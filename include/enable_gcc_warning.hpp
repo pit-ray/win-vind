@@ -1,0 +1,7 @@
+#pragma GCC diagnostic warning "-Weffc++"
+#pragma GCC diagnostic warning "-Wshadow"
+#pragma GCC diagnostic warning "-Wold-style-cast"
+#pragma GCC diagnostic warning "-Wctor-dtor-privacy"
+#pragma GCC diagnostic warning "-Wuseless-cast"
+#pragma GCC diagnostic warning "-Wsuggest-override"
+#pragma GCC diagnostic warning "-Wconversion"

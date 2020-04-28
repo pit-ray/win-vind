@@ -2,16 +2,26 @@
 Vim Key Binder for Windows
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/win-vind-icon.png?raw=true" width="256" height="256" align="right">  
 
+GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>.  
+<br>  
+
+
 ## Description
-Vim, Vi is  a powerful light-weight awesome editor, has the idia of OSS. These editor key bind has been inherited from the begining. The reason why is it is very intuitive and allow us to type keeping the positon of hand over key board without moving it to mouse.
-Therefore, I implemented key bind of Vim for manipulating Windows.
-This software provides key bind like Vim and original useful shortcut system and is light-weight.
+Vim, Vi is a powerful light-weight awesome editor, has the idia of OSS. These editor key bind has been inherited from the begining. The reason why is it is very intuitive and allow us to type keeping the positon of hand over key board without moving it to mouse. Therefore, I implemented key bind of Vim for manipulating Windows. This software provides key bind like Vim and original useful shortcut system and is light-weight.
 
-The most attractive things is that you can start any application with the "!" command according to the commands registered in "config/exapp.ini".
+Of course,  you can disable this application, by typing `i` in order to change mode to `Insert Mode`. Thus, It's not only the idea of Mouse-less, but it can also be used as an auxiliary tool for GUI operation.
 
-However, if you install by installer, it makes ".win-vind" directory at Home directory instead of "config" directory.
+The most attractive things are that you can start any application with the `!` command according to the commands registered in `exapp.ini`.  
+In addition, it makes cursor to jump any position with key-mapping of your keyboard as following image.  
 
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/Jump2Any-image.png?raw=true" width="512">
+This makes key coordinates on keyboard project coordinates of the desktop.  
+<br>
 
+## How to use  
+Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.  
+<br>  
+  
 ## Build instructions
 recommend executing build.bat  
 ``` shell
@@ -34,10 +44,8 @@ cd ..
 ```
 
 ## For Developer
-- This licence is MIT.
-- This GUI is a temporary and simply by Win32API, therefore will be replace by a GUI(For example, Qt...) in the future.
-- It is designed by Polymorphism and Pimpl idiom. Base classes are BindedFunction or BindedFunctionWithCreator, Command or CommandWithCreator, DynamicOption. First class is called by inputting short key command shown in config/default.xml. For example, gg is jumping to top. Next class is done by :command, for example, :w is saving file. In the end, Dynamic Option Class use in order to change on running process, use dynamically resource need to refresh resource. For example, display inputed command. Please register BindedFunction and Command to KeyBinder, Option to OptionLoader.
-
+Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.  
+<br>  
 
 ## Development Enviroment
 ||Name and Version|
@@ -49,5 +57,5 @@ cd ..
 |CPU|AMD Ryzen 2600|
 
 ## Author
-**pit-ray**  
-**[E-mail]** contact(at)pit-ray.com
+- pit-ray  
+[E-mail] contact(at)pit-ray.com

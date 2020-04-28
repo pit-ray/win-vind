@@ -11,7 +11,7 @@ Vim, Vi is a powerful light-weight awesome editor, has the idia of OSS. These ed
 
 Of course,  you can disable this application, by typing `i` in order to change mode to `Insert Mode`. Thus, It's not only the idea of Mouse-less, but it can also be used as an auxiliary tool for GUI operation.
 
-The most attractive things are that you can start any application with the `!` command according to the commands registered in `exapp.ini`.  
+The most of attractive things are that you can start any application with the `!` command according to the commands registered in `exapp.ini`.  
 In addition, it makes cursor to jump any position with key-mapping of your keyboard as following image.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/Jump2Any-image.png?raw=true" width="512">

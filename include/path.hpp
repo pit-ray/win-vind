@@ -8,7 +8,7 @@
 
 namespace Path
 {
-    static constexpr auto _USE_INSTALLER = false ;
+    static constexpr auto _USE_INSTALLER = true ;
     static const std::string _USE_INST_CONFIG_DIR{".win-vind"} ;
     static const std::string _UNUSE_INST_CONFIG_DIR{"config"} ;
 

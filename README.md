@@ -1,6 +1,6 @@
 # win-vind
 Vim Key Binder for Windows
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/p/pit-ray/20200428/20200428042034.png" width="256" height="256" align="right">  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/win-vind-icon.png?raw=true" width="256" height="256" align="right">  
 
 ## Description
 Vim, Vi is  a powerful light-weight awesome editor, has the idia of OSS. These editor key bind has been inherited from the begining. The reason why is it is very intuitive and allow us to type keeping the positon of hand over key board without moving it to mouse.
@@ -10,68 +10,6 @@ This software provides key bind like Vim and original useful shortcut system and
 The most attractive things is that you can start any application with the "!" command according to the commands registered in "config/exapp.ini".
 
 However, if you install by installer, it makes ".win-vind" directory at Home directory instead of "config" directory.
-
-## How to use
-Basically, key bind is based on Vim or Vi. Original functions are `highlighted`.
-
-|Functions|binds|Windows Shortcut Key|
-|---|---|---|
-|Normal Mode|Left+ESC, Right+ESC, Up+Esc, F9|-|
-|Insert Mode|i|-|
-|Visual Mode|v|-|
-|Select All|V|Ctrl+a|
-|Move Cursor Left|h, Ctrl+h, BkSpace, Left|-|
-|Move Cursor Right|l, Space, Right|-|
-|Move Cursor Up|k, -, gk, Ctrl+p, Up|-|
-|Jump Cursor Left End|0, ^, Home, g0, g^|-|
-|Jump Cursor Right End|$, End, g$|-|
-|Jump Cursor Top|gg|-|
-|Jump Cursor Bottom|G|-|
-|Jump Cursor Horizontal Center|gm, gM|-|
-|Jump Cursor Vertical Center|M|-|
-|`Jump Cursor to Any by Keyboard mapping`|f, F|-|
-|`Jump Cursor to Center of Active Window`|t, T|-|
-|Scroll Up|Ctrl+y|-|
-|Scroll Down|Ctrl+e|-|
-|Scroll Mid-Page Up|Ctrl+u|-|
-|Scroll Mid-Page Down|Ctrl+f|-|
-|Scroll Page Up|Ctrl+b|-|
-|Scroll Page Down|Ctrl+f|-|
-|Scroll Left|zh, z+h|-|
-|Scroll Right|zl, z+l|-|
-|Scroll Mid-Page Left|zH, z+H|-|
-|Scroll Mid-Page Right|zL, z+L|-|
-|`Click Left`|o, O|-|
-|`Click Right`|a, A|-|
-|Copy|y, yy, Y|Ctrl+c|
-|Paste|p, P|Ctrl+v|
-|Cut|dd, D|Ctrl+x|
-|Delete|x, X, Delete|Delete|
-|ReDo|Ctrl+r|Ctrl+y|
-|Undo|u, U|Ctrl+z|
-|`Switch Virtual Desktop to Left`|gT|Ctrl+Win+Left|
-|`Switch Virtual Desktop to right`|gt|Ctrl+Win+Right|
-|Search Pattern|/, ?|F3|
-|`Close Current Window`|(Ctrl+w)q, (Ctrl+w)c|-|
-|`Switch Window`|(Ctrl+w)s|Alt+Tab|
-|`Maximize Current Window`|(Ctrl+w)k, (Ctrl+w)a|Win+Up|
-|`Minimize Current Window`|(Ctrl+w)j, (Ctrl+w)i|Win+Down|
-|`Snap Current Window to Left (resize half of screen)`|(Ctrl+w)h, (Ctrl+w)<|Win+Left|
-|`Snap Current Window to Right (resize half of screen)`|(Ctrl+w)l, (Ctrl+w)>|Win+Right|
-|`Move to Next Page`|>|Alt+Right|
-|`Move to Previous Page`|<|Alt+Left|
-
-|Functions|Commands|Windows Shortcut Key|
-|---|---|---|
-|Save Opened File|:w, :w_f, :w_a, :w_c, :up, :wall|Ctrl+s|
-|Close Opened File(Tab)|:cl, :close|Ctrl+F4|
-|`Switch WIndow`|:sw, :switch|Alt+Tab|
-|`Maximize Current Window`|:max, :on, :only|Win+Up|
-|`Minimize Current Window`|:min, :hi, :hide|Win+Down|
-|`Snap Current Window to Left (resize half of screen)`|:lsplit|Win+Left|
-|`Snap Current Window to Right (resize half of screen)`|:rsplit|Win+Right|
-|`Start Command Prompt`|:sh, :shell|-|
-|`Start Any Application`|!|-|
 
 
 ## Build instructions

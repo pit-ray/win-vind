@@ -3,6 +3,7 @@ Vim Key Binder for Windows
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/win-vind-icon.png?raw=true" width="256" height="256" align="right">  
 
 GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>.  
+日本語のGitHub wikiページは <a href="https://github.com/pit-ray/win-vind/wiki/%E3%83%9B%E3%83%BC%E3%83%A0-(Home-in-Japanese)">こちら</a>です。  
 <br>  
 
 
@@ -20,6 +21,7 @@ This makes key coordinates on keyboard project coordinates of the desktop.
 
 ## How to use  
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.  
+<a href="https://github.com/pit-ray/win-vind/wiki/%E4%BD%BF%E3%81%84%E6%96%B9-(For-Users-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。  
 <br>  
   
 ## Build instructions
@@ -45,6 +47,7 @@ cd ..
 
 ## For Developer
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.  
+<a href="https://github.com/pit-ray/win-vind/wiki/%E9%96%8B%E7%99%BA%E8%80%85%E3%81%B8(For-Developers-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。  
 <br>  
 
 ## Development Enviroment

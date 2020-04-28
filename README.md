@@ -1,6 +1,6 @@
 # win-vind
 Vim Key Binder for Windows
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/p/pit-ray/20200428/20200428042034.png" width="256" height="256" align="right">  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/win-vind-icon.png?raw=true" width="256" height="256" align="right">  
 
 ## Description
 Vim, Vi is  a powerful light-weight awesome editor, has the idia of OSS. These editor key bind has been inherited from the begining. The reason why is it is very intuitive and allow us to type keeping the positon of hand over key board without moving it to mouse.

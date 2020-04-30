@@ -23,13 +23,22 @@ bool Change2Normal::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
 
+    if(get_mode() == Mode::Normal) {
+        return true ;
+    }
+
     if(get_mode() == Mode::Visual) {
         if(!MouseEventer::is_click(MouseEventer::Button::LEFT)) {
             return false ;
         }
     }
 
-    KeyAbsorber::close() ;
+    //When this function is called, binded key is down.
+    //Thus, its key is needed to be up before absorbing key.
+    if(!KeyAbsorber::is_close_with_refresh()) {
+        return false ;
+    }
+
     System::change_mode(System::Mode::Normal) ;
     return true ;
 }
@@ -43,11 +52,12 @@ const string Change2Insert::sname() noexcept
 
 bool Change2Insert::sprocess(const bool first_call)
 {
-    using namespace MouseEventer ;
     if(!first_call) return true ;
-    if(!is_click(Button::LEFT)) {
+
+    if(!MouseEventer::is_click(MouseEventer::Button::LEFT)) {
         return false ;
     }
+
     KeyAbsorber::open() ;
     change_mode(Mode::Insert) ;
     return true ;

@@ -3,12 +3,13 @@
 
 #include "key_absorber.hpp"
 #include "msg_logger.hpp"
+#include "virtual_key_fwd.hpp"
+#include "key_log.hpp"
 #include <windows.h>
 #include <iostream>
 #include <algorithm>
 #include <stack>
 #include <memory>
-#include "virtual_key_fwd.hpp"
 
 namespace KeybrdEventer
 {
@@ -33,7 +34,7 @@ namespace KeybrdEventer
         explicit SmartKey(const T keycode) noexcept : in(), key(static_cast<unsigned char>(keycode)) {
             in.type = INPUT_KEYBOARD ;
             in.ki.wVk = static_cast<WORD>(keycode) ;
-            in.ki.wScan = 0 ;
+            in.ki.wScan = static_cast<WORD>(MapVirtualKeyA(keycode, MAPVK_VK_TO_VSC)) ;
             in.ki.dwFlags = 0 ;
             in.ki.time = 0 ;
             in.ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -92,12 +93,13 @@ namespace KeybrdEventer
         return true ;
     }
 
+    //change key state without input
     template <typename T>
-    bool is_release(const T key) noexcept {
+    bool is_release_keystate(const T key) noexcept {
         INPUT in ;
         in.type = INPUT_KEYBOARD ;
         in.ki.wVk = static_cast<WORD>(key) ;
-        in.ki.wScan = 0 ;
+        in.ki.wScan = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
         in.ki.dwFlags = KEYEVENTF_KEYUP ;
         in.ki.time = 0 ;
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -112,12 +114,13 @@ namespace KeybrdEventer
         return true ;
     }
 
+    //change key state without input
     template <typename T>
-    bool is_push(const T key) noexcept {
+    bool is_push_keystate(const T key) noexcept {
         INPUT in ;
         in.type = INPUT_KEYBOARD ;
         in.ki.wVk = static_cast<WORD>(key) ;
-        in.ki.wScan = 0 ;
+        in.ki.wScan = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
         in.ki.dwFlags = 0 ;
         in.ki.time = 0 ;
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;

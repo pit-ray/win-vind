@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <initializer_list>
 
 class KeyLog
 {
@@ -16,6 +17,7 @@ public:
     explicit KeyLog() ;
     explicit KeyLog(const data_t& codes) ;
     explicit KeyLog(data_t&& codes) ;
+    explicit KeyLog(std::initializer_list<unsigned char>&& codes) ;
 
     ~KeyLog() ;
 

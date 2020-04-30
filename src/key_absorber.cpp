@@ -1,21 +1,30 @@
 #include "key_absorber.hpp"
+#include "msg_logger.hpp"
+#include "keybrd_eventer.hpp"
 
-#include <windows.h>
 #include <array>
 #include <memory>
 #include <iostream>
 #include <algorithm>
 
-#include "msg_logger.hpp"
-#include "key_log.hpp"
+#include <windows.h>
 
 using namespace std ;
 
 namespace KeyAbsorber
 {
-    static array<bool, 256> state{false} ;
-    static bool absorbed_flag{true} ;
-    static key_log_t ignored_keys{} ;
+    static array<bool, 256> _state{false} ;
+    static bool _absorbed_flag{true} ;
+    static KeyLog::data_t _ignored_keys{} ;
+
+    /*
+    static const KeyLog _toggle_key {
+        VKC_CAPS_LOCK,
+        VKC_FROM_EN,
+        VKC_TO_JP,
+        VKC_KANA
+    } ;
+    */
 
     static const auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook == nullptr) return ;
@@ -32,7 +41,11 @@ namespace KeyAbsorber
     static unique_ptr<HHOOK, decltype(uninstaller)> p_handle(nullptr, uninstaller) ;
 
     static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) noexcept {
-        static const auto release = [&wParam, &lParam](const int code){return CallNextHookEx(*p_handle, code, wParam, lParam) ;} ;
+
+        const auto release = [&wParam, &lParam](const int code) {
+            return CallNextHookEx(*p_handle, code, wParam, lParam) ;
+        } ;
+
         if(nCode < HC_ACTION) {
             //not processed
             return release(nCode) ;
@@ -40,16 +53,16 @@ namespace KeyAbsorber
         try {
             const auto pkbs = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam) ;
 
-            state.at(pkbs->vkCode) = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+            _state.at(pkbs->vkCode) = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
 
-            if(!ignored_keys.empty()) {
-                if(std::find(ignored_keys.cbegin(), ignored_keys.cend(), pkbs->vkCode)
-                    != ignored_keys.cend()) {
+            if(!_ignored_keys.empty()) {
+                if(std::find(_ignored_keys.cbegin(), _ignored_keys.cend(), pkbs->vkCode)
+                    != _ignored_keys.cend()) {
                     return release(HC_ACTION) ;
                 }
             }
 
-            if(absorbed_flag) {
+            if(_absorbed_flag) {
                 return -1 ; //absorbing
             }
 
@@ -62,7 +75,7 @@ namespace KeyAbsorber
     }
 
     bool is_install_hook() noexcept {
-        state.fill(false) ;
+        _state.fill(false) ;
 
         p_handle.reset(new HHOOK{}) ; //added ownership
         if(p_handle == nullptr) {
@@ -90,7 +103,7 @@ namespace KeyAbsorber
         }
 
         try{
-            return state.at(keycode) ;
+            return _state.at(keycode) ;
         }
         catch(out_of_range&) {
             return false ;
@@ -111,26 +124,41 @@ namespace KeyAbsorber
 
     //if this object is not hooked, can call following functions.
     bool is_closed() noexcept {
-        return absorbed_flag ;
+        return _absorbed_flag ;
     }
 
     void close() noexcept {
-        ignored_keys.clear() ;
-        absorbed_flag = true ;
+        _ignored_keys.clear() ;
+        _absorbed_flag = true ;
+    }
+
+    bool is_close_with_refresh() noexcept {
+        _ignored_keys.clear() ;
+
+        //if this function is called by pushed button,
+        //it has to send message "KEYUP" to OS (not absorbed).
+        for(const auto& vkc : get_downed_list()) {
+            if(!KeybrdEventer::is_release_keystate(vkc)) {
+                return false ;
+            }
+        }
+
+        _absorbed_flag = true ;
+        return true ;
     }
 
     void open() noexcept {
-        ignored_keys.clear() ;
-        absorbed_flag = false ;
+        _ignored_keys.clear() ;
+        _absorbed_flag = false ;
     }
 
-    void open_keys(const key_log_t& keys) noexcept {
-        ignored_keys = keys ;
+    void open_keys(const KeyLog::data_t& keys) noexcept {
+        _ignored_keys = keys ;
     }
 
     void open_key(const unsigned char key) noexcept {
         try {
-            ignored_keys.push_back(key) ;
+            _ignored_keys.push_back(key) ;
         }
         catch(bad_alloc& e) {
             Logger::error_stream << "[Error] " \

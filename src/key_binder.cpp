@@ -74,8 +74,8 @@ struct KeyBinder::Impl
         ScrollPageUp::create_with_cache(),
         ScrollPageDown::create_with_cache(),
 
-        ClickLeft::create(),
-        ClickRight::create(),
+        ClickLeft::create_with_cache(),
+        ClickRight::create_with_cache(),
 
         CBCopy::create_with_cache(),
         CBPaste::create_with_cache(),
@@ -131,6 +131,9 @@ struct KeyBinder::Impl
         ScrollMidDown::create_with_cache(),
         ScrollPageUp::create_with_cache(),
         ScrollPageDown::create_with_cache(),
+
+        ClickLeft::create_with_cache(),
+        ClickRight::create_with_cache(),
 
         CBCopy::create_with_cache(),
         CBPaste::create_with_cache(),
@@ -404,15 +407,15 @@ void KeyBinder::update() noexcept {
             break ;
 
         case Mode::EdiNormal:
-            update_core(pimpl->vpbf_edi_normal) ;
+            //update_core(pimpl->vpbf_edi_normal) ;
             break ;
 
         case Mode::EdiInsert:
-            update_core(pimpl->vpbf_edi_insert) ;
+            //update_core(pimpl->vpbf_edi_insert) ;
             break ;
 
         case Mode::EdiVisual:
-            update_core(pimpl->vpbf_edi_visual) ;
+            //update_core(pimpl->vpbf_edi_visual) ;
             break ;
 
         case Mode::Command:

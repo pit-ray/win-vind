@@ -2,6 +2,7 @@
 #include "key_absorber.hpp"
 #include "vkc_converter.hpp"
 #include "utility.hpp"
+#include "virtual_key_fwd.hpp"
 
 #include <iostream>
 

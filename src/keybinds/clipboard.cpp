@@ -122,7 +122,7 @@ bool CBDelete::sprocess(const bool first_call)
     }
 
     if(KeyAbsorber::is_down(VKC_DELETE)) {
-        if(!KeybrdEventer::is_release(VKC_DELETE)) {
+        if(!KeybrdEventer::is_release_keystate(VKC_DELETE)) {
             return false ;
         }
     }

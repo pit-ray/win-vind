@@ -233,7 +233,7 @@ bool Jump2Any::sprocess(const bool first_call)
 
     //reset key state (binded key)
     for(const auto& key : KeyAbsorber::get_downed_list()) {
-        KeybrdEventer::is_release(key) ;
+        KeybrdEventer::is_release_keystate(key) ;
     }
 
     //ignore locked key (for example, CapsLock, NumLock, Kana....)
@@ -261,8 +261,8 @@ bool Jump2Any::sprocess(const bool first_call)
         try {
             const auto pos = keypos.at(log.back()) ;
 
-            auto x_pos = static_cast<int>(pos.first / max_keybrd_xpos * static_cast<float>(MAX_X_POS)) ;
-            auto y_pos = static_cast<int>(pos.second / max_keybrd_ypos * static_cast<float>(MAX_Y_POS)) ;
+            auto x_pos = static_cast<int>(pos.first / max_keybrd_xpos * MAX_X_POS) ;
+            auto y_pos = static_cast<int>(pos.second / max_keybrd_ypos * MAX_Y_POS) ;
             if(x_pos == MAX_X_POS) {
                 x_pos -= DefaultConfig::SCREEN_POS_BUF() ;
             }
@@ -273,8 +273,8 @@ bool Jump2Any::sprocess(const bool first_call)
             SetCursorPos(x_pos, y_pos) ;
 
             for(const auto& key : log) {
-                if(!KeybrdEventer::is_release(key)) {
-                    Logger::error_stream << "[Error] failed release key (Jump2Any::is_release)\n" ;
+                if(!KeybrdEventer::is_release_keystate(key)) {
+                    Logger::error_stream << "[Error] failed release key (Jump2Any::is_release_keystate)\n" ;
                     return false ;
                 }
             }

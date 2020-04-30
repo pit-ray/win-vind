@@ -26,7 +26,7 @@ static const auto BK_COLOR = RGB(30, 30, 30) ;
 static const auto WINDOW_ALPHA = 200 ;
 static const auto TX_COLOR = RGB(222, 222, 222) ;
 static const auto PROJECT_NAME = "win-vind" ;
-static const auto VERSION = "1.0.1-alpha" ;
+static const auto VERSION = "1.0.2-alpha" ;
 
 //GUI ID
 static constexpr auto OPTION1_ID = 0 ;
@@ -187,12 +187,12 @@ int WINAPI WinMain(
         kb.update() ;
         ol.update() ;
 
-
         using namespace KeyAbsorber ;
         if(is_down(VKC_ESC) && is_down(VKC_F8) && is_down(VKC_F9)) {
             Logger::msg_stream << "[Message] Completed successfully (ExitCommand)\n" ;
             break ;
         }
+
         Sleep(5) ; //5ms
     }
 

@@ -117,7 +117,7 @@ bool ScrollMidUp::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(static_cast<float>(MAX_Y_POS) * DefaultConfig::YSCROLL_SCREEN_RATIO() * 0.5f) ;
+    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO() * 0.5f) ;
     return MouseEventer::is_vscroll(delta) ;
 }
 
@@ -152,7 +152,7 @@ bool ScrollMidDown::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(static_cast<float>(MAX_Y_POS) * DefaultConfig::YSCROLL_SCREEN_RATIO() * 0.5f) ;
+    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO() * 0.5f) ;
     return MouseEventer::is_vscroll(-delta) ;
 }
 
@@ -187,7 +187,7 @@ bool ScrollPageUp::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(static_cast<float>(MAX_Y_POS) * DefaultConfig::YSCROLL_SCREEN_RATIO()) ;
+    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO()) ;
     return MouseEventer::is_vscroll(delta) ;
 }
 
@@ -222,7 +222,7 @@ bool ScrollPageDown::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(static_cast<float>(MAX_Y_POS) * DefaultConfig::YSCROLL_SCREEN_RATIO()) ;
+    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO()) ;
     return MouseEventer::is_vscroll(-delta) ;
 }
 
@@ -326,7 +326,7 @@ bool ScrollMidLeft::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(static_cast<float>(MAX_X_POS) * DefaultConfig::XSCROLL_SCREEN_RATIO() * 0.5f) ;
+    static const auto delta = static_cast<int>(MAX_X_POS * DefaultConfig::XSCROLL_SCREEN_RATIO() * 0.5f) ;
     return MouseEventer::is_hscroll(-delta) ;
 }
 
@@ -361,6 +361,6 @@ bool ScrollMidRight::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(static_cast<float>(MAX_X_POS) * DefaultConfig::XSCROLL_SCREEN_RATIO() * 0.5f) ;
+    static const auto delta = static_cast<int>(MAX_X_POS * DefaultConfig::XSCROLL_SCREEN_RATIO() * 0.5f) ;
     return MouseEventer::is_hscroll(delta) ;
 }

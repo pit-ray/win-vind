@@ -74,10 +74,10 @@ bool SwitchWindow::common_process()
 
         //check system keys
         if(KeyAbsorber::is_down(VKC_ESC)) {
-            return is_release(VKC_ESC) ;
+            return is_release_keystate(VKC_ESC) ;
         }
         if(KeyAbsorber::is_down(VKC_ENTER)) {
-            return is_release(VKC_ENTER) ;
+            return is_release_keystate(VKC_ENTER) ;
         }
 
         //is changed ?
@@ -104,14 +104,14 @@ bool SwitchWindow::common_process()
         //is callable?
         if(left_pbf->is_callable()) {
             if(KeyAbsorber::is_down(VKC_LEFT)) {
-                if(!is_release(VKC_LEFT)) {
+                if(!is_release_keystate(VKC_LEFT)) {
                     return false ;
                 }
                 if(!is_pushup(VKC_LEFT)) {
                     return false ;
                 }
                 //undo
-                if(!is_push(VKC_LEFT)) {
+                if(!is_push_keystate(VKC_LEFT)) {
                     return false ;
                 }
             }
@@ -125,14 +125,14 @@ bool SwitchWindow::common_process()
 
         if(right_pbf->is_callable()) {
             if(KeyAbsorber::is_down(VKC_RIGHT)) {
-                if(!is_release(VKC_RIGHT)) {
+                if(!is_release_keystate(VKC_RIGHT)) {
                     return false ;
                 }
                 if(!is_pushup(VKC_RIGHT)) {
                     return false ;
                 }
                 //undo
-                if(!is_push(VKC_RIGHT)) {
+                if(!is_push_keystate(VKC_RIGHT)) {
                     return false ;
                 }
             }
@@ -158,7 +158,7 @@ bool SwitchWindow::sprocess(const bool first_call)
 
 bool SwitchWindow::sprocess(const string& cmd)
 {
-    if(!KeybrdEventer::is_release(VKC_ENTER)) {
+    if(!KeybrdEventer::is_release_keystate(VKC_ENTER)) {
         return false ;
     }
     return common_process() ;

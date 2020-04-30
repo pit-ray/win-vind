@@ -19,6 +19,10 @@ struct KeyLog::Impl
     : once_log(codes)
     {}
 
+    explicit Impl(initializer_list<unsigned char>&& codes)
+    : once_log(codes)
+    {}
+
     ~Impl() noexcept {
         once_log.clear() ;
     }
@@ -39,6 +43,10 @@ KeyLog::KeyLog(const data_t& codes)
 {}
 
 KeyLog::KeyLog(data_t&& codes)
+: pimpl(make_unique<Impl>(codes))
+{}
+
+KeyLog::KeyLog(initializer_list<unsigned char>&& codes)
 : pimpl(make_unique<Impl>(codes))
 {}
 

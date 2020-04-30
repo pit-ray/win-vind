@@ -8,7 +8,7 @@ namespace MouseEventer
     //allow this enum to implicit cast
     enum Button : unsigned char {
         LEFT = 0,
-        RIGHT = 2,
+        RIGHT = 1,
     } ;
 
     bool is_click(const Button bt) noexcept ;

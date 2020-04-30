@@ -1,7 +1,10 @@
 # win-vind
 Vim Key Binder for Windows
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/win-vind-icon.png?raw=true" width="256" height="256" align="right">  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/win-vind-icon.png?raw=true" width="256" height="256" align="right">
+<br>
 
+**win-vind** provides the light weight **Hybrid UI System of CUI and GUI**.  
+<br>
 GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>.  
 日本語のGitHub wikiページは <a href="https://github.com/pit-ray/win-vind/wiki/%E3%83%9B%E3%83%BC%E3%83%A0-(Home-in-Japanese)">こちら</a>です。  
 <br>  

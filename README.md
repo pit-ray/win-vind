@@ -26,27 +26,51 @@ This makes key coordinates on keyboard project coordinates of the desktop.
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.  
 <a href="https://github.com/pit-ray/win-vind/wiki/%E4%BD%BF%E3%81%84%E6%96%B9-(For-Users-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。  
 <br>  
-  
-## Build instructions
-recommend executing build.bat  
+ 
+## Build instructions  
+### How to build Project  
+**This project use `<mutex>`**, so some MinGW without it will fail a build.  
+In this case, you will need to install other MinGW with `<mutex>`. (select `posix` at item called **Thread** in MinGW-Installer.)
+
+
+- Automatically Build  
+I recommend executing `build.bat`  
 ``` shell
 ./build.bat [-debug/-release]
 ```
 
-If you want to manualy build, do as follows.
+- Manualy Build  
+If you want to manualy build, use `cmake` and `make` commands as follows.
 ```shell
 mkdir debug
 cd debug
 cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
 mingw32-make -f Makefile
 cd ..
+```  
+<br>  
+
+### How to build Installer 
+If you want to make installer, please use `cpack` command of **CMake**.  
+However, the installer generator of `cpack` use **Nullsoft Scriptable Install System(NSIS)**.  
+Therefore, you will need to install its software to your Windows. (<a href="https://nsis.sourceforge.io/Download">Download Link of NSIS</a>)  
+
+**Please change `_USE_INSTALLER` to `true` in `include/path.hpp` before building the installer.**  
+
+- Automatically Build  
+I recommend executing `create_ins.bat`.    
 ```
-If you want to make installer, please as follows.
+./create_ins.bat
+```
+
+- Manually Build  
+Move directory existed a builded binary.   
 ```shell
 cd debug
 cpack .
 cd ..
 ```
+<br>  
 
 ## For Developer
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.  

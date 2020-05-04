@@ -13,6 +13,7 @@ add_library(Common STATIC
     utility.cpp
     system.cpp
     key_absorber.cpp
+    interval_timer.cpp
     xml_parser.cpp
     text_analyzer.cpp
     mouse_eventer.cpp

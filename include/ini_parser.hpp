@@ -21,19 +21,19 @@ namespace INIParser
         ptree pt ;
         try {
             read_ini(filename, pt) ;
-            return std::move(pt) ;
+            return pt ; //return value is optimized by compiler
         }
         catch(ini_parser_error& e) {
             catch_boost_except(e) ;
-            return std::move(pt) ;
+            return pt ;
         }
         catch(ptree_bad_path& e) {
             catch_boost_except(e) ;
-            return std::move(pt) ;
+            return pt ;
         }
         catch(ptree_bad_data& e) {
             catch_boost_except(e) ;
-            return std::move(pt) ;
+            return pt ;
         }
     }
 }

@@ -18,7 +18,7 @@ private:
 
 public:
     static std::unique_ptr<BindedFunction> create() {
-        return std::move(std::make_unique<Derived>()) ;
+        return std::make_unique<Derived>() ;
     }
 
     static std::shared_ptr<BindedFunction> create_with_cache() {

@@ -17,7 +17,7 @@ private:
 
 public:
     static std::unique_ptr<Command> create() {
-        return std::move(std::make_unique<Derived>()) ;
+        return std::make_unique<Derived>() ;
     }
 
     const std::string name() const noexcept override {

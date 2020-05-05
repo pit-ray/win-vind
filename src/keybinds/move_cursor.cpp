@@ -1,5 +1,4 @@
 #include "move_cursor.hpp"
-#include "interval_timer.hpp"
 #include "default_config.hpp"
 
 #include <windows.h>

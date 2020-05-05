@@ -57,12 +57,12 @@ namespace XMLParser {
             }
         }
 
-        return std::move(full_comb) ;
+        return full_comb ;
     }
 
     auto not_alone_syskeys = VKCConverter::get_all_sys_vkc() ;
     const std::vector<unsigned char> get_ignore_alone() noexcept {
-        return std::move(not_alone_syskeys) ;
+        return not_alone_syskeys ;
     }
 
     const bind_map_t load_bind_map(const string& filename) noexcept {
@@ -178,9 +178,10 @@ namespace XMLParser {
         }
         catch(out_of_range& e) {
             catch_except(e) ;
+            return map ;
         }
 
-        return std::move(map) ;
+        return map ;
     }
 
     const bind_map_t load_command_map(const string& filename) noexcept {
@@ -273,8 +274,9 @@ namespace XMLParser {
         }
         catch(out_of_range& e) {
             catch_except(e) ;
+            return map ;
         }
 
-        return std::move(map) ;
+        return map ;
     }
 }

@@ -21,11 +21,11 @@ public:
 
     ~KeyLog() ;
 
-    KeyLog(KeyLog&&) ;
-    KeyLog& operator=(KeyLog&&) ;
+    KeyLog(KeyLog&&) noexcept ;
+    KeyLog& operator=(KeyLog&&) noexcept ;
 
     KeyLog(const KeyLog&) ;
-    KeyLog& operator=(const KeyLog&) ;
+    KeyLog& operator=(const KeyLog&) noexcept ;
 
     data_t::const_iterator begin() const noexcept ;
     data_t::const_iterator end() const noexcept ;

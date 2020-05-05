@@ -28,8 +28,8 @@ public:
     explicit BindedFunction() ;
     virtual ~BindedFunction() ;
 
-    BindedFunction(BindedFunction&&) ;
-    BindedFunction& operator=(BindedFunction&&) ;
+    BindedFunction(BindedFunction&&) noexcept ;
+    BindedFunction& operator=(BindedFunction&&) noexcept ;
 
     BindedFunction(const BindedFunction&) = delete ;
     BindedFunction& operator=(const BindedFunction&) = delete ;

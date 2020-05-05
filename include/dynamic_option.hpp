@@ -24,8 +24,8 @@ public:
     explicit DynamicOption() ;
     virtual ~DynamicOption() noexcept ;
 
-    DynamicOption(DynamicOption&&) ;
-    DynamicOption& operator=(DynamicOption&&) ;
+    DynamicOption(DynamicOption&&) noexcept ;
+    DynamicOption& operator=(DynamicOption&&) noexcept ;
 
     DynamicOption(const DynamicOption&) = delete ;
     DynamicOption& operator=(const DynamicOption&) = delete ;

@@ -14,8 +14,8 @@ public:
 
     ~IntervalTimer() ;
 
-    IntervalTimer(IntervalTimer&&) ;
-    IntervalTimer& operator=(IntervalTimer&&) ;
+    IntervalTimer(IntervalTimer&&) noexcept ;
+    IntervalTimer& operator=(IntervalTimer&&) noexcept ;
 
     void set_delta(const int delta_us) noexcept ;
     void reset() noexcept ;

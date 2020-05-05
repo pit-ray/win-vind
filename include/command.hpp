@@ -27,8 +27,8 @@ public:
     explicit Command() ;
     virtual ~Command() ;
 
-    Command(Command&&) ;
-    Command& operator=(Command&&) ;
+    Command(Command&&) noexcept ;
+    Command& operator=(Command&&) noexcept ;
 
     Command(const Command&) = delete ;
     Command& operator=(const Command&) = delete ;

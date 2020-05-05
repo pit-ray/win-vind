@@ -119,7 +119,7 @@ namespace KeyAbsorber
             }
         }
 
-        return std::move(KeyLog(res)) ;
+        return KeyLog(res) ;
     }
 
     //if this object is not hooked, can call following functions.

@@ -53,14 +53,14 @@ KeyLog::KeyLog(initializer_list<unsigned char>&& codes)
 KeyLog::~KeyLog() = default ;
 
 //move
-KeyLog::KeyLog(KeyLog&&) = default ;
-KeyLog& KeyLog::operator=(KeyLog&&) = default ;
+KeyLog::KeyLog(KeyLog&&) noexcept = default ;
+KeyLog& KeyLog::operator=(KeyLog&&) noexcept = default ;
 
 KeyLog::KeyLog(const KeyLog& rhs)
 : pimpl(rhs.pimpl ? make_unique<Impl>(*rhs.pimpl) : make_unique<Impl>())
 {}
 
-KeyLog& KeyLog::operator=(const KeyLog& rhs)
+KeyLog& KeyLog::operator=(const KeyLog& rhs) noexcept
 {
     if(!rhs.pimpl) return *this ; //if already moved, not copy
     *pimpl = *rhs.pimpl ;

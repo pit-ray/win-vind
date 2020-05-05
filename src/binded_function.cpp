@@ -48,8 +48,8 @@ BindedFunction::BindedFunction()
 BindedFunction::~BindedFunction() noexcept = default ;
 
 //move
-BindedFunction::BindedFunction(BindedFunction&&) = default ;
-BindedFunction& BindedFunction::operator=(BindedFunction&&) = default ;
+BindedFunction::BindedFunction(BindedFunction&&) noexcept = default ;
+BindedFunction& BindedFunction::operator=(BindedFunction&&) noexcept = default ;
 
 //methods
 void BindedFunction::set_command(const XMLParser::vvvc_t& command) noexcept

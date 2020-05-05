@@ -34,8 +34,8 @@ DynamicOption::DynamicOption()
 
 DynamicOption::~DynamicOption() noexcept = default ;
 
-DynamicOption::DynamicOption(DynamicOption&&) = default ;
-DynamicOption& DynamicOption::operator=(DynamicOption&&) = default ;
+DynamicOption::DynamicOption(DynamicOption&&) noexcept = default ;
+DynamicOption& DynamicOption::operator=(DynamicOption&&) noexcept = default ;
 
 void DynamicOption::enable() noexcept
 {

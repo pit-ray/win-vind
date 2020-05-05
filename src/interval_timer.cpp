@@ -27,8 +27,8 @@ IntervalTimer::IntervalTimer(const int delta_us)
 
 IntervalTimer::~IntervalTimer() = default ;
 
-IntervalTimer::IntervalTimer(IntervalTimer&&) = default ;
-IntervalTimer& IntervalTimer::operator=(IntervalTimer&&) = default ;
+IntervalTimer::IntervalTimer(IntervalTimer&&) noexcept = default ;
+IntervalTimer& IntervalTimer::operator=(IntervalTimer&&) noexcept = default ;
 
 void IntervalTimer::set_delta(const int delta_us) noexcept
 {

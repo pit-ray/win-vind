@@ -184,6 +184,6 @@ namespace VKCConverter
             vec.push_back(elem.second) ;
         }
 
-        return std::move(vec) ;
+        return vec ;
     }
 }

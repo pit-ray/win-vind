@@ -52,8 +52,8 @@ Command::Command()
 Command::~Command() noexcept = default ;
 
 //move
-Command::Command(Command&&) = default ;
-Command& Command::operator=(Command&&) = default ;
+Command::Command(Command&&) noexcept = default ;
+Command& Command::operator=(Command&&) noexcept = default ;
 
 //methods
 void Command::set_command(const XMLParser::vvvc_t& command) noexcept

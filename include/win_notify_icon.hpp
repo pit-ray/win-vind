@@ -36,6 +36,12 @@ public:
         delete_icon() ;
     }
 
+    NotifyIcon(NotifyIcon&&) = delete ;
+    NotifyIcon& operator=(NotifyIcon&&) = delete ;
+
+    NotifyIcon(const NotifyIcon&) = delete ;
+    NotifyIcon& operator=(const NotifyIcon&) = delete ;
+
     bool add_icon() noexcept {
         if(!Shell_NotifyIconA(NIM_ADD, &nid)) {
             Logger::error_stream << "[Error] windows.h: cannnot setup notification area. (NotifyIcon::add_icon::Shell_NotifyIcon)\n" ;

@@ -86,7 +86,7 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">G
 ||Name and Version|
 |---|---|
 |OS|Windows 10 Home 64bit 1909|
-|Framework|MinGW-W64-builds-4.3.5|
+|Framework|MinGW-W64-builds-4.3.5, CMake 3.14.4|
 |Compiler|GNU GCC 8.20|
 |Library|Boost 1.72.0, Win32API, STL|
 |CPU|AMD Ryzen 2600|

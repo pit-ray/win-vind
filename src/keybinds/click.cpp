@@ -1,6 +1,6 @@
 #include "click.hpp"
 #include "mouse_eventer.hpp"
-#include "system.hpp"
+#include "mode_manager.hpp"
 #include <windows.h>
 #include <iostream>
 
@@ -15,7 +15,7 @@ const string ClickLeft::sname() noexcept
 bool ClickLeft::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    using namespace System ;
+    using namespace ModeManager ;
     if(get_mode() == Mode::Visual) {
         change_mode(Mode::Normal) ;
     }
@@ -36,7 +36,7 @@ const string ClickRight::sname() noexcept
 bool ClickRight::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    using namespace System ;
+    using namespace ModeManager ;
     if(get_mode() == Mode::Visual) {
         change_mode(Mode::Normal) ;
     }

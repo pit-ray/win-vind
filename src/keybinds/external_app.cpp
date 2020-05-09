@@ -6,6 +6,7 @@
 
 #include "msg_logger.hpp"
 #include "path.hpp"
+#include "jump_cursor.hpp"
 
 #include <unordered_map>
 #include <string>
@@ -116,7 +117,18 @@ const string StartShell::sname() noexcept
 
 bool StartShell::sprocess(const string& cmd)
 {
-    return is_create_process(get_protected_path("shell")) ;
+    if(!is_create_process(get_protected_path("shell"))) {
+        return false ;
+    }
+
+    //wait until select window by OS.
+    Sleep(50) ;
+
+    if(!Jump2ActiveWindow::sprocess(true)) {
+        return false ;
+    }
+
+    return true ;
 }
 
 
@@ -128,5 +140,16 @@ const string StartAnyApp::sname() noexcept
 
 bool StartAnyApp::sprocess(const string& cmd)
 {
-    return is_create_process(get_protected_path(cmd.substr(1))) ;
+    if(!is_create_process(get_protected_path(cmd.substr(1)))) {
+        return false ;
+    }
+
+    //wait until select window by OS.
+    Sleep(50) ;
+
+    if(!Jump2ActiveWindow::sprocess(true)) {
+        return false ;
+    }
+
+    return true ;
 }

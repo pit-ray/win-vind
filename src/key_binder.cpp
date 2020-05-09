@@ -1,7 +1,7 @@
 #include "key_binder.hpp"
 #include "xml_parser.hpp"
 #include "ini_parser.hpp"
-#include "system.hpp"
+#include "mode_manager.hpp"
 #include "key_logger.hpp"
 #include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
@@ -346,7 +346,7 @@ void KeyBinder::update_core_cmd() noexcept
     if(pimpl->logger.back().is_included(VKC_ESC)){
         pimpl->logger.clear() ;
         pimpl->callable_cmd = nullptr ;
-        System::change_mode(System::Mode::Normal) ;
+        ModeManager::change_mode(ModeManager::Mode::Normal) ;
         refresh_display() ;
         return ;
     }
@@ -359,7 +359,7 @@ void KeyBinder::update_core_cmd() noexcept
         refresh_display() ;
 
         pimpl->callable_cmd = nullptr ;
-        System::change_mode(System::Mode::Normal) ;
+        ModeManager::change_mode(ModeManager::Mode::Normal) ;
         return ;
     }
 
@@ -392,7 +392,7 @@ void KeyBinder::update_core_cmd() noexcept
 }
 
 void KeyBinder::update() noexcept {
-    using namespace System ;
+    using namespace ModeManager ;
     switch(get_mode()) {
         case Mode::Normal:
             update_core(pimpl->vpbf_normal) ;
@@ -407,15 +407,15 @@ void KeyBinder::update() noexcept {
             break ;
 
         case Mode::EdiNormal:
-            //update_core(pimpl->vpbf_edi_normal) ;
+            update_core(pimpl->vpbf_edi_normal) ;
             break ;
 
         case Mode::EdiInsert:
-            //update_core(pimpl->vpbf_edi_insert) ;
+            update_core(pimpl->vpbf_edi_insert) ;
             break ;
 
         case Mode::EdiVisual:
-            //update_core(pimpl->vpbf_edi_visual) ;
+            update_core(pimpl->vpbf_edi_visual) ;
             break ;
 
         case Mode::Command:
@@ -423,6 +423,7 @@ void KeyBinder::update() noexcept {
             break ;
 
         default:
+            change_mode(Mode::Normal) ;
             break ;
     }
     //post process
@@ -430,5 +431,5 @@ void KeyBinder::update() noexcept {
 
 const string KeyBinder::get_logger_str() const noexcept
 {
-    return std::move(pimpl->logger.get_str()) ;
+    return pimpl->logger.get_str() ;
 }

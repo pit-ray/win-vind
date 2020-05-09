@@ -11,12 +11,13 @@ include_directories(
 #Common
 add_library(Common STATIC
     utility.cpp
-    system.cpp
+    mode_manager.cpp
     key_absorber.cpp
     interval_timer.cpp
     xml_parser.cpp
     text_analyzer.cpp
     mouse_eventer.cpp
+    keybrd_eventer.cpp
     key_log.cpp
     key_logger.cpp
     binded_function.cpp
@@ -66,5 +67,6 @@ target_link_libraries(Options Common)
 add_library(Main STATIC
     key_binder.cpp
     option_loader.cpp
+    system.cpp
 )
 target_link_libraries(Main Keybinds EditorKeybinds Options)

@@ -1,14 +1,3 @@
-/*
-
-
-
-                NOT IMPLEMENTED
-
-
-
-
-
-*/
 #include "edi_move_cursor.hpp"
 #include "keybrd_eventer.hpp"
 #include "interval_timer.hpp"
@@ -58,7 +47,7 @@ using namespace EdiMoveUtility ;
 //EdiMoveLeft
 struct EdiMoveLeft::Impl
 {
-    IntervalTimer timer{DELTA_US} ;
+    IntervalTimer timer{30} ;
 } ;
 
 EdiMoveLeft::EdiMoveLeft()
@@ -117,6 +106,7 @@ const string EdiMoveRight::sname() noexcept
 
 bool EdiMoveRight::sprocess(const bool first_call) const
 {
+    /*
     if(first_call) {
         pimpl->timer.reset() ;
     }
@@ -132,6 +122,8 @@ bool EdiMoveRight::sprocess(const bool first_call) const
         return false ;
     }
 
+    return true ;
+    */
     return true ;
 }
 
@@ -159,6 +151,7 @@ const string EdiMoveUp::sname() noexcept
 
 bool EdiMoveUp::sprocess(const bool first_call) const
 {
+    /*
     if(first_call) {
         pimpl->timer.reset() ;
     }
@@ -184,6 +177,8 @@ bool EdiMoveUp::sprocess(const bool first_call) const
 
     ShowCaret(hwnd) ;
 
+    return true ;
+    */
     return true ;
 }
 
@@ -211,6 +206,7 @@ const string EdiMoveDown::sname() noexcept
 
 bool EdiMoveDown::sprocess(const bool first_call) const
 {
+    /*
     if(first_call) {
         pimpl->timer.reset() ;
     }
@@ -231,4 +227,6 @@ bool EdiMoveDown::sprocess(const bool first_call) const
             break ;
         }
     }
+    */
+    return true ;
 }

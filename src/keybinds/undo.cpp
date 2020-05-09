@@ -1,7 +1,6 @@
 #include "undo.hpp"
 #include "mouse_eventer.hpp"
 #include "keybrd_eventer.hpp"
-#include "system.hpp"
 #include <windows.h>
 #include <richedit.h>
 
@@ -17,12 +16,6 @@ const string SCRedo::sname() noexcept
 bool SCRedo::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    /*
-    POINT pos ;
-    if(!GetCursorPos(&pos)) return false ;
-    const auto hwnd = WindowFromPoint(pos) ;
-    SendMessage(hwnd, EM_REDO, 0, 0) ;
-    */
     if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_Y)) {
         return false ;
     }
@@ -40,12 +33,6 @@ const string SCUndo::sname() noexcept
 bool SCUndo::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    /*
-    POINT pos ;
-    if(!GetCursorPos(&pos)) return false ;
-    const auto hwnd = WindowFromPoint(pos) ;
-    SendMessage(hwnd, EM_UNDO, 0, 0) ;
-    */
     if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_Z)) {
         return false ;
     }

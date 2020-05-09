@@ -3,7 +3,7 @@
 #include "key_absorber.hpp"
 #include "text_analyzer.hpp"
 #include "msg_logger.hpp"
-#include "system.hpp"
+#include "mode_manager.hpp"
 #include "keybrd_eventer.hpp"
 #include "virtual_key_fwd.hpp"
 #include <windows.h>
@@ -11,7 +11,7 @@
 #include <iostream>
 using namespace std ;
 
-using namespace System ;
+using namespace ModeManager ;
 
 //Change2Normal
 const string Change2Normal::sname() noexcept
@@ -39,7 +39,7 @@ bool Change2Normal::sprocess(const bool first_call)
         return false ;
     }
 
-    System::change_mode(System::Mode::Normal) ;
+    change_mode(Mode::Normal) ;
     return true ;
 }
 
@@ -91,9 +91,14 @@ bool Change2Editor::sprocess(const bool first_call)
     if(!is_click(Button::LEFT)) {
         return false ;
     }
+
+    if(!KeyAbsorber::is_close_with_refresh()) {
+        return false ;
+    }
+
     change_mode(Mode::EdiNormal) ;
 
-    TextAnalyzer::is_update() ;
+    //TextAnalyzer::is_update() ;
     return true ;
 }
 
@@ -107,6 +112,6 @@ const string Change2Command::sname() noexcept
 bool Change2Command::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    System::change_mode(System::Mode::Command) ;
+    change_mode(Mode::Command) ;
     return true ;
 }

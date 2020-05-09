@@ -1,8 +1,8 @@
 #include "clipboard.hpp"
 #include "mouse_eventer.hpp"
 #include "keybrd_eventer.hpp"
+#include "mode_manager.hpp"
 #include "key_absorber.hpp"
-#include "system.hpp"
 
 #include <windows.h>
 #include <iostream>
@@ -37,7 +37,7 @@ bool CBCopy::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
 
-    System::change_mode(System::Mode::Normal) ;
+    ModeManager::change_mode(ModeManager::Mode::Normal) ;
 
     if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
         return false ;
@@ -72,7 +72,7 @@ bool CBPaste::sprocess(const bool first_call)
         return false ;
     }
 
-    System::change_mode(System::Mode::Normal) ;
+    ModeManager::change_mode(ModeManager::Mode::Normal) ;
     return true ;
 }
 
@@ -96,7 +96,7 @@ bool CBCut::sprocess(const bool first_call)
     }
 
     KeyAbsorber::close() ;
-    System::change_mode(System::Mode::Normal) ;
+    ModeManager::change_mode(ModeManager::Mode::Normal) ;
     return true ;
 }
 
@@ -132,6 +132,6 @@ bool CBDelete::sprocess(const bool first_call)
     }
 
     KeyAbsorber::close() ;
-    System::change_mode(System::Mode::Normal) ;
+    ModeManager::change_mode(ModeManager::Mode::Normal) ;
     return true ;
 }

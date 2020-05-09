@@ -3,7 +3,7 @@
 #include "utility.hpp"
 #include "default_config.hpp"
 #include "key_binder.hpp"
-#include "system.hpp"
+#include "mode_manager.hpp"
 
 #include <windows.h>
 
@@ -171,7 +171,7 @@ namespace DiCmUtility
 bool DisplayCmd::do_process() const
 {
     using namespace DiCmUtility ;
-    if(System::get_mode() != System::Mode::Command) {
+    if(ModeManager::get_mode() != ModeManager::Mode::Command) {
         return true ;
     }
 

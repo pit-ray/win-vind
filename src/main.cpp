@@ -1,11 +1,9 @@
-#include "key_binder.hpp"
-#include "option_loader.hpp"
-#include "key_absorber.hpp"
 #include "msg_logger.hpp"
-#include "vkc_converter.hpp"
 #include "win_notify_icon.hpp"
 #include "path.hpp"
 #include "ini_parser.hpp"
+
+#include "system.hpp"
 
 #include <memory>
 #include <iostream>
@@ -38,8 +36,6 @@ static HWND main_hwnd = nullptr ;
 static HWND op1_hwnd = nullptr ;
 static HWND op2_hwnd = nullptr ;
 static HWND exit_hwnd = nullptr ;
-
-static OptionLoader* pol ;
 
 static bool runnable = true ; //in order to prevent from being memory leak
 
@@ -131,18 +127,9 @@ int WINAPI WinMain(
     //install Notify Icon (Task Tray)
     NotifyIcon ni(main_hwnd, PROJECT_NAME, "resources/icon32.ico") ;
 
-    //load keyboard mapping of ascii code
-    //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
-    VKCConverter::load_input_combination() ;
-
     //If we input control-command, for example Ctrl + C,  at console, this handler is called.
     if(!SetConsoleCtrlHandler(CtrlHandler, TRUE)) {
         Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot set console ctrl handler. (main.cpp)\n" ;
-        return 0 ;
-    }
-
-    //lower keyboard hook
-    if(!KeyAbsorber::is_install_hook()) {
         return 0 ;
     }
 
@@ -163,14 +150,12 @@ int WINAPI WinMain(
         return 0 ;
     }
 
-    //loading config
-    KeyBinder kb(Path::CONFIG_XML()) ;
-    OptionLoader ol(&kb) ;
-    ol.load_config(Path::CONFIG_OPTION_INI()) ; 
-    pol = &ol ;
+    if(!System::is_init()) {
+        return 0 ;
+    }
 
     MSG msg ;
-    while(runnable) {
+    while(runnable && System::is_update()) {
 
         //if other window is clicked, this window is hided.
         if(GetForegroundWindow() != main_hwnd) {
@@ -181,16 +166,6 @@ int WINAPI WinMain(
             TranslateMessage(&msg) ;
 
             DispatchMessage(&msg) ;
-        }
-
-        //update system binding key
-        kb.update() ;
-        ol.update() ;
-
-        using namespace KeyAbsorber ;
-        if(is_down(VKC_ESC) && is_down(VKC_F8) && is_down(VKC_F9)) {
-            Logger::msg_stream << "[Message] Completed successfully (ExitCommand)\n" ;
-            break ;
         }
 
         Sleep(5) ; //5ms
@@ -362,8 +337,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
                 }
 
                 write_ini(Path::CONFIG_OPTION_INI(), pt) ;
-                pol->load_config(Path::CONFIG_OPTION_INI()) ;
 
+                System::load_option_config() ;
                 break ;
             }
 

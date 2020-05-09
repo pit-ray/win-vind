@@ -2,11 +2,13 @@
 #include "keybrd_eventer.hpp"
 #include "interval_timer.hpp"
 #include "key_logger.hpp"
+#include "key_absorber.hpp"
 
 #include "move_cursor.hpp"
+#include "jump_cursor.hpp"
 
 #include <iostream>
-
+#include <windows.h>
 
 using namespace std ;
 
@@ -60,10 +62,35 @@ bool SwitchWindow::common_process()
     }
     ptab.reset() ; // release key
 
-    const auto sleep = [] {Sleep(5) ;} ;
+    KeyLogger logger{} ;
+
+    auto select = [&logger] (const auto& pbf, const auto vkc) {
+        //is callable?
+        if(pbf->is_callable()) {
+            if(KeyAbsorber::is_down(vkc)) {
+                if(!is_release_keystate(vkc)) {
+                    return false ;
+                }
+                if(!is_pushup(vkc)) {
+                    return false ;
+                }
+                //undo
+                if(!is_push_keystate(vkc)) {
+                    return false ;
+                }
+            }
+            else {
+                if(!is_pushup(vkc)) {
+                    return false ;
+                }
+            }
+            logger.clear() ;
+        }
+
+        return true ;
+    } ;
 
     MSG msg ;
-    KeyLogger logger{} ;
     while(true) {
         //MessageRoop
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -74,16 +101,24 @@ bool SwitchWindow::common_process()
 
         //check system keys
         if(KeyAbsorber::is_down(VKC_ESC)) {
-            return is_release_keystate(VKC_ESC) ;
+            if(!is_release_keystate(VKC_ESC)) {
+                return false;
+            }
+
+            break ;
         }
         if(KeyAbsorber::is_down(VKC_ENTER)) {
-            return is_release_keystate(VKC_ENTER) ;
+            if(!is_release_keystate(VKC_ENTER)) {
+                return false ;
+            }
+
+            break ;
         }
 
         //is changed ?
         if(!logger.is_changed_and_update()) {
             logger.remove_from_back(1) ;
-            sleep() ;
+            Sleep(5) ;
             continue ;
         }
 
@@ -97,54 +132,29 @@ bool SwitchWindow::common_process()
         }
         if(!at_least_exist) { 
             logger.clear() ;
-            sleep() ;
+            Sleep(5) ;
             continue ;
         }
 
-        //is callable?
-        if(left_pbf->is_callable()) {
-            if(KeyAbsorber::is_down(VKC_LEFT)) {
-                if(!is_release_keystate(VKC_LEFT)) {
-                    return false ;
-                }
-                if(!is_pushup(VKC_LEFT)) {
-                    return false ;
-                }
-                //undo
-                if(!is_push_keystate(VKC_LEFT)) {
-                    return false ;
-                }
-            }
-            else {
-                if(!is_pushup(VKC_LEFT)) {
-                    return false ;
-                }
-            }
-            logger.clear() ;
+        //select window
+        if(!select(left_pbf, VKC_LEFT)) {
+            return false ;
         }
 
-        if(right_pbf->is_callable()) {
-            if(KeyAbsorber::is_down(VKC_RIGHT)) {
-                if(!is_release_keystate(VKC_RIGHT)) {
-                    return false ;
-                }
-                if(!is_pushup(VKC_RIGHT)) {
-                    return false ;
-                }
-                //undo
-                if(!is_push_keystate(VKC_RIGHT)) {
-                    return false ;
-                }
-            }
-            else {
-                if(!is_pushup(VKC_RIGHT)) {
-                    return false ;
-                }
-            }
-            logger.clear() ;
+        if(!select(right_pbf, VKC_RIGHT)) {
+            return false ;
         }
 
-        sleep() ;
+        Sleep(5) ;
+    }
+
+    palt.reset() ;
+    ptab.reset() ;
+
+    //jump cursor to a selected window after releasing alt and tab.
+    Sleep(5) ; //send select-message to OS(wait)
+    if(!Jump2ActiveWindow::sprocess(true)) {
+        return false ;
     }
 
     return true ;

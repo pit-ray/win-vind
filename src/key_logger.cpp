@@ -162,5 +162,5 @@ const string KeyLogger::get_str() const noexcept
             if(c != 0) str.push_back(c) ;
         }
     }
-    return std::move(str) ;
+    return str ;
 }

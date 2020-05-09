@@ -1,20 +1,13 @@
-/*
-
-
-
-                NOT IMPLEMENTED
-
-
-
-
-
-*/
 #include "edi_change_mode.hpp"
 #include "keybrd_eventer.hpp"
-#include "system.hpp"
+#include "mode_manager.hpp"
+#include "key_absorber.hpp"
+
+#include <iostream>
+#include <windows.h>
 
 using namespace std ;
-using namespace System ;
+using namespace ModeManager ;
 
 
 //Change2EdiNormal
@@ -26,13 +19,16 @@ const string Change2EdiNormal::sname() noexcept
 bool Change2EdiNormal::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    if(get_mode() == Mode::Visual) {
+    if(get_mode() == Mode::EdiVisual) {
         const auto hwnd = GetForegroundWindow() ;
         //cancel selecting
         SendMessage(hwnd, EM_SETSEL, -1, 0) ;
     }
 
-    KeyAbsorber::close() ;
+    if(!KeyAbsorber::is_close_with_refresh()) {
+        return false ;
+    }
+
     change_mode(Mode::EdiNormal) ;
     return true ;
 }

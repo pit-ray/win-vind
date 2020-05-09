@@ -3,18 +3,12 @@
 
 namespace System
 {
-    enum class Mode : unsigned char {
-        Normal,
-        Insert,
-        Visual,
-        EdiNormal,
-        EdiInsert,
-        EdiVisual,
-        Command,
-    } ;
+    bool is_init() ;
 
-    void change_mode(const Mode mode) noexcept ;
-    Mode get_mode() noexcept ;
+    void load_config() ;
+    void load_option_config() ;
+
+    bool is_update() ;
 }
 
 #endif

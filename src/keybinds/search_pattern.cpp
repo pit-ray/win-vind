@@ -1,8 +1,6 @@
 #include "search_pattern.hpp"
 #include "keybrd_eventer.hpp"
 
-#include "system.hpp"
-
 #include <iostream>
 using namespace std ;
 

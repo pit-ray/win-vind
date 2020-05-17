@@ -52,12 +52,19 @@
         <func name="sc_redo">Ctrl(+)r</func>
         <func name="sc_undo">u|U</func>
 
-        <func name="switch_taskview_to_left">g->T</func>
-        <func name="switch_taskview_to_right">g->t</func>
+        <func name="switch_vdesktop_to_left">g->T</func>
+        <func name="switch_vdesktop_to_right">g->t</func>
 
         <func name="search_pattern">/|?</func>
 
-        <!--Editor-->
+        <func name="close_current_window">Ctrl(+)w->q|Ctrl(+)w->c</func>
+        <func name="switch_window">Ctrl(+)w->s</func>
+        <func name="maximize_current_window">Ctrl(+)w->k|Ctrl(+)w->a</func>
+        <func name="minimize_current_window">Ctrl(+)w->j|Ctrl(+)w->i</func>
+        <func name="snap_current_window_to_left">Ctrl(+)w->h|Ctrl(+)w->&lt;</func>
+        <func name="snap_current_window_to_right">Ctrl(+)w->l|Ctrl(+)w->&gt;</func>
+        <func name="move_to_next_page">&gt;</func>
+        <func name="move_to_prev_page">&lt;</func>
         <func name="change_to_edi_normal">Esc</func>
         <func name="change_to_edi_insert">i|I|G->I</func>
         <func name="change_to_edi_bkinsert">a|A</func>
@@ -68,15 +75,6 @@
         <func name="edi_move_right">l|Space|Right</func>
         <func name="edi_move_up">k|-|g->k|Ctrl(+)P|Up</func>
         <func name="edi_move_down">j|+|g->j|Ctrl(+)j|Ctrl(+)n|Down|Enter|Ctrl(+)m</func>
-
-        <func name="close_current_window">Ctrl(+)w->q|Ctrl(+)w->c</func>
-        <func name="switch_window">Ctrl(+)w->s</func>
-        <func name="maximize_current_window">Ctrl(+)w->k|Ctrl(+)w->a</func>
-        <func name="minimize_current_window">Ctrl(+)w->j|Ctrl(+)w->i</func>
-        <func name="snap_current_window_to_left">Ctrl(+)w->h|Ctrl(+)w->&lt;</func>
-        <func name="snap_current_window_to_right">Ctrl(+)w->l|Ctrl(+)w->&gt;</func>
-        <func name="move_to_next_page">&gt;</func>
-        <func name="move_to_prev_page">&lt;</func>
     </binds>
 
     <commands>
@@ -91,7 +89,4 @@
         <cmd name="start_shell">sh|shell</cmd>
         <cmd name="start_any_app">!OPTIONAL_COMMAND</cmd>
     </commands>
-
-    <params type="common">
-    </params>
 </config>

@@ -1,0 +1,60 @@
+#include "wx_system_tray.hpp"
+
+#include <wx/msgdlg.h>
+#include <wx/icon.h>
+#include <wx/menu.h>
+
+#include "wx_prop_dlg.hpp"
+
+namespace wxGUI
+{
+
+    namespace Event {
+        enum : unsigned int {
+            PU_CONFIG = 10001,
+            PU_ABOUT,
+            PU_EXIT,
+        } ;
+    }
+
+    SystemTray::SystemTray(const wxString iconpath, const wxString tooltips, PropDlg* const ptr_pd)
+    : wxTaskBarIcon(), ppd(ptr_pd)
+    {
+        wxTaskBarIcon::SetIcon(wxIcon(iconpath, wxBITMAP_TYPE_ICO), tooltips) ;
+
+        Bind(wxEVT_MENU, [this](auto&) {
+            ppd->Show(true) ;
+        }, Event::PU_CONFIG) ;
+
+        Bind(wxEVT_MENU, [this](auto&) {
+            static const char* const title = "About win-vind" ;
+            static const char* const message = \
+                "Version: 1.2.0\n"
+                "\n"
+                "License: MIT License (C) 2020 pit-ray" ;
+
+#if defined(__WXMSW__) && wxUSE_TASKBARICON_BALLOONS
+                ShowBalloon(title, message, 15000, wxICON_INFORMATION);
+#else
+                wxMessageBox(message, title, wxICON_INFORMATION|wxOK);
+#endif
+        }, Event::PU_ABOUT) ;
+
+        Bind(wxEVT_MENU, [this](auto&) {
+            ppd->Destroy() ;
+        }, Event::PU_EXIT) ;
+    }
+
+    SystemTray::~SystemTray() = default ;
+
+    wxMenu* SystemTray::CreatePopupMenu() {
+        auto menu = new wxMenu ;
+        menu->Append(Event::PU_CONFIG, wxT("Preferences")) ;
+        menu->AppendSeparator() ;
+        menu->Append(Event::PU_ABOUT, wxT("About")) ;
+        menu->AppendSeparator() ;
+        menu->Append(Event::PU_EXIT, wxT("Exit")) ;
+
+        return menu ;
+    }
+}

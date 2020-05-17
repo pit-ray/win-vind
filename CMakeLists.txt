@@ -8,9 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wdelete-non-virtual-dtor -Wdouble-promotion -Weffc++ -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsuggest-override -Wuseless-cast")
 
-include(CTest)
-enable_testing()
-
 set(winres "${CMAKE_CURRENT_SOURCE_DIR}/resources/resource.rc")
 if(NOT CMAKE_RC_COMPILER)
     set(CMAKE_RC_COMPILER windres.exe)
@@ -26,22 +23,69 @@ add_custom_command(OUTPUT "${winresobj}"
     -i ${winres}
 )
 
+#ON is GUI by Win32API.
+#OFF is GUI by wxWidgets.
+set(USE_SIMPL_GUI OFF)
+
 include_directories(
-    include
-    include/keybinds
-    include/editor_keybinds
-    include/options
+    include/system
     C:/boost
 )
 
-add_executable(${PROJECT_NAME} WIN32
-    src/main.cpp
-    "${winresobj}"
-)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/system)
 
-add_subdirectory(src)
-target_link_libraries(${PROJECT_NAME} Main)
+#main
+if(${USE_SIMPL_GUI})
+    include_directories(include/win32gui)
 
+    set(W32G_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/win32gui)
+    set(WIN32GUI_SRC
+        ${W32G_DIR}/main.cpp
+        ${W32G_DIR}/win32gui.cpp
+    )
+
+    add_executable(${PROJECT_NAME} WIN32
+        ${WIN32GUI_SRC}
+        "${winresobj}" #resource
+    )
+    target_link_libraries(${PROJECT_NAME} CoreSystem)
+
+else()
+    set(wxWidgets_USE_DEBUG ON)
+    set(wxWidgets_USE_UNICODE ON)
+    set(wxWidgets_USE_UNIVERSAL OFF)
+    set(wxWidgets_USE_STATIC ON)
+
+    find_package(wxWidgets COMPONENTS adv core base REQUIRED)
+    include(${wxWidgets_USE_FILE})
+
+    include_directories(
+        include/wxgui
+        C:/wxWidgets/include
+    )
+
+    set(WXG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/wxgui)
+    set(WXGUI_SRC
+        ${WXG_DIR}/main.cpp
+        ${WXG_DIR}/wxgui.cpp
+        ${WXG_DIR}/wx_system_tray.cpp
+        ${WXG_DIR}/wx_prop_dlg.cpp
+        ${WXG_DIR}/pref_parser.cpp
+        #${WXG_DIR}/wx_config_window.cpp
+        #${WXG_DIR}/wx_dialog_window.cpp
+        #${WXG_DIR}/tbtest.cpp
+    )
+
+    add_executable(${PROJECT_NAME} WIN32
+        ${WXGUI_SRC}
+        "${winresobj}" #resource
+    )
+    target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} CoreSystem)
+endif()
+
+
+#CPack
+#-----------------------------------------------------------------------------
 install(TARGETS win-vind RUNTIME DESTINATION .)
 install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/resources

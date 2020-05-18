@@ -1,4 +1,8 @@
 {
     "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools",
-    "python.pythonPath": "C:\\Anaconda3\\python.exe"
+    "python.pythonPath": "C:\\Anaconda3\\python.exe",
+    "files.associations": {
+        "fstream": "cpp",
+        "string": "cpp"
+    }
 }

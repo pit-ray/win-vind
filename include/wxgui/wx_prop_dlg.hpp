@@ -16,12 +16,6 @@ namespace wxGUI
         std::unique_ptr<Impl> pimpl ;
         std::unique_ptr<SystemTray> ptbi ;
 
-        class HotkeyScrWindow ;
-        class CmdScrWindow ;
-
-        void load_all(const PrefParser::ums_ums_str_t binds,
-                      const PrefParser::ums_str_t params,
-                      const PrefParser::ums_bool_t opts) ;
         void save_all() ;
 
     public:

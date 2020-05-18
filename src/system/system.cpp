@@ -20,7 +20,7 @@ namespace System
     bool is_init() {
         //show mouse cursor
         //When Windows was started up, cursor is hidden until move mouse by default.
-        //Thus, send lowlevel move event in order to show cursor. 
+        //Thus, send lowlevel move event in order to show cursor.
         INPUT in ;
         in.type = INPUT_MOUSE ;
         in.mi.dx = 1 ;
@@ -51,11 +51,11 @@ namespace System
 
     void load_config() {
         _kb.load_config(Path::CONFIG_XML()) ;
-        _ol.load_config(Path::CONFIG_OPTION_INI()) ;
+        _ol.load_config(Path::CONFIG_OPTS_BOOL_INI()) ;
     }
 
     void load_option_config() {
-        _ol.load_config(Path::CONFIG_OPTION_INI()) ;
+        _ol.load_config(Path::CONFIG_OPTS_BOOL_INI()) ;
     }
 
     bool is_update() {
@@ -73,5 +73,5 @@ namespace System
         return true ;
     }
 
-    
+
 }

@@ -42,8 +42,15 @@ namespace DefaultConfig
         static const auto obj = get_property<float>("xscroll_screen_ratio") ;
         return obj ;
     }
+
+    template <typename T>
+    inline const auto get_opts_property(const std::string& key) {
+        static const auto pt = INIParser::load_config(Path::CONFIG_OPTS_INI()) ;
+        return pt.get_optional<T>("Property." + key).get() ;
+    }
+
     inline static const auto& CMD_MAX_CHAR() {
-        static const auto obj = get_property<std::size_t>("cmd_max_char") ;
+        static const auto obj = get_opts_property<std::size_t>("cmd_max_char") ;
         return obj ;
     }
 }

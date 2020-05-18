@@ -29,7 +29,7 @@ namespace wxGUI
         Bind(wxEVT_MENU, [this](auto&) {
             static const char* const title = "About win-vind" ;
             static const char* const message = \
-                "Version: 1.2.0\n"
+                "Version: 1.2.0-beta\n"
                 "\n"
                 "License: MIT License (C) 2020 pit-ray" ;
 

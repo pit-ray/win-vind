@@ -1,9 +1,9 @@
 #ifndef _PATH_HPP
 #define _PATH_HPP
-
 #include "msg_logger.hpp"
 
 #include <string>
+#include <fstream>
 #include <windows.h>
 
 namespace Path
@@ -51,8 +51,13 @@ namespace Path
         return obj ;
     }
 
-    inline static const auto& CONFIG_OPTION_INI() noexcept {
+    inline static const auto& CONFIG_OPTS_INI() noexcept {
         static const auto obj = _get_path("custom_opts.ini") ;
+        return obj ;
+    }
+
+    inline static const auto& CONFIG_OPTS_BOOL_INI() noexcept {
+        static const auto obj = _get_path("custom_opts_bool.ini") ;
         return obj ;
     }
 
@@ -62,11 +67,24 @@ namespace Path
     }
 
     inline static const auto& CONFIG_EXAPP_INI() noexcept {
-        static const auto obj = _get_path("exapp.ini") ;
+        static const auto obj = _get_path("custom_exapp.ini") ;
         return obj ;
     }
+
+    inline static const auto& KBTYPE_PTH() noexcept {
+        static const auto obj = _get_path("custom_kbtype.pth") ;
+        return obj ;
+    }
+
     inline static const auto& KEYBRD_MAP() noexcept {
-        static const auto obj = _get_path("enable.kmp");
+        static const auto get_file_name = [] {
+            std::ifstream ifs{KBTYPE_PTH()} ;
+            std::string filename{} ;
+            std::getline(ifs, filename) ;
+            return filename ;
+        } ;
+
+        static const auto obj = _get_path(get_file_name());
         return obj ;
     }
 }

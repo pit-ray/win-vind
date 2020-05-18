@@ -71,6 +71,10 @@ else()
         ${WXG_DIR}/wx_system_tray.cpp
         ${WXG_DIR}/wx_prop_dlg.cpp
         ${WXG_DIR}/pref_parser.cpp
+        ${WXG_DIR}/wx_settings.cpp
+        ${WXG_DIR}/wx_bind_list.cpp
+        ${WXG_DIR}/wx_shortcut_apps.cpp
+        ${WXG_DIR}/wx_options.cpp
         #${WXG_DIR}/wx_config_window.cpp
         #${WXG_DIR}/wx_dialog_window.cpp
         #${WXG_DIR}/tbtest.cpp

@@ -86,7 +86,7 @@ namespace DiCmUtility
 bool DisplayCmd::do_enable() const noexcept
 {
     try {
-        const auto pt = INIParser::load_config(Path::CONFIG_INI()) ;
+        const auto pt = INIParser::load_config(Path::CONFIG_OPTS_INI()) ;
 
         pimpl->lf.lfHeight = pt.get_optional<int>("Property.cmd_font_size").get() ;
         pimpl->lf.lfWeight = pt.get_optional<int>("Property.cmd_font_weight").get() ;

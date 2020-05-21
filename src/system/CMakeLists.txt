@@ -49,7 +49,7 @@ add_library(Keybinds STATIC
     keybinds/switch_vdesktop.cpp
     keybinds/undo.cpp
     keybinds/window_ctrl.cpp
-    keybinds/show_config_window.cpp
+    keybinds/mywindow_ctrl.cpp
 )
 target_link_libraries(Keybinds Common)
 

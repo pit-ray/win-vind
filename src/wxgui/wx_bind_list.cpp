@@ -141,6 +141,7 @@ namespace wxGUI
             add("start_shell") ;
             add("start_any_app") ;
             add("show_config_window") ;
+            add("exit_config_window") ;
 
             SetScrollRate(0, 5) ;
             SetSizer(sizer) ;

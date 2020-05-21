@@ -57,8 +57,13 @@ namespace wxGUI
         ppd->Show(false) ;
 
         //enable opening window by command
-        System::register_show_window_func([ppd]{
+        System::register_show_window_func([ppd] {
             ppd->Show(true) ;
+        }) ;
+
+        System::register_exit_window_func([ppd] {
+            ppd->Show(true) ;
+            ppd->Destroy() ;
         }) ;
 
         return true ;

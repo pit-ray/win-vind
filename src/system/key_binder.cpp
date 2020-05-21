@@ -29,7 +29,7 @@
 #include "pager.hpp"
 #include "filer.hpp"
 #include "external_app.hpp"
-#include "show_config_window.hpp"
+#include "mywindow_ctrl.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -180,7 +180,8 @@ struct KeyBinder::Impl
         SnapCurrentWindow2Right::CommandWithCreator::create(),
         StartShell::create(),
         StartAnyApp::create(),
-        ShowConfigWindow::create()
+        ShowConfigWindow::create(),
+        ExitConfigWindow::create()
     } ;
 
     KeyLogger logger{} ;

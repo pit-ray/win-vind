@@ -10,7 +10,7 @@
 #include <iostream>
 #include <windows.h>
 
-#include "keybinds/show_config_window.hpp"
+#include "keybinds/mywindow_ctrl.hpp"
 
 namespace System
 {
@@ -76,8 +76,12 @@ namespace System
     }
 
 
-    //Please use it, if you want to show a self config window by command.
+    //Please use it if you want to show a self config window by command.
     void register_show_window_func(std::function<void()> func) noexcept {
         ShowConfigWindow::register_show_func(std::move(func)) ;
+    }
+
+    void register_exit_window_func(std::function<void()> func) noexcept {
+        ExitConfigWindow::register_exit_func(std::move(func)) ;
     }
 }

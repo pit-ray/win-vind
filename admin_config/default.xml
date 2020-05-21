@@ -89,5 +89,6 @@
         <cmd name="start_shell">sh|shell</cmd>
         <cmd name="start_any_app">!OPTIONAL_COMMAND</cmd>
         <cmd name="show_config_window">set|config</cmd>
+        <cmd name="exit_config_window">exit</cmd>
     </commands>
 </config>

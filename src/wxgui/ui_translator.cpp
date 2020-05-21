@@ -205,6 +205,7 @@ namespace UITrans
             {"start_shell",                  wxT("コマンドプロンプトを起動")},
             {"start_any_app",                wxT("任意のアプリを実行")},
             {"show_config_window",           wxT("設定ウィンドウを開く")},
+            {"exit_config_window",           wxT("アプリケーションを終了する")},
 
             {"display_cmd",     wxT("コマンドの画面表示")},
             {"autotrack_popup", wxT("ポップアップ自動追従")},
@@ -298,6 +299,7 @@ namespace UITrans
             {"start_shell",                  "Start Shell"},
             {"start_any_app",                "Start Shortcut App"},
             {"show_config_window",           "Show Config Window. (this window)"},
+            {"exit_config_window",           "Exit This Application"},
 
             {"display_cmd",     "Display Commands"},
             {"autotrack_popup", "Autotrack Popup"},

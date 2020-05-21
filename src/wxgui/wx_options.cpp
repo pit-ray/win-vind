@@ -118,7 +118,7 @@ namespace wxGUI
                 add_cp("cmd_font_bkcolor") ;
                 add_sc("cmd_font_extra", 0, 100, 3) ;
 
-                add_st(wxT("Position")) ;
+                add_st(trans("cmd_pos")) ;
                 wxArrayString cmp_items ;
                 for(const auto& p : ChoiceTranslator::label2val) {
                     cmp_items.Add(p.second) ;

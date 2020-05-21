@@ -13,6 +13,7 @@ namespace System
     bool is_update() ;
 
     void register_show_window_func(std::function<void()> func) noexcept ;
+    void register_exit_window_func(std::function<void()> func) noexcept ;
 }
 
 #endif

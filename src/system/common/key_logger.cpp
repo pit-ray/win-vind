@@ -98,7 +98,7 @@ const KeyLog KeyLogger::at(const size_t i) const
 
 bool KeyLogger::is_changed_and_update()
 {
-    KeyLog log{KeyAbsorber::get_downed_list()} ;
+    auto log = KeyAbsorber::get_downed_list() ;
     pimpl->logs.push_back(log) ;
 
     if(pimpl->past_log == log) {
@@ -112,7 +112,7 @@ bool KeyLogger::is_changed_and_update()
 //regard inputed key log as ascii charactor
 bool KeyLogger::is_changed_and_inputc()
 {
-    KeyLog log{KeyAbsorber::get_downed_list()} ;
+    auto log = KeyAbsorber::get_downed_list() ;
 
     const auto diff = log - pimpl->past_log ;
 
@@ -131,7 +131,9 @@ bool KeyLogger::is_changed_and_inputc()
     if(!data.empty()) {
         data.insert(data.end(), diff.cbegin(), diff.cend()) ;
         Utility::remove_deplication(data) ;
-        pimpl->logs.push_back(KeyLog(std::move(data))) ;
+
+        //construct KeyLog inside logs directly from std::vector
+        pimpl->logs.emplace_back(std::move(data)) ;
         return result ;
     }
 

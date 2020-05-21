@@ -17,13 +17,13 @@ namespace wxGUI
 
         void load_core(const PrefParser::ums_str_t paths) ;
         void load_default() ;
-        void load_all() ;
 
     public:
         explicit ShortcutAppsPanel(wxBookCtrlBase* const p_book_ctrl) ;
         virtual ~ShortcutAppsPanel() ;
 
         void save_all() ;
+        void load_all() ;
 
         ShortcutAppsPanel(ShortcutAppsPanel&&) = delete ;
         ShortcutAppsPanel& operator=(ShortcutAppsPanel&&) = delete ;

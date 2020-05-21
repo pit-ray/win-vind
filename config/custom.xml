@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
   <commands>
-    <cmd name="switch_window">sw|switch</cmd>
-    <cmd name="maximize_current_window">max|on|only</cmd>
-    <cmd name="close_current_window">cl|close</cmd>
-    <cmd name="close_opened_file">q|qa|q!|qa!</cmd>
     <cmd name="start_shell">sh|shell</cmd>
+    <cmd name="maximize_current_window">max|on|only</cmd>
+    <cmd name="switch_window">sw|switch</cmd>
+    <cmd name="close_current_window">cl|close</cmd>
+    <cmd name="show_config_window">set|config</cmd>
+    <cmd name="close_opened_file">q|qa|q!|qa!</cmd>
     <cmd name="save_opened_file">w|w_f|w_a|w_c|up|wall</cmd>
-    <cmd name="start_any_app">!OPTIONAL_COMMAND</cmd>
-    <cmd name="snap_current_window_to_left">lsplit</cmd>
     <cmd name="minimize_current_window">min|hi|hide</cmd>
+    <cmd name="snap_current_window_to_left">lsplit</cmd>
+    <cmd name="start_any_app">!OPTIONAL_COMMAND</cmd>
+    <cmd name="snap_current_window_to_right">rsplit</cmd>
   </commands>
   <binds>
     <func name="move_to_next_page">&gt;</func>

@@ -20,13 +20,13 @@ namespace wxGUI
 
         void load_core(const PrefParser::ums_ums_str_t bind_list) ;
         void load_default() ;
-        void load_all() ;
 
     public:
         explicit BindListPanel(wxBookCtrlBase* const p_book_ctrl) ;
         virtual ~BindListPanel() ;
 
         void save_all() ;
+        void load_all() ;
 
         BindListPanel(BindListPanel&&) = delete ;
         BindListPanel& operator=(BindListPanel&&) = delete ;

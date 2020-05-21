@@ -46,9 +46,7 @@ namespace KeybrdEventer
     bool SmartKey::is_send_event(const bool pushed) noexcept {
         pimpl->in.ki.dwFlags = pushed ? 0 : KEYEVENTF_KEYUP ;
         if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
-            Logger::error_stream << "[Error] windows.h " \
-            << GetLastError() \
-            << " (keybrd_eventer.hpp)\n" ;
+            ERROR_STREAM << "windows.h " << GetLastError() << " (keybrd_eventer.hpp)\n" ;
             return false ;
         }
         return true ;
@@ -82,9 +80,7 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            Logger::error_stream << "[Error] windows.h " \
-            << GetLastError() \
-            << " (keybrd_eventer.hpp::is_release)\n" ;
+            ERROR_STREAM << "windows.h " << GetLastError() << " (keybrd_eventer.hpp::is_release)\n" ;
             return false ;
         }
 
@@ -102,9 +98,7 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            Logger::error_stream << "[Error] windows.h " \
-            << GetLastError() \
-            << " (keybrd_eventer.hpp::is_release)\n" ;
+            ERROR_STREAM << "windows.h " << GetLastError() << " (keybrd_eventer.hpp::is_release)\n" ;
             return false ;
         }
         return true ;

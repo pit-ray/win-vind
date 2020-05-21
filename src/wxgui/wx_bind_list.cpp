@@ -8,6 +8,7 @@
 
 #include "msg_logger.hpp"
 #include "wx_constant.hpp"
+#include "ui_translator.hpp"
 
 namespace wxGUI
 {
@@ -17,7 +18,7 @@ namespace wxGUI
         } ;
     }
 
-    constexpr auto SCR_HEIGHT = HEIGHT - 195 ;
+    constexpr auto SCR_HEIGHT = HEIGHT - 225 ;
 
     struct BindListPanel::Impl
     {
@@ -25,7 +26,8 @@ namespace wxGUI
         ums_t<wxTextCtrl*> cmds{} ;
     } ;
 
-    //Hot Key List with Scroll bar
+    constexpr auto DEFAULT_TEXT = wxT("Load Failed") ;
+
     class BindListPanel::HotkeyScrWindow : public wxScrolledWindow
     {
     public:
@@ -38,72 +40,71 @@ namespace wxGUI
             auto sizer = new wxFlexGridSizer(2) ;
 
             //insert map and add object
-            auto add = [&sizer, &flags, &map, this](auto func_name, auto label_name) {
-                sizer->Add(new wxStaticText(this, wxID_ANY, label_name), flags) ;
-                map[func_name] = new wxTextCtrl(this, wxID_ANY) ;
-                sizer->Add(map[func_name], flags) ;
+            auto add = [&sizer, &flags, &map, this](const auto func_name) {
+                using namespace UITrans ;
+                sizer->Add(new wxStaticText(this, wxID_ANY, trans(func_name)), flags) ;
+                map[func_name] = new wxTextCtrl(this, wxID_ANY, DEFAULT_TEXT) ;
+                sizer->Add(map[std::move(func_name)], flags) ;
             } ;
 
-            {
-                add("change_to_normal",             wxT("Change to Normal")) ;
-                add("change_to_insert",             wxT("Change to Insert")) ;
-                add("change_to_visual",             wxT("Change to Visual")) ;
-                add("change_to_editor",             wxT("Change to Editor")) ;
-                add("change_to_command",            wxT("Change to Command")) ;
-                add("select_all",                   wxT("Select All")) ;
-                add("move_left",                    wxT("Move Cursor Left")) ;
-                add("move_right",                   wxT("Move Cursor Right")) ;
-                add("move_up",                      wxT("Move Cursor Up")) ;
-                add("move_down",                    wxT("Move Cursor Down")) ;
-                add("jump_to_left",                 wxT("Jump Cursor to Left")) ;
-                add("jump_to_right",                wxT("Jump Cursor to Right")) ;
-                add("jump_to_top",                  wxT("Jump Cursor to Top")) ;
-                add("jump_to_bottom",               wxT("Jump Cursor to Bottom")) ;
-                add("jump_to_xcenter",              wxT("Jump Cursor to Horizontal Center")) ;
-                add("jump_to_ycenter",              wxT("Jump Cursor to Vertical Center")) ;
-                add("jump_to_any",                  wxT("Jump Cursor by Keyboard Mapping")) ;
-                add("jump_to_active_window",        wxT("Jump Cursor to Selected Window")) ;
-                add("scroll_up",                    wxT("Scroll Up")) ;
-                add("scroll_down",                  wxT("Scroll Down")) ;
-                add("scroll_mid_up",                wxT("Scroll Half Page Up")) ;
-                add("scroll_mid_down",              wxT("Scroll Half Page Down")) ;
-                add("scroll_page_up",               wxT("Scroll Page Up")) ;
-                add("scroll_page_down",             wxT("Scroll Page Down")) ;
-                add("scroll_left",                  wxT("Scroll Left")) ;
-                add("scroll_right",                 wxT("Scroll Right")) ;
-                add("scroll_mid_left",              wxT("Scroll Half Page Left")) ;
-                add("scroll_mid_right",             wxT("Scroll Half Page Right")) ;
-                add("click_left",                   wxT("Click Left")) ;
-                add("click_right",                  wxT("Click Right")) ;
-                add("cb_copy",                      wxT("Copy")) ;
-                add("cb_paste",                     wxT("Paste")) ;
-                add("cb_cut",                       wxT("Cut")) ;
-                add("cb_delete",                    wxT("Delete")) ;
-                add("sc_redo",                      wxT("Redo")) ;
-                add("sc_undo",                      wxT("Undo")) ;
-                add("switch_vdesktop_to_left",      wxT("Switch Virtual Desktop to Left")) ;
-                add("switch_vdesktop_to_right",     wxT("Switch Virtual Desktop to Right")) ;
-                add("search_pattern",               wxT("Search Pattern")) ;
-                add("close_current_window",         wxT("Close Current Window")) ;
-                add("switch_window",                wxT("Switch Window")) ;
-                add("maximize_current_window",      wxT("Maximize Current Window")) ;
-                add("minimize_current_window",      wxT("Minimize Current Window")) ;
-                add("snap_current_window_to_left",  wxT("Snap Current Window to Left")) ;
-                add("snap_current_window_to_right", wxT("Snap Current Window to Right")) ;
-                add("move_to_next_page",            wxT("Move to Next Page")) ;
-                add("move_to_prev_page",            wxT("Move to Previous Page")) ;
+            add("change_to_normal") ;
+            add("change_to_insert") ;
+            add("change_to_visual") ;
+            add("change_to_editor") ;
+            add("change_to_command") ;
+            add("select_all") ;
+            add("move_left") ;
+            add("move_right") ;
+            add("move_up") ;
+            add("move_down") ;
+            add("jump_to_left") ;
+            add("jump_to_right") ;
+            add("jump_to_top") ;
+            add("jump_to_bottom") ;
+            add("jump_to_xcenter") ;
+            add("jump_to_ycenter") ;
+            add("jump_to_any") ;
+            add("jump_to_active_window") ;
+            add("scroll_up") ;
+            add("scroll_down") ;
+            add("scroll_mid_up") ;
+            add("scroll_mid_down") ;
+            add("scroll_page_up") ;
+            add("scroll_page_down") ;
+            add("scroll_left") ;
+            add("scroll_right") ;
+            add("scroll_mid_left") ;
+            add("scroll_mid_right") ;
+            add("click_left") ;
+            add("click_right") ;
+            add("cb_copy") ;
+            add("cb_paste") ;
+            add("cb_cut") ;
+            add("cb_delete") ;
+            add("sc_redo") ;
+            add("sc_undo") ;
+            add("switch_vdesktop_to_left") ;
+            add("switch_vdesktop_to_right") ;
+            add("search_pattern") ;
+            add("close_current_window") ;
+            add("switch_window") ;
+            add("maximize_current_window") ;
+            add("minimize_current_window") ;
+            add("snap_current_window_to_left") ;
+            add("snap_current_window_to_right") ;
+            add("move_to_next_page") ;
+            add("move_to_prev_page") ;
 
-                //Editor
-                add("change_to_edi_normal",         wxT("Change to Editor Normal")) ;
-                add("change_to_edi_insert",         wxT("Change to Editor Insert")) ;
-                add("change_to_edi_bkinsert",       wxT("Change to Editor BackInsert")) ;
-                add("change_to_edi_nlinsert",       wxT("Change to Editor NewLineInsert")) ;
-                add("change_to_edi_visual",         wxT("Change to Editor Visual")) ;
-                add("edi_move_left",                wxT("Editor Move Left")) ;
-                add("edi_move_right",               wxT("Editor Move Right")) ;
-                add("edi_move_up",                  wxT("Editor Move Up")) ;
-                add("edi_move_down",                wxT("Editor Move Down")) ;
-            }
+            //Editor
+            add("change_to_edi_normal") ;
+            add("change_to_edi_insert") ;
+            add("change_to_edi_bkinsert") ;
+            add("change_to_edi_nlinsert") ;
+            add("change_to_edi_visual") ;
+            add("edi_move_left") ;
+            add("edi_move_right") ;
+            add("edi_move_up") ;
+            add("edi_move_down") ;
 
             SetSizer(sizer) ;
             SetScrollRate(0, 5) ;
@@ -111,7 +112,6 @@ namespace wxGUI
         }
     } ;
 
-    //Command List with Scroll bar
     class BindListPanel::CmdScrWindow : public wxScrolledWindow
     {
     public:
@@ -123,21 +123,24 @@ namespace wxGUI
 
             auto sizer = new wxFlexGridSizer(2) ;
 
-            auto add = [&sizer, &flags, &map, this](auto func_name, auto label_name) {
-                sizer->Add(new wxStaticText(this, wxID_ANY, label_name), flags) ;
-                map[func_name] = new wxTextCtrl(this, wxID_ANY) ;
-                sizer->Add(map[func_name], flags) ;
+            auto add = [&sizer, &flags, &map, this](const auto func_name) {
+                using namespace UITrans ;
+                sizer->Add(new wxStaticText(this, wxID_ANY, trans(func_name)), flags) ;
+                map[func_name] = new wxTextCtrl(this, wxID_ANY, DEFAULT_TEXT) ;
+                sizer->Add(map[std::move(func_name)], flags) ;
             } ;
 
-            add("save_opened_file",             wxT("Save Opened File")) ;
-            add("close_opened_file",            wxT("Close Opened File(Tab)")) ;
-            add("close_current_window",         wxT("Close Current Window")) ;
-            add("switch_window",                wxT("Switch Window")) ;
-            add("maximize_current_window",      wxT("Maximize Current Window")) ;
-            add("minimize_current_window",      wxT("Minimize Current Window")) ;
-            add("snap_current_window_to_left",  wxT("Snap Current Window to Left")) ;
-            add("start_shell",                  wxT("Start Shell")) ;
-            add("start_any_app",                wxT("Start Shortcut App")) ;
+            add("save_opened_file") ;
+            add("close_opened_file") ;
+            add("close_current_window") ;
+            add("switch_window") ;
+            add("maximize_current_window") ;
+            add("minimize_current_window") ;
+            add("snap_current_window_to_left") ;
+            add("snap_current_window_to_right") ;
+            add("start_shell") ;
+            add("start_any_app") ;
+            add("show_config_window") ;
 
             SetScrollRate(0, 5) ;
             SetSizer(sizer) ;
@@ -149,21 +152,22 @@ namespace wxGUI
     : wxPanel(p_book_ctrl),
       pimpl(std::make_unique<Impl>())
     {
-        p_book_ctrl->AddPage(this, wxT("Bind List")) ;
+        using namespace UITrans ;
+        p_book_ctrl->AddPage(this, trans(Label::PREF_BINDLIST)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
 
+        //this wrapper is needed to add default button.
         auto bindlist_sizer_wrapper = new wxBoxSizer(wxVERTICAL) ;
-
         {
             auto bindlist_sizer = new wxBoxSizer(wxHORIZONTAL) ;
 
-            auto kb_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, wxT("HotKeys")) ;
+            auto kb_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_BINDLIST_HOTKEYS)) ;
             kb_sizer_wrapper->Add(new HotkeyScrWindow(this, wxID_ANY, pimpl->keybinds), flags) ;
             bindlist_sizer->Add(kb_sizer_wrapper, flags) ;
 
-            auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Commands")) ;
+            auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_BINDLIST_COMMANDS)) ;
             cmd_sizer_wrapper->Add(new CmdScrWindow(this, wxID_ANY, pimpl->cmds), flags) ;
             bindlist_sizer->Add(cmd_sizer_wrapper, flags) ;
 
@@ -175,7 +179,7 @@ namespace wxGUI
         auto defbtn_flags = flags ;
         defbtn_flags.Align(wxALIGN_RIGHT) ;
         bindlist_sizer_wrapper->Add(new wxButton(this,
-            BindListEvt::DEFAULT, wxT("Return to Default")), defbtn_flags) ;
+            BindListEvt::DEFAULT, trans(Label::PREF_RETURN_TO_DEFAULT)), defbtn_flags) ;
 
         SetSizerAndFit(bindlist_sizer_wrapper) ;
         load_all() ;
@@ -193,14 +197,10 @@ namespace wxGUI
             const auto hk = bind_list.at("binds") ;
             const auto cmd = bind_list.at("commands") ;
 
-            //UI language and icon-style and keybrd-type is preparing
-
             auto catch_except = [](auto& e, auto& index) {
-                Logger::error_stream << Logger::E << e.what() << ": " \
-                << index << "is invalid index. (BindListPanel::load_core)\n" ;
+                ERROR_STREAM << e.what() << ": " << index << "is invalid index. (BindListPanel::load_core)\n" ;
             } ;
 
-            //binds
             //wxTextCtrl
             for(auto& p : pimpl->keybinds) {
                 try {
@@ -209,6 +209,7 @@ namespace wxGUI
                 }
                 catch(std::out_of_range& e) {
                     catch_except(e, p.first) ;
+                    *p.second << DEFAULT_TEXT ;
                     continue ;
                 }
             }
@@ -221,13 +222,13 @@ namespace wxGUI
                 }
                 catch(std::out_of_range& e) {
                     catch_except(e, p.first) ;
+                    *p.second << DEFAULT_TEXT ;
                     continue ;
                 }
             }
         }
         catch(std::out_of_range& e) {
-            Logger::error_stream << Logger::E \
-            << e.what() << ": cannot load config (BindListPanel::load_core)\n" ;
+            ERROR_STREAM << e.what() << ": cannot load config (BindListPanel::load_core)\n" ;
         }
     }
 

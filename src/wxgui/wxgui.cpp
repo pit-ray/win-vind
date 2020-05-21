@@ -1,21 +1,22 @@
 #include "wxgui.hpp"
 
-#include "wx_config_window.hpp"
-#include "wx_prop_dlg.hpp"
-#include "system.hpp"
+#include <windows.h>
+#include <iostream>
+#include <atomic>
 
 #include <wx/taskbar.h>
 #include <wx/msgdlg.h>
 #include <wx/thread.h>
 
-#include <windows.h>
-#include <iostream>
-#include <atomic>
+#include "wx_prop_dlg.hpp"
+#include "system.hpp"
+
 
 namespace wxGUI
 {
     static std::atomic_bool runnable{true} ;
 
+    //core system is wrought at another thread
     class SystemThread : public wxThread {
     private:
         virtual ExitCode Entry() override {
@@ -52,12 +53,13 @@ namespace wxGUI
             return false ;
         }
 
-        /*
-        auto pcw = new ConfigWindow ;
-        pcw->Show(false) ;
-        */
         auto ppd = new PropDlg() ;
-        ppd->Show(true) ;
+        ppd->Show(false) ;
+
+        //enable opening window by command
+        System::register_show_window_func([ppd]{
+            ppd->Show(true) ;
+        }) ;
 
         return true ;
     }
@@ -72,8 +74,8 @@ namespace wxGUI
 
     App::~App() {
         if(runnable.load()) {
-            //System is running
-            runnable.store(false) ; //terminate system
+            //Core-System is running
+            runnable.store(false) ; //terminate core system
         }
     }
 }

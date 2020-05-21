@@ -53,7 +53,7 @@ void OptionLoader::load_config(const string& filename) noexcept
         op->enable() ;
     }
 
-    Logger::msg_stream << "[Message] Loaded " << filename << endl ;
+    MESSAGE_STREAM << "Loaded " << filename << endl ;
 }
 
 void OptionLoader::update() noexcept

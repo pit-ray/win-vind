@@ -6,7 +6,7 @@
 #include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
 #include "msg_logger.hpp"
-#include "default_config.hpp"
+#include "dynamic_config.hpp"
 
 //funcs
 #include "move_cursor.hpp"
@@ -29,6 +29,7 @@
 #include "pager.hpp"
 #include "filer.hpp"
 #include "external_app.hpp"
+#include "show_config_window.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -62,7 +63,7 @@ struct KeyBinder::Impl
         Jump2YCenter::create_with_cache(),
         Jump2Any::create_with_cache(),
         Jump2ActiveWindow::create_with_cache(),
-        
+
         ScrollLeft::create_with_cache(),
         ScrollRight::create_with_cache(),
         ScrollUp::create_with_cache(),
@@ -81,7 +82,7 @@ struct KeyBinder::Impl
         CBPaste::create_with_cache(),
         CBCut::create_with_cache(),
         CBDelete::create_with_cache(),
-        
+
         SCRedo::create(),
         SCUndo::create(),
 
@@ -120,7 +121,7 @@ struct KeyBinder::Impl
         Jump2YCenter::create_with_cache(),
         Jump2Any::create_with_cache(),
         Jump2ActiveWindow::create_with_cache(),
-        
+
         ScrollLeft::create_with_cache(),
         ScrollRight::create_with_cache(),
         ScrollUp::create_with_cache(),
@@ -147,7 +148,7 @@ struct KeyBinder::Impl
         Change2EdiBkInsert::create(),
         Change2EdiNlInsert::create(),
         Change2EdiVisual::create(),
-        
+
         EdiMoveLeft::create_with_cache(),
         EdiMoveRight::create_with_cache(),
         EdiMoveUp::create_with_cache(),
@@ -178,7 +179,8 @@ struct KeyBinder::Impl
         SnapCurrentWindow2Left::CommandWithCreator::create(),
         SnapCurrentWindow2Right::CommandWithCreator::create(),
         StartShell::create(),
-        StartAnyApp::create()
+        StartAnyApp::create(),
+        ShowConfigWindow::create()
     } ;
 
     KeyLogger logger{} ;
@@ -240,7 +242,10 @@ void KeyBinder::load_config(const string& filename) noexcept
     const auto cmd_map = XMLParser::load_command_map(filename) ;
     set(cmd_map, pimpl->vpcmd) ;
 
-    Logger::msg_stream << "[Message] Loaded " << filename << endl ;
+    ExAppUtility::load_config() ;
+    DynamicConfig::load_config() ;
+
+    MESSAGE_STREAM << "Loaded " << filename << endl ;
 }
 
 namespace KBUtility{
@@ -252,7 +257,7 @@ namespace KBUtility{
 
     inline static void refresh_display() noexcept {
         if(!InvalidateRect(NULL, NULL, TRUE)) {
-            Logger::msg_stream << "[Error] windows.h: " << GetLastError() << " failed refresh display (KeyBinder::InvalidateRect)\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " failed refresh display (KeyBinder::InvalidateRect)\n" ;
             return ;
         }
     }
@@ -304,7 +309,7 @@ void KeyBinder::update_core(const vector<bf::shp_t>& vpbf) noexcept
                 continue ;
             }
 
-            max_matching_num = lmn ; 
+            max_matching_num = lmn ;
             buf_bf = func ;
         }
     }
@@ -374,7 +379,7 @@ void KeyBinder::update_core_cmd() noexcept
     }
 
     //invalid keys
-    if(is_ignored(ignore_alone, pimpl->logger.back()) || pimpl->logger.size() > DefaultConfig::CMD_MAX_CHAR()) {
+    if(is_ignored(ignore_alone, pimpl->logger.back()) || pimpl->logger.size() > DynamicConfig::CMD_MAX_CHAR()) {
         pimpl->logger.remove_from_back(1) ;
         return ;
     }
@@ -396,7 +401,7 @@ void KeyBinder::update() noexcept {
         case Mode::Normal:
             update_core(pimpl->vpbf_normal) ;
             break ;
-        
+
         case Mode::Insert:
             update_core(pimpl->vpbf_insert) ;
             break ;

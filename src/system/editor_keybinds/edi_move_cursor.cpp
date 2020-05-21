@@ -2,7 +2,7 @@
 #include "keybrd_eventer.hpp"
 #include "interval_timer.hpp"
 #include "msg_logger.hpp"
-#include "default_config.hpp"
+#include "dynamic_config.hpp"
 
 using namespace std ;
 
@@ -11,9 +11,7 @@ namespace EdiMoveUtility
 {
     static constexpr auto DELTA_US = 130000 ;
     inline static void disp_error_msg() noexcept {
-        Logger::error_stream << "[Error] windows.h: " \
-        << GetLastError() \
-        << " (bf_edi_move_cursor.cpp)\n" ;
+        ERROR_STREAM << "windows.h: "  << GetLastError() << " (bf_edi_move_cursor.cpp)\n" ;
     }
 
     inline static POINT get_pos_num() noexcept {

@@ -7,16 +7,15 @@
 namespace wxGUI
 {
     class PropDlg ;
-
     class SystemTray : public wxTaskBarIcon
     {
     private:
-        PropDlg* const ppd ;
+        PropDlg* const ppd ; //hooked window
 
     public:
         SystemTray(const wxString iconpath, const wxString tooltips, PropDlg* const ptr_pd) ;
-
         virtual ~SystemTray() ;
+
         SystemTray(SystemTray&&) = delete ;
         SystemTray& operator=(SystemTray&&) = delete ;
         SystemTray(const SystemTray&) = delete ;

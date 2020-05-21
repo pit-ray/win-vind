@@ -13,27 +13,28 @@ namespace INIParser
 {
     template <typename T>
     inline static void catch_boost_except(T& e) {
-        Logger::error_stream << "[Error] " << e.what() << " (default_config_core.cpp)\n" ;
+        ERROR_STREAM << e.what() << " (default_config_core.cpp)\n" ;
     }
 
-    inline const auto load_config(const std::string& filename) noexcept {
+    template <typename T>
+    inline const auto load_config(T&& filename) noexcept {
         using namespace boost::property_tree ;
         ptree pt ;
         try {
-            read_ini(filename, pt) ;
+            read_ini(std::forward<T>(filename), pt) ;
             return pt ; //return value is optimized by compiler
         }
         catch(ini_parser_error& e) {
             catch_boost_except(e) ;
-            return pt ;
+            return ptree{} ;
         }
         catch(ptree_bad_path& e) {
             catch_boost_except(e) ;
-            return pt ;
+            return ptree{} ;
         }
         catch(ptree_bad_data& e) {
             catch_boost_except(e) ;
-            return pt ;
+            return ptree{} ;
         }
     }
 }

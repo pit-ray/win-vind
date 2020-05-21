@@ -18,4 +18,8 @@ namespace Logger
     static constexpr auto M{"[Message] "} ;
 }
 
+#define MESSAGE_STREAM (Logger::msg_stream << Logger::M)
+
+#define ERROR_STREAM (Logger::error_stream << Logger::E)
+
 #endif

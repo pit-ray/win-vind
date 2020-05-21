@@ -14,8 +14,7 @@ struct AutotrackPopup::Impl
         if(!SystemParametersInfo(SPI_GETSNAPTODEFBUTTON, 0,
             reinterpret_cast<PVOID>(&default_flag), 0)) {
 
-            Logger::error_stream << "[Error] windows.h " \
-            << GetLastError() << " (AutotrackPopup.cpp)\n" ;
+            ERROR_STREAM << "windows.h " << GetLastError() << " (AutotrackPopup.cpp)\n" ;
         }
     }
 } ;
@@ -24,10 +23,22 @@ AutotrackPopup::AutotrackPopup()
 : pimpl(make_unique<Impl>())
 {}
 
+namespace APUtility
+{
+    inline static const auto is_set_param(const bool new_flag) noexcept
+    {
+        if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
+            ERROR_STREAM << " windows.h " << GetLastError() << " (AutotrackPopup.cpp)\n" ;
+            return false ;
+        }
+        return true ;
+    }
+}
+
 AutotrackPopup::~AutotrackPopup()
 {
-    if(is_enabled()) do_disable() ;
-    Logger::msg_stream << "[Message] Refreshed successfully (Option: " << name() << ")\n" ;
+    APUtility::is_set_param(pimpl->default_flag) ;
+    MESSAGE_STREAM << "Refreshed successfully (Option: " << name() << ")\n" ;
 }
 
 AutotrackPopup::AutotrackPopup(AutotrackPopup&&) = default ;
@@ -43,19 +54,6 @@ unique_ptr<DynamicOption> AutotrackPopup::create()
     return std::move(make_unique<AutotrackPopup>()) ;
 }
 
-namespace APUtility
-{
-    inline static const auto is_set_param(const bool new_flag) noexcept
-    {
-        if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
-            cout << "[Error] windows.h " ;
-            cout << GetLastError() ;
-            cout << " (AutotrackPopup.cpp)\n" ;
-            return false ;
-        }
-        return true ;
-    }
-}
 
 bool AutotrackPopup::do_enable() const noexcept
 {
@@ -64,10 +62,7 @@ bool AutotrackPopup::do_enable() const noexcept
 
 bool AutotrackPopup::do_disable() const noexcept
 {
-    if(!APUtility::is_set_param(pimpl->default_flag)) {
-        return false ;
-    }
-    return true ;
+    return APUtility::is_set_param(false) ;
 }
 
 bool AutotrackPopup::do_process() const

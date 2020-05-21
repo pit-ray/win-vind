@@ -17,7 +17,7 @@ using namespace boost::property_tree ;
 namespace XMLParser {
     template <typename T>
     inline static void catch_except(T& e) {
-        Logger::error_stream << "[Error] " << e.what() << " (xml_parser.cpp)\n" ;
+        ERROR_STREAM << e.what() << " (xml_parser.cpp)\n" ;
     }
 
     template <typename T>
@@ -100,17 +100,21 @@ namespace XMLParser {
 
                                 if(scode.size() == 1) {
                                     //normal key code
-                                    if(const auto vkc = get_vkc(scode[0])) {
+                                    if(auto vkc = get_vkc(scode[0])) {
                                         vkcs.push_back(vkc) ;
                                         continue ;
                                     }
 
                                     //sifted key code
-                                    if(const auto vkc = get_shifted_vkc(scode[0])) {
+                                    if(auto vkc = get_shifted_vkc(scode[0])) {
                                         //if exist, append system-key-list
                                         vkcs.push_back(vkc) ;
 
-                                        sys_vkcs_vec.push_back(vc_t{VKC_LSHIFT, VKC_RSHIFT}) ;
+                                        //sys_vkcs_vec.push_back(vc_t{VKC_LSHIFT, VKC_RSHIFT}) ;
+                                        //construct std::vector<unsigned char>
+                                        //inside sys_vkc_vec from initlizer-list
+                                        auto init_list = {VKC_LSHIFT, VKC_RSHIFT} ;
+                                        sys_vkcs_vec.emplace_back(std::move(init_list)) ;
                                         continue ;
                                     }
                                 }
@@ -133,13 +137,11 @@ namespace XMLParser {
 
                             //remove duplication element
                             Utility::remove_deplication(vkcs) ;
-                            ascii_keys.push_back(vkcs) ;
+                            ascii_keys.push_back(std::move(vkcs)) ;
 
                             Utility::remove_deplication(sys_vkcs_vec) ;
-
                             //compute all pattern
-                            const auto sys_all_pattern = reconstruct_combination(sys_vkcs_vec) ;
-                            sys_key_all_patterns.push_back(sys_all_pattern) ;
+                            sys_key_all_patterns.push_back(reconstruct_combination(sys_vkcs_vec)) ;
                         }
 
                         //compute all pattern
@@ -160,7 +162,7 @@ namespace XMLParser {
                         }
                     }
 
-                    map[name.get()] = vvvc ;
+                    map[name.get()] = std::move(vvvc) ;
                 }
             }
         }
@@ -209,21 +211,28 @@ namespace XMLParser {
 
                         for(const auto& c : cmd) {
                             if(c == static_cast<char>(VKC_OPTIONAL)) {
-                                vkcs_vec.push_back(vc_t{VKC_OPTIONAL}) ;
-                                sys_vkcs_vec.emplace_back() ;
+                                //vkcs_vec.push_back(vc_t{VKC_OPTIONAL}) ;
+                                vkcs_vec.emplace_back(1, VKC_OPTIONAL) ; // directly construct
+                                sys_vkcs_vec.emplace_back() ; //directly construct with empty std::vector
                                 break ;
                             }
 
-                            if(const auto vkc = get_vkc(c)) {
-                                vkcs_vec.push_back(vc_t{vkc}) ;
-                                sys_vkcs_vec.emplace_back() ;
+                            if(auto vkc = get_vkc(c)) {
+                                //vkcs_vec.push_back(vc_t{vkc}) ;
+                                vkcs_vec.emplace_back(1, vkc) ; //directly construct
+                                sys_vkcs_vec.emplace_back() ; //directly construct with empty std::vector
                                 continue ;
                             }
 
-                            if(const auto vkc = get_shifted_vkc(c)) {
-                                vkcs_vec.push_back(vc_t{vkc}) ;
+                            if(auto vkc = get_shifted_vkc(c)) {
+                                //vkcs_vec.push_back(vc_t{vkc}) ;
+                                vkcs_vec.emplace_back(1, vkc) ; // directly construct
 
-                                sys_vkcs_vec.push_back(vc_t{VKC_LSHIFT, VKC_RSHIFT}) ;
+                                //sys_vkcs_vec.push_back(vc_t{VKC_LSHIFT, VKC_RSHIFT}) ;
+                                //construct std::vector<unsigned char> inside
+                                //sys_vkcs_vec directly from initializer_list<unsigned char>
+                                auto init_list = {VKC_LSHIFT, VKC_RSHIFT} ;
+                                sys_vkcs_vec.emplace_back(std::move(init_list)) ;
                                 continue ;
                             }
                         }
@@ -239,15 +248,15 @@ namespace XMLParser {
                                 vc_t sync{vkcs_vec.at(i_phase)} ;
 
                                 if(!sys_pattern.empty()) {
-                                    const auto vkc = sys_pattern.at(i_phase) ;
+                                    auto vkc = sys_pattern.at(i_phase) ;
                                     if(vkc) {
                                         sync.push_back(vkc) ;
                                     }
                                 }
 
-                                phase.push_back(sync) ;
+                                phase.push_back(std::move(sync)) ;
                             }
-                            all_pattern.push_back(phase) ;
+                            all_pattern.push_back(std::move(phase)) ;
                         }
 
                         //append all pattern
@@ -256,7 +265,7 @@ namespace XMLParser {
                         }
                     }
 
-                    map[name.get()] = vvvc ;
+                    map[name.get()] = std::move(vvvc) ;
                 }
             }
         }

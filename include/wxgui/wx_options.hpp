@@ -17,13 +17,13 @@ namespace wxGUI
 
         void load_core(const PrefParser::ums_str_t params, const PrefParser::ums_bool_t flags) ;
         void load_default() ;
-        void load_all() ;
 
     public:
         explicit OptionsPanel(wxBookCtrlBase* const p_book_ctrl) ;
         virtual ~OptionsPanel() ;
 
         void save_all() ;
+        void load_all() ;
 
         OptionsPanel(OptionsPanel&&) = delete ;
         OptionsPanel& operator=(OptionsPanel&&) = delete ;

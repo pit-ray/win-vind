@@ -21,7 +21,7 @@ private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 
-    virtual bool do_process(const std::string& cmd) const = 0 ;
+    virtual bool do_process(const std::string cmd) const = 0 ;
 
 public:
     explicit Command() ;
@@ -35,7 +35,8 @@ public:
 
     virtual const std::string name() const noexcept = 0 ;
 
-    void process(const std::string& cmd) const ;
+    //command may be short, so will apply SSO.
+    void process(const std::string cmd) const ;
 
     void set_command(const XMLParser::vvvc_t& command) noexcept ;
 

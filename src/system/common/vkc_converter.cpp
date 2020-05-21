@@ -181,7 +181,7 @@ namespace VKCConverter
             return vec ;
         }
         catch(const bad_alloc& e) {
-            Logger::error_stream << "[Error] " << e.what() << " (vkc_converter.cpp::VKCConverter::get_sys_vkc)\n" ;
+            ERROR_STREAM << e.what() << " (vkc_converter.cpp::VKCConverter::get_sys_vkc)\n" ;
             return vec ;
         }
     }

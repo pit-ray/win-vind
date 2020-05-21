@@ -10,6 +10,16 @@ namespace wxGUI
 
     template <typename T>
     using ums_t = std::unordered_map<std::string, T> ;
+
+    enum class Language : unsigned char {
+        English,
+        Japanese,
+    } ;
+
+    enum class IconStyle : unsigned char {
+        DARK,
+        LIGHT,
+    } ;
 }
 
 #endif

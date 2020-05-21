@@ -10,6 +10,8 @@
 #include <iostream>
 #include <windows.h>
 
+#include "keybinds/show_config_window.hpp"
+
 namespace System
 {
     using namespace std ;
@@ -31,7 +33,7 @@ namespace System
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (SendInput, MOUSEEVENTF_MOVE)\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " (SendInput, MOUSEEVENTF_MOVE)\n" ;
             return 0 ;
         }
 
@@ -66,7 +68,7 @@ namespace System
 
         using namespace KeyAbsorber ;
         if(is_down(VKC_F8) && is_down(VKC_F9)) {
-            Logger::msg_stream << "[Message] Completed successfully (ExitCommand)\n" ;
+            MESSAGE_STREAM << "Completed successfully (ExitCommand)\n" ;
             return false ;
         }
 
@@ -74,4 +76,8 @@ namespace System
     }
 
 
+    //Please use it, if you want to show a self config window by command.
+    void register_show_window_func(std::function<void()> func) noexcept {
+        ShowConfigWindow::register_show_func(std::move(func)) ;
+    }
 }

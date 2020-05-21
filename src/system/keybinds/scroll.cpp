@@ -1,10 +1,11 @@
 #include "scroll.hpp"
+
+#include <windows.h>
+#include <iostream>
+
 #include "mouse_eventer.hpp"
 #include "interval_timer.hpp"
-#include "default_config.hpp"
-#include <windows.h>
-
-#include <iostream>
+#include "dynamic_config.hpp"
 
 using namespace std ;
 
@@ -49,7 +50,7 @@ bool ScrollUp::sprocess(const bool first_call) const
         return true ;
     }
 
-    return MouseEventer::is_vscroll(DefaultConfig::YSCROLL_SPEED()) ;
+    return MouseEventer::is_vscroll(DynamicConfig::YSCROLL_SPEED()) ;
 }
 
 
@@ -83,7 +84,7 @@ bool ScrollDown::sprocess(const bool first_call) const
         return true ;
     }
 
-    return MouseEventer::is_vscroll(-DefaultConfig::YSCROLL_SPEED()) ;
+    return MouseEventer::is_vscroll(-DynamicConfig::YSCROLL_SPEED()) ;
 }
 
 
@@ -117,8 +118,8 @@ bool ScrollMidUp::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO() * 0.5f) ;
-    return MouseEventer::is_vscroll(delta) ;
+    static const auto delta = MAX_Y_POS  * 0.5f ;
+    return MouseEventer::is_vscroll(delta * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
 }
 
 
@@ -152,8 +153,8 @@ bool ScrollMidDown::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO() * 0.5f) ;
-    return MouseEventer::is_vscroll(-delta) ;
+    static const auto delta = MAX_Y_POS * 0.5f ;
+    return MouseEventer::is_vscroll(-delta * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
 }
 
 
@@ -187,8 +188,7 @@ bool ScrollPageUp::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO()) ;
-    return MouseEventer::is_vscroll(delta) ;
+    return MouseEventer::is_vscroll(MAX_Y_POS * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
 }
 
 
@@ -222,8 +222,7 @@ bool ScrollPageDown::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(MAX_Y_POS * DefaultConfig::YSCROLL_SCREEN_RATIO()) ;
-    return MouseEventer::is_vscroll(-delta) ;
+    return MouseEventer::is_vscroll(-MAX_Y_POS * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
 }
 
 
@@ -258,7 +257,7 @@ bool ScrollLeft::sprocess(const bool first_call) const
         return true ;
     }
 
-    return MouseEventer::is_hscroll(-DefaultConfig::XSCROLL_SPEED()) ;
+    return MouseEventer::is_hscroll(-DynamicConfig::XSCROLL_SPEED()) ;
 }
 
 
@@ -292,7 +291,7 @@ bool ScrollRight::sprocess(const bool first_call) const
         return true ;
     }
 
-    return MouseEventer::is_hscroll(DefaultConfig::XSCROLL_SPEED()) ;
+    return MouseEventer::is_hscroll(DynamicConfig::XSCROLL_SPEED()) ;
 }
 
 
@@ -326,8 +325,8 @@ bool ScrollMidLeft::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(MAX_X_POS * DefaultConfig::XSCROLL_SCREEN_RATIO() * 0.5f) ;
-    return MouseEventer::is_hscroll(-delta) ;
+    static const auto delta = MAX_X_POS * 0.5f ;
+    return MouseEventer::is_hscroll(-delta * DynamicConfig::XSCROLL_SCREEN_RATIO()) ;
 }
 
 
@@ -361,6 +360,6 @@ bool ScrollMidRight::sprocess(const bool first_call) const
         return true ;
     }
 
-    static const auto delta = static_cast<int>(MAX_X_POS * DefaultConfig::XSCROLL_SCREEN_RATIO() * 0.5f) ;
-    return MouseEventer::is_hscroll(delta) ;
+    static const auto delta = MAX_X_POS * 0.5f ;
+    return MouseEventer::is_hscroll(delta * DynamicConfig::XSCROLL_SCREEN_RATIO()) ;
 }

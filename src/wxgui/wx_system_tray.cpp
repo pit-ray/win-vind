@@ -4,11 +4,11 @@
 #include <wx/icon.h>
 #include <wx/menu.h>
 
+#include "ui_translator.hpp"
 #include "wx_prop_dlg.hpp"
 
 namespace wxGUI
 {
-
     namespace Event {
         enum : unsigned int {
             PU_CONFIG = 10001,
@@ -48,12 +48,13 @@ namespace wxGUI
     SystemTray::~SystemTray() = default ;
 
     wxMenu* SystemTray::CreatePopupMenu() {
+        using namespace UITrans ;
         auto menu = new wxMenu ;
-        menu->Append(Event::PU_CONFIG, wxT("Preferences")) ;
+        menu->Append(Event::PU_CONFIG, trans(Label::SYSTRAY_PREFERENCES)) ;
         menu->AppendSeparator() ;
-        menu->Append(Event::PU_ABOUT, wxT("About")) ;
+        menu->Append(Event::PU_ABOUT, trans(Label::SYSTRAY_ABOUT)) ;
         menu->AppendSeparator() ;
-        menu->Append(Event::PU_EXIT, wxT("Exit")) ;
+        menu->Append(Event::PU_EXIT, trans(Label::SYSTRAY_EXIT)) ;
 
         return menu ;
     }

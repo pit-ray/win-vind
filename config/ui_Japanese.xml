@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<tray>
+    <menu name="preferences">設定</menu>
+    <menu name="about">win-vindについて</menu>
+    <menu name="exit">終了</menu>
+</tray>
+
+<preferences>
+    <tab name="settings">
+        <title>設定</title>
+
+        <box name="common">
+            <title>共通</title>
+
+            <line name="ui_lang">
+                <title>GUIの言語</title>
+                <choice name="en">英語</choice>
+                <choice name="jp">日本語</choice>
+            </line>
+
+            <line name="icon_style">
+                <title>アイコン</title>
+                <choice name="dark">ダーク</choice>
+                <choice name="light">ライト</choice>
+            </line>
+
+            <line name="kb_type">
+                <title>キーボード配列</title>
+                <choice name="kb_jp">日本語(106/109)</choice>
+                <choice name="kb_jp">英語(101/102)</choice>
+            </line>
+        </box>
+
+        <box name="hotkeys">
+            <title>ホットキー</title>
+            <line >
+            </line>
+        </box>
+
+        <box name="commands">
+            <title>コマンド</title>
+            <line name="max_char">
+                <title>最大文字数</title>
+            </line>
+        </box>
+
+    </tab>
+
+    <tab name="bind_list">
+    </tab>
+
+    <tab name="options">
+
+    </tab>
+</preferences>

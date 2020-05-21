@@ -22,6 +22,8 @@ namespace wxGUI
         explicit PropDlg() ;
         virtual ~PropDlg() ;
 
+        bool Show(bool show=true) override ;
+
         PropDlg(PropDlg&& rhs) = delete ;
         PropDlg& operator=(PropDlg&& rhs) = delete ;
 

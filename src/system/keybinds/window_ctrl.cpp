@@ -29,7 +29,7 @@ bool CloseCurrentWindow::sprocess(const bool first_call)
     return common_process() ;
 }
 
-bool CloseCurrentWindow::sprocess(const string& cmd)
+bool CloseCurrentWindow::sprocess(const string cmd)
 {
     return common_process() ;
 }
@@ -130,7 +130,7 @@ bool SwitchWindow::common_process()
         if(right_pbf->existed_num_and_update(logger.back(), logger.size() - 1)) {
             at_least_exist = true ;
         }
-        if(!at_least_exist) { 
+        if(!at_least_exist) {
             logger.clear() ;
             Sleep(5) ;
             continue ;
@@ -152,7 +152,7 @@ bool SwitchWindow::common_process()
     ptab.reset() ;
 
     //jump cursor to a selected window after releasing alt and tab.
-    Sleep(5) ; //send select-message to OS(wait)
+    Sleep(50) ; //send select-message to OS(wait)
     if(!Jump2ActiveWindow::sprocess(true)) {
         return false ;
     }
@@ -166,7 +166,7 @@ bool SwitchWindow::sprocess(const bool first_call)
     return common_process() ;
 }
 
-bool SwitchWindow::sprocess(const string& cmd)
+bool SwitchWindow::sprocess(const string cmd)
 {
     if(!KeybrdEventer::is_release_keystate(VKC_ENTER)) {
         return false ;
@@ -192,7 +192,7 @@ bool MaximizeCurrentWindow::sprocess(const bool first_call)
     return common_process() ;
 }
 
-bool MaximizeCurrentWindow::sprocess(const string& cmd)
+bool MaximizeCurrentWindow::sprocess(const string cmd)
 {
     return common_process() ;
 }
@@ -215,7 +215,7 @@ bool MinimizeCurrentWindow::sprocess(const bool first_call)
     return common_process() ;
 }
 
-bool MinimizeCurrentWindow::sprocess(const string& cmd)
+bool MinimizeCurrentWindow::sprocess(const string cmd)
 {
     return common_process() ;
 }
@@ -238,7 +238,7 @@ bool SnapCurrentWindow2Left::sprocess(const bool first_call)
     return common_process() ;
 }
 
-bool SnapCurrentWindow2Left::sprocess(const string& cmd)
+bool SnapCurrentWindow2Left::sprocess(const string cmd)
 {
     return common_process() ;
 }
@@ -261,7 +261,7 @@ bool SnapCurrentWindow2Right::sprocess(const bool first_call)
     return common_process() ;
 }
 
-bool SnapCurrentWindow2Right::sprocess(const string& cmd)
+bool SnapCurrentWindow2Right::sprocess(const string cmd)
 {
     return common_process() ;
 }

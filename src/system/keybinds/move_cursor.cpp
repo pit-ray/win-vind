@@ -1,5 +1,5 @@
 #include "move_cursor.hpp"
-#include "default_config.hpp"
+#include "dynamic_config.hpp"
 
 #include <windows.h>
 
@@ -15,16 +15,16 @@ namespace MoveUtility
     static constexpr auto INITIAL_VELOCITY = 1.0f ;
 
     template <typename T1, typename T2>
-    inline static const auto const_accelerate(T1& velocity, const T2 us) noexcept {
+    inline static const auto const_accelerate(T1&& velocity, const T2&& us) noexcept {
         static constexpr auto TIME_COEF = static_cast<float>(pow(10, -3)) ;
         static constexpr auto MAX_VELOCITY = 10.0f ;
 
-        const auto t = us * TIME_COEF / DefaultConfig::CURSOR_WEIGHT() ; //accuracy
+        const auto t = us * TIME_COEF / DynamicConfig::CURSOR_WEIGHT() ; //accuracy
 
-        const auto x = velocity*t + 0.5f*DefaultConfig::MOVE_ACCELERATION()*t*t ;
+        const auto x = velocity*t + 0.5f*DynamicConfig::MOVE_ACCELERATION()*t*t ;
 
         if(velocity < MAX_VELOCITY) {
-            velocity += DefaultConfig::MOVE_ACCELERATION() * t ;
+            velocity += DynamicConfig::MOVE_ACCELERATION() * t ;
         }
         else {
             velocity = MAX_VELOCITY ;
@@ -52,7 +52,7 @@ namespace MoveUtility
         in.mi.dy = dy ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError()  << " (MoveUtility::move_cursor)\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError()  << " (MoveUtility::move_cursor)\n" ;
             return false ;
         }
         return true ;

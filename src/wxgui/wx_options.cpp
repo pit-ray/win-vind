@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <string>
+#include <map>
 
 #include <wx/stattext.h>
 #include <wx/checkbox.h>
@@ -13,6 +14,7 @@
 
 #include "wx_constant.hpp"
 #include "msg_logger.hpp"
+#include "ui_translator.hpp"
 
 
 namespace wxGUI
@@ -23,17 +25,18 @@ namespace wxGUI
         } ;
     }
 
-    namespace ChoiceTranslater {
-        static const std::unordered_map<std::string, std::string> label2val {
-            {"UpperLeft",  "UpperLeft"},
-            {"UpperMid",   "UpperMid"},
-            {"UpperRight", "UpperRight"},
-            {"MidLeft",    "MidLeft"},
-            {"Center",     "Center"},
-            {"MidRight",   "MidRight"},
-            {"LowerLeft",  "LowerLeft"},
-            {"LowerMid",   "LowerMid"},
-            {"LowerRight", "LowerRight"}
+    namespace ChoiceTranslator {
+        using namespace UITrans ;
+        static const std::map<std::string, wxString> label2val {
+            {"UpperLeft",  trans(Label::PREF_OPTIONS_DISPCMDS_POS_UPPERLEFT)},
+            {"UpperMid",   trans(Label::PREF_OPTIONS_DISPCMDS_POS_UPPERMID)},
+            {"UpperRight", trans(Label::PREF_OPTIONS_DISPCMDS_POS_UPPERRIGHT)},
+            {"MidLeft",    trans(Label::PREF_OPTIONS_DISPCMDS_POS_MIDLEFT)},
+            {"Center",     trans(Label::PREF_OPTIONS_DISPCMDS_POS_CENTER)},
+            {"MidRight",   trans(Label::PREF_OPTIONS_DISPCMDS_POS_MIDRIGHT)},
+            {"LowerLeft",  trans(Label::PREF_OPTIONS_DISPCMDS_POS_LOWERLEFT)},
+            {"LowerMid",   trans(Label::PREF_OPTIONS_DISPCMDS_POS_LOWERMID)},
+            {"LowerRight", trans(Label::PREF_OPTIONS_DISPCMDS_POS_LOWERRIGHT)}
         } ;
     }
 
@@ -51,90 +54,80 @@ namespace wxGUI
     : wxPanel(p_book_ctrl),
       pimpl(std::make_unique<Impl>())
     {
-        p_book_ctrl->AddPage(this, wxT("Options")) ;
+        using namespace UITrans ;
+        p_book_ctrl->AddPage(this, trans(Label::PREF_OPTIONS)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
 
+        //this wrapper is needed to add a default button.
         auto opts_sizer_wrapper = new wxBoxSizer(wxVERTICAL) ;
 
         auto opts_sizer = new wxBoxSizer(wxHORIZONTAL) ;
         {
             //Option Checks
             {
-                auto check_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Options")) ;
+                auto check_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_OPTIONS_OPTS)) ;
                 auto check_sizer = new wxBoxSizer(wxVERTICAL) ;
 
-                auto add_cb = [this, &flags, &check_sizer, &c = pimpl->opts](auto id, auto label) {
-                    c[id] = new wxCheckBox(this, wxID_ANY, label) ;
-                    check_sizer->Add(c[id], flags) ;
+                auto add_cb = [this, &flags, &check_sizer](const auto id) {
+                    pimpl->opts[id] = new wxCheckBox(this, wxID_ANY, trans(id)) ;
+                    check_sizer->Add(pimpl->opts[std::move(id)], flags) ;
                 } ;
 
-                add_cb("autotrack_popup", wxT("Autotrack Popup")) ;
-                add_cb("display_cmd", wxT("Display Commands")) ;
+                add_cb("autotrack_popup") ;
+                add_cb("display_cmd") ;
 
                 check_sizer_wrapper->Add(check_sizer, flags) ;
-
                 opts_sizer->Add(check_sizer_wrapper, flags) ;
-
                 opts_sizer_wrapper->Add(opts_sizer, flags) ;
             }
 
-            //Display Commands
+            //Display Commands Preferences
             {
-                auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Display Commands")) ;
+                auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_OPTIONS_DISPCMDS)) ;
                 auto cmd_sizer = new wxFlexGridSizer(2) ;
 
-                auto add_cp = [this, &flags, &cmd_sizer, &c = pimpl->cp_params](auto id) {
-                    c[id] = new wxColourPickerCtrl(this, wxID_ANY) ;
-                    cmd_sizer->Add(c[id], flags) ;
-                } ;
+                //text is longer than 15 characters, so not apply SSO.
                 auto add_st = [this, &flags, &cmd_sizer](auto&& text) {
                     cmd_sizer->Add(new wxStaticText(this, wxID_ANY, std::forward<decltype(text)>(text)), flags) ;
                 } ;
-                auto add_sc = [this, &flags, &cmd_sizer, &c = pimpl->sc_params](auto id) {
-                    c[id] = new wxSpinCtrl(this, wxID_ANY) ;
-                    cmd_sizer->Add(c[id], flags) ;
+                auto add_cp = [this, &flags, &cmd_sizer, &add_st](auto id) {
+                    add_st(trans(id)) ;
+                    pimpl->cp_params[id] = new wxColourPickerCtrl(this, wxID_ANY) ;
+                    cmd_sizer->Add(pimpl->cp_params[id], flags) ;
+                } ;
+                auto add_sc = [this, &flags, &cmd_sizer, &add_st](auto id, const auto min, const auto max, const auto init) {
+                    add_st(trans(id)) ;
+                    pimpl->sc_params[id] = new wxSpinCtrl(
+                        this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                        wxDefaultSize, wxSP_ARROW_KEYS, min, max, init
+                    ) ;
+                    cmd_sizer->Add(pimpl->sc_params[id], flags) ;
                 } ;
 
-                add_st(wxT("Font Size")) ;
-                add_sc("cmd_font_size") ;
+                auto add_sl = [this, &flags, &cmd_sizer, &add_st](const auto id, const auto min, const auto max, const auto init) {
+                    add_st(trans(id)) ;
+                    pimpl->sl_params[id] = new wxSlider(this, wxID_ANY, init, min, max) ;
+                    cmd_sizer->Add(pimpl->sl_params[id], flags) ;
+                } ;
 
-                add_st(wxT("Font Weight")) ;
-                auto& rcfw = pimpl->sl_params["cmd_font_weight"] = new wxSlider(this, wxID_ANY, 600, 0, 1000) ;
-                cmd_sizer->Add(rcfw, flags) ;
-
-                add_st(wxT("Font Color")) ;
+                add_sc("cmd_font_size", 5, 200, 20) ;
+                add_sl("cmd_font_weight", 0, 1000, 600) ;
                 add_cp("cmd_font_color") ;
-
-                add_st(wxT("Font Background Color")) ;
                 add_cp("cmd_font_bkcolor") ;
-
-                add_st(wxT("Font Extra")) ;
-                add_sc("cmd_font_extra") ;
-
-                add_st(wxT("Max Char")) ;
-                add_sc("cmd_max_char") ;
+                add_sc("cmd_font_extra", 0, 100, 3) ;
 
                 add_st(wxT("Position")) ;
                 wxArrayString cmp_items ;
-                cmp_items.Add(wxT("UpperLeft")) ;
-                cmp_items.Add(wxT("UpperMid")) ;
-                cmp_items.Add(wxT("UpperRight")) ;
-                cmp_items.Add(wxT("MidLeft")) ;
-                cmp_items.Add(wxT("Center")) ;
-                cmp_items.Add(wxT("MidRight")) ;
-                cmp_items.Add(wxT("LowerLeft")) ;
-                cmp_items.Add(wxT("LowerMid")) ;
-                cmp_items.Add(wxT("LowerRight")) ;
+                for(const auto& p : ChoiceTranslator::label2val) {
+                    cmp_items.Add(p.second) ;
+                }
                 auto& rch = pimpl->ch_params["cmd_pos"] = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, cmp_items) ;
                 cmd_sizer->Add(rch, flags) ;
 
-                add_st(wxT("Position X Margin")) ;
-                add_sc("cmd_xmargin") ;
-
-                add_st(wxT("Position Y Margin")) ;
-                add_sc("cmd_ymargin") ;
+                add_sc("cmd_xmargin", -500, 500, 32) ;
+                add_sc("cmd_ymargin", -500, 500, 64) ;
 
                 cmd_sizer_wrapper->Add(cmd_sizer, flags) ;
                 opts_sizer->Add(cmd_sizer_wrapper, flags) ;
@@ -145,7 +138,7 @@ namespace wxGUI
             auto defbtn_flags = flags ;
             defbtn_flags.Align(wxALIGN_RIGHT) ;
             opts_sizer_wrapper->Add(new wxButton(this,
-                OptsEvt::DEFAULT, wxT("Return to Default")), defbtn_flags) ;
+                OptsEvt::DEFAULT, trans(Label::PREF_RETURN_TO_DEFAULT)), defbtn_flags) ;
 
             SetSizerAndFit(opts_sizer_wrapper) ;
             load_all() ;
@@ -160,8 +153,7 @@ namespace wxGUI
 
     void OptionsPanel::load_core(const PrefParser::ums_str_t params, const PrefParser::ums_bool_t flags) {
         auto catch_except = [](auto& e, auto& index) {
-            Logger::error_stream << Logger::E << e.what() << ": " \
-            << index << "is invalid index. (OptionsPanel::load_core)\n" ;
+            ERROR_STREAM << e.what() << ": " << index << "is invalid index. (OptionsPanel::load_core)\n" ;
         } ;
 
         //params
@@ -187,7 +179,6 @@ namespace wxGUI
             if(hex.front() == '#') {
                 hex.erase(0, 1) ;
             }
-
             unsigned char r = 0 ;
             unsigned char g = 0 ;
             unsigned char b = 0 ;
@@ -216,23 +207,13 @@ namespace wxGUI
         //wxChoice
         for(auto& p : pimpl->ch_params) {
             try {
-                //ini's key
-                const auto key = params.at(p.first) ;
-
-                for(const auto& trs : ChoiceTranslater::label2val) {
-                    //linear-search same key label
-                    if(key != trs.second) {
-                        continue ;
-                    }
-
-                    const auto index = p.second->FindString(trs.first) ;
-
-                    if(index != wxNOT_FOUND) {
-                        p.second->SetSelection(index) ;
-                    }
-                    break ;
-                }
-
+                //params has loaded params.
+                //it converts to choice's string
+                p.second->SetSelection(
+                    p.second->FindString(
+                        ChoiceTranslator::label2val.at(params.at(p.first))
+                    )
+                ) ;
             }
             catch(std::out_of_range& e) {
                 catch_except(e, p.first) ;
@@ -283,13 +264,10 @@ namespace wxGUI
 
         auto to_hex = [](unsigned char val) {
             std::stringstream ss ;
-
             ss << std::hex << static_cast<int>(val) ;
-
             if(val == 0) {
                 return "0" + ss.str() ;
             }
-
             return ss.str() ;
         } ;
 
@@ -302,14 +280,7 @@ namespace wxGUI
         //wxChoice
         for(const auto& p : pimpl->ch_params) {
             const auto index = p.second->GetSelection() ;
-            try {
-                params[p.first] = ChoiceTranslater::label2val.at(p.second->GetString(index).ToStdString()) ;
-            }
-            catch(std::out_of_range& e) {
-                Logger::error_stream << Logger::E << e.what() << ": failed save " \
-                << p.second->GetString(index) << " (OptionsPanel::save_core)\n" ;
-                continue ;
-            }
+            params[p.first] = std::next(ChoiceTranslator::label2val.begin(), index)->first ;
         }
 
         //opts

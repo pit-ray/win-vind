@@ -66,18 +66,16 @@ else()
 
     set(WXG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/wxgui)
     set(WXGUI_SRC
-        ${WXG_DIR}/main.cpp
-        ${WXG_DIR}/wxgui.cpp
+        ${WXG_DIR}/ui_translator.cpp
         ${WXG_DIR}/wx_system_tray.cpp
         ${WXG_DIR}/wx_prop_dlg.cpp
-        ${WXG_DIR}/pref_parser.cpp
         ${WXG_DIR}/wx_settings.cpp
         ${WXG_DIR}/wx_bind_list.cpp
         ${WXG_DIR}/wx_shortcut_apps.cpp
         ${WXG_DIR}/wx_options.cpp
-        #${WXG_DIR}/wx_config_window.cpp
-        #${WXG_DIR}/wx_dialog_window.cpp
-        #${WXG_DIR}/tbtest.cpp
+        ${WXG_DIR}/pref_parser.cpp
+        ${WXG_DIR}/wxgui.cpp
+        ${WXG_DIR}/main.cpp
     )
 
     add_executable(${PROJECT_NAME} WIN32

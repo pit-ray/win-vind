@@ -25,6 +25,7 @@ add_library(Common STATIC
     common/utility.cpp
     common/vkc_converter.cpp
     common/xml_parser.cpp
+    common/dynamic_config.cpp
 )
 
 add_library(EditorKeybinds STATIC
@@ -48,6 +49,7 @@ add_library(Keybinds STATIC
     keybinds/switch_vdesktop.cpp
     keybinds/undo.cpp
     keybinds/window_ctrl.cpp
+    keybinds/show_config_window.cpp
 )
 target_link_libraries(Keybinds Common)
 

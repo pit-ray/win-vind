@@ -31,9 +31,7 @@ namespace KeyAbsorber
         if(p_hook == nullptr) return ;
 
         if(!UnhookWindowsHookEx(*p_hook)) {
-            Logger::error_stream << "[Error] windows.h: " \
-            << GetLastError()\
-            << " (win_key_absorber_impl.cpp)\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " (win_key_absorber_impl.cpp)\n" ;
         }
 
         delete p_hook ;
@@ -88,11 +86,9 @@ namespace KeyAbsorber
             static_cast<HOOKPROC>(LowLevelKeyboardProc),
             nullptr, 0
         ) ;
-        
+
         if(!*p_handle) {
-            Logger::error_stream << "[Error] windows.h: " \
-            << GetLastError()
-            << " (win_key_absorber_impl.cpp)\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " (win_key_absorber_impl.cpp)\n" ;
             return false ;
         }
         return true ;
@@ -162,8 +158,7 @@ namespace KeyAbsorber
             _ignored_keys.push_back(key) ;
         }
         catch(bad_alloc& e) {
-            Logger::error_stream << "[Error] " \
-            << e.what() << " (key_absorber.cpp::open_key)\n" ;
+            ERROR_STREAM << e.what() << " (key_absorber.cpp::open_key)\n" ;
             return ;
         }
     }

@@ -131,10 +131,9 @@ bool BindedFunction::is_callable() const noexcept
 void BindedFunction::process(const bool first_call) const
 {
     //preprocess
-    if(!do_process(first_call)) {
+    if(!do_process(std::move(first_call))) {
         //error
-        Logger::error_stream << "[Error] do_process is failed " \
-        << "(" << name() << ")\n" ;
+        ERROR_STREAM << "do_process is failed " << "(" << name() << ")\n" ;
     }
     //postpcess
 }

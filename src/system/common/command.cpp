@@ -99,7 +99,7 @@ bool Command::is_callable(const KeyLogger& logger) const noexcept
             catch(const out_of_range&) {
                 continue ;
             }
-            catch(const int& code) {
+            catch(const unsigned char& code) {
                 return code == VKC_OPTIONAL ? true : false ;
             }
         }
@@ -107,13 +107,12 @@ bool Command::is_callable(const KeyLogger& logger) const noexcept
     return false ;
 }
 
-void Command::process(const string& cmd) const
+void Command::process(const string cmd) const
 {
     //preprocess
     if(!do_process(cmd)) {
         //error
-        Logger::error_stream << "[Error] do_process is failed " \
-        << "(" << name() << ")\n" ;
+        ERROR_STREAM << "do_process is failed " << "(" << name() << ")\n" ;
     }
     //postpcess
 }

@@ -1,9 +1,9 @@
 #include "display_cmd.hpp"
 #include "ini_parser.hpp"
 #include "utility.hpp"
-#include "default_config.hpp"
 #include "key_binder.hpp"
 #include "mode_manager.hpp"
+#include "path.hpp"
 
 #include <windows.h>
 
@@ -148,6 +148,8 @@ bool DisplayCmd::do_enable() const noexcept
         }
 
         pimpl->extra = pt.get_optional<int>("Property.cmd_font_extra").get() ;
+
+        MESSAGE_STREAM << "Loaded config of Display Command Option" << Path::CONFIG_OPTS_INI() << endl ;
     }
     catch(...) {
         return false ;
@@ -163,8 +165,7 @@ bool DisplayCmd::do_disable() const noexcept
 namespace DiCmUtility
 {
     inline static void write_error(const string& func_name) noexcept {
-        Logger::error_stream << "[Error] windows.h: "\
-        << GetLastError() << (" (display_cmd.cpp::DisplayCmd::do_process::" + func_name) << ")\n" ;
+        ERROR_STREAM << "windows.h: " << GetLastError() << (" (display_cmd.cpp::DisplayCmd::do_process::" + func_name) << ")\n" ;
     }
 }
 

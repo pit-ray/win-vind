@@ -21,10 +21,10 @@ namespace ExAppUtility
 
     template <typename T>
     inline static void catch_boost_except(T& e) {
-        Logger::error_stream << "[Error] " << e.what() << " (bf_external_app.cpp::load_proc_list)\n" ;
+        ERROR_STREAM << e.what() << " (ExAppUtility::_load_proc_list_core)\n" ;
     }
 
-    inline static const mss_t load_proc_list(const string& filename) noexcept {
+    inline static const mss_t _load_proc_list_core(const string& filename) noexcept {
         using namespace boost::property_tree ;
 
         ptree pt ;
@@ -45,6 +45,8 @@ namespace ExAppUtility
                 }
             }
 
+            MESSAGE_STREAM << "Loaded External Proc List (" << filename << ")\n" ;
+
             return map ;
         }
         catch(ini_parser_error& e) {
@@ -61,9 +63,13 @@ namespace ExAppUtility
         }
     }
 
-    static const auto proc_list{load_proc_list(Path::CONFIG_EXAPP_INI())} ;
+    static auto proc_list{_load_proc_list_core(Path::CONFIG_EXAPP_INI())} ;
 
-    inline static const auto get_protected_path(const string& name) noexcept {
+    void load_config() {
+        proc_list = _load_proc_list_core(Path::CONFIG_EXAPP_INI()) ;
+    }
+
+    inline static const auto get_protected_path(const string name) noexcept {
         try {
             const auto& origin = proc_list.at(name) ;
 
@@ -79,13 +85,13 @@ namespace ExAppUtility
             return "\"" + origin + "\"" ;
         }
         catch(const out_of_range& e) {
-            Logger::error_stream << "[Error] Not an external-application command : " << name \
+            ERROR_STREAM << "Not an external-application command : " << name \
             << " (bf_external_app.cpp::ExAppUtility::get_protected_path)\n" ;
             return string{} ;
         }
     }
 
-    inline static bool is_create_process(const string& path) noexcept
+    inline static bool is_create_process(const string path) noexcept
     {
         STARTUPINFOA si ;
         ZeroMemory(&si, sizeof(si)) ;
@@ -97,7 +103,7 @@ namespace ExAppUtility
         if(!CreateProcessA(
             NULL, const_cast<LPSTR>(path.c_str()), NULL, NULL, FALSE,
             CREATE_NEW_CONSOLE, NULL, Path::HOME_PATH().c_str(), &si, &pi)) {
-            Logger::error_stream << "[Error] windows.h: "\
+            ERROR_STREAM << "windows.h: "\
             << GetLastError() << ", cannot call \"" << path << "\"" \
             << " (bf_external_app.cpp::ExAppUtility::is_create_process::CreateProcessA)\n" ;
             return false ;
@@ -115,14 +121,14 @@ const string StartShell::sname() noexcept
     return "start_shell" ;
 }
 
-bool StartShell::sprocess(const string& cmd)
+bool StartShell::sprocess(const string cmd)
 {
     if(!is_create_process(get_protected_path("shell"))) {
         return false ;
     }
 
     //wait until select window by OS.
-    Sleep(50) ;
+    Sleep(100) ;
 
     if(!Jump2ActiveWindow::sprocess(true)) {
         return false ;
@@ -138,14 +144,14 @@ const string StartAnyApp::sname() noexcept
     return "start_any_app" ;
 }
 
-bool StartAnyApp::sprocess(const string& cmd)
+bool StartAnyApp::sprocess(const string cmd)
 {
     if(!is_create_process(get_protected_path(cmd.substr(1)))) {
         return false ;
     }
 
     //wait until select window by OS.
-    Sleep(50) ;
+    Sleep(100) ;
 
     if(!Jump2ActiveWindow::sprocess(true)) {
         return false ;

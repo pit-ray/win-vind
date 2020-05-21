@@ -9,7 +9,7 @@ const string SaveOpenedFile::sname() noexcept
     return "save_opened_file" ;
 }
 
-bool SaveOpenedFile::sprocess(const string& cmd)
+bool SaveOpenedFile::sprocess(const string cmd)
 {
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_S) ;
 }
@@ -21,7 +21,7 @@ const string CloseOpenedFile::sname() noexcept
     return "close_opened_file" ;
 }
 
-bool CloseOpenedFile::sprocess(const string& cmd)
+bool CloseOpenedFile::sprocess(const string cmd)
 {
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_F4) ;
 }

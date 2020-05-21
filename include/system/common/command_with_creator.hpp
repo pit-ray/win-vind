@@ -11,7 +11,7 @@
 template <typename Derived>
 class CommandWithCreator : public Command {
 private:
-    bool do_process(const std::string& cmd) const override {
+    bool do_process(const std::string cmd) const override {
         return static_cast<const Derived*>(this)->sprocess(cmd) ;
     }
 

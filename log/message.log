@@ -1,3 +1,10 @@
 [Message] Loaded config\custom.xml
+[Message] Loaded config of Display Command Optionconfig\custom_opts.ini
 [Message] Loaded config\custom_opts_bool.ini
+[Message] Loaded config\custom.xml
+[Message] Loaded config of Display Command Optionconfig\custom_opts.ini
+[Message] Loaded config\custom_opts_bool.ini
+[Message] Loaded External Proc List (config\custom_exapp.ini)
+[Message] Loaded External Proc List (config\custom_exapp.ini)
+[Message] Loaded External Proc List (config\custom_exapp.ini)
 [Message] Refreshed successfully (Option: autotrack_popup)

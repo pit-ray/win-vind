@@ -1,7 +1,6 @@
 #include "wx_settings.hpp"
 
-#include <unordered_map>
-#include <functional>
+#include <map>
 
 #include <wx/choice.h>
 #include <wx/sizer.h>
@@ -14,6 +13,8 @@
 #include "msg_logger.hpp"
 #include "pref_parser.hpp"
 #include "wx_constant.hpp"
+#include "ui_translator.hpp"
+#include "wx_path.hpp"
 
 namespace wxGUI
 {
@@ -23,21 +24,24 @@ namespace wxGUI
         } ;
     }
 
+    //This maps is converter from choiced text by wxChoice to saved text in file.
     namespace ChoiceCvt {
-        static const std::unordered_map<std::string, std::string> uilang {
-            {"Japanese", "config/ui_Japanese.xml"},
-            {"English",  "config/ui_English.xml"}
+        using namespace UITrans ;
+        //the index of these iterator is same as wxChoice's index, so not use unordered_map.
+        static const std::map<Language, wxString> uilang {
+            {Language::Japanese, trans(Label::PREF_SETTINGS_COMMON_GUILANG_JP)},
+            {Language::English, trans(Label::PREF_SETTINGS_COMMON_GUILANG_US)}
         } ;
 
-        static const std::unordered_map<std::string, std::string> iconstyle {
-            {"Dark",  "resources/icon32_dark.ico"},
-            {"Light", "resources/icon32_light.ico"}
+        static const std::map<IconStyle, wxString> iconstyle {
+            {IconStyle::DARK, trans(Label::PREF_SETTINGS_COMMON_ICONSTYLE_DARK)},
+            {IconStyle::LIGHT, trans(Label::PREF_SETTINGS_COMMON_ICONSTYLE_LIGHT)}
         } ;
 
-        static const std::unordered_map<std::string, std::string> kbtype {
-            {"JP(106/109)", "JP.kmp"},
-            {"US(101/102)", "US.kmp"},
-            {"custom.kmp",  "custom.kmp"}
+        static const std::map<std::string, wxString> kbtype {
+            {"JP.kmp", trans(Label::PREF_SETTINGS_COMMON_KBTYPE_JP)},
+            {"US.kmp", trans(Label::PREF_SETTINGS_COMMON_KBTYPE_US)},
+            {"custom.kmp", trans(Label::PREF_SETTINGS_COMMON_KBTYPE_CUSTOM)}
         } ;
     }
 
@@ -56,7 +60,8 @@ namespace wxGUI
     : wxPanel(p_book_ctrl),
       pimpl(std::make_unique<Impl>())
     {
-        p_book_ctrl->AddPage(this, wxT("Settings")) ;
+        using namespace UITrans ;
+        p_book_ctrl->AddPage(this, trans(Label::PREF_SETTINGS)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
@@ -69,96 +74,117 @@ namespace wxGUI
                 sizer->Add(new wxStaticText(this, wxID_ANY, std::forward<decltype(text)>(text)), flags) ;
             } ;
 
-            //Common
+            //In old versionm, this sizer does not exist.
+            //However, Commands Settings is very small, so I want to locate it under Common Settings.
+            auto left_sizer_wrapper = new wxBoxSizer(wxVERTICAL) ;
+
+            //Add Common Choices
             {
-                auto com_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Common")) ;
+                auto com_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_SETTINGS_COMMON)) ;
                 auto com_sizer = new wxFlexGridSizer(2) ;
 
-                add_st(com_sizer, wxT("GUI Language")) ;
+                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_GUILANG)) ;
                 wxArrayString lgitems ;
                 for(const auto& p : ChoiceCvt::uilang) {
-                    lgitems.Add(p.first) ;
+                    lgitems.Add(p.second) ;
                 }
                 pimpl->ui_language = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, lgitems) ;
                 com_sizer->Add(pimpl->ui_language, flags) ;
 
-                add_st(com_sizer, wxT("System Tray Icon Style")) ;
+                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_ICONSTYLE)) ;
                 wxArrayString isitems ;
                 for(const auto& p : ChoiceCvt::iconstyle) {
-                    isitems.Add(p.first) ;
+                    isitems.Add(p.second) ;
                 }
                 pimpl->icon_style = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, isitems) ;
                 com_sizer->Add(pimpl->icon_style, flags) ;
 
-                add_st(com_sizer, wxT("Keyboard Type")) ;
+                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_KBTYPE)) ;
                 wxArrayString ktitems ;
                 for(const auto& p : ChoiceCvt::kbtype) {
-                    ktitems.Add(p.first) ;
+                    ktitems.Add(p.second) ;
                 }
                 pimpl->keybrd_type = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, ktitems) ;
                 com_sizer->Add(pimpl->keybrd_type, flags) ;
 
                 com_sizer_wrapper->Add(com_sizer, flags) ;
-                setter_sizer->Add(com_sizer_wrapper, flags) ;
+                //setter_sizer->Add(com_sizer_wrapper, flags) ;
+                left_sizer_wrapper->Add(com_sizer_wrapper, flags) ;
             }
 
-            //HotKeys
+            //Add Commands Settings
             {
-                auto hk_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, wxT("HotKeys")) ;
+                auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_SETTINGS_COMMANDS)) ;
+                auto cmd_sizer = new wxFlexGridSizer(2) ;
+
+                auto add_sc = [this, &flags, &cmd_sizer, &add_st](const auto id, const auto min, const auto max, const auto init) {
+                    add_st(cmd_sizer, trans(id)) ;
+                    pimpl->sc_params[id] = new wxSpinCtrl(
+                        this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                        wxDefaultSize, wxSP_ARROW_KEYS, min, max, init
+                    ) ;
+                    cmd_sizer->Add(pimpl->sc_params[id], flags) ;
+                } ;
+
+                add_sc("cmd_max_char", 5, 1024, 32) ;
+
+                cmd_sizer_wrapper->Add(cmd_sizer, flags) ;
+                //setter_sizer->Add(cmd_sizer_wrapper, flags) ;
+                left_sizer_wrapper->Add(cmd_sizer_wrapper, flags) ;
+            }
+            setter_sizer->Add(left_sizer_wrapper, flags) ;
+
+            //Add HotKeys Settings
+            {
+                auto hk_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_SETTINGS_HOTKEYS)) ;
                 auto hk_sizer = new wxFlexGridSizer(2) ;
 
-                auto add_sc = [this, &flags, &c = pimpl->sc_params, &hk_sizer](auto id) {
-                    c[id] = new wxSpinCtrl(this, wxID_ANY) ;
-                    hk_sizer->Add(c[id], flags) ;
+                auto add_sc = [this, &flags, &hk_sizer, &add_st](const auto id, const auto min, const auto max, const auto init) {
+                    add_st(hk_sizer, trans(id)) ;
+                    pimpl->sc_params[id] = new wxSpinCtrl(
+                        this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                        wxDefaultSize, wxSP_ARROW_KEYS, min, max, init
+                    ) ;
+                    hk_sizer->Add(pimpl->sc_params[id], flags) ;
                 } ;
 
-                auto add_sl = [this, &flags, &c = pimpl->sl_params, &hk_sizer](auto id, auto value, auto min, auto max) {
-                    c[id] = new wxSlider(this, wxID_ANY, value, min, max) ;
-                    hk_sizer->Add(c[id], flags) ;
+                auto add_sl = [this, &flags, &hk_sizer, &add_st](const auto id, const auto min, const auto max, const auto init) {
+                    add_st(hk_sizer, trans(id)) ;
+                    pimpl->sl_params[id] = new wxSlider(this, wxID_ANY, init, min, max) ;
+                    hk_sizer->Add(pimpl->sl_params[id], flags) ;
                 } ;
 
-                auto add_ratio = [this, &flags, &c = pimpl->scd_params, &hk_sizer](auto id, auto value) {
-                    c[id] = new wxSpinCtrlDouble(
+                auto add_ratio = [this, &flags, &hk_sizer, &add_st](const auto id, const auto value) {
+                    add_st(hk_sizer, trans(id)) ;
+                    pimpl->scd_params[id] = new wxSpinCtrlDouble(
                         this, wxID_ANY,
                         wxEmptyString, wxDefaultPosition, wxDefaultSize,
                         wxSP_ARROW_KEYS, 0.0, 1.0, value, 0.001
                     ) ;
-                    hk_sizer->Add(c[id], flags) ;
+                    hk_sizer->Add(pimpl->scd_params[id], flags) ;
                 } ;
 
-                add_st(hk_sizer, wxT("Screen Position Buffer At Jump Cursor")) ;
-                add_sc("screen_pos_buf") ;
-
-                add_st(hk_sizer, wxT("Move Cursor Acceleration")) ;
-                add_sl("move_acceleration", 64, 1, 128) ;
-
-                add_st(hk_sizer, wxT("Cursor Weight")) ;
-                add_sl("cursor_weight", 512, 1, 1024) ;
-
-                add_st(hk_sizer, wxT("Vertical Scroll Speed")) ;
-                add_sl("yscroll_speed", 4, 1, 10) ;
-
-                add_st(hk_sizer, wxT("Horizontal Scroll Speed")) ;
-                add_sl("xscroll_speed", 4, 1, 10) ;
-
-                add_st(hk_sizer, wxT("Vertical Page Scroll Ratio")) ;
+                add_sc("screen_pos_buf", 0, 128, 10) ;
+                add_sl("move_acceleration", 1, 128, 64) ;
+                add_sl("cursor_weight", 1, 1024, 512) ;
+                add_sl("yscroll_speed", 1, 20, 4) ;
+                add_sl("xscroll_speed", 1, 20, 4) ;
                 add_ratio("yscroll_screen_ratio", 0.125) ;
-
-                add_st(hk_sizer, wxT("Horizontal Page Scroll Ratio")) ;
                 add_ratio("xscroll_screen_ratio", 0.125) ;
-
                 hk_sizer_wrapper->Add(hk_sizer, flags) ;
                 setter_sizer->Add(hk_sizer_wrapper, flags) ;
             }
+
             setter_sizer_wrapper->Add(setter_sizer, flags) ;
         }
 
         setter_sizer_wrapper->AddStretchSpacer() ;
 
+        //Add Return to Default Button
         auto defbtn_flags = flags ;
         defbtn_flags.Align(wxALIGN_RIGHT) ;
         setter_sizer_wrapper->Add(new wxButton(this,
-            SettingsEvt::DEFAULT, wxT("Return to Default")), defbtn_flags) ;
+            SettingsEvt::DEFAULT, trans(Label::PREF_RETURN_TO_DEFAULT)), defbtn_flags) ;
 
         SetSizerAndFit(setter_sizer_wrapper) ;
         load_all() ;
@@ -173,12 +199,11 @@ namespace wxGUI
     void SettingsPanel::load_core(
         const PrefParser::ums_str_t params,
         const std::string kb_path,
-        const std::string ui_path,
-        const std::string ico_path
+        const Language ui_idx,
+        const IconStyle ico_idx
     ) {
         auto catch_except = [](auto& e, auto& index) {
-            Logger::error_stream << Logger::E << e.what() << ": " \
-            << index << "is invalid index. (SettingsPanel::load_core)\n" ;
+            ERROR_STREAM << e.what() << ": " << index << "is invalid index. (SettingsPanel::load_core)\n" ;
         } ;
 
         //wxSpinCtrl
@@ -208,20 +233,14 @@ namespace wxGUI
             }
         }
 
-        const auto set_choice = [](auto& choice_ptr, auto& pth, auto& cvt) {
-            for(const auto& p : cvt) {
-                if(p.second != pth) {
-                    continue ;
-                }
-                const auto index = choice_ptr->FindString(p.first) ;
-                if(index != wxNOT_FOUND) {
-                    choice_ptr->SetSelection(index) ;
-                }
-            }
+        //Path may be very long, so will not allpy SSO.
+        const auto set_choice = [](const auto choice_ptr, const auto& loaded_data, const auto& cvt) {
+            //wxChoice is based on ChoiceCvt, so at() does not throw exception.
+            choice_ptr->SetSelection(choice_ptr->FindString(cvt.at(loaded_data))) ;
         } ;
         set_choice(pimpl->keybrd_type, kb_path, ChoiceCvt::kbtype) ;
-        set_choice(pimpl->ui_language, ui_path, ChoiceCvt::uilang) ;
-        set_choice(pimpl->icon_style, ico_path, ChoiceCvt::iconstyle) ;
+        set_choice(pimpl->ui_language, ui_idx, ChoiceCvt::uilang) ;
+        set_choice(pimpl->icon_style, ico_idx, ChoiceCvt::iconstyle) ;
     }
 
     void SettingsPanel::load_default() {
@@ -264,15 +283,14 @@ namespace wxGUI
             params[p.first] = std::to_string(p.second->GetValue()) ;
         }
 
-        const auto get_choice = [](auto& choice_ptr) {
+        const auto get_choice = [](const auto choice_ptr, const auto& cvt) {
             const auto index = choice_ptr->GetSelection() ;
-            return choice_ptr->GetString(index).ToStdString() ;
+            return std::next(cvt.begin(), index)->first ;
         } ;
 
-        //wxChoice has the key, so at() dont throw except.
-        save_kbtype(ChoiceCvt::kbtype.at(get_choice(pimpl->keybrd_type))) ;
-        save_uilang(ChoiceCvt::uilang.at(get_choice(pimpl->ui_language))) ;
-        save_sticon(ChoiceCvt::iconstyle.at(get_choice(pimpl->icon_style))) ;
+        save_kbtype(get_choice(pimpl->keybrd_type, ChoiceCvt::kbtype)) ;
+        save_uilang(get_choice(pimpl->ui_language, ChoiceCvt::uilang)) ;
+        save_sticon(get_choice(pimpl->icon_style,  ChoiceCvt::iconstyle)) ;
 
         save_params(params) ;
     }

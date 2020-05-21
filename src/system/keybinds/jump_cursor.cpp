@@ -1,11 +1,4 @@
 #include "jump_cursor.hpp"
-#include "key_absorber.hpp"
-#include "keybrd_eventer.hpp"
-#include "msg_logger.hpp"
-#include "default_config.hpp"
-#include "key_log.hpp"
-#include "vkc_converter.hpp"
-#include "utility.hpp"
 
 #include <windows.h>
 #include <algorithm>
@@ -14,6 +7,15 @@
 #include <string>
 #include <utility>
 #include <unordered_map>
+
+#include "key_absorber.hpp"
+#include "keybrd_eventer.hpp"
+#include "msg_logger.hpp"
+#include "dynamic_config.hpp"
+#include "key_log.hpp"
+#include "vkc_converter.hpp"
+#include "utility.hpp"
+
 using namespace std ;
 
 namespace JumpCursorUtility
@@ -62,7 +64,7 @@ bool Jump2Right::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(MAX_X_POS - DefaultConfig::SCREEN_POS_BUF(), pos.y) ;
+    SetCursorPos(MAX_X_POS - DynamicConfig::SCREEN_POS_BUF(), pos.y) ;
     return true ;
 }
 
@@ -94,7 +96,7 @@ bool Jump2Bottom::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(pos.x, MAX_Y_POS - DefaultConfig::SCREEN_POS_BUF()) ;
+    SetCursorPos(pos.x, MAX_Y_POS - DynamicConfig::SCREEN_POS_BUF()) ;
     return true ;
 }
 
@@ -131,7 +133,6 @@ bool Jump2YCenter::sprocess(const bool first_call)
 }
 
 
-
 //Jump2Any
 namespace JumpCursorUtility
 {
@@ -139,8 +140,7 @@ namespace JumpCursorUtility
     static float max_keybrd_ypos = 0 ;
 
     inline static void write_error(const string& buf, const string& filename) {
-        Logger::error_stream << "[Error] " << buf << " is bad syntax in " \
-        << filename << ". (JumpCursorUtility::load_keybrd_pos)\n" ;
+        ERROR_STREAM << buf << " is bad syntax in " << filename << ". (JumpCursorUtility::load_keybrd_pos)\n" ;
     }
 
     using key_pos_t = std::unordered_map<unsigned char, std::pair<float, float>> ;
@@ -187,7 +187,7 @@ namespace JumpCursorUtility
                     kp[VKCConverter::get_vkc(' ')] = make_pair(x, y) ;
                     continue ;
                 }
-                
+
                 const auto vkc_vec = VKCConverter::get_sys_vkc(vec[2]) ;
                 if(!vkc_vec.empty()) {
                     //is system code
@@ -214,7 +214,7 @@ namespace JumpCursorUtility
         }
 
         catch(const exception& e) {
-            Logger::error_stream << "[Error] std::fstream: " <<  e.what() << " (JumpCursorUtility::load_keybrd_pos)\n" ;
+            ERROR_STREAM << "std::fstream: " <<  e.what() << " (JumpCursorUtility::load_keybrd_pos)\n" ;
             return key_pos_t{} ;
         }
     }
@@ -226,7 +226,7 @@ const string Jump2Any::sname() noexcept
 }
 
 bool Jump2Any::sprocess(const bool first_call)
-{ 
+{
     if(!first_call) return true ;
 
     static const auto keypos = load_keybrd_pos(Path::KEYBRD_MAP()) ;
@@ -264,17 +264,17 @@ bool Jump2Any::sprocess(const bool first_call)
             auto x_pos = static_cast<int>(pos.first / max_keybrd_xpos * MAX_X_POS) ;
             auto y_pos = static_cast<int>(pos.second / max_keybrd_ypos * MAX_Y_POS) ;
             if(x_pos == MAX_X_POS) {
-                x_pos -= DefaultConfig::SCREEN_POS_BUF() ;
+                x_pos -= DynamicConfig::SCREEN_POS_BUF() ;
             }
             if(y_pos == MAX_Y_POS) {
-                y_pos -= DefaultConfig::SCREEN_POS_BUF() ;
+                y_pos -= DynamicConfig::SCREEN_POS_BUF() ;
             }
 
             SetCursorPos(x_pos, y_pos) ;
 
             for(const auto& key : log) {
                 if(!KeybrdEventer::is_release_keystate(key)) {
-                    Logger::error_stream << "[Error] failed release key (Jump2Any::is_release_keystate)\n" ;
+                    ERROR_STREAM << "failed release key (Jump2Any::is_release_keystate)\n" ;
                     return false ;
                 }
             }
@@ -302,15 +302,14 @@ bool Jump2ActiveWindow::sprocess(const bool first_call)
 
     const auto hwnd = GetForegroundWindow() ;
     if(!hwnd) {
-        Logger::error_stream << "[Error] windows.h: GetForegoundWindow return nullptr "\
+        ERROR_STREAM << "windows.h: GetForegoundWindow return nullptr "\
         << " (bf_jump_cursor.cpp::Jump2ActiveWindow::do_process::GetForegroundWindow)\n" ;
         return false ;
     }
 
     RECT rect ;
     if(!GetWindowRect(hwnd, &rect)) {
-        Logger::error_stream << "[Error] windows.h: "\
-        << GetLastError() \
+        ERROR_STREAM << "windows.h: " << GetLastError() \
         << " (bf_jump_cursor.cpp::Jump2ActiveWindow::do_process::GetWindowRect)\n" ;
         return false ;
     }

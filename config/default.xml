@@ -88,5 +88,6 @@
         <cmd name="snap_current_window_to_right">rsplit</cmd>
         <cmd name="start_shell">sh|shell</cmd>
         <cmd name="start_any_app">!OPTIONAL_COMMAND</cmd>
+        <cmd name="show_config_window">set|config</cmd>
     </commands>
 </config>

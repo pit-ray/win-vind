@@ -46,7 +46,7 @@ namespace Win32GUI
 
         //If we input control-command, for example Ctrl + C,  at console, this handler is called.
         if(!SetConsoleCtrlHandler(CtrlHandler, TRUE)) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot set console ctrl handler. (main.cpp)\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot set console ctrl handler. (main.cpp)\n" ;
             return 0 ;
         }
 
@@ -63,7 +63,7 @@ namespace Win32GUI
         winc.lpszClassName = PROJECT_NAME ;
 
         if(!RegisterClassA(&winc)) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot register window class.\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot register window class.\n" ;
             return false ;
         }
 
@@ -78,7 +78,7 @@ namespace Win32GUI
         ) ;
 
         if(!main_hwnd) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot create window.\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
             return false ;
         }
 
@@ -89,7 +89,7 @@ namespace Win32GUI
             main_hwnd, reinterpret_cast<HMENU>(OPTION1_ID), hInstance, NULL
         ) ;
         if(!op1_hwnd) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot create window.\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
             return false ;
         }
 
@@ -100,7 +100,7 @@ namespace Win32GUI
             main_hwnd, reinterpret_cast<HMENU>(OPTION2_ID), hInstance, NULL
         ) ;
         if(!op2_hwnd) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot create window.\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
             return false ;
         }
 
@@ -111,17 +111,17 @@ namespace Win32GUI
             main_hwnd, reinterpret_cast<HMENU>(EXIT_ID), hInstance, NULL
         ) ;
         if(!exit_hwnd) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot create window.\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
             return false ;
         }
 
         if(!SetLayeredWindowAttributes(main_hwnd, 0, WINDOW_ALPHA, LWA_ALPHA)) {
-            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot set window attribute.\n" ;
+            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot set window attribute.\n" ;
             return false ;
         }
 
         //initialize check box
-        const auto pt = INIParser::load_config(Path::CONFIG_OPTION_INI()) ;
+        const auto pt = INIParser::load_config(Path::CONFIG_OPTS_BOOL_INI()) ;
         if(pt.get_optional<int>("Options.autotrack_popup").get() == 1) {
             SendMessageA(op1_hwnd, BM_SETCHECK, BST_CHECKED, 0) ;
         }
@@ -130,7 +130,7 @@ namespace Win32GUI
         }
 
         //install Notify Icon (Task Tray)
-        pni.reset(new NotifyIcon(main_hwnd, PROJECT_NAME, "resources/icon32.ico")) ;
+        pni.reset(new NotifyIcon(main_hwnd, PROJECT_NAME, "resources/icon32_dark.ico")) ;
 
         return true ;
     }
@@ -152,7 +152,7 @@ namespace Win32GUI
         //resource
         static const auto del_hmenu = [](void* hmenu) {
             if(!DestroyMenu(static_cast<HMENU>(hmenu))) {
-                Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (DestroyMenu)\n" ;
+                ERROR_STREAM << "windows.h: " << GetLastError() << " (DestroyMenu)\n" ;
             }
             hmenu = nullptr ;
         } ;
@@ -160,7 +160,7 @@ namespace Win32GUI
 
         auto delete_brush = [](void* hbrush) {
             if(!DeleteObject(static_cast<HBRUSH>(hbrush))) {
-                Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (DeleteObject)\n" ;
+                ERROR_STREAM << "windows.h: " << GetLastError() << " (DeleteObject)\n" ;
             }
             hbrush = nullptr ;
         } ;
@@ -208,42 +208,42 @@ namespace Win32GUI
                 PAINTSTRUCT ps ;
                 auto hdc = BeginPaint(hwnd, &ps) ;
                 if(!hdc) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_PAINT::BeginPaint)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::BeginPaint)\n" ;
                     return 0 ;
                 }
 
                 auto font = CreateFontIndirectA(&lf) ;
                 if(!font) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_PAINT::CreateFontIndirectA)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::CreateFontIndirectA)\n" ;
                     return 0 ;
                 }
 
                 if(!SelectObject(hdc, font)) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_PAINT::SelectObject)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::SelectObject)\n" ;
                     return 0 ;
                 }
 
                 if(SetBkColor(hdc, BK_COLOR) == CLR_INVALID) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_PAINT::SetBkColor)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::SetBkColor)\n" ;
                     return 0 ;
                 }
 
                 if(SetTextColor(hdc, TX_COLOR) == CLR_INVALID) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_PAINT::SetTextColor)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::SetTextColor)\n" ;
                     return 0 ;
                 }
 
                 if(!TextOutA(hdc, 90, 110, VERSION, lstrlenA(VERSION))) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " cannot write Text. (TextOut)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " cannot write Text. (TextOut)\n" ;
                     return 0 ;
                 }
 
                 if(!EndPaint(hwnd, &ps)) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_PAINT::EndPaint)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::EndPaint)\n" ;
                     return 0 ;
                 }
                 if(!DeleteObject(font)) {
-                    Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_PAINT::DeleteObject)\n" ;
+                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::DeleteObject)\n" ;
                     return 0 ;
                 }
 
@@ -254,11 +254,11 @@ namespace Win32GUI
                 //Color Setting of Popup window
                 if(reinterpret_cast<HWND>(lparam) == op1_hwnd) {
                     if(SetTextColor(reinterpret_cast<HDC>(wparam), TX_COLOR) == CLR_INVALID) {
-                        Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
+                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
                         return 0 ;
                     }
                     if(SetBkColor(reinterpret_cast<HDC>(wparam), BK_COLOR) == CLR_INVALID) {
-                        Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
+                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
                         return 0 ;
                     }
                     return reinterpret_cast<LRESULT>(bk_brush.get()) ;
@@ -266,11 +266,11 @@ namespace Win32GUI
 
                 if(reinterpret_cast<HWND>(lparam) == op2_hwnd) {
                     if(SetTextColor(reinterpret_cast<HDC>(wparam), TX_COLOR) == CLR_INVALID) {
-                        Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
+                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
                         return 0 ;
                     }
                     if(SetBkColor(reinterpret_cast<HDC>(wparam), BK_COLOR) == CLR_INVALID) {
-                        Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
+                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
                         return 0 ;
                     }
                     return reinterpret_cast<LRESULT>(bk_brush.get()) ;
@@ -278,11 +278,11 @@ namespace Win32GUI
 
                 if(reinterpret_cast<HWND>(lparam) == exit_hwnd) {
                     if(SetTextColor(reinterpret_cast<HDC>(wparam), TX_COLOR) == CLR_INVALID) {
-                        Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
+                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
                         return 0 ;
                     }
                     if(SetBkColor(reinterpret_cast<HDC>(wparam), BK_COLOR) == CLR_INVALID) {
-                        Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
+                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
                         return 0 ;
                     }
                     return reinterpret_cast<LRESULT>(bk_brush.get()) ;
@@ -309,7 +309,7 @@ namespace Win32GUI
                         pt.put("Options.display_cmd", 0) ;
                     }
 
-                    write_ini(Path::CONFIG_OPTION_INI(), pt) ;
+                    write_ini(Path::CONFIG_OPTS_BOOL_INI(), pt) ;
 
                     System::load_option_config() ;
                     break ;
@@ -327,7 +327,7 @@ namespace Win32GUI
                 }
                 return 0 ;
             }
-            
+
             case APPWM_ICONNOTIFY: {
                 static constexpr auto TASKBAR_WIDTH = 50 ;
                 static constexpr auto TASKBAR_HEIGHT = 32 ;
@@ -336,7 +336,7 @@ namespace Win32GUI
                     case WM_RBUTTONUP: {
                         POINT pos ;
                         if(!GetCursorPos(&pos)) {
-                            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::GetCursorPos)\n" ;
+                            ERROR_STREAM << "windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::GetCursorPos)\n" ;
                             return 0 ;
                         }
 
@@ -365,12 +365,12 @@ namespace Win32GUI
                         }
 
                         if(!SetWindowPos(hwnd, HWND_TOP, pos.x, pos.y, 0, 0, SWP_NOSIZE | SWP_SHOWWINDOW)) {
-                            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::SetWindowPos)\n" ;
+                            ERROR_STREAM << "windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::SetWindowPos)\n" ;
                             return 0 ;
                         }
 
                         if(!SetForegroundWindow(hwnd)) {
-                            Logger::error_stream << "[Error] windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::SetForegroundWindow)\n" ;
+                            ERROR_STREAM << "windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::SetForegroundWindow)\n" ;
                             return 0 ;
                         }
 

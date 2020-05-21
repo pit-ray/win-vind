@@ -9,7 +9,7 @@ struct CloseCurrentWindow
   public CommandWithCreator<CloseCurrentWindow>
 {
     static bool sprocess(const bool first_call) ;
-    static bool sprocess(const std::string& cmd) ;
+    static bool sprocess(const std::string cmd) ;
     static const std::string sname() noexcept ;
 
 private:
@@ -21,7 +21,7 @@ struct SwitchWindow
   public CommandWithCreator<SwitchWindow>
 {
     static bool sprocess(const bool first_call) ;
-    static bool sprocess(const std::string& cmd) ;
+    static bool sprocess(const std::string cmd) ;
     static const std::string sname() noexcept ;
 
 private:
@@ -33,7 +33,7 @@ struct MaximizeCurrentWindow
   public CommandWithCreator<MaximizeCurrentWindow>
 {
     static bool sprocess(const bool first_call) ;
-    static bool sprocess(const std::string& cmd) ;
+    static bool sprocess(const std::string cmd) ;
     static const std::string sname() noexcept ;
 
 private:
@@ -45,7 +45,7 @@ struct MinimizeCurrentWindow
   public CommandWithCreator<MinimizeCurrentWindow>
 {
     static bool sprocess(const bool first_call) ;
-    static bool sprocess(const std::string& cmd) ;
+    static bool sprocess(const std::string cmd) ;
     static const std::string sname() noexcept ;
 
 private:
@@ -57,7 +57,7 @@ struct SnapCurrentWindow2Left
   public CommandWithCreator<SnapCurrentWindow2Left>
 {
     static bool sprocess(const bool first_call) ;
-    static bool sprocess(const std::string& cmd) ;
+    static bool sprocess(const std::string cmd) ;
     static const std::string sname() noexcept ;
 
 private:
@@ -69,7 +69,7 @@ struct SnapCurrentWindow2Right
   public CommandWithCreator<SnapCurrentWindow2Right>
 {
     static bool sprocess(const bool first_call) ;
-    static bool sprocess(const std::string& cmd) ;
+    static bool sprocess(const std::string cmd) ;
     static const std::string sname() noexcept ;
 
 private:

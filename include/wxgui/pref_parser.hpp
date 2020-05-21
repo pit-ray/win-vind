@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <string>
+#include "wx_constant.hpp"
 
 namespace PrefParser
 {
@@ -36,15 +37,13 @@ namespace PrefParser
     void save_kbtype(const std::string& path) ;
     void save_kbtype(std::string&& path) ;
 
-    const std::string load_uilang() ;
-    const std::string load_default_uilang() ;
-    void save_uilang(const std::string& path) ;
-    void save_uilang(std::string&& path) ;
+    wxGUI::Language load_uilang() ;
+    const wxGUI::Language& load_default_uilang() ;
+    void save_uilang(const wxGUI::Language idx) ;
 
-    const std::string load_sticon() ;
-    const std::string load_default_sticon() ;
-    void save_sticon(const std::string& path) ;
-    void save_sticon(std::string&& path) ;
+    wxGUI::IconStyle load_sticon() ;
+    const wxGUI::IconStyle& load_default_sticon() ;
+    void save_sticon(const wxGUI::IconStyle idx) ;
 }
 
 #endif

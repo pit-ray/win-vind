@@ -13,7 +13,7 @@ template <typename Derived>
 class BindedFunctionWithCreator : public BindedFunction {
 private:
     bool do_process(const bool first_call) const override {
-        return static_cast<const Derived*>(this)->sprocess(first_call) ;
+        return static_cast<const Derived*>(this)->sprocess(std::move(first_call)) ;
     }
 
 public:

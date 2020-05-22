@@ -1,5 +1,5 @@
-#ifndef _EDI_MOVE_CURSOR_HPP
-#define _EDI_MOVE_CURSOR_HPP
+#ifndef _EDI_MOVE_CARET_HPP
+#define _EDI_MOVE_CARET_HPP
 
 #include "binded_function_with_creator.hpp"
 

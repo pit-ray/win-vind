@@ -1,4 +1,4 @@
-#include "edi_move_cursor.hpp"
+#include "edi_move_caret.hpp"
 #include "keybrd_eventer.hpp"
 #include "interval_timer.hpp"
 #include "msg_logger.hpp"

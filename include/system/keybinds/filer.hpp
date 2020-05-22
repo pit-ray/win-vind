@@ -15,4 +15,16 @@ struct CloseOpenedFile : public CommandWithCreator<CloseOpenedFile>
     static const std::string sname() noexcept ;
 } ;
 
+struct OpenOtherFile : public CommandWithCreator<OpenOtherFile>
+{
+    static bool sprocess(const std::string cmd) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct MakeDir : public CommandWithCreator<MakeDir>
+{
+    static bool sprocess(const std::string cmd) ;
+    static const std::string sname() noexcept ;
+} ;
+
 #endif

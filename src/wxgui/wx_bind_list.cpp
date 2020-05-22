@@ -92,6 +92,7 @@ namespace wxGUI
             add("minimize_current_window") ;
             add("snap_current_window_to_left") ;
             add("snap_current_window_to_right") ;
+            add("open_new_current_window") ;
             add("move_to_next_page") ;
             add("move_to_prev_page") ;
 
@@ -138,10 +139,14 @@ namespace wxGUI
             add("minimize_current_window") ;
             add("snap_current_window_to_left") ;
             add("snap_current_window_to_right") ;
+            add("open_new_current_window") ;
+            add("reload_current_window") ;
             add("start_shell") ;
             add("start_any_app") ;
             add("show_config_window") ;
             add("exit_config_window") ;
+            add("open_other_file") ;
+            add("make_dir") ;
 
             SetScrollRate(0, 5) ;
             SetSizer(sizer) ;
@@ -199,7 +204,7 @@ namespace wxGUI
             const auto cmd = bind_list.at("commands") ;
 
             auto catch_except = [](auto& e, auto& index) {
-                ERROR_STREAM << e.what() << ": " << index << "is invalid index. (BindListPanel::load_core)\n" ;
+                ERROR_STREAM << e.what() << ": " << index << " is invalid index. (BindListPanel::load_core)\n" ;
             } ;
 
             //wxTextCtrl

@@ -1,4 +1,12 @@
 #include "key_binder.hpp"
+
+#include <algorithm>
+#include <iostream>
+#include <mutex>
+#include <deque>
+
+#include <windows.h>
+
 #include "xml_parser.hpp"
 #include "ini_parser.hpp"
 #include "mode_manager.hpp"
@@ -21,7 +29,7 @@
 #include "select.hpp"
 
 //editor
-#include "edi_move_cursor.hpp"
+#include "edi_move_caret.hpp"
 #include "edi_change_mode.hpp"
 
 //cmd?
@@ -30,12 +38,6 @@
 #include "filer.hpp"
 #include "external_app.hpp"
 #include "mywindow_ctrl.hpp"
-
-#include <algorithm>
-#include <iostream>
-#include <mutex>
-
-#include <windows.h>
 
 using namespace std ;
 
@@ -98,7 +100,9 @@ struct KeyBinder::Impl
         SnapCurrentWindow2Left::BindedFunctionWithCreator::create(),
         SnapCurrentWindow2Right::BindedFunctionWithCreator::create(),
         Move2NextPage::create(),
-        Move2PrevPage::create()
+        Move2PrevPage::create(),
+
+        OpenNewCurrentWindow::BindedFunctionWithCreator::create()
     } ;
 
     vector<bf::shp_t> vpbf_insert {
@@ -178,16 +182,23 @@ struct KeyBinder::Impl
         MinimizeCurrentWindow::CommandWithCreator::create(),
         SnapCurrentWindow2Left::CommandWithCreator::create(),
         SnapCurrentWindow2Right::CommandWithCreator::create(),
+        OpenNewCurrentWindow::CommandWithCreator::create(),
+        ReloadCurrentWindow::create(),
         StartShell::create(),
         StartAnyApp::create(),
         ShowConfigWindow::create(),
-        ExitConfigWindow::create()
+        ExitConfigWindow::create(),
+        OpenOtherFile::create(),
+        MakeDir::create()
     } ;
 
     KeyLogger logger{} ;
 
     bf::shp_t callable_bf{nullptr} ;
     cmd::shp_t callable_cmd{nullptr} ;
+
+    int cmd_hist_index = -1 ; //negative value is a inputting command
+    std::deque<std::pair<std::string, cmd::shp_t>> cmd_hist{} ;
 
     explicit Impl() {}
 
@@ -368,7 +379,7 @@ void KeyBinder::update_core_cmd() noexcept
         return ;
     }
 
-    //command edit
+    //edit command
     if(pimpl->logger.back().is_included(VKC_BKSPACE)) {
         pimpl->logger.remove_from_back(2) ;
         refresh_display() ;
@@ -378,6 +389,22 @@ void KeyBinder::update_core_cmd() noexcept
             return ;
         }
     }
+
+    //operate command history
+    /*
+    if(pimpl->logger.back().is_included(VKC_UP)) {
+        if(pimpl->cmd_hist_index < pimpl->cmd_hist.size() - 1) {
+            pimpl->cmd_hist_index ++ ;
+            return  ;
+        }
+    }
+    if(pimpl->logger.back().is_included(VKC_DOWN)) {
+        if(pimpl->cmd_hist_index >= 0) {
+            pimpl->cmd_hist_index -- ;
+            return ;
+        }
+    }
+    */
 
     //invalid keys
     if(is_ignored(ignore_alone, pimpl->logger.back()) || pimpl->logger.size() > DynamicConfig::CMD_MAX_CHAR()) {
@@ -436,5 +463,14 @@ void KeyBinder::update() noexcept {
 
 const string KeyBinder::get_logger_str() const noexcept
 {
-    return pimpl->logger.get_str() ;
+    if(pimpl->cmd_hist_index < 0) {
+        return pimpl->logger.get_str() ;
+    }
+
+    try {
+        return pimpl->cmd_hist.at(pimpl->cmd_hist_index).first ;
+    }
+    catch(std::out_of_range& e) {
+        return string() ;
+    }
 }

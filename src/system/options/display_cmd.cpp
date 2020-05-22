@@ -176,7 +176,7 @@ bool DisplayCmd::do_process() const
         return true ;
     }
 
-    const auto str = pimpl->pkb->get_logger_str() ;
+    const auto str = ":" + pimpl->pkb->get_logger_str() ;
     if(str.empty()) return true ;
 
     auto hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;

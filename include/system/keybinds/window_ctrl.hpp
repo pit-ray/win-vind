@@ -75,4 +75,23 @@ struct SnapCurrentWindow2Right
 private:
     static bool common_process() ;
 } ;
+
+struct OpenNewCurrentWindow
+: public BindedFunctionWithCreator<OpenNewCurrentWindow>,
+  public CommandWithCreator<OpenNewCurrentWindow>
+{
+    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const std::string cmd) ;
+    static const std::string sname() noexcept ;
+
+private:
+    static bool common_process() ;
+} ;
+
+struct ReloadCurrentWindow
+: public CommandWithCreator<ReloadCurrentWindow>
+{
+    static bool sprocess(const std::string cmd) ;
+    static const std::string sname() noexcept ;
+} ;
 #endif

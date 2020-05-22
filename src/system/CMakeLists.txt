@@ -30,7 +30,9 @@ add_library(Common STATIC
 
 add_library(EditorKeybinds STATIC
     editor_keybinds/edi_change_mode.cpp
-    editor_keybinds/edi_move_cursor.cpp
+    editor_keybinds/edi_move_caret.cpp
+    editor_keybinds/edi_jump_caret.cpp
+    editor_keybinds/edi_search_pattern.cpp
 )
 target_link_libraries(EditorKeybinds Common)
 
@@ -51,7 +53,7 @@ add_library(Keybinds STATIC
     keybinds/window_ctrl.cpp
     keybinds/mywindow_ctrl.cpp
 )
-target_link_libraries(Keybinds Common)
+target_link_libraries(Keybinds Common Psapi)
 
 add_library(Options
     options/autotrack_popup.cpp

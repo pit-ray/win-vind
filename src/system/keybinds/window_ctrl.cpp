@@ -1,4 +1,9 @@
 #include "window_ctrl.hpp"
+
+#include <iostream>
+#include <windows.h>
+#include <psapi.h>
+
 #include "keybrd_eventer.hpp"
 #include "interval_timer.hpp"
 #include "key_logger.hpp"
@@ -6,9 +11,7 @@
 
 #include "move_cursor.hpp"
 #include "jump_cursor.hpp"
-
-#include <iostream>
-#include <windows.h>
+#include "msg_logger.hpp"
 
 using namespace std ;
 
@@ -264,4 +267,84 @@ bool SnapCurrentWindow2Right::sprocess(const bool first_call)
 bool SnapCurrentWindow2Right::sprocess(const string cmd)
 {
     return common_process() ;
+}
+
+
+//OpenNewCurrentWindow
+const string OpenNewCurrentWindow::sname() noexcept
+{
+    return "open_new_current_window" ;
+}
+
+bool OpenNewCurrentWindow::common_process()
+{
+    auto hwnd = GetForegroundWindow() ;
+    if(!hwnd) {
+        return false ;
+    }
+
+    DWORD proc_id = 0 ;
+    GetWindowThreadProcessId(hwnd, &proc_id) ;
+
+    HANDLE hproc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, proc_id) ;
+    if(!hproc) {
+        ERROR_STREAM << "windows.h: " << GetLastError() << " (OpenNewCurrentWindow::OpenProcess)\n" ;
+        return false ;
+    }
+
+    HMODULE hmod = NULL ;
+    DWORD cbneed = 0 ;
+    if(!EnumProcessModules(hproc, &hmod, sizeof(HMODULE), &cbneed)) {
+        ERROR_STREAM << "windows.h: " << GetLastError() << " (OpenNewCurrentWindow::EnumProcessModules)\n" ;
+        return false ;
+    }
+
+    TCHAR path[MAX_PATH] = {0} ;
+    if(!GetModuleFileNameEx(hproc, hmod, path, MAX_PATH)) {
+        ERROR_STREAM << "windows.h: " << GetLastError() \
+        << " cannot get a process path of current window (OpenNewCurrentWindow::common_process::GetModuleFileNameEx)\n" ;
+        return false ;
+    }
+
+    CloseHandle(hproc) ;
+
+    STARTUPINFO si ;
+    ZeroMemory(&si, sizeof(si)) ;
+    si.cb = sizeof(si) ;
+
+    PROCESS_INFORMATION pi ;
+    ZeroMemory(&pi, sizeof(pi)) ;
+
+    if(!CreateProcess(
+        NULL, path, NULL, NULL, FALSE,
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+        ERROR_STREAM << "windows.h: "\
+        << GetLastError() << ", cannot call \"" << path << "\"" \
+        << " (OpenNewCurrentWindow:::common_process::CreateProcess)\n" ;
+        return false ;
+    }
+    return true ;
+}
+
+bool OpenNewCurrentWindow::sprocess(const bool first_call)
+{
+    if(!first_call) return true ;
+    return common_process() ;
+}
+
+bool OpenNewCurrentWindow::sprocess(const string cmd)
+{
+    return common_process() ;
+}
+
+
+//ReloadCurrentWindow
+const string ReloadCurrentWindow::sname() noexcept
+{
+    return "reload_current_window" ;
+}
+
+bool ReloadCurrentWindow::sprocess(const string cmd)
+{
+    return KeybrdEventer::is_pushup(VKC_F5) ;
 }

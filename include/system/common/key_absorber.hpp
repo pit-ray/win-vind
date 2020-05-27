@@ -8,7 +8,7 @@
 namespace KeyAbsorber
 {
     bool is_install_hook() noexcept ;
-    bool is_down(const unsigned char keycode) noexcept ;
+    bool is_downed(const unsigned char keycode) noexcept ;
     const KeyLog get_downed_list() noexcept ;
 
     bool is_closed() noexcept ;
@@ -17,6 +17,11 @@ namespace KeyAbsorber
     void open() noexcept ;
     void open_keys(const KeyLog::data_t& key) noexcept ;
     void open_key(const unsigned char key) noexcept ;
+
+    //These functions is existed in order to fool KeyLogger as no-changing.
+    //For example, EdiMoveCaretLeft...
+    void release_vertually(const unsigned char key) noexcept ;
+    void push_vertually(const unsigned char key) noexcept ;
 }
 
 

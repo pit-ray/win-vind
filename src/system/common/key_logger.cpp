@@ -11,9 +11,9 @@ using namespace std ;
 struct KeyLogger::Impl
 {
     data_t logs ;
-    KeyLog past_log ;
+    static KeyLog past_log ;
 
-    explicit Impl() : logs(), past_log() {}
+    explicit Impl() : logs() {}
 
     ~Impl() noexcept {
         logs.clear() ;
@@ -24,6 +24,8 @@ struct KeyLogger::Impl
     Impl(const Impl&) = delete ;
     Impl& operator=(const Impl&) = delete ;
 } ;
+
+KeyLog KeyLogger::Impl::past_log{} ;
 
 
 KeyLogger::KeyLogger() noexcept
@@ -146,7 +148,7 @@ const string KeyLogger::get_str() const noexcept
     string str{} ;
 
     if(pimpl->logs.empty()) {
-        return std::move(str + '\0') ;
+        return str ;
     }
 
     for(const auto& log : pimpl->logs) {

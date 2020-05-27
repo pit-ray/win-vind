@@ -43,11 +43,11 @@ KeyLog::KeyLog(const data_t& codes)
 {}
 
 KeyLog::KeyLog(data_t&& codes)
-: pimpl(make_unique<Impl>(codes))
+: pimpl(make_unique<Impl>(std::move(codes)))
 {}
 
 KeyLog::KeyLog(initializer_list<unsigned char>&& codes)
-: pimpl(make_unique<Impl>(codes))
+: pimpl(make_unique<Impl>(std::move(codes)))
 {}
 
 KeyLog::~KeyLog() = default ;
@@ -65,6 +65,16 @@ KeyLog& KeyLog::operator=(const KeyLog& rhs) noexcept
     if(!rhs.pimpl) return *this ; //if already moved, not copy
     *pimpl = *rhs.pimpl ;
     return *this ;
+}
+
+const KeyLog::data_t& KeyLog::get() const & noexcept
+{
+    return pimpl->once_log ;
+}
+
+KeyLog::data_t&& KeyLog::get() && noexcept
+{
+    return std::move(pimpl->once_log) ;
 }
 
 KeyLog::data_t::const_iterator KeyLog::begin() const noexcept

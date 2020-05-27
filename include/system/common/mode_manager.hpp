@@ -7,10 +7,13 @@ namespace ModeManager
         Normal,
         Insert,
         Visual,
+        Command,
+
         EdiNormal,
         EdiInsert,
         EdiVisual,
-        Command,
+        EdiLineVisual,
+        EdiCommand,
     } ;
 
     void change_mode(const Mode mode) noexcept ;

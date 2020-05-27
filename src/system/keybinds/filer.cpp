@@ -9,6 +9,7 @@
 #include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
+#include "mode_manager.hpp"
 
 using namespace std ;
 
@@ -20,6 +21,7 @@ const string SaveOpenedFile::sname() noexcept
 
 bool SaveOpenedFile::sprocess(const string cmd)
 {
+    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_S) ;
 }
 
@@ -32,7 +34,8 @@ const string CloseOpenedFile::sname() noexcept
 
 bool CloseOpenedFile::sprocess(const string cmd)
 {
-    return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_F4) ;
+    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
+    return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_F4) ; //close a browser's tab (the file is HTML).
 }
 
 
@@ -44,6 +47,7 @@ const string OpenOtherFile::sname() noexcept
 
 bool OpenOtherFile::sprocess(const string cmd)
 {
+    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_O) ;
 }
 
@@ -69,7 +73,7 @@ namespace FilerUtility
         }
 
         if(FAILED(CoInitialize(NULL))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << "initialization is failed (MakeDir::CoInitialize)\n" ;
+            WIN_ERROR_STREAM << "initialization is failed (MakeDir::CoInitialize)\n" ;
             return path_t() ;
         }
 
@@ -82,7 +86,7 @@ namespace FilerUtility
             IID_IShellWindows,
             reinterpret_cast<void**>(&raw_psw)
         ))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create IShellWindows. (MakeDir::CoCreateInstance)\n" ;
+            WIN_ERROR_STREAM << " cannot create IShellWindows. (MakeDir::CoCreateInstance)\n" ;
             return path_t() ;
         }
         auto sw_deleter = [](IShellWindows* ptr) {ptr->Release() ;} ;
@@ -90,7 +94,7 @@ namespace FilerUtility
 
         long win_num = 0 ;
         if(FAILED(psw->get_Count(&win_num))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << "No explorer is opened. (MakeDir::IShellWindows::get_Count)\n" ;
+            WIN_ERROR_STREAM << "No explorer is opened. (MakeDir::IShellWindows::get_Count)\n" ;
             return path_t() ;
         }
 
@@ -125,7 +129,7 @@ namespace FilerUtility
             //access to shell window
             IServiceProvider* raw_psp = nullptr ;
             if(FAILED(pwba->QueryInterface(IID_IServiceProvider, reinterpret_cast<void**>(&raw_psp)))) {
-                ERROR_STREAM << "windows.h: cannot access a top service provider. (MakeDir::IWebBrowserApp::QueryInterface\n)" ;
+                WIN_ERROR_STREAM << "cannot access a top service provider. (MakeDir::IWebBrowserApp::QueryInterface\n)" ;
                 return path_t() ;
             }
             auto sp_deleter = [](IServiceProvider* ptr) {ptr->Release() ;} ;
@@ -134,7 +138,7 @@ namespace FilerUtility
             //access to shell browser
             IShellBrowser* raw_psb = nullptr ;
             if(FAILED(psp->QueryService(SID_STopLevelBrowser, IID_IShellBrowser, reinterpret_cast<void**>(&raw_psb)))) {
-                ERROR_STREAM << "windows.h: cannot access a shell browser. (MakeDir::IServiceProvider::QueryService\n)" ;
+                WIN_ERROR_STREAM << "cannot access a shell browser. (MakeDir::IServiceProvider::QueryService\n)" ;
                 return path_t() ;
             }
             auto sb_deleter = [](IShellBrowser* ptr) {ptr->Release() ;} ;
@@ -143,7 +147,7 @@ namespace FilerUtility
             //access to shell view
             IShellView* raw_psv = nullptr ;
             if(FAILED(psb->QueryActiveShellView(&raw_psv))) {
-                ERROR_STREAM << "windows.h: cannot access a shell view. (MakeDir::IShellBrowser::QueryActiveShellView\n)" ;
+                WIN_ERROR_STREAM << "cannot access a shell view. (MakeDir::IShellBrowser::QueryActiveShellView\n)" ;
                 return path_t() ;
             }
             auto sv_deleter = [](IShellView* ptr) {ptr->Release() ;} ;
@@ -152,7 +156,7 @@ namespace FilerUtility
             //get IFolerView Interface
             IFolderView* raw_pfv = nullptr ;
             if(FAILED(psv->QueryInterface(IID_IFolderView, reinterpret_cast<void**>(&raw_pfv)))) {
-                ERROR_STREAM << "windows.h: cannot access a foler view. (MakeDir::IShellView::QueryInterface\n)" ;
+                WIN_ERROR_STREAM << "cannot access a foler view. (MakeDir::IShellView::QueryInterface\n)" ;
                 return path_t() ;
             }
             auto fv_deleter = [](IFolderView* ptr) {ptr->Release() ;} ;
@@ -161,7 +165,7 @@ namespace FilerUtility
             //get IPersistantFolder2 in order to use GetCurFolder method
             IPersistFolder2* raw_ppf2 = nullptr ;
             if(FAILED(pfv->GetFolder(IID_IPersistFolder2, reinterpret_cast<void**>(&raw_ppf2)))) {
-                ERROR_STREAM << "windows.h: cannot access a persist folder 2. (MakeDir::IFolderView::GetFolder\n)" ;
+                WIN_ERROR_STREAM << "cannot access a persist folder 2. (MakeDir::IFolderView::GetFolder\n)" ;
                 return path_t() ;
             }
             auto pf2_deleter = [](IPersistFolder2* ptr) {ptr->Release() ;} ;
@@ -169,7 +173,7 @@ namespace FilerUtility
 
             LPITEMIDLIST raw_pidl = nullptr ;
             if(FAILED(ppf2->GetCurFolder(&raw_pidl))) {
-                ERROR_STREAM << "windows.h: cannot get current folder. (MakeDir::IPersistFolder::GetCurFolder\n)" ;
+                WIN_ERROR_STREAM << "cannot get current folder. (MakeDir::IPersistFolder::GetCurFolder\n)" ;
                 return path_t() ;
             }
             auto idl_deleter = [](ITEMIDLIST* ptr) {CoTaskMemFree(ptr) ;} ;
@@ -178,7 +182,7 @@ namespace FilerUtility
             //convert to path
             TCHAR path[MAX_PATH] = {0} ;
             if(!SHGetPathFromIDList(pidl.get(), path)) {
-                ERROR_STREAM << "windows.h: cannot convert an item ID to a file system path. (MakeDir::SHGetPathFromIDList\n)" ;
+                WIN_ERROR_STREAM << "cannot convert an item ID to a file system path. (MakeDir::SHGetPathFromIDList\n)" ;
                 return path_t() ;
             }
 

@@ -3,6 +3,11 @@
 
 #include <memory>
 
+namespace IntervalTimerDefaults
+{
+    static constexpr int REPEAT_KEYSTROKE = 1'500'00 ;
+}
+
 class IntervalTimer
 {
 private:

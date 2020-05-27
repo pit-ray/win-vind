@@ -39,12 +39,16 @@ public:
     static const auto SCREEN_POS_BUF() {
         return static_cast<int>(get_config("screen_pos_buf")) ;
     }
-    static const auto& MOVE_ACCELERATION() {
-        return get_config("move_acceleration") ;
+    static const auto& CURSOR_ACCELERATION() {
+        return get_config("cursor_acceleration") ;
     }
     static const auto& CURSOR_WEIGHT() {
         return get_config("cursor_weight") ;
     }
+    static const auto& CURSOR_MAX_VELOCITY() {
+        return get_config("cursor_max_velocity") ;
+    }
+
     static const auto& YSCROLL_SPEED() {
         return get_config("yscroll_speed") ;
     }
@@ -59,6 +63,9 @@ public:
     }
     static const auto CMD_MAX_CHAR() {
         return static_cast<std::size_t>(get_config("cmd_max_char")) ;
+    }
+    static const auto CMD_MAX_HISTORY_NUM() {
+        return static_cast<std::size_t>(get_config("cmd_max_history_num")) ;
     }
 } ;
 

@@ -4,80 +4,106 @@
 #include "binded_function_with_creator.hpp"
 
 
-struct EdiMoveLeft : public BindedFunctionWithCreator<EdiMoveLeft>
+struct EdiMoveCaretLeft : public BindedFunctionWithCreator<EdiMoveCaretLeft>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
 
-    explicit EdiMoveLeft() ;
-    virtual ~EdiMoveLeft() ;
+    explicit EdiMoveCaretLeft() ;
+    virtual ~EdiMoveCaretLeft() ;
 
-    EdiMoveLeft(EdiMoveLeft&&) ;
-    EdiMoveLeft& operator=(EdiMoveLeft&&) ;
+    EdiMoveCaretLeft(EdiMoveCaretLeft&&) ;
+    EdiMoveCaretLeft& operator=(EdiMoveCaretLeft&&) ;
 
-    EdiMoveLeft(const EdiMoveLeft&) = delete ;
-    EdiMoveLeft& operator=(const EdiMoveLeft&) = delete ;
+    EdiMoveCaretLeft(const EdiMoveCaretLeft&) = delete ;
+    EdiMoveCaretLeft& operator=(const EdiMoveCaretLeft&) = delete ;
 
 private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveRight : public BindedFunctionWithCreator<EdiMoveRight>
+struct EdiMoveCaretRight : public BindedFunctionWithCreator<EdiMoveCaretRight>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
 
-    explicit EdiMoveRight() ;
-    virtual ~EdiMoveRight() ;
+    explicit EdiMoveCaretRight() ;
+    virtual ~EdiMoveCaretRight() ;
 
-    EdiMoveRight(EdiMoveRight&&) ;
-    EdiMoveRight& operator=(EdiMoveRight&&) ;
+    EdiMoveCaretRight(EdiMoveCaretRight&&) ;
+    EdiMoveCaretRight& operator=(EdiMoveCaretRight&&) ;
 
-    EdiMoveRight(const EdiMoveRight&) = delete ;
-    EdiMoveRight& operator=(const EdiMoveRight&) = delete ;
+    EdiMoveCaretRight(const EdiMoveCaretRight&) = delete ;
+    EdiMoveCaretRight& operator=(const EdiMoveCaretRight&) = delete ;
 
 private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveUp : public BindedFunctionWithCreator<EdiMoveUp>
+struct EdiMoveCaretUp : public BindedFunctionWithCreator<EdiMoveCaretUp>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
 
-    explicit EdiMoveUp() ;
-    virtual ~EdiMoveUp() ;
+    explicit EdiMoveCaretUp() ;
+    virtual ~EdiMoveCaretUp() ;
 
-    EdiMoveUp(EdiMoveUp&&) ;
-    EdiMoveUp& operator=(EdiMoveUp&&) ;
+    EdiMoveCaretUp(EdiMoveCaretUp&&) ;
+    EdiMoveCaretUp& operator=(EdiMoveCaretUp&&) ;
 
-    EdiMoveUp(const EdiMoveUp&) = delete ;
-    EdiMoveUp& operator=(const EdiMoveUp&) = delete ;
+    EdiMoveCaretUp(const EdiMoveCaretUp&) = delete ;
+    EdiMoveCaretUp& operator=(const EdiMoveCaretUp&) = delete ;
 
 private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveDown : public BindedFunctionWithCreator<EdiMoveDown>
+struct EdiMoveCaretDown : public BindedFunctionWithCreator<EdiMoveCaretDown>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
 
-    explicit EdiMoveDown() ;
-    virtual ~EdiMoveDown() ;
+    explicit EdiMoveCaretDown() ;
+    virtual ~EdiMoveCaretDown() ;
 
-    EdiMoveDown(EdiMoveDown&&) ;
-    EdiMoveDown& operator=(EdiMoveDown&&) ;
+    EdiMoveCaretDown(EdiMoveCaretDown&&) ;
+    EdiMoveCaretDown& operator=(EdiMoveCaretDown&&) ;
 
-    EdiMoveDown(const EdiMoveDown&) = delete ;
-    EdiMoveDown& operator=(const EdiMoveDown&) = delete ;
+    EdiMoveCaretDown(const EdiMoveCaretDown&) = delete ;
+    EdiMoveCaretDown& operator=(const EdiMoveCaretDown&) = delete ;
 
 private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
+} ;
+
+
+struct EdiMoveCaretNwordsForward : public BindedFunctionWithCreator<EdiMoveCaretNwordsForward>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EdiMoveCaretNwordsBackward : public BindedFunctionWithCreator<EdiMoveCaretNwordsBackward>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+
+struct EdiMoveCaretNWORDSForward : public BindedFunctionWithCreator<EdiMoveCaretNWORDSForward>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EdiMoveCaretNWORDSBackward : public BindedFunctionWithCreator<EdiMoveCaretNWORDSBackward>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
 } ;
 
 #endif

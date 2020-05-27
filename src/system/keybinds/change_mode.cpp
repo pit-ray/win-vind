@@ -1,4 +1,9 @@
 #include "change_mode.hpp"
+
+#include <iostream>
+
+#include <windows.h>
+
 #include "mouse_eventer.hpp"
 #include "key_absorber.hpp"
 #include "text_analyzer.hpp"
@@ -6,9 +11,8 @@
 #include "mode_manager.hpp"
 #include "keybrd_eventer.hpp"
 #include "virtual_key_fwd.hpp"
-#include <windows.h>
+#include "text_selecter.hpp"
 
-#include <iostream>
 using namespace std ;
 
 using namespace ModeManager ;
@@ -23,12 +27,18 @@ bool Change2Normal::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
 
-    if(get_mode() == Mode::Normal) {
+    const auto m = get_mode() ;
+    if(m == Mode::Normal) {
         return true ;
     }
 
-    if(get_mode() == Mode::Visual) {
+    if(m == Mode::Visual) {
         if(!MouseEventer::is_click(MouseEventer::Button::LEFT)) {
+            return false ;
+        }
+    }
+    if(m == Mode::EdiVisual || m == Mode::EdiLineVisual) {
+        if(!TextSelecter::is_unselect()) {
             return false ;
         }
     }
@@ -112,6 +122,18 @@ const string Change2Command::sname() noexcept
 bool Change2Command::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    change_mode(Mode::Command) ;
+
+    const auto mode = ModeManager::get_mode() ;
+
+    if(mode == Mode::Normal) {
+        change_mode(Mode::Command) ;
+        return true ;
+    }
+    if(mode == Mode::EdiNormal) {
+        change_mode(Mode::EdiCommand) ;
+        return true ;
+    }
+
+    change_mode(Mode::Normal) ;
     return true ;
 }

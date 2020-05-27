@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 
+#include <windows.h>
+
 namespace Logger
 {
     static constexpr auto efilename{"log/error.log"} ;
@@ -18,8 +20,16 @@ namespace Logger
     static constexpr auto M{"[Message] "} ;
 }
 
-#define MESSAGE_STREAM (Logger::msg_stream << Logger::M)
+#define MESSAGE_STREAM (\
+Logger::msg_stream << Logger::M\
+)
 
-#define ERROR_STREAM (Logger::error_stream << Logger::E)
+#define ERROR_STREAM (\
+Logger::error_stream << Logger::E\
+)
+
+#define WIN_ERROR_STREAM (\
+Logger::error_stream << Logger::E << "windows.h: [" << GetLastError() << "] "\
+)
 
 #endif

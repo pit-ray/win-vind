@@ -58,7 +58,7 @@ void BindedFunction::set_command(const XMLParser::vvvc_t& command) noexcept
     pimpl->vvvkc = command ;
 }
 
-size_t BindedFunction::existed_num_and_update(const KeyLog& log, const size_t seq_index) const noexcept
+size_t BindedFunction::is_matching(const KeyLog& log, const size_t seq_index) const noexcept
 {
     lock_guard<mutex> lock(pimpl->mtx) ;
 
@@ -131,7 +131,7 @@ bool BindedFunction::is_callable() const noexcept
 void BindedFunction::process(const bool first_call) const
 {
     //preprocess
-    if(!do_process(std::move(first_call))) {
+    if(!do_process(first_call)) {
         //error
         ERROR_STREAM << "do_process is failed " << "(" << name() << ")\n" ;
     }

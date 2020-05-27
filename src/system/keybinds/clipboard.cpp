@@ -62,7 +62,7 @@ const string CBPaste::sname() noexcept
 bool CBPaste::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    
+
     if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
         return false ;
     }
@@ -121,7 +121,7 @@ bool CBDelete::sprocess(const bool first_call)
         return false ;
     }
 
-    if(KeyAbsorber::is_down(VKC_DELETE)) {
+    if(KeyAbsorber::is_downed(VKC_DELETE)) {
         if(!KeybrdEventer::is_release_keystate(VKC_DELETE)) {
             return false ;
         }

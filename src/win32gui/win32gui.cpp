@@ -46,7 +46,7 @@ namespace Win32GUI
 
         //If we input control-command, for example Ctrl + C,  at console, this handler is called.
         if(!SetConsoleCtrlHandler(CtrlHandler, TRUE)) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot set console ctrl handler. (main.cpp)\n" ;
+            WIN_ERROR_STREAM << "cannot set console ctrl handler. (main.cpp)\n" ;
             return 0 ;
         }
 
@@ -63,7 +63,7 @@ namespace Win32GUI
         winc.lpszClassName = PROJECT_NAME ;
 
         if(!RegisterClassA(&winc)) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot register window class.\n" ;
+            WIN_ERROR_STREAM << "cannot register window class.\n" ;
             return false ;
         }
 
@@ -78,7 +78,7 @@ namespace Win32GUI
         ) ;
 
         if(!main_hwnd) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
+            WIN_ERROR_STREAM << "cannot create window.\n" ;
             return false ;
         }
 
@@ -89,7 +89,7 @@ namespace Win32GUI
             main_hwnd, reinterpret_cast<HMENU>(OPTION1_ID), hInstance, NULL
         ) ;
         if(!op1_hwnd) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
+            WIN_ERROR_STREAM << "cannot create window.\n" ;
             return false ;
         }
 
@@ -100,7 +100,7 @@ namespace Win32GUI
             main_hwnd, reinterpret_cast<HMENU>(OPTION2_ID), hInstance, NULL
         ) ;
         if(!op2_hwnd) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
+            WIN_ERROR_STREAM << "cannot create window.\n" ;
             return false ;
         }
 
@@ -111,12 +111,12 @@ namespace Win32GUI
             main_hwnd, reinterpret_cast<HMENU>(EXIT_ID), hInstance, NULL
         ) ;
         if(!exit_hwnd) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot create window.\n" ;
+            WIN_ERROR_STREAM << "cannot create window.\n" ;
             return false ;
         }
 
         if(!SetLayeredWindowAttributes(main_hwnd, 0, WINDOW_ALPHA, LWA_ALPHA)) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " cannot set window attribute.\n" ;
+            WIN_ERROR_STREAM << "cannot set window attribute.\n" ;
             return false ;
         }
 
@@ -208,42 +208,42 @@ namespace Win32GUI
                 PAINTSTRUCT ps ;
                 auto hdc = BeginPaint(hwnd, &ps) ;
                 if(!hdc) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::BeginPaint)\n" ;
+                    WIN_ERROR_STREAM << "(WM_PAINT::BeginPaint)\n" ;
                     return 0 ;
                 }
 
                 auto font = CreateFontIndirectA(&lf) ;
                 if(!font) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::CreateFontIndirectA)\n" ;
+                    WIN_ERROR_STREAM << "(WM_PAINT::CreateFontIndirectA)\n" ;
                     return 0 ;
                 }
 
                 if(!SelectObject(hdc, font)) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::SelectObject)\n" ;
+                    WIN_ERROR_STREAM << "(WM_PAINT::SelectObject)\n" ;
                     return 0 ;
                 }
 
                 if(SetBkColor(hdc, BK_COLOR) == CLR_INVALID) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::SetBkColor)\n" ;
+                    WIN_ERROR_STREAM << "(WM_PAINT::SetBkColor)\n" ;
                     return 0 ;
                 }
 
                 if(SetTextColor(hdc, TX_COLOR) == CLR_INVALID) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::SetTextColor)\n" ;
+                    WIN_ERROR_STREAM << "(WM_PAINT::SetTextColor)\n" ;
                     return 0 ;
                 }
 
                 if(!TextOutA(hdc, 90, 110, VERSION, lstrlenA(VERSION))) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " cannot write Text. (TextOut)\n" ;
+                    WIN_ERROR_STREAM << "cannot write Text. (TextOut)\n" ;
                     return 0 ;
                 }
 
                 if(!EndPaint(hwnd, &ps)) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::EndPaint)\n" ;
+                    WIN_ERROR_STREAM << "(WM_PAINT::EndPaint)\n" ;
                     return 0 ;
                 }
                 if(!DeleteObject(font)) {
-                    ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_PAINT::DeleteObject)\n" ;
+                    WIN_ERROR_STREAM << "(WM_PAINT::DeleteObject)\n" ;
                     return 0 ;
                 }
 
@@ -254,11 +254,11 @@ namespace Win32GUI
                 //Color Setting of Popup window
                 if(reinterpret_cast<HWND>(lparam) == op1_hwnd) {
                     if(SetTextColor(reinterpret_cast<HDC>(wparam), TX_COLOR) == CLR_INVALID) {
-                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
+                        WIN_ERROR_STREAM << "(WM_CTLCOLORSTATIC::SetTextColor)\n" ;
                         return 0 ;
                     }
                     if(SetBkColor(reinterpret_cast<HDC>(wparam), BK_COLOR) == CLR_INVALID) {
-                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
+                        WIN_ERROR_STREAM << "(WM_CTLCOLORSTATIC::SetBkColor)\n" ;
                         return 0 ;
                     }
                     return reinterpret_cast<LRESULT>(bk_brush.get()) ;
@@ -266,11 +266,11 @@ namespace Win32GUI
 
                 if(reinterpret_cast<HWND>(lparam) == op2_hwnd) {
                     if(SetTextColor(reinterpret_cast<HDC>(wparam), TX_COLOR) == CLR_INVALID) {
-                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
+                        WIN_ERROR_STREAM << "(WM_CTLCOLORSTATIC::SetTextColor)\n" ;
                         return 0 ;
                     }
                     if(SetBkColor(reinterpret_cast<HDC>(wparam), BK_COLOR) == CLR_INVALID) {
-                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
+                        WIN_ERROR_STREAM << "(WM_CTLCOLORSTATIC::SetBkColor)\n" ;
                         return 0 ;
                     }
                     return reinterpret_cast<LRESULT>(bk_brush.get()) ;
@@ -278,11 +278,11 @@ namespace Win32GUI
 
                 if(reinterpret_cast<HWND>(lparam) == exit_hwnd) {
                     if(SetTextColor(reinterpret_cast<HDC>(wparam), TX_COLOR) == CLR_INVALID) {
-                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetTextColor)\n" ;
+                        WIN_ERROR_STREAM << "(WM_CTLCOLORSTATIC::SetTextColor)\n" ;
                         return 0 ;
                     }
                     if(SetBkColor(reinterpret_cast<HDC>(wparam), BK_COLOR) == CLR_INVALID) {
-                        ERROR_STREAM << "windows.h: " << GetLastError() << " (WM_CTLCOLORSTATIC::SetBkColor)\n" ;
+                        WIN_ERROR_STREAM << "(WM_CTLCOLORSTATIC::SetBkColor)\n" ;
                         return 0 ;
                     }
                     return reinterpret_cast<LRESULT>(bk_brush.get()) ;
@@ -336,7 +336,7 @@ namespace Win32GUI
                     case WM_RBUTTONUP: {
                         POINT pos ;
                         if(!GetCursorPos(&pos)) {
-                            ERROR_STREAM << "windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::GetCursorPos)\n" ;
+                            WIN_ERROR_STREAM << "(APPWM_ICONNOTIFY::GetCursorPos)\n" ;
                             return 0 ;
                         }
 
@@ -365,12 +365,12 @@ namespace Win32GUI
                         }
 
                         if(!SetWindowPos(hwnd, HWND_TOP, pos.x, pos.y, 0, 0, SWP_NOSIZE | SWP_SHOWWINDOW)) {
-                            ERROR_STREAM << "windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::SetWindowPos)\n" ;
+                            WIN_ERROR_STREAM << "(APPWM_ICONNOTIFY::SetWindowPos)\n" ;
                             return 0 ;
                         }
 
                         if(!SetForegroundWindow(hwnd)) {
-                            ERROR_STREAM << "windows.h: " << GetLastError() << " (APPWM_ICONNOTIFY::SetForegroundWindow)\n" ;
+                            WIN_ERROR_STREAM << "(APPWM_ICONNOTIFY::SetForegroundWindow)\n" ;
                             return 0 ;
                         }
 

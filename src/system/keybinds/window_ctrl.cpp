@@ -12,6 +12,7 @@
 #include "move_cursor.hpp"
 #include "jump_cursor.hpp"
 #include "msg_logger.hpp"
+#include "mode_manager.hpp"
 
 using namespace std ;
 
@@ -34,6 +35,7 @@ bool CloseCurrentWindow::sprocess(const bool first_call)
 
 bool CloseCurrentWindow::sprocess(const string cmd)
 {
+    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
     return common_process() ;
 }
 
@@ -70,7 +72,7 @@ bool SwitchWindow::common_process()
     auto select = [&logger] (const auto& pbf, const auto vkc) {
         //is callable?
         if(pbf->is_callable()) {
-            if(KeyAbsorber::is_down(vkc)) {
+            if(KeyAbsorber::is_downed(vkc)) {
                 if(!is_release_keystate(vkc)) {
                     return false ;
                 }
@@ -103,14 +105,14 @@ bool SwitchWindow::common_process()
         }
 
         //check system keys
-        if(KeyAbsorber::is_down(VKC_ESC)) {
+        if(KeyAbsorber::is_downed(VKC_ESC)) {
             if(!is_release_keystate(VKC_ESC)) {
                 return false;
             }
 
             break ;
         }
-        if(KeyAbsorber::is_down(VKC_ENTER)) {
+        if(KeyAbsorber::is_downed(VKC_ENTER)) {
             if(!is_release_keystate(VKC_ENTER)) {
                 return false ;
             }
@@ -127,10 +129,10 @@ bool SwitchWindow::common_process()
 
         //inputed keys include key map of MoveLeft or MoveRight.
         auto at_least_exist = false ;
-        if(left_pbf->existed_num_and_update(logger.back(), logger.size() - 1)) {
+        if(left_pbf->is_matching(logger.back(), logger.size() - 1)) {
             at_least_exist = true ;
         }
-        if(right_pbf->existed_num_and_update(logger.back(), logger.size() - 1)) {
+        if(right_pbf->is_matching(logger.back(), logger.size() - 1)) {
             at_least_exist = true ;
         }
         if(!at_least_exist) {
@@ -288,21 +290,20 @@ bool OpenNewCurrentWindow::common_process()
 
     HANDLE hproc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, proc_id) ;
     if(!hproc) {
-        ERROR_STREAM << "windows.h: " << GetLastError() << " (OpenNewCurrentWindow::OpenProcess)\n" ;
+        WIN_ERROR_STREAM << "(OpenNewCurrentWindow::OpenProcess)\n" ;
         return false ;
     }
 
     HMODULE hmod = NULL ;
     DWORD cbneed = 0 ;
     if(!EnumProcessModules(hproc, &hmod, sizeof(HMODULE), &cbneed)) {
-        ERROR_STREAM << "windows.h: " << GetLastError() << " (OpenNewCurrentWindow::EnumProcessModules)\n" ;
+        WIN_ERROR_STREAM << "(OpenNewCurrentWindow::EnumProcessModules)\n" ;
         return false ;
     }
 
     TCHAR path[MAX_PATH] = {0} ;
     if(!GetModuleFileNameEx(hproc, hmod, path, MAX_PATH)) {
-        ERROR_STREAM << "windows.h: " << GetLastError() \
-        << " cannot get a process path of current window (OpenNewCurrentWindow::common_process::GetModuleFileNameEx)\n" ;
+        WIN_ERROR_STREAM << "cannot get a process path of current window (OpenNewCurrentWindow::common_process::GetModuleFileNameEx)\n" ;
         return false ;
     }
 
@@ -318,9 +319,7 @@ bool OpenNewCurrentWindow::common_process()
     if(!CreateProcess(
         NULL, path, NULL, NULL, FALSE,
         CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
-        ERROR_STREAM << "windows.h: "\
-        << GetLastError() << ", cannot call \"" << path << "\"" \
-        << " (OpenNewCurrentWindow:::common_process::CreateProcess)\n" ;
+        WIN_ERROR_STREAM << ", cannot call \"" << path << "\"" << " (OpenNewCurrentWindow:::common_process::CreateProcess)\n" ;
         return false ;
     }
     return true ;

@@ -15,13 +15,13 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " (win_mouse_eventer.cpp)" << endl ;
+            WIN_ERROR_STREAM << "(win_mouse_eventer.cpp)\n" ;
             return false ;
         }
 
         in.mi.dwFlags = (bt == Button::LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP ;
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " (win_mouse_eventer.cpp)" << endl ;
+            WIN_ERROR_STREAM << "(win_mouse_eventer.cpp)\n" ;
             return false ;
         }
 
@@ -39,7 +39,7 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " (win_mouse_eventer.cpp)" << endl ;
+            WIN_ERROR_STREAM << " (win_mouse_eventer.cpp)" << endl ;
             return false ;
         }
 

@@ -20,6 +20,19 @@ public:
         return std::make_unique<Derived>() ;
     }
 
+    static std::shared_ptr<Command> create_with_cache() {
+        static std::weak_ptr<Derived> cache ;
+
+        auto pobj = cache.lock() ;
+
+        if(!pobj) {
+            pobj = std::make_shared<Derived>() ;
+            cache = pobj ;
+        }
+
+        return pobj ;
+    }
+
     const std::string name() const noexcept override {
         return Derived::sname() ;
     }

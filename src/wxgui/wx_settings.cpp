@@ -127,6 +127,7 @@ namespace wxGUI
                 } ;
 
                 add_sc("cmd_max_char", 5, 1024, 32) ;
+                add_sc("cmd_max_history_num", 1, 1024, 10) ;
 
                 cmd_sizer_wrapper->Add(cmd_sizer, flags) ;
                 //setter_sizer->Add(cmd_sizer_wrapper, flags) ;
@@ -165,8 +166,9 @@ namespace wxGUI
                 } ;
 
                 add_sc("screen_pos_buf", 0, 128, 10) ;
-                add_sl("move_acceleration", 1, 128, 64) ;
+                add_sl("cursor_acceleration", 1, 128, 64) ;
                 add_sl("cursor_weight", 1, 1024, 512) ;
+                add_sl("cursor_max_velocity", 1, 50, 10) ;
                 add_sl("yscroll_speed", 1, 20, 4) ;
                 add_sl("xscroll_speed", 1, 20, 4) ;
                 add_ratio("yscroll_screen_ratio", 0.125) ;

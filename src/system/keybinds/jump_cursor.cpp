@@ -248,7 +248,7 @@ bool Jump2Any::sprocess(const bool first_call)
             DispatchMessage(&msg) ;
         }
 
-        if(KeyAbsorber::is_down(VKC_ESC)) {
+        if(KeyAbsorber::is_downed(VKC_ESC)) {
             return true ;
         }
 
@@ -302,15 +302,14 @@ bool Jump2ActiveWindow::sprocess(const bool first_call)
 
     const auto hwnd = GetForegroundWindow() ;
     if(!hwnd) {
-        ERROR_STREAM << "windows.h: GetForegoundWindow return nullptr "\
+        WIN_ERROR_STREAM << "GetForegoundWindow return nullptr "\
         << " (bf_jump_cursor.cpp::Jump2ActiveWindow::do_process::GetForegroundWindow)\n" ;
         return false ;
     }
 
     RECT rect ;
     if(!GetWindowRect(hwnd, &rect)) {
-        ERROR_STREAM << "windows.h: " << GetLastError() \
-        << " (bf_jump_cursor.cpp::Jump2ActiveWindow::do_process::GetWindowRect)\n" ;
+        WIN_ERROR_STREAM << " (bf_jump_cursor.cpp::Jump2ActiveWindow::do_process::GetWindowRect)\n" ;
         return false ;
     }
 

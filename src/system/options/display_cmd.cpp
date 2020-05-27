@@ -165,14 +165,18 @@ bool DisplayCmd::do_disable() const noexcept
 namespace DiCmUtility
 {
     inline static void write_error(const string& func_name) noexcept {
-        ERROR_STREAM << "windows.h: " << GetLastError() << (" (display_cmd.cpp::DisplayCmd::do_process::" + func_name) << ")\n" ;
+        WIN_ERROR_STREAM << (" (display_cmd.cpp::DisplayCmd::do_process::" + func_name) << ")\n" ;
     }
 }
 
 bool DisplayCmd::do_process() const
 {
     using namespace DiCmUtility ;
-    if(ModeManager::get_mode() != ModeManager::Mode::Command) {
+
+    const auto mode = ModeManager::get_mode() ;
+    using ModeManager::Mode ;
+
+    if(mode != Mode::Command && mode != Mode::EdiCommand) {
         return true ;
     }
 

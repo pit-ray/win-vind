@@ -103,8 +103,7 @@ namespace ExAppUtility
         if(!CreateProcessA(
             NULL, const_cast<LPSTR>(path.c_str()), NULL, NULL, FALSE,
             CREATE_NEW_CONSOLE, NULL, Path::HOME_PATH().c_str(), &si, &pi)) {
-            ERROR_STREAM << "windows.h: "\
-            << GetLastError() << ", cannot call \"" << path << "\"" \
+            WIN_ERROR_STREAM << "cannot call \"" << path << "\"" \
             << " (bf_external_app.cpp::ExAppUtility::is_create_process::CreateProcessA)\n" ;
             return false ;
         }

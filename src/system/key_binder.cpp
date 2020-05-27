@@ -29,8 +29,9 @@
 #include "select.hpp"
 
 //editor
-#include "edi_move_caret.hpp"
 #include "edi_change_mode.hpp"
+#include "edi_move_caret.hpp"
+#include "edi_jump_caret.hpp"
 
 //cmd?
 #include "window_ctrl.hpp"
@@ -47,7 +48,7 @@ struct KeyBinder::Impl
         Change2Normal::create_with_cache(),
         Change2Insert::create(),
         Change2Visual::create(),
-        //Change2Editor::create(),
+        Change2Editor::create(),
         Change2Command::create(),
 
         SelectAll::create(),
@@ -148,15 +149,25 @@ struct KeyBinder::Impl
 
     vector<bf::shp_t> vpbf_edi_normal {
         Change2Normal::create_with_cache(),
+        Change2Command::create_with_cache(),
         Change2EdiInsert::create(),
         Change2EdiBkInsert::create(),
         Change2EdiNlInsert::create(),
         Change2EdiVisual::create(),
+        Change2EdiLineVisual::create(),
 
-        EdiMoveLeft::create_with_cache(),
-        EdiMoveRight::create_with_cache(),
-        EdiMoveUp::create_with_cache(),
-        EdiMoveDown::create_with_cache()
+        EdiMoveCaretLeft::create_with_cache(),
+        EdiMoveCaretRight::create_with_cache(),
+        EdiMoveCaretUp::create_with_cache(),
+        EdiMoveCaretDown::create_with_cache(),
+
+        EdiMoveCaretNWORDSForward::create_with_cache(),
+        EdiMoveCaretNWORDSBackward::create_with_cache(),
+
+        EdiJumpCaret2BOL::create_with_cache(),
+        EdiJumpCaret2EOL::create_with_cache(),
+        EdiJumpCaret2NLine_DfBOF::create_with_cache(),
+        EdiJumpCaret2NLine_DfEOF::create_with_cache()
     } ;
 
     vector<bf::shp_t> vpbf_edi_insert {
@@ -165,18 +176,28 @@ struct KeyBinder::Impl
     } ;
 
     vector<bf::shp_t> vpbf_edi_visual {
+        Change2Normal::create_with_cache(),
         Change2EdiNormal::create_with_cache(),
 
-        EdiMoveLeft::create_with_cache(),
-        EdiMoveRight::create_with_cache(),
-        EdiMoveUp::create_with_cache(),
-        EdiMoveDown::create_with_cache()
+        EdiMoveCaretLeft::create_with_cache(),
+        EdiMoveCaretRight::create_with_cache(),
+        EdiMoveCaretUp::create_with_cache(),
+        EdiMoveCaretDown::create_with_cache(),
+
+        EdiMoveCaretNWORDSForward::create_with_cache(),
+        EdiMoveCaretNWORDSBackward::create_with_cache(),
+
+        EdiJumpCaret2BOL::create_with_cache(),
+        EdiJumpCaret2EOL::create_with_cache(),
+        EdiJumpCaret2NLine_DfBOF::create_with_cache(),
+        EdiJumpCaret2NLine_DfEOF::create_with_cache()
     } ;
 
+    //Window Mode Command
     vector<cmd::shp_t> vpcmd {
-        SaveOpenedFile::create(),
-        CloseOpenedFile::create(),
-        CloseCurrentWindow::CommandWithCreator::create(),
+        SaveOpenedFile::create_with_cache(),
+        CloseOpenedFile::create_with_cache(),
+        CloseCurrentWindow::CommandWithCreator::create_with_cache(),
         SwitchWindow::CommandWithCreator::create(),
         MaximizeCurrentWindow::CommandWithCreator::create(),
         MinimizeCurrentWindow::CommandWithCreator::create(),
@@ -187,18 +208,52 @@ struct KeyBinder::Impl
         StartShell::create(),
         StartAnyApp::create(),
         ShowConfigWindow::create(),
-        ExitConfigWindow::create(),
-        OpenOtherFile::create(),
+        ExitConfigWindow::create_with_cache(),
+        OpenOtherFile::create_with_cache(),
         MakeDir::create()
+    } ;
+
+    //Editor Mode Command
+    vector<cmd::shp_t> vpcmd_edi {
+        SaveOpenedFile::create_with_cache(),
+        CloseOpenedFile::create_with_cache(),
+
+        CloseCurrentWindow::CommandWithCreator::create_with_cache(),
+
+        ExitConfigWindow::create_with_cache(),
+        OpenOtherFile::create_with_cache()
     } ;
 
     KeyLogger logger{} ;
 
     bf::shp_t callable_bf{nullptr} ;
-    cmd::shp_t callable_cmd{nullptr} ;
 
-    int cmd_hist_index = -1 ; //negative value is a inputting command
-    std::deque<std::pair<std::string, cmd::shp_t>> cmd_hist{} ;
+    std::size_t cmd_hist_index = 0 ;
+    struct CmdPoint {
+        std::unique_ptr<KeyLogger> logger ;
+        cmd::shp_t  func ;
+
+        explicit CmdPoint()
+        : logger(std::make_unique<KeyLogger>()), func(nullptr)
+        {}
+    } ;
+    std::deque<std::shared_ptr<CmdPoint>> cmd_hist{std::make_shared<CmdPoint>()} ;
+
+    void update_history() {
+        if(cmd_hist_index == cmd_hist.size() - 1) {
+            //recently logger
+            while(cmd_hist.size() >= DynamicConfig::CMD_MAX_HISTORY_NUM()) {
+                cmd_hist.pop_front() ;
+            }
+
+            cmd_hist_index = cmd_hist.size() ; //update to index of recently history
+            cmd_hist.emplace_back(std::make_shared<CmdPoint>()) ;
+            return ;
+        }
+
+        //past logger
+        cmd_hist_index = cmd_hist.size() - 1 ;
+    }
 
     explicit Impl() {}
 
@@ -211,6 +266,7 @@ struct KeyBinder::Impl
         vpbf_edi_insert.clear() ;
         vpbf_edi_visual.clear() ;
         vpcmd.clear() ;
+        vpcmd_edi.clear() ;
     }
 
     Impl(Impl&&) = delete ;
@@ -253,6 +309,7 @@ void KeyBinder::load_config(const string& filename) noexcept
     //load commands ---------------------------------------------------
     const auto cmd_map = XMLParser::load_command_map(filename) ;
     set(cmd_map, pimpl->vpcmd) ;
+    set(cmd_map, pimpl->vpcmd_edi) ;
 
     ExAppUtility::load_config() ;
     DynamicConfig::load_config() ;
@@ -275,7 +332,7 @@ namespace KBUtility{
     }
 }
 
-void KeyBinder::update_core(const vector<bf::shp_t>& vpbf) noexcept
+void KeyBinder::update_core(const vector<bf::shp_t>& vp) noexcept
 {
     static const auto& ignore_alone = XMLParser::get_ignore_alone() ;
     using namespace KBUtility ;
@@ -305,8 +362,8 @@ void KeyBinder::update_core(const vector<bf::shp_t>& vpbf) noexcept
     bf::shp_t buf_bf = pimpl->callable_bf ;
 
     //overwrite callable
-    for(auto& func : vpbf) {
-        const auto lmn = func->existed_num_and_update(pimpl->logger.back(), pimpl->logger.size() - 1) ;
+    for(auto& func : vp) {
+        const auto lmn = func->is_matching(pimpl->logger.back(), pimpl->logger.size() - 1) ;
         if(lmn == 0) {
             continue ;
         }
@@ -342,85 +399,107 @@ void KeyBinder::update_core(const vector<bf::shp_t>& vpbf) noexcept
     pimpl->callable_bf = buf_bf ;
 }
 
-void KeyBinder::update_core_cmd() noexcept
+void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
 {
+    auto return_mode = [] {
+        const auto mode = ModeManager::get_mode() ;
+        using ModeManager::Mode ;
+        using ModeManager::change_mode ;
+        if(mode == Mode::EdiCommand) {
+            change_mode(Mode::EdiNormal) ;
+        }
+        else {
+            change_mode(Mode::Normal) ;
+        }
+    } ;
+
     static const auto ignore_alone = VKCConverter::get_all_sys_vkc() ;
     using namespace KBUtility ;
 
-    if(!pimpl->logger.is_changed_and_inputc()) {
-        pimpl->logger.remove_from_back(1) ;
+    auto& p_cmdp = pimpl->cmd_hist.at(pimpl->cmd_hist_index) ;
+    auto& plger = p_cmdp->logger ;
+
+    if(!plger->is_changed_and_inputc()) {
+        plger->remove_from_back(1) ;
         return ;
     }
 
     //empty input is skipped
-    if(pimpl->logger.back().is_empty()) {
-        pimpl->logger.remove_from_back(1) ;
+    if(plger->back().is_empty()) {
+        plger->remove_from_back(1) ;
         return ;
     }
 
     //breaking
-    if(pimpl->logger.back().is_included(VKC_ESC)){
-        pimpl->logger.clear() ;
-        pimpl->callable_cmd = nullptr ;
-        ModeManager::change_mode(ModeManager::Mode::Normal) ;
+    if(plger->back().is_included(VKC_ESC)){
+        const auto recent_index = pimpl->cmd_hist.size() - 1 ;
+        if(pimpl->cmd_hist_index == recent_index) {
+            plger->clear() ;
+            p_cmdp->func = nullptr ;
+        }
+        else {
+            plger->remove_from_back(1) ;
+            pimpl->cmd_hist_index = recent_index ;
+        }
+        return_mode() ;
         refresh_display() ;
         return ;
     }
 
-    if(pimpl->logger.back().is_included(VKC_ENTER) && pimpl->callable_cmd) {
-        pimpl->logger.remove_from_back(1) ; //remove keycode of enter
-        pimpl->callable_cmd->process(pimpl->logger.get_str()) ;
+    if(plger->back().is_included(VKC_ENTER) && p_cmdp->func) {
+        plger->remove_from_back(1) ; //remove keycode of enter
+        p_cmdp->func->process(plger->get_str()) ;
 
-        pimpl->logger.clear() ;
+        //plger->clear() ;
+        //p_cmdp->func = nullptr ;
+
+        pimpl->update_history() ;
+
+        return_mode() ;
         refresh_display() ;
-
-        pimpl->callable_cmd = nullptr ;
-        ModeManager::change_mode(ModeManager::Mode::Normal) ;
         return ;
     }
 
     //edit command
-    if(pimpl->logger.back().is_included(VKC_BKSPACE)) {
-        pimpl->logger.remove_from_back(2) ;
+    if(plger->back().is_included(VKC_BKSPACE)) {
+        plger->remove_from_back(2) ;
         refresh_display() ;
 
-        if(pimpl->logger.is_empty()) {
-            pimpl->callable_cmd = nullptr ;
+        if(plger->is_empty()) {
+            p_cmdp->func = nullptr ;
             return ;
         }
     }
 
     //operate command history
-    /*
-    if(pimpl->logger.back().is_included(VKC_UP)) {
-        if(pimpl->cmd_hist_index < pimpl->cmd_hist.size() - 1) {
-            pimpl->cmd_hist_index ++ ;
-            return  ;
-        }
+    if(plger->back().is_included(VKC_UP) && pimpl->cmd_hist_index > 0) {
+        pimpl->cmd_hist_index -- ;
+        plger->remove_from_back(1) ;
+        refresh_display() ;
+        return ;
     }
-    if(pimpl->logger.back().is_included(VKC_DOWN)) {
-        if(pimpl->cmd_hist_index >= 0) {
-            pimpl->cmd_hist_index -- ;
-            return ;
-        }
+    if(plger->back().is_included(VKC_DOWN) && pimpl->cmd_hist_index < pimpl->cmd_hist.size() - 1) {
+        pimpl->cmd_hist_index ++ ;
+        plger->remove_from_back(1) ;
+        refresh_display() ;
+        return  ;
     }
-    */
 
     //invalid keys
-    if(is_ignored(ignore_alone, pimpl->logger.back()) || pimpl->logger.size() > DynamicConfig::CMD_MAX_CHAR()) {
-        pimpl->logger.remove_from_back(1) ;
+    if(is_ignored(ignore_alone, plger->back()) || plger->size() > DynamicConfig::CMD_MAX_CHAR()) {
+        plger->remove_from_back(1) ;
         return ;
     }
 
     //search cmd from cmd list
-    for(auto& func : pimpl->vpcmd) {
-        if(func->is_callable(pimpl->logger)) {
-            pimpl->callable_cmd = func ;
+    for(auto& func : vp) {
+        if(func->is_callable(*plger)) {
+            p_cmdp->func = func ;
             return ;
         }
     }
 
-    pimpl->callable_cmd = nullptr ;
+    p_cmdp->func = nullptr ;
 }
 
 void KeyBinder::update() noexcept {
@@ -438,20 +517,28 @@ void KeyBinder::update() noexcept {
             update_core(pimpl->vpbf_visual) ;
             break ;
 
+        case Mode::Command:
+            update_core_cmd(pimpl->vpcmd) ;
+            break ;
+
         case Mode::EdiNormal:
-            //update_core(pimpl->vpbf_edi_normal) ;
+            update_core(pimpl->vpbf_edi_normal) ;
             break ;
 
         case Mode::EdiInsert:
-            //update_core(pimpl->vpbf_edi_insert) ;
+            update_core(pimpl->vpbf_edi_insert) ;
             break ;
 
         case Mode::EdiVisual:
-            //update_core(pimpl->vpbf_edi_visual) ;
+            update_core(pimpl->vpbf_edi_visual) ;
             break ;
 
-        case Mode::Command:
-            update_core_cmd() ;
+        case Mode::EdiLineVisual:
+            update_core(pimpl->vpbf_edi_visual) ;
+            break ;
+
+        case Mode::EdiCommand:
+            update_core_cmd(pimpl->vpcmd_edi) ;
             break ;
 
         default:
@@ -463,12 +550,8 @@ void KeyBinder::update() noexcept {
 
 const string KeyBinder::get_logger_str() const noexcept
 {
-    if(pimpl->cmd_hist_index < 0) {
-        return pimpl->logger.get_str() ;
-    }
-
     try {
-        return pimpl->cmd_hist.at(pimpl->cmd_hist_index).first ;
+        return pimpl->cmd_hist.at(pimpl->cmd_hist_index)->logger->get_str() ;
     }
     catch(std::out_of_range& e) {
         return string() ;

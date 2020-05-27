@@ -27,6 +27,9 @@ public:
     KeyLog(const KeyLog&) ;
     KeyLog& operator=(const KeyLog&) noexcept ;
 
+    const data_t& get() const & noexcept ;
+    data_t&& get() && noexcept ;
+
     data_t::const_iterator begin() const noexcept ;
     data_t::const_iterator end() const noexcept ;
 

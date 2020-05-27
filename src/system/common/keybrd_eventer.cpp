@@ -16,7 +16,12 @@ namespace KeybrdEventer
     struct SmartKey::Impl
     {
         INPUT in ;
-        explicit Impl(const unsigned char key) noexcept : in() {
+        unsigned char key ;
+
+        explicit Impl(const unsigned char keycode) noexcept
+        : in(),
+          key(keycode)
+        {
             ZeroMemory(&in, sizeof(INPUT)) ;
 
             in.type = INPUT_KEYBOARD ;
@@ -30,44 +35,41 @@ namespace KeybrdEventer
     {}
 
     SmartKey::~SmartKey() noexcept {
-        const auto&& key = static_cast<unsigned char>(pimpl->in.ki.wVk) ;
-        if(!KeyAbsorber::is_down(key)) {
-            return ;
-        }
-
-        KeyAbsorber::open_key(key) ;
-        is_send_event(false) ;
-        KeyAbsorber::close() ;
+        is_release() ;
     }
 
-    SmartKey::SmartKey(SmartKey&&) = default ;
-    SmartKey& SmartKey::operator=(SmartKey&&) = default ;
+    SmartKey::SmartKey(SmartKey&&) noexcept = default ;
+    SmartKey& SmartKey::operator=(SmartKey&&) noexcept = default ;
 
     bool SmartKey::is_send_event(const bool pushed) noexcept {
         pimpl->in.ki.dwFlags = pushed ? 0 : KEYEVENTF_KEYUP ;
         if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h " << GetLastError() << " (keybrd_eventer.hpp)\n" ;
+            WIN_ERROR_STREAM << "(KeybrdEventer::SmartKey::is_send_event::SendInput)\n" ;
             return false ;
         }
         return true ;
     }
 
     bool SmartKey::is_push() noexcept {
-        const auto&& key = static_cast<unsigned char>(pimpl->in.ki.wVk) ;
-        if(KeyAbsorber::is_down(key)) {
-            return true ;
-        }
-
-        KeyAbsorber::open_key(key) ;
+        KeyAbsorber::open_key(pimpl->key) ;
         if(!is_send_event(true)) {
             return false ;
         }
         KeyAbsorber::close() ;
-        return KeyAbsorber::is_down(key) ;
+
+        return GetAsyncKeyState(pimpl->key) & 0x8000 ;
     }
 
+    bool SmartKey::is_release() noexcept {
+        KeyAbsorber::open_key(pimpl->key) ;
+        if(!is_send_event(false)) {
+            return false ;
+        }
+        KeyAbsorber::close() ;
 
-    //free functions
+        return !(GetAsyncKeyState(pimpl->key) & 0x8000) ;
+    }
+
 
     //change key state without input
     bool is_release_keystate(const unsigned char key) noexcept {
@@ -80,7 +82,7 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h " << GetLastError() << " (keybrd_eventer.hpp::is_release)\n" ;
+            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::is_release)\n" ;
             return false ;
         }
 
@@ -98,51 +100,9 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h " << GetLastError() << " (keybrd_eventer.hpp::is_release)\n" ;
+            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::is_release)\n" ;
             return false ;
         }
         return true ;
-    }
-
-    static unordered_map<unsigned char, unique_ptr<SmartKey>> _syncm ;
-
-    bool is_sync_push(const unsigned char bindkey, const unsigned char funckey) {
-        try {
-            _syncm.at(bindkey) ;
-            //exist
-            cout << "finded\n" ;
-        }
-        catch(out_of_range&) {
-            cout << "not finded\n" ;
-            //not exist
-            _syncm.insert(make_pair(bindkey, make_unique<SmartKey>(funckey))) ;
-
-            if(!_syncm.at(bindkey)->is_push()) {
-                cout << "not existed\n" ;
-                return false ;
-            }
-        }
-
-        return true ;
-    }
-
-    void update_sync_push() noexcept {
-        if(_syncm.empty()) {
-            return ;
-        }
-
-        /*
-        if(GetAsyncKeyState(VKC_LEFT) & 0x8000)
-        {
-            cout << "LEFT is down\n" ;
-        }
-        */
-
-        for(const auto& pair : _syncm) {
-            if(!KeyAbsorber::is_down(pair.first)) {
-                cout << "erased\n" ;
-                _syncm.erase(pair.first) ;
-            }
-        }
     }
 }

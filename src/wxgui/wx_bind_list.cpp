@@ -102,10 +102,19 @@ namespace wxGUI
             add("change_to_edi_bkinsert") ;
             add("change_to_edi_nlinsert") ;
             add("change_to_edi_visual") ;
-            add("edi_move_left") ;
-            add("edi_move_right") ;
-            add("edi_move_up") ;
-            add("edi_move_down") ;
+            add("change_to_edi_line_visual") ;
+            add("edi_move_caret_left") ;
+            add("edi_move_caret_right") ;
+            add("edi_move_caret_up") ;
+            add("edi_move_caret_down") ;
+            add("edi_move_caret_Nwords_forward") ;
+            add("edi_move_caret_Nwords_backward") ;
+            add("edi_move_caret_NWORDS_forward") ;
+            add("edi_move_caret_NWORDS_backward") ;
+            add("edi_jump_caret_to_BOL") ;
+            add("edi_jump_caret_to_EOL") ;
+            add("edi_jump_caret_to_nline_default_BOF") ;
+            add("edi_jump_caret_to_nline_default_EOF") ;
 
             SetSizer(sizer) ;
             SetScrollRate(0, 5) ;

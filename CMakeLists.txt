@@ -23,9 +23,12 @@ add_custom_command(OUTPUT "${winresobj}"
     -i ${winres}
 )
 
+#For Debug------------------------
 #ON is GUI by Win32API.
 #OFF is GUI by wxWidgets.
 set(USE_SIMPL_GUI OFF)
+set(ALLOW_CONSOLE ON)
+#---------------------------------
 
 include_directories(
     include/system
@@ -44,10 +47,14 @@ if(${USE_SIMPL_GUI})
         ${W32G_DIR}/win32gui.cpp
     )
 
-    add_executable(${PROJECT_NAME} WIN32
-        ${WIN32GUI_SRC}
-        "${winresobj}" #resource
-    )
+    set(EXE_SRC ${WIN32GUI_SRC} "${winresobj}")
+
+    if(${ALLOW_CONSOLE})
+        add_executable(${PROJECT_NAME} ${EXE_SRC})
+    else()
+        add_executable(${PROJECT_NAME} WIN32 ${EXE_SRC})
+    endif()
+
     target_link_libraries(${PROJECT_NAME} CoreSystem)
 
 else()
@@ -77,11 +84,14 @@ else()
         ${WXG_DIR}/wxgui.cpp
         ${WXG_DIR}/main.cpp
     )
+    set(EXE_SRC ${WXGUI_SRC} "${winresobj}")
 
-    add_executable(${PROJECT_NAME} WIN32
-        ${WXGUI_SRC}
-        "${winresobj}" #resource
-    )
+    if(${ALLOW_CONSOLE})
+        add_executable(${PROJECT_NAME} ${EXE_SRC})
+    else()
+        add_executable(${PROJECT_NAME} WIN32 ${EXE_SRC})
+    endif()
+
     target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} CoreSystem)
 endif()
 

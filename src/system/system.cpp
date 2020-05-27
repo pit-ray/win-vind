@@ -33,7 +33,7 @@ namespace System
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " (SendInput, MOUSEEVENTF_MOVE)\n" ;
+            WIN_ERROR_STREAM << "(SendInput, MOUSEEVENTF_MOVE)\n" ;
             return 0 ;
         }
 
@@ -61,13 +61,11 @@ namespace System
     }
 
     bool is_update() {
-        //KeybrdEventer::update_sync_push() ;
-
         _kb.update() ;
         _ol.update() ;
 
         using namespace KeyAbsorber ;
-        if(is_down(VKC_F8) && is_down(VKC_F9)) {
+        if(is_downed(VKC_F8) && is_downed(VKC_F9)) {
             MESSAGE_STREAM << "Completed successfully (ExitCommand)\n" ;
             return false ;
         }

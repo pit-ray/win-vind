@@ -88,13 +88,13 @@ namespace KeyAbsorber
         ) ;
 
         if(!*p_handle) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " (win_key_absorber_impl.cpp)\n" ;
+            WIN_ERROR_STREAM << "(win_key_absorber_impl.cpp)\n" ;
             return false ;
         }
         return true ;
     }
 
-    bool is_down(const unsigned char keycode) noexcept {
+    bool is_downed(const unsigned char keycode) noexcept {
         if(keycode < 1 || keycode > 254) {
             return false ;
         }
@@ -111,7 +111,7 @@ namespace KeyAbsorber
         vector<unsigned char> res{} ;
 
         for(unsigned char i = 1 ; i < 255 ; i ++) {
-            if(is_down(i)) {
+            if(is_downed(i)) {
                 res.push_back(i) ;
             }
         }
@@ -161,5 +161,12 @@ namespace KeyAbsorber
             ERROR_STREAM << e.what() << " (key_absorber.cpp::open_key)\n" ;
             return ;
         }
+    }
+
+    void release_vertually(const unsigned char key) noexcept {
+        _state[key] = false ;
+    }
+    void push_vertually(const unsigned char key) noexcept {
+        _state[key] = true ;
     }
 }

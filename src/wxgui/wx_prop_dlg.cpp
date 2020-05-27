@@ -125,7 +125,10 @@ namespace wxGUI
             pimpl->shortcut_apps->load_all() ;
             pimpl->options->load_all() ;
 
-            SetForegroundWindow(GetHandle()) ; //shown as most top window
+            if(!SetForegroundWindow(GetHandle())) {
+                WIN_ERROR_STREAM << "Preferences Window was not brought to the foreground\n" ;
+
+            } //shown as most top window
         }
 
         return wxPropertySheetDialog::Show(show) ;

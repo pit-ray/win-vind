@@ -73,12 +73,22 @@
         <func name="change_to_edi_insert">i|I|G->I</func>
         <func name="change_to_edi_bkinsert">a|A</func>
         <func name="change_to_edi_nlinsert">o|O</func>
-        <func name="change_to_edi_visual">v|V|Ctrl(+)V</func>
+        <func name="change_to_edi_visual">v|Ctrl(+)v</func>
+        <func name="change_to_edi_line_visual">V</func>
 
-        <func name="edi_move_left">h|Ctrl(+)h|BkSpace|Left</func>
-        <func name="edi_move_right">l|Space|Right</func>
-        <func name="edi_move_up">k|-|g->k|Ctrl(+)P|Up</func>
-        <func name="edi_move_down">j|+|g->j|Ctrl(+)j|Ctrl(+)n|Down|Enter|Ctrl(+)m</func>
+        <func name="edi_move_caret_left">h|Ctrl(+)h|BkSpace|Left</func>
+        <func name="edi_move_caret_right">l|Space|Right</func>
+        <func name="edi_move_caret_up">k|-|g->k|Ctrl(+)P|Up</func>
+        <func name="edi_move_caret_down">j|+|g->j|Ctrl(+)j|Ctrl(+)n|Down|Enter|Ctrl(+)m</func>
+        <func name="edi_move_caret_Nwords_forward">w</func>
+        <func name="edi_move_caret_Nwords_backward">b</func>
+        <func name="edi_move_caret_NWORDS_forward">W</func>
+        <func name="edi_move_caret_NWORDS_backward">B</func>
+
+        <func name="edi_jump_caret_to_BOL">0|Home|g->0</func>
+        <func name="edi_jump_caret_to_EOL">$|End|g->$</func>
+        <func name="edi_jump_caret_to_nline_default_BOF">g->g</func>
+        <func name="edi_jump_caret_to_nline_default_EOF">G</func>
     </binds>
 
     <commands>

@@ -12,22 +12,23 @@ using namespace std::chrono ;
 
 namespace MoveUtility
 {
+    //hardcoded (The cursor move 1px necessarilly by one push)
     static constexpr auto INITIAL_VELOCITY = 1.0f ;
 
-    template <typename T1, typename T2>
-    inline static const auto const_accelerate(T1&& velocity, const T2&& us) noexcept {
+    template <typename T>
+    inline static const auto const_accelerate(float& velocity, T&& us) noexcept {
         static constexpr auto TIME_COEF = static_cast<float>(pow(10, -3)) ;
-        static constexpr auto MAX_VELOCITY = 10.0f ;
 
         const auto t = us * TIME_COEF / DynamicConfig::CURSOR_WEIGHT() ; //accuracy
 
-        const auto x = velocity*t + 0.5f*DynamicConfig::MOVE_ACCELERATION()*t*t ;
+        const auto x = velocity*t + 0.5f*DynamicConfig::CURSOR_ACCELERATION()*t*t ;
 
-        if(velocity < MAX_VELOCITY) {
-            velocity += DynamicConfig::MOVE_ACCELERATION() * t ;
+        const auto delta_v = DynamicConfig::CURSOR_ACCELERATION() * t ;
+        if(velocity + delta_v < DynamicConfig::CURSOR_MAX_VELOCITY()) {
+            velocity += delta_v ;
         }
         else {
-            velocity = MAX_VELOCITY ;
+            velocity = DynamicConfig::CURSOR_MAX_VELOCITY() ;
         }
         return x ;
     }
@@ -52,7 +53,7 @@ namespace MoveUtility
         in.mi.dy = dy ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h: " << GetLastError()  << " (MoveUtility::move_cursor)\n" ;
+            WIN_ERROR_STREAM << "(MoveUtility::move_cursor)\n" ;
             return false ;
         }
         return true ;
@@ -61,6 +62,22 @@ namespace MoveUtility
     inline static const auto compute_deltat(const system_clock::time_point& start_time) noexcept {
         return duration_cast<microseconds>(system_clock::now() - start_time).count() ;
     }
+
+    class MoveDeltaCalculator {
+    private:
+        float v = INITIAL_VELOCITY ;
+        system_clock::time_point start_time = system_clock::now() ;
+
+    public:
+        void reset() noexcept {
+            v = INITIAL_VELOCITY ;
+            start_time = system_clock::now() ;
+        }
+
+        const auto delta() noexcept {
+            return static_cast<int>(const_accelerate(v, compute_deltat(start_time))) ;
+        }
+    } ;
 }
 
 using namespace MoveUtility ;
@@ -68,8 +85,7 @@ using namespace MoveUtility ;
 //MoveLeft
 struct MoveLeft::Impl
 {
-    float v = INITIAL_VELOCITY ;
-    system_clock::time_point start_time = system_clock::now() ;
+    MoveDeltaCalculator calcer{} ;
 } ;
 
 MoveLeft::MoveLeft()
@@ -89,19 +105,17 @@ const std::string MoveLeft::sname() noexcept
 bool MoveLeft::sprocess(const bool first_call) const
 {
     if(first_call) {
-        pimpl->v = INITIAL_VELOCITY ;
-        pimpl->start_time = system_clock::now() ;
+        pimpl->calcer.reset() ;
     }
-    const auto delta = static_cast<int>(const_accelerate(pimpl->v, compute_deltat(pimpl->start_time))) ;
-    return is_move_cursor(-delta, 0) ;
+
+    return is_move_cursor(-pimpl->calcer.delta(), 0) ;
 }
 
 
 //MoveRight
 struct MoveRight::Impl
 {
-    float v = INITIAL_VELOCITY ;
-    system_clock::time_point start_time = system_clock::now() ;
+    MoveDeltaCalculator calcer{} ;
 } ;
 
 MoveRight::MoveRight()
@@ -121,19 +135,17 @@ const std::string MoveRight::sname() noexcept
 bool MoveRight::sprocess(const bool first_call) const
 {
     if(first_call) {
-        pimpl->v = INITIAL_VELOCITY ;
-        pimpl->start_time = system_clock::now() ;
+        pimpl->calcer.reset() ;
     }
-    const auto delta = static_cast<int>(const_accelerate(pimpl->v, compute_deltat(pimpl->start_time))) ;
-    return is_move_cursor(delta, 0) ;
+
+    return is_move_cursor(pimpl->calcer.delta(), 0) ;
 }
 
 
 //MoveUp
 struct MoveUp::Impl
 {
-    float v = INITIAL_VELOCITY ;
-    system_clock::time_point start_time = system_clock::now() ;
+    MoveDeltaCalculator calcer{} ;
 } ;
 
 MoveUp::MoveUp()
@@ -153,18 +165,16 @@ const std::string MoveUp::sname() noexcept
 bool MoveUp::sprocess(const bool first_call) const
 {
     if(first_call) {
-        pimpl->v = INITIAL_VELOCITY ;
-        pimpl->start_time = system_clock::now() ;
+        pimpl->calcer.reset() ;
     }
-    const auto delta = static_cast<int>(const_accelerate(pimpl->v, compute_deltat(pimpl->start_time))) ;
-    return is_move_cursor(0, -delta) ;
+
+    return is_move_cursor(0, -pimpl->calcer.delta()) ;
 }
 
 //MoveDown
 struct MoveDown::Impl
 {
-    float v = INITIAL_VELOCITY ;
-    system_clock::time_point start_time = system_clock::now() ;
+    MoveDeltaCalculator calcer{} ;
 } ;
 
 MoveDown::MoveDown()
@@ -184,9 +194,7 @@ const std::string MoveDown::sname() noexcept
 bool MoveDown::sprocess(const bool first_call) const
 {
     if(first_call) {
-        pimpl->v = INITIAL_VELOCITY ;
-        pimpl->start_time = system_clock::now() ;
+        pimpl->calcer.reset() ;
     }
-    const auto delta = static_cast<int>(const_accelerate(pimpl->v, compute_deltat(pimpl->start_time))) ;
-    return is_move_cursor(0, delta) ;
+    return is_move_cursor(0, pimpl->calcer.delta()) ;
 }

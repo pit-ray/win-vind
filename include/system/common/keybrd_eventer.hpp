@@ -7,6 +7,8 @@
 #include "virtual_key_fwd.hpp"
 #include <iostream>
 
+class KeyLog ;
+
 namespace KeybrdEventer
 {
     class SmartKey {
@@ -21,9 +23,10 @@ namespace KeybrdEventer
         ~SmartKey() ;
 
         bool is_push() noexcept ;
+        bool is_release() noexcept ;
 
-        SmartKey(SmartKey&&) ;
-        SmartKey& operator=(SmartKey&&) ;
+        SmartKey(SmartKey&&) noexcept ;
+        SmartKey& operator=(SmartKey&&) noexcept ;
 
         SmartKey(const SmartKey&) = delete ;
         SmartKey& operator=(const SmartKey&) = delete ;
@@ -69,11 +72,6 @@ namespace KeybrdEventer
 
     //change key state without input
     bool is_push_keystate(const unsigned char key) noexcept ;
-
-
-    bool is_sync_push(const unsigned char bindkey, const unsigned char funckey) ;
-
-    void update_sync_push() noexcept ;
 }
 
 #endif

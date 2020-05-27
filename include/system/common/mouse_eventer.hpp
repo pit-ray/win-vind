@@ -30,7 +30,7 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << "(win_mouse_eventer.cpp)" << std::endl ;
+            WIN_ERROR_STREAM << "(win_mouse_eventer.cpp)" << std::endl ;
             return false ;
         }
 

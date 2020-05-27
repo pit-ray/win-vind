@@ -14,7 +14,7 @@ struct AutotrackPopup::Impl
         if(!SystemParametersInfo(SPI_GETSNAPTODEFBUTTON, 0,
             reinterpret_cast<PVOID>(&default_flag), 0)) {
 
-            ERROR_STREAM << "windows.h " << GetLastError() << " (AutotrackPopup.cpp)\n" ;
+            WIN_ERROR_STREAM << "(AutotrackPopup.cpp)\n" ;
         }
     }
 } ;
@@ -28,7 +28,7 @@ namespace APUtility
     inline static const auto is_set_param(const bool new_flag) noexcept
     {
         if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
-            ERROR_STREAM << " windows.h " << GetLastError() << " (AutotrackPopup.cpp)\n" ;
+            WIN_ERROR_STREAM << "(AutotrackPopup.cpp)\n" ;
             return false ;
         }
         return true ;

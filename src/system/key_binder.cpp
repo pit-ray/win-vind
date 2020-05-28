@@ -49,7 +49,7 @@ struct KeyBinder::Impl
         Change2Insert::create(),
         Change2Visual::create(),
         Change2Editor::create(),
-        Change2Command::create(),
+        Change2Command::create_with_cache(),
 
         SelectAll::create(),
 
@@ -85,9 +85,10 @@ struct KeyBinder::Impl
         CBPaste::create_with_cache(),
         CBCut::create_with_cache(),
         CBDelete::create_with_cache(),
+        CBBackSpace::create_with_cache(),
 
-        SCRedo::create(),
-        SCUndo::create(),
+        SCRedo::create_with_cache(),
+        SCUndo::create_with_cache(),
 
         SwitchVDesktop2Left::create(),
         SwitchVDesktop2Right::create(),
@@ -144,7 +145,8 @@ struct KeyBinder::Impl
         CBCopy::create_with_cache(),
         CBPaste::create_with_cache(),
         CBCut::create_with_cache(),
-        CBDelete::create_with_cache()
+        CBDelete::create_with_cache(),
+        CBBackSpace::create_with_cache()
     } ;
 
     vector<bf::shp_t> vpbf_edi_normal {
@@ -156,6 +158,24 @@ struct KeyBinder::Impl
         Change2EdiVisual::create(),
         Change2EdiLineVisual::create(),
 
+        CBPaste::create_with_cache(),
+        CBDelete::create_with_cache(),
+        CBBackSpace::create_with_cache(),
+
+        SCRedo::create_with_cache(),
+        SCUndo::create_with_cache(),
+
+        ScrollLeft::create_with_cache(),
+        ScrollRight::create_with_cache(),
+        ScrollUp::create_with_cache(),
+        ScrollDown::create_with_cache(),
+        ScrollMidLeft::create_with_cache(),
+        ScrollMidRight::create_with_cache(),
+        ScrollMidUp::create_with_cache(),
+        ScrollMidDown::create_with_cache(),
+        ScrollPageUp::create_with_cache(),
+        ScrollPageDown::create_with_cache(),
+
         EdiMoveCaretLeft::create_with_cache(),
         EdiMoveCaretRight::create_with_cache(),
         EdiMoveCaretUp::create_with_cache(),
@@ -163,6 +183,8 @@ struct KeyBinder::Impl
 
         EdiMoveCaretNWORDSForward::create_with_cache(),
         EdiMoveCaretNWORDSBackward::create_with_cache(),
+        EdiMoveCaretNwordsForward::create_with_cache(),
+        EdiMoveCaretNwordsBackward::create_with_cache(),
 
         EdiJumpCaret2BOL::create_with_cache(),
         EdiJumpCaret2EOL::create_with_cache(),
@@ -179,6 +201,26 @@ struct KeyBinder::Impl
         Change2Normal::create_with_cache(),
         Change2EdiNormal::create_with_cache(),
 
+        CBCopy::create_with_cache(),
+        CBPaste::create_with_cache(),
+        CBCut::create_with_cache(),
+        CBDelete::create_with_cache(),
+        CBBackSpace::create_with_cache(),
+
+        SCRedo::create_with_cache(),
+        SCUndo::create_with_cache(),
+
+        ScrollLeft::create_with_cache(),
+        ScrollRight::create_with_cache(),
+        ScrollUp::create_with_cache(),
+        ScrollDown::create_with_cache(),
+        ScrollMidLeft::create_with_cache(),
+        ScrollMidRight::create_with_cache(),
+        ScrollMidUp::create_with_cache(),
+        ScrollMidDown::create_with_cache(),
+        ScrollPageUp::create_with_cache(),
+        ScrollPageDown::create_with_cache(),
+
         EdiMoveCaretLeft::create_with_cache(),
         EdiMoveCaretRight::create_with_cache(),
         EdiMoveCaretUp::create_with_cache(),
@@ -186,6 +228,8 @@ struct KeyBinder::Impl
 
         EdiMoveCaretNWORDSForward::create_with_cache(),
         EdiMoveCaretNWORDSBackward::create_with_cache(),
+        EdiMoveCaretNwordsForward::create_with_cache(),
+        EdiMoveCaretNwordsBackward::create_with_cache(),
 
         EdiJumpCaret2BOL::create_with_cache(),
         EdiJumpCaret2EOL::create_with_cache(),
@@ -431,7 +475,7 @@ void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
     }
 
     //breaking
-    if(plger->back().is_included(VKC_ESC)){
+    if(plger->back().is_including(VKC_ESC)){
         const auto recent_index = pimpl->cmd_hist.size() - 1 ;
         if(pimpl->cmd_hist_index == recent_index) {
             plger->clear() ;
@@ -446,7 +490,7 @@ void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
         return ;
     }
 
-    if(plger->back().is_included(VKC_ENTER) && p_cmdp->func) {
+    if(plger->back().is_including(VKC_ENTER) && p_cmdp->func) {
         plger->remove_from_back(1) ; //remove keycode of enter
         p_cmdp->func->process(plger->get_str()) ;
 
@@ -461,7 +505,7 @@ void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
     }
 
     //edit command
-    if(plger->back().is_included(VKC_BKSPACE)) {
+    if(plger->back().is_including(VKC_BKSPACE)) {
         plger->remove_from_back(2) ;
         refresh_display() ;
 
@@ -472,13 +516,13 @@ void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
     }
 
     //operate command history
-    if(plger->back().is_included(VKC_UP) && pimpl->cmd_hist_index > 0) {
+    if(plger->back().is_including(VKC_UP) && pimpl->cmd_hist_index > 0) {
         pimpl->cmd_hist_index -- ;
         plger->remove_from_back(1) ;
         refresh_display() ;
         return ;
     }
-    if(plger->back().is_included(VKC_DOWN) && pimpl->cmd_hist_index < pimpl->cmd_hist.size() - 1) {
+    if(plger->back().is_including(VKC_DOWN) && pimpl->cmd_hist_index < pimpl->cmd_hist.size() - 1) {
         pimpl->cmd_hist_index ++ ;
         plger->remove_from_back(1) ;
         refresh_display() ;

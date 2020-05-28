@@ -6,7 +6,7 @@
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "key_absorber.hpp"
-#include "text_selecter.hpp"
+#include "alternative_text_selecter.hpp"
 
 
 using namespace std ;
@@ -18,17 +18,17 @@ const string Change2EdiNormal::sname() noexcept
 }
 bool Change2EdiNormal::sprocess(const bool first_call)
 {
-    using namespace ModeManager ;
     if(!first_call) {
         return true ;
     }
 
-    const auto m = get_mode() ;
-    if(m == Mode::EdiNormal) {
+    using namespace ModeManager ;
+    if(ModeManager::get_mode() == Mode::EdiNormal) {
         return true ;
     }
-    if(m == Mode::EdiVisual || m == Mode::EdiLineVisual) {
-        if(!TextSelecter::is_unselect()) {
+
+    if(is_edi_visual()) {
+        if(!AlternativeTextSelecter::is_unselect()) {
             return false ;
         }
     }
@@ -125,7 +125,7 @@ bool Change2EdiVisual::sprocess(const bool first_call)
         return true ;
     }
 
-    if(!TextSelecter::is_select_words()) {
+    if(!AlternativeTextSelecter::is_select_words()) {
         return false ;
     }
 
@@ -147,7 +147,7 @@ bool Change2EdiLineVisual::sprocess(const bool first_call)
         return true ;
     }
 
-    if(!TextSelecter::is_select_line_EOL2BOL()) {
+    if(!AlternativeTextSelecter::is_select_line_EOL2BOL()) {
         return false ;
     }
 

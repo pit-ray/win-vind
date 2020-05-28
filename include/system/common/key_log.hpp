@@ -41,7 +41,7 @@ public:
     std::size_t size() const noexcept ;
     bool is_empty() const noexcept ;
 
-    bool is_included(const unsigned char key) const noexcept ;
+    bool is_including(const unsigned char key) const noexcept ;
 
     bool operator==(const KeyLog& rhs) const noexcept ;
     bool operator!=(const KeyLog& rhs) const noexcept ;

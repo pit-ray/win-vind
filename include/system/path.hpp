@@ -8,8 +8,7 @@
 
 namespace Path
 {
-    static constexpr auto _USE_INSTALLER = false ;
-
+    static constexpr auto _EXECUTION_MODE_IDX = "admin_config/execution_mode.idx" ;
     static const std::string _USE_INST_CONFIG_DIR{".win-vind"} ;
     static const std::string _UNUSE_INST_CONFIG_DIR{"config"} ;
 
@@ -36,7 +35,14 @@ namespace Path
         using namespace std ;
         string fstr(filename) ;
 
-        if(!_USE_INSTALLER) {
+        static const auto is_executed_by_installer = [] {
+            std::ifstream ifs{_EXECUTION_MODE_IDX} ;
+            std::string index_str{} ;
+            std::getline(ifs, index_str) ;
+            return index_str == "1" ? true : false ;
+        } ;
+
+        if(!is_executed_by_installer()) {
             fstr = _UNUSE_INST_CONFIG_DIR +"\\" + fstr ;
             return move(fstr) ;
         }

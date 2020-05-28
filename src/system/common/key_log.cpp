@@ -112,7 +112,7 @@ bool KeyLog::is_empty() const noexcept
     return pimpl->once_log.empty() ;
 }
 
-bool KeyLog::is_included(const unsigned char key) const noexcept
+bool KeyLog::is_including(const unsigned char key) const noexcept
 {
     return find(pimpl->once_log.cbegin(),
         pimpl->once_log.cend(), key) != pimpl->once_log.cend() ;

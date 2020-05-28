@@ -72,7 +72,8 @@ namespace wxGUI
 
         LayoutDialog() ;
         Centre() ;
-        SetSize(wxSize(WIDTH, HEIGHT)) ;
+        auto size = wxSize(WIDTH, HEIGHT) ;
+        SetSize(size) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
             save_all() ;

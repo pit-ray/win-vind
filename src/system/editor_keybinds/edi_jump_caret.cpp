@@ -2,7 +2,7 @@
 
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
-#include "text_selecter.hpp"
+#include "alternative_text_selecter.hpp"
 
 
 //EdiJumpCaret2BOL
@@ -14,6 +14,10 @@ bool EdiJumpCaret2BOL::sprocess(const bool first_call)
 {
     if(!first_call) {
         return true ;
+    }
+
+    if(ModeManager::is_edi_visual()) {
+        return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_HOME) ;
     }
 
     return KeybrdEventer::is_pushup(VKC_HOME) ;
@@ -29,6 +33,10 @@ bool EdiJumpCaret2EOL::sprocess(const bool first_call)
 {
     if(!first_call) {
         return true ;
+    }
+
+    if(ModeManager::is_edi_visual()) {
+        return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_END) ;
     }
 
     return KeybrdEventer::is_pushup(VKC_END) ;
@@ -58,18 +66,18 @@ bool EdiJumpCaret2NLine_DfBOF::sprocess(const bool first_call)
     }
 
     /*
-    if(TextSelecter::get_mode() == TextSelecter::Mode::BOL2EOL) {
-        if(!TextSelecter::is_select_line_EOL2BOL()) {
+    if(AlternativeTextSelecter::get_mode() == AlternativeTextSelecter::Mode::BOL2EOL) {
+        if(!AlternativeTextSelecter::is_select_line_EOL2BOL()) {
             return false ;
         }
     }
     */
 
-    if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_HOME)) {
-        return false ;
+    if(ModeManager::is_edi_visual()) {
+        return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
     }
 
-    return true ;
+    return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_HOME) ;
 }
 
 
@@ -84,21 +92,24 @@ bool EdiJumpCaret2NLine_DfEOF::sprocess(const bool first_call)
         return true ;
     }
 
-    if(TextSelecter::get_mode() == TextSelecter::Mode::EOL2BOL) {
-        if(!TextSelecter::is_select_line_BOL2EOL()) {
+    if(ModeManager::is_edi_visual()) {
+        if(AlternativeTextSelecter::get_mode() == AlternativeTextSelecter::Mode::EOL2BOL) {
+            if(!AlternativeTextSelecter::is_select_line_BOL2EOL()) {
+                return false ;
+            }
+        }
+
+        if(!KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LCTRL, VKC_END)) {
             return false ;
         }
-    }
 
-    if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_END)) {
-        return false ;
-    }
-
-    if(ModeManager::get_mode() != ModeManager::Mode::EdiLineVisual) {
-        if(!KeybrdEventer::is_pushup(VKC_HOME)) {
-            return false ;
+        if(ModeManager::get_mode() != ModeManager::Mode::EdiLineVisual) {
+            if(!KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_HOME)) {
+                return false ;
+            }
         }
+        return true ;
     }
 
-    return true ;
+    return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_END) ;
 }

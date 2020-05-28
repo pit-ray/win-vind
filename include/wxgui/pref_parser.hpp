@@ -3,7 +3,11 @@
 
 #include <unordered_map>
 #include <string>
-#include "wx_constant.hpp"
+
+namespace wxGUI {
+    enum class Language : unsigned char ;
+    enum class IconStyle : unsigned char ;
+}
 
 namespace PrefParser
 {
@@ -44,6 +48,10 @@ namespace PrefParser
     wxGUI::IconStyle load_sticon() ;
     const wxGUI::IconStyle& load_default_sticon() ;
     void save_sticon(const wxGUI::IconStyle idx) ;
+
+    unsigned char load_propdlg_res() ;
+    unsigned char load_default_propdlg_res() ;
+    void save_propdlg_res(const unsigned char resolution_index) ;
 }
 
 #endif

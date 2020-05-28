@@ -64,7 +64,7 @@ namespace wxGUI
             add_st(sh_sizer, trans(Label::PREF_SHORTCUTAPPS_SHELL)) ;
             pimpl->sh_path_picker = new wxFilePickerCtrl(this, wxID_ANY, wxT("cmd"),
                 wxFileSelectorPromptStr, wxFileSelectorDefaultWildcardStr, wxDefaultPosition,
-                wxSize(WIDTH - 200, wxDefaultCoord), flp_flags) ;
+                wxSize(static_cast<int>(WIDTH * 0.75), wxDefaultCoord), flp_flags) ;
             sh_sizer->Add(pimpl->sh_path_picker, flags) ;
             exapps_sizer->Add(sh_sizer, flags) ;
         }
@@ -72,8 +72,8 @@ namespace wxGUI
         {
             pimpl->path_list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxSize(WIDTH, 225), wxLC_REPORT) ;
 
-            constexpr auto name_width = 150 ;
-
+            static const auto name_width = static_cast<int>(WIDTH * 0.187) ;
+            static const auto path_width = WIDTH - name_width - 100 ;
             wxListItem col0 ;
             col0.SetId(PathListCol::NAME) ;
             col0.SetText(trans(Label::PREF_SHORTCUTAPPS_NAME)) ;
@@ -83,7 +83,7 @@ namespace wxGUI
             wxListItem col1 ;
             col1.SetId(PathListCol::PATH) ;
             col1.SetText(trans(Label::PREF_SHORTCUTAPPS_PATH)) ;
-            col1.SetWidth(WIDTH - name_width - 100) ;
+            col1.SetWidth(path_width) ;
             pimpl->path_list->InsertColumn(PathListCol::PATH, col1) ;
 
             exapps_sizer->Add(pimpl->path_list, flags) ;

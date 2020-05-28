@@ -30,7 +30,7 @@ namespace ClipboardUtility
         using namespace ModeManager ;
         if(is_editor()) {
             change_mode(Mode::EdiNormal) ;
-            if(!AlternativeTextSelecter::is_unselect()) {
+            if(!TextSelecter::is_unselect()) {
                 return false ;
             }
         }
@@ -136,38 +136,6 @@ bool CBDelete::sprocess(const bool first_call)
     }
 
     if(!KeybrdEventer::is_pushup(VKC_DELETE)) {
-        return false ;
-    }
-
-    using namespace ModeManager ;
-    if(is_editor()) {
-        change_mode(Mode::EdiNormal) ;
-    }
-    else {
-        change_mode(Mode::Normal) ;
-    }
-
-    return true ;
-}
-
-
-//CBBackSpace
-const string CBBackSpace::sname() noexcept
-{
-    return "cb_back_space" ;
-}
-
-bool CBBackSpace::sprocess(const bool first_call)
-{
-    if(!first_call) return true ;
-
-    //selecting->cut
-    //unselecting->delete
-    if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_C)) {
-        return false ;
-    }
-
-    if(!KeybrdEventer::is_pushup(VKC_BKSPACE)) {
         return false ;
     }
 

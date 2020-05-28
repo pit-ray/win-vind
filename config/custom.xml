@@ -19,8 +19,6 @@
     <cmd name="save_opened_file">w|w_f|w_a|w_c|up|wall</cmd>
   </commands>
   <binds>
-    <func name="open_new_current_window">Ctrl(+)w-&gt;n</func>
-    <func name="edi_move_caret_Nwords_backward">b</func>
     <func name="snap_current_window_to_left">Ctrl(+)w-&gt;h|Ctrl(+)w-&gt;&lt;</func>
     <func name="maximize_current_window">Ctrl(+)w-&gt;k|Ctrl(+)w-&gt;a</func>
     <func name="scroll_down">Ctrl(+)e</func>
@@ -32,6 +30,7 @@
     <func name="sc_undo">u|U</func>
     <func name="snap_current_window_to_right">Ctrl(+)w-&gt;l|Ctrl(+)w-&gt;&gt;</func>
     <func name="sc_redo">Ctrl(+)r</func>
+    <func name="cb_back_space">X</func>
     <func name="scroll_mid_right">z-&gt;L|z(+)L</func>
     <func name="click_left">o|O</func>
     <func name="scroll_mid_left">z-&gt;H|z(+)H</func>
@@ -39,11 +38,10 @@
     <func name="scroll_right">z-&gt;l|z(+)l</func>
     <func name="scroll_page_down">Ctrl(+)f</func>
     <func name="scroll_mid_up">Ctrl(+)u</func>
-    <func name="jump_to_top">g-&gt;g</func>
+    <func name="move_down">j|+|g-&gt;j|Ctrl(+)j|Ctrl(+)n|Down|Enter|Ctrl(+)m</func>
+    <func name="click_right">a|A</func>
     <func name="change_to_insert">i</func>
-    <func name="cb_copy">y|y-&gt;y|Y</func>
-    <func name="move_left">h|Ctrl(+)h|BkSpace|Left</func>
-    <func name="cb_delete">x|Delete|X</func>
+    <func name="cb_delete">x|Delete</func>
     <func name="move_right">l| |Right</func>
     <func name="jump_to_bottom">G</func>
     <func name="close_current_window">Ctrl(+)w-&gt;q|Ctrl(+)w-&gt;c</func>
@@ -54,6 +52,9 @@
     <func name="edi_move_caret_NWORDS_forward">W</func>
     <func name="edi_move_caret_NWORDS_backward">B</func>
     <func name="edi_jump_caret_to_nline_default_BOF">g-&gt;g</func>
+    <func name="open_new_current_window">Ctrl(+)w-&gt;n</func>
+    <func name="edi_move_caret_Nwords_backward">b</func>
+    <func name="change_to_normal">Left(+)Esc|Right(+)Esc|Up(+)Esc|Down(+)Esc|F9</func>
     <func name="move_to_next_page">&gt;</func>
     <func name="edi_move_caret_right">l|Space|Right</func>
     <func name="change_to_edi_visual">v|Ctrl(+)v</func>
@@ -62,12 +63,15 @@
     <func name="edi_jump_caret_to_nline_default_EOF">G</func>
     <func name="jump_to_left">0|^|Home|g-&gt;0|g-&gt;^</func>
     <func name="cb_cut">d-&gt;d|D</func>
-    <func name="change_to_edi_insert">i|I|G-&gt;I</func>
-    <func name="change_to_edi_line_visual">V</func>
-    <func name="scroll_mid_down">Ctrl(+)d</func>
     <func name="edi_move_caret_down">j|+|g-&gt;j|Ctrl(+)j|Ctrl(+)n|Down|Enter|Ctrl(+)m</func>
     <func name="edi_move_caret_up">k|-|g-&gt;k|Ctrl(+)P|Up</func>
     <func name="change_to_edi_nlinsert">o|O</func>
+    <func name="change_to_edi_insert">i|I|G-&gt;I</func>
+    <func name="change_to_edi_line_visual">V</func>
+    <func name="scroll_mid_down">Ctrl(+)d</func>
+    <func name="jump_to_top">g-&gt;g</func>
+    <func name="move_left">h|Ctrl(+)h|BkSpace|Left</func>
+    <func name="cb_copy">y|y-&gt;y|Y</func>
     <func name="jump_to_ycenter">M</func>
     <func name="jump_to_active_window">t|T</func>
     <func name="scroll_page_up">Ctrl(+)b</func>
@@ -79,11 +83,8 @@
     <func name="jump_to_any">f|F</func>
     <func name="select_all">V|Ctrl(+)V</func>
     <func name="scroll_up">Ctrl(+)y</func>
-    <func name="change_to_normal">Left(+)Esc|Right(+)Esc|Up(+)Esc|Down(+)Esc|F9</func>
     <func name="search_pattern">/|?</func>
     <func name="change_to_visual">v</func>
     <func name="change_to_command">:</func>
-    <func name="click_right">a|A</func>
-    <func name="move_down">j|+|g-&gt;j|Ctrl(+)j|Ctrl(+)n|Down|Enter|Ctrl(+)m</func>
   </binds>
 </config>

@@ -1,13 +1,17 @@
 #include "keybrd_eventer.hpp"
 
-#include "key_absorber.hpp"
-#include "msg_logger.hpp"
-#include "key_log.hpp"
-#include <windows.h>
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
 #include <utility>
+
+#include <windows.h>
+
+#include "key_absorber.hpp"
+#include "msg_logger.hpp"
+#include "key_log.hpp"
+#include "vkc_converter.hpp"
+
 
 using namespace std ;
 
@@ -103,6 +107,48 @@ namespace KeybrdEventer
             WIN_ERROR_STREAM << "(keybrd_eventer.hpp::is_release)\n" ;
             return false ;
         }
+        return true ;
+    }
+
+    bool _is_pushup_core(std::initializer_list<unsigned char>&& initl) {
+        const auto pushing_keys = KeyAbsorber::get_downed_list() ;
+
+        const auto recover_keystate= [&pushing_keys] {
+            for(const auto key : pushing_keys) {
+                KeyAbsorber::push_vertually(key) ;
+            }
+        } ;
+
+        if(initl.size() == 1) {
+            SmartKey ins(static_cast<unsigned char>(*initl.begin())) ;
+
+            if(!ins.is_push()) {
+                return false ;
+            }
+
+            recover_keystate() ;
+            return true ;
+        }
+
+        std::stack<std::unique_ptr<SmartKey>> st ;
+        const auto clear_stack = [&st] {
+            while(!st.empty()) {
+                st.pop() ;
+            }
+        } ;
+
+        for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
+            const auto key = static_cast<unsigned char>(*iter) ;
+            st.push(std::make_unique<SmartKey>(key)) ;
+            if(!st.top()->is_push()) {
+                clear_stack() ;
+                recover_keystate() ;
+                return false ;
+            }
+        }
+
+        clear_stack() ;
+        recover_keystate() ;
         return true ;
     }
 }

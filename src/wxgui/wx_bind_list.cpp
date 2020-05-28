@@ -18,7 +18,9 @@ namespace wxGUI
         } ;
     }
 
-    constexpr auto SCR_HEIGHT = HEIGHT - 225 ;
+    static const auto SCR_HEIGHT        = static_cast<int>(HEIGHT * 0.525) ;
+    static const auto SCR_HOTKEY_WIDTH  = static_cast<int>(WIDTH * 0.43) ;
+    static const auto SCR_CMD_WIDTH     = static_cast<int>(WIDTH * 0.39) ;
 
     struct BindListPanel::Impl
     {
@@ -81,6 +83,7 @@ namespace wxGUI
             add("cb_paste") ;
             add("cb_cut") ;
             add("cb_delete") ;
+            add("cb_back_space") ;
             add("sc_redo") ;
             add("sc_undo") ;
             add("switch_vdesktop_to_left") ;
@@ -118,7 +121,7 @@ namespace wxGUI
 
             SetSizer(sizer) ;
             SetScrollRate(0, 5) ;
-            SetMinSize(wxSize(350, SCR_HEIGHT)) ; //if use auto WIDTH, objects is hidden by scroll-bar.
+            SetMinSize(wxSize(SCR_HOTKEY_WIDTH, SCR_HEIGHT)) ; //if use auto WIDTH, objects is hidden by scroll-bar.
         }
     } ;
 
@@ -159,7 +162,7 @@ namespace wxGUI
 
             SetScrollRate(0, 5) ;
             SetSizer(sizer) ;
-            SetMinSize(wxSize(315, SCR_HEIGHT)) ;
+            SetMinSize(wxSize(SCR_CMD_WIDTH, SCR_HEIGHT)) ;
         }
     } ;
 

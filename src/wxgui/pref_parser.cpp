@@ -256,4 +256,16 @@ namespace PrefParser
     void save_sticon(const wxGUI::IconStyle idx) {
         _save_pth(Path::ICON_IDX, e2s(idx)) ;
     }
+
+    //config window's resolution PPI magnification
+    unsigned char load_propdlg_res() {
+        return static_cast<unsigned char>(std::stoi(_load_pth(Path::RESOLUTION_IDX))) ;
+    }
+    unsigned char load_default_propdlg_res() {
+        static auto cache =  static_cast<unsigned char>(std::stoi(_load_pth(Path::DEFAULT_RESOLUTION_IDX))) ;
+        return cache ;
+    }
+    void save_propdlg_res(const unsigned char resolution_index) {
+        _save_pth(Path::RESOLUTION_IDX, std::to_string(resolution_index)) ;
+    }
 }

@@ -29,4 +29,11 @@ struct CBDelete : public BindedFunctionWithCreator<CBDelete>
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
+
+
+struct CBBackSpace : public BindedFunctionWithCreator<CBBackSpace>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
 #endif

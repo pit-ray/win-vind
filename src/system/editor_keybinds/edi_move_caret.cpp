@@ -8,7 +8,8 @@
 #include "msg_logger.hpp"
 #include "dynamic_config.hpp"
 #include "key_absorber.hpp"
-#include "text_selecter.hpp"
+#include "alternative_text_selecter.hpp"
+#include "mode_manager.hpp"
 
 using namespace std ;
 using namespace std::chrono ;
@@ -110,6 +111,9 @@ const string EdiMoveCaretLeft::sname() noexcept
 bool EdiMoveCaretLeft::sprocess(const bool first_call) const
 {
     auto push = [] {
+        if(ModeManager::is_edi_visual()) {
+            return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LEFT) ;
+        }
         return KeybrdEventer::is_pushup(VKC_LEFT) ;
     } ;
 
@@ -149,6 +153,9 @@ const string EdiMoveCaretRight::sname() noexcept
 bool EdiMoveCaretRight::sprocess(const bool first_call) const
 {
     auto push = [] {
+        if(ModeManager::is_edi_visual()) {
+            return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_RIGHT) ;
+        }
         return KeybrdEventer::is_pushup(VKC_RIGHT) ;
     } ;
 
@@ -189,6 +196,9 @@ const string EdiMoveCaretUp::sname() noexcept
 bool EdiMoveCaretUp::sprocess(const bool first_call) const
 {
     auto push = [] {
+        if(ModeManager::is_edi_visual()) {
+            return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_UP) ;
+        }
         return KeybrdEventer::is_pushup(VKC_UP) ;
     } ;
 
@@ -229,6 +239,9 @@ const string EdiMoveCaretDown::sname() noexcept
 bool EdiMoveCaretDown::sprocess(const bool first_call) const
 {
     auto push = [] {
+        if(ModeManager::is_edi_visual()) {
+            return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_DOWN) ;
+        }
         return KeybrdEventer::is_pushup(VKC_DOWN) ;
     } ;
 
@@ -254,6 +267,9 @@ const string EdiMoveCaretNwordsForward::sname() noexcept
 bool EdiMoveCaretNwordsForward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
+    if(ModeManager::is_edi_visual()) {
+        return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
+    }
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_RIGHT) ;
 }
 
@@ -267,6 +283,9 @@ const string EdiMoveCaretNwordsBackward::sname() noexcept
 bool EdiMoveCaretNwordsBackward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
+    if(ModeManager::is_edi_visual()) {
+        return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
+    }
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_LEFT) ;
 }
 
@@ -280,6 +299,9 @@ const string EdiMoveCaretNWORDSForward::sname() noexcept
 bool EdiMoveCaretNWORDSForward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
+    if(ModeManager::is_edi_visual()) {
+        return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
+    }
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_RIGHT) ;
 }
 
@@ -293,5 +315,8 @@ const string EdiMoveCaretNWORDSBackward::sname() noexcept
 bool EdiMoveCaretNWORDSBackward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
+    if(ModeManager::is_edi_visual()) {
+        return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
+    }
     return KeybrdEventer::is_pushup(VKC_LCTRL, VKC_LEFT) ;
 }

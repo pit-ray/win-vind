@@ -47,7 +47,8 @@
         <func name="cb_copy">y|y->y|Y</func>
         <func name="cb_paste">p|P</func>
         <func name="cb_cut">d->d|D</func>
-        <func name="cb_delete">x|Delete|X</func>
+        <func name="cb_delete">x|Delete</func>
+        <func name="cb_back_space">X</func>
 
         <func name="sc_redo">Ctrl(+)r</func>
         <func name="sc_undo">u|U</func>

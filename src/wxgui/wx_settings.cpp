@@ -47,9 +47,10 @@ namespace wxGUI
 
     struct SettingsPanel::Impl
     {
-        wxChoice* ui_language = nullptr ;
-        wxChoice* icon_style  = nullptr ;
-        wxChoice* keybrd_type = nullptr ;
+        wxChoice* ui_language   = nullptr ;
+        wxChoice* icon_style    = nullptr ;
+        wxChoice* keybrd_type   = nullptr ;
+        wxSpinCtrl* resolution  = nullptr ;
 
         ums_t<wxSpinCtrl*>         sc_params{} ;
         ums_t<wxSpinCtrlDouble*>   scd_params{} ;
@@ -106,6 +107,13 @@ namespace wxGUI
                 }
                 pimpl->keybrd_type = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, ktitems) ;
                 com_sizer->Add(pimpl->keybrd_type, flags) ;
+
+                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_RESOLUTION)) ;
+                pimpl->resolution = new wxSpinCtrl(
+                    this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                    wxDefaultSize, wxSP_ARROW_KEYS, 1, 12, 6
+                ) ;
+                com_sizer->Add(pimpl->resolution, flags) ;
 
                 com_sizer_wrapper->Add(com_sizer, flags) ;
                 //setter_sizer->Add(com_sizer_wrapper, flags) ;
@@ -202,7 +210,8 @@ namespace wxGUI
         const PrefParser::ums_str_t params,
         const std::string kb_path,
         const Language ui_idx,
-        const IconStyle ico_idx
+        const IconStyle ico_idx,
+        const unsigned char res_ppi_idx
     ) {
         auto catch_except = [](auto& e, auto& index) {
             ERROR_STREAM << e.what() << ": " << index << "is invalid index. (SettingsPanel::load_core)\n" ;
@@ -243,6 +252,9 @@ namespace wxGUI
         set_choice(pimpl->keybrd_type, kb_path, ChoiceCvt::kbtype) ;
         set_choice(pimpl->ui_language, ui_idx, ChoiceCvt::uilang) ;
         set_choice(pimpl->icon_style, ico_idx, ChoiceCvt::iconstyle) ;
+
+        //Property Dialog's resolution PPI magnification
+        pimpl->resolution->SetValue(res_ppi_idx) ;
     }
 
     void SettingsPanel::load_default() {
@@ -251,7 +263,8 @@ namespace wxGUI
             load_default_params(),
             load_default_kbtype(),
             load_default_uilang(),
-            load_default_sticon()
+            load_default_sticon(),
+            load_default_propdlg_res()
         ) ;
     }
 
@@ -262,7 +275,8 @@ namespace wxGUI
             load_params(),
             load_kbtype(),
             load_uilang(),
-            load_sticon()
+            load_sticon(),
+            load_propdlg_res()
         ) ;
     }
 
@@ -293,6 +307,9 @@ namespace wxGUI
         save_kbtype(get_choice(pimpl->keybrd_type, ChoiceCvt::kbtype)) ;
         save_uilang(get_choice(pimpl->ui_language, ChoiceCvt::uilang)) ;
         save_sticon(get_choice(pimpl->icon_style,  ChoiceCvt::iconstyle)) ;
+
+        //Property Dialog's resolution PPI magnification
+        save_propdlg_res(static_cast<unsigned char>(pimpl->resolution->GetValue())) ;
 
         save_params(params) ;
     }

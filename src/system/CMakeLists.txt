@@ -22,7 +22,7 @@ add_library(Common STATIC
     common/mode_manager.cpp
     common/mouse_eventer.cpp
     common/text_analyzer.cpp
-    common/text_selecter.cpp
+    common/alternative_text_selecter.cpp
     common/utility.cpp
     common/vkc_converter.cpp
     common/xml_parser.cpp

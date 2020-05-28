@@ -122,11 +122,11 @@ bool KeyLogger::is_changed_and_inputc()
     pimpl->past_log = log ;
 
     KeyLog::data_t data{} ;
-    if(log.is_included(VKC_LSHIFT)) {
+    if(log.is_including(VKC_LSHIFT)) {
         data.push_back(VKC_LSHIFT) ;
     }
 
-    if(log.is_included(VKC_RSHIFT)) {
+    if(log.is_including(VKC_RSHIFT)) {
         data.push_back(VKC_RSHIFT) ;
     }
 
@@ -152,7 +152,7 @@ const string KeyLogger::get_str() const noexcept
     }
 
     for(const auto& log : pimpl->logs) {
-        if(log.is_included(VKC_LSHIFT) || log.is_included(VKC_RSHIFT)) {
+        if(log.is_including(VKC_LSHIFT) || log.is_including(VKC_RSHIFT)) {
             //shifted ascii
             for(const auto&vkc : log) {
                 const auto c = VKCConverter::get_shifted_ascii(vkc) ;

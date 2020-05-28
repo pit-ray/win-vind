@@ -15,6 +15,9 @@ namespace Path
 
     static constexpr auto DEFAULT_UI_LANG_IDX  = "admin_config/default_ui_language.idx" ;
     static constexpr auto DEFAULT_ICON_IDX     = "admin_config/default_icon.idx" ;
+
+    static constexpr auto DEFAULT_RESOLUTION_IDX = "admin_config/default_propdlg_resolution.idx" ;
+    static constexpr auto RESOLUTION_IDX         = "config/custom_propdlg_resolution.idx" ;
 }
 
 #endif

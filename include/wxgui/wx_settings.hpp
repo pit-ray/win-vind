@@ -19,7 +19,8 @@ namespace wxGUI
             const PrefParser::ums_str_t params,
             const std::string kb_path,
             const Language ui_idx,
-            const IconStyle ico_idx
+            const IconStyle ico_idx,
+            const unsigned char res_ppi_idx
         ) ;
 
         void load_default() ;

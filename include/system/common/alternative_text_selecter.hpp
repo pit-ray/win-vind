@@ -1,7 +1,7 @@
-#ifndef _TEXT_SELECTER_HPP
-#define _TEXT_SELECTER_HPP
+#ifndef _ALTERNATIVE_TEXT_SELECTER_HPP
+#define _ALTERNATIVE_TEXT_SELECTER_HPP
 
-namespace TextSelecter
+namespace AlternativeTextSelecter
 {
     enum class Mode : unsigned char {
         WORD,

@@ -4,8 +4,10 @@
 #include <memory>
 #include <type_traits>
 #include <stack>
-#include "virtual_key_fwd.hpp"
 #include <iostream>
+
+#include "virtual_key_fwd.hpp"
+#include "key_absorber.hpp"
 
 class KeyLog ;
 
@@ -35,43 +37,21 @@ namespace KeybrdEventer
 
     //free function
 
-    //perfect forwarding
-    template <typename... Ts>
-    inline bool is_pushup(Ts&&... keys) {
-        using namespace std ;
-        const auto initl = {std::forward<Ts>(keys)...} ;
-
-        if(initl.size() == 1) {
-            return std::make_unique<SmartKey>(
-                static_cast<unsigned char>(*initl.begin()) //initialize
-            )->is_push() ;
-        }
-
-        std::stack<std::unique_ptr<SmartKey>> st ;
-        const auto clear_stack = [&st] {
-            while(!st.empty()) {
-                st.pop() ;
-            }
-        } ;
-
-        for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
-            const auto key = static_cast<unsigned char>(*iter) ;
-            st.push(std::make_unique<SmartKey>(key)) ;
-            if(!st.top()->is_push()) {
-                clear_stack() ;
-                return false ;
-            }
-        }
-
-        clear_stack() ;
-        return true ;
-    }
-
     //change key state without input
     bool is_release_keystate(const unsigned char key) noexcept ;
 
     //change key state without input
     bool is_push_keystate(const unsigned char key) noexcept ;
+
+    bool _is_pushup_core(std::initializer_list<unsigned char>&& initlist) ;
+
+    //perfect forwarding
+    template <typename... Ts>
+    inline bool is_pushup(Ts&&... keys) {
+        using namespace std ;
+        auto initl = {std::forward<Ts>(keys)...} ;
+        return _is_pushup_core(std::move(initl)) ;
+    }
 }
 
 #endif

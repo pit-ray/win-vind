@@ -9,6 +9,7 @@ namespace ModeManager
         Visual,
         Command,
 
+        _EditorModeThreshold,
         EdiNormal,
         EdiInsert,
         EdiVisual,
@@ -19,8 +20,9 @@ namespace ModeManager
     void change_mode(const Mode mode) noexcept ;
     Mode get_mode() noexcept ;
 
-    bool init() ;
-    bool update() ;
+    bool is_edi_visual() noexcept ;
+
+    bool is_editor() noexcept ;
 }
 
 #endif

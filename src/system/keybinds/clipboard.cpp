@@ -10,43 +10,8 @@
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "key_absorber.hpp"
-#include "alternative_text_selecter.hpp"
-
 
 using namespace std ;
-
-namespace ClipboardUtility
-{
-    inline static bool is_selecting(const HWND hwnd) noexcept {
-        DWORD32 start{0}, end{0} ;
-        SendMessage(hwnd, EM_GETSEL,
-            reinterpret_cast<WPARAM>(&start),
-            reinterpret_cast<LPARAM>(&end)) ;
-
-        return end != 0 && start != end ;
-    }
-
-    inline static bool is_unselect_and_change_mode() {
-        using namespace ModeManager ;
-        if(is_editor()) {
-            change_mode(Mode::EdiNormal) ;
-            if(!AlternativeTextSelecter::is_unselect()) {
-                return false ;
-            }
-        }
-        else {
-            change_mode(Mode::Normal) ;
-            if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
-                return false ;
-            }
-        }
-
-        return true ;
-    }
-}
-
-using namespace ClipboardUtility ;
-
 
 //CBCopy
 const string CBCopy::sname() noexcept
@@ -58,15 +23,17 @@ bool CBCopy::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
 
+    if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
+        return false ;
+    }
+
     //there are cases in which not editable.
     //thus, not use Message Copy
     if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_INSERT)) {
         return false ;
     }
 
-    if(!is_unselect_and_change_mode()) {
-        return false ;
-    }
+    ModeManager::change_mode(ModeManager::Mode::Normal) ;
 
     return true ;
 }
@@ -82,15 +49,16 @@ bool CBPaste::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
 
+    if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
+        return false ;
+    }
+
     //not selecting at paste.
     if(!KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_INSERT)) {
         return false ;
     }
 
-
-    if(!is_unselect_and_change_mode()) {
-        return false ;
-    }
+    ModeManager::change_mode(ModeManager::Mode::Normal) ;
 
     return true ;
 }
@@ -106,14 +74,15 @@ bool CBCut::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
 
+    if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
+        return false ;
+    }
+
     if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_X)) {
         return false ;
     }
 
-    if(!is_unselect_and_change_mode()) {
-        return false ;
-    }
-
+    ModeManager::change_mode(ModeManager::Mode::Normal) ;
 
     return true ;
 }
@@ -128,6 +97,10 @@ const string CBDelete::sname() noexcept
 bool CBDelete::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
+
+    if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
+        return false ;
+    }
 
     //selecting->cut
     //unselecting->delete
@@ -160,6 +133,10 @@ const string CBBackSpace::sname() noexcept
 bool CBBackSpace::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
+
+    if(!MouseEventer::is_up(MouseEventer::Button::LEFT)) {
+        return false ;
+    }
 
     //selecting->cut
     //unselecting->delete

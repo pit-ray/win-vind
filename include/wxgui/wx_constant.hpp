@@ -24,8 +24,8 @@ namespace wxGUI
     } ;
 
     enum class IconStyle : unsigned char {
-        DARK,
-        LIGHT,
+        Dark,
+        Light,
     } ;
 }
 

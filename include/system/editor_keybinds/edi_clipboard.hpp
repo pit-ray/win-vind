@@ -2,59 +2,66 @@
 #define _EDI_CLIPBOARD_HPP
 
 #include "binded_function_with_creator.hpp"
-/*
-ノーマルモードと、エディタモードでは、
-基本的にコピー方式が違う
-今は、仮にショートカットキーだが、
-アナライザーからでは、レジスタも用意可能
-
-したがって、別に作るとよい
-
-また、ペーストは、
-ライン選択と単語選択で挙動が異なる
-Nシステムもある
 
 
-*/
+//Copy
+struct EdiCopyHighlightText : public BindedFunctionWithCreator<EdiCopyHighlightText>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
 
-struct EdiCopy : public BindedFunctionWithCreator<EdiCopy>
+struct EdiNCopyLine : public BindedFunctionWithCreator<EdiNCopyLine>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct EdiNLineCopy : public BindedFunctionWithCreator<EdiNLineCopy>
+//Paste
+struct EdiNPasteAfter : public BindedFunctionWithCreator<EdiNPasteAfter>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EdiNPasteBefore : public BindedFunctionWithCreator<EdiNPasteBefore>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct EdiPaste : public BindedFunctionWithCreator<EdiPaste>
+//Delete
+struct EdiDeleteHighlightText : public BindedFunctionWithCreator<EdiDeleteHighlightText>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EdiNDeleteLine : public BindedFunctionWithCreator<EdiNDeleteLine>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct EdiCut : public BindedFunctionWithCreator<EdiCut>
+struct EdiNDeleteLineUntilEOL : public BindedFunctionWithCreator<EdiNDeleteLineUntilEOL>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-
-struct EdiDelete : public BindedFunctionWithCreator<EdiDelete>
+struct EdiNDeleteAfter : public BindedFunctionWithCreator<EdiNDeleteAfter>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-
-struct EdiBackSpace : public BindedFunctionWithCreator<EdiDelete>
+struct EdiNDeleteBefore : public BindedFunctionWithCreator<EdiNDeleteBefore>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
+
 #endif

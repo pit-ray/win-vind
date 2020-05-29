@@ -233,11 +233,13 @@ bool Jump2Any::sprocess(const bool first_call)
 
     //reset key state (binded key)
     for(const auto& key : KeyAbsorber::get_downed_list()) {
-        KeybrdEventer::is_release_keystate(key) ;
+        if(!KeybrdEventer::is_release_keystate(key)) {
+            return false ;
+        }
     }
 
     //ignore locked key (for example, CapsLock, NumLock, Kana....)
-    const auto tmp_log = KeyAbsorber::get_downed_list() ;
+    const auto toggle_keys = KeyAbsorber::get_downed_list() ;
 
     MSG msg ;
     while(true) {
@@ -252,7 +254,7 @@ bool Jump2Any::sprocess(const bool first_call)
             return true ;
         }
 
-        const auto log = KeyAbsorber::get_downed_list() - tmp_log ;
+        const auto log = KeyAbsorber::get_downed_list() - toggle_keys ;
 
         if(log.is_empty()) {
             continue ;

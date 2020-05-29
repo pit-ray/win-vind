@@ -29,10 +29,10 @@ namespace wxGUI
 
     inline static const auto _load_icon_path() {
         switch(PrefParser::load_sticon()) {
-            case IconStyle::DARK:
+            case IconStyle::Dark:
                 return "resources/icon32_dark.ico" ;
 
-            case IconStyle::LIGHT:
+            case IconStyle::Light:
                 return "resources/icon32_light.ico" ;
 
             default:
@@ -48,7 +48,7 @@ namespace wxGUI
     } ;
 
     PropDlg::PropDlg()
-    : wxPropertySheetDialog(nullptr, wxID_ANY, trans(Label::SYSTRAY_PREFERENCES)),
+    : wxPropertySheetDialog(nullptr, wxID_ANY, trans(Label::SysTray_Preferences)),
       pimpl(std::make_unique<Impl>()),
       ptbi(std::make_unique<SystemTray>(_load_icon_path(), APP_NAME, this))
     {
@@ -63,9 +63,9 @@ namespace wxGUI
         flags.Border(wxALL, BORDER) ;
 
         auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;
-        btn_sizer->Add(new wxButton(this, wxID_OK,     trans(Label::PREF_OK)),     flags) ;
-        btn_sizer->Add(new wxButton(this, wxID_CANCEL, trans(Label::PREF_CANCEL)), flags) ;
-        btn_sizer->Add(new wxButton(this, wxID_APPLY,  trans(Label::PREF_APPLY)),  flags) ;
+        btn_sizer->Add(new wxButton(this, wxID_OK,     trans(Label::Pref_OK)),     flags) ;
+        btn_sizer->Add(new wxButton(this, wxID_CANCEL, trans(Label::Pref_Cancel)), flags) ;
+        btn_sizer->Add(new wxButton(this, wxID_APPLY,  trans(Label::Pref_Apply)),  flags) ;
 
         flags.Align(wxALIGN_RIGHT) ;
         GetInnerSizer()->Add(btn_sizer, flags) ; //The inner sizer contains the book control and button sizer.

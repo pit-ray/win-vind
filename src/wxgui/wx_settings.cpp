@@ -29,19 +29,19 @@ namespace wxGUI
         using namespace UITrans ;
         //the index of these iterator is same as wxChoice's index, so not use unordered_map.
         static const std::map<Language, wxString> uilang {
-            {Language::Japanese, trans(Label::PREF_SETTINGS_COMMON_GUILANG_JP)},
-            {Language::English, trans(Label::PREF_SETTINGS_COMMON_GUILANG_US)}
+            {Language::Japanese, trans(Label::Pref_Settings_Common_GUILang_JP)},
+            {Language::English,  trans(Label::Pref_Settings_Common_GUILang_US)}
         } ;
 
         static const std::map<IconStyle, wxString> iconstyle {
-            {IconStyle::DARK, trans(Label::PREF_SETTINGS_COMMON_ICONSTYLE_DARK)},
-            {IconStyle::LIGHT, trans(Label::PREF_SETTINGS_COMMON_ICONSTYLE_LIGHT)}
+            {IconStyle::Dark, trans(Label::Pref_Settings_Common_IconStyle_Dark)},
+            {IconStyle::Light, trans(Label::Pref_Settings_Common_IconStyle_Light)}
         } ;
 
         static const std::map<std::string, wxString> kbtype {
-            {"JP.kmp", trans(Label::PREF_SETTINGS_COMMON_KBTYPE_JP)},
-            {"US.kmp", trans(Label::PREF_SETTINGS_COMMON_KBTYPE_US)},
-            {"custom.kmp", trans(Label::PREF_SETTINGS_COMMON_KBTYPE_CUSTOM)}
+            {"JP.kmp", trans(Label::Pref_Settings_Common_KBType_JP)},
+            {"US.kmp", trans(Label::Pref_Settings_Common_KBType_US)},
+            {"custom.kmp", trans(Label::Pref_Settings_Common_KBType_Custom)}
         } ;
     }
 
@@ -62,7 +62,7 @@ namespace wxGUI
       pimpl(std::make_unique<Impl>())
     {
         using namespace UITrans ;
-        p_book_ctrl->AddPage(this, trans(Label::PREF_SETTINGS)) ;
+        p_book_ctrl->AddPage(this, trans(Label::Pref_Settings)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
@@ -81,10 +81,10 @@ namespace wxGUI
 
             //Add Common Choices
             {
-                auto com_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_SETTINGS_COMMON)) ;
+                auto com_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_Settings_Common)) ;
                 auto com_sizer = new wxFlexGridSizer(2) ;
 
-                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_GUILANG)) ;
+                add_st(com_sizer, trans(Label::Pref_Settings_Common_GUILang)) ;
                 wxArrayString lgitems ;
                 for(const auto& p : ChoiceCvt::uilang) {
                     lgitems.Add(p.second) ;
@@ -92,7 +92,7 @@ namespace wxGUI
                 pimpl->ui_language = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, lgitems) ;
                 com_sizer->Add(pimpl->ui_language, flags) ;
 
-                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_ICONSTYLE)) ;
+                add_st(com_sizer, trans(Label::Pref_Settings_Common_IconStyle)) ;
                 wxArrayString isitems ;
                 for(const auto& p : ChoiceCvt::iconstyle) {
                     isitems.Add(p.second) ;
@@ -100,7 +100,7 @@ namespace wxGUI
                 pimpl->icon_style = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, isitems) ;
                 com_sizer->Add(pimpl->icon_style, flags) ;
 
-                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_KBTYPE)) ;
+                add_st(com_sizer, trans(Label::Pref_Settings_Common_KBType)) ;
                 wxArrayString ktitems ;
                 for(const auto& p : ChoiceCvt::kbtype) {
                     ktitems.Add(p.second) ;
@@ -108,7 +108,7 @@ namespace wxGUI
                 pimpl->keybrd_type = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, ktitems) ;
                 com_sizer->Add(pimpl->keybrd_type, flags) ;
 
-                add_st(com_sizer, trans(Label::PREF_SETTINGS_COMMON_RESOLUTION)) ;
+                add_st(com_sizer, trans(Label::Pref_Settings_Common_Resolution)) ;
                 pimpl->resolution = new wxSpinCtrl(
                     this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                     wxDefaultSize, wxSP_ARROW_KEYS, 1, 12, 6
@@ -122,7 +122,7 @@ namespace wxGUI
 
             //Add Commands Settings
             {
-                auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_SETTINGS_COMMANDS)) ;
+                auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_Settings_Commands));
                 auto cmd_sizer = new wxFlexGridSizer(2) ;
 
                 auto add_sc = [this, &flags, &cmd_sizer, &add_st](const auto id, const auto min, const auto max, const auto init) {
@@ -145,7 +145,7 @@ namespace wxGUI
 
             //Add HotKeys Settings
             {
-                auto hk_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_SETTINGS_HOTKEYS)) ;
+                auto hk_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_Settings_HotKeys)) ;
                 auto hk_sizer = new wxFlexGridSizer(2) ;
 
                 auto add_sc = [this, &flags, &hk_sizer, &add_st](const auto id, const auto min, const auto max, const auto init) {
@@ -194,7 +194,7 @@ namespace wxGUI
         auto defbtn_flags = flags ;
         defbtn_flags.Align(wxALIGN_RIGHT) ;
         setter_sizer_wrapper->Add(new wxButton(this,
-            SettingsEvt::DEFAULT, trans(Label::PREF_RETURN_TO_DEFAULT)), defbtn_flags) ;
+            SettingsEvt::DEFAULT, trans(Label::Pref_Return_To_Default)), defbtn_flags) ;
 
         SetSizerAndFit(setter_sizer_wrapper) ;
         load_all() ;

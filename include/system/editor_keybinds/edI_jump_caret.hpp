@@ -15,13 +15,13 @@ struct EdiJumpCaret2EOL : public BindedFunctionWithCreator<EdiJumpCaret2EOL>
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiJumpCaret2NLine_DfBOF : public BindedFunctionWithCreator<EdiJumpCaret2NLine_DfBOF>
+struct EdiNJumpCaret2Line_DfBOF : public BindedFunctionWithCreator<EdiNJumpCaret2Line_DfBOF>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiJumpCaret2NLine_DfEOF : public BindedFunctionWithCreator<EdiJumpCaret2NLine_DfEOF>
+struct EdiNJumpCaret2Line_DfEOF : public BindedFunctionWithCreator<EdiNJumpCaret2Line_DfEOF>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;

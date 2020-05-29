@@ -1,14 +1,14 @@
-#ifndef _ALTERNATIVE_TEXT_SELECTER_HPP
-#define _ALTERNATIVE_TEXT_SELECTER_HPP
+#ifndef _SIMPL_TEXT_SELECTER_HPP
+#define _SIMPL_TEXT_SELECTER_HPP
 
-namespace AlternativeTextSelecter
+namespace SimplTextSelecter
 {
     enum class Mode : unsigned char {
-        WORD,
+        Word,
         EOL2BOL,
         BOL2EOL,
 
-        UNSELECT,
+        Unselect,
     } ;
 
     bool is_select_words() noexcept ;
@@ -17,6 +17,10 @@ namespace AlternativeTextSelecter
     bool is_unselect() noexcept ;
 
     Mode get_mode() noexcept ;
+
+    bool is_moving_update() noexcept ;
+
+    bool is_first_line_selection() noexcept ;
 }
 
 

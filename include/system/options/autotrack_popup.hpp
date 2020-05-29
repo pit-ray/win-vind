@@ -3,7 +3,7 @@
 
 #include "dynamic_option.hpp"
 
-struct AutotrackPopup : public DynamicOption
+class AutotrackPopup : public DynamicOption
 {
 private:
     struct Impl ;

@@ -32,6 +32,9 @@
 #include "edi_change_mode.hpp"
 #include "edi_move_caret.hpp"
 #include "edi_jump_caret.hpp"
+#include "edi_clipboard.hpp"
+#include "edi_replace.hpp"
+#include "edi_layout.hpp"
 
 //cmd?
 #include "window_ctrl.hpp"
@@ -158,9 +161,18 @@ struct KeyBinder::Impl
         Change2EdiVisual::create(),
         Change2EdiLineVisual::create(),
 
-        CBPaste::create_with_cache(),
-        CBDelete::create_with_cache(),
-        CBBackSpace::create_with_cache(),
+        EdiNCopyLine::create(),
+        EdiNPasteAfter::create_with_cache(),
+        EdiNPasteBefore::create_with_cache(),
+        EdiNDeleteLine::create_with_cache(),
+        EdiNDeleteLineUntilEOL::create_with_cache(),
+        EdiNDeleteAfter::create_with_cache(),
+        EdiNDeleteBefore::create_with_cache(),
+
+        EdiNRemoveEOL::create_with_cache(),
+
+        EdiNReplaceChar::create(),
+        EdiNReplaceSequence::create(),
 
         SCRedo::create_with_cache(),
         SCUndo::create_with_cache(),
@@ -181,15 +193,15 @@ struct KeyBinder::Impl
         EdiMoveCaretUp::create_with_cache(),
         EdiMoveCaretDown::create_with_cache(),
 
-        EdiMoveCaretNWORDSForward::create_with_cache(),
-        EdiMoveCaretNWORDSBackward::create_with_cache(),
-        EdiMoveCaretNwordsForward::create_with_cache(),
-        EdiMoveCaretNwordsBackward::create_with_cache(),
+        EdiNMoveCaretWORDSForward::create_with_cache(),
+        EdiNMoveCaretWORDSBackward::create_with_cache(),
+        EdiNMoveCaretwordsForward::create_with_cache(),
+        EdiNMoveCaretwordsBackward::create_with_cache(),
 
         EdiJumpCaret2BOL::create_with_cache(),
         EdiJumpCaret2EOL::create_with_cache(),
-        EdiJumpCaret2NLine_DfBOF::create_with_cache(),
-        EdiJumpCaret2NLine_DfEOF::create_with_cache()
+        EdiNJumpCaret2Line_DfBOF::create_with_cache(),
+        EdiNJumpCaret2Line_DfEOF::create_with_cache()
     } ;
 
     vector<bf::shp_t> vpbf_edi_insert {
@@ -201,11 +213,17 @@ struct KeyBinder::Impl
         Change2Normal::create_with_cache(),
         Change2EdiNormal::create_with_cache(),
 
-        CBCopy::create_with_cache(),
-        CBPaste::create_with_cache(),
-        CBCut::create_with_cache(),
-        CBDelete::create_with_cache(),
-        CBBackSpace::create_with_cache(),
+        EdiCopyHighlightText::create(),
+
+        EdiNPasteAfter::create_with_cache(),
+        EdiNPasteBefore::create_with_cache(),
+
+        EdiDeleteHighlightText::create(),
+        EdiNDeleteLineUntilEOL::create_with_cache(),
+        EdiNDeleteAfter::create_with_cache(),
+        EdiNDeleteBefore::create_with_cache(),
+
+        EdiNRemoveEOL::create_with_cache(),
 
         SCRedo::create_with_cache(),
         SCUndo::create_with_cache(),
@@ -226,15 +244,15 @@ struct KeyBinder::Impl
         EdiMoveCaretUp::create_with_cache(),
         EdiMoveCaretDown::create_with_cache(),
 
-        EdiMoveCaretNWORDSForward::create_with_cache(),
-        EdiMoveCaretNWORDSBackward::create_with_cache(),
-        EdiMoveCaretNwordsForward::create_with_cache(),
-        EdiMoveCaretNwordsBackward::create_with_cache(),
+        EdiNMoveCaretWORDSForward::create_with_cache(),
+        EdiNMoveCaretWORDSBackward::create_with_cache(),
+        EdiNMoveCaretwordsForward::create_with_cache(),
+        EdiNMoveCaretwordsBackward::create_with_cache(),
 
         EdiJumpCaret2BOL::create_with_cache(),
         EdiJumpCaret2EOL::create_with_cache(),
-        EdiJumpCaret2NLine_DfBOF::create_with_cache(),
-        EdiJumpCaret2NLine_DfEOF::create_with_cache()
+        EdiNJumpCaret2Line_DfBOF::create_with_cache(),
+        EdiNJumpCaret2Line_DfEOF::create_with_cache()
     } ;
 
     //Window Mode Command

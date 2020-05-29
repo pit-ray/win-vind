@@ -81,26 +81,26 @@ private:
 } ;
 
 
-struct EdiMoveCaretNwordsForward : public BindedFunctionWithCreator<EdiMoveCaretNwordsForward>
+struct EdiNMoveCaretwordsForward : public BindedFunctionWithCreator<EdiNMoveCaretwordsForward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiMoveCaretNwordsBackward : public BindedFunctionWithCreator<EdiMoveCaretNwordsBackward>
+struct EdiNMoveCaretwordsBackward : public BindedFunctionWithCreator<EdiNMoveCaretwordsBackward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct EdiMoveCaretNWORDSForward : public BindedFunctionWithCreator<EdiMoveCaretNWORDSForward>
+struct EdiNMoveCaretWORDSForward : public BindedFunctionWithCreator<EdiNMoveCaretWORDSForward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiMoveCaretNWORDSBackward : public BindedFunctionWithCreator<EdiMoveCaretNWORDSBackward>
+struct EdiNMoveCaretWORDSBackward : public BindedFunctionWithCreator<EdiNMoveCaretWORDSBackward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;

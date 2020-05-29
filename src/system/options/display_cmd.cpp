@@ -50,6 +50,10 @@ DisplayCmd::DisplayCmd(const KeyBinder* const pkb)
     pimpl->lf.lfFaceName[0] = '\0' ;
 }
 
+DisplayCmd::~DisplayCmd() = default ;
+DisplayCmd::DisplayCmd(DisplayCmd&&) = default ;
+DisplayCmd& DisplayCmd::operator=(DisplayCmd&&) = default ;
+
 const string DisplayCmd::name() const noexcept
 {
     return "display_cmd" ;

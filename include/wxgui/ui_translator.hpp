@@ -7,61 +7,61 @@
 namespace UITrans
 {
     enum class Label : unsigned char {
-        SYSTRAY_PREFERENCES, //System Tray
-        SYSTRAY_ABOUT,
-        SYSTRAY_EXIT,
+        SysTray_Preferences, //System Tray
+        SysTray_About,
+        SysTray_Exit,
 
-        PREF_SETTINGS, //Settings Tab
-        PREF_SETTINGS_COMMON,
+        Pref_Settings, //Settings Tab
+        Pref_Settings_Common,
 
-        PREF_SETTINGS_COMMON_GUILANG,
-        PREF_SETTINGS_COMMON_GUILANG_US,
-        PREF_SETTINGS_COMMON_GUILANG_JP,
+        Pref_Settings_Common_GUILang,
+        Pref_Settings_Common_GUILang_US,
+        Pref_Settings_Common_GUILang_JP,
 
-        PREF_SETTINGS_COMMON_ICONSTYLE,
-        PREF_SETTINGS_COMMON_ICONSTYLE_DARK,
-        PREF_SETTINGS_COMMON_ICONSTYLE_LIGHT,
+        Pref_Settings_Common_IconStyle,
+        Pref_Settings_Common_IconStyle_Dark,
+        Pref_Settings_Common_IconStyle_Light,
 
-        PREF_SETTINGS_COMMON_KBTYPE,
-        PREF_SETTINGS_COMMON_KBTYPE_US,
-        PREF_SETTINGS_COMMON_KBTYPE_JP,
-        PREF_SETTINGS_COMMON_KBTYPE_CUSTOM,
+        Pref_Settings_Common_KBType,
+        Pref_Settings_Common_KBType_US,
+        Pref_Settings_Common_KBType_JP,
+        Pref_Settings_Common_KBType_Custom,
 
-        PREF_SETTINGS_COMMON_RESOLUTION,
+        Pref_Settings_Common_Resolution,
 
-        PREF_SETTINGS_HOTKEYS,
-        PREF_SETTINGS_COMMANDS,
+        Pref_Settings_HotKeys,
+        Pref_Settings_Commands,
 
-        PREF_BINDLIST, //Bind List Tab
-        PREF_BINDLIST_HOTKEYS,
-        PREF_BINDLIST_COMMANDS,
+        Pref_BindList, //Bind List Tab
+        Pref_BindList_HotKeys,
+        Pref_BindList_Commands,
 
-        PREF_SHORTCUTAPPS, //Shortcut Apps Tab
-        PREF_SHORTCUTAPPS_SHELL,
-        PREF_SHORTCUTAPPS_NAME,
-        PREF_SHORTCUTAPPS_PATH,
-        PREF_SHORTCUTAPPS_ADD,
-        PREF_SHORTCUTAPPS_DEL,
+        Pref_ShortcutApps, //Shortcut Apps Tab
+        Pref_ShortcutApps_Shell,
+        Pref_ShortcutApps_Name,
+        Pref_ShortcutApps_Path,
+        Pref_ShortcutApps_Add,
+        Pref_ShortcutApps_Del,
 
-        PREF_OPTIONS, //Options Tab
+        Pref_Options, //Options Tab
 
-        PREF_OPTIONS_OPTS,
-        PREF_OPTIONS_DISPCMDS,
+        Pref_Options_Opts,
+        Pref_Options_DispCmds,
 
-        PREF_OPTIONS_DISPCMDS_POS_UPPERLEFT,
-        PREF_OPTIONS_DISPCMDS_POS_UPPERMID,
-        PREF_OPTIONS_DISPCMDS_POS_UPPERRIGHT,
-        PREF_OPTIONS_DISPCMDS_POS_MIDLEFT,
-        PREF_OPTIONS_DISPCMDS_POS_CENTER,
-        PREF_OPTIONS_DISPCMDS_POS_MIDRIGHT,
-        PREF_OPTIONS_DISPCMDS_POS_LOWERLEFT,
-        PREF_OPTIONS_DISPCMDS_POS_LOWERMID,
-        PREF_OPTIONS_DISPCMDS_POS_LOWERRIGHT,
+        Pref_Options_DispCmds_Pos_UpperLeft,
+        Pref_Options_DispCmds_Pos_UpperMid,
+        Pref_Options_DispCmds_Pos_UpperRight,
+        Pref_Options_DispCmds_Pos_MidLeft,
+        Pref_Options_DispCmds_Pos_Center,
+        Pref_Options_DispCmds_Pos_MidRight,
+        Pref_Options_DispCmds_Pos_LowerLeft,
+        Pref_Options_DispCmds_Pos_LowerMid,
+        Pref_Options_DispCmds_Pos_LowerRight,
 
-        PREF_RETURN_TO_DEFAULT, //General Buttons
-        PREF_OK,
-        PREF_CANCEL,
-        PREF_APPLY
+        Pref_Return_To_Default, //General Buttons
+        Pref_OK,
+        Pref_Cancel,
+        Pref_Apply
     } ;
 
     const wxString& trans(const Label index) ;

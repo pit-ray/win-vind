@@ -12,112 +12,112 @@ namespace UITrans
     //so locate static objects used general purposes at local in order to define by called its functions.
     const wxString& trans(const Label index) {
         static const auto ui_language = PrefParser::load_uilang() ;
-        static const wxString DEFAULT_LABEL{"CANNOT FOUND LABEL"} ;
+        static const wxString Default_LABEL{"CANNOT FOUND LABEL"} ;
 
         static const std::unordered_map<Label, wxString> lb2jp {
-            {Label::SYSTRAY_PREFERENCES, wxT("設定")},
-            {Label::SYSTRAY_ABOUT,       wxT("win-vindについて")},
-            {Label::SYSTRAY_EXIT,        wxT("終了")},
+            {Label::SysTray_Preferences, wxT("設定")},
+            {Label::SysTray_About,       wxT("win-vindについて")},
+            {Label::SysTray_Exit,        wxT("終了")},
 
-            {Label::PREF_SETTINGS,                          wxT("詳細設定")},
-            {Label::PREF_SETTINGS_COMMON,                   wxT("共通")},
-            {Label::PREF_SETTINGS_COMMON_GUILANG,           wxT("GUIの言語")},
-            {Label::PREF_SETTINGS_COMMON_GUILANG_JP,        wxT("日本語")},
-            {Label::PREF_SETTINGS_COMMON_GUILANG_US,        wxT("英語")},
-            {Label::PREF_SETTINGS_COMMON_ICONSTYLE,         wxT("アイコンのスタイル")},
-            {Label::PREF_SETTINGS_COMMON_ICONSTYLE_DARK,    wxT("ダーク")},
-            {Label::PREF_SETTINGS_COMMON_ICONSTYLE_LIGHT,   wxT("ライト")},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE,            wxT("キーボード配列")},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE_US,         wxT("英語配列(101/102)")},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE_JP,         wxT("日本語配列(106/109)")},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE_CUSTOM,     wxT("カスタム")},
-            {Label::PREF_SETTINGS_HOTKEYS,                  wxT("ホットキー")},
-            {Label::PREF_SETTINGS_COMMANDS,                 wxT("コマンド")},
-            {Label::PREF_SETTINGS_COMMON_RESOLUTION,        wxT("解像度PPI倍率")},
+            {Label::Pref_Settings,                          wxT("詳細設定")},
+            {Label::Pref_Settings_Common,                   wxT("共通")},
+            {Label::Pref_Settings_Common_GUILang,           wxT("GUIの言語")},
+            {Label::Pref_Settings_Common_GUILang_JP,        wxT("日本語")},
+            {Label::Pref_Settings_Common_GUILang_US,        wxT("英語")},
+            {Label::Pref_Settings_Common_IconStyle,         wxT("アイコンのスタイル")},
+            {Label::Pref_Settings_Common_IconStyle_Dark,    wxT("ダーク")},
+            {Label::Pref_Settings_Common_IconStyle_Light,   wxT("ライト")},
+            {Label::Pref_Settings_Common_KBType,            wxT("キーボード配列")},
+            {Label::Pref_Settings_Common_KBType_US,         wxT("英語配列(101/102)")},
+            {Label::Pref_Settings_Common_KBType_JP,         wxT("日本語配列(106/109)")},
+            {Label::Pref_Settings_Common_KBType_Custom,     wxT("カスタム")},
+            {Label::Pref_Settings_HotKeys,                  wxT("ホットキー")},
+            {Label::Pref_Settings_Commands,                 wxT("コマンド")},
+            {Label::Pref_Settings_Common_Resolution,        wxT("解像度PPI倍率")},
 
-            {Label::PREF_BINDLIST,          wxT("バインドリスト")},
-            {Label::PREF_BINDLIST_HOTKEYS,  wxT("ホットキー")},
-            {Label::PREF_BINDLIST_COMMANDS, wxT("コマンド")},
+            {Label::Pref_BindList,          wxT("バインドリスト")},
+            {Label::Pref_BindList_HotKeys,  wxT("ホットキー")},
+            {Label::Pref_BindList_Commands, wxT("コマンド")},
 
-            {Label::PREF_SHORTCUTAPPS,          wxT("アプリのショートカット")},
-            {Label::PREF_SHORTCUTAPPS_SHELL,    wxT("コンソール (shellコマンド)")},
-            {Label::PREF_SHORTCUTAPPS_NAME,     wxT("名前")},
-            {Label::PREF_SHORTCUTAPPS_PATH,     wxT("ファイルの場所")},
-            {Label::PREF_SHORTCUTAPPS_ADD,      wxT("追加")},
-            {Label::PREF_SHORTCUTAPPS_DEL,      wxT("削除")},
+            {Label::Pref_ShortcutApps,          wxT("アプリのショートカット")},
+            {Label::Pref_ShortcutApps_Shell,    wxT("コンソール (shellコマンド)")},
+            {Label::Pref_ShortcutApps_Name,     wxT("名前")},
+            {Label::Pref_ShortcutApps_Path,     wxT("ファイルの場所")},
+            {Label::Pref_ShortcutApps_Add,      wxT("追加")},
+            {Label::Pref_ShortcutApps_Del,      wxT("削除")},
 
-            {Label::PREF_OPTIONS,          wxT("オプション")},
-            {Label::PREF_OPTIONS_OPTS,     wxT("オプションの切り替え")},
-            {Label::PREF_OPTIONS_DISPCMDS, wxT("コマンドの画面表示")},
+            {Label::Pref_Options,          wxT("オプション")},
+            {Label::Pref_Options_Opts,     wxT("オプションの切り替え")},
+            {Label::Pref_Options_DispCmds, wxT("コマンドの画面表示")},
 
-            {Label::PREF_OPTIONS_DISPCMDS_POS_UPPERLEFT,    wxT("左上")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_UPPERMID,     wxT("上中央")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_UPPERRIGHT,   wxT("右上")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_MIDLEFT,      wxT("左中央")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_CENTER,       wxT("中央")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_MIDRIGHT,     wxT("右中央")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_LOWERLEFT,    wxT("左下")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_LOWERMID,     wxT("下中央")},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_LOWERRIGHT,   wxT("右下")},
+            {Label::Pref_Options_DispCmds_Pos_UpperLeft,    wxT("左上")},
+            {Label::Pref_Options_DispCmds_Pos_UpperMid,     wxT("上中央")},
+            {Label::Pref_Options_DispCmds_Pos_UpperRight,   wxT("右上")},
+            {Label::Pref_Options_DispCmds_Pos_MidLeft,      wxT("左中央")},
+            {Label::Pref_Options_DispCmds_Pos_Center,       wxT("中央")},
+            {Label::Pref_Options_DispCmds_Pos_MidRight,     wxT("右中央")},
+            {Label::Pref_Options_DispCmds_Pos_LowerLeft,    wxT("左下")},
+            {Label::Pref_Options_DispCmds_Pos_LowerMid,     wxT("下中央")},
+            {Label::Pref_Options_DispCmds_Pos_LowerRight,   wxT("右下")},
 
-            {Label::PREF_RETURN_TO_DEFAULT, wxT("初期設定に戻す")},
+            {Label::Pref_Return_To_Default, wxT("初期設定に戻す")},
 
-            {Label::PREF_OK,     wxT("OK")},
-            {Label::PREF_CANCEL, wxT("キャンセル")},
-            {Label::PREF_APPLY,  wxT("適用")}
+            {Label::Pref_OK,     wxT("OK")},
+            {Label::Pref_Cancel, wxT("キャンセル")},
+            {Label::Pref_Apply,  wxT("適用")}
         } ;
 
         static const std::unordered_map<Label, wxString> lb2us {
-            {Label::SYSTRAY_PREFERENCES, "Preferences"},
-            {Label::SYSTRAY_ABOUT,       "About"},
-            {Label::SYSTRAY_EXIT,        "Exit"},
+            {Label::SysTray_Preferences, "Preferences"},
+            {Label::SysTray_About,       "About"},
+            {Label::SysTray_Exit,        "Exit"},
 
-            {Label::PREF_SETTINGS,                          "Settings"},
-            {Label::PREF_SETTINGS_COMMON,                   "Common"},
-            {Label::PREF_SETTINGS_COMMON_GUILANG,           "GUI Language"},
-            {Label::PREF_SETTINGS_COMMON_GUILANG_JP,        "Japanese"},
-            {Label::PREF_SETTINGS_COMMON_GUILANG_US,        "English"},
-            {Label::PREF_SETTINGS_COMMON_ICONSTYLE,         "Icon Style"},
-            {Label::PREF_SETTINGS_COMMON_ICONSTYLE_DARK,    "Dark"},
-            {Label::PREF_SETTINGS_COMMON_ICONSTYLE_LIGHT,   "Light"},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE,            "Keyboard Type"},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE_US,         "US(101/102)"},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE_JP,         "JP(106/109)"},
-            {Label::PREF_SETTINGS_COMMON_RESOLUTION,        "Resolution PPI Mag"},
-            {Label::PREF_SETTINGS_COMMON_KBTYPE_CUSTOM,     "Custom"},
-            {Label::PREF_SETTINGS_HOTKEYS,                  "Hot Keys"},
-            {Label::PREF_SETTINGS_COMMANDS,                 "Commands"},
+            {Label::Pref_Settings,                          "Settings"},
+            {Label::Pref_Settings_Common,                   "Common"},
+            {Label::Pref_Settings_Common_GUILang,           "GUI Language"},
+            {Label::Pref_Settings_Common_GUILang_JP,        "Japanese"},
+            {Label::Pref_Settings_Common_GUILang_US,        "English"},
+            {Label::Pref_Settings_Common_IconStyle,         "Icon Style"},
+            {Label::Pref_Settings_Common_IconStyle_Dark,    "Dark"},
+            {Label::Pref_Settings_Common_IconStyle_Light,   "Light"},
+            {Label::Pref_Settings_Common_KBType,            "Keyboard Type"},
+            {Label::Pref_Settings_Common_KBType_US,         "US(101/102)"},
+            {Label::Pref_Settings_Common_KBType_JP,         "JP(106/109)"},
+            {Label::Pref_Settings_Common_Resolution,        "Resolution PPI Mag"},
+            {Label::Pref_Settings_Common_KBType_Custom,     "Custom"},
+            {Label::Pref_Settings_HotKeys,                  "Hot Keys"},
+            {Label::Pref_Settings_Commands,                 "Commands"},
 
-            {Label::PREF_BINDLIST,          "Bind Lists"},
-            {Label::PREF_BINDLIST_HOTKEYS,  "Hot Keys"},
-            {Label::PREF_BINDLIST_COMMANDS, "Commands"},
+            {Label::Pref_BindList,          "Bind Lists"},
+            {Label::Pref_BindList_HotKeys,  "Hot Keys"},
+            {Label::Pref_BindList_Commands, "Commands"},
 
-            {Label::PREF_SHORTCUTAPPS,          "Shortcut Apps"},
-            {Label::PREF_SHORTCUTAPPS_SHELL,    "console (command: 'shell')"},
-            {Label::PREF_SHORTCUTAPPS_NAME,     "Name"},
-            {Label::PREF_SHORTCUTAPPS_PATH,     "Path"},
-            {Label::PREF_SHORTCUTAPPS_ADD,      "Add"},
-            {Label::PREF_SHORTCUTAPPS_DEL,      "Delete"},
+            {Label::Pref_ShortcutApps,          "Shortcut Apps"},
+            {Label::Pref_ShortcutApps_Shell,    "console (command: 'shell')"},
+            {Label::Pref_ShortcutApps_Name,     "Name"},
+            {Label::Pref_ShortcutApps_Path,     "Path"},
+            {Label::Pref_ShortcutApps_Add,      "Add"},
+            {Label::Pref_ShortcutApps_Del,      "Delete"},
 
-            {Label::PREF_OPTIONS,          "Options"},
-            {Label::PREF_OPTIONS_OPTS,     "Options"},
-            {Label::PREF_OPTIONS_DISPCMDS, "Display Commands"},
+            {Label::Pref_Options,          "Options"},
+            {Label::Pref_Options_Opts,     "Options"},
+            {Label::Pref_Options_DispCmds, "Display Commands"},
 
-            {Label::PREF_OPTIONS_DISPCMDS_POS_UPPERLEFT,    "UpperLeft"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_UPPERMID,     "UpperMid"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_UPPERRIGHT,   "UpperRight"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_MIDLEFT,      "MidLeft"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_CENTER,       "Center"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_MIDRIGHT,     "MidRight"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_LOWERLEFT,    "LowerLeft"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_LOWERMID,     "LowerMid"},
-            {Label::PREF_OPTIONS_DISPCMDS_POS_LOWERRIGHT,   "LowerRight"},
+            {Label::Pref_Options_DispCmds_Pos_UpperLeft,    "UpperLeft"},
+            {Label::Pref_Options_DispCmds_Pos_UpperMid,     "UpperMid"},
+            {Label::Pref_Options_DispCmds_Pos_UpperRight,   "UpperRight"},
+            {Label::Pref_Options_DispCmds_Pos_MidLeft,      "MidLeft"},
+            {Label::Pref_Options_DispCmds_Pos_Center,       "Center"},
+            {Label::Pref_Options_DispCmds_Pos_MidRight,     "MidRight"},
+            {Label::Pref_Options_DispCmds_Pos_LowerLeft,    "LowerLeft"},
+            {Label::Pref_Options_DispCmds_Pos_LowerMid,     "LowerMid"},
+            {Label::Pref_Options_DispCmds_Pos_LowerRight,   "LowerRight"},
 
-            {Label::PREF_RETURN_TO_DEFAULT, "Return to Default"},
+            {Label::Pref_Return_To_Default, "Return to Default"},
 
-            {Label::PREF_OK,     "OK"},
-            {Label::PREF_CANCEL, "Cancel"},
-            {Label::PREF_APPLY,  "Apply"}
+            {Label::Pref_OK,     "OK"},
+            {Label::Pref_Cancel, "Cancel"},
+            {Label::Pref_Apply,  "Apply"}
         } ;
 
         try {
@@ -128,13 +128,13 @@ namespace UITrans
             return lb2us.at(index) ;
         }
         catch(std::out_of_range& e) {
-            return DEFAULT_LABEL ;
+            return Default_LABEL ;
         }
     }
 
     const wxString& trans(const std::string id) {
         static const auto ui_language = PrefParser::load_uilang() ;
-        static const wxString DEFAULT_LABEL{"CANNOT FOUND LABEL"} ;
+        static const wxString Default_LABEL{"CANNOT FOUND LABEL"} ;
 
         static const std::unordered_map<std::string, wxString> id2jp {
             {"change_to_normal",             wxT("ノーマルモード")},
@@ -192,19 +192,32 @@ namespace UITrans
             {"change_to_edi_bkinsert",              wxT("[E] バックインサートモード")},
             {"change_to_edi_nlinsert",              wxT("[E] 改行インサートモード")},
             {"change_to_edi_visual",                wxT("[E] ビジュアルモード")},
-            {"change_to_edi_line_visual",           wxT("[E] ビジュアルモード(行単位)")},
+            {"change_to_edi_line_visual",           wxT("[E] ビジュアルモード(行)")},
             {"edi_move_caret_left",                 wxT("[E] 左へキャレット移動")},
             {"edi_move_caret_right",                wxT("[E] 右へキャレット移動")},
             {"edi_move_caret_up",                   wxT("[E] 上へキャレット移動")},
             {"edi_move_caret_down",                 wxT("[E] 下へキャレット移動")},
-            {"edi_move_caret_Nwords_forward",       wxT("[E] N単語分先に進む")},
-            {"edi_move_caret_Nwords_backward",      wxT("[E] N単語分前に戻る")},
-            {"edi_move_caret_NWORDS_forward",       wxT("[E] N単語分先に進む(空白)")},
-            {"edi_move_caret_NWORDS_backward",      wxT("[E] N単語分前に戻る(空白)")},
+            {"edi_n_move_caret_words_forward",      wxT("[E] N単語分先に進む")},
+            {"edi_n_move_caret_words_backward",     wxT("[E] N単語分前に戻る")},
+            {"edi_n_move_caret_WORDS_forward",      wxT("[E] N単語分先に進む(空白)")},
+            {"edi_n_move_caret_WORDS_backward",     wxT("[E] N単語分前に戻る(空白)")},
             {"edi_jump_caret_to_BOL",               wxT("[E] 行頭へキャレット移動")},
             {"edi_jump_caret_to_EOL",               wxT("[E] 行末へキャレット移動")},
-            {"edi_jump_caret_to_nline_default_BOF", wxT("[E] N行目にキャレット移動 (BOF)")},
-            {"edi_jump_caret_to_nline_default_EOF", wxT("[E] N行目にキャレット移動 (EOF)")},
+            {"edi_copy_highlight_text",             wxT("[E] 選択テキストをヤンク")},
+            {"edi_n_copy_line",                     wxT("[E] N行ヤンク")},
+            {"edi_n_paste_after",                   wxT("[E] 後方にプット")},
+            {"edi_n_paste_before",                  wxT("[E] 前方にプット")},
+            {"edi_delete_highlight_text",           wxT("[E] 選択テキストを削除")},
+            {"edi_n_delete_line",                   wxT("[E] N行削除")},
+            {"edi_n_delete_line_until_EOL",         wxT("[E] N-1行後の行末まで削除")},
+            {"edi_n_delete_after",                  wxT("[E] 後方のN文字削除")},
+            {"edi_n_delete_before",                 wxT("[E] 前方のN文字削除")},
+            {"edi_n_remove_EOL",                    wxT("[E] 次の行を行末に結合")},
+            {"edi_n_replace_char",                  wxT("[E] N文字置換")},
+            {"edi_n_replace_sequence",              wxT("[E] 置換モード")},
+
+            {"edi_n_jump_caret_to_line_default_BOF", wxT("[E] N行目にキャレット移動 (BOF)")},
+            {"edi_n_jump_caret_to_line_default_EOF", wxT("[E] N行目にキャレット移動 (EOF)")},
 
             {"save_opened_file",             wxT("ファイルを保存")},
             {"close_opened_file",            wxT("ドキュメント(タブ)を閉じる")},
@@ -308,14 +321,27 @@ namespace UITrans
             {"edi_move_caret_right",                "[E] Move Caret Right"},
             {"edi_move_caret_up",                   "[E] Move Caret Up"},
             {"edi_move_caret_down",                 "[E] Move Caret Down"},
-            {"edi_move_caret_Nwords_forward",       "[E] N-words forward"},
-            {"edi_move_caret_Nwords_backward",      "[E] N-words backward"},
-            {"edi_move_caret_NWORDS_forward",       "[E] N-WORDS forward"},
-            {"edi_move_caret_NWORDS_backward",      "[E] N-WORDS backward"},
+            {"edi_n_move_caret_words_forward",      "[E] N-words forward"},
+            {"edi_n_move_caret_words_backward",     "[E] N-words backward"},
+            {"edi_n_move_caret_WORDS_forward",      "[E] N-WORDS forward"},
+            {"edi_n_move_caret_WORDS_backward",     "[E] N-WORDS backward"},
             {"edi_jump_caret_to_BOL",               "[E] Jump Caret to BOL"},
             {"edi_jump_caret_to_EOL",               "[E] Jump Caret to EOL"},
-            {"edi_jump_caret_to_nline_default_BOF", "[E] Jump Caret to N-Line (BOF)"},
-            {"edi_jump_caret_to_nline_default_EOF", "[E] Jump Caret to N-Line (EOF)"},
+            {"edi_copy_highlight_text",             "[E] Yank Highlighted Text"},
+            {"edi_n_copy_line",                     "[E] Yank N-Lines"},
+            {"edi_n_paste_after",                   "[E] Put Text After Caret"},
+            {"edi_n_paste_before",                  "[E] Put Text Before Caret"},
+            {"edi_delete_highlight_text",           "[E] Delete Highlighted Text"},
+            {"edi_n_delete_line",                   "[E] Delete N-Lines"},
+            {"edi_n_delete_line_until_EOL",         "[E] Delete N-Lines Until EOL"},
+            {"edi_n_delete_after",                  "[E] Delete N-Chars After Caret"},
+            {"edi_n_delete_before",                 "[E] Delete N-Chars Before Caret"},
+            {"edi_n_remove_EOL",                    "[E] Join Next Line"},
+            {"edi_n_replace_char",                  "[E] Replace char"},
+            {"edi_n_replace_sequence",              "[E] Replace Insert Mode"},
+
+            {"edi_n_jump_caret_to_line_default_BOF", "[E] Jump Caret to N-Line (BOF)"},
+            {"edi_n_jump_caret_to_line_default_EOF", "[E] Jump Caret to N-Line (EOF)"},
 
             {"save_opened_file",             "Save Opened File"},
             {"close_opened_file",            "Close Opened File(Tab)"},
@@ -365,7 +391,7 @@ namespace UITrans
             return id2us.at(id) ;
         }
         catch(std::out_of_range& e) {
-            return DEFAULT_LABEL ;
+            return Default_LABEL ;
         }
     }
 }

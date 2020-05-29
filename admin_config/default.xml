@@ -81,15 +81,30 @@
         <func name="edi_move_caret_right">l|Space|Right</func>
         <func name="edi_move_caret_up">k|-|g->k|Ctrl(+)P|Up</func>
         <func name="edi_move_caret_down">j|+|g->j|Ctrl(+)j|Ctrl(+)n|Down|Enter|Ctrl(+)m</func>
-        <func name="edi_move_caret_Nwords_forward">w</func>
-        <func name="edi_move_caret_Nwords_backward">b</func>
-        <func name="edi_move_caret_NWORDS_forward">W</func>
-        <func name="edi_move_caret_NWORDS_backward">B</func>
+        <func name="edi_n_move_caret_words_forward">w</func>
+        <func name="edi_n_move_caret_words_backward">b</func>
+        <func name="edi_n_move_caret_WORDS_forward">W</func>
+        <func name="edi_n_move_caret_WORDS_backward">B</func>
 
         <func name="edi_jump_caret_to_BOL">0|Home|g->0</func>
         <func name="edi_jump_caret_to_EOL">$|End|g->$</func>
-        <func name="edi_jump_caret_to_nline_default_BOF">g->g</func>
-        <func name="edi_jump_caret_to_nline_default_EOF">G</func>
+        <func name="edi_n_jump_caret_to_line_default_BOF">g->g</func>
+        <func name="edi_n_jump_caret_to_line_default_EOF">G</func>
+
+        <func name="edi_copy_highlight_text">y</func>
+        <func name="edi_n_copy_line">y->y|Y</func>
+        <func name="edi_n_paste_after">p</func>
+        <func name="edi_n_paste_before">P</func>
+        <func name="edi_delete_highlight_text">d</func>
+        <func name="edi_n_delete_line">d->d</func>
+        <func name="edi_n_delete_line_until_EOL">D</func>
+        <func name="edi_n_delete_after">x|Delete</func>
+        <func name="edi_n_delete_before">X</func>
+
+        <func name="edi_n_remove_EOL">J</func>
+
+        <func name="edi_n_replace_char">r</func>
+        <func name="edi_n_replace_sequence">R</func>
     </binds>
 
     <commands>

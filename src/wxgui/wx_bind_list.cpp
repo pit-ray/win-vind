@@ -110,14 +110,26 @@ namespace wxGUI
             add("edi_move_caret_right") ;
             add("edi_move_caret_up") ;
             add("edi_move_caret_down") ;
-            add("edi_move_caret_Nwords_forward") ;
-            add("edi_move_caret_Nwords_backward") ;
-            add("edi_move_caret_NWORDS_forward") ;
-            add("edi_move_caret_NWORDS_backward") ;
+            add("edi_n_move_caret_words_forward") ;
+            add("edi_n_move_caret_words_backward") ;
+            add("edi_n_move_caret_WORDS_forward") ;
+            add("edi_n_move_caret_WORDS_backward") ;
             add("edi_jump_caret_to_BOL") ;
             add("edi_jump_caret_to_EOL") ;
-            add("edi_jump_caret_to_nline_default_BOF") ;
-            add("edi_jump_caret_to_nline_default_EOF") ;
+            add("edi_n_jump_caret_to_line_default_BOF") ;
+            add("edi_n_jump_caret_to_line_default_EOF") ;
+            add("edi_copy_highlight_text") ;
+            add("edi_n_copy_line") ;
+            add("edi_n_paste_after") ;
+            add("edi_n_paste_before") ;
+            add("edi_delete_highlight_text") ;
+            add("edi_n_delete_line") ;
+            add("edi_n_delete_line_until_EOL") ;
+            add("edi_n_delete_after") ;
+            add("edi_n_delete_before") ;
+            add("edi_n_remove_EOL") ;
+            add("edi_n_replace_char") ;
+            add("edi_n_replace_sequence") ;
 
             SetSizer(sizer) ;
             SetScrollRate(0, 5) ;
@@ -171,7 +183,7 @@ namespace wxGUI
       pimpl(std::make_unique<Impl>())
     {
         using namespace UITrans ;
-        p_book_ctrl->AddPage(this, trans(Label::PREF_BINDLIST)) ;
+        p_book_ctrl->AddPage(this, trans(Label::Pref_BindList)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
@@ -181,11 +193,11 @@ namespace wxGUI
         {
             auto bindlist_sizer = new wxBoxSizer(wxHORIZONTAL) ;
 
-            auto kb_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_BINDLIST_HOTKEYS)) ;
+            auto kb_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_BindList_HotKeys)) ;
             kb_sizer_wrapper->Add(new HotkeyScrWindow(this, wxID_ANY, pimpl->keybinds), flags) ;
             bindlist_sizer->Add(kb_sizer_wrapper, flags) ;
 
-            auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_BINDLIST_COMMANDS)) ;
+            auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_BindList_Commands)) ;
             cmd_sizer_wrapper->Add(new CmdScrWindow(this, wxID_ANY, pimpl->cmds), flags) ;
             bindlist_sizer->Add(cmd_sizer_wrapper, flags) ;
 
@@ -197,7 +209,7 @@ namespace wxGUI
         auto defbtn_flags = flags ;
         defbtn_flags.Align(wxALIGN_RIGHT) ;
         bindlist_sizer_wrapper->Add(new wxButton(this,
-            BindListEvt::DEFAULT, trans(Label::PREF_RETURN_TO_DEFAULT)), defbtn_flags) ;
+            BindListEvt::DEFAULT, trans(Label::Pref_Return_To_Default)), defbtn_flags) ;
 
         SetSizerAndFit(bindlist_sizer_wrapper) ;
         load_all() ;

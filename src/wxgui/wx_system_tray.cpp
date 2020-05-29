@@ -50,11 +50,11 @@ namespace wxGUI
     wxMenu* SystemTray::CreatePopupMenu() {
         using namespace UITrans ;
         auto menu = new wxMenu ;
-        menu->Append(Event::PU_CONFIG, trans(Label::SYSTRAY_PREFERENCES)) ;
+        menu->Append(Event::PU_CONFIG, trans(Label::SysTray_Preferences)) ;
         menu->AppendSeparator() ;
-        menu->Append(Event::PU_ABOUT, trans(Label::SYSTRAY_ABOUT)) ;
+        menu->Append(Event::PU_ABOUT, trans(Label::SysTray_About)) ;
         menu->AppendSeparator() ;
-        menu->Append(Event::PU_EXIT, trans(Label::SYSTRAY_EXIT)) ;
+        menu->Append(Event::PU_EXIT, trans(Label::SysTray_Exit)) ;
 
         return menu ;
     }

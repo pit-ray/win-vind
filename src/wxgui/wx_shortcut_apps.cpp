@@ -46,7 +46,7 @@ namespace wxGUI
       pimpl(std::make_unique<Impl>())
     {
         using namespace UITrans ;
-        p_book_ctrl->AddPage(this, trans(Label::PREF_SHORTCUTAPPS)) ;
+        p_book_ctrl->AddPage(this, trans(Label::Pref_ShortcutApps)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
@@ -61,7 +61,7 @@ namespace wxGUI
 
         {
             auto sh_sizer = new wxFlexGridSizer(2) ;
-            add_st(sh_sizer, trans(Label::PREF_SHORTCUTAPPS_SHELL)) ;
+            add_st(sh_sizer, trans(Label::Pref_ShortcutApps_Shell)) ;
             pimpl->sh_path_picker = new wxFilePickerCtrl(this, wxID_ANY, wxT("cmd"),
                 wxFileSelectorPromptStr, wxFileSelectorDefaultWildcardStr, wxDefaultPosition,
                 wxSize(static_cast<int>(WIDTH * 0.75), wxDefaultCoord), flp_flags) ;
@@ -76,13 +76,13 @@ namespace wxGUI
             static const auto path_width = WIDTH - name_width - 100 ;
             wxListItem col0 ;
             col0.SetId(PathListCol::NAME) ;
-            col0.SetText(trans(Label::PREF_SHORTCUTAPPS_NAME)) ;
+            col0.SetText(trans(Label::Pref_ShortcutApps_Name)) ;
             col0.SetWidth(name_width) ;
             pimpl->path_list->InsertColumn(PathListCol::NAME, col0) ;
 
             wxListItem col1 ;
             col1.SetId(PathListCol::PATH) ;
-            col1.SetText(trans(Label::PREF_SHORTCUTAPPS_PATH)) ;
+            col1.SetText(trans(Label::Pref_ShortcutApps_Path)) ;
             col1.SetWidth(path_width) ;
             pimpl->path_list->InsertColumn(PathListCol::PATH, col1) ;
 
@@ -98,8 +98,8 @@ namespace wxGUI
                 wxSize(static_cast<int>(WIDTH * 0.5), wxDefaultCoord), flp_flags) ;
             ctrls_sizer->Add(pimpl->any_path_picker, flags) ;
 
-            ctrls_sizer->Add(new wxButton(this, PathListEvt::ADD, trans(Label::PREF_SHORTCUTAPPS_ADD)), flags) ;
-            ctrls_sizer->Add(new wxButton(this, PathListEvt::DEL, trans(Label::PREF_SHORTCUTAPPS_DEL)), flags) ;
+            ctrls_sizer->Add(new wxButton(this, PathListEvt::ADD, trans(Label::Pref_ShortcutApps_Add)), flags) ;
+            ctrls_sizer->Add(new wxButton(this, PathListEvt::DEL, trans(Label::Pref_ShortcutApps_Del)), flags) ;
 
             exapps_sizer->Add(ctrls_sizer, flags) ;
         }
@@ -108,7 +108,7 @@ namespace wxGUI
         auto defbtn_flags = flags ;
         defbtn_flags.Align(wxALIGN_RIGHT) ;
         exapps_sizer->Add(new wxButton(this,
-            ExappsEvt::DEFAULT, trans(Label::PREF_RETURN_TO_DEFAULT)), defbtn_flags) ;
+            ExappsEvt::DEFAULT, trans(Label::Pref_Return_To_Default)), defbtn_flags) ;
 
         SetSizerAndFit(exapps_sizer) ;
         load_all() ;

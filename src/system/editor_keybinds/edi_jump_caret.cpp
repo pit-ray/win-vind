@@ -2,7 +2,7 @@
 
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
-#include "alternative_text_selecter.hpp"
+#include "simpl_text_selecter.hpp"
 
 
 //EdiJumpCaret2BOL
@@ -55,23 +55,21 @@ bool EdiJumpCaret2EOL::sprocess(const bool first_call)
 
 
 //EdiJumpCaret2NLine_DfBOF
-const std::string EdiJumpCaret2NLine_DfBOF::sname() noexcept
+const std::string EdiNJumpCaret2Line_DfBOF::sname() noexcept
 {
-    return "edi_jump_caret_to_nline_default_BOF" ;
+    return "edi_n_jump_caret_to_line_default_BOF" ;
 }
-bool EdiJumpCaret2NLine_DfBOF::sprocess(const bool first_call)
+bool EdiNJumpCaret2Line_DfBOF::sprocess(const bool first_call)
 {
     if(!first_call) {
         return true ;
     }
 
-    /*
-    if(AlternativeTextSelecter::get_mode() == AlternativeTextSelecter::Mode::BOL2EOL) {
-        if(!AlternativeTextSelecter::is_select_line_EOL2BOL()) {
+    if(SimplTextSelecter::is_first_line_selection()) {
+        if(!SimplTextSelecter::is_select_line_EOL2BOL()) {
             return false ;
         }
     }
-    */
 
     if(ModeManager::is_edi_visual()) {
         return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
@@ -82,19 +80,19 @@ bool EdiJumpCaret2NLine_DfBOF::sprocess(const bool first_call)
 
 
 //EdiJumpCaret2NLine_DfEOF
-const std::string EdiJumpCaret2NLine_DfEOF::sname() noexcept
+const std::string EdiNJumpCaret2Line_DfEOF::sname() noexcept
 {
-    return "edi_jump_caret_to_nline_default_EOF" ;
+    return "edi_n_jump_caret_to_line_default_EOF" ;
 }
-bool EdiJumpCaret2NLine_DfEOF::sprocess(const bool first_call)
+bool EdiNJumpCaret2Line_DfEOF::sprocess(const bool first_call)
 {
     if(!first_call) {
         return true ;
     }
 
     if(ModeManager::is_edi_visual()) {
-        if(AlternativeTextSelecter::get_mode() == AlternativeTextSelecter::Mode::EOL2BOL) {
-            if(!AlternativeTextSelecter::is_select_line_BOL2EOL()) {
+        if(SimplTextSelecter::is_first_line_selection()) {
+            if(!SimplTextSelecter::is_select_line_BOL2EOL()) {
                 return false ;
             }
         }

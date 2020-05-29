@@ -8,7 +8,7 @@
 #include "msg_logger.hpp"
 #include "dynamic_config.hpp"
 #include "key_absorber.hpp"
-#include "alternative_text_selecter.hpp"
+#include "simpl_text_selecter.hpp"
 #include "mode_manager.hpp"
 
 using namespace std ;
@@ -197,7 +197,16 @@ bool EdiMoveCaretUp::sprocess(const bool first_call) const
 {
     auto push = [] {
         if(ModeManager::is_edi_visual()) {
-            return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_UP) ;
+            if(SimplTextSelecter::is_first_line_selection()) {
+                if(!SimplTextSelecter::is_select_line_EOL2BOL()) {
+                    return false ;
+                }
+            }
+
+            if(!KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_UP)) {
+                return false ;
+            }
+            return SimplTextSelecter::is_moving_update() ;
         }
         return KeybrdEventer::is_pushup(VKC_UP) ;
     } ;
@@ -240,7 +249,16 @@ bool EdiMoveCaretDown::sprocess(const bool first_call) const
 {
     auto push = [] {
         if(ModeManager::is_edi_visual()) {
-            return KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_DOWN) ;
+            if(SimplTextSelecter::is_first_line_selection()) {
+                if(!SimplTextSelecter::is_select_line_BOL2EOL()) {
+                    return false ;
+                }
+            }
+
+            if(!KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_DOWN)) {
+                return false ;
+            }
+            return SimplTextSelecter::is_moving_update() ;
         }
         return KeybrdEventer::is_pushup(VKC_DOWN) ;
     } ;
@@ -259,12 +277,12 @@ bool EdiMoveCaretDown::sprocess(const bool first_call) const
 
 
 //EdiMoveCaretNwordsForward
-const string EdiMoveCaretNwordsForward::sname() noexcept
+const string EdiNMoveCaretwordsForward::sname() noexcept
 {
-    return "edi_move_caret_Nwords_forward" ;
+    return "edi_n_move_caret_words_forward" ;
 }
 
-bool EdiMoveCaretNwordsForward::sprocess(const bool first_call)
+bool EdiNMoveCaretwordsForward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {
@@ -275,12 +293,12 @@ bool EdiMoveCaretNwordsForward::sprocess(const bool first_call)
 
 
 //EdiMoveCaretNwordsBackward
-const string EdiMoveCaretNwordsBackward::sname() noexcept
+const string EdiNMoveCaretwordsBackward::sname() noexcept
 {
-    return "edi_move_caret_Nwords_backward" ;
+    return "edi_n_move_caret_words_backward" ;
 }
 
-bool EdiMoveCaretNwordsBackward::sprocess(const bool first_call)
+bool EdiNMoveCaretwordsBackward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {
@@ -291,12 +309,12 @@ bool EdiMoveCaretNwordsBackward::sprocess(const bool first_call)
 
 
 //EdiMoveCaretNWORDSForward
-const string EdiMoveCaretNWORDSForward::sname() noexcept
+const string EdiNMoveCaretWORDSForward::sname() noexcept
 {
-    return "edi_move_caret_NWORDS_forward" ;
+    return "edi_n_move_caret_WORDS_forward" ;
 }
 
-bool EdiMoveCaretNWORDSForward::sprocess(const bool first_call)
+bool EdiNMoveCaretWORDSForward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {
@@ -307,12 +325,12 @@ bool EdiMoveCaretNWORDSForward::sprocess(const bool first_call)
 
 
 //EdiMoveCaretNWORDSBackward
-const string EdiMoveCaretNWORDSBackward::sname() noexcept
+const string EdiNMoveCaretWORDSBackward::sname() noexcept
 {
-    return "edi_move_caret_NWORDS_backward" ;
+    return "edi_n_move_caret_WORDS_backward" ;
 }
 
-bool EdiMoveCaretNWORDSBackward::sprocess(const bool first_call)
+bool EdiNMoveCaretWORDSBackward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {

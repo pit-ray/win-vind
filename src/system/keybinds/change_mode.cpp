@@ -11,7 +11,7 @@
 #include "mode_manager.hpp"
 #include "keybrd_eventer.hpp"
 #include "virtual_key_fwd.hpp"
-#include "alternative_text_selecter.hpp"
+#include "simpl_text_selecter.hpp"
 
 using namespace std ;
 
@@ -38,7 +38,7 @@ bool Change2Normal::sprocess(const bool first_call)
         }
     }
     if(is_edi_visual()) {
-        if(!AlternativeTextSelecter::is_unselect()) {
+        if(!SimplTextSelecter::is_unselect()) {
             return false ;
         }
     }

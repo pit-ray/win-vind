@@ -6,7 +6,7 @@
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "key_absorber.hpp"
-#include "alternative_text_selecter.hpp"
+#include "simpl_text_selecter.hpp"
 
 
 using namespace std ;
@@ -28,7 +28,7 @@ bool Change2EdiNormal::sprocess(const bool first_call)
     }
 
     if(is_edi_visual()) {
-        if(!AlternativeTextSelecter::is_unselect()) {
+        if(!SimplTextSelecter::is_unselect()) {
             return false ;
         }
     }
@@ -125,7 +125,7 @@ bool Change2EdiVisual::sprocess(const bool first_call)
         return true ;
     }
 
-    if(!AlternativeTextSelecter::is_select_words()) {
+    if(!SimplTextSelecter::is_select_words()) {
         return false ;
     }
 
@@ -147,7 +147,7 @@ bool Change2EdiLineVisual::sprocess(const bool first_call)
         return true ;
     }
 
-    if(!AlternativeTextSelecter::is_select_line_EOL2BOL()) {
+    if(!SimplTextSelecter::is_select_line_EOL2BOL()) {
         return false ;
     }
 

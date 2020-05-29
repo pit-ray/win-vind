@@ -22,7 +22,7 @@ add_library(Common STATIC
     common/mode_manager.cpp
     common/mouse_eventer.cpp
     common/text_analyzer.cpp
-    common/alternative_text_selecter.cpp
+    common/simpl_text_selecter.cpp
     common/utility.cpp
     common/vkc_converter.cpp
     common/xml_parser.cpp
@@ -34,6 +34,9 @@ add_library(EditorKeybinds STATIC
     editor_keybinds/edi_move_caret.cpp
     editor_keybinds/edi_jump_caret.cpp
     editor_keybinds/edi_search_pattern.cpp
+    editor_keybinds/edi_clipboard.cpp
+    editor_keybinds/edi_replace.cpp
+    editor_keybinds/edi_layout.cpp
 )
 target_link_libraries(EditorKeybinds Common)
 

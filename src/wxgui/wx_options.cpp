@@ -28,15 +28,15 @@ namespace wxGUI
     namespace ChoiceTranslator {
         using namespace UITrans ;
         static const std::map<std::string, wxString> label2val {
-            {"UpperLeft",  trans(Label::PREF_OPTIONS_DISPCMDS_POS_UPPERLEFT)},
-            {"UpperMid",   trans(Label::PREF_OPTIONS_DISPCMDS_POS_UPPERMID)},
-            {"UpperRight", trans(Label::PREF_OPTIONS_DISPCMDS_POS_UPPERRIGHT)},
-            {"MidLeft",    trans(Label::PREF_OPTIONS_DISPCMDS_POS_MIDLEFT)},
-            {"Center",     trans(Label::PREF_OPTIONS_DISPCMDS_POS_CENTER)},
-            {"MidRight",   trans(Label::PREF_OPTIONS_DISPCMDS_POS_MIDRIGHT)},
-            {"LowerLeft",  trans(Label::PREF_OPTIONS_DISPCMDS_POS_LOWERLEFT)},
-            {"LowerMid",   trans(Label::PREF_OPTIONS_DISPCMDS_POS_LOWERMID)},
-            {"LowerRight", trans(Label::PREF_OPTIONS_DISPCMDS_POS_LOWERRIGHT)}
+            {"UpperLeft",  trans(Label::Pref_Options_DispCmds_Pos_UpperLeft)},
+            {"UpperMid",   trans(Label::Pref_Options_DispCmds_Pos_UpperMid)},
+            {"UpperRight", trans(Label::Pref_Options_DispCmds_Pos_UpperRight)},
+            {"MidLeft",    trans(Label::Pref_Options_DispCmds_Pos_MidLeft)},
+            {"Center",     trans(Label::Pref_Options_DispCmds_Pos_Center)},
+            {"MidRight",   trans(Label::Pref_Options_DispCmds_Pos_MidRight)},
+            {"LowerLeft",  trans(Label::Pref_Options_DispCmds_Pos_LowerLeft)},
+            {"LowerMid",   trans(Label::Pref_Options_DispCmds_Pos_LowerMid)},
+            {"LowerRight", trans(Label::Pref_Options_DispCmds_Pos_LowerRight)}
         } ;
     }
 
@@ -55,7 +55,7 @@ namespace wxGUI
       pimpl(std::make_unique<Impl>())
     {
         using namespace UITrans ;
-        p_book_ctrl->AddPage(this, trans(Label::PREF_OPTIONS)) ;
+        p_book_ctrl->AddPage(this, trans(Label::Pref_Options)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
@@ -67,7 +67,7 @@ namespace wxGUI
         {
             //Option Checks
             {
-                auto check_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_OPTIONS_OPTS)) ;
+                auto check_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_Options_Opts)) ;
                 auto check_sizer = new wxBoxSizer(wxVERTICAL) ;
 
                 auto add_cb = [this, &flags, &check_sizer](const auto id) {
@@ -85,7 +85,7 @@ namespace wxGUI
 
             //Display Commands Preferences
             {
-                auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::PREF_OPTIONS_DISPCMDS)) ;
+                auto cmd_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_Options_DispCmds)) ;
                 auto cmd_sizer = new wxFlexGridSizer(2) ;
 
                 //text is longer than 15 characters, so not apply SSO.
@@ -138,7 +138,7 @@ namespace wxGUI
             auto defbtn_flags = flags ;
             defbtn_flags.Align(wxALIGN_RIGHT) ;
             opts_sizer_wrapper->Add(new wxButton(this,
-                OptsEvt::DEFAULT, trans(Label::PREF_RETURN_TO_DEFAULT)), defbtn_flags) ;
+                OptsEvt::DEFAULT, trans(Label::Pref_Return_To_Default)), defbtn_flags) ;
 
             SetSizerAndFit(opts_sizer_wrapper) ;
             load_all() ;

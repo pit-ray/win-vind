@@ -337,8 +337,8 @@ namespace UITrans
             {"edi_n_delete_after",                  "[E] Delete N-Chars After Caret"},
             {"edi_n_delete_before",                 "[E] Delete N-Chars Before Caret"},
             {"edi_n_remove_EOL",                    "[E] Join Next Line"},
-            {"edi_n_replace_char",                  "[E] Replace char"},
-            {"edi_n_replace_sequence",              "[E] Replace Insert Mode"},
+            {"edi_n_replace_char",                  "[E] Replace Char"},
+            {"edi_n_replace_sequence",              "[E] Replacing Insert Mode"},
 
             {"edi_n_jump_caret_to_line_default_BOF", "[E] Jump Caret to N-Line (BOF)"},
             {"edi_n_jump_caret_to_line_default_EOF", "[E] Jump Caret to N-Line (EOF)"},

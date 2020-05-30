@@ -20,4 +20,4 @@ cpack .
 cd ..
 copy ".\\release\\setup*.exe" ".\\bin\\"
 
-del /q ".\\release"
+rmdir /q /s ".\\release"

@@ -23,7 +23,7 @@ Vim, Vi is a powerful light-weight awesome editor, has the idia of OSS. Their ke
 
 
 ### GUI Mode
-This is default mode after starting `win-vind`. The target is the mouse cursor. For instance, if you input `h`, moves it to left.  However, it doses not have a concept called rows and columns, so I implemented a wealth of alternative functions. You can be referred to wiki.
+This is default mode after starting `win-vind`. The target is the mouse cursor. For instance, if you input `h`, moves it to left.  However, it doses not have a concept called rows and columns, so I implemented a wealth of alternative functions. You can be referred to <a href="https://github.com/pit-ray/win-vind/wiki/For-Users#key-bind-list">wiki</a>.
 
 #### Example
 You are able to start optional application shortcuts by a registered command as following.
@@ -43,7 +43,7 @@ It enable to emulate Vim when use general text editors, for instance, `notepad.e
 
 
 ## How to use
-Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.
+Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.  
 <a href="https://github.com/pit-ray/win-vind/wiki/%E4%BD%BF%E3%81%84%E6%96%B9-(For-Users-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。
 <br>
 <br>

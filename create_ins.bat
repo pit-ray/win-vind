@@ -19,3 +19,5 @@ cd release
 cpack .
 cd ..
 copy ".\\release\\setup*.exe" ".\\bin\\"
+
+del /q ".\\release"

@@ -54,7 +54,8 @@ namespace wxGUI
         }
 
         auto ppd = new PropDlg() ;
-        ppd->Show(true) ;
+        //ppd->Show(true) ;
+        ppd->Show(false) ;
 
         //enable opening window by command
         System::register_show_window_func([ppd] {

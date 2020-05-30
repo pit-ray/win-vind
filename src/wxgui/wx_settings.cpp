@@ -176,9 +176,9 @@ namespace wxGUI
                 add_sc("screen_pos_buf", 0, 128, 10) ;
                 add_sl("cursor_acceleration", 1, 128, 64) ;
                 add_sl("cursor_weight", 1, 1024, 512) ;
-                add_sl("cursor_max_velocity", 1, 50, 10) ;
-                add_sl("yscroll_speed", 1, 20, 4) ;
-                add_sl("xscroll_speed", 1, 20, 4) ;
+                add_sl("cursor_max_velocity", 1, 20, 10) ;
+                add_sl("yscroll_speed", 1, 10, 4) ;
+                add_sl("xscroll_speed", 1, 10, 4) ;
                 add_ratio("yscroll_screen_ratio", 0.125) ;
                 add_ratio("xscroll_screen_ratio", 0.125) ;
                 hk_sizer_wrapper->Add(hk_sizer, flags) ;

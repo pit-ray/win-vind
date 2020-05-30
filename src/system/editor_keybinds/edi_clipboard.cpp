@@ -35,10 +35,15 @@ bool EdiCopyHighlightText::sprocess(const bool first_call)
     if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_INSERT)) {
         return false ;
     }
-    ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
 
-    using ModeManager::change_mode ;
-    using ModeManager::Mode ;
+    using namespace ECBUtility ;
+    using namespace ModeManager ;
+    if(get_mode() == Mode::EdiLineVisual) {
+        _rgtype = _RegisteredType::Lines ;
+    }
+    else {
+        _rgtype = _RegisteredType::Chars ;
+    }
 
     change_mode(Mode::EdiNormal) ;
     if(!SimplTextSelecter::is_unselect()) {
@@ -190,9 +195,17 @@ bool EdiDeleteHighlightText::sprocess(const bool first_call)
     if(!KeybrdEventer::is_pushup(VKC_LCTRL, VKC_X)) {
         return false ;
     }
-    ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
 
-    ModeManager::change_mode(ModeManager::Mode::EdiNormal) ;
+    using namespace ECBUtility ;
+    using namespace ModeManager ;
+    if(get_mode() == Mode::EdiLineVisual) {
+        _rgtype = _RegisteredType::Lines ;
+    }
+    else {
+        _rgtype = _RegisteredType::Chars ;
+    }
+
+    change_mode(Mode::EdiNormal) ;
     return true ;
 }
 

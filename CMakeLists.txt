@@ -27,7 +27,7 @@ add_custom_command(OUTPUT "${winresobj}"
 #ON is GUI by Win32API.
 #OFF is GUI by wxWidgets.
 set(USE_SIMPL_GUI OFF)
-set(ALLOW_CONSOLE ON)
+set(ALLOW_CONSOLE OFF)
 #---------------------------------
 
 include_directories(
@@ -74,13 +74,13 @@ else()
     set(WXG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/wxgui)
     set(WXGUI_SRC
         ${WXG_DIR}/ui_translator.cpp
+        ${WXG_DIR}/pref_parser.cpp
         ${WXG_DIR}/wx_system_tray.cpp
         ${WXG_DIR}/wx_prop_dlg.cpp
         ${WXG_DIR}/wx_settings.cpp
         ${WXG_DIR}/wx_bind_list.cpp
         ${WXG_DIR}/wx_shortcut_apps.cpp
         ${WXG_DIR}/wx_options.cpp
-        ${WXG_DIR}/pref_parser.cpp
         ${WXG_DIR}/wxgui.cpp
         ${WXG_DIR}/main.cpp
     )
@@ -115,11 +115,11 @@ set(CPACK_GENERATOR NSIS)
 set(CPACK_PACKAGE_NAME "win-vind")
 set(CPACK_PACKAGE_VENDOR "pit-ray")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "win-vind")
-set(CPACK_PACKAGE_VERSION_MAJOR "1.1.0")
+set(CPACK_PACKAGE_VERSION_MAJOR "1.2.0")
 set(CPACK_PACKAGE_VERSION_MINOR "0.0.0")
 set(CPACK_PACKAGE_VERSION_PATCH "1")
-set(CPACK_PACKAGE_VERSION "1.1.0-beta")
-set(CPACK_PACKAGE_FILE_NAME "setup_win-vind_1.1.0_beta")
+set(CPACK_PACKAGE_VERSION "1.2.0-beta")
+set(CPACK_PACKAGE_FILE_NAME "setup_win-vind_1.2.0_beta")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "win-vind")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "applications (win-vind)")

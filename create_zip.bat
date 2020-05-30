@@ -29,4 +29,4 @@ xcopy /e ".\\admin_config" ".\\bin\\win-vind\\admin_config"
 xcopy /e ".\\log" ".\\bin\\win-vind\\log"
 xcopy /e ".\\resources" ".\\bin\\win-vind\\resources"
 
-del /q ".\\release"
+rmdir /q /s ".\\release"

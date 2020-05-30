@@ -35,18 +35,18 @@ If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/cmd-demo.gif?raw=true" width=400>
 
 <br>
-<br>
 
 ### Editor Mode
 It enable to emulate Vim when use general text editors, for instance, `notepad.exe` or `Microsoft Office Word`. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key binds of the original Vim.
-
+<br>
+<br>
 
 
 ## How to use
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.
 <a href="https://github.com/pit-ray/win-vind/wiki/%E4%BD%BF%E3%81%84%E6%96%B9-(For-Users-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。
 <br>
-
+<br>
 
 ## Build instructions
 ### How to build Project

@@ -8,9 +8,18 @@
 
 namespace Path
 {
-    static constexpr auto _EXECUTION_MODE_IDX = "admin_config/execution_mode.idx" ;
-    static const std::string _USE_INST_CONFIG_DIR{".win-vind"} ;
-    static const std::string _UNUSE_INST_CONFIG_DIR{"config"} ;
+    static constexpr auto _EXECUTION_MODE_IDX() noexcept {
+        return "admin_config/execution_mode.idx" ;
+    }
+
+    static const auto& _USE_INST_CONFIG_DIR() noexcept {
+        static const std::string obj(".win-vind") ;
+        return obj ;
+    }
+    static const auto&  _UNUSE_INST_CONFIG_DIR() noexcept {
+        static const std::string obj("config") ;
+        return obj ;
+    }
 
     static inline const auto _get_home_path() noexcept {
         char home_path[200] = {0} ;
@@ -18,11 +27,7 @@ namespace Path
             WIN_ERROR_STREAM << "cannot find %HOMEPATH% (DefaultConfig::get_home_path::GetEnviromentVariable)\n" ;
             return std::string() ;
         }
-
-        std::string str(home_path) ;
-        str.push_back('\\') ;
-
-        return std::move(str) ;
+        return std::string(home_path) + '\\' ;
     }
 
     inline static const auto& HOME_PATH() noexcept {
@@ -30,26 +35,18 @@ namespace Path
         return obj ;
     }
 
-    template <typename T>
-    inline static const auto _get_path(const T& filename) noexcept {
-        using namespace std ;
-        string fstr(filename) ;
-
-        static const auto is_executed_by_installer = [] {
-            std::ifstream ifs{_EXECUTION_MODE_IDX} ;
+    inline static const auto _get_path(std::string filename) noexcept {
+        static const auto use_installer = [] {
+            std::ifstream ifs{_EXECUTION_MODE_IDX()} ;
             std::string index_str{} ;
             std::getline(ifs, index_str) ;
-            return index_str == "1" ? true : false ;
-        } ;
+            return index_str.front() == '1' ;
+        }() ;
 
-        if(!is_executed_by_installer()) {
-            fstr = _UNUSE_INST_CONFIG_DIR +"\\" + fstr ;
-            return move(fstr) ;
+        if(!use_installer) {
+            return _UNUSE_INST_CONFIG_DIR() +"\\" + filename ;
         }
-
-        fstr = HOME_PATH() + _USE_INST_CONFIG_DIR + "\\" + fstr ;
-
-        return std::move(fstr) ;
+        return HOME_PATH() + _USE_INST_CONFIG_DIR() + "\\" + filename ;
     }
 
     inline static const auto& CONFIG_INI() noexcept {
@@ -83,14 +80,12 @@ namespace Path
     }
 
     inline static const auto& KEYBRD_MAP() noexcept {
-        static const auto get_file_name = [] {
+        static const auto obj = _get_path([] {
             std::ifstream ifs{KBTYPE_PTH()} ;
             std::string filename{} ;
             std::getline(ifs, filename) ;
             return filename ;
-        } ;
-
-        static const auto obj = _get_path(get_file_name());
+        }()) ;
         return obj ;
     }
 }

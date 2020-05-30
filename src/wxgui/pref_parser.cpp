@@ -235,37 +235,37 @@ namespace PrefParser
 
     //lang
     wxGUI::Language load_uilang() {
-        return s2e<wxGUI::Language>(_load_pth(Path::UI_LANG_IDX)) ;
+        return s2e<wxGUI::Language>(_load_pth(Path::UI_LANG_IDX())) ;
     }
     const wxGUI::Language& load_default_uilang() {
         static auto cache = s2e<wxGUI::Language>(_load_pth(Path::DEFAULT_UI_LANG_IDX)) ;
         return cache ;
     }
     void save_uilang(const wxGUI::Language idx) {
-        _save_pth(Path::UI_LANG_IDX, e2s(idx)) ;
+        _save_pth(Path::UI_LANG_IDX(), e2s(idx)) ;
     }
 
     //system tray icon
     wxGUI::IconStyle load_sticon() {
-        return s2e<wxGUI::IconStyle>(_load_pth(Path::ICON_IDX)) ;
+        return s2e<wxGUI::IconStyle>(_load_pth(Path::ICON_IDX())) ;
     }
     const wxGUI::IconStyle& load_default_sticon() {
         static auto cache = s2e<wxGUI::IconStyle>(_load_pth(Path::DEFAULT_ICON_IDX)) ;
         return cache ;
     }
     void save_sticon(const wxGUI::IconStyle idx) {
-        _save_pth(Path::ICON_IDX, e2s(idx)) ;
+        _save_pth(Path::ICON_IDX(), e2s(idx)) ;
     }
 
     //config window's resolution PPI magnification
     unsigned char load_propdlg_res() {
-        return static_cast<unsigned char>(std::stoi(_load_pth(Path::RESOLUTION_IDX))) ;
+        return static_cast<unsigned char>(std::stoi(_load_pth(Path::RESOLUTION_IDX()))) ;
     }
     unsigned char load_default_propdlg_res() {
         static auto cache =  static_cast<unsigned char>(std::stoi(_load_pth(Path::DEFAULT_RESOLUTION_IDX))) ;
         return cache ;
     }
     void save_propdlg_res(const unsigned char resolution_index) {
-        _save_pth(Path::RESOLUTION_IDX, std::to_string(resolution_index)) ;
+        _save_pth(Path::RESOLUTION_IDX(), std::to_string(resolution_index)) ;
     }
 }

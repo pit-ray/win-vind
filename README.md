@@ -43,7 +43,7 @@ It enable to emulate Vim when use general text editors, for instance, `notepad.e
 
 
 ## How to use
-Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.  
+Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.
 <a href="https://github.com/pit-ray/win-vind/wiki/%E4%BD%BF%E3%81%84%E6%96%B9-(For-Users-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。
 <br>
 <br>
@@ -71,7 +71,7 @@ cd ..
 <br>
 
 ## For Developer
-Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.  
+Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.
 <a href="https://github.com/pit-ray/win-vind/wiki/%E9%96%8B%E7%99%BA%E8%80%85%E3%81%B8(For-Developers-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。
 <br>
 
@@ -81,7 +81,7 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">G
 |OS|Windows 10 Home 64bit 1909|
 |Framework|MinGW-W64-builds-4.3.5, CMake 3.14.4|
 |Compiler|GNU GCC 8.20|
-|Library|Boost 1.72.0, Win32API, STL|
+|Library|Boost 1.72.0, Win32API, STL, wxWidgets 3.0.5|
 |CPU|AMD Ryzen 2600|
 
 ## Author

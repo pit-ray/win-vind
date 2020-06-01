@@ -49,7 +49,7 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub
 
 ## Build instructions  
 ### How to build Project  
-**This project use `<mutex>`**, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with `<mutex>`. (select `posix` at item called **Thread** in MinGW-Installer.)  
+**This project use `<mutex>` and `<atomic>`**, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with `<mutex>` and `<atomic>`. (select `posix` at item called **Thread** in MinGW-Installer.)  
 
 
 - Automatically Build  
@@ -58,7 +58,7 @@ I recommend executing `build.bat`
 ./build.bat [-debug/-release]
 ```
 
-- Manualy Build
+- Manualy Build  
 If you want to manualy build, use `cmake` and `make` commands as follows.  
 ```shell
 mkdir debug
@@ -84,5 +84,5 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">G
 |CPU|AMD Ryzen 2600|
 
 ## Author
-- pit-ray
+- pit-ray  
 [E-mail] contact(at)pit-ray.com

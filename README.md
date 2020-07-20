@@ -11,23 +11,23 @@ GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>
 
 
 ## Description  
-Vim, Vi is a powerful lightweight awesome editor, has the idea of OSS. Their key binds are very intuitive and allow us to type keeping positions of hands over a keyboard without moving them to mouse. I like this idea, so I implemented a key bind system of Vim for manipulating Windows GUI and general text editors, while staying at home for the virus.  
+Vim, Vi is a powerful lightweight awesome editor, has the idea of OSS. Their key binds are very intuitive and allow us to type keeping positions of hands over a keyboard without moving them to mouse. I like this idea, so I implemented a key bind system of Vim for manipulating Windows GUI and general text editors while staying at home for the virus.  
 This software provides the key bind like Vim and useful shortcut systems.  
 
 
 ## Overview  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/mode_overview.jpg?raw=true" width=700 title="Mode Overview">  
 
-`win-vind` has plenty of hot keys and commands, but they is based on the original Vim. Some little differences are that its mode has two layers and its unique functions for GUI. Concretely, they are `GUI Mode` and `Editor Mode`.
+`win-vind` has plenty of hotkeys and commands, but they are based on the original Vim. Some little differences are that its mode has two layers and its unique functions for GUI. Concretely, they are `GUI Mode` and `Editor Mode`.
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/GUIandEditor.jpg?raw=true" width=600>
 
 
 ### GUI Mode
-This is default mode after starting `win-vind`. The target is the mouse cursor. For instance, if you input `h`, moves it to left.    However, it doses not have a concept called rows and columns, so I implemented a wealth of alternative functions. You can be referred to <a href="https://github.com/pit-ray/win-vind/wiki/For-Users#key-bind-list">wiki</a>.  
+This is default mode after starting `win-vind`. The target is the mouse cursor. For instance, if you input `h`, moves it to left.    However, it does not have a concept called rows and columns, so I implemented a wealth of alternative functions. You can be referred to <a href="https://github.com/pit-ray/win-vind/wiki/For-Users#key-bind-list">wiki</a>.  
 
 #### Example  
-You are able to start optional application shortcuts by a registered command as following.  
+You can start optional application shortcuts by a registered command as following.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/config_shortapps.jpg?raw=true" width=512>  
 
@@ -37,7 +37,7 @@ If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad
 <br>
 
 ### Editor Mode  
-It enable to emulate Vim when use general text editors, for instance, `notepad.exe` or `Microsoft Office Word`. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key binds of the original Vim.  
+It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key binds of the original Vim.  
 <br>
 <br>
 
@@ -59,7 +59,7 @@ I recommend executing `build.bat`
 ./build.bat [-debug/-release]
 ```
 
-- Manualy Build  
+- Manually Build  
 If you want to manualy build, use `cmake` and `make` commands as follows.  
 ```shell
 mkdir debug

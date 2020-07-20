@@ -3,7 +3,7 @@ Vim Key Binder for Windows
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/win-vind-icon.png?raw=true" width="256" height="256" align="right" title="win-vind">
 <br>
 
-**win-vind** provides the light weight **Hybrid UI System of CUI and GUI**.  
+**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.  
 <br>
 GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>.  
 日本語のGitHub wikiページは <a href="https://github.com/pit-ray/win-vind/wiki/%E3%83%9B%E3%83%BC%E3%83%A0-(Home-in-Japanese)">こちら</a>です。  
@@ -11,8 +11,8 @@ GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>
 
 
 ## Description  
-Vim, Vi is a powerful light-weight awesome editor, has the idia of OSS. Their key binds are very intuitive and allow us to type keeping positions of hands over key board without moving them to mouse. I like this idea, so I implemented key bind system of Vim for manipulating Windows GUI and general text editors, while staying at home for the virus.  
-This software provides key bind like Vim and useful shortcut system and is very light-weight.  
+Vim, Vi is a powerful lightweight awesome editor, has the idea of OSS. Their key binds are very intuitive and allow us to type keeping positions of hands over a keyboard without moving them to mouse. I like this idea, so I implemented a key bind system of Vim for manipulating Windows GUI and general text editors, while staying at home for the virus.  
+This software provides the key bind like Vim and useful shortcut systems.  
 
 
 ## Overview  

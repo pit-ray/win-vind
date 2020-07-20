@@ -86,4 +86,4 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">G
 
 ## Author
 - pit-ray  
-[E-mail] contact(at)pit-ray.com
+[E-mail] pit-ray(at)outlook.com

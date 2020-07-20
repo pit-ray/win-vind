@@ -9,6 +9,7 @@ GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>
 日本語のGitHub wikiページは <a href="https://github.com/pit-ray/win-vind/wiki/%E3%83%9B%E3%83%BC%E3%83%A0-(Home-in-Japanese)">こちら</a>です。  
 <br>
 
+`vind` = `vi` + `bind`
 
 ## Description  
 Vim, Vi is a powerful lightweight awesome editor, has the idea of OSS. Their key binds are very intuitive and allow us to type keeping positions of hands over a keyboard without moving them to mouse. I like this idea, so I implemented a key bind system of Vim for manipulating Windows GUI and general text editors while staying at home for the virus.  

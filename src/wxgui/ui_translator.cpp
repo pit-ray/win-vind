@@ -31,12 +31,12 @@ namespace UITrans
             {Label::Pref_Settings_Common_KBType_US,         wxT("英語配列(101/102)")},
             {Label::Pref_Settings_Common_KBType_JP,         wxT("日本語配列(106/109)")},
             {Label::Pref_Settings_Common_KBType_Custom,     wxT("カスタム")},
-            {Label::Pref_Settings_HotKeys,                  wxT("ホットキー")},
+            {Label::Pref_Settings_Hotkeys,                  wxT("ホットキー")},
             {Label::Pref_Settings_Commands,                 wxT("コマンド")},
             {Label::Pref_Settings_Common_Resolution,        wxT("解像度PPI倍率")},
 
             {Label::Pref_BindList,          wxT("バインドリスト")},
-            {Label::Pref_BindList_HotKeys,  wxT("ホットキー")},
+            {Label::Pref_BindList_Hotkeys,  wxT("ホットキー")},
             {Label::Pref_BindList_Commands, wxT("コマンド")},
 
             {Label::Pref_ShortcutApps,          wxT("アプリのショートカット")},
@@ -85,11 +85,11 @@ namespace UITrans
             {Label::Pref_Settings_Common_KBType_JP,         "JP(106/109)"},
             {Label::Pref_Settings_Common_Resolution,        "Resolution PPI Mag"},
             {Label::Pref_Settings_Common_KBType_Custom,     "Custom"},
-            {Label::Pref_Settings_HotKeys,                  "Hot Keys"},
+            {Label::Pref_Settings_Hotkeys,                  "Hotkeys"},
             {Label::Pref_Settings_Commands,                 "Commands"},
 
             {Label::Pref_BindList,          "Bind Lists"},
-            {Label::Pref_BindList_HotKeys,  "Hot Keys"},
+            {Label::Pref_BindList_Hotkeys,  "Hotkeys"},
             {Label::Pref_BindList_Commands, "Commands"},
 
             {Label::Pref_ShortcutApps,          "Shortcut Apps"},
@@ -188,9 +188,12 @@ namespace UITrans
 
             //Editor
             {"change_to_edi_normal",                wxT("[E] ノーマルモード")},
-            {"change_to_edi_insert",                wxT("[E] インサートモード")},
-            {"change_to_edi_bkinsert",              wxT("[E] バックインサートモード")},
-            {"change_to_edi_nlinsert",              wxT("[E] 改行インサートモード")},
+            {"change_to_edi_insert",                wxT("[E] キャレットの前に挿入")},
+            {"change_to_edi_BOLinsert",             wxT("[E] 行頭に挿入")},
+            {"change_to_edi_bkinsert",              wxT("[E] キャレットの後に追加")},
+            {"change_to_edi_EOLinsert",             wxT("[E] 行末に追加")},
+            {"change_to_edi_nlinsert_below",        wxT("[E] 次の行に行を挿入")},
+            {"change_to_edi_nlinsert_above",        wxT("[E] 前の行に行を挿入")},
             {"change_to_edi_visual",                wxT("[E] ビジュアルモード")},
             {"change_to_edi_line_visual",           wxT("[E] ビジュアルモード(行)")},
             {"edi_move_caret_left",                 wxT("[E] 左へキャレット移動")},
@@ -312,11 +315,14 @@ namespace UITrans
 
             //Editor
             {"change_to_edi_normal",                "[E] Change to Editor Normal"},
-            {"change_to_edi_insert",                "[E] Change to Editor Insert"},
-            {"change_to_edi_bkinsert",              "[E] Change to Editor BackInsert"},
-            {"change_to_edi_nlinsert",              "[E] Change to Editor NewLineInsert"},
+            {"change_to_edi_insert",                "[E] Insert Before Caret"},
+            {"change_to_edi_BOLinsert",             "[E] Insert BOL"},
+            {"change_to_edi_bkinsert",              "[E] Append After Caret"},
+            {"change_to_edi_EOLinsert",             "[E] Append EOL"},
+            {"change_to_edi_nlinsert_below",        "[E] Begin New Line Below Caret"},
+            {"change_to_edi_nlinsert_above",        "[E] Begin New Line Above Caret"},
             {"change_to_edi_visual",                "[E] Change to Editor Visual"},
-            {"change_to_edi_line_visual",           "[E] Change to Editor Visual (Line)"},
+            {"change_to_edi_line_visual",           "[E] Change to Editor Line-Visual"},
             {"edi_move_caret_left",                 "[E] Move Caret Left"},
             {"edi_move_caret_right",                "[E] Move Caret Right"},
             {"edi_move_caret_up",                   "[E] Move Caret Up"},

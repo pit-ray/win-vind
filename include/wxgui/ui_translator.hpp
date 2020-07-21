@@ -29,11 +29,11 @@ namespace UITrans
 
         Pref_Settings_Common_Resolution,
 
-        Pref_Settings_HotKeys,
+        Pref_Settings_Hotkeys,
         Pref_Settings_Commands,
 
         Pref_BindList, //Bind List Tab
-        Pref_BindList_HotKeys,
+        Pref_BindList_Hotkeys,
         Pref_BindList_Commands,
 
         Pref_ShortcutApps, //Shortcut Apps Tab

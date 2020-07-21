@@ -16,6 +16,11 @@ struct Change2EdiInsert : public BindedFunctionWithCreator<Change2EdiInsert>
     static const std::string sname() noexcept ;
 } ;
 
+struct Change2EdiBOLInsert : public BindedFunctionWithCreator<Change2EdiBOLInsert>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
 
 struct Change2EdiBkInsert : public BindedFunctionWithCreator<Change2EdiBkInsert>
 {
@@ -23,13 +28,23 @@ struct Change2EdiBkInsert : public BindedFunctionWithCreator<Change2EdiBkInsert>
     static const std::string sname() noexcept ;
 } ;
 
-
-struct Change2EdiNlInsert : public BindedFunctionWithCreator<Change2EdiNlInsert>
+struct Change2EdiEOLInsert : public BindedFunctionWithCreator<Change2EdiEOLInsert>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
+struct Change2EdiNlInsertBelow : public BindedFunctionWithCreator<Change2EdiNlInsertBelow>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct Change2EdiNlInsertAbove : public BindedFunctionWithCreator<Change2EdiNlInsertAbove>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
 
 struct Change2EdiVisual : public BindedFunctionWithCreator<Change2EdiVisual>
 {

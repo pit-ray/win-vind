@@ -102,8 +102,11 @@ namespace wxGUI
             //Editor
             add("change_to_edi_normal") ;
             add("change_to_edi_insert") ;
+            add("change_to_edi_BOLinsert") ;
             add("change_to_edi_bkinsert") ;
-            add("change_to_edi_nlinsert") ;
+            add("change_to_edi_EOLinsert") ;
+            add("change_to_edi_nlinsert_below") ;
+            add("change_to_edi_nlinsert_above") ;
             add("change_to_edi_visual") ;
             add("change_to_edi_line_visual") ;
             add("edi_move_caret_left") ;
@@ -193,7 +196,7 @@ namespace wxGUI
         {
             auto bindlist_sizer = new wxBoxSizer(wxHORIZONTAL) ;
 
-            auto kb_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_BindList_HotKeys)) ;
+            auto kb_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_BindList_Hotkeys)) ;
             kb_sizer_wrapper->Add(new HotkeyScrWindow(this, wxID_ANY, pimpl->keybinds), flags) ;
             bindlist_sizer->Add(kb_sizer_wrapper, flags) ;
 

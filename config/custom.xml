@@ -71,9 +71,12 @@
 
 
         <func name="change_to_edi_normal">Esc</func>
-        <func name="change_to_edi_insert">i|I|g->I</func>
-        <func name="change_to_edi_bkinsert">a|A</func>
-        <func name="change_to_edi_nlinsert">o|O</func>
+        <func name="change_to_edi_insert">i</func>
+        <func name="change_to_edi_BOLinsert">I|g->I</func>
+        <func name="change_to_edi_bkinsert">a</func>
+        <func name="change_to_edi_EOLinsert">A</func>
+        <func name="change_to_edi_nlinsert_below">o</func>
+        <func name="change_to_edi_nlinsert_above">O</func>
         <func name="change_to_edi_visual">v|Ctrl(+)v</func>
         <func name="change_to_edi_line_visual">V</func>
 

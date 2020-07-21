@@ -145,7 +145,7 @@ namespace wxGUI
 
             //Add HotKeys Settings
             {
-                auto hk_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_Settings_HotKeys)) ;
+                auto hk_sizer_wrapper = new wxStaticBoxSizer(wxVERTICAL, this, trans(Label::Pref_Settings_Hotkeys)) ;
                 auto hk_sizer = new wxFlexGridSizer(2) ;
 
                 auto add_sc = [this, &flags, &hk_sizer, &add_st](const auto id, const auto min, const auto max, const auto init) {

@@ -156,8 +156,11 @@ struct KeyBinder::Impl
         Change2Normal::create_with_cache(),
         Change2Command::create_with_cache(),
         Change2EdiInsert::create(),
+        Change2EdiBOLInsert::create(),
         Change2EdiBkInsert::create(),
-        Change2EdiNlInsert::create(),
+        Change2EdiEOLInsert::create(),
+        Change2EdiNlInsertBelow::create(),
+        Change2EdiNlInsertAbove::create(),
         Change2EdiVisual::create(),
         Change2EdiLineVisual::create(),
 

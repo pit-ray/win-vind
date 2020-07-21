@@ -60,6 +60,30 @@ bool Change2EdiInsert::sprocess(const bool first_call)
 }
 
 
+//Change2EdiBOLInsert
+const string Change2EdiBOLInsert::sname() noexcept
+{
+    return "change_to_edi_BOLinsert" ;
+}
+bool Change2EdiBOLInsert::sprocess(const bool first_call)
+{
+    using namespace ModeManager ;
+
+    if(!first_call) {
+        return true ;
+    }
+
+    using namespace KeybrdEventer ;
+    if(!is_pushup(VKC_HOME)) {
+        return false ;
+    }
+
+    KeyAbsorber::open() ;
+    change_mode(Mode::EdiInsert) ;
+    return true ;
+}
+
+
 //Change2EdiBkInsert
 const string Change2EdiBkInsert::sname() noexcept
 {
@@ -84,12 +108,36 @@ bool Change2EdiBkInsert::sprocess(const bool first_call)
 }
 
 
-//Change2EdiNlInsert
-const string Change2EdiNlInsert::sname() noexcept
+//Change2EdiEOLInsert
+const string Change2EdiEOLInsert::sname() noexcept
 {
-    return "change_to_edi_nlinsert" ;
+    return "change_to_edi_EOLinsert" ;
 }
-bool Change2EdiNlInsert::sprocess(const bool first_call)
+bool Change2EdiEOLInsert::sprocess(const bool first_call)
+{
+    using namespace ModeManager ;
+
+    if(!first_call) {
+        return true ;
+    }
+
+    using namespace KeybrdEventer ;
+    if(!is_pushup(VKC_END)) {
+        return false ;
+    }
+
+    KeyAbsorber::open() ;
+    change_mode(Mode::EdiInsert) ;
+    return true ;
+}
+
+
+//Change2EdiNlInsertBelow
+const string Change2EdiNlInsertBelow::sname() noexcept
+{
+    return "change_to_edi_nlinsert_below" ;
+}
+bool Change2EdiNlInsertBelow::sprocess(const bool first_call)
 {
     using namespace ModeManager ;
 
@@ -103,6 +151,36 @@ bool Change2EdiNlInsert::sprocess(const bool first_call)
     }
 
     if(!is_pushup(VKC_ENTER)) {
+        return false ;
+    }
+
+    KeyAbsorber::open() ;
+    change_mode(Mode::EdiInsert) ;
+    return true ;
+}
+
+
+//Change2EdiNlInsertAbove
+const string Change2EdiNlInsertAbove::sname() noexcept
+{
+    return "change_to_edi_nlinsert_above" ;
+}
+bool Change2EdiNlInsertAbove::sprocess(const bool first_call)
+{
+    using namespace ModeManager ;
+
+    if(!first_call) {
+        return true ;
+    }
+
+    using namespace KeybrdEventer ;
+    if(!is_pushup(VKC_HOME)) {
+        return false ;
+    }
+    if(!is_pushup(VKC_ENTER)) {
+        return false ;
+    }
+    if(!is_pushup(VKC_UP)) {
         return false ;
     }
 

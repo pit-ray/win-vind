@@ -17,7 +17,7 @@ This software provides the key bind like Vim and useful shortcut systems.
 
 
 ## Overview  
-<img src="hhttps://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/mode_overview_2.jpg?raw=true" width=700 title="Mode Overview">  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/mode_overview_2.jpg?raw=true" width=700 title="Mode Overview">  
 
 `win-vind` has plenty of hotkeys and commands, but they are based on the original Vim. Some little differences are that its mode has two layers and its unique functions for GUI. Concretely, they are `GUI Mode` and `Editor Mode`.
 

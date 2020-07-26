@@ -6,7 +6,7 @@ using namespace std ;
 //SwitchVDesktop2Left
 const string SwitchVDesktop2Left::sname() noexcept
 {
-    return "switch_taskview_to_left" ;
+    return "switch_vdesktop_to_left" ;
 }
 
 bool SwitchVDesktop2Left::sprocess(const bool first_call)
@@ -23,7 +23,7 @@ bool SwitchVDesktop2Left::sprocess(const bool first_call)
 //SwitchVDesktop2Right
 const string SwitchVDesktop2Right::sname() noexcept
 {
-    return "switch_taskview_to_right" ;
+    return "switch_vdesktop_to_right" ;
 }
 
 bool SwitchVDesktop2Right::sprocess(const bool first_call)

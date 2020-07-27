@@ -12,8 +12,8 @@ GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>
 `vind` = `vi` + `bind`
 
 ## Description  
-Vim, Vi is a powerful lightweight awesome editor, has the idea of OSS. Their key binds are very intuitive and allow us to type keeping positions of hands over a keyboard without moving them to mouse. I like this idea, so I implemented a key bind system of Vim for manipulating Windows GUI and general text editors.
-This software provides the key bind like Vim and useful shortcut systems.  
+Vim, Vi is a powerful lightweight awesome editor, has the idea of OSS. Their key bindings are very intuitive and allow us to type keeping positions of hands over a keyboard without moving them to mouse. I like this idea, so I implemented the key bindings system like Vim for manipulating Windows GUI and general text editors.
+This software provides the key bindings like Vim and useful shortcut systems.  
 
 
 ## Overview  

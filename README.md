@@ -38,7 +38,7 @@ If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad
 <br>
 
 ### Editor Mode  
-It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key binds of the original Vim.  
+It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key bindings of the original Vim.  
 <br>
 <br>
 

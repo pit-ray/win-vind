@@ -49,34 +49,12 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub
 <br>
 <br>
 
-## Build instructions  
-### How to build Project  
-**This project use `<mutex>` and `<atomic>`**, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with `<mutex>` and `<atomic>`. (select `posix` at item called **Thread** in MinGW-Installer.)  
-
-
-- Automatically Build  
-I recommend executing `build.bat`  
-``` shell
-./build.bat [-debug/-release]
-```
-
-- Manually Build  
-If you want to manualy build, use `cmake` and `make` commands as follows.  
-```shell
-mkdir debug
-cd debug
-cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
-mingw32-make -f Makefile
-cd ..
-```
-<br>
-
 ## For Developer
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.  
 <a href="https://github.com/pit-ray/win-vind/wiki/%E9%96%8B%E7%99%BA%E8%80%85%E3%81%B8(For-Developers-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。  
 <br>
 
-## To be implemented  
+## TO DO
 Please contribute.  
 ### Commands
 - `s` / `S`
@@ -88,12 +66,14 @@ Please contribute.
 
 ### System  
 - system for repeating commands
-- by one key + mouse clicking, transition Editor-Mode
+- By one key + mouse clicking, transitions Editor-Mode for a target window. (If change a selected window, turn off Editor-Mode.)
 - setting of an initial mode
 - system for jumping to any line
 - better error message system
 - improve interfaces of Preferences/Bind-List
 - better useful translating system for developer
+
+There are already implemented functions in <a href="https://github.com/pit-ray/win-vind/blob/master/latest_log.md">latest_log.md</a>.
 
 ## Development Enviroment
 ||Name and Version|

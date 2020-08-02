@@ -55,8 +55,10 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">G
 <br>
 
 ## TO DO
-Please contribute.  
-### Commands
+Please contribute or request.  
+There are already implemented functions in <a href="https://github.com/pit-ray/win-vind/blob/master/latest_log.md">latest_log.md</a>.
+<br>
+#### Editor Mode Commands
 - `s` / `S`
 - `cw` / `C`
 - `~`
@@ -64,16 +66,20 @@ Please contribute.
 - operator commands like `diw`
 - replacing commands like `:s/old/new` or `:%s/old/new/g`
 
-### System  
-- system for repeating commands
+#### Differences with Original Vim
+- repeating commands
+- jumping to any line
+
+#### Useful
 - By one key + mouse clicking, transitions Editor-Mode for a target window. (If change a selected window, turn off Editor-Mode.)
 - setting of an initial mode
-- system for jumping to any line
+- config's saving system when reinstall
+
+#### Improving
 - better error message system
 - improve interfaces of Preferences/Bind-List
 - better useful translating system for developer
 
-There are already implemented functions in <a href="https://github.com/pit-ray/win-vind/blob/master/latest_log.md">latest_log.md</a>.
 
 ## Development Enviroment
 ||Name and Version|

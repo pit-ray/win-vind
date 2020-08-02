@@ -23,7 +23,6 @@ This software provides the key bindings like Vim and useful shortcut systems.
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/GUIandEditor.jpg?raw=true" width=600>
 
-
 ### GUI Mode
 This is default mode after starting `win-vind`. The target is the mouse cursor. For instance, if you input `h`, moves it to left.    However, it does not have a concept called rows and columns, so I implemented a wealth of alternative functions. You can be referred to <a href="https://github.com/pit-ray/win-vind/wiki/For-Users#key-bind-list">wiki</a>.  
 
@@ -40,19 +39,14 @@ If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad
 ### Editor Mode  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key bindings of the original Vim.  
 <br>
-<br>
-
 
 ## How to use  
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.  
 <a href="https://github.com/pit-ray/win-vind/wiki/%E4%BD%BF%E3%81%84%E6%96%B9-(For-Users-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。  
-<br>
-<br>
 
 ## For Developer
 Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.  
 <a href="https://github.com/pit-ray/win-vind/wiki/%E9%96%8B%E7%99%BA%E8%80%85%E3%81%B8(For-Developers-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。  
-<br>
 
 ## TO DO
 Please contribute or request.  

@@ -81,15 +81,6 @@ There are already implemented functions in <a href="https://github.com/pit-ray/w
 - better useful translating system for developer
 
 
-## Development Enviroment
-||Name and Version|
-|---|---|
-|OS|Windows 10 Home 64bit 1909|
-|Framework|MinGW-W64-builds-4.3.5, CMake 3.14.4|
-|Compiler|GNU GCC 8.20|
-|Library|Boost 1.72.0, Win32API, STL, wxWidgets 3.0.5|
-|CPU|AMD Ryzen 2600|
-
 ## Author
 - pit-ray  
 [E-mail] pit-ray(at)outlook.com

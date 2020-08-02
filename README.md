@@ -77,13 +77,23 @@ Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">G
 <br>
 
 ## To be implemented  
-### Short Commands
-- `s`/`S`
-- `cw`/`C`
+Please contribute.  
+### Commands
+- `s` / `S`
+- `cw` / `C`
 - `~`
+- `?` / `/` / `n` / `N`
+- operator commands like `diw`
+- replacing commands like `:s/old/new` or `:%s/old/new/g`
 
 ### System  
-- the system for repeating commands
+- system for repeating commands
+- by one key + mouse clicking, transition Editor-Mode
+- setting of an initial mode
+- system for jumping to any line
+- better error message system
+- improve interfaces of Preferences/Bind-List
+- better useful translating system for developer
 
 ## Development Enviroment
 ||Name and Version|

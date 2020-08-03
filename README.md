@@ -74,6 +74,9 @@ There are already implemented functions in <a href="https://github.com/pit-ray/w
 - improve interfaces of Preferences/Bind-List
 - better useful translating system for developer
 
+#### Bugs
+- In some case, the mouse cursor is held moving.  
+
 
 ## Author
 - pit-ray  

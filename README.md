@@ -59,10 +59,12 @@ There are already implemented functions in <a href="https://github.com/pit-ray/w
 - `?` / `/` / `n` / `N`
 - operator commands like `diw`
 - replacing commands like `:s/old/new` or `:%s/old/new/g`
+- `q` (Macro)
 
 #### Differences with Original Vim
 - repeating commands
 - jumping to any line
+- secure text analyzing system
 
 #### Useful
 - By one key + mouse clicking, transitions Editor-Mode for a target window. (If change a selected window, turn off Editor-Mode.)

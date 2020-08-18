@@ -67,7 +67,6 @@ There are already implemented functions in <a href="https://github.com/pit-ray/w
 - secure text analyzing system
 
 #### Useful
-- By one key + mouse clicking, transitions Editor-Mode for a target window. (If change a selected window, turn off Editor-Mode.)
 - setting of an initial mode
 - config's saving system when reinstall
 - adopt JSON instead of XML

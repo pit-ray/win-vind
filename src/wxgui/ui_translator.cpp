@@ -239,8 +239,9 @@ namespace UITrans
             {"open_new_current_window",      wxT("新しいウィンドウを開く")},
             {"reload_current_window",        wxT("ウィンドウを再読み込み")},
 
-            {"display_cmd",     wxT("コマンドの画面表示")},
-            {"autotrack_popup", wxT("ポップアップ自動追従")},
+            {"display_cmd",        wxT("コマンドの画面表示")},
+            {"autotrack_popup",    wxT("ポップアップ自動追従")},
+            {"dedicate_to_window", wxT("ウィンドウ特化")},
 
             {"yscroll_speed",           wxT("縦スクロールのスピード")},
             {"xscroll_speed",           wxT("横スクロールのスピード")},
@@ -365,8 +366,9 @@ namespace UITrans
             {"open_new_current_window",      "Open New Window"},
             {"reload_current_window",        "Reload Current Window"},
 
-            {"display_cmd",     "Display Commands"},
-            {"autotrack_popup", "Autotrack Popup"},
+            {"display_cmd",        "Display Commands"},
+            {"autotrack_popup",    "Autotrack Popup"},
+            {"dedicate_to_window", "Dedicate to One Window"},
 
             {"yscroll_speed",           "Vertical Scroll Speed"},
             {"xscroll_speed",           "Horizontal Scroll Speed"},
@@ -382,7 +384,7 @@ namespace UITrans
             {"cmd_font_size",       "Font Size"},
             {"cmd_font_weight",     "Font Weight"},
             {"cmd_font_color",      "Font Color"},
-            {"cmd_font_bkcolor",    "Font Backgrount Color"},
+            {"cmd_font_bkcolor",    "Font Background Color"},
             {"cmd_font_extra",      "Font Extra"},
             {"cmd_pos",             "Position"},
             {"cmd_ymargin",         "Vertical Margin"},

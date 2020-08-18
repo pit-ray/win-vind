@@ -26,7 +26,7 @@ private:
 
 public:
     explicit BindedFunction() ;
-    virtual ~BindedFunction() ;
+    virtual ~BindedFunction() noexcept ;
 
     BindedFunction(BindedFunction&&) noexcept ;
     BindedFunction& operator=(BindedFunction&&) noexcept ;
@@ -40,10 +40,9 @@ public:
 
     void set_command(const XMLParser::vvvc_t& command) noexcept ;
 
-    std::size_t is_matching(const KeyLog& log, const std::size_t seq_index=0) const noexcept ;
+    std::size_t matched_num(const KeyLog& log, const std::size_t seq_index=0) const noexcept ;
 
     bool is_callable() const noexcept ;
-
 } ;
 
 #endif

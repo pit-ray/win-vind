@@ -35,14 +35,14 @@ namespace APUtility
     }
 }
 
-AutotrackPopup::~AutotrackPopup()
+AutotrackPopup::~AutotrackPopup() noexcept
 {
     APUtility::is_set_param(pimpl->default_flag) ;
     MESSAGE_STREAM << "Refreshed successfully (Option: " << name() << ")\n" ;
 }
 
-AutotrackPopup::AutotrackPopup(AutotrackPopup&&) = default ;
-AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
+AutotrackPopup::AutotrackPopup(AutotrackPopup&&) noexcept = default ;
+AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) noexcept = default ;
 
 const string AutotrackPopup::name() const noexcept
 {

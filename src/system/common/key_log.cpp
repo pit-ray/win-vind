@@ -27,8 +27,8 @@ struct KeyLog::Impl
         once_log.clear() ;
     }
 
-    Impl(Impl&&) = default ;
-    Impl& operator=(Impl&&) = default ;
+    Impl(Impl&&) noexcept = default ;
+    Impl& operator=(Impl&&) noexcept = default ;
 
     Impl(const Impl&) = default ;
     Impl& operator=(const Impl&) =  default ;
@@ -50,7 +50,7 @@ KeyLog::KeyLog(initializer_list<unsigned char>&& codes)
 : pimpl(make_unique<Impl>(std::move(codes)))
 {}
 
-KeyLog::~KeyLog() = default ;
+KeyLog::~KeyLog() noexcept = default ;
 
 //move
 KeyLog::KeyLog(KeyLog&&) noexcept = default ;

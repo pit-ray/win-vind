@@ -77,6 +77,7 @@ namespace wxGUI
 
                 add_cb("autotrack_popup") ;
                 add_cb("display_cmd") ;
+                add_cb("dedicate_to_window") ;
 
                 check_sizer_wrapper->Add(check_sizer, flags) ;
                 opts_sizer->Add(check_sizer_wrapper, flags) ;

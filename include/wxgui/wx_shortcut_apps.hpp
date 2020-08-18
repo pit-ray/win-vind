@@ -20,7 +20,7 @@ namespace wxGUI
 
     public:
         explicit ShortcutAppsPanel(wxBookCtrlBase* const p_book_ctrl) ;
-        virtual ~ShortcutAppsPanel() ;
+        virtual ~ShortcutAppsPanel() noexcept ;
 
         void save_all() ;
         void load_all() ;

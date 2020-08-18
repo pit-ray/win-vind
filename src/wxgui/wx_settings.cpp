@@ -204,7 +204,7 @@ namespace wxGUI
         }, SettingsEvt::DEFAULT) ;
     }
 
-    SettingsPanel::~SettingsPanel() = default ;
+    SettingsPanel::~SettingsPanel() noexcept = default ;
 
     void SettingsPanel::load_core(
         const PrefParser::ums_str_t params,

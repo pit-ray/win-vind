@@ -144,7 +144,7 @@ namespace wxGUI
         }, PathListEvt::DEL) ;
     }
 
-    ShortcutAppsPanel::~ShortcutAppsPanel() = default ;
+    ShortcutAppsPanel::~ShortcutAppsPanel() noexcept = default ;
 
 
     void ShortcutAppsPanel::load_core(const PrefParser::ums_str_t paths) {

@@ -20,7 +20,7 @@ private:
 public:
     explicit KeyBinder() ;
     explicit KeyBinder(const std::string& filename) ;
-    ~KeyBinder() noexcept ;
+    virtual ~KeyBinder() noexcept ;
 
     void load_config(const std::string& filename) noexcept ;
     void update() noexcept ;

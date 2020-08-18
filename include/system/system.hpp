@@ -5,12 +5,12 @@
 
 namespace System
 {
-    bool is_init() ;
+    bool init() ;
 
     void load_config() ;
     void load_option_config() ;
 
-    bool is_update() ;
+    bool update() ;
 
     void register_show_window_func(std::function<void()> func) noexcept ;
     void register_exit_window_func(std::function<void()> func) noexcept ;

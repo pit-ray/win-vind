@@ -19,7 +19,7 @@ public:
     explicit KeyLog(data_t&& codes) ;
     explicit KeyLog(std::initializer_list<unsigned char>&& codes) ;
 
-    ~KeyLog() ;
+    virtual ~KeyLog() noexcept ;
 
     KeyLog(KeyLog&&) noexcept ;
     KeyLog& operator=(KeyLog&&) noexcept ;

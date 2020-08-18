@@ -1,9 +1,8 @@
 #ifndef _BINDED_FUNCTION_WITH_CREATOR_HPP
 #define _BINDED_FUNCTION_WITH_CREATOR_HPP
 
-#include "binded_function.hpp"
-
 #include <memory>
+#include "binded_function.hpp"
 
 //use Curiously Recurring Template Pattern (CRTP)
 //derived class must implement sprocess and sname.

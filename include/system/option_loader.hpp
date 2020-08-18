@@ -14,7 +14,7 @@ private:
 
 public:
     explicit OptionLoader(const KeyBinder* const pkb) ;
-    ~OptionLoader() noexcept ;
+    virtual ~OptionLoader() noexcept ;
 
     void load_config(const std::string& filename) noexcept ;
     void update() noexcept ;

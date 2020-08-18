@@ -1,34 +1,43 @@
 #include "mouse_eventer.hpp"
 #include <iostream>
+#include <memory>
+#include <unordered_map>
 using namespace std ;
 
 namespace MouseEventer
 {
-    bool is_click(const Button bt) noexcept {
+    static std::unordered_map<unsigned char, bool> btstate = {
+        {VKC_MOUSE_LEFT,  false},
+        {VKC_MOUSE_MID,   false},
+        {VKC_MOUSE_RIGHT, false}
+    } ;
+
+    bool click(const unsigned char btcode) noexcept {
         INPUT in ;
         in.type = INPUT_MOUSE ;
         in.mi.dx = 0 ;
         in.mi.dy = 0 ;
         in.mi.mouseData = 0 ;
-        in.mi.dwFlags = (bt == Button::LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN ;
+        in.mi.dwFlags = (btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN ;
         in.mi.time = 0 ;
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(win_mouse_eventer.cpp)\n" ;
+            WIN_ERROR_STREAM << "(MouseEventer::click)\n" ;
             return false ;
         }
+        btstate[btcode] = true ;
 
-        in.mi.dwFlags = (bt == Button::LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP ;
+        in.mi.dwFlags = (btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP ;
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(win_mouse_eventer.cpp)\n" ;
+            WIN_ERROR_STREAM << "(MouseEventer::click)\n" ;
             return false ;
         }
 
         return true ;
     }
 
-    inline static bool _is_down_or_up(const DWORD event) noexcept {
+    inline static bool change_btstate(const DWORD event) noexcept {
         INPUT in ;
         in.type = INPUT_MOUSE ;
         in.mi.dx = 0 ;
@@ -39,18 +48,31 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << " (win_mouse_eventer.cpp)" << endl ;
+            WIN_ERROR_STREAM << " (MouseEventer::change_btstate)" << endl ;
             return false ;
         }
 
         return true ;
     }
 
-    bool is_down(const Button bt) noexcept {
-        return _is_down_or_up((bt == Button::LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN) ;
+    bool press(const unsigned char btcode) noexcept {
+        return change_btstate((btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN) ;
     }
 
-    bool is_up(const Button bt) noexcept {
-        return _is_down_or_up((bt == Button::LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP) ;
+    bool release(const unsigned char btcode) noexcept {
+        return change_btstate((btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP) ;
+    }
+
+    bool is_releasing_occured(const unsigned char btcode) noexcept {
+        if(GetAsyncKeyState(btcode) & 0x8000) {
+            if(!btstate[btcode]) btstate[btcode] = true ; 
+        }
+        else {
+            if(btstate[btcode]) {
+                btstate[btcode] = false ;
+                return true ;
+            }
+        }
+        return false ;
     }
 }

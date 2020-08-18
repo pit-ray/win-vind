@@ -25,7 +25,7 @@ private:
 
 public:
     explicit Command() ;
-    virtual ~Command() ;
+    virtual ~Command() noexcept ;
 
     Command(Command&&) noexcept ;
     Command& operator=(Command&&) noexcept ;

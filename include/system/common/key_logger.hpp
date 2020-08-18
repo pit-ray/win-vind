@@ -11,7 +11,7 @@ private:
 
 public:
     explicit KeyLogger() noexcept ;
-    ~KeyLogger() ;
+    virtual ~KeyLogger() noexcept ;
 
     size_t size() const noexcept ;
     bool is_empty() const noexcept ;

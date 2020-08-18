@@ -18,14 +18,13 @@ public:
     static std::unique_ptr<DynamicOption> create() ;
 
     explicit AutotrackPopup() ;
-    virtual ~AutotrackPopup() ;
+    virtual ~AutotrackPopup() noexcept ;
 
-    AutotrackPopup(AutotrackPopup&&) ;
-    AutotrackPopup& operator=(AutotrackPopup&&) ;
+    AutotrackPopup(AutotrackPopup&&) noexcept ;
+    AutotrackPopup& operator=(AutotrackPopup&&) noexcept ;
 
     AutotrackPopup(const AutotrackPopup&) = delete ;
     AutotrackPopup& operator=(const AutotrackPopup&) = delete ;
 } ;
-
 
 #endif

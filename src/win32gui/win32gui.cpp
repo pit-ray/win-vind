@@ -42,7 +42,7 @@ namespace Win32GUI
 
     static unique_ptr<NotifyIcon> pni(nullptr) ;
 
-    bool is_init(HINSTANCE& hInstance) noexcept {
+    bool init(HINSTANCE& hInstance) noexcept {
 
         //If we input control-command, for example Ctrl + C,  at console, this handler is called.
         if(!SetConsoleCtrlHandler(CtrlHandler, TRUE)) {
@@ -106,7 +106,7 @@ namespace Win32GUI
 
         exit_hwnd = CreateWindow(
             TEXT("BUTTON"), TEXT("Exit"),
-            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+            WS_CHILD | WS_VISIBLE | BS_pressBUTTON,
             40, 80, WINDOW_WIDTH / 2, 25,
             main_hwnd, reinterpret_cast<HMENU>(EXIT_ID), hInstance, NULL
         ) ;
@@ -136,7 +136,7 @@ namespace Win32GUI
     }
 
 
-    bool is_update() noexcept {
+    bool update() noexcept {
         //if other window is clicked, this window is hided.
         if(main_hwnd) {
             if(GetForegroundWindow() != main_hwnd) {

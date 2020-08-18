@@ -22,4 +22,6 @@ namespace Utility
     }
 }
 
+#define UNUSED(identifier) /* identifier */
+
 #endif

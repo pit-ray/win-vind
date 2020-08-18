@@ -17,7 +17,7 @@ private:
 public:
     explicit IntervalTimer(const int delta_us=30) ;
 
-    ~IntervalTimer() ;
+    virtual ~IntervalTimer() noexcept ;
 
     IntervalTimer(IntervalTimer&&) noexcept ;
     IntervalTimer& operator=(IntervalTimer&&) noexcept ;

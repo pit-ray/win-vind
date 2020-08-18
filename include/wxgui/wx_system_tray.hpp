@@ -14,7 +14,7 @@ namespace wxGUI
 
     public:
         SystemTray(const wxString iconpath, const wxString tooltips, PropDlg* const ptr_pd) ;
-        virtual ~SystemTray() ;
+        virtual ~SystemTray() noexcept ;
 
         SystemTray(SystemTray&&) = delete ;
         SystemTray& operator=(SystemTray&&) = delete ;

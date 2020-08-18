@@ -19,8 +19,8 @@ struct DynamicOption::Impl
 
     ~Impl() = default ;
 
-    Impl(Impl&&) = default ;
-    Impl& operator=(Impl&&) = default ;
+    Impl(Impl&&) noexcept = default ;
+    Impl& operator=(Impl&&) noexcept = default ;
 
     Impl(const Impl&) = default ;
     Impl& operator=(const Impl&) = default ;

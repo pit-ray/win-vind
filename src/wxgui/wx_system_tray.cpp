@@ -45,7 +45,7 @@ namespace wxGUI
         }, Event::PU_EXIT) ;
     }
 
-    SystemTray::~SystemTray() = default ;
+    SystemTray::~SystemTray() noexcept = default ;
 
     wxMenu* SystemTray::CreatePopupMenu() {
         using namespace UITrans ;

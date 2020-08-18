@@ -20,9 +20,9 @@ public:
     static std::unique_ptr<DynamicOption> create(const KeyBinder* const pkb) ;
 
     explicit DisplayCmd(const KeyBinder* const pkb) ;
-    virtual ~DisplayCmd() ;
-    DisplayCmd(DisplayCmd&&) ;
-    DisplayCmd& operator=(DisplayCmd&&) ;
+    virtual ~DisplayCmd() noexcept ;
+    DisplayCmd(DisplayCmd&&) noexcept ;
+    DisplayCmd& operator=(DisplayCmd&&) noexcept ;
 
     DisplayCmd(const DisplayCmd&) = delete ;
     DisplayCmd& operator=(const DisplayCmd&) = delete ;

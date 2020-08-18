@@ -13,7 +13,7 @@ namespace wxGUI
         virtual int MainLoop() override ;
 
     public:
-        ~App() ;
+        virtual ~App() noexcept ;
     } ;
 }
 

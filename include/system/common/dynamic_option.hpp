@@ -33,11 +33,9 @@ public:
     virtual const std::string name() const noexcept =  0 ;
 
     void enable() noexcept ;
-
     void disable() noexcept ;
 
     bool is_enabled() const noexcept ;
-
     void process() const ;
 } ;
 

@@ -1,6 +1,10 @@
 #ifndef _VIRTUAL_KEY_FWD_HPP
 #define _VIRTUAL_KEY_FWD_HPP
 
+#define VKC_MOUSE_LEFT   (static_cast<unsigned char>(1))
+#define VKC_MOUSE_RIGHT  (static_cast<unsigned char>(2))
+#define VKC_MOUSE_MID    (static_cast<unsigned char>(4))
+
 #define VKC_FROM_JP      (static_cast<unsigned char>(244))
 #define VKC_TO_EN        (static_cast<unsigned char>(243))
 #define VKC_FROM_EN      (static_cast<unsigned char>(243))

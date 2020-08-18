@@ -20,7 +20,7 @@ namespace wxGUI
 
     public:
         explicit PropDlg() ;
-        virtual ~PropDlg() ;
+        virtual ~PropDlg() noexcept ;
 
         bool Show(bool show=true) override ;
 

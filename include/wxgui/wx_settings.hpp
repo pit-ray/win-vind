@@ -27,7 +27,7 @@ namespace wxGUI
 
     public:
         explicit SettingsPanel(wxBookCtrlBase* const p_book_ctrl) ;
-        virtual ~SettingsPanel() ;
+        virtual ~SettingsPanel() noexcept ;
 
         void save_all() ;
         void load_all() ;

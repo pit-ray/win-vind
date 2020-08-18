@@ -31,7 +31,7 @@ namespace KeyAbsorber
         if(p_hook == nullptr) return ;
 
         if(!UnhookWindowsHookEx(*p_hook)) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " (win_key_absorber_impl.cpp)\n" ;
+            WIN_ERROR_STREAM << " (win_key_absorber_impl.cpp)\n" ;
         }
 
         delete p_hook ;
@@ -73,7 +73,7 @@ namespace KeyAbsorber
         }
     }
 
-    bool is_install_hook() noexcept {
+    bool install_hook() noexcept {
         _state.fill(false) ;
 
         p_handle.reset(new HHOOK{}) ; //added ownership
@@ -129,13 +129,13 @@ namespace KeyAbsorber
         _absorbed_flag = true ;
     }
 
-    bool is_close_with_refresh() noexcept {
+    bool close_with_refresh() noexcept {
         _ignored_keys.clear() ;
 
-        //if this function is called by pushed button,
+        //if this function is called by pressed button,
         //it has to send message "KEYUP" to OS (not absorbed).
         for(const auto& vkc : get_downed_list()) {
-            if(!KeybrdEventer::is_release_keystate(vkc)) {
+            if(!KeybrdEventer::release_keystate(vkc)) {
                 return false ;
             }
         }
@@ -166,7 +166,7 @@ namespace KeyAbsorber
     void release_vertually(const unsigned char key) noexcept {
         _state[key] = false ;
     }
-    void push_vertually(const unsigned char key) noexcept {
+    void press_vertually(const unsigned char key) noexcept {
         _state[key] = true ;
     }
 }

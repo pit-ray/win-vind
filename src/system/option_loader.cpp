@@ -1,15 +1,15 @@
 #include "option_loader.hpp"
-#include "dynamic_option.hpp"
-
-#include "autotrack_popup.hpp"
-#include "display_cmd.hpp"
-
-#include "ini_parser.hpp"
-#include "msg_logger.hpp"
 
 #include <vector>
 #include <memory>
 #include <algorithm>
+
+#include "ini_parser.hpp"
+#include "msg_logger.hpp"
+
+#include "autotrack_popup.hpp"
+#include "display_cmd.hpp"
+#include "dedicate_to_window.hpp"
 
 using namespace std ;
 
@@ -18,8 +18,11 @@ struct OptionLoader::Impl
     vector<op::shp_t> vpop ;
 
     explicit Impl(const KeyBinder* const pkb)
-    : vpop{AutotrackPopup::create(), DisplayCmd::create(pkb)}
-    {}
+    : vpop{
+        AutotrackPopup::create(),
+        DisplayCmd::create(pkb),
+        Dedicate2Window::create()
+    }{}
 
     ~Impl() {
         vpop.clear() ;

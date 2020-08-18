@@ -36,8 +36,8 @@ struct Command::Impl
     }
 
     //move
-    Impl(Impl&&) = default ;
-    Impl& operator=(Impl&&) = default ;
+    Impl(Impl&&) noexcept = default ;
+    Impl& operator=(Impl&&) noexcept = default ;
 
     //copy
     Impl(const Impl&) = delete ;

@@ -25,7 +25,7 @@ IntervalTimer::IntervalTimer(const int delta_us)
 : pimpl(make_unique<Impl>(delta_us))
 {}
 
-IntervalTimer::~IntervalTimer() = default ;
+IntervalTimer::~IntervalTimer() noexcept = default ;
 
 IntervalTimer::IntervalTimer(IntervalTimer&&) noexcept = default ;
 IntervalTimer& IntervalTimer::operator=(IntervalTimer&&) noexcept = default ;

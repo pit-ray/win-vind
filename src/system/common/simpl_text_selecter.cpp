@@ -10,19 +10,18 @@ namespace SimplTextSelecter
     static bool _first_line_selection = false ;
     static bool _first_call = true ;
 
-    bool is_select_words() noexcept {
+    bool select_words() noexcept {
         _mode = Mode::Word ;
         return true ;
     }
 
-    bool is_select_line_EOL2BOL() noexcept {
+    bool select_line_EOL2BOL() noexcept {
         _first_line_selection = _first_call ;
 
-        using namespace KeybrdEventer ;
-        if(!is_pushup(VKC_END)) {
+        if(!KeybrdEventer::pressup(VKC_END)) {
             return false ;
         }
-        if(!is_pushup(VKC_LSHIFT, VKC_HOME)) {
+        if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_HOME)) {
             return false ;
         }
 
@@ -31,14 +30,12 @@ namespace SimplTextSelecter
         return true ;
     }
 
-    bool is_select_line_BOL2EOL() noexcept {
+    bool select_line_BOL2EOL() noexcept {
         _first_line_selection = _first_call ;
-        using namespace KeybrdEventer ;
-
-        if(!is_pushup(VKC_HOME)) {
+        if(!KeybrdEventer::pressup(VKC_HOME)) {
             return false ;
         }
-        if(!is_pushup(VKC_LSHIFT, VKC_END)) {
+        if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_END)) {
             return false ;
         }
 
@@ -54,16 +51,14 @@ namespace SimplTextSelecter
         _mode = Mode::Unselect ;
     }
 
-    bool is_unselect() noexcept {
-        using namespace KeybrdEventer ;
-
+    bool unselect() noexcept {
         if(_mode == Mode::EOL2BOL) {
-            if(!is_pushup(VKC_LEFT)) {
+            if(!KeybrdEventer::pressup(VKC_LEFT)) {
                 return false ;
             }
         }
         else if(_mode == Mode::BOL2EOL) {
-            if(!is_pushup(VKC_RIGHT)) {
+            if(!KeybrdEventer::pressup(VKC_RIGHT)) {
                 return false ;
             }
         }
@@ -76,14 +71,14 @@ namespace SimplTextSelecter
         return _mode ;
     }
 
-    bool is_moving_update() noexcept {
+    bool moving_update() noexcept {
         if(_mode == Mode::BOL2EOL) {
-            if(!KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_END)) {
+            if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_END)) {
                 return false ;
             }
         }
         else {
-            if(!KeybrdEventer::is_pushup(VKC_LSHIFT, VKC_HOME)) {
+            if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_HOME)) {
                 return false ;
             }
         }

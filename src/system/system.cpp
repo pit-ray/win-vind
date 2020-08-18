@@ -10,7 +10,7 @@
 #include <iostream>
 #include <windows.h>
 
-#include "keybinds/mywindow_ctrl.hpp"
+#include "gui_bindings/mywindow_ctrl.hpp"
 
 namespace System
 {
@@ -19,7 +19,7 @@ namespace System
     static KeyBinder _kb ;
     static OptionLoader _ol(&_kb) ;
 
-    bool is_init() {
+    bool init() {
         //show mouse cursor
         //When Windows was started up, cursor is hidden until move mouse by default.
         //Thus, send lowlevel move event in order to show cursor.
@@ -42,7 +42,7 @@ namespace System
         VKCConverter::load_input_combination() ;
 
         //lower keyboard hook
-        if(!KeyAbsorber::is_install_hook()) {
+        if(!KeyAbsorber::install_hook()) {
             return false ;
         }
 
@@ -60,7 +60,7 @@ namespace System
         _ol.load_config(Path::CONFIG_OPTS_BOOL_INI()) ;
     }
 
-    bool is_update() {
+    bool update() {
         _kb.update() ;
         _ol.update() ;
 

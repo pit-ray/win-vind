@@ -428,7 +428,7 @@ void KeyBinder::update_core(const vector<bf::shp_t>& vp) noexcept
 
     //overwrite callable
     for(auto& func : vp) {
-        const auto lmn = func->is_matching(pimpl->logger.back(), pimpl->logger.size() - 1) ;
+        const auto lmn = func->matched_num(pimpl->logger.back(), pimpl->logger.size() - 1) ;
         if(lmn == 0) {
             continue ;
         }

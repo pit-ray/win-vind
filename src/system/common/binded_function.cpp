@@ -32,8 +32,8 @@ struct BindedFunction::Impl
     }
 
     //move
-    Impl(Impl&&) = default ;
-    Impl& operator=(Impl&&) = default ;
+    Impl(Impl&&) noexcept = default ;
+    Impl& operator=(Impl&&) noexcept = default ;
 
     //copy
     Impl(const Impl&) = delete ;
@@ -58,7 +58,7 @@ void BindedFunction::set_command(const XMLParser::vvvc_t& command) noexcept
     pimpl->vvvkc = command ;
 }
 
-size_t BindedFunction::is_matching(const KeyLog& log, const size_t seq_index) const noexcept
+size_t BindedFunction::matched_num(const KeyLog& log, const size_t seq_index) const noexcept
 {
     lock_guard<mutex> lock(pimpl->mtx) ;
 

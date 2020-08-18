@@ -99,7 +99,7 @@ namespace wxGUI
                 case WXK_ESCAPE: //disable closing window by ESC
                     return ;
 
-                case WXK_RETURN: //disable pushing OK by Enter
+                case WXK_RETURN: //disable pressing OK by Enter
                     return ;
 
                 default:
@@ -109,7 +109,7 @@ namespace wxGUI
         }) ;
     }
 
-    PropDlg::~PropDlg() = default ;
+    PropDlg::~PropDlg() noexcept = default ;
 
     void PropDlg::save_all() {
         pimpl->settings->save_all() ;

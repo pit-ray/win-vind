@@ -4,9 +4,9 @@
 
 namespace Win32GUI
 {
-    bool is_init(HINSTANCE& hInstance) noexcept ;
+    bool init(HINSTANCE& hInstance) noexcept ;
 
-    bool is_update() noexcept ;
+    bool update() noexcept ;
 }
 
 #endif

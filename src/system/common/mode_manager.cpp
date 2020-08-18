@@ -2,21 +2,20 @@
 
 namespace ModeManager
 {
-    static Mode system_mode{Mode::Normal} ;
+    static Mode m{Mode::Normal} ;
 
     void change_mode(const Mode mode) noexcept {
-        system_mode = mode ;
+        m = mode ;
     }
-
     Mode get_mode() noexcept {
-        return system_mode ;
+        return m ;
     }
 
     bool is_edi_visual() noexcept {
-        return system_mode == Mode::EdiVisual || system_mode == Mode::EdiLineVisual ;
+        return m == Mode::EdiVisual || m == Mode::EdiLineVisual ;
     }
 
     bool is_editor() noexcept {
-        return system_mode > Mode::_EditorModeThreshold ;
+        return m > Mode::_EditorModeThreshold ;
     }
 }

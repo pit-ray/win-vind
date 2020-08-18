@@ -14,16 +14,16 @@ int WINAPI WinMain(
     LPSTR lpCmdLine,
     int nShowCmd)
 {
-    if(!Win32GUI::is_init(hInstance)) {
+    if(!Win32GUI::init(hInstance)) {
         return 0 ;
     }
 
-    if(!System::is_init()) {
+    if(!System::init()) {
         return 0 ;
     }
 
     MSG msg ;
-    while(System::is_update() && Win32GUI::is_update()) {
+    while(System::update() && Win32GUI::update()) {
         //MessageRoop
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg) ;

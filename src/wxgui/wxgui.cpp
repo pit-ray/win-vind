@@ -21,7 +21,7 @@ namespace wxGUI
     private:
         virtual ExitCode Entry() override {
             MSG msg ;
-            while(System::is_update() && runnable.load()) {
+            while(System::update() && runnable.load()) {
                 //MessageRoop
                 if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
                     TranslateMessage(&msg) ;
@@ -49,7 +49,7 @@ namespace wxGUI
             wxMessageBox("not supported System Tray", "Warning", wxOK | wxICON_EXCLAMATION) ;
         }
 
-        if(!System::is_init()) {
+        if(!System::init()) {
             return false ;
         }
 
@@ -78,7 +78,7 @@ namespace wxGUI
         return wxApp::MainLoop() ;
     }
 
-    App::~App() {
+    App::~App() noexcept {
         if(runnable.load()) {
             //Core-System is running
             runnable.store(false) ; //terminate core system

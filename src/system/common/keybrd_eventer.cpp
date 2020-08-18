@@ -39,24 +39,24 @@ namespace KeybrdEventer
     {}
 
     SmartKey::~SmartKey() noexcept {
-        is_release() ;
+        release() ;
     }
 
     SmartKey::SmartKey(SmartKey&&) noexcept = default ;
     SmartKey& SmartKey::operator=(SmartKey&&) noexcept = default ;
 
-    bool SmartKey::is_send_event(const bool pushed) noexcept {
-        pimpl->in.ki.dwFlags = pushed ? 0 : KEYEVENTF_KEYUP ;
+    bool SmartKey::send_event(const bool pressed) noexcept {
+        pimpl->in.ki.dwFlags = pressed ? 0 : KEYEVENTF_KEYUP ;
         if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(KeybrdEventer::SmartKey::is_send_event::SendInput)\n" ;
+            WIN_ERROR_STREAM << "(KeybrdEventer::SmartKey::send_event::SendInput)\n" ;
             return false ;
         }
         return true ;
     }
 
-    bool SmartKey::is_push() noexcept {
+    bool SmartKey::press() noexcept {
         KeyAbsorber::open_key(pimpl->key) ;
-        if(!is_send_event(true)) {
+        if(!send_event(true)) {
             return false ;
         }
         KeyAbsorber::close() ;
@@ -64,9 +64,9 @@ namespace KeybrdEventer
         return GetAsyncKeyState(pimpl->key) & 0x8000 ;
     }
 
-    bool SmartKey::is_release() noexcept {
+    bool SmartKey::release() noexcept {
         KeyAbsorber::open_key(pimpl->key) ;
-        if(!is_send_event(false)) {
+        if(!send_event(false)) {
             return false ;
         }
         KeyAbsorber::close() ;
@@ -76,7 +76,7 @@ namespace KeybrdEventer
 
 
     //change key state without input
-    bool is_release_keystate(const unsigned char key) noexcept {
+    bool release_keystate(const unsigned char key) noexcept {
         INPUT in ;
         in.type = INPUT_KEYBOARD ;
         in.ki.wVk = static_cast<WORD>(key) ;
@@ -86,7 +86,7 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::is_release)\n" ;
+            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::release)\n" ;
             return false ;
         }
 
@@ -94,7 +94,7 @@ namespace KeybrdEventer
     }
 
     //change key state without input
-    bool is_push_keystate(const unsigned char key) noexcept {
+    bool press_keystate(const unsigned char key) noexcept {
         INPUT in ;
         in.type = INPUT_KEYBOARD ;
         in.ki.wVk = static_cast<WORD>(key) ;
@@ -104,25 +104,25 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::is_release)\n" ;
+            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::release)\n" ;
             return false ;
         }
         return true ;
     }
 
-    bool _is_pushup_core(std::initializer_list<unsigned char>&& initl) {
-        const auto pushing_keys = KeyAbsorber::get_downed_list() ;
+    bool _pressup_core(std::initializer_list<unsigned char>&& initl) {
+        const auto pressing_keys = KeyAbsorber::get_downed_list() ;
 
-        const auto recover_keystate= [&pushing_keys] {
-            for(const auto key : pushing_keys) {
-                KeyAbsorber::push_vertually(key) ;
+        const auto recover_keystate= [&pressing_keys] {
+            for(const auto key : pressing_keys) {
+                KeyAbsorber::press_vertually(key) ;
             }
         } ;
 
         if(initl.size() == 1) {
             SmartKey ins(static_cast<unsigned char>(*initl.begin())) ;
 
-            if(!ins.is_push()) {
+            if(!ins.press()) {
                 return false ;
             }
 
@@ -140,7 +140,7 @@ namespace KeybrdEventer
         for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
             const auto key = static_cast<unsigned char>(*iter) ;
             st.push(std::make_unique<SmartKey>(key)) ;
-            if(!st.top()->is_push()) {
+            if(!st.top()->press()) {
                 clear_stack() ;
                 recover_keystate() ;
                 return false ;

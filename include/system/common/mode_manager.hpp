@@ -21,7 +21,6 @@ namespace ModeManager
     Mode get_mode() noexcept ;
 
     bool is_edi_visual() noexcept ;
-
     bool is_editor() noexcept ;
 }
 

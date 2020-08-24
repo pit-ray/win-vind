@@ -34,13 +34,13 @@ namespace wxGUI
         } ;
 
         static const std::map<IconStyle, wxString> iconstyle {
-            {IconStyle::Dark, trans(Label::Pref_Settings_Common_IconStyle_Dark)},
+            {IconStyle::Dark,  trans(Label::Pref_Settings_Common_IconStyle_Dark)},
             {IconStyle::Light, trans(Label::Pref_Settings_Common_IconStyle_Light)}
         } ;
 
         static const std::map<std::string, wxString> kbtype {
-            {"JP.kmp", trans(Label::Pref_Settings_Common_KBType_JP)},
-            {"US.kmp", trans(Label::Pref_Settings_Common_KBType_US)},
+            {"JP.kmp",     trans(Label::Pref_Settings_Common_KBType_JP)},
+            {"US.kmp",     trans(Label::Pref_Settings_Common_KBType_US)},
             {"custom.kmp", trans(Label::Pref_Settings_Common_KBType_Custom)}
         } ;
     }

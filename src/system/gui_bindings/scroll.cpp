@@ -30,7 +30,7 @@ ScrollUp::ScrollUp()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollUp::~ScrollUp() = default ;
+ScrollUp::~ScrollUp() noexcept = default ;
 
 ScrollUp::ScrollUp(ScrollUp&&) = default ;
 ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
@@ -64,7 +64,7 @@ ScrollDown::ScrollDown()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollDown::~ScrollDown() = default ;
+ScrollDown::~ScrollDown() noexcept = default ;
 
 ScrollDown::ScrollDown(ScrollDown&&) = default ;
 ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
@@ -98,7 +98,7 @@ ScrollMidUp::ScrollMidUp()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollMidUp::~ScrollMidUp() = default ;
+ScrollMidUp::~ScrollMidUp() noexcept = default ;
 
 ScrollMidUp::ScrollMidUp(ScrollMidUp&&) = default ;
 ScrollMidUp& ScrollMidUp::operator=(ScrollMidUp&&) = default ;
@@ -133,7 +133,7 @@ ScrollMidDown::ScrollMidDown()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollMidDown::~ScrollMidDown() = default ;
+ScrollMidDown::~ScrollMidDown() noexcept = default ;
 
 ScrollMidDown::ScrollMidDown(ScrollMidDown&&) = default ;
 ScrollMidDown& ScrollMidDown::operator=(ScrollMidDown&&) = default ;
@@ -148,11 +148,9 @@ bool ScrollMidDown::sprocess(const bool first_call) const
     if(first_call) {
         pimpl->timer.reset() ;
     }
-
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-
     static const auto delta = MAX_Y_POS * 0.5f ;
     return MouseEventer::vscroll(-delta * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
 }
@@ -168,7 +166,7 @@ ScrollPageUp::ScrollPageUp()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollPageUp::~ScrollPageUp() = default ;
+ScrollPageUp::~ScrollPageUp() noexcept = default ;
 
 ScrollPageUp::ScrollPageUp(ScrollPageUp&&) = default ;
 ScrollPageUp& ScrollPageUp::operator=(ScrollPageUp&&) = default ;
@@ -183,11 +181,9 @@ bool ScrollPageUp::sprocess(const bool first_call) const
     if(first_call) {
         pimpl->timer.reset() ;
     }
-
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-
     return MouseEventer::vscroll(MAX_Y_POS * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
 }
 
@@ -202,7 +198,7 @@ ScrollPageDown::ScrollPageDown()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollPageDown::~ScrollPageDown() = default ;
+ScrollPageDown::~ScrollPageDown() noexcept = default ;
 
 ScrollPageDown::ScrollPageDown(ScrollPageDown&&) = default ;
 ScrollPageDown& ScrollPageDown::operator=(ScrollPageDown&&) = default ;
@@ -217,11 +213,9 @@ bool ScrollPageDown::sprocess(const bool first_call) const
     if(first_call) {
         pimpl->timer.reset() ;
     }
-
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-
     return MouseEventer::vscroll(-MAX_Y_POS * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
 }
 
@@ -237,7 +231,7 @@ ScrollLeft::ScrollLeft()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollLeft::~ScrollLeft() = default ;
+ScrollLeft::~ScrollLeft() noexcept = default ;
 
 ScrollLeft::ScrollLeft(ScrollLeft&&) = default ;
 ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
@@ -252,11 +246,9 @@ bool ScrollLeft::sprocess(const bool first_call) const
     if(first_call) {
         pimpl->timer.reset() ;
     }
-
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-
     return MouseEventer::hscroll(-DynamicConfig::XSCROLL_SPEED()) ;
 }
 
@@ -271,7 +263,7 @@ ScrollRight::ScrollRight()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollRight::~ScrollRight() = default ;
+ScrollRight::~ScrollRight() noexcept = default ;
 
 ScrollRight::ScrollRight(ScrollRight&&) = default ;
 ScrollRight& ScrollRight::operator=(ScrollRight&&) = default ;
@@ -286,11 +278,9 @@ bool ScrollRight::sprocess(const bool first_call) const
     if(first_call) {
         pimpl->timer.reset() ;
     }
-
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-
     return MouseEventer::hscroll(DynamicConfig::XSCROLL_SPEED()) ;
 }
 
@@ -305,7 +295,7 @@ ScrollMidLeft::ScrollMidLeft()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollMidLeft::~ScrollMidLeft() = default ;
+ScrollMidLeft::~ScrollMidLeft() noexcept = default ;
 
 ScrollMidLeft::ScrollMidLeft(ScrollMidLeft&&) = default ;
 ScrollMidLeft& ScrollMidLeft::operator=(ScrollMidLeft&&) = default ;
@@ -320,11 +310,9 @@ bool ScrollMidLeft::sprocess(const bool first_call) const
     if(first_call) {
         pimpl->timer.reset() ;
     }
-
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-
     static const auto delta = MAX_X_POS * 0.5f ;
     return MouseEventer::hscroll(-delta * DynamicConfig::XSCROLL_SCREEN_RATIO()) ;
 }
@@ -340,7 +328,7 @@ ScrollMidRight::ScrollMidRight()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollMidRight::~ScrollMidRight() = default ;
+ScrollMidRight::~ScrollMidRight() noexcept = default ;
 
 ScrollMidRight::ScrollMidRight(ScrollMidRight&&) = default ;
 ScrollMidRight& ScrollMidRight::operator=(ScrollMidRight&&) = default ;
@@ -355,11 +343,9 @@ bool ScrollMidRight::sprocess(const bool first_call) const
     if(first_call) {
         pimpl->timer.reset() ;
     }
-
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-
     static const auto delta = MAX_X_POS * 0.5f ;
     return MouseEventer::hscroll(delta * DynamicConfig::XSCROLL_SCREEN_RATIO()) ;
 }

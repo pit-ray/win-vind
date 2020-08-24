@@ -12,6 +12,8 @@ copy ".\\admin_config\\default_ui_language.idx" ".\\config\\custom_ui_language.i
 copy ".\\admin_config\\default.ini" ".\\config\\custom.ini"
 copy ".\\admin_config\\default.xml" ".\\config\\custom.xml"
 
+copy ".\\admin_config\\cmds.json" ".\\config\\cmds.json"
+
 del /q ".\\bin\\setup*.exe"
 del /q ".\\release"
 call build.bat -release

@@ -47,12 +47,11 @@ namespace System
         }
 
         load_config() ;
-
         return true ;
     }
 
     void load_config() {
-        _kb.load_config(Path::CONFIG_XML()) ;
+        _kb.load_config(Path::BINDINGS_LIST()) ;
         _ol.load_config(Path::CONFIG_OPTS_BOOL_INI()) ;
     }
 

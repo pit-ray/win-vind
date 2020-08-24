@@ -50,10 +50,11 @@ namespace wxGUI
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
+        flags.Align(wxALIGN_CENTER_VERTICAL) ;
 
         auto exapps_sizer = new wxBoxSizer(wxVERTICAL) ;
 
-        auto add_st = [this, &flags](auto sizer, auto&& label) {
+        auto add_st = [this, flags](auto sizer, auto&& label) {
             sizer->Add(new wxStaticText(this, wxID_ANY, std::forward<decltype(label)>(label)), flags) ;
         } ;
 
@@ -70,7 +71,11 @@ namespace wxGUI
         }
 
         {
-            pimpl->path_list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxSize(WIDTH, 225), wxLC_REPORT) ;
+            pimpl->path_list = new wxListCtrl(
+                this, wxID_ANY, wxDefaultPosition,
+                wxSize(WIDTH, static_cast<int>(HEIGHT * 0.5)),
+                wxLC_REPORT
+            ) ;
 
             static const auto name_width = static_cast<int>(WIDTH * 0.187) ;
             static const auto path_width = WIDTH - name_width - 100 ;

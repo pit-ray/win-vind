@@ -63,63 +63,44 @@ size_t BindedFunction::matched_num(const KeyLog& log, const size_t seq_index) co
     lock_guard<mutex> lock(pimpl->mtx) ;
 
     pimpl->callable = false ;
-
-    //still not registering keys
-    if(pimpl->vvvkc.empty()) {
+    if(pimpl->vvvkc.empty()) { //not registered
         return 0 ;
     }
-
-    if(seq_index == 0) {
+    if(seq_index == 0) { //initialize
         pimpl->exist_code = true ;
     }
-
-    //not needed searching.
-    if(!pimpl->exist_code) {
+    if(!pimpl->exist_code) { //not needed searching.
         return 0 ;
     }
-
     size_t max_matched_num{0} ;
     auto at_least_exist = false ;
 
-    //or-types
-
-    //pvkc is pointer of code-vec.
-    //I use vvkc.at in order to get code-vec.
-    //However, [at] is exceptable.
-    //I want try-identifier to be only-one, thus, use pointer.
     const XMLParser::vc_t* pvkc = nullptr ;
     for(const auto& vvkc : pimpl->vvvkc) {
         size_t matched_num{0} ;
 
         try {pvkc = &vvkc.at(seq_index) ;}
-        catch(const out_of_range&) {
-            continue ;
-        }
+        catch(out_of_range&) {continue ;}
 
-        //sequence-types
-        for(const auto& kc : *pvkc) {
-            if(find(log.cbegin(), log.cend(), kc) != log.cend()) {
+        for(const auto& kc : *pvkc) { //same time pressing
+            if(log.is_including(kc)) {
                 matched_num ++ ;
             }
         }
-
         if(matched_num != pvkc->size()) {
             continue ;
         }
-
         at_least_exist = true ;
 
         if(max_matched_num < matched_num) {
             max_matched_num = matched_num ;
         }
-
         if(seq_index == (vvkc.size() - 1)) {
             pimpl->callable = true ;
         }
     }
 
     pimpl->exist_code = at_least_exist ;
-
     return max_matched_num ;
 }
 

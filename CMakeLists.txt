@@ -31,6 +31,7 @@ set(ALLOW_CONSOLE OFF)
 #---------------------------------
 
 include_directories(
+    libs
     include/system
     C:/boost
 )
@@ -78,7 +79,8 @@ else()
         ${WXG_DIR}/wx_system_tray.cpp
         ${WXG_DIR}/wx_prop_dlg.cpp
         ${WXG_DIR}/wx_settings.cpp
-        ${WXG_DIR}/wx_bind_list.cpp
+        #${WXG_DIR}/wx_bind_list.cpp
+        ${WXG_DIR}/wx_bindings.cpp
         ${WXG_DIR}/wx_shortcut_apps.cpp
         ${WXG_DIR}/wx_options.cpp
         ${WXG_DIR}/wxgui.cpp

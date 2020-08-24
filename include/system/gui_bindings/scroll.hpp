@@ -8,7 +8,7 @@ struct ScrollUp : public BindedFunctionWithCreator<ScrollUp>
     static const std::string sname() noexcept ;
 
     explicit ScrollUp() ;
-    virtual ~ScrollUp() ;
+    virtual ~ScrollUp() noexcept ;
 
     ScrollUp(ScrollUp&&) ;
     ScrollUp& operator=(ScrollUp&&) ;
@@ -28,7 +28,7 @@ struct ScrollDown : public BindedFunctionWithCreator<ScrollDown>
     static const std::string sname() noexcept ;
 
     explicit ScrollDown() ;
-    virtual ~ScrollDown() ;
+    virtual ~ScrollDown() noexcept ;
 
     ScrollDown(ScrollDown&&) ;
     ScrollDown& operator=(ScrollDown&&) ;
@@ -48,7 +48,7 @@ struct ScrollMidUp : public BindedFunctionWithCreator<ScrollMidUp>
     static const std::string sname() noexcept ;
 
     explicit ScrollMidUp() ;
-    virtual ~ScrollMidUp() ;
+    virtual ~ScrollMidUp() noexcept ;
 
     ScrollMidUp(ScrollMidUp&&) ;
     ScrollMidUp& operator=(ScrollMidUp&&) ;
@@ -68,7 +68,7 @@ struct ScrollMidDown : public BindedFunctionWithCreator<ScrollMidDown>
     static const std::string sname() noexcept ;
 
     explicit ScrollMidDown() ;
-    virtual ~ScrollMidDown() ;
+    virtual ~ScrollMidDown() noexcept ;
 
     ScrollMidDown(ScrollMidDown&&) ;
     ScrollMidDown& operator=(ScrollMidDown&&) ;
@@ -88,7 +88,7 @@ struct ScrollPageUp : public BindedFunctionWithCreator<ScrollPageUp>
     static const std::string sname() noexcept ;
 
     explicit ScrollPageUp() ;
-    virtual ~ScrollPageUp() ;
+    virtual ~ScrollPageUp() noexcept ;
 
     ScrollPageUp(ScrollPageUp&&) ;
     ScrollPageUp& operator=(ScrollPageUp&&) ;
@@ -108,7 +108,7 @@ struct ScrollPageDown : public BindedFunctionWithCreator<ScrollPageDown>
     static const std::string sname() noexcept ;
 
     explicit ScrollPageDown() ;
-    virtual ~ScrollPageDown() ;
+    virtual ~ScrollPageDown() noexcept ;
 
     ScrollPageDown(ScrollPageDown&&) ;
     ScrollPageDown& operator=(ScrollPageDown&&) ;
@@ -128,7 +128,7 @@ struct ScrollLeft : public BindedFunctionWithCreator<ScrollLeft>
     static const std::string sname() noexcept ;
 
     explicit ScrollLeft() ;
-    virtual ~ScrollLeft() ;
+    virtual ~ScrollLeft() noexcept ;
 
     ScrollLeft(ScrollLeft&&) ;
     ScrollLeft& operator=(ScrollLeft&&) ;
@@ -148,7 +148,7 @@ struct ScrollRight : public BindedFunctionWithCreator<ScrollRight>
     static const std::string sname() noexcept ;
 
     explicit ScrollRight() ;
-    virtual ~ScrollRight() ;
+    virtual ~ScrollRight() noexcept ;
 
     ScrollRight(ScrollRight&&) ;
     ScrollRight& operator=(ScrollRight&&) ;
@@ -168,7 +168,7 @@ struct ScrollMidLeft : public BindedFunctionWithCreator<ScrollMidLeft>
     static const std::string sname() noexcept ;
 
     explicit ScrollMidLeft() ;
-    virtual ~ScrollMidLeft() ;
+    virtual ~ScrollMidLeft() noexcept ;
 
     ScrollMidLeft(ScrollMidLeft&&) ;
     ScrollMidLeft& operator=(ScrollMidLeft&&) ;
@@ -188,7 +188,7 @@ struct ScrollMidRight : public BindedFunctionWithCreator<ScrollMidRight>
     static const std::string sname() noexcept ;
 
     explicit ScrollMidRight() ;
-    virtual ~ScrollMidRight() ;
+    virtual ~ScrollMidRight() noexcept ;
 
     ScrollMidRight(ScrollMidRight&&) ;
     ScrollMidRight& operator=(ScrollMidRight&&) ;

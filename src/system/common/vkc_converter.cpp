@@ -87,111 +87,87 @@ namespace VKCConverter
         }
     }
 
-    inline static const auto& _sys_str2vkc() {
-        static const unordered_multimap<string, unsigned char> data {
-            {"IME",         VKC_FROM_EN},
-            {"IME",         VKC_TO_JP},
-            {"Tab",         VKC_TAB},
-            {"Enter",       VKC_ENTER},
-            {"CapsLock",    VKC_CAPS_LOCK},
-            {"Left",        VKC_LEFT},
-            {"Right",       VKC_RIGHT},
-            {"Up",          VKC_UP},
-            {"Down",        VKC_DOWN},
-            {"BkSpace",     VKC_BKSPACE},
+    static const unordered_map<string, unsigned char> _sys_vkc {
+        {"IME",         VKC_IME},
+        {"Tab",         VKC_TAB},
+        {"Enter",       VKC_ENTER},
+        {"CapsLock",    VKC_CAPS_LOCK},
+        {"Left",        VKC_LEFT},
+        {"Right",       VKC_RIGHT},
+        {"Up",          VKC_UP},
+        {"Down",        VKC_DOWN},
+        {"BkSpace",     VKC_BKSPACE},
 
-            {"Shift",       VKC_LSHIFT},
-            {"Shift",       VKC_RSHIFT},
-            {"LShift",      VKC_LSHIFT},
-            {"RShift",      VKC_RSHIFT},
+        {"Shift",       VKC_SHIFT},
+        {"LShift",      VKC_LSHIFT},
+        {"RShift",      VKC_RSHIFT},
 
-            {"Ctrl",        VKC_LCTRL},
-            {"Ctrl",        VKC_RCTRL},
-            {"LCtrl",       VKC_LCTRL},
-            {"RCtrl",       VKC_RCTRL},
+        {"Ctrl",        VKC_CTRL},
+        {"LCtrl",       VKC_LCTRL},
+        {"RCtrl",       VKC_RCTRL},
 
-            {"Win",         VKC_LWIN},
-            {"Win",         VKC_RWIN},
-            {"LWin",        VKC_LWIN},
-            {"RWin",        VKC_RWIN},
+        {"Win",         VKC_WIN},
+        {"LWin",        VKC_LWIN},
+        {"RWin",        VKC_RWIN},
 
-            {"Alt",         VKC_LALT},
-            {"Alt",         VKC_RALT},
-            {"LAlt",        VKC_LALT},
-            {"RAlt",        VKC_RALT},
+        {"Alt",         VKC_ALT},
+        {"LAlt",        VKC_LALT},
+        {"RAlt",        VKC_RALT},
 
-            {"NoConvert",   VKC_NOCONVERT},
-            {"Convert",     VKC_CONVERT},
-            {"Kana",        VKC_KANA},
-            {"App",         VKC_APP},
-            {"Esc",         VKC_ESC},
+        {"NoConvert",   VKC_NOCONVERT},
+        {"Convert",     VKC_CONVERT},
+        {"Kana",        VKC_KANA},
+        {"App",         VKC_APP},
+        {"Esc",         VKC_ESC},
 
-            {"F1",          VKC_F1},
-            {"F2",          VKC_F2},
-            {"F3",          VKC_F3},
-            {"F4",          VKC_F4},
-            {"F5",          VKC_F5},
-            {"F6",          VKC_F6},
-            {"F7",          VKC_F7},
-            {"F8",          VKC_F8},
-            {"F9",          VKC_F9},
-            {"F10",         VKC_F10},
-            {"F11",         VKC_F11},
-            {"F12",         VKC_F12},
-            {"F13",         VKC_F13},
-            {"F14",         VKC_F14},
-            {"F15",         VKC_F15},
-            {"F16",         VKC_F16},
-            {"F17",         VKC_F17},
-            {"F18",         VKC_F18},
-            {"F19",         VKC_F19},
-            {"F20",         VKC_F20},
-            {"F21",         VKC_F21},
-            {"F22",         VKC_F22},
-            {"F23",         VKC_F23},
-            {"F24",         VKC_F24},
+        {"F1",          VKC_F1},
+        {"F2",          VKC_F2},
+        {"F3",          VKC_F3},
+        {"F4",          VKC_F4},
+        {"F5",          VKC_F5},
+        {"F6",          VKC_F6},
+        {"F7",          VKC_F7},
+        {"F8",          VKC_F8},
+        {"F9",          VKC_F9},
+        {"F10",         VKC_F10},
+        {"F11",         VKC_F11},
+        {"F12",         VKC_F12},
+        {"F13",         VKC_F13},
+        {"F14",         VKC_F14},
+        {"F15",         VKC_F15},
+        {"F16",         VKC_F16},
+        {"F17",         VKC_F17},
+        {"F18",         VKC_F18},
+        {"F19",         VKC_F19},
+        {"F20",         VKC_F20},
+        {"F21",         VKC_F21},
+        {"F22",         VKC_F22},
+        {"F23",         VKC_F23},
+        {"F24",         VKC_F24},
 
-            {"SnapShot",    VKC_SNAPSHOT},
-            {"Scroll",      VKC_SCROLL},
-            {"Pause",       VKC_PAUSE},
-            {"Insert",      VKC_INSERT},
-            {"Home",        VKC_HOME},
-            {"PageUp",      VKC_PAGEUP},
-            {"Delete",      VKC_DELETE},
-            {"End",         VKC_END},
-            {"PageDown",    VKC_PAGEDOWN},
+        {"SnapShot",    VKC_SNAPSHOT},
+        {"Scroll",      VKC_SCROLL},
+        {"Pause",       VKC_PAUSE},
+        {"Insert",      VKC_INSERT},
+        {"Home",        VKC_HOME},
+        {"PageUp",      VKC_PAGEUP},
+        {"Delete",      VKC_DELETE},
+        {"End",         VKC_END},
+        {"PageDown",    VKC_PAGEDOWN},
 
-            {"NumLock",     VKC_NUMLOCK}
-        } ;
+        {"NumLock",     VKC_NUMLOCK}
+    } ;
 
-        return data ;
-    }
-
-    const vector<unsigned char> get_sys_vkc(const string& strkey) noexcept {
-        if(_sys_str2vkc().find(strkey) == _sys_str2vkc().end()) {
-            return vector<unsigned char>{} ;
-        }
-
-        vector<unsigned char> vec ;
-        const auto ret = _sys_str2vkc().equal_range(strkey) ;
-        try {
-            for(auto it = ret.first ; it != ret.second ; it++) {
-                vec.push_back(it->second) ;
-            }
-            return vec ;
-        }
-        catch(const bad_alloc& e) {
-            ERROR_STREAM << e.what() << " (vkc_converter.cpp::VKCConverter::get_sys_vkc)\n" ;
-            return vec ;
-        }
+    unsigned char get_sys_vkc(const string& strkey) noexcept {
+        try {return _sys_vkc.at(strkey) ;}
+        catch(const std::out_of_range&) {return 0 ;}
     }
 
     const vector<unsigned char> get_all_sys_vkc() {
         vector<unsigned char> vec ;
-        for(const auto& elem : _sys_str2vkc()) {
-            vec.push_back(elem.second) ;
+        for(const auto& i : _sys_vkc) {
+            vec.push_back(i.second) ;
         }
-
         return vec ;
     }
 }

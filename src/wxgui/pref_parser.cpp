@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "disable_gcc_warning.hpp"
+#include "json.hpp" //nlohmann (libs)
 #include <boost/property_tree/xml_parser.hpp>
 #include "enable_gcc_warning.hpp"
 
@@ -46,6 +47,35 @@ namespace PrefParser
             return ums_str_t{} ;
         }
         catch(xml_parser_error& e) {
+            catch_except(e) ;
+            return ums_str_t{} ;
+        }
+    }
+
+    //filename may be long strings, so not applied SSO.
+    template <typename T>
+    inline static const auto _load_bindings_core(T&& filename, const std::string tag) {
+        try {
+            ums_str_t ssm ;
+            std::ifstream ifs(std::forward<T>(filename)) ;
+            nlohmann::json jp{} ;
+
+        /*
+            for(const auto& obj : jp) {
+                try {
+                    const auto& data = pt_f ;
+                    ssm[obj["name"]] = data ;
+                }
+                catch(ptree_bad_data& e) {
+                    catch_except(e) ;
+                    continue ;
+                }
+            }
+        */
+
+            return ssm ;
+        }
+        catch(const nlohmann::json::exception& e) {
             catch_except(e) ;
             return ums_str_t{} ;
         }
@@ -103,7 +133,6 @@ namespace PrefParser
             return ;
         }
     }
-
 
     template <typename T>
     inline static const auto _load_ini_core(T&& filename, const std::string sect) {
@@ -181,7 +210,6 @@ namespace PrefParser
 
         _save_ini_core(std::move(ssm), Path::CONFIG_OPTS_BOOL_INI(), "Options") ;
     }
-
 
     //exapps
     const ums_str_t load_exapps() {

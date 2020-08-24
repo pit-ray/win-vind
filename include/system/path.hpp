@@ -64,6 +64,10 @@ namespace Path
         return obj ;
     }
 
+    inline static const auto& BINDINGS_LIST() noexcept {
+        static const auto obj = _get_path("cmds.json") ;
+        return obj ;
+    }
     inline static const auto& CONFIG_XML() noexcept {
         static const auto obj = _get_path("custom.xml") ;
         return obj ;

@@ -7,7 +7,7 @@ namespace VKCConverter
 {
     void load_input_combination() noexcept ;
 
-    const std::vector<unsigned char> get_sys_vkc(const std::string& strkey) noexcept ;
+    unsigned char get_sys_vkc(const std::string& strkey) noexcept ;
     unsigned char get_vkc(const char ascii) noexcept ;
     char get_ascii(const unsigned char vkc) noexcept ;
 

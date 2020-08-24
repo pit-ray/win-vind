@@ -5,6 +5,7 @@
 
 namespace Path
 {
+    static constexpr auto DEFAULT_BINDINGS    = "admin_config/cmds.json" ;
     static constexpr auto DEFAULT_BINDS       = "admin_config/default.xml" ;
     static constexpr auto DEFAULT_PARAMS      = "admin_config/default.ini" ;
     static constexpr auto DEFAULT_OPTS_PARAMS = "admin_config/default_opts.ini" ;

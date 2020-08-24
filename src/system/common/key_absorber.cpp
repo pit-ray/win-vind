@@ -1,6 +1,6 @@
 #include "key_absorber.hpp"
-#include "msg_logger.hpp"
-#include "keybrd_eventer.hpp"
+
+#include <windows.h>
 
 #include <array>
 #include <memory>
@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <unordered_map>
 
-#include <windows.h>
+#include "msg_logger.hpp"
+#include "keybrd_eventer.hpp"
 
 using namespace std ;
 
@@ -39,24 +40,38 @@ namespace KeyAbsorber
 
     static unique_ptr<HHOOK, decltype(uninstaller)> p_handle(nullptr, uninstaller) ;
 
+    inline static const auto create_more_enabler() {
+            std::array<unsigned char, 256> a{0} ;
+            a[VKC_LSHIFT]   = VKC_SHIFT ;
+            a[VKC_RSHIFT]   = VKC_SHIFT ;
+            a[VKC_LCTRL]    = VKC_CTRL ;
+            a[VKC_RCTRL]    = VKC_CTRL ;
+            a[VKC_LWIN]     = VKC_WIN ;
+            a[VKC_RWIN]     = VKC_WIN ;
+            a[VKC_LALT]     = VKC_ALT ;
+            a[VKC_RALT]     = VKC_ALT ;
+            a[VKC_FROM_EN]  = VKC_IME ;
+            a[VKC_TO_JP]    = VKC_IME ;
+            return a ;
+    }
     static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) noexcept {
-
         const auto release = [&wParam, &lParam](const int code) {
             return CallNextHookEx(*p_handle, code, wParam, lParam) ;
         } ;
+        static const auto more_enabler = create_more_enabler() ;
 
         if(nCode < HC_ACTION) {
             //not processed
             return release(nCode) ;
         }
         try {
-            const auto pkbs = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam) ;
-
-            _state.at(pkbs->vkCode) = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+            const auto code = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode ;
+            const auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+            _state.at(code) = state ;
+            _state.at(more_enabler[code]) = state ;
 
             if(!_ignored_keys.empty()) {
-                if(std::find(_ignored_keys.cbegin(), _ignored_keys.cend(), pkbs->vkCode)
-                    != _ignored_keys.cend()) {
+                if(std::find(_ignored_keys.cbegin(), _ignored_keys.cend(), code) != _ignored_keys.cend()) {
                     return release(HC_ACTION) ;
                 }
             }
@@ -64,7 +79,6 @@ namespace KeyAbsorber
             if(_absorbed_flag) {
                 return -1 ; //absorbing
             }
-
             //not absorbing
             return release(HC_ACTION) ;
         }
@@ -98,24 +112,16 @@ namespace KeyAbsorber
         if(keycode < 1 || keycode > 254) {
             return false ;
         }
-
-        try{
-            return _state.at(keycode) ;
-        }
-        catch(out_of_range&) {
-            return false ;
-        }
+        return _state[keycode] ;
     }
 
     const KeyLog get_downed_list() noexcept {
         vector<unsigned char> res{} ;
-
         for(unsigned char i = 1 ; i < 255 ; i ++) {
             if(is_downed(i)) {
                 res.push_back(i) ;
             }
         }
-
         return KeyLog(res) ;
     }
 

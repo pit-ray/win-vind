@@ -7,8 +7,8 @@
 
 #include <windows.h>
 
-#include "xml_parser.hpp"
 #include "ini_parser.hpp"
+#include "bindings_json_parser.hpp"
 #include "mode_manager.hpp"
 #include "key_logger.hpp"
 #include "virtual_key_fwd.hpp"
@@ -290,8 +290,8 @@ struct KeyBinder::Impl
     } ;
 
     KeyLogger logger{} ;
-
     bf::shp_t callable_bf{nullptr} ;
+    BindingsJSONParser::vc_t ignored_syskeys{} ;
 
     std::size_t cmd_hist_index = 0 ;
     struct CmdPoint {
@@ -332,6 +332,7 @@ struct KeyBinder::Impl
         vpbf_edi_visual.clear() ;
         vpcmd.clear() ;
         vpcmd_edi.clear() ;
+        ignored_syskeys.clear() ;
     }
 
     Impl(Impl&&) = delete ;
@@ -354,8 +355,11 @@ KeyBinder::KeyBinder(const string& filename)
 
 void KeyBinder::load_config(const string& filename) noexcept
 {
-    //initialize key list ------------------------------------------
-    const auto map = XMLParser::load_bind_map(filename) ;
+    BindingsJSONParser json(filename) ;
+    pimpl->ignored_syskeys = json.get_ignored_syskeys() ;
+
+    //initialize bindings ------------------------------------------
+    const decltype(auto) map = json.get_bindings() ;
     const auto set = [](const auto& bindmap, auto& vpbf) {
         for(auto& i : vpbf) {
             try {i->set_command(bindmap.at(i->name())) ;}
@@ -372,18 +376,19 @@ void KeyBinder::load_config(const string& filename) noexcept
     set(map, pimpl->vpbf_edi_visual) ;
 
     //load commands ---------------------------------------------------
-    const auto cmd_map = XMLParser::load_command_map(filename) ;
+    const decltype(auto) cmd_map = json.get_commands() ;
     set(cmd_map, pimpl->vpcmd) ;
     set(cmd_map, pimpl->vpcmd_edi) ;
 
     ExAppUtility::load_config() ;
     DynamicConfig::load_config() ;
 
-    MESSAGE_STREAM << "Loaded " << filename << endl ;
+    MESSAGE_STREAM << "loaded " << filename << endl ;
 }
 
 namespace KBUtility{
-    inline static auto is_ignored(const std::vector<unsigned char>& ignore_list, const KeyLog& log) noexcept {
+    template <typename T>
+    inline static auto is_ignored(const T& ignore_list, const KeyLog& log) noexcept {
         return std::all_of(log.cbegin(), log.cend(), [&ignore_list](const auto& key) {
             return std::find(ignore_list.cbegin(), ignore_list.cend(), key) != ignore_list.cend() ;
         }) ;
@@ -391,7 +396,7 @@ namespace KBUtility{
 
     inline static void refresh_display() noexcept {
         if(!InvalidateRect(NULL, NULL, TRUE)) {
-            ERROR_STREAM << "windows.h: " << GetLastError() << " failed refresh display (KeyBinder::InvalidateRect)\n" ;
+            WIN_ERROR_STREAM << " failed refresh display (KBUtility::refresh_display)\n" ;
             return ;
         }
     }
@@ -399,7 +404,6 @@ namespace KBUtility{
 
 void KeyBinder::update_core(const vector<bf::shp_t>& vp) noexcept
 {
-    static const auto& ignore_alone = XMLParser::get_ignore_alone() ;
     using namespace KBUtility ;
 
     if(!pimpl->logger.is_changed_and_update()) {
@@ -411,28 +415,20 @@ void KeyBinder::update_core(const vector<bf::shp_t>& vp) noexcept
         pimpl->logger.remove_from_back(1) ;
         return ;
     }
-
-    if(is_ignored(ignore_alone, pimpl->logger.back())) {
+    if(is_ignored(pimpl->ignored_syskeys, pimpl->logger.back())) {
         //all is ignore code
         pimpl->logger.remove_from_back(1) ;
         pimpl->callable_bf = nullptr ;
         return ;
     }
-
-    //typed key is changed.---------------------------------------------
-
-    auto at_least_exist = false ; //is typed key existed in binded functions?
+    auto at_least_exist = false ; //is a typed key existed in binded functions?
     size_t max_matching_num = 0 ;
-
     bf::shp_t buf_bf = pimpl->callable_bf ;
 
     //overwrite callable
     for(auto& func : vp) {
         const auto lmn = func->matched_num(pimpl->logger.back(), pimpl->logger.size() - 1) ;
-        if(lmn == 0) {
-            continue ;
-        }
-
+        if(lmn == 0) continue ;
         at_least_exist = true ;
 
         if(func->is_callable()) {
@@ -442,7 +438,6 @@ void KeyBinder::update_core(const vector<bf::shp_t>& vp) noexcept
             if(max_matching_num >= lmn) {
                 continue ;
             }
-
             max_matching_num = lmn ;
             buf_bf = func ;
         }
@@ -453,12 +448,10 @@ void KeyBinder::update_core(const vector<bf::shp_t>& vp) noexcept
         pimpl->callable_bf = nullptr ;
         return ;
     }
-
     if(!buf_bf) {
         pimpl->callable_bf = nullptr ;
         return ;
     }
-
     buf_bf->process(true) ;
     pimpl->logger.clear() ;
     pimpl->callable_bf = buf_bf ;
@@ -489,13 +482,11 @@ void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
         return ;
     }
 
-    //empty input is skipped
-    if(plger->back().is_empty()) {
+    if(plger->back().is_empty()) { //empty input is skipped
         plger->remove_from_back(1) ;
         return ;
     }
 
-    //breaking
     if(plger->back().is_including(VKC_ESC)){
         const auto recent_index = pimpl->cmd_hist.size() - 1 ;
         if(pimpl->cmd_hist_index == recent_index) {
@@ -514,10 +505,6 @@ void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
     if(plger->back().is_including(VKC_ENTER) && p_cmdp->func) {
         plger->remove_from_back(1) ; //remove keycode of enter
         p_cmdp->func->process(plger->get_str()) ;
-
-        //plger->clear() ;
-        //p_cmdp->func = nullptr ;
-
         pimpl->update_history() ;
 
         return_mode() ;
@@ -563,7 +550,6 @@ void KeyBinder::update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept
             return ;
         }
     }
-
     p_cmdp->func = nullptr ;
 }
 

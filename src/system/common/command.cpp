@@ -66,41 +66,31 @@ bool Command::is_callable(const KeyLogger& logger) const noexcept
 {
     lock_guard<mutex> lock(pimpl->mtx) ;
 
-    //still not registering keys
     if(pimpl->vvvkc.empty()) {
         return false ;
     }
-
-    //or-types
-
     for(const auto& vvkc : pimpl->vvvkc) {
         for(size_t i = 0 ; i < logger.size() ; i ++) {
             try {
-                const auto keyvec = vvkc.at(i) ;
+                const auto sync = vvkc.at(i) ;
                 const auto log = logger.at(i) ;
-                if(std::all_of(keyvec.cbegin(), keyvec.cend(), [&log](const auto& key) {
-                    if(key == VKC_OPTIONAL) {
-                        throw VKC_OPTIONAL ;
-                    }
-
-                    return std::find(log.cbegin(), log.cend(), key) != log.cend() ;
+                if(std::all_of(sync.cbegin(), sync.cend(), [&log](const auto vkc) {
+                    if(vkc == VKC_OPTIONAL) throw VKC_OPTIONAL ;
+                    return log.is_including(vkc) ;
                 })) {
-                    if(i == vvkc.size() - 1) {
-                        if(i == logger.size() - 1) {
-                            return true ;
-                        }
+                    if(i == vvkc.size() - 1 && i == logger.size() - 1) {
+                        return true ;
                     }
                     continue ;
                 }
-
                 //logger's command is different from set command.
                 break ;
             }
             catch(const out_of_range&) {
                 continue ;
             }
-            catch(const unsigned char& code) {
-                return code == VKC_OPTIONAL ? true : false ;
+            catch(const unsigned char code) {
+                return code == VKC_OPTIONAL ;
             }
         }
     }

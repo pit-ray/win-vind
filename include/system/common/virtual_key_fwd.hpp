@@ -5,11 +5,6 @@
 #define VKC_MOUSE_RIGHT  (static_cast<unsigned char>(2))
 #define VKC_MOUSE_MID    (static_cast<unsigned char>(4))
 
-#define VKC_FROM_JP      (static_cast<unsigned char>(244))
-#define VKC_TO_EN        (static_cast<unsigned char>(243))
-#define VKC_FROM_EN      (static_cast<unsigned char>(243))
-#define VKC_TO_JP        (static_cast<unsigned char>(244))
-
 #define VKC_0            (static_cast<unsigned char>(48))
 #define VKC_1            (static_cast<unsigned char>(49))
 #define VKC_2            (static_cast<unsigned char>(50))
@@ -125,6 +120,17 @@
 
 #define VKC_NUMLOCK      (static_cast<unsigned char>(144))
 
+
+#define VKC_FROM_JP      (static_cast<unsigned char>(244))
+#define VKC_TO_EN        (static_cast<unsigned char>(243))
+#define VKC_FROM_EN      (static_cast<unsigned char>(243))
+#define VKC_TO_JP        (static_cast<unsigned char>(244))
+#define VKC_IME          (static_cast<unsigned char>(14))
+
+#define VKC_WIN          (static_cast<unsigned char>(15))
+#define VKC_SHIFT        (static_cast<unsigned char>(16))
+#define VKC_CTRL         (static_cast<unsigned char>(17))
+#define VKC_ALT          (static_cast<unsigned char>(18))
 #define VKC_OPTIONAL     (static_cast<unsigned char>(177))
 
 #endif

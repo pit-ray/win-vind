@@ -1,0 +1,20 @@
+[
+    {
+        "name": "autotrack_popup",
+        "state": false,
+        "us": "Autotrack Popup",
+        "jp": "ポップアップ自動追従"
+    },
+    {
+        "name": "display_cmd",
+        "state": true,
+        "us": "Display Popup",
+        "jp": "コマンドの画面表示"
+    },
+    {
+        "name": "dedicate_to_window",
+        "state": true,
+        "us": "Dedicate to One Window",
+        "jp": "ウィンドウ特化"
+    }
+]

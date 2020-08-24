@@ -8,6 +8,7 @@ include_directories(
     ${SYSINCDIR}/editor_bindings
     ${SYSINCDIR}/options
     C:/boost
+    ../../libs
 )
 
 add_library(Common STATIC
@@ -25,9 +26,11 @@ add_library(Common STATIC
     common/simpl_text_selecter.cpp
     common/utility.cpp
     common/vkc_converter.cpp
-    common/xml_parser.cpp
+    #common/xml_parser.cpp
     common/dynamic_config.cpp
+    common/bindings_json_parser.cpp
 )
+#target_link_libraries(Common ~~~~~~)
 
 add_library(EditorBindings STATIC
     editor_bindings/edi_change_mode.cpp

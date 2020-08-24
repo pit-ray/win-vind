@@ -115,25 +115,21 @@ bool KeyLogger::is_changed_and_update()
 bool KeyLogger::is_changed_and_inputc()
 {
     auto log = KeyAbsorber::get_downed_list() ;
-
-    const auto diff = log - pimpl->past_log ;
-
     const auto result = pimpl->past_log != log ;
+    const auto diff = log - pimpl->past_log ;
     pimpl->past_log = log ;
 
-    KeyLog::data_t data{} ;
-    if(log.is_including(VKC_LSHIFT)) {
-        data.push_back(VKC_LSHIFT) ;
-    }
+    if(log.is_including(VKC_SHIFT)) {
+        auto data = diff.get() ;
+        data.push_back(VKC_SHIFT) ;
+        if(log.is_including(VKC_LSHIFT)) {
+            data.push_back(VKC_LSHIFT) ;
+        }
+        if(log.is_including(VKC_RSHIFT)) {
+            data.push_back(VKC_RSHIFT) ;
+        }
 
-    if(log.is_including(VKC_RSHIFT)) {
-        data.push_back(VKC_RSHIFT) ;
-    }
-
-    if(!data.empty()) {
-        data.insert(data.end(), diff.cbegin(), diff.cend()) ;
         Utility::remove_deplication(data) ;
-
         //construct KeyLog inside logs directly from std::vector
         pimpl->logs.emplace_back(std::move(data)) ;
         return result ;
@@ -146,22 +142,20 @@ bool KeyLogger::is_changed_and_inputc()
 const string KeyLogger::get_str() const noexcept
 {
     string str{} ;
-
     if(pimpl->logs.empty()) {
         return str ;
     }
 
     for(const auto& log : pimpl->logs) {
-        if(log.is_including(VKC_LSHIFT) || log.is_including(VKC_RSHIFT)) {
+        if(log.is_including(VKC_SHIFT)) {
             //shifted ascii
-            for(const auto&vkc : log) {
+            for(const auto vkc : log) {
                 const auto c = VKCConverter::get_shifted_ascii(vkc) ;
                 if(c != 0) str.push_back(c) ;
             }
             continue ;
         }
-
-        for(const auto& vkc : log) {
+        for(const auto vkc : log) {
             const auto c = VKCConverter::get_ascii(vkc) ;
             if(c != 0) str.push_back(c) ;
         }

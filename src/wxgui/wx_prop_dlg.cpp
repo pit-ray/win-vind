@@ -13,6 +13,7 @@
 #include "wx_bind_list.hpp"
 #include "wx_shortcut_apps.hpp"
 #include "wx_options.hpp"
+#include "wx_bindings.hpp"
 
 #include "wx_constant.hpp"
 #include "wx_path.hpp"
@@ -43,6 +44,7 @@ namespace wxGUI
     struct PropDlg::Impl {
         SettingsPanel* settings          = nullptr ;
         BindListPanel* bind_list         = nullptr ;
+        BindingsPanel* bindings = nullptr ;
         ShortcutAppsPanel* shortcut_apps = nullptr ;
         OptionsPanel* options            = nullptr ;
     } ;
@@ -55,7 +57,8 @@ namespace wxGUI
         SetIcon(wxIcon(_load_icon_path(), wxBITMAP_TYPE_ICO)) ;
 
         pimpl->settings      = new SettingsPanel(GetBookCtrl()) ;
-        pimpl->bind_list     = new BindListPanel(GetBookCtrl()) ;
+        //pimpl->bind_list     = new BindListPanel(GetBookCtrl()) ;
+        pimpl->bindings = new BindingsPanel(GetBookCtrl()) ;
         pimpl->shortcut_apps = new ShortcutAppsPanel(GetBookCtrl()) ;
         pimpl->options       = new OptionsPanel(GetBookCtrl()) ;
 
@@ -113,7 +116,7 @@ namespace wxGUI
 
     void PropDlg::save_all() {
         pimpl->settings->save_all() ;
-        pimpl->bind_list->save_all() ;
+        pimpl->bindings->save_all() ;
         pimpl->shortcut_apps->save_all() ;
         pimpl->options->save_all() ;
     }
@@ -122,7 +125,7 @@ namespace wxGUI
         if(show) {
             //true is shown. false is hidden.
             pimpl->settings->load_all() ;
-            pimpl->bind_list->load_all() ;
+            pimpl->bindings->load_all() ;
             pimpl->shortcut_apps->load_all() ;
             pimpl->options->load_all() ;
 

@@ -6,8 +6,11 @@ namespace Utility
 {
     const vector<string> split(string str, const string deliminator) noexcept
     {
-        vector<string> vec ;
+        if(str.length() < deliminator.length()) {
+            return vector<string>{str} ;
+        }
 
+        vector<string> vec ;
         while(true) {
             auto pos = str.find(deliminator) ;
             if(pos == string::npos) {
@@ -20,7 +23,6 @@ namespace Utility
             }
             str = str.substr(pos + deliminator.size()) ;
         }
-
         return vec ;
     }
 

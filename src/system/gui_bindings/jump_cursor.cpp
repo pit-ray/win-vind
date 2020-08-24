@@ -1,6 +1,12 @@
+//for DPI support
+#define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
+#define WINVER          _WIN32_WINNT_WIN10
+#define _WIN32_WINNT    _WIN32_WINNT_WIN10
+
 #include "jump_cursor.hpp"
 
 #include <windows.h>
+#include <winuser.h>
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -20,19 +26,31 @@ using namespace std ;
 
 namespace JumpCursorUtility
 {
-    inline static const auto get_screen_pos() noexcept {
-        WINDOWINFO winfo ;
-        winfo.cbSize = sizeof(WINDOWINFO) ;
+    class ScreenMetrics {
+    private:
+        LONG w ;
+        LONG h ;
 
-        auto dhwnd = GetDesktopWindow() ;
-        GetWindowInfo(dhwnd, &winfo) ;
+    public:
+        explicit ScreenMetrics() : w(0), h(0) {
+            SetProcessDPIAware() ;
 
-        return make_pair(winfo.rcWindow.right, winfo.rcWindow.bottom) ;
-    }
+            MONITORINFO minfo ;
+            minfo.cbSize = sizeof(MONITORINFO) ;
+            const auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTONEAREST) ;
+            GetMonitorInfo(hmonitor, &minfo) ;
+            w = minfo.rcMonitor.right - minfo.rcMonitor.left ;
+            h = minfo.rcMonitor.bottom - minfo.rcMonitor.top ;
+        }
+        const auto width() const noexcept {
+            return w ;
+        }
+        const auto height() const noexcept {
+            return h ;
+        }
+    } ;
 
-    const auto _pos = get_screen_pos() ;
-    static const auto MAX_X_POS = _pos.first ;
-    static const auto MAX_Y_POS = _pos.second ;
+    static const ScreenMetrics _scmet{} ;
 }
 
 using namespace JumpCursorUtility ;
@@ -64,7 +82,7 @@ bool Jump2Right::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(MAX_X_POS - DynamicConfig::SCREEN_POS_BUF(), pos.y) ;
+    SetCursorPos(_scmet.width() - DynamicConfig::SCREEN_POS_BUF(), pos.y) ;
     return true ;
 }
 
@@ -96,7 +114,7 @@ bool Jump2Bottom::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(pos.x, MAX_Y_POS - DynamicConfig::SCREEN_POS_BUF()) ;
+    SetCursorPos(pos.x, _scmet.height() - DynamicConfig::SCREEN_POS_BUF()) ;
     return true ;
 }
 
@@ -112,7 +130,7 @@ bool Jump2XCenter::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(MAX_X_POS / 2, pos.y) ;
+    SetCursorPos(_scmet.width() / 2, pos.y) ;
     return true ;
 }
 
@@ -128,7 +146,7 @@ bool Jump2YCenter::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(pos.x, MAX_Y_POS / 2) ;
+    SetCursorPos(pos.x, _scmet.height() / 2) ;
     return true ;
 }
 
@@ -188,13 +206,8 @@ namespace JumpCursorUtility
                     continue ;
                 }
 
-                const auto vkc_vec = VKCConverter::get_sys_vkc(vec[2]) ;
-                if(!vkc_vec.empty()) {
-                    //is system code
-                    for(const auto& vkc : vkc_vec) {
-                        //overwrite
-                        kp[vkc] = make_pair(x, y) ;
-                    }
+                if(auto vkc = VKCConverter::get_sys_vkc(vec[2])) {
+                    kp[vkc] = make_pair(x, y) ;
                     continue ;
                 }
 
@@ -263,12 +276,12 @@ bool Jump2Any::sprocess(const bool first_call)
         try {
             const auto pos = keypos.at(log.back()) ;
 
-            auto x_pos = static_cast<int>(pos.first / max_keybrd_xpos * MAX_X_POS) ;
-            auto y_pos = static_cast<int>(pos.second / max_keybrd_ypos * MAX_Y_POS) ;
-            if(x_pos == MAX_X_POS) {
+            auto x_pos = static_cast<int>(pos.first / max_keybrd_xpos * _scmet.width()) ;
+            auto y_pos = static_cast<int>(pos.second / max_keybrd_ypos * _scmet.height()) ;
+            if(x_pos == _scmet.width()) {
                 x_pos -= DynamicConfig::SCREEN_POS_BUF() ;
             }
-            if(y_pos == MAX_Y_POS) {
+            if(y_pos == _scmet.height()) {
                 y_pos -= DynamicConfig::SCREEN_POS_BUF() ;
             }
 

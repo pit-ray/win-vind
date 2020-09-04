@@ -8,8 +8,8 @@
 namespace KeyAbsorber
 {
     bool install_hook() noexcept ;
-    bool is_downed(const unsigned char keycode) noexcept ;
-    const KeyLog get_downed_list() noexcept ;
+    bool is_pressed(const unsigned char keycode) noexcept ;
+    const KeyLog get_pressed_list() noexcept ;
 
     bool is_closed() noexcept ;
     void close() noexcept ;

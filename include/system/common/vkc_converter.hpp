@@ -2,6 +2,7 @@
 #define _VKC_CONVERTER_HPP
 #include <vector>
 #include <string>
+#include <unordered_set>
 
 namespace VKCConverter
 {
@@ -14,7 +15,7 @@ namespace VKCConverter
     unsigned char get_shifted_vkc(const char ascii) noexcept ;
     char get_shifted_ascii(const unsigned char vkc) noexcept ;
 
-    const std::vector<unsigned char> get_all_sys_vkc() ;
+    const std::unordered_set<unsigned char> get_all_sys_vkc() ;
 }
 
 #endif

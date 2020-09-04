@@ -1,37 +1,37 @@
 #ifndef _CLIPBOARD_HPP
 #define _CLIPBOARD_HPP
 
-#include "binded_function_with_creator.hpp"
+#include "key_binding_with_creator.hpp"
 
-struct CBCopy : public BindedFunctionWithCreator<CBCopy>
+struct CBCopy : public KeyBindingWithCreator<CBCopy>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct CBPaste : public BindedFunctionWithCreator<CBPaste>
+struct CBPaste : public KeyBindingWithCreator<CBPaste>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct CBCut : public BindedFunctionWithCreator<CBCut>
+struct CBCut : public KeyBindingWithCreator<CBCut>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct CBDelete : public BindedFunctionWithCreator<CBDelete>
+struct CBDelete : public KeyBindingWithCreator<CBDelete>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct CBBackSpace : public BindedFunctionWithCreator<CBBackSpace>
+struct CBBackSpace : public KeyBindingWithCreator<CBBackSpace>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;

@@ -9,6 +9,7 @@
 #include "wx_constant.hpp"
 #include "msg_logger.hpp"
 #include "ui_translator.hpp"
+#include "io_params.hpp"
 
 namespace wxGUI
 {
@@ -35,37 +36,77 @@ namespace wxGUI
     struct ShortcutAppsPanel::Impl
     {
         wxFilePickerCtrl* sh_path_picker  = nullptr ;
-
-        wxListCtrl* path_list = nullptr ;
+        wxListCtrl* path_list             = nullptr ;
         wxFilePickerCtrl* any_path_picker = nullptr ;
-        wxTextCtrl* any_path_label = nullptr ;
+        wxTextCtrl* any_path_label        = nullptr ;
+
+        wxStaticText* sh_label = nullptr ;
+        wxButton* add_btn = nullptr ;
+        wxButton* del_btn = nullptr ;
+        wxButton* def_btn = nullptr ;
+
+        template <typename T>
+        void load_path_list(T&& ch) {
+            path_list->DeleteAllItems() ;
+            for(const auto& obj : ch) {
+                try {
+                    const auto& name = obj.at("name") ;
+                    const auto& value = obj.at("value") ;
+
+                    if(name == "shell") {
+                        sh_path_picker->SetPath(value) ;
+                        continue ;
+                    }
+                    auto num = path_list->InsertItem(PathListCol::NAME, name) ;
+                    path_list->SetItem(num, PathListCol::PATH, value) ;
+                }
+                catch(const std::exception& e) {
+                    continue ;
+                }
+            }
+        }
+
+        void update_labels() noexcept {
+            sh_label->SetLabel(UITrans::trans("notify/preferences/exapps/console")) ;
+
+            wxListItem lt ;
+            if(path_list->GetColumn(PathListCol::NAME, lt)) {
+                lt.SetText(UITrans::trans("notify/preferences/exapps/name")) ;
+                path_list->SetColumn(PathListCol::NAME, lt) ;
+            }
+
+            if(path_list->GetColumn(PathListCol::PATH, lt)) {
+                lt.SetText(UITrans::trans("notify/preferences/exapps/path")) ;
+                path_list->SetColumn(PathListCol::PATH, lt) ;
+            }
+
+            add_btn->SetLabel(UITrans::trans("buttons/add")) ;
+            del_btn->SetLabel(UITrans::trans("buttons/del")) ;
+            def_btn->SetLabel(UITrans::trans("buttons/default")) ;
+        }
     } ;
 
     ShortcutAppsPanel::ShortcutAppsPanel(wxBookCtrlBase* const p_book_ctrl)
-    : wxPanel(p_book_ctrl),
+    : PanelCore(p_book_ctrl, "notify/preferences/exapps"),
       pimpl(std::make_unique<Impl>())
     {
         using namespace UITrans ;
-        p_book_ctrl->AddPage(this, trans(Label::Pref_ShortcutApps)) ;
-
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
         flags.Align(wxALIGN_CENTER_VERTICAL) ;
 
         auto exapps_sizer = new wxBoxSizer(wxVERTICAL) ;
 
-        auto add_st = [this, flags](auto sizer, auto&& label) {
-            sizer->Add(new wxStaticText(this, wxID_ANY, std::forward<decltype(label)>(label)), flags) ;
-        } ;
-
         constexpr auto flp_flags = wxFLP_SMALL | wxFLP_USE_TEXTCTRL | wxFLP_FILE_MUST_EXIST ;
 
         {
             auto sh_sizer = new wxFlexGridSizer(2) ;
-            add_st(sh_sizer, trans(Label::Pref_ShortcutApps_Shell)) ;
+            pimpl->sh_label = new wxStaticText(this, wxID_ANY, wxT("Console")) ;
+            sh_sizer->Add(pimpl->sh_label, flags) ;
+
             pimpl->sh_path_picker = new wxFilePickerCtrl(this, wxID_ANY, wxT("cmd"),
                 wxFileSelectorPromptStr, wxFileSelectorDefaultWildcardStr, wxDefaultPosition,
-                wxSize(static_cast<int>(WIDTH * 0.75), wxDefaultCoord), flp_flags) ;
+                wxSize(static_cast<int>(WIDTH() * 0.75), wxDefaultCoord), flp_flags) ;
             sh_sizer->Add(pimpl->sh_path_picker, flags) ;
             exapps_sizer->Add(sh_sizer, flags) ;
         }
@@ -73,21 +114,21 @@ namespace wxGUI
         {
             pimpl->path_list = new wxListCtrl(
                 this, wxID_ANY, wxDefaultPosition,
-                wxSize(WIDTH, static_cast<int>(HEIGHT * 0.5)),
+                wxSize(WIDTH(), static_cast<int>(HEIGHT() * 0.4)),
                 wxLC_REPORT
             ) ;
 
-            static const auto name_width = static_cast<int>(WIDTH * 0.187) ;
-            static const auto path_width = WIDTH - name_width - 100 ;
+            static const auto name_width = static_cast<int>(WIDTH() * 0.187) ;
+            static const auto path_width = WIDTH() - name_width - 100 ;
             wxListItem col0 ;
             col0.SetId(PathListCol::NAME) ;
-            col0.SetText(trans(Label::Pref_ShortcutApps_Name)) ;
+            col0.SetText(trans("notify/preferences/exapps/name")) ;
             col0.SetWidth(name_width) ;
             pimpl->path_list->InsertColumn(PathListCol::NAME, col0) ;
 
             wxListItem col1 ;
             col1.SetId(PathListCol::PATH) ;
-            col1.SetText(trans(Label::Pref_ShortcutApps_Path)) ;
+            col1.SetText(trans("notify/preferences/exapps/path")) ;
             col1.SetWidth(path_width) ;
             pimpl->path_list->InsertColumn(PathListCol::PATH, col1) ;
 
@@ -100,27 +141,30 @@ namespace wxGUI
 
             pimpl->any_path_picker = new wxFilePickerCtrl(this, wxID_ANY, wxT("C\\"),
                 wxFileSelectorPromptStr, wxFileSelectorDefaultWildcardStr, wxDefaultPosition,
-                wxSize(static_cast<int>(WIDTH * 0.5), wxDefaultCoord), flp_flags) ;
+                wxSize(static_cast<int>(WIDTH() * 0.5), wxDefaultCoord), flp_flags) ;
             ctrls_sizer->Add(pimpl->any_path_picker, flags) ;
 
-            ctrls_sizer->Add(new wxButton(this, PathListEvt::ADD, trans(Label::Pref_ShortcutApps_Add)), flags) ;
-            ctrls_sizer->Add(new wxButton(this, PathListEvt::DEL, trans(Label::Pref_ShortcutApps_Del)), flags) ;
+            pimpl->add_btn = new wxButton(this, PathListEvt::ADD, trans("buttons/add")) ;
+            ctrls_sizer->Add(pimpl->add_btn, flags) ;
+            pimpl->del_btn = new wxButton(this, PathListEvt::DEL, trans("buttons/del")) ;
+            ctrls_sizer->Add(pimpl->del_btn, flags) ;
 
             exapps_sizer->Add(ctrls_sizer, flags) ;
         }
 
         exapps_sizer->AddStretchSpacer() ;
-        auto defbtn_flags = flags ;
-        defbtn_flags.Align(wxALIGN_RIGHT) ;
-        exapps_sizer->Add(new wxButton(this,
-            ExappsEvt::DEFAULT, trans(Label::Pref_Return_To_Default)), defbtn_flags) ;
+        auto def_sizer = new wxBoxSizer(wxHORIZONTAL) ;
+        def_sizer->AddStretchSpacer() ;
+        pimpl->def_btn = new wxButton(this, ExappsEvt::DEFAULT, trans("buttons/default")) ;
+        def_sizer->Add(pimpl->def_btn, 0, wxEXPAND | wxALL | wxALIGN_RIGHT, BORDER) ;
+        exapps_sizer->Add(def_sizer, 0, wxEXPAND | wxALL | wxALIGN_BOTTOM, BORDER) ;
 
         SetSizerAndFit(exapps_sizer) ;
-        load_all() ;
+        load_config() ;
 
         //set event handler ----------------------
         Bind(wxEVT_BUTTON, [this](auto&) {
-            load_default() ;
+            pimpl->load_path_list(ioParams::Default::get_choices("exapps")) ;
         }) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
@@ -152,42 +196,30 @@ namespace wxGUI
     ShortcutAppsPanel::~ShortcutAppsPanel() noexcept = default ;
 
 
-    void ShortcutAppsPanel::load_core(const PrefParser::ums_str_t paths) {
-        pimpl->path_list->DeleteAllItems() ;
+    void ShortcutAppsPanel::do_load_config() noexcept {
+        pimpl->load_path_list(ioParams::get_choices("exapps")) ;
+    }
 
-        for(const auto& p : paths) {
-            if(p.first == "shell") {
-                pimpl->sh_path_picker->SetPath(p.second) ;
-                continue ;
+    void ShortcutAppsPanel::do_save_config() noexcept {
+        ioParams::choices_t ch {
+            {
+                {"name", "shell"},
+                {"value", pimpl->sh_path_picker->GetPath().ToStdString()}
             }
-
-            auto num = pimpl->path_list->InsertItem(PathListCol::NAME, p.first) ;
-            pimpl->path_list->SetItem(num, PathListCol::PATH, p.second) ;
-        }
-    }
-
-    void ShortcutAppsPanel::load_default() {
-        load_core(PrefParser::load_default_exapps()) ;
-    }
-
-    void ShortcutAppsPanel::load_all() {
-        load_core(PrefParser::load_exapps()) ;
-    }
-
-    void ShortcutAppsPanel::save_all() {
-        PrefParser::ums_str_t paths{} ;
-
-        //shell
-        paths["shell"] = pimpl->sh_path_picker->GetPath().ToStdString() ;
+        } ;
 
         for(long i = 0 ; i < pimpl->path_list->GetItemCount() ; i ++) {
             const auto n = pimpl->path_list->GetItemText(i, PathListCol::NAME).ToStdString() ;
             const auto p  = pimpl->path_list->GetItemText(i, PathListCol::PATH).ToStdString() ;
-
-            paths[n] = p ;
+            ioParams::item_t a{{"name", n}, {"value", p}} ;
+            ch.emplace_back(std::move(a)) ;
         }
 
-        //optional starting commands
-        PrefParser::save_exapps(paths) ;
+        ioParams::set("exapps", ch) ;
+    }
+
+    void ShortcutAppsPanel::translate() noexcept {
+        pimpl->update_labels() ;
+        Layout() ;
     }
 }

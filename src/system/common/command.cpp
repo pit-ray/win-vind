@@ -70,13 +70,13 @@ bool Command::is_callable(const KeyLogger& logger) const noexcept
         return false ;
     }
     for(const auto& vvkc : pimpl->vvvkc) {
-        for(size_t i = 0 ; i < logger.size() ; i ++) {
+        for(std::size_t i = 0 ; i < logger.size() ; i ++) {
             try {
                 const auto sync = vvkc.at(i) ;
                 const auto log = logger.at(i) ;
                 if(std::all_of(sync.cbegin(), sync.cend(), [&log](const auto vkc) {
                     if(vkc == VKC_OPTIONAL) throw VKC_OPTIONAL ;
-                    return log.is_including(vkc) ;
+                    return log.is_containing(vkc) ;
                 })) {
                     if(i == vvkc.size() - 1 && i == logger.size() - 1) {
                         return true ;

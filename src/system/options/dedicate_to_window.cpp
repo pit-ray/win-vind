@@ -45,10 +45,10 @@ bool Dedicate2Window::do_process() const
         return true ;
     }
 
-    using KeyAbsorber::is_downed ;
-    if(is_downed(VKC_LALT) || is_downed(VKC_RALT) ||
-       is_downed(VKC_LSHIFT) || is_downed(VKC_RSHIFT) ||
-       is_downed(VKC_LCTRL) || is_downed(VKC_RCTRL)) {
+    using KeyAbsorber::is_pressed ;
+    if(is_pressed(VKC_LALT) || is_pressed(VKC_RALT) ||
+       is_pressed(VKC_LSHIFT) || is_pressed(VKC_RSHIFT) ||
+       is_pressed(VKC_LCTRL) || is_pressed(VKC_RCTRL)) {
         if(hwnd != selected_hwnd) {
             hwnd = selected_hwnd ;
             is_other_selected = true ;

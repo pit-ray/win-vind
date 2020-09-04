@@ -97,12 +97,7 @@ KeyLog::data_t::const_iterator KeyLog::cend() const noexcept
     return pimpl->once_log.cend() ;
 }
 
-unsigned char KeyLog::back() const noexcept
-{
-    return pimpl->once_log.back() ;
-}
-
-size_t KeyLog::size() const noexcept
+std::size_t KeyLog::size() const noexcept
 {
     return pimpl->once_log.size() ;
 }
@@ -112,10 +107,9 @@ bool KeyLog::is_empty() const noexcept
     return pimpl->once_log.empty() ;
 }
 
-bool KeyLog::is_including(const unsigned char key) const noexcept
+bool KeyLog::is_containing(const unsigned char key) const noexcept
 {
-    return find(pimpl->once_log.cbegin(),
-        pimpl->once_log.cend(), key) != pimpl->once_log.cend() ;
+    return pimpl->once_log.find(key) != pimpl->once_log.end() ;
 }
 
 bool KeyLog::operator==(const KeyLog& rhs) const noexcept

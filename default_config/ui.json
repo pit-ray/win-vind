@@ -1,0 +1,116 @@
+{
+    "version": "1.0",
+    "author": "pit-ray",
+    "support": ["us", "jp"],
+    "root": {
+        "notify": {
+            "preferences": {
+                "us": "Preferences",
+                "jp": "設定",
+
+                "settings": {
+                    "us": "Settings",
+                    "jp": "詳細設定",
+
+                    "common": {
+                        "us": "Common",
+                        "jp": "共通設定"
+                    },
+                    "options": {
+                        "us": "Options",
+                        "jp": "オプション"
+                    },
+                    "move_cursor": {
+                        "us": "Move Cursor",
+                        "jp": "カーソルの移動"
+                    },
+                    "scroll_page": {
+                        "us": "Scroll Page",
+                        "jp": "スクロール"
+                    },
+                    "virtual_cmdline": {
+                        "us": "Virtual CmdLine",
+                        "jp": "仮想コマンドライン"
+                    }
+                },
+                "bindings": {
+                    "us": "Bindings",
+                    "jp": "バイディング",
+
+                    "id": {
+                        "us": "Identifier: ",
+                        "jp": "識別子: "
+                    },
+                    "keys": {
+                        "us": "HotKeys",
+                        "jp": "ホットキー"
+                    },
+                    "cmds": {
+                        "us": "Commands",
+                        "jp": "コマンド"
+                    }
+                },
+                "exapps": {
+                    "us": "Shortcut Apps",
+                    "jp": "アプリのショートカット",
+
+                    "console": {
+                        "us": "Console",
+                        "jp": "コンソール"
+                    },
+                    "name": {
+                        "us": "Name",
+                        "jp": "名前"
+                    },
+                    "path": {
+                        "us": "Path",
+                        "jp": "ファイルの場所"
+                    }
+                },
+                "options": {
+                    "us": "Options",
+                    "jp": "オプション",
+
+                    "options": {
+                        "us": "Optionss Switch",
+                        "jp": "オプションの切替"
+                    }
+                }
+            },
+            "about": {
+                "us": "About",
+                "jp": "win-vindについて"
+            },
+            "exit": {
+                "us": "Exit",
+                "jp": "終了"
+            }
+        },
+        "buttons": {
+            "default": {
+                "us": "Return to Default",
+                "jp": "初期設定に戻す"
+            },
+            "ok": {
+                "us": "OK",
+                "jp": "OK"
+            },
+            "cancel": {
+                "us": "Cancel",
+                "jp": "キャンセル"
+            },
+            "apply": {
+                "us": "Apply",
+                "jp": "適用"
+            },
+            "add": {
+                "us": "Add",
+                "jp": "追加"
+            },
+            "del": {
+                "us": "Delete",
+                "jp": "削除"
+            }
+        }
+    }
+}

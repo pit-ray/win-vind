@@ -1,10 +1,10 @@
 #ifndef _EDI_MOVE_CARET_HPP
 #define _EDI_MOVE_CARET_HPP
 
-#include "binded_function_with_creator.hpp"
+#include "key_binding_with_creator.hpp"
 
 
-struct EdiMoveCaretLeft : public BindedFunctionWithCreator<EdiMoveCaretLeft>
+struct EdiMoveCaretLeft : public KeyBindingWithCreator<EdiMoveCaretLeft>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -23,7 +23,7 @@ private:
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveCaretRight : public BindedFunctionWithCreator<EdiMoveCaretRight>
+struct EdiMoveCaretRight : public KeyBindingWithCreator<EdiMoveCaretRight>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -42,7 +42,7 @@ private:
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveCaretUp : public BindedFunctionWithCreator<EdiMoveCaretUp>
+struct EdiMoveCaretUp : public KeyBindingWithCreator<EdiMoveCaretUp>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -61,7 +61,7 @@ private:
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveCaretDown : public BindedFunctionWithCreator<EdiMoveCaretDown>
+struct EdiMoveCaretDown : public KeyBindingWithCreator<EdiMoveCaretDown>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -81,26 +81,26 @@ private:
 } ;
 
 
-struct EdiNMoveCaretwordsForward : public BindedFunctionWithCreator<EdiNMoveCaretwordsForward>
+struct EdiNMoveCaretwordsForward : public KeyBindingWithCreator<EdiNMoveCaretwordsForward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNMoveCaretwordsBackward : public BindedFunctionWithCreator<EdiNMoveCaretwordsBackward>
+struct EdiNMoveCaretwordsBackward : public KeyBindingWithCreator<EdiNMoveCaretwordsBackward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct EdiNMoveCaretWORDSForward : public BindedFunctionWithCreator<EdiNMoveCaretWORDSForward>
+struct EdiNMoveCaretWORDSForward : public KeyBindingWithCreator<EdiNMoveCaretWORDSForward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNMoveCaretWORDSBackward : public BindedFunctionWithCreator<EdiNMoveCaretWORDSBackward>
+struct EdiNMoveCaretWORDSBackward : public KeyBindingWithCreator<EdiNMoveCaretWORDSBackward>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;

@@ -1,17 +1,17 @@
 #ifndef _EDI_CLIPBOARD_HPP
 #define _EDI_CLIPBOARD_HPP
 
-#include "binded_function_with_creator.hpp"
+#include "key_binding_with_creator.hpp"
 
 
 //Copy
-struct EdiCopyHighlightText : public BindedFunctionWithCreator<EdiCopyHighlightText>
+struct EdiCopyHighlightText : public KeyBindingWithCreator<EdiCopyHighlightText>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNCopyLine : public BindedFunctionWithCreator<EdiNCopyLine>
+struct EdiNCopyLine : public KeyBindingWithCreator<EdiNCopyLine>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
@@ -19,13 +19,13 @@ struct EdiNCopyLine : public BindedFunctionWithCreator<EdiNCopyLine>
 
 
 //Paste
-struct EdiNPasteAfter : public BindedFunctionWithCreator<EdiNPasteAfter>
+struct EdiNPasteAfter : public KeyBindingWithCreator<EdiNPasteAfter>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNPasteBefore : public BindedFunctionWithCreator<EdiNPasteBefore>
+struct EdiNPasteBefore : public KeyBindingWithCreator<EdiNPasteBefore>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
@@ -33,32 +33,32 @@ struct EdiNPasteBefore : public BindedFunctionWithCreator<EdiNPasteBefore>
 
 
 //Delete
-struct EdiDeleteHighlightText : public BindedFunctionWithCreator<EdiDeleteHighlightText>
+struct EdiDeleteHighlightText : public KeyBindingWithCreator<EdiDeleteHighlightText>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNDeleteLine : public BindedFunctionWithCreator<EdiNDeleteLine>
+struct EdiNDeleteLine : public KeyBindingWithCreator<EdiNDeleteLine>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct EdiNDeleteLineUntilEOL : public BindedFunctionWithCreator<EdiNDeleteLineUntilEOL>
+struct EdiNDeleteLineUntilEOL : public KeyBindingWithCreator<EdiNDeleteLineUntilEOL>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNDeleteAfter : public BindedFunctionWithCreator<EdiNDeleteAfter>
+struct EdiNDeleteAfter : public KeyBindingWithCreator<EdiNDeleteAfter>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNDeleteBefore : public BindedFunctionWithCreator<EdiNDeleteBefore>
+struct EdiNDeleteBefore : public KeyBindingWithCreator<EdiNDeleteBefore>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;

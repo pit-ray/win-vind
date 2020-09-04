@@ -34,7 +34,7 @@ KeyLogger::KeyLogger() noexcept
 
 KeyLogger::~KeyLogger() noexcept = default ;
 
-size_t KeyLogger::size() const noexcept
+std::size_t KeyLogger::size() const noexcept
 {
     return pimpl->logs.size() ;
 }
@@ -93,14 +93,14 @@ const KeyLog KeyLogger::back() const noexcept
     return pimpl->logs.back() ;
 }
 
-const KeyLog KeyLogger::at(const size_t i) const
+const KeyLog KeyLogger::at(const std::size_t i) const
 {
     return pimpl->logs.at(i) ;
 }
 
-bool KeyLogger::is_changed_and_update()
+bool KeyLogger::is_changed_code()
 {
-    auto log = KeyAbsorber::get_downed_list() ;
+    auto log = KeyAbsorber::get_pressed_list() ;
     pimpl->logs.push_back(log) ;
 
     if(pimpl->past_log == log) {
@@ -112,24 +112,23 @@ bool KeyLogger::is_changed_and_update()
 }
 
 //regard inputed key log as ascii charactor
-bool KeyLogger::is_changed_and_inputc()
+bool KeyLogger::is_changed_char()
 {
-    auto log = KeyAbsorber::get_downed_list() ;
+    auto log = KeyAbsorber::get_pressed_list() ;
     const auto result = pimpl->past_log != log ;
     const auto diff = log - pimpl->past_log ;
     pimpl->past_log = log ;
 
-    if(log.is_including(VKC_SHIFT)) {
+    if(log.is_containing(VKC_SHIFT)) {
         auto data = diff.get() ;
-        data.push_back(VKC_SHIFT) ;
-        if(log.is_including(VKC_LSHIFT)) {
-            data.push_back(VKC_LSHIFT) ;
+        data.insert(VKC_SHIFT) ;
+        if(log.is_containing(VKC_LSHIFT)) {
+            data.insert(VKC_LSHIFT) ;
         }
-        if(log.is_including(VKC_RSHIFT)) {
-            data.push_back(VKC_RSHIFT) ;
+        if(log.is_containing(VKC_RSHIFT)) {
+            data.insert(VKC_RSHIFT) ;
         }
 
-        Utility::remove_deplication(data) ;
         //construct KeyLog inside logs directly from std::vector
         pimpl->logs.emplace_back(std::move(data)) ;
         return result ;
@@ -147,7 +146,7 @@ const string KeyLogger::get_str() const noexcept
     }
 
     for(const auto& log : pimpl->logs) {
-        if(log.is_including(VKC_SHIFT)) {
+        if(log.is_containing(VKC_SHIFT)) {
             //shifted ascii
             for(const auto vkc : log) {
                 const auto c = VKCConverter::get_shifted_ascii(vkc) ;

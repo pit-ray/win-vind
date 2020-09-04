@@ -2,7 +2,7 @@
 #define _KEY_LOG_HPP
 
 #include <memory>
-#include <vector>
+#include <unordered_set>
 #include <string>
 #include <initializer_list>
 
@@ -13,7 +13,7 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    using data_t = std::vector<unsigned char> ;
+    using data_t = std::unordered_set<unsigned char> ;
     explicit KeyLog() ;
     explicit KeyLog(const data_t& codes) ;
     explicit KeyLog(data_t&& codes) ;
@@ -36,12 +36,9 @@ public:
     data_t::const_iterator cbegin() const noexcept ;
     data_t::const_iterator cend() const noexcept ;
 
-    unsigned char back() const noexcept ;
-
     std::size_t size() const noexcept ;
     bool is_empty() const noexcept ;
-
-    bool is_including(const unsigned char key) const noexcept ;
+    bool is_containing(const unsigned char key) const noexcept ;
 
     bool operator==(const KeyLog& rhs) const noexcept ;
     bool operator!=(const KeyLog& rhs) const noexcept ;

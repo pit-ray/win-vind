@@ -3,7 +3,6 @@
 
 #include <wx/propdlg.h>
 #include <memory>
-#include "pref_parser.hpp"
 
 namespace wxGUI
 {
@@ -16,7 +15,8 @@ namespace wxGUI
         std::unique_ptr<Impl> pimpl ;
         std::unique_ptr<SystemTray> ptbi ;
 
-        void save_all() ;
+        void save_config() ;
+        void load_config() ;
 
     public:
         explicit PropDlg() ;

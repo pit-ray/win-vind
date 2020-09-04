@@ -23,7 +23,7 @@ namespace XMLParser {
     template <typename T>
     inline static const auto reconstruct_combination(const T& elem_2d) {
         //num of pattern at synchorous system-key
-        size_t n_combination = 1 ;
+        std::size_t n_combination = 1 ;
         for(const auto& elem : elem_2d) {
             if(elem.empty()) continue ;
             n_combination *= elem.size() ;
@@ -42,14 +42,14 @@ namespace XMLParser {
 
             step /= elem.size() ;
 
-            size_t elem_index = 0 ;
-            for(size_t pt_base_index = 0 ; pt_base_index < full_comb.size() ; pt_base_index += step) {
+            std::size_t elem_index = 0 ;
+            for(std::size_t pt_base_index = 0 ; pt_base_index < full_comb.size() ; pt_base_index += step) {
                 if(elem_index == elem.size()) {
                     //cycle iterating
                     elem_index = 0 ;
                 }
 
-                for(size_t i = 0 ; i < step ; i ++) {
+                for(std::size_t i = 0 ; i < step ; i ++) {
                     full_comb[pt_base_index + i].push_back(elem.at(elem_index)) ;
                 }
 
@@ -149,7 +149,7 @@ namespace XMLParser {
 
                         //append required keys at each phase
                         for(auto& phase_list : phase_all_pattern) {
-                            for(size_t i = 0 ; i < phase_list.size() ; i ++) {
+                            for(std::size_t i = 0 ; i < phase_list.size() ; i ++) {
                                 for(const auto& key : ascii_keys[i]) {
                                     phase_list[i].push_back(key) ;
                                 }
@@ -244,7 +244,7 @@ namespace XMLParser {
                         //append required keys at each phase
                         for(const auto& sys_pattern : all_sys_pattern) {
                             vvc_t phase{} ;
-                            for(size_t i_phase = 0 ; i_phase < phase_num ; i_phase ++) {
+                            for(std::size_t i_phase = 0 ; i_phase < phase_num ; i_phase ++) {
                                 vc_t sync{vkcs_vec.at(i_phase)} ;
 
                                 if(!sys_pattern.empty()) {

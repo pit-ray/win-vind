@@ -1,11 +1,13 @@
+#include "screen_metrics.hpp"
 #include "display_cmd.hpp"
-#include "ini_parser.hpp"
+
+#include <windows.h>
+
 #include "utility.hpp"
 #include "key_binder.hpp"
 #include "mode_manager.hpp"
 #include "path.hpp"
-
-#include <windows.h>
+#include "i_params.hpp"
 
 using namespace std ;
 
@@ -89,75 +91,65 @@ namespace DiCmUtility
 }
 bool DisplayCmd::do_enable() const noexcept
 {
-    try {
-        const auto pt = INIParser::load_config(Path::CONFIG_OPTS_INI()) ;
+    pimpl->lf.lfHeight = iParams::get_l("cmd_font_size") ;
+    pimpl->lf.lfWeight = iParams::get_l("cmd_font_weight") ;
 
-        pimpl->lf.lfHeight = pt.get_optional<int>("Property.cmd_font_size").get() ;
-        pimpl->lf.lfWeight = pt.get_optional<int>("Property.cmd_font_weight").get() ;
+    using namespace DiCmUtility ;
+    pimpl->color = hex2COLOREF(iParams::get_s("cmd_font_color")) ;
+    pimpl->bkcolor = hex2COLOREF(iParams::get_s("cmd_font_bkcolor")) ;
 
-        using namespace DiCmUtility ;
-        pimpl->color = hex2COLOREF(pt.get_optional<string>("Property.cmd_font_color").get()) ;
-        pimpl->bkcolor = hex2COLOREF(pt.get_optional<string>("Property.cmd_font_bkcolor").get()) ;
+    const auto pos = iParams::get_s("cmd_pos") ;
+    const auto xma = iParams::get_i("cmd_xmargin") ;
+    const auto yma = iParams::get_i("cmd_ymargin") ;
 
-        const auto pos = pt.get_optional<string>("Property.cmd_pos").get() ;
-        const auto xma = pt.get_optional<int>("Property.cmd_xmargin").get() ;
-        const auto yma = pt.get_optional<int>("Property.cmd_ymargin").get() ;
+    static const ScreenMetrics met{} ;
 
-        static const auto xmet = GetSystemMetrics(SM_CXSCREEN) ;
-        static const auto ymet = GetSystemMetrics(SM_CYSCREEN) ;
+    constexpr auto mid_xbuf = 256 ;
 
-        constexpr auto mid_xbuf = 256 ;
-
-        if(pos == "UpperLeft") {
-            pimpl->x = xma ;
-            pimpl->y = yma ;
-        }
-        else if(pos == "UpperMid") {
-            pimpl->x = xmet / 2 - mid_xbuf ;
-            pimpl->y = yma ;
-        }
-        else if(pos == "UpperRight") {
-            pimpl->x = xmet - xma - mid_xbuf ;
-            pimpl->y = yma ;
-        }
-
-        else if(pos == "MidLeft") {
-            pimpl->x = xma ;
-            pimpl->y = ymet / 2 ;
-        }
-        else if(pos == "Center") {
-            pimpl->x = xmet / 2 - mid_xbuf ;
-            pimpl->y = ymet / 2 ;
-        }
-        else if(pos == "MidRight") {
-            pimpl->x = xmet - xma - mid_xbuf ;
-            pimpl->y = ymet / 2 ;
-        }
-
-        else if(pos == "LowerLeft") {
-            pimpl->x = xma ;
-            pimpl->y = ymet - yma ;
-        }
-        else if(pos == "LowerMid") {
-            pimpl->x = xmet / 2 - mid_xbuf ;
-            pimpl->y = ymet - yma ;
-        }
-        else if(pos == "LowerRight") {
-            pimpl->x = xmet - xma - mid_xbuf ;
-            pimpl->y = ymet - yma ;
-        }
-        else {
-            pimpl->x = xmet / 2 - mid_xbuf ;
-            pimpl->y = ymet - yma ;
-        }
-
-        pimpl->extra = pt.get_optional<int>("Property.cmd_font_extra").get() ;
-
-        MESSAGE_STREAM << "Loaded config of Display Command Option" << Path::CONFIG_OPTS_INI() << endl ;
+    if(pos == "UpperLeft") {
+        pimpl->x = xma ;
+        pimpl->y = yma ;
     }
-    catch(...) {
-        return false ;
+    else if(pos == "UpperMid") {
+        pimpl->x = met.primary_width() / 2 - mid_xbuf ;
+        pimpl->y = yma ;
     }
+    else if(pos == "UpperRight") {
+        pimpl->x = met.primary_width() - xma - mid_xbuf ;
+        pimpl->y = yma ;
+    }
+
+    else if(pos == "MidLeft") {
+        pimpl->x = xma ;
+        pimpl->y = met.primary_height() / 2 ;
+    }
+    else if(pos == "Center") {
+        pimpl->x = met.primary_width() / 2 - mid_xbuf ;
+        pimpl->y = met.primary_height() / 2 ;
+    }
+    else if(pos == "MidRight") {
+        pimpl->x = met.primary_width() - xma - mid_xbuf ;
+        pimpl->y = met.primary_height() / 2 ;
+    }
+
+    else if(pos == "LowerLeft") {
+        pimpl->x = xma ;
+        pimpl->y = met.primary_height() - yma ;
+    }
+    else if(pos == "LowerMid") {
+        pimpl->x = met.primary_width() / 2 - mid_xbuf ;
+        pimpl->y = met.primary_height() - yma ;
+    }
+    else if(pos == "LowerRight") {
+        pimpl->x = met.primary_width() - xma - mid_xbuf ;
+        pimpl->y = met.primary_height() - yma ;
+    }
+    else {
+        pimpl->x = met.primary_width() / 2 - mid_xbuf ;
+        pimpl->y = met.primary_height() - yma ;
+    }
+
+    pimpl->extra = iParams::get_i("cmd_font_extra") ;
     return true ;
 }
 

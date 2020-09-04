@@ -6,7 +6,6 @@
 #include "keybrd_eventer.hpp"
 #include "interval_timer.hpp"
 #include "msg_logger.hpp"
-#include "dynamic_config.hpp"
 #include "key_absorber.hpp"
 #include "simpl_text_selecter.hpp"
 #include "mode_manager.hpp"

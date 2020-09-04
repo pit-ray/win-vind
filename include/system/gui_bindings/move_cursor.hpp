@@ -1,9 +1,9 @@
 #ifndef _MOVE_CURSOR_HPP
 #define _MOVE_CURSOR_HPP
 
-#include "binded_function_with_creator.hpp"
+#include "key_binding_with_creator.hpp"
 
-struct MoveLeft : public BindedFunctionWithCreator<MoveLeft>
+struct MoveLeft : public KeyBindingWithCreator<MoveLeft>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -23,7 +23,7 @@ private:
 } ;
 
 
-struct MoveRight : public BindedFunctionWithCreator<MoveRight>
+struct MoveRight : public KeyBindingWithCreator<MoveRight>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -43,7 +43,7 @@ private:
 } ;
 
 
-struct MoveUp : public BindedFunctionWithCreator<MoveUp>
+struct MoveUp : public KeyBindingWithCreator<MoveUp>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -63,7 +63,7 @@ private:
 } ;
 
 
-struct MoveDown : public BindedFunctionWithCreator<MoveDown>
+struct MoveDown : public KeyBindingWithCreator<MoveDown>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;

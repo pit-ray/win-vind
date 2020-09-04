@@ -12,13 +12,13 @@ namespace EREPUtility {
     template <typename FuncT>
     inline static bool _is_loop_for_input(FuncT&& func) {
         //reset keys downed in order to call this function.
-        for(const auto& key : KeyAbsorber::get_downed_list()) {
+        for(const auto& key : KeyAbsorber::get_pressed_list()) {
             if(!KeybrdEventer::release_keystate(key)) {
                 return false ;
             }
         }
 
-        const auto toggle_keys = KeyAbsorber::get_downed_list() ;
+        const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
         const KeyLog shifts_log{VKC_LSHIFT, VKC_RSHIFT} ;
 
         MSG msg ;
@@ -28,11 +28,11 @@ namespace EREPUtility {
                 DispatchMessage(&msg) ;
             }
 
-            if(KeyAbsorber::is_downed(VKC_ESC)) {
+            if(KeyAbsorber::is_pressed(VKC_ESC)) {
                 return true ;
             }
 
-            const auto log = KeyAbsorber::get_downed_list() - toggle_keys ;
+            const auto log = KeyAbsorber::get_pressed_list() - toggle_keys ;
 
             const auto unshifted_log = log - shifts_log ;
             if(unshifted_log == log) {

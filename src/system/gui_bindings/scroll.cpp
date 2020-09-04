@@ -5,7 +5,7 @@
 
 #include "mouse_eventer.hpp"
 #include "interval_timer.hpp"
-#include "dynamic_config.hpp"
+#include "i_params.hpp"
 
 using namespace std ;
 
@@ -50,7 +50,7 @@ bool ScrollUp::sprocess(const bool first_call) const
         return true ;
     }
 
-    return MouseEventer::vscroll(DynamicConfig::YSCROLL_SPEED()) ;
+    return MouseEventer::vscroll(iParams::get_i("yscroll_speed")) ;
 }
 
 
@@ -84,7 +84,7 @@ bool ScrollDown::sprocess(const bool first_call) const
         return true ;
     }
 
-    return MouseEventer::vscroll(-DynamicConfig::YSCROLL_SPEED()) ;
+    return MouseEventer::vscroll(-iParams::get_i("yscroll_speed")) ;
 }
 
 
@@ -119,7 +119,7 @@ bool ScrollMidUp::sprocess(const bool first_call) const
     }
 
     static const auto delta = MAX_Y_POS  * 0.5f ;
-    return MouseEventer::vscroll(delta * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
+    return MouseEventer::vscroll(delta * iParams::get_f("yscroll_screen_ratio")) ;
 }
 
 
@@ -152,7 +152,7 @@ bool ScrollMidDown::sprocess(const bool first_call) const
         return true ;
     }
     static const auto delta = MAX_Y_POS * 0.5f ;
-    return MouseEventer::vscroll(-delta * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
+    return MouseEventer::vscroll(-delta * iParams::get_f("yscroll_screen_ratio")) ;
 }
 
 
@@ -184,7 +184,7 @@ bool ScrollPageUp::sprocess(const bool first_call) const
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-    return MouseEventer::vscroll(MAX_Y_POS * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
+    return MouseEventer::vscroll(MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
 }
 
 
@@ -216,7 +216,7 @@ bool ScrollPageDown::sprocess(const bool first_call) const
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-    return MouseEventer::vscroll(-MAX_Y_POS * DynamicConfig::YSCROLL_SCREEN_RATIO()) ;
+    return MouseEventer::vscroll(-MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
 }
 
 
@@ -249,7 +249,7 @@ bool ScrollLeft::sprocess(const bool first_call) const
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-    return MouseEventer::hscroll(-DynamicConfig::XSCROLL_SPEED()) ;
+    return MouseEventer::hscroll(-iParams::get_i("xscroll_speed")) ;
 }
 
 
@@ -281,7 +281,7 @@ bool ScrollRight::sprocess(const bool first_call) const
     if(!pimpl->timer.is_passed()) {
         return true ;
     }
-    return MouseEventer::hscroll(DynamicConfig::XSCROLL_SPEED()) ;
+    return MouseEventer::hscroll(iParams::get_f("xscroll_speed")) ;
 }
 
 
@@ -314,7 +314,7 @@ bool ScrollMidLeft::sprocess(const bool first_call) const
         return true ;
     }
     static const auto delta = MAX_X_POS * 0.5f ;
-    return MouseEventer::hscroll(-delta * DynamicConfig::XSCROLL_SCREEN_RATIO()) ;
+    return MouseEventer::hscroll(-delta * iParams::get_f("xscroll_screen_ratio")) ;
 }
 
 
@@ -347,5 +347,5 @@ bool ScrollMidRight::sprocess(const bool first_call) const
         return true ;
     }
     static const auto delta = MAX_X_POS * 0.5f ;
-    return MouseEventer::hscroll(delta * DynamicConfig::XSCROLL_SCREEN_RATIO()) ;
+    return MouseEventer::hscroll(delta * iParams::get_f("xscroll_screen_ratio")) ;
 }

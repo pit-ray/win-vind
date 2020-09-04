@@ -111,7 +111,7 @@ namespace KeybrdEventer
     }
 
     bool _pressup_core(std::initializer_list<unsigned char>&& initl) {
-        const auto pressing_keys = KeyAbsorber::get_downed_list() ;
+        const auto pressing_keys = KeyAbsorber::get_pressed_list() ;
 
         const auto recover_keystate= [&pressing_keys] {
             for(const auto key : pressing_keys) {

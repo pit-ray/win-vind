@@ -2,23 +2,23 @@
 #define _WX_BINDINGS_HPP
 
 #include <memory>
-#include <wx/panel.h>
-#include <wx/bookctrl.h>
+#include "wx_panel_core.hpp"
 
 namespace wxGUI
 {
-    class BindingsPanel : public wxPanel
+    class BindingsPanel : public PanelCore
     {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
+        void translate() noexcept override ;
+        void do_save_config() noexcept override ;
+        void do_load_config() noexcept override ;
+
     public:
         explicit BindingsPanel(wxBookCtrlBase* const p_book_ctrl) ;
         virtual ~BindingsPanel() noexcept ;
-
-        void save_all() ;
-        void load_all() ;
 
         BindingsPanel(BindingsPanel&&) = delete ;
         BindingsPanel& operator=(BindingsPanel&&) = delete ;

@@ -5,7 +5,7 @@
 
 namespace ExAppUtility
 {
-    void load_config() ;
+    void load_config() noexcept ;
 }
 
 struct StartShell : public CommandWithCreator<StartShell>

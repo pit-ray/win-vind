@@ -4,8 +4,8 @@
 #include <memory>
 #include <algorithm>
 
-#include "ini_parser.hpp"
 #include "msg_logger.hpp"
+#include "i_params.hpp"
 
 #include "autotrack_popup.hpp"
 #include "display_cmd.hpp"
@@ -41,22 +41,15 @@ OptionLoader::OptionLoader(const KeyBinder* const pkb)
 
 OptionLoader::~OptionLoader() = default ;
 
-void OptionLoader::load_config(const string& filename) noexcept
+void OptionLoader::load_config() noexcept
 {
     //load options ------------------------------------------------
     //initialzie
     for_each(pimpl->vpop.cbegin(), pimpl->vpop.cend(), [](auto& op){op->disable() ;}) ;
-    const auto pt = INIParser::load_config(filename) ;
 
     for(const auto& op : pimpl->vpop) {
-        if(pt.get_optional<int>("Options." + op->name()).get() == 0) {
-            continue ;
-        }
-
-        op->enable() ;
+        if(iParams::get_b(op->name())) op->enable() ;
     }
-
-    MESSAGE_STREAM << "Loaded " << filename << endl ;
 }
 
 void OptionLoader::update() noexcept

@@ -18,4 +18,8 @@ namespace ModeManager
     bool is_editor() noexcept {
         return m > Mode::_EditorModeThreshold ;
     }
+
+    bool is_command() noexcept {
+        return m == Mode::Command || m == Mode::EdiCommand ;
+    }
 }

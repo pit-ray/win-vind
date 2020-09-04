@@ -108,19 +108,17 @@ namespace KeyAbsorber
         return true ;
     }
 
-    bool is_downed(const unsigned char keycode) noexcept {
+    bool is_pressed(const unsigned char keycode) noexcept {
         if(keycode < 1 || keycode > 254) {
             return false ;
         }
         return _state[keycode] ;
     }
 
-    const KeyLog get_downed_list() noexcept {
-        vector<unsigned char> res{} ;
+    const KeyLog get_pressed_list() noexcept {
+        KeyLog::data_t res{} ;
         for(unsigned char i = 1 ; i < 255 ; i ++) {
-            if(is_downed(i)) {
-                res.push_back(i) ;
-            }
+            if(is_pressed(i)) res.insert(i) ;
         }
         return KeyLog(res) ;
     }
@@ -140,7 +138,7 @@ namespace KeyAbsorber
 
         //if this function is called by pressed button,
         //it has to send message "KEYUP" to OS (not absorbed).
-        for(const auto& vkc : get_downed_list()) {
+        for(const auto& vkc : get_pressed_list()) {
             if(!KeybrdEventer::release_keystate(vkc)) {
                 return false ;
             }
@@ -161,7 +159,7 @@ namespace KeyAbsorber
 
     void open_key(const unsigned char key) noexcept {
         try {
-            _ignored_keys.push_back(key) ;
+            _ignored_keys.insert(key) ;
         }
         catch(bad_alloc& e) {
             ERROR_STREAM << e.what() << " (key_absorber.cpp::open_key)\n" ;

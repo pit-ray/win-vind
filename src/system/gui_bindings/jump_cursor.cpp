@@ -1,12 +1,7 @@
-//for DPI support
-#define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
-#define WINVER          _WIN32_WINNT_WIN10
-#define _WIN32_WINNT    _WIN32_WINNT_WIN10
-
+#include "screen_metrics.hpp"
 #include "jump_cursor.hpp"
 
 #include <windows.h>
-#include <winuser.h>
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -17,39 +12,16 @@
 #include "key_absorber.hpp"
 #include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
-#include "dynamic_config.hpp"
+#include "i_params.hpp"
 #include "key_log.hpp"
 #include "vkc_converter.hpp"
 #include "utility.hpp"
+#include "path.hpp"
 
 using namespace std ;
 
 namespace JumpCursorUtility
 {
-    class ScreenMetrics {
-    private:
-        LONG w ;
-        LONG h ;
-
-    public:
-        explicit ScreenMetrics() : w(0), h(0) {
-            SetProcessDPIAware() ;
-
-            MONITORINFO minfo ;
-            minfo.cbSize = sizeof(MONITORINFO) ;
-            const auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTONEAREST) ;
-            GetMonitorInfo(hmonitor, &minfo) ;
-            w = minfo.rcMonitor.right - minfo.rcMonitor.left ;
-            h = minfo.rcMonitor.bottom - minfo.rcMonitor.top ;
-        }
-        const auto width() const noexcept {
-            return w ;
-        }
-        const auto height() const noexcept {
-            return h ;
-        }
-    } ;
-
     static const ScreenMetrics _scmet{} ;
 }
 
@@ -82,7 +54,7 @@ bool Jump2Right::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(_scmet.width() - DynamicConfig::SCREEN_POS_BUF(), pos.y) ;
+    SetCursorPos(_scmet.width() - iParams::get_i("screen_pos_buf"), pos.y) ;
     return true ;
 }
 
@@ -114,7 +86,7 @@ bool Jump2Bottom::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(pos.x, _scmet.height() - DynamicConfig::SCREEN_POS_BUF()) ;
+    SetCursorPos(pos.x, _scmet.height() - iParams::get_i("cursor_pos_buf")) ;
     return true ;
 }
 
@@ -162,15 +134,18 @@ namespace JumpCursorUtility
     }
 
     using key_pos_t = std::unordered_map<unsigned char, std::pair<float, float>> ;
-    inline static const auto load_keybrd_pos(const string& filename) {
+    static key_pos_t _keypos{} ;
+    void load_config() noexcept {
         //initilize
         max_keybrd_xpos = 0 ;
         max_keybrd_ypos = 0 ;
 
         try {
+            _keypos.clear() ;
+            const auto filename = Path::KEYBRD_MAP() ;
+
             ifstream ifs(filename, ios::in) ;
             string buf ;
-            key_pos_t kp{} ;
 
             while(getline(ifs, buf)) {
                 if(buf.empty()) {
@@ -202,12 +177,12 @@ namespace JumpCursorUtility
 
                 //specific code
                 if(vec[2] == "Space") {
-                    kp[VKCConverter::get_vkc(' ')] = make_pair(x, y) ;
+                    _keypos[VKCConverter::get_vkc(' ')] = make_pair(x, y) ;
                     continue ;
                 }
 
                 if(auto vkc = VKCConverter::get_sys_vkc(vec[2])) {
-                    kp[vkc] = make_pair(x, y) ;
+                    _keypos[vkc] = make_pair(x, y) ;
                     continue ;
                 }
 
@@ -216,19 +191,18 @@ namespace JumpCursorUtility
                     const auto vkc = VKCConverter::get_vkc(vec[2].front()) ;
                     if(vkc != '\0') {
                         //overwrite
-                        kp[vkc] = make_pair(x, y) ;
+                        _keypos[vkc] = make_pair(x, y) ;
                         continue ;
                     }
                 }
 
                 write_error(buf, filename) ;
             }
-            return kp ;
         }
 
         catch(const exception& e) {
             ERROR_STREAM << "std::fstream: " <<  e.what() << " (JumpCursorUtility::load_keybrd_pos)\n" ;
-            return key_pos_t{} ;
+            return ;
         }
     }
 }
@@ -242,17 +216,15 @@ bool Jump2Any::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
 
-    static const auto keypos = load_keybrd_pos(Path::KEYBRD_MAP()) ;
-
     //reset key state (binded key)
-    for(const auto& key : KeyAbsorber::get_downed_list()) {
+    for(const auto& key : KeyAbsorber::get_pressed_list()) {
         if(!KeybrdEventer::release_keystate(key)) {
             return false ;
         }
     }
 
     //ignore locked key (for example, CapsLock, NumLock, Kana....)
-    const auto toggle_keys = KeyAbsorber::get_downed_list() ;
+    const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
 
     MSG msg ;
     while(true) {
@@ -263,26 +235,26 @@ bool Jump2Any::sprocess(const bool first_call)
             DispatchMessage(&msg) ;
         }
 
-        if(KeyAbsorber::is_downed(VKC_ESC)) {
+        if(KeyAbsorber::is_pressed(VKC_ESC)) {
             return true ;
         }
 
-        const auto log = KeyAbsorber::get_downed_list() - toggle_keys ;
+        const auto log = KeyAbsorber::get_pressed_list() - toggle_keys ;
 
         if(log.is_empty()) {
             continue ;
         }
 
         try {
-            const auto pos = keypos.at(log.back()) ;
+            const auto pos = _keypos.at(*log.cbegin()) ;
 
             auto x_pos = static_cast<int>(pos.first / max_keybrd_xpos * _scmet.width()) ;
             auto y_pos = static_cast<int>(pos.second / max_keybrd_ypos * _scmet.height()) ;
             if(x_pos == _scmet.width()) {
-                x_pos -= DynamicConfig::SCREEN_POS_BUF() ;
+                x_pos -= iParams::get_i("screen_pos_buf") ;
             }
             if(y_pos == _scmet.height()) {
-                y_pos -= DynamicConfig::SCREEN_POS_BUF() ;
+                y_pos -= iParams::get_i("screen_pos_buf") ;
             }
 
             SetCursorPos(x_pos, y_pos) ;

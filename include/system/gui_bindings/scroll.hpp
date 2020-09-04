@@ -1,8 +1,8 @@
 #ifndef _SCROLL_HPP
 #define _SCROLL_HPP
-#include "binded_function_with_creator.hpp"
+#include "key_binding_with_creator.hpp"
 
-struct ScrollUp : public BindedFunctionWithCreator<ScrollUp>
+struct ScrollUp : public KeyBindingWithCreator<ScrollUp>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -22,7 +22,7 @@ private:
 } ;
 
 
-struct ScrollDown : public BindedFunctionWithCreator<ScrollDown>
+struct ScrollDown : public KeyBindingWithCreator<ScrollDown>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -42,7 +42,7 @@ private:
 } ;
 
 
-struct ScrollMidUp : public BindedFunctionWithCreator<ScrollMidUp>
+struct ScrollMidUp : public KeyBindingWithCreator<ScrollMidUp>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -62,7 +62,7 @@ private:
 } ;
 
 
-struct ScrollMidDown : public BindedFunctionWithCreator<ScrollMidDown>
+struct ScrollMidDown : public KeyBindingWithCreator<ScrollMidDown>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -82,7 +82,7 @@ private:
 } ;
 
 
-struct ScrollPageUp : public BindedFunctionWithCreator<ScrollPageUp>
+struct ScrollPageUp : public KeyBindingWithCreator<ScrollPageUp>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -102,7 +102,7 @@ private:
 } ;
 
 
-struct ScrollPageDown : public BindedFunctionWithCreator<ScrollPageDown>
+struct ScrollPageDown : public KeyBindingWithCreator<ScrollPageDown>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -122,7 +122,7 @@ private:
 } ;
 
 
-struct ScrollLeft : public BindedFunctionWithCreator<ScrollLeft>
+struct ScrollLeft : public KeyBindingWithCreator<ScrollLeft>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -142,7 +142,7 @@ private:
 } ;
 
 
-struct ScrollRight : public BindedFunctionWithCreator<ScrollRight>
+struct ScrollRight : public KeyBindingWithCreator<ScrollRight>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -162,7 +162,7 @@ private:
 } ;
 
 
-struct ScrollMidLeft : public BindedFunctionWithCreator<ScrollMidLeft>
+struct ScrollMidLeft : public KeyBindingWithCreator<ScrollMidLeft>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
@@ -182,7 +182,7 @@ private:
 } ;
 
 
-struct ScrollMidRight : public BindedFunctionWithCreator<ScrollMidRight>
+struct ScrollMidRight : public KeyBindingWithCreator<ScrollMidRight>
 {
     bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;

@@ -3,10 +3,11 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
-#include <boost/property_tree/ini_parser.hpp>
+#include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
 #include "msg_logger.hpp"
@@ -20,51 +21,35 @@ namespace ExAppUtility
 {
     using mss_t = unordered_map<string, string> ;
 
-    template <typename T>
-    inline static void catch_boost_except(T& e) {
-        ERROR_STREAM << e.what() << " (ExAppUtility)\n" ;
-    }
-
-    inline static const mss_t _load_proc_list_core(const string& filename) noexcept {
-        using namespace boost::property_tree ;
-        ptree pt ;
+    inline static const mss_t _load_proc_list_core() noexcept {
         mss_t map{} ;
 
         try {
-            read_ini(filename, pt) ;
+            nlohmann::json j ;
+            std::ifstream ifs(Path::SETTINGS()) ;
+            ifs >> j ;
 
-            for(const auto& sect : pt) {
-                if(sect.first != "ExAppPath") {
-                    continue ;
+            for(const auto& i : j.at("exapps").at("choices")) {
+                try {
+                    auto&& key = i.at("name").get<std::string>() ;
+                    auto&& val = i.at("value").get<std::string>() ;
+                    map[key] = val ;
                 }
-                for(const auto& key : sect.second) {
-                    const auto key_str = static_cast<string>(key.first) ;
-                    const auto val_str = key.second.get_value<string>() ;
-                    map[key_str] = val_str ;
-                }
+                catch(const std::exception& e) {continue ;}
             }
-
-            MESSAGE_STREAM << "Loaded External Proc List (" << filename << ")\n" ;
             return map ;
         }
-        catch(ini_parser_error& e) {
-            catch_boost_except(e) ;
-            return map ;
-        }
-        catch(ptree_bad_path& e) {
-            catch_boost_except(e) ;
-            return map ;
-        }
-        catch(ptree_bad_data& e) {
-            catch_boost_except(e) ;
+        catch(const std::exception& e) {
+            ERROR_STREAM << e.what() << ", failed loading external app list (" \
+            << Path::SETTINGS() <<") (ExAppUtility::_load_proc_list_core)\n" ;
             return map ;
         }
     }
 
-    static auto proc_list{_load_proc_list_core(Path::CONFIG_EXAPP_INI())} ;
+    static auto proc_list{_load_proc_list_core()} ;
 
-    void load_config() {
-        proc_list = _load_proc_list_core(Path::CONFIG_EXAPP_INI()) ;
+    void load_config() noexcept {
+        proc_list = _load_proc_list_core() ;
     }
 
     inline static const auto get_protected_path(const string name) noexcept {

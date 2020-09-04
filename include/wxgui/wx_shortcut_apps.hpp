@@ -1,29 +1,23 @@
 #ifndef _WX_SHORTCUT_APPS_HPP
 #define _WX_SHORTCUT_APPS_HPP
 
-#include <wx/panel.h>
-#include <wx/bookctrl.h>
 #include <memory>
-
-#include "pref_parser.hpp"
+#include "wx_panel_core.hpp"
 
 namespace wxGUI
 {
-    class ShortcutAppsPanel : public wxPanel
+    class ShortcutAppsPanel : public PanelCore
     {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        void load_core(const PrefParser::ums_str_t paths) ;
-        void load_default() ;
-
+        void translate() noexcept override ;
+        void do_save_config() noexcept override ;
+        void do_load_config() noexcept override ;
     public:
         explicit ShortcutAppsPanel(wxBookCtrlBase* const p_book_ctrl) ;
         virtual ~ShortcutAppsPanel() noexcept ;
-
-        void save_all() ;
-        void load_all() ;
 
         ShortcutAppsPanel(ShortcutAppsPanel&&) = delete ;
         ShortcutAppsPanel& operator=(ShortcutAppsPanel&&) = delete ;

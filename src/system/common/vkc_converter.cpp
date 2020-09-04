@@ -163,11 +163,9 @@ namespace VKCConverter
         catch(const std::out_of_range&) {return 0 ;}
     }
 
-    const vector<unsigned char> get_all_sys_vkc() {
-        vector<unsigned char> vec ;
-        for(const auto& i : _sys_vkc) {
-            vec.push_back(i.second) ;
-        }
-        return vec ;
+    const unordered_set<unsigned char> get_all_sys_vkc() {
+        unordered_set<unsigned char> set ;
+        for(const auto& i : _sys_vkc) set.insert(i.second) ;
+        return set ;
     }
 }

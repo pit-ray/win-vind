@@ -10,15 +10,18 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/button.h>
+#include <wx/statbox.h>
 
 #include "disable_gcc_warning.hpp"
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
 #include "path.hpp"
 #include "msg_logger.hpp"
-#include "wx_path.hpp"
+
 #include "wx_constant.hpp"
+#include "io_params.hpp"
+#include "ui_translator.hpp"
 
 namespace wxGUI
 {
@@ -35,16 +38,27 @@ namespace wxGUI
 
     struct BindingsPanel::Impl {
         wxListBox* func_list = nullptr ;
-        wxStaticText* id = nullptr ;
+
+        wxStaticText* id_label = nullptr ;
+        wxStaticText* id       = nullptr ;
+
         wxListBox* keys = nullptr ;
         wxListBox* cmds = nullptr ;
+
         wxTextCtrl* new_key = nullptr ;
         wxTextCtrl* new_cmd = nullptr ;
-        nlohmann::json parser{} ;
 
-        wxSizer* right_sizer = nullptr ;
-        wxSizer* keys_sizer = nullptr ;
-        wxSizer* cmds_sizer = nullptr ;
+        wxBoxSizer* right_sizer      = nullptr ;
+        wxStaticBoxSizer* keys_sizer = nullptr ;
+        wxStaticBoxSizer* cmds_sizer = nullptr ;
+
+        wxButton* key_add_btn = nullptr ;
+        wxButton* key_del_btn = nullptr ;
+        wxButton* cmd_add_btn = nullptr ;
+        wxButton* cmd_del_btn = nullptr ;
+        wxButton* def_btn   = nullptr ;
+
+        nlohmann::json parser{} ;
 
         void update_shown_details() noexcept {
             auto update = [this](const nlohmann::json& obj) {
@@ -79,29 +93,53 @@ namespace wxGUI
                 update(parser.front()) ;
                 return ;
             }
-            update(parser[index]) ;
+            update(parser.at(index)) ;
+        }
+
+        void update_func_list() noexcept {
+            func_list->Clear() ;
+            for(const auto& obj : parser) {
+                try {
+                    func_list->Append(wxString::FromUTF8(obj.at(
+                        ioParams::get_vs("ui_lang")
+                    ).get<std::string>().c_str())) ;
+                }
+                catch(const std::exception&) {continue ;}
+            }
+        }
+
+        void update_labels() noexcept {
+            id_label->SetLabel(UITrans::trans("notify/preferences/bindings/id")) ;
+            keys_sizer->GetStaticBox()->SetLabel(UITrans::trans("notify/preferences/bindings/keys")) ;
+            cmds_sizer->GetStaticBox()->SetLabel(UITrans::trans("notify/preferences/bindings/cmds")) ;
+
+            key_add_btn->SetLabel(UITrans::trans("buttons/add")) ;
+            key_del_btn->SetLabel(UITrans::trans("buttons/del")) ;
+            cmd_add_btn->SetLabel(UITrans::trans("buttons/add")) ;
+            cmd_del_btn->SetLabel(UITrans::trans("buttons/del")) ;
+            def_btn->SetLabel(UITrans::trans("buttons/default")) ;
         }
 
         bool read_json() noexcept {
             //pimpl->parser.clear() ;
             try {
-                std::ifstream ifs(Path::BINDINGS_LIST()) ;
+                std::ifstream ifs(Path::BINDINGS()) ;
                 ifs >> parser ;
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << "(wxGUI::BindingsPanel::load_all)\n" ;
+                ERROR_STREAM << e.what() << "(wxGUI::BindingsPanel::load_config)\n" ;
                 return false ;
             }
             return true ;
         }
-    
+
         bool write_json() noexcept {
             try {
-                std::ofstream ofs(Path::BINDINGS_LIST()) ;
+                std::ofstream ofs(Path::BINDINGS()) ;
                 ofs << std::setw(4) << parser << std::endl ;
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << "(wxGUI::BindingsPanel::save_all)\n" ;
+                ERROR_STREAM << e.what() << "(wxGUI::BindingsPanel::save_config)\n" ;
                 return false ;
             }
             return true ;
@@ -109,27 +147,20 @@ namespace wxGUI
     } ;
 
     BindingsPanel::BindingsPanel(wxBookCtrlBase* const p_book_ctrl)
-    : wxPanel(p_book_ctrl),
+    : PanelCore(p_book_ctrl, "notify/preferences/bindings"),
       pimpl(std::make_unique<Impl>())
     {
-        p_book_ctrl->AddPage(this, "Bindings") ;
-
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
-
-        pimpl->read_json() ;
-        wxArrayString choices ;
-        for(const auto& obj : pimpl->parser) {
-            try {choices.Add(wxString::FromUTF8(obj["jp"].get<std::string>().c_str())) ;}
-            catch(const nlohmann::json::exception&) {continue ;}
-        }
 
         auto root_sizer = new wxBoxSizer(wxHORIZONTAL) ;
         pimpl->func_list = new wxListBox(
             this, BindingsEvt::SELECT_FUNC, wxDefaultPosition,
-            wxSize(static_cast<int>(WIDTH * 0.4), static_cast<int>(HEIGHT * 0.8)),
-            choices, wxLB_SINGLE
+            wxSize(static_cast<int>(WIDTH() * 0.4), HEIGHT()),
+            wxArrayString{}, wxLB_SINGLE
         ) ;
+
+        pimpl->read_json() ;
         root_sizer->Add(pimpl->func_list, 0, wxALL | wxALIGN_CENTRE_HORIZONTAL, BORDER) ;
         root_sizer->AddStretchSpacer() ;
 
@@ -139,7 +170,8 @@ namespace wxGUI
             {
                 auto fl = flags ;
                 fl.Align(wxALIGN_CENTER_VERTICAL) ;
-                id_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Identifier: ")), std::move(fl)) ;
+                pimpl->id_label = new wxStaticText(this, wxID_ANY, wxT("Identifier: ")) ;
+                id_sizer->Add(pimpl->id_label, std::move(fl)) ;
                 pimpl->id = new wxStaticText(this, wxID_ANY, wxT("")) ;
                 id_sizer->Add(pimpl->id, flags) ;
             }
@@ -149,22 +181,23 @@ namespace wxGUI
             {
                 pimpl->keys = new wxListBox(
                     this, wxID_ANY, wxDefaultPosition,
-                    wxSize(static_cast<int>(WIDTH * 0.5), static_cast<int>(HEIGHT * 0.15)),
+                    wxSize(static_cast<int>(WIDTH() * 0.5), static_cast<int>(HEIGHT() * 0.125)),
                     wxArrayString{}, wxLB_SINGLE
                 ) ;
                 pimpl->keys_sizer->Add(pimpl->keys, flags) ;
- 
+
                 auto ctrls_sizer = new wxBoxSizer(wxHORIZONTAL) ;
                 auto fl = flags ;
                 fl.Align(wxALIGN_CENTER_VERTICAL) ;
                 pimpl->new_key = new wxTextCtrl(
                     this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                    wxSize(static_cast<int>(WIDTH * 0.25), wxDefaultCoord)
+                    wxSize(static_cast<int>(WIDTH() * 0.25), wxDefaultCoord)
                 ) ;
                 ctrls_sizer->Add(pimpl->new_key, fl) ;
-
-                ctrls_sizer->Add(new wxButton(this, BindingsEvt::ADD_KEY, wxT("Add")), fl) ;
-                ctrls_sizer->Add(new wxButton(this, BindingsEvt::DEL_KEY, wxT("Delete")), fl) ;
+                pimpl->key_add_btn = new wxButton(this, BindingsEvt::ADD_KEY, wxT("Add")) ;
+                ctrls_sizer->Add(pimpl->key_add_btn, fl) ;
+                pimpl->key_del_btn = new wxButton(this, BindingsEvt::DEL_KEY, wxT("Delete")) ;
+                ctrls_sizer->Add(pimpl->key_del_btn, fl) ;
                 pimpl->keys_sizer->Add(ctrls_sizer, flags) ;
             }
             pimpl->right_sizer->Add(pimpl->keys_sizer, flags) ;
@@ -173,7 +206,7 @@ namespace wxGUI
             {
                 pimpl->cmds = new wxListBox(
                     this, wxID_ANY, wxDefaultPosition,
-                    wxSize(static_cast<int>(WIDTH * 0.5), static_cast<int>(HEIGHT * 0.15)),
+                    wxSize(static_cast<int>(WIDTH() * 0.5), static_cast<int>(HEIGHT() * 0.125)),
                     wxArrayString{}, wxLB_SINGLE
                 ) ;
                 pimpl->cmds_sizer->Add(pimpl->cmds, flags) ;
@@ -183,23 +216,22 @@ namespace wxGUI
                 fl.Align(wxALIGN_CENTER_VERTICAL) ;
                 pimpl->new_cmd = new wxTextCtrl(
                     this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                    wxSize(static_cast<int>(WIDTH * 0.25), wxDefaultCoord)
+                    wxSize(static_cast<int>(WIDTH() * 0.25), wxDefaultCoord)
                 ) ;
                 ctrls_sizer->Add(pimpl->new_cmd, fl) ;
 
-                ctrls_sizer->Add(new wxButton(this, BindingsEvt::ADD_CMD, wxT("Add")), fl) ;
-                ctrls_sizer->Add(new wxButton(this, BindingsEvt::DEL_CMD, wxT("Delete")), fl) ;
+                pimpl->cmd_add_btn = new wxButton(this, BindingsEvt::ADD_CMD, wxT("Add")) ;
+                ctrls_sizer->Add(pimpl->cmd_add_btn, fl) ;
+                pimpl->cmd_del_btn = new wxButton(this, BindingsEvt::DEL_CMD, wxT("Delete")) ;
+                ctrls_sizer->Add(pimpl->cmd_del_btn, fl) ;
                 pimpl->cmds_sizer->Add(ctrls_sizer, flags) ;
             }
             pimpl->right_sizer->Add(pimpl->cmds_sizer, flags) ;
 
             pimpl->right_sizer->AddStretchSpacer() ;
-            //pimpl->right_sizer->Add(0, 0, 1, wxEXPAND | wxBOTTOM, BORDER) ;
             auto df = flags;
-            pimpl->right_sizer->Add(
-                new wxButton(this, BindingsEvt::DEFAULT,
-                wxT("Return to Default")), std::move(df.Right())
-            ) ;
+            pimpl->def_btn = new wxButton(this, BindingsEvt::DEFAULT, wxT("Return to Default")) ;
+            pimpl->right_sizer->Add(pimpl->def_btn, std::move(df.Right())) ;
         }
         root_sizer->Add(pimpl->right_sizer, 0, wxEXPAND | wxALL | wxALIGN_CENTRE_HORIZONTAL, BORDER) ;
         SetSizerAndFit(root_sizer) ;
@@ -217,10 +249,15 @@ namespace wxGUI
             const auto index = pimpl->func_list->GetSelection() ;
             if(index == wxNOT_FOUND) return ;
 
-            auto& c = pimpl->parser[index]["key"] ;
-            if(!c.contains(str)) {
-                pimpl->keys->Append(str) ;
-                c.push_back(std::move(str.ToStdString())) ;
+            try {
+                auto& c = pimpl->parser.at(index).at("key") ;
+                if(!c.contains(str)) {
+                    pimpl->keys->Append(str) ;
+                    c.push_back(std::move(str.ToStdString())) ;
+                }
+            }
+            catch(const std::exception& e) {
+                ERROR_STREAM << e.what() << " (BindingsPanel::BindingsPanel::BIND(ADD_KEY))\n" ;
             }
 
             pimpl->new_key->Clear() ;
@@ -235,8 +272,10 @@ namespace wxGUI
             if(func_index == wxNOT_FOUND) return ;
 
             pimpl->keys->Delete(index) ;
-            try{pimpl->parser[func_index]["key"].erase(index) ;}
-            catch(const nlohmann::json::exception&){return ;}
+            try{pimpl->parser.at(func_index).at("key").erase(index) ;}
+            catch(const std::exception& e) {
+                ERROR_STREAM << e.what() << " (BindingsPanel::BindingsPanel::BIND(DEL_KEY))\n" ;
+            }
         }, BindingsEvt::DEL_KEY) ;
 
         //Cmds Add Button
@@ -247,10 +286,15 @@ namespace wxGUI
             const auto index = pimpl->func_list->GetSelection() ;
             if(index == wxNOT_FOUND) return ;
 
-            auto& c = pimpl->parser[index]["cmd"] ;
-            if(!c.contains(str)) {
-                c.push_back(str.ToStdString()) ;
-                pimpl->cmds->Append(str) ;
+            try {
+                auto& c = pimpl->parser.at(index).at("cmd") ;
+                if(!c.contains(str)) {
+                    c.push_back(str.ToStdString()) ;
+                    pimpl->cmds->Append(str) ;
+                }
+            }
+            catch(const std::exception& e) {
+                ERROR_STREAM << e.what() << " (BindingsPanel::BindingsPanel::BIND(ADD_CMD))\n" ;
             }
 
             pimpl->new_cmd->Clear() ;
@@ -265,7 +309,7 @@ namespace wxGUI
             if(func_index == wxNOT_FOUND) return ;
 
             pimpl->cmds->Delete(index) ;
-            try {pimpl->parser[func_index]["cmd"].erase(index) ;}
+            try {pimpl->parser.at(func_index).at("cmd").erase(index) ;}
             catch(const nlohmann::json::exception&){return ;}
         }, BindingsEvt::DEL_CMD) ;
 
@@ -276,12 +320,12 @@ namespace wxGUI
                 const auto index = pimpl->func_list->GetSelection() ;
                 if(index == wxNOT_FOUND) return ;
 
-                std::ifstream ifs(Path::DEFAULT_BINDINGS) ;
+                std::ifstream ifs(Path::Default::BINDINGS()) ;
                 nlohmann::json p{} ;
                 ifs >> p ;
 
-                pimpl->parser[index].clear() ;
-                pimpl->parser[index] = std::move(p.at(index)) ;
+                pimpl->parser.at(index).clear() ;
+                pimpl->parser.at(index) = std::move(p.at(index)) ;
 
                 pimpl->update_shown_details() ;
             }
@@ -292,18 +336,25 @@ namespace wxGUI
         }, BindingsEvt::DEFAULT) ;
     }
     BindingsPanel::~BindingsPanel() noexcept = default ;
-    void BindingsPanel::load_all() {
-        pimpl->func_list->SetSelection(0) ;
-        pimpl->update_shown_details() ;
-
+    void BindingsPanel::do_load_config() noexcept {
         if(!pimpl->read_json()) {
             return ;
         }
     }
 
-    void BindingsPanel::save_all() {
+    void BindingsPanel::do_save_config() noexcept {
         if(!pimpl->write_json()) {
             return ;
         }
+    }
+
+    void BindingsPanel::translate() noexcept {
+        pimpl->update_func_list() ;
+
+        pimpl->func_list->SetSelection(0) ;
+        pimpl->update_shown_details() ;
+
+        pimpl->update_labels() ;
+        Layout() ;
     }
 }

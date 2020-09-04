@@ -1,14 +1,16 @@
 #include "system.hpp"
 
+#include <windows.h>
+
+#include <iostream>
+
 #include "key_binder.hpp"
 #include "vkc_converter.hpp"
 #include "key_absorber.hpp"
 #include "path.hpp"
 #include "option_loader.hpp"
 #include "keybrd_eventer.hpp"
-
-#include <iostream>
-#include <windows.h>
+#include "i_params.hpp"
 
 #include "gui_bindings/mywindow_ctrl.hpp"
 
@@ -51,12 +53,13 @@ namespace System
     }
 
     void load_config() {
-        _kb.load_config(Path::BINDINGS_LIST()) ;
-        _ol.load_config(Path::CONFIG_OPTS_BOOL_INI()) ;
+        iParams::load_config() ;
+        _kb.load_config() ;
+        _ol.load_config() ;
     }
 
     void load_option_config() {
-        _ol.load_config(Path::CONFIG_OPTS_BOOL_INI()) ;
+        _ol.load_config() ;
     }
 
     bool update() {
@@ -64,7 +67,7 @@ namespace System
         _ol.update() ;
 
         using namespace KeyAbsorber ;
-        if(is_downed(VKC_F8) && is_downed(VKC_F9)) {
+        if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
             MESSAGE_STREAM << "Completed successfully (ExitCommand)\n" ;
             return false ;
         }

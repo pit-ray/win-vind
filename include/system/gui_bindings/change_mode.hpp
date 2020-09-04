@@ -1,36 +1,36 @@
 #ifndef _CHANGE_MODE_HPP
 #define _CHANGE_MODE_HPP
-#include "binded_function_with_creator.hpp"
+#include "key_binding_with_creator.hpp"
 
-struct Change2Normal : public BindedFunctionWithCreator<Change2Normal>
+struct Change2Normal : public KeyBindingWithCreator<Change2Normal>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct Change2Insert : public BindedFunctionWithCreator<Change2Insert>
+struct Change2Insert : public KeyBindingWithCreator<Change2Insert>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct Change2Visual : public BindedFunctionWithCreator<Change2Visual>
+struct Change2Visual : public KeyBindingWithCreator<Change2Visual>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct Change2Editor : public BindedFunctionWithCreator<Change2Editor>
+struct Change2Editor : public KeyBindingWithCreator<Change2Editor>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct Change2Command : public BindedFunctionWithCreator<Change2Command>
+struct Change2Command : public KeyBindingWithCreator<Change2Command>
 {
     static bool sprocess(const bool first_call) ;
     static const std::string sname() noexcept ;

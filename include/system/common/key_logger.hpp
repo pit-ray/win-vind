@@ -1,6 +1,7 @@
 #ifndef _KEY_LOGGER_HPP
 #define _KEY_LOGGER_HPP
 
+#include <vector>
 #include "key_log.hpp"
 
 class KeyLogger
@@ -13,7 +14,7 @@ public:
     explicit KeyLogger() noexcept ;
     virtual ~KeyLogger() noexcept ;
 
-    size_t size() const noexcept ;
+    std::size_t size() const noexcept ;
     bool is_empty() const noexcept ;
     void clear() noexcept ;
 
@@ -27,11 +28,11 @@ public:
     data_t::const_iterator cend() const noexcept ;
 
     const KeyLog back() const noexcept ;
-    const KeyLog at(const size_t i) const ;
+    const KeyLog at(const std::size_t i) const ;
 
     //if not changed, return false
-    bool is_changed_and_update() ; //logging direct
-    bool is_changed_and_inputc() ; //regard inputed key log as ascii charactor
+    bool is_changed_code() ; //logging direct
+    bool is_changed_char() ; //regard inputed key log as ascii charactor
 
     const std::string get_str() const noexcept ;
 

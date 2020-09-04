@@ -32,8 +32,7 @@ set(ALLOW_CONSOLE OFF)
 
 include_directories(
     libs
-    include/system
-    C:/boost
+    include
 )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/system)
@@ -69,20 +68,32 @@ else()
 
     include_directories(
         include/wxgui
+        include/wxgui/settings_ctrls
         C:/wxWidgets/include
     )
 
     set(WXG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/wxgui)
+    set(WXG_SETCTR_DIR ${WXG_DIR}/settings_ctrls)
     set(WXGUI_SRC
+        src/i_params.cpp
+
         ${WXG_DIR}/ui_translator.cpp
-        ${WXG_DIR}/pref_parser.cpp
+        ${WXG_DIR}/io_params.cpp
+
+        ${WXG_SETCTR_DIR}/ctrl_core.cpp
+        ${WXG_SETCTR_DIR}/choices_manager.cpp
+        ${WXG_SETCTR_DIR}/common_ctrl.cpp
+        ${WXG_SETCTR_DIR}/options_ctrl.cpp
+        ${WXG_SETCTR_DIR}/move_cursor_ctrl.cpp
+        ${WXG_SETCTR_DIR}/scroll_page_ctrl.cpp
+        ${WXG_SETCTR_DIR}/virtual_cmd_line_ctrl.cpp
+
+        ${WXG_DIR}/wx_panel_core.cpp
         ${WXG_DIR}/wx_system_tray.cpp
         ${WXG_DIR}/wx_prop_dlg.cpp
         ${WXG_DIR}/wx_settings.cpp
-        #${WXG_DIR}/wx_bind_list.cpp
         ${WXG_DIR}/wx_bindings.cpp
         ${WXG_DIR}/wx_shortcut_apps.cpp
-        ${WXG_DIR}/wx_options.cpp
         ${WXG_DIR}/wxgui.cpp
         ${WXG_DIR}/main.cpp
     )
@@ -105,7 +116,7 @@ install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
     ${CMAKE_CURRENT_SOURCE_DIR}/log
     ${CMAKE_CURRENT_SOURCE_DIR}/config
-    ${CMAKE_CURRENT_SOURCE_DIR}/admin_config
+    ${CMAKE_CURRENT_SOURCE_DIR}/default_config
     DESTINATION .
 )
 

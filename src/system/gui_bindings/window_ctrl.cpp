@@ -73,7 +73,7 @@ bool SwitchWindow::common_process()
     auto select = [&logger] (const auto& pbf, const auto vkc) {
         //is callable?
         if(pbf->is_callable()) {
-            if(KeyAbsorber::is_downed(vkc)) {
+            if(KeyAbsorber::is_pressed(vkc)) {
                 if(!release_keystate(vkc)) {
                     return false ;
                 }
@@ -106,14 +106,14 @@ bool SwitchWindow::common_process()
         }
 
         //check system keys
-        if(KeyAbsorber::is_downed(VKC_ESC)) {
+        if(KeyAbsorber::is_pressed(VKC_ESC)) {
             if(!release_keystate(VKC_ESC)) {
                 return false;
             }
 
             break ;
         }
-        if(KeyAbsorber::is_downed(VKC_ENTER)) {
+        if(KeyAbsorber::is_pressed(VKC_ENTER)) {
             if(!release_keystate(VKC_ENTER)) {
                 return false ;
             }
@@ -121,7 +121,7 @@ bool SwitchWindow::common_process()
         }
 
         //is changed ?
-        if(!logger.is_changed_and_update()) {
+        if(!logger.is_changed_code()) {
             logger.remove_from_back(1) ;
             Sleep(5) ;
             continue ;

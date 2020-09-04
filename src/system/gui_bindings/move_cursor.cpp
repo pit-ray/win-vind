@@ -1,11 +1,13 @@
 #include "move_cursor.hpp"
-#include "dynamic_config.hpp"
 
 #include <windows.h>
 
 #include <chrono>
 #include <iostream>
 #include <cmath>
+
+#include "i_params.hpp"
+#include "msg_logger.hpp"
 using namespace std ;
 
 using namespace std::chrono ;
@@ -17,18 +19,18 @@ namespace MoveUtility
 
     template <typename T>
     inline static const auto const_accelerate(float& velocity, T&& us) noexcept {
+        const auto acc = iParams::get_f("cursor_acceleration") ;
+        const auto mvc = iParams::get_f("cursor_max_velocity") ;
+
         static constexpr auto TIME_COEF = static_cast<float>(pow(10, -3)) ;
-
-        const auto t = us * TIME_COEF / DynamicConfig::CURSOR_WEIGHT() ; //accuracy
-
-        const auto x = velocity*t + 0.5f*DynamicConfig::CURSOR_ACCELERATION()*t*t ;
-
-        const auto delta_v = DynamicConfig::CURSOR_ACCELERATION() * t ;
-        if(velocity + delta_v < DynamicConfig::CURSOR_MAX_VELOCITY()) {
+        const auto t = us * TIME_COEF / iParams::get_i("cursor_weight") ; //accuracy
+        const auto x = velocity*t + 0.5f*acc*t*t ;
+        const auto delta_v = acc * t ;
+        if(velocity + delta_v < mvc) {
             velocity += delta_v ;
         }
         else {
-            velocity = DynamicConfig::CURSOR_MAX_VELOCITY() ;
+            velocity = mvc ;
         }
         return x ;
     }

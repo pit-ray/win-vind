@@ -9,8 +9,9 @@
 #include <wx/thread.h>
 
 #include "wx_prop_dlg.hpp"
-#include "system.hpp"
-
+#include "io_params.hpp"
+#include "system/system.hpp"
+#include "msg_logger.hpp"
 
 namespace wxGUI
 {
@@ -50,6 +51,11 @@ namespace wxGUI
         }
 
         if(!System::init()) {
+            ERROR_STREAM << "failed initializing system (wxGUI::App)\n" ;
+            return false ;
+        }
+        if(!ioParams::load_config()) {
+            ERROR_STREAM << "failed loading config (wxGUI::App)\n" ;
             return false ;
         }
 

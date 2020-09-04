@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include <sstream>
+#include <vector>
 
 #include <windows.h>
 
@@ -10,81 +11,85 @@
 #include <wx/sizer.h>
 
 #include "wx_settings.hpp"
-#include "wx_bind_list.hpp"
 #include "wx_shortcut_apps.hpp"
-#include "wx_options.hpp"
 #include "wx_bindings.hpp"
 
 #include "wx_constant.hpp"
-#include "wx_path.hpp"
 #include "wx_system_tray.hpp"
 #include "msg_logger.hpp"
-#include "system.hpp"
+#include "system/system.hpp"
 #include "ui_translator.hpp"
-
+#include "io_params.hpp"
 
 namespace wxGUI
 {
     using namespace UITrans ;
     constexpr auto APP_NAME = wxT("win-vind") ;
 
-    inline static const auto _load_icon_path() {
-        switch(PrefParser::load_sticon()) {
-            case IconStyle::Dark:
-                return "resources/icon32_dark.ico" ;
-
-            case IconStyle::Light:
-                return "resources/icon32_light.ico" ;
-
-            default:
-                return "resources/icon32_dark.ico" ;
-        }
-    }
-
     struct PropDlg::Impl {
-        SettingsPanel* settings          = nullptr ;
-        BindListPanel* bind_list         = nullptr ;
-        BindingsPanel* bindings = nullptr ;
-        ShortcutAppsPanel* shortcut_apps = nullptr ;
-        OptionsPanel* options            = nullptr ;
+        std::vector<PanelCore*> panels{} ;
+
+        wxButton* ok_btn ;
+        wxButton* cl_btn ;
+        wxButton* ap_btn ;
+
+        explicit Impl()
+        : panels(),
+          ok_btn(nullptr),
+          cl_btn(nullptr),
+          ap_btn(nullptr)
+        {}
+
+        void translate() noexcept {
+            ok_btn->SetLabel(trans("buttons/ok")) ;
+            cl_btn->SetLabel(trans("buttons/cancel")) ;
+            ap_btn->SetLabel(trans("buttons/apply")) ;
+        }
+
+        ~Impl() noexcept = default ;
+        Impl(Impl&&)                 = delete ;
+        Impl& operator=(Impl&&)      = delete ;
+        Impl(const Impl&)            = delete ;
+        Impl& operator=(const Impl&) = delete ;
     } ;
 
     PropDlg::PropDlg()
-    : wxPropertySheetDialog(nullptr, wxID_ANY, trans(Label::SysTray_Preferences)),
+    : wxPropertySheetDialog(nullptr, wxID_ANY, trans("notify/preferences")),
       pimpl(std::make_unique<Impl>()),
-      ptbi(std::make_unique<SystemTray>(_load_icon_path(), APP_NAME, this))
+      ptbi(std::make_unique<SystemTray>(ioParams::get_vs("icon_style"), APP_NAME, this))
     {
-        SetIcon(wxIcon(_load_icon_path(), wxBITMAP_TYPE_ICO)) ;
-
-        pimpl->settings      = new SettingsPanel(GetBookCtrl()) ;
-        //pimpl->bind_list     = new BindListPanel(GetBookCtrl()) ;
-        pimpl->bindings = new BindingsPanel(GetBookCtrl()) ;
-        pimpl->shortcut_apps = new ShortcutAppsPanel(GetBookCtrl()) ;
-        pimpl->options       = new OptionsPanel(GetBookCtrl()) ;
+        SetIcon(wxIcon(ioParams::get_vs("icon_style"), wxBITMAP_TYPE_ICO)) ;
 
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
 
+        pimpl->panels.emplace_back(new SettingsPanel(GetBookCtrl())) ;
+        pimpl->panels.emplace_back(new BindingsPanel(GetBookCtrl())) ;
+        pimpl->panels.emplace_back(new ShortcutAppsPanel(GetBookCtrl())) ;
+
         auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;
-        btn_sizer->Add(new wxButton(this, wxID_OK,     trans(Label::Pref_OK)),     flags) ;
-        btn_sizer->Add(new wxButton(this, wxID_CANCEL, trans(Label::Pref_Cancel)), flags) ;
-        btn_sizer->Add(new wxButton(this, wxID_APPLY,  trans(Label::Pref_Apply)),  flags) ;
+        pimpl->ok_btn = new wxButton(this, wxID_OK,  wxT("OK")) ;
+        btn_sizer->Add(pimpl->ok_btn, flags) ;
+        pimpl->cl_btn = new wxButton(this, wxID_CANCEL, wxT("Cancel")) ;
+        btn_sizer->Add(pimpl->cl_btn, flags) ;
+        pimpl->ap_btn = new wxButton(this, wxID_APPLY, wxT("Apply")) ;
+        btn_sizer->Add(pimpl->ap_btn, flags) ;
 
         flags.Align(wxALIGN_RIGHT) ;
         GetInnerSizer()->Add(btn_sizer, flags) ; //The inner sizer contains the book control and button sizer.
 
         LayoutDialog() ;
         Centre() ;
-        auto size = wxSize(WIDTH, HEIGHT) ;
-        SetSize(size) ;
+        SetSize(wxSize(WIDTH(), HEIGHT())) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
-            save_all() ;
+            save_config() ;
             System::load_config() ;
+            load_config() ;
         }, wxID_APPLY) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
-            save_all() ;
+            save_config() ;
             System::load_config() ;
             Show(false) ;
         }, wxID_OK) ;
@@ -114,25 +119,36 @@ namespace wxGUI
 
     PropDlg::~PropDlg() noexcept = default ;
 
-    void PropDlg::save_all() {
-        pimpl->settings->save_all() ;
-        pimpl->bindings->save_all() ;
-        pimpl->shortcut_apps->save_all() ;
-        pimpl->options->save_all() ;
+    void PropDlg::save_config() {
+        for(auto& p : pimpl->panels) {
+            p->save_config() ;
+        }
+        if(!ioParams::save_config()) {
+            ERROR_STREAM << "failed saving config(wxGUI/PropDlg::save_config)\n" ;
+        }
+        pimpl->translate() ;
+    }
+
+    void PropDlg::load_config() {
+        if(!ioParams::load_config()) {
+            ERROR_STREAM << " failed loading config (wxGUI::PropDlg::Show)\n" ;
+        }
+        pimpl->translate() ;
+        SetLabel(trans("notify/preferences")) ;
+
+        for(auto& p : pimpl->panels) {
+            p->load_config() ;
+        }
+
+        if(!SetForegroundWindow(GetHandle())) {
+            WIN_ERROR_STREAM << "Preferences Window was not brought to the foreground\n" ;
+        } //shown as most top window
     }
 
     bool PropDlg::Show(bool show) {
+        //true is shown. false is hidden.
         if(show) {
-            //true is shown. false is hidden.
-            pimpl->settings->load_all() ;
-            pimpl->bindings->load_all() ;
-            pimpl->shortcut_apps->load_all() ;
-            pimpl->options->load_all() ;
-
-            if(!SetForegroundWindow(GetHandle())) {
-                WIN_ERROR_STREAM << "Preferences Window was not brought to the foreground\n" ;
-
-            } //shown as most top window
+            load_config() ;
         }
 
         return wxPropertySheetDialog::Show(show) ;

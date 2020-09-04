@@ -7,12 +7,12 @@ include_directories(
     ${SYSINCDIR}/gui_bindings
     ${SYSINCDIR}/editor_bindings
     ${SYSINCDIR}/options
-    C:/boost
     ../../libs
+    ../../include
 )
 
 add_library(Common STATIC
-    common/binded_function.cpp
+    common/key_binding.cpp
     common/command.cpp
     common/dynamic_option.cpp
     common/interval_timer.cpp
@@ -26,9 +26,7 @@ add_library(Common STATIC
     common/simpl_text_selecter.cpp
     common/utility.cpp
     common/vkc_converter.cpp
-    #common/xml_parser.cpp
-    common/dynamic_config.cpp
-    common/bindings_json_parser.cpp
+    common/bindings_loader.cpp
 )
 #target_link_libraries(Common ~~~~~~)
 

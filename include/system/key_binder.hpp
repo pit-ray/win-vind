@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "binded_function.hpp"
+#include "key_binding.hpp"
 #include "command.hpp"
 
 class KeyBinder
@@ -14,15 +14,14 @@ private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 
-    void update_core(const std::vector<bf::shp_t>& vp) noexcept ;
-    void update_core_cmd(const std::vector<cmd::shp_t>& vp) noexcept ;
+    void update_core() noexcept ;
+    void update_core_cmd() noexcept ;
 
 public:
     explicit KeyBinder() ;
-    explicit KeyBinder(const std::string& filename) ;
     virtual ~KeyBinder() noexcept ;
 
-    void load_config(const std::string& filename) noexcept ;
+    void load_config() noexcept ;
     void update() noexcept ;
 
     const std::string get_logger_str() const noexcept ;

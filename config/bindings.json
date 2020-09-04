@@ -1,0 +1,639 @@
+[
+    {
+        "name": "change_to_normal",
+        "key": ["Left(+)Esc", "Right(+)Esc", "Up(+)Esc", "Down(+)Esc", "F9"],
+        "cmd": [],
+        "us": "Normal Mode",
+        "jp": "ノーマルモード"
+    },
+    {
+        "name": "change_to_insert",
+        "key": ["i"],
+        "cmd": [],
+        "us": "Insert Mode",
+        "jp": "インサートモード"
+    },
+    {
+        "name": "change_to_visual",
+        "key": ["v"],
+        "cmd": [],
+        "us": "Visual Mode",
+        "jp": "ヴィジュアルモード"
+    },
+    {
+        "name": "change_to_editor",
+        "key": ["I", "g->I"],
+        "cmd": [],
+        "us": "Editor Mode",
+        "jp": "エディタモード"
+    },
+    {
+        "name": "change_to_command",
+        "key": [":"],
+        "cmd": [],
+        "us": "Command Mode",
+        "jp": "コマンドモード"
+    },
+    {
+        "name": "select_all",
+        "key": ["V", "Ctrl(+)V"],
+        "cmd": [],
+        "us": "Select All",
+        "jp": "全て選択"
+    },
+    {
+        "name": "move_left",
+        "key": ["h", "Ctrl(+)h", "BkSpace", "Left"],
+        "cmd": [],
+        "us": "Move Cursor Left",
+        "jp": "左へカーソル移動"
+    },
+    {
+        "name": "move_right",
+        "key": ["l", " ", "Right"],
+        "cmd": [],
+        "us": "Move Cursor Right",
+        "jp": "右へカーソル移動"
+    },
+    {
+        "name": "move_up",
+        "key": ["k", "-", "g->k", "Ctrl(+)p", "Up"],
+        "cmd": [],
+        "us": "Move Cursor Up",
+        "jp": "上へカーソル移動"
+    },
+    {
+        "name": "move_down",
+        "key": ["j", "+", "g->j", "Ctrl(+)j", "Ctrl(+)n", "Down", "Enter", "Ctrl(+)m"],
+        "cmd": [],
+        "us": "Move Cursor Down",
+        "jp": "下へカーソル移動"
+    },
+    {
+        "name": "jump_to_left",
+        "key": ["0", "^", "Home", "g->0", "g->^"],
+        "cmd": [],
+        "us": "Jump Cursor to Left",
+        "jp": "左端へカーソル移動"
+    },
+    {
+        "name": "jump_to_right",
+        "key": ["$", "End", "g->$"],
+        "cmd": [],
+        "us": "Jump Cursor to Right",
+        "jp": "右端へカーソル移動"
+    },
+    {
+        "name": "jump_to_top",
+        "key": ["g->g"],
+        "cmd": [],
+        "us": "Jump Cursor to Top",
+        "jp": "上端へカーソル移動"
+    },
+    {
+        "name": "jump_to_bottom",
+        "key": ["G"],
+        "cmd": [],
+        "us": "Jump Cursor to Bottom",
+        "jp": "下端へカーソル移動"
+    },
+    {
+        "name": "jump_to_xcenter",
+        "key": ["g->m", "g->M"],
+        "cmd": [],
+        "us": "Jump Cursor to Horizontal Center",
+        "jp": "横中央へカーソル移動"
+    },
+    {
+        "name": "jump_to_ycenter",
+        "key": ["M"],
+        "cmd": [],
+        "us": "Jump Cursor to Vertical Center",
+        "jp": "縦中央へカーソル移動"
+    },
+    {
+        "name": "jump_to_any",
+        "key": ["f", "F"],
+        "cmd": [],
+        "us": "Jump Cursor by Keyboard Mapping",
+        "jp": "キー配置でカーソル移動"
+    },
+    {
+        "name": "jump_to_active_window",
+        "key": ["t", "T"],
+        "cmd": [],
+        "us": "Jump Cursor to Selected Window",
+        "jp": "選択ウィンドウへカーソル移動"
+    },
+    {
+        "name": "scroll_up",
+        "key": ["Ctrl(+)y"],
+        "cmd": [],
+        "us": "Scroll Up",
+        "jp": "上スクロール"
+    },
+    {
+        "name": "scroll_down",
+        "key": ["Ctrl(+)e"],
+        "cmd": [],
+        "us": "Scroll Down",
+        "jp": "下スクロール"
+    },
+    {
+        "name": "scroll_mid_up",
+        "key": ["Ctrl(+)u"],
+        "cmd": [],
+        "us": "Scroll Half Page Up",
+        "jp": "上スクロール(ページ半分)"
+    },
+    {
+        "name": "scroll_mid_down",
+        "key": ["Ctrl(+)d"],
+        "cmd": [],
+        "us": "Scroll Half Page Down",
+        "jp": "下スクロール(ページ半分)"
+    },
+    {
+        "name": "scroll_page_up",
+        "key": ["Ctrl(+)b"],
+        "cmd": [],
+        "us": "Scroll Page Up",
+        "jp": "上スクロール(1ページ分)"
+    },
+    {
+        "name": "scroll_page_down",
+        "key": ["Ctrl(+)f"],
+        "cmd": [],
+        "us": "Scroll Page Down",
+        "jp": "下スクロール(1ページ分)"
+    },
+    {
+        "name": "scroll_left",
+        "key": ["z->h", "z(+)h"],
+        "cmd": [],
+        "us": "Scroll Left",
+        "jp": "左スクロール"
+    },
+    {
+        "name": "scroll_right",
+        "key": ["z->l", "z(+)l"],
+        "cmd": [],
+        "us": "Scroll Right",
+        "jp": "右スクロール"
+    },
+    {
+        "name": "scroll_mid_left",
+        "key": ["z->H", "z(+)H"],
+        "cmd": [],
+        "us": "Scroll Half Page Left",
+        "jp": "左スクロール(ページ半分)"
+    },
+    {
+        "name": "scroll_mid_right",
+        "key": ["z->L", "z(+)L"],
+        "cmd": [],
+        "us": "Scroll Half Page Right",
+        "jp": "右スクロール(ページ半分)"
+    },
+    {
+        "name": "click_left",
+        "key": ["o", "O"],
+        "cmd": [],
+        "us": "Left Click",
+        "jp": "左クリック"
+    },
+    {
+        "name": "click_right",
+        "key": ["a", "A"],
+        "cmd": [],
+        "us": "Right Click",
+        "jp": "右クリック"
+    },
+    {
+        "name": "cb_copy",
+        "key": ["y", "y->y", "Y"],
+        "cmd": [],
+        "us": "Copy",
+        "jp": "コピー"
+    },
+    {
+        "name": "cb_paste",
+        "key": ["p", "P"],
+        "cmd": [],
+        "us": "Paste",
+        "jp": "貼り付け"
+    },
+    {
+        "name": "cb_cut",
+        "key": ["d->d", "D"],
+        "cmd": [],
+        "us": "Cut",
+        "jp": "切り取り"
+    },
+    {
+        "name": "cb_delete",
+        "key": ["x", "Delete"],
+        "cmd": [],
+        "us": "Delete",
+        "jp": "削除"
+    },
+    {
+        "name": "cb_back_space",
+        "key": ["X"],
+        "cmd": [],
+        "us": "BackSpace",
+        "jp": "バックスペース"
+    },
+    {
+        "name": "sc_redo",
+        "key": ["Ctrl(+)r"],
+        "cmd": [],
+        "us": "Redo",
+        "jp": "やり直す"
+    },
+    {
+        "name": "sc_undo",
+        "key": ["u", "U"],
+        "cmd": [],
+        "us": "Undo",
+        "jp": "元に戻す"
+    },
+    {
+        "name": "switch_vdesktop_to_left",
+        "key": ["g->T"],
+        "cmd": [],
+        "us": "Switch to Left Virtual Desktop",
+        "jp": "左の仮想デスクトップへ切替"
+    },
+    {
+        "name": "switch_vdesktop_to_right",
+        "key": ["g->t"],
+        "cmd": [],
+        "us": "Switch to Right Virtual Desktop",
+        "jp": "右の仮想デスクトップへ切替"
+    },
+    {
+        "name": "search_pattern",
+        "key": ["/", "?"],
+        "cmd": [],
+        "us": "Search Pattern",
+        "jp": "文字検索"
+    },
+    {
+        "name": "close_current_window",
+        "key": ["Ctrl(+)w->q", "Ctrl(+)w->c"],
+        "cmd": ["cl", "close"],
+        "us": "Close Current Window",
+        "jp": "ウィンドウを閉じる"
+    },
+    {
+        "name": "switch_window",
+        "key": ["Ctrl(+)w->s"],
+        "cmd": ["sw", "switch"],
+        "us": "Switch Window",
+        "jp": "ウィンドウを切替"
+    },
+    {
+        "name": "maximize_current_window",
+        "key": ["Ctrl(+)w->k", "Ctrl(+)w->a"],
+        "cmd": ["max", "on", "only"],
+        "us": "Maximize Current Window",
+        "jp": "ウィンドウを最大化"
+    },
+    {
+        "name": "minimize_current_window",
+        "key": ["Ctrl(+)w->j", "Ctrl(+)w->i"],
+        "cmd": ["min", "hi", "hide"],
+        "us": "Minimize Current Window",
+        "jp": "ウィンドウを最小化"
+    },
+    {
+        "name": "snap_current_window_to_left",
+        "key": ["Ctrl(+)w->h", "Ctrl(+)w-><"],
+        "cmd": ["lsplit"],
+        "us": "Snap Current Window to Left",
+        "jp": "ウィンドウを画面左半分化"
+    },
+    {
+        "name": "snap_current_window_to_right",
+        "key": ["Ctrl(+)w->l", "Ctrl(+)w->>"],
+        "cmd": ["rsplit"],
+        "us": "Snap Current Window to Right",
+        "jp": "ウィンドウを画面右半分化"
+    },
+    {
+        "name": "open_new_current_window",
+        "key": ["Ctrl(+)w->n"],
+        "cmd": ["new"],
+        "us": "Open New Window",
+        "jp": "新しいウィンドウを開く"
+    },
+    {
+        "name": "move_to_next_page",
+        "key": [">"],
+        "cmd": [],
+        "us": "Forward Next Page",
+        "jp": "次のページへ進む"
+    },
+    {
+        "name": "move_to_prev_page",
+        "key": ["<"],
+        "cmd": [],
+        "us": "Backward Previous Page",
+        "jp": "前のページへ戻る"
+    },
+    {
+        "name": "change_to_edi_normal",
+        "key": ["Esc"],
+        "cmd": [],
+        "us": "[E] Normal Mode",
+        "jp": "[E] ノーマルモード"
+    },
+    {
+        "name": "change_to_edi_insert",
+        "key": ["i"],
+        "cmd": [],
+        "us": "[E] Insert before Caret",
+        "jp": "[E] キャレットの前に挿入"
+    },
+    {
+        "name": "change_to_edi_BOLinsert",
+        "key": ["I", "g->I"],
+        "cmd": [],
+        "us": "[E] Insert BOL",
+        "jp": "[E] 行頭に挿入"
+    },
+    {
+        "name": "change_to_edi_bkinsert",
+        "key": ["a"],
+        "cmd": [],
+        "us": "[E] Append after Caret",
+        "jp": "[E] キャレットの後に追加"
+    },
+    {
+        "name": "change_to_edi_EOLinsert",
+        "key": ["A"],
+        "cmd": [],
+        "us": "[E] Append EOL",
+        "jp": "[E] 行末に追加"
+    },
+    {
+        "name": "change_to_edi_nlinsert_below",
+        "key": ["o"],
+        "cmd": [],
+        "us": "[E] Begin New Line below Caret",
+        "jp": "[E] 次の行に新しい行を挿入"
+    },
+    {
+        "name": "change_to_edi_nlinsert_above",
+        "key": ["O"],
+        "cmd": [],
+        "us": "[E] Begin New Line above Caret",
+        "jp": "[E] 前の行に新しい行を挿入"
+    },
+    {
+        "name": "change_to_edi_visual",
+        "key": ["v", "Ctrl(+)v"],
+        "cmd": [],
+        "us": "[E] Visual Mode",
+        "jp": "[E] ヴィジュアルモード"
+    },
+    {
+        "name": "change_to_edi_line_visual",
+        "key": ["V"],
+        "cmd": [],
+        "us": "[E] Line-Visual Mode",
+        "jp": "[E] ヴィジュアルモード(行)"
+    },
+    {
+        "name": "edi_move_caret_left",
+        "key": ["h", "Ctrl(+)h", "BkSpace", "Left"],
+        "cmd": [],
+        "us": "[E] Move Caret Left",
+        "jp": "[E] 左へキャレット移動"
+    },
+    {
+        "name": "edi_move_caret_right",
+        "key": ["l", "Space", "Right"],
+        "cmd": [],
+        "us": "[E] Move Caret Right",
+        "jp": "[E] 右へキャレット移動"
+    },
+    {
+        "name": "edi_move_caret_up",
+        "key": ["k", "-", "g->k", "Ctrl(+)P", "Up"],
+        "cmd": [],
+        "us": "[E] Move Caret Up",
+        "jp": "[E] 上へキャレット移動"
+    },
+    {
+        "name": "edi_move_caret_down",
+        "key": ["j", "+", "g->j", "Ctrl(+)j", "Ctrl(+)n", "Down", "Enter", "Ctrl(+)m"],
+        "cmd": [],
+        "us": "[E] Move Caret Down",
+        "jp": "[E] 下へキャレット移動"
+    },
+    {
+        "name": "edi_n_move_caret_words_forward",
+        "key": ["w"],
+        "cmd": [],
+        "us": "[E] N-words Forward",
+        "jp": "[E] 次の単語へ進む"
+    },
+    {
+        "name": "edi_n_move_caret_words_backward",
+        "key": ["b"],
+        "cmd": [],
+        "us": "[E] N-words Backward",
+        "jp": "[E] 前の単語へ戻る"
+    },
+    {
+        "name": "edi_n_move_caret_WORDS_forward",
+        "key": ["W"],
+        "cmd": [],
+        "us": "[E] N-WORDS Forward",
+        "jp": "[E] 次の単語へ進む(空白ベース)"
+    },
+    {
+        "name": "edi_n_move_caret_WORDS_backward",
+        "key": ["B"],
+        "cmd": [],
+        "us": "[E] N-WORDS Backward",
+        "jp": "[E] 前の単語へ戻る(空白ベース)"
+    },
+    {
+        "name": "edi_jump_caret_to_BOL",
+        "key": ["0", "Home", "g->0"],
+        "cmd": [],
+        "us": "[E] Jump Caret to BOL",
+        "jp": "[E] 行頭へキャレット移動"
+    },
+    {
+        "name": "edi_jump_caret_to_EOL",
+        "key": ["$", "End", "g->$"],
+        "cmd": [],
+        "us": "[E] Jump Caret to EOL",
+        "jp": "[E] 行末へキャレット移動"
+    },
+    {
+        "name": "edi_n_jump_caret_to_line_default_BOF",
+        "key": ["g->g"],
+        "cmd": [],
+        "us": "[E] Jump Caret to N-Line (BOF)",
+        "jp": "[E] N行目にキャレット移動 (BOF)"
+    },
+    {
+        "name": "edi_n_jump_caret_to_line_default_EOF",
+        "key": ["G"],
+        "cmd": [],
+        "us": "[E] Jump Caret to N-Line (EOF)",
+        "jp": "[E] N行目にキャレット移動 (EOF)"
+    },
+    {
+        "name": "edi_copy_highlight_text",
+        "key": ["y"],
+        "cmd": [],
+        "us": "[E] Yank Highlighted Text",
+        "jp": "[E] 選択テキストをヤンク"
+    },
+    {
+        "name": "edi_n_copy_line",
+        "key": ["y->y", "Y"],
+        "cmd": [],
+        "us": "[E] Yank Lines",
+        "jp": "[E] 行ヤンク"
+    },
+    {
+        "name": "edi_n_paste_after",
+        "key": ["p"],
+        "cmd": [],
+        "us": "[E] Put Text after Caret",
+        "jp": "[E] 後にプット"
+    },
+    {
+        "name": "edi_n_paste_before",
+        "key": ["P"],
+        "cmd": [],
+        "us": "[E] Put Text before Caret",
+        "jp": "[E] 前にプット"
+    },
+    {
+        "name": "edi_delete_highlight_text",
+        "key": ["d"],
+        "cmd": [],
+        "us": "[E] Delete Highlighted Text",
+        "jp": "[E] 選択テキストを削除"
+    },
+    {
+        "name": "edi_n_delete_line",
+        "key": ["d->d"],
+        "cmd": [],
+        "us": "[E] Delete Lines",
+        "jp": "[E] 行削除"
+    },
+    {
+        "name": "edi_n_delete_line_until_EOL",
+        "key": ["D"],
+        "cmd": [],
+        "us": "[E] Delete Text until EOL",
+        "jp": "[E] 行末まで削除"
+    },
+    {
+        "name": "edi_n_delete_after",
+        "key": ["x", "Delete"],
+        "cmd": [],
+        "us": "[E] Delete Chars after Caret",
+        "jp": "[E] 次の文字を削除"
+    },
+    {
+        "name": "edi_n_delete_before",
+        "key": ["X"],
+        "cmd": [],
+        "us": "[E] Delete Chars before Caret",
+        "jp": "[E] 前の文字を削除"
+    },
+    {
+        "name": "edi_n_remove_EOL",
+        "key": ["J"],
+        "cmd": [],
+        "us": "[E] Join Next Line",
+        "jp": "[E] 次の行を行末に結合"
+    },
+    {
+        "name": "edi_n_replace_char",
+        "key": ["r"],
+        "cmd": [],
+        "us": "[E] Replace Char",
+        "jp": "[E] 置換"
+    },
+    {
+        "name": "edi_n_replace_sequence",
+        "key": ["R"],
+        "cmd": [],
+        "us": "[E] Replace Sequences",
+        "jp": "[E] 置換モード"
+    },
+    {
+        "name": "save_opened_file",
+        "key": [],
+        "cmd": ["w", "w_f", "w_a", "w_c", "up", "wall"],
+        "us": "Save File",
+        "jp": "ファイルを保存"
+    },
+    {
+        "name": "close_opened_file",
+        "key": [],
+        "cmd": ["q", "qa", "q!", "qa!"],
+        "us": "Close Document(Tab)",
+        "jp": "ドキュメント(タブ)を閉じる"
+    },
+    {
+        "name": "start_shell",
+        "key": [],
+        "cmd": ["sh", "shell"],
+        "us": "Start Shell",
+        "jp": "ターミナル起動"
+    },
+    {
+        "name": "start_any_app",
+        "key": [],
+        "cmd": ["!*"],
+        "us": "Start App",
+        "jp": "任意のアプリを実行"
+    },
+    {
+        "name": "show_config_window",
+        "key": [],
+        "cmd": ["set", "config"],
+        "us": "Config of win-vind",
+        "jp": "win-vindの設定"
+    },
+    {
+        "name": "exit_config_window",
+        "key": [],
+        "cmd": ["exit"],
+        "us": "Exit win-vind",
+        "jp": "win-vindを終了する"
+    },
+    {
+        "name": "open_other_file",
+        "key": [],
+        "cmd": ["find", "e", "e!", "open", "edit", "edit!"],
+        "us": "Open Other File",
+        "jp": "ファイルを開く"
+    }
+   , {
+        "name": "make_dir",
+        "key": [],
+        "cmd": ["mkdir", "md", "mkdir *", "md *"],
+        "us": "Make Directory",
+        "jp": "ディレクトリ作成"
+    },
+    {
+        "name": "reload_current_window",
+        "key": [],
+        "cmd": ["reload"],
+        "us": "Reload Current Window",
+        "jp": "ウィンドウを再読み込み"
+    }
+]

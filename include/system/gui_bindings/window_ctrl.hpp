@@ -1,11 +1,11 @@
 #ifndef _WINDOW_CTRL_HPP
 #define _WINDOW_CTRL_HPP
 
-#include "binded_function_with_creator.hpp"
+#include "key_binding_with_creator.hpp"
 #include "command_with_creator.hpp"
 
 struct CloseCurrentWindow
-: public BindedFunctionWithCreator<CloseCurrentWindow>,
+: public KeyBindingWithCreator<CloseCurrentWindow>,
   public CommandWithCreator<CloseCurrentWindow>
 {
     static bool sprocess(const bool first_call) ;
@@ -17,7 +17,7 @@ private:
 } ;
 
 struct SwitchWindow
-: public BindedFunctionWithCreator<SwitchWindow>,
+: public KeyBindingWithCreator<SwitchWindow>,
   public CommandWithCreator<SwitchWindow>
 {
     static bool sprocess(const bool first_call) ;
@@ -29,7 +29,7 @@ private:
 } ;
 
 struct MaximizeCurrentWindow
-: public BindedFunctionWithCreator<MaximizeCurrentWindow>,
+: public KeyBindingWithCreator<MaximizeCurrentWindow>,
   public CommandWithCreator<MaximizeCurrentWindow>
 {
     static bool sprocess(const bool first_call) ;
@@ -41,7 +41,7 @@ private:
 } ;
 
 struct MinimizeCurrentWindow
-: public BindedFunctionWithCreator<MinimizeCurrentWindow>,
+: public KeyBindingWithCreator<MinimizeCurrentWindow>,
   public CommandWithCreator<MinimizeCurrentWindow>
 {
     static bool sprocess(const bool first_call) ;
@@ -53,7 +53,7 @@ private:
 } ;
 
 struct SnapCurrentWindow2Left
-: public BindedFunctionWithCreator<SnapCurrentWindow2Left>,
+: public KeyBindingWithCreator<SnapCurrentWindow2Left>,
   public CommandWithCreator<SnapCurrentWindow2Left>
 {
     static bool sprocess(const bool first_call) ;
@@ -65,7 +65,7 @@ private:
 } ;
 
 struct SnapCurrentWindow2Right
-: public BindedFunctionWithCreator<SnapCurrentWindow2Right>,
+: public KeyBindingWithCreator<SnapCurrentWindow2Right>,
   public CommandWithCreator<SnapCurrentWindow2Right>
 {
     static bool sprocess(const bool first_call) ;
@@ -77,7 +77,7 @@ private:
 } ;
 
 struct OpenNewCurrentWindow
-: public BindedFunctionWithCreator<OpenNewCurrentWindow>,
+: public KeyBindingWithCreator<OpenNewCurrentWindow>,
   public CommandWithCreator<OpenNewCurrentWindow>
 {
     static bool sprocess(const bool first_call) ;

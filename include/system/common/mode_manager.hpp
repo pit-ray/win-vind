@@ -15,6 +15,8 @@ namespace ModeManager
         EdiVisual,
         EdiLineVisual,
         EdiCommand,
+
+        NUM,
     } ;
 
     void change_mode(const Mode mode) noexcept ;
@@ -22,6 +24,8 @@ namespace ModeManager
 
     bool is_edi_visual() noexcept ;
     bool is_editor() noexcept ;
+
+    bool is_command() noexcept ;
 }
 
 #endif

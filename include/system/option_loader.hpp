@@ -16,7 +16,7 @@ public:
     explicit OptionLoader(const KeyBinder* const pkb) ;
     virtual ~OptionLoader() noexcept ;
 
-    void load_config(const std::string& filename) noexcept ;
+    void load_config() noexcept ;
     void update() noexcept ;
 
     OptionLoader(OptionLoader&&) = delete ;

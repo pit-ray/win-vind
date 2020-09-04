@@ -27,6 +27,7 @@ add_library(Common STATIC
     common/utility.cpp
     common/vkc_converter.cpp
     common/bindings_loader.cpp
+    common/keystroke_repeater.cpp
 )
 #target_link_libraries(Common ~~~~~~)
 

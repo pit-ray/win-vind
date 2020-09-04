@@ -8,9 +8,11 @@ It has differences from the latest release.
 - Rename a menu text
 - Remodeled `Preferences/Bind Lists` for customizing key-bindings to new UI `Preferences/Bindings`.
 - Changed settings's format from XML to JSON.
+- Renovated UI
+- Refactored all codes
 
 ## Useful Functions
-- added `Dedicating Mode` for real-mouse user. If you push a left button of mouse while pressing system keys(Shift, Alt, Ctrl), `win-vind` is only validated on a selected window. You can turn this function on `Preferences/Options/Dedicate to One Window` checkbox.
+- added `Dedicating Mode` for real-mouse user. If you push a left button of mouse while pressing system keys(Shift, Alt, Ctrl), `win-vind` is only validated on a selected window. You can turn this function on `Preferences/Settings/Options/Dedicate to One Window` checkbox.
 
 ## New Functions
 - Insert BOL (I/gI)

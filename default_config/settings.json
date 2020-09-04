@@ -202,7 +202,7 @@
         "jp": "UIの言語"
     },
     "ppi_factor": {
-        "value": 6,
+        "value": 5,
         "us": "Resolution PPI Factor",
         "jp": "解像度PPI倍率"
     },

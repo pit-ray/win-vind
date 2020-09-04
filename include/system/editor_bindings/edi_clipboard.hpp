@@ -21,14 +21,40 @@ struct EdiNCopyLine : public KeyBindingWithCreator<EdiNCopyLine>
 //Paste
 struct EdiNPasteAfter : public KeyBindingWithCreator<EdiNPasteAfter>
 {
-    static bool sprocess(const bool first_call) ;
+    bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNPasteAfter() ;
+    virtual ~EdiNPasteAfter() noexcept ;
+
+    EdiNPasteAfter(EdiNPasteAfter&&) noexcept ;
+    EdiNPasteAfter& operator=(EdiNPasteAfter&&) noexcept ;
+
+    EdiNPasteAfter(const EdiNPasteAfter&) = delete ;
+    EdiNPasteAfter& operator=(const EdiNPasteAfter&) = delete ;
+
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
 } ;
 
 struct EdiNPasteBefore : public KeyBindingWithCreator<EdiNPasteBefore>
 {
-    static bool sprocess(const bool first_call) ;
+    bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNPasteBefore() ;
+    virtual ~EdiNPasteBefore() noexcept ;
+
+    EdiNPasteBefore(EdiNPasteBefore&&) noexcept ;
+    EdiNPasteBefore& operator=(EdiNPasteBefore&&) noexcept ;
+
+    EdiNPasteBefore(const EdiNPasteBefore&) = delete ;
+    EdiNPasteBefore& operator=(const EdiNPasteBefore&) = delete ;
+
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
 } ;
 
 
@@ -41,27 +67,79 @@ struct EdiDeleteHighlightText : public KeyBindingWithCreator<EdiDeleteHighlightT
 
 struct EdiNDeleteLine : public KeyBindingWithCreator<EdiNDeleteLine>
 {
-    static bool sprocess(const bool first_call) ;
+    bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNDeleteLine() ;
+    virtual ~EdiNDeleteLine() noexcept ;
+
+    EdiNDeleteLine(EdiNDeleteLine&&) noexcept ;
+    EdiNDeleteLine& operator=(EdiNDeleteLine&&) noexcept ;
+
+    EdiNDeleteLine(const EdiNDeleteLine&) = delete ;
+    EdiNDeleteLine& operator=(const EdiNDeleteLine&) = delete ;
+
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
 } ;
 
 
 struct EdiNDeleteLineUntilEOL : public KeyBindingWithCreator<EdiNDeleteLineUntilEOL>
 {
-    static bool sprocess(const bool first_call) ;
+    bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNDeleteLineUntilEOL() ;
+    virtual ~EdiNDeleteLineUntilEOL() noexcept ;
+
+    EdiNDeleteLineUntilEOL(EdiNDeleteLineUntilEOL&&) noexcept ;
+    EdiNDeleteLineUntilEOL& operator=(EdiNDeleteLineUntilEOL&&) noexcept ;
+
+    EdiNDeleteLineUntilEOL(const EdiNDeleteLineUntilEOL&) = delete ;
+    EdiNDeleteLineUntilEOL& operator=(const EdiNDeleteLineUntilEOL&) = delete ;
+
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
 } ;
 
 struct EdiNDeleteAfter : public KeyBindingWithCreator<EdiNDeleteAfter>
 {
-    static bool sprocess(const bool first_call) ;
+    bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNDeleteAfter() ;
+    virtual ~EdiNDeleteAfter() noexcept ;
+
+    EdiNDeleteAfter(EdiNDeleteAfter&&) noexcept ;
+    EdiNDeleteAfter& operator=(EdiNDeleteAfter&&) noexcept ;
+
+    EdiNDeleteAfter(const EdiNDeleteAfter&) = delete ;
+    EdiNDeleteAfter& operator=(const EdiNDeleteAfter&) = delete ;
+
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
 } ;
 
 struct EdiNDeleteBefore : public KeyBindingWithCreator<EdiNDeleteBefore>
 {
-    static bool sprocess(const bool first_call) ;
+    bool sprocess(const bool first_call) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNDeleteBefore() ;
+    virtual ~EdiNDeleteBefore() noexcept ;
+
+    EdiNDeleteBefore(EdiNDeleteBefore&&) noexcept ;
+    EdiNDeleteBefore& operator=(EdiNDeleteBefore&&) noexcept ;
+
+    EdiNDeleteBefore(const EdiNDeleteBefore&) = delete ;
+    EdiNDeleteBefore& operator=(const EdiNDeleteBefore&) = delete ;
+
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
 } ;
 
 #endif

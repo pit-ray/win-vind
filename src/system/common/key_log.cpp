@@ -126,8 +126,7 @@ bool KeyLog::operator!=(const KeyLog& rhs) const noexcept
 
 const KeyLog KeyLog::operator-(const KeyLog& rhs) const
 {
-    data_t diff{} ;
-    set_difference(cbegin(), cend(), rhs.cbegin(), rhs.cend(), inserter(diff, diff.end())) ;
-
+    auto diff = pimpl->once_log ;
+    for(const auto k : rhs) diff.erase(k) ;
     return KeyLog(std::move(diff)) ;
 }

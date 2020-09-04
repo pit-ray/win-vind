@@ -1,10 +1,12 @@
 #include "key_logger.hpp"
+
+#include <iostream>
+
 #include "key_absorber.hpp"
 #include "vkc_converter.hpp"
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
-
-#include <iostream>
+#include "keystroke_repeater.hpp"
 
 using namespace std ;
 
@@ -12,8 +14,10 @@ struct KeyLogger::Impl
 {
     data_t logs ;
     static KeyLog past_log ;
+    KeyStrokeRepeater ksr ;
+    bool cmd_changed ;
 
-    explicit Impl() : logs() {}
+    explicit Impl() : logs(), ksr(), cmd_changed(true) {}
 
     ~Impl() noexcept {
         logs.clear() ;
@@ -26,7 +30,6 @@ struct KeyLogger::Impl
 } ;
 
 KeyLog KeyLogger::Impl::past_log{} ;
-
 
 KeyLogger::KeyLogger() noexcept
 : pimpl(make_unique<Impl>())
@@ -115,27 +118,36 @@ bool KeyLogger::is_changed_code()
 bool KeyLogger::is_changed_char()
 {
     auto log = KeyAbsorber::get_pressed_list() ;
-    const auto result = pimpl->past_log != log ;
-    const auto diff = log - pimpl->past_log ;
-    pimpl->past_log = log ;
 
-    if(log.is_containing(VKC_SHIFT)) {
+    if(pimpl->past_log != log) { //changed
+        pimpl->cmd_changed = true ;
+        const auto diff = log - pimpl->past_log ;
+        pimpl->past_log = log ;
+
+        if(!log.is_containing(VKC_SHIFT)) {
+            pimpl->logs.push_back(std::move(diff)) ;
+            return true ;
+        }
+        //shfited
         auto data = diff.get() ;
         data.insert(VKC_SHIFT) ;
-        if(log.is_containing(VKC_LSHIFT)) {
-            data.insert(VKC_LSHIFT) ;
-        }
-        if(log.is_containing(VKC_RSHIFT)) {
-            data.insert(VKC_RSHIFT) ;
-        }
+        if(log.is_containing(VKC_LSHIFT)) data.insert(VKC_LSHIFT) ;
+        if(log.is_containing(VKC_RSHIFT)) data.insert(VKC_RSHIFT) ;
 
         //construct KeyLog inside logs directly from std::vector
         pimpl->logs.emplace_back(std::move(data)) ;
-        return result ;
+        return true ;
     }
+    else { //unchanged
+        pimpl->logs.push_back(log) ;
 
-    pimpl->logs.push_back(std::move(diff)) ;
-    return result ;
+        if(pimpl->cmd_changed) {
+            pimpl->cmd_changed = false ;
+            pimpl->ksr.reset() ;
+            return false ;
+        }
+        return pimpl->ksr.is_pressed() ;
+    }
 }
 
 const string KeyLogger::get_str() const noexcept

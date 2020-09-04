@@ -109,14 +109,14 @@ void KeyBinder::load_config() noexcept
     if(!pimpl->parser.parse()) {
         return ;
     }
-    const decltype(auto) map = pimpl->parser.get_bindings() ;
+    decltype(auto) map = pimpl->parser.get_bindings() ;
     for(auto& v : pimpl->vpbf) {
         for(auto& i : v) {
             try {i->set_command(map.at(i->name())) ;}
             catch(out_of_range&) {continue ;}
         }
     }
-    const decltype(auto) cmd_map = pimpl->parser.get_commands() ;
+    decltype(auto) cmd_map = pimpl->parser.get_commands() ;
     for(auto& v : pimpl->vpcmd) {
         for(auto& i : v) {
             try {i->set_command(cmd_map.at(i->name())) ;}

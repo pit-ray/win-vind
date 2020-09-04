@@ -201,7 +201,7 @@ namespace JumpCursorUtility
         }
 
         catch(const exception& e) {
-            ERROR_STREAM << "std::fstream: " <<  e.what() << " (JumpCursorUtility::load_keybrd_pos)\n" ;
+            ERROR_STREAM << "std::fstream: " <<  e.what() << " (JumpCursorUtility::load_config)\n" ;
             return ;
         }
     }

@@ -10,10 +10,10 @@ struct EdiMoveCaretLeft : public KeyBindingWithCreator<EdiMoveCaretLeft>
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretLeft() ;
-    virtual ~EdiMoveCaretLeft() ;
+    virtual ~EdiMoveCaretLeft() noexcept ;
 
-    EdiMoveCaretLeft(EdiMoveCaretLeft&&) ;
-    EdiMoveCaretLeft& operator=(EdiMoveCaretLeft&&) ;
+    EdiMoveCaretLeft(EdiMoveCaretLeft&&) noexcept ;
+    EdiMoveCaretLeft& operator=(EdiMoveCaretLeft&&) noexcept ;
 
     EdiMoveCaretLeft(const EdiMoveCaretLeft&) = delete ;
     EdiMoveCaretLeft& operator=(const EdiMoveCaretLeft&) = delete ;
@@ -29,10 +29,10 @@ struct EdiMoveCaretRight : public KeyBindingWithCreator<EdiMoveCaretRight>
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretRight() ;
-    virtual ~EdiMoveCaretRight() ;
+    virtual ~EdiMoveCaretRight() noexcept ;
 
-    EdiMoveCaretRight(EdiMoveCaretRight&&) ;
-    EdiMoveCaretRight& operator=(EdiMoveCaretRight&&) ;
+    EdiMoveCaretRight(EdiMoveCaretRight&&) noexcept ;
+    EdiMoveCaretRight& operator=(EdiMoveCaretRight&&) noexcept ;
 
     EdiMoveCaretRight(const EdiMoveCaretRight&) = delete ;
     EdiMoveCaretRight& operator=(const EdiMoveCaretRight&) = delete ;
@@ -48,10 +48,10 @@ struct EdiMoveCaretUp : public KeyBindingWithCreator<EdiMoveCaretUp>
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretUp() ;
-    virtual ~EdiMoveCaretUp() ;
+    virtual ~EdiMoveCaretUp() noexcept ;
 
-    EdiMoveCaretUp(EdiMoveCaretUp&&) ;
-    EdiMoveCaretUp& operator=(EdiMoveCaretUp&&) ;
+    EdiMoveCaretUp(EdiMoveCaretUp&&) noexcept ;
+    EdiMoveCaretUp& operator=(EdiMoveCaretUp&&) noexcept ;
 
     EdiMoveCaretUp(const EdiMoveCaretUp&) = delete ;
     EdiMoveCaretUp& operator=(const EdiMoveCaretUp&) = delete ;
@@ -67,10 +67,10 @@ struct EdiMoveCaretDown : public KeyBindingWithCreator<EdiMoveCaretDown>
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretDown() ;
-    virtual ~EdiMoveCaretDown() ;
+    virtual ~EdiMoveCaretDown() noexcept ;
 
-    EdiMoveCaretDown(EdiMoveCaretDown&&) ;
-    EdiMoveCaretDown& operator=(EdiMoveCaretDown&&) ;
+    EdiMoveCaretDown(EdiMoveCaretDown&&) noexcept ;
+    EdiMoveCaretDown& operator=(EdiMoveCaretDown&&) noexcept ;
 
     EdiMoveCaretDown(const EdiMoveCaretDown&) = delete ;
     EdiMoveCaretDown& operator=(const EdiMoveCaretDown&) = delete ;

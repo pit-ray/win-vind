@@ -25,17 +25,13 @@ namespace Path
     }
 
     inline static const auto _get_path(std::string filename) noexcept {
-        static const auto use_installer = [] {
+        static const auto flag = [] {
             std::ifstream ifs{"default_config/is_installer_used"} ;
-            std::string index_str{} ;
-            std::getline(ifs, index_str) ;
-            return index_str.front() == '1' ;
+            std::string str{} ;
+            std::getline(ifs, str) ;
+            return str.front() == 'y' || str.front() == 'Y' ;
         }() ;
-
-        if(!use_installer) {
-            return "config\\" + filename ;
-        }
-        return HOME_PATH() + ".win-vind\\" + filename ;
+        return flag ? (HOME_PATH() + ".win-vind\\" + filename) : ("config\\" + filename) ;
     }
 
     inline static const auto& BINDINGS() noexcept {

@@ -63,8 +63,8 @@ target_link_libraries(GUIBindings Common Psapi)
 
 add_library(Options
     options/autotrack_popup.cpp
-    options/display_cmd.cpp
     options/dedicate_to_window.cpp
+    options/virtual_cmd_line.cpp
 )
 target_link_libraries(Options Common)
 

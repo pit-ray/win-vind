@@ -9,6 +9,7 @@
 #include "simpl_text_selecter.hpp"
 #include "msg_logger.hpp"
 #include "keystroke_repeater.hpp"
+#include "edi_change_mode.hpp"
 
 namespace ECBUtility
 {
@@ -32,7 +33,7 @@ bool EdiCopyHighlightText::sprocess(const bool first_call)
     if(!first_call) {
         return true ;
     }
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_INSERT)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_INSERT)) {
         return false ;
     }
 
@@ -45,7 +46,9 @@ bool EdiCopyHighlightText::sprocess(const bool first_call)
         _rgtype = _RegisteredType::Chars ;
     }
 
-    change_mode(Mode::EdiNormal) ;
+    if(!Change2EdiNormal::sprocess(true)) {
+        return false ;
+    }
     if(!SimplTextSelecter::unselect()) {
         return false ;
     }
@@ -63,18 +66,18 @@ bool EdiNCopyLine::sprocess(const bool first_call)
     if(!first_call) {
         return true ;
     }
-    using KeybrdEventer::pressup ;
+    using KeybrdEventer::pushup ;
 
-    if(!pressup(VKC_HOME)) {
+    if(!pushup(VKC_HOME)) {
         return false ;
     }
-    if(!pressup(VKC_LSHIFT, VKC_END)) {
+    if(!pushup(VKC_LSHIFT, VKC_END)) {
         return false ;
     }
-    if(!pressup(VKC_LCTRL, VKC_INSERT)) {
+    if(!pushup(VKC_LCTRL, VKC_INSERT)) {
         return false ;
     }
-    if(!pressup(VKC_END)) {
+    if(!pushup(VKC_END)) {
         return false ;
     }
 
@@ -105,14 +108,16 @@ bool EdiNPasteAfter::sprocess(const bool first_call) const
     auto paste = [] {
         using ECBUtility::_RegisteredType ;
         using ECBUtility::_rgtype ;
-        using KeybrdEventer::pressup ;
+        using KeybrdEventer::pushup ;
 
         if(_rgtype == _RegisteredType::Chars) {
-            if(!pressup(VKC_LSHIFT, VKC_INSERT)) {
+            if(!pushup(VKC_LSHIFT, VKC_INSERT)) {
                 return false ;
             }
 
-            ModeManager::change_mode(ModeManager::Mode::EdiNormal) ;
+            if(!Change2EdiNormal::sprocess(true)) {
+                return false ;
+            }
             return true ;
         }
 
@@ -120,15 +125,15 @@ bool EdiNPasteAfter::sprocess(const bool first_call) const
             if(ModeManager::is_edi_visual()) {
                 return true ;
             }
-            if(!pressup(VKC_END)) {
+            if(!pushup(VKC_END)) {
                 return false ;
             }
             //It might be double newlines in some applications distinglishing EOL.
             //In other words, creating a empty line.
-            if(!pressup(VKC_ENTER)) {
+            if(!pushup(VKC_ENTER)) {
                 return false ;
             }
-            if(!pressup(VKC_LSHIFT, VKC_INSERT)) {
+            if(!pushup(VKC_LSHIFT, VKC_INSERT)) {
                 return false ;
             }
 
@@ -169,13 +174,15 @@ bool EdiNPasteBefore::sprocess(const bool first_call) const
     auto paste = [] {
         using ECBUtility::_RegisteredType ;
         using ECBUtility::_rgtype ;
-        using KeybrdEventer::pressup ;
+        using KeybrdEventer::pushup ;
 
         if(_rgtype == _RegisteredType::Chars) {
-            if(!pressup(VKC_LSHIFT, VKC_INSERT)) {
+            if(!pushup(VKC_LSHIFT, VKC_INSERT)) {
                 return false ;
             }
-            ModeManager::change_mode(ModeManager::Mode::EdiNormal) ;
+            if(!Change2EdiNormal::sprocess(true)) {
+                return false ;
+            }
             return true ;
         }
 
@@ -183,16 +190,16 @@ bool EdiNPasteBefore::sprocess(const bool first_call) const
             if(ModeManager::is_edi_visual()) {
                 return true ;
             }
-            if(!pressup(VKC_HOME)) {
+            if(!pushup(VKC_HOME)) {
                 return false ;
             }
-            if(!pressup(VKC_ENTER)) {
+            if(!pushup(VKC_ENTER)) {
                 return false ;
             }
-            if(!pressup(VKC_UP)) {
+            if(!pushup(VKC_UP)) {
                 return false ;
             }
-            if(!pressup(VKC_LSHIFT, VKC_INSERT)) {
+            if(!pushup(VKC_LSHIFT, VKC_INSERT)) {
                 return false ;
             }
             return true ;
@@ -221,7 +228,7 @@ bool EdiDeleteHighlightText::sprocess(const bool first_call)
         return true ;
     }
 
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_X)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_X)) {
         return false ;
     }
 
@@ -234,7 +241,9 @@ bool EdiDeleteHighlightText::sprocess(const bool first_call)
         _rgtype = _RegisteredType::Chars ;
     }
 
-    change_mode(Mode::EdiNormal) ;
+    if(!Change2EdiNormal::sprocess(true)) {
+        return false ;
+    }
     return true ;
 }
 
@@ -243,14 +252,14 @@ namespace ECBUtility
 {
 
     inline static bool delete_line() {
-        using KeybrdEventer::pressup ;
-        if(!pressup(VKC_LCTRL, VKC_X)) {
+        using KeybrdEventer::pushup ;
+        if(!pushup(VKC_LCTRL, VKC_X)) {
             return false ;
         }
-        if(!pressup(VKC_BKSPACE)) {
+        if(!pushup(VKC_BKSPACE)) {
             return false ;
         }
-        if(!pressup(VKC_LCTRL, VKC_RIGHT)) {
+        if(!pushup(VKC_LCTRL, VKC_RIGHT)) {
             return false ;
         }
 
@@ -261,11 +270,13 @@ namespace ECBUtility
         using namespace ModeManager ;
         const auto mode = get_mode() ;
         if(mode == Mode::EdiVisual) {
-            if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_X)) {
+            if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_X)) {
                 return false ;
             }
 
-            change_mode(Mode::EdiNormal) ;
+            if(!Change2EdiNormal::sprocess(true)) {
+                return false ;
+            }
             _rgtype = _RegisteredType::Chars ;
             return true ;
         }
@@ -274,7 +285,9 @@ namespace ECBUtility
                 return false ;
             }
 
-            change_mode(Mode::EdiNormal) ;
+            if(!Change2EdiNormal::sprocess(true)) {
+                return false ;
+            }
             _rgtype = _RegisteredType::Lines ;
             return true ;
         }
@@ -312,11 +325,11 @@ bool EdiNDeleteLine::sprocess(const bool first_call) const
             return false ;
         }
 
-        using KeybrdEventer::pressup ;
-        if(!pressup(VKC_HOME)) {
+        using KeybrdEventer::pushup ;
+        if(!pushup(VKC_HOME)) {
             return false ;
         }
-        if(!pressup(VKC_LSHIFT, VKC_END)) {
+        if(!pushup(VKC_LSHIFT, VKC_END)) {
             return false ;
         }
         if(!ECBUtility::delete_line()) {
@@ -362,11 +375,11 @@ bool EdiNDeleteLineUntilEOL::sprocess(const bool first_call) const
         }
 
         //not select
-        using KeybrdEventer::pressup ;
-        if(!pressup(VKC_LSHIFT, VKC_END)) {
+        using KeybrdEventer::pushup ;
+        if(!pushup(VKC_LSHIFT, VKC_END)) {
             return false ;
         }
-        if(!pressup(VKC_LCTRL, VKC_X)) {
+        if(!pushup(VKC_LCTRL, VKC_X)) {
             return false ;
         }
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
@@ -409,11 +422,11 @@ bool EdiNDeleteAfter::sprocess(const bool first_call) const
         }
 
         //not select
-        using KeybrdEventer::pressup ;
-        if(!pressup(VKC_LSHIFT, VKC_RIGHT)) {
+        using KeybrdEventer::pushup ;
+        if(!pushup(VKC_LSHIFT, VKC_RIGHT)) {
             return false ;
         }
-        if(!pressup(VKC_LCTRL, VKC_X)) {
+        if(!pushup(VKC_LCTRL, VKC_X)) {
             return false ;
         }
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
@@ -456,11 +469,11 @@ bool EdiNDeleteBefore::sprocess(const bool first_call) const
         }
 
         //not select
-        using KeybrdEventer::pressup ;
-        if(!pressup(VKC_LSHIFT, VKC_LEFT)) {
+        using KeybrdEventer::pushup ;
+        if(!pushup(VKC_LSHIFT, VKC_LEFT)) {
             return false ;
         }
-        if(!pressup(VKC_LCTRL, VKC_X)) {
+        if(!pushup(VKC_LCTRL, VKC_X)) {
             return false ;
         }
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;

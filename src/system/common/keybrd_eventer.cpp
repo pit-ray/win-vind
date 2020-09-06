@@ -86,7 +86,7 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::release)\n" ;
+            WIN_ERROR_STREAM << "(KeybrdEventer::release)\n" ;
             return false ;
         }
 
@@ -104,13 +104,13 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(keybrd_eventer.hpp::release)\n" ;
+            WIN_ERROR_STREAM << "(KeybrdEventer::release)\n" ;
             return false ;
         }
         return true ;
     }
 
-    bool _pressup_core(std::initializer_list<unsigned char>&& initl) {
+    bool _pushup_core(std::initializer_list<unsigned char>&& initl) {
         const auto pressing_keys = KeyAbsorber::get_pressed_list() ;
 
         const auto recover_keystate= [&pressing_keys] {

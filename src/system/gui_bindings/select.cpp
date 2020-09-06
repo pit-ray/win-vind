@@ -16,7 +16,7 @@ bool SelectAll::sprocess(const bool first_call)
     if(!MouseEventer::click(VKC_MOUSE_LEFT)) {
         return false ;
     }
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_A)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_A)) {
         return false ;
     }
     return true ;

@@ -1,9 +1,9 @@
 #ifndef _DEDICATE_TO_WINDOW_HPP
 #define _DEDICATE_TO_WINDOW_HPP
 
-#include "dynamic_option.hpp"
+#include "dynamic_option_with_creater.hpp"
 
-class Dedicate2Window : public DynamicOption
+class Dedicate2Window : public DynamicOptionWithCreater<Dedicate2Window>
 {
 private:
     bool do_enable() const noexcept override ;
@@ -11,16 +11,7 @@ private:
     bool do_process() const override ;
 
 public:
-    const std::string name() const noexcept override ;
-    static std::unique_ptr<DynamicOption> create() ;
-
-    explicit Dedicate2Window() ;
-    virtual ~Dedicate2Window() noexcept ;
-    Dedicate2Window(Dedicate2Window&&) noexcept ;
-    Dedicate2Window& operator=(Dedicate2Window&&) noexcept ;
-
-    Dedicate2Window(const Dedicate2Window&) = delete ;
-    Dedicate2Window& operator=(const Dedicate2Window&) = delete ;
+    static const std::string sname() noexcept ;
 } ;
 
 #endif

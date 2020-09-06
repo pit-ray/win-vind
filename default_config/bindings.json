@@ -402,7 +402,7 @@
         "name": "change_to_edi_line_visual",
         "key": ["V"],
         "cmd": [],
-        "us": "[E] Line-Visual Mode",
+        "us": "[E] Visual-Line Mode",
         "jp": "[E] ヴィジュアルモード(行)"
     },
     {

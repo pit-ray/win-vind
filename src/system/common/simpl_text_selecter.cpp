@@ -18,10 +18,10 @@ namespace SimplTextSelecter
     bool select_line_EOL2BOL() noexcept {
         _first_line_selection = _first_call ;
 
-        if(!KeybrdEventer::pressup(VKC_END)) {
+        if(!KeybrdEventer::pushup(VKC_END)) {
             return false ;
         }
-        if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_HOME)) {
+        if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME)) {
             return false ;
         }
 
@@ -32,10 +32,10 @@ namespace SimplTextSelecter
 
     bool select_line_BOL2EOL() noexcept {
         _first_line_selection = _first_call ;
-        if(!KeybrdEventer::pressup(VKC_HOME)) {
+        if(!KeybrdEventer::pushup(VKC_HOME)) {
             return false ;
         }
-        if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_END)) {
+        if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_END)) {
             return false ;
         }
 
@@ -53,12 +53,12 @@ namespace SimplTextSelecter
 
     bool unselect() noexcept {
         if(_mode == Mode::EOL2BOL) {
-            if(!KeybrdEventer::pressup(VKC_LEFT)) {
+            if(!KeybrdEventer::pushup(VKC_LEFT)) {
                 return false ;
             }
         }
         else if(_mode == Mode::BOL2EOL) {
-            if(!KeybrdEventer::pressup(VKC_RIGHT)) {
+            if(!KeybrdEventer::pushup(VKC_RIGHT)) {
                 return false ;
             }
         }
@@ -73,12 +73,12 @@ namespace SimplTextSelecter
 
     bool moving_update() noexcept {
         if(_mode == Mode::BOL2EOL) {
-            if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_END)) {
+            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_END)) {
                 return false ;
             }
         }
         else {
-            if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_HOME)) {
+            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME)) {
                 return false ;
             }
         }

@@ -73,6 +73,7 @@ namespace wxGUI
         create_ch("icon_style") ;
         create_ch("kb_type") ;
         create_sc("ppi_factor", 1, 12, 6) ;
+        create_ch("initial_mode") ;
         SetSizerAndFit(root_sizer) ;
     }
     CommonCtrl::~CommonCtrl() noexcept = default ;

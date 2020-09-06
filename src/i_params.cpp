@@ -12,7 +12,7 @@
 namespace iParams
 {
     static nlohmann::json jp ;
-    void load_config() {
+    void load_config() noexcept {
         try {
             jp.clear() ;
             std::ifstream ifs(Path::SETTINGS()) ;
@@ -28,7 +28,7 @@ namespace iParams
     inline static const T _get(const std::string name) noexcept {
         try {return jp.at(name).at("value").get<T>() ;}
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << " bad index (iParams::_get)\n" ;
+            ERROR_STREAM << e.what() << "(iParams::_get)\n" ;
             return T{0} ;
         }
     }

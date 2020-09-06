@@ -11,6 +11,10 @@
 #include "option_loader.hpp"
 #include "keybrd_eventer.hpp"
 #include "i_params.hpp"
+#include "mode_manager.hpp"
+
+#include "change_mode.hpp"
+#include "edi_change_mode.hpp"
 
 #include "gui_bindings/mywindow_ctrl.hpp"
 
@@ -18,8 +22,8 @@ namespace System
 {
     using namespace std ;
 
-    static KeyBinder _kb ;
-    static OptionLoader _ol(&_kb) ;
+    static KeyBinder _kb{} ;
+    static OptionLoader _ol{} ;
 
     bool init() {
         //show mouse cursor
@@ -49,32 +53,50 @@ namespace System
         }
 
         load_config() ;
+
+        //initialize system mode
+        const std::unordered_map<std::string, kbg::shp_t> cm {
+            {"gui_normal", Change2Normal::create()},
+            {"gui_insert", Change2Insert::create()},
+            {"edi_normal", Change2Editor::create()},
+            {"edi_insert", Change2EdiInsert::create()}
+        } ;
+        try {
+            cm.at(iParams::get_s("initial_mode"))->process() ;
+        }
+        catch(const std::out_of_range& e) {
+            ERROR_STREAM << e.what() << ", in" << Path::SETTINGS() << ", initial_mode is invalid syntax (System::init)\n" ;
+        }
+
         return true ;
     }
 
-    void load_config() {
+    void load_config() noexcept {
         iParams::load_config() ;
         _kb.load_config() ;
         _ol.load_config() ;
     }
 
-    void load_option_config() {
+    void load_option_config() noexcept {
         _ol.load_config() ;
     }
 
-    bool update() {
+    bool update() noexcept {
         _kb.update() ;
         _ol.update() ;
 
         using namespace KeyAbsorber ;
         if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
-            MESSAGE_STREAM << "Completed successfully (ExitCommand)\n" ;
             return false ;
         }
 
         return true ;
     }
 
+    bool update_options() noexcept {
+        _ol.update() ;
+        return true ;
+    }
 
     //Please use it if you want to show a self config window by command.
     void register_show_window_func(std::function<void()> func) noexcept {

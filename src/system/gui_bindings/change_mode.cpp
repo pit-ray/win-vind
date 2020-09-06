@@ -12,6 +12,7 @@
 #include "keybrd_eventer.hpp"
 #include "virtual_key_fwd.hpp"
 #include "simpl_text_selecter.hpp"
+#include "options/virtual_cmd_line.hpp"
 
 using namespace std ;
 
@@ -31,13 +32,12 @@ bool Change2Normal::sprocess(const bool first_call)
     if(m == Mode::Normal) {
         return true ;
     }
-
     if(m == Mode::Visual) {
         if(!MouseEventer::click(VKC_MOUSE_LEFT)) {
             return false ;
         }
     }
-    if(is_edi_visual()) {
+    else if(is_edi_visual()) {
         if(!SimplTextSelecter::unselect()) {
             return false ;
         }
@@ -49,6 +49,7 @@ bool Change2Normal::sprocess(const bool first_call)
         return false ;
     }
     change_mode(Mode::Normal) ;
+    VirtualCmdLine::msgout("-- GUI NORMAL --") ;
     return true ;
 }
 
@@ -71,6 +72,7 @@ bool Change2Insert::sprocess(const bool first_call)
 
     KeyAbsorber::open() ;
     change_mode(Mode::Insert) ;
+    VirtualCmdLine::msgout("-- GUI INSERT --") ;
     return true ;
 }
 
@@ -85,6 +87,7 @@ bool Change2Visual::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     change_mode(Mode::Visual) ;
+    VirtualCmdLine::msgout("-- GUI VISUAL --") ;
     return MouseEventer::press(VKC_MOUSE_LEFT) ;
 }
 
@@ -105,6 +108,7 @@ bool Change2Editor::sprocess(const bool first_call)
         return false ;
     }
     change_mode(Mode::EdiNormal) ;
+    VirtualCmdLine::msgout("-- EDI NORMAL --") ;
     return true ;
 }
 
@@ -120,6 +124,7 @@ bool Change2Command::sprocess(const bool first_call)
     if(!first_call) return true ;
 
     const auto mode = ModeManager::get_mode() ;
+    VirtualCmdLine::reset() ;
 
     if(mode == Mode::Normal) {
         change_mode(Mode::Command) ;

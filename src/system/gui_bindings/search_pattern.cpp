@@ -13,7 +13,7 @@ const string SearchPattern::sname() noexcept
 bool SearchPattern::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    if(!KeybrdEventer::pressup(VKC_F3)) {
+    if(!KeybrdEventer::pushup(VKC_F3)) {
         return false ;
     }
     return true ;

@@ -26,7 +26,7 @@ namespace MouseEventer
             WIN_ERROR_STREAM << "(MouseEventer::click)\n" ;
             return false ;
         }
-        btstate[btcode] = true ;
+        //btstate[btcode] = true ;
 
         in.mi.dwFlags = (btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP ;
         if(!SendInput(1, &in, sizeof(INPUT))) {
@@ -65,7 +65,7 @@ namespace MouseEventer
 
     bool is_releasing_occured(const unsigned char btcode) noexcept {
         if(GetAsyncKeyState(btcode) & 0x8000) {
-            if(!btstate[btcode]) btstate[btcode] = true ; 
+            if(!btstate[btcode]) btstate[btcode] = true ;
         }
         else {
             if(btstate[btcode]) {

@@ -34,9 +34,9 @@ bool EdiMoveCaretLeft::sprocess(const bool first_call) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
-            return KeybrdEventer::pressup(VKC_LSHIFT, VKC_LEFT) ;
+            return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
         }
-        return KeybrdEventer::pressup(VKC_LEFT) ;
+        return KeybrdEventer::pushup(VKC_LEFT) ;
     } ;
 
     if(first_call) {
@@ -76,9 +76,9 @@ bool EdiMoveCaretRight::sprocess(const bool first_call) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
-            return KeybrdEventer::pressup(VKC_LSHIFT, VKC_RIGHT) ;
+            return KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
         }
-        return KeybrdEventer::pressup(VKC_RIGHT) ;
+        return KeybrdEventer::pushup(VKC_RIGHT) ;
     } ;
 
     if(first_call) {
@@ -124,12 +124,12 @@ bool EdiMoveCaretUp::sprocess(const bool first_call) const
                 }
             }
 
-            if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_UP)) {
+            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_UP)) {
                 return false ;
             }
             return SimplTextSelecter::moving_update() ;
         }
-        return KeybrdEventer::pressup(VKC_UP) ;
+        return KeybrdEventer::pushup(VKC_UP) ;
     } ;
 
     if(first_call) {
@@ -174,12 +174,12 @@ bool EdiMoveCaretDown::sprocess(const bool first_call) const
                 }
             }
 
-            if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_DOWN)) {
+            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN)) {
                 return false ;
             }
             return SimplTextSelecter::moving_update() ;
         }
-        return KeybrdEventer::pressup(VKC_DOWN) ;
+        return KeybrdEventer::pushup(VKC_DOWN) ;
     } ;
 
     if(first_call) {
@@ -203,9 +203,9 @@ bool EdiNMoveCaretwordsForward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pressup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
+        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
     }
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_RIGHT) ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
 }
 
 
@@ -219,9 +219,9 @@ bool EdiNMoveCaretwordsBackward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pressup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
+        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
     }
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_LEFT) ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
 }
 
 
@@ -235,9 +235,9 @@ bool EdiNMoveCaretWORDSForward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pressup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
+        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
     }
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_RIGHT) ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
 }
 
 
@@ -251,7 +251,7 @@ bool EdiNMoveCaretWORDSBackward::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pressup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
+        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
     }
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_LEFT) ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
 }

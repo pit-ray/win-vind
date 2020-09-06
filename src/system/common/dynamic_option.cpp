@@ -16,8 +16,7 @@ struct DynamicOption::Impl
     bool flag ;
 
     explicit Impl() : flag(false) {}
-
-    ~Impl() = default ;
+    ~Impl() noexcept = default ;
 
     Impl(Impl&&) noexcept = default ;
     Impl& operator=(Impl&&) noexcept = default ;

@@ -25,7 +25,7 @@ const string CloseCurrentWindow::sname() noexcept
 
 bool CloseCurrentWindow::common_process()
 {
-    return KeybrdEventer::pressup(VKC_LALT, VKC_F4) ;
+    return KeybrdEventer::pushup(VKC_LALT, VKC_F4) ;
 }
 
 bool CloseCurrentWindow::sprocess(const bool first_call)
@@ -77,7 +77,7 @@ bool SwitchWindow::common_process()
                 if(!release_keystate(vkc)) {
                     return false ;
                 }
-                if(!pressup(vkc)) {
+                if(!pushup(vkc)) {
                     return false ;
                 }
                 //undo
@@ -86,7 +86,7 @@ bool SwitchWindow::common_process()
                 }
             }
             else {
-                if(!pressup(vkc)) {
+                if(!pushup(vkc)) {
                     return false ;
                 }
             }
@@ -188,7 +188,7 @@ const string MaximizeCurrentWindow::sname() noexcept
 
 bool MaximizeCurrentWindow::common_process()
 {
-    return KeybrdEventer::pressup(VKC_LWIN, VKC_UP) ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_UP) ;
 }
 
 bool MaximizeCurrentWindow::sprocess(const bool first_call)
@@ -211,7 +211,7 @@ const string MinimizeCurrentWindow::sname() noexcept
 
 bool MinimizeCurrentWindow::common_process()
 {
-    return KeybrdEventer::pressup(VKC_LWIN, VKC_DOWN) ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
 }
 
 bool MinimizeCurrentWindow::sprocess(const bool first_call)
@@ -234,7 +234,7 @@ const string SnapCurrentWindow2Left::sname() noexcept
 
 bool SnapCurrentWindow2Left::common_process()
 {
-    return KeybrdEventer::pressup(VKC_LWIN, VKC_LEFT) ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_LEFT) ;
 }
 
 bool SnapCurrentWindow2Left::sprocess(const bool first_call)
@@ -257,7 +257,7 @@ const string SnapCurrentWindow2Right::sname() noexcept
 
 bool SnapCurrentWindow2Right::common_process()
 {
-    return KeybrdEventer::pressup(VKC_LWIN, VKC_RIGHT) ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_RIGHT) ;
 }
 
 bool SnapCurrentWindow2Right::sprocess(const bool first_call)
@@ -345,5 +345,5 @@ const string ReloadCurrentWindow::sname() noexcept
 
 bool ReloadCurrentWindow::sprocess(const string UNUSED(cmd))
 {
-    return KeybrdEventer::pressup(VKC_F5) ;
+    return KeybrdEventer::pushup(VKC_F5) ;
 }

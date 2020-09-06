@@ -16,7 +16,7 @@ namespace iParams
     std::size_t get_z(const std::string name) noexcept ;
     bool get_b(const std::string name) noexcept ;
 
-    void load_config() ;
+    void load_config() noexcept ;
 } ;
 
 #endif

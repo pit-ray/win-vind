@@ -22,6 +22,9 @@
 #include "path.hpp"
 #include "key_binder_list.hpp"
 
+#include "virtual_cmd_line.hpp"
+#include "change_mode.hpp"
+
 using namespace std ;
 
 struct KeyBinder::Impl
@@ -134,13 +137,6 @@ namespace KBUtility{
             return ignore_set.find(key) != ignore_set.end() ;
         }) ;
     }
-
-    inline static void refresh_display() noexcept {
-        if(!InvalidateRect(NULL, NULL, TRUE)) {
-            WIN_ERROR_STREAM << " failed refresh display (KBUtility::refresh_display)\n" ;
-            return ;
-        }
-    }
 }
 
 void KeyBinder::update_core() noexcept
@@ -209,10 +205,10 @@ void KeyBinder::update_core_cmd() noexcept
         using ModeManager::Mode ;
         using ModeManager::change_mode ;
         if(mode == Mode::EdiCommand) {
-            change_mode(Mode::EdiNormal) ;
+            return Change2Editor::sprocess(true) ;
         }
         else {
-            change_mode(Mode::Normal) ;
+            return Change2Normal::sprocess(true) ;
         }
     } ;
 
@@ -242,24 +238,28 @@ void KeyBinder::update_core_cmd() noexcept
             pimpl->cmd_hist_index = recent_index ;
         }
         return_mode() ;
-        refresh_display() ;
+        VirtualCmdLine::clear() ;
+        VirtualCmdLine::refresh() ;
         return ;
     }
 
     if(plger->back().is_containing(VKC_ENTER) && p_cmdp->func) {
         plger->remove_from_back(1) ; //remove keycode of enter
+
+        VirtualCmdLine::clear() ;
+        VirtualCmdLine::refresh() ;
+
         p_cmdp->func->process(plger->get_str()) ;
         pimpl->update_history() ;
 
         return_mode() ;
-        refresh_display() ;
         return ;
     }
 
     //edit command
     if(plger->back().is_containing(VKC_BKSPACE)) {
         plger->remove_from_back(2) ;
-        refresh_display() ;
+        VirtualCmdLine::refresh() ;
 
         if(plger->is_empty()) {
             p_cmdp->func = nullptr ;
@@ -271,13 +271,13 @@ void KeyBinder::update_core_cmd() noexcept
     if(plger->back().is_containing(VKC_UP) && pimpl->cmd_hist_index > 0) {
         pimpl->cmd_hist_index -- ;
         plger->remove_from_back(1) ;
-        refresh_display() ;
+        VirtualCmdLine::refresh() ;
         return ;
     }
     if(plger->back().is_containing(VKC_DOWN) && pimpl->cmd_hist_index < pimpl->cmd_hist.size() - 1) {
         pimpl->cmd_hist_index ++ ;
         plger->remove_from_back(1) ;
-        refresh_display() ;
+        VirtualCmdLine::refresh() ;
         return  ;
     }
 
@@ -299,17 +299,12 @@ void KeyBinder::update_core_cmd() noexcept
 
 void KeyBinder::update() noexcept {
     if(ModeManager::is_command()) {
+        try {VirtualCmdLine::cout(":" + pimpl->cmd_hist.at(pimpl->cmd_hist_index)->logger->get_str()) ;}
+        catch(const std::out_of_range&) {VirtualCmdLine::clear() ;} ;
+
         update_core_cmd() ;
     }
     else {
         update_core() ;
     }
-}
-
-const string KeyBinder::get_logger_str() const noexcept
-{
-    try {
-        return pimpl->cmd_hist.at(pimpl->cmd_hist_index)->logger->get_str() ;
-    }
-    catch(std::out_of_range& e) {return string() ;}
 }

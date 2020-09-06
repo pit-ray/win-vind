@@ -10,6 +10,8 @@
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "key_absorber.hpp"
+#include "change_mode.hpp"
+#include "editor_bindings/edi_change_mode.hpp"
 
 using namespace std ;
 
@@ -29,10 +31,9 @@ bool CBCopy::sprocess(const bool first_call)
 
     //there are cases in which not editable.
     //thus, not use Message Copy
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_INSERT)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_INSERT)) {
         return false ;
     }
-    ModeManager::change_mode(ModeManager::Mode::Normal) ;
     return true ;
 }
 
@@ -52,10 +53,10 @@ bool CBPaste::sprocess(const bool first_call)
     }
 
     //not selecting at paste.
-    if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_INSERT)) {
+    if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_INSERT)) {
         return false ;
     }
-    ModeManager::change_mode(ModeManager::Mode::Normal) ;
+    Change2Normal::sprocess(true) ;
     return true ;
 }
 
@@ -73,10 +74,10 @@ bool CBCut::sprocess(const bool first_call)
     if(!MouseEventer::release(VKC_MOUSE_LEFT)) {
         return false ;
     }
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_X)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_X)) {
         return false ;
     }
-    ModeManager::change_mode(ModeManager::Mode::Normal) ;
+    Change2Normal::sprocess(true) ;
     return true ;
 }
 
@@ -96,19 +97,19 @@ bool CBDelete::sprocess(const bool first_call)
 
     //selecting->cut
     //unselecting->delete
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_C)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_C)) {
         return false ;
     }
-    if(!KeybrdEventer::pressup(VKC_DELETE)) {
+    if(!KeybrdEventer::pushup(VKC_DELETE)) {
         return false ;
     }
 
     using namespace ModeManager ;
     if(is_editor()) {
-        change_mode(Mode::EdiNormal) ;
+        Change2Editor::sprocess(true) ;
     }
     else {
-        change_mode(Mode::Normal) ;
+        Change2Normal::sprocess(true) ;
     }
     return true ;
 }
@@ -130,20 +131,20 @@ bool CBBackSpace::sprocess(const bool first_call)
 
     //selecting->cut
     //unselecting->delete
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_C)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_C)) {
         return false ;
     }
 
-    if(!KeybrdEventer::pressup(VKC_BKSPACE)) {
+    if(!KeybrdEventer::pushup(VKC_BKSPACE)) {
         return false ;
     }
 
     using namespace ModeManager ;
     if(is_editor()) {
-        change_mode(Mode::EdiNormal) ;
+        Change2EdiNormal::sprocess(true) ;
     }
     else {
-        change_mode(Mode::Normal) ;
+        Change2Normal::sprocess(true) ;
     }
     return true ;
 }

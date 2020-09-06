@@ -9,20 +9,11 @@
 #include "mouse_eventer.hpp"
 #include "change_mode.hpp"
 #include "edi_change_mode.hpp"
+#include "virtual_cmd_line.hpp"
 
-Dedicate2Window::Dedicate2Window() = default ;
-Dedicate2Window::~Dedicate2Window() noexcept = default ;
-Dedicate2Window::Dedicate2Window(Dedicate2Window&&) noexcept = default ;
-Dedicate2Window& Dedicate2Window::operator=(Dedicate2Window&&) noexcept = default ;
-
-const std::string Dedicate2Window::name() const noexcept
+const std::string Dedicate2Window::sname() noexcept
 {
     return "dedicate_to_window" ;
-}
-
-std::unique_ptr<DynamicOption> Dedicate2Window::create()
-{
-    return std::move(std::make_unique<Dedicate2Window>()) ;
 }
 
 bool Dedicate2Window::do_enable() const noexcept
@@ -37,40 +28,62 @@ bool Dedicate2Window::do_disable() const noexcept
 
 bool Dedicate2Window::do_process() const
 {
-    static HWND hwnd = NULL ;
-    static auto is_other_selected = true ;
+    auto is_selected = [] {
+        if(!MouseEventer::is_releasing_occured(VKC_MOUSE_LEFT)) {
+            return false ;
+        }
+
+        using KeyAbsorber::is_pressed ;
+        return is_pressed(VKC_LALT) ||
+               is_pressed(VKC_RALT) ||
+               is_pressed(VKC_LSHIFT) ||
+               is_pressed(VKC_RSHIFT) ||
+               is_pressed(VKC_LCTRL) ||
+               is_pressed(VKC_RCTRL) ;
+    } ;
+
+    static HWND target_hwnd = NULL ;
+    static HWND past_hwnd = NULL ;
     auto selected_hwnd = GetForegroundWindow() ;
 
-    if(!MouseEventer::is_releasing_occured(VKC_MOUSE_LEFT)) {
+    if(!target_hwnd) {
+        if(!is_selected()) return true ;
+        //turn on
+        target_hwnd = past_hwnd = selected_hwnd ;
+        if(!Change2Editor::sprocess(true)) {
+            return false ;
+        }
+        VirtualCmdLine::msgout("-- TARGET ON --") ;
         return true ;
     }
 
-    using KeyAbsorber::is_pressed ;
-    if(is_pressed(VKC_LALT) || is_pressed(VKC_RALT) ||
-       is_pressed(VKC_LSHIFT) || is_pressed(VKC_RSHIFT) ||
-       is_pressed(VKC_LCTRL) || is_pressed(VKC_RCTRL)) {
-        if(hwnd != selected_hwnd) {
-            hwnd = selected_hwnd ;
-            is_other_selected = true ;
+    //-- targeting now --
+    if(is_selected()) { //turn off
+        target_hwnd = NULL ;
+        past_hwnd = NULL ;
+        if(!Change2Insert::sprocess(true)) {
+            return false ;
         }
-        else {
-            hwnd = NULL ;
-            Change2Insert::sprocess(true) ;
-        }
+        VirtualCmdLine::msgout("-- TARGET OFF --") ;
+        return true ;
     }
-    if(!hwnd) return true ;
 
-    if(hwnd != selected_hwnd) { //other window
-        if(!Change2Insert::sprocess(!is_other_selected)) {
+    //is selected window changed?
+    if(past_hwnd == selected_hwnd) {
+        return true ;
+    }
+
+    if(target_hwnd == selected_hwnd) { //other -> target
+        if(!Change2EdiNormal::sprocess(true)) {
             return false ;
         }
-        is_other_selected = true ;
     }
-    else { //dedicated window
-        if(!Change2EdiNormal::sprocess(is_other_selected)) {
+    else if(past_hwnd == target_hwnd) { //target -> other
+        if(!Change2Insert::sprocess(true)) {
             return false ;
         }
-        is_other_selected = false ;
     }
+
+    past_hwnd = selected_hwnd ;
     return true ;
 }

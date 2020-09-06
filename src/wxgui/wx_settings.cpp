@@ -42,11 +42,23 @@ namespace wxGUI
             def_btn->SetLabel(UITrans::trans("buttons/default")) ;
         }
 
+        void switch_ctrls() noexcept {
+            const auto index = list->GetSelection() ;
+            if(index != wxNOT_FOUND) {
+                shown_ctrl->Hide() ;
+                shown_ctrl = ctrls[index] ;
+                shown_ctrl->Show() ;
+                ctrls_sizer->Layout() ;
+            }
+        }
+
         void update_list() noexcept {
             list->Clear() ;
             for(const auto& l : ctrls) {
                 list->Append(l->name()) ;
             }
+            list->SetSelection(0) ;
+            switch_ctrls() ;
         }
     } ;
 
@@ -99,15 +111,7 @@ namespace wxGUI
         load_config() ;
 
         Bind(wxEVT_LISTBOX, [this](auto&) {
-            //switch ctrls
-            const auto index = pimpl->list->GetSelection() ;
-            if(index != wxNOT_FOUND) {
-                pimpl->shown_ctrl->Hide() ;
-                pimpl->shown_ctrl = pimpl->ctrls[index] ;
-                pimpl->shown_ctrl->Show() ;
-                pimpl->ctrls_sizer->Layout() ;
-            }
-
+            pimpl->switch_ctrls() ;
         }, SettingsEvt::SELECT_ITEM) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {

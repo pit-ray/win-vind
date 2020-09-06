@@ -23,10 +23,10 @@ const std::string EdiNRemoveEOL::sname() noexcept
 bool EdiNRemoveEOL::sprocess(const bool first_call) const
 {
     auto remove = [] {
-        if(!KeybrdEventer::pressup(VKC_END)) {
+        if(!KeybrdEventer::pushup(VKC_END)) {
             return false ;
         }
-        if(!KeybrdEventer::pressup(VKC_DELETE)) {
+        if(!KeybrdEventer::pushup(VKC_DELETE)) {
             return false ;
         }
         ModeManager::change_mode(ModeManager::Mode::EdiNormal) ;

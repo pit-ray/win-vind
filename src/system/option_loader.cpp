@@ -8,8 +8,8 @@
 #include "i_params.hpp"
 
 #include "autotrack_popup.hpp"
-#include "display_cmd.hpp"
 #include "dedicate_to_window.hpp"
+#include "virtual_cmd_line.hpp"
 
 using namespace std ;
 
@@ -17,10 +17,10 @@ struct OptionLoader::Impl
 {
     vector<op::shp_t> vpop ;
 
-    explicit Impl(const KeyBinder* const pkb)
+    explicit Impl()
     : vpop{
         AutotrackPopup::create(),
-        DisplayCmd::create(pkb),
+        VirtualCmdLine::create(),
         Dedicate2Window::create()
     }{}
 
@@ -35,8 +35,8 @@ struct OptionLoader::Impl
 } ;
 
 
-OptionLoader::OptionLoader(const KeyBinder* const pkb)
-: pimpl(make_unique<Impl>(pkb))
+OptionLoader::OptionLoader()
+: pimpl(make_unique<Impl>())
 {}
 
 OptionLoader::~OptionLoader() = default ;

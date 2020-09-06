@@ -24,8 +24,6 @@ public:
     void load_config() noexcept ;
     void update() noexcept ;
 
-    const std::string get_logger_str() const noexcept ;
-
     KeyBinder(KeyBinder&&) = delete ;
     KeyBinder& operator=(KeyBinder&&) = delete ;
     KeyBinder(const KeyBinder&) = delete ;

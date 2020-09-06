@@ -1,9 +1,9 @@
 #ifndef _AUTOTRACK_POPUP_HPP
 #define _AUTOTRACK_POPUP_HPP
 
-#include "dynamic_option.hpp"
+#include "dynamic_option_with_creater.hpp"
 
-class AutotrackPopup : public DynamicOption
+class AutotrackPopup : public DynamicOptionWithCreater<AutotrackPopup>
 {
 private:
     struct Impl ;
@@ -14,8 +14,7 @@ private:
     bool do_process() const override ;
 
 public:
-    const std::string name() const noexcept override ;
-    static std::unique_ptr<DynamicOption> create() ;
+    static const std::string sname() noexcept ;
 
     explicit AutotrackPopup() ;
     virtual ~AutotrackPopup() noexcept ;

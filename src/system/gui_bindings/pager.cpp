@@ -12,7 +12,7 @@ const string Move2NextPage::sname() noexcept
 bool Move2NextPage::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    return KeybrdEventer::pressup(VKC_LALT, VKC_RIGHT) ;
+    return KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
 }
 
 
@@ -25,5 +25,5 @@ const string Move2PrevPage::sname() noexcept
 bool Move2PrevPage::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    return KeybrdEventer::pressup(VKC_LALT, VKC_LEFT) ;
+    return KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
 }

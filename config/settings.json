@@ -1,4 +1,31 @@
 {
+    "initial_mode": {
+        "value": "gui_normal",
+        "us": "Initial Mode",
+        "jp": "初期モード",
+        "choices": [
+            {
+                "value": "gui_normal",
+                "us": "GUI Normal",
+                "jp": "GUIノーマル"
+            },
+            {
+                "value": "gui_insert",
+                "us": "GUI Insert",
+                "jp": "GUIインサート"
+            },
+            {
+                "value": "edi_normal",
+                "us": "Editor Normal",
+                "jp": "エディタノーマル"
+            },
+            {
+                "value": "edi_insert",
+                "us": "Editor Insert",
+                "jp": "エディタインサート"
+            }
+        ]
+    },
     "screen_pos_buf": {
         "value": 10,
         "us": "Screen Position Buffer",
@@ -138,6 +165,11 @@
         "us": "Font Extra",
         "jp": "文字同士の間隔"
     },
+    "cmd_fadeout_time": {
+        "value": 5,
+        "us": "Fade Out Time (s)",
+        "jp": "フェードアウト時間 (s)"
+    },
     "icon_style": {
         "value": "./resources/icon32_dark.ico",
         "choices": [
@@ -206,11 +238,6 @@
         "us": "Resolution PPI Factor",
         "jp": "解像度PPI倍率"
     },
-    "use_installer": {
-        "value": false,
-        "us": "Use Installer",
-        "jp": "インストーラの利用"
-    },
     "exapps": {
         "choices": [
             {
@@ -246,14 +273,14 @@
         "us": "Autotrack Popup",
         "jp": "ポップアップ自動追従"
     },
-    "display_cmd": {
-        "value": true,
-        "us": "Display Command",
-        "jp": "コマンドの画面表示"
-    },
     "dedicate_to_window": {
         "value": true,
         "us": "Dedicate to One Window",
         "jp": "ウィンドウ特化"
+    },
+    "virtual_cmd_line": {
+        "value": true,
+        "us": "Virtual Command Line",
+        "jp": "仮想コマンドライン"
     }
 }

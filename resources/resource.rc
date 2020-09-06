@@ -3,7 +3,7 @@
 IDI_ICON1 ICON DISCARDABLE "icon512.ico"
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION     1,2,0
+FILEVERSION     2,0,0
 FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
 FILEFLAGS       VS_FF_PRERELEASE
 FILEOS          VOS_NT_WINDOWS32
@@ -19,7 +19,7 @@ BEGIN
             VALUE "InternalName",       "win-vind\0"
             VALUE "OriginalFilename",   "win-vind.exe\0"
             VALUE "ProductName",        "win-vind\0"
-            VALUE "ProductVersion",     "1.2.0-beta\0"
+            VALUE "ProductVersion",     "2.0.0\0"
         END
     END
     BLOCK "VarFileInfo"

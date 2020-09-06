@@ -12,7 +12,7 @@ const string SwitchVDesktop2Left::sname() noexcept
 bool SwitchVDesktop2Left::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_LWIN, VKC_LEFT)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_LEFT)) {
         return false ;
     }
     return true ;
@@ -28,7 +28,7 @@ const string SwitchVDesktop2Right::sname() noexcept
 bool SwitchVDesktop2Right::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_LWIN, VKC_RIGHT)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_RIGHT)) {
         return false ;
     }
     return true ;

@@ -11,6 +11,7 @@
 #include "path.hpp"
 #include "mode_manager.hpp"
 #include "utility.hpp"
+#include "change_mode.hpp"
 
 using namespace std ;
 
@@ -22,8 +23,15 @@ const string SaveOpenedFile::sname() noexcept
 
 bool SaveOpenedFile::sprocess(const string UNUSED(cmd))
 {
-    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_S) ;
+    auto hwnd = GetForegroundWindow() ;
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_S)) {
+        return false ;
+    }
+    Sleep(500) ;
+    if(hwnd != GetForegroundWindow()) { //opened popup
+        return Change2Normal::sprocess(true) ;
+    }
+    return true ; //over write
 }
 
 
@@ -35,8 +43,8 @@ const string CloseOpenedFile::sname() noexcept
 
 bool CloseOpenedFile::sprocess(const string UNUSED(cmd))
 {
-    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_F4) ; //close a browser's tab (the file is HTML).
+    if(!Change2Normal::sprocess(true)) return false ; //cursor is avaiable
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ; //close a browser's tab (the file is HTML).
 }
 
 
@@ -48,8 +56,8 @@ const string OpenOtherFile::sname() noexcept
 
 bool OpenOtherFile::sprocess(const string UNUSED(cmd))
 {
-    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_O) ;
+    if(!Change2Normal::sprocess(true)) return false ; //cursor is avaiable
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_O) ;
 }
 
 

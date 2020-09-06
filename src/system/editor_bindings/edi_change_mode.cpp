@@ -7,6 +7,7 @@
 #include "mode_manager.hpp"
 #include "key_absorber.hpp"
 #include "simpl_text_selecter.hpp"
+#include "options/virtual_cmd_line.hpp"
 
 
 using namespace std ;
@@ -36,8 +37,8 @@ bool Change2EdiNormal::sprocess(const bool first_call)
     if(!KeyAbsorber::close_with_refresh()) {
         return false ;
     }
-
     change_mode(Mode::EdiNormal) ;
+    VirtualCmdLine::msgout("-- EDI NORMAL --") ;
     return true ;
 }
 
@@ -56,6 +57,7 @@ bool Change2EdiInsert::sprocess(const bool first_call)
     }
     KeyAbsorber::open() ;
     change_mode(Mode::EdiInsert) ;
+    VirtualCmdLine::msgout("-- EDI INSERT --") ;
     return true ;
 }
 
@@ -70,11 +72,12 @@ bool Change2EdiBOLInsert::sprocess(const bool first_call)
     if(!first_call) {
         return true ;
     }
-    if(!KeybrdEventer::pressup(VKC_HOME)) {
+    if(!KeybrdEventer::pushup(VKC_HOME)) {
         return false ;
     }
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
+    VirtualCmdLine::msgout("-- EDI INSERT --") ;
     return true ;
 }
 
@@ -89,11 +92,12 @@ bool Change2EdiBkInsert::sprocess(const bool first_call)
     if(!first_call) {
         return true ;
     }
-    if(!KeybrdEventer::pressup(VKC_RIGHT)) {
+    if(!KeybrdEventer::pushup(VKC_RIGHT)) {
         return false ;
     }
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
+    VirtualCmdLine::msgout("-- EDI INSERT --") ;
     return true ;
 }
 
@@ -108,11 +112,12 @@ bool Change2EdiEOLInsert::sprocess(const bool first_call)
     if(!first_call) {
         return true ;
     }
-    if(!KeybrdEventer::pressup(VKC_END)) {
+    if(!KeybrdEventer::pushup(VKC_END)) {
         return false ;
     }
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
+    VirtualCmdLine::msgout("-- EDI INSERT --") ;
     return true ;
 }
 
@@ -127,14 +132,15 @@ bool Change2EdiNlInsertBelow::sprocess(const bool first_call)
     if(!first_call) {
         return true ;
     }
-    if(!KeybrdEventer::pressup(VKC_END)) {
+    if(!KeybrdEventer::pushup(VKC_END)) {
         return false ;
     }
-    if(!KeybrdEventer::pressup(VKC_ENTER)) {
+    if(!KeybrdEventer::pushup(VKC_ENTER)) {
         return false ;
     }
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
+    VirtualCmdLine::msgout("-- EDI INSERT --") ;
     return true ;
 }
 
@@ -149,17 +155,18 @@ bool Change2EdiNlInsertAbove::sprocess(const bool first_call)
     if(!first_call) {
         return true ;
     }
-    if(!KeybrdEventer::pressup(VKC_HOME)) {
+    if(!KeybrdEventer::pushup(VKC_HOME)) {
         return false ;
     }
-    if(!KeybrdEventer::pressup(VKC_ENTER)) {
+    if(!KeybrdEventer::pushup(VKC_ENTER)) {
         return false ;
     }
-    if(!KeybrdEventer::pressup(VKC_UP)) {
+    if(!KeybrdEventer::pushup(VKC_UP)) {
         return false ;
     }
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
+    VirtualCmdLine::msgout("-- EDI INSERT --") ;
     return true ;
 }
 
@@ -178,6 +185,7 @@ bool Change2EdiVisual::sprocess(const bool first_call)
         return false ;
     }
     ModeManager::change_mode(ModeManager::Mode::EdiVisual) ;
+    VirtualCmdLine::msgout("-- EDI VISUAL --") ;
     return true ;
 }
 
@@ -196,5 +204,6 @@ bool Change2EdiLineVisual::sprocess(const bool first_call)
         return false ;
     }
     ModeManager::change_mode(ModeManager::Mode::EdiLineVisual) ;
+    VirtualCmdLine::msgout("-- EDI VISUAL LINE--") ;
     return true ;
 }

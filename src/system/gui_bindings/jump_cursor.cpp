@@ -130,7 +130,7 @@ namespace JumpCursorUtility
     static float max_keybrd_ypos = 0 ;
 
     inline static void write_error(const string& buf, const string& filename) {
-        ERROR_STREAM << buf << " is bad syntax in " << filename << ". (JumpCursorUtility::load_keybrd_pos)\n" ;
+        ERROR_STREAM << buf << " is bad syntax in " << filename << ". (JumpCursorUtility::load_config)\n" ;
     }
 
     using key_pos_t = std::unordered_map<unsigned char, std::pair<float, float>> ;

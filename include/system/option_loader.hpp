@@ -13,7 +13,7 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    explicit OptionLoader(const KeyBinder* const pkb) ;
+    explicit OptionLoader() ;
     virtual ~OptionLoader() noexcept ;
 
     void load_config() noexcept ;

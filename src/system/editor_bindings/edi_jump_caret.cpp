@@ -16,9 +16,9 @@ bool EdiJumpCaret2BOL::sprocess(const bool first_call)
         return true ;
     }
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pressup(VKC_LSHIFT, VKC_HOME) ;
+        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
     }
-    return KeybrdEventer::pressup(VKC_HOME) ;
+    return KeybrdEventer::pushup(VKC_HOME) ;
 }
 
 
@@ -33,9 +33,9 @@ bool EdiJumpCaret2EOL::sprocess(const bool first_call)
         return true ;
     }
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pressup(VKC_LSHIFT, VKC_END) ;
+        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
     }
-    return KeybrdEventer::pressup(VKC_END) ;
+    return KeybrdEventer::pushup(VKC_END) ;
 }
 
 
@@ -66,9 +66,9 @@ bool EdiNJumpCaret2Line_DfBOF::sprocess(const bool first_call)
         }
     }
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pressup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
+        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
     }
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_HOME) ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_HOME) ;
 }
 
 
@@ -88,15 +88,15 @@ bool EdiNJumpCaret2Line_DfEOF::sprocess(const bool first_call)
                 return false ;
             }
         }
-        if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_LCTRL, VKC_END)) {
+        if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_END)) {
             return false ;
         }
         if(ModeManager::get_mode() != ModeManager::Mode::EdiLineVisual) {
-            if(!KeybrdEventer::pressup(VKC_LSHIFT, VKC_HOME)) {
+            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME)) {
                 return false ;
             }
         }
         return true ;
     }
-    return KeybrdEventer::pressup(VKC_LCTRL, VKC_END) ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_END) ;
 }

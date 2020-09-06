@@ -7,6 +7,13 @@ namespace ModeManager
     void change_mode(const Mode mode) noexcept {
         m = mode ;
     }
+    void change_mode(const int mode) noexcept {
+        m = static_cast<Mode>(mode) ;
+    }
+    void change_mode(const unsigned char mode) noexcept {
+        m = static_cast<Mode>(mode) ;
+    }
+
     Mode get_mode() noexcept {
         return m ;
     }

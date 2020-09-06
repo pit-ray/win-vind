@@ -20,6 +20,8 @@ namespace ModeManager
     } ;
 
     void change_mode(const Mode mode) noexcept ;
+    void change_mode(const int mode) noexcept ;
+    void change_mode(const unsigned char mode) noexcept ;
     Mode get_mode() noexcept ;
 
     bool is_edi_visual() noexcept ;

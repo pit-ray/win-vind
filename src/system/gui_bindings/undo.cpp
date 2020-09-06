@@ -16,7 +16,7 @@ const string SCRedo::sname() noexcept
 bool SCRedo::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_Y)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_Y)) {
         return false ;
     }
     return true ;
@@ -32,7 +32,7 @@ const string SCUndo::sname() noexcept
 bool SCUndo::sprocess(const bool first_call)
 {
     if(!first_call) return true ;
-    if(!KeybrdEventer::pressup(VKC_LCTRL, VKC_Z)) {
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_Z)) {
         return false ;
     }
     return true ;

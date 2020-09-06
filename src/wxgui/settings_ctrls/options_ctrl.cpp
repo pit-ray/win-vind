@@ -46,7 +46,7 @@ namespace wxGUI
         } ;
 
         create_cb("autotrack_popup") ;
-        create_cb("display_cmd") ;
+        create_cb("virtual_cmd_line") ;
         create_cb("dedicate_to_window") ;
 
         SetSizerAndFit(root_sizer) ;

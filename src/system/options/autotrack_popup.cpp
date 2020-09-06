@@ -28,7 +28,7 @@ namespace APUtility
     inline static const auto is_set_param(const bool new_flag) noexcept
     {
         if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
-            WIN_ERROR_STREAM << "(AutotrackPopup.cpp)\n" ;
+            WIN_ERROR_STREAM << "(APUtility::is_set_param, SystemParametersInfo)\n" ;
             return false ;
         }
         return true ;
@@ -38,22 +38,15 @@ namespace APUtility
 AutotrackPopup::~AutotrackPopup() noexcept
 {
     APUtility::is_set_param(pimpl->default_flag) ;
-    MESSAGE_STREAM << "Refreshed successfully (Option: " << name() << ")\n" ;
 }
 
 AutotrackPopup::AutotrackPopup(AutotrackPopup&&) noexcept = default ;
 AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) noexcept = default ;
 
-const string AutotrackPopup::name() const noexcept
+const string AutotrackPopup::sname() noexcept
 {
     return "autotrack_popup" ;
 }
-
-unique_ptr<DynamicOption> AutotrackPopup::create()
-{
-    return std::move(make_unique<AutotrackPopup>()) ;
-}
-
 
 bool AutotrackPopup::do_enable() const noexcept
 {

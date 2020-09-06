@@ -136,6 +136,7 @@ namespace wxGUI
         create_ch("cmd_pos") ;
         create_sc("cmd_xmargin", -500, 500, 32) ;
         create_sc("cmd_ymargin", -500, 500, 64) ;
+        create_sc("cmd_fadeout_time", 0, 3600, 5) ;
 
         SetSizerAndFit(root_sizer) ;
     }

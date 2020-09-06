@@ -43,14 +43,14 @@ namespace KeybrdEventer
     //change key state without input
     bool press_keystate(const unsigned char key) noexcept ;
 
-    bool _pressup_core(std::initializer_list<unsigned char>&& initlist) ;
+    bool _pushup_core(std::initializer_list<unsigned char>&& initlist) ;
 
     //perfect forwarding
     template <typename... Ts>
-    inline bool pressup(Ts&&... keys) {
+    inline bool pushup(Ts&&... keys) {
         using namespace std ;
         auto initl = {std::forward<Ts>(keys)...} ;
-        return _pressup_core(std::move(initl)) ;
+        return _pushup_core(std::move(initl)) ;
     }
 }
 

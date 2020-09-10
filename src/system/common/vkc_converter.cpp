@@ -89,6 +89,8 @@ namespace VKCConverter
 
     static const unordered_map<string, unsigned char> _sys_vkc {
         {"IME",         VKC_IME},
+        {"IME1",        VKC_FROM_EN},
+        {"IME2",        VKC_TO_JP},
         {"Tab",         VKC_TAB},
         {"Enter",       VKC_ENTER},
         {"CapsLock",    VKC_CAPS_LOCK},

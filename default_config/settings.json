@@ -78,12 +78,12 @@
         "jp": "最大コマンド履歴数"
     },
     "cmd_font_size": {
-        "value": 30,
+        "value": 23,
         "us": "Font Size",
         "jp": "フォントサイズ"
     },
     "cmd_font_weight": {
-        "value": 600,
+        "value": 400,
         "us": "Font Weight",
         "jp": "フォントの太さ"
     },
@@ -99,7 +99,7 @@
         "jp": "背景の色"
     },
     "cmd_pos": {
-        "value": "LowerMid",
+        "value": "LowerLeft",
         "choices": [
             {
                 "value": "UpperLeft",
@@ -161,7 +161,7 @@
         "jp": "縦の余白"
     },
     "cmd_font_extra": {
-        "value": 3,
+        "value": 2,
         "us": "Font Extra",
         "jp": "文字同士の間隔"
     },

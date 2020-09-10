@@ -143,6 +143,7 @@ void KeyBinder::update_core() noexcept
 {
     const auto& vp = pimpl->vpbf[static_cast<int>(ModeManager::get_mode())] ;
     using namespace KBUtility ;
+
     if(!pimpl->logger.is_changed_code()) {
         if(!pimpl->callable_bf) {
             pimpl->logger.remove_from_back(1) ;
@@ -159,9 +160,10 @@ void KeyBinder::update_core() noexcept
         pimpl->callable_bf = nullptr ;
         return ;
     }
+
     auto at_least_exist = false ; //is a typed key existed in binded functions?
     std::size_t max_matching_num = 0 ;
-    kbg::shp_t buf_bf = pimpl->callable_bf ;
+    auto buf_bf = pimpl->callable_bf ;
 
     //overwrite callable
     for(auto& func : vp) {

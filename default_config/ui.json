@@ -1,115 +1,115 @@
 {
     "version": "1.0",
     "author": "pit-ray",
-    "support": ["us", "jp"],
+    "support": ["en", "ja"],
     "root": {
         "notify": {
             "preferences": {
-                "us": "Preferences",
-                "jp": "設定",
+                "en": "Preferences",
+                "ja": "設定",
 
                 "settings": {
-                    "us": "Settings",
-                    "jp": "詳細設定",
+                    "en": "Settings",
+                    "ja": "詳細設定",
 
                     "common": {
-                        "us": "Common",
-                        "jp": "共通設定"
+                        "en": "Common",
+                        "ja": "共通設定"
                     },
                     "options": {
-                        "us": "Options",
-                        "jp": "オプション"
+                        "en": "Options",
+                        "ja": "オプション"
                     },
                     "move_cursor": {
-                        "us": "Move Cursor",
-                        "jp": "カーソルの移動"
+                        "en": "Move Cursor",
+                        "ja": "カーソルの移動"
                     },
                     "scroll_page": {
-                        "us": "Scroll Page",
-                        "jp": "スクロール"
+                        "en": "Scroll Page",
+                        "ja": "スクロール"
                     },
                     "virtual_cmdline": {
-                        "us": "Virtual Command Line",
-                        "jp": "仮想コマンドライン"
+                        "en": "Virtual Command Line",
+                        "ja": "仮想コマンドライン"
                     }
                 },
                 "bindings": {
-                    "us": "Bindings",
-                    "jp": "バイディング",
+                    "en": "Bindings",
+                    "ja": "バイディング",
 
                     "id": {
-                        "us": "Identifier: ",
-                        "jp": "識別子: "
+                        "en": "Identifier: ",
+                        "ja": "識別子: "
                     },
                     "keys": {
-                        "us": "HotKeys",
-                        "jp": "ホットキー"
+                        "en": "HotKeys",
+                        "ja": "ホットキー"
                     },
                     "cmds": {
-                        "us": "Commands",
-                        "jp": "コマンド"
+                        "en": "Commands",
+                        "ja": "コマンド"
                     }
                 },
                 "exapps": {
-                    "us": "Shortcut Apps",
-                    "jp": "アプリのショートカット",
+                    "en": "Shortcut Apps",
+                    "ja": "アプリのショートカット",
 
                     "console": {
-                        "us": "Console",
-                        "jp": "コンソール"
+                        "en": "Console",
+                        "ja": "コンソール"
                     },
                     "name": {
-                        "us": "Name",
-                        "jp": "名前"
+                        "en": "Name",
+                        "ja": "名前"
                     },
                     "path": {
-                        "us": "Path",
-                        "jp": "ファイルの場所"
+                        "en": "Path",
+                        "ja": "ファイルの場所"
                     }
                 },
                 "options": {
-                    "us": "Options",
-                    "jp": "オプション",
+                    "en": "Options",
+                    "ja": "オプション",
 
                     "options": {
-                        "us": "Optionss Switch",
-                        "jp": "オプションの切替"
+                        "en": "Optionss Switch",
+                        "ja": "オプションの切替"
                     }
                 }
             },
             "about": {
-                "us": "About",
-                "jp": "win-vindについて"
+                "en": "About",
+                "ja": "win-vindについて"
             },
             "exit": {
-                "us": "Exit",
-                "jp": "終了"
+                "en": "Exit",
+                "ja": "終了"
             }
         },
         "buttons": {
             "default": {
-                "us": "Return to Default",
-                "jp": "初期設定に戻す"
+                "en": "Return to Default",
+                "ja": "初期設定に戻す"
             },
             "ok": {
-                "us": "OK",
-                "jp": "OK"
+                "en": "OK",
+                "ja": "OK"
             },
             "cancel": {
-                "us": "Cancel",
-                "jp": "キャンセル"
+                "en": "Cancel",
+                "ja": "キャンセル"
             },
             "apply": {
-                "us": "Apply",
-                "jp": "適用"
+                "en": "Apply",
+                "ja": "適用"
             },
             "add": {
-                "us": "Add",
-                "jp": "追加"
+                "en": "Add",
+                "ja": "追加"
             },
             "del": {
-                "us": "Delete",
-                "jp": "削除"
+                "en": "Delete",
+                "ja": "削除"
             }
         }
     }

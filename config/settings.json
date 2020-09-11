@@ -1,174 +1,174 @@
 {
     "initial_mode": {
         "value": "gui_normal",
-        "us": "Initial Mode",
-        "jp": "初期モード",
+        "en": "Initial Mode",
+        "ja": "初期モード",
         "choices": [
             {
                 "value": "gui_normal",
-                "us": "GUI Normal",
-                "jp": "GUIノーマル"
+                "en": "GUI Normal",
+                "ja": "GUIノーマル"
             },
             {
                 "value": "gui_insert",
-                "us": "GUI Insert",
-                "jp": "GUIインサート"
+                "en": "GUI Insert",
+                "ja": "GUIインサート"
             },
             {
                 "value": "edi_normal",
-                "us": "Editor Normal",
-                "jp": "エディタノーマル"
+                "en": "Editor Normal",
+                "ja": "エディタノーマル"
             },
             {
                 "value": "edi_insert",
-                "us": "Editor Insert",
-                "jp": "エディタインサート"
+                "en": "Editor Insert",
+                "ja": "エディタインサート"
             }
         ]
     },
     "screen_pos_buf": {
         "value": 10,
-        "us": "Screen Position Buffer",
-        "jp": "画面端の余白"
+        "en": "Screen Position Buffer",
+        "ja": "画面端の余白"
 
     },
     "cursor_acceleration": {
         "value": 64,
-        "us": "Cursor Acceleration",
-        "jp": "カーソルの加速度"
+        "en": "Cursor Acceleration",
+        "ja": "カーソルの加速度"
     },
     "cursor_weight": {
         "value": 512,
-        "us": "Cursor Weight",
-        "jp": "カーソルの重さ"
+        "en": "Cursor Weight",
+        "ja": "カーソルの重さ"
     },
     "cursor_max_velocity": {
         "value": 10,
-        "us": "Cursor Max Velocity",
-        "jp": "カーソルの最大速度"
+        "en": "Cursor Max Velocity",
+        "ja": "カーソルの最大速度"
     },
     "yscroll_speed": {
         "value": 4,
-        "us": "Vertical Scroll Speed",
-        "jp": "縦スクロールの速度"
+        "en": "Vertical Scroll Speed",
+        "ja": "縦スクロールの速度"
     },
     "xscroll_speed": {
         "value": 4,
-        "us": "Horizontal Scroll Speed",
-        "jp": "横スクロールの速度"
+        "en": "Horizontal Scroll Speed",
+        "ja": "横スクロールの速度"
     },
     "yscroll_screen_ratio": {
         "value": 0.125,
-        "us": "Vertical Page Scroll Ratio",
-        "jp": "縦ページスクロール比"
+        "en": "Vertical Page Scroll Ratio",
+        "ja": "縦ページスクロール比"
     },
     "xscroll_screen_ratio": {
         "value": 0.125,
-        "us": "Horizontal Page Scroll Ratio",
-        "jp": "横ページスクロール比"
+        "en": "Horizontal Page Scroll Ratio",
+        "ja": "横ページスクロール比"
     },
     "cmd_max_char": {
         "value": 32,
-        "us": "Max Character Num",
-        "jp": "最大文字数"
+        "en": "Max Character Num",
+        "ja": "最大文字数"
     },
     "cmd_max_history_num": {
         "value": 10,
-        "us": "Max Command History Num",
-        "jp": "最大コマンド履歴数"
+        "en": "Max Command History Num",
+        "ja": "最大コマンド履歴数"
     },
     "cmd_font_size": {
         "value": 23,
-        "us": "Font Size",
-        "jp": "フォントサイズ"
+        "en": "Font Size",
+        "ja": "フォントサイズ"
     },
     "cmd_font_weight": {
         "value": 400,
-        "us": "Font Weight",
-        "jp": "フォントの太さ"
+        "en": "Font Weight",
+        "ja": "フォントの太さ"
     },
     "cmd_font_color": {
         "value": "c8c8c8",
-        "us": "Font Color",
-        "jp": "フォントの色"
+        "en": "Font Color",
+        "ja": "フォントの色"
     },
     "cmd_font_bkcolor": {
         "name": "cmd_font_bkcolor",
         "value": "323232",
-        "us": "Font Background Color",
-        "jp": "背景の色"
+        "en": "Font Background Color",
+        "ja": "背景の色"
     },
     "cmd_pos": {
         "value": "LowerLeft",
         "choices": [
             {
                 "value": "UpperLeft",
-                "us": "Upper Left",
-                "jp": "左上"
+                "en": "Upper Left",
+                "ja": "左上"
             },
             {
                 "value": "UpperMid",
-                "us": "Upper Mid",
-                "jp": "上中央"
+                "en": "Upper Mid",
+                "ja": "上中央"
             },
             {
                 "value": "UpperRight",
-                "us": "Upper Right",
-                "jp": "右上"
+                "en": "Upper Right",
+                "ja": "右上"
             },
             {
                 "value": "MidLeft",
-                "us": "Mid Left",
-                "jp": "左中央"
+                "en": "Mid Left",
+                "ja": "左中央"
             },
             {
                 "value": "Center",
-                "us": "Center",
-                "jp": "中央"
+                "en": "Center",
+                "ja": "中央"
             },
             {
                 "value": "MidRight",
-                "us": "Mid Right",
-                "jp": "右中央"
+                "en": "Mid Right",
+                "ja": "右中央"
             },
             {
                 "value": "LowerLeft",
-                "us": "Lower left",
-                "jp": "左下"
+                "en": "Lower left",
+                "ja": "左下"
             },
             {
                 "value": "LowerMid",
-                "us": "Lower Mid",
-                "jp": "下中央"
+                "en": "Lower Mid",
+                "ja": "下中央"
             },
             {
                 "value": "LowerRight",
-                "us": "Lower Right",
-                "jp": "右下"
+                "en": "Lower Right",
+                "ja": "右下"
             }
         ],
-        "us": "Position",
-        "jp": "位置"
+        "en": "Position",
+        "ja": "位置"
     },
     "cmd_xmargin": {
         "value": 32,
-        "us": "Horizontal Margin",
-        "jp": "横の余白"
+        "en": "Horizontal Margin",
+        "ja": "横の余白"
     },
     "cmd_ymargin": {
         "value": 64,
-        "us": "Vertical Margin",
-        "jp": "縦の余白"
+        "en": "Vertical Margin",
+        "ja": "縦の余白"
     },
     "cmd_font_extra": {
         "value": 2,
-        "us": "Font Extra",
-        "jp": "文字同士の間隔"
+        "en": "Font Extra",
+        "ja": "文字同士の間隔"
     },
     "cmd_fadeout_time": {
         "value": 5,
-        "us": "Fade Out Time (s)",
-        "jp": "フェードアウト時間 (s)"
+        "en": "Fade Out Time (s)",
+        "ja": "フェードアウト時間 (s)"
     },
     "icon_style": {
         "value": "./resources/icon32_dark.ico",
@@ -176,18 +176,18 @@
             {
                 "name": "dark",
                 "value": "./resources/icon32_dark.ico",
-                "us": "Dark",
-                "jp": "ダーク"
+                "en": "Dark",
+                "ja": "ダーク"
             },
             {
                 "name": "light",
                 "value": "./resources/icon32_light.ico",
-                "us": "Light",
-                "jp": "ライト"
+                "en": "Light",
+                "ja": "ライト"
             }
         ],
-        "us": "Icon Style",
-        "jp": "アイコンのスタイル"
+        "en": "Icon Style",
+        "ja": "アイコンのスタイル"
     },
     "kb_type": {
         "value": "US.kmp",
@@ -195,48 +195,48 @@
             {
                 "name": "us",
                 "value": "US.kmp",
-                "us": "US(101/102)",
-                "jp": "英語配列(101/102)"
+                "en": "US(101/102)",
+                "ja": "英語配列(101/102)"
             },
             {
                 "name": "jp",
                 "value": "JP.kmp",
-                "us": "JP(106/109)",
-                "jp": "日本語配列(106/109)"
+                "en": "JP(106/109)",
+                "ja": "日本語配列(106/109)"
             },
             {
                 "name": "custom",
                 "value": "custom.kmp",
-                "us": "Custom",
-                "jp": "カスタム"
+                "en": "Custom",
+                "ja": "カスタム"
             }
         ],
-        "us": "Keyboard Type",
-        "jp": "キーボード配列"
+        "en": "Keyboard Type",
+        "ja": "キーボード配列"
     },
     "ui_lang": {
-        "value": "us",
+        "value": "en",
         "choices": [
             {
-                "name": "US",
-                "value": "us",
-                "us": "English",
-                "jp": "英語"
+                "name": "EN",
+                "value": "en",
+                "en": "English",
+                "ja": "英語"
             },
             {
-                "name": "JP",
-                "value": "jp",
-                "us": "Japanese",
-                "jp": "日本語"
+                "name": "JA",
+                "value": "ja",
+                "en": "Japanese",
+                "ja": "日本語"
             }
         ],
-        "us": "UI Language",
-        "jp": "UIの言語"
+        "en": "UI Language",
+        "ja": "UIの言語"
     },
     "ppi_factor": {
         "value": 5,
-        "us": "Resolution PPI Factor",
-        "jp": "解像度PPI倍率"
+        "en": "Resolution PPI Factor",
+        "ja": "解像度PPI倍率"
     },
     "exapps": {
         "choices": [
@@ -265,22 +265,22 @@
                 "value": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
             }
         ],
-        "us": "Shortcut Apps",
-        "jp": "アプリのショートカット"
+        "en": "Shortcut Apps",
+        "ja": "アプリのショートカット"
     },
     "autotrack_popup": {
         "value": false,
-        "us": "Autotrack Popup",
-        "jp": "ポップアップ自動追従"
+        "en": "Autotrack Popup",
+        "ja": "ポップアップ自動追従"
     },
     "dedicate_to_window": {
         "value": true,
-        "us": "Dedicate to One Window",
-        "jp": "ウィンドウ特化"
+        "en": "Dedicate to One Window",
+        "ja": "ウィンドウ特化"
     },
     "virtual_cmd_line": {
         "value": true,
-        "us": "Virtual Command Line",
-        "jp": "仮想コマンドライン"
+        "en": "Virtual Command Line",
+        "ja": "仮想コマンドライン"
     }
 }

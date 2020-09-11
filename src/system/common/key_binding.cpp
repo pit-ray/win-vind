@@ -14,7 +14,8 @@ using namespace std ;
 struct KeyBinding::Impl
 {
     //this vector is stored, "|" > "->" > "+" > "unsigned char"
-    XMLParser::vvvc_t vvvkc ;
+    BindingsLoader::vvvc_t vvvkc ;
+
 
     bool callable ;
     bool exist_code ;
@@ -52,7 +53,7 @@ KeyBinding::KeyBinding(KeyBinding&&) noexcept = default ;
 KeyBinding& KeyBinding::operator=(KeyBinding&&) noexcept = default ;
 
 //methods
-void KeyBinding::set_command(const XMLParser::vvvc_t& command) noexcept
+void KeyBinding::set_command(const BindingsLoader::vvvc_t& command) noexcept
 {
     if(!pimpl->vvvkc.empty()) return ; //only once registerable
     pimpl->vvvkc = command ;
@@ -75,7 +76,7 @@ std::size_t KeyBinding::matched_num(const KeyLog& log, const std::size_t seq_ind
     std::size_t max_matched_num{0} ;
     auto at_least_exist = false ;
 
-    const XMLParser::vc_t* pvkc = nullptr ;
+    const BindingsLoader::vc_t* pvkc = nullptr ;
     for(const auto& vvkc : pimpl->vvvkc) {
         std::size_t matched_num{0} ;
 

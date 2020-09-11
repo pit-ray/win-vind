@@ -9,7 +9,6 @@
 #include <vector>
 #include <algorithm>
 
-
 //for debug
 #include "vkc_converter.hpp"
 
@@ -18,7 +17,7 @@ using namespace std ;
 struct Command::Impl
 {
     //this vector is stored, "|" > "->" > "+" > "unsigned char"
-    XMLParser::vvvc_t vvvkc ;
+    BindingsLoader::vvvc_t vvvkc ;
 
     bool callable ;
     bool exist_code ;
@@ -56,7 +55,7 @@ Command::Command(Command&&) noexcept = default ;
 Command& Command::operator=(Command&&) noexcept = default ;
 
 //methods
-void Command::set_command(const XMLParser::vvvc_t& command) noexcept
+void Command::set_command(const BindingsLoader::vvvc_t& command) noexcept
 {
     if(!pimpl->vvvkc.empty()) return ; //only once registerable
     pimpl->vvvkc = command ;

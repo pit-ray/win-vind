@@ -24,7 +24,7 @@ const string Change2Normal::sname() noexcept
     return "change_to_normal" ;
 }
 
-bool Change2Normal::sprocess(const bool first_call)
+bool Change2Normal::sprocess(const bool first_call, const bool vclmodeout)
 {
     if(!first_call) return true ;
 
@@ -49,7 +49,7 @@ bool Change2Normal::sprocess(const bool first_call)
         return false ;
     }
     change_mode(Mode::Normal) ;
-    VirtualCmdLine::msgout("-- GUI NORMAL --") ;
+    if(vclmodeout) VirtualCmdLine::msgout("-- GUI NORMAL --") ;
     return true ;
 }
 
@@ -60,7 +60,7 @@ const string Change2Insert::sname() noexcept
     return "change_to_insert" ;
 }
 
-bool Change2Insert::sprocess(const bool first_call)
+bool Change2Insert::sprocess(const bool first_call, const bool vclmodeout)
 {
     if(!first_call) return true ;
 
@@ -72,7 +72,7 @@ bool Change2Insert::sprocess(const bool first_call)
 
     KeyAbsorber::open() ;
     change_mode(Mode::Insert) ;
-    VirtualCmdLine::msgout("-- GUI INSERT --") ;
+    if(vclmodeout) VirtualCmdLine::msgout("-- GUI INSERT --") ;
     return true ;
 }
 
@@ -83,11 +83,11 @@ const string Change2Visual::sname() noexcept
     return "change_to_visual" ;
 }
 
-bool Change2Visual::sprocess(const bool first_call)
+bool Change2Visual::sprocess(const bool first_call, const bool vclmodeout)
 {
     if(!first_call) return true ;
     change_mode(Mode::Visual) ;
-    VirtualCmdLine::msgout("-- GUI VISUAL --") ;
+    if(vclmodeout) VirtualCmdLine::msgout("-- GUI VISUAL --") ;
     return MouseEventer::press(VKC_MOUSE_LEFT) ;
 }
 
@@ -98,7 +98,7 @@ const string Change2Editor::sname() noexcept
     return "change_to_editor" ;
 }
 
-bool Change2Editor::sprocess(const bool first_call)
+bool Change2Editor::sprocess(const bool first_call, const bool vclmodeout)
 {
     if(!first_call) return true ;
     if(!MouseEventer::click(VKC_MOUSE_LEFT)) {
@@ -108,7 +108,7 @@ bool Change2Editor::sprocess(const bool first_call)
         return false ;
     }
     change_mode(Mode::EdiNormal) ;
-    VirtualCmdLine::msgout("-- EDI NORMAL --") ;
+    if(vclmodeout) VirtualCmdLine::msgout("-- EDI NORMAL --") ;
     return true ;
 }
 

@@ -4,6 +4,7 @@ set(SYSINCDIR ../../include/system)
 include_directories(
     ${SYSINCDIR}
     ${SYSINCDIR}/common
+    ${SYSINCDIR}/common_bindings
     ${SYSINCDIR}/gui_bindings
     ${SYSINCDIR}/editor_bindings
     ${SYSINCDIR}/options
@@ -31,6 +32,18 @@ add_library(Common STATIC
 )
 #target_link_libraries(Common ~~~~~~)
 
+add_library(CommonBindings STATIC
+    common_bindings/change_mode.cpp
+    common_bindings/dedicate_to_window_ctrl.cpp
+    common_bindings/external_app.cpp
+    common_bindings/filer.cpp
+    common_bindings/mywindow_ctrl.cpp
+    common_bindings/scroll.cpp
+    common_bindings/undo.cpp
+    common_bindings/window_ctrl.cpp
+)
+target_link_libraries(CommonBindings Common)
+
 add_library(EditorBindings STATIC
     editor_bindings/edi_change_mode.cpp
     editor_bindings/edi_move_caret.cpp
@@ -43,21 +56,14 @@ add_library(EditorBindings STATIC
 target_link_libraries(EditorBindings Common)
 
 add_library(GUIBindings STATIC
-    gui_bindings/change_mode.cpp
     gui_bindings/click.cpp
     gui_bindings/clipboard.cpp
-    gui_bindings/external_app.cpp
-    gui_bindings/filer.cpp
     gui_bindings/jump_cursor.cpp
     gui_bindings/move_cursor.cpp
     gui_bindings/pager.cpp
-    gui_bindings/scroll.cpp
     gui_bindings/search_pattern.cpp
     gui_bindings/select.cpp
     gui_bindings/switch_vdesktop.cpp
-    gui_bindings/undo.cpp
-    gui_bindings/window_ctrl.cpp
-    gui_bindings/mywindow_ctrl.cpp
 )
 target_link_libraries(GUIBindings Common Psapi)
 
@@ -72,7 +78,7 @@ add_library(Binders STATIC
     key_binder.cpp
     option_loader.cpp
 )
-target_link_libraries(Binders EditorBindings GUIBindings Options)
+target_link_libraries(Binders CommonBindings EditorBindings GUIBindings Options)
 
 add_library(CoreSystem STATIC
     system.cpp

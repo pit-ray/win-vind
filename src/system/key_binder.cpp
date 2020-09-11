@@ -32,7 +32,7 @@ struct KeyBinder::Impl
     template <typename T>
     using vplist_t = std::array<std::vector<T>, static_cast<std::size_t>(ModeManager::Mode::NUM)> ;
     vplist_t<kbg::shp_t> vpbf ;
-    vplist_t<cmd::shp_t> vpcmd ;
+    std::vector<cmd::shp_t> vpcmd ;
 
     KeyLogger logger ;
     kbg::shp_t callable_bf ;
@@ -83,11 +83,7 @@ struct KeyBinder::Impl
         setbf(Mode::EdiVisual, KeyBinderList::editor_visual()) ;
         setbf(Mode::EdiLineVisual, KeyBinderList::editor_visual()) ;
 
-        auto setcmd = [this](const auto index, auto&& value) {
-            return vpcmd[static_cast<int>(index)] = value ;
-        } ;
-        setcmd(Mode::Command, KeyBinderList::command()) ;
-        setcmd(Mode::EdiCommand, KeyBinderList::editor_command()) ;
+        vpcmd = KeyBinderList::command() ;
     }
 
     virtual ~Impl() noexcept
@@ -120,11 +116,9 @@ void KeyBinder::load_config() noexcept
         }
     }
     decltype(auto) cmd_map = pimpl->parser.get_commands() ;
-    for(auto& v : pimpl->vpcmd) {
-        for(auto& i : v) {
-            try {i->set_command(cmd_map.at(i->name())) ;}
-            catch(out_of_range&) {continue ;}
-        }
+    for(auto& i : pimpl->vpcmd) {
+        try {i->set_command(cmd_map.at(i->name())) ;}
+        catch(out_of_range&) {continue ;}
     }
     ExAppUtility::load_config() ;
     JumpCursorUtility::load_config() ;
@@ -200,8 +194,6 @@ void KeyBinder::update_core() noexcept
 
 void KeyBinder::update_core_cmd() noexcept
 {
-    const auto& vp = pimpl->vpcmd[static_cast<int>(ModeManager::get_mode())] ;
-
     auto return_mode = [] {
         const auto mode = ModeManager::get_mode() ;
         using ModeManager::Mode ;
@@ -250,11 +242,10 @@ void KeyBinder::update_core_cmd() noexcept
 
         VirtualCmdLine::clear() ;
         VirtualCmdLine::refresh() ;
+        return_mode() ;
 
         p_cmdp->func->process(plger->get_str()) ;
         pimpl->update_history() ;
-
-        return_mode() ;
         return ;
     }
 
@@ -290,7 +281,7 @@ void KeyBinder::update_core_cmd() noexcept
     }
 
     //search cmd from cmd list
-    for(auto& func : vp) {
+    for(auto& func : pimpl->vpcmd) {
         if(func->is_callable(*plger)) {
             p_cmdp->func = func ;
             return ;

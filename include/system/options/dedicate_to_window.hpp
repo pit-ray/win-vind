@@ -12,6 +12,9 @@ private:
 
 public:
     static const std::string sname() noexcept ;
+
+    static bool enable_targeting() noexcept ;
+    static bool disable_targeting() noexcept ;
 } ;
 
 #endif

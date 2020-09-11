@@ -16,7 +16,7 @@
 #include "change_mode.hpp"
 #include "edi_change_mode.hpp"
 
-#include "gui_bindings/mywindow_ctrl.hpp"
+#include "common_bindings/mywindow_ctrl.hpp"
 
 namespace System
 {

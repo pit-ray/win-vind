@@ -13,7 +13,8 @@
 #include "move_cursor.hpp"
 #include "jump_cursor.hpp"
 #include "msg_logger.hpp"
-#include "mode_manager.hpp"
+
+#include "change_mode.hpp"
 
 using namespace std ;
 
@@ -25,7 +26,10 @@ const string CloseCurrentWindow::sname() noexcept
 
 bool CloseCurrentWindow::common_process()
 {
-    return KeybrdEventer::pushup(VKC_LALT, VKC_F4) ;
+    if(!KeybrdEventer::pushup(VKC_LALT, VKC_F4)) {
+        return false ;
+    }
+    return true ;
 }
 
 bool CloseCurrentWindow::sprocess(const bool first_call)
@@ -36,7 +40,6 @@ bool CloseCurrentWindow::sprocess(const bool first_call)
 
 bool CloseCurrentWindow::sprocess(const string UNUSED(cmd))
 {
-    ModeManager::change_mode(ModeManager::Mode::Command) ; //cursor is avaiable
     return common_process() ;
 }
 

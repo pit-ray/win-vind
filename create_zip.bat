@@ -1,11 +1,15 @@
-type null > ".\\log\\error.log"
-type null > ".\\log\\message.log"
-echo n > ".\\default_config\\is_installer_used"
+@if "%1" == "" (
+    @echo [Error] Please call this script with the version as a first argument.
+    @exit
+)
+
+type nul > ".\\log\\error.log"
+type nul > ".\\log\\message.log"
+echo n> ".\\default_config\\is_installer_used"
 
 copy ".\\default_config\\bindings.json" ".\\config\\bindings.json"
 copy ".\\default_config\\settings.json" ".\\config\\settings.json"
 
-del /q ".\\release"
 call build.bat -release
 
 rmdir /q /s ".\\bin\\win-vind"
@@ -22,4 +26,5 @@ xcopy /e ".\\default_config" ".\\bin\\win-vind\\default_config"
 xcopy /e ".\\log" ".\\bin\\win-vind\\log"
 xcopy /e ".\\resources" ".\\bin\\win-vind\\resources"
 
-rmdir /q /s ".\\release"
+del /q ".\\bin\\*.zip"
+powershell Compress-Archive -Path ".\\bin\\win-vind" -DestinationPath ".\\bin\\win-vind_"%1".zip"

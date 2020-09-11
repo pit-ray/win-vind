@@ -1,18 +1,18 @@
 echo [cmake] _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-if "%1" == "" (
-    goto debug
+@if "%1" == "" (
+    @goto debug
 )
-if %1 == -debug (
-    goto debug
+@if %1 == -debug (
+    @goto debug
 )
-if %1 == -release (
-    goto release
+@if %1 == -release (
+    @goto release
 )
 
 :debug
-    if not exist debug (
-        mkdir debug
+    @if not exist debug (
+        @mkdir debug
     )
     cd debug
 
@@ -20,9 +20,9 @@ if %1 == -release (
     goto make
 
 :release
-    if not exist release (
-        mkdir release
-    )
+    @if not exist release (
+        @mkdir release
+    ) 
     cd release
 
     cmake -j 4 -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..

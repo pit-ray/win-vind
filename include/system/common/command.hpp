@@ -2,7 +2,8 @@
 #define _COMMAND_HPP
 #include <memory>
 #include <string>
-#include "xml_parser.hpp"
+
+#include "bindings_loader.hpp"
 
 class Command ;
 
@@ -38,7 +39,7 @@ public:
     //command may be short, so will apply SSO.
     void process(const std::string cmd) const ;
 
-    void set_command(const XMLParser::vvvc_t& command) noexcept ;
+    void set_command(const BindingsLoader::vvvc_t& command) noexcept ;
 
     bool is_callable(const KeyLogger& logger) const noexcept ;
 } ;

@@ -3,7 +3,8 @@
 
 #include <memory>
 #include <string>
-#include "xml_parser.hpp"
+
+#include "bindings_loader.hpp"
 
 class KeyBinding ;
 
@@ -38,7 +39,7 @@ public:
 
     void process(const bool first_call=true) const ;
 
-    void set_command(const XMLParser::vvvc_t& command) noexcept ;
+    void set_command(const BindingsLoader::vvvc_t& command) noexcept ;
 
     std::size_t matched_num(const KeyLog& log, const std::size_t seq_index=0) const noexcept ;
 

@@ -635,5 +635,19 @@
         "cmd": ["reload"],
         "us": "Reload Current Window",
         "jp": "ウィンドウを再読み込み"
+    },
+    {
+        "name": "enable_targeting_of_dedicate_to_window",
+        "key": ["LAlt->LAlt", "F2"],
+        "cmd": ["enable d2w", "e d2w", "target", "d2w on", "set d2w"],
+        "us": "Enable Targeting",
+        "jp": "ターゲティングの有効化"
+    },
+    {
+        "name": "disable_targeting_of_dedicate_to_window",
+        "key": ["RAlt->RAlt", "F10"],
+        "cmd": ["disable d2w", "d d2w", "untarget", "d2w off", "unset d2w"],
+        "us": "Disable Targeting",
+        "jp": "ターゲティングの無効化"
     }
 ]

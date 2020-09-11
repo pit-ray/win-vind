@@ -3,7 +3,6 @@
 
 #include <vector>
 
-//funcs
 #include "move_cursor.hpp"
 #include "jump_cursor.hpp"
 #include "scroll.hpp"
@@ -15,7 +14,6 @@
 #include "search_pattern.hpp"
 #include "select.hpp"
 
-//editor
 #include "edi_change_mode.hpp"
 #include "edi_move_caret.hpp"
 #include "edi_jump_caret.hpp"
@@ -23,12 +21,13 @@
 #include "edi_replace.hpp"
 #include "edi_layout.hpp"
 
-//cmd?
 #include "window_ctrl.hpp"
 #include "pager.hpp"
 #include "filer.hpp"
 #include "external_app.hpp"
 #include "mywindow_ctrl.hpp"
+
+#include "dedicate_to_window_ctrl.hpp"
 
 namespace KeyBinderList {
 
@@ -93,7 +92,9 @@ namespace KeyBinderList {
             Move2NextPage::create(),
             Move2PrevPage::create(),
 
-            OpenNewCurrentWindow::KeyBindingWithCreator::create()
+            OpenNewCurrentWindow::KeyBindingWithCreator::create(),
+            EnableTargetingOfDedicate2Window::KeyBindingWithCreator::create_with_cache(),
+            DisableTargetingOfDedicate2Window::KeyBindingWithCreator::create_with_cache()
         } ;
         return tmp ;
     }
@@ -199,7 +200,10 @@ namespace KeyBinderList {
             EdiJumpCaret2BOL::create_with_cache(),
             EdiJumpCaret2EOL::create_with_cache(),
             EdiNJumpCaret2Line_DfBOF::create_with_cache(),
-            EdiNJumpCaret2Line_DfEOF::create_with_cache()
+            EdiNJumpCaret2Line_DfEOF::create_with_cache(),
+
+            EnableTargetingOfDedicate2Window::KeyBindingWithCreator::create_with_cache(),
+            DisableTargetingOfDedicate2Window::KeyBindingWithCreator::create_with_cache()
         } ;
         return tmp ;
     }
@@ -264,9 +268,9 @@ namespace KeyBinderList {
 
     const auto command() {
         std::vector<cmd::shp_t> tmp {
-            SaveOpenedFile::create_with_cache(),
-            CloseOpenedFile::create_with_cache(),
-            CloseCurrentWindow::CommandWithCreator::create_with_cache(),
+            SaveOpenedFile::create(),
+            CloseOpenedFile::create(),
+            CloseCurrentWindow::CommandWithCreator::create(),
             SwitchWindow::CommandWithCreator::create(),
             MaximizeCurrentWindow::CommandWithCreator::create(),
             MinimizeCurrentWindow::CommandWithCreator::create(),
@@ -277,22 +281,11 @@ namespace KeyBinderList {
             StartShell::create(),
             StartAnyApp::create(),
             ShowConfigWindow::create(),
-            ExitConfigWindow::create_with_cache(),
-            OpenOtherFile::create_with_cache(),
-            MakeDir::create()
-        } ;
-        return tmp ;
-    }
-
-    const auto editor_command() {
-        std::vector<cmd::shp_t> tmp {
-            SaveOpenedFile::create_with_cache(),
-            CloseOpenedFile::create_with_cache(),
-
-            CloseCurrentWindow::CommandWithCreator::create_with_cache(),
-
-            ExitConfigWindow::create_with_cache(),
-            OpenOtherFile::create_with_cache()
+            ExitConfigWindow::create(),
+            OpenOtherFile::create(),
+            MakeDir::create(),
+            EnableTargetingOfDedicate2Window::CommandWithCreator::create(),
+            DisableTargetingOfDedicate2Window::CommandWithCreator::create()
         } ;
         return tmp ;
     }

@@ -339,7 +339,7 @@
         "name": "move_to_prev_page",
         "key": ["<"],
         "cmd": [],
-        "en": "Backward Previoen Page",
+        "en": "Backward Previous Page",
         "ja": "前のページへ戻る"
     },
     {

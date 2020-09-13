@@ -1,20 +1,14 @@
 # win-vind
-Vim Key Binder for Windows
+Simple Vim Key Binder for Windows  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="256" height="256" align="right" title="win-vind">
 <br>
 
-**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.
-<br>
-GitHub wiki pages is <a href="https://github.com/pit-ray/win-vind/wiki">this</a>.
-日本語のGitHub wikiページは <a href="https://github.com/pit-ray/win-vind/wiki/%E3%83%9B%E3%83%BC%E3%83%A0-(Home-in-Japanese)">こちら</a>です。
-<br>
 
-`vind` = `vi` + `bind`
+Please refer to <a href="https://pit-ray.github.io/win-vind/">github.io/win-vind</a>.  
 
 ## Description
-Vim, Vi is a powerful lightweight awesome editor, has the idea of OSS. Their key bindings are very intuitive and allow us to type keeping positions of hands over a keyboard without moving them to mouse. I like this idea, so I implemented the key bindings system like Vim for manipulating Windows GUI and general text editors.
-This software provides the key bindings like Vim and useful shortcut systems.
-
+You can operate Windows by key-bindings like Vim.  
+**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.  
 
 ## Overview
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true" width=700 title="Mode Overview">
@@ -24,7 +18,7 @@ This software provides the key bindings like Vim and useful shortcut systems.
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/GUIandEditor.jpg?raw=true" width=600>
 
 ### GUI Mode
-This is default mode after starting `win-vind`. The target is the mouse cursor. For instance, if you input `h`, moves it to left.    However, it does not have a concept called rows and columns, so I implemented a wealth of alternative functions. You can be referred to <a href="https://github.com/pit-ray/win-vind/wiki/For-Users#key-bind-list">wiki</a>.
+This is default mode after starting `win-vind`. The target is the mouse cursor. For instance, if you input `h`, moves it to left.    However, it does not have a concept called rows and columns, so I implemented a wealth of alternative functions. You can be referred to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">github.io/win-vind/cheat_sheet</a>.
 
 #### Example
 You can start optional application shortcuts by a registered command as following.
@@ -41,18 +35,16 @@ It enables to emulate Vim when using general text editors, for instance, `notepa
 <br>
 
 ## How to use
-Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Users">GitHub wiki pages</a>.
-<a href="https://github.com/pit-ray/win-vind/wiki/%E4%BD%BF%E3%81%84%E6%96%B9-(For-Users-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。
+Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">github.io/win-vind/how_to_use</a>.  
 
-## For Developer
-Please visit <a href="https://github.com/pit-ray/win-vind/wiki/For-Developers">GitHub wiki pages</a>.
-<a href="https://github.com/pit-ray/win-vind/wiki/%E9%96%8B%E7%99%BA%E8%80%85%E3%81%B8(For-Developers-in-Japanese)">GitHub wikiページ</a>に日本語で詳細を載せました。
+## How to contribute
+Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">github.io/win-vind/how_to_contribute</a>.  
 
 ## TO DO
 Please contribute or request.
 There are already implemented functions in <a href="https://github.com/pit-ray/win-vind/blob/master/latest_log.md">latest_log.md</a>.
 <br>
-#### Editor Mode Commands
+#### Differences with Original Vim
 - `s` / `S`
 - `cw` / `C`
 - `~`
@@ -60,21 +52,17 @@ There are already implemented functions in <a href="https://github.com/pit-ray/w
 - operator commands like `diw`
 - replacing commands like `:s/old/new` or `:%s/old/new/g`
 - `q` (Macro)
-
-#### Differences with Original Vim
 - repeating commands
 - jumping to any line
 - secure text analyzing system
 
 #### Useful
 - config's saving system when reinstall
-
-#### Improving
 - update system
 
 #### Bugs
 -
 
 ## Author
-- pit-ray
+- pit-ray  
 [E-mail] pit-ray(at)outlook.com

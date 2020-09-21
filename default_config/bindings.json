@@ -625,7 +625,7 @@
     {
         "name": "start_shell",
         "key": [],
-        "cmd": ["sh", "shell"],
+        "cmd": ["sh", "shell", "terminal", "term"],
         "en": "Start Shell",
         "ja": "ターミナル起動"
     },

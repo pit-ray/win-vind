@@ -261,8 +261,24 @@
                 "value": "powershell"
             },
             {
-                "name": "chrome",
-                "value": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+                "name": "edge",
+                "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+            },
+            {
+                "name": "gvim",
+                "value": "gvim"
+            },
+            {
+                "name": "paint",
+                "value": "C:\\WINDOWS\\system32\\mspaint.exe"
+            },
+            {
+                "name": "bash",
+                "value": "bash"
+            },
+            {
+                "name": "calc",
+                "value": "calc"
             }
         ],
         "en": "Shortcut Apps",

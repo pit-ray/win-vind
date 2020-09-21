@@ -36,7 +36,7 @@
     },
     {
         "name": "select_all",
-        "key": ["V", "Ctrl(+)V"],
+        "key": ["V"],
         "cmd": [],
         "en": "Select All",
         "ja": "全て選択"
@@ -259,18 +259,53 @@
         "ja": "元に戻す"
     },
     {
-        "name": "switch_vdesktop_to_left",
-        "key": ["g->T"],
+        "name": "switch_to_left_vdesktop",
+        "key": ["Ctrl(+)v->h"],
         "cmd": [],
         "en": "Switch to Left Virtual Desktop",
         "ja": "左の仮想デスクトップへ切替"
     },
     {
-        "name": "switch_vdesktop_to_right",
-        "key": ["g->t"],
+        "name": "switch_to_right_vdesktop",
+        "key": ["Ctrl(+)v->l"],
         "cmd": [],
         "en": "Switch to Right Virtual Desktop",
         "ja": "右の仮想デスクトップへ切替"
+    },
+    {
+        "name": "create_new_vdesktop",
+        "key": ["Ctrl(+)v->n", "Ctrl(+)->c"],
+        "cmd": [],
+        "en": "Create New Virtual Desktop",
+        "ja": "新しい仮想デスクトップを作成"
+    },
+    {
+        "name": "close_current_vdesktop",
+        "key": ["Ctrl(+)v->q"],
+        "cmd": [],
+        "en": "Close Current Virtual Desktop",
+        "ja": "現在の仮想デスクトップを閉じる"
+    },
+    {
+        "name": "task_view",
+        "key": ["Ctrl(+)v->s"],
+        "cmd": ["taskview", "tv", "vdesktop list"],
+        "en": "Task View",
+        "ja": "タスクビュー"
+    },
+    {
+        "name": "switch_to_left_tab",
+        "key": ["g->T"],
+        "cmd": [],
+        "en": "Switch to Left Tab",
+        "ja": "左のタブへ切替"
+    },
+    {
+        "name": "switch_to_right_tab",
+        "key": ["g->t"],
+        "cmd": [],
+        "en": "Switch to Right Tab",
+        "ja": "右のタブへ切替"
     },
     {
         "name": "search_pattern",
@@ -309,14 +344,14 @@
     },
     {
         "name": "snap_current_window_to_left",
-        "key": ["Ctrl(+)w->h", "Ctrl(+)w-><"],
+        "key": ["Ctrl(+)w->h", "Ctrl(+)w-><", "Ctrl(+)w->Left"],
         "cmd": ["lsplit"],
         "en": "Snap Current Window to Left",
         "ja": "ウィンドウを画面左半分化"
     },
     {
         "name": "snap_current_window_to_right",
-        "key": ["Ctrl(+)w->l", "Ctrl(+)w->>"],
+        "key": ["Ctrl(+)w->l", "Ctrl(+)w->>", "Ctrl(+)w->Right"],
         "cmd": ["rsplit"],
         "en": "Snap Current Window to Right",
         "ja": "ウィンドウを画面右半分化"

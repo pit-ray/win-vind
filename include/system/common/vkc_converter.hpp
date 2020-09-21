@@ -16,6 +16,9 @@ namespace VKCConverter
     char get_shifted_ascii(const unsigned char vkc) noexcept ;
 
     const std::unordered_set<unsigned char> get_all_sys_vkc() ;
+
+    unsigned char get_representative_key(const unsigned char key) noexcept ;
+    bool is_unreal_key(const unsigned char key) noexcept ;
 }
 
 #endif

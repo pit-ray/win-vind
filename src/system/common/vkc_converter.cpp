@@ -7,6 +7,7 @@
 #include <utility>
 #include <windows.h>
 #include <iostream>
+#include <array>
 
 using namespace std ;
 
@@ -25,22 +26,25 @@ namespace VKCConverter
             'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
             'z', '{', '|', '}', '~'
         } ;
-
         return data ;
     }
 
-    //not use boost::bimaps in order to be efficient
-    //unorderd_map is O(1)
-    static unordered_map<char, unsigned char> char2vkc{} ;
-    static unordered_map<unsigned char, char> vkc2char{} ;
-    static unordered_map<char, unsigned char> shifted_char2vkc{} ;
-    static unordered_map<unsigned char, char> shifted_vkc2char{} ;
+    static std::array<unsigned char, 256> char2vkc{0} ;
+    static std::array<char, 256> vkc2char{0} ;
+    static std::array<unsigned char, 256> shifted_char2vkc{0} ;
+    static std::array<char, 256> shifted_vkc2char{0} ;
 
     void load_input_combination() noexcept {
-        char2vkc.clear() ;
-        vkc2char.clear() ;
-        shifted_char2vkc.clear() ;
-        shifted_vkc2char.clear() ;
+        try {
+            char2vkc.fill(0) ;
+            vkc2char.fill(0) ;
+            shifted_char2vkc.fill(0) ;
+            shifted_vkc2char.fill(0) ;
+        }
+        catch(const std::exception& e) {
+            ERROR_STREAM << e.what() << "failed loading input combination (VKCConverter::load_input_combination)\n" ;
+            return ;
+        }
 
         for(const auto c : _printable_ascii()) {
             const auto res = VkKeyScanA(c) ;
@@ -49,42 +53,27 @@ namespace VKCConverter
             const auto shifted = (res & 0x0100) != 0 ;
 
             if(shifted) {
-                shifted_char2vkc.insert(make_pair(c, vkc)) ;
-                shifted_vkc2char.insert(make_pair(vkc, c)) ;
+                shifted_char2vkc[static_cast<unsigned char>(c)] = vkc ;
+                shifted_vkc2char[vkc] = c ;
             }
             else {
-                char2vkc.insert(make_pair(c, vkc)) ;
-                vkc2char.insert(make_pair(vkc, c)) ;
+                char2vkc[static_cast<unsigned char>(c)] = vkc ;
+                vkc2char[vkc] = c ;
             }
         }
     }
 
     unsigned char get_vkc(const char ascii) noexcept {
-        try{return char2vkc.at(ascii) ;}
-        catch(const out_of_range& e) {
-            return 0 ;
-        }
+        return char2vkc[static_cast<unsigned char>(ascii)] ;
     }
-
     char get_ascii(const unsigned char vkc) noexcept {
-        try{return vkc2char.at(vkc) ;}
-        catch(const out_of_range& e) {
-            return 0 ;
-        }
+        return vkc2char[vkc] ;
     }
-
     unsigned char get_shifted_vkc(const char ascii) noexcept {
-        try{return shifted_char2vkc.at(ascii) ;}
-        catch(const out_of_range& e) {
-            return 0 ;
-        }
+        return shifted_char2vkc[static_cast<unsigned char>(ascii)] ;
     }
-
     char get_shifted_ascii(const unsigned char vkc) noexcept {
-        try{return shifted_vkc2char.at(vkc) ;}
-        catch(const out_of_range& e) {
-            return 0 ;
-        }
+        return shifted_vkc2char[vkc] ;
     }
 
     static const unordered_map<string, unsigned char> _sys_vkc {
@@ -169,5 +158,36 @@ namespace VKCConverter
         unordered_set<unsigned char> set ;
         for(const auto& i : _sys_vkc) set.insert(i.second) ;
         return set ;
+    }
+
+    inline static const auto _create_related_keys() {
+            std::array<unsigned char, 256> a{0} ;
+            a[VKC_LSHIFT]   = VKC_SHIFT ;
+            a[VKC_RSHIFT]   = VKC_SHIFT ;
+            a[VKC_LCTRL]    = VKC_CTRL ;
+            a[VKC_RCTRL]    = VKC_CTRL ;
+            a[VKC_LWIN]     = VKC_WIN ;
+            a[VKC_RWIN]     = VKC_WIN ;
+            a[VKC_LALT]     = VKC_ALT ;
+            a[VKC_RALT]     = VKC_ALT ;
+            a[VKC_FROM_EN]  = VKC_IME ;
+            a[VKC_TO_JP]    = VKC_IME ;
+            return a ;
+    }
+    unsigned char get_representative_key(const unsigned char key) noexcept {
+        static const auto a = _create_related_keys() ;
+        return a[key] ;
+    }
+
+    inline static const auto _create_unreal_keys() {
+        std::array<bool, 256> a{false} ;
+        for(const auto i : _create_related_keys()) {
+            if(i) a[i] = true ;
+        }
+        return a ;
+    }
+    bool is_unreal_key(const unsigned char key) noexcept {
+        static const auto a = _create_unreal_keys() ;
+        return a[key] ;
     }
 }

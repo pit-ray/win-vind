@@ -35,7 +35,7 @@ struct KeyBinder::Impl
     std::vector<cmd::shp_t> vpcmd ;
 
     KeyLogger logger ;
-    kbg::shp_t callable_bf ;
+    kbg::shp_t running_func ;
     BindingsLoader parser ;
 
     struct CmdPoint {
@@ -64,7 +64,7 @@ struct KeyBinder::Impl
     : vpbf(),
       vpcmd(),
       logger(),
-      callable_bf(nullptr),
+      running_func(nullptr),
       parser(Path::BINDINGS()),
       cmd_hist{std::make_shared<CmdPoint>()},
       cmd_hist_index(0)
@@ -139,57 +139,56 @@ void KeyBinder::update_core() noexcept
     using namespace KBUtility ;
 
     if(!pimpl->logger.is_changed_code()) {
-        if(!pimpl->callable_bf) {
+        if(!pimpl->running_func) {
             pimpl->logger.remove_from_back(1) ;
             return ;
         }
-        pimpl->callable_bf->process(false) ;
+        pimpl->running_func->process(false) ;
         pimpl->logger.remove_from_back(1) ;
         return ;
     }
 
-    if(pimpl->logger.back().is_empty() || is_ignored(pimpl->parser.get_ignored_syskeys(), pimpl->logger.back())) {
+    if(pimpl->logger.back().is_empty() ||
+       is_ignored(pimpl->parser.get_ignored_syskeys(), pimpl->logger.back())) {
         //all is ignore code
         pimpl->logger.remove_from_back(1) ;
-        pimpl->callable_bf = nullptr ;
+        pimpl->running_func = nullptr ;
         return ;
     }
 
-    auto at_least_exist = false ; //is a typed key existed in binded functions?
     std::size_t max_matching_num = 0 ;
-    auto buf_bf = pimpl->callable_bf ;
+    auto most_matched_func = pimpl->running_func ;
 
     //overwrite callable
     for(auto& func : vp) {
-        const auto lmn = func->matched_num(pimpl->logger.back(), pimpl->logger.size() - 1) ;
-        if(lmn == 0) continue ;
-        at_least_exist = true ;
+        if(pimpl->running_func == func) {
+            continue ;
+        }
 
-        if(func->is_callable()) {
-            if(pimpl->callable_bf == func) {
-                continue ;
-            }
-            if(max_matching_num >= lmn) {
-                continue ;
-            }
-            max_matching_num = lmn ;
-            buf_bf = func ;
+        const auto num = func->matched_num(pimpl->logger.back(), pimpl->logger.size() - 1) ;
+        if(max_matching_num < num) {
+            max_matching_num = num ;
+            most_matched_func = func ;
+        }
+        else if(max_matching_num == num && func->is_callable()) {
+            //on same matching level, a callable function ist the strongest.
+            most_matched_func = func ;
         }
     }
 
-    if(!at_least_exist) {
+    if(!most_matched_func) {
         pimpl->logger.clear() ;
-        pimpl->callable_bf = nullptr ;
-        return ;
-    }
-    if(!buf_bf) {
-        pimpl->callable_bf = nullptr ;
         return ;
     }
 
-    buf_bf->process(true) ;
-    pimpl->logger.clear() ;
-    pimpl->callable_bf = buf_bf ;
+    if(most_matched_func->is_callable()) {
+        most_matched_func->process(true) ;
+        pimpl->logger.clear() ;
+        pimpl->running_func = most_matched_func ;
+    }
+    else {
+        pimpl->running_func = nullptr ;
+    }
 }
 
 void KeyBinder::update_core_cmd() noexcept

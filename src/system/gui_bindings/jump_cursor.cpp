@@ -86,7 +86,7 @@ bool Jump2Bottom::sprocess(const bool first_call)
     if(!first_call) return true ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(pos.x, _scmet.height() - iParams::get_i("cursor_pos_buf")) ;
+    SetCursorPos(pos.x, _scmet.height() - iParams::get_i("screen_pos_buf")) ;
     return true ;
 }
 
@@ -126,22 +126,24 @@ bool Jump2YCenter::sprocess(const bool first_call)
 //Jump2Any
 namespace JumpCursorUtility
 {
-    static float max_keybrd_xpos = 0 ;
-    static float max_keybrd_ypos = 0 ;
+    static float max_keybrd_xposs = 0 ;
+    static float max_keybrd_yposs = 0 ;
 
     inline static void write_error(const string& buf, const string& filename) {
         ERROR_STREAM << buf << " is bad syntax in " << filename << ". (JumpCursorUtility::load_config)\n" ;
     }
 
-    using key_pos_t = std::unordered_map<unsigned char, std::pair<float, float>> ;
-    static key_pos_t _keypos{} ;
+    using key_pos_t = std::array<float, 256> ;
+    static key_pos_t _xposs{} ;
+    static key_pos_t _yposs{} ;
     void load_config() noexcept {
         //initilize
-        max_keybrd_xpos = 0 ;
-        max_keybrd_ypos = 0 ;
+        max_keybrd_xposs = 0 ;
+        max_keybrd_yposs = 0 ;
 
         try {
-            _keypos.clear() ;
+            _xposs.fill(0) ;
+            _yposs.fill(0) ;
             const auto filename = Path::KEYBRD_MAP() ;
 
             ifstream ifs(filename, ios::in) ;
@@ -167,22 +169,25 @@ namespace JumpCursorUtility
                 const auto x = stof(vec[0]) ;
                 const auto y = stof(vec[1]) ;
 
-                if(x > max_keybrd_xpos) {
-                    max_keybrd_xpos = x ;
+                if(x > max_keybrd_xposs) {
+                    max_keybrd_xposs = x ;
                 }
 
-                if(y > max_keybrd_ypos) {
-                    max_keybrd_ypos = y ;
+                if(y > max_keybrd_yposs) {
+                    max_keybrd_yposs = y ;
                 }
 
                 //specific code
                 if(vec[2] == "Space") {
-                    _keypos[VKCConverter::get_vkc(' ')] = make_pair(x, y) ;
+                    auto&& vkc = VKCConverter::get_vkc(' ') ;
+                    _xposs[vkc] = x ;
+                    _yposs[vkc] = y ;
                     continue ;
                 }
 
                 if(auto vkc = VKCConverter::get_sys_vkc(vec[2])) {
-                    _keypos[vkc] = make_pair(x, y) ;
+                    _xposs[vkc] = x ;
+                    _yposs[vkc] = y ;
                     continue ;
                 }
 
@@ -191,7 +196,8 @@ namespace JumpCursorUtility
                     const auto vkc = VKCConverter::get_vkc(vec[2].front()) ;
                     if(vkc != '\0') {
                         //overwrite
-                        _keypos[vkc] = make_pair(x, y) ;
+                        _xposs[vkc] = x ;
+                        _yposs[vkc] = y ;
                         continue ;
                     }
                 }
@@ -199,7 +205,6 @@ namespace JumpCursorUtility
                 write_error(buf, filename) ;
             }
         }
-
         catch(const exception& e) {
             ERROR_STREAM << "std::fstream: " <<  e.what() << " (JumpCursorUtility::load_config)\n" ;
             return ;
@@ -223,7 +228,7 @@ bool Jump2Any::sprocess(const bool first_call)
         }
     }
 
-    //ignore locked key (for example, CapsLock, NumLock, Kana....)
+    //ignore toggle keys (for example, CapsLock, NumLock, IME....)
     const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
 
     MSG msg ;
@@ -231,7 +236,6 @@ bool Jump2Any::sprocess(const bool first_call)
         //MessageRoop
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg) ;
-
             DispatchMessage(&msg) ;
         }
 
@@ -246,26 +250,30 @@ bool Jump2Any::sprocess(const bool first_call)
         }
 
         try {
-            const auto pos = _keypos.at(*log.cbegin()) ;
-
-            auto x_pos = static_cast<int>(pos.first / max_keybrd_xpos * _scmet.width()) ;
-            auto y_pos = static_cast<int>(pos.second / max_keybrd_ypos * _scmet.height()) ;
-            if(x_pos == _scmet.width()) {
-                x_pos -= iParams::get_i("screen_pos_buf") ;
-            }
-            if(y_pos == _scmet.height()) {
-                y_pos -= iParams::get_i("screen_pos_buf") ;
-            }
-
-            SetCursorPos(x_pos, y_pos) ;
-
-            for(const auto& key : log) {
-                if(!KeybrdEventer::release_keystate(key)) {
-                    ERROR_STREAM << "failed release key (Jump2Any::is_release_keystate)\n" ;
-                    return false ;
+            for(const auto& vkc : log) {
+                if(VKCConverter::is_unreal_key(vkc)) {
+                    continue ;
                 }
+
+                auto x_pos = static_cast<int>(_xposs[vkc] / max_keybrd_xposs * _scmet.width()) ;
+                auto y_pos = static_cast<int>(_yposs[vkc] / max_keybrd_yposs * _scmet.height()) ;
+                if(x_pos == _scmet.width()) {
+                    x_pos -= iParams::get_i("screen_pos_buf") ;
+                }
+                if(y_pos == _scmet.height()) {
+                    y_pos -= iParams::get_i("screen_pos_buf") ;
+                }
+
+                SetCursorPos(x_pos, y_pos) ;
+
+                for(const auto& key : log) {
+                    if(!KeybrdEventer::release_keystate(key)) {
+                        ERROR_STREAM << "failed release key (Jump2Any::is_release_keystate)\n" ;
+                        return false ;
+                    }
+                }
+                return true ;
             }
-            return true ;
         }
         catch(const out_of_range&) {
             continue ;
@@ -300,8 +308,8 @@ bool Jump2ActiveWindow::sprocess(const bool first_call)
         return false ;
     }
 
-    const auto xpos = static_cast<int>(rect.left + (rect.right - rect.left) / 2) ;
-    const auto ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
+    auto&& xpos = static_cast<int>(rect.left + (rect.right - rect.left) / 2) ;
+    auto&& ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
 
     SetCursorPos(xpos, ypos) ;
     return true ;

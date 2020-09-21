@@ -1,0 +1,11 @@
+-std=c++14
+-Iinclude
+-Iinclude/system
+-Iinclude/system/common
+-Iinclude/system/common_bindings
+-Iinclude/system/editor_bindings
+-Iinclude/system/gui_bindings
+-Iinclude/system/options
+-Iinclude/win32gui
+-Iinclude/wxgui
+-Ilibs

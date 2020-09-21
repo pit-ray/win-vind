@@ -350,3 +350,29 @@ bool ReloadCurrentWindow::sprocess(const string UNUSED(cmd))
 {
     return KeybrdEventer::pushup(VKC_F5) ;
 }
+
+
+//Switch2LeftTab
+const string Switch2LeftTab::sname() noexcept
+{
+    return "switch_to_left_tab" ;
+}
+
+bool Switch2LeftTab::sprocess(const bool first_call)
+{
+    if(!first_call) return true ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_LSHIFT, VKC_TAB) ;
+}
+
+
+//Switch2RightTab
+const string Switch2RightTab::sname() noexcept
+{
+    return "switch_to_right_tab" ;
+}
+
+bool Switch2RightTab::sprocess(const bool first_call)
+{
+    if(!first_call) return true ;
+    return KeybrdEventer::pushup(VKC_LCTRL, VKC_TAB) ;
+}

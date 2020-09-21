@@ -10,7 +10,7 @@ echo n> ".\\default_config\\is_installer_used"
 copy ".\\default_config\\bindings.json" ".\\config\\bindings.json"
 copy ".\\default_config\\settings.json" ".\\config\\settings.json"
 
-call build.bat -release
+call build.bat --release
 
 rmdir /q /s ".\\bin\\win-vind"
 

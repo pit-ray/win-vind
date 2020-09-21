@@ -81,6 +81,13 @@ namespace KeyBinderList {
             SwitchVDesktop2Left::create(),
             SwitchVDesktop2Right::create(),
 
+            CreateNewVDesktop::create(),
+            CloseCurrentVDesktop::create(),
+            TaskView::KeyBindingWithCreator::create(),
+
+            Switch2LeftTab::create_with_cache(),
+            Switch2RightTab::create_with_cache(),
+
             SearchPattern::create(),
 
             CloseCurrentWindow::KeyBindingWithCreator::create(),
@@ -187,6 +194,9 @@ namespace KeyBinderList {
             ScrollPageUp::create_with_cache(),
             ScrollPageDown::create_with_cache(),
 
+            Switch2LeftTab::create_with_cache(),
+            Switch2RightTab::create_with_cache(),
+
             EdiMoveCaretLeft::create_with_cache(),
             EdiMoveCaretRight::create_with_cache(),
             EdiMoveCaretUp::create_with_cache(),
@@ -285,7 +295,8 @@ namespace KeyBinderList {
             OpenOtherFile::create(),
             MakeDir::create(),
             EnableTargetingOfDedicate2Window::CommandWithCreator::create(),
-            DisableTargetingOfDedicate2Window::CommandWithCreator::create()
+            DisableTargetingOfDedicate2Window::CommandWithCreator::create(),
+            TaskView::CommandWithCreator::create()
         } ;
         return tmp ;
     }

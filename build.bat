@@ -9,6 +9,18 @@ echo [cmake] _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 @if %1 == -release (
     @goto release
 )
+@if %1 == --debug (
+    @goto debug
+)
+@if %1 == --release (
+    @goto release
+)
+if %1 == -D (
+    @goto debug
+)
+if %1 == -R (
+    @goto release
+)
 
 :debug
     @if not exist debug (

@@ -6,8 +6,8 @@ copy ".\\default_config\\bindings.json" ".\\config\\bindings.json"
 copy ".\\default_config\\settings.json" ".\\config\\settings.json"
 
 del /q ".\\bin\\setup*.exe"
-call build.bat -release
+call build.bat --release
 cd release
-cpack .
+cpack . -C Release
 cd ..
 copy ".\\release\\setup*.exe" ".\\bin\\"

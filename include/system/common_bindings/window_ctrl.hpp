@@ -94,4 +94,18 @@ struct ReloadCurrentWindow
     static bool sprocess(const std::string cmd) ;
     static const std::string sname() noexcept ;
 } ;
+
+struct Switch2LeftTab
+: public KeyBindingWithCreator<Switch2LeftTab>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct Switch2RightTab
+: public KeyBindingWithCreator<Switch2RightTab>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
 #endif

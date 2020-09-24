@@ -1,4 +1,4 @@
-#include "edi_clipboard.hpp"
+#include "edi_edit.hpp"
 
 #include <iostream> //for debug
 #include <memory>

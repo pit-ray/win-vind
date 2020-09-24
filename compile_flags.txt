@@ -8,4 +8,5 @@
 -Iinclude/system/options
 -Iinclude/win32gui
 -Iinclude/wxgui
+-IC:/wxWidgets/include
 -Ilibs

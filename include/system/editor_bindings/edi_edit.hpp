@@ -1,5 +1,5 @@
-#ifndef _EDI_CLIPBOARD_HPP
-#define _EDI_CLIPBOARD_HPP
+#ifndef _EDI_EDIT_HPP
+#define _EDI_EDIT_HPP
 
 #include "key_binding_with_creator.hpp"
 
@@ -140,6 +140,30 @@ struct EdiNDeleteBefore : public KeyBindingWithCreator<EdiNDeleteBefore>
 private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
+} ;
+
+struct EdiDeleteMotionAndStartInsert : public KeyBindingWithCreator<EdiDeleteMotionAndStartInsert>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EdiDeleteLinesAndStartInsert : public KeyBindingWithCreator<EdiDeleteLinesAndStartInsert>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EdiDeleteCharsAndStartInsert : public KeyBindingWithCreator<EdiDeleteCharsAndStartInsert>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EdiDeleteUntilEOLAndStartInsert : public KeyBindingWithCreator<EdiDeleteUntilEOLAndStartInsert>
+{
+    static bool sprocess(const bool first_call) ;
+    static const std::string sname() noexcept ;
 } ;
 
 #endif

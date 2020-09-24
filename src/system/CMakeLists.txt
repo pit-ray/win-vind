@@ -49,7 +49,7 @@ add_library(EditorBindings STATIC
     editor_bindings/edi_move_caret.cpp
     editor_bindings/edi_jump_caret.cpp
     editor_bindings/edi_search_pattern.cpp
-    editor_bindings/edi_clipboard.cpp
+    editor_bindings/edi_edit.cpp
     editor_bindings/edi_replace.cpp
     editor_bindings/edi_layout.cpp
 )

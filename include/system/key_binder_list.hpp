@@ -17,7 +17,7 @@
 #include "edi_change_mode.hpp"
 #include "edi_move_caret.hpp"
 #include "edi_jump_caret.hpp"
-#include "edi_clipboard.hpp"
+#include "edi_edit.hpp"
 #include "edi_replace.hpp"
 #include "edi_layout.hpp"
 

@@ -22,9 +22,6 @@ namespace System
 {
     using namespace std ;
 
-    static KeyBinder _kb{} ;
-    static OptionLoader _ol{} ;
-
     bool init() {
         //show mouse cursor
         //When Windows was started up, cursor is hidden until move mouse by default.
@@ -39,7 +36,7 @@ namespace System
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(SendInput, MOUSEEVENTF_MOVE)\n" ;
+            WIN_ERROR_PRINT("SendInput, MOUSEEVENTF_MOVE") ;
             return 0 ;
         }
 
@@ -52,6 +49,7 @@ namespace System
             return false ;
         }
 
+        KeyBinder::init() ;
         load_config() ;
 
         //initialize system mode
@@ -65,7 +63,7 @@ namespace System
             cm.at(iParams::get_s("initial_mode"))->process() ;
         }
         catch(const std::out_of_range& e) {
-            ERROR_STREAM << e.what() << ", in" << Path::SETTINGS() << ", initial_mode is invalid syntax (System::init)\n" ;
+            ERROR_PRINT(std::string(e.what()) + ", in" + Path::SETTINGS() + ", initial_mode is invalid syntax.") ;
         }
 
         return true ;
@@ -73,17 +71,17 @@ namespace System
 
     void load_config() noexcept {
         iParams::load_config() ;
-        _kb.load_config() ;
-        _ol.load_config() ;
+        KeyBinder::load_config() ;
+        OptionLoader::load_config() ;
     }
 
     void load_option_config() noexcept {
-        _ol.load_config() ;
+        OptionLoader::load_config() ;
     }
 
     bool update() noexcept {
-        _kb.update() ;
-        _ol.update() ;
+        KeyBinder::call_matched_funcs() ;
+        OptionLoader::call_active_funcs() ;
 
         using namespace KeyAbsorber ;
         if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
@@ -94,7 +92,7 @@ namespace System
     }
 
     bool update_options() noexcept {
-        _ol.update() ;
+        OptionLoader::call_active_funcs() ;
         return true ;
     }
 

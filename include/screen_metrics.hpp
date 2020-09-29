@@ -24,7 +24,7 @@ public:
 
     bool calibrate() noexcept {
         if(!SetProcessDPIAware()) {
-            WIN_ERROR_STREAM << "(ScreenMetrics::calibrate)\n" ;
+            WIN_ERROR_PRINT("SetProcessDPIAware") ;
             return false ;
         }
 

@@ -29,6 +29,7 @@ add_library(Common STATIC
     common/vkc_converter.cpp
     common/bindings_loader.cpp
     common/keystroke_repeater.cpp
+    common/smart_clipboard.cpp
 )
 #target_link_libraries(Common ~~~~~~)
 
@@ -75,6 +76,7 @@ add_library(Options
 target_link_libraries(Options Common)
 
 add_library(Binders STATIC
+    command_mode.cpp
     key_binder.cpp
     option_loader.cpp
 )

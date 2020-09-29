@@ -19,7 +19,7 @@ namespace iParams
             ifs >> jp ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << " failed loading config for system (Params::load_config)\n" ;
+            ERROR_PRINT(std::string(e.what()) + ", failed loading config for system") ;
             return ;
         }
     }
@@ -28,7 +28,7 @@ namespace iParams
     inline static const T _get(const std::string name) noexcept {
         try {return jp.at(name).at("value").get<T>() ;}
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << "(iParams::_get)\n" ;
+            ERROR_PRINT(e.what()) ;
             return T{0} ;
         }
     }

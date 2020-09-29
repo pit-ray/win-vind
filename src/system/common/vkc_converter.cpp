@@ -42,7 +42,7 @@ namespace VKCConverter
             shifted_vkc2char.fill(0) ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << "failed loading input combination (VKCConverter::load_input_combination)\n" ;
+            ERROR_PRINT(std::string(e.what()) + "failed loading input combination") ;
             return ;
         }
 

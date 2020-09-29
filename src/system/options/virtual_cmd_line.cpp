@@ -116,7 +116,7 @@ bool VirtualCmdLine::do_enable() const noexcept
         const auto& p = pos_list.at("LowerMid") ;
         pimpl->x = p.first ;
         pimpl->y = p.second ;
-        ERROR_STREAM << e.what() << "in " << Path::SETTINGS() << ", " << iParams::get_s("cmd_pos") << "is invalid syntax (VirtualCmdLine::do_enable)\n" ;
+        ERROR_PRINT(std::string(e.what()) + "in " + Path::SETTINGS() + ", " + iParams::get_s("cmd_pos") + "is invalid syntax.") ;
     }
 
     pimpl->extra = iParams::get_i("cmd_font_extra") ;
@@ -149,7 +149,7 @@ void VirtualCmdLine::msgout(std::string str) noexcept
 
 void VirtualCmdLine::refresh() noexcept {
     if(!InvalidateRect(NULL, NULL, TRUE)) {
-        WIN_ERROR_STREAM << " failed refresh display (VirtualCmdLine::refresh)\n" ;
+        WIN_ERROR_PRINT(" failed refresh display") ;
     }
 }
 
@@ -178,48 +178,48 @@ bool VirtualCmdLine::do_process() const
 
     auto hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
     if(!hdc) {
-        WIN_ERROR_STREAM << ", CreateDC (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("CreateDC") ;
         return false ;
     }
 
     auto font = CreateFontIndirect(&pimpl->lf) ;
     if(!font) {
-        WIN_ERROR_STREAM << ", CreateFontIndirectA (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("CreateFontIndirectA") ;
         return false ;
     }
 
     if(!SelectObject(hdc, font)) {
-        WIN_ERROR_STREAM << ", SelectObject (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("SelectObject") ;
         return false ;
     }
 
     if(SetBkColor(hdc, pimpl->bkcolor) == CLR_INVALID) {
-        WIN_ERROR_STREAM << ", SetBkColor (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("SetBkColor") ;
         return false ;
     }
 
     if(SetTextColor(hdc, pimpl->color) == CLR_INVALID) {
-        WIN_ERROR_STREAM << ", SetTextColor (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("SetTextColor") ;
         return false ;
     }
 
     if(SetTextCharacterExtra(hdc, pimpl->extra) == static_cast<int>(0x80000000)) {
-        WIN_ERROR_STREAM << ", SetTextCharacterExtra (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("SetTextCharacterExtra") ;
         return false ;
     }
 
     if(!TextOutA(hdc, pimpl->x, pimpl->y, outstr.c_str(), lstrlenA(outstr.c_str()))) {
-        WIN_ERROR_STREAM << ", TextOutA (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("TextOutA") ;
         return false ;
     }
 
     if(!DeleteDC(hdc)) {
-        WIN_ERROR_STREAM << ", DeleteDC (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("DeleteDC") ;
         return false ;
     }
 
     if(!DeleteObject(font)) {
-        WIN_ERROR_STREAM << ", DeleteObject (VirtualCmdLine::draw_str)\n" ;
+        WIN_ERROR_PRINT("DeleteObject") ;
         return false ;
     }
 

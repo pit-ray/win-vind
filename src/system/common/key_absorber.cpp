@@ -24,7 +24,7 @@ namespace KeyAbsorber
         if(p_hook == nullptr) return ;
 
         if(!UnhookWindowsHookEx(*p_hook)) {
-            WIN_ERROR_STREAM << " (win_key_absorber_impl.cpp)\n" ;
+            WIN_ERROR_PRINT("cannot unhook LowLevelKeyboardProc") ;
         }
 
         delete p_hook ;
@@ -74,7 +74,7 @@ namespace KeyAbsorber
         ) ;
 
         if(!*p_handle) {
-            WIN_ERROR_STREAM << "(win_key_absorber_impl.cpp)\n" ;
+            WIN_ERROR_PRINT("handle is nullptr") ;
             return false ;
         }
         return true ;
@@ -134,7 +134,7 @@ namespace KeyAbsorber
             _ignored_keys.insert(key) ;
         }
         catch(bad_alloc& e) {
-            ERROR_STREAM << e.what() << " (key_absorber.cpp::open_key)\n" ;
+            ERROR_PRINT(e.what()) ;
             return ;
         }
     }

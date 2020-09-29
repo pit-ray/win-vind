@@ -3,6 +3,9 @@
 
 #include "key_binding_with_creator.hpp"
 
+namespace TextAnalyzer {
+    class SelRes ;
+}
 
 //Copy
 struct EdiCopyHighlightText : public KeyBindingWithCreator<EdiCopyHighlightText>
@@ -13,7 +16,7 @@ struct EdiCopyHighlightText : public KeyBindingWithCreator<EdiCopyHighlightText>
 
 struct EdiNCopyLine : public KeyBindingWithCreator<EdiNCopyLine>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres=nullptr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -67,7 +70,7 @@ struct EdiDeleteHighlightText : public KeyBindingWithCreator<EdiDeleteHighlightT
 
 struct EdiNDeleteLine : public KeyBindingWithCreator<EdiNDeleteLine>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres=nullptr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNDeleteLine() ;
@@ -87,7 +90,7 @@ private:
 
 struct EdiNDeleteLineUntilEOL : public KeyBindingWithCreator<EdiNDeleteLineUntilEOL>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres=nullptr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNDeleteLineUntilEOL() ;
@@ -162,7 +165,7 @@ struct EdiDeleteCharsAndStartInsert : public KeyBindingWithCreator<EdiDeleteChar
 
 struct EdiDeleteUntilEOLAndStartInsert : public KeyBindingWithCreator<EdiDeleteUntilEOLAndStartInsert>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres=nullptr) ;
     static const std::string sname() noexcept ;
 } ;
 

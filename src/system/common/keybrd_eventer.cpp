@@ -48,7 +48,7 @@ namespace KeybrdEventer
     bool SmartKey::send_event(const bool pressed) noexcept {
         pimpl->in.ki.dwFlags = pressed ? 0 : KEYEVENTF_KEYUP ;
         if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(KeybrdEventer::SmartKey::send_event::SendInput)\n" ;
+            WIN_ERROR_PRINT("failed sending keyboard event") ;
             return false ;
         }
         return true ;
@@ -86,7 +86,7 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(KeybrdEventer::release)\n" ;
+            WIN_ERROR_PRINT("failed sending keyboard event") ;
             return false ;
         }
 
@@ -104,7 +104,7 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(KeybrdEventer::release)\n" ;
+            WIN_ERROR_PRINT("failed sending keyboard event") ;
             return false ;
         }
         return true ;

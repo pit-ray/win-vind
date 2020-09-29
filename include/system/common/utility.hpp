@@ -20,6 +20,11 @@ namespace Utility
         if(itr == vec.cend()) return ;
         vec.erase(itr) ;
     }
+
+    template <typename T, std::size_t N>
+    constexpr std::size_t sizeof_array(T(&) [N]) noexcept {
+        return N ;
+    }
 }
 
 #define UNUSED(identifier) /* identifier */

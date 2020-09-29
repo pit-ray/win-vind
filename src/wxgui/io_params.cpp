@@ -24,7 +24,7 @@ namespace ioParams
             return j ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << "(ioParams::_init)\n" ;
+            ERROR_PRINT(e.what()) ;
             return json() ;
         }
     }
@@ -37,7 +37,7 @@ namespace ioParams
             ifs >> parser ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << "(ioParams::load_config)\n" ;
+            ERROR_PRINT(e.what()) ;
             return false ;
         }
         return true ;
@@ -49,7 +49,7 @@ namespace ioParams
             ofs << std::setw(4) << parser << std::endl ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << "(ioParams::save_config)\n" ;
+            ERROR_PRINT(e.what()) ;
             return false ;
         }
         return true ;
@@ -59,7 +59,7 @@ namespace ioParams
     inline static const auto _get_v(const json& json_parser, T2&& path) noexcept {
         try {return json_parser.at(json::json_pointer("/" + path + "/value")).get<T1>() ;}
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << ", not found " << path << " (ioParams::_get_v)\n" ;
+            ERROR_PRINT(std::string(e.what()) + ", not found " + path) ;
             return T1{0} ;
         }
     }
@@ -83,8 +83,8 @@ namespace ioParams
     const wxString get_label(const std::string path) noexcept {
         try {return wxString::FromUTF8(parser.at(json::json_pointer("/" + path + "/" + get_vs("ui_lang"))).get<std::string>().c_str()) ;}
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << ", not found " << path << " (ioParams::get_label)\n" ;
-            return wxT("ERROR") ;
+            ERROR_PRINT(std::string(e.what()) + ", not found " + path) ;
+            return wxT("ERROR_PRINT") ;
         }
     }
 
@@ -103,7 +103,7 @@ namespace ioParams
                     v.push_back(std::move(i)) ;
                 }
                 catch(const std::exception& e) {
-                    ERROR_STREAM << e.what() << "not found item (ioParams::_get_choices)\n" ;
+                    ERROR_PRINT(std::string(e.what()) + "not found item") ;
                     continue ;
                 }
             }
@@ -111,7 +111,7 @@ namespace ioParams
             return v ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << "failed loading choices (" << path << ") (ioParams::get__choices)\n" ;
+            ERROR_PRINT("failed loading choices (" + path + ")") ;
             return choices_t{} ;
         }
     }
@@ -155,7 +155,7 @@ namespace ioParams
             node = ar ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << "failed loading choices (" << path << ") (ioParams::set)\n" ;
+            ERROR_PRINT("failed loading choices (" + path + ")") ;
             return ;
         }
     }
@@ -164,7 +164,7 @@ namespace ioParams
     inline static void _set(T1&& path, const T2 value) noexcept {
         try {parser.at(json::json_pointer("/" + path + "/value")) = value ;}
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << ", failed to store value at " << path << " (ioParams::_set)\n" ;
+            ERROR_PRINT(std::string(e.what()) + ", failed to store value at " + path) ;
         }
     }
 

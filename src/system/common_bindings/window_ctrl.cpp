@@ -293,20 +293,20 @@ bool OpenNewCurrentWindow::common_process()
 
     HANDLE hproc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, proc_id) ;
     if(!hproc) {
-        WIN_ERROR_STREAM << "(OpenNewCurrentWindow::OpenProcess)\n" ;
+        WIN_ERROR_PRINT("cannot open process") ;
         return false ;
     }
 
     HMODULE hmod = NULL ;
     DWORD cbneed = 0 ;
     if(!EnumProcessModules(hproc, &hmod, sizeof(HMODULE), &cbneed)) {
-        WIN_ERROR_STREAM << "(OpenNewCurrentWindow::EnumProcessModules)\n" ;
+        WIN_ERROR_PRINT("cannot enumerate process modules") ;
         return false ;
     }
 
     TCHAR path[MAX_PATH] = {0} ;
     if(!GetModuleFileNameEx(hproc, hmod, path, MAX_PATH)) {
-        WIN_ERROR_STREAM << "cannot get a process path of current window (OpenNewCurrentWindow::common_process::GetModuleFileNameEx)\n" ;
+        WIN_ERROR_PRINT("cannot get a process path of current window") ;
         return false ;
     }
 
@@ -322,7 +322,7 @@ bool OpenNewCurrentWindow::common_process()
     if(!CreateProcess(
         NULL, path, NULL, NULL, FALSE,
         CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
-        WIN_ERROR_STREAM << ", cannot call \"" << path << "\"" << " (OpenNewCurrentWindow:::common_process::CreateProcess)\n" ;
+        WIN_ERROR_PRINT(", cannot call \"" + std::string(path) + "\"") ;
         return false ;
     }
     return true ;

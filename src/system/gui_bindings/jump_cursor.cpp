@@ -129,10 +129,6 @@ namespace JumpCursorUtility
     static float max_keybrd_xposs = 0 ;
     static float max_keybrd_yposs = 0 ;
 
-    inline static void write_error(const string& buf, const string& filename) {
-        ERROR_STREAM << buf << " is bad syntax in " << filename << ". (JumpCursorUtility::load_config)\n" ;
-    }
-
     using key_pos_t = std::array<float, 256> ;
     static key_pos_t _xposs{} ;
     static key_pos_t _yposs{} ;
@@ -162,7 +158,7 @@ namespace JumpCursorUtility
                 const auto vec = Utility::split(buf, " ") ;
 
                 if(vec.size() != 3) {
-                    write_error(buf, filename) ;
+                    ERROR_PRINT(buf + " is bad syntax in " + filename + ".") ;
                     continue ;
                 }
 
@@ -202,11 +198,11 @@ namespace JumpCursorUtility
                     }
                 }
 
-                write_error(buf, filename) ;
+                ERROR_PRINT(buf + " is bad syntax in " + filename + ".") ;
             }
         }
         catch(const exception& e) {
-            ERROR_STREAM << "std::fstream: " <<  e.what() << " (JumpCursorUtility::load_config)\n" ;
+            ERROR_PRINT("std::fstream: " + std::string(e.what())) ;
             return ;
         }
     }
@@ -268,7 +264,7 @@ bool Jump2Any::sprocess(const bool first_call)
 
                 for(const auto& key : log) {
                     if(!KeybrdEventer::release_keystate(key)) {
-                        ERROR_STREAM << "failed release key (Jump2Any::is_release_keystate)\n" ;
+                        ERROR_PRINT("failed release key") ;
                         return false ;
                     }
                 }
@@ -297,14 +293,13 @@ bool Jump2ActiveWindow::sprocess(const bool first_call)
 
     const auto hwnd = GetForegroundWindow() ;
     if(!hwnd) {
-        WIN_ERROR_STREAM << "GetForegoundWindow return nullptr "\
-        << " (bf_jump_cursor.cpp::Jump2ActiveWindow::do_process::GetForegroundWindow)\n" ;
+        WIN_ERROR_PRINT("GetForegoundWindow return nullptr") ;
         return false ;
     }
 
     RECT rect ;
     if(!GetWindowRect(hwnd, &rect)) {
-        WIN_ERROR_STREAM << " (bf_jump_cursor.cpp::Jump2ActiveWindow::do_process::GetWindowRect)\n" ;
+        WIN_ERROR_PRINT("cannot get window rect") ;
         return false ;
     }
 

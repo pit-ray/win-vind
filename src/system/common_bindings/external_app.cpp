@@ -40,8 +40,7 @@ namespace ExAppUtility
             return map ;
         }
         catch(const std::exception& e) {
-            ERROR_STREAM << e.what() << ", failed loading external app list (" \
-            << Path::SETTINGS() <<") (ExAppUtility::_load_proc_list_core)\n" ;
+            ERROR_PRINT(std::string(e.what()) + ", failed loading external app list (" + Path::SETTINGS() + ")") ;
             return map ;
         }
     }
@@ -65,8 +64,7 @@ namespace ExAppUtility
             return "\"" + origin + "\"" ;
         }
         catch(const out_of_range& e) {
-            ERROR_STREAM << "Not an external-application command : " << name \
-            << " (ExAppUtility::get_protected_path)\n" ;
+            ERROR_PRINT("Not an external-application command : " + name) ;
             return string{} ;
         }
     }
@@ -83,8 +81,7 @@ namespace ExAppUtility
         if(!CreateProcessA(
             NULL, const_cast<LPSTR>(path.c_str()), NULL, NULL, FALSE,
             CREATE_NEW_CONSOLE, NULL, Path::HOME_PATH().c_str(), &si, &pi)) {
-            WIN_ERROR_STREAM << "cannot call \"" << path << "\"" \
-            << " (ExAppUtility::create_process)\n" ;
+            WIN_ERROR_PRINT("cannot call \"" + path + "\"") ;
             return false ;
         }
         return true ;

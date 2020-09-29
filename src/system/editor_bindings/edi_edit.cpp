@@ -4,12 +4,18 @@
 #include <memory>
 #include <windows.h>
 
-#include "keybrd_eventer.hpp"
-#include "mode_manager.hpp"
-#include "simpl_text_selecter.hpp"
-#include "msg_logger.hpp"
-#include "keystroke_repeater.hpp"
 #include "edi_change_mode.hpp"
+#include "keybrd_eventer.hpp"
+#include "keystroke_repeater.hpp"
+#include "mode_manager.hpp"
+#include "msg_logger.hpp"
+#include "simpl_text_selecter.hpp"
+#include "text_analyzer.hpp"
+#include "utility.hpp"
+#include "smart_clipboard.hpp"
+#include "system.hpp"
+#include "key_logger.hpp"
+#include "key_binder.hpp"
 
 namespace ECBUtility
 {
@@ -20,6 +26,73 @@ namespace ECBUtility
     } ;
 
     static _RegisteredType _rgtype{_RegisteredType::None} ;
+
+    //Some editors have a visible EOL mark in a line.
+    //This function select text from current position to EOL, except for the visible EOL mark.
+    //If the line has only null characters, it does not select.
+    //  <EOL mark exists> [select] NONE    [clipboard] null characters with EOL.    (neighborhoods of LSB are 0x00)
+    //  <plain text>      [select] NONE    [clipboard] null characters without EOL. (neighborhoods of LSB are 0x?0)
+    inline bool select_line_until_EOL(const TextAnalyzer::SelRes* const exres) noexcept {
+        using namespace KeybrdEventer ;
+        if(exres != nullptr) {
+            if(!pushup(VKC_LSHIFT, VKC_END)) {
+                return false ;
+            }
+            if(exres->having_EOL) {
+                if(!pushup(VKC_LSHIFT, VKC_LEFT)) {
+                    return false ;
+                }
+                if(exres->str.empty()) {
+                    return false ; //not selected (true text is only null text)
+                }
+            }
+            return true ; //selected
+        }
+
+        if(auto res = TextAnalyzer::get_selected_text([] {
+                if(!pushup(VKC_LSHIFT, VKC_END)) {
+                    return false ;
+                }
+                if(!pushup(VKC_LCTRL, VKC_INSERT)) {
+                    return false ;
+                }
+                return true ;
+            })) {
+
+            if(res.having_EOL) {
+                if(!pushup(VKC_LSHIFT, VKC_LEFT)) {
+                    return false ;
+                }
+                if(res.str.empty()) {
+                    return false ;
+                }
+            }
+            return true ;
+        }
+        return false ;
+    }
+
+    inline bool copy_null() noexcept {
+        const auto hwnd = GetForegroundWindow() ;
+        if(!hwnd) {
+            WIN_ERROR_PRINT("not exist active window") ;
+            return false ;
+        }
+
+        SmartClipboard scb(hwnd) ;
+        if(!scb.open()) {
+            return false ;
+        }
+        if(!scb.set("")) {
+            return false ;
+        }
+
+        if(!scb.close()) {
+            return false ;
+        }
+
+        return true ;
+    }
 }
 
 
@@ -61,19 +134,21 @@ const std::string EdiNCopyLine::sname() noexcept
 {
     return "edi_n_copy_line" ;
 }
-bool EdiNCopyLine::sprocess(const bool first_call)
+bool EdiNCopyLine::sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres)
 {
     if(!first_call) {
         return true ;
     }
     using KeybrdEventer::pushup ;
-
     if(!pushup(VKC_HOME)) {
         return false ;
     }
-    if(!pushup(VKC_LSHIFT, VKC_END)) {
-        return false ;
+    if(!ECBUtility::select_line_until_EOL(exres)) {
+        if(!ECBUtility::copy_null()) {
+            return false ;
+        }
     }
+
     if(!pushup(VKC_LCTRL, VKC_INSERT)) {
         return false ;
     }
@@ -256,12 +331,17 @@ namespace ECBUtility
         if(!pushup(VKC_LCTRL, VKC_X)) {
             return false ;
         }
+        if(!pushup(VKC_DELETE)) {
+            return false ;
+        }
+        /*
         if(!pushup(VKC_BKSPACE)) {
             return false ;
         }
         if(!pushup(VKC_LCTRL, VKC_RIGHT)) {
             return false ;
         }
+        */
 
         return true ;
     }
@@ -313,9 +393,9 @@ const std::string EdiNDeleteLine::sname() noexcept
 {
     return "edi_n_delete_line" ;
 }
-bool EdiNDeleteLine::sprocess(const bool first_call) const
+bool EdiNDeleteLine::sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres) const
 {
-    auto del = [] {
+    auto del = [exres] {
         if(ECBUtility::delete_line_when_selecting()) {
             return true ;
         }
@@ -325,13 +405,15 @@ bool EdiNDeleteLine::sprocess(const bool first_call) const
             return false ;
         }
 
-        using KeybrdEventer::pushup ;
-        if(!pushup(VKC_HOME)) {
+        if(!KeybrdEventer::pushup(VKC_HOME)) {
             return false ;
         }
-        if(!pushup(VKC_LSHIFT, VKC_END)) {
-            return false ;
+        if(!ECBUtility::select_line_until_EOL(exres)) {
+            if(!ECBUtility::copy_null()) {
+                return false ;
+            }
         }
+
         if(!ECBUtility::delete_line()) {
             return false ;
         }
@@ -367,17 +449,19 @@ const std::string EdiNDeleteLineUntilEOL::sname() noexcept
 {
     return "edi_n_delete_line_until_EOL" ;
 }
-bool EdiNDeleteLineUntilEOL::sprocess(const bool first_call) const
+bool EdiNDeleteLineUntilEOL::sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres) const
 {
-    auto del = [] {
+    auto del = [exres] {
         if(ECBUtility::delete_line_when_selecting()) {
             return true ;
         }
 
         //not select
         using KeybrdEventer::pushup ;
-        if(!pushup(VKC_LSHIFT, VKC_END)) {
-            return false ;
+        if(!ECBUtility::select_line_until_EOL(exres)) {
+            if(!ECBUtility::copy_null()) {
+                return false ;
+            }
         }
         if(!pushup(VKC_LCTRL, VKC_X)) {
             return false ;
@@ -487,5 +571,172 @@ bool EdiNDeleteBefore::sprocess(const bool first_call) const
     if(pimpl->ksr.is_pressed()) {
         return del() ;
     }
+    return true ;
+}
+
+
+//EdiDeleteMotionAndStartInsert
+const std::string EdiDeleteMotionAndStartInsert::sname() noexcept
+{
+    return "edi_delete_motion_and_start_insert" ;
+}
+bool EdiDeleteMotionAndStartInsert::sprocess(const bool first_call)
+{
+    /*
+     * NOT IMPLEMENTED YET
+     *
+     */
+    if(!first_call) return true ;
+
+    KeyLogger logger ;
+    MSG msg ;
+    POINT pos ;
+    if(!GetCaretPos(&pos)) {
+        return false ;
+    }
+    std::cout << "x: " << pos.x << ", y: " << pos.y << std::endl ;
+
+    while(true) {
+        Sleep(10) ;
+
+        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+            TranslateMessage(&msg) ;
+        }
+
+        if(!logger.is_changed_code()) {
+            logger.remove_from_back(1) ;
+            continue ;
+        }
+        if(KeyBinder::is_invalid_log(logger, KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
+            logger.remove_from_back(1) ;
+            continue ;
+        }
+
+        if(auto func = KeyBinder::find_keybinds(logger)) {
+            //skip itself
+            if(func->name() == sname()) {
+                continue ;
+            }
+
+            if(func->is_callable()) {
+                std::cout << func->name() << " is matched\n" ;
+                func->process(true) ;
+                break ;
+            }
+        }
+        else {
+            logger.clear() ;
+        }
+    }
+
+    return true ;
+}
+
+
+//EdiDeleteLinesAndStartInsert
+const std::string EdiDeleteLinesAndStartInsert::sname() noexcept
+{
+    return "edi_delete_lines_and_start_insert" ;
+}
+
+bool EdiDeleteLinesAndStartInsert::sprocess(const bool first_call)
+{
+    if(!first_call) return true ;
+
+    if(!KeyAbsorber::close_with_refresh()) {
+        ERROR_PRINT("cannot refresh key-abosorber.") ;
+        return false ;
+    }
+
+    if(auto res = TextAnalyzer::get_selected_text([] {
+        if(!KeybrdEventer::pushup(VKC_HOME)) {
+            return false ;
+        }
+        if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_END)) {
+            return false ;
+        }
+        if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_INSERT)) {
+            return false ;
+        }
+        return true ;
+    })) {
+
+        if(res.str.empty()) {
+            return Change2EdiInsert::sprocess(true) ;
+        }
+
+        const auto pos = res.str.find_first_not_of(" \t") ; //position except for space or tab
+        if(pos == std::string::npos) { //space only
+            return Change2EdiEOLInsert::sprocess(true) ;
+        }
+
+        if(!KeybrdEventer::pushup(VKC_HOME)) {
+            return false ;
+        }
+
+        if(pos == 0) {
+            return EdiDeleteUntilEOLAndStartInsert::sprocess(true, &res) ;
+        }
+
+        if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT)) {
+            return false ;
+        }
+        if(!EdiDeleteUntilEOLAndStartInsert::sprocess(true, &res)) {
+            return false ;
+        }
+    }
+
+    return true ;
+}
+
+
+//EdiDeleteCharsAndStartInsert
+const std::string EdiDeleteCharsAndStartInsert::sname() noexcept
+{
+    return "edi_delete_chars_and_start_insert" ;
+}
+bool EdiDeleteCharsAndStartInsert::sprocess(const bool first_call)
+{
+    if(!first_call) return true ;
+
+    if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT)) {
+        return false ;
+    }
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_X)) {
+        return false ;
+    }
+    ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
+
+    if(!Change2EdiInsert::sprocess(true)) {
+        return false ;
+    }
+
+    return true ;
+}
+
+
+//EdiDeleteUntilEOLAndStartInsert
+const std::string EdiDeleteUntilEOLAndStartInsert::sname() noexcept
+{
+    return "edi_delete_until_eol_and_start_insert" ;
+}
+bool EdiDeleteUntilEOLAndStartInsert::sprocess(const bool first_call, const TextAnalyzer::SelRes* const exres)
+{
+    if(!first_call) return true ;
+
+    if(!ECBUtility::select_line_until_EOL(exres)) {
+        if(!ECBUtility::copy_null()) {
+            return false ;
+        }
+    }
+    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_X)) {
+        return false ;
+    }
+    ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
+
+    if(!Change2EdiInsert::sprocess(true)) {
+        return false ;
+    }
+
     return true ;
 }

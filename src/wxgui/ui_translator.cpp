@@ -22,12 +22,12 @@ namespace UITrans
                 ifs >> j ;
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << ", failed loading ui.json (UITranslator::trans)\n" ;
+                ERROR_PRINT(std::string(e.what()) + ", failed loading ui.json") ;
             }
             return j ;
         } ;
         static const auto j = init(Path::Default::UI()) ;
-        static constexpr auto error_str = wxT("ERROR") ;
+        static constexpr auto error_str = wxT("ERROR_PRINT") ;
 
         if(j.empty()) {
             return error_str ;
@@ -48,7 +48,7 @@ namespace UITrans
                 }
             }
             catch(const std::exception& e2) {
-                ERROR_STREAM << e2.what() << ", not found (UITranslator::trans)\n" ;
+                ERROR_PRINT(std::string(e2.what()) + ", not found") ;
                 return error_str ;
             }
         }

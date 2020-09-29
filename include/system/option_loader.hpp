@@ -1,29 +1,10 @@
 #ifndef _OPTION_LOADER_HPP
 #define _OPTION_LOADER_HPP
 
-#include <memory>
-#include <string>
-#include <vector>
-
-class KeyBinder ;
-class OptionLoader
+namespace OptionLoader
 {
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
-
-public:
-    explicit OptionLoader() ;
-    virtual ~OptionLoader() noexcept ;
-
     void load_config() noexcept ;
-    void update() noexcept ;
-
-    OptionLoader(OptionLoader&&) = delete ;
-    OptionLoader& operator=(OptionLoader&&) = delete ;
-    OptionLoader(const OptionLoader&) = delete ;
-    OptionLoader& operator=(const OptionLoader&) = delete ;
-} ;
-
+    void call_active_funcs() noexcept ;
+}
 
 #endif

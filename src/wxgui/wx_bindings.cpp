@@ -127,7 +127,7 @@ namespace wxGUI
                 ifs >> parser ;
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << "(wxGUI::BindingsPanel::load_config)\n" ;
+                ERROR_PRINT(e.what()) ;
                 return false ;
             }
             return true ;
@@ -139,7 +139,7 @@ namespace wxGUI
                 ofs << std::setw(4) << parser << std::endl ;
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << "(wxGUI::BindingsPanel::save_config)\n" ;
+                ERROR_PRINT(e.what()) ;
                 return false ;
             }
             return true ;
@@ -257,7 +257,7 @@ namespace wxGUI
                 }
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << " (BindingsPanel::BindingsPanel::BIND(ADD_KEY))\n" ;
+                ERROR_PRINT(e.what()) ;
             }
 
             pimpl->new_key->Clear() ;
@@ -274,7 +274,7 @@ namespace wxGUI
             pimpl->keys->Delete(index) ;
             try{pimpl->parser.at(func_index).at("key").erase(index) ;}
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << " (BindingsPanel::BindingsPanel::BIND(DEL_KEY))\n" ;
+                ERROR_PRINT(e.what()) ;
             }
         }, BindingsEvt::DEL_KEY) ;
 
@@ -294,7 +294,7 @@ namespace wxGUI
                 }
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << " (BindingsPanel::BindingsPanel::BIND(ADD_CMD))\n" ;
+                ERROR_PRINT(e.what()) ;
             }
 
             pimpl->new_cmd->Clear() ;
@@ -330,7 +330,7 @@ namespace wxGUI
                 pimpl->update_shown_details() ;
             }
             catch(const std::exception& e) {
-                ERROR_STREAM << e.what() << "(wxGUI::BindingsPanel, BindingsEvt::DEFAULT)\n" ;
+                ERROR_PRINT(std::string(e.what()) + "BindingsEvt::DEFAULT)") ;
                 return ;
             }
         }, BindingsEvt::DEFAULT) ;

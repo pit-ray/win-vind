@@ -51,11 +51,11 @@ namespace wxGUI
         }
 
         if(!System::init()) {
-            ERROR_STREAM << "failed initializing system (wxGUI::App)\n" ;
+            ERROR_PRINT("failed initializing system") ;
             return false ;
         }
         if(!ioParams::load_config()) {
-            ERROR_STREAM << "failed loading config (wxGUI::App)\n" ;
+            ERROR_PRINT("failed loading config") ;
             return false ;
         }
 

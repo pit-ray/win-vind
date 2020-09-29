@@ -124,14 +124,14 @@ namespace wxGUI
             p->save_config() ;
         }
         if(!ioParams::save_config()) {
-            ERROR_STREAM << "failed saving config(wxGUI/PropDlg::save_config)\n" ;
+            ERROR_PRINT("failed saving config") ;
         }
         pimpl->translate() ;
     }
 
     void PropDlg::load_config() {
         if(!ioParams::load_config()) {
-            ERROR_STREAM << " failed loading config (wxGUI::PropDlg::Show)\n" ;
+            ERROR_PRINT(" failed loading config") ;
         }
         pimpl->translate() ;
         SetLabel(trans("notify/preferences")) ;
@@ -141,7 +141,7 @@ namespace wxGUI
         }
 
         if(!SetForegroundWindow(GetHandle())) {
-            WIN_ERROR_STREAM << "Preferences Window was not brought to the foreground\n" ;
+            WIN_ERROR_PRINT("Preferences Window was not brought to the foreground") ;
         } //shown as most top window
     }
 

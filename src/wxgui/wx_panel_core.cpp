@@ -11,10 +11,10 @@ namespace wxGUI
       uip(std::move(ui_path_code))
     {
         if(!p_book_ctrl) {
-            ERROR_STREAM << "the passed wxBookCtrlBase* is nullptr (wxGUI::PanelCore::PanelCore)\n" ;
+            ERROR_PRINT("the passed wxBookCtrlBase* is nullptr") ;
             return ;
         }
-        pbk->AddPage(this, wxT("ERROR")) ;
+        pbk->AddPage(this, wxT("ERROR_PRINT")) ;
     }
     PanelCore::~PanelCore() noexcept = default ;
 

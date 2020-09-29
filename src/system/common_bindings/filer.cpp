@@ -82,7 +82,7 @@ namespace FilerUtility
         }
 
         if(FAILED(CoInitialize(NULL))) {
-            WIN_ERROR_STREAM << "initialization is failed (MakeDir::CoInitialize)\n" ;
+            WIN_ERROR_PRINT("initialization is failed") ;
             return path_t() ;
         }
 
@@ -95,7 +95,7 @@ namespace FilerUtility
             IID_IShellWindows,
             reinterpret_cast<void**>(&raw_psw)
         ))) {
-            WIN_ERROR_STREAM << " cannot create IShellWindows. (MakeDir::CoCreateInstance)\n" ;
+            WIN_ERROR_PRINT("cannot create IShellWindows.") ;
             return path_t() ;
         }
         auto sw_deleter = [](IShellWindows* ptr) {ptr->Release() ;} ;
@@ -103,7 +103,7 @@ namespace FilerUtility
 
         long win_num = 0 ;
         if(FAILED(psw->get_Count(&win_num))) {
-            WIN_ERROR_STREAM << "No explorer is opened. (MakeDir::IShellWindows::get_Count)\n" ;
+            WIN_ERROR_PRINT("No explorer is opened.") ;
             return path_t() ;
         }
 
@@ -138,7 +138,7 @@ namespace FilerUtility
             //access to shell window
             IServiceProvider* raw_psp = nullptr ;
             if(FAILED(pwba->QueryInterface(IID_IServiceProvider, reinterpret_cast<void**>(&raw_psp)))) {
-                WIN_ERROR_STREAM << "cannot access a top service provider. (MakeDir::IWebBrowserApp::QueryInterface\n)" ;
+                WIN_ERROR_PRINT("cannot access a top service provider.") ;
                 return path_t() ;
             }
             auto sp_deleter = [](IServiceProvider* ptr) {ptr->Release() ;} ;
@@ -147,7 +147,7 @@ namespace FilerUtility
             //access to shell browser
             IShellBrowser* raw_psb = nullptr ;
             if(FAILED(psp->QueryService(SID_STopLevelBrowser, IID_IShellBrowser, reinterpret_cast<void**>(&raw_psb)))) {
-                WIN_ERROR_STREAM << "cannot access a shell browser. (MakeDir::IServiceProvider::QueryService\n)" ;
+                WIN_ERROR_PRINT("cannot access a shell browser.") ;
                 return path_t() ;
             }
             auto sb_deleter = [](IShellBrowser* ptr) {ptr->Release() ;} ;
@@ -156,7 +156,7 @@ namespace FilerUtility
             //access to shell view
             IShellView* raw_psv = nullptr ;
             if(FAILED(psb->QueryActiveShellView(&raw_psv))) {
-                WIN_ERROR_STREAM << "cannot access a shell view. (MakeDir::IShellBrowser::QueryActiveShellView\n)" ;
+                WIN_ERROR_PRINT("cannot access a shell view.") ;
                 return path_t() ;
             }
             auto sv_deleter = [](IShellView* ptr) {ptr->Release() ;} ;
@@ -165,7 +165,7 @@ namespace FilerUtility
             //get IFolerView Interface
             IFolderView* raw_pfv = nullptr ;
             if(FAILED(psv->QueryInterface(IID_IFolderView, reinterpret_cast<void**>(&raw_pfv)))) {
-                WIN_ERROR_STREAM << "cannot access a foler view. (MakeDir::IShellView::QueryInterface\n)" ;
+                WIN_ERROR_PRINT("cannot access a foler view.") ;
                 return path_t() ;
             }
             auto fv_deleter = [](IFolderView* ptr) {ptr->Release() ;} ;
@@ -174,7 +174,7 @@ namespace FilerUtility
             //get IPersistantFolder2 in order to use GetCurFolder method
             IPersistFolder2* raw_ppf2 = nullptr ;
             if(FAILED(pfv->GetFolder(IID_IPersistFolder2, reinterpret_cast<void**>(&raw_ppf2)))) {
-                WIN_ERROR_STREAM << "cannot access a persist folder 2. (MakeDir::IFolderView::GetFolder\n)" ;
+                WIN_ERROR_PRINT("cannot access a persist folder 2.") ;
                 return path_t() ;
             }
             auto pf2_deleter = [](IPersistFolder2* ptr) {ptr->Release() ;} ;
@@ -182,7 +182,7 @@ namespace FilerUtility
 
             LPITEMIDLIST raw_pidl = nullptr ;
             if(FAILED(ppf2->GetCurFolder(&raw_pidl))) {
-                WIN_ERROR_STREAM << "cannot get current folder. (MakeDir::IPersistFolder::GetCurFolder\n)" ;
+                WIN_ERROR_PRINT("cannot get current folder.") ;
                 return path_t() ;
             }
             auto idl_deleter = [](ITEMIDLIST* ptr) {CoTaskMemFree(ptr) ;} ;
@@ -191,7 +191,7 @@ namespace FilerUtility
             //convert to path
             TCHAR path[MAX_PATH] = {0} ;
             if(!SHGetPathFromIDList(pidl.get(), path)) {
-                WIN_ERROR_STREAM << "cannot convert an item ID to a file system path. (MakeDir::SHGetPathFromIDList\n)" ;
+                WIN_ERROR_PRINT("cannot convert an item ID to a file system path.") ;
                 return path_t() ;
             }
 
@@ -206,18 +206,15 @@ bool MakeDir::sprocess(const string cmd)
 {
     auto catch_error = [](auto&& path) {
         const auto ercode = GetLastError() ;
-        ERROR_STREAM << "windows.h: " << ercode << ", " ;
-
         if(ercode == ERROR_ALREADY_EXISTS) {
-            Logger::error_stream << "This directory is already existed." ;
+            WIN_ERROR_PRINT("This directory is already existed. (" + path + ")") ;
         }
         else if(ercode == ERROR_PATH_NOT_FOUND) {
-            Logger::error_stream << "This path is not found." ;
+            WIN_ERROR_PRINT("This path is not found. (" + path + ")") ;
         }
         else {
-            Logger::error_stream << "Cannot make directory." ;
+            WIN_ERROR_PRINT("Cannot make directory. (" + path + ")") ;
         }
-        Logger::error_stream << " (" << path << "). (MakeDir::CreateDirectory)\n" ;
     } ;
 
     const auto pos = cmd.find_first_of(" ") ;

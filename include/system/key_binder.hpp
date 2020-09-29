@@ -1,33 +1,24 @@
 #ifndef _KEY_BINDER_HPP
 #define _KEY_BINDER_HPP
 
-#include <memory>
-#include <string>
-#include <vector>
-
-#include "key_binding.hpp"
 #include "command.hpp"
+#include "key_binding.hpp"
 
-class KeyBinder
+namespace KeyBinder
 {
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    void init() ;
 
-    void update_core() noexcept ;
-    void update_core_cmd() noexcept ;
+    enum InvalidPolicy {
+        None,
+        AllSystemKey,
+        UnbindedSystemKey
+    } ;
 
-public:
-    explicit KeyBinder() ;
-    virtual ~KeyBinder() noexcept ;
+    bool is_invalid_log(KeyLogger& logger, const InvalidPolicy ip=InvalidPolicy::AllSystemKey) noexcept ;
+    const kbg::shp_t find_keybinds(const KeyLogger& logger) noexcept ;
 
     void load_config() noexcept ;
-    void update() noexcept ;
-
-    KeyBinder(KeyBinder&&) = delete ;
-    KeyBinder& operator=(KeyBinder&&) = delete ;
-    KeyBinder(const KeyBinder&) = delete ;
-    KeyBinder& operator=(const KeyBinder&) = delete ;
-} ;
+    void call_matched_funcs() noexcept ;
+}
 
 #endif

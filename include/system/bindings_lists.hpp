@@ -1,35 +1,33 @@
-#ifndef _KEY_BINDER_LIST_HPP
-#define _KEY_BINDER_LIST_HPP
+#ifndef _BINDINGS_LISTS_HPP
+#define _BINDINGS_LISTS_HPP
 
 #include <vector>
 
-#include "move_cursor.hpp"
-#include "jump_cursor.hpp"
-#include "scroll.hpp"
-#include "click.hpp"
 #include "change_mode.hpp"
-#include "undo.hpp"
+#include "click.hpp"
 #include "clipboard.hpp"
-#include "switch_vdesktop.hpp"
+#include "command_mode.hpp"
+#include "jump_cursor.hpp"
+#include "move_cursor.hpp"
+#include "scroll.hpp"
 #include "search_pattern.hpp"
 #include "select.hpp"
+#include "switch_vdesktop.hpp"
+#include "undo.hpp"
 
 #include "edi_change_mode.hpp"
-#include "edi_move_caret.hpp"
-#include "edi_jump_caret.hpp"
 #include "edi_edit.hpp"
-#include "edi_replace.hpp"
+#include "edi_jump_caret.hpp"
 #include "edi_layout.hpp"
+#include "edi_move_caret.hpp"
+#include "edi_replace.hpp"
 
-#include "window_ctrl.hpp"
 #include "pager.hpp"
-#include "filer.hpp"
-#include "external_app.hpp"
-#include "mywindow_ctrl.hpp"
+#include "window_ctrl.hpp"
 
 #include "dedicate_to_window_ctrl.hpp"
 
-namespace KeyBinderList {
+namespace BindingsLists {
 
     const auto normal() {
         std::vector<kbg::shp_t> tmp {
@@ -38,6 +36,8 @@ namespace KeyBinderList {
             Change2Visual::create(),
             Change2Editor::create(),
             Change2Command::create_with_cache(),
+
+            CommandMode::create_with_cache(),
 
             SelectAll::create(),
 
@@ -167,6 +167,8 @@ namespace KeyBinderList {
             Change2EdiVisual::create(),
             Change2EdiLineVisual::create(),
 
+            CommandMode::create_with_cache(),
+
             EdiNCopyLine::create(),
             EdiNPasteAfter::create_with_cache(),
             EdiNPasteBefore::create_with_cache(),
@@ -211,6 +213,11 @@ namespace KeyBinderList {
             EdiJumpCaret2EOL::create_with_cache(),
             EdiNJumpCaret2Line_DfBOF::create_with_cache(),
             EdiNJumpCaret2Line_DfEOF::create_with_cache(),
+
+            EdiDeleteMotionAndStartInsert::create(),
+            EdiDeleteLinesAndStartInsert::create(),
+            EdiDeleteCharsAndStartInsert::create(),
+            EdiDeleteUntilEOLAndStartInsert::create(),
 
             EnableTargetingOfDedicate2Window::KeyBindingWithCreator::create_with_cache(),
             DisableTargetingOfDedicate2Window::KeyBindingWithCreator::create_with_cache()
@@ -271,32 +278,6 @@ namespace KeyBinderList {
             EdiJumpCaret2EOL::create_with_cache(),
             EdiNJumpCaret2Line_DfBOF::create_with_cache(),
             EdiNJumpCaret2Line_DfEOF::create_with_cache()
-        } ;
-        return tmp ;
-    }
-
-
-    const auto command() {
-        std::vector<cmd::shp_t> tmp {
-            SaveOpenedFile::create(),
-            CloseOpenedFile::create(),
-            CloseCurrentWindow::CommandWithCreator::create(),
-            SwitchWindow::CommandWithCreator::create(),
-            MaximizeCurrentWindow::CommandWithCreator::create(),
-            MinimizeCurrentWindow::CommandWithCreator::create(),
-            SnapCurrentWindow2Left::CommandWithCreator::create(),
-            SnapCurrentWindow2Right::CommandWithCreator::create(),
-            OpenNewCurrentWindow::CommandWithCreator::create(),
-            ReloadCurrentWindow::create(),
-            StartShell::create(),
-            StartAnyApp::create(),
-            ShowConfigWindow::create(),
-            ExitConfigWindow::create(),
-            OpenOtherFile::create(),
-            MakeDir::create(),
-            EnableTargetingOfDedicate2Window::CommandWithCreator::create(),
-            DisableTargetingOfDedicate2Window::CommandWithCreator::create(),
-            TaskView::CommandWithCreator::create()
         } ;
         return tmp ;
     }

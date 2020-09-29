@@ -14,7 +14,7 @@ struct AutotrackPopup::Impl
         if(!SystemParametersInfo(SPI_GETSNAPTODEFBUTTON, 0,
             reinterpret_cast<PVOID>(&default_flag), 0)) {
 
-            WIN_ERROR_STREAM << "(AutotrackPopup.cpp)\n" ;
+            WIN_ERROR_PRINT("cannot get system flag") ;
         }
     }
 } ;
@@ -28,7 +28,7 @@ namespace APUtility
     inline static const auto is_set_param(const bool new_flag) noexcept
     {
         if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
-            WIN_ERROR_STREAM << "(APUtility::is_set_param, SystemParametersInfo)\n" ;
+            WIN_ERROR_PRINT("cannot set system flag") ;
             return false ;
         }
         return true ;

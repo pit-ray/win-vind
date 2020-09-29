@@ -40,7 +40,7 @@ void DynamicOption::enable() noexcept
     pimpl->flag = true ;
 
     if(!do_enable()) {
-        ERROR_STREAM << "do_enable is failed " << "(" << name() << ")\n" ;
+        ERROR_PRINT("do_enable is failed (" + name() + ")") ;
         return ;
     }
 }
@@ -49,7 +49,7 @@ void DynamicOption::disable() noexcept
 {
     pimpl->flag = false ;
     if(!do_disable()) {
-        ERROR_STREAM << "do_disable is failed " << "(" << name() << ")\n" ;
+        ERROR_PRINT("do_disable is failed (" + name() + ")") ;
         return ;
     }
 }
@@ -64,7 +64,7 @@ void DynamicOption::process() const
     if(!pimpl->flag) return ;
 
     if(!do_process()) {
-        ERROR_STREAM << "do_process is failed " << "(" << name() << ")\n" ;
+        ERROR_PRINT("do_process is failed (" + name() + ")") ;
         return ;
     }
 }

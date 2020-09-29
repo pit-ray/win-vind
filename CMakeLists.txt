@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(win-vind VERSION 2.1.1)
 
 enable_language(CXX)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -77,6 +77,7 @@ else()
     set(WXG_SETCTR_DIR ${WXG_DIR}/settings_ctrls)
     set(WXGUI_SRC
         src/i_params.cpp
+        src/msg_logger.cpp
 
         ${WXG_DIR}/ui_translator.cpp
         ${WXG_DIR}/io_params.cpp

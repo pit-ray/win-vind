@@ -1,130 +1,77 @@
-/*
-
-
-
-                NOT IMPLEMENTED
-
-
-
-
-
-*/
 #include "text_analyzer.hpp"
-#include "msg_logger.hpp"
 
 #include <windows.h>
-#include <richedit.h>
-#include <vector>
 
 #include <iostream>
+#include <memory>
+#include <vector>
 
-//test
-#include "mouse_eventer.hpp"
 #include "keybrd_eventer.hpp"
-
-#define UNICODE_PAGE (1200)
+#include "mouse_eventer.hpp"
+#include "msg_logger.hpp"
+#include "smart_clipboard.hpp"
+#include "utility.hpp"
 
 using namespace std ;
 
 namespace TextAnalyzer{
-
-    static vector<vector<DWORD32>> textmap ;
-
-    inline static void disp_error_msg() noexcept {
-        Logger::error_stream << "[Error] windows.h: " \
-        << GetLastError() << " (text_analyzer.cpp)\n" ;
-    }
-
-    bool is_update() noexcept {
-        POINT pos{0, 0} ;
-        if(!GetCursorPos(&pos)) {
-            disp_error_msg() ;
-            return false ;
-        }
-
-        const auto hwnd = WindowFromPoint(pos) ;
-
-        TCHAR buf[1000] ;
-        //GetWindowText(hwnd, buf, 1000) ;
-        SendMessage(hwnd, WM_GETTEXT, 1000, reinterpret_cast<LPARAM>(buf)) ;
-
-        cout << buf << endl ;
-
-        return true ;
-    }
-    /*
-    in order to get text of edit control,
-    use CTRL + A and Clipboard control.
-    in addition, create text map from all text data,
-    it is avaiable to move cursor, jump, search word, etc...
-    */
-
-    class SmartClipboard
-    {
-    private:
-        HWND hwnd ;
-
-    public:
-        explicit SmartClipboard(HWND handle) : hwnd(handle) {}
-
-        bool is_open() noexcept {
-            if(!OpenClipboard(hwnd)) {
-                return false ;
-            }
-
-            return true ;
-        }
-
-        ~SmartClipboard() {
-            CloseClipboard() ;
-        }
-
-        SmartClipboard(SmartClipboard&&) = delete ;
-        SmartClipboard& operator=(SmartClipboard&&) = delete ;
-
-        SmartClipboard(const SmartClipboard&) = delete ;
-        SmartClipboard& operator=(const SmartClipboard&) = delete ;
-    } ;
-
-    inline static bool _is_included_EOL_in_clipboard() {
-        auto hwnd = GetForegroundWindow() ;
+    const SelRes get_selected_text(std::function<bool()> clip_func, const bool backup) {
+        const auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
-            WIN_ERROR_STREAM << "hwnd loading failed (ECBUtility::GetForegroundWindow)\n" ;
-            return false ;
+            WIN_ERROR_PRINT("not exist active window") ;
+            return SelRes(false) ;
         }
 
         SmartClipboard scb(hwnd) ;
-        if(!scb.is_open()) {
-            WIN_ERROR_STREAM << "cannot open clipboard (ECBUtility::OpenClipboard)\n" ;
-            return false ;
+        if(!scb.open()) {
+            return SelRes(false) ;
         }
 
-        if(!IsClipboardFormatAvailable(CF_TEXT)) {
-            WIN_ERROR_STREAM << "not supported format (ECBUtility::IsClipboardFormatAvailable)\n" ;
-            return false ;
+        if(backup) {
+            if(!scb.backup()) {
+                return SelRes(false) ;
+            }
         }
 
-        auto handle = GetClipboardData(CF_TEXT) ;
-        if(!handle) {
-            WIN_ERROR_STREAM << "cannot get clipboard data (ECBUtility::GetClipboardData)\n" ;
-            return false ;
+        //initialize clipboard
+        if(!scb.set("")) {
+            return SelRes(false) ;
         }
 
-        auto deleter = [](void* ptr) {
-            GlobalUnlock(ptr) ;
-        } ;
-        std::unique_ptr<void, decltype(deleter)> obj_dptr(GlobalLock(handle), deleter) ;
-        if(!obj_dptr) {
-            WIN_ERROR_STREAM << "cannot lock global clipboard data (ECBUtility::GlobalLock)\n" ;
-            return false ;
+        if(!scb.close()) {
+            return SelRes(false) ;
         }
 
-        std::string str(reinterpret_cast<char*>(obj_dptr.get())) ;
-        if(!GlobalUnlock(handle)) {
-            WIN_ERROR_STREAM << "cannot unlock global clipboard data (ECBUtility::GlobalUnLock)\n" ;
-            return false ;
+        //By copy or cut functions, sends text to analyze to clipboard.
+        if(!clip_func()) {
+            return SelRes(false) ;
         }
 
-        return str.back() == '\n' ;
+        //It needs to start reading text in a clipboard,
+        //insofar as having already arrived the copied text
+        //from the editor to a clipboard,
+        //so wait for a little.
+        Sleep(100) ;
+
+        if(!scb.open()) {
+            return SelRes(false) ;
+        }
+
+        SelRes out(true, "", false) ;
+        if(!scb.get_as_str(out.str, out.having_EOL)) {
+            return SelRes(false) ;
+        }
+
+        if(backup) {
+            if(!scb.restore_backup()) {
+                return SelRes(false) ;
+            }
+        }
+
+        if(!scb.close()) {
+            return SelRes(false) ;
+        }
+
+        return out ;
     }
 }

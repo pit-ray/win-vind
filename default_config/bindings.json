@@ -28,7 +28,7 @@
         "ja": "エディタモード"
     },
     {
-        "name": "change_to_command",
+        "name": "command_mode",
         "key": [":"],
         "cmd": [],
         "en": "Command Mode",
@@ -378,6 +378,83 @@
         "ja": "前のページへ戻る"
     },
     {
+        "name": "save_opened_file",
+        "key": [],
+        "cmd": ["w", "w_f", "w_a", "w_c", "up", "wall"],
+        "en": "Save File",
+        "ja": "ファイルを保存"
+    },
+    {
+        "name": "close_opened_file",
+        "key": [],
+        "cmd": ["q", "qa", "q!", "qa!"],
+        "en": "Close Document(Tab)",
+        "ja": "ドキュメント(タブ)を閉じる"
+    },
+    {
+        "name": "start_shell",
+        "key": [],
+        "cmd": ["sh", "shell", "terminal", "term"],
+        "en": "Start Shell",
+        "ja": "ターミナル起動"
+    },
+    {
+        "name": "start_any_app",
+        "key": [],
+        "cmd": ["!*"],
+        "en": "Start App",
+        "ja": "任意のアプリを実行"
+    },
+    {
+        "name": "show_config_window",
+        "key": [],
+        "cmd": ["set", "config"],
+        "en": "Config of win-vind",
+        "ja": "win-vindの設定"
+    },
+    {
+        "name": "exit_config_window",
+        "key": [],
+        "cmd": ["exit"],
+        "en": "Exit win-vind",
+        "ja": "win-vindを終了する"
+    },
+    {
+        "name": "open_other_file",
+        "key": [],
+        "cmd": ["find", "e", "e!", "open", "edit", "edit!"],
+        "en": "Open Other File",
+        "ja": "ファイルを開く"
+    },
+    {
+        "name": "make_dir",
+        "key": [],
+        "cmd": ["mkdir", "md", "mkdir *", "md *"],
+        "en": "Make Directory",
+        "ja": "ディレクトリ作成"
+    },
+    {
+        "name": "reload_current_window",
+        "key": [],
+        "cmd": ["reload"],
+        "en": "Reload Current Window",
+        "ja": "ウィンドウを再読み込み"
+    },
+    {
+        "name": "enable_targeting_of_dedicate_to_window",
+        "key": ["LAlt->LAlt", "F2"],
+        "cmd": ["enable d2w", "e d2w", "target", "d2w on", "set d2w"],
+        "en": "Enable Targeting",
+        "ja": "ターゲティングの有効化"
+    },
+    {
+        "name": "disable_targeting_of_dedicate_to_window",
+        "key": ["RAlt->RAlt", "F10"],
+        "cmd": ["disable d2w", "d d2w", "untarget", "d2w off", "unset d2w"],
+        "en": "Disable Targeting",
+        "ja": "ターゲティングの無効化"
+    },
+    {
         "name": "change_to_edi_normal",
         "key": ["Esc"],
         "cmd": [],
@@ -609,80 +686,31 @@
         "ja": "[E] 置換モード"
     },
     {
-        "name": "save_opened_file",
-        "key": [],
-        "cmd": ["w", "w_f", "w_a", "w_c", "up", "wall"],
-        "en": "Save File",
-        "ja": "ファイルを保存"
+        "name": "edi_delete_motion_and_start_insert",
+        "key": ["c"],
+        "cmd": [],
+        "en": "[E] Delete Text by Motion and Start Insert (NOT RELEASED)",
+        "jp": "[E] 移動でテキストを削除してインサートモード"
     },
     {
-        "name": "close_opened_file",
-        "key": [],
-        "cmd": ["q", "qa", "q!", "qa!"],
-        "en": "Close Document(Tab)",
-        "ja": "ドキュメント(タブ)を閉じる"
+        "name": "edi_delete_lines_and_start_insert",
+        "key": ["c->c", "S"],
+        "cmd": [],
+        "en": "[E] Delete Lines And Start Insert (NOT RELEASED)",
+        "jp": "[E] 行を削除してインサートモード"
     },
     {
-        "name": "start_shell",
-        "key": [],
-        "cmd": ["sh", "shell", "terminal", "term"],
-        "en": "Start Shell",
-        "ja": "ターミナル起動"
+        "name": "edi_delete_chars_and_start_insert",
+        "key": ["s"],
+        "cmd": [],
+        "en": "[E] Delete Chars And Start Insert (NOT RELEASED)",
+        "jp": "[E] 文字を削除してインサートモード"
     },
     {
-        "name": "start_any_app",
-        "key": [],
-        "cmd": ["!*"],
-        "en": "Start App",
-        "ja": "任意のアプリを実行"
-    },
-    {
-        "name": "show_config_window",
-        "key": [],
-        "cmd": ["set", "config"],
-        "en": "Config of win-vind",
-        "ja": "win-vindの設定"
-    },
-    {
-        "name": "exit_config_window",
-        "key": [],
-        "cmd": ["exit"],
-        "en": "Exit win-vind",
-        "ja": "win-vindを終了する"
-    },
-    {
-        "name": "open_other_file",
-        "key": [],
-        "cmd": ["find", "e", "e!", "open", "edit", "edit!"],
-        "en": "Open Other File",
-        "ja": "ファイルを開く"
-    }
-   , {
-        "name": "make_dir",
-        "key": [],
-        "cmd": ["mkdir", "md", "mkdir *", "md *"],
-        "en": "Make Directory",
-        "ja": "ディレクトリ作成"
-    },
-    {
-        "name": "reload_current_window",
-        "key": [],
-        "cmd": ["reload"],
-        "en": "Reload Current Window",
-        "ja": "ウィンドウを再読み込み"
-    },
-    {
-        "name": "enable_targeting_of_dedicate_to_window",
-        "key": ["LAlt->LAlt", "F2"],
-        "cmd": ["enable d2w", "e d2w", "target", "d2w on", "set d2w"],
-        "en": "Enable Targeting",
-        "ja": "ターゲティングの有効化"
-    },
-    {
-        "name": "disable_targeting_of_dedicate_to_window",
-        "key": ["RAlt->RAlt", "F10"],
-        "cmd": ["disable d2w", "d d2w", "untarget", "d2w off", "unset d2w"],
-        "en": "Disable Targeting",
-        "ja": "ターゲティングの無効化"
+        "name": "edi_delete_until_eol_and_start_insert",
+        "key": ["C"],
+        "cmd": [],
+        "en": "[E] Delete Until EOL And Start Insert (NOT RELEASED)",
+        "jp": "[E] 行末まで削除してインサートモード"
     }
 ]

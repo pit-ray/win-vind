@@ -112,10 +112,7 @@ bool KeyBinding::is_callable() const noexcept
 
 void KeyBinding::process(const bool first_call) const
 {
-    //preprocess
     if(!do_process(first_call)) {
-        //error
-        ERROR_STREAM << "do_process is failed " << "(" << name() << ")\n" ;
+        ERROR_PRINT("do_process is failed (" + name() + ")") ;
     }
-    //postpcess
 }

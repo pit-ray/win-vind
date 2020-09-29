@@ -44,7 +44,7 @@ public:
 
     bool add_icon() noexcept {
         if(!Shell_NotifyIconA(NIM_ADD, &nid)) {
-            WIN_ERROR_STREAM << "cannnot setup notification area. (NotifyIcon::add_icon::Shell_NotifyIcon)\n" ;
+            WIN_ERROR_PRINT("cannnot setup notification area.") ;
             return false ;
         }
         return true ;
@@ -52,7 +52,7 @@ public:
 
     bool delete_icon() noexcept {
         if(!Shell_NotifyIconA(NIM_DELETE, &nid)) {
-            WIN_ERROR_STREAM << "cannnot refresh notification area. (NotifyIcon::delete_icon::Shell_NotifyIcon)\n" ;
+            WIN_ERROR_PRINT("cannnot refresh notification area.") ;
             return false ;
         }
         return true ;

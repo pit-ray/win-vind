@@ -55,7 +55,7 @@ namespace MoveUtility
         in.mi.dy = dy ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(MoveUtility::move_cursor)\n" ;
+            WIN_ERROR_PRINT("cannot send the moving event of the mouse") ;
             return false ;
         }
         return true ;

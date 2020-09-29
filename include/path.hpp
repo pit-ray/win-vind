@@ -13,7 +13,7 @@ namespace Path
     static inline const auto _get_home_path() noexcept {
         char home_path[200] = {0} ;
         if(!GetEnvironmentVariableA("HOMEPATH", home_path, 1000)) {
-            WIN_ERROR_STREAM << "cannot find %HOMEPATH% (DefaultConfig::get_home_path::GetEnviromentVariable)\n" ;
+            WIN_ERROR_PRINT("cannot find %HOMEPATH% in GetEnviromentVariable") ;
             return std::string() ;
         }
         return std::string(home_path) + '\\' ;

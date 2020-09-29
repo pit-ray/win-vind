@@ -23,14 +23,14 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(MouseEventer::click)\n" ;
+            WIN_ERROR_PRINT("cannot send mouse-down event") ;
             return false ;
         }
         //btstate[btcode] = true ;
 
         in.mi.dwFlags = (btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP ;
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << "(MouseEventer::click)\n" ;
+            WIN_ERROR_PRINT("cannot send mouse-up event") ;
             return false ;
         }
 
@@ -48,7 +48,7 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_STREAM << " (MouseEventer::change_btstate)" << endl ;
+            WIN_ERROR_PRINT("cannot change the mouse button state") ;
             return false ;
         }
 

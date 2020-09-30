@@ -582,10 +582,6 @@ const std::string EdiDeleteMotionAndStartInsert::sname() noexcept
 }
 bool EdiDeleteMotionAndStartInsert::sprocess(const bool first_call)
 {
-    /*
-     * NOT IMPLEMENTED YET
-     *
-     */
     if(!first_call) return true ;
 
     KeyLogger logger ;
@@ -594,7 +590,6 @@ bool EdiDeleteMotionAndStartInsert::sprocess(const bool first_call)
     if(!GetCaretPos(&pos)) {
         return false ;
     }
-    std::cout << "x: " << pos.x << ", y: " << pos.y << std::endl ;
 
     while(true) {
         Sleep(10) ;
@@ -674,12 +669,10 @@ bool EdiDeleteLinesAndStartInsert::sprocess(const bool first_call)
             return false ;
         }
 
-        if(pos == 0) {
-            return EdiDeleteUntilEOLAndStartInsert::sprocess(true, &res) ;
-        }
-
-        if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT)) {
-            return false ;
+        for(int i = 0 ; i < static_cast<int>(pos) ; i ++) {
+            if(!KeybrdEventer::pushup(VKC_RIGHT)) {
+                return false ;
+            }
         }
         if(!EdiDeleteUntilEOLAndStartInsert::sprocess(true, &res)) {
             return false ;

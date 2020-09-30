@@ -43,26 +43,7 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">git
 ## TO DO
 Please contribute or request.  
 There are already implemented functions in <a href="https://github.com/pit-ray/win-vind/blob/master/latest_log.md">latest_log.md</a>.
-<br>
-#### Differences with Original Vim
-- `s` / `S` 
-- `cw` / `C`
-- `~`
-- `?` / `/` / `n` / `N`
-- operator commands like `diw`
-- replacing commands like `:s/old/new` or `:%s/old/new/g`
-- `q` (Macro)
-- repeating commands (e.g. `5->h` is equel to `h->h->h->h->h`)  
-- jumping to any line
-- The secure text analyzing system (if win-vind treats columns or lines, it need to anaylze text file. However, I don't know whether the fact that the external application gets other application's resources is good from a security perspective.)
-
-
-#### Useful
-- config saving system when reinstall
-- easy update system
-
-#### Bugs
--
+Please refer to ~~.
 
 ## Author
 - pit-ray  

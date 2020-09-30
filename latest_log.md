@@ -7,6 +7,7 @@ It has differences from the latest release.
 ## Change
 - The Command Mode was divided as KeyBindings from the inner matching system.
 - This version requires C++17
+- Improved Error out function.
 
 ## New
 - Delete Lines And Start Insert (`c->c`, `S`)

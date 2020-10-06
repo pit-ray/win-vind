@@ -40,11 +40,6 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">github.io/
 ## How to contribute
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">github.io/win-vind/how_to_contribute</a>.  
 
-## TO DO
-Please contribute or request.  
-There are already implemented functions in <a href="https://github.com/pit-ray/win-vind/blob/master/latest_log.md">latest_log.md</a>.
-Please refer to ~~.
-
 ## Author
 - pit-ray  
 [E-mail] pit-ray(at)outlook.com

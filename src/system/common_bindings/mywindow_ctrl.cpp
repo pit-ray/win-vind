@@ -13,12 +13,14 @@ namespace MYWUtility
 }
 
 //ShowConfigWindow
-bool ShowConfigWindow::sprocess(const std::string UNUSED(cmd))
+bool ShowConfigWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
+    if(!first_call) return true ;
+
     MYWUtility::show_func() ;
 
     Sleep(50) ; //wait until opened window.
-    if(!Jump2ActiveWindow::sprocess(true)) {
+    if(!Jump2ActiveWindow::sprocess(true, 1, nullptr)) {
         return false ;
     }
     return true ;
@@ -36,8 +38,9 @@ void ShowConfigWindow::register_show_func(std::function<void()> func) noexcept
 
 
 //ExitConfigWindow
-bool ExitConfigWindow::sprocess(const std::string UNUSED(cmd))
+bool ExitConfigWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
+    if(!first_call) return true ;
     MYWUtility::exit_func() ;
     return true ;
 }

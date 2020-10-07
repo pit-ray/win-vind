@@ -6,6 +6,7 @@
 #include "mouse_eventer.hpp"
 #include "interval_timer.hpp"
 #include "i_params.hpp"
+#include "utility.hpp"
 
 using namespace std ;
 
@@ -40,17 +41,26 @@ const string ScrollUp::sname() noexcept
     return "scroll_up" ;
 }
 
-bool ScrollUp::sprocess(const bool first_call) const
+bool ScrollUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::vscroll(iParams::get_i("yscroll_speed")) ;
     }
 
-    if(!pimpl->timer.is_passed()) {
-        return true ;
+    if(!first_call) return true ;
+    //repeat_num > 1
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::vscroll(iParams::get_i("yscroll_speed"))) {
+            return false ;
+        }
     }
-
-    return MouseEventer::vscroll(iParams::get_i("yscroll_speed")) ;
+    return true ;
 }
 
 
@@ -74,17 +84,28 @@ const string ScrollDown::sname() noexcept
     return "scroll_down" ;
 }
 
-bool ScrollDown::sprocess(const bool first_call) const
+bool ScrollDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+
+        return MouseEventer::vscroll(-iParams::get_i("yscroll_speed")) ;
     }
 
-    if(!pimpl->timer.is_passed()) {
-        return true ;
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+       if(!MouseEventer::vscroll(-iParams::get_i("yscroll_speed"))) {
+           return false ;
+       }
     }
-
-    return MouseEventer::vscroll(-iParams::get_i("yscroll_speed")) ;
+    return true ;
 }
 
 
@@ -108,18 +129,28 @@ const string ScrollMidUp::sname() noexcept
     return "scroll_mid_up" ;
 }
 
-bool ScrollMidUp::sprocess(const bool first_call) const
+bool ScrollMidUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
-    }
-
-    if(!pimpl->timer.is_passed()) {
-        return true ;
-    }
-
     static const auto delta = MAX_Y_POS  * 0.5f ;
-    return MouseEventer::vscroll(delta * iParams::get_f("yscroll_screen_ratio")) ;
+
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::vscroll(delta * iParams::get_f("yscroll_screen_ratio")) ;
+    }
+
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::vscroll(delta * iParams::get_f("yscroll_screen_ratio"))) {
+            return false ;
+        }
+    }
+    return true ;
 }
 
 
@@ -143,16 +174,27 @@ const string ScrollMidDown::sname() noexcept
     return "scroll_mid_down" ;
 }
 
-bool ScrollMidDown::sprocess(const bool first_call) const
+bool ScrollMidDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
-    }
-    if(!pimpl->timer.is_passed()) {
-        return true ;
-    }
     static const auto delta = MAX_Y_POS * 0.5f ;
-    return MouseEventer::vscroll(-delta * iParams::get_f("yscroll_screen_ratio")) ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::vscroll(-delta * iParams::get_f("yscroll_screen_ratio")) ;
+    }
+
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::vscroll(-delta * iParams::get_f("yscroll_screen_ratio"))) {
+            return false ;
+        }
+    }
+    return true ;
 }
 
 
@@ -176,15 +218,25 @@ const string ScrollPageUp::sname() noexcept
     return "scroll_page_up" ;
 }
 
-bool ScrollPageUp::sprocess(const bool first_call) const
+bool ScrollPageUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::vscroll(MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
     }
-    if(!pimpl->timer.is_passed()) {
-        return true ;
+
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::vscroll(MAX_Y_POS * iParams::get_f("yscroll_screen_ratio"))) {
+            return false ;
+        }
     }
-    return MouseEventer::vscroll(MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
+    return true ;
 }
 
 
@@ -208,15 +260,26 @@ const string ScrollPageDown::sname() noexcept
     return "scroll_page_down" ;
 }
 
-bool ScrollPageDown::sprocess(const bool first_call) const
+bool ScrollPageDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::vscroll(-MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
     }
-    if(!pimpl->timer.is_passed()) {
-        return true ;
+
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::vscroll(-MAX_Y_POS * iParams::get_f("yscroll_screen_ratio"))) {
+            return false ;
+        }
     }
-    return MouseEventer::vscroll(-MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
+    return true ;
 }
 
 
@@ -241,15 +304,26 @@ const string ScrollLeft::sname() noexcept
     return "scroll_left" ;
 }
 
-bool ScrollLeft::sprocess(const bool first_call) const
+bool ScrollLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::hscroll(-iParams::get_i("xscroll_speed")) ;
     }
-    if(!pimpl->timer.is_passed()) {
-        return true ;
+    
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::hscroll(-iParams::get_i("xscroll_speed"))) {
+            return false ;
+        }
     }
-    return MouseEventer::hscroll(-iParams::get_i("xscroll_speed")) ;
+    return true ;
 }
 
 
@@ -273,15 +347,26 @@ const string ScrollRight::sname() noexcept
     return "scroll_right" ;
 }
 
-bool ScrollRight::sprocess(const bool first_call) const
+bool ScrollRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::hscroll(iParams::get_f("xscroll_speed")) ;
     }
-    if(!pimpl->timer.is_passed()) {
-        return true ;
+
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::hscroll(iParams::get_f("xscroll_speed"))) {
+            return false ;
+        }
     }
-    return MouseEventer::hscroll(iParams::get_f("xscroll_speed")) ;
+    return true ;
 }
 
 
@@ -305,16 +390,27 @@ const string ScrollMidLeft::sname() noexcept
     return "scroll_mid_left" ;
 }
 
-bool ScrollMidLeft::sprocess(const bool first_call) const
+bool ScrollMidLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
-    }
-    if(!pimpl->timer.is_passed()) {
-        return true ;
-    }
     static const auto delta = MAX_X_POS * 0.5f ;
-    return MouseEventer::hscroll(-delta * iParams::get_f("xscroll_screen_ratio")) ;
+    if(!repeat_num) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::hscroll(-delta * iParams::get_f("xscroll_screen_ratio")) ;
+    }
+
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::hscroll(-delta * iParams::get_f("xscroll_screen_ratio"))) {
+            return false ;
+        }
+    }
+    return true ;
 }
 
 
@@ -338,14 +434,25 @@ const string ScrollMidRight::sname() noexcept
     return "scroll_mid_right" ;
 }
 
-bool ScrollMidRight::sprocess(const bool first_call) const
+bool ScrollMidRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    if(first_call) {
-        pimpl->timer.reset() ;
-    }
-    if(!pimpl->timer.is_passed()) {
-        return true ;
-    }
     static const auto delta = MAX_X_POS * 0.5f ;
-    return MouseEventer::hscroll(delta * iParams::get_f("xscroll_screen_ratio")) ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->timer.reset() ;
+        }
+        if(!pimpl->timer.is_passed()) {
+            return true ;
+        }
+        return MouseEventer::hscroll(delta * iParams::get_f("xscroll_screen_ratio")) ;
+    }
+
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!MouseEventer::hscroll(delta * iParams::get_f("xscroll_screen_ratio"))) {
+            return false ;
+        }
+    }
+    return true ;
 }

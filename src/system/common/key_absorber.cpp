@@ -22,11 +22,9 @@ namespace KeyAbsorber
 
     static const auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook == nullptr) return ;
-
         if(!UnhookWindowsHookEx(*p_hook)) {
             WIN_ERROR_PRINT("cannot unhook LowLevelKeyboardProc") ;
         }
-
         delete p_hook ;
     } ;
 
@@ -51,12 +49,7 @@ namespace KeyAbsorber
                 return release(HC_ACTION) ;
             }
         }
-
-        if(_absorbed_flag) {
-            return -1 ; //absorbing
-        }
-        //not absorbing
-        return release(HC_ACTION) ;
+        return _absorbed_flag ? -1 : release(HC_ACTION) ;
     }
 
     bool install_hook() noexcept {

@@ -12,7 +12,7 @@ const string ClickLeft::sname() noexcept
     return "click_left" ;
 }
 
-bool ClickLeft::sprocess(const bool first_call)
+bool ClickLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     using namespace ModeManager ;
@@ -33,7 +33,7 @@ const string ClickRight::sname() noexcept
     return "click_right" ;
 }
 
-bool ClickRight::sprocess(const bool first_call)
+bool ClickRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     using namespace ModeManager ;

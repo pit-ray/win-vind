@@ -33,7 +33,7 @@ const string Jump2Left::sname() noexcept
     return "jump_to_left" ;
 }
 
-bool Jump2Left::sprocess(const bool first_call)
+bool Jump2Left::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     POINT pos ;
@@ -49,7 +49,7 @@ const string Jump2Right::sname() noexcept
     return "jump_to_right" ;
 }
 
-bool Jump2Right::sprocess(const bool first_call)
+bool Jump2Right::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     POINT pos ;
@@ -65,7 +65,7 @@ const string Jump2Top::sname() noexcept
     return "jump_to_top" ;
 }
 
-bool Jump2Top::sprocess(const bool first_call)
+bool Jump2Top::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     POINT pos ;
@@ -81,7 +81,7 @@ const string Jump2Bottom::sname() noexcept
     return "jump_to_bottom" ;
 }
 
-bool Jump2Bottom::sprocess(const bool first_call)
+bool Jump2Bottom::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     POINT pos ;
@@ -97,7 +97,7 @@ const string Jump2XCenter::sname() noexcept
     return "jump_to_xcenter" ;
 }
 
-bool Jump2XCenter::sprocess(const bool first_call)
+bool Jump2XCenter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     POINT pos ;
@@ -113,7 +113,7 @@ const string Jump2YCenter::sname() noexcept
     return "jump_to_ycenter" ;
 }
 
-bool Jump2YCenter::sprocess(const bool first_call)
+bool Jump2YCenter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     POINT pos ;
@@ -144,8 +144,11 @@ namespace JumpCursorUtility
 
             ifstream ifs(filename, ios::in) ;
             string buf ;
+            int lnum = 0 ;
 
             while(getline(ifs, buf)) {
+                lnum ++ ;
+
                 if(buf.empty()) {
                     continue ;
                 }
@@ -158,7 +161,7 @@ namespace JumpCursorUtility
                 const auto vec = Utility::split(buf, " ") ;
 
                 if(vec.size() != 3) {
-                    ERROR_PRINT(buf + " is bad syntax in " + filename + ".") ;
+                    ERROR_PRINT(buf + " is bad syntax in " + filename + ", L" + std::to_string(lnum) + ".") ;
                     continue ;
                 }
 
@@ -174,31 +177,39 @@ namespace JumpCursorUtility
                 }
 
                 //specific code
-                if(vec[2] == "Space") {
+                auto code = vec[2] ;
+                //is ascii code
+                if(code.size() == 1) {
+                    if(const auto vkc = VKCConverter::get_vkc(code.front())) {
+                        //overwrite
+                        _xposs[vkc] = x ;
+                        _yposs[vkc] = y ;
+                        continue ;
+                    }
+                    ERROR_PRINT(buf + " is not supported in " + filename + ", L" + std::to_string(lnum) + ".") ;
+                    continue ;
+                }
+
+                code = Utility::A2a(code) ;
+                if(code.front() != '<' && code.back() != '>') {
+                    ERROR_PRINT(buf + " is bad syntax in " + filename + ", L" + std::to_string(lnum) + ".") ;
+                }
+
+                code = code.substr(1, code.length() - 2) ;
+                if(code == "space") {
                     auto&& vkc = VKCConverter::get_vkc(' ') ;
                     _xposs[vkc] = x ;
                     _yposs[vkc] = y ;
                     continue ;
                 }
 
-                if(auto vkc = VKCConverter::get_sys_vkc(vec[2])) {
+                if(auto vkc = VKCConverter::get_sys_vkc(code)) {
                     _xposs[vkc] = x ;
                     _yposs[vkc] = y ;
                     continue ;
                 }
 
-                //is ascii code
-                if(vec[2].size() == 1) {
-                    const auto vkc = VKCConverter::get_vkc(vec[2].front()) ;
-                    if(vkc != '\0') {
-                        //overwrite
-                        _xposs[vkc] = x ;
-                        _yposs[vkc] = y ;
-                        continue ;
-                    }
-                }
-
-                ERROR_PRINT(buf + " is bad syntax in " + filename + ".") ;
+                ERROR_PRINT(buf + " is invalid system key code in " + filename + ", L" + std::to_string(lnum) + ".") ;
             }
         }
         catch(const exception& e) {
@@ -213,7 +224,7 @@ const string Jump2Any::sname() noexcept
     return "jump_to_any" ;
 }
 
-bool Jump2Any::sprocess(const bool first_call)
+bool Jump2Any::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
 
@@ -287,7 +298,7 @@ const string Jump2ActiveWindow::sname() noexcept
     return "jump_to_active_window" ;
 }
 
-bool Jump2ActiveWindow::sprocess(const bool first_call)
+bool Jump2ActiveWindow::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
 

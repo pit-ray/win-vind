@@ -1,17 +1,17 @@
 #ifndef _CLICK_HPP
 #define _CLICK_HPP
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct ClickLeft : public KeyBindingWithCreator<ClickLeft>
+struct ClickLeft : public BindedFuncWithCreator<ClickLeft>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct ClickRight : public KeyBindingWithCreator<ClickRight>
+struct ClickRight : public BindedFuncWithCreator<ClickRight>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 

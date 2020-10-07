@@ -1,8 +1,7 @@
 #ifndef _KEY_BINDER_HPP
 #define _KEY_BINDER_HPP
 
-#include "command.hpp"
-#include "key_binding.hpp"
+#include "binded_func.hpp"
 
 namespace KeyBinder
 {
@@ -14,11 +13,17 @@ namespace KeyBinder
         UnbindedSystemKey
     } ;
 
-    bool is_invalid_log(KeyLogger& logger, const InvalidPolicy ip=InvalidPolicy::AllSystemKey) noexcept ;
-    const kbg::shp_t find_keybinds(const KeyLogger& logger) noexcept ;
+    bool is_invalid_log(
+            KeyLogger& logger,
+            const InvalidPolicy ip=InvalidPolicy::AllSystemKey) noexcept ;
 
-    void load_config() noexcept ;
-    void call_matched_funcs() noexcept ;
+    const BindedFunc::shp_t find_keybinds(
+            const KeyLogger& logger,
+            const BindedFunc::shp_t& current_func=nullptr,
+            ModeManager::Mode mode=ModeManager::get_mode()) ;
+
+    void load_config() ;
+    void call_matched_funcs() ;
 }
 
 #endif

@@ -8,6 +8,7 @@
 #include "key_absorber.hpp"
 #include "simpl_text_selecter.hpp"
 #include "options/virtual_cmd_line.hpp"
+#include "utility.hpp"
 
 
 using namespace std ;
@@ -17,7 +18,7 @@ const string Change2EdiNormal::sname() noexcept
 {
     return "change_to_edi_normal" ;
 }
-bool Change2EdiNormal::sprocess(const bool first_call)
+bool Change2EdiNormal::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;
@@ -48,7 +49,7 @@ const string Change2EdiInsert::sname() noexcept
 {
     return "change_to_edi_insert" ;
 }
-bool Change2EdiInsert::sprocess(const bool first_call)
+bool Change2EdiInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     using namespace ModeManager ;
 
@@ -67,7 +68,7 @@ const string Change2EdiBOLInsert::sname() noexcept
 {
     return "change_to_edi_BOLinsert" ;
 }
-bool Change2EdiBOLInsert::sprocess(const bool first_call)
+bool Change2EdiBOLInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;
@@ -87,7 +88,7 @@ const string Change2EdiBkInsert::sname() noexcept
 {
     return "change_to_edi_bkinsert" ;
 }
-bool Change2EdiBkInsert::sprocess(const bool first_call)
+bool Change2EdiBkInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;
@@ -107,7 +108,7 @@ const string Change2EdiEOLInsert::sname() noexcept
 {
     return "change_to_edi_EOLinsert" ;
 }
-bool Change2EdiEOLInsert::sprocess(const bool first_call)
+bool Change2EdiEOLInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;
@@ -127,7 +128,7 @@ const string Change2EdiNlInsertBelow::sname() noexcept
 {
     return "change_to_edi_nlinsert_below" ;
 }
-bool Change2EdiNlInsertBelow::sprocess(const bool first_call)
+bool Change2EdiNlInsertBelow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;
@@ -150,7 +151,7 @@ const string Change2EdiNlInsertAbove::sname() noexcept
 {
     return "change_to_edi_nlinsert_above" ;
 }
-bool Change2EdiNlInsertAbove::sprocess(const bool first_call)
+bool Change2EdiNlInsertAbove::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;
@@ -176,7 +177,7 @@ const string Change2EdiVisual::sname() noexcept
 {
     return "change_to_edi_visual" ;
 }
-bool Change2EdiVisual::sprocess(const bool first_call)
+bool Change2EdiVisual::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;
@@ -195,7 +196,7 @@ const string Change2EdiLineVisual::sname() noexcept
 {
     return "change_to_edi_line_visual" ;
 }
-bool Change2EdiLineVisual::sprocess(const bool first_call)
+bool Change2EdiLineVisual::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
         return true ;

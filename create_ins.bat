@@ -1,3 +1,4 @@
+@chcp 65001
 type nul > ".\\log\\error.log"
 type nul > ".\\log\\message.log"
 echo y> ".\\default_config\\is_installer_used"

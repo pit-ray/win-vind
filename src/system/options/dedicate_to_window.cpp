@@ -64,12 +64,12 @@ bool Dedicate2Window::do_process() const
     }
 
     if(target_hwnd == foreground_hwnd) { //other -> target
-        if(!Change2Editor::sprocess(true, past_hwnd)) {
+        if(!Change2Editor::sprocess(true, 1, nullptr, past_hwnd)) {
             return false ;
         }
     }
     else if(past_hwnd == target_hwnd) { //target -> other
-        if(!Change2Insert::sprocess(true, past_hwnd)) {
+        if(!Change2Insert::sprocess(true, 1, nullptr, past_hwnd)) {
             return false ;
         }
     }

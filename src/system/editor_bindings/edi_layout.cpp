@@ -20,7 +20,7 @@ const std::string EdiNRemoveEOL::sname() noexcept
 {
     return "edi_n_remove_EOL" ;
 }
-bool EdiNRemoveEOL::sprocess(const bool first_call) const
+bool EdiNRemoveEOL::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
 {
     auto remove = [] {
         if(!KeybrdEventer::pushup(VKC_END)) {

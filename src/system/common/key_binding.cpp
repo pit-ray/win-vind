@@ -63,6 +63,7 @@ std::size_t KeyBinding::matched_num(const KeyLog& log, const std::size_t seq_ind
 {
     lock_guard<mutex> lock(pimpl->mtx) ;
 
+    
     pimpl->callable = false ;
     if(pimpl->vvvkc.empty()) { //not registered
         return 0 ;

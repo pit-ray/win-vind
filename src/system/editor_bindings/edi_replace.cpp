@@ -80,7 +80,7 @@ const std::string EdiNReplaceChar::sname() noexcept
 {
     return "edi_n_replace_char" ;
 }
-bool EdiNReplaceChar::sprocess(const bool first_call)
+bool EdiNReplaceChar::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) {
         return true ;
@@ -114,7 +114,7 @@ const std::string EdiNReplaceSequence::sname() noexcept
 {
     return "edi_n_replace_sequence" ;
 }
-bool EdiNReplaceSequence::sprocess(const bool first_call)
+bool EdiNReplaceSequence::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) {
         return true ;

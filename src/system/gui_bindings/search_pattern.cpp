@@ -10,7 +10,7 @@ const string SearchPattern::sname() noexcept
     return "search_pattern" ;
 }
 
-bool SearchPattern::sprocess(const bool first_call)
+bool SearchPattern::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     if(!KeybrdEventer::pushup(VKC_F3)) {

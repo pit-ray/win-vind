@@ -10,7 +10,7 @@ const std::string EdiJumpCaret2BOL::sname() noexcept
 {
     return "edi_jump_caret_to_BOL" ;
 }
-bool EdiJumpCaret2BOL::sprocess(const bool first_call)
+bool EdiJumpCaret2BOL::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) {
         return true ;
@@ -27,7 +27,7 @@ const std::string EdiJumpCaret2EOL::sname() noexcept
 {
     return "edi_jump_caret_to_EOL" ;
 }
-bool EdiJumpCaret2EOL::sprocess(const bool first_call)
+bool EdiJumpCaret2EOL::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) {
         return true ;
@@ -39,23 +39,12 @@ bool EdiJumpCaret2EOL::sprocess(const bool first_call)
 }
 
 
-/*
-<Schedule>
-- implement N Line System
-
-
-
-
-
-*/
-
-
 //EdiJumpCaret2NLine_DfBOF
 const std::string EdiNJumpCaret2Line_DfBOF::sname() noexcept
 {
     return "edi_n_jump_caret_to_line_default_BOF" ;
 }
-bool EdiNJumpCaret2Line_DfBOF::sprocess(const bool first_call)
+bool EdiNJumpCaret2Line_DfBOF::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) {
         return true ;
@@ -77,7 +66,7 @@ const std::string EdiNJumpCaret2Line_DfEOF::sname() noexcept
 {
     return "edi_n_jump_caret_to_line_default_EOF" ;
 }
-bool EdiNJumpCaret2Line_DfEOF::sprocess(const bool first_call)
+bool EdiNJumpCaret2Line_DfEOF::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) {
         return true ;

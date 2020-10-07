@@ -1,0 +1,3 @@
+[Error]  0      0   ` is not supported in config\US.kmp, L2. (void JumpCursorUtility::load_config())
+[Error]  12     0   = is not supported in config\US.kmp, L14. (void JumpCursorUtility::load_config())
+[Error]  11.75   2  ' is not supported in config\US.kmp, L43. (void JumpCursorUtility::load_config())

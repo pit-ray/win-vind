@@ -337,18 +337,23 @@ namespace wxGUI
     }
     BindingsPanel::~BindingsPanel() noexcept = default ;
     void BindingsPanel::do_load_config() noexcept {
+        /*
         if(!pimpl->read_json()) {
             return ;
         }
+        */
     }
 
     void BindingsPanel::do_save_config() noexcept {
+        /*
         if(!pimpl->write_json()) {
             return ;
         }
+        */
     }
 
     void BindingsPanel::translate() noexcept {
+        /*
         pimpl->update_func_list() ;
 
         pimpl->func_list->SetSelection(0) ;
@@ -356,5 +361,6 @@ namespace wxGUI
 
         pimpl->update_labels() ;
         Layout() ;
+        */
     }
 }

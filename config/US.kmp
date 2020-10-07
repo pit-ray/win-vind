@@ -12,9 +12,9 @@
  10     0   0
  11     0   -
  12     0   =
- 14     0   BkSpace
+ 14     0   <BS>
 
- 0      1   Tab
+ 0      1   <Tab>
  1.5    1   q
  2.5    1   w
  3.5    1   e
@@ -29,7 +29,7 @@
  12.5   1   ]
  14     1   \
 
- 0       2  CapsLock
+ 0       2  <CapsLock>
  1.75    2  a
  2.75    2  s
  3.75    2  d
@@ -41,9 +41,9 @@
  9.75    2  l
  10.75   2  ;
  11.75   2  '
- 14      2  Enter
+ 14      2  <Enter>
 
- 0       3  LShift
+ 0       3  <LShift>
  2.25    3  z
  3.25    3  x
  4.25    3  c
@@ -54,12 +54,12 @@
  9.25    3  ,
  10.25   3  .
  11.25   3  /
- 14      3  RShift
+ 14      3  <RShift>
 
- 0       4  LCtrl
- 2       4  LWin
- 3       4  LAlt
- 7       4  Space
- 10      4  RAlt
- 11      4  App
- 12      4  RCtrl
+ 0       4  <LCtrl>
+ 2       4  <LWin>
+ 3       4  <LAlt>
+ 7       4  <Space>
+ 10      4  <RAlt>
+ 11      4  <App>
+ 12      4  <RCtrl>

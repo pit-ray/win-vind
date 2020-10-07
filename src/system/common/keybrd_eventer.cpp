@@ -56,21 +56,15 @@ namespace KeybrdEventer
 
     bool SmartKey::press() noexcept {
         KeyAbsorber::open_key(pimpl->key) ;
-        if(!send_event(true)) {
-            return false ;
-        }
+        if(!send_event(true)) return false ;
         KeyAbsorber::close() ;
-
         return GetAsyncKeyState(pimpl->key) & 0x8000 ;
     }
 
     bool SmartKey::release() noexcept {
         KeyAbsorber::open_key(pimpl->key) ;
-        if(!send_event(false)) {
-            return false ;
-        }
+        if(!send_event(false)) return false ;
         KeyAbsorber::close() ;
-
         return !(GetAsyncKeyState(pimpl->key) & 0x8000) ;
     }
 

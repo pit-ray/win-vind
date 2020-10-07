@@ -1,9 +1,9 @@
 #ifndef _AUTOTRACK_POPUP_HPP
 #define _AUTOTRACK_POPUP_HPP
 
-#include "dynamic_option_with_creater.hpp"
+#include "dynamic_option_with_creator.hpp"
 
-class AutotrackPopup : public DynamicOptionWithCreater<AutotrackPopup>
+class AutotrackPopup : public DynamicOptionWithCreator<AutotrackPopup>
 {
 private:
     struct Impl ;

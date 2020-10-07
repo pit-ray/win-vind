@@ -1,45 +1,39 @@
 #ifndef _SWITCH_TASKVIEW_HPP
 #define _SWITCH_TASKVIEW_HPP
 
-#include "key_binding_with_creator.hpp"
-#include "command_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct SwitchVDesktop2Left : public KeyBindingWithCreator<SwitchVDesktop2Left>
+struct SwitchVDesktop2Left : public BindedFuncWithCreator<SwitchVDesktop2Left>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct SwitchVDesktop2Right : public KeyBindingWithCreator<SwitchVDesktop2Right>
+struct SwitchVDesktop2Right : public BindedFuncWithCreator<SwitchVDesktop2Right>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct CreateNewVDesktop : public KeyBindingWithCreator<CreateNewVDesktop>
+struct CreateNewVDesktop : public BindedFuncWithCreator<CreateNewVDesktop>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct CloseCurrentVDesktop : public KeyBindingWithCreator<CloseCurrentVDesktop>
+struct CloseCurrentVDesktop : public BindedFuncWithCreator<CloseCurrentVDesktop>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct TaskView
-: public KeyBindingWithCreator<TaskView>,
-  public CommandWithCreator<TaskView>
+struct TaskView : public BindedFuncWithCreator<TaskView>
 {
-    static bool sprocess(const bool first_call) ;
-    static bool sprocess(const std::string cmd) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
-private:
-    static bool common_process() ;
 } ;
 #endif

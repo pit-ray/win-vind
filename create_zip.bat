@@ -1,3 +1,4 @@
+@chcp 65001
 @if "%1" == "" (
     @echo [Error] Please call this script with the version as a first argument.
     @exit

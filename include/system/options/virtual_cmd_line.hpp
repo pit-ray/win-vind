@@ -1,10 +1,10 @@
 #ifndef _VIRTUAL_CMD_LINE_HPP
 #define _VIRTUAL_CMD_LINE_HPP
 
-#include "dynamic_option_with_creater.hpp"
+#include "dynamic_option_with_creator.hpp"
 #include <chrono>
 
-class VirtualCmdLine : public DynamicOptionWithCreater<VirtualCmdLine>
+class VirtualCmdLine : public DynamicOptionWithCreator<VirtualCmdLine>
 {
 private:
     struct Impl ;

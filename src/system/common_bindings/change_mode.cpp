@@ -4,15 +4,16 @@
 
 #include <windows.h>
 
-#include "mouse_eventer.hpp"
 #include "key_absorber.hpp"
-#include "text_analyzer.hpp"
-#include "msg_logger.hpp"
-#include "mode_manager.hpp"
 #include "keybrd_eventer.hpp"
-#include "virtual_key_fwd.hpp"
-#include "simpl_text_selecter.hpp"
+#include "mode_manager.hpp"
+#include "mouse_eventer.hpp"
+#include "msg_logger.hpp"
 #include "options/virtual_cmd_line.hpp"
+#include "simpl_text_selecter.hpp"
+#include "text_analyzer.hpp"
+#include "virtual_key_fwd.hpp"
+#include "utility.hpp"
 
 using namespace std ;
 
@@ -24,7 +25,7 @@ const string Change2Normal::sname() noexcept
     return "change_to_normal" ;
 }
 
-bool Change2Normal::sprocess(const bool first_call, const bool vclmodeout)
+bool Change2Normal::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger),  const bool vclmodeout)
 {
     if(!first_call) return true ;
 
@@ -60,7 +61,7 @@ const string Change2Insert::sname() noexcept
     return "change_to_insert" ;
 }
 
-bool Change2Insert::sprocess(const bool first_call, const bool vclmodeout)
+bool Change2Insert::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const bool vclmodeout)
 {
     if(!first_call) return true ;
 
@@ -83,7 +84,7 @@ const string Change2Visual::sname() noexcept
     return "change_to_visual" ;
 }
 
-bool Change2Visual::sprocess(const bool first_call, const bool vclmodeout)
+bool Change2Visual::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const bool vclmodeout)
 {
     if(!first_call) return true ;
     change_mode(Mode::Visual) ;
@@ -98,7 +99,7 @@ const string Change2Editor::sname() noexcept
     return "change_to_editor" ;
 }
 
-bool Change2Editor::sprocess(const bool first_call, const bool vclmodeout)
+bool Change2Editor::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger), const bool vclmodeout)
 {
     if(!first_call) return true ;
     if(!MouseEventer::click(VKC_MOUSE_LEFT)) {
@@ -119,7 +120,7 @@ const string Change2Command::sname() noexcept
     return "change_to_command" ;
 }
 
-bool Change2Command::sprocess(const bool first_call)
+bool Change2Command::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
 

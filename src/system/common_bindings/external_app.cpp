@@ -14,6 +14,7 @@
 #include "path.hpp"
 #include "jump_cursor.hpp"
 #include "utility.hpp"
+#include "key_logger.hpp"
 
 using namespace std ;
 
@@ -97,14 +98,16 @@ const string StartShell::sname() noexcept
     return "start_shell" ;
 }
 
-bool StartShell::sprocess(const string UNUSED(cmd))
+bool StartShell::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
 {
+    if(!first_call) return true ;
+
     if(!create_process(get_protected_path("shell"))) {
         return false ;
     }
     //wait until select window by OS.
     Sleep(100) ;
-    if(!Jump2ActiveWindow::sprocess(true)) {
+    if(!Jump2ActiveWindow::sprocess(true, 1, parent_logger)) {
         return false ;
     }
     return true ;
@@ -117,14 +120,18 @@ const string StartAnyApp::sname() noexcept
     return "start_any_app" ;
 }
 
-bool StartAnyApp::sprocess(const string cmd)
+bool StartAnyApp::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
 {
+    if(!first_call) return true ;
+    if(!parent_logger) return false ;
+    auto cmd = parent_logger->get_str() ;
+
     if(!create_process(get_protected_path(cmd.substr(1)))) {
         return false ;
     }
     //wait until select window by OS.
     Sleep(100) ;
-    if(!Jump2ActiveWindow::sprocess(true)) {
+    if(!Jump2ActiveWindow::sprocess(true, 1, parent_logger)) {
         return false ;
     }
     return true ;

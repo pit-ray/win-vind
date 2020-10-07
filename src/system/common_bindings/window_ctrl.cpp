@@ -4,17 +4,16 @@
 #include <windows.h>
 #include <psapi.h>
 
-#include "keybrd_eventer.hpp"
-#include "interval_timer.hpp"
-#include "key_logger.hpp"
-#include "key_absorber.hpp"
-#include "utility.hpp"
-
-#include "move_cursor.hpp"
-#include "jump_cursor.hpp"
-#include "msg_logger.hpp"
-
 #include "change_mode.hpp"
+#include "interval_timer.hpp"
+#include "jump_cursor.hpp"
+#include "key_absorber.hpp"
+#include "key_binder.hpp"
+#include "key_logger.hpp"
+#include "keybrd_eventer.hpp"
+#include "move_cursor.hpp"
+#include "msg_logger.hpp"
+#include "utility.hpp"
 
 using namespace std ;
 
@@ -24,87 +23,94 @@ const string CloseCurrentWindow::sname() noexcept
     return "close_current_window" ;
 }
 
-bool CloseCurrentWindow::common_process()
-{
-    if(!KeybrdEventer::pushup(VKC_LALT, VKC_F4)) {
-        return false ;
-    }
-    return true ;
-}
-
-bool CloseCurrentWindow::sprocess(const bool first_call)
+bool CloseCurrentWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return true ;
-    return common_process() ;
-}
-
-bool CloseCurrentWindow::sprocess(const string UNUSED(cmd))
-{
-    return common_process() ;
+    return KeybrdEventer::pushup(VKC_LALT, VKC_F4) ;
 }
 
 
 //SwitchWindow
+
+namespace WCtrlUtility {
+    template <typename T>
+    auto preserve_pushup(const T vkc) {
+        using namespace KeybrdEventer ;
+        if(!KeyAbsorber::is_pressed(vkc)) {
+            return pushup(vkc) ;
+        }
+
+        if(!release_keystate(vkc)) {
+            return false ;
+        }
+        if(!pushup(vkc)) {
+            return false ;
+        }
+        //undo
+        if(!press_keystate(vkc)) {
+            return false ;
+        }
+        return true ;
+    }
+}
 const string SwitchWindow::sname() noexcept
 {
     return "switch_window" ;
 }
 
-bool SwitchWindow::common_process()
+bool SwitchWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
+    if(!first_call) return true ;
     using namespace KeybrdEventer ;
 
-    //if funcs is not initialized, these funcs is always uncallable.
-    //and, I do not want to use process() of func, but refer key map.
-    const auto left_pbf = MoveLeft::create_with_cache() ;
-    const auto right_pbf = MoveRight::create_with_cache() ;
-
-    auto palt = make_unique<SmartKey>(VKC_LALT) ;
-    auto ptab = make_unique<SmartKey>(VKC_TAB) ;
-
-    if(!palt->press()) {
-        return false ;
+    //reset all keystate
+    for(const auto& vkc : KeyAbsorber::get_pressed_list()) {
+        if(!KeybrdEventer::release_keystate(vkc)) {
+            return false ;
+        }
     }
 
-    if(!ptab->press()) {
-        return false ;
-    }
-    ptab.reset() ; // release key
+    static SmartKey alt(VKC_LALT) ;
+    if(!alt.press()) return false ;
+    KeyAbsorber::release_vertually(VKC_LALT) ;
+
+    if(!pushup(VKC_TAB)) return false ;
 
     KeyLogger logger{} ;
-
-    auto select = [&logger] (const auto& pbf, const auto vkc) {
-        //is callable?
-        if(pbf->is_callable()) {
-            if(KeyAbsorber::is_pressed(vkc)) {
-                if(!release_keystate(vkc)) {
-                    return false ;
-                }
-                if(!pushup(vkc)) {
-                    return false ;
-                }
-                //undo
-                if(!press_keystate(vkc)) {
-                    return false ;
-                }
-            }
-            else {
-                if(!pushup(vkc)) {
-                    return false ;
-                }
-            }
-            logger.clear() ;
+    auto main_loop = [&logger] {
+        if(!logger.is_changed_code()) {
+            logger.remove_from_back(1) ;
+            return true ;
+        }
+        if(KeyBinder::is_invalid_log(logger, KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
+            logger.remove_from_back(1) ;
+            return true ;
         }
 
+        auto matched_func = KeyBinder::find_keybinds(logger, nullptr, ModeManager::Mode::Normal) ;
+        if(!matched_func) {
+            logger.clear() ;
+            return true ;
+        }
+
+        if(matched_func->is_callable()) {
+            const auto name = matched_func->name() ;
+            logger.clear() ;
+            if(name == MoveLeft::sname()) {
+                return WCtrlUtility::preserve_pushup(VKC_LEFT) ;
+            }
+            if(name == MoveRight::sname()) {
+                return WCtrlUtility::preserve_pushup(VKC_RIGHT) ;
+            }
+        }
         return true ;
     } ;
 
     MSG msg ;
-    while(true) {
+    while(main_loop()) {
         //MessageRoop
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg) ;
-
             DispatchMessage(&msg) ;
         }
 
@@ -113,7 +119,6 @@ bool SwitchWindow::common_process()
             if(!release_keystate(VKC_ESC)) {
                 return false;
             }
-
             break ;
         }
         if(KeyAbsorber::is_pressed(VKC_ENTER)) {
@@ -122,64 +127,16 @@ bool SwitchWindow::common_process()
             }
             break ;
         }
-
-        //is changed ?
-        if(!logger.is_changed_code()) {
-            logger.remove_from_back(1) ;
-            Sleep(5) ;
-            continue ;
-        }
-
-        //inputed keys include key map of MoveLeft or MoveRight.
-        auto at_least_exist = false ;
-        if(left_pbf->matched_num(logger.back(), logger.size() - 1)) {
-            at_least_exist = true ;
-        }
-        if(right_pbf->matched_num(logger.back(), logger.size() - 1)) {
-            at_least_exist = true ;
-        }
-        if(!at_least_exist) {
-            logger.clear() ;
-            Sleep(5) ;
-            continue ;
-        }
-
-        //select window
-        if(!select(left_pbf, VKC_LEFT)) {
-            return false ;
-        }
-
-        if(!select(right_pbf, VKC_RIGHT)) {
-            return false ;
-        }
-
         Sleep(5) ;
     }
 
-    palt.reset() ;
-    ptab.reset() ;
+    if(!alt.release()) {
+        return false ;
+    }
 
     //jump cursor to a selected window after releasing alt and tab.
     Sleep(50) ; //send select-message to OS(wait)
-    if(!Jump2ActiveWindow::sprocess(true)) {
-        return false ;
-    }
-
-    return true ;
-}
-
-bool SwitchWindow::sprocess(const bool first_call)
-{
-    if(!first_call) return true ;
-    return common_process() ;
-}
-
-bool SwitchWindow::sprocess(const string UNUSED(cmd))
-{
-    if(!KeybrdEventer::release_keystate(VKC_ENTER)) {
-        return false ;
-    }
-    return common_process() ;
+    return Jump2ActiveWindow::sprocess(true, 1, nullptr) ;
 }
 
 
@@ -189,20 +146,10 @@ const string MaximizeCurrentWindow::sname() noexcept
     return "maximize_current_window" ;
 }
 
-bool MaximizeCurrentWindow::common_process()
-{
-    return KeybrdEventer::pushup(VKC_LWIN, VKC_UP) ;
-}
-
-bool MaximizeCurrentWindow::sprocess(const bool first_call)
+bool MaximizeCurrentWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return true ;
-    return common_process() ;
-}
-
-bool MaximizeCurrentWindow::sprocess(const string UNUSED(cmd))
-{
-    return common_process() ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_UP) ;
 }
 
 
@@ -212,20 +159,10 @@ const string MinimizeCurrentWindow::sname() noexcept
     return "minimize_current_window" ;
 }
 
-bool MinimizeCurrentWindow::common_process()
-{
-    return KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
-}
-
-bool MinimizeCurrentWindow::sprocess(const bool first_call)
+bool MinimizeCurrentWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return true ;
-    return common_process() ;
-}
-
-bool MinimizeCurrentWindow::sprocess(const string UNUSED(cmd))
-{
-    return common_process() ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
 }
 
 
@@ -235,20 +172,10 @@ const string SnapCurrentWindow2Left::sname() noexcept
     return "snap_current_window_to_left" ;
 }
 
-bool SnapCurrentWindow2Left::common_process()
-{
-    return KeybrdEventer::pushup(VKC_LWIN, VKC_LEFT) ;
-}
-
-bool SnapCurrentWindow2Left::sprocess(const bool first_call)
+bool SnapCurrentWindow2Left::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return true ;
-    return common_process() ;
-}
-
-bool SnapCurrentWindow2Left::sprocess(const string UNUSED(cmd))
-{
-    return common_process() ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_LEFT) ;
 }
 
 
@@ -258,20 +185,10 @@ const string SnapCurrentWindow2Right::sname() noexcept
     return "snap_current_window_to_right" ;
 }
 
-bool SnapCurrentWindow2Right::common_process()
-{
-    return KeybrdEventer::pushup(VKC_LWIN, VKC_RIGHT) ;
-}
-
-bool SnapCurrentWindow2Right::sprocess(const bool first_call)
+bool SnapCurrentWindow2Right::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return true ;
-    return common_process() ;
-}
-
-bool SnapCurrentWindow2Right::sprocess(const string UNUSED(cmd))
-{
-    return common_process() ;
+    return KeybrdEventer::pushup(VKC_LWIN, VKC_RIGHT) ;
 }
 
 
@@ -281,8 +198,9 @@ const string OpenNewCurrentWindow::sname() noexcept
     return "open_new_current_window" ;
 }
 
-bool OpenNewCurrentWindow::common_process()
+bool OpenNewCurrentWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
+    if(!first_call) return true ;
     auto hwnd = GetForegroundWindow() ;
     if(!hwnd) {
         return false ;
@@ -328,17 +246,6 @@ bool OpenNewCurrentWindow::common_process()
     return true ;
 }
 
-bool OpenNewCurrentWindow::sprocess(const bool first_call)
-{
-    if(!first_call) return true ;
-    return common_process() ;
-}
-
-bool OpenNewCurrentWindow::sprocess(const string UNUSED(cmd))
-{
-    return common_process() ;
-}
-
 
 //ReloadCurrentWindow
 const string ReloadCurrentWindow::sname() noexcept
@@ -346,8 +253,9 @@ const string ReloadCurrentWindow::sname() noexcept
     return "reload_current_window" ;
 }
 
-bool ReloadCurrentWindow::sprocess(const string UNUSED(cmd))
+bool ReloadCurrentWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
+    if(!first_call) return true ;
     return KeybrdEventer::pushup(VKC_F5) ;
 }
 
@@ -358,7 +266,7 @@ const string Switch2LeftTab::sname() noexcept
     return "switch_to_left_tab" ;
 }
 
-bool Switch2LeftTab::sprocess(const bool first_call)
+bool Switch2LeftTab::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return true ;
     return KeybrdEventer::pushup(VKC_LCTRL, VKC_LSHIFT, VKC_TAB) ;
@@ -371,7 +279,7 @@ const string Switch2RightTab::sname() noexcept
     return "switch_to_right_tab" ;
 }
 
-bool Switch2RightTab::sprocess(const bool first_call)
+bool Switch2RightTab::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return true ;
     return KeybrdEventer::pushup(VKC_LCTRL, VKC_TAB) ;

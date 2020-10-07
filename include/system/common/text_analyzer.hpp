@@ -30,7 +30,7 @@ namespace TextAnalyzer
         SelRes(const SelRes&) = default ;
         SelRes& operator=(const SelRes&) = default ;
 
-        operator bool() {
+        operator bool() const noexcept {
             return success ;
         }
     } ;

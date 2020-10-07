@@ -1,11 +1,11 @@
 #ifndef _MOVE_CURSOR_HPP
 #define _MOVE_CURSOR_HPP
 
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct MoveLeft : public KeyBindingWithCreator<MoveLeft>
+struct MoveLeft : public BindedFuncWithCreator<MoveLeft>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveLeft() ;
@@ -23,9 +23,9 @@ private:
 } ;
 
 
-struct MoveRight : public KeyBindingWithCreator<MoveRight>
+struct MoveRight : public BindedFuncWithCreator<MoveRight>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveRight() ;
@@ -43,9 +43,9 @@ private:
 } ;
 
 
-struct MoveUp : public KeyBindingWithCreator<MoveUp>
+struct MoveUp : public BindedFuncWithCreator<MoveUp>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveUp() ;
@@ -63,9 +63,9 @@ private:
 } ;
 
 
-struct MoveDown : public KeyBindingWithCreator<MoveDown>
+struct MoveDown : public BindedFuncWithCreator<MoveDown>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveDown() ;

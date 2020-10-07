@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "key_matcher.hpp"
+#include "mode_manager.hpp"
 
 namespace BindingsLoader
 {
@@ -17,7 +19,10 @@ namespace BindingsLoader
     void load_config() noexcept ;
     const keymap_t& get_bindings() noexcept ;
     const keymap_t& get_commands() noexcept ;
+
     const std::unordered_set<unsigned char>& get_unbinded_syskeys() noexcept ;
+
+    using modematcher_t = std::array<KeyMatcher::shp_t, static_cast<int>(ModeManager::Mode::NUM)> ;
 } ;
 
 #endif

@@ -1,12 +1,12 @@
 #ifndef _EDI_MOVE_CARET_HPP
 #define _EDI_MOVE_CARET_HPP
 
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
 
-struct EdiMoveCaretLeft : public KeyBindingWithCreator<EdiMoveCaretLeft>
+struct EdiMoveCaretLeft : public BindedFuncWithCreator<EdiMoveCaretLeft>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretLeft() ;
@@ -23,9 +23,9 @@ private:
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveCaretRight : public KeyBindingWithCreator<EdiMoveCaretRight>
+struct EdiMoveCaretRight : public BindedFuncWithCreator<EdiMoveCaretRight>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretRight() ;
@@ -42,9 +42,9 @@ private:
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveCaretUp : public KeyBindingWithCreator<EdiMoveCaretUp>
+struct EdiMoveCaretUp : public BindedFuncWithCreator<EdiMoveCaretUp>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretUp() ;
@@ -61,9 +61,9 @@ private:
     std::unique_ptr<Impl> pimpl ;
 } ;
 
-struct EdiMoveCaretDown : public KeyBindingWithCreator<EdiMoveCaretDown>
+struct EdiMoveCaretDown : public BindedFuncWithCreator<EdiMoveCaretDown>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretDown() ;
@@ -81,28 +81,28 @@ private:
 } ;
 
 
-struct EdiNMoveCaretwordsForward : public KeyBindingWithCreator<EdiNMoveCaretwordsForward>
+struct EdiNMoveCaretwordsForward : public BindedFuncWithCreator<EdiNMoveCaretwordsForward>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNMoveCaretwordsBackward : public KeyBindingWithCreator<EdiNMoveCaretwordsBackward>
+struct EdiNMoveCaretwordsBackward : public BindedFuncWithCreator<EdiNMoveCaretwordsBackward>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct EdiNMoveCaretWORDSForward : public KeyBindingWithCreator<EdiNMoveCaretWORDSForward>
+struct EdiNMoveCaretWORDSForward : public BindedFuncWithCreator<EdiNMoveCaretWORDSForward>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct EdiNMoveCaretWORDSBackward : public KeyBindingWithCreator<EdiNMoveCaretWORDSBackward>
+struct EdiNMoveCaretWORDSBackward : public BindedFuncWithCreator<EdiNMoveCaretWORDSBackward>
 {
-    static bool sprocess(const bool first_call) ;
+    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 

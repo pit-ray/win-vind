@@ -7,6 +7,7 @@
 #include "keybrd_eventer.hpp"
 #include "keystroke_repeater.hpp"
 #include "mouse_eventer.hpp"
+#include "utility.hpp"
 using namespace std ;
 
 //SCRedo
@@ -27,18 +28,24 @@ const string SCRedo::sname() noexcept
     return "sc_redo" ;
 }
 
-bool SCRedo::sprocess(const bool first_call) const
+bool SCRedo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
     auto redo = [] {
         return KeybrdEventer::pushup(VKC_LCTRL, VKC_Y) ;
     } ;
-
-    if(first_call) {
-        pimpl->ksr.reset() ;
-        return redo() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->ksr.reset() ;
+            return redo() ;
+        }
+        if(pimpl->ksr.is_pressed()) return redo() ;
+        return true ;
     }
-    if(pimpl->ksr.is_pressed()) {
-        return redo() ;
+
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!redo()) return false ;
     }
     return true ;
 }
@@ -61,18 +68,27 @@ const string SCUndo::sname() noexcept
 {
     return "sc_undo" ;
 }
-bool SCUndo::sprocess(const bool first_call) const
+bool SCUndo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
     auto undo = [] {
        return KeybrdEventer::pushup(VKC_LCTRL, VKC_Z) ;
     } ;
 
-    if(first_call) {
-        pimpl->ksr.reset() ;
-        return undo() ;
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->ksr.reset() ;
+            return undo() ;
+        }
+        if(pimpl->ksr.is_pressed()) {
+            return undo() ;
+        }
+        return true ;
     }
-    if(pimpl->ksr.is_pressed()) {
-        return undo() ;
+
+    //repeat_num > 1
+    if(!first_call) return true ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        if(!undo()) return false ;
     }
     return true ;
 }

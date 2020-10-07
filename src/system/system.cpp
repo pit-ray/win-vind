@@ -49,18 +49,17 @@ namespace System
             return false ;
         }
 
-        KeyBinder::init() ;
         load_config() ;
 
         //initialize system mode
-        const std::unordered_map<std::string, kbg::shp_t> cm {
+        const std::unordered_map<std::string, BindedFunc::shp_t> cm {
             {"gui_normal", Change2Normal::create()},
             {"gui_insert", Change2Insert::create()},
             {"edi_normal", Change2Editor::create()},
             {"edi_insert", Change2EdiInsert::create()}
         } ;
         try {
-            cm.at(iParams::get_s("initial_mode"))->process() ;
+            cm.at(iParams::get_s("initial_mode"))->process(true, 1, nullptr) ;
         }
         catch(const std::out_of_range& e) {
             ERROR_PRINT(std::string(e.what()) + ", in" + Path::SETTINGS() + ", initial_mode is invalid syntax.") ;

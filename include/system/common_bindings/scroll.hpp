@@ -1,10 +1,10 @@
 #ifndef _SCROLL_HPP
 #define _SCROLL_HPP
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct ScrollUp : public KeyBindingWithCreator<ScrollUp>
+struct ScrollUp : public BindedFuncWithCreator<ScrollUp>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollUp() ;
@@ -22,9 +22,9 @@ private:
 } ;
 
 
-struct ScrollDown : public KeyBindingWithCreator<ScrollDown>
+struct ScrollDown : public BindedFuncWithCreator<ScrollDown>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollDown() ;
@@ -42,9 +42,9 @@ private:
 } ;
 
 
-struct ScrollMidUp : public KeyBindingWithCreator<ScrollMidUp>
+struct ScrollMidUp : public BindedFuncWithCreator<ScrollMidUp>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidUp() ;
@@ -62,9 +62,9 @@ private:
 } ;
 
 
-struct ScrollMidDown : public KeyBindingWithCreator<ScrollMidDown>
+struct ScrollMidDown : public BindedFuncWithCreator<ScrollMidDown>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidDown() ;
@@ -82,9 +82,9 @@ private:
 } ;
 
 
-struct ScrollPageUp : public KeyBindingWithCreator<ScrollPageUp>
+struct ScrollPageUp : public BindedFuncWithCreator<ScrollPageUp>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollPageUp() ;
@@ -102,9 +102,9 @@ private:
 } ;
 
 
-struct ScrollPageDown : public KeyBindingWithCreator<ScrollPageDown>
+struct ScrollPageDown : public BindedFuncWithCreator<ScrollPageDown>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollPageDown() ;
@@ -122,9 +122,9 @@ private:
 } ;
 
 
-struct ScrollLeft : public KeyBindingWithCreator<ScrollLeft>
+struct ScrollLeft : public BindedFuncWithCreator<ScrollLeft>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollLeft() ;
@@ -142,9 +142,9 @@ private:
 } ;
 
 
-struct ScrollRight : public KeyBindingWithCreator<ScrollRight>
+struct ScrollRight : public BindedFuncWithCreator<ScrollRight>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollRight() ;
@@ -162,9 +162,9 @@ private:
 } ;
 
 
-struct ScrollMidLeft : public KeyBindingWithCreator<ScrollMidLeft>
+struct ScrollMidLeft : public BindedFuncWithCreator<ScrollMidLeft>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidLeft() ;
@@ -182,9 +182,9 @@ private:
 } ;
 
 
-struct ScrollMidRight : public KeyBindingWithCreator<ScrollMidRight>
+struct ScrollMidRight : public BindedFuncWithCreator<ScrollMidRight>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidRight() ;

@@ -1,30 +1,33 @@
-#ifndef _DYNAMIC_OPTION_WITH_CREATER_HPP
-#define _DYNAMIC_OPTION_WITH_CREATER_HPP
+#ifndef _BINDED_FUNC_WITH_CREATOR_HPP
+#define _BINDED_FUNC_WITH_CREATOR_HPP
 
-#include "dynamic_option.hpp"
 #include <memory>
+#include "binded_func.hpp"
 
 //use Curiously Recurring Template Pattern (CRTP)
 //derived class must implement sprocess and sname.
 //if derived class does not use variable of member, sprocess prefers static function.
 //else, sprocess is constant function.
 template <typename Derived>
-class DynamicOptionWithCreater : public DynamicOption {
+class BindedFuncWithCreator : public BindedFunc {
+private:
+    bool do_process(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const override {
+        return static_cast<const Derived*>(this)->sprocess(first_call, repeat_num, parent_logger) ;
+    }
+
 public:
-    static std::unique_ptr<DynamicOption> create() {
+    static std::unique_ptr<BindedFunc> create() {
         return std::make_unique<Derived>() ;
     }
 
-    static std::shared_ptr<DynamicOption> create_with_cache() {
+    static std::shared_ptr<BindedFunc> create_with_cache() {
         static std::weak_ptr<Derived> cache ;
 
         auto pobj = cache.lock() ;
-
         if(!pobj) {
             pobj = std::make_shared<Derived>() ;
             cache = pobj ;
         }
-
         return pobj ;
     }
 

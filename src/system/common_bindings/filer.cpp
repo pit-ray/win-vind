@@ -1,17 +1,18 @@
 #include "filer.hpp"
 
-#include <memory>
-
 #include <windows.h>
 #include <exdisp.h>
 #include <shlobj.h>
 
+#include <memory>
+
+#include "change_mode.hpp"
+#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
+#include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
-#include "mode_manager.hpp"
 #include "utility.hpp"
-#include "change_mode.hpp"
 
 using namespace std ;
 
@@ -21,15 +22,17 @@ const string SaveOpenedFile::sname() noexcept
     return "save_opened_file" ;
 }
 
-bool SaveOpenedFile::sprocess(const string UNUSED(cmd))
+bool SaveOpenedFile::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
+    if(!first_call) return true ;
+
     auto hwnd = GetForegroundWindow() ;
     if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_S)) {
         return false ;
     }
     Sleep(500) ;
     if(hwnd != GetForegroundWindow()) { //opened popup
-        return Change2Normal::sprocess(true) ;
+        return Change2Normal::sprocess(true, 1, nullptr) ;
     }
     return true ; //over write
 }
@@ -41,9 +44,10 @@ const string CloseOpenedFile::sname() noexcept
     return "close_opened_file" ;
 }
 
-bool CloseOpenedFile::sprocess(const string UNUSED(cmd))
+bool CloseOpenedFile::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
-    if(!Change2Normal::sprocess(true)) return false ; //cursor is avaiable
+    if(!first_call) return true ;
+    if(!Change2Normal::sprocess(true, 1, nullptr)) return false ; //cursor is avaiable
     return KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ; //close a browser's tab (the file is HTML).
 }
 
@@ -54,9 +58,10 @@ const string OpenOtherFile::sname() noexcept
     return "open_other_file" ;
 }
 
-bool OpenOtherFile::sprocess(const string UNUSED(cmd))
+bool OpenOtherFile::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
-    if(!Change2Normal::sprocess(true)) return false ; //cursor is avaiable
+    if(!first_call) return true ;
+    if(!Change2Normal::sprocess(true, 1, nullptr)) return false ; //cursor is avaiable
     return KeybrdEventer::pushup(VKC_LCTRL, VKC_O) ;
 }
 
@@ -202,8 +207,12 @@ namespace FilerUtility
     }
 }
 
-bool MakeDir::sprocess(const string cmd)
+bool MakeDir::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
 {
+    if(!first_call) return true ;
+
+    auto cmd = parent_logger->get_str() ;
+
     auto catch_error = [](auto&& path) {
         const auto ercode = GetLastError() ;
         if(ercode == ERROR_ALREADY_EXISTS) {

@@ -3,11 +3,11 @@
 
 #include <memory>
 
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct SCRedo : public KeyBindingWithCreator<SCRedo>
+struct SCRedo : public BindedFuncWithCreator<SCRedo>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit SCRedo() ;
@@ -25,9 +25,9 @@ private:
 } ;
 
 
-struct SCUndo : public KeyBindingWithCreator<SCUndo>
+struct SCUndo : public BindedFuncWithCreator<SCUndo>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit SCUndo() ;

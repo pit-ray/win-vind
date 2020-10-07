@@ -1,11 +1,11 @@
 #ifndef _EDI_LAYOUT_HPP
 #define _EDI_LAYOUT_HPP
 
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct EdiNRemoveEOL : public KeyBindingWithCreator<EdiNRemoveEOL>
+struct EdiNRemoveEOL : public BindedFuncWithCreator<EdiNRemoveEOL>
 {
-    bool sprocess(const bool first_call) const ;
+    bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNRemoveEOL() ;

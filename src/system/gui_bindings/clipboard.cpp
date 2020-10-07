@@ -21,7 +21,7 @@ const string CBCopy::sname() noexcept
     return "cb_copy" ;
 }
 
-bool CBCopy::sprocess(const bool first_call)
+bool CBCopy::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
 
@@ -44,7 +44,7 @@ const string CBPaste::sname() noexcept
     return "cb_paste" ;
 }
 
-bool CBPaste::sprocess(const bool first_call)
+bool CBPaste::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
 
@@ -56,7 +56,7 @@ bool CBPaste::sprocess(const bool first_call)
     if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_INSERT)) {
         return false ;
     }
-    Change2Normal::sprocess(true) ;
+    Change2Normal::sprocess(true, 1, nullptr) ;
     return true ;
 }
 
@@ -67,7 +67,7 @@ const string CBCut::sname() noexcept
     return "cb_cut" ;
 }
 
-bool CBCut::sprocess(const bool first_call)
+bool CBCut::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
 
@@ -77,7 +77,7 @@ bool CBCut::sprocess(const bool first_call)
     if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_X)) {
         return false ;
     }
-    Change2Normal::sprocess(true) ;
+    Change2Normal::sprocess(true, 1, nullptr) ;
     return true ;
 }
 
@@ -88,7 +88,7 @@ const string CBDelete::sname() noexcept
     return "cb_delete" ;
 }
 
-bool CBDelete::sprocess(const bool first_call)
+bool CBDelete::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
     if(!MouseEventer::release(VKC_MOUSE_LEFT)) {
@@ -106,10 +106,10 @@ bool CBDelete::sprocess(const bool first_call)
 
     using namespace ModeManager ;
     if(is_editor()) {
-        Change2Editor::sprocess(true) ;
+        Change2Editor::sprocess(true, 1, nullptr) ;
     }
     else {
-        Change2Normal::sprocess(true) ;
+        Change2Normal::sprocess(true, 1, nullptr) ;
     }
     return true ;
 }
@@ -121,7 +121,7 @@ const string CBBackSpace::sname() noexcept
     return "cb_back_space" ;
 }
 
-bool CBBackSpace::sprocess(const bool first_call)
+bool CBBackSpace::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
     if(!first_call) return true ;
 
@@ -141,10 +141,10 @@ bool CBBackSpace::sprocess(const bool first_call)
 
     using namespace ModeManager ;
     if(is_editor()) {
-        Change2EdiNormal::sprocess(true) ;
+        Change2EdiNormal::sprocess(true, 1, nullptr) ;
     }
     else {
-        Change2Normal::sprocess(true) ;
+        Change2Normal::sprocess(true, 1, nullptr) ;
     }
     return true ;
 }

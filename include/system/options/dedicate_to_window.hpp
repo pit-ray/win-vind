@@ -1,9 +1,9 @@
 #ifndef _DEDICATE_TO_WINDOW_HPP
 #define _DEDICATE_TO_WINDOW_HPP
 
-#include "dynamic_option_with_creater.hpp"
+#include "dynamic_option_with_creator.hpp"
 
-class Dedicate2Window : public DynamicOptionWithCreater<Dedicate2Window>
+class Dedicate2Window : public DynamicOptionWithCreator<Dedicate2Window>
 {
 private:
     bool do_enable() const noexcept override ;

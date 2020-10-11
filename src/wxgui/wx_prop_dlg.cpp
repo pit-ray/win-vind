@@ -141,7 +141,7 @@ namespace wxGUI
         }
 
         if(!SetForegroundWindow(GetHandle())) {
-            WIN_ERROR_PRINT("Preferences Window was not brought to the foreground") ;
+            ERROR_PRINT("Preferences Window was not brought to the foreground") ;
         } //shown as most top window
     }
 

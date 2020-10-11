@@ -9,10 +9,9 @@ const string Move2NextPage::sname() noexcept
     return "move_to_next_page" ;
 }
 
-bool Move2NextPage::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Move2NextPage::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
-    return KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
+    if(first_call) KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
 }
 
 
@@ -22,8 +21,7 @@ const string Move2PrevPage::sname() noexcept
     return "move_to_prev_page" ;
 }
 
-bool Move2PrevPage::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Move2PrevPage::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
-    return KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
+    if(first_call) KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
 }

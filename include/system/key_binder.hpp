@@ -15,7 +15,7 @@ namespace KeyBinder
 
     bool is_invalid_log(
             KeyLogger& logger,
-            const InvalidPolicy ip=InvalidPolicy::AllSystemKey) noexcept ;
+            const InvalidPolicy ip=InvalidPolicy::AllSystemKey) ;
 
     const BindedFunc::shp_t find_keybinds(
             const KeyLogger& logger,

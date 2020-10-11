@@ -20,35 +20,33 @@ EdiMoveCaretLeft::EdiMoveCaretLeft()
 : pimpl(make_unique<Impl>())
 {}
 
-EdiMoveCaretLeft::~EdiMoveCaretLeft() noexcept = default ;
-
-EdiMoveCaretLeft::EdiMoveCaretLeft(EdiMoveCaretLeft&&) noexcept = default ;
-EdiMoveCaretLeft& EdiMoveCaretLeft::operator=(EdiMoveCaretLeft&&) noexcept = default ;
+EdiMoveCaretLeft::~EdiMoveCaretLeft() noexcept                    = default ;
+EdiMoveCaretLeft::EdiMoveCaretLeft(EdiMoveCaretLeft&&)            = default ;
+EdiMoveCaretLeft& EdiMoveCaretLeft::operator=(EdiMoveCaretLeft&&) = default ;
 
 const string EdiMoveCaretLeft::sname() noexcept
 {
     return "edi_move_caret_left" ;
 }
 
-bool EdiMoveCaretLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
-            return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
         }
-        return KeybrdEventer::pushup(VKC_LEFT) ;
+        KeybrdEventer::pushup(VKC_LEFT) ;
     } ;
 
     if(first_call) {
         pimpl->calcer.reset() ;
-        return press() ;
+        press() ;
+        return ;
     }
-
     if(!pimpl->calcer.is_pressed()) {
-        return true ;
+        return ;
     }
-
-    return press() ;
+    press() ;
 }
 
 
@@ -62,34 +60,36 @@ EdiMoveCaretRight::EdiMoveCaretRight()
 : pimpl(make_unique<Impl>())
 {}
 
-EdiMoveCaretRight::~EdiMoveCaretRight() noexcept = default ;
-
-EdiMoveCaretRight::EdiMoveCaretRight(EdiMoveCaretRight&&) noexcept = default ;
-EdiMoveCaretRight& EdiMoveCaretRight::operator=(EdiMoveCaretRight&&) noexcept = default ;
+EdiMoveCaretRight::~EdiMoveCaretRight() noexcept                     = default ;
+EdiMoveCaretRight::EdiMoveCaretRight(EdiMoveCaretRight&&)            = default ;
+EdiMoveCaretRight& EdiMoveCaretRight::operator=(EdiMoveCaretRight&&) = default ;
 
 const string EdiMoveCaretRight::sname() noexcept
 {
     return "edi_move_caret_right" ;
 }
 
-bool EdiMoveCaretRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
-            return KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
         }
-        return KeybrdEventer::pushup(VKC_RIGHT) ;
+        else {
+            KeybrdEventer::pushup(VKC_RIGHT) ;
+        }
     } ;
 
     if(first_call) {
         pimpl->calcer.reset() ;
-        return press() ;
+        press() ;
+        return ;
     }
 
     if(!pimpl->calcer.is_pressed()) {
-        return true ;
+        return ;
     }
-    return press() ;
+    press() ;
 }
 
 
@@ -104,42 +104,40 @@ EdiMoveCaretUp::EdiMoveCaretUp()
 : pimpl(make_unique<Impl>())
 {}
 
-EdiMoveCaretUp::~EdiMoveCaretUp() noexcept = default ;
-
-EdiMoveCaretUp::EdiMoveCaretUp(EdiMoveCaretUp&&) noexcept = default ;
-EdiMoveCaretUp& EdiMoveCaretUp::operator=(EdiMoveCaretUp&&) noexcept = default ;
+EdiMoveCaretUp::~EdiMoveCaretUp() noexcept                  = default ;
+EdiMoveCaretUp::EdiMoveCaretUp(EdiMoveCaretUp&&)            = default ;
+EdiMoveCaretUp& EdiMoveCaretUp::operator=(EdiMoveCaretUp&&) = default ;
 
 const string EdiMoveCaretUp::sname() noexcept
 {
     return "edi_move_caret_up" ;
 }
 
-bool EdiMoveCaretUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
             if(SimplTextSelecter::is_first_line_selection()) {
-                if(!SimplTextSelecter::select_line_EOL2BOL()) {
-                    return false ;
-                }
+                SimplTextSelecter::select_line_EOL2BOL() ;
             }
 
-            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_UP)) {
-                return false ;
-            }
-            return SimplTextSelecter::moving_update() ;
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_UP) ;
+            SimplTextSelecter::moving_update() ;
         }
-        return KeybrdEventer::pushup(VKC_UP) ;
+        else {
+            KeybrdEventer::pushup(VKC_UP) ;
+        }
     } ;
 
     if(first_call) {
         pimpl->calcer.reset() ;
-        return press() ;
+        press() ;
+        return ;
     }
     if(!pimpl->calcer.is_pressed()) {
-        return true ;
+        return ;
     }
-    return press() ;
+    press() ;
 }
 
 
@@ -154,42 +152,40 @@ EdiMoveCaretDown::EdiMoveCaretDown()
 : pimpl(make_unique<Impl>())
 {}
 
-EdiMoveCaretDown::~EdiMoveCaretDown() noexcept = default ;
-
-EdiMoveCaretDown::EdiMoveCaretDown(EdiMoveCaretDown&&) noexcept = default ;
-EdiMoveCaretDown& EdiMoveCaretDown::operator=(EdiMoveCaretDown&&) noexcept = default ;
+EdiMoveCaretDown::~EdiMoveCaretDown() noexcept                    = default ;
+EdiMoveCaretDown::EdiMoveCaretDown(EdiMoveCaretDown&&)            = default ;
+EdiMoveCaretDown& EdiMoveCaretDown::operator=(EdiMoveCaretDown&&) = default ;
 
 const string EdiMoveCaretDown::sname() noexcept
 {
     return "edi_move_caret_down" ;
 }
 
-bool EdiMoveCaretDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
             if(SimplTextSelecter::is_first_line_selection()) {
-                if(!SimplTextSelecter::select_line_BOL2EOL()) {
-                    return false ;
-                }
+                SimplTextSelecter::select_line_BOL2EOL() ;
             }
 
-            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN)) {
-                return false ;
-            }
-            return SimplTextSelecter::moving_update() ;
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN) ;
+            SimplTextSelecter::moving_update() ;
         }
-        return KeybrdEventer::pushup(VKC_DOWN) ;
+        else {
+            KeybrdEventer::pushup(VKC_DOWN) ;
+        }
     } ;
 
     if(first_call) {
         pimpl->calcer.reset() ;
-        return press() ;
+        press() ;
+        return ;
     }
     if(!pimpl->calcer.is_pressed()) {
-        return true ;
+        return ;
     }
-    return press() ;
+    press() ;
 }
 
 
@@ -199,13 +195,15 @@ const string EdiNMoveCaretwordsForward::sname() noexcept
     return "edi_n_move_caret_words_forward" ;
 }
 
-bool EdiNMoveCaretwordsForward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretwordsForward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
     }
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
+    else {
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
+    }
 }
 
 
@@ -215,13 +213,15 @@ const string EdiNMoveCaretwordsBackward::sname() noexcept
     return "edi_n_move_caret_words_backward" ;
 }
 
-bool EdiNMoveCaretwordsBackward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretwordsBackward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
     }
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
+    else {
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
+    }
 }
 
 
@@ -231,13 +231,15 @@ const string EdiNMoveCaretWORDSForward::sname() noexcept
     return "edi_n_move_caret_WORDS_forward" ;
 }
 
-bool EdiNMoveCaretWORDSForward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretWORDSForward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
     }
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
+    else {
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
+    }
 }
 
 
@@ -247,11 +249,13 @@ const string EdiNMoveCaretWORDSBackward::sname() noexcept
     return "edi_n_move_caret_WORDS_backward" ;
 }
 
-bool EdiNMoveCaretWORDSBackward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretWORDSBackward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {
-        return KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
     }
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
+    else {
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
+    }
 }

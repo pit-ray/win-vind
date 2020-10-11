@@ -20,34 +20,33 @@ SCRedo::SCRedo()
 : pimpl(std::make_unique<Impl>())
 {}
 
-SCRedo::~SCRedo() noexcept = default ;
-SCRedo::SCRedo(SCRedo&&) noexcept = default ;
-SCRedo& SCRedo::operator=(SCRedo&&) noexcept = default ;
+SCRedo::~SCRedo() noexcept          = default ;
+SCRedo::SCRedo(SCRedo&&)            = default ;
+SCRedo& SCRedo::operator=(SCRedo&&) = default ;
 const string SCRedo::sname() noexcept
 {
     return "sc_redo" ;
 }
 
-bool SCRedo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void SCRedo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    auto redo = [] {
-        return KeybrdEventer::pushup(VKC_LCTRL, VKC_Y) ;
-    } ;
+    auto redo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Y) ;} ;
     if(repeat_num == 1) {
         if(first_call) {
             pimpl->ksr.reset() ;
-            return redo() ;
+            redo() ;
+            return ;
         }
-        if(pimpl->ksr.is_pressed()) return redo() ;
-        return true ;
+        if(pimpl->ksr.is_pressed()) {
+            redo() ;
+            return ;
+        }
+        return ;
     }
 
     //repeat_num > 1
-    if(!first_call) return true ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        if(!redo()) return false ;
-    }
-    return true ;
+    if(!first_call) return ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) redo() ;
 }
 
 
@@ -61,34 +60,33 @@ SCUndo::SCUndo()
 : pimpl(std::make_unique<Impl>())
 {}
 
-SCUndo::~SCUndo() noexcept = default ;
-SCUndo::SCUndo(SCUndo&&) noexcept = default ;
-SCUndo& SCUndo::operator=(SCUndo&&) noexcept = default ;
+SCUndo::~SCUndo() noexcept          = default ;
+SCUndo::SCUndo(SCUndo&&)            = default ;
+SCUndo& SCUndo::operator=(SCUndo&&) = default ;
 const string SCUndo::sname() noexcept
 {
     return "sc_undo" ;
 }
-bool SCUndo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void SCUndo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
 {
-    auto undo = [] {
-       return KeybrdEventer::pushup(VKC_LCTRL, VKC_Z) ;
-    } ;
+    auto undo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Z) ;} ;
 
     if(repeat_num == 1) {
         if(first_call) {
             pimpl->ksr.reset() ;
-            return undo() ;
+            undo() ;
+            return ;
         }
         if(pimpl->ksr.is_pressed()) {
-            return undo() ;
+            undo() ;
+            return ;
         }
-        return true ;
+        return ;
     }
 
     //repeat_num > 1
-    if(!first_call) return true ;
+    if(!first_call) return ;
     for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        if(!undo()) return false ;
+        undo() ;
     }
-    return true ;
 }

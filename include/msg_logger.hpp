@@ -4,9 +4,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <mutex>
-
-#include <windows.h>
 
 namespace Logger
 {
@@ -19,13 +16,9 @@ namespace Logger
     static std::ofstream msg_stream{mfilename, std::ios::app} ;
     static constexpr auto M{"[Message] "} ;
 
-    void error(const char* msg, const char* scope) noexcept ;
-    void error(std::string&& msg, const char* scope) noexcept ;
-    void error(const std::string& msg, const char* scope) noexcept ;
-
-    void win_error(const char* msg, const char* scope) noexcept ;
-    void win_error(std::string&& msg, const char* scope) noexcept ;
-    void win_error(const std::string& msg, const char* scope) noexcept ;
+    void error(const char* msg, const char* scope) ;
+    void error(std::string&& msg, const char* scope) ;
+    void error(const std::string& msg, const char* scope) ;
 }
 
 #define MESSAGE_STREAM (\
@@ -33,6 +26,5 @@ Logger::msg_stream << Logger::M\
 )
 
 #define ERROR_PRINT(MSG) Logger::error((MSG), __PRETTY_FUNCTION__)
-#define WIN_ERROR_PRINT(MSG) Logger::win_error((MSG), __PRETTY_FUNCTION__)
 
 #endif

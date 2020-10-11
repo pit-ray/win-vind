@@ -19,15 +19,15 @@ public:
 
     virtual ~IntervalTimer() noexcept ;
 
-    IntervalTimer(IntervalTimer&&) noexcept ;
-    IntervalTimer& operator=(IntervalTimer&&) noexcept ;
+    IntervalTimer(IntervalTimer&&) ;
+    IntervalTimer& operator=(IntervalTimer&&) ;
 
     void set_delta(const int delta_us) noexcept ;
     void reset() noexcept ;
-    bool is_passed() const noexcept ;
+    bool is_passed() const ;
 
-    IntervalTimer(const IntervalTimer&) = delete ;
-    IntervalTimer& operator=(const IntervalTimer&) = delete ;
+    IntervalTimer(const IntervalTimer&)             = delete ;
+    IntervalTimer& operator=(const IntervalTimer&)  = delete ;
 } ;
 
 #endif

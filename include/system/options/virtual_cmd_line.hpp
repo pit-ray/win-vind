@@ -14,9 +14,9 @@ private:
     static std::chrono::system_clock::time_point msg_start ;
     static bool msg_showing ;
 
-    bool do_enable() const noexcept override ;
-    bool do_disable() const noexcept override ;
-    bool do_process() const override ;
+    void do_enable() const override ;
+    void do_disable() const override ;
+    void do_process() const override ;
 
 public:
     explicit VirtualCmdLine() ;
@@ -27,15 +27,14 @@ public:
     static void cout(const std::string& str) noexcept ;
     static void msgout(std::string str) noexcept ;
 
-    static void refresh() noexcept ;
+    static void refresh() ;
     static void clear() noexcept ;
     static void reset() noexcept ;
 
     virtual ~VirtualCmdLine() noexcept ;
-    VirtualCmdLine(VirtualCmdLine&&) noexcept ;
-    VirtualCmdLine& operator=(VirtualCmdLine&&) noexcept ;
-
-    VirtualCmdLine(const VirtualCmdLine&) = delete ;
+    VirtualCmdLine(VirtualCmdLine&&) ;
+    VirtualCmdLine& operator=(VirtualCmdLine&&) ;
+    VirtualCmdLine(const VirtualCmdLine&)            = delete ;
     VirtualCmdLine& operator=(const VirtualCmdLine&) = delete ;
 } ;
 #endif

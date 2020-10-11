@@ -33,13 +33,12 @@ const string Jump2Left::sname() noexcept
     return "jump_to_left" ;
 }
 
-bool Jump2Left::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2Left::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(0, pos.y) ;
-    return true ;
 }
 
 
@@ -49,13 +48,12 @@ const string Jump2Right::sname() noexcept
     return "jump_to_right" ;
 }
 
-bool Jump2Right::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2Right::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(_scmet.width() - iParams::get_i("screen_pos_buf"), pos.y) ;
-    return true ;
 }
 
 
@@ -65,13 +63,12 @@ const string Jump2Top::sname() noexcept
     return "jump_to_top" ;
 }
 
-bool Jump2Top::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2Top::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(pos.x, 0) ;
-    return true ;
 }
 
 
@@ -81,13 +78,12 @@ const string Jump2Bottom::sname() noexcept
     return "jump_to_bottom" ;
 }
 
-bool Jump2Bottom::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2Bottom::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(pos.x, _scmet.height() - iParams::get_i("screen_pos_buf")) ;
-    return true ;
 }
 
 
@@ -97,13 +93,12 @@ const string Jump2XCenter::sname() noexcept
     return "jump_to_xcenter" ;
 }
 
-bool Jump2XCenter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2XCenter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(_scmet.width() / 2, pos.y) ;
-    return true ;
 }
 
 
@@ -113,13 +108,12 @@ const string Jump2YCenter::sname() noexcept
     return "jump_to_ycenter" ;
 }
 
-bool Jump2YCenter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2YCenter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(pos.x, _scmet.height() / 2) ;
-    return true ;
 }
 
 
@@ -132,7 +126,7 @@ namespace JumpCursorUtility
     using key_pos_t = std::array<float, 256> ;
     static key_pos_t _xposs{} ;
     static key_pos_t _yposs{} ;
-    void load_config() noexcept {
+    void load_config() {
         //initilize
         max_keybrd_xposs = 0 ;
         max_keybrd_yposs = 0 ;
@@ -224,30 +218,22 @@ const string Jump2Any::sname() noexcept
     return "jump_to_any" ;
 }
 
-bool Jump2Any::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2Any::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
     //reset key state (binded key)
-    for(const auto& key : KeyAbsorber::get_pressed_list()) {
-        if(!KeybrdEventer::release_keystate(key)) {
-            return false ;
-        }
-    }
+    
+    KeyAbsorber::close_with_refresh() ;
 
     //ignore toggle keys (for example, CapsLock, NumLock, IME....)
     const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
 
-    MSG msg ;
     while(true) {
-        //MessageRoop
-        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&msg) ;
-            DispatchMessage(&msg) ;
-        }
+        Utility::get_win_message() ;
 
         if(KeyAbsorber::is_pressed(VKC_ESC)) {
-            return true ;
+            return ;
         }
 
         const auto log = KeyAbsorber::get_pressed_list() - toggle_keys ;
@@ -274,12 +260,8 @@ bool Jump2Any::sprocess(const bool first_call, const unsigned int repeat_num, co
                 SetCursorPos(x_pos, y_pos) ;
 
                 for(const auto& key : log) {
-                    if(!KeybrdEventer::release_keystate(key)) {
-                        ERROR_PRINT("failed release key") ;
-                        return false ;
-                    }
+                    KeybrdEventer::release_keystate(key) ;
                 }
-                return true ;
             }
         }
         catch(const out_of_range&) {
@@ -288,7 +270,6 @@ bool Jump2Any::sprocess(const bool first_call, const unsigned int repeat_num, co
 
         Sleep(5) ;
     }
-    return true ;
 }
 
 
@@ -298,25 +279,22 @@ const string Jump2ActiveWindow::sname() noexcept
     return "jump_to_active_window" ;
 }
 
-bool Jump2ActiveWindow::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void Jump2ActiveWindow::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
     const auto hwnd = GetForegroundWindow() ;
     if(!hwnd) {
-        WIN_ERROR_PRINT("GetForegoundWindow return nullptr") ;
-        return false ;
+        throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
     }
 
     RECT rect ;
     if(!GetWindowRect(hwnd, &rect)) {
-        WIN_ERROR_PRINT("cannot get window rect") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot get window rect") ;
     }
 
     auto&& xpos = static_cast<int>(rect.left + (rect.right - rect.left) / 2) ;
     auto&& ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
 
     SetCursorPos(xpos, ypos) ;
-    return true ;
 }

@@ -26,15 +26,20 @@ struct KeyMatcher::Impl
     virtual ~Impl() noexcept {
         cmdlist.clear() ;
     }
+
+    Impl(Impl&&)            = default ;
+    Impl& operator=(Impl&&) = default ;
+    Impl(const Impl&)            = delete ;
+    Impl& operator=(const Impl&) = delete ;
 } ;
 
 KeyMatcher::KeyMatcher(KeyMatcher::cmdlist_t&& keyset)
 : pimpl(std::make_unique<Impl>(std::move(keyset)))
 {}
 
-KeyMatcher::~KeyMatcher() noexcept                          = default ;
-KeyMatcher::KeyMatcher(KeyMatcher&&) noexcept               = default ;
-KeyMatcher& KeyMatcher::operator=(KeyMatcher&&) noexcept    = default ;
+KeyMatcher::~KeyMatcher() noexcept                  = default ;
+KeyMatcher::KeyMatcher(KeyMatcher&&)                = default ;
+KeyMatcher& KeyMatcher::operator=(KeyMatcher&&)     = default ;
 
 unsigned int KeyMatcher::compare2latestlog(const KeyLogger& logger) const
 {

@@ -34,17 +34,11 @@ namespace VKCConverter
     static std::array<unsigned char, 256> shifted_char2vkc{0} ;
     static std::array<char, 256> shifted_vkc2char{0} ;
 
-    void load_input_combination() noexcept {
-        try {
-            char2vkc.fill(0) ;
-            vkc2char.fill(0) ;
-            shifted_char2vkc.fill(0) ;
-            shifted_vkc2char.fill(0) ;
-        }
-        catch(const std::exception& e) {
-            ERROR_PRINT(std::string(e.what()) + "failed loading input combination") ;
-            return ;
-        }
+    void load_input_combination() {
+        char2vkc.fill(0) ;
+        vkc2char.fill(0) ;
+        shifted_char2vkc.fill(0) ;
+        shifted_vkc2char.fill(0) ;
 
         for(const auto c : _printable_ascii()) {
             const auto res = VkKeyScanA(c) ;
@@ -189,7 +183,8 @@ namespace VKCConverter
             a[VKC_TO_JP]    = VKC_IME ;
             return a ;
     }
-    unsigned char get_representative_key(const unsigned char key) noexcept {
+
+    unsigned char get_representative_key(const unsigned char key) {
         static const auto a = _create_related_keys() ;
         return a[key] ;
     }

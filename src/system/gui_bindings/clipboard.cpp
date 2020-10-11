@@ -21,20 +21,15 @@ const string CBCopy::sname() noexcept
     return "cb_copy" ;
 }
 
-bool CBCopy::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBCopy::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
-    if(!MouseEventer::release(VKC_MOUSE_LEFT)) {
-        return false ;
-    }
+    MouseEventer::release(VKC_MOUSE_LEFT) ;
 
     //there are cases in which not editable.
     //thus, not use Message Copy
-    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_INSERT)) {
-        return false ;
-    }
-    return true ;
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_INSERT) ;
 }
 
 
@@ -44,20 +39,15 @@ const string CBPaste::sname() noexcept
     return "cb_paste" ;
 }
 
-bool CBPaste::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBPaste::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
-    if(!MouseEventer::release(VKC_MOUSE_LEFT)) {
-        return false ;
-    }
+    MouseEventer::release(VKC_MOUSE_LEFT) ;
 
     //not selecting at paste.
-    if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_INSERT)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_LSHIFT, VKC_INSERT) ;
     Change2Normal::sprocess(true, 1, nullptr) ;
-    return true ;
 }
 
 
@@ -67,18 +57,13 @@ const string CBCut::sname() noexcept
     return "cb_cut" ;
 }
 
-bool CBCut::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBCut::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
-    if(!MouseEventer::release(VKC_MOUSE_LEFT)) {
-        return false ;
-    }
-    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_X)) {
-        return false ;
-    }
+    MouseEventer::release(VKC_MOUSE_LEFT) ;
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
     Change2Normal::sprocess(true, 1, nullptr) ;
-    return true ;
 }
 
 
@@ -88,21 +73,15 @@ const string CBDelete::sname() noexcept
     return "cb_delete" ;
 }
 
-bool CBDelete::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBDelete::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
-    if(!MouseEventer::release(VKC_MOUSE_LEFT)) {
-        return false ;
-    }
+    if(!first_call) return ;
+    MouseEventer::release(VKC_MOUSE_LEFT) ;
 
     //selecting->cut
     //unselecting->delete
-    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_C)) {
-        return false ;
-    }
-    if(!KeybrdEventer::pushup(VKC_DELETE)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
+    KeybrdEventer::pushup(VKC_DELETE) ;
 
     using namespace ModeManager ;
     if(is_editor()) {
@@ -111,7 +90,6 @@ bool CBDelete::sprocess(const bool first_call, const unsigned int repeat_num, co
     else {
         Change2Normal::sprocess(true, 1, nullptr) ;
     }
-    return true ;
 }
 
 
@@ -121,23 +99,17 @@ const string CBBackSpace::sname() noexcept
     return "cb_back_space" ;
 }
 
-bool CBBackSpace::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBBackSpace::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
-    if(!MouseEventer::release(VKC_MOUSE_LEFT)) {
-        return false ;
-    }
+    MouseEventer::release(VKC_MOUSE_LEFT) ;
 
     //selecting->cut
     //unselecting->delete
-    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_C)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
 
-    if(!KeybrdEventer::pushup(VKC_BKSPACE)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_BKSPACE) ;
 
     using namespace ModeManager ;
     if(is_editor()) {
@@ -146,5 +118,4 @@ bool CBBackSpace::sprocess(const bool first_call, const unsigned int repeat_num,
     else {
         Change2Normal::sprocess(true, 1, nullptr) ;
     }
-    return true ;
 }

@@ -18,29 +18,25 @@ const string Change2EdiNormal::sname() noexcept
 {
     return "change_to_edi_normal" ;
 }
-bool Change2EdiNormal::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiNormal::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
 
     using namespace ModeManager ;
     if(ModeManager::get_mode() == Mode::EdiNormal) {
-        return true ;
+        return ;
     }
 
     if(is_edi_visual()) {
-        if(!SimplTextSelecter::unselect()) {
-            return false ;
-        }
+        SimplTextSelecter::unselect() ;
     }
 
-    if(!KeyAbsorber::close_with_refresh()) {
-        return false ;
-    }
+    KeyAbsorber::close_with_refresh() ;
+
     change_mode(Mode::EdiNormal) ;
     VirtualCmdLine::msgout("-- EDI NORMAL --") ;
-    return true ;
 }
 
 
@@ -49,17 +45,16 @@ const string Change2EdiInsert::sname() noexcept
 {
     return "change_to_edi_insert" ;
 }
-bool Change2EdiInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     using namespace ModeManager ;
 
     if(!first_call) {
-        return true ;
+        return ;
     }
     KeyAbsorber::open() ;
     change_mode(Mode::EdiInsert) ;
     VirtualCmdLine::msgout("-- EDI INSERT --") ;
-    return true ;
 }
 
 
@@ -68,18 +63,15 @@ const string Change2EdiBOLInsert::sname() noexcept
 {
     return "change_to_edi_BOLinsert" ;
 }
-bool Change2EdiBOLInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiBOLInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
-    if(!KeybrdEventer::pushup(VKC_HOME)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_HOME) ;
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
     VirtualCmdLine::msgout("-- EDI INSERT --") ;
-    return true ;
 }
 
 
@@ -88,18 +80,15 @@ const string Change2EdiBkInsert::sname() noexcept
 {
     return "change_to_edi_bkinsert" ;
 }
-bool Change2EdiBkInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiBkInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
-    if(!KeybrdEventer::pushup(VKC_RIGHT)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_RIGHT) ;
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
     VirtualCmdLine::msgout("-- EDI INSERT --") ;
-    return true ;
 }
 
 
@@ -108,18 +97,15 @@ const string Change2EdiEOLInsert::sname() noexcept
 {
     return "change_to_edi_EOLinsert" ;
 }
-bool Change2EdiEOLInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiEOLInsert::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
-    if(!KeybrdEventer::pushup(VKC_END)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_END) ;
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
     VirtualCmdLine::msgout("-- EDI INSERT --") ;
-    return true ;
 }
 
 
@@ -128,21 +114,16 @@ const string Change2EdiNlInsertBelow::sname() noexcept
 {
     return "change_to_edi_nlinsert_below" ;
 }
-bool Change2EdiNlInsertBelow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiNlInsertBelow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
-    if(!KeybrdEventer::pushup(VKC_END)) {
-        return false ;
-    }
-    if(!KeybrdEventer::pushup(VKC_ENTER)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_END) ;
+    KeybrdEventer::pushup(VKC_ENTER) ;
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
     VirtualCmdLine::msgout("-- EDI INSERT --") ;
-    return true ;
 }
 
 
@@ -151,24 +132,17 @@ const string Change2EdiNlInsertAbove::sname() noexcept
 {
     return "change_to_edi_nlinsert_above" ;
 }
-bool Change2EdiNlInsertAbove::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiNlInsertAbove::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
-    if(!KeybrdEventer::pushup(VKC_HOME)) {
-        return false ;
-    }
-    if(!KeybrdEventer::pushup(VKC_ENTER)) {
-        return false ;
-    }
-    if(!KeybrdEventer::pushup(VKC_UP)) {
-        return false ;
-    }
+    KeybrdEventer::pushup(VKC_HOME) ;
+    KeybrdEventer::pushup(VKC_ENTER) ;
+    KeybrdEventer::pushup(VKC_UP) ;
     KeyAbsorber::open() ;
     ModeManager::change_mode(ModeManager::Mode::EdiInsert) ;
     VirtualCmdLine::msgout("-- EDI INSERT --") ;
-    return true ;
 }
 
 
@@ -177,17 +151,14 @@ const string Change2EdiVisual::sname() noexcept
 {
     return "change_to_edi_visual" ;
 }
-bool Change2EdiVisual::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiVisual::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
-    if(!SimplTextSelecter::select_words()) {
-        return false ;
-    }
+    SimplTextSelecter::select_words() ;
     ModeManager::change_mode(ModeManager::Mode::EdiVisual) ;
     VirtualCmdLine::msgout("-- EDI VISUAL --") ;
-    return true ;
 }
 
 
@@ -196,15 +167,12 @@ const string Change2EdiLineVisual::sname() noexcept
 {
     return "change_to_edi_line_visual" ;
 }
-bool Change2EdiLineVisual::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void Change2EdiLineVisual::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) {
-        return true ;
+        return ;
     }
-    if(!SimplTextSelecter::select_line_EOL2BOL()) {
-        return false ;
-    }
+    SimplTextSelecter::select_line_EOL2BOL() ;
     ModeManager::change_mode(ModeManager::Mode::EdiLineVisual) ;
     VirtualCmdLine::msgout("-- EDI VISUAL LINE--") ;
-    return true ;
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <mutex>
+#include <stdexcept>
 
 using namespace std ;
 
@@ -16,7 +17,7 @@ struct DynamicOption::Impl
     bool flag ;
 
     explicit Impl() : flag(false) {}
-    ~Impl() noexcept = default ;
+    virtual ~Impl() noexcept = default ;
 
     Impl(Impl&&) noexcept = default ;
     Impl& operator=(Impl&&) noexcept = default ;
@@ -30,28 +31,33 @@ DynamicOption::DynamicOption()
 : pimpl(make_unique<Impl>())
 {}
 
-DynamicOption::~DynamicOption() noexcept = default ;
+DynamicOption::~DynamicOption() noexcept                            = default ;
+DynamicOption::DynamicOption(DynamicOption&&) noexcept              = default ;
+DynamicOption& DynamicOption::operator=(DynamicOption&&) noexcept   = default ;
 
-DynamicOption::DynamicOption(DynamicOption&&) noexcept = default ;
-DynamicOption& DynamicOption::operator=(DynamicOption&&) noexcept = default ;
-
-void DynamicOption::enable() noexcept
+void DynamicOption::enable()
 {
-    pimpl->flag = true ;
-
-    if(!do_enable()) {
-        ERROR_PRINT("do_enable is failed (" + name() + ")") ;
+    try {
+        do_enable() ;
+    }
+    catch(const std::runtime_error& e) {
+        ERROR_PRINT(name() + " did not enable. " + e.what()) ;
         return ;
     }
+
+    pimpl->flag = true ;
 }
 
-void DynamicOption::disable() noexcept
+void DynamicOption::disable()
 {
-    pimpl->flag = false ;
-    if(!do_disable()) {
-        ERROR_PRINT("do_disable is failed (" + name() + ")") ;
+    try {
+        do_disable() ;
+    }
+    catch(const std::runtime_error& e) {
+        ERROR_PRINT(name() + " did not disable. " + e.what()) ;
         return ;
     }
+    pimpl->flag = false ;
 }
 
 bool DynamicOption::is_enabled() const noexcept
@@ -61,10 +67,15 @@ bool DynamicOption::is_enabled() const noexcept
 
 void DynamicOption::process() const
 {
-    if(!pimpl->flag) return ;
+    if(!pimpl->flag) {
+        return ;
+    }
 
-    if(!do_process()) {
-        ERROR_PRINT("do_process is failed (" + name() + ")") ;
+    try {
+        do_process() ;
+    }
+    catch(const std::runtime_error& e) {
+        ERROR_PRINT(name() + " is failed. " + e.what()) ;
         return ;
     }
 }

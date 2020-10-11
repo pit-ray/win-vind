@@ -10,13 +10,9 @@ const string SwitchVDesktop2Left::sname() noexcept
     return "switch_to_left_vdesktop" ;
 }
 
-bool SwitchVDesktop2Left::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void SwitchVDesktop2Left::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
-    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_LEFT)) {
-        return false ;
-    }
-    return true ;
+    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_LEFT) ;
 }
 
 
@@ -26,13 +22,9 @@ const string SwitchVDesktop2Right::sname() noexcept
     return "switch_to_right_vdesktop" ;
 }
 
-bool SwitchVDesktop2Right::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void SwitchVDesktop2Right::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
-    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_RIGHT)) {
-        return false ;
-    }
-    return true ;
+    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_RIGHT) ;
 }
 
 
@@ -41,10 +33,9 @@ const std::string CreateNewVDesktop::sname() noexcept
 {
     return "create_new_vdesktop" ;
 }
-bool CreateNewVDesktop::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CreateNewVDesktop::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return false ;
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_D) ;
+    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_D) ;
 }
 
 
@@ -53,10 +44,9 @@ const std::string CloseCurrentVDesktop::sname() noexcept
 {
     return "close_current_vdesktop" ;
 }
-bool CloseCurrentVDesktop::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CloseCurrentVDesktop::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_F4) ;
+    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_F4) ;
 }
 
 
@@ -66,8 +56,7 @@ const std::string TaskView::sname() noexcept
     return "task_view" ;
 }
 
-bool TaskView::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void TaskView::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
-    return KeybrdEventer::pushup(VKC_LWIN, VKC_TAB) ;
+    if(first_call) KeybrdEventer::pushup(VKC_LWIN, VKC_TAB) ;
 }

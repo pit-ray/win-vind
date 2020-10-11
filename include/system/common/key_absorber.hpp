@@ -7,13 +7,13 @@
 
 namespace KeyAbsorber
 {
-    bool install_hook() noexcept ;
+    void install_hook() ;
     bool is_pressed(const unsigned char keycode) noexcept ;
-    const KeyLog get_pressed_list() noexcept ;
+    const KeyLog get_pressed_list() ;
 
     bool is_closed() noexcept ;
     void close() noexcept ;
-    bool close_with_refresh() noexcept ;
+    void close_with_refresh() ;
     void open() noexcept ;
     void open_keys(const KeyLog::data_t& key) noexcept ;
     void open_key(const unsigned char key) noexcept ;

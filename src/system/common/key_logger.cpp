@@ -12,26 +12,31 @@ using namespace std ;
 
 struct KeyLogger::Impl
 {
-    data_t logs ;
     static KeyLog past_log ;
+
+    data_t logs ;
     KeyStrokeRepeater ksr ;
     bool cmd_changed ;
 
-    explicit Impl() : logs(), ksr(), cmd_changed(true) {}
+    explicit Impl()
+    : logs(),
+      ksr(),
+      cmd_changed(true)
+    {}
 
-    ~Impl() noexcept {
+    virtual ~Impl() noexcept {
         logs.clear() ;
     }
 
-    Impl(Impl&&) = delete ;
-    Impl& operator=(Impl&&) = delete ;
-    Impl(const Impl&) = delete ;
-    Impl& operator=(const Impl&) = delete ;
+    Impl(Impl&&)                    = delete ;
+    Impl& operator=(Impl&&)         = delete ;
+    Impl(const Impl&)               = delete ;
+    Impl& operator=(const Impl&)    = delete ;
 } ;
 
 KeyLog KeyLogger::Impl::past_log{} ;
 
-KeyLogger::KeyLogger() noexcept
+KeyLogger::KeyLogger()
 : pimpl(make_unique<Impl>())
 {}
 
@@ -52,13 +57,13 @@ void KeyLogger::clear() noexcept
     pimpl->logs.clear() ;
 }
 
-void KeyLogger::remove_from_top(const std::size_t num_from_top) noexcept
+void KeyLogger::remove_from_top(const std::size_t num_from_top)
 {
     if(pimpl->logs.empty()) return ;
     pimpl->logs.erase(pimpl->logs.begin(), pimpl->logs.begin() + num_from_top) ;
 }
 
-void KeyLogger::remove_from_back(std::size_t num_from_back) noexcept
+void KeyLogger::remove_from_back(std::size_t num_from_back)
 {
     if(pimpl->logs.empty()) return ;
     if(pimpl->logs.size() < num_from_back) {
@@ -87,7 +92,7 @@ KeyLogger::data_t::const_iterator KeyLogger::cend() const noexcept
     return pimpl->logs.cend() ;
 }
 
-const KeyLog KeyLogger::back() const noexcept
+const KeyLog KeyLogger::back() const
 {
     if(pimpl->logs.empty()) {
         return std::move(KeyLog{}) ;
@@ -150,7 +155,7 @@ bool KeyLogger::is_changed_char()
     }
 }
 
-const string KeyLogger::get_str() const noexcept
+const string KeyLogger::get_as_str() const
 {
     string str{} ;
     if(pimpl->logs.empty()) {

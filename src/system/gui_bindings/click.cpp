@@ -12,18 +12,15 @@ const string ClickLeft::sname() noexcept
     return "click_left" ;
 }
 
-bool ClickLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void ClickLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     using namespace ModeManager ;
     if(get_mode() == Mode::Visual) {
         change_mode(Mode::Normal) ;
     }
 
-    if(!MouseEventer::click(VKC_MOUSE_LEFT)) {
-        return false ;
-    }
-    return true ;
+    MouseEventer::click(VKC_MOUSE_LEFT) ;
 }
 
 
@@ -33,16 +30,13 @@ const string ClickRight::sname() noexcept
     return "click_right" ;
 }
 
-bool ClickRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void ClickRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     using namespace ModeManager ;
     if(get_mode() == Mode::Visual) {
         change_mode(Mode::Normal) ;
     }
 
-    if(!MouseEventer::click(VKC_MOUSE_RIGHT)) {
-        return false ;
-    }
-    return true ;
+    MouseEventer::click(VKC_MOUSE_RIGHT) ;
 }

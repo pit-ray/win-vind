@@ -3,11 +3,12 @@
 #include <windows.h>
 #include <iostream>
 
-#include "keybrd_eventer.hpp"
 #include "key_absorber.hpp"
-#include "vkc_converter.hpp"
-#include "virtual_cmd_line.hpp"
+#include "keybrd_eventer.hpp"
 #include "system.hpp"
+#include "utility.hpp"
+#include "virtual_cmd_line.hpp"
+#include "vkc_converter.hpp"
 
 namespace EREPUtility {
 
@@ -16,23 +17,18 @@ namespace EREPUtility {
     }
 
     template <typename FuncT>
-    inline static bool _is_loop_for_input(FuncT&& func) {
+    inline static void _loop_for_input(FuncT&& func) {
         //reset keys downed in order to call this function.
         for(const auto& key : KeyAbsorber::get_pressed_list()) {
             if(is_shift(key)) continue ;
-            if(!KeybrdEventer::release_keystate(key)) {
-                return false ;
-            }
+            KeybrdEventer::release_keystate(key) ;
         }
 
-        MSG msg ;
         while(System::update_options()) {
-            if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-                TranslateMessage(&msg) ;
-                DispatchMessage(&msg) ;
-            }
+            Utility::get_win_message() ;
+
             if(KeyAbsorber::is_pressed(VKC_ESC)) {
-                return true ;
+                return ;
             }
             const auto log = KeyAbsorber::get_pressed_list() ;
 
@@ -41,14 +37,13 @@ namespace EREPUtility {
                 for(const auto& key : log) {
                     //For example, if replace by 'i' and 'i' key is downed,
                     //immediately will call "insert-mode", so release 'i'.
-                    if(!KeybrdEventer::release_keystate(key)) {
-                        return false ;
-                    }
+                    KeybrdEventer::release_keystate(key) ;
+
                     if(!VKCConverter::get_ascii(key)) {
                         continue ;
                     }
                     if(func(key)) {
-                        return true ;
+                        return ;
                     }
                 }
             }
@@ -56,21 +51,17 @@ namespace EREPUtility {
                 //shifted
                 for(const auto& key : log) {
                     if(is_shift(key)) continue ;
-                    if(!KeybrdEventer::release_keystate(key)) {
-                        return false ;
-                    }
+                    KeybrdEventer::release_keystate(key) ;
                     if(!VKCConverter::get_shifted_ascii(key)) {
                         continue ;
                     }
                     if(func(key, true)) {
-                        return true ;
+                        return ;
                     }
                 }
             }
             Sleep(10) ;
         }
-
-        return true ;
     }
 }
 
@@ -80,30 +71,19 @@ const std::string EdiNReplaceChar::sname() noexcept
 {
     return "edi_n_replace_char" ;
 }
-bool EdiNReplaceChar::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNReplaceChar::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) {
-        return true ;
-    }
-
-    return EREPUtility::_is_loop_for_input([](const auto& vkcs, const bool shifted=false) {
-        if(!KeybrdEventer::pushup(VKC_DELETE)) {
-            return false ;
-        }
+    if(!first_call) return ;
+    EREPUtility::_loop_for_input([](const auto& vkcs, const bool shifted=false) {
+        KeybrdEventer::pushup(VKC_DELETE) ;
 
         if(shifted) {
-            if(!KeybrdEventer::pushup(VKC_LSHIFT, vkcs)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(VKC_LSHIFT, vkcs) ;
         }
         else {
-            if(!KeybrdEventer::pushup(vkcs)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(vkcs) ;
         }
-        if(!KeybrdEventer::pushup(VKC_LEFT)) {
-            return false ;
-        }
+        KeybrdEventer::pushup(VKC_LEFT) ;
         return true ; //terminate looping
     }) ;
 }
@@ -114,37 +94,24 @@ const std::string EdiNReplaceSequence::sname() noexcept
 {
     return "edi_n_replace_sequence" ;
 }
-bool EdiNReplaceSequence::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNReplaceSequence::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
 {
-    if(!first_call) {
-        return true ;
-    }
+    if(!first_call) return ;
 
     VirtualCmdLine::clear() ;
     VirtualCmdLine::msgout("-- EDI REPLACE --") ;
-    if(!EREPUtility::_is_loop_for_input([](const auto& vkcs, const bool shifted=false) {
-        if(!KeybrdEventer::pushup(VKC_DELETE)) {
-            return false ;
-        }
-
+    EREPUtility::_loop_for_input([](const auto& vkcs, const bool shifted=false) {
+        KeybrdEventer::pushup(VKC_DELETE) ;
         if(shifted) {
-            if(!KeybrdEventer::pushup(VKC_LSHIFT, vkcs)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(VKC_LSHIFT, vkcs) ;
         }
         else {
-            if(!KeybrdEventer::pushup(vkcs)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(vkcs) ;
         }
         return false ; //continue looping
-
-    })) {
-        return false ;
-    }
+    }) ;
 
     VirtualCmdLine::clear() ;
     VirtualCmdLine::refresh() ;
     VirtualCmdLine::msgout("-- EDI NORMAL --") ;
-    return true ;
 }

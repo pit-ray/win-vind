@@ -10,80 +10,57 @@ namespace SimplTextSelecter
     static bool _first_line_selection = false ;
     static bool _first_call = true ;
 
-    bool select_words() noexcept {
+    void select_words() noexcept {
         _mode = Mode::Word ;
-        return true ;
     }
 
-    bool select_line_EOL2BOL() noexcept {
+    void select_line_EOL2BOL() {
         _first_line_selection = _first_call ;
 
-        if(!KeybrdEventer::pushup(VKC_END)) {
-            return false ;
-        }
-        if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME)) {
-            return false ;
-        }
+        KeybrdEventer::pushup(VKC_END) ;
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
 
         _mode = Mode::EOL2BOL ;
         _first_call = false ;
-        return true ;
     }
 
-    bool select_line_BOL2EOL() noexcept {
+    void select_line_BOL2EOL() {
         _first_line_selection = _first_call ;
-        if(!KeybrdEventer::pushup(VKC_HOME)) {
-            return false ;
-        }
-        if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_END)) {
-            return false ;
-        }
+
+        KeybrdEventer::pushup(VKC_HOME) ;
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
 
         _mode = Mode::BOL2EOL ;
         _first_call = false ;
-        return true ;
     }
 
-    inline static void reset() noexcept {
+    inline static void _reset() noexcept {
         _first_call = true ;
         _first_line_selection = false ;
-
         _mode = Mode::Unselect ;
     }
 
-    bool unselect() noexcept {
+    void unselect() {
         if(_mode == Mode::EOL2BOL) {
-            if(!KeybrdEventer::pushup(VKC_LEFT)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(VKC_LEFT) ;
         }
         else if(_mode == Mode::BOL2EOL) {
-            if(!KeybrdEventer::pushup(VKC_RIGHT)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(VKC_RIGHT) ;
         }
-
-        reset() ;
-        return true ;
+        _reset() ;
     }
 
     Mode get_mode() noexcept {
         return _mode ;
     }
 
-    bool moving_update() noexcept {
+    void moving_update() {
         if(_mode == Mode::BOL2EOL) {
-            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_END)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
         }
         else {
-            if(!KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME)) {
-                return false ;
-            }
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
         }
-
-        return true ;
     }
 
     bool is_first_line_selection() noexcept {

@@ -15,37 +15,24 @@
 using namespace std ;
 
 namespace TextAnalyzer{
-    const SelRes get_selected_text(std::function<bool()> clip_func, const bool backup) {
+    const SelRes get_selected_text(std::function<void()> clip_func, const bool backup) {
         const auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
-            WIN_ERROR_PRINT("not exist active window") ;
-            return SelRes(false) ;
+            throw RUNTIME_EXCEPT("not exist active window") ;
         }
 
         SmartClipboard scb(hwnd) ;
-        if(!scb.open()) {
-            return SelRes(false) ;
-        }
+        scb.open() ; //<open>-------------------------
 
-        if(backup) {
-            if(!scb.backup()) {
-                return SelRes(false) ;
-            }
-        }
+        if(backup) scb.backup() ;
 
         //initialize clipboard
-        if(!scb.set("")) {
-            return SelRes(false) ;
-        }
+        scb.set("") ;
 
-        if(!scb.close()) {
-            return SelRes(false) ;
-        }
+        scb.close() ; //<close>-----------------------
 
         //By copy or cut functions, sends text to analyze to clipboard.
-        if(!clip_func()) {
-            return SelRes(false) ;
-        }
+        clip_func() ;
 
         //It needs to start reading text in a clipboard,
         //insofar as having already arrived the copied text
@@ -53,25 +40,14 @@ namespace TextAnalyzer{
         //so wait for a little.
         Sleep(100) ;
 
-        if(!scb.open()) {
-            return SelRes(false) ;
-        }
+        scb.open() ; //<open>-------------------------
 
-        SelRes out(true, "", false) ;
-        if(!scb.get_as_str(out.str, out.having_EOL)) {
-            return SelRes(false) ;
-        }
+        SelRes out{} ;
+        scb.get_as_str(out.str, out.having_EOL) ;
 
-        if(backup) {
-            if(!scb.restore_backup()) {
-                return SelRes(false) ;
-            }
-        }
+        if(backup) scb.restore_backup() ;
 
-        if(!scb.close()) {
-            return SelRes(false) ;
-        }
-
+        scb.close() ; //<close>----------------------
         return out ;
     }
 }

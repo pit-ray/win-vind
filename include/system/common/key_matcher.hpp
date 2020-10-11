@@ -25,8 +25,8 @@ public:
     unsigned int compare2latestlog(const KeyLogger& logger) const ;
     bool is_callable() const noexcept ;
 
-    KeyMatcher(KeyMatcher&&) noexcept ;
-    KeyMatcher& operator=(KeyMatcher&&) noexcept ;
+    KeyMatcher(KeyMatcher&&) ;
+    KeyMatcher& operator=(KeyMatcher&&) ;
 
     KeyMatcher(const KeyMatcher&)               = delete ;
     KeyMatcher& operator=(const KeyMatcher&)    = delete ;

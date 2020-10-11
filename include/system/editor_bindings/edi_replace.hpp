@@ -5,13 +5,13 @@
 
 struct EdiNReplaceChar : public BindedFuncWithCreator<EdiNReplaceChar>
 {
-    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 struct EdiNReplaceSequence : public BindedFuncWithCreator<EdiNReplaceSequence>
 {
-    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 

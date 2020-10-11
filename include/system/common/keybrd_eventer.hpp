@@ -18,19 +18,18 @@ namespace KeybrdEventer
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        bool send_event(const bool pressed) noexcept ;
+        void send_event(const bool pressed) ;
 
     public:
         explicit SmartKey(const unsigned char key) ;
         virtual ~SmartKey() noexcept ;
 
-        bool press() noexcept ;
-        bool release() noexcept ;
+        void press() ;
+        void release() ;
 
-        SmartKey(SmartKey&&) noexcept ;
-        SmartKey& operator=(SmartKey&&) noexcept ;
-
-        SmartKey(const SmartKey&) = delete ;
+        SmartKey(SmartKey&&) ;
+        SmartKey& operator=(SmartKey&&) ;
+        SmartKey(const SmartKey&)            = delete ;
         SmartKey& operator=(const SmartKey&) = delete ;
     } ;
 
@@ -38,17 +37,16 @@ namespace KeybrdEventer
     //free function
 
     //change key state without input
-    bool release_keystate(const unsigned char key) noexcept ;
+    void release_keystate(const unsigned char key) ;
 
     //change key state without input
-    bool press_keystate(const unsigned char key) noexcept ;
+    void press_keystate(const unsigned char key) ;
 
-    bool _pushup_core(std::initializer_list<unsigned char>&& initlist) ;
+    void _pushup_core(std::initializer_list<unsigned char>&& initlist) ;
 
     //perfect forwarding
     template <typename... Ts>
-    inline bool pushup(Ts&&... keys) {
-        using namespace std ;
+    inline void pushup(Ts&&... keys) {
         auto initl = {std::forward<Ts>(keys)...} ;
         return _pushup_core(std::move(initl)) ;
     }

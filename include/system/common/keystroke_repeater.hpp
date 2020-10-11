@@ -11,17 +11,16 @@ private:
 
 public:
     explicit KeyStrokeRepeater() ;
-    ~KeyStrokeRepeater() noexcept ;
+    virtual ~KeyStrokeRepeater() noexcept ;
 
-    KeyStrokeRepeater(KeyStrokeRepeater&&) noexcept ;
-    KeyStrokeRepeater& operator=(KeyStrokeRepeater&&) noexcept ;
+    KeyStrokeRepeater(KeyStrokeRepeater&&) ;
+    KeyStrokeRepeater& operator=(KeyStrokeRepeater&&) ;
 
     KeyStrokeRepeater(const KeyStrokeRepeater&)            = delete ;
     KeyStrokeRepeater& operator=(const KeyStrokeRepeater&) = delete ;
 
     void reset() noexcept ;
-
-    bool is_pressed() noexcept ;
+    bool is_pressed() ;
 } ;
 
 

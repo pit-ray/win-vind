@@ -5,14 +5,14 @@
 
 struct EnableTargetingOfDedicate2Window : public BindedFuncWithCreator<EnableTargetingOfDedicate2Window>
 {
-    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 
 
 struct DisableTargetingOfDedicate2Window : public BindedFuncWithCreator<DisableTargetingOfDedicate2Window>
 {
-    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 } ;
 #endif

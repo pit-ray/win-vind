@@ -16,7 +16,7 @@ private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 
-    virtual bool do_process(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const = 0 ;
+    virtual void do_process(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const = 0 ;
 
 public:
     using shp_t = std::shared_ptr<BindedFunc> ;
@@ -24,9 +24,8 @@ public:
     explicit BindedFunc() ;
     virtual ~BindedFunc() noexcept ;
 
-    BindedFunc(BindedFunc&&) noexcept ;
-    BindedFunc& operator=(BindedFunc&&) noexcept ;
-
+    BindedFunc(BindedFunc&&) ;
+    BindedFunc& operator=(BindedFunc&&) ;
     BindedFunc(const BindedFunc&)            = delete ;
     BindedFunc& operator=(const BindedFunc&) = delete ;
 

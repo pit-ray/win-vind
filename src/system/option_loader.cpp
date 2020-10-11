@@ -21,7 +21,7 @@ namespace OptionLoader
         Dedicate2Window::create()
     } ;
 
-    void load_config() noexcept
+    void load_config()
     {
         //load options ------------------------------------------------
         //initialzie
@@ -32,7 +32,7 @@ namespace OptionLoader
         }
     }
 
-    void call_active_funcs() noexcept
+    void call_active_funcs()
     {
         for(const auto& op : vpop) {
             op->process() ;

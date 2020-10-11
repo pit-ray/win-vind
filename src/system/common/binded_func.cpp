@@ -1,6 +1,7 @@
 #include "binded_func.hpp"
 
 #include <array>
+#include <stdexcept>
 
 #include "msg_logger.hpp"
 
@@ -21,15 +22,22 @@ BindedFunc::BindedFunc()
 : pimpl(std::make_unique<Impl>())
 {}
 
-BindedFunc::~BindedFunc() noexcept                          = default ;
-BindedFunc::BindedFunc(BindedFunc&&) noexcept               = default ;
-BindedFunc& BindedFunc::operator=(BindedFunc&&) noexcept    = default ;
+BindedFunc::~BindedFunc()                       = default ;
+BindedFunc::BindedFunc(BindedFunc&&)            = default ;
+BindedFunc& BindedFunc::operator=(BindedFunc&&) = default ;
 
 void BindedFunc::process(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
 {
-    if(!repeat_num) return ;
-    if(!do_process(first_call, repeat_num, parent_logger)) {
-        ERROR_PRINT("do_process is failed. (" + name() + ")") ;
+    if(repeat_num == 0) {
+        return ;
+    }
+
+    try {
+        do_process(first_call, repeat_num, parent_logger) ;
+    }
+    catch(const std::runtime_error& e) {
+        ERROR_PRINT(name() + " is failed. " + e.what()) ;
+        return ;
     }
 }
 

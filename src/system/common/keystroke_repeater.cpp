@@ -7,7 +7,7 @@
 
 using namespace std::chrono ;
 
-inline static const auto const_accelerate(float& velocity, const float ms) noexcept {
+inline static const auto _const_accelerate(float& velocity, const float ms) noexcept {
     //hardcoded
     static constexpr auto MAX_ACCELERATION = 1.0f ;
     static constexpr auto MAX_VELOCITY = 1.0f ;
@@ -25,15 +25,14 @@ inline static const auto const_accelerate(float& velocity, const float ms) noexc
     return velocity ;
 }
 
-inline static const auto compute_deltat(const system_clock::time_point& start_time) noexcept {
+inline static const auto _compute_deltat(const system_clock::time_point& start_time) noexcept {
     return duration_cast<milliseconds>(system_clock::now() - start_time) ;
 }
 
-inline static const auto generate_uniform() noexcept {
+inline static const auto _generate_uniform() {
     static std::random_device seed_gen ;
     static std::default_random_engine engine(seed_gen()) ;
     static std::uniform_real_distribution<float> dist(0.0f, 1.0f) ;
-
     return dist(engine) ;
 }
 
@@ -52,17 +51,17 @@ KeyStrokeRepeater::KeyStrokeRepeater()
 : pimpl(std::make_unique<Impl>())
 {}
 
-KeyStrokeRepeater::~KeyStrokeRepeater() noexcept                                   = default ;
-KeyStrokeRepeater::KeyStrokeRepeater(KeyStrokeRepeater&&) noexcept                 = default ;
-KeyStrokeRepeater& KeyStrokeRepeater::operator=(KeyStrokeRepeater&&) noexcept      = default ;
+KeyStrokeRepeater::~KeyStrokeRepeater() noexcept                        = default ;
+KeyStrokeRepeater::KeyStrokeRepeater(KeyStrokeRepeater&&)               = default ;
+KeyStrokeRepeater& KeyStrokeRepeater::operator=(KeyStrokeRepeater&&)    = default ;
 
 void KeyStrokeRepeater::reset() noexcept {
     pimpl->v = INITIAL_VELOCITY ;
     pimpl->start_time = system_clock::now() ;
 }
 
-bool KeyStrokeRepeater::is_pressed() noexcept {
-    const auto dt = compute_deltat(pimpl->start_time) ;
+bool KeyStrokeRepeater::is_pressed() {
+    const auto dt = _compute_deltat(pimpl->start_time) ;
 
     if(dt < WAIT_TIME_FOR_STARTING_REPEAT_KEYSTROKE) {
         return false ;
@@ -71,8 +70,8 @@ bool KeyStrokeRepeater::is_pressed() noexcept {
         return false ;
     }
 
-    const auto rate = const_accelerate(pimpl->v, static_cast<float>(dt.count())) ; //speed
-    if(rate < generate_uniform()) {
+    const auto rate = _const_accelerate(pimpl->v, static_cast<float>(dt.count())) ; //speed
+    if(rate < _generate_uniform()) {
         return false ;
     }
 

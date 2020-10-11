@@ -6,7 +6,7 @@
 
 struct ShowConfigWindow : public BindedFuncWithCreator<ShowConfigWindow>
 {
-    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 
     static void register_show_func(std::function<void()> func) noexcept ;
@@ -15,7 +15,7 @@ struct ShowConfigWindow : public BindedFuncWithCreator<ShowConfigWindow>
 
 struct ExitConfigWindow : public BindedFuncWithCreator<ExitConfigWindow>
 {
-    static bool sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
     static const std::string sname() noexcept ;
 
     static void register_exit_func(std::function<void()> func) noexcept ;

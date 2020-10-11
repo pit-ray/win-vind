@@ -263,7 +263,7 @@ namespace KeyBinder
         ExAppUtility::load_config() ;
     }
 
-    bool is_invalid_log(KeyLogger& lgr, const InvalidPolicy ip) noexcept {
+    bool is_invalid_log(KeyLogger& lgr, const InvalidPolicy ip) {
         if(lgr.back().is_empty()) {
             return true ;
         }

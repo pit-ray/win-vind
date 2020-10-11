@@ -21,11 +21,10 @@ public:
 
     virtual ~KeyLog() noexcept ;
 
-    KeyLog(KeyLog&&) noexcept ;
-    KeyLog& operator=(KeyLog&&) noexcept ;
-
+    KeyLog(KeyLog&&) ;
+    KeyLog& operator=(KeyLog&&) ;
     KeyLog(const KeyLog&) ;
-    KeyLog& operator=(const KeyLog&) noexcept ;
+    KeyLog& operator=(const KeyLog&) ;
 
     const data_t& get() const & noexcept ;
     data_t&& get() && noexcept ;
@@ -38,10 +37,10 @@ public:
 
     std::size_t size() const noexcept ;
     bool is_empty() const noexcept ;
-    bool is_containing(const unsigned char key) const noexcept ;
+    bool is_containing(const unsigned char key) const ;
 
-    bool operator==(const KeyLog& rhs) const noexcept ;
-    bool operator!=(const KeyLog& rhs) const noexcept ;
+    bool operator==(const KeyLog& rhs) const ;
+    bool operator!=(const KeyLog& rhs) const ;
     const KeyLog operator-(const KeyLog& rhs) const ;
 } ;
 

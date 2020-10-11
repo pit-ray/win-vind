@@ -26,62 +26,69 @@ SmartClipboard::SmartClipboard(HWND hwnd)
 {}
 
 SmartClipboard::~SmartClipboard() noexcept {
-    close() ;
-    //Unused handles should be released.
-    if(pimpl->cache != NULL) {
-        GlobalFree(pimpl->cache) ;
-        pimpl->cache = NULL ;
+    try {
+        close() ;
+        //Unused handles should be released.
+        if(pimpl->cache != NULL) {
+            GlobalFree(pimpl->cache) ;
+            pimpl->cache = NULL ;
+        }
+    }
+    catch(const std::exception& e) {
+        ERROR_PRINT(e.what()) ;
     }
 }
 
-bool SmartClipboard::open() noexcept {
-    if(pimpl->opening) return true ;
+void SmartClipboard::open() {
+    if(pimpl->opening) {
+        return ;
+    }
     if(!OpenClipboard(pimpl->hwnd)) {
-        WIN_ERROR_PRINT("failed opening clipboard") ;
-        return false ;
+        throw RUNTIME_EXCEPT("failed opening clipboard") ;
+        return ;
     }
     pimpl->opening = true ;
-    return true ;
 }
 
-bool SmartClipboard::close() noexcept {
-    if(!pimpl->opening) return true ;
+void SmartClipboard::close() {
+    if(!pimpl->opening) {
+        return ;
+    }
     if(!CloseClipboard()) {
-        WIN_ERROR_PRINT("failed closing clipboard") ;
-        return false ;
+        throw RUNTIME_EXCEPT("failed closing clipboard") ;
+        return ;
     }
     pimpl->opening = false ;
-    return true ;
 }
 
-bool SmartClipboard::get_as_str(std::string& str, bool& having_EOL) noexcept {
+void SmartClipboard::get_as_str(std::string& str, bool& having_EOL) {
     if(!pimpl->opening) {
-        WIN_ERROR_PRINT("Thread does not have a clipboard open.") ;
-        return false ;
+        throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
+        return ;
     }
 
     if(!IsClipboardFormatAvailable(COMMON_FORMAT)) {
-        WIN_ERROR_PRINT("the current clipboard data is not supported unicode") ;
-        return false ;
+        throw RUNTIME_EXCEPT("the current clipboard data is not supported unicode") ;
+        return ;
     }
 
     auto data = GetClipboardData(COMMON_FORMAT) ;
     if(data == NULL) {
-        WIN_ERROR_PRINT("cannot get clipboard data") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot get clipboard data") ;
+        return ;
     }
 
     auto unlocker = [](void* ptr) {GlobalUnlock(ptr) ;} ;
     std::unique_ptr<void, decltype(unlocker)> locked_data(GlobalLock(data), unlocker) ;
     if(locked_data == NULL) {
-        WIN_ERROR_PRINT("cannot lock global clipboard data ") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot lock global clipboard data ") ;
+        return ;
     }
 
     auto data_size = GlobalSize(locked_data.get()) ;
     if(!data_size) {
-        WIN_ERROR_PRINT("the clipboard does not have data.") ; 
-        return false ;
+        throw RUNTIME_EXCEPT("the clipboard does not have data.") ; 
+        return ;
     }
     auto rawstr = reinterpret_cast<char*>(locked_data.get()) ;
     str = rawstr ;
@@ -94,109 +101,106 @@ bool SmartClipboard::get_as_str(std::string& str, bool& having_EOL) noexcept {
         having_EOL = rawstr[data_size - 1] == '\0' &&\
                      rawstr[data_size - 2] == '\0' ;
     }
-    return true ;
 }
 
 //backup current clipboard to cache
-bool SmartClipboard::backup() noexcept {
+void SmartClipboard::backup() {
     if(!pimpl->opening) {
-        WIN_ERROR_PRINT("Thread does not have a clipboard open.") ;
-        return false ;
+        throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
+        return ;
     }
 
     if(pimpl->cache != NULL) {
         if(!GlobalFree(pimpl->cache)) {
-            return false ;
+            throw RUNTIME_EXCEPT("Cannot free cache for backup") ;
+            return ;
         }
     }
 
     auto data = GetClipboardData(COMMON_FORMAT) ;
     if(data == NULL) {
-        WIN_ERROR_PRINT("cannot get clipboard data") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot get clipboard data") ;
+        return ;
     }
 
     auto unlocker = [](void* ptr) {GlobalUnlock(ptr) ;} ;
     std::unique_ptr<void, decltype(unlocker)> locked_data(GlobalLock(data), unlocker) ;
     if(locked_data == NULL) {
-        WIN_ERROR_PRINT("cannot lock global clipboard data") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot lock global clipboard data") ;
+        return ;
     }
 
     auto data_size = GlobalSize(locked_data.get()) ;
     if(!data_size) {
-        WIN_ERROR_PRINT("the clipboard's data is not valid.") ; 
-        return false ;
+        throw RUNTIME_EXCEPT("the clipboard's data is not valid.") ; 
+        return ;
     }
 
     auto gmem = GlobalAlloc(GHND, data_size) ;
     if(gmem == NULL) {
-        WIN_ERROR_PRINT("cannot alloc memories in global area.") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot alloc memories in global area.") ;
+        return ;
     }
 
     std::unique_ptr<void, decltype(unlocker)> locked_gmem(GlobalLock(gmem), unlocker) ;
     if(locked_gmem == NULL) {
-        WIN_ERROR_PRINT("cannot lock global memory for backup.") ;
+        throw RUNTIME_EXCEPT("cannot lock global memory for backup.") ;
         GlobalFree(gmem) ;
-        return false ;
+        return ;
     }
 
     std::memcpy(locked_gmem.get(), locked_data.get(), data_size) ;
     pimpl->cache = gmem ;
-
-    return true ;
 }
 
 //restore cache to clipboard
-bool SmartClipboard::restore_backup() noexcept {
+void SmartClipboard::restore_backup() {
     if(!pimpl->opening) {
-        WIN_ERROR_PRINT("Thread does not have a clipboard open.") ;
-        return false ;
+        throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
+        return ;
     }
 
     if(pimpl->cache == NULL) {
-        WIN_ERROR_PRINT("cache does not have backup") ;
-        return false ;
+        throw LOGIC_EXCEPT("cache does not have backup") ;
+        return ;
     }
 
     if(!EmptyClipboard()) {
-        WIN_ERROR_PRINT("Failed initalization of clipboard") ;
-        return false ;
+        throw RUNTIME_EXCEPT("Failed initalization of clipboard") ;
+        return ;
     }
 
     //If SetClipboardData succeeds, the system owns gmem, so should not free gmem.
     if(!SetClipboardData(COMMON_FORMAT, pimpl->cache)) {
-        WIN_ERROR_PRINT("cannot set data into clipboard") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot set data into clipboard") ;
+        return ;
     }
     pimpl->cache = NULL ;
-    return true ;
 }
 
-bool SmartClipboard::set(const char* const ar, const std::size_t size) noexcept {
+void SmartClipboard::set(const char* const ar, const std::size_t size) {
     if(!pimpl->opening) {
-        WIN_ERROR_PRINT("Thread does not have a clipboard open.") ;
-        return false ;
+        throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
+        return ;
     }
 
     auto gmem = GlobalAlloc(GHND, size) ;
     if(gmem == NULL) {
-        WIN_ERROR_PRINT("cannot alloc memories in global area.") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot alloc memories in global area.") ;
+        return ;
     }
 
     auto unlocker = [](void* ptr) {GlobalUnlock(ptr) ;} ;
     std::unique_ptr<void, decltype(unlocker)> locked_gmem(GlobalLock(gmem), unlocker) ;
     if(locked_gmem == NULL) {
-        WIN_ERROR_PRINT("cannot lock global memory for backup.") ;
+        throw RUNTIME_EXCEPT("cannot lock global memory for backup.") ;
         GlobalFree(gmem) ;
-        return false ;
+        return ;
     }
 
     if(!EmptyClipboard()) {
-        WIN_ERROR_PRINT("Failed initalization of clipboard") ;
-        return false ;
+        throw RUNTIME_EXCEPT("Failed initalization of clipboard") ;
+        return ;
     }
 
     std::memcpy(locked_gmem.get(), ar, size) ;
@@ -204,8 +208,7 @@ bool SmartClipboard::set(const char* const ar, const std::size_t size) noexcept 
 
     //If SetClipboardData succeeds, the system owns gmem, so should not free gmem.
     if(!SetClipboardData(COMMON_FORMAT, gmem)) {
-        WIN_ERROR_PRINT("cannot set data into clipboard") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot set data into clipboard") ;
+        return ;
     }
-    return true ;
 }

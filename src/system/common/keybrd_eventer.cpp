@@ -8,8 +8,9 @@
 #include <windows.h>
 
 #include "key_absorber.hpp"
-#include "msg_logger.hpp"
 #include "key_log.hpp"
+#include "msg_logger.hpp"
+#include "utility.hpp"
 #include "vkc_converter.hpp"
 
 
@@ -22,7 +23,7 @@ namespace KeybrdEventer
         INPUT in ;
         unsigned char key ;
 
-        explicit Impl(const unsigned char keycode) noexcept
+        explicit Impl(const unsigned char keycode)
         : in(),
           key(keycode)
         {
@@ -39,38 +40,48 @@ namespace KeybrdEventer
     {}
 
     SmartKey::~SmartKey() noexcept {
-        release() ;
+        try {
+            release() ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+        }
     }
 
-    SmartKey::SmartKey(SmartKey&&) noexcept = default ;
-    SmartKey& SmartKey::operator=(SmartKey&&) noexcept = default ;
+    SmartKey::SmartKey(SmartKey&&)            = default ;
+    SmartKey& SmartKey::operator=(SmartKey&&) = default ;
 
-    bool SmartKey::send_event(const bool pressed) noexcept {
+    void SmartKey::send_event(const bool pressed) {
         pimpl->in.ki.dwFlags = pressed ? 0 : KEYEVENTF_KEYUP ;
         if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("failed sending keyboard event") ;
-            return false ;
+            throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+            return ;
         }
-        return true ;
     }
 
-    bool SmartKey::press() noexcept {
+    void SmartKey::press() {
         KeyAbsorber::open_key(pimpl->key) ;
-        if(!send_event(true)) return false ;
+        send_event(true) ;
         KeyAbsorber::close() ;
-        return GetAsyncKeyState(pimpl->key) & 0x8000 ;
+        if(!(GetAsyncKeyState(pimpl->key) & 0x8000)) {
+            throw RUNTIME_EXCEPT("You sent a key pressing event successfully, but the state of its key was not changed.") ;
+            return ;
+        }
     }
 
-    bool SmartKey::release() noexcept {
+    void SmartKey::release() {
         KeyAbsorber::open_key(pimpl->key) ;
-        if(!send_event(false)) return false ;
+        send_event(false) ;
         KeyAbsorber::close() ;
-        return !(GetAsyncKeyState(pimpl->key) & 0x8000) ;
+        if(GetAsyncKeyState(pimpl->key) & 0x8000) {
+            throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
+            return ;
+        }
     }
 
 
     //change key state without input
-    bool release_keystate(const unsigned char key) noexcept {
+    void release_keystate(const unsigned char key) {
         INPUT in ;
         in.type = INPUT_KEYBOARD ;
         in.ki.wVk = static_cast<WORD>(key) ;
@@ -80,15 +91,13 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("failed sending keyboard event") ;
-            return false ;
+            throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+            return ;
         }
-
-        return true ;
     }
 
     //change key state without input
-    bool press_keystate(const unsigned char key) noexcept {
+    void press_keystate(const unsigned char key) {
         INPUT in ;
         in.type = INPUT_KEYBOARD ;
         in.ki.wVk = static_cast<WORD>(key) ;
@@ -98,13 +107,12 @@ namespace KeybrdEventer
         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("failed sending keyboard event") ;
-            return false ;
+            throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+            return ;
         }
-        return true ;
     }
 
-    bool _pushup_core(std::initializer_list<unsigned char>&& initl) {
+    void _pushup_core(std::initializer_list<unsigned char>&& initl) {
         const auto pressing_keys = KeyAbsorber::get_pressed_list() ;
 
         const auto recover_keystate= [&pressing_keys] {
@@ -115,13 +123,9 @@ namespace KeybrdEventer
 
         if(initl.size() == 1) {
             SmartKey ins(static_cast<unsigned char>(*initl.begin())) ;
-
-            if(!ins.press()) {
-                return false ;
-            }
-
+            ins.press() ;
             recover_keystate() ;
-            return true ;
+            return ;
         }
 
         std::stack<std::unique_ptr<SmartKey>> st ;
@@ -131,18 +135,21 @@ namespace KeybrdEventer
             }
         } ;
 
-        for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
-            const auto key = static_cast<unsigned char>(*iter) ;
-            st.push(std::make_unique<SmartKey>(key)) ;
-            if(!st.top()->press()) {
-                clear_stack() ;
-                recover_keystate() ;
-                return false ;
+        try {
+            for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
+                const auto key = static_cast<unsigned char>(*iter) ;
+                st.push(std::make_unique<SmartKey>(key)) ;
+                st.top()->press() ;
             }
+        }
+        catch(const std::runtime_error& e) {
+            clear_stack() ;
+            recover_keystate() ;
+            throw e ;
+            return ;
         }
 
         clear_stack() ;
         recover_keystate() ;
-        return true ;
     }
 }

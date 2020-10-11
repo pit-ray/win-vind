@@ -129,10 +129,10 @@ bool update_core_cmd() noexcept {
 }
 
 
-bool CommandMode::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
+void CommandMode::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
 {
     using namespace CmdModeUtility ;
-    if(!first_call) return true ;
+    if(!first_call) return ;
     
     using namespace ModeManager ;
 
@@ -143,9 +143,7 @@ bool CommandMode::sprocess(const bool first_call, const unsigned int UNUSED(repe
 
     //refresh key state
     for(const auto& key : KeyAbsorber::get_pressed_list()) {
-        if(!KeybrdEventer::release_keystate(key)) {
-            return false ;
-        }
+        KeybrdEventer::release_keystate(key) ;
     }
 
     MSG msg ;
@@ -155,14 +153,12 @@ bool CommandMode::sprocess(const bool first_call, const unsigned int UNUSED(repe
             DispatchMessage(&msg) ;
         }
 
-        try {VirtualCmdLine::cout(":" + cmd_hist.at(cmd_hist_index)->logger.get_str()) ;}
+        try {VirtualCmdLine::cout(":" + cmd_hist.at(cmd_hist_index)->logger.get_as_str()) ;}
         catch(const std::out_of_range&) {VirtualCmdLine::clear() ;} ;
 
         if(!update_core_cmd()) break ;
 
         Sleep(10) ;
     }
-    
     change_mode(past_mode) ;
-    return true ;
 }

@@ -6,6 +6,10 @@ Simple Vim Key Binder for Windows
 
 Please refer to <a href="https://pit-ray.github.io/win-vind/">github.io/win-vind</a>.  
 
+## Warning
+It has some serious problems repeating key-stroke infinitely in `Editor Mode`.
+Now, I am fixing them, so please wait for the next version in December or don't use `Editor Mode`.
+
 ## Description
 You can operate Windows by key-bindings like Vim.  
 **win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.  

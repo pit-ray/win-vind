@@ -12,7 +12,7 @@ You can operate Windows by key-bindings like Vim.
 
 ## Warning
 It has some serious problems repeating key-stroke infinitely in `Editor Mode`.
-Now, I am fixing them, so please wait for the next version in November or don't use `Editor Mode`.
+However, I am unfortunately busy now, so please wait for the next version in November middle or don't use `Editor Mode`.
 
 ## Overview
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true" width=700 title="Mode Overview">  

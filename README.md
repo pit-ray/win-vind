@@ -11,7 +11,7 @@ You can operate Windows by key-bindings like Vim.
 **win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.  
 
 # Warning
-**It has some serious problems repeating key-stroke infinitely in `Editor Mode` if you use multiple IME. If you are single language user, no problem. 
+**It has some serious problems repeating key-stroke infinitely in `Editor Mode`. 
 Please be looking forward to the next version.**  
 
 ## Overview

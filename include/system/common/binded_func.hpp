@@ -50,6 +50,12 @@ public:
             const KeyLogger& logger,
             ModeManager::Mode mode=ModeManager::get_mode()) const ;
 
+    //[return] matched num in latest log
+    //The cost for computing is bigger than validate_if_match.
+    unsigned int validate_if_fullmatch(
+            const KeyLogger& logger,
+            ModeManager::Mode mode=ModeManager::get_mode()) const ;
+
     bool is_callable() const noexcept ;
     virtual bool is_for_moving_caret() const noexcept ;
 } ;

@@ -88,7 +88,7 @@ void SwitchWindow::sprocess(
             return ;
         }
 
-        auto matched_func = KeyBinder::find_func(logger, nullptr, ModeManager::Mode::Normal) ;
+        auto matched_func = KeyBinder::find_func(logger, nullptr, false, ModeManager::Mode::Normal) ;
         if(!matched_func) {
             logger.clear() ;
             return ;

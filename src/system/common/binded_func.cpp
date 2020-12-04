@@ -81,17 +81,30 @@ unsigned int BindedFunc::validate_if_match(
     if(pimpl->running_now.load()) return 0 ;
 
     pimpl->modeidx = static_cast<unsigned char>(mode) ;
-    if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx)) {
+    if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
         return ptr->compare_to_latestlog(logger) ;
-    }
+
+    return 0 ;
+}
+
+unsigned int BindedFunc::validate_if_fullmatch(
+        const KeyLogger& logger,
+        ModeManager::Mode mode) const
+{
+    if(pimpl->running_now.load()) return 0 ;
+
+    pimpl->modeidx = static_cast<unsigned char>(mode) ;
+    if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
+        return ptr->compare_to_alllog(logger) ;
+
     return 0 ;
 }
 
 bool BindedFunc::is_callable() const noexcept
 {
-    if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx)) {
-        return !pimpl->running_now.load() && ptr->is_safisfied() ;
-    }
+    if(pimpl->running_now.load()) return false ;
+    if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
+        return ptr->is_accepted() ;
     return false ;
 }
 

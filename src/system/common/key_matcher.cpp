@@ -10,17 +10,25 @@
 struct KeyMatcher::Impl
 {
     cmdlist_t cmdlist ;
-    bool code_existed = true ;
-    bool safisfied    = false ;
-    std::size_t optional_index = std::numeric_limits<std::size_t>::max() ;
+    bool code_existed ;
+    bool accepted ;
+    std::size_t optional_index ;
     std::mutex mtx ;
 
     explicit Impl(cmdlist_t&& cl)
-    : cmdlist(std::move(cl))
+    : cmdlist(std::move(cl)),
+      code_existed(true),
+      accepted(false),
+      optional_index(std::numeric_limits<std::size_t>::max()),
+      mtx()
     {}
 
     explicit Impl(const cmdlist_t& cl)
-    : cmdlist(cl)
+    : cmdlist(cl),
+      code_existed(true),
+      accepted(false),
+      optional_index(std::numeric_limits<std::size_t>::max()),
+      mtx()
     {}
 
     virtual ~Impl() noexcept {
@@ -40,31 +48,21 @@ KeyMatcher::~KeyMatcher() noexcept              = default ;
 KeyMatcher::KeyMatcher(KeyMatcher&&)            = default ;
 KeyMatcher& KeyMatcher::operator=(KeyMatcher&&) = default ;
 
-unsigned int KeyMatcher::compare_to_latestlog(const KeyLogger& logger) const
+/*
+ * -- Key matching system like Automata --
+ * [code_existed == true] state transitioned successfully
+ * [accepted     == true] reached accepting state
+ *
+ */
+unsigned int KeyMatcher::compare_onelog(const KeyLog& log, const size_t seqidx) const
 {
-    std::lock_guard<std::mutex> lock(pimpl->mtx) ;
+    //mutex is applied
 
-    pimpl->safisfied = false ;
-    if(logger.empty()) return 0 ;
-
-    const auto seqidx = logger.size() - 1 ;
-    if(seqidx == 0) {
-        pimpl->code_existed = true ;
-    }
-
-    if(seqidx < pimpl->optional_index) {
-        pimpl->optional_index = std::numeric_limits<std::size_t>::max() ;
-    }
-    else {
-        pimpl->safisfied    = true ;
+    if(seqidx >= pimpl->optional_index) {
+        pimpl->accepted     = true ;
         pimpl->code_existed = true ;
 
         return std::numeric_limits<unsigned int>::max() ;
-    }
-
-    //The search is not needed anymore.
-    if(!pimpl->code_existed) {
-        return 0 ;
     }
 
     unsigned int most_matched_num = 0 ;
@@ -80,28 +78,25 @@ unsigned int KeyMatcher::compare_to_latestlog(const KeyLogger& logger) const
                     pimpl->optional_index = seqidx ;
                     throw VKC_OPTIONAL ;
                 }
-                if(logger.back().is_containing(key)) {
+                if(log.is_containing(key))
                     matched_num ++ ;
-                }
             }
 
-            if(matched_num != keyset.size()) {
-                continue ; //not matched, so search next command
-            }
+            //not matched, so search next command
+            if(matched_num != keyset.size()) continue ;
             at_least_exist = true ;
 
-            if(most_matched_num < matched_num) {
+            if(most_matched_num < matched_num)
                 most_matched_num = matched_num ;
-            }
-            if(seqidx == (cmd.size() - 1)) {
-                pimpl->safisfied = true ;
-            }
+
+            if(seqidx == (cmd.size() - 1))
+                pimpl->accepted = true ;
         }
         catch(const std::out_of_range&) {
             continue ;
         }
         catch(const unsigned char code) {
-            pimpl->safisfied    = true ;
+            pimpl->accepted    = true ;
             pimpl->code_existed = true ;
             return std::numeric_limits<unsigned int>::max() ;
         }
@@ -109,9 +104,52 @@ unsigned int KeyMatcher::compare_to_latestlog(const KeyLogger& logger) const
 
     pimpl->code_existed = at_least_exist ;
     return most_matched_num ;
+
 }
 
-bool KeyMatcher::is_safisfied() const noexcept
+unsigned int KeyMatcher::compare_to_latestlog(const KeyLogger& logger) const
 {
-    return pimpl->safisfied ;
+    std::lock_guard<std::mutex> lock(pimpl->mtx) ;
+
+    pimpl->accepted = false ;
+
+    if(logger.empty()) return 0 ;
+
+    const auto seqidx = logger.size() - 1 ;
+    if(seqidx == 0)
+        pimpl->code_existed = true ;
+
+    if(seqidx < pimpl->optional_index) {
+        pimpl->optional_index = std::numeric_limits<std::size_t>::max() ;
+    }
+
+    //The search is not needed anymore.
+    if(!pimpl->code_existed) return 0 ;
+
+    return compare_onelog(logger.back(), seqidx) ;
+}
+
+unsigned int KeyMatcher::compare_to_alllog(const KeyLogger& logger) const
+{
+    std::lock_guard<std::mutex> lock(pimpl->mtx) ;
+
+    pimpl->accepted = false ;
+
+    if(logger.empty()) return 0 ;
+
+    pimpl->code_existed   = true ;
+    pimpl->optional_index = std::numeric_limits<std::size_t>::max() ;
+
+    unsigned int result ;
+    for(std::size_t i = 0 ; i < logger.size() ; i ++) {
+        result = compare_onelog(logger[i], i) ;
+
+        if(pimpl->accepted || !pimpl->code_existed) break ;
+    }
+    return result ;
+}
+
+bool KeyMatcher::is_accepted() const noexcept
+{
+    return pimpl->accepted ;
 }

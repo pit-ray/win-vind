@@ -12,6 +12,7 @@
 
 #include <windows.h>
 
+#include "binded_func.hpp"
 #include "disable_gcc_warning.hpp"
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
@@ -33,7 +34,7 @@ using namespace std ;
 
 namespace KeyBinder
 {
-    static auto _vpbf{BindingsLists::get()} ;
+    static const auto _vpbf{BindingsLists::get()} ;
 
     static KeyLogger _logger{} ;
     static BindedFunc::shp_t _running_func = nullptr ;
@@ -300,6 +301,7 @@ namespace KeyBinder
     const BindedFunc::shp_t find_func(
             const KeyLogger& lgr,
             const BindedFunc::shp_t& running_func,
+            const bool full_scan,
             ModeManager::Mode mode) {
 
         unsigned int most_matched_num  = 0 ;
@@ -317,15 +319,32 @@ namespace KeyBinder
         } ;
 
         if(!running_func) { //lower cost version
-            for(const auto& func : _vpbf)
-                choose(func, func->validate_if_match(lgr, mode)) ;
+            if(full_scan) {
+                for(const auto& func : _vpbf)
+                    choose(func, func->validate_if_fullmatch(lgr, mode)) ;
+            }
+            else {
+                for(const auto& func : _vpbf)
+                    choose(func, func->validate_if_match(lgr, mode)) ;
+            }
             return matched_func ;
         }
 
-        for(const auto& func : _vpbf) {
-            const auto matched_num = func->validate_if_match(lgr, mode) ;
-            if(running_func == func) continue ;
-            choose(func, matched_num) ;
+        unsigned int matched_num ;
+
+        if(full_scan) {
+            for(const auto& func : _vpbf) {
+                matched_num = func->validate_if_fullmatch(lgr, mode) ;
+                if(running_func == func) continue ;
+                choose(func, matched_num) ;
+            }
+        }
+        else {
+            for(const auto& func : _vpbf) {
+                matched_num = func->validate_if_match(lgr, mode) ;
+                if(running_func == func) continue ;
+                choose(func, matched_num) ;
+            }
         }
 
         //New matched function is given priority over running func.

@@ -4,10 +4,12 @@
 
 #include <vector>
 
+#include "binded_func.hpp"
 #include "bindings_loader.hpp"
 #include "i_params.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
+#include "key_binding.hpp"
 #include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
@@ -42,6 +44,8 @@ namespace CmdMode
         //past logger
         cmd_hist_index = cmd_hist.size() - 1 ;
     }
+
+    static auto need_full_scan = false ;
 }
 
 const std::string CommandMode::sname() noexcept
@@ -108,6 +112,7 @@ inline static bool _main_loop() {
 
         remove_from_back(lgr, 2) ;
         VirtualCmdLine::refresh() ;
+        need_full_scan = true ;
         return CONTINUE_LOOP ;
     }
 
@@ -133,7 +138,10 @@ inline static bool _main_loop() {
         return CONTINUE_LOOP ;
     }
 
-    if(auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func)) {
+    auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func, need_full_scan) ;
+    need_full_scan = false ;
+
+    if(matched_func) {
         if(matched_func->is_callable()) {
             p_cmdp->func = matched_func ;
             return CONTINUE_LOOP ;

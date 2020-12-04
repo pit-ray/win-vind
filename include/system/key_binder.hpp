@@ -3,6 +3,7 @@
 
 #include "binded_func.hpp"
 #include "key_logger.hpp"
+#include "mode_manager.hpp"
 
 namespace KeyBinder
 {
@@ -21,6 +22,7 @@ namespace KeyBinder
     const BindedFunc::shp_t find_func(
             const KeyLogger& logger,
             const BindedFunc::shp_t& running_func=nullptr,
+            const bool full_scan=false, //The cost for computing is high.
             ModeManager::Mode mode=ModeManager::get_mode()) ;
 
     void load_config() ;

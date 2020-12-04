@@ -12,6 +12,8 @@ private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 
+    unsigned int compare_onelog(const KeyLog& log, const size_t seqidx) const ;
+
 public:
     using keyset_t = std::vector<unsigned char> ;
     using cmd_t = std::vector<keyset_t> ;
@@ -24,7 +26,8 @@ public:
 
     //return most matched quantity of key in log
     unsigned int compare_to_latestlog(const KeyLogger& logger) const ;
-    bool is_safisfied() const noexcept ;
+    unsigned int compare_to_alllog(const KeyLogger& logger) const ;
+    bool is_accepted() const noexcept ;
 
     KeyMatcher(KeyMatcher&&) ;
     KeyMatcher& operator=(KeyMatcher&&) ;

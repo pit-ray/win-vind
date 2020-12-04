@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <iostream>
 
 namespace Utility
 {
@@ -73,9 +74,35 @@ namespace Utility
     inline void get_win_message() noexcept {
         static MSG msg ;
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            //TranslateMessage(&msg) ;
+            TranslateMessage(&msg) ;
             DispatchMessage(&msg) ;
         }
+    }
+
+    template <typename T>
+    void remove_from_top(std::vector<T>& v, const std::size_t num_from_top)
+    {
+        if(v.empty()) {
+            return ;
+        }
+        if(v.size() < num_from_top) {
+            v.clear() ;
+            return ;
+        }
+        v.erase(v.begin(), v.begin() + num_from_top) ;
+    }
+
+    template <typename T>
+    void remove_from_back(std::vector<T>& v, std::size_t num_from_back)
+    {
+        if(v.empty()) {
+            return ;
+        }
+        if(v.size() < num_from_back) {
+            v.clear() ;
+            return ;
+        }
+        v.erase(v.end() - num_from_back, v.end()) ;
     }
 }
 

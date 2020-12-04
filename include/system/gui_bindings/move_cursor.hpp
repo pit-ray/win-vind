@@ -10,7 +10,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveLeft() ;
@@ -30,7 +34,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveRight() ;
@@ -50,7 +58,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveUp() ;
@@ -70,7 +82,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit MoveDown() ;

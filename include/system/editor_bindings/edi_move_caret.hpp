@@ -11,7 +11,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretLeft() ;
@@ -30,7 +34,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretRight() ;
@@ -49,7 +57,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretUp() ;
@@ -68,7 +80,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiMoveCaretDown() ;
@@ -83,26 +99,42 @@ public:
 
 struct EdiNMoveCaretwordsForward : public BindedFuncWithCreator<EdiNMoveCaretwordsForward>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 struct EdiNMoveCaretwordsBackward : public BindedFuncWithCreator<EdiNMoveCaretwordsBackward>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 
 struct EdiNMoveCaretWORDSForward : public BindedFuncWithCreator<EdiNMoveCaretWORDSForward>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 struct EdiNMoveCaretWORDSBackward : public BindedFuncWithCreator<EdiNMoveCaretWORDSBackward>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 

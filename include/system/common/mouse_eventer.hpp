@@ -28,7 +28,7 @@ namespace MouseEventer
         in.mi.time = 0 ;
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            throw RUNTIME_EXCEPT("SendInput is failed.") ;
+            throw RUNTIME_EXCEPT("SendInput failed.") ;
         }
     }
 

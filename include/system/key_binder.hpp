@@ -2,6 +2,7 @@
 #define _KEY_BINDER_HPP
 
 #include "binded_func.hpp"
+#include "key_logger.hpp"
 
 namespace KeyBinder
 {
@@ -17,9 +18,9 @@ namespace KeyBinder
             KeyLogger& logger,
             const InvalidPolicy ip=InvalidPolicy::AllSystemKey) ;
 
-    const BindedFunc::shp_t find_keybinds(
+    const BindedFunc::shp_t find_func(
             const KeyLogger& logger,
-            const BindedFunc::shp_t& current_func=nullptr,
+            const BindedFunc::shp_t& running_func=nullptr,
             ModeManager::Mode mode=ModeManager::get_mode()) ;
 
     void load_config() ;

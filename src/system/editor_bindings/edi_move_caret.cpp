@@ -1,12 +1,13 @@
 #include "edi_move_caret.hpp"
 
-#include "keybrd_eventer.hpp"
 #include "interval_timer.hpp"
-#include "msg_logger.hpp"
 #include "key_absorber.hpp"
-#include "simpl_text_selecter.hpp"
-#include "mode_manager.hpp"
+#include "keybrd_eventer.hpp"
 #include "keystroke_repeater.hpp"
+#include "mode_manager.hpp"
+#include "msg_logger.hpp"
+#include "simpl_text_selecter.hpp"
+#include "utility.hpp"
 
 using namespace std ;
 
@@ -29,7 +30,11 @@ const string EdiMoveCaretLeft::sname() noexcept
     return "edi_move_caret_left" ;
 }
 
-void EdiMoveCaretLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretLeft::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
@@ -69,7 +74,11 @@ const string EdiMoveCaretRight::sname() noexcept
     return "edi_move_caret_right" ;
 }
 
-void EdiMoveCaretRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretRight::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
@@ -113,7 +122,11 @@ const string EdiMoveCaretUp::sname() noexcept
     return "edi_move_caret_up" ;
 }
 
-void EdiMoveCaretUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretUp::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
@@ -161,7 +174,11 @@ const string EdiMoveCaretDown::sname() noexcept
     return "edi_move_caret_down" ;
 }
 
-void EdiMoveCaretDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiMoveCaretDown::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto press = [] {
         if(ModeManager::is_edi_visual()) {
@@ -195,7 +212,11 @@ const string EdiNMoveCaretwordsForward::sname() noexcept
     return "edi_n_move_caret_words_forward" ;
 }
 
-void EdiNMoveCaretwordsForward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretwordsForward::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {
@@ -213,7 +234,11 @@ const string EdiNMoveCaretwordsBackward::sname() noexcept
     return "edi_n_move_caret_words_backward" ;
 }
 
-void EdiNMoveCaretwordsBackward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretwordsBackward::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {
@@ -231,7 +256,11 @@ const string EdiNMoveCaretWORDSForward::sname() noexcept
     return "edi_n_move_caret_WORDS_forward" ;
 }
 
-void EdiNMoveCaretWORDSForward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretWORDSForward::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {
@@ -249,7 +278,11 @@ const string EdiNMoveCaretWORDSBackward::sname() noexcept
     return "edi_n_move_caret_WORDS_backward" ;
 }
 
-void EdiNMoveCaretWORDSBackward::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNMoveCaretWORDSBackward::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(ModeManager::is_edi_visual()) {

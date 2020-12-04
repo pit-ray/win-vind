@@ -5,7 +5,6 @@
 #include <deque>
 #include <iostream>
 #include <memory>
-#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -22,7 +21,6 @@
 #include "command.hpp"
 #include "i_params.hpp"
 #include "key_binding.hpp"
-#include "key_logger.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
@@ -177,9 +175,10 @@ namespace KeyBinder
             throw std::logic_error("KeyBinder has no defined BindFunc.") ;
         }
 
-        _unbinded_syskeys = VKCConverter::get_all_sys_vkc() ; //initialize
+        //initialize the ignoring key list
+        _unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
 
-        //create name list
+        //create name lists of BindidFunc
         std::unordered_map<std::string, BindedFunc::shp_t> funclist ;
         for(auto& func : _vpbf) {
             funclist[func->name()] = func ;
@@ -216,7 +215,7 @@ namespace KeyBinder
                                 cmd = _parse_strcmd(cmdstr) ;
                             }
                             catch(const std::runtime_error& e) {
-                                ERROR_PRINT(func->name() + "::" + index.second\
+                                ERROR_PRINT(func->name() + "::" + index.second \
                                         + " in " + Path::BINDINGS() + " " + e.what()) ;
                                 continue ;
                             }
@@ -229,10 +228,9 @@ namespace KeyBinder
                             cmdlist.push_back(cmd) ;
                         }
 
-                        if(cmdlist.empty()) {
-                            continue ;
-                        }
+                        if(cmdlist.empty()) continue ;
 
+                        //create KeyMatcher for one mode
                         matcher_list[static_cast<unsigned char>(index.first)] \
                             = std::make_shared<KeyMatcher>(std::move(cmdlist)) ;
                     }
@@ -242,9 +240,15 @@ namespace KeyBinder
                     }
                 }
 
+                //If there are some key-bindings fields of the mode having <mode-name> (e.q. <guin>, <edin>) in bindings.json ,
+                //they are copied key-bindings from the first mode in json-array to them.
+                //Ex) "guin": ["<Esc>", "happy"]
+                //    "edin": ["<guin>", "<guii>"]    -> same as "guin"'s key-bindings(<Esc>, "happy")
                 for(std::size_t i = 0 ; i < index_links.size() ; i ++) {
                     const auto link_idx = index_links[i] ;
-                    if(link_idx == static_cast<unsigned char>(Mode::None)) continue ;
+                    if(link_idx == static_cast<unsigned char>(Mode::None)) 
+                        continue ;
+
                     matcher_list[i] = matcher_list[link_idx] ;
                 }
 
@@ -253,7 +257,7 @@ namespace KeyBinder
                 }
             }
             catch(const std::out_of_range& e) {
-                ERROR_PRINT(std::string(e.what()) + ", so not loaded.") ;
+                ERROR_PRINT(std::string(e.what()) + ". The following syntax is invalid." + obj.dump()) ;
                 continue ;
             }
         }
@@ -264,13 +268,13 @@ namespace KeyBinder
     }
 
     bool is_invalid_log(KeyLogger& lgr, const InvalidPolicy ip) {
-        if(lgr.back().is_empty()) {
+        if(lgr.back().empty()) {
             return true ;
         }
 
         auto ignore = [&lgr](auto&& set) {
             return std::all_of(lgr.back().cbegin(), lgr.back().cend(), [&set](const auto& key) {
-                return set.find(key) != set.end() || !VKCConverter::get_ascii(key) ;
+                return set.find(key) != set.end() ;
             }) ;
         } ;
 
@@ -293,60 +297,77 @@ namespace KeyBinder
 
     //This function regards as other functions is stronger than the running function.
     //If the 2nd argument is not passed, it regards as not processing.
-    const BindedFunc::shp_t find_keybinds(
+    const BindedFunc::shp_t find_func(
             const KeyLogger& lgr,
-            const BindedFunc::shp_t& current_func,
+            const BindedFunc::shp_t& running_func,
             ModeManager::Mode mode) {
 
-        unsigned int most_matched_num = 0 ;
-        auto matched_func = current_func ;
+        unsigned int most_matched_num  = 0 ;
+        BindedFunc::shp_t matched_func = nullptr ;
+
+        auto choose = [&most_matched_num, &matched_func](auto& func, auto num) {
+            if(num > most_matched_num) {
+                most_matched_num = num ;
+                matched_func     = func ;
+            }
+            else if(num == most_matched_num && func->is_callable()) {
+                //On same matching level, the callable function is the strongest.
+                matched_func = func ;
+            }
+        } ;
+
+        if(!running_func) { //lower cost version
+            for(const auto& func : _vpbf)
+                choose(func, func->validate_if_match(lgr, mode)) ;
+            return matched_func ;
+        }
 
         for(const auto& func : _vpbf) {
-            if(current_func == func) continue ;
-            const auto matched_num = func->get_matched_num(lgr, mode) ;
-            if(matched_num > most_matched_num) {
-                most_matched_num = matched_num ;
-                matched_func = func ;
-            }
-            else if(matched_num == most_matched_num && func->is_callable()) {
-                //on same matching level, a callable function is the strongest.
-                matched_func = func ;
-            }
+            const auto matched_num = func->validate_if_match(lgr, mode) ;
+            if(running_func == func) continue ;
+            choose(func, matched_num) ;
         }
-        return matched_func ;
+
+        //New matched function is given priority over running func.
+        if(matched_func)
+            return matched_func ;
+
+        if(running_func->is_callable())
+            return running_func ;
+
+        return nullptr ;
     }
 
     void call_matched_funcs() {
-        static std::mutex mtx ;
-        std::lock_guard<std::mutex> lock(mtx) ;
+        using Utility::remove_from_back ;
 
-        if(!_logger.is_changed_code()) {
+        if(!KyLgr::log_as_vkc(_logger)) {
             if(!_running_func) {
-                _logger.remove_from_back(1) ;
+                remove_from_back(_logger, 1) ;
                 return ;
             }
-            _running_func->process(false, 1, &_logger) ;
-            _logger.remove_from_back(1) ;
+            _running_func->process(false, 1, &_logger, nullptr) ;
+            remove_from_back(_logger, 1) ;
             return ;
         }
 
         if(is_invalid_log(_logger, InvalidPolicy::UnbindedSystemKey)) {
-            _logger.remove_from_back(1) ;
+            remove_from_back(_logger, 1) ;
             _running_func = nullptr ;
             return ;
         }
 
-        auto matched_func = find_keybinds(_logger, _running_func) ;
+        auto matched_func = find_func(_logger, _running_func) ;
         if(!matched_func) {
             _logger.clear() ;
+            _running_func = nullptr ;
             return ;
         }
 
         if(matched_func->is_callable()) {
             unsigned int repeat_num = 1 ; //in feature, set this variable
-
             _running_func = matched_func ;
-            _running_func->process(true, repeat_num, &_logger) ;
+            _running_func->process(true, repeat_num, &_logger, nullptr) ;
             _logger.clear() ;
             return ;
         }

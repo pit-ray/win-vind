@@ -22,7 +22,11 @@ const string SaveOpenedFile::sname() noexcept
     return "save_opened_file" ;
 }
 
-void SaveOpenedFile::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void SaveOpenedFile::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -33,9 +37,9 @@ void SaveOpenedFile::sprocess(const bool first_call, const unsigned int UNUSED(r
 
     KeybrdEventer::pushup(VKC_LCTRL, VKC_S) ;
 
-    Sleep(500) ;
+    Sleep(500) ; //wait by openning the dialog for saving
     if(hwnd != GetForegroundWindow()) { //opened popup
-        Change2Normal::sprocess(true, 1, nullptr) ;
+        Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
     }
 }
 
@@ -46,10 +50,14 @@ const string CloseOpenedFile::sname() noexcept
     return "close_opened_file" ;
 }
 
-void CloseOpenedFile::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void CloseOpenedFile::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    Change2Normal::sprocess(true, 1, nullptr) ; //in order to use cursor
+    Change2Normal::sprocess(true, 1, nullptr, nullptr) ; //in order to use cursor
     KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ;
 }
 
@@ -60,26 +68,24 @@ const string OpenOtherFile::sname() noexcept
     return "open_other_file" ;
 }
 
-void OpenOtherFile::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void OpenOtherFile::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    Change2Normal::sprocess(true, 1, nullptr) ;
+    Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
     KeybrdEventer::pushup(VKC_LCTRL, VKC_O) ;
 }
 
 
 //MakeDir
-const string MakeDir::sname() noexcept
-{
-    return "make_dir" ;
-}
-
-
 namespace FilerUtility
 {
     //This algorithm is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
-    inline static auto get_current_explorer_path() noexcept {
-        using path_t = std::basic_string<TCHAR> ;
+    inline static auto get_current_explorer_path() {
+        using path_t = std::string ;
 
         const auto hwnd = GetForegroundWindow() ;
 
@@ -88,7 +94,7 @@ namespace FilerUtility
         }
 
         if(FAILED(CoInitialize(NULL))) {
-            throw RUNTIME_EXCEPT("initialization is failed") ;
+            throw RUNTIME_EXCEPT("initialization failed") ;
         }
 
         //we can get explorer handle from IShellWindows.
@@ -182,7 +188,7 @@ namespace FilerUtility
             if(FAILED(ppf2->GetCurFolder(&raw_pidl))) {
                 throw RUNTIME_EXCEPT("cannot get current folder.") ;
             }
-            auto idl_deleter = [](ITEMIDLIST* ptr) {CoTaskMemFree(ptr) ;} ;
+            auto idl_deleter = [](LPITEMIDLIST ptr) {CoTaskMemFree(ptr) ;} ;
             std::unique_ptr<ITEMIDLIST, decltype(idl_deleter)> pidl(raw_pidl, idl_deleter) ;
 
             //convert to path
@@ -198,11 +204,22 @@ namespace FilerUtility
     }
 }
 
-void MakeDir::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
+const string MakeDir::sname() noexcept
+{
+    return "make_dir" ;
+}
+void MakeDir::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
-    auto cmd = parent_logger->get_as_str() ;
+    if(!parent_charlgr)
+        throw LOGIC_EXCEPT("KeyLogger is nullptr for character.") ;
+
+    auto cmd = KyLgr::log2str(*parent_charlgr) ;
 
     auto catch_error = [](auto&& path) {
         const auto ercode = GetLastError() ;
@@ -220,13 +237,13 @@ void MakeDir::sprocess(const bool first_call, const unsigned int UNUSED(repeat_n
     const auto pos = cmd.find_first_of(" ") ;
     auto arg = cmd.substr(pos + 1) ;
 
-    if(arg.find("\\") != std::string::npos || arg.find("/") != std::string::npos) {
+    if(arg.find("\\") != std::string::npos ||
+            arg.find("/") != std::string::npos) {
         //argument is directory path
         if(arg.length() > 248) {
             //over max path num
             arg = arg.substr(0, 248) ;
         }
-
         if(!CreateDirectory(arg.c_str(), NULL)) {
             catch_error(arg) ;
         }
@@ -240,7 +257,6 @@ void MakeDir::sprocess(const bool first_call, const unsigned int UNUSED(repeat_n
     }
 
     auto full_path = current_path + "\\" + arg ;
-
     if(!CreateDirectory(full_path.c_str(), NULL)) {
         catch_error(full_path) ;
     }

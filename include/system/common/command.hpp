@@ -4,6 +4,7 @@
 #include <string>
 
 #include "bindings_loader.hpp"
+#include "key_logger.hpp"
 
 class Command ;
 
@@ -11,9 +12,6 @@ namespace cmd
 {
     using shp_t = std::shared_ptr<Command> ;
 }
-
-class KeyLog ;
-class KeyLogger ;
 
 //base
 class Command

@@ -36,7 +36,7 @@ public:
     data_t::const_iterator cend() const noexcept ;
 
     std::size_t size() const noexcept ;
-    bool is_empty() const noexcept ;
+    bool empty() const noexcept ;
     bool is_containing(const unsigned char key) const ;
 
     bool operator==(const KeyLog& rhs) const ;

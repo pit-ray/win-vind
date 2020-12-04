@@ -3,20 +3,30 @@
 
 #include "binded_func_with_creator.hpp"
 
-namespace TextAnalyzer {
+namespace TextAnalyzer
+{
     class SelRes ;
 }
 
 //Copy
 struct EdiCopyHighlightText : public BindedFuncWithCreator<EdiCopyHighlightText>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 struct EdiNCopyLine : public BindedFuncWithCreator<EdiNCopyLine>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const TextAnalyzer::SelRes* const exres=nullptr) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const TextAnalyzer::SelRes* const exres=nullptr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -29,7 +39,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNPasteAfter() ;
@@ -48,7 +62,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNPasteBefore() ;
@@ -64,7 +82,11 @@ public:
 //Delete
 struct EdiDeleteHighlightText : public BindedFuncWithCreator<EdiDeleteHighlightText>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -75,7 +97,12 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const TextAnalyzer::SelRes* const exres=nullptr) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const TextAnalyzer::SelRes* const exres=nullptr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNDeleteLine() ;
@@ -95,7 +122,12 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const TextAnalyzer::SelRes* const exres=nullptr) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const TextAnalyzer::SelRes* const exres=nullptr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNDeleteLineUntilEOL() ;
@@ -114,7 +146,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNDeleteAfter() ;
@@ -133,7 +169,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit EdiNDeleteBefore() ;
@@ -147,25 +187,42 @@ public:
 
 struct EdiDeleteMotionAndStartInsert : public BindedFuncWithCreator<EdiDeleteMotionAndStartInsert>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 struct EdiDeleteLinesAndStartInsert : public BindedFuncWithCreator<EdiDeleteLinesAndStartInsert>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 struct EdiDeleteCharsAndStartInsert : public BindedFuncWithCreator<EdiDeleteCharsAndStartInsert>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 struct EdiDeleteUntilEOLAndStartInsert : public BindedFuncWithCreator<EdiDeleteUntilEOLAndStartInsert>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const TextAnalyzer::SelRes* const exres=nullptr) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const TextAnalyzer::SelRes* const exres=nullptr) ;
     static const std::string sname() noexcept ;
 } ;
 

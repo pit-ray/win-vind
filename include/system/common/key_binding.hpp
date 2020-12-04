@@ -5,6 +5,7 @@
 #include <string>
 
 #include "bindings_loader.hpp"
+#include "key_logger.hpp"
 
 class KeyBinding ;
 
@@ -14,7 +15,6 @@ namespace kbg
 }
 
 class KeyLog ;
-class KeyLogger ;
 
 //base
 class KeyBinding

@@ -44,7 +44,6 @@ namespace BindingsLists {
             Change2EdiNlInsertBelow::create(),
             Change2EdiNormal::create(),
             Change2EdiVisual::create(),
-            Change2Editor::create(),
             Change2Insert::create(),
             Change2Normal::create(),
             Change2Visual::create(),

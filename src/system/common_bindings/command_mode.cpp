@@ -3,7 +3,6 @@
 #include <windows.h>
 
 #include <vector>
-#include <mutex>
 
 #include "bindings_loader.hpp"
 #include "i_params.hpp"
@@ -12,20 +11,24 @@
 #include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
+#include "msg_logger.hpp"
 #include "system.hpp"
 #include "utility.hpp"
 #include "virtual_cmd_line.hpp"
+#include "vkc_converter.hpp"
 
-namespace CmdModeUtility
+namespace CmdMode
 {
     struct CmdPoint {
         KeyLogger logger{} ;
         BindedFunc::shp_t func = nullptr ;
     } ;
-    static std::deque<std::shared_ptr<CmdPoint>> cmd_hist{std::make_shared<CmdPoint>()} ;
+    static std::deque<std::shared_ptr<CmdPoint>>
+        cmd_hist{std::make_shared<CmdPoint>()} ;
+
     static std::size_t cmd_hist_index = 0 ;
 
-    inline void update_history() {
+    inline static void update_history() {
         if(cmd_hist_index == cmd_hist.size() - 1) {
             //recently logger
             while(cmd_hist.size() >= iParams::get_z("cmd_max_history_num")) {
@@ -46,21 +49,21 @@ const std::string CommandMode::sname() noexcept
     return "command_mode" ;
 }
 
-//[true] continue, [false] terminate
-bool update_core_cmd() noexcept {
-    std::mutex mtx ;
-    std::lock_guard<std::mutex> lock(mtx) ;
-
-    using namespace CmdModeUtility ;
+#define CONTINUE_LOOP (true)
+#define BREAK_LOOP    (false)
+inline static bool _main_loop() {
+    using namespace CmdMode ;
+    using Utility::remove_from_back ;
 
     auto& p_cmdp = cmd_hist.at(cmd_hist_index) ;
-    auto& lgr = p_cmdp->logger ;
+    auto& lgr    = p_cmdp->logger ;
 
-    if(!lgr.is_changed_char()) {
-        lgr.remove_from_back(1) ;
-        return true ;
+    if(!KyLgr::log_as_char(lgr)) { //update log as character input
+        remove_from_back(lgr, 1) ;
+        return CONTINUE_LOOP ;
     }
 
+    //canceling operation
     if(lgr.back().is_containing(VKC_ESC)){
         const auto recent_index = cmd_hist.size() - 1 ;
         if(cmd_hist_index == recent_index) {
@@ -68,95 +71,101 @@ bool update_core_cmd() noexcept {
             p_cmdp->func = nullptr ;
         }
         else {
-            lgr.remove_from_back(1) ;
+            remove_from_back(lgr, 1) ;
             cmd_hist_index = recent_index ;
         }
         VirtualCmdLine::clear() ;
         VirtualCmdLine::refresh() ;
-        return false ;
+        return BREAK_LOOP ;
     }
 
+    if(lgr.back().empty()) {
+        remove_from_back(lgr, 1) ;
+        return CONTINUE_LOOP ;
+    }
+
+    //decision of input
     if(lgr.back().is_containing(VKC_ENTER) && p_cmdp->func) {
-        lgr.remove_from_back(1) ; //remove keycode of enter
+        remove_from_back(lgr, 1) ; //remove keycode of enter
 
         VirtualCmdLine::clear() ;
         VirtualCmdLine::refresh() ;
 
-        p_cmdp->func->process(true, 1, &lgr) ;
+        p_cmdp->func->process(true, 1, nullptr, &lgr) ;
         update_history() ;
-        return false ;
+        return BREAK_LOOP ;
     }
 
     //edit command
     if(lgr.back().is_containing(VKC_BKSPACE)) {
-        lgr.remove_from_back(2) ;
-        VirtualCmdLine::refresh() ;
-
-        if(lgr.is_empty()) {
+        if(lgr.size() == 1) {
+            lgr.clear() ;
             p_cmdp->func = nullptr ;
-            return true ;
+            VirtualCmdLine::clear() ;
+            VirtualCmdLine::refresh() ;
+            return BREAK_LOOP ;
         }
+
+        remove_from_back(lgr, 2) ;
+        VirtualCmdLine::refresh() ;
+        return CONTINUE_LOOP ;
     }
 
-    //operate command history
+    //command history operation
     if(lgr.back().is_containing(VKC_UP) && cmd_hist_index > 0) {
         cmd_hist_index -- ;
-        lgr.remove_from_back(1) ;
+        remove_from_back(lgr, 1) ;
         VirtualCmdLine::refresh() ;
-        return true ;
+        return CONTINUE_LOOP ;
     }
-    if(lgr.back().is_containing(VKC_DOWN) && cmd_hist_index < cmd_hist.size() - 1) {
+    if(lgr.back().is_containing(VKC_DOWN) 
+            && cmd_hist_index < cmd_hist.size() - 1) {
         cmd_hist_index ++ ;
-        lgr.remove_from_back(1) ;
+        remove_from_back(lgr, 1) ;
         VirtualCmdLine::refresh() ;
-        return true ;
+        return CONTINUE_LOOP ;
     }
 
     //invalid keys
-    if(is_invalid_log(lgr, KeyBinder::InvalidPolicy::AllSystemKey) || lgr.size() > iParams::get_z("cmd_max_char")) {
-        lgr.remove_from_back(1) ;
-        return true ;
+    if(is_invalid_log(lgr, KeyBinder::InvalidPolicy::AllSystemKey) ||
+            lgr.size() > iParams::get_z("cmd_max_char")) {
+        remove_from_back(lgr, 1) ;
+        return CONTINUE_LOOP ;
     }
 
-    if(auto matched_func = KeyBinder::find_keybinds(lgr)) {
+    if(auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func)) {
         if(matched_func->is_callable()) {
             p_cmdp->func = matched_func ;
-            return true ;
+            return CONTINUE_LOOP ;
         }
+        p_cmdp->func = nullptr ;
     }
-    p_cmdp->func = nullptr ;
-    return true ;
+    return CONTINUE_LOOP ;
 }
 
 
-void CommandMode::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
+void CommandMode::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    using namespace CmdModeUtility ;
-    if(!first_call) return ;
-    
+    using namespace CmdMode ;
     using namespace ModeManager ;
+
+    if(!first_call) return ;
 
     const auto past_mode = get_mode() ;
     change_mode(Mode::Command) ;
 
     VirtualCmdLine::reset() ;
+    KeyAbsorber::close_with_refresh() ;
 
-    //refresh key state
-    for(const auto& key : KeyAbsorber::get_pressed_list()) {
-        KeybrdEventer::release_keystate(key) ;
-    }
+    while(System::update_options() && _main_loop()) {
+        Utility::get_win_message() ;
 
-    MSG msg ;
-    while(System::update_options()) {
-        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&msg) ;
-            DispatchMessage(&msg) ;
-        }
-
-        try {VirtualCmdLine::cout(":" + cmd_hist.at(cmd_hist_index)->logger.get_as_str()) ;}
-        catch(const std::out_of_range&) {VirtualCmdLine::clear() ;} ;
-
-        if(!update_core_cmd()) break ;
+        VirtualCmdLine::cout(":" +
+                KyLgr::log2str(cmd_hist.at(cmd_hist_index)->logger)) ;
 
         Sleep(10) ;
     }

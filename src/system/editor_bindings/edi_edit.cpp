@@ -24,8 +24,7 @@ namespace ECBUtility
         Chars,
         Lines,
     } ;
-
-    static _RegisteredType _rgtype{_RegisteredType::None} ;
+    static auto _rgtype = _RegisteredType::None ;
 
     //Some editors have a visible EOL mark in a line.
     //This function select text from current position to EOL, except for the visible EOL mark.
@@ -48,8 +47,7 @@ namespace ECBUtility
         auto res = TextAnalyzer::get_selected_text([] {
                 pushup(VKC_LSHIFT, VKC_END) ;
                 pushup(VKC_LCTRL, VKC_INSERT) ;
-            }) ;
-
+        }) ;
         if(res.having_EOL) {
             pushup(VKC_LSHIFT, VKC_LEFT) ;
             if(res.str.empty()) {
@@ -77,23 +75,27 @@ const std::string EdiCopyHighlightText::sname() noexcept
 {
     return "edi_copy_highlight_text" ;
 }
-void EdiCopyHighlightText::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void EdiCopyHighlightText::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
+    using namespace ECBUtility ;
+    using namespace ModeManager ;
+
     if(!first_call) {
         return ;
     }
     KeybrdEventer::pushup(VKC_LCTRL, VKC_INSERT) ;
 
-    using namespace ECBUtility ;
-    using namespace ModeManager ;
     if(get_mode() == Mode::EdiLineVisual) {
         _rgtype = _RegisteredType::Lines ;
     }
     else {
         _rgtype = _RegisteredType::Chars ;
     }
-
-    Change2EdiNormal::sprocess(true, 1, nullptr) ;
+    Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     SimplTextSelecter::unselect() ;
 }
 
@@ -103,13 +105,18 @@ const std::string EdiNCopyLine::sname() noexcept
 {
     return "edi_n_copy_line" ;
 }
-void EdiNCopyLine::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger), const TextAnalyzer::SelRes* const exres)
+void EdiNCopyLine::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr),
+        const TextAnalyzer::SelRes* const exres)
 {
+    using KeybrdEventer::pushup ;
     if(!first_call) {
         return ;
     }
 
-    using KeybrdEventer::pushup ;
     pushup(VKC_HOME) ;
 
     for(unsigned int i = 1 ; i < repeat_num ; i ++) {
@@ -144,7 +151,11 @@ const std::string EdiNPasteAfter::sname() noexcept
 {
     return "edi_n_paste_after" ;
 }
-void EdiNPasteAfter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void EdiNPasteAfter::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto paste = [repeat_num] {
         using ECBUtility::_RegisteredType ;
@@ -164,9 +175,9 @@ void EdiNPasteAfter::sprocess(const bool first_call, const unsigned int repeat_n
                 pushup(VKC_LSHIFT, VKC_INSERT) ;
             }
         }
-
-        Change2EdiNormal::sprocess(true, 1, nullptr) ;
+        Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     } ;
+
     if(first_call) {
         pimpl->ksr.reset() ;
         paste() ;
@@ -195,7 +206,11 @@ const std::string EdiNPasteBefore::sname() noexcept
 {
     return "edi_n_paste_before" ;
 }
-void EdiNPasteBefore::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void EdiNPasteBefore::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto paste = [repeat_num] {
         using ECBUtility::_RegisteredType ;
@@ -206,10 +221,9 @@ void EdiNPasteBefore::sprocess(const bool first_call, const unsigned int repeat_
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 pushup(VKC_LSHIFT, VKC_INSERT) ;
             }
-            Change2EdiNormal::sprocess(true, 1, nullptr) ;
+            Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
         }
-
-        if(_rgtype == _RegisteredType::Lines) {
+        else if(_rgtype == _RegisteredType::Lines) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 pushup(VKC_HOME) ;
                 pushup(VKC_ENTER) ;
@@ -221,9 +235,8 @@ void EdiNPasteBefore::sprocess(const bool first_call, const unsigned int repeat_
     if(first_call) {
         pimpl->ksr.reset() ;
         paste() ;
-        return ;
     }
-    if(pimpl->ksr.is_pressed()) {
+    else if(pimpl->ksr.is_pressed()) {
         paste() ;
     }
 }
@@ -234,47 +247,45 @@ const std::string EdiDeleteHighlightText::sname() noexcept
 {
     return "edi_delete_highlight_text" ;
 }
-void EdiDeleteHighlightText::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void EdiDeleteHighlightText::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
+    using namespace ECBUtility ;
+    using namespace ModeManager ;
+
     if(!first_call) {
         return ;
     }
 
     KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
 
-    using namespace ECBUtility ;
-    using namespace ModeManager ;
     if(get_mode() == Mode::EdiLineVisual) {
         _rgtype = _RegisteredType::Lines ;
     }
     else {
         _rgtype = _RegisteredType::Chars ;
     }
-
-    Change2EdiNormal::sprocess(true, 1, nullptr) ;
+    Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
 }
 
 
 namespace ECBUtility
 {
-
-    inline static void delete_line() {
-        using KeybrdEventer::pushup ;
-        pushup(VKC_LCTRL, VKC_X) ;
-        pushup(VKC_DELETE) ;
-    }
-
     inline static void delete_line_when_selecting() {
         using namespace ModeManager ;
         const auto mode = get_mode() ;
         if(mode == Mode::EdiVisual) {
             KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-            Change2EdiNormal::sprocess(true, 1, nullptr) ;
+            Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
             _rgtype = _RegisteredType::Chars ;
         }
         else if(mode == Mode::EdiLineVisual) {
-            ECBUtility::delete_line() ;
-            Change2EdiNormal::sprocess(true, 1, nullptr) ;
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            KeybrdEventer::pushup(VKC_DELETE) ;
+            Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
             _rgtype = _RegisteredType::Lines ;
         }
     }
@@ -298,7 +309,12 @@ const std::string EdiNDeleteLine::sname() noexcept
 {
     return "edi_n_delete_line" ;
 }
-void EdiNDeleteLine::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const TextAnalyzer::SelRes* const exres) const
+void EdiNDeleteLine::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr),
+        const TextAnalyzer::SelRes* const exres) const
 {
     auto del = [exres, repeat_num] {
         //not select
@@ -312,20 +328,19 @@ void EdiNDeleteLine::sprocess(const bool first_call, const unsigned int repeat_n
             ECBUtility::_copy_null() ;
         }
         else {
-            ECBUtility::delete_line() ;
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            KeybrdEventer::pushup(VKC_DELETE) ;
         }
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Lines ;
 
-        Change2EdiNormal::sprocess(true, 1, nullptr) ;
-        return ;
+        Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     } ;
 
     if(first_call) {
         pimpl->ksr.reset() ;
         del() ;
-        return ;
     }
-    if(pimpl->ksr.is_pressed()) {
+    else if(pimpl->ksr.is_pressed()) {
         del() ;
     }
 }
@@ -349,7 +364,12 @@ const std::string EdiNDeleteLineUntilEOL::sname() noexcept
 {
     return "edi_n_delete_line_until_EOL" ;
 }
-void EdiNDeleteLineUntilEOL::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const TextAnalyzer::SelRes* const exres) const
+void EdiNDeleteLineUntilEOL::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr),
+        const TextAnalyzer::SelRes* const exres) const
 {
     using namespace ECBUtility ;
     auto del = [exres] {
@@ -368,9 +388,8 @@ void EdiNDeleteLineUntilEOL::sprocess(const bool first_call, const unsigned int 
     if(first_call) {
         pimpl->ksr.reset() ;
         del() ;
-        return ;
     }
-    if(pimpl->ksr.is_pressed()) {
+    else if(pimpl->ksr.is_pressed()) {
         del() ;
     }
 }
@@ -394,22 +413,22 @@ const std::string EdiNDeleteAfter::sname() noexcept
 {
     return "edi_n_delete_after" ;
 }
-void EdiNDeleteAfter::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiNDeleteAfter::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    auto del = []{
-        //not select
-        using KeybrdEventer::pushup ;
-        pushup(VKC_LSHIFT, VKC_RIGHT) ;
-        pushup(VKC_LCTRL, VKC_X) ;
+    auto del = [] {
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
     } ;
-
     if(first_call) {
         pimpl->ksr.reset() ;
         del() ;
-        return ;
     }
-    if(pimpl->ksr.is_pressed()) {
+    else if(pimpl->ksr.is_pressed()) {
         del() ;
     }
 }
@@ -433,24 +452,24 @@ const std::string EdiNDeleteBefore::sname() noexcept
 {
     return "edi_n_delete_before" ;
 }
-void EdiNDeleteBefore::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiNDeleteBefore::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto del = [] {
         ECBUtility::delete_line_when_selecting() ;
-        //not select
-        using KeybrdEventer::pushup ;
-        pushup(VKC_LSHIFT, VKC_LEFT) ;
-        pushup(VKC_LCTRL, VKC_X) ;
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
     } ;
 
     if(first_call) {
         pimpl->ksr.reset() ;
         del() ;
-        return ;
     }
-
-    if(pimpl->ksr.is_pressed()) {
+    else if(pimpl->ksr.is_pressed()) {
         del() ;
     }
 }
@@ -461,37 +480,45 @@ const std::string EdiDeleteMotionAndStartInsert::sname() noexcept
 {
     return "edi_delete_motion_and_start_insert" ;
 }
-void EdiDeleteMotionAndStartInsert::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiDeleteMotionAndStartInsert::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* parent_vkclgr,
+        const KeyLogger* const parent_charlgr)
 {
-    if(!first_call) return ;
+    using Utility::remove_from_back ;
+    if(!first_call) {
+        return ;
+    }
 
-    KeyLogger logger ;
+    KeyLogger lgr ;
     while(true) {
         Sleep(10) ;
         Utility::get_win_message() ;
 
-        if(!logger.is_changed_code()) {
-            logger.remove_from_back(1) ;
+        if(!KyLgr::log_as_vkc(lgr)) {
+            remove_from_back(lgr, 1) ;
             continue ;
         }
-        if(KeyBinder::is_invalid_log(logger, KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
-            logger.remove_from_back(1) ;
+        if(KeyBinder::is_invalid_log(lgr,
+                    KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
+            remove_from_back(lgr, 1) ;
             continue ;
         }
 
-        if(auto func = KeyBinder::find_keybinds(logger)) {
+        if(auto func = KeyBinder::find_func(lgr)) {
             if(!func->is_for_moving_caret()) {
                 return ;
             }
 
             if(func->is_callable()) {
                 std::cout << func->name() << " is matched\n" ;
-                func->process(true, 1, &logger) ;
+                func->process(true, 1, &lgr) ;
                 break ;
             }
         }
         else {
-            logger.clear() ;
+            lgr.clear() ;
         }
     }
 }
@@ -503,34 +530,37 @@ const std::string EdiDeleteLinesAndStartInsert::sname() noexcept
     return "edi_delete_lines_and_start_insert" ;
 }
 
-void EdiDeleteLinesAndStartInsert::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiDeleteLinesAndStartInsert::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return ;
+    if(!first_call) {
+        return ;
+    }
 
-    //KeyAbsorber::close_with_refresh() ;
     auto res = TextAnalyzer::get_selected_text([] {
         KeybrdEventer::pushup(VKC_HOME) ;
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
         KeybrdEventer::pushup(VKC_LCTRL, VKC_INSERT) ;
     }) ;
-
     if(res.str.empty()) {
-        Change2EdiInsert::sprocess(true, 1, nullptr) ;
+        Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
         return ;
     }
 
     const auto pos = res.str.find_first_not_of(" \t") ; //position except for space or tab
     if(pos == std::string::npos) { //space only
-        Change2EdiEOLInsert::sprocess(true, 1, nullptr) ;
+        Change2EdiEOLInsert::sprocess(true, 1, nullptr, nullptr) ;
         return ;
     }
-
     KeybrdEventer::pushup(VKC_HOME) ;
 
     for(int i = 0 ; i < static_cast<int>(pos) ; i ++) {
         KeybrdEventer::pushup(VKC_RIGHT) ;
     }
-    EdiDeleteUntilEOLAndStartInsert::sprocess(true, 1, nullptr, &res) ;
+    EdiDeleteUntilEOLAndStartInsert::sprocess(true, 1, nullptr, nullptr, &res) ;
 }
 
 
@@ -539,15 +569,22 @@ const std::string EdiDeleteCharsAndStartInsert::sname() noexcept
 {
     return "edi_delete_chars_and_start_insert" ;
 }
-void EdiDeleteCharsAndStartInsert::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiDeleteCharsAndStartInsert::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return ;
-
-    KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+    if(!first_call) {
+        return ;
+    }
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+    }
     KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
     ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
 
-    Change2EdiInsert::sprocess(true, 1, nullptr) ;
+    Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
 }
 
 
@@ -556,9 +593,16 @@ const std::string EdiDeleteUntilEOLAndStartInsert::sname() noexcept
 {
     return "edi_delete_until_eol_and_start_insert" ;
 }
-void EdiDeleteUntilEOLAndStartInsert::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger, const TextAnalyzer::SelRes* const exres)
+void EdiDeleteUntilEOLAndStartInsert::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr),
+        const TextAnalyzer::SelRes* const exres)
 {
-    if(!first_call) return ;
+    if(!first_call) {
+        return ;
+    }
 
     if(!ECBUtility::_select_line_until_EOL(exres)) {
         ECBUtility::_copy_null() ;
@@ -566,5 +610,5 @@ void EdiDeleteUntilEOLAndStartInsert::sprocess(const bool first_call, const unsi
     KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
     ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
 
-    Change2EdiInsert::sprocess(true, 1, nullptr) ;
+    Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
 }

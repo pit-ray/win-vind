@@ -39,19 +39,6 @@
         "ja": "ヴィジュアルモード"
     },
     {
-        "name": "change_to_editor",
-        "guin": ["I", "gI"],
-        "guii": [],
-        "guiv": [],
-        "edin": [],
-        "edii": [],
-        "ediv": [],
-        "edivl": [],
-        "cmd": [],
-        "en": "Editor Mode",
-        "ja": "エディタモード"
-    },
-    {
         "name": "command_mode",
         "guin": [":"],
         "guii": [],
@@ -846,7 +833,7 @@
     },
     {
         "name": "change_to_edi_normal",
-        "guin": [],
+        "guin": ["I", "gI"],
         "guii": [],
         "guiv": [],
         "edin": ["<Esc>"],
@@ -968,8 +955,8 @@
         "guiv": [],
         "edin": ["h", "<C-h>", "<BS>", "<Left>"],
         "edii": [],
-        "ediv": [],
-        "edivl": [],
+        "ediv": ["<edin>"],
+        "edivl": ["<edin>"],
         "cmd": [],
         "en": "Move Caret Left",
         "ja": "左へキャレット移動"
@@ -981,8 +968,8 @@
         "guiv": [],
         "edin": ["l", "<Space>", "<Right>"],
         "edii": [],
-        "ediv": [],
-        "edivl": [],
+        "ediv": ["<edin>"],
+        "edivl": ["<edin>"],
         "cmd": [],
         "en": "Move Caret Right",
         "ja": "右へキャレット移動"
@@ -994,8 +981,8 @@
         "guiv": [],
         "edin": ["k", "-", "gk", "<C-p>", "<Up>"],
         "edii": [],
-        "ediv": [],
-        "edivl": [],
+        "ediv": ["<edin>"],
+        "edivl": ["<edin>"],
         "cmd": [],
         "en": "Move Caret Up",
         "ja": "上へキャレット移動"
@@ -1007,8 +994,8 @@
         "guiv": [],
         "edin": ["j", "+", "gj", "<C-j>", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
         "edii": [],
-        "ediv": [],
-        "edivl": [],
+        "ediv": ["<edin>"],
+        "edivl": ["<edin>"],
         "cmd": [],
         "en": "Move Caret Down",
         "ja": "下へキャレット移動"
@@ -1020,8 +1007,8 @@
         "guiv": [],
         "edin": ["w"],
         "edii": [],
-        "ediv": [],
-        "edivl": [],
+        "ediv": ["<edin>"],
+        "edivl": ["<edin>"],
         "cmd": [],
         "en": "N-words Forward",
         "ja": "次の単語へ進む"
@@ -1033,8 +1020,8 @@
         "guiv": [],
         "edin": ["b"],
         "edii": [],
-        "ediv": [],
-        "edivl": [],
+        "ediv": ["<edin>"],
+        "edivl": ["<edin>"],
         "cmd": [],
         "en": "N-words Backward",
         "ja": "前の単語へ戻る"

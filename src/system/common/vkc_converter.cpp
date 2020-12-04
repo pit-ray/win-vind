@@ -169,18 +169,32 @@ namespace VKCConverter
         return set ;
     }
 
+    //for debug
+    const std::string get_name(const unsigned char vkc) noexcept {
+        if(auto ascii = get_ascii(vkc)) {
+            char s[] = {ascii} ;
+            return s ;
+        }
+
+        for(const auto& sk : _sys_vkc) {
+            if(sk.second == vkc) return sk.first ;
+        }
+
+        return "Unknown" ;
+    }
+
     inline static const auto _create_related_keys() {
             std::array<unsigned char, 256> a{0} ;
-            a[VKC_LSHIFT]   = VKC_SHIFT ;
-            a[VKC_RSHIFT]   = VKC_SHIFT ;
-            a[VKC_LCTRL]    = VKC_CTRL ;
-            a[VKC_RCTRL]    = VKC_CTRL ;
-            a[VKC_LWIN]     = VKC_WIN ;
-            a[VKC_RWIN]     = VKC_WIN ;
-            a[VKC_LALT]     = VKC_ALT ;
-            a[VKC_RALT]     = VKC_ALT ;
-            a[VKC_FROM_EN]  = VKC_IME ;
-            a[VKC_TO_JP]    = VKC_IME ;
+            a[VKC_LSHIFT]  = VKC_SHIFT ;
+            a[VKC_RSHIFT]  = VKC_SHIFT ;
+            a[VKC_LCTRL]   = VKC_CTRL ;
+            a[VKC_RCTRL]   = VKC_CTRL ;
+            a[VKC_LWIN]    = VKC_WIN ;
+            a[VKC_RWIN]    = VKC_WIN ;
+            a[VKC_LALT]    = VKC_ALT ;
+            a[VKC_RALT]    = VKC_ALT ;
+            a[VKC_FROM_EN] = VKC_IME ;
+            a[VKC_TO_JP]   = VKC_IME ;
             return a ;
     }
 

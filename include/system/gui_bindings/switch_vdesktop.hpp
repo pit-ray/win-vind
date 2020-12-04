@@ -5,35 +5,55 @@
 
 struct SwitchVDesktop2Left : public BindedFuncWithCreator<SwitchVDesktop2Left>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 
 struct SwitchVDesktop2Right : public BindedFuncWithCreator<SwitchVDesktop2Right>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 
 struct CreateNewVDesktop : public BindedFuncWithCreator<CreateNewVDesktop>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 
 struct CloseCurrentVDesktop : public BindedFuncWithCreator<CloseCurrentVDesktop>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
 
 struct TaskView : public BindedFuncWithCreator<TaskView>
 {
-    static void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 #endif

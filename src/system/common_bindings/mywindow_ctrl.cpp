@@ -16,12 +16,16 @@ const std::string ShowConfigWindow::sname() noexcept
 {
     return "show_config_window" ;
 }
-void ShowConfigWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void ShowConfigWindow::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     MYWUtility::show_func() ;
     Sleep(50) ; //wait until opened window.
-    Jump2ActiveWindow::sprocess(true, 1, nullptr) ;
+    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }
 void ShowConfigWindow::register_show_func(std::function<void()> func) noexcept
 {
@@ -34,7 +38,11 @@ const std::string ExitConfigWindow::sname() noexcept
 {
     return "exit_config_window" ;
 }
-void ExitConfigWindow::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const UNUSED(parent_logger))
+void ExitConfigWindow::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     MYWUtility::exit_func() ;

@@ -9,7 +9,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollUp() ;
@@ -29,7 +33,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollDown() ;
@@ -49,7 +57,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidUp() ;
@@ -69,7 +81,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidDown() ;
@@ -89,7 +105,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollPageUp() ;
@@ -110,7 +130,11 @@ private:
 
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollPageDown() ;
@@ -130,7 +154,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollLeft() ;
@@ -150,7 +178,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollRight() ;
@@ -170,7 +202,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidLeft() ;
@@ -190,7 +226,11 @@ private:
     std::unique_ptr<Impl> pimpl ;
 
 public:
-    void sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const ;
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidRight() ;

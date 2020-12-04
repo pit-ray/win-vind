@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-class KeyLogger ;
+#include "key_logger.hpp"
 
 class KeyMatcher
 {
@@ -19,11 +19,12 @@ public:
     using shp_t = std::shared_ptr<KeyMatcher> ;
 
     explicit KeyMatcher(cmdlist_t&& keyset) ;
+    explicit KeyMatcher(const cmdlist_t& keyset) ;
     virtual ~KeyMatcher() noexcept ;
 
     //return most matched quantity of key in log
-    unsigned int compare2latestlog(const KeyLogger& logger) const ;
-    bool is_callable() const noexcept ;
+    unsigned int compare_to_latestlog(const KeyLogger& logger) const ;
+    bool is_safisfied() const noexcept ;
 
     KeyMatcher(KeyMatcher&&) ;
     KeyMatcher& operator=(KeyMatcher&&) ;

@@ -11,8 +11,13 @@
 template <typename Derived>
 class BindedFuncWithCreator : public BindedFunc {
 private:
-    void do_process(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const override {
-        static_cast<const Derived*>(this)->sprocess(first_call, repeat_num, parent_logger) ;
+    void do_process(
+            const bool first_call,
+            const unsigned int repeat_num,
+            const KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const override {
+        static_cast<const Derived*>(this)->sprocess(
+                first_call, repeat_num, parent_vkclgr, parent_charlgr) ;
     }
 
 public:

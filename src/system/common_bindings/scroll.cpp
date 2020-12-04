@@ -20,7 +20,6 @@ namespace ScrollConstant
 
 using namespace ScrollConstant ;
 
-//Vertical
 //ScrollUp
 struct ScrollUp::Impl
 {
@@ -40,24 +39,20 @@ const string ScrollUp::sname() noexcept
     return "scroll_up" ;
 }
 
-void ScrollUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollUp::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::vscroll(iParams::get_i("yscroll_speed")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    if(!first_call) return ;
-    //repeat_num > 1
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::vscroll(iParams::get_i("yscroll_speed")) ;
-    }
+    MouseEventer::vscroll(iParams::get_i("yscroll_speed") \
+            * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -80,24 +75,20 @@ const string ScrollDown::sname() noexcept
     return "scroll_down" ;
 }
 
-void ScrollDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollDown::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::vscroll(-iParams::get_i("yscroll_speed")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-       MouseEventer::vscroll(-iParams::get_i("yscroll_speed")) ;
-    }
+    MouseEventer::vscroll(-iParams::get_i("yscroll_speed") \
+            * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -120,24 +111,20 @@ const string ScrollMidUp::sname() noexcept
     return "scroll_mid_up" ;
 }
 
-void ScrollMidUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollMidUp::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    static const auto delta = MAX_Y_POS  * 0.5f ;
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::vscroll(delta * iParams::get_f("yscroll_screen_ratio")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::vscroll(delta * iParams::get_f("yscroll_screen_ratio")) ;
-    }
+    MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+            * MAX_Y_POS * 0.5f * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -160,25 +147,20 @@ const string ScrollMidDown::sname() noexcept
     return "scroll_mid_down" ;
 }
 
-void ScrollMidDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollMidDown::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    static const auto delta = MAX_Y_POS * 0.5f ;
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::vscroll(-delta * iParams::get_f("yscroll_screen_ratio")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::vscroll(-delta * iParams::get_f("yscroll_screen_ratio")) ;
-    }
+    MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+            * -0.5f * MAX_Y_POS * (first_call ? repeat_num: 1)) ;
 }
 
 
@@ -201,23 +183,20 @@ const string ScrollPageUp::sname() noexcept
     return "scroll_page_up" ;
 }
 
-void ScrollPageUp::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollPageUp::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::vscroll(MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::vscroll(MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
-    }
+    MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+            * MAX_Y_POS * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -240,24 +219,20 @@ const string ScrollPageDown::sname() noexcept
     return "scroll_page_down" ;
 }
 
-void ScrollPageDown::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void ScrollPageDown::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::vscroll(-MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::vscroll(-MAX_Y_POS * iParams::get_f("yscroll_screen_ratio")) ;
-    }
+    MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+            * -MAX_Y_POS * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -281,24 +256,20 @@ const string ScrollLeft::sname() noexcept
     return "scroll_left" ;
 }
 
-void ScrollLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollLeft::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::hscroll(-iParams::get_i("xscroll_speed")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-    
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::hscroll(-iParams::get_i("xscroll_speed")) ;
-    }
+    MouseEventer::hscroll(-iParams::get_i("xscroll_speed") \
+            * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -321,24 +292,20 @@ const string ScrollRight::sname() noexcept
     return "scroll_right" ;
 }
 
-void ScrollRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollRight::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::hscroll(iParams::get_f("xscroll_speed")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::hscroll(iParams::get_f("xscroll_speed")) ;
-    }
+    MouseEventer::hscroll(iParams::get_f("xscroll_speed") \
+            * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -361,25 +328,20 @@ const string ScrollMidLeft::sname() noexcept
     return "scroll_mid_left" ;
 }
 
-void ScrollMidLeft::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollMidLeft::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    static const auto delta = MAX_X_POS * 0.5f ;
-    if(!repeat_num) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::hscroll(-delta * iParams::get_f("xscroll_screen_ratio")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::hscroll(-delta * iParams::get_f("xscroll_screen_ratio")) ;
-    }
+    MouseEventer::hscroll(iParams::get_f("xscroll_screen_ratio") \
+            * -0.5f * MAX_X_POS * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -402,23 +364,18 @@ const string ScrollMidRight::sname() noexcept
     return "scroll_mid_right" ;
 }
 
-void ScrollMidRight::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void ScrollMidRight::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    static const auto delta = MAX_X_POS * 0.5f ;
-    if(repeat_num == 1) {
-        if(first_call) {
-            pimpl->timer.reset() ;
-        }
-        if(!pimpl->timer.is_passed()) {
-            return ;
-        }
-        MouseEventer::hscroll(delta * iParams::get_f("xscroll_screen_ratio")) ;
+    if(first_call) {
+        pimpl->timer.reset() ;
+    }
+    if(!pimpl->timer.is_passed()) {
         return ;
     }
-
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        MouseEventer::hscroll(delta * iParams::get_f("xscroll_screen_ratio")) ;
-    }
+    MouseEventer::hscroll(iParams::get_f("xscroll_screen_ratio") \
+            * MAX_X_POS * 0.5f * (first_call ? repeat_num : 1)) ;
 }

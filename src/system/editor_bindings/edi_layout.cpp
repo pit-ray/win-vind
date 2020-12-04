@@ -3,6 +3,7 @@
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "keystroke_repeater.hpp"
+#include "utility.hpp"
 
 struct EdiNRemoveEOL::Impl
 {
@@ -20,7 +21,11 @@ const std::string EdiNRemoveEOL::sname() noexcept
 {
     return "edi_n_remove_EOL" ;
 }
-void EdiNRemoveEOL::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger) const
+void EdiNRemoveEOL::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto remove = [] {
         KeybrdEventer::pushup(VKC_END) ;

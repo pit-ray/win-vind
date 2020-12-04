@@ -54,14 +54,18 @@ namespace System
             const std::unordered_map<std::string, BindedFunc::shp_t> cm {
                 {"gui_normal", Change2Normal::create()},
                 {"gui_insert", Change2Insert::create()},
-                {"edi_normal", Change2Editor::create()},
+                {"edi_normal", Change2EdiNormal::create()},
                 {"edi_insert", Change2EdiInsert::create()}
             } ;
-            cm.at(iParams::get_s("initial_mode"))->process(true, 1, nullptr) ;
+            cm.at(iParams::get_s("initial_mode"))->process(true, 1) ;
             return true ;
         }
         catch(const std::exception& e) {
             ERROR_PRINT(std::string(e.what()) + ", so system was terminated.") ;
+            return false ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
             return false ;
         }
     }
@@ -77,14 +81,23 @@ namespace System
             ERROR_PRINT(e.what()) ;
             return false ;
         }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+            return false ;
+        }
     }
 
     bool load_option_config() noexcept {
         try {
             OptionLoader::load_config() ;
+            return true ;
         }
         catch(const std::exception& e) {
             ERROR_PRINT(e.what()) ;
+            return false ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
             return false ;
         }
     }
@@ -96,12 +109,17 @@ namespace System
 
             using namespace KeyAbsorber ;
             if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
+                ExitConfigWindow::sprocess(true, 1, nullptr, nullptr) ; //exit GUI-window in system tray
                 return false ;
             }
             return true ;
         }
         catch(const std::exception& e) {
             ERROR_PRINT(e.what()) ;
+            return false ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
             return false ;
         }
     }
@@ -115,14 +133,34 @@ namespace System
             ERROR_PRINT(e.what()) ;
             return false ;
         }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+            return false ;
+        }
     }
 
     //Please use it if you want to show a self config window by command.
     void register_show_window_func(std::function<void()> func) noexcept {
-        ShowConfigWindow::register_show_func(std::move(func)) ;
+        try {
+            ShowConfigWindow::register_show_func(std::move(func)) ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+        }
     }
 
     void register_exit_window_func(std::function<void()> func) noexcept {
-        ExitConfigWindow::register_exit_func(std::move(func)) ;
+        try {
+            ExitConfigWindow::register_exit_func(std::move(func)) ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+        }
     }
 }

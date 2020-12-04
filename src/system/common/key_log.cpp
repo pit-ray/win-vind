@@ -99,7 +99,7 @@ std::size_t KeyLog::size() const noexcept
     return pimpl->once_log.size() ;
 }
 
-bool KeyLog::is_empty() const noexcept
+bool KeyLog::empty() const noexcept
 {
     return pimpl->once_log.empty() ;
 }

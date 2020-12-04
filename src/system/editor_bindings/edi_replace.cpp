@@ -71,7 +71,11 @@ const std::string EdiNReplaceChar::sname() noexcept
 {
     return "edi_n_replace_char" ;
 }
-void EdiNReplaceChar::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNReplaceChar::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     EREPUtility::_loop_for_input([](const auto& vkcs, const bool shifted=false) {
@@ -94,7 +98,11 @@ const std::string EdiNReplaceSequence::sname() noexcept
 {
     return "edi_n_replace_sequence" ;
 }
-void EdiNReplaceSequence::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void EdiNReplaceSequence::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 

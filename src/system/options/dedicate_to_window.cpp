@@ -3,13 +3,13 @@
 #include <windows.h>
 #include <iostream>
 
-#include "virtual_key_fwd.hpp"
-#include "msg_logger.hpp"
-#include "key_absorber.hpp"
-#include "mouse_eventer.hpp"
 #include "change_mode.hpp"
 #include "edi_change_mode.hpp"
+#include "key_absorber.hpp"
+#include "mouse_eventer.hpp"
+#include "msg_logger.hpp"
 #include "virtual_cmd_line.hpp"
+#include "virtual_key_fwd.hpp"
 
 namespace D2WUtility
 {
@@ -60,10 +60,10 @@ void Dedicate2Window::do_process() const
     }
 
     if(target_hwnd == foreground_hwnd) { //other -> target
-        Change2Editor::sprocess(true, 1, nullptr, past_hwnd) ;
+        Change2EdiNormal::sprocess(true, 1, nullptr, nullptr, past_hwnd) ;
     }
     else if(past_hwnd == target_hwnd) { //target -> other
-        Change2Insert::sprocess(true, 1, nullptr, past_hwnd) ;
+        Change2Insert::sprocess(true, 1, nullptr, nullptr, past_hwnd) ;
     }
     past_hwnd = foreground_hwnd ;
 }

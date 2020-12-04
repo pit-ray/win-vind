@@ -21,7 +21,11 @@ const string CBCopy::sname() noexcept
     return "cb_copy" ;
 }
 
-void CBCopy::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBCopy::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -39,7 +43,11 @@ const string CBPaste::sname() noexcept
     return "cb_paste" ;
 }
 
-void CBPaste::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBPaste::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -47,7 +55,7 @@ void CBPaste::sprocess(const bool first_call, const unsigned int repeat_num, con
 
     //not selecting at paste.
     KeybrdEventer::pushup(VKC_LSHIFT, VKC_INSERT) ;
-    Change2Normal::sprocess(true, 1, nullptr) ;
+    Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
 }
 
 
@@ -57,13 +65,17 @@ const string CBCut::sname() noexcept
     return "cb_cut" ;
 }
 
-void CBCut::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBCut::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
     MouseEventer::release(VKC_MOUSE_LEFT) ;
     KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-    Change2Normal::sprocess(true, 1, nullptr) ;
+    Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
 }
 
 
@@ -73,7 +85,11 @@ const string CBDelete::sname() noexcept
     return "cb_delete" ;
 }
 
-void CBDelete::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBDelete::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     MouseEventer::release(VKC_MOUSE_LEFT) ;
@@ -85,10 +101,10 @@ void CBDelete::sprocess(const bool first_call, const unsigned int repeat_num, co
 
     using namespace ModeManager ;
     if(is_editor()) {
-        Change2Editor::sprocess(true, 1, nullptr) ;
+        Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     }
     else {
-        Change2Normal::sprocess(true, 1, nullptr) ;
+        Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
     }
 }
 
@@ -99,7 +115,11 @@ const string CBBackSpace::sname() noexcept
     return "cb_back_space" ;
 }
 
-void CBBackSpace::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void CBBackSpace::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -113,9 +133,9 @@ void CBBackSpace::sprocess(const bool first_call, const unsigned int repeat_num,
 
     using namespace ModeManager ;
     if(is_editor()) {
-        Change2EdiNormal::sprocess(true, 1, nullptr) ;
+        Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     }
     else {
-        Change2Normal::sprocess(true, 1, nullptr) ;
+        Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
     }
 }

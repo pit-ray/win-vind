@@ -1,70 +1,69 @@
 #include "key_matcher.hpp"
 
-#include <mutex>
 #include <iostream>
+#include <limits>
+#include <mutex>
 
-#include "Key_logger.hpp"
+#include "msg_logger.hpp"
 #include "virtual_key_fwd.hpp"
-
-#define OPTIONAL_MAX_INDEX  (99999999999)
 
 struct KeyMatcher::Impl
 {
     cmdlist_t cmdlist ;
-    bool code_existed ;
-    bool callable ;
-    std::size_t optional_index ;
+    bool code_existed = true ;
+    bool safisfied    = false ;
+    std::size_t optional_index = std::numeric_limits<std::size_t>::max() ;
     std::mutex mtx ;
 
     explicit Impl(cmdlist_t&& cl)
-    : cmdlist(std::move(cl)),
-      code_existed(true),
-      callable(false),
-      optional_index(OPTIONAL_MAX_INDEX),
-      mtx()
+    : cmdlist(std::move(cl))
     {}
+
+    explicit Impl(const cmdlist_t& cl)
+    : cmdlist(cl)
+    {}
+
     virtual ~Impl() noexcept {
         cmdlist.clear() ;
     }
-
-    Impl(Impl&&)            = default ;
-    Impl& operator=(Impl&&) = default ;
-    Impl(const Impl&)            = delete ;
-    Impl& operator=(const Impl&) = delete ;
 } ;
 
 KeyMatcher::KeyMatcher(KeyMatcher::cmdlist_t&& keyset)
 : pimpl(std::make_unique<Impl>(std::move(keyset)))
 {}
 
-KeyMatcher::~KeyMatcher() noexcept                  = default ;
-KeyMatcher::KeyMatcher(KeyMatcher&&)                = default ;
-KeyMatcher& KeyMatcher::operator=(KeyMatcher&&)     = default ;
+KeyMatcher::KeyMatcher(const cmdlist_t& keyset)
+: pimpl(std::make_unique<Impl>(keyset))
+{}
 
-unsigned int KeyMatcher::compare2latestlog(const KeyLogger& logger) const
+KeyMatcher::~KeyMatcher() noexcept              = default ;
+KeyMatcher::KeyMatcher(KeyMatcher&&)            = default ;
+KeyMatcher& KeyMatcher::operator=(KeyMatcher&&) = default ;
+
+unsigned int KeyMatcher::compare_to_latestlog(const KeyLogger& logger) const
 {
     std::lock_guard<std::mutex> lock(pimpl->mtx) ;
 
-    pimpl->callable = false ;
-    if(pimpl->cmdlist.empty() || logger.is_empty()) {
-        return 0 ;
-    }
+    pimpl->safisfied = false ;
+    if(logger.empty()) return 0 ;
 
-    const auto seq_index = logger.size() - 1 ;
-    if(seq_index == 0) {
+    const auto seqidx = logger.size() - 1 ;
+    if(seqidx == 0) {
         pimpl->code_existed = true ;
     }
 
-    if(seq_index < pimpl->optional_index) {
-        pimpl->optional_index = OPTIONAL_MAX_INDEX ;
+    if(seqidx < pimpl->optional_index) {
+        pimpl->optional_index = std::numeric_limits<std::size_t>::max() ;
     }
     else {
-        pimpl->callable     = true ;
+        pimpl->safisfied    = true ;
         pimpl->code_existed = true ;
-        return 0x9999 ;
+
+        return std::numeric_limits<unsigned int>::max() ;
     }
 
-    if(!pimpl->code_existed) { //The search is not needed anymore.
+    //The search is not needed anymore.
+    if(!pimpl->code_existed) {
         return 0 ;
     }
 
@@ -74,11 +73,11 @@ unsigned int KeyMatcher::compare2latestlog(const KeyLogger& logger) const
     for(const auto& cmd : pimpl->cmdlist) { 
         try {
             std::size_t matched_num = 0 ;
-            const auto& keyset = cmd.at(seq_index) ;
+            const auto& keyset = cmd.at(seqidx) ;
 
             for(const auto& key : keyset) {
                 if(key == VKC_OPTIONAL) {
-                    pimpl->optional_index = seq_index ;
+                    pimpl->optional_index = seqidx ;
                     throw VKC_OPTIONAL ;
                 }
                 if(logger.back().is_containing(key)) {
@@ -94,17 +93,17 @@ unsigned int KeyMatcher::compare2latestlog(const KeyLogger& logger) const
             if(most_matched_num < matched_num) {
                 most_matched_num = matched_num ;
             }
-            if(seq_index == (cmd.size() - 1)) {
-                pimpl->callable = true ;
+            if(seqidx == (cmd.size() - 1)) {
+                pimpl->safisfied = true ;
             }
         }
         catch(const std::out_of_range&) {
             continue ;
         }
         catch(const unsigned char code) {
-            pimpl->callable     = true ;
+            pimpl->safisfied    = true ;
             pimpl->code_existed = true ;
-            return 0xffff ;
+            return std::numeric_limits<unsigned int>::max() ;
         }
     }
 
@@ -112,7 +111,7 @@ unsigned int KeyMatcher::compare2latestlog(const KeyLogger& logger) const
     return most_matched_num ;
 }
 
-bool KeyMatcher::is_callable() const noexcept
+bool KeyMatcher::is_safisfied() const noexcept
 {
-    return pimpl->callable ;
+    return pimpl->safisfied ;
 }

@@ -3,11 +3,12 @@
 
 //for DPI support
 #define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
-#define WINVER          _WIN32_WINNT_WIN10
-#define _WIN32_WINNT    _WIN32_WINNT_WIN10
+
+#define WINVER        _WIN32_WINNT_WIN10
+#define _WIN32_WINNT  _WIN32_WINNT_WIN10
 
 #include <windows.h>
-#include <winuser.h>
+
 #include "msg_logger.hpp"
 #include "utility.hpp"
 
@@ -25,7 +26,7 @@ public:
 
     void calibrate() {
         if(!SetProcessDPIAware()) {
-            throw RUNTIME_EXCEPT("SetProcessDPIAware") ;
+            throw RUNTIME_EXCEPT("SetProcessDPIAware failed. Your system is not supported DPI on Windows10.") ;
         }
 
         MONITORINFO minfo ;

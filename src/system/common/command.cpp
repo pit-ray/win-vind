@@ -101,7 +101,7 @@ void Command::process(const string cmd) const
     //preprocess
     if(!do_process(cmd)) {
         //error
-        ERROR_PRINT("do_process is failed (" + name() + ")") ;
+        ERROR_PRINT("do_process failed (" + name() + ")") ;
     }
     //postpcess
 }

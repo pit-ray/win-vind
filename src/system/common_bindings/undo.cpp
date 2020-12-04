@@ -28,7 +28,11 @@ const string SCRedo::sname() noexcept
     return "sc_redo" ;
 }
 
-void SCRedo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void SCRedo::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto redo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Y) ;} ;
     if(repeat_num == 1) {
@@ -67,10 +71,13 @@ const string SCUndo::sname() noexcept
 {
     return "sc_undo" ;
 }
-void SCUndo::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const UNUSED(parent_logger)) const
+void SCUndo::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto undo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Z) ;} ;
-
     if(repeat_num == 1) {
         if(first_call) {
             pimpl->ksr.reset() ;

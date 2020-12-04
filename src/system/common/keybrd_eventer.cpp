@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include <windows.h>
 
@@ -15,6 +16,9 @@
 
 
 using namespace std ;
+
+template <typename T>
+using vec_stack = std::stack<T, std::vector<T>> ;
 
 namespace KeybrdEventer
 {
@@ -128,8 +132,8 @@ namespace KeybrdEventer
             return ;
         }
 
-        std::stack<std::unique_ptr<SmartKey>> st ;
-        const auto clear_stack = [&st] {
+        static vec_stack<std::unique_ptr<SmartKey>> st ;
+        const auto clear_stack = [] {
             while(!st.empty()) {
                 st.pop() ;
             }

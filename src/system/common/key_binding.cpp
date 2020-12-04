@@ -114,6 +114,6 @@ bool KeyBinding::is_callable() const noexcept
 void KeyBinding::process(const bool first_call) const
 {
     if(!do_process(first_call)) {
-        ERROR_PRINT("do_process is failed (" + name() + ")") ;
+        ERROR_PRINT("do_process failed (" + name() + ")") ;
     }
 }

@@ -8,6 +8,7 @@
 #include <wx/msgdlg.h>
 #include <wx/thread.h>
 
+#include "utility.hpp"
 #include "wx_prop_dlg.hpp"
 #include "io_params.hpp"
 #include "system/system.hpp"
@@ -21,17 +22,11 @@ namespace wxGUI
     class SystemThread : public wxThread {
     private:
         virtual ExitCode Entry() override {
-            MSG msg ;
             while(System::update() && runnable.load()) {
                 //MessageRoop
-                if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-                    TranslateMessage(&msg) ;
-                    DispatchMessage(&msg) ;
-                }
-
+                Utility::get_win_message() ;
                 Sleep(5) ; //5ms
             }
-
             return static_cast<ExitCode>(0) ;
         }
 

@@ -1,28 +1,25 @@
 #include "external_app.hpp"
 
-#include <unordered_map>
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <unordered_map>
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
+#include "jump_cursor.hpp"
+#include "key_logger.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
-#include "jump_cursor.hpp"
 #include "utility.hpp"
-#include "key_logger.hpp"
-
-using namespace std ;
 
 namespace ExAppUtility
 {
-    using mss_t = unordered_map<string, string> ;
-
-    inline static const mss_t _load_proc_list_core() {
+    using mss_t = std::unordered_map<std::string, std::string> ;
+    inline static const mss_t _load__proc_list_core() {
         mss_t map{} ;
 
         nlohmann::json j ;
@@ -33,35 +30,34 @@ namespace ExAppUtility
             try {
                 auto&& key = i.at("name").get<std::string>() ;
                 auto&& val = i.at("value").get<std::string>() ;
-                map[key] = val ;
+                map[key]   = val ;
             }
             catch(const std::exception& e) {
-                ERROR_PRINT(std::string(e.what()) + ", so one shortcut application is skipped") ;
+                ERROR_PRINT(std::string(e.what()) + ", so one shortcut application is skipped.") ;
                 continue ;
             }
         }
         return map ;
     }
 
-    static auto proc_list{_load_proc_list_core()} ;
-
+    static mss_t _proc_list{} ;
     void load_config() {
-        proc_list = _load_proc_list_core() ;
+        _proc_list = _load__proc_list_core() ;
     }
 
-    inline static const auto _get_protected_path(const string name) {
-        const auto& origin = proc_list.at(name) ;
+    inline static const std::string _cvt_to_protected_path(const std::string name) {
+        const auto& origin = _proc_list.at(name) ;
         //is origin path?
-        if(origin.find("/") == string::npos) {
+        if(origin.find("/") == std::string::npos) {
             return origin ;
         }
-        if(origin.find("\\") == string::npos) {
+        if(origin.find("\\") == std::string::npos) {
             return origin ;
         }
         return "\"" + origin + "\"" ;
     }
 
-    inline static bool _create_process(const string path)
+    inline static void _create_process(const std::string path)
     {
         STARTUPINFOA si ;
         ZeroMemory(&si, sizeof(si)) ;
@@ -71,9 +67,12 @@ namespace ExAppUtility
         ZeroMemory(&pi, sizeof(pi)) ;
 
         if(!CreateProcessA(
-            NULL, const_cast<LPSTR>(path.c_str()), NULL, NULL, FALSE,
-            CREATE_NEW_CONSOLE, NULL, Path::HOME_PATH().c_str(), &si, &pi)) {
-            throw RUNTIME_EXCEPT("cannot call \"" + path + "\"") ;
+            NULL, const_cast<LPSTR>(path.c_str()),
+            NULL, NULL, FALSE,
+            CREATE_NEW_CONSOLE, NULL,
+            Path::HOME_PATH().c_str(),
+            &si, &pi)) {
+            throw RUNTIME_EXCEPT("Cannot call \"" + path + "\"") ;
         }
     }
 }
@@ -82,42 +81,45 @@ using namespace ExAppUtility ;
 
 
 //StartShell
-const string StartShell::sname() noexcept
+const std::string StartShell::sname() noexcept
 {
     return "start_shell" ;
 }
 
-void StartShell::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
+void StartShell::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
+    _create_process(_cvt_to_protected_path("shell")) ;
 
-    _create_process(_get_protected_path("shell")) ;
-
-    //wait until select window by OS.
-    Sleep(100) ;
-    Jump2ActiveWindow::sprocess(true, 1, parent_logger) ;
+    Sleep(100) ; //wait until select window by OS.
+    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }
 
 
 //StartAnyApp
-const string StartAnyApp::sname() noexcept
+const std::string StartAnyApp::sname() noexcept
 {
     return "start_any_app" ;
 }
 
-void StartAnyApp::sprocess(const bool first_call, const unsigned int UNUSED(repeat_num), const KeyLogger* const parent_logger)
+void StartAnyApp::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
-    if(!parent_logger) {
+    if(!parent_charlgr)
         throw LOGIC_EXCEPT("The passed parent logger is null") ;
-    }
-    auto cmd = parent_logger->get_as_str() ;
 
-    _create_process(_get_protected_path(cmd.substr(1))) ;
+    auto cmd = KyLgr::log2str(*parent_charlgr) ;
+    _create_process(_cvt_to_protected_path(cmd.substr(1))) ;
 
-    //wait until select window by OS.
-    Sleep(100) ;
-
-    Jump2ActiveWindow::sprocess(true, 1, parent_logger) ;
+    Sleep(100) ; //wait until select window by OS.
+    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }

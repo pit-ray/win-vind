@@ -29,7 +29,8 @@ add_library(Common STATIC
     common/text_analyzer.cpp
     common/vkc_converter.cpp
 )
-#target_link_libraries(Common ~~~~~~)
+enable_cotire(Common)
+
 
 add_library(CommonBindings STATIC
     common_bindings/change_mode.cpp
@@ -43,6 +44,7 @@ add_library(CommonBindings STATIC
     common_bindings/window_ctrl.cpp
 )
 target_link_libraries(CommonBindings Common)
+enable_cotire(CommonBindings)
 
 add_library(EditorBindings STATIC
     editor_bindings/edi_change_mode.cpp
@@ -54,6 +56,7 @@ add_library(EditorBindings STATIC
     editor_bindings/edi_search_pattern.cpp
 )
 target_link_libraries(EditorBindings Common)
+enable_cotire(EditorBindings)
 
 add_library(GUIBindings STATIC
     gui_bindings/click.cpp
@@ -66,21 +69,24 @@ add_library(GUIBindings STATIC
     gui_bindings/switch_vdesktop.cpp
 )
 target_link_libraries(GUIBindings Common Psapi)
+enable_cotire(GUIBindings)
 
 add_library(Options
     options/autotrack_popup.cpp
     options/dedicate_to_window.cpp
     options/virtual_cmd_line.cpp
 )
-target_link_libraries(Options Common)
+enable_cotire(Options)
 
 add_library(Binders STATIC
     key_binder.cpp
     option_loader.cpp
 )
 target_link_libraries(Binders CommonBindings EditorBindings GUIBindings Options)
+enable_cotire(Binders)
 
 add_library(CoreSystem STATIC
     system.cpp
 )
 target_link_libraries(CoreSystem Binders)
+enable_cotire(CoreSystem)

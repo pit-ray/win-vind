@@ -1,5 +1,6 @@
 #include "search_pattern.hpp"
 #include "keybrd_eventer.hpp"
+#include "utility.hpp"
 
 #include <iostream>
 using namespace std ;
@@ -10,7 +11,11 @@ const string SearchPattern::sname() noexcept
     return "search_pattern" ;
 }
 
-void SearchPattern::sprocess(const bool first_call, const unsigned int repeat_num, const KeyLogger* const parent_logger)
+void SearchPattern::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        const KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) KeybrdEventer::pushup(VKC_F3) ;
 }

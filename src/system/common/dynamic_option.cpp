@@ -75,7 +75,7 @@ void DynamicOption::process() const
         do_process() ;
     }
     catch(const std::runtime_error& e) {
-        ERROR_PRINT(name() + " is failed. " + e.what()) ;
+        ERROR_PRINT(name() + " failed. " + e.what()) ;
         return ;
     }
 }

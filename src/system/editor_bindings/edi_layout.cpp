@@ -30,13 +30,27 @@ void EdiNRemoveEOL::sprocess(
     auto remove = [] {
         KeybrdEventer::pushup(VKC_END) ;
         KeybrdEventer::pushup(VKC_DELETE) ;
-        ModeManager::change_mode(ModeManager::Mode::EdiNormal) ;
     } ;
-    if(first_call) {
-        pimpl->ksr.reset() ;
-        remove() ;
+
+    using ModeManager::change_mode ;
+    using ModeManager::Mode ;
+
+    if(repeat_num == 1) {
+        if(first_call) {
+            pimpl->ksr.reset() ;
+            remove() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            remove() ;
+        }
+        change_mode(Mode::EdiNormal) ;
+        return ;
     }
-    else if(pimpl->ksr.is_pressed()) {
+
+    if(!first_call) return ;
+
+    for(unsigned int i = 0 ; i < repeat_num ; i ++)
         remove() ;
-    }
+
+    change_mode(Mode::EdiNormal) ;
 }

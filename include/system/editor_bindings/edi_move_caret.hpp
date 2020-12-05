@@ -97,45 +97,97 @@ public:
 } ;
 
 
-struct EdiNMoveCaretwordsForward : public BindedFuncWithCreator<EdiNMoveCaretwordsForward>
+class EdiNMoveCaretwordsForward : public BindedFuncWithCreator<EdiNMoveCaretwordsForward>
 {
-    static void sprocess(
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
             const KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNMoveCaretwordsForward() ;
+    virtual ~EdiNMoveCaretwordsForward() noexcept ;
+
+    EdiNMoveCaretwordsForward(EdiNMoveCaretwordsForward&&) ;
+    EdiNMoveCaretwordsForward& operator=(EdiNMoveCaretwordsForward&&) ;
+    EdiNMoveCaretwordsForward(const EdiNMoveCaretwordsForward&)            = delete ;
+    EdiNMoveCaretwordsForward& operator=(const EdiNMoveCaretwordsForward&) = delete ;
 } ;
 
-struct EdiNMoveCaretwordsBackward : public BindedFuncWithCreator<EdiNMoveCaretwordsBackward>
+class EdiNMoveCaretwordsBackward : public BindedFuncWithCreator<EdiNMoveCaretwordsBackward>
 {
-    static void sprocess(
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
             const KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNMoveCaretwordsBackward() ;
+    virtual ~EdiNMoveCaretwordsBackward() noexcept ;
+
+    EdiNMoveCaretwordsBackward(EdiNMoveCaretwordsBackward&&) ;
+    EdiNMoveCaretwordsBackward& operator=(EdiNMoveCaretwordsBackward&&) ;
+    EdiNMoveCaretwordsBackward(const EdiNMoveCaretwordsBackward&)            = delete ;
+    EdiNMoveCaretwordsBackward& operator=(const EdiNMoveCaretwordsBackward&) = delete ;
 } ;
 
 
-struct EdiNMoveCaretWORDSForward : public BindedFuncWithCreator<EdiNMoveCaretWORDSForward>
+class EdiNMoveCaretWORDSForward : public BindedFuncWithCreator<EdiNMoveCaretWORDSForward>
 {
-    static void sprocess(
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
             const KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNMoveCaretWORDSForward() ;
+    virtual ~EdiNMoveCaretWORDSForward() noexcept ;
+
+    EdiNMoveCaretWORDSForward(EdiNMoveCaretWORDSForward&&) ;
+    EdiNMoveCaretWORDSForward& operator=(EdiNMoveCaretWORDSForward&&) ;
+    EdiNMoveCaretWORDSForward(const EdiNMoveCaretWORDSForward&)            = delete ;
+    EdiMoveCaretDown& operator=(const EdiMoveCaretDown&) = delete ;
 } ;
 
-struct EdiNMoveCaretWORDSBackward : public BindedFuncWithCreator<EdiNMoveCaretWORDSBackward>
+class EdiNMoveCaretWORDSBackward : public BindedFuncWithCreator<EdiNMoveCaretWORDSBackward>
 {
-    static void sprocess(
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
             const KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    explicit EdiNMoveCaretWORDSBackward() ;
+    virtual ~EdiNMoveCaretWORDSBackward() noexcept ;
+
+    EdiNMoveCaretWORDSBackward(EdiNMoveCaretWORDSBackward&&) ;
+    EdiNMoveCaretWORDSBackward& operator=(EdiNMoveCaretWORDSBackward&&) ;
+    EdiNMoveCaretWORDSBackward(const EdiNMoveCaretWORDSBackward&)            = delete ;
+    EdiNMoveCaretWORDSBackward& operator=(const EdiNMoveCaretWORDSBackward&) = delete ;
 } ;
 
 #endif

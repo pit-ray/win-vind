@@ -1,8 +1,9 @@
 #include "edi_edit.hpp"
 
-#include <iostream> //for debug
-#include <memory>
 #include <windows.h>
+
+#include <memory>   //for std::unique_ptr
+#include <iostream> //for debug
 
 #include "edi_change_mode.hpp"
 #include "key_binder.hpp"
@@ -422,6 +423,7 @@ void EdiNDeleteAfter::sprocess(
     auto del = [] {
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
         KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+        //KeybrdEventer::pushup(VKC_DELETE) ;
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
     } ;
     if(first_call) {
@@ -462,6 +464,7 @@ void EdiNDeleteBefore::sprocess(
         ECBUtility::delete_line_when_selecting() ;
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
         KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+        //KeybrdEventer::pushup(VKC_BKSPACE) ;
         ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
     } ;
 

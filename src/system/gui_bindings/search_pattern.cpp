@@ -13,9 +13,10 @@ const string SearchPattern::sname() noexcept
 
 void SearchPattern::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_F3) ;
+    if(first_call)
+        KeybrdEventer::pushup(VKC_F3) ;
 }

@@ -24,7 +24,8 @@ void ClickLeft::sprocess(
         change_mode(Mode::Normal) ;
     }
 
-    MouseEventer::click(VKC_MOUSE_LEFT) ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++)
+        MouseEventer::click(VKC_MOUSE_LEFT) ;
 }
 
 
@@ -46,5 +47,6 @@ void ClickRight::sprocess(
         change_mode(Mode::Normal) ;
     }
 
-    MouseEventer::click(VKC_MOUSE_RIGHT) ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++)
+        MouseEventer::click(VKC_MOUSE_RIGHT) ;
 }

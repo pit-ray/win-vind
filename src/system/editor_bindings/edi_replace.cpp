@@ -78,16 +78,18 @@ void EdiNReplaceChar::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    EREPUtility::_loop_for_input([](const auto& vkcs, const bool shifted=false) {
-        KeybrdEventer::pushup(VKC_DELETE) ;
+    EREPUtility::_loop_for_input([repeat_num](const auto& vkcs, const bool shifted=false) {
 
-        if(shifted) {
-            KeybrdEventer::pushup(VKC_LSHIFT, vkcs) ;
+        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            KeybrdEventer::pushup(VKC_DELETE) ;
+
+            if(shifted) KeybrdEventer::pushup(VKC_LSHIFT, vkcs) ;
+            else KeybrdEventer::pushup(vkcs) ;
         }
-        else {
-            KeybrdEventer::pushup(vkcs) ;
-        }
-        KeybrdEventer::pushup(VKC_LEFT) ;
+
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            KeybrdEventer::pushup(VKC_LEFT) ;
+
         return true ; //terminate looping
     }) ;
 }
@@ -106,18 +108,36 @@ void EdiNReplaceSequence::sprocess(
 {
     if(!first_call) return ;
 
+    using KeybrdEventer::pushup ;
+
     VirtualCmdLine::clear() ;
     VirtualCmdLine::msgout("-- EDI REPLACE --") ;
-    EREPUtility::_loop_for_input([](const auto& vkcs, const bool shifted=false) {
-        KeybrdEventer::pushup(VKC_DELETE) ;
+
+    std::vector<unsigned char> strs{} ;
+    std::vector<bool> shifts{} ;
+
+    EREPUtility::_loop_for_input([&strs, &shifts](const auto& vkcs, const bool shifted=false) {
+        pushup(VKC_DELETE) ;
         if(shifted) {
-            KeybrdEventer::pushup(VKC_LSHIFT, vkcs) ;
+            pushup(VKC_LSHIFT, vkcs) ;
+            strs.push_back(vkcs) ;
+            shifts.push_back(true) ;
         }
         else {
-            KeybrdEventer::pushup(vkcs) ;
+            pushup(vkcs) ;
+            strs.push_back(vkcs) ;
+            shifts.push_back(false) ;
         }
         return false ; //continue looping
     }) ;
+
+    for(unsigned int i = 0 ; i < repeat_num - 1 ; i ++) {
+        for(std::size_t stridx = 0 ; stridx < strs.size() ; stridx ++) {
+            pushup(VKC_DELETE) ;
+            if(shifts[stridx]) pushup(VKC_LSHIFT, strs[stridx]) ;
+            else pushup(strs[stridx]) ;
+        }
+    }
 
     VirtualCmdLine::clear() ;
     VirtualCmdLine::refresh() ;

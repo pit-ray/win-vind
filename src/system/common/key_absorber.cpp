@@ -123,9 +123,7 @@ namespace KeyAbsorber
     }
 
     void open_key(const unsigned char key) noexcept {
-        try {
-            _ignored_keys.insert(key) ;
-        }
+        try {_ignored_keys.insert(key) ;}
         catch(bad_alloc& e) {
             ERROR_PRINT(e.what()) ;
             return ;

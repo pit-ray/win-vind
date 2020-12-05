@@ -11,10 +11,48 @@
 
 using namespace std ;
 
+template <typename T1, typename T2>
+inline static void _common_process(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyStrokeRepeater& ksr,
+        T1&& v_press_proc,
+        T2&& n_press_proc)
+{
+    using ModeManager::is_edi_visual ;
+
+    if(repeat_num == 1) {
+        if(first_call) {
+            ksr.reset() ;
+
+            if(is_edi_visual()) v_press_proc() ;
+            else n_press_proc() ;
+
+            return ;
+        }
+        if(!ksr.is_pressed()) {
+            return ;
+        }
+
+        if(is_edi_visual()) v_press_proc() ;
+        else n_press_proc() ;
+    }
+
+    if(!first_call) return ;
+    if(is_edi_visual()) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            v_press_proc() ;
+    }
+    else {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            n_press_proc() ;
+    }
+}
+
 //EdiMoveCaretLeft
 struct EdiMoveCaretLeft::Impl
 {
-    KeyStrokeRepeater calcer{} ;
+    KeyStrokeRepeater ksr{} ;
 } ;
 
 EdiMoveCaretLeft::EdiMoveCaretLeft()
@@ -36,29 +74,17 @@ void EdiMoveCaretLeft::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    auto press = [] {
-        if(ModeManager::is_edi_visual()) {
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
-        }
-        KeybrdEventer::pushup(VKC_LEFT) ;
-    } ;
-
-    if(first_call) {
-        pimpl->calcer.reset() ;
-        press() ;
-        return ;
-    }
-    if(!pimpl->calcer.is_pressed()) {
-        return ;
-    }
-    press() ;
+    using KeybrdEventer::pushup ;
+    _common_process(first_call, repeat_num, pimpl->ksr,
+            [] {pushup(VKC_LSHIFT, VKC_LEFT) ;},
+            [] {pushup(VKC_LEFT) ;}) ;
 }
 
 
 //EdiMoveCaretRight
 struct EdiMoveCaretRight::Impl
 {
-    KeyStrokeRepeater calcer{} ;
+    KeyStrokeRepeater ksr{} ;
 } ;
 
 EdiMoveCaretRight::EdiMoveCaretRight()
@@ -80,25 +106,10 @@ void EdiMoveCaretRight::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    auto press = [] {
-        if(ModeManager::is_edi_visual()) {
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
-        }
-        else {
-            KeybrdEventer::pushup(VKC_RIGHT) ;
-        }
-    } ;
-
-    if(first_call) {
-        pimpl->calcer.reset() ;
-        press() ;
-        return ;
-    }
-
-    if(!pimpl->calcer.is_pressed()) {
-        return ;
-    }
-    press() ;
+    using KeybrdEventer::pushup ;
+    _common_process(first_call, repeat_num, pimpl->ksr,
+            [] {pushup(VKC_LSHIFT, VKC_RIGHT) ;},
+            [] {pushup(VKC_RIGHT) ;}) ;
 }
 
 
@@ -106,7 +117,7 @@ void EdiMoveCaretRight::sprocess(
 //EdiMoveCaretUp
 struct EdiMoveCaretUp::Impl
 {
-    KeyStrokeRepeater calcer{} ;
+    KeyStrokeRepeater ksr{} ;
 } ;
 
 EdiMoveCaretUp::EdiMoveCaretUp()
@@ -128,29 +139,16 @@ void EdiMoveCaretUp::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    auto press = [] {
-        if(ModeManager::is_edi_visual()) {
-            if(SimplTextSelecter::is_first_line_selection()) {
-                SimplTextSelecter::select_line_EOL2BOL() ;
-            }
+    auto v_press = [] {
+        if(SimplTextSelecter::is_first_line_selection())
+            SimplTextSelecter::select_line_EOL2BOL() ;
 
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_UP) ;
-            SimplTextSelecter::moving_update() ;
-        }
-        else {
-            KeybrdEventer::pushup(VKC_UP) ;
-        }
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_UP) ;
+        //SimplTextSelecter::moving_update() ;
     } ;
+    auto n_press = [] {KeybrdEventer::pushup(VKC_UP) ;} ;
 
-    if(first_call) {
-        pimpl->calcer.reset() ;
-        press() ;
-        return ;
-    }
-    if(!pimpl->calcer.is_pressed()) {
-        return ;
-    }
-    press() ;
+    _common_process(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
 }
 
 
@@ -158,7 +156,7 @@ void EdiMoveCaretUp::sprocess(
 //EdiMoveCaretDown
 struct EdiMoveCaretDown::Impl
 {
-    KeyStrokeRepeater calcer{} ;
+    KeyStrokeRepeater ksr{} ;
 } ;
 
 EdiMoveCaretDown::EdiMoveCaretDown()
@@ -180,33 +178,37 @@ void EdiMoveCaretDown::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    auto press = [] {
-        if(ModeManager::is_edi_visual()) {
-            if(SimplTextSelecter::is_first_line_selection()) {
-                SimplTextSelecter::select_line_BOL2EOL() ;
-            }
+    auto v_press = [] {
+        if(SimplTextSelecter::is_first_line_selection())
+            SimplTextSelecter::select_line_BOL2EOL() ;
 
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN) ;
-            SimplTextSelecter::moving_update() ;
-        }
-        else {
-            KeybrdEventer::pushup(VKC_DOWN) ;
-        }
+        KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN) ;
+
+        //If call EdiMoveCaretDown after EdiMoveCaretUp,
+        //inner variables of moving_update() are dedicated to EOL2BOL.
+        //so we cannot move caret down.
+        //SimplTextSelecter::moving_update() ;
     } ;
+    auto n_press = [] {KeybrdEventer::pushup(VKC_DOWN) ;} ;
 
-    if(first_call) {
-        pimpl->calcer.reset() ;
-        press() ;
-        return ;
-    }
-    if(!pimpl->calcer.is_pressed()) {
-        return ;
-    }
-    press() ;
+    _common_process(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
 }
 
 
 //EdiMoveCaretNwordsForward
+struct EdiNMoveCaretwordsForward::Impl
+{
+    KeyStrokeRepeater ksr{} ;
+} ;
+
+EdiNMoveCaretwordsForward::EdiNMoveCaretwordsForward()
+: pimpl(make_unique<Impl>())
+{}
+
+EdiNMoveCaretwordsForward::~EdiNMoveCaretwordsForward() noexcept                             = default ;
+EdiNMoveCaretwordsForward::EdiNMoveCaretwordsForward(EdiNMoveCaretwordsForward&&)            = default ;
+EdiNMoveCaretwordsForward& EdiNMoveCaretwordsForward::operator=(EdiNMoveCaretwordsForward&&) = default ;
+
 const string EdiNMoveCaretwordsForward::sname() noexcept
 {
     return "edi_n_move_caret_words_forward" ;
@@ -216,19 +218,29 @@ void EdiNMoveCaretwordsForward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         const KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(!first_call) return ;
-    if(ModeManager::is_edi_visual()) {
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
-    }
-    else {
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
-    }
+    using KeybrdEventer::pushup ;
+    _common_process(first_call, repeat_num, pimpl->ksr,
+        [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;},
+        [] {pushup(VKC_LCTRL, VKC_RIGHT) ;}) ;
 }
 
 
 //EdiMoveCaretNwordsBackward
+struct EdiNMoveCaretwordsBackward::Impl
+{
+    KeyStrokeRepeater ksr{} ;
+} ;
+
+EdiNMoveCaretwordsBackward::EdiNMoveCaretwordsBackward()
+: pimpl(make_unique<Impl>())
+{}
+
+EdiNMoveCaretwordsBackward::~EdiNMoveCaretwordsBackward() noexcept                              = default ;
+EdiNMoveCaretwordsBackward::EdiNMoveCaretwordsBackward(EdiNMoveCaretwordsBackward&&)            = default ;
+EdiNMoveCaretwordsBackward& EdiNMoveCaretwordsBackward::operator=(EdiNMoveCaretwordsBackward&&) = default ;
+
 const string EdiNMoveCaretwordsBackward::sname() noexcept
 {
     return "edi_n_move_caret_words_backward" ;
@@ -238,19 +250,29 @@ void EdiNMoveCaretwordsBackward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         const KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(!first_call) return ;
-    if(ModeManager::is_edi_visual()) {
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
-    }
-    else {
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
-    }
+    using KeybrdEventer::pushup ;
+    _common_process(first_call, repeat_num, pimpl->ksr,
+            [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;},
+            [] {pushup(VKC_LCTRL, VKC_LEFT) ;}) ;
 }
 
 
 //EdiMoveCaretNWORDSForward
+struct EdiNMoveCaretWORDSForward::Impl
+{
+    KeyStrokeRepeater ksr{} ;
+} ;
+
+EdiNMoveCaretWORDSForward::EdiNMoveCaretWORDSForward()
+: pimpl(make_unique<Impl>())
+{}
+
+EdiNMoveCaretWORDSForward::~EdiNMoveCaretWORDSForward() noexcept                             = default ;
+EdiNMoveCaretWORDSForward::EdiNMoveCaretWORDSForward(EdiNMoveCaretWORDSForward&&)            = default ;
+EdiNMoveCaretWORDSForward& EdiNMoveCaretWORDSForward::operator=(EdiNMoveCaretWORDSForward&&) = default ;
+
 const string EdiNMoveCaretWORDSForward::sname() noexcept
 {
     return "edi_n_move_caret_WORDS_forward" ;
@@ -260,19 +282,29 @@ void EdiNMoveCaretWORDSForward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         const KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(!first_call) return ;
-    if(ModeManager::is_edi_visual()) {
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;
-    }
-    else {
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_RIGHT) ;
-    }
+    using KeybrdEventer::pushup ;
+    _common_process(first_call, repeat_num, pimpl->ksr,
+            [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;},
+            [] {pushup(VKC_LCTRL, VKC_RIGHT) ;}) ;
 }
 
 
 //EdiMoveCaretNWORDSBackward
+struct EdiNMoveCaretWORDSBackward::Impl
+{
+    KeyStrokeRepeater ksr{} ;
+} ;
+
+EdiNMoveCaretWORDSBackward::EdiNMoveCaretWORDSBackward()
+: pimpl(make_unique<Impl>())
+{}
+
+EdiNMoveCaretWORDSBackward::~EdiNMoveCaretWORDSBackward() noexcept                              = default ;
+EdiNMoveCaretWORDSBackward::EdiNMoveCaretWORDSBackward(EdiNMoveCaretWORDSBackward&&)            = default ;
+EdiNMoveCaretWORDSBackward& EdiNMoveCaretWORDSBackward::operator=(EdiNMoveCaretWORDSBackward&&) = default ;
+
 const string EdiNMoveCaretWORDSBackward::sname() noexcept
 {
     return "edi_n_move_caret_WORDS_backward" ;
@@ -282,13 +314,10 @@ void EdiNMoveCaretWORDSBackward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         const KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(!first_call) return ;
-    if(ModeManager::is_edi_visual()) {
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;
-    }
-    else {
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_LEFT) ;
-    }
+    using KeybrdEventer::pushup ;
+    _common_process(first_call, repeat_num, pimpl->ksr,
+            [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;},
+            [] {pushup(VKC_LCTRL, VKC_LEFT) ;}) ;
 }

@@ -80,8 +80,7 @@ namespace Utility
     }
 
     template <typename T>
-    void remove_from_top(std::vector<T>& v, const std::size_t num_from_top)
-    {
+    void remove_from_top(std::vector<T>& v, const std::size_t num_from_top) {
         if(v.empty()) {
             return ;
         }
@@ -93,8 +92,7 @@ namespace Utility
     }
 
     template <typename T>
-    void remove_from_back(std::vector<T>& v, std::size_t num_from_back)
-    {
+    void remove_from_back(std::vector<T>& v, std::size_t num_from_back) {
         if(v.empty()) {
             return ;
         }
@@ -103,6 +101,18 @@ namespace Utility
             return ;
         }
         v.erase(v.end() - num_from_back, v.end()) ;
+    }
+
+    constexpr unsigned int pow_i(int base, unsigned int exp) noexcept {
+        return (exp == 0 ? 1 : base * pow_i(base, exp - 1)) ;
+    }
+    constexpr float pow_f(int base, int exp) noexcept {
+        if(exp < 0) return pow_f(base, exp + 1) / base ;
+        return (exp == 0 ? 1.0f : base * pow_f(base, exp - 1)) ;
+    }
+    constexpr double pow_d(int base, int exp) noexcept {
+        if(exp < 0) return pow_d(base, exp + 1) / base ;
+        return (exp == 0 ? 1.0 : base * pow_d(base, exp - 1)) ;
     }
 }
 

@@ -16,7 +16,10 @@ void Move2NextPage::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
+    }
 }
 
 
@@ -32,5 +35,8 @@ void Move2PrevPage::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
+    }
 }

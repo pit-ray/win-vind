@@ -13,7 +13,7 @@ const string SelectAll::sname() noexcept
 
 void SelectAll::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {

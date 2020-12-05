@@ -13,19 +13,15 @@ const std::string EdiJumpCaret2BOL::sname() noexcept
 }
 void EdiJumpCaret2BOL::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) {
-        return ;
-    }
-    if(ModeManager::is_edi_visual()) {
+    if(!first_call) return ;
+    if(ModeManager::is_edi_visual())
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
-    }
-    else {
+    else
         KeybrdEventer::pushup(VKC_HOME) ;
-    }
 }
 
 
@@ -40,9 +36,12 @@ void EdiJumpCaret2EOL::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) {
-        return ;
-    }
+    if(!first_call) return ;
+
+    //down caret N - 1
+    for(unsigned int i = 1 ; i < repeat_num ; i ++)
+        KeybrdEventer::pushup(VKC_DOWN) ;
+
     if(ModeManager::is_edi_visual()) {
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
     }
@@ -63,17 +62,26 @@ void EdiNJumpCaret2Line_DfBOF::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) {
-        return ;
-    }
-    if(SimplTextSelecter::is_first_line_selection()) {
+    if(!first_call) return ;
+
+    if(SimplTextSelecter::is_first_line_selection())
         SimplTextSelecter::select_line_EOL2BOL() ;
-    }
+
+    using KeybrdEventer::pushup ;
+
     if(ModeManager::is_edi_visual()) {
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
+        pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
+
+        //down caret N - 1
+        for(unsigned int i = 1 ; i < repeat_num ; i ++)
+            pushup(VKC_LSHIFT, VKC_DOWN) ;
     }
     else {
         KeybrdEventer::pushup(VKC_LCTRL, VKC_HOME) ;
+
+        //down caret N - 1
+        for(unsigned int i = 1 ; i < repeat_num ; i ++)
+            pushup(VKC_DOWN) ;
     }
 }
 
@@ -89,20 +97,26 @@ void EdiNJumpCaret2Line_DfEOF::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_logger))
 {
-    if(!first_call) {
-        return ;
-    }
-    if(ModeManager::is_edi_visual()) {
-        if(SimplTextSelecter::is_first_line_selection()) {
-            SimplTextSelecter::select_line_BOL2EOL() ;
-        }
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LCTRL, VKC_END) ;
+    if(!first_call) return ;
 
-        if(ModeManager::get_mode() != ModeManager::Mode::EdiLineVisual) {
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
+    using KeybrdEventer::pushup ;
+    using namespace ModeManager ;
+
+    if(repeat_num == 1) {
+        if(is_edi_visual()) {
+            if(SimplTextSelecter::is_first_line_selection())
+                SimplTextSelecter::select_line_BOL2EOL() ;
+
+            pushup(VKC_LSHIFT, VKC_LCTRL, VKC_END) ;
+
+            if(get_mode() != Mode::EdiLineVisual)
+                pushup(VKC_LSHIFT, VKC_HOME) ;
+        }
+        else {
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_END) ;
         }
     }
     else {
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_END) ;
+        EdiNJumpCaret2Line_DfBOF::sprocess(true, repeat_num, nullptr, nullptr) ;
     }
 }

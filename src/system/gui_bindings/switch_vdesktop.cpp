@@ -16,7 +16,10 @@ void SwitchVDesktop2Left::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_LEFT) ;
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_LEFT) ;
+    }
 }
 
 
@@ -32,7 +35,10 @@ void SwitchVDesktop2Right::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_RIGHT) ;
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_RIGHT) ;
+    }
 }
 
 
@@ -47,7 +53,10 @@ void CreateNewVDesktop::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_D) ;
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_D) ;
+    }
 }
 
 
@@ -62,7 +71,10 @@ void CloseCurrentVDesktop::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_F4) ;
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_F4) ;
+    }
 }
 
 
@@ -74,9 +86,10 @@ const std::string TaskView::sname() noexcept
 
 void TaskView::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) KeybrdEventer::pushup(VKC_LWIN, VKC_TAB) ;
+    if(first_call)
+        KeybrdEventer::pushup(VKC_LWIN, VKC_TAB) ;
 }

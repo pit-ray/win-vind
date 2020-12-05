@@ -55,12 +55,10 @@ namespace SimplTextSelecter
     }
 
     void moving_update() {
-        if(_mode == Mode::BOL2EOL) {
+        if(_mode == Mode::BOL2EOL)
             KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
-        }
-        else {
+        else
             KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
-        }
     }
 
     bool is_first_line_selection() noexcept {

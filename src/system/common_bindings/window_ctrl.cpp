@@ -47,7 +47,6 @@ namespace WCtrlUtility {
 
         release_keystate(vkc) ;
         pushup(vkc) ;
-        //undo
         press_keystate(vkc) ;
     }
 }

@@ -79,7 +79,6 @@ namespace ExAppUtility
 
 using namespace ExAppUtility ;
 
-
 //StartShell
 const std::string StartShell::sname() noexcept
 {
@@ -99,6 +98,12 @@ void StartShell::sprocess(
     Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }
 
+
+/*
+ * -- ToDo --
+ * connect directly to command prompt
+ *
+ */
 
 //StartAnyApp
 const std::string StartAnyApp::sname() noexcept

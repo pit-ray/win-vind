@@ -32,14 +32,16 @@ void Change2EdiNormal::sprocess(
         MouseEventer::click(VKC_MOUSE_LEFT) ;
 
     using namespace ModeManager ;
-    if(ModeManager::get_mode() == Mode::EdiNormal) return ;
+    if(get_mode() == Mode::EdiNormal) return ;
 
-    if(is_edi_visual()) SimplTextSelecter::unselect() ;
+    if(is_edi_visual())
+        SimplTextSelecter::unselect() ;
 
     KeyAbsorber::close_with_refresh() ;
 
     change_mode(Mode::EdiNormal) ;
-    if(vclmodeout) VirtualCmdLine::msgout("-- EDI NORMAL --") ;
+    if(vclmodeout)
+        VirtualCmdLine::msgout("-- EDI NORMAL --") ;
 }
 
 
@@ -60,7 +62,8 @@ void Change2EdiInsert::sprocess(
     if(!first_call) return ;
     KeyAbsorber::open() ;
     change_mode(Mode::EdiInsert) ;
-    if(vclmodeout) VirtualCmdLine::msgout("-- EDI INSERT --") ;
+    if(vclmodeout)
+        VirtualCmdLine::msgout("-- EDI INSERT --") ;
 }
 
 
@@ -169,10 +172,12 @@ void Change2EdiVisual::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
+    using namespace ModeManager ;
     if(!first_call) return ;
     SimplTextSelecter::select_words() ;
-    ModeManager::change_mode(ModeManager::Mode::EdiVisual) ;
-    if(vclmodeout) VirtualCmdLine::msgout("-- EDI VISUAL --") ;
+    change_mode(Mode::EdiVisual) ;
+    if(vclmodeout)
+        VirtualCmdLine::msgout("-- EDI VISUAL --") ;
 }
 
 
@@ -188,8 +193,10 @@ void Change2EdiLineVisual::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
+    using namespace ModeManager ;
     if(!first_call) return ;
     SimplTextSelecter::select_line_EOL2BOL() ;
-    ModeManager::change_mode(ModeManager::Mode::EdiLineVisual) ;
-    if(vclmodeout) VirtualCmdLine::msgout("-- EDI VISUAL LINE--") ;
+    change_mode(Mode::EdiLineVisual) ;
+    if(vclmodeout)
+        VirtualCmdLine::msgout("-- EDI VISUAL LINE--") ;
 }

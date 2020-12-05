@@ -21,6 +21,7 @@
 #include "change_mode.hpp"
 #include "command.hpp"
 #include "i_params.hpp"
+#include "key_absorber.hpp"
 #include "key_binding.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
@@ -360,15 +361,34 @@ namespace KeyBinder
     void call_matched_funcs() {
         using Utility::remove_from_back ;
 
+        auto debug = [] {
+            /*
+            for(auto& log : _logger) {
+                for(auto& key : log) {
+                    Logger::msg_stream << VKCConverter::get_name(key) << " " ;
+                }
+                Logger::msg_stream << "|" ;
+            }
+            */
+            for(auto& key : KeyAbsorber::get_pressed_list()) {
+                Logger::msg_stream << VKCConverter::get_name(key) << " " ;
+            }
+        } ;
+
         if(!KyLgr::log_as_vkc(_logger)) {
+            debug() ;
             if(!_running_func) {
                 remove_from_back(_logger, 1) ;
+                Logger::msg_stream << "<1>\n" ;
                 return ;
             }
             _running_func->process(false, 1, &_logger, nullptr) ;
             remove_from_back(_logger, 1) ;
+            Logger::msg_stream << "<2>\n" ;
             return ;
         }
+        debug() ;
+        Logger::msg_stream << "<3>\n" ;
 
         if(is_invalid_log(_logger, InvalidPolicy::UnbindedSystemKey)) {
             remove_from_back(_logger, 1) ;

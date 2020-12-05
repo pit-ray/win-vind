@@ -2,12 +2,13 @@
 #include "jump_cursor.hpp"
 
 #include <windows.h>
+
 #include <algorithm>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
-#include <utility>
 #include <unordered_map>
+#include <utility>
 
 #include "key_absorber.hpp"
 #include "keybrd_eventer.hpp"
@@ -35,7 +36,7 @@ const string Jump2Left::sname() noexcept
 
 void Jump2Left::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -54,7 +55,7 @@ const string Jump2Right::sname() noexcept
 
 void Jump2Right::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -73,7 +74,7 @@ const string Jump2Top::sname() noexcept
 
 void Jump2Top::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -92,7 +93,7 @@ const string Jump2Bottom::sname() noexcept
 
 void Jump2Bottom::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -111,7 +112,7 @@ const string Jump2XCenter::sname() noexcept
 
 void Jump2XCenter::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -130,7 +131,7 @@ const string Jump2YCenter::sname() noexcept
 
 void Jump2YCenter::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -243,7 +244,7 @@ const string Jump2Any::sname() noexcept
 
 void Jump2Any::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -259,18 +260,15 @@ void Jump2Any::sprocess(
     while(true) {
         Utility::get_win_message() ;
 
-        if(KeyAbsorber::is_pressed(VKC_ESC)) {
-            return ;
-        }
+        if(KeyAbsorber::is_pressed(VKC_ESC)) return ;
 
         const auto log = KeyAbsorber::get_pressed_list() - toggle_keys ;
         if(log.empty()) continue ;
 
         try {
             for(const auto& vkc : log) {
-                if(VKCConverter::is_unreal_key(vkc)) {
+                if(VKCConverter::is_unreal_key(vkc))
                     continue ;
-                }
 
                 auto x_pos = static_cast<int>( \
                         _xposs[vkc] / max_keybrd_xposs * _scmet.width()) ;
@@ -308,7 +306,7 @@ const string Jump2ActiveWindow::sname() noexcept
 
 void Jump2ActiveWindow::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {

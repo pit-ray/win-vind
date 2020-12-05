@@ -23,33 +23,17 @@ namespace MoveUtility
         const auto acc = iParams::get_f("cursor_acceleration") ;
         const auto mvc = iParams::get_f("cursor_max_velocity") ;
 
-        static constexpr auto TIME_COEF = static_cast<float>(std::pow(10, -3)) ;
+        static constexpr auto TIME_COEF = Utility::pow_f(10, -3) ;
         const auto t = us * TIME_COEF / iParams::get_i("cursor_weight") ; //accuracy
         const auto x = velocity*t + 0.5f*acc*t*t ;
         const auto delta_v = acc * t ;
-        if(velocity + delta_v < mvc) {
-            velocity += delta_v ;
-        }
-        else {
-            velocity = mvc ;
-        }
+        if(velocity + delta_v < mvc) velocity += delta_v ;
+        else velocity = mvc ;
         return x ;
     }
 
-    inline static INPUT& _initialize_cursor() noexcept {
-        static INPUT in ;
-        in.type           = INPUT_MOUSE ;
-        in.mi.dx          = 0 ;
-        in.mi.dy          = 0 ;
-        in.mi.mouseData   = 0 ;
-        in.mi.dwFlags     = MOUSEEVENTF_MOVE ;
-        in.mi.time        = 0 ;
-        in.mi.dwExtraInfo = 0 ;
-        return in ;
-    }
-
-    inline static bool _move_cursor(const int dx, const int dy) {
-        static INPUT in = _initialize_cursor() ;
+    inline static void _move_cursor(const int dx, const int dy) {
+        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, MOUSEEVENTF_MOVE, 0, 0}}} ;
 
         in.mi.dx = dx ;
         in.mi.dy = dy ;
@@ -59,8 +43,11 @@ namespace MoveUtility
         }
     }
 
-    inline static const auto _compute_deltat(const system_clock::time_point& start_time) {
-        return duration_cast<microseconds>(system_clock::now() - start_time).count() ;
+    inline static const auto _compute_deltat(
+            const system_clock::time_point& start_time) {
+
+        return duration_cast<microseconds>(
+                system_clock::now() - start_time).count() ;
     }
 
     class MoveDeltaCalculator {
@@ -75,7 +62,8 @@ namespace MoveUtility
         }
 
         const auto delta() noexcept {
-            return static_cast<int>(_const_accelerate(v, _compute_deltat(start_time))) ;
+            return static_cast<int>(
+                    _const_accelerate(v, _compute_deltat(start_time))) ;
         }
     } ;
 }
@@ -107,10 +95,8 @@ void MoveLeft::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-    _move_cursor(-pimpl->calcer.delta(), 0) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(-pimpl->calcer.delta() * repeat_num, 0) ;
 }
 
 
@@ -139,10 +125,8 @@ void MoveRight::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-    _move_cursor(pimpl->calcer.delta(), 0) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(pimpl->calcer.delta() * repeat_num, 0) ;
 }
 
 
@@ -171,10 +155,8 @@ void MoveUp::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-    _move_cursor(0, -pimpl->calcer.delta()) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(0, -pimpl->calcer.delta() * repeat_num) ;
 }
 
 //MoveDown
@@ -202,8 +184,6 @@ void MoveDown::sprocess(
         const KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-    _move_cursor(0, pimpl->calcer.delta()) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(0, pimpl->calcer.delta() * repeat_num) ;
 }

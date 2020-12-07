@@ -7,7 +7,7 @@ using namespace std ;
 struct KeyLog::Impl
 {
     data_t once_log ;
-    explicit Impl() noexcept
+    explicit Impl()
     : once_log()
     {}
 
@@ -23,15 +23,14 @@ struct KeyLog::Impl
     : once_log(codes)
     {}
 
-    ~Impl() noexcept {
+    virtual ~Impl() noexcept {
         once_log.clear() ;
     }
 
-    Impl(Impl&&) noexcept = default ;
-    Impl& operator=(Impl&&) noexcept = default ;
-
-    Impl(const Impl&) = default ;
-    Impl& operator=(const Impl&) =  default ;
+    Impl(Impl&&)                 = default ;
+    Impl& operator=(Impl&&)      = default ;
+    Impl(const Impl&)            = default ;
+    Impl& operator=(const Impl&) = default ;
 } ;
 
 KeyLog::KeyLog()
@@ -50,17 +49,15 @@ KeyLog::KeyLog(initializer_list<unsigned char>&& codes)
 : pimpl(make_unique<Impl>(std::move(codes)))
 {}
 
-KeyLog::~KeyLog() noexcept = default ;
-
-//move
-KeyLog::KeyLog(KeyLog&&) noexcept = default ;
-KeyLog& KeyLog::operator=(KeyLog&&) noexcept = default ;
+KeyLog::~KeyLog() noexcept                      = default ;
+KeyLog::KeyLog(KeyLog&&)                        = default ;
+KeyLog& KeyLog::operator=(KeyLog&&)             = default ;
 
 KeyLog::KeyLog(const KeyLog& rhs)
 : pimpl(rhs.pimpl ? make_unique<Impl>(*rhs.pimpl) : make_unique<Impl>())
 {}
 
-KeyLog& KeyLog::operator=(const KeyLog& rhs) noexcept
+KeyLog& KeyLog::operator=(const KeyLog& rhs)
 {
     if(!rhs.pimpl) return *this ; //if already moved, not copy
     *pimpl = *rhs.pimpl ;
@@ -102,23 +99,23 @@ std::size_t KeyLog::size() const noexcept
     return pimpl->once_log.size() ;
 }
 
-bool KeyLog::is_empty() const noexcept
+bool KeyLog::empty() const noexcept
 {
     return pimpl->once_log.empty() ;
 }
 
-bool KeyLog::is_containing(const unsigned char key) const noexcept
+bool KeyLog::is_containing(const unsigned char key) const
 {
     return pimpl->once_log.find(key) != pimpl->once_log.end() ;
 }
 
-bool KeyLog::operator==(const KeyLog& rhs) const noexcept
+bool KeyLog::operator==(const KeyLog& rhs) const
 {
     if(!rhs.pimpl) return false ; //moved
     return pimpl->once_log == rhs.pimpl->once_log ;
 }
 
-bool KeyLog::operator!=(const KeyLog& rhs) const noexcept
+bool KeyLog::operator!=(const KeyLog& rhs) const
 {
     if(!rhs.pimpl) return false ; //moved
     return pimpl->once_log != rhs.pimpl->once_log ;

@@ -1,3 +1,4 @@
+@chcp 65001
 echo [cmake] _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 @if "%1" == "" (
@@ -28,8 +29,10 @@ if %1 == -R (
     )
     cd debug
 
-    cmake -j 4 -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
-    goto make
+    cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
+    cmake --build . --config Debug
+    cd ..
+    exit
 
 :release
     @if not exist release (
@@ -37,13 +40,7 @@ if %1 == -R (
     ) 
     cd release
 
-    cmake -j 4 -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
-    goto make
-
-:make
-echo;
-echo;
-echo [mingw32-make] _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-mingw32-make -j 4 -f Makefile
-
-cd ..
+    cmake -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" ..
+    cmake --build . --config Release
+    cd ..
+    exit

@@ -22,86 +22,145 @@ namespace System
 {
     using namespace std ;
 
-    bool init() {
-        //show mouse cursor
-        //When Windows was started up, cursor is hidden until move mouse by default.
-        //Thus, send lowlevel move event in order to show cursor.
-        INPUT in ;
-        in.type = INPUT_MOUSE ;
-        in.mi.dx = 1 ;
-        in.mi.dy = 1 ;
-        in.mi.mouseData = 0 ;
-        in.mi.dwFlags = MOUSEEVENTF_MOVE ;
-        in.mi.time = 0 ;
-        in.mi.dwExtraInfo = GetMessageExtraInfo() ;
+    bool init() noexcept {
+        try {
+            //show mouse cursor
+            //When Windows was started up, cursor is hidden until move mouse by default.
+            //Thus, send lowlevel move event in order to show cursor.
+            INPUT in ;
+            in.type = INPUT_MOUSE ;
+            in.mi.dx = 1 ;
+            in.mi.dy = 1 ;
+            in.mi.mouseData = 0 ;
+            in.mi.dwFlags = MOUSEEVENTF_MOVE ;
+            in.mi.time = 0 ;
+            in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
-        if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("SendInput, MOUSEEVENTF_MOVE") ;
-            return 0 ;
+            if(!SendInput(1, &in, sizeof(INPUT))) {
+                ERROR_PRINT("SendInput, MOUSEEVENTF_MOVE") ;
+                return false ;
+            }
+
+            //load keyboard mapping of ascii code
+            //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
+            VKCConverter::load_input_combination() ;
+
+            //lower keyboard hook
+            KeyAbsorber::install_hook() ;
+
+            load_config() ;
+
+            //initialize system mode
+            const std::unordered_map<std::string, BindedFunc::shp_t> cm {
+                {"gui_normal", Change2Normal::create()},
+                {"gui_insert", Change2Insert::create()},
+                {"edi_normal", Change2EdiNormal::create()},
+                {"edi_insert", Change2EdiInsert::create()}
+            } ;
+            cm.at(iParams::get_s("initial_mode"))->process(true, 1) ;
+            return true ;
         }
-
-        //load keyboard mapping of ascii code
-        //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
-        VKCConverter::load_input_combination() ;
-
-        //lower keyboard hook
-        if(!KeyAbsorber::install_hook()) {
+        catch(const std::exception& e) {
+            ERROR_PRINT(std::string(e.what()) + ", so system was terminated.") ;
             return false ;
         }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+            return false ;
+        }
+    }
 
-        KeyBinder::init() ;
-        load_config() ;
-
-        //initialize system mode
-        const std::unordered_map<std::string, kbg::shp_t> cm {
-            {"gui_normal", Change2Normal::create()},
-            {"gui_insert", Change2Insert::create()},
-            {"edi_normal", Change2Editor::create()},
-            {"edi_insert", Change2EdiInsert::create()}
-        } ;
+    bool load_config() noexcept {
         try {
-            cm.at(iParams::get_s("initial_mode"))->process() ;
+            iParams::load_config() ;
+            KeyBinder::load_config() ;
+            OptionLoader::load_config() ;
+            return true ;
         }
-        catch(const std::out_of_range& e) {
-            ERROR_PRINT(std::string(e.what()) + ", in" + Path::SETTINGS() + ", initial_mode is invalid syntax.") ;
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+            return false ;
         }
-
-        return true ;
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+            return false ;
+        }
     }
 
-    void load_config() noexcept {
-        iParams::load_config() ;
-        KeyBinder::load_config() ;
-        OptionLoader::load_config() ;
-    }
-
-    void load_option_config() noexcept {
-        OptionLoader::load_config() ;
+    bool load_option_config() noexcept {
+        try {
+            OptionLoader::load_config() ;
+            return true ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+            return false ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+            return false ;
+        }
     }
 
     bool update() noexcept {
-        KeyBinder::call_matched_funcs() ;
-        OptionLoader::call_active_funcs() ;
+        try {
+            KeyBinder::call_matched_funcs() ;
+            OptionLoader::call_active_funcs() ;
 
-        using namespace KeyAbsorber ;
-        if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
+            using namespace KeyAbsorber ;
+            if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
+                ExitConfigWindow::sprocess(true, 1, nullptr, nullptr) ; //exit GUI-window in system tray
+                return false ;
+            }
+            return true ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
             return false ;
         }
-
-        return true ;
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+            return false ;
+        }
     }
 
     bool update_options() noexcept {
-        OptionLoader::call_active_funcs() ;
-        return true ;
+        try {
+            OptionLoader::call_active_funcs() ;
+            return true ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+            return false ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+            return false ;
+        }
     }
 
     //Please use it if you want to show a self config window by command.
     void register_show_window_func(std::function<void()> func) noexcept {
-        ShowConfigWindow::register_show_func(std::move(func)) ;
+        try {
+            ShowConfigWindow::register_show_func(std::move(func)) ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+        }
     }
 
     void register_exit_window_func(std::function<void()> func) noexcept {
-        ExitConfigWindow::register_exit_func(std::move(func)) ;
+        try {
+            ExitConfigWindow::register_exit_func(std::move(func)) ;
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+        }
+        catch(...) {
+            ERROR_PRINT("Fatal error occured.") ;
+        }
     }
 }

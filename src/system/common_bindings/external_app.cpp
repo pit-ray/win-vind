@@ -1,75 +1,63 @@
 #include "external_app.hpp"
 
-#include <unordered_map>
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <unordered_map>
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
+#include "jump_cursor.hpp"
+#include "key_logger.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
-#include "jump_cursor.hpp"
 #include "utility.hpp"
-
-using namespace std ;
 
 namespace ExAppUtility
 {
-    using mss_t = unordered_map<string, string> ;
-
-    inline static const mss_t _load_proc_list_core() noexcept {
+    using mss_t = std::unordered_map<std::string, std::string> ;
+    inline static const mss_t _load__proc_list_core() {
         mss_t map{} ;
 
-        try {
-            nlohmann::json j ;
-            std::ifstream ifs(Path::SETTINGS()) ;
-            ifs >> j ;
+        nlohmann::json j ;
+        std::ifstream ifs(Path::SETTINGS()) ;
+        ifs >> j ;
 
-            for(const auto& i : j.at("exapps").at("choices")) {
-                try {
-                    auto&& key = i.at("name").get<std::string>() ;
-                    auto&& val = i.at("value").get<std::string>() ;
-                    map[key] = val ;
-                }
-                catch(const std::exception& e) {continue ;}
+        for(const auto& i : j.at("exapps").at("choices")) {
+            try {
+                auto&& key = i.at("name").get<std::string>() ;
+                auto&& val = i.at("value").get<std::string>() ;
+                map[key]   = val ;
             }
-            return map ;
+            catch(const std::exception& e) {
+                ERROR_PRINT(std::string(e.what()) + ", so one shortcut application is skipped.") ;
+                continue ;
+            }
         }
-        catch(const std::exception& e) {
-            ERROR_PRINT(std::string(e.what()) + ", failed loading external app list (" + Path::SETTINGS() + ")") ;
-            return map ;
-        }
+        return map ;
     }
 
-    static auto proc_list{_load_proc_list_core()} ;
-
-    void load_config() noexcept {
-        proc_list = _load_proc_list_core() ;
+    static mss_t _proc_list{} ;
+    void load_config() {
+        _proc_list = _load__proc_list_core() ;
     }
 
-    inline static const auto get_protected_path(const string name) noexcept {
-        try {
-            const auto& origin = proc_list.at(name) ;
-            //is origin path?
-            if(origin.find("/") == string::npos) {
-                return origin ;
-            }
-            if(origin.find("\\") == string::npos) {
-                return origin ;
-            }
-            return "\"" + origin + "\"" ;
+    inline static const std::string _cvt_to_protected_path(const std::string name) {
+        const auto& origin = _proc_list.at(name) ;
+        //is origin path?
+        if(origin.find("/") == std::string::npos) {
+            return origin ;
         }
-        catch(const out_of_range& e) {
-            ERROR_PRINT("Not an external-application command : " + name) ;
-            return string{} ;
+        if(origin.find("\\") == std::string::npos) {
+            return origin ;
         }
+        return "\"" + origin + "\"" ;
     }
 
-    inline static bool create_process(const string path) noexcept
+    inline static void _create_process(const std::string path)
     {
         STARTUPINFOA si ;
         ZeroMemory(&si, sizeof(si)) ;
@@ -79,53 +67,64 @@ namespace ExAppUtility
         ZeroMemory(&pi, sizeof(pi)) ;
 
         if(!CreateProcessA(
-            NULL, const_cast<LPSTR>(path.c_str()), NULL, NULL, FALSE,
-            CREATE_NEW_CONSOLE, NULL, Path::HOME_PATH().c_str(), &si, &pi)) {
-            WIN_ERROR_PRINT("cannot call \"" + path + "\"") ;
-            return false ;
+            NULL, const_cast<LPSTR>(path.c_str()),
+            NULL, NULL, FALSE,
+            CREATE_NEW_CONSOLE, NULL,
+            Path::HOME_PATH().c_str(),
+            &si, &pi)) {
+            throw RUNTIME_EXCEPT("Cannot call \"" + path + "\"") ;
         }
-        return true ;
     }
 }
 
 using namespace ExAppUtility ;
 
-
 //StartShell
-const string StartShell::sname() noexcept
+const std::string StartShell::sname() noexcept
 {
     return "start_shell" ;
 }
 
-bool StartShell::sprocess(const string UNUSED(cmd))
+void StartShell::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!create_process(get_protected_path("shell"))) {
-        return false ;
-    }
-    //wait until select window by OS.
-    Sleep(100) ;
-    if(!Jump2ActiveWindow::sprocess(true)) {
-        return false ;
-    }
-    return true ;
+    if(!first_call) return ;
+    _create_process(_cvt_to_protected_path("shell")) ;
+
+    Sleep(100) ; //wait until select window by OS.
+    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }
 
 
+/*
+ * -- ToDo --
+ * connect directly to command prompt
+ *
+ */
+
 //StartAnyApp
-const string StartAnyApp::sname() noexcept
+const std::string StartAnyApp::sname() noexcept
 {
     return "start_any_app" ;
 }
 
-bool StartAnyApp::sprocess(const string cmd)
+void StartAnyApp::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
 {
-    if(!create_process(get_protected_path(cmd.substr(1)))) {
-        return false ;
-    }
-    //wait until select window by OS.
-    Sleep(100) ;
-    if(!Jump2ActiveWindow::sprocess(true)) {
-        return false ;
-    }
-    return true ;
+    if(!first_call) return ;
+
+    if(!parent_charlgr)
+        throw LOGIC_EXCEPT("The passed parent logger is null") ;
+
+    auto cmd = KyLgr::log2str(*parent_charlgr) ;
+    _create_process(_cvt_to_protected_path(cmd.substr(1))) ;
+
+    Sleep(100) ; //wait until select window by OS.
+    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }

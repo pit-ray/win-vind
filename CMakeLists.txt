@@ -7,7 +7,51 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdelete-non-virtual-dtor -Wdouble-promotion -Weffc++ -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsuggest-override -Wuseless-cast -static -lstdc++ -lgcc -lwinpthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdelete-non-virtual-dtor -Wdouble-promotion -Weffc++ -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsuggest-override -Wuseless-cast -static -lstdc++ -lgcc -lwinpthread -fdiagnostics-color")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+
+set(CMAKE_SH "CMAKE_SH-NOTFOUND")
+
+include(ProcessorCount)
+ProcessorCount(PROC_N)
+message(STATUS "The number of processors: " ${PROC_N})
+set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
+
+#If use cotire, for some reason, cannot redefine windows version.
+#Now, All CMakeLists.txt in win-vind has no header files at add_executable() or add_library()
+set(COTIRE_ENABLE OFF)
+if(${COTIRE_ENABLE})
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+            message(STATUS "Enable cotire")
+            set(COTIRE_MINIMUM_NUMBER_OF_TARGET_SOURCES 1)
+            set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules")
+            include(cotire)
+    endif()
+endif()
+function(enable_cotire name)
+    if(${COTIRE_ENABLE})
+        if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+            message(STATUS "${name} is applied cotire")
+            cotire(${name})
+        endif()
+    endif()
+endfunction()
+
+set(CCACHE_ENABLE ON)
+find_program(CCACHE ccache)
+if(CCACHE)
+    if(${CCACHE_ENABLE})
+        if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+            message(STATUS "Enable ccache")
+            if(CMAKE_CXX_COMPILER_LAUNCHER)
+                set(CMAKE_CXX_COMPILER_LAUNCHER "${CMAKE_CXX_COMPILER_LAUNCHER}" "${CCACHE}")
+            else()
+                set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE}")
+            endif()
+        endif()
+    endif()
+endif()
 
 set(winres "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc")
 if(NOT CMAKE_RC_COMPILER)
@@ -28,7 +72,16 @@ add_custom_command(OUTPUT "${winresobj}"
 #ON is GUI by Win32API.
 #OFF is GUI by wxWidgets.
 set(USE_SIMPL_GUI OFF)
-set(ALLOW_CONSOLE ON)
+if(${USE_SIMPL_GUI})
+    message(STATUS "Use Simple GUI System")
+endif()
+
+set(ALLOW_CONSOLE OFF)
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message(STATUS "Enable Console")
+    set(ALLOW_CONSOLE ON)
+endif()
+
 #---------------------------------
 
 include_directories(
@@ -43,6 +96,7 @@ if(${USE_SIMPL_GUI})
     include_directories(include/win32gui)
 
     set(W32G_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/win32gui)
+    set(W32G_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/win32gui)
     set(WIN32GUI_SRC
         ${W32G_DIR}/main.cpp
         ${W32G_DIR}/win32gui.cpp
@@ -75,6 +129,8 @@ else()
 
     set(WXG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/wxgui)
     set(WXG_SETCTR_DIR ${WXG_DIR}/settings_ctrls)
+    set(WXG_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/wxgui)
+    set(WXG_SETCTR_INC_DIR ${WXG_INC_DIR}/settings_ctrls)
     set(WXGUI_SRC
         src/i_params.cpp
         src/msg_logger.cpp
@@ -110,6 +166,7 @@ else()
     target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} CoreSystem)
 endif()
 
+enable_cotire(${PROJECT_NAME})
 
 #CPack
 #-----------------------------------------------------------------------------

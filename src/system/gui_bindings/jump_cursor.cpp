@@ -2,12 +2,13 @@
 #include "jump_cursor.hpp"
 
 #include <windows.h>
+
 #include <algorithm>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
-#include <utility>
 #include <unordered_map>
+#include <utility>
 
 #include "key_absorber.hpp"
 #include "keybrd_eventer.hpp"
@@ -33,13 +34,16 @@ const string Jump2Left::sname() noexcept
     return "jump_to_left" ;
 }
 
-bool Jump2Left::sprocess(const bool first_call)
+void Jump2Left::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(0, pos.y) ;
-    return true ;
 }
 
 
@@ -49,13 +53,16 @@ const string Jump2Right::sname() noexcept
     return "jump_to_right" ;
 }
 
-bool Jump2Right::sprocess(const bool first_call)
+void Jump2Right::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(_scmet.width() - iParams::get_i("screen_pos_buf"), pos.y) ;
-    return true ;
 }
 
 
@@ -65,13 +72,16 @@ const string Jump2Top::sname() noexcept
     return "jump_to_top" ;
 }
 
-bool Jump2Top::sprocess(const bool first_call)
+void Jump2Top::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(pos.x, 0) ;
-    return true ;
 }
 
 
@@ -81,13 +91,16 @@ const string Jump2Bottom::sname() noexcept
     return "jump_to_bottom" ;
 }
 
-bool Jump2Bottom::sprocess(const bool first_call)
+void Jump2Bottom::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(pos.x, _scmet.height() - iParams::get_i("screen_pos_buf")) ;
-    return true ;
 }
 
 
@@ -97,13 +110,16 @@ const string Jump2XCenter::sname() noexcept
     return "jump_to_xcenter" ;
 }
 
-bool Jump2XCenter::sprocess(const bool first_call)
+void Jump2XCenter::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(_scmet.width() / 2, pos.y) ;
-    return true ;
 }
 
 
@@ -113,13 +129,16 @@ const string Jump2YCenter::sname() noexcept
     return "jump_to_ycenter" ;
 }
 
-bool Jump2YCenter::sprocess(const bool first_call)
+void Jump2YCenter::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
     SetCursorPos(pos.x, _scmet.height() / 2) ;
-    return true ;
 }
 
 
@@ -132,20 +151,27 @@ namespace JumpCursorUtility
     using key_pos_t = std::array<float, 256> ;
     static key_pos_t _xposs{} ;
     static key_pos_t _yposs{} ;
-    void load_config() noexcept {
+    void load_config() {
         //initilize
         max_keybrd_xposs = 0 ;
         max_keybrd_yposs = 0 ;
 
-        try {
-            _xposs.fill(0) ;
-            _yposs.fill(0) ;
-            const auto filename = Path::KEYBRD_MAP() ;
+        _xposs.fill(0) ;
+        _yposs.fill(0) ;
+        const auto filename = Path::KEYBRD_MAP() ;
 
-            ifstream ifs(filename, ios::in) ;
-            string buf ;
+        ifstream ifs(filename, ios::in) ;
+        string buf ;
+        int lnum = 0 ;
 
-            while(getline(ifs, buf)) {
+        auto ep = [&lnum, &buf, &filename](auto msg) {
+            ERROR_PRINT(buf + msg + "\"" + filename + "\", L" + std::to_string(lnum) + ".") ;
+        } ;
+
+        while(getline(ifs, buf)) {
+            try {
+                lnum ++ ;
+
                 if(buf.empty()) {
                     continue ;
                 }
@@ -158,52 +184,55 @@ namespace JumpCursorUtility
                 const auto vec = Utility::split(buf, " ") ;
 
                 if(vec.size() != 3) {
-                    ERROR_PRINT(buf + " is bad syntax in " + filename + ".") ;
+                    ep(" is bad syntax in ") ;
                     continue ;
                 }
 
                 const auto x = stof(vec[0]) ;
                 const auto y = stof(vec[1]) ;
 
-                if(x > max_keybrd_xposs) {
-                    max_keybrd_xposs = x ;
-                }
-
-                if(y > max_keybrd_yposs) {
-                    max_keybrd_yposs = y ;
-                }
+                if(x > max_keybrd_xposs) max_keybrd_xposs = x ;
+                if(y > max_keybrd_yposs) max_keybrd_yposs = y ;
 
                 //specific code
-                if(vec[2] == "Space") {
+                auto code = vec[2] ;
+                //is ascii code
+                if(code.size() == 1) {
+                    if(const auto vkc = VKCConverter::get_vkc(code.front())) {
+                        //overwrite
+                        _xposs[vkc] = x ;
+                        _yposs[vkc] = y ;
+                        continue ;
+                    }
+                    ep(" is not supported in ") ;
+                    continue ;
+                }
+
+                code = Utility::A2a(code) ;
+                if(code.front() != '<' && code.back() != '>') {
+                    ep(" is bad syntax in ") ;
+                }
+
+                code = code.substr(1, code.length() - 2) ;
+                if(code == "space") {
                     auto&& vkc = VKCConverter::get_vkc(' ') ;
                     _xposs[vkc] = x ;
                     _yposs[vkc] = y ;
                     continue ;
                 }
 
-                if(auto vkc = VKCConverter::get_sys_vkc(vec[2])) {
+                if(auto vkc = VKCConverter::get_sys_vkc(code)) {
                     _xposs[vkc] = x ;
                     _yposs[vkc] = y ;
                     continue ;
                 }
 
-                //is ascii code
-                if(vec[2].size() == 1) {
-                    const auto vkc = VKCConverter::get_vkc(vec[2].front()) ;
-                    if(vkc != '\0') {
-                        //overwrite
-                        _xposs[vkc] = x ;
-                        _yposs[vkc] = y ;
-                        continue ;
-                    }
-                }
-
-                ERROR_PRINT(buf + " is bad syntax in " + filename + ".") ;
+                ep(" is invalid system key code in ") ;
             }
-        }
-        catch(const exception& e) {
-            ERROR_PRINT("std::fstream: " + std::string(e.what())) ;
-            return ;
+            catch(const std::runtime_error& e) {
+                ERROR_PRINT(e.what()) ;
+                continue ;
+            }
         }
     }
 }
@@ -213,62 +242,51 @@ const string Jump2Any::sname() noexcept
     return "jump_to_any" ;
 }
 
-bool Jump2Any::sprocess(const bool first_call)
+void Jump2Any::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
     //reset key state (binded key)
-    for(const auto& key : KeyAbsorber::get_pressed_list()) {
-        if(!KeybrdEventer::release_keystate(key)) {
-            return false ;
-        }
-    }
+    
+    KeyAbsorber::close_with_refresh() ;
 
     //ignore toggle keys (for example, CapsLock, NumLock, IME....)
     const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
 
-    MSG msg ;
     while(true) {
-        //MessageRoop
-        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&msg) ;
-            DispatchMessage(&msg) ;
-        }
+        Utility::get_win_message() ;
 
-        if(KeyAbsorber::is_pressed(VKC_ESC)) {
-            return true ;
-        }
+        if(KeyAbsorber::is_pressed(VKC_ESC)) return ;
 
         const auto log = KeyAbsorber::get_pressed_list() - toggle_keys ;
-
-        if(log.is_empty()) {
-            continue ;
-        }
+        if(log.empty()) continue ;
 
         try {
             for(const auto& vkc : log) {
-                if(VKCConverter::is_unreal_key(vkc)) {
+                if(VKCConverter::is_unreal_key(vkc))
                     continue ;
-                }
 
-                auto x_pos = static_cast<int>(_xposs[vkc] / max_keybrd_xposs * _scmet.width()) ;
-                auto y_pos = static_cast<int>(_yposs[vkc] / max_keybrd_yposs * _scmet.height()) ;
-                if(x_pos == _scmet.width()) {
+                auto x_pos = static_cast<int>( \
+                        _xposs[vkc] / max_keybrd_xposs * _scmet.width()) ;
+                auto y_pos = static_cast<int>( \
+                        _yposs[vkc] / max_keybrd_yposs * _scmet.height()) ;
+
+                if(x_pos == _scmet.width())
                     x_pos -= iParams::get_i("screen_pos_buf") ;
-                }
-                if(y_pos == _scmet.height()) {
+
+                if(y_pos == _scmet.height()) 
                     y_pos -= iParams::get_i("screen_pos_buf") ;
-                }
 
                 SetCursorPos(x_pos, y_pos) ;
 
                 for(const auto& key : log) {
-                    if(!KeybrdEventer::release_keystate(key)) {
-                        ERROR_PRINT("failed release key") ;
-                        return false ;
-                    }
+                    KeybrdEventer::release_keystate(key) ;
                 }
-                return true ;
+                return ;
             }
         }
         catch(const out_of_range&) {
@@ -277,7 +295,6 @@ bool Jump2Any::sprocess(const bool first_call)
 
         Sleep(5) ;
     }
-    return true ;
 }
 
 
@@ -287,25 +304,26 @@ const string Jump2ActiveWindow::sname() noexcept
     return "jump_to_active_window" ;
 }
 
-bool Jump2ActiveWindow::sprocess(const bool first_call)
+void Jump2ActiveWindow::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!first_call) return true ;
+    if(!first_call) return ;
 
     const auto hwnd = GetForegroundWindow() ;
     if(!hwnd) {
-        WIN_ERROR_PRINT("GetForegoundWindow return nullptr") ;
-        return false ;
+        throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
     }
 
     RECT rect ;
     if(!GetWindowRect(hwnd, &rect)) {
-        WIN_ERROR_PRINT("cannot get window rect") ;
-        return false ;
+        throw RUNTIME_EXCEPT("cannot get window rect") ;
     }
 
     auto&& xpos = static_cast<int>(rect.left + (rect.right - rect.left) / 2) ;
     auto&& ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
 
     SetCursorPos(xpos, ypos) ;
-    return true ;
 }

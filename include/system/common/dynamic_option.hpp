@@ -16,9 +16,9 @@ class DynamicOption
 private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
-    virtual bool do_enable() const noexcept = 0 ;
-    virtual bool do_disable() const noexcept = 0 ;
-    virtual bool do_process() const = 0 ;
+    virtual void do_enable() const  = 0 ;
+    virtual void do_disable() const = 0 ;
+    virtual void do_process() const = 0 ;
 
 public:
     explicit DynamicOption() ;
@@ -32,8 +32,8 @@ public:
 
     virtual const std::string name() const noexcept =  0 ;
 
-    void enable() noexcept ;
-    void disable() noexcept ;
+    void enable() ;
+    void disable() ;
 
     bool is_enabled() const noexcept ;
     void process() const ;

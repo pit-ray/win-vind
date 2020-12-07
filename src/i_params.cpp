@@ -12,46 +12,36 @@
 namespace iParams
 {
     static nlohmann::json jp ;
-    void load_config() noexcept {
-        try {
-            jp.clear() ;
-            std::ifstream ifs(Path::SETTINGS()) ;
-            ifs >> jp ;
-        }
-        catch(const std::exception& e) {
-            ERROR_PRINT(std::string(e.what()) + ", failed loading config for system") ;
-            return ;
-        }
+    void load_config() {
+        jp.clear() ;
+        std::ifstream ifs(Path::SETTINGS()) ;
+        ifs >> jp ;
     }
 
     template <typename T>
-    inline static const T _get(const std::string name) noexcept {
-        try {return jp.at(name).at("value").get<T>() ;}
-        catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
-            return T{0} ;
-        }
+    inline static const T _get(const std::string name) {
+        return jp.at(name).at("value").get<T>() ;
     }
 
-    const std::string get_s(const std::string name) noexcept {
+    const std::string get_s(const std::string name) {
         return _get<std::string>(name) ;
     }
-    float get_f(const std::string name) noexcept {
+    float get_f(const std::string name) {
         return _get<float>(name) ;
     }
-    double get_d(const std::string name) noexcept {
+    double get_d(const std::string name) {
         return _get<double>(name) ;
     }
-    int get_i(const std::string name) noexcept {
+    int get_i(const std::string name) {
         return _get<int>(name) ;
     }
-    long get_l(const std::string name) noexcept {
+    long get_l(const std::string name) {
         return _get<long>(name) ;
     }
-    std::size_t get_z(const std::string name) noexcept {
+    std::size_t get_z(const std::string name) {
         return _get<std::size_t>(name) ;
     }
-    bool get_b(const std::string name) noexcept {
+    bool get_b(const std::string name) {
         return _get<bool>(name) ;
     }
 }

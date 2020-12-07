@@ -3,8 +3,8 @@
 
 namespace OptionLoader
 {
-    void load_config() noexcept ;
-    void call_active_funcs() noexcept ;
+    void load_config() ;
+    void call_active_funcs() ;
 }
 
 #endif

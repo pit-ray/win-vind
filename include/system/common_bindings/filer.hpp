@@ -1,29 +1,45 @@
 #ifndef _FILER_HPP
 #define _FILER_HPP
 
-#include "command_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct SaveOpenedFile : public CommandWithCreator<SaveOpenedFile>
+struct SaveOpenedFile : public BindedFuncWithCreator<SaveOpenedFile>
 {
-    static bool sprocess(const std::string cmd) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct CloseOpenedFile : public CommandWithCreator<CloseOpenedFile>
+struct CloseOpenedFile : public BindedFuncWithCreator<CloseOpenedFile>
 {
-    static bool sprocess(const std::string cmd) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct OpenOtherFile : public CommandWithCreator<OpenOtherFile>
+struct OpenOtherFile : public BindedFuncWithCreator<OpenOtherFile>
 {
-    static bool sprocess(const std::string cmd) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct MakeDir : public CommandWithCreator<MakeDir>
+struct MakeDir : public BindedFuncWithCreator<MakeDir>
 {
-    static bool sprocess(const std::string cmd) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 

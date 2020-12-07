@@ -3,12 +3,14 @@
 
 //for DPI support
 #define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
-#define WINVER          _WIN32_WINNT_WIN10
-#define _WIN32_WINNT    _WIN32_WINNT_WIN10
+
+#define WINVER        _WIN32_WINNT_WIN10
+#define _WIN32_WINNT  _WIN32_WINNT_WIN10
 
 #include <windows.h>
-#include <winuser.h>
+
 #include "msg_logger.hpp"
+#include "utility.hpp"
 
 class ScreenMetrics {
 private:
@@ -22,10 +24,9 @@ public:
         calibrate() ;
     }
 
-    bool calibrate() noexcept {
+    void calibrate() {
         if(!SetProcessDPIAware()) {
-            WIN_ERROR_PRINT("SetProcessDPIAware") ;
-            return false ;
+            throw RUNTIME_EXCEPT("SetProcessDPIAware failed. Your system is not supported DPI on Windows10.") ;
         }
 
         MONITORINFO minfo ;
@@ -40,8 +41,6 @@ public:
         GetWindowInfo(GetDesktopWindow(), &winfo) ;
         w = winfo.rcWindow.right - winfo.rcWindow.left ;
         h = winfo.rcWindow.bottom - winfo.rcWindow.top ;
-
-        return true ;
     }
     const auto width() const noexcept {
         return w ;
@@ -55,6 +54,12 @@ public:
     const auto primary_height() const noexcept {
         return ph ;
     }
+
+    virtual ~ScreenMetrics() noexcept                       = default ;
+    ScreenMetrics(ScreenMetrics&&) noexcept                 = default ;
+    ScreenMetrics& operator=(ScreenMetrics&&) noexcept      = default ;
+    ScreenMetrics(const ScreenMetrics&) noexcept            = default ;
+    ScreenMetrics& operator=(const ScreenMetrics&) noexcept = default ;
 } ;
 
 #endif

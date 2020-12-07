@@ -2,14 +2,15 @@
 
 #include <windows.h>
 
-#include <array>
-#include <memory>
-#include <iostream>
 #include <algorithm>
+#include <array>
+#include <iostream>
+#include <memory>
 #include <unordered_map>
 
-#include "msg_logger.hpp"
 #include "keybrd_eventer.hpp"
+#include "msg_logger.hpp"
+#include "utility.hpp"
 #include "vkc_converter.hpp"
 
 using namespace std ;
@@ -22,17 +23,16 @@ namespace KeyAbsorber
 
     static const auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook == nullptr) return ;
-
         if(!UnhookWindowsHookEx(*p_hook)) {
-            WIN_ERROR_PRINT("cannot unhook LowLevelKeyboardProc") ;
+            ERROR_PRINT("cannot unhook LowLevelKeyboardProc") ;
         }
-
         delete p_hook ;
+        p_hook = nullptr ;
     } ;
 
     static unique_ptr<HHOOK, decltype(uninstaller)> p_handle(nullptr, uninstaller) ;
 
-    static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) noexcept {
+    static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
         const auto release = [&wParam, &lParam](const int code) {
             return CallNextHookEx(*p_handle, code, wParam, lParam) ;
         } ;
@@ -51,20 +51,16 @@ namespace KeyAbsorber
                 return release(HC_ACTION) ;
             }
         }
-
-        if(_absorbed_flag) {
-            return -1 ; //absorbing
-        }
-        //not absorbing
-        return release(HC_ACTION) ;
+        return _absorbed_flag ? -1 : release(HC_ACTION) ;
     }
 
-    bool install_hook() noexcept {
+    void install_hook() {
         _state.fill(false) ;
 
         p_handle.reset(new HHOOK{}) ; //added ownership
         if(p_handle == nullptr) {
-            return false ;
+            RUNTIME_EXCEPT("Cannot alloc a hook handle") ;
+            return ;
         }
 
         *p_handle = SetWindowsHookEx(
@@ -74,10 +70,9 @@ namespace KeyAbsorber
         ) ;
 
         if(!*p_handle) {
-            WIN_ERROR_PRINT("handle is nullptr") ;
-            return false ;
+            RUNTIME_EXCEPT("KeyAbosorber's hook handle is null") ;
+            return ;
         }
-        return true ;
     }
 
     bool is_pressed(const unsigned char keycode) noexcept {
@@ -87,7 +82,7 @@ namespace KeyAbsorber
         return _state[keycode] ;
     }
 
-    const KeyLog get_pressed_list() noexcept {
+    const KeyLog get_pressed_list() {
         KeyLog::data_t res{} ;
         for(unsigned char i = 1 ; i < 255 ; i ++) {
             if(is_pressed(i)) res.insert(i) ;
@@ -105,19 +100,17 @@ namespace KeyAbsorber
         _absorbed_flag = true ;
     }
 
-    bool close_with_refresh() noexcept {
+    void close_with_refresh() {
         _ignored_keys.clear() ;
 
         //if this function is called by pressed button,
         //it has to send message "KEYUP" to OS (not absorbed).
-        for(const auto& vkc : get_pressed_list()) {
-            if(!KeybrdEventer::release_keystate(vkc)) {
-                return false ;
-            }
+        unsigned char vkc = 0 ;
+        for(const auto& s : _state) {
+            if(s) KeybrdEventer::release_keystate(vkc) ;
+            vkc ++ ;
         }
-
         _absorbed_flag = true ;
-        return true ;
     }
 
     void open() noexcept {
@@ -130,9 +123,7 @@ namespace KeyAbsorber
     }
 
     void open_key(const unsigned char key) noexcept {
-        try {
-            _ignored_keys.insert(key) ;
-        }
+        try {_ignored_keys.insert(key) ;}
         catch(bad_alloc& e) {
             ERROR_PRINT(e.what()) ;
             return ;

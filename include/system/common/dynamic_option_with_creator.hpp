@@ -1,7 +1,7 @@
-#ifndef _COMMAND_WITH_CREATOR_HPP
-#define _COMMAND_WITH_CREATOR_HPP
+#ifndef _DYNAMIC_OPTION_WITH_CREATOR_HPP
+#define _DYNAMIC_OPTION_WITH_CREATOR_HPP
 
-#include "command.hpp"
+#include "dynamic_option.hpp"
 #include <memory>
 
 //use Curiously Recurring Template Pattern (CRTP)
@@ -9,18 +9,13 @@
 //if derived class does not use variable of member, sprocess prefers static function.
 //else, sprocess is constant function.
 template <typename Derived>
-class CommandWithCreator : public Command {
-private:
-    bool do_process(const std::string cmd) const override {
-        return static_cast<const Derived*>(this)->sprocess(cmd) ;
-    }
-
+class DynamicOptionWithCreator : public DynamicOption {
 public:
-    static std::unique_ptr<Command> create() {
+    static std::unique_ptr<DynamicOption> create() {
         return std::make_unique<Derived>() ;
     }
 
-    static std::shared_ptr<Command> create_with_cache() {
+    static std::shared_ptr<DynamicOption> create_with_cache() {
         static std::weak_ptr<Derived> cache ;
 
         auto pobj = cache.lock() ;

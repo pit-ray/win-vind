@@ -1,8 +1,10 @@
 #include "autotrack_popup.hpp"
-#include "msg_logger.hpp"
 
 #include <windows.h>
 #include <iostream>
+
+#include "msg_logger.hpp"
+#include "utility.hpp"
 
 using namespace std ;
 
@@ -12,9 +14,8 @@ struct AutotrackPopup::Impl
 
     explicit Impl() {
         if(!SystemParametersInfo(SPI_GETSNAPTODEFBUTTON, 0,
-            reinterpret_cast<PVOID>(&default_flag), 0)) {
-
-            WIN_ERROR_PRINT("cannot get system flag") ;
+                    reinterpret_cast<PVOID>(&default_flag), 0)) {
+            throw RUNTIME_EXCEPT("cannot get system flag") ;
         }
     }
 } ;
@@ -25,40 +26,37 @@ AutotrackPopup::AutotrackPopup()
 
 namespace APUtility
 {
-    inline static const auto is_set_param(const bool new_flag) noexcept
+    inline static const auto _set_param(const bool new_flag)
     {
         if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
-            WIN_ERROR_PRINT("cannot set system flag") ;
-            return false ;
+            throw RUNTIME_EXCEPT("cannot set system flag") ;
         }
-        return true ;
     }
 }
 
 AutotrackPopup::~AutotrackPopup() noexcept
 {
-    APUtility::is_set_param(pimpl->default_flag) ;
+    APUtility::_set_param(pimpl->default_flag) ;
 }
 
-AutotrackPopup::AutotrackPopup(AutotrackPopup&&) noexcept = default ;
-AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) noexcept = default ;
+AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
+AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
 
 const string AutotrackPopup::sname() noexcept
 {
     return "autotrack_popup" ;
 }
 
-bool AutotrackPopup::do_enable() const noexcept
+void AutotrackPopup::do_enable() const
 {
-    return APUtility::is_set_param(true) ;
+    APUtility::_set_param(true) ;
 }
 
-bool AutotrackPopup::do_disable() const noexcept
+void AutotrackPopup::do_disable() const
 {
-    return APUtility::is_set_param(false) ;
+    APUtility::_set_param(false) ;
 }
 
-bool AutotrackPopup::do_process() const
+void AutotrackPopup::do_process() const
 {
-    return true ;
 }

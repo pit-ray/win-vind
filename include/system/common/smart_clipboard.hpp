@@ -19,26 +19,26 @@ public:
 
     virtual ~SmartClipboard() noexcept ;
 
-    bool open() noexcept ;
-    bool close() noexcept ;
-    bool get_as_str(std::string& str, bool& having_EOL) noexcept ;
+    void open() ;
+    void close() ;
+    void get_as_str(std::string& str, bool& having_EOL) ;
 
     //backup current clipboard to cache
-    bool backup() noexcept ;
+    void backup() ;
 
     //restore cache to clipboard
-    bool restore_backup() noexcept ;
+    void restore_backup() ;
 
-    bool set(const char* const ar, const std::size_t size) noexcept ;
+    void set(const char* const ar, const std::size_t size) ;
 
     template <typename T>
-    bool set(const T& arref) noexcept {
+    void set(const T& arref) {
         return set(arref, Utility::sizeof_array(arref)) ;
     }
 
-    SmartClipboard(SmartClipboard&&) = delete ;
-    SmartClipboard& operator=(SmartClipboard&&) = delete ;
-    SmartClipboard(const SmartClipboard&) = delete ;
-    SmartClipboard& operator=(const SmartClipboard&) = delete ;
+    SmartClipboard(SmartClipboard&&)                    = delete ;
+    SmartClipboard& operator=(SmartClipboard&&)         = delete ;
+    SmartClipboard(const SmartClipboard&)               = delete ;
+    SmartClipboard& operator=(const SmartClipboard&)    = delete ;
 } ;
 #endif

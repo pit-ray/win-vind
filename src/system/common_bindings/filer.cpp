@@ -1,17 +1,18 @@
 #include "filer.hpp"
 
-#include <memory>
-
 #include <windows.h>
 #include <exdisp.h>
 #include <shlobj.h>
 
+#include <memory>
+
+#include "change_mode.hpp"
+#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
+#include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
-#include "mode_manager.hpp"
 #include "utility.hpp"
-#include "change_mode.hpp"
 
 using namespace std ;
 
@@ -21,17 +22,25 @@ const string SaveOpenedFile::sname() noexcept
     return "save_opened_file" ;
 }
 
-bool SaveOpenedFile::sprocess(const string UNUSED(cmd))
+void SaveOpenedFile::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
+    if(!first_call) return ;
+
     auto hwnd = GetForegroundWindow() ;
-    if(!KeybrdEventer::pushup(VKC_LCTRL, VKC_S)) {
-        return false ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("The foreground window is not existed.") ;
     }
-    Sleep(500) ;
+
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_S) ;
+
+    Sleep(500) ; //wait by openning the dialog for saving
     if(hwnd != GetForegroundWindow()) { //opened popup
-        return Change2Normal::sprocess(true) ;
+        Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
     }
-    return true ; //over write
 }
 
 
@@ -41,10 +50,15 @@ const string CloseOpenedFile::sname() noexcept
     return "close_opened_file" ;
 }
 
-bool CloseOpenedFile::sprocess(const string UNUSED(cmd))
+void CloseOpenedFile::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!Change2Normal::sprocess(true)) return false ; //cursor is avaiable
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ; //close a browser's tab (the file is HTML).
+    if(!first_call) return ;
+    Change2Normal::sprocess(true, 1, nullptr, nullptr) ; //in order to use cursor
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ;
 }
 
 
@@ -54,26 +68,24 @@ const string OpenOtherFile::sname() noexcept
     return "open_other_file" ;
 }
 
-bool OpenOtherFile::sprocess(const string UNUSED(cmd))
+void OpenOtherFile::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(!Change2Normal::sprocess(true)) return false ; //cursor is avaiable
-    return KeybrdEventer::pushup(VKC_LCTRL, VKC_O) ;
+    if(!first_call) return ;
+    Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_O) ;
 }
 
 
 //MakeDir
-const string MakeDir::sname() noexcept
-{
-    return "make_dir" ;
-}
-
-
 namespace FilerUtility
 {
     //This algorithm is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
-    inline static auto get_current_explorer_path() noexcept {
-
-        using path_t = std::basic_string<TCHAR> ;
+    inline static auto get_current_explorer_path() {
+        using path_t = std::string ;
 
         const auto hwnd = GetForegroundWindow() ;
 
@@ -82,8 +94,7 @@ namespace FilerUtility
         }
 
         if(FAILED(CoInitialize(NULL))) {
-            WIN_ERROR_PRINT("initialization is failed") ;
-            return path_t() ;
+            throw RUNTIME_EXCEPT("initialization failed") ;
         }
 
         //we can get explorer handle from IShellWindows.
@@ -95,16 +106,14 @@ namespace FilerUtility
             IID_IShellWindows,
             reinterpret_cast<void**>(&raw_psw)
         ))) {
-            WIN_ERROR_PRINT("cannot create IShellWindows.") ;
-            return path_t() ;
+            throw RUNTIME_EXCEPT("cannot create IShellWindows.") ;
         }
         auto sw_deleter = [](IShellWindows* ptr) {ptr->Release() ;} ;
         std::unique_ptr<IShellWindows, decltype(sw_deleter)> psw(raw_psw, sw_deleter) ;
 
         long win_num = 0 ;
         if(FAILED(psw->get_Count(&win_num))) {
-            WIN_ERROR_PRINT("No explorer is opened.") ;
-            return path_t() ;
+            throw RUNTIME_EXCEPT("No explorer is opened.") ;
         }
 
         for(long i = 0 ; i < win_num ; i ++) {
@@ -138,8 +147,7 @@ namespace FilerUtility
             //access to shell window
             IServiceProvider* raw_psp = nullptr ;
             if(FAILED(pwba->QueryInterface(IID_IServiceProvider, reinterpret_cast<void**>(&raw_psp)))) {
-                WIN_ERROR_PRINT("cannot access a top service provider.") ;
-                return path_t() ;
+                throw RUNTIME_EXCEPT("cannot access a top service provider.") ;
             }
             auto sp_deleter = [](IServiceProvider* ptr) {ptr->Release() ;} ;
             std::unique_ptr<IServiceProvider, decltype(sp_deleter)> psp(raw_psp, sp_deleter) ;
@@ -147,8 +155,7 @@ namespace FilerUtility
             //access to shell browser
             IShellBrowser* raw_psb = nullptr ;
             if(FAILED(psp->QueryService(SID_STopLevelBrowser, IID_IShellBrowser, reinterpret_cast<void**>(&raw_psb)))) {
-                WIN_ERROR_PRINT("cannot access a shell browser.") ;
-                return path_t() ;
+                throw RUNTIME_EXCEPT("cannot access a shell browser.") ;
             }
             auto sb_deleter = [](IShellBrowser* ptr) {ptr->Release() ;} ;
             std::unique_ptr<IShellBrowser, decltype(sb_deleter)> psb(raw_psb, sb_deleter) ;
@@ -156,8 +163,7 @@ namespace FilerUtility
             //access to shell view
             IShellView* raw_psv = nullptr ;
             if(FAILED(psb->QueryActiveShellView(&raw_psv))) {
-                WIN_ERROR_PRINT("cannot access a shell view.") ;
-                return path_t() ;
+                throw RUNTIME_EXCEPT("cannot access a shell view.") ;
             }
             auto sv_deleter = [](IShellView* ptr) {ptr->Release() ;} ;
             std::unique_ptr<IShellView, decltype(sv_deleter)> psv(raw_psv, sv_deleter) ;
@@ -165,8 +171,7 @@ namespace FilerUtility
             //get IFolerView Interface
             IFolderView* raw_pfv = nullptr ;
             if(FAILED(psv->QueryInterface(IID_IFolderView, reinterpret_cast<void**>(&raw_pfv)))) {
-                WIN_ERROR_PRINT("cannot access a foler view.") ;
-                return path_t() ;
+                throw RUNTIME_EXCEPT("cannot access a foler view.") ;
             }
             auto fv_deleter = [](IFolderView* ptr) {ptr->Release() ;} ;
             std::unique_ptr<IFolderView, decltype(fv_deleter)> pfv(raw_pfv, fv_deleter) ;
@@ -174,25 +179,22 @@ namespace FilerUtility
             //get IPersistantFolder2 in order to use GetCurFolder method
             IPersistFolder2* raw_ppf2 = nullptr ;
             if(FAILED(pfv->GetFolder(IID_IPersistFolder2, reinterpret_cast<void**>(&raw_ppf2)))) {
-                WIN_ERROR_PRINT("cannot access a persist folder 2.") ;
-                return path_t() ;
+                throw RUNTIME_EXCEPT("cannot access a persist folder 2.") ;
             }
             auto pf2_deleter = [](IPersistFolder2* ptr) {ptr->Release() ;} ;
             std::unique_ptr<IPersistFolder2, decltype(pf2_deleter)> ppf2(raw_ppf2, pf2_deleter) ;
 
             LPITEMIDLIST raw_pidl = nullptr ;
             if(FAILED(ppf2->GetCurFolder(&raw_pidl))) {
-                WIN_ERROR_PRINT("cannot get current folder.") ;
-                return path_t() ;
+                throw RUNTIME_EXCEPT("cannot get current folder.") ;
             }
-            auto idl_deleter = [](ITEMIDLIST* ptr) {CoTaskMemFree(ptr) ;} ;
+            auto idl_deleter = [](LPITEMIDLIST ptr) {CoTaskMemFree(ptr) ;} ;
             std::unique_ptr<ITEMIDLIST, decltype(idl_deleter)> pidl(raw_pidl, idl_deleter) ;
 
             //convert to path
             TCHAR path[MAX_PATH] = {0} ;
             if(!SHGetPathFromIDList(pidl.get(), path)) {
-                WIN_ERROR_PRINT("cannot convert an item ID to a file system path.") ;
-                return path_t() ;
+                throw RUNTIME_EXCEPT("cannot convert an item ID to a file system path.") ;
             }
 
             return path_t(path) ;
@@ -202,34 +204,48 @@ namespace FilerUtility
     }
 }
 
-bool MakeDir::sprocess(const string cmd)
+const string MakeDir::sname() noexcept
 {
+    return "make_dir" ;
+}
+void MakeDir::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
+{
+    if(!first_call) return ;
+
+    if(!parent_charlgr)
+        throw LOGIC_EXCEPT("KeyLogger is nullptr for character.") ;
+
+    auto cmd = KyLgr::log2str(*parent_charlgr) ;
+
     auto catch_error = [](auto&& path) {
         const auto ercode = GetLastError() ;
         if(ercode == ERROR_ALREADY_EXISTS) {
-            WIN_ERROR_PRINT("This directory is already existed. (" + path + ")") ;
+            throw RUNTIME_EXCEPT("This directory is already existed. (" + path + ")") ;
         }
         else if(ercode == ERROR_PATH_NOT_FOUND) {
-            WIN_ERROR_PRINT("This path is not found. (" + path + ")") ;
+            throw RUNTIME_EXCEPT("This path is not found. (" + path + ")") ;
         }
         else {
-            WIN_ERROR_PRINT("Cannot make directory. (" + path + ")") ;
+            throw RUNTIME_EXCEPT("Cannot make directory. (" + path + ")") ;
         }
     } ;
 
     const auto pos = cmd.find_first_of(" ") ;
     auto arg = cmd.substr(pos + 1) ;
 
-    if(arg.find("\\") != std::string::npos || arg.find("/") != std::string::npos) {
+    if(arg.find("\\") != std::string::npos ||
+            arg.find("/") != std::string::npos) {
         //argument is directory path
         if(arg.length() > 248) {
             //over max path num
             arg = arg.substr(0, 248) ;
         }
-
-        if(!CreateDirectoryA(arg.c_str(), NULL)) {
+        if(!CreateDirectory(arg.c_str(), NULL)) {
             catch_error(arg) ;
-            return false ;
         }
     }
 
@@ -241,11 +257,7 @@ bool MakeDir::sprocess(const string cmd)
     }
 
     auto full_path = current_path + "\\" + arg ;
-
     if(!CreateDirectory(full_path.c_str(), NULL)) {
         catch_error(full_path) ;
-        return false ;
     }
-
-    return true ;
 }

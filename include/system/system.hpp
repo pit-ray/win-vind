@@ -5,10 +5,10 @@
 
 namespace System
 {
-    bool init() ;
+    bool init() noexcept ;
 
-    void load_config() noexcept ;
-    void load_option_config() noexcept ;
+    bool load_config() noexcept ;
+    bool load_option_config() noexcept ;
 
     bool update() noexcept ;
     bool update_options() noexcept ;

@@ -12,7 +12,7 @@ namespace MouseEventer
         {VKC_MOUSE_RIGHT, false}
     } ;
 
-    bool click(const unsigned char btcode) noexcept {
+    void click(const unsigned char btcode) {
         INPUT in ;
         in.type = INPUT_MOUSE ;
         in.mi.dx = 0 ;
@@ -23,21 +23,19 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("cannot send mouse-down event") ;
-            return false ;
+            throw RUNTIME_EXCEPT("cannot send mouse-down event") ;
+            return ;
         }
         //btstate[btcode] = true ;
 
         in.mi.dwFlags = (btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP ;
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("cannot send mouse-up event") ;
-            return false ;
+            throw RUNTIME_EXCEPT("cannot send mouse-up event") ;
+            return ;
         }
-
-        return true ;
     }
 
-    inline static bool change_btstate(const DWORD event) noexcept {
+    inline static void _change_btstate(const DWORD event) {
         INPUT in ;
         in.type = INPUT_MOUSE ;
         in.mi.dx = 0 ;
@@ -48,22 +46,20 @@ namespace MouseEventer
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("cannot change the mouse button state") ;
-            return false ;
+            throw RUNTIME_EXCEPT("cannot change the mouse button state") ;
+            return ;
         }
-
-        return true ;
     }
 
-    bool press(const unsigned char btcode) noexcept {
-        return change_btstate((btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN) ;
+    void press(const unsigned char btcode) {
+        _change_btstate((btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN) ;
     }
 
-    bool release(const unsigned char btcode) noexcept {
-        return change_btstate((btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP) ;
+    void release(const unsigned char btcode) {
+        _change_btstate((btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP) ;
     }
 
-    bool is_releasing_occured(const unsigned char btcode) noexcept {
+    bool is_releasing_occured(const unsigned char btcode) {
         if(GetAsyncKeyState(btcode) & 0x8000) {
             if(!btstate[btcode]) btstate[btcode] = true ;
         }

@@ -12,7 +12,7 @@ struct IntervalTimer::Impl
     bool first_call ;
     mutex mtx ;
 
-    explicit Impl(const int delta_t) noexcept
+    explicit Impl(const int delta_t)
     : delta_time(static_cast<microseconds>(delta_t)),
       start_time(system_clock::now()),
       first_call(true),
@@ -27,8 +27,8 @@ IntervalTimer::IntervalTimer(const int delta_us)
 
 IntervalTimer::~IntervalTimer() noexcept = default ;
 
-IntervalTimer::IntervalTimer(IntervalTimer&&) noexcept = default ;
-IntervalTimer& IntervalTimer::operator=(IntervalTimer&&) noexcept = default ;
+IntervalTimer::IntervalTimer(IntervalTimer&&)               = default ;
+IntervalTimer& IntervalTimer::operator=(IntervalTimer&&)    = default ;
 
 void IntervalTimer::set_delta(const int delta_us) noexcept
 {
@@ -41,7 +41,7 @@ void IntervalTimer::reset() noexcept
     pimpl->first_call = true ;
 }
 
-bool IntervalTimer::is_passed() const noexcept
+bool IntervalTimer::is_passed() const
 {
     lock_guard<mutex> lock{pimpl->mtx} ;
 

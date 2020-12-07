@@ -13,28 +13,28 @@ include_directories(
 )
 
 add_library(Common STATIC
-    common/key_binding.cpp
-    common/command.cpp
+    common/binded_func.cpp
     common/dynamic_option.cpp
     common/interval_timer.cpp
     common/key_absorber.cpp
     common/key_log.cpp
     common/key_logger.cpp
+    common/key_matcher.cpp
     common/keybrd_eventer.cpp
+    common/keystroke_repeater.cpp
     common/mode_manager.cpp
     common/mouse_eventer.cpp
-    common/text_analyzer.cpp
     common/simpl_text_selecter.cpp
-    common/utility.cpp
-    common/vkc_converter.cpp
-    common/bindings_loader.cpp
-    common/keystroke_repeater.cpp
     common/smart_clipboard.cpp
+    common/text_analyzer.cpp
+    common/vkc_converter.cpp
 )
-#target_link_libraries(Common ~~~~~~)
+enable_cotire(Common)
+
 
 add_library(CommonBindings STATIC
     common_bindings/change_mode.cpp
+    common_bindings/command_mode.cpp
     common_bindings/dedicate_to_window_ctrl.cpp
     common_bindings/external_app.cpp
     common_bindings/filer.cpp
@@ -44,17 +44,19 @@ add_library(CommonBindings STATIC
     common_bindings/window_ctrl.cpp
 )
 target_link_libraries(CommonBindings Common)
+enable_cotire(CommonBindings)
 
 add_library(EditorBindings STATIC
     editor_bindings/edi_change_mode.cpp
-    editor_bindings/edi_move_caret.cpp
-    editor_bindings/edi_jump_caret.cpp
-    editor_bindings/edi_search_pattern.cpp
     editor_bindings/edi_edit.cpp
-    editor_bindings/edi_replace.cpp
+    editor_bindings/edi_jump_caret.cpp
     editor_bindings/edi_layout.cpp
+    editor_bindings/edi_move_caret.cpp
+    editor_bindings/edi_replace.cpp
+    editor_bindings/edi_search_pattern.cpp
 )
 target_link_libraries(EditorBindings Common)
+enable_cotire(EditorBindings)
 
 add_library(GUIBindings STATIC
     gui_bindings/click.cpp
@@ -67,22 +69,24 @@ add_library(GUIBindings STATIC
     gui_bindings/switch_vdesktop.cpp
 )
 target_link_libraries(GUIBindings Common Psapi)
+enable_cotire(GUIBindings)
 
 add_library(Options
     options/autotrack_popup.cpp
     options/dedicate_to_window.cpp
     options/virtual_cmd_line.cpp
 )
-target_link_libraries(Options Common)
+enable_cotire(Options)
 
 add_library(Binders STATIC
-    command_mode.cpp
     key_binder.cpp
     option_loader.cpp
 )
 target_link_libraries(Binders CommonBindings EditorBindings GUIBindings Options)
+enable_cotire(Binders)
 
 add_library(CoreSystem STATIC
     system.cpp
 )
 target_link_libraries(CoreSystem Binders)
+enable_cotire(CoreSystem)

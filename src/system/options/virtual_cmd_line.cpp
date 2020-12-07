@@ -16,7 +16,7 @@ bool VirtualCmdLine::msg_showing = false ;
 
 namespace VCLUtility
 {
-    inline static const auto hex2COLOREF(string hex) noexcept {
+    inline static const auto _hex2COLOREF(string hex) {
         if(hex.front() == '#') {
             hex.erase(0, 1) ;
         }
@@ -44,8 +44,8 @@ struct VirtualCmdLine::Impl
     LOGFONT lf{} ;
     COLORREF color{RGB(0, 0, 0)} ;
     COLORREF bkcolor{RGB(0, 0, 0)} ;
-    int x = 0 ;
-    int y = 0 ;
+    int x     = 0 ;
+    int y     = 0 ;
     int extra = 0 ;
 
     std::chrono::seconds fadeout_time{} ;
@@ -55,38 +55,38 @@ VirtualCmdLine::VirtualCmdLine()
 : pimpl(std::make_unique<Impl>())
 {
     //default setting
-    pimpl->lf.lfHeight = 25 ;
-    pimpl->lf.lfWidth = 0 ;
-    pimpl->lf.lfEscapement = 0 ;
-    pimpl->lf.lfOrientation = 0 ;
-    pimpl->lf.lfWeight = FW_MEDIUM ;
-    pimpl->lf.lfItalic = FALSE ;
-    pimpl->lf.lfUnderline = FALSE ;
-    pimpl->lf.lfStrikeOut = FALSE ;
-    pimpl->lf.lfCharSet = ANSI_CHARSET ;
-    pimpl->lf.lfOutPrecision = OUT_TT_ONLY_PRECIS ;
-    pimpl->lf.lfClipPrecision = CLIP_DEFAULT_PRECIS ;
-    pimpl->lf.lfQuality = ANTIALIASED_QUALITY ;
+    pimpl->lf.lfHeight         = 25 ;
+    pimpl->lf.lfWidth          = 0 ;
+    pimpl->lf.lfEscapement     = 0 ;
+    pimpl->lf.lfOrientation    = 0 ;
+    pimpl->lf.lfWeight         = FW_MEDIUM ;
+    pimpl->lf.lfItalic         = FALSE ;
+    pimpl->lf.lfUnderline      = FALSE ;
+    pimpl->lf.lfStrikeOut      = FALSE ;
+    pimpl->lf.lfCharSet        = ANSI_CHARSET ;
+    pimpl->lf.lfOutPrecision   = OUT_TT_ONLY_PRECIS ;
+    pimpl->lf.lfClipPrecision  = CLIP_DEFAULT_PRECIS ;
+    pimpl->lf.lfQuality        = ANTIALIASED_QUALITY ;
     pimpl->lf.lfPitchAndFamily = 0 ;
-    pimpl->lf.lfFaceName[0] = '\0' ;
+    pimpl->lf.lfFaceName[0]    = '\0' ;
 }
-VirtualCmdLine::~VirtualCmdLine() noexcept = default ;
-VirtualCmdLine::VirtualCmdLine(VirtualCmdLine&&) noexcept = default ;
-VirtualCmdLine& VirtualCmdLine::operator=(VirtualCmdLine&&) noexcept = default ;
+VirtualCmdLine::~VirtualCmdLine() noexcept                  = default ;
+VirtualCmdLine::VirtualCmdLine(VirtualCmdLine&&)            = default ;
+VirtualCmdLine& VirtualCmdLine::operator=(VirtualCmdLine&&) = default ;
 
 const string VirtualCmdLine::sname() noexcept
 {
     return "virtual_cmd_line" ;
 }
 
-bool VirtualCmdLine::do_enable() const noexcept
+void VirtualCmdLine::do_enable() const
 {
     reset() ;
     pimpl->lf.lfHeight = iParams::get_l("cmd_font_size") ;
     pimpl->lf.lfWeight = iParams::get_l("cmd_font_weight") ;
 
-    pimpl->color = hex2COLOREF(iParams::get_s("cmd_font_color")) ;
-    pimpl->bkcolor = hex2COLOREF(iParams::get_s("cmd_font_bkcolor")) ;
+    pimpl->color   = _hex2COLOREF(iParams::get_s("cmd_font_color")) ;
+    pimpl->bkcolor = _hex2COLOREF(iParams::get_s("cmd_font_bkcolor")) ;
 
     const auto pos = iParams::get_s("cmd_pos") ;
     const auto xma = iParams::get_i("cmd_xmargin") ;
@@ -121,12 +121,10 @@ bool VirtualCmdLine::do_enable() const noexcept
 
     pimpl->extra = iParams::get_i("cmd_font_extra") ;
     pimpl->fadeout_time = std::chrono::seconds(iParams::get_i("cmd_fadeout_time")) ;
-    return true ;
 }
 
-bool VirtualCmdLine::do_disable() const noexcept
+void VirtualCmdLine::do_disable() const
 {
-    return true ;
 }
 
 void VirtualCmdLine::cout(std::string&& str) noexcept
@@ -141,15 +139,14 @@ void VirtualCmdLine::cout(const std::string& str) noexcept
 void VirtualCmdLine::msgout(std::string str) noexcept
 {
     if(str.empty()) return ;
-
     outstr = std::move(str) ;
     msg_start = std::chrono::system_clock::now() ;
     msg_showing = true ;
 }
 
-void VirtualCmdLine::refresh() noexcept {
+void VirtualCmdLine::refresh() {
     if(!InvalidateRect(NULL, NULL, TRUE)) {
-        WIN_ERROR_PRINT(" failed refresh display") ;
+        throw RUNTIME_EXCEPT(" failed refresh display") ;
     }
 }
 
@@ -165,63 +162,51 @@ void VirtualCmdLine::reset() noexcept
     refresh() ;
 }
 
-bool VirtualCmdLine::do_process() const
+void VirtualCmdLine::do_process() const
 {
-    if(outstr.empty()) return true ;
-
+    if(outstr.empty()) return ;
     if(msg_showing) {
         if(std::chrono::system_clock::now() - msg_start > pimpl->fadeout_time) {
             reset() ;
-            return true ;
+            return ;
         }
     }
 
     auto hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
     if(!hdc) {
-        WIN_ERROR_PRINT("CreateDC") ;
-        return false ;
+        throw RUNTIME_EXCEPT("CreateDC") ;
     }
 
     auto font = CreateFontIndirect(&pimpl->lf) ;
     if(!font) {
-        WIN_ERROR_PRINT("CreateFontIndirectA") ;
-        return false ;
+        throw RUNTIME_EXCEPT("CreateFontIndirectA") ;
     }
 
     if(!SelectObject(hdc, font)) {
-        WIN_ERROR_PRINT("SelectObject") ;
-        return false ;
+        throw RUNTIME_EXCEPT("SelectObject") ;
     }
 
     if(SetBkColor(hdc, pimpl->bkcolor) == CLR_INVALID) {
-        WIN_ERROR_PRINT("SetBkColor") ;
-        return false ;
+        throw RUNTIME_EXCEPT("SetBkColor") ;
     }
 
     if(SetTextColor(hdc, pimpl->color) == CLR_INVALID) {
-        WIN_ERROR_PRINT("SetTextColor") ;
-        return false ;
+        throw RUNTIME_EXCEPT("SetTextColor") ;
     }
 
     if(SetTextCharacterExtra(hdc, pimpl->extra) == static_cast<int>(0x80000000)) {
-        WIN_ERROR_PRINT("SetTextCharacterExtra") ;
-        return false ;
+        throw RUNTIME_EXCEPT("SetTextCharacterExtra") ;
     }
 
     if(!TextOutA(hdc, pimpl->x, pimpl->y, outstr.c_str(), lstrlenA(outstr.c_str()))) {
-        WIN_ERROR_PRINT("TextOutA") ;
-        return false ;
+        throw RUNTIME_EXCEPT("TextOutA") ;
     }
 
     if(!DeleteDC(hdc)) {
-        WIN_ERROR_PRINT("DeleteDC") ;
-        return false ;
+        throw RUNTIME_EXCEPT("DeleteDC") ;
     }
 
     if(!DeleteObject(font)) {
-        WIN_ERROR_PRINT("DeleteObject") ;
-        return false ;
+        throw RUNTIME_EXCEPT("DeleteObject") ;
     }
-
-    return true ;
 }

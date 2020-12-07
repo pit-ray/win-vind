@@ -1,61 +1,106 @@
 #ifndef _EDI_CHANGE_MOVE_HPP
 #define _EDI_CHANGE_MOVE_HPP
 
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct Change2EdiNormal : public KeyBindingWithCreator<Change2EdiNormal>
+struct Change2EdiNormal : public BindedFuncWithCreator<Change2EdiNormal>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct Change2EdiInsert : public KeyBindingWithCreator<Change2EdiInsert>
+struct Change2EdiInsert : public BindedFuncWithCreator<Change2EdiInsert>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct Change2EdiBOLInsert : public KeyBindingWithCreator<Change2EdiBOLInsert>
+struct Change2EdiBOLInsert : public BindedFuncWithCreator<Change2EdiBOLInsert>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct Change2EdiBkInsert : public KeyBindingWithCreator<Change2EdiBkInsert>
+struct Change2EdiBkInsert : public BindedFuncWithCreator<Change2EdiBkInsert>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct Change2EdiEOLInsert : public KeyBindingWithCreator<Change2EdiEOLInsert>
+struct Change2EdiEOLInsert : public BindedFuncWithCreator<Change2EdiEOLInsert>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct Change2EdiNlInsertBelow : public KeyBindingWithCreator<Change2EdiNlInsertBelow>
+struct Change2EdiNlInsertBelow : public BindedFuncWithCreator<Change2EdiNlInsertBelow>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct Change2EdiNlInsertAbove : public KeyBindingWithCreator<Change2EdiNlInsertAbove>
+struct Change2EdiNlInsertAbove : public BindedFuncWithCreator<Change2EdiNlInsertAbove>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
-struct Change2EdiVisual : public KeyBindingWithCreator<Change2EdiVisual>
+struct Change2EdiVisual : public BindedFuncWithCreator<Change2EdiVisual>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 
 
-struct Change2EdiLineVisual : public KeyBindingWithCreator<Change2EdiLineVisual>
+struct Change2EdiLineVisual : public BindedFuncWithCreator<Change2EdiLineVisual>
 {
-    static bool sprocess(const bool first_call) ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr,
+            const bool vclmodeout=true) ;
     static const std::string sname() noexcept ;
 } ;
 

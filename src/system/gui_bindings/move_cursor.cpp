@@ -8,8 +8,9 @@
 
 #include "i_params.hpp"
 #include "msg_logger.hpp"
-using namespace std ;
+#include "utility.hpp"
 
+using namespace std ;
 using namespace std::chrono ;
 
 namespace MoveUtility
@@ -18,51 +19,35 @@ namespace MoveUtility
     static constexpr auto INITIAL_VELOCITY = 1.0f ;
 
     template <typename T>
-    inline static const auto const_accelerate(float& velocity, T&& us) noexcept {
+    inline static const auto _const_accelerate(float& velocity, T&& us) {
         const auto acc = iParams::get_f("cursor_acceleration") ;
         const auto mvc = iParams::get_f("cursor_max_velocity") ;
 
-        static constexpr auto TIME_COEF = static_cast<float>(pow(10, -3)) ;
+        static constexpr auto TIME_COEF = Utility::pow_f(10, -3) ;
         const auto t = us * TIME_COEF / iParams::get_i("cursor_weight") ; //accuracy
         const auto x = velocity*t + 0.5f*acc*t*t ;
         const auto delta_v = acc * t ;
-        if(velocity + delta_v < mvc) {
-            velocity += delta_v ;
-        }
-        else {
-            velocity = mvc ;
-        }
+        if(velocity + delta_v < mvc) velocity += delta_v ;
+        else velocity = mvc ;
         return x ;
     }
 
-    inline static INPUT& _initialize_cursor() noexcept {
-        static INPUT in ;
-        in.type = INPUT_MOUSE ;
-        in.mi.dx = 0 ;
-        in.mi.dy = 0 ;
-        in.mi.mouseData = 0 ;
-        in.mi.dwFlags = MOUSEEVENTF_MOVE ;
-        in.mi.time = 0 ;
-        in.mi.dwExtraInfo = 0 ;
-
-        return in ;
-    }
-
-    inline static bool is_move_cursor(const int dx, const int dy) noexcept {
-        static INPUT in = _initialize_cursor() ;
+    inline static void _move_cursor(const int dx, const int dy) {
+        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, MOUSEEVENTF_MOVE, 0, 0}}} ;
 
         in.mi.dx = dx ;
         in.mi.dy = dy ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
-            WIN_ERROR_PRINT("cannot send the moving event of the mouse") ;
-            return false ;
+            throw RUNTIME_EXCEPT("cannot send the moving event of the mouse") ;
         }
-        return true ;
     }
 
-    inline static const auto compute_deltat(const system_clock::time_point& start_time) noexcept {
-        return duration_cast<microseconds>(system_clock::now() - start_time).count() ;
+    inline static const auto _compute_deltat(
+            const system_clock::time_point& start_time) {
+
+        return duration_cast<microseconds>(
+                system_clock::now() - start_time).count() ;
     }
 
     class MoveDeltaCalculator {
@@ -77,7 +62,8 @@ namespace MoveUtility
         }
 
         const auto delta() noexcept {
-            return static_cast<int>(const_accelerate(v, compute_deltat(start_time))) ;
+            return static_cast<int>(
+                    _const_accelerate(v, _compute_deltat(start_time))) ;
         }
     } ;
 }
@@ -94,9 +80,8 @@ MoveLeft::MoveLeft()
 : pimpl(make_unique<Impl>())
 {}
 
-MoveLeft::~MoveLeft() = default ;
-
-MoveLeft::MoveLeft(MoveLeft&&) = default ;
+MoveLeft::~MoveLeft()                     = default ;
+MoveLeft::MoveLeft(MoveLeft&&)            = default ;
 MoveLeft& MoveLeft::operator=(MoveLeft&&) = default ;
 
 const std::string MoveLeft::sname() noexcept
@@ -104,13 +89,14 @@ const std::string MoveLeft::sname() noexcept
     return "move_left" ;
 }
 
-bool MoveLeft::sprocess(const bool first_call) const
+void MoveLeft::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-
-    return is_move_cursor(-pimpl->calcer.delta(), 0) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(-pimpl->calcer.delta() * repeat_num, 0) ;
 }
 
 
@@ -124,9 +110,8 @@ MoveRight::MoveRight()
 : pimpl(make_unique<Impl>())
 {}
 
-MoveRight::~MoveRight() = default ;
-
-MoveRight::MoveRight(MoveRight&&) = default ;
+MoveRight::~MoveRight()                      = default ;
+MoveRight::MoveRight(MoveRight&&)            = default ;
 MoveRight& MoveRight::operator=(MoveRight&&) = default ;
 
 const std::string MoveRight::sname() noexcept
@@ -134,13 +119,14 @@ const std::string MoveRight::sname() noexcept
     return "move_right" ;
 }
 
-bool MoveRight::sprocess(const bool first_call) const
+void MoveRight::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-
-    return is_move_cursor(pimpl->calcer.delta(), 0) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(pimpl->calcer.delta() * repeat_num, 0) ;
 }
 
 
@@ -154,9 +140,8 @@ MoveUp::MoveUp()
 : pimpl(make_unique<Impl>())
 {}
 
-MoveUp::~MoveUp() = default ;
-
-MoveUp::MoveUp(MoveUp&&) = default ;
+MoveUp::~MoveUp()                   = default ;
+MoveUp::MoveUp(MoveUp&&)            = default ;
 MoveUp& MoveUp::operator=(MoveUp&&) = default ;
 
 const std::string MoveUp::sname() noexcept
@@ -164,13 +149,14 @@ const std::string MoveUp::sname() noexcept
     return "move_up" ;
 }
 
-bool MoveUp::sprocess(const bool first_call) const
+void MoveUp::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-
-    return is_move_cursor(0, -pimpl->calcer.delta()) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(0, -pimpl->calcer.delta() * repeat_num) ;
 }
 
 //MoveDown
@@ -183,9 +169,8 @@ MoveDown::MoveDown()
 : pimpl(make_unique<Impl>())
 {}
 
-MoveDown::~MoveDown() = default ;
-
-MoveDown::MoveDown(MoveDown&&) = default ;
+MoveDown::~MoveDown()                     = default ;
+MoveDown::MoveDown(MoveDown&&)            = default ;
 MoveDown& MoveDown::operator=(MoveDown&&) = default ;
 
 const std::string MoveDown::sname() noexcept
@@ -193,10 +178,12 @@ const std::string MoveDown::sname() noexcept
     return "move_down" ;
 }
 
-bool MoveDown::sprocess(const bool first_call) const
+void MoveDown::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) const
 {
-    if(first_call) {
-        pimpl->calcer.reset() ;
-    }
-    return is_move_cursor(0, pimpl->calcer.delta()) ;
+    if(first_call) pimpl->calcer.reset() ;
+    _move_cursor(0, pimpl->calcer.delta() * repeat_num) ;
 }

@@ -11,13 +11,13 @@ namespace SimplTextSelecter
         Unselect,
     } ;
 
-    bool select_words() noexcept ;
-    bool select_line_EOL2BOL() noexcept ;
-    bool select_line_BOL2EOL() noexcept ;
-    bool unselect() noexcept ;
+    void select_words() noexcept ;
+    void select_line_EOL2BOL() ;
+    void select_line_BOL2EOL() ;
+    void unselect() ;
 
     Mode get_mode() noexcept ;
-    bool moving_update() noexcept ;
+    void moving_update() ;
 
     bool is_first_line_selection() noexcept ;
 }

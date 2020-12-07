@@ -1,10 +1,19 @@
 #ifndef _SCROLL_HPP
 #define _SCROLL_HPP
-#include "key_binding_with_creator.hpp"
+#include "binded_func_with_creator.hpp"
 
-struct ScrollUp : public KeyBindingWithCreator<ScrollUp>
+class ScrollUp : public BindedFuncWithCreator<ScrollUp>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollUp() ;
@@ -12,19 +21,23 @@ struct ScrollUp : public KeyBindingWithCreator<ScrollUp>
 
     ScrollUp(ScrollUp&&) ;
     ScrollUp& operator=(ScrollUp&&) ;
-
-    ScrollUp(const ScrollUp&) = delete ;
-    ScrollUp& operator=(const ScrollUp&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollUp(const ScrollUp&)               = delete ;
+    ScrollUp& operator=(const ScrollUp&)    = delete ;
 } ;
 
 
-struct ScrollDown : public KeyBindingWithCreator<ScrollDown>
+class ScrollDown : public BindedFuncWithCreator<ScrollDown>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollDown() ;
@@ -32,19 +45,23 @@ struct ScrollDown : public KeyBindingWithCreator<ScrollDown>
 
     ScrollDown(ScrollDown&&) ;
     ScrollDown& operator=(ScrollDown&&) ;
-
-    ScrollDown(const ScrollDown&) = delete ;
-    ScrollDown& operator=(const ScrollDown&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollDown(const ScrollDown&)               = delete ;
+    ScrollDown& operator=(const ScrollDown&)    = delete ;
 } ;
 
 
-struct ScrollMidUp : public KeyBindingWithCreator<ScrollMidUp>
+class ScrollMidUp : public BindedFuncWithCreator<ScrollMidUp>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidUp() ;
@@ -52,19 +69,23 @@ struct ScrollMidUp : public KeyBindingWithCreator<ScrollMidUp>
 
     ScrollMidUp(ScrollMidUp&&) ;
     ScrollMidUp& operator=(ScrollMidUp&&) ;
-
-    ScrollMidUp(const ScrollMidUp&) = delete ;
-    ScrollMidUp& operator=(const ScrollMidUp&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollMidUp(const ScrollMidUp&)             = delete ;
+    ScrollMidUp& operator=(const ScrollMidUp&)  = delete ;
 } ;
 
 
-struct ScrollMidDown : public KeyBindingWithCreator<ScrollMidDown>
+class ScrollMidDown : public BindedFuncWithCreator<ScrollMidDown>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidDown() ;
@@ -72,19 +93,23 @@ struct ScrollMidDown : public KeyBindingWithCreator<ScrollMidDown>
 
     ScrollMidDown(ScrollMidDown&&) ;
     ScrollMidDown& operator=(ScrollMidDown&&) ;
-
-    ScrollMidDown(const ScrollMidDown&) = delete ;
-    ScrollMidDown& operator=(const ScrollMidDown&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollMidDown(const ScrollMidDown&)             = delete ;
+    ScrollMidDown& operator=(const ScrollMidDown&)  = delete ;
 } ;
 
 
-struct ScrollPageUp : public KeyBindingWithCreator<ScrollPageUp>
+class ScrollPageUp : public BindedFuncWithCreator<ScrollPageUp>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollPageUp() ;
@@ -92,19 +117,24 @@ struct ScrollPageUp : public KeyBindingWithCreator<ScrollPageUp>
 
     ScrollPageUp(ScrollPageUp&&) ;
     ScrollPageUp& operator=(ScrollPageUp&&) ;
-
-    ScrollPageUp(const ScrollPageUp&) = delete ;
-    ScrollPageUp& operator=(const ScrollPageUp&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollPageUp(const ScrollPageUp&)               = delete ;
+    ScrollPageUp& operator=(const ScrollPageUp&)    = delete ;
 } ;
 
 
-struct ScrollPageDown : public KeyBindingWithCreator<ScrollPageDown>
+class ScrollPageDown : public BindedFuncWithCreator<ScrollPageDown>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollPageDown() ;
@@ -112,19 +142,23 @@ struct ScrollPageDown : public KeyBindingWithCreator<ScrollPageDown>
 
     ScrollPageDown(ScrollPageDown&&) ;
     ScrollPageDown& operator=(ScrollPageDown&&) ;
-
-    ScrollPageDown(const ScrollPageDown&) = delete ;
-    ScrollPageDown& operator=(const ScrollPageDown&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollPageDown(const ScrollPageDown&)               = delete ;
+    ScrollPageDown& operator=(const ScrollPageDown&)    = delete ;
 } ;
 
 
-struct ScrollLeft : public KeyBindingWithCreator<ScrollLeft>
+class ScrollLeft : public BindedFuncWithCreator<ScrollLeft>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollLeft() ;
@@ -132,19 +166,23 @@ struct ScrollLeft : public KeyBindingWithCreator<ScrollLeft>
 
     ScrollLeft(ScrollLeft&&) ;
     ScrollLeft& operator=(ScrollLeft&&) ;
-
-    ScrollLeft(const ScrollLeft&) = delete ;
-    ScrollLeft& operator=(const ScrollLeft&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollLeft(const ScrollLeft&)               = delete ;
+    ScrollLeft& operator=(const ScrollLeft&)    = delete ;
 } ;
 
 
-struct ScrollRight : public KeyBindingWithCreator<ScrollRight>
+class ScrollRight : public BindedFuncWithCreator<ScrollRight>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollRight() ;
@@ -152,19 +190,23 @@ struct ScrollRight : public KeyBindingWithCreator<ScrollRight>
 
     ScrollRight(ScrollRight&&) ;
     ScrollRight& operator=(ScrollRight&&) ;
-
-    ScrollRight(const ScrollRight&) = delete ;
-    ScrollRight& operator=(const ScrollRight&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollRight(const ScrollRight&)             = delete ;
+    ScrollRight& operator=(const ScrollRight&)  = delete ;
 } ;
 
 
-struct ScrollMidLeft : public KeyBindingWithCreator<ScrollMidLeft>
+class ScrollMidLeft : public BindedFuncWithCreator<ScrollMidLeft>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidLeft() ;
@@ -172,19 +214,23 @@ struct ScrollMidLeft : public KeyBindingWithCreator<ScrollMidLeft>
 
     ScrollMidLeft(ScrollMidLeft&&) ;
     ScrollMidLeft& operator=(ScrollMidLeft&&) ;
-
-    ScrollMidLeft(const ScrollMidLeft&) = delete ;
-    ScrollMidLeft& operator=(const ScrollMidLeft&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollMidLeft(const ScrollMidLeft&)             = delete ;
+    ScrollMidLeft& operator=(const ScrollMidLeft&)  = delete ;
 } ;
 
 
-struct ScrollMidRight : public KeyBindingWithCreator<ScrollMidRight>
+class ScrollMidRight : public BindedFuncWithCreator<ScrollMidRight>
 {
-    bool sprocess(const bool first_call) const ;
+private:
+    struct Impl ;
+    std::unique_ptr<Impl> pimpl ;
+
+public:
+    void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit ScrollMidRight() ;
@@ -192,12 +238,7 @@ struct ScrollMidRight : public KeyBindingWithCreator<ScrollMidRight>
 
     ScrollMidRight(ScrollMidRight&&) ;
     ScrollMidRight& operator=(ScrollMidRight&&) ;
-
-    ScrollMidRight(const ScrollMidRight&) = delete ;
-    ScrollMidRight& operator=(const ScrollMidRight&) = delete ;
-
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    ScrollMidRight(const ScrollMidRight&)               = delete ;
+    ScrollMidRight& operator=(const ScrollMidRight&)    = delete ;
 } ;
 #endif

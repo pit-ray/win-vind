@@ -32,7 +32,7 @@ if %1 == -R (
     cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
     cmake --build . --config Debug
     cd ..
-    exit
+    @goto exit
 
 :release
     @if not exist release (
@@ -43,4 +43,6 @@ if %1 == -R (
     cmake -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" ..
     cmake --build . --config Release
     cd ..
-    exit
+    @goto exit
+
+:exit

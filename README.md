@@ -10,10 +10,6 @@ Please refer to <a href="https://pit-ray.github.io/win-vind/">github.io/win-vind
 You can operate Windows by key-bindings like Vim.  
 **win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.  
 
-# Warning
-**It has some serious problems repeating key-stroke infinitely in `Editor Mode`. 
-Please be looking forward to the next version.**  
-
 ## Overview
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true" width=700 title="Mode Overview">  
 

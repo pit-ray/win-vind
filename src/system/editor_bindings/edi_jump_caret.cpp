@@ -11,10 +11,14 @@ const std::string EdiJumpCaret2BOL::sname() noexcept
 {
     return "edi_jump_caret_to_BOL" ;
 }
+bool EdiJumpCaret2BOL::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiJumpCaret2BOL::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -30,10 +34,14 @@ const std::string EdiJumpCaret2EOL::sname() noexcept
 {
     return "edi_jump_caret_to_EOL" ;
 }
+bool EdiJumpCaret2EOL::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiJumpCaret2EOL::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -47,6 +55,7 @@ void EdiJumpCaret2EOL::sprocess(
     }
     else {
         KeybrdEventer::pushup(VKC_END) ;
+        KeybrdEventer::pushup(VKC_LEFT) ;
     }
 }
 
@@ -56,10 +65,14 @@ const std::string EdiNJumpCaret2Line_DfBOF::sname() noexcept
 {
     return "edi_n_jump_caret_to_line_default_BOF" ;
 }
+bool EdiNJumpCaret2Line_DfBOF::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiNJumpCaret2Line_DfBOF::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -91,10 +104,14 @@ const std::string EdiNJumpCaret2Line_DfEOF::sname() noexcept
 {
     return "edi_n_jump_caret_to_line_default_EOF" ;
 }
+bool EdiNJumpCaret2Line_DfEOF::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiNJumpCaret2Line_DfEOF::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_logger))
 {
     if(!first_call) return ;

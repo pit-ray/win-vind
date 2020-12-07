@@ -13,7 +13,7 @@ const std::string EnableTargetingOfDedicate2Window::sname() noexcept
 void EnableTargetingOfDedicate2Window::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -29,7 +29,7 @@ const std::string DisableTargetingOfDedicate2Window::sname() noexcept
 void DisableTargetingOfDedicate2Window::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;

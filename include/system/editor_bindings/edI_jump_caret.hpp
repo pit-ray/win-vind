@@ -8,9 +8,11 @@ struct EdiJumpCaret2BOL : public BindedFuncWithCreator<EdiJumpCaret2BOL>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 } ;
 
 struct EdiJumpCaret2EOL : public BindedFuncWithCreator<EdiJumpCaret2EOL>
@@ -18,9 +20,11 @@ struct EdiJumpCaret2EOL : public BindedFuncWithCreator<EdiJumpCaret2EOL>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 } ;
 
 struct EdiNJumpCaret2Line_DfBOF : public BindedFuncWithCreator<EdiNJumpCaret2Line_DfBOF>
@@ -28,9 +32,11 @@ struct EdiNJumpCaret2Line_DfBOF : public BindedFuncWithCreator<EdiNJumpCaret2Lin
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 } ;
 
 struct EdiNJumpCaret2Line_DfEOF : public BindedFuncWithCreator<EdiNJumpCaret2Line_DfEOF>
@@ -38,9 +44,11 @@ struct EdiNJumpCaret2Line_DfEOF : public BindedFuncWithCreator<EdiNJumpCaret2Lin
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 } ;
 
 #endif

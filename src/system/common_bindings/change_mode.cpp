@@ -24,7 +24,7 @@ const std::string Change2Normal::sname() noexcept
 void Change2Normal::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -58,7 +58,7 @@ const std::string Change2Insert::sname() noexcept
 void Change2Insert::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -84,7 +84,7 @@ const std::string Change2Visual::sname() noexcept
 void Change2Visual::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {

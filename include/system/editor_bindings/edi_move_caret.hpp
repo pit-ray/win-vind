@@ -14,9 +14,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiMoveCaretLeft() ;
     virtual ~EdiMoveCaretLeft() noexcept ;
@@ -37,9 +39,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiMoveCaretRight() ;
     virtual ~EdiMoveCaretRight() noexcept ;
@@ -60,9 +64,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiMoveCaretUp() ;
     virtual ~EdiMoveCaretUp() noexcept ;
@@ -83,9 +89,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiMoveCaretDown() ;
     virtual ~EdiMoveCaretDown() noexcept ;
@@ -107,9 +115,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiNMoveCaretwordsForward() ;
     virtual ~EdiNMoveCaretwordsForward() noexcept ;
@@ -130,9 +140,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiNMoveCaretwordsBackward() ;
     virtual ~EdiNMoveCaretwordsBackward() noexcept ;
@@ -154,9 +166,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiNMoveCaretWORDSForward() ;
     virtual ~EdiNMoveCaretWORDSForward() noexcept ;
@@ -177,9 +191,11 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
+
+    bool is_for_moving_caret() const noexcept override ;
 
     explicit EdiNMoveCaretWORDSBackward() ;
     virtual ~EdiNMoveCaretWORDSBackward() noexcept ;

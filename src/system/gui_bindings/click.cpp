@@ -15,7 +15,7 @@ const string ClickLeft::sname() noexcept
 void ClickLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -38,7 +38,7 @@ const string ClickRight::sname() noexcept
 void ClickRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;

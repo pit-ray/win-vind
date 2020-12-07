@@ -25,7 +25,7 @@ const string SaveOpenedFile::sname() noexcept
 void SaveOpenedFile::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -53,7 +53,7 @@ const string CloseOpenedFile::sname() noexcept
 void CloseOpenedFile::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -71,7 +71,7 @@ const string OpenOtherFile::sname() noexcept
 void OpenOtherFile::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -211,7 +211,7 @@ const string MakeDir::sname() noexcept
 void MakeDir::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const parent_charlgr)
 {
     if(!first_call) return ;

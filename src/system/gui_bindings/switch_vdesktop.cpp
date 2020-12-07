@@ -13,7 +13,7 @@ const string SwitchVDesktop2Left::sname() noexcept
 void SwitchVDesktop2Left::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
@@ -32,7 +32,7 @@ const string SwitchVDesktop2Right::sname() noexcept
 void SwitchVDesktop2Right::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
@@ -50,7 +50,7 @@ const std::string CreateNewVDesktop::sname() noexcept
 void CreateNewVDesktop::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
@@ -68,7 +68,7 @@ const std::string CloseCurrentVDesktop::sname() noexcept
 void CloseCurrentVDesktop::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
@@ -87,7 +87,7 @@ const std::string TaskView::sname() noexcept
 void TaskView::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(first_call)

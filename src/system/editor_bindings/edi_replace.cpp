@@ -74,7 +74,7 @@ const std::string EdiNReplaceChar::sname() noexcept
 void EdiNReplaceChar::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -103,7 +103,7 @@ const std::string EdiNReplaceSequence::sname() noexcept
 void EdiNReplaceSequence::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;

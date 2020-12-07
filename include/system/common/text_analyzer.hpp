@@ -31,7 +31,9 @@ namespace TextAnalyzer
         SelRes& operator=(const SelRes&)        = default ;
     } ;
 
-    const SelRes get_selected_text(std::function<void()> clip_func, const bool backup=false) ;
+    const SelRes get_selected_text(
+            std::function<void()> clip_func,
+            const bool backup=false) ;
 }
 
 

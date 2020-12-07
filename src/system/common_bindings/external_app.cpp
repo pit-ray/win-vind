@@ -88,7 +88,7 @@ const std::string StartShell::sname() noexcept
 void StartShell::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
@@ -114,7 +114,7 @@ const std::string StartAnyApp::sname() noexcept
 void StartAnyApp::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const parent_charlgr)
 {
     if(!first_call) return ;

@@ -64,7 +64,7 @@ namespace wxGUI
         flags.Border(wxALL, BORDER) ;
 
         pimpl->panels.emplace_back(new SettingsPanel(GetBookCtrl())) ;
-        pimpl->panels.emplace_back(new BindingsPanel(GetBookCtrl())) ;
+        //pimpl->panels.emplace_back(new BindingsPanel(GetBookCtrl())) ;
         pimpl->panels.emplace_back(new ShortcutAppsPanel(GetBookCtrl())) ;
 
         auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;

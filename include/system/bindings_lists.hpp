@@ -60,6 +60,7 @@ namespace BindingsLists {
             EdiDeleteCharsAndStartInsert::create(),
             EdiDeleteHighlightText::create(),
             EdiDeleteLinesAndStartInsert::create(),
+            EdiDeleteMotion::create(),
             EdiDeleteMotionAndStartInsert::create(),
             EdiDeleteUntilEOLAndStartInsert::create(),
             EdiJumpCaret2BOL::create(),

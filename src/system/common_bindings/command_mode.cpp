@@ -5,11 +5,9 @@
 #include <vector>
 
 #include "binded_func.hpp"
-#include "bindings_loader.hpp"
 #include "i_params.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
-#include "key_binding.hpp"
 #include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
@@ -155,7 +153,7 @@ inline static bool _main_loop() {
 void CommandMode::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     using namespace CmdMode ;

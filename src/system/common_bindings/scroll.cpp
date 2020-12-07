@@ -42,7 +42,7 @@ const string ScrollUp::sname() noexcept
 void ScrollUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -78,7 +78,7 @@ const string ScrollDown::sname() noexcept
 void ScrollDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -114,7 +114,7 @@ const string ScrollMidUp::sname() noexcept
 void ScrollMidUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -150,7 +150,7 @@ const string ScrollMidDown::sname() noexcept
 void ScrollMidDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -186,7 +186,7 @@ const string ScrollPageUp::sname() noexcept
 void ScrollPageUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -222,7 +222,7 @@ const string ScrollPageDown::sname() noexcept
 void ScrollPageDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -259,7 +259,7 @@ const string ScrollLeft::sname() noexcept
 void ScrollLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -295,7 +295,7 @@ const string ScrollRight::sname() noexcept
 void ScrollRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -331,7 +331,7 @@ const string ScrollMidLeft::sname() noexcept
 void ScrollMidLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
@@ -367,7 +367,7 @@ const string ScrollMidRight::sname() noexcept
 void ScrollMidRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {

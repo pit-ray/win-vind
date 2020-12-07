@@ -16,7 +16,7 @@ private:
     virtual void do_process(
             const bool first_call,
             const unsigned int repeat_num,
-            const KeyLogger* parent_vkclgr,
+            KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) const = 0 ;
 
 public:
@@ -35,7 +35,7 @@ public:
     void process(
             const bool first_call=true,
             const unsigned int repeat_num=1,
-            const KeyLogger* parent_vkclgr=nullptr,
+            KeyLogger* parent_vkclgr=nullptr,
             const KeyLogger* const parent_charlgr=nullptr) const ;
 
     void register_matcher(

@@ -67,11 +67,14 @@ const string EdiMoveCaretLeft::sname() noexcept
 {
     return "edi_move_caret_left" ;
 }
-
+bool EdiMoveCaretLeft::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiMoveCaretLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
@@ -99,11 +102,14 @@ const string EdiMoveCaretRight::sname() noexcept
 {
     return "edi_move_caret_right" ;
 }
-
+bool EdiMoveCaretRight::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiMoveCaretRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
@@ -132,11 +138,14 @@ const string EdiMoveCaretUp::sname() noexcept
 {
     return "edi_move_caret_up" ;
 }
-
+bool EdiMoveCaretUp::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiMoveCaretUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto v_press = [] {
@@ -171,11 +180,14 @@ const string EdiMoveCaretDown::sname() noexcept
 {
     return "edi_move_caret_down" ;
 }
-
+bool EdiMoveCaretDown::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiMoveCaretDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto v_press = [] {
@@ -213,11 +225,14 @@ const string EdiNMoveCaretwordsForward::sname() noexcept
 {
     return "edi_n_move_caret_words_forward" ;
 }
-
+bool EdiNMoveCaretwordsForward::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiNMoveCaretwordsForward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
@@ -245,11 +260,14 @@ const string EdiNMoveCaretwordsBackward::sname() noexcept
 {
     return "edi_n_move_caret_words_backward" ;
 }
-
+bool EdiNMoveCaretwordsBackward::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiNMoveCaretwordsBackward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
@@ -277,11 +295,14 @@ const string EdiNMoveCaretWORDSForward::sname() noexcept
 {
     return "edi_n_move_caret_WORDS_forward" ;
 }
-
+bool EdiNMoveCaretWORDSForward::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiNMoveCaretWORDSForward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
@@ -309,11 +330,14 @@ const string EdiNMoveCaretWORDSBackward::sname() noexcept
 {
     return "edi_n_move_caret_WORDS_backward" ;
 }
-
+bool EdiNMoveCaretWORDSBackward::is_for_moving_caret() const noexcept
+{
+    return true ;
+}
 void EdiNMoveCaretWORDSBackward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;

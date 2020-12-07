@@ -1109,10 +1109,10 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["y"],
+        "edin": [],
         "edii": [],
-        "ediv": ["<edin>"],
-        "edivl": ["<edin>"],
+        "ediv": ["y"],
+        "edivl": ["<ediv>"],
         "cmd": [],
         "en": "Yank Highlighted Text",
         "ja": "選択テキストをヤンク"
@@ -1161,10 +1161,10 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["d"],
+        "edin": [],
         "edii": [],
-        "ediv": ["<edin>"],
-        "edivl": ["<edin>"],
+        "ediv": ["d"],
+        "edivl": ["<ediv>"],
         "cmd": [],
         "en": "Delete Highlighted Text",
         "ja": "選択テキストを削除"
@@ -1259,6 +1259,19 @@
         "cmd": [],
         "en": "Replace Sequences",
         "ja": "置換モード"
+    },
+    {
+        "name": "edi_delete_motion",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": ["d"],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [],
+        "en": "Delete Text by Motion (NOT RELEASED)",
+        "jp": "移動でテキストを削除"
     },
     {
         "name": "edi_delete_motion_and_start_insert",

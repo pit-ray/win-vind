@@ -33,7 +33,7 @@ BindedFunc& BindedFunc::operator=(BindedFunc&&) = default ;
 void BindedFunc::process(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* parent_vkclgr,
+        KeyLogger* parent_vkclgr,
         const KeyLogger* const parent_charlgr) const
 {
     if(repeat_num == 0) return ;

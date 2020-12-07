@@ -19,10 +19,8 @@
 
 #include "bindings_lists.hpp"
 #include "change_mode.hpp"
-#include "command.hpp"
 #include "i_params.hpp"
 #include "key_absorber.hpp"
-#include "key_binding.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
@@ -269,7 +267,7 @@ namespace KeyBinder
         ExAppUtility::load_config() ;
     }
 
-    bool is_invalid_log(KeyLogger& lgr, const InvalidPolicy ip) {
+    bool is_invalid_log(const KeyLogger& lgr, const InvalidPolicy ip) {
         if(lgr.back().empty()) {
             return true ;
         }
@@ -361,34 +359,15 @@ namespace KeyBinder
     void call_matched_funcs() {
         using Utility::remove_from_back ;
 
-        auto debug = [] {
-            /*
-            for(auto& log : _logger) {
-                for(auto& key : log) {
-                    Logger::msg_stream << VKCConverter::get_name(key) << " " ;
-                }
-                Logger::msg_stream << "|" ;
-            }
-            */
-            for(auto& key : KeyAbsorber::get_pressed_list()) {
-                Logger::msg_stream << VKCConverter::get_name(key) << " " ;
-            }
-        } ;
-
         if(!KyLgr::log_as_vkc(_logger)) {
-            debug() ;
             if(!_running_func) {
                 remove_from_back(_logger, 1) ;
-                Logger::msg_stream << "<1>\n" ;
                 return ;
             }
             _running_func->process(false, 1, &_logger, nullptr) ;
             remove_from_back(_logger, 1) ;
-            Logger::msg_stream << "<2>\n" ;
             return ;
         }
-        debug() ;
-        Logger::msg_stream << "<3>\n" ;
 
         if(is_invalid_log(_logger, InvalidPolicy::UnbindedSystemKey)) {
             remove_from_back(_logger, 1) ;
@@ -402,6 +381,7 @@ namespace KeyBinder
             _running_func = nullptr ;
             return ;
         }
+        std::cout << matched_func->name() << std::endl ;
 
         if(matched_func->is_callable()) {
             unsigned int repeat_num = 1 ; //in feature, set this variable

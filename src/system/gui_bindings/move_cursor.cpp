@@ -92,7 +92,7 @@ const std::string MoveLeft::sname() noexcept
 void MoveLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;
@@ -122,7 +122,7 @@ const std::string MoveRight::sname() noexcept
 void MoveRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;
@@ -152,7 +152,7 @@ const std::string MoveUp::sname() noexcept
 void MoveUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;
@@ -181,7 +181,7 @@ const std::string MoveDown::sname() noexcept
 void MoveDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;

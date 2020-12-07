@@ -22,7 +22,7 @@ const string Change2EdiNormal::sname() noexcept
 void Change2EdiNormal::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -53,7 +53,7 @@ const string Change2EdiInsert::sname() noexcept
 void Change2EdiInsert::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -75,7 +75,7 @@ const string Change2EdiBOLInsert::sname() noexcept
 void Change2EdiBOLInsert::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -93,7 +93,7 @@ const string Change2EdiBkInsert::sname() noexcept
 void Change2EdiBkInsert::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -111,7 +111,7 @@ const string Change2EdiEOLInsert::sname() noexcept
 void Change2EdiEOLInsert::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -129,7 +129,7 @@ const string Change2EdiNlInsertBelow::sname() noexcept
 void Change2EdiNlInsertBelow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -148,7 +148,7 @@ const string Change2EdiNlInsertAbove::sname() noexcept
 void Change2EdiNlInsertAbove::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -168,7 +168,7 @@ const string Change2EdiVisual::sname() noexcept
 void Change2EdiVisual::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
@@ -189,7 +189,7 @@ const string Change2EdiLineVisual::sname() noexcept
 void Change2EdiLineVisual::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        const KeyLogger* UNUSED(parent_vkclgr),
+        KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {

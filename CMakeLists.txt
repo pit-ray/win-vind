@@ -18,9 +18,14 @@ ProcessorCount(PROC_N)
 message(STATUS "The number of processors: " ${PROC_N})
 set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
 
+#Options -------------------
+set(COTIRE_ENABLE OFF)
+set(CCACHE_ENABLE ON)
+set(USE_SIMPL_GUI OFF)
+#---------------------------
+
 #If use cotire, for some reason, cannot redefine windows version.
 #Now, All CMakeLists.txt in win-vind has no header files at add_executable() or add_library()
-set(COTIRE_ENABLE OFF)
 if(${COTIRE_ENABLE})
     if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
             message(STATUS "Enable cotire")
@@ -38,7 +43,6 @@ function(enable_cotire name)
     endif()
 endfunction()
 
-set(CCACHE_ENABLE ON)
 find_program(CCACHE ccache)
 if(CCACHE)
     if(${CCACHE_ENABLE})
@@ -53,6 +57,8 @@ if(CCACHE)
     endif()
 endif()
 
+
+#build the file properties
 set(winres "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc")
 if(NOT CMAKE_RC_COMPILER)
     set(CMAKE_RC_COMPILER windres.exe)
@@ -68,105 +74,27 @@ add_custom_command(OUTPUT "${winresobj}"
     -i ${winres}
 )
 
-#For Debug------------------------
-#ON is GUI by Win32API.
-#OFF is GUI by wxWidgets.
-set(USE_SIMPL_GUI OFF)
+#add core system
+add_subdirectory(core)
+
+#add entry with GUI
+set(ENTRY_CMAKE_SOURCE wxgui)
 if(${USE_SIMPL_GUI})
     message(STATUS "Use Simple GUI System")
+    set(ENTRY_CMAKE_SOURCE win32gui)
 endif()
+add_subdirectory(${ENTRY_CMAKE_SOURCE})
 
-set(ALLOW_CONSOLE OFF)
+#build all
+include_directories(${MAIN_ENTRY_INCLUDE})
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    message(STATUS "Enable Console")
-    set(ALLOW_CONSOLE ON)
-endif()
-
-#---------------------------------
-
-include_directories(
-    libs
-    include
-)
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/system)
-
-#main
-if(${USE_SIMPL_GUI})
-    include_directories(include/win32gui)
-
-    set(W32G_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/win32gui)
-    set(W32G_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/win32gui)
-    set(WIN32GUI_SRC
-        ${W32G_DIR}/main.cpp
-        ${W32G_DIR}/win32gui.cpp
-    )
-
-    set(EXE_SRC ${WIN32GUI_SRC} "${winresobj}")
-
-    if(${ALLOW_CONSOLE})
-        add_executable(${PROJECT_NAME} ${EXE_SRC})
-    else()
-        add_executable(${PROJECT_NAME} WIN32 ${EXE_SRC})
-    endif()
-
-    target_link_libraries(${PROJECT_NAME} CoreSystem)
-
+    add_executable(${PROJECT_NAME} ${MAIN_ENTRY} ${winresobj})
 else()
-    set(wxWidgets_USE_DEBUG ON)
-    set(wxWidgets_USE_UNICODE ON)
-    set(wxWidgets_USE_UNIVERSAL OFF)
-    set(wxWidgets_USE_STATIC ON)
-
-    find_package(wxWidgets COMPONENTS adv core base REQUIRED)
-    include(${wxWidgets_USE_FILE})
-
-    include_directories(
-        include/wxgui
-        include/wxgui/settings_ctrls
-        C:/wxWidgets/include
-    )
-
-    set(WXG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/wxgui)
-    set(WXG_SETCTR_DIR ${WXG_DIR}/settings_ctrls)
-    set(WXG_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/wxgui)
-    set(WXG_SETCTR_INC_DIR ${WXG_INC_DIR}/settings_ctrls)
-    set(WXGUI_SRC
-        src/i_params.cpp
-        src/msg_logger.cpp
-
-        ${WXG_DIR}/ui_translator.cpp
-        ${WXG_DIR}/io_params.cpp
-
-        ${WXG_SETCTR_DIR}/ctrl_core.cpp
-        ${WXG_SETCTR_DIR}/choices_manager.cpp
-        ${WXG_SETCTR_DIR}/common_ctrl.cpp
-        ${WXG_SETCTR_DIR}/options_ctrl.cpp
-        ${WXG_SETCTR_DIR}/move_cursor_ctrl.cpp
-        ${WXG_SETCTR_DIR}/scroll_page_ctrl.cpp
-        ${WXG_SETCTR_DIR}/virtual_cmd_line_ctrl.cpp
-
-        ${WXG_DIR}/wx_panel_core.cpp
-        ${WXG_DIR}/wx_system_tray.cpp
-        ${WXG_DIR}/wx_prop_dlg.cpp
-        ${WXG_DIR}/wx_settings.cpp
-        ${WXG_DIR}/wx_bindings.cpp
-        ${WXG_DIR}/wx_shortcut_apps.cpp
-        ${WXG_DIR}/wxgui.cpp
-        ${WXG_DIR}/main.cpp
-    )
-    set(EXE_SRC ${WXGUI_SRC} "${winresobj}")
-
-    if(${ALLOW_CONSOLE})
-        add_executable(${PROJECT_NAME} ${EXE_SRC})
-    else()
-        add_executable(${PROJECT_NAME} WIN32 ${EXE_SRC})
-    endif()
-
-    target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} CoreSystem)
+    add_executable(${PROJECT_NAME} WIN32 ${MAIN_ENTRY} ${winresobj})
 endif()
-
+target_link_libraries(${PROJECT_NAME} ${MAIN_ENTRY_LIBRARIES} CoreSystem)
 enable_cotire(${PROJECT_NAME})
+
 
 #CPack
 #-----------------------------------------------------------------------------

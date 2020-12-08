@@ -14,12 +14,13 @@
 #include "wx_shortcut_apps.hpp"
 #include "wx_bindings.hpp"
 
+#include "io_params.hpp"
+#include "msg_logger.hpp"
+#include "ui_translator.hpp"
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
-#include "msg_logger.hpp"
-#include "system/system.hpp"
-#include "ui_translator.hpp"
-#include "io_params.hpp"
+
+#include "system.hpp"
 
 namespace wxGUI
 {

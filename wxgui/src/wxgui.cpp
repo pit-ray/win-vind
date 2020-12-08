@@ -11,8 +11,9 @@
 #include "utility.hpp"
 #include "wx_prop_dlg.hpp"
 #include "io_params.hpp"
-#include "system/system.hpp"
 #include "msg_logger.hpp"
+
+#include "system.hpp"
 
 namespace wxGUI
 {

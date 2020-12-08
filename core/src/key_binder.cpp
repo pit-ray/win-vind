@@ -381,7 +381,6 @@ namespace KeyBinder
             _running_func = nullptr ;
             return ;
         }
-        std::cout << matched_func->name() << std::endl ;
 
         if(matched_func->is_callable()) {
             unsigned int repeat_num = 1 ; //in feature, set this variable

@@ -1,9 +1,11 @@
 #include "move_cursor_ctrl.hpp"
 
+#include "disable_gcc_warning.hpp"
 #include <wx/spinctrl.h>
 #include <wx/slider.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>
+#include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"
 #include "ui_translator.hpp"

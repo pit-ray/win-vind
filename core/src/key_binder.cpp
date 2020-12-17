@@ -33,15 +33,23 @@ using namespace std ;
 
 namespace KeyBinder
 {
-    static const auto _vpbf{BindingsLists::get()} ;
+    static std::vector<BindedFunc::shp_t> g_func_list{} ;
 
-    static KeyLogger _logger{} ;
-    static BindedFunc::shp_t _running_func = nullptr ;
+    static KeyLogger g_logger{} ;
+    static BindedFunc::shp_t g_running_func = nullptr ;
 
-    static auto _unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+    static std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
+
+    void init() {
+        g_func_list.clear() ;
+        g_func_list = BindingsLists::get() ;
+
+        g_unbinded_syskeys.clear() ;
+        g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+    }
 
     using ModeManager::Mode ;
-    static const std::unordered_map<Mode, const char*> _modeidxs {
+    static const std::unordered_map<Mode, const char*> g_modeidxs {
         {Mode::Normal,          "guin"},
         {Mode::Insert,          "guii"},
         {Mode::Visual,          "guiv"},
@@ -109,7 +117,7 @@ namespace KeyBinder
 
                 //if the cmd is same as some mode's key (e.g. <guin>, <edin>),
                 //its pointer use same pointer to target mode.
-                for(const auto& target_index : _modeidxs) {
+                for(const auto& target_index : g_modeidxs) {
                     if(lowercode == target_index.second) {
                         throw target_index.first ;
                     }
@@ -137,7 +145,7 @@ namespace KeyBinder
 
                 if(const auto vkc = VKCConverter::get_sys_vkc(lowercode)) {
                     keyset.push_back(vkc) ;
-                    _unbinded_syskeys.erase(vkc) ;
+                    g_unbinded_syskeys.erase(vkc) ;
                     continue ;
                 }
 
@@ -171,16 +179,16 @@ namespace KeyBinder
         //if JSON's data is "edin": ["<guin>"], index_links[edin-index] = guin-index
         std::array<unsigned char, mode_num> index_links ;
 
-        if(_vpbf.empty()) {
+        if(g_func_list.empty()) {
             throw std::logic_error("KeyBinder has no defined BindFunc.") ;
         }
 
         //initialize the ignoring key list
-        _unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+        g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
 
         //create name lists of BindidFunc
         std::unordered_map<std::string, BindedFunc::shp_t> funclist ;
-        for(auto& func : _vpbf) {
+        for(auto& func : g_func_list) {
             funclist[func->name()] = func ;
         }
 
@@ -195,7 +203,7 @@ namespace KeyBinder
                 matcher_list.fill(nullptr) ;
                 index_links.fill(static_cast<unsigned char>(Mode::None)) ;
 
-                for(const auto& index : _modeidxs) {
+                for(const auto& index : g_modeidxs) {
                     try {
                         const auto& cmds = obj.at(index.second) ;
                         if(!cmds.is_array()) {
@@ -287,7 +295,7 @@ namespace KeyBinder
                 return ignore(system_keys) ;
             }
             case UnbindedSystemKey: {
-                return ignore(_unbinded_syskeys) ;
+                return ignore(g_unbinded_syskeys) ;
             }
             default: {
                 return false ;
@@ -319,11 +327,11 @@ namespace KeyBinder
 
         if(!running_func) { //lower cost version
             if(full_scan) {
-                for(const auto& func : _vpbf)
+                for(const auto& func : g_func_list)
                     choose(func, func->validate_if_fullmatch(lgr, mode)) ;
             }
             else {
-                for(const auto& func : _vpbf)
+                for(const auto& func : g_func_list)
                     choose(func, func->validate_if_match(lgr, mode)) ;
             }
             return matched_func ;
@@ -332,14 +340,14 @@ namespace KeyBinder
         unsigned int matched_num ;
 
         if(full_scan) {
-            for(const auto& func : _vpbf) {
+            for(const auto& func : g_func_list) {
                 matched_num = func->validate_if_fullmatch(lgr, mode) ;
                 if(running_func == func) continue ;
                 choose(func, matched_num) ;
             }
         }
         else {
-            for(const auto& func : _vpbf) {
+            for(const auto& func : g_func_list) {
                 matched_num = func->validate_if_match(lgr, mode) ;
                 if(running_func == func) continue ;
                 choose(func, matched_num) ;
@@ -359,34 +367,34 @@ namespace KeyBinder
     void call_matched_funcs() {
         using Utility::remove_from_back ;
 
-        if(!KyLgr::log_as_vkc(_logger)) {
-            if(!_running_func) {
-                remove_from_back(_logger, 1) ;
+        if(!KyLgr::log_as_vkc(g_logger)) {
+            if(!g_running_func) {
+                remove_from_back(g_logger, 1) ;
                 return ;
             }
-            _running_func->process(false, 1, &_logger, nullptr) ;
-            remove_from_back(_logger, 1) ;
+            g_running_func->process(false, 1, &g_logger, nullptr) ;
+            remove_from_back(g_logger, 1) ;
             return ;
         }
 
-        if(is_invalid_log(_logger, InvalidPolicy::UnbindedSystemKey)) {
-            remove_from_back(_logger, 1) ;
-            _running_func = nullptr ;
+        if(is_invalid_log(g_logger, InvalidPolicy::UnbindedSystemKey)) {
+            remove_from_back(g_logger, 1) ;
+            g_running_func = nullptr ;
             return ;
         }
 
-        auto matched_func = find_func(_logger, _running_func) ;
+        auto matched_func = find_func(g_logger, g_running_func) ;
         if(!matched_func) {
-            _logger.clear() ;
-            _running_func = nullptr ;
+            g_logger.clear() ;
+            g_running_func = nullptr ;
             return ;
         }
 
         if(matched_func->is_callable()) {
             unsigned int repeat_num = 1 ; //in feature, set this variable
-            _running_func = matched_func ;
-            _running_func->process(true, repeat_num, &_logger, nullptr) ;
-            _logger.clear() ;
+            g_running_func = matched_func ;
+            g_running_func->process(true, repeat_num, &g_logger, nullptr) ;
+            g_logger.clear() ;
             return ;
         }
     }

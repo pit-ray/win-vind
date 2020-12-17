@@ -8,6 +8,7 @@
 #include "clipboard.hpp"
 #include "command_mode.hpp"
 #include "dedicate_to_window_ctrl.hpp"
+#include "easy_click.hpp"
 #include "edi_change_mode.hpp"
 #include "edi_edit.hpp"
 #include "edi_jump_caret.hpp"
@@ -56,6 +57,7 @@ namespace BindingsLists {
             CreateNewVDesktop::create(),
             DisableTargetingOfDedicate2Window::create(),
             DisableTargetingOfDedicate2Window::create(),
+            EasyClick::create(),
             EdiCopyHighlightText::create(),
             EdiDeleteCharsAndStartInsert::create(),
             EdiDeleteHighlightText::create(),
@@ -133,7 +135,8 @@ namespace BindingsLists {
             SwitchVDesktop2Left::create(),
             SwitchVDesktop2Right::create(),
             SwitchWindow::create(),
-            TaskView::create()
+            TaskView::create(),
+            UpdateEasyClick::create()
         } ;
         return tmp ;
     }

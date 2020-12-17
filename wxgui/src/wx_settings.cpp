@@ -3,10 +3,12 @@
 #include <map>
 #include <vector>
 
+#include "disable_gcc_warning.hpp"
 #include <wx/button.h>
 #include <wx/string.h>
 #include <wx/listbox.h>
 #include <wx/sizer.h>
+#include "enable_gcc_warning.hpp"
 
 #include "ctrl_core.hpp"
 #include "common_ctrl.hpp"

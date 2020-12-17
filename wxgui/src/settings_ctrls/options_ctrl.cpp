@@ -1,7 +1,9 @@
 #include "options_ctrl.hpp"
 
+#include "disable_gcc_warning.hpp"
 #include <wx/sizer.h>
 #include <wx/checkbox.h>
+#include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"
 #include "ui_translator.hpp"

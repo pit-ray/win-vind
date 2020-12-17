@@ -1,8 +1,10 @@
 #include "common_ctrl.hpp"
 
+#include "disable_gcc_warning.hpp"
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>
+#include "enable_gcc_warning.hpp"
 
 #include "choices_manager.hpp"
 

@@ -1,8 +1,10 @@
 #ifndef _CTRL_CORE_HPP
 #define _CTRL_CORE_HPP
 
+#include "disable_gcc_warning.hpp"
 #include <wx/string.h>
 #include <wx/window.h>
+#include "enable_gcc_warning.hpp"
 
 #include "wx_constant.hpp"
 #define CTRL_WIDTH static_cast<int>(WIDTH() * 0.15)

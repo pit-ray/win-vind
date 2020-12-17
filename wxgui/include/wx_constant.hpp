@@ -1,7 +1,11 @@
 #ifndef _WX_CONSTANT_HPP
 #define _WX_CONSTANT_HPP
 #include <unordered_map>
+
+#include "disable_gcc_warning.hpp"
 #include <wx/gdicmn.h>
+#include "enable_gcc_warning.hpp"
+
 #include "io_params.hpp"
 
 namespace wxGUI

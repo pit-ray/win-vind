@@ -1,9 +1,11 @@
 #include "scroll_page_ctrl.hpp"
 
+#include "disable_gcc_warning.hpp"
 #include <wx/slider.h>
 #include <wx/sizer.h>
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
+#include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"
 #include "ui_translator.hpp"
@@ -73,8 +75,8 @@ namespace wxGUI
             root_sizer->Add(pimpl->scsdbl[name], flags) ;
         } ;
 
-        create_sl("yscroll_speed", 1, 10, 4) ;
-        create_sl("xscroll_speed", 1, 10, 4) ;
+        create_sl("yscroll_speed", 1, 50, 4) ;
+        create_sl("xscroll_speed", 1, 50, 4) ;
         create_ratio("yscroll_screen_ratio", 0.125) ;
         create_ratio("xscroll_screen_ratio", 0.125) ;
 

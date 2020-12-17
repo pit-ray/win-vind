@@ -25,6 +25,18 @@ namespace Logger
 Logger::msg_stream << Logger::M\
 )
 
+
+//-----------------
+#if defined(__GNUC__)
 #define ERROR_PRINT(MSG) Logger::error((MSG), __PRETTY_FUNCTION__)
+
+#elif defined(_MSC_VER) && _MSC_VER >= 1500
+#define ERROR_PRINT(MSG) Logger::error((MSG), __FUNCSIG__)
+
+#else
+#define ERROR_PRINT(MSG) Logger::error((MSG))
+
+#endif
+//------------------
 
 #endif

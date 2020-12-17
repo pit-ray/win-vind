@@ -121,7 +121,7 @@ inline static bool _main_loop() {
         VirtualCmdLine::refresh() ;
         return CONTINUE_LOOP ;
     }
-    if(lgr.back().is_containing(VKC_DOWN) 
+    if(lgr.back().is_containing(VKC_DOWN)
             && cmd_hist_index < cmd_hist.size() - 1) {
         cmd_hist_index ++ ;
         remove_from_back(lgr, 1) ;

@@ -28,7 +28,7 @@ namespace ECBUtility
         Chars,
         Lines,
     } ;
-    static auto _rgtype = _RegisteredType::None ;
+    static auto g_rgtype = _RegisteredType::None ;
 
     //Some editors have a visible EOL mark in a line.
     //This function select text from current position to EOL except for the visible EOL mark.
@@ -93,9 +93,9 @@ void EdiCopyHighlightText::sprocess(
     KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
 
     if(get_mode() == Mode::EdiLineVisual)
-        _rgtype = _RegisteredType::Lines ;
+        g_rgtype = _RegisteredType::Lines ;
     else
-        _rgtype = _RegisteredType::Chars ;
+        g_rgtype = _RegisteredType::Chars ;
 
     Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     SimplTextSelecter::unselect() ;
@@ -130,7 +130,7 @@ void EdiNCopyLine::sprocess(
     pushup(VKC_LCTRL, VKC_C) ;
     pushup(VKC_END) ;
 
-    ECBUtility::_rgtype = ECBUtility::_RegisteredType::Lines ;
+    ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Lines ;
 }
 
 //EdiNPasteAfter (EdiNormal or EdiVisual)
@@ -167,21 +167,21 @@ namespace ECBUtility
         if(repeat_num == 1) {
             if(first_call) {
                 ksr.reset() ;
-                if(_rgtype == _RegisteredType::Chars) {
+                if(g_rgtype == _RegisteredType::Chars) {
                     put_chars_preproc() ;
                     put_chars() ;
                 }
-                else if(_rgtype == _RegisteredType::Lines) {
+                else if(g_rgtype == _RegisteredType::Lines) {
                     put_lines_preproc() ;
                     put_lines() ;
                 }
             }
             else if(ksr.is_pressed()) {
-                if(_rgtype == _RegisteredType::Chars) {
+                if(g_rgtype == _RegisteredType::Chars) {
                     put_chars_preproc() ;
                     put_chars() ;
                 }
-                else if(_rgtype == _RegisteredType::Lines) {
+                else if(g_rgtype == _RegisteredType::Lines) {
                     put_lines_preproc() ;
                     put_lines() ;
                 }
@@ -191,11 +191,11 @@ namespace ECBUtility
             //repeat_num >= 2
             if(!first_call) return ;
 
-            if(_rgtype == _RegisteredType::Chars) {
+            if(g_rgtype == _RegisteredType::Chars) {
                 put_chars_preproc() ;
                 for(unsigned int i = 0 ; i < repeat_num ; i ++) put_chars() ;
             }
-            else if(_rgtype == _RegisteredType::Lines) {
+            else if(g_rgtype == _RegisteredType::Lines) {
                 put_lines_preproc() ;
                 for(unsigned int i = 0 ; i < repeat_num ; i ++) put_lines() ;
             }
@@ -297,10 +297,10 @@ void EdiDeleteHighlightText::sprocess(
     pushup(VKC_LCTRL, VKC_X) ;
 
     if(get_mode() == Mode::EdiLineVisual) {
-        _rgtype = _RegisteredType::Lines ;
+        g_rgtype = _RegisteredType::Lines ;
     }
     else {
-        _rgtype = _RegisteredType::Chars ;
+        g_rgtype = _RegisteredType::Chars ;
     }
 }
 
@@ -312,12 +312,12 @@ namespace ECBUtility
         const auto mode = get_mode() ;
         if(mode == Mode::EdiVisual) {
             KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-            _rgtype = _RegisteredType::Chars ;
+            g_rgtype = _RegisteredType::Chars ;
         }
         else if(mode == Mode::EdiLineVisual) {
             KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
             KeybrdEventer::pushup(VKC_DELETE) ;
-            _rgtype = _RegisteredType::Lines ;
+            g_rgtype = _RegisteredType::Lines ;
         }
     }
 }
@@ -357,7 +357,7 @@ void EdiNDeleteLine::sprocess(
             pushup(VKC_LCTRL, VKC_X) ;
             pushup(VKC_DELETE) ;
         }
-        ECBUtility::_rgtype = ECBUtility::_RegisteredType::Lines ;
+        ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Lines ;
     } ;
 
     if(repeat_num == 1) {
@@ -417,7 +417,7 @@ void EdiNDeleteLineUntilEOL::sprocess(
         else
             pushup(VKC_LCTRL, VKC_X) ;
 
-        _rgtype = _RegisteredType::Chars ;
+        g_rgtype = _RegisteredType::Chars ;
     } ;
 
     if(repeat_num == 1) {
@@ -468,7 +468,7 @@ void EdiNDeleteAfter::sprocess(
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
         KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
         //KeybrdEventer::pushup(VKC_DELETE) ;
-        ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
+        ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Chars ;
     } ;
     if(repeat_num == 1) {
         if(first_call) {
@@ -516,7 +516,7 @@ void EdiNDeleteBefore::sprocess(
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
         KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
         //KeybrdEventer::pushup(VKC_BKSPACE) ;
-        ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
+        ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Chars ;
     } ;
 
     if(repeat_num == 1) {
@@ -683,7 +683,7 @@ void EdiDeleteCharsAndStartInsert::sprocess(
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
 
     KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-    ECBUtility::_rgtype = ECBUtility::_RegisteredType::Chars ;
+    ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Chars ;
 
     Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
 }
@@ -739,7 +739,7 @@ void EdiDeleteUntilEOLAndStartInsert::sprocess(
     else
         KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
 
-    _rgtype = _RegisteredType::Chars ;
+    g_rgtype = _RegisteredType::Chars ;
 
     Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
 }

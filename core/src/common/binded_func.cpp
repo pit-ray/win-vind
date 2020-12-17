@@ -52,8 +52,6 @@ void BindedFunc::process(
                     + " failed. Cannot refresh all key state. "
                     + e2.what()) ;
         }
-        pimpl->running_now.store(false) ;
-        return ;
     }
     pimpl->running_now.store(false) ;
 }

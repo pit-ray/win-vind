@@ -105,7 +105,7 @@
     },
     {
         "name": "move_down",
-        "guin": ["j", "+", "gj", "<C-j>", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
+        "guin": ["j", "+", "gj", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -196,7 +196,7 @@
     },
     {
         "name": "jump_to_any",
-        "guin": ["f", "F"],
+        "guin": ["f"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -222,7 +222,7 @@
     },
     {
         "name": "scroll_up",
-        "guin": ["<C-y>"],
+        "guin": ["<C-y>", "<C-k>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -235,7 +235,7 @@
     },
     {
         "name": "scroll_down",
-        "guin": ["<C-e>"],
+        "guin": ["<C-e>", "<C-j>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -300,7 +300,7 @@
     },
     {
         "name": "scroll_left",
-        "guin": ["zh"],
+        "guin": ["zh", "<C-h>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -313,7 +313,7 @@
     },
     {
         "name": "scroll_right",
-        "guin": ["zl"],
+        "guin": ["zl", "<C-l>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -632,7 +632,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["lsplit"],
+        "cmd": ["lsplit", "lsp", "wl"],
         "en": "Snap Current Window to Left",
         "ja": "ウィンドウを画面左半分化"
     },
@@ -645,7 +645,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["rsplit"],
+        "cmd": ["rsplit", "rsp", "wh"],
         "en": "Snap Current Window to Right",
         "ja": "ウィンドウを画面右半分化"
     },
@@ -992,7 +992,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["j", "+", "gj", "<C-j>", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
+        "edin": ["j", "+", "gj", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
         "edii": [],
         "ediv": ["<edin>"],
         "edivl": ["<edin>"],
@@ -1324,5 +1324,31 @@
         "cmd": [],
         "en": "Delete Until EOL And Start Insert (NOT RELEASED)",
         "jp": "行末まで削除してインサートモード"
+    },
+    {
+        "name": "easy_click",
+        "guin": ["F"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [],
+        "en": "Easy Click (NOT RELEASED)",
+        "jp": "Easy Click"
+    },
+    {
+        "name": "update_easy_click",
+        "guin": ["<C-F>"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["update EasyClick", "update ec"],
+        "en": "Easy Click (NOT RELEASED)",
+        "jp": "Easy Click"
     }
 ]

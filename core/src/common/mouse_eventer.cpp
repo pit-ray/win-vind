@@ -13,13 +13,8 @@ namespace MouseEventer
     } ;
 
     void click(const unsigned char btcode) {
-        INPUT in ;
-        in.type = INPUT_MOUSE ;
-        in.mi.dx = 0 ;
-        in.mi.dy = 0 ;
-        in.mi.mouseData = 0 ;
+        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}};
         in.mi.dwFlags = (btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN ;
-        in.mi.time = 0 ;
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {
@@ -36,13 +31,8 @@ namespace MouseEventer
     }
 
     inline static void _change_btstate(const DWORD event) {
-        INPUT in ;
-        in.type = INPUT_MOUSE ;
-        in.mi.dx = 0 ;
-        in.mi.dy = 0 ;
-        in.mi.mouseData = 0 ;
+        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}};
         in.mi.dwFlags = event ;
-        in.mi.time = 0 ;
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {

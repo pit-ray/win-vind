@@ -39,7 +39,7 @@ inline static const auto _generate_uniform() {
 }
 
 //hardcoded
-static constexpr auto WAIT_TIME_FOR_STARTING   = 512ms;
+//static constexpr auto WAIT_TIME_FOR_STARTING   = 512ms;
 static constexpr auto REPEAT_SAMPLING_DELTA_US = 25'600 ;
 static constexpr auto INITIAL_VELOCITY         = 0.000'1f ;
 
@@ -47,10 +47,18 @@ struct KeyStrokeRepeater::Impl {
     IntervalTimer timer{REPEAT_SAMPLING_DELTA_US} ;
     float v = INITIAL_VELOCITY ;
     system_clock::time_point start_time{system_clock::now()} ;
+    const milliseconds wait_time ;
+
+    explicit Impl(const unsigned int wait_time_for_starting_ms)
+    : timer(REPEAT_SAMPLING_DELTA_US),
+      v(INITIAL_VELOCITY),
+      start_time(system_clock::now()),
+      wait_time(wait_time_for_starting_ms)
+    {}
 } ;
 
-KeyStrokeRepeater::KeyStrokeRepeater()
-: pimpl(std::make_unique<Impl>())
+KeyStrokeRepeater::KeyStrokeRepeater(const unsigned int wait_time_for_starting_ms)
+: pimpl(std::make_unique<Impl>(wait_time_for_starting_ms))
 {}
 
 KeyStrokeRepeater::~KeyStrokeRepeater() noexcept                     = default ;
@@ -65,7 +73,7 @@ void KeyStrokeRepeater::reset() noexcept {
 bool KeyStrokeRepeater::is_pressed() {
     const auto dt = _compute_deltat(pimpl->start_time) ;
 
-    if(dt < WAIT_TIME_FOR_STARTING) return false ;
+    if(dt < pimpl->wait_time) return false ;
 
     //sampling
     if(!pimpl->timer.is_passed()) return false ;

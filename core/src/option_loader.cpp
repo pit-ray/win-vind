@@ -15,7 +15,7 @@
 namespace OptionLoader
 {
     using namespace std ;
-    vector<op::shp_t> vpop {
+    vector<op::shp_t> g_vpop {
         AutotrackPopup::create(),
         VirtualCmdLine::create(),
         Dedicate2Window::create()
@@ -25,16 +25,16 @@ namespace OptionLoader
     {
         //load options ------------------------------------------------
         //initialzie
-        for_each(vpop.cbegin(), vpop.cend(), [](auto& op){op->disable() ;}) ;
+        for_each(g_vpop.cbegin(), g_vpop.cend(), [](auto& op){op->disable() ;}) ;
 
-        for(const auto& op : vpop) {
+        for(const auto& op : g_vpop) {
             if(iParams::get_b(op->name())) op->enable() ;
         }
     }
 
     void call_active_funcs()
     {
-        for(const auto& op : vpop) {
+        for(const auto& op : g_vpop) {
             op->process() ;
         }
     }

@@ -30,6 +30,7 @@ if %1 == -R (
     cd debug
 
     cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
+    @rem cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" ..
     cmake --build . --config Debug
     cd ..
     @goto exit
@@ -41,6 +42,7 @@ if %1 == -R (
     cd release
 
     cmake -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" ..
+    @rem cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" ..
     cmake --build . --config Release
     cd ..
     @goto exit

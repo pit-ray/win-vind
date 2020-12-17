@@ -9,6 +9,8 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/options
 
     ${PROJECT_SOURCE_DIR}/libs
+
+    ${WINDOWS_SDK_INCLUDE_DIR}
 )
 
 add_library(Common STATIC
@@ -59,6 +61,7 @@ enable_cotire(EdiBindings)
 add_library(GUIBindings STATIC
     src/gui_bindings/click.cpp
     src/gui_bindings/clipboard.cpp
+    src/gui_bindings/easy_click.cpp
     src/gui_bindings/jump_cursor.cpp
     src/gui_bindings/move_cursor.cpp
     src/gui_bindings/pager.cpp
@@ -66,7 +69,7 @@ add_library(GUIBindings STATIC
     src/gui_bindings/select.cpp
     src/gui_bindings/switch_vdesktop.cpp
 )
-target_link_libraries(GUIBindings Psapi Common)
+target_link_libraries(GUIBindings Psapi Common Kernel32)
 enable_cotire(GUIBindings)
 
 add_library(Options

@@ -15,8 +15,7 @@
 
 #include "change_mode.hpp"
 #include "edi_change_mode.hpp"
-
-#include "common_bindings/mywindow_ctrl.hpp"
+#include "mywindow_ctrl.hpp"
 
 namespace System
 {
@@ -47,6 +46,8 @@ namespace System
 
             //lower keyboard hook
             KeyAbsorber::install_hook() ;
+
+            KeyBinder::init() ;
 
             load_config() ;
 

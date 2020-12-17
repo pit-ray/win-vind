@@ -1,10 +1,12 @@
 #include "wx_shortcut_apps.hpp"
 
+#include "disable_gcc_warning.hpp"
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/filepicker.h>
 #include <wx/listctrl.h>
 #include <wx/button.h>
+#include "enable_gcc_warning.hpp"
 
 #include "wx_constant.hpp"
 #include "msg_logger.hpp"

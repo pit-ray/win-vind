@@ -5,7 +5,9 @@
 #include <unordered_map>
 #include <vector>
 
+#include "disable_gcc_warning.hpp"
 #include <wx/string.h>
+#include "enable_gcc_warning.hpp"
 
 namespace ioParams
 {

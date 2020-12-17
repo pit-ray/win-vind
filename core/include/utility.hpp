@@ -41,12 +41,11 @@ namespace Utility
     }
 
     template <typename T>
-    inline void remove_deplication(std::vector<T>& vec) {
+    inline void remove_deplication(T&& vec) {
         if(vec.empty()) return ;
         std::sort(vec.begin(), vec.end()) ;
-        const auto& itr = std::unique(vec.begin(), vec.end()) ;
-        if(itr == vec.cend()) return ;
-        vec.erase(itr) ;
+        decltype(auto) itr = std::unique(vec.begin(), vec.end()) ;
+        vec.erase(itr, vec.end()) ;
     }
 
     template <typename T, std::size_t N>
@@ -119,6 +118,7 @@ namespace Utility
 #define UNUSED(identifier) /* identifier */
 
 //exception class with scope identifier
+#if defined(__GNUC__)
 #define LOGIC_EXCEPT(msg) \
     std::logic_error(std::string("An logic exception occurred from ") +\
             __PRETTY_FUNCTION__ + ". " + msg)
@@ -126,5 +126,15 @@ namespace Utility
 #define RUNTIME_EXCEPT(msg) \
     std::runtime_error(std::string("An runtime exception occurred from ") +\
             __PRETTY_FUNCTION__ + ". " + msg)
+
+#elif defined(_MSC_VER) && _MSC_VER >= 1500
+#define LOGIC_EXCEPT(msg) \
+    std::logic_error(std::string("An logic exception occurred from ") +\
+            __FUNCSIG__ + ". " + msg)
+
+#define RUNTIME_EXCEPT(msg) \
+    std::runtime_error(std::string("An runtime exception occurred from ") +\
+            __FUNCSIG__ + ". " + msg)
+#endif
 
 #endif

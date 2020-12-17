@@ -9,7 +9,9 @@ set(wxWidgets_USE_UNICODE ON)
 set(wxWidgets_USE_UNIVERSAL OFF)
 set(wxWidgets_USE_STATIC ON)
 
+set(wxWidgets_INCLUDE_DIRS ${wxWidgets_ROOT_DIR}/include)
 find_package(wxWidgets COMPONENTS adv core base REQUIRED)
+
 include(${wxWidgets_USE_FILE})
 
 include_directories(
@@ -18,6 +20,8 @@ include_directories(
 
     ${PROJECT_SOURCE_DIR}/core/include
     ${PROJECT_SOURCE_DIR}/libs
+
+    ${wxWidgets_INCLUDE_DIRS}
 )
 
 set(SRCDIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -45,6 +49,7 @@ target_link_libraries(wxGUI ${wxWidgets_LIBRARIES})
 
 set(MAIN_ENTRY_INCLUDE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/core/include
 
     ${wxWidgets_INCLUDE_DIRS}
     PARENT_SCOPE

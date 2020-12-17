@@ -7,8 +7,10 @@
 
 #include <windows.h>
 
+#include "disable_gcc_warning.hpp"
 #include <wx/button.h>
 #include <wx/sizer.h>
+#include "enable_gcc_warning.hpp"
 
 #include "wx_settings.hpp"
 #include "wx_shortcut_apps.hpp"

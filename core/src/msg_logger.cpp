@@ -6,12 +6,12 @@
 namespace Logger
 {
     static std::mutex mtx ;
-    static constexpr auto _er_tag = "[Error] " ;
+    static constexpr auto g_er_tag = "[Error] " ;
 
     template <typename T>
     inline void _error(T&& msg, const char* scope) {
         std::lock_guard<std::mutex> lock(mtx) ;
-        error_stream << _er_tag << "Windows Error Code: [" << GetLastError() << "], " << msg << " (" << scope << ")\n" ;
+        error_stream << g_er_tag << "Windows Error Code: [" << GetLastError() << "], " << msg << " (" << scope << ")" << std::endl ;
     }
     void error(const char* msg, const char* scope) {
         _error(msg, scope) ;

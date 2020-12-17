@@ -17,9 +17,9 @@ using namespace std ;
 
 namespace KeyAbsorber
 {
-    static array<bool, 256> _state{false} ;
-    static bool _absorbed_flag{true} ;
-    static KeyLog::data_t _ignored_keys{} ;
+    static array<bool, 256> g_state{false} ;
+    static bool g_absorbed_flag{true} ;
+    static KeyLog::data_t g_ignored_keys{} ;
 
     static const auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook == nullptr) return ;
@@ -43,19 +43,19 @@ namespace KeyAbsorber
         }
         const auto code = static_cast<unsigned char>(reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
         const auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
-        _state[code] = state ;
-        _state[VKCConverter::get_representative_key(code)] = state ;
+        g_state[code] = state ;
+        g_state[VKCConverter::get_representative_key(code)] = state ;
 
-        if(!_ignored_keys.empty()) {
-            if(std::find(_ignored_keys.cbegin(), _ignored_keys.cend(), code) != _ignored_keys.cend()) {
+        if(!g_ignored_keys.empty()) {
+            if(std::find(g_ignored_keys.cbegin(), g_ignored_keys.cend(), code) != g_ignored_keys.cend()) {
                 return release(HC_ACTION) ;
             }
         }
-        return _absorbed_flag ? -1 : release(HC_ACTION) ;
+        return g_absorbed_flag ? -1 : release(HC_ACTION) ;
     }
 
     void install_hook() {
-        _state.fill(false) ;
+        g_state.fill(false) ;
 
         p_handle.reset(new HHOOK{}) ; //added ownership
         if(p_handle == nullptr) {
@@ -79,7 +79,7 @@ namespace KeyAbsorber
         if(keycode < 1 || keycode > 254) {
             return false ;
         }
-        return _state[keycode] ;
+        return g_state[keycode] ;
     }
 
     const KeyLog get_pressed_list() {
@@ -92,38 +92,38 @@ namespace KeyAbsorber
 
     //if this object is not hooked, can call following functions.
     bool is_closed() noexcept {
-        return _absorbed_flag ;
+        return g_absorbed_flag ;
     }
 
     void close() noexcept {
-        _ignored_keys.clear() ;
-        _absorbed_flag = true ;
+        g_ignored_keys.clear() ;
+        g_absorbed_flag = true ;
     }
 
     void close_with_refresh() {
-        _ignored_keys.clear() ;
+        g_ignored_keys.clear() ;
 
         //if this function is called by pressed button,
         //it has to send message "KEYUP" to OS (not absorbed).
         unsigned char vkc = 0 ;
-        for(const auto& s : _state) {
+        for(const auto& s : g_state) {
             if(s) KeybrdEventer::release_keystate(vkc) ;
             vkc ++ ;
         }
-        _absorbed_flag = true ;
+        g_absorbed_flag = true ;
     }
 
     void open() noexcept {
-        _ignored_keys.clear() ;
-        _absorbed_flag = false ;
+        g_ignored_keys.clear() ;
+        g_absorbed_flag = false ;
     }
 
     void open_keys(const KeyLog::data_t& keys) noexcept {
-        _ignored_keys = keys ;
+        g_ignored_keys = keys ;
     }
 
     void open_key(const unsigned char key) noexcept {
-        try {_ignored_keys.insert(key) ;}
+        try {g_ignored_keys.insert(key) ;}
         catch(bad_alloc& e) {
             ERROR_PRINT(e.what()) ;
             return ;
@@ -131,9 +131,9 @@ namespace KeyAbsorber
     }
 
     void release_vertually(const unsigned char key) noexcept {
-        _state[key] = false ;
+        g_state[key] = false ;
     }
     void press_vertually(const unsigned char key) noexcept {
-        _state[key] = true ;
+        g_state[key] = true ;
     }
 }

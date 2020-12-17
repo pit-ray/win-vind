@@ -1,8 +1,10 @@
 #include "wx_system_tray.hpp"
 
+#include "disable_gcc_warning.hpp"
 #include <wx/msgdlg.h>
 #include <wx/icon.h>
 #include <wx/menu.h>
+#include "enable_gcc_warning.hpp"
 
 #include "ui_translator.hpp"
 #include "wx_prop_dlg.hpp"

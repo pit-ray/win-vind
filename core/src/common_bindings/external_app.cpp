@@ -16,10 +16,12 @@
 #include "path.hpp"
 #include "utility.hpp"
 
+#include "virtual_cmd_line.hpp"
+
 namespace ExAppUtility
 {
     using mss_t = std::unordered_map<std::string, std::string> ;
-    inline static const mss_t _load__proc_list_core() {
+    inline static const mss_t _load_proc_list_core() {
         mss_t map{} ;
 
         nlohmann::json j ;
@@ -40,21 +42,27 @@ namespace ExAppUtility
         return map ;
     }
 
-    static mss_t _proc_list{} ;
+    static mss_t g_proc_list{} ;
     void load_config() {
-        _proc_list = _load__proc_list_core() ;
+        g_proc_list = _load_proc_list_core() ;
     }
 
-    inline static const std::string _cvt_to_protected_path(const std::string name) {
-        const auto& origin = _proc_list.at(name) ;
-        //is origin path?
-        if(origin.find("/") == std::string::npos) {
-            return origin ;
+    inline static const auto _cvt_to_protected_path(const std::string name) noexcept {
+        try {
+            const auto& origin = g_proc_list.at(name) ;
+            //is origin path?
+            if(origin.find("/") == std::string::npos) {
+                return origin ;
+            }
+            if(origin.find("\\") == std::string::npos) {
+                return origin ;
+            }
+            return "\"" + origin + "\"" ;
         }
-        if(origin.find("\\") == std::string::npos) {
-            return origin ;
+        catch(const std::out_of_range& e) {
+            VirtualCmdLine::msgout("e: Not a command") ;
+            return std::string() ;
         }
-        return "\"" + origin + "\"" ;
     }
 
     inline static void _create_process(const std::string path)
@@ -92,7 +100,7 @@ void StartShell::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    _create_process(_cvt_to_protected_path("shell")) ;
+    _create_process("shell") ;
 
     Sleep(100) ; //wait until select window by OS.
     Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
@@ -123,8 +131,11 @@ void StartAnyApp::sprocess(
         throw LOGIC_EXCEPT("The passed parent logger is null") ;
 
     auto cmd = KyLgr::log2str(*parent_charlgr) ;
-    _create_process(_cvt_to_protected_path(cmd.substr(1))) ;
+    cmd = _cvt_to_protected_path(cmd.substr(1)) ;
+    if(!cmd.empty()) {
+        _create_process(cmd) ;
 
-    Sleep(100) ; //wait until select window by OS.
-    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        Sleep(100) ; //wait until select window by OS.
+        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+    }
 }

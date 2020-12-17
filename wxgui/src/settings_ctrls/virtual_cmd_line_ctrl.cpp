@@ -3,12 +3,14 @@
 #include <unordered_map>
 #include <sstream>
 
+#include "disable_gcc_warning.hpp"
 #include <wx/spinctrl.h>
 #include <wx/clrpicker.h>
 #include <wx/colour.h>
 #include <wx/slider.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
+#include "enable_gcc_warning.hpp"
 
 #include "choices_manager.hpp"
 

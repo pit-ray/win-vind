@@ -2,14 +2,42 @@ cmake_minimum_required(VERSION 3.0.0)
 project(win-vind VERSION 2.2.0)
 
 enable_language(CXX)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdelete-non-virtual-dtor -Wdouble-promotion -Weffc++ -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsuggest-override -Wuseless-cast -static -lstdc++ -lgcc -lwinpthread -fdiagnostics-color")
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+if(${MSVC})
+    add_compile_options("/Wall /std:c++17")
+
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+        add_compile_options("/O0 /g3")
+    elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+        add_compile_options("/O2")
+    endif()
+
+else()
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_EXTENSIONS OFF)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdelete-non-virtual-dtor -Wdouble-promotion -Weffc++ -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsuggest-override -Wuseless-cast -static -lstdc++ -lgcc -lwinpthread -fdiagnostics-color")
+    set(CMAKE_CXX_DEBUG "-O0 -g3")
+    set(CMAKE_CXX_RELEASE "-O2")
+
+    #build the file properties
+   set(winres "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc")
+   if(NOT CMAKE_RC_COMPILER)
+       set(CMAKE_RC_COMPILER windres.exe)
+   endif()
+
+   set(winresobj "${CMAKE_CURRENT_BINARY_DIR}/resource.rc.obj")
+   add_custom_command(OUTPUT "${winresobj}"
+       COMMAND ${CMAKE_RC_COMPILER}
+       -D GCC_WINDRES
+       -I ${CMAKE_CURRENT_SOURCE_DIR}
+       -I ${CMAKE_CURRENT_BINARY_DIR}
+       -o ${winresobj}
+       -i ${winres}
+   )
+endif()
 
 set(CMAKE_SH "CMAKE_SH-NOTFOUND")
 
@@ -18,11 +46,40 @@ ProcessorCount(PROC_N)
 message(STATUS "The number of processors: " ${PROC_N})
 set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
 
+#Default wxWidgets installed directories
+#If you installed to other directories, you can change like the below.
+#cmake -DCMAKE_BUILD_TYPE=Debug -DwxWidgets_ROOT_DIR=C:/wxWidgets 
+set(wxWidgets_ROOT_DIR C:/wxWidgets)
+if(NOT EXISTS ${wxWidgets_ROOT_DIR})
+    message(FATAL_ERROR "Could not find the directory; ${wxWidgets_ROOT_DIR}. You can fix by the cmake flag; -DwxWidgets_ROOT_DIR=<Path>")
+endif()
+message(STATUS "Detected wxWidgets Root Directory: ${wxWidgets_ROOT_DIR}")
+
+set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/gcc_lib)
+if(NOT EXISTS ${wxWidgets_LIB_DIR})
+    message(FATAL_ERROR "Could not find the directory; ${wxWidgets_LIB_DIR}. You can fix by the cmake flag; -DwxWidgets_LIB_DIR=<Path>")
+endif()
+message(STATUS "Detected wxWidgets Library Directory: ${wxWidgets_LIB_DIR}")
+
+set(WINDOWS_SDK_INCLUDE_DIR "")
+if("${WINDOWS_SDK_INCLUDE_DIR}" STREQUAL "")
+    get_filename_component(WINDOWS_SDK_ROOT_DIR "[HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows Kits\\Installed Roots;KitsRoot10]" REALPATH)
+    file(GLOB WINDOWS_SDK_INCS LIST_DIRECTORIES true "${WINDOWS_SDK_ROOT_DIR}/Include/10.0.*.*")
+    list(SORT WINDOWS_SDK_INCS ORDER DESCENDING)
+    list(GET WINDOWS_SDK_INCS 0 WINDOWS_SDK_INCLUDE_DIR)
+endif()
+if(NOT EXISTS ${WINDOWS_SDK_INCLUDE_DIR})
+    message(FATAL_ERROR "Could not find the directory; ${WINDOWS_SDK_INCLUDE_DIR}. You can fix by the cmake flag; -DWINDOWS_SDK_INCLUDE_DIR=<Path>")
+endif()
+message(STATUS "Detected Windows SDK: ${WINDOWS_SDK_INCLUDE_DIR}")
+
 #Options -------------------
 set(COTIRE_ENABLE OFF)
-set(CCACHE_ENABLE ON)
+set(CCACHE_ENABLE OFF)
 set(USE_SIMPL_GUI OFF)
 #---------------------------
+
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules")
 
 #If use cotire, for some reason, cannot redefine windows version.
 #Now, All CMakeLists.txt in win-vind has no header files at add_executable() or add_library()
@@ -30,7 +87,6 @@ if(${COTIRE_ENABLE})
     if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
             message(STATUS "Enable cotire")
             set(COTIRE_MINIMUM_NUMBER_OF_TARGET_SOURCES 1)
-            set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules")
             include(cotire)
     endif()
 endif()
@@ -57,23 +113,6 @@ if(CCACHE)
     endif()
 endif()
 
-
-#build the file properties
-set(winres "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc")
-if(NOT CMAKE_RC_COMPILER)
-    set(CMAKE_RC_COMPILER windres.exe)
-endif()
-
-set(winresobj "${CMAKE_CURRENT_BINARY_DIR}/resource.rc.obj")
-add_custom_command(OUTPUT "${winresobj}"
-    COMMAND ${CMAKE_RC_COMPILER}
-    -D GCC_WINDRES
-    -I ${CMAKE_CURRENT_SOURCE_DIR}
-    -I ${CMAKE_CURRENT_BINARY_DIR}
-    -o ${winresobj}
-    -i ${winres}
-)
-
 #add core system
 add_subdirectory(core)
 
@@ -87,11 +126,18 @@ add_subdirectory(${ENTRY_CMAKE_SOURCE})
 
 #build all
 include_directories(${MAIN_ENTRY_INCLUDE})
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    add_executable(${PROJECT_NAME} ${MAIN_ENTRY} ${winresobj})
-else()
+if(${MSVC})
     add_executable(${PROJECT_NAME} WIN32 ${MAIN_ENTRY} ${winresobj})
+
+else()
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+        message(STATUS "Enable Console")
+        add_executable(${PROJECT_NAME} ${MAIN_ENTRY} ${winresobj})
+    else()
+        add_executable(${PROJECT_NAME} WIN32 ${MAIN_ENTRY} ${winresobj})
+    endif()
 endif()
+
 target_link_libraries(${PROJECT_NAME} ${MAIN_ENTRY_LIBRARIES} CoreSystem)
 enable_cotire(${PROJECT_NAME})
 

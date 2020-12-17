@@ -13,7 +13,7 @@ using namespace std ;
 
 namespace VKCConverter
 {
-    inline static const auto& _printable_ascii() noexcept {
+    inline static const auto& g_printable_ascii() noexcept {
         static const auto data = {
             ' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')',
             '*', '+', ',', '-', '.', '/', '0', '1', '2', '3',
@@ -40,7 +40,7 @@ namespace VKCConverter
         shifted_char2vkc.fill(0) ;
         shifted_vkc2char.fill(0) ;
 
-        for(const auto c : _printable_ascii()) {
+        for(const auto c : g_printable_ascii()) {
             const auto res = VkKeyScanA(c) ;
 
             const auto vkc = static_cast<unsigned char>(res & 0xff) ;
@@ -70,7 +70,7 @@ namespace VKCConverter
         return shifted_vkc2char[vkc] ;
     }
 
-    static const unordered_map<string, unsigned char> _sys_vkc {
+    static const unordered_map<string, unsigned char> g_sys_vkc {
         {"ime",         VKC_IME},
         {"ime1",        VKC_FROM_EN},
         {"ime2",        VKC_TO_JP},
@@ -159,13 +159,13 @@ namespace VKCConverter
     } ;
 
     unsigned char get_sys_vkc(const string& strkey) noexcept {
-        try {return _sys_vkc.at(strkey) ;}
+        try {return g_sys_vkc.at(strkey) ;}
         catch(const std::out_of_range&) {return 0 ;}
     }
 
     const unordered_set<unsigned char> get_all_sys_vkc() {
         unordered_set<unsigned char> set ;
-        for(const auto& i : _sys_vkc) set.insert(i.second) ;
+        for(const auto& i : g_sys_vkc) set.insert(i.second) ;
         return set ;
     }
 
@@ -176,7 +176,7 @@ namespace VKCConverter
             return s ;
         }
 
-        for(const auto& sk : _sys_vkc) {
+        for(const auto& sk : g_sys_vkc) {
             if(sk.second == vkc) return sk.first ;
         }
 

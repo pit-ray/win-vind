@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <algorithm>
 
+#include "disable_gcc_warning.hpp"
 #include <wx/sizer.h>
 #include <wx/listbox.h>
 #include <wx/arrstr.h>
@@ -11,6 +12,7 @@
 #include <wx/textctrl.h>
 #include <wx/button.h>
 #include <wx/statbox.h>
+#include "enable_gcc_warning.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <nlohmann/json.hpp>

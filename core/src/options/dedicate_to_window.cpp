@@ -13,9 +13,8 @@
 
 namespace D2WUtility
 {
-    static const auto _NULL = static_cast<HWND>(0) ;
-    static auto target_hwnd = _NULL ;
-    static auto past_hwnd   = _NULL ;
+    static HWND target_hwnd = NULL ;
+    static HWND past_hwnd   = NULL ;
 }
 
 const std::string Dedicate2Window::sname() noexcept
@@ -35,15 +34,15 @@ void Dedicate2Window::enable_targeting()
 {
     using namespace D2WUtility ;
     target_hwnd = GetForegroundWindow() ;
-    past_hwnd   = _NULL ;
+    past_hwnd   = NULL ;
     VirtualCmdLine::msgout("-- TARGET ON --") ;
 }
 
 void Dedicate2Window::disable_targeting()
 {
     using namespace D2WUtility ;
-    target_hwnd = _NULL ;
-    past_hwnd   = _NULL ;
+    target_hwnd = NULL ;
+    past_hwnd   = NULL ;
     VirtualCmdLine::msgout("-- TARGET OFF --") ;
 }
 

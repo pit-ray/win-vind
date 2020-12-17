@@ -5,6 +5,7 @@
 
 #include "mouse_eventer.hpp"
 #include "interval_timer.hpp"
+#include "keystroke_repeater.hpp"
 #include "i_params.hpp"
 #include "utility.hpp"
 
@@ -15,7 +16,8 @@ namespace ScrollConstant
     static const auto MAX_X_POS = GetSystemMetrics(SM_CXSCREEN) ;
     static const auto MAX_Y_POS = GetSystemMetrics(SM_CYSCREEN) ;
 
-    constexpr static int DELTA_US = 30 ;
+    constexpr static auto DELTA_US = 30 ;
+    constexpr static auto WAIT_MS  = 30 ;
 }
 
 using namespace ScrollConstant ;
@@ -23,16 +25,16 @@ using namespace ScrollConstant ;
 //ScrollUp
 struct ScrollUp::Impl
 {
-    IntervalTimer timer{DELTA_US} ;
+    KeyStrokeRepeater ksr{WAIT_MS} ;
 } ;
 
 ScrollUp::ScrollUp()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollUp::~ScrollUp() noexcept              = default ;
-ScrollUp::ScrollUp(ScrollUp&&)              = default ;
-ScrollUp& ScrollUp::operator=(ScrollUp&&)   = default ;
+ScrollUp::~ScrollUp() noexcept            = default ;
+ScrollUp::ScrollUp(ScrollUp&&)            = default ;
+ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
 const string ScrollUp::sname() noexcept
 {
@@ -45,21 +47,25 @@ void ScrollUp::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
+    auto scroll = [first_call, repeat_num] {
+        MouseEventer::vscroll(iParams::get_i("yscroll_speed") \
+                * (first_call ? repeat_num : 1)) ;
+    } ;
+
     if(first_call) {
-        pimpl->timer.reset() ;
+        pimpl->ksr.reset() ;
+        scroll() ;
     }
-    if(!pimpl->timer.is_passed()) {
-        return ;
+    if(pimpl->ksr.is_pressed()) {
+        scroll() ;
     }
-    MouseEventer::vscroll(iParams::get_i("yscroll_speed") \
-            * (first_call ? repeat_num : 1)) ;
 }
 
 
 //ScrollDown
 struct ScrollDown::Impl
 {
-    IntervalTimer timer{DELTA_US} ;
+    KeyStrokeRepeater ksr{WAIT_MS} ;
 } ;
 
 ScrollDown::ScrollDown()
@@ -81,14 +87,18 @@ void ScrollDown::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
+    auto scroll = [first_call, repeat_num] {
+        MouseEventer::vscroll(-iParams::get_i("yscroll_speed") \
+                * (first_call ? repeat_num : 1)) ;
+    } ;
+
     if(first_call) {
-        pimpl->timer.reset() ;
+        pimpl->ksr.reset() ;
+        scroll() ;
     }
-    if(!pimpl->timer.is_passed()) {
-        return ;
+    if(pimpl->ksr.is_pressed()) {
+        scroll() ;
     }
-    MouseEventer::vscroll(-iParams::get_i("yscroll_speed") \
-            * (first_call ? repeat_num : 1)) ;
 }
 
 
@@ -102,9 +112,9 @@ ScrollMidUp::ScrollMidUp()
 : pimpl(make_unique<Impl>())
 {}
 
-ScrollMidUp::~ScrollMidUp() noexcept                = default ;
-ScrollMidUp::ScrollMidUp(ScrollMidUp&&)             = default ;
-ScrollMidUp& ScrollMidUp::operator=(ScrollMidUp&&)  = default ;
+ScrollMidUp::~ScrollMidUp() noexcept               = default ;
+ScrollMidUp::ScrollMidUp(ScrollMidUp&&)            = default ;
+ScrollMidUp& ScrollMidUp::operator=(ScrollMidUp&&) = default ;
 
 const string ScrollMidUp::sname() noexcept
 {

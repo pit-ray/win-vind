@@ -1,7 +1,6 @@
 #ifndef _BINDED_FUNC_WITH_CREATOR_HPP
 #define _BINDED_FUNC_WITH_CREATOR_HPP
 
-#include <memory>
 #include "binded_func.hpp"
 
 //use Curiously Recurring Template Pattern (CRTP)

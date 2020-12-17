@@ -1,7 +1,10 @@
 #ifndef _WXGUI_HPP
 #define _WXGUI_HPP
 
+#include "disable_gcc_warning.hpp"
 #include <wx/app.h>
+#include "enable_gcc_warning.hpp"
+
 #include <memory>
 
 namespace wxGUI

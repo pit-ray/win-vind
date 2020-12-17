@@ -1,7 +1,9 @@
 #ifndef _WX_SYSTEM_TRAY_HPP
 #define _WX_SYATEM_TRAY_HPP
 
+#include "disable_gcc_warning.hpp"
 #include <wx/taskbar.h>
+#include "enable_gcc_warning.hpp"
 #include <memory>
 
 namespace wxGUI

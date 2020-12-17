@@ -4,9 +4,11 @@
 #include <iostream>
 #include <atomic>
 
+#include "disable_gcc_warning.hpp"
 #include <wx/taskbar.h>
 #include <wx/msgdlg.h>
 #include <wx/thread.h>
+#include "enable_gcc_warning.hpp"
 
 #include "utility.hpp"
 #include "wx_prop_dlg.hpp"

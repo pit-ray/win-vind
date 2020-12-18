@@ -1,13 +1,9 @@
 # win-vind
 Simple Vim Key Binder for Windows  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="256" height="256" align="right" title="win-vind">
-<br>
-
-
-Please refer to <a href="https://pit-ray.github.io/win-vind/">github.io/win-vind</a>.  
+<br>  
 
 ## Description
-You can operate Windows by key-bindings like Vim.  
 **win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.  
 
 ## Overview

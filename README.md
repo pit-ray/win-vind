@@ -58,6 +58,7 @@ It has differences from the latest release.
 - Some classes modified to STL-based simple one.
 - Supported file-properties of the installer
 - Changed methods of the key eventer to faster one.
+- If a command called by `!*` is not existed, will print out message.
 
 ### New
 - Change Lines And Start Insert (`c->c`, `S`)
@@ -65,7 +66,7 @@ It has differences from the latest release.
 - Change Text Until EOL And Start Insert (`C`)
 - Delete Text by Motion (`d{Motion}`)
 - Change Text by Motion (`c{Motion}`)
-
+- EasyClick; feature like EasyMotion or Vimium. (`F`)
 
 ### Bugs
 - Nothing

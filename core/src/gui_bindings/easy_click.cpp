@@ -267,7 +267,7 @@ namespace EsyClk
         }
     }
 
-    static BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM lparam) {
+    static BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM UNUSED(lparam)) {
         scan_object_from_hwnd(hwnd) ;
         return TRUE ;
     }

@@ -1,3 +1,0 @@
-[Error] Windows Error Code: [0],  0      0   ` is not supported in "config\US.kmp", L2. (JumpCursorUtility::load_config()::<lambda(auto:1)> [with auto:1 = const char*])
-[Error] Windows Error Code: [0],  12     0   = is not supported in "config\US.kmp", L14. (JumpCursorUtility::load_config()::<lambda(auto:1)> [with auto:1 = const char*])
-[Error] Windows Error Code: [0],  11.75   2  ' is not supported in "config\US.kmp", L43. (JumpCursorUtility::load_config()::<lambda(auto:1)> [with auto:1 = const char*])

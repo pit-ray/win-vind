@@ -64,7 +64,7 @@ It has differences from the latest release.
 - Change Text by Motion (`c{Motion}`)
 - EasyClick; feature like EasyMotion or Vimium. (`F`)
 
-<imgs src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" width=740 title="EasyClick-demo">
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo">
 
 ### Bugs
 - Nothing

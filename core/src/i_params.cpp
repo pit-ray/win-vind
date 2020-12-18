@@ -44,4 +44,7 @@ namespace iParams
     bool get_b(const std::string name) {
         return _get<bool>(name) ;
     }
+    unsigned char get_uc(const std::string name) {
+        return _get<unsigned char>(name) ;
+    }
 }

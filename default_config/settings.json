@@ -93,7 +93,6 @@
         "ja": "フォントの色"
     },
     "cmd_font_bkcolor": {
-        "name": "cmd_font_bkcolor",
         "value": "323232",
         "en": "Font Background Color",
         "ja": "背景の色"
@@ -298,5 +297,30 @@
         "value": true,
         "en": "Virtual Command Line",
         "ja": "仮想コマンドライン"
+    },
+    "easy_click_font_size": {
+        "value": 14,
+        "en": "EasyClick Font Size",
+        "ja": "EasyClickのフォントサイズ"
+    },
+    "easy_click_font_weight": {
+        "value": 500,
+        "en": "EasyClick Font Weight",
+        "ja": "EasyClickのフォントの太さ"
+    },
+    "easy_click_font_color": {
+        "value": "c8c8c8",
+        "en": "EasyClick Font Color",
+        "ja": "EasyClickのフォントの色"
+    },
+    "easy_click_font_bkcolor": {
+        "value": "323232",
+        "en": "EasyClick Font Background Color",
+        "ja": "EasyClickの背景の色"
+    },
+    "easy_click_matching_color_decay": {
+        "value": 100,
+        "en": "EasyClick Matching Color Decay",
+        "ja": "EasyClickの一致文字の色減衰"
     }
 }

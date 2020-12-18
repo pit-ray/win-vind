@@ -75,7 +75,7 @@ message(STATUS "Detected Windows SDK: ${WINDOWS_SDK_INCLUDE_DIR}")
 
 #Options -------------------
 set(COTIRE_ENABLE OFF)
-set(CCACHE_ENABLE ON)
+set(CCACHE_ENABLE OFF)
 set(USE_SIMPL_GUI OFF)
 #---------------------------
 

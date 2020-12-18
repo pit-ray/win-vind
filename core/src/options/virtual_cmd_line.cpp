@@ -60,8 +60,8 @@ void VirtualCmdLine::do_enable() const
     pimpl->lf.lfHeight = iParams::get_l("cmd_font_size") ;
     pimpl->lf.lfWeight = iParams::get_l("cmd_font_weight") ;
 
-    pimpl->color   = Utility::hex2COLOREF(iParams::get_s("cmd_font_color")) ;
-    pimpl->bkcolor = Utility::hex2COLOREF(iParams::get_s("cmd_font_bkcolor")) ;
+    pimpl->color   = Utility::hex2COLORREF(iParams::get_s("cmd_font_color")) ;
+    pimpl->bkcolor = Utility::hex2COLORREF(iParams::get_s("cmd_font_bkcolor")) ;
 
     const auto pos = iParams::get_s("cmd_pos") ;
     const auto xma = iParams::get_i("cmd_xmargin") ;
@@ -147,41 +147,39 @@ void VirtualCmdLine::do_process() const
         }
     }
 
-    auto hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
+    auto delete_hdc = [] (HDC h) {
+        if(h != nullptr) DeleteDC(h) ;
+    } ;
+    std::unique_ptr<HDC__, decltype(delete_hdc)> hdc(CreateDCA("DISPLAY", NULL, NULL, NULL), delete_hdc) ;
     if(!hdc) {
         throw RUNTIME_EXCEPT("CreateDC") ;
     }
 
-    auto font = CreateFontIndirect(&pimpl->lf) ;
+    auto delete_font = [] (HFONT f) {
+        if(f != nullptr) DeleteObject(f) ;
+    } ;
+    std::unique_ptr<HFONT__, decltype(delete_font)> font(CreateFontIndirect(&pimpl->lf), delete_font) ;
     if(!font) {
         throw RUNTIME_EXCEPT("CreateFontIndirectA") ;
     }
 
-    if(!SelectObject(hdc, font)) {
+    if(!SelectObject(hdc.get(), font.get())) {
         throw RUNTIME_EXCEPT("SelectObject") ;
     }
 
-    if(SetBkColor(hdc, pimpl->bkcolor) == CLR_INVALID) {
+    if(SetBkColor(hdc.get(), pimpl->bkcolor) == CLR_INVALID) {
         throw RUNTIME_EXCEPT("SetBkColor") ;
     }
 
-    if(SetTextColor(hdc, pimpl->color) == CLR_INVALID) {
+    if(SetTextColor(hdc.get(), pimpl->color) == CLR_INVALID) {
         throw RUNTIME_EXCEPT("SetTextColor") ;
     }
 
-    if(SetTextCharacterExtra(hdc, pimpl->extra) == static_cast<int>(0x80000000)) {
+    if(SetTextCharacterExtra(hdc.get(), pimpl->extra) == static_cast<int>(0x80000000)) {
         throw RUNTIME_EXCEPT("SetTextCharacterExtra") ;
     }
 
-    if(!TextOutA(hdc, pimpl->x, pimpl->y, outstr.c_str(), lstrlenA(outstr.c_str()))) {
+    if(!TextOutA(hdc.get(), pimpl->x, pimpl->y, outstr.c_str(), lstrlenA(outstr.c_str()))) {
         throw RUNTIME_EXCEPT("TextOutA") ;
-    }
-
-    if(!DeleteDC(hdc)) {
-        throw RUNTIME_EXCEPT("DeleteDC") ;
-    }
-
-    if(!DeleteObject(font)) {
-        throw RUNTIME_EXCEPT("DeleteObject") ;
     }
 }

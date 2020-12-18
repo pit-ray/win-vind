@@ -16,6 +16,8 @@ namespace iParams
     std::size_t get_z(const std::string name) ;
     bool get_b(const std::string name) ;
 
+    unsigned char get_uc(const std::string name) ;
+
     void load_config() ;
 } ;
 

@@ -87,6 +87,8 @@ add_library(CoreSystem STATIC
     src/msg_logger.cpp
     src/option_loader.cpp
     src/system.cpp
+    src/utility.cpp
+
 )
 target_link_libraries(CoreSystem
     CmnBindings

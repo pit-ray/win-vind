@@ -19,11 +19,11 @@ This is default mode after starting `win-vind`. The target is the mouse cursor. 
 #### Example
 You can start optional application shortcuts by a registered command as following.  
 
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/config_shortapps.jpg?raw=true" width=512>  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/config_shortapps.jpg?raw=true" width=512 title="shortcut_config">  
 
 If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad` like below.  
 
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cmd-demo.gif?raw=true" width=400>  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cmd-demo.gif?raw=true" width=400 title="cmd-demo">  
 <br>
 
 ### Editor Mode
@@ -63,6 +63,8 @@ It has differences from the latest release.
 - Delete Text by Motion (`d{Motion}`)
 - Change Text by Motion (`c{Motion}`)
 - EasyClick; feature like EasyMotion or Vimium. (`F`)
+
+<imgs src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" width=740 title="EasyClick-demo">
 
 ### Bugs
 - Nothing

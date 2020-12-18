@@ -1,4 +1,3 @@
-#include "uia_global.hpp"
 #include "uia.hpp"
 
 #include "utility.hpp"
@@ -15,13 +14,32 @@
 
 namespace UIA
 {
-    auto delete_com_with_clear = [] (IUnknown* com) {
-        if(com != nullptr) com->Release() ;
-        CoUninitialize() ;
-    } ;
-    using SmartCUIA = std::shared_ptr<IUIAutomation> ;
+    CUIA::CUIA()
+    : cuia(nullptr)
+    {
+        CoInitialize(NULL) ;
+        if(FAILED(create_UIAutomation(&cuia))) {
+            throw LOGIC_EXCEPT("Could not create UIAutomation.") ;
+        }
+        if(!cuia) {
+            throw LOGIC_EXCEPT("Could not initialize UIAutomation.") ;
+        }
+    }
 
-    static SmartCUIA g_cuia(nullptr, delete_com_with_clear) ;
+    CUIA::~CUIA() {
+        if(cuia != nullptr) cuia->Release() ;
+        CoUninitialize() ;
+    }
+
+    IUIAutomation* CUIA::get() const noexcept {
+        return cuia ;
+    }
+    CUIA::operator IUIAutomation*() const noexcept {
+        return cuia ;
+    }
+    IUIAutomation* CUIA::operator->() const noexcept {
+        return cuia ;
+    }
 
     HRESULT create_UIAutomation(IUIAutomation** ptr) {
         return CoCreateInstance(CLSID_CUIAutomation, NULL,
@@ -29,19 +47,8 @@ namespace UIA
                 reinterpret_cast<void**>(ptr)) ;
     }
 
-    void initialize() {
-        CoInitialize(NULL) ;
-        IUIAutomation* cuia_raw ;
-        if(FAILED(create_UIAutomation(&cuia_raw))) {
-            throw LOGIC_EXCEPT("Could not create UIAutomation.") ;
-        }
-        if(!cuia_raw) {
-            throw LOGIC_EXCEPT("Could not initialize UIAutomation.") ;
-        }
-        g_cuia.reset(cuia_raw) ;
-    }
-
-    const SmartCUIA& get_global_cuia() {
+    const CUIA& get_global_cuia() {
+        static CUIA g_cuia{} ;
         return g_cuia ;
     }
 }

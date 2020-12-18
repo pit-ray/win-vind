@@ -11,7 +11,6 @@
 #include "mode_manager.hpp"
 #include "option_loader.hpp"
 #include "path.hpp"
-#include "uia_global.hpp"
 #include "vkc_converter.hpp"
 
 #include "change_mode.hpp"
@@ -44,8 +43,6 @@ namespace System
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             VKCConverter::load_input_combination() ;
-
-            UIA::initialize() ;
 
             //lower keyboard hook
             KeyAbsorber::install_hook() ;

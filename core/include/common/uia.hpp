@@ -26,10 +26,31 @@ namespace UIA
         return SmartCacheReq(ptr, delete_com) ;
     }
 
+    auto delete_com_with_clear = [] (IUnknown* com) {
+        if(com != nullptr) com->Release() ;
+        CoUninitialize() ;
+    } ;
+
     HRESULT create_UIAutomation(IUIAutomation** ptr) ;
 
-    using SmartCUIA = std::shared_ptr<IUIAutomation> ;
-    const SmartCUIA& get_global_cuia() ;
+    class CUIA {
+    private:
+        IUIAutomation* cuia ;
+
+    public:
+        explicit CUIA() ;
+        virtual ~CUIA() noexcept ;
+
+        CUIA(CUIA&&)                 = delete ;
+        CUIA& operator=(CUIA&&)      = delete ;
+        CUIA(const CUIA&)            = delete ;
+        CUIA& operator=(const CUIA&) = delete ;
+
+        IUIAutomation* get() const noexcept ;
+        operator IUIAutomation*() const noexcept ;
+        IUIAutomation* operator->() const noexcept ;
+    } ;
+    const CUIA& get_global_cuia() ;
 }
 
 #endif

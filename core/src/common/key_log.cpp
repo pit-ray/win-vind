@@ -22,15 +22,6 @@ struct KeyLog::Impl
     explicit Impl(initializer_list<unsigned char>&& codes)
     : once_log(codes)
     {}
-
-    virtual ~Impl() noexcept {
-        once_log.clear() ;
-    }
-
-    Impl(Impl&&)                 = default ;
-    Impl& operator=(Impl&&)      = default ;
-    Impl(const Impl&)            = default ;
-    Impl& operator=(const Impl&) = default ;
 } ;
 
 KeyLog::KeyLog()
@@ -49,9 +40,9 @@ KeyLog::KeyLog(initializer_list<unsigned char>&& codes)
 : pimpl(make_unique<Impl>(std::move(codes)))
 {}
 
-KeyLog::~KeyLog() noexcept                      = default ;
-KeyLog::KeyLog(KeyLog&&)                        = default ;
-KeyLog& KeyLog::operator=(KeyLog&&)             = default ;
+KeyLog::~KeyLog() noexcept          = default ;
+KeyLog::KeyLog(KeyLog&&)            = default ;
+KeyLog& KeyLog::operator=(KeyLog&&) = default ;
 
 KeyLog::KeyLog(const KeyLog& rhs)
 : pimpl(rhs.pimpl ? make_unique<Impl>(*rhs.pimpl) : make_unique<Impl>())
@@ -59,7 +50,7 @@ KeyLog::KeyLog(const KeyLog& rhs)
 
 KeyLog& KeyLog::operator=(const KeyLog& rhs)
 {
-    if(!rhs.pimpl) return *this ; //if already moved, not copy
+    if(!(rhs.pimpl)) return *this ; //if already moved, not copy
     *pimpl = *rhs.pimpl ;
     return *this ;
 }
@@ -111,18 +102,20 @@ bool KeyLog::is_containing(const unsigned char key) const
 
 bool KeyLog::operator==(const KeyLog& rhs) const
 {
-    if(!rhs.pimpl) return false ; //moved
+    if(!(rhs.pimpl)) return false ; //moved
     return pimpl->once_log == rhs.pimpl->once_log ;
 }
 
 bool KeyLog::operator!=(const KeyLog& rhs) const
 {
-    if(!rhs.pimpl) return false ; //moved
+    if(!(rhs.pimpl)) return false ; //moved
     return pimpl->once_log != rhs.pimpl->once_log ;
 }
 
 const KeyLog KeyLog::operator-(const KeyLog& rhs) const
 {
+    if(!(rhs.pimpl)) return *this ;
+
     auto diff = pimpl->once_log ;
     for(const auto k : rhs) diff.erase(k) ;
     return KeyLog(std::move(diff)) ;

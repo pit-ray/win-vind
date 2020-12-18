@@ -70,7 +70,7 @@ add_library(GUIBindings STATIC
     src/gui_bindings/select.cpp
     src/gui_bindings/switch_vdesktop.cpp
 )
-target_link_libraries(GUIBindings Psapi Common)
+target_link_libraries(GUIBindings Common psapi)
 enable_cotire(GUIBindings)
 
 add_library(Options

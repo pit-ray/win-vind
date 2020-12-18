@@ -12,7 +12,6 @@
 #pragma GCC diagnostic warning "-Wold-style-cast"
 #pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wsuggest-override"
-#pragma GCC diagnostic warning "-Wunknown-pragmas"
 #pragma GCC diagnostic warning "-Wuseless-cast"
 
 #endif

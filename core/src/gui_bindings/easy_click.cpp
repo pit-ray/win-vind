@@ -1,15 +1,14 @@
 #include "easy_click.hpp"
 
-#include "utility.hpp"
 #include "msg_logger.hpp"
+#include "uia.hpp"
+#include "utility.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <windows.h>
-#include "guid_definition.hpp"
 #include <oleauto.h>
 #include <winerror.h>
 #include <winuser.h>
-#include <um/uiautomationclient.h>
 #include "enable_gcc_warning.hpp"
 
 #include <iostream>
@@ -89,42 +88,17 @@ namespace EsyClk
     } ;
 
     static std::vector<Point2D> g_objpos ;
+    static auto g_cache_req = UIA::make_SmartCacheReq(nullptr) ;
 
-    auto delete_com_with_clear = [] (IUnknown* com) {
-        if(com != nullptr) com->Release() ;
-        CoUninitialize() ;
-    } ;
-    using SmartCUIA = std::unique_ptr<IUIAutomation, decltype(delete_com_with_clear)> ;
-
-    auto delete_com = [] (IUnknown* com) {
-        if(com != nullptr) com->Release() ;
-    } ;
-    using SmartCacheReq     = std::unique_ptr<IUIAutomationCacheRequest, decltype(delete_com)> ;
-    using SmartElement      = std::unique_ptr<IUIAutomationElement, decltype(delete_com)> ;
-    using SmartElementArray = std::unique_ptr<IUIAutomationElementArray, decltype(delete_com)> ;
-    using SmartIDispach     = std::unique_ptr<IDispatch, decltype(delete_com)> ;
-    static SmartCUIA g_cuia(nullptr, delete_com_with_clear) ;
-    static SmartCacheReq g_cache_req(nullptr, delete_com) ;
-
-    inline static auto create_UIAutomation(IUIAutomation** ptr) {
-        return CoCreateInstance(CLSID_CUIAutomation, NULL,
-                CLSCTX_INPROC_SERVER, IID_IUIAutomation,
-                reinterpret_cast<void**>(ptr)) ;
-    }
+    static LOGFONT g_font{0} ;
 
     void init() {
         g_objpos.reserve(2048) ;
 
-        CoInitialize(NULL) ;
-        IUIAutomation* cuia_raw ;
-        create_UIAutomation(&cuia_raw) ;
-        if(!cuia_raw) {
-            throw LOGIC_EXCEPT("Could not initialize UIAutomation.") ;
-        }
-        g_cuia.reset(cuia_raw) ;
+        decltype(auto) cuia = UIA::get_global_cuia() ;
 
         IUIAutomationCacheRequest* cr_raw ;
-        if(FAILED(g_cuia->CreateCacheRequest(&cr_raw))) {
+        if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
             throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
         }
         g_cache_req.reset(cr_raw) ;
@@ -143,11 +117,26 @@ namespace EsyClk
         if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
             throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
         }
+
+        g_font.lfHeight         = 25 ;
+        g_font.lfWidth          = 0 ;
+        g_font.lfEscapement     = 0 ;
+        g_font.lfOrientation    = 0 ;
+        g_font.lfWeight         = FW_MEDIUM ;
+        g_font.lfItalic         = FALSE ;
+        g_font.lfUnderline      = FALSE ;
+        g_font.lfStrikeOut      = FALSE ;
+        g_font.lfCharSet        = ANSI_CHARSET ;
+        g_font.lfOutPrecision   = OUT_TT_ONLY_PRECIS ;
+        g_font.lfClipPrecision  = CLIP_DEFAULT_PRECIS ;
+        g_font.lfQuality        = ANTIALIASED_QUALITY ;
+        g_font.lfPitchAndFamily = 0 ;
+        g_font.lfFaceName[0]    = '\0' ;
     }
 
     //Why, cannot get the value of ClickablePointPropertyId with GetCachedProperyValue.
     //We must use cache in order not to freeze.
-    inline static void get_clickable_point(SmartElement& elem) {
+    inline static void get_clickable_point(UIA::SmartElement& elem) {
         if(VARIANT val ; SUCCEEDED(elem->GetCachedPropertyValue(UIA_ClickablePointPropertyId, &val))) {
             if(val.vt == (VT_R8 | VT_ARRAY)) {
                 if(LONG* ppvdata ; SUCCEEDED(SafeArrayAccessData(val.parray,
@@ -163,7 +152,7 @@ namespace EsyClk
     }
 
     inline static void get_keyboard_focusable_point(
-            SmartElement& elem,
+            UIA::SmartElement& elem,
             const RECT& window_rect,
             const BOOL parent_is_focasuable=FALSE) {
         if(!parent_is_focasuable) {
@@ -192,7 +181,7 @@ namespace EsyClk
     }
 
     inline static void enumurate_child_elem(
-            SmartElementArray& parents,
+            UIA::SmartElementArray& parents,
             const RECT& window_rect,
             const BOOL& parent_is_focusable=FALSE) {
         int length ;
@@ -200,10 +189,10 @@ namespace EsyClk
         if(length == 0) return ;
 
         IUIAutomationElement* elem_raw ;
-        SmartElement elem(nullptr, delete_com) ;
+        auto elem = UIA::make_SmartElement(nullptr) ;
 
         IUIAutomationElementArray* children_raw ;
-        SmartElementArray children(nullptr, delete_com) ;
+        auto children = UIA::make_SmartElementArray(nullptr) ;
 
         BOOL flag ;
         for(int i = 0 ; i < length ; i ++) {
@@ -239,15 +228,18 @@ namespace EsyClk
     }
 
     inline static void scan_object_from_hwnd(HWND hwnd) {
+
+        decltype(auto) cuia = UIA::get_global_cuia() ;
+
         IUIAutomationElement* elem_raw ;
-        if(FAILED(g_cuia->ElementFromHandle(hwnd, &elem_raw))) {
+        if(FAILED(cuia->ElementFromHandle(hwnd, &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
         }
         if(!elem_raw) {
             throw RUNTIME_EXCEPT("Could not get UIAutomationElement from HWND.") ;
             return ;
         }
-        SmartElement elem(elem_raw, delete_com) ;
+        auto elem = UIA::make_SmartElement(elem_raw) ;
 
         if(FAILED(elem->BuildUpdatedCache(g_cache_req.get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
@@ -269,7 +261,7 @@ namespace EsyClk
         IUIAutomationElementArray* children_raw ;
         if(SUCCEEDED(elem->GetCachedChildren(&children_raw))) {
             if(children_raw) {
-                SmartElementArray children(children_raw, delete_com) ;
+                auto children = UIA::make_SmartElementArray(children_raw) ;
                 enumurate_child_elem(children, rect) ;
             }
             else {
@@ -351,7 +343,9 @@ namespace EsyClk
             }
             std::string str {c} ;
             g_objpos_wid.emplace(str, g_objpos[i]) ;
-            c ++ ;
+            if(c < 'z') {
+                c ++ ;
+            }
         }
     }
 
@@ -361,6 +355,15 @@ namespace EsyClk
             throw RUNTIME_EXCEPT("CreateDC") ;
         }
 
+        auto font = CreateFontIndirect(&g_font) ;
+        if(!font) {
+            throw RUNTIME_EXCEPT("CreateFontIndirectA") ;
+        }
+
+        if(!SelectObject(hdc, font)) {
+            throw RUNTIME_EXCEPT("SelectObject") ;
+        }
+
         if(SetBkColor(hdc, RGB(20, 20, 20)) == CLR_INVALID) {
             throw RUNTIME_EXCEPT("SetBkColor") ;
         }
@@ -368,7 +371,8 @@ namespace EsyClk
             throw RUNTIME_EXCEPT("SetTextColor") ;
             return ;
         }
-        if(SetTextCharacterExtra(hdc, 3) == static_cast<int>(0x80000000)) {
+
+        if(SetTextCharacterExtra(hdc, 2) == static_cast<int>(0x80000000)) {
             throw RUNTIME_EXCEPT("SetTextCharacterExtra") ;
         }
 
@@ -376,6 +380,7 @@ namespace EsyClk
             const auto& id = idpos.first ;
             const auto& pos = idpos.second ;
             TextOutA(hdc, pos.x(), pos.y(), id.c_str(), lstrlenA(id.c_str())) ;
+            //draw_rect_by_center(pos.x(), pos.y()) ;
         }
 
         if(!DeleteDC(hdc)) {
@@ -424,14 +429,12 @@ void EasyClick::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr)) {
     if(!first_call) return ;
 
-    if(!EsyClk::g_cuia) return ;
-
     if(EsyClk::need_update(GetForegroundWindow())) {
         EsyClk::g_objpos.clear() ;
         EsyClk::scan_gui_objects() ;
     }
 
-    std::cout << EsyClk::g_objpos.capacity() << std::endl ;
+    std::cout << "capa:" << EsyClk::g_objpos.capacity() << "\tsize: " << EsyClk::g_objpos.size() << std::endl ;
 
     if(!EsyClk::g_objpos.empty()) {
         EsyClk::assign_identifiers() ;
@@ -454,8 +457,6 @@ void UpdateEasyClick::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr)) {
     if(!first_call) return ;
 
-    if(!EsyClk::g_cuia) return ;
-
     EsyClk::g_prehwnd = GetForegroundWindow() ;
     GetWindowRect(EsyClk::g_prehwnd, &EsyClk::g_prerect) ;
 
@@ -466,7 +467,7 @@ void UpdateEasyClick::sprocess(
 
 namespace EsyClk
 {
-    //This function is for debugging.
+    //for debug
     void print_hresult(HRESULT& res) {
         switch(res) {
             case S_OK:

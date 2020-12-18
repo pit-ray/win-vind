@@ -14,31 +14,6 @@ std::string VirtualCmdLine::outstr{} ;
 std::chrono::system_clock::time_point VirtualCmdLine::msg_start{} ;
 bool VirtualCmdLine::msg_showing = false ;
 
-namespace VCLUtility
-{
-    inline static const auto _hex2COLOREF(string hex) {
-        if(hex.front() == '#') {
-            hex.erase(0, 1) ;
-        }
-
-        unsigned char r = 0 ;
-        unsigned char g = 0 ;
-        unsigned char b = 0 ;
-
-        if(hex.length() == 6) {
-            auto r_hex = hex.substr(0, 2) ;
-            auto g_hex = hex.substr(2, 2) ;
-            auto b_hex = hex.substr(4, 2) ;
-            r = static_cast<unsigned char>(strtol(r_hex.c_str(), nullptr, 16)) ;
-            g = static_cast<unsigned char>(strtol(g_hex.c_str(), nullptr, 16)) ;
-            b = static_cast<unsigned char>(strtol(b_hex.c_str(), nullptr, 16)) ;
-        }
-
-        return RGB(r, g, b) ;
-    }
-}
-using namespace VCLUtility ;
-
 struct VirtualCmdLine::Impl
 {
     LOGFONT lf{} ;
@@ -85,8 +60,8 @@ void VirtualCmdLine::do_enable() const
     pimpl->lf.lfHeight = iParams::get_l("cmd_font_size") ;
     pimpl->lf.lfWeight = iParams::get_l("cmd_font_weight") ;
 
-    pimpl->color   = _hex2COLOREF(iParams::get_s("cmd_font_color")) ;
-    pimpl->bkcolor = _hex2COLOREF(iParams::get_s("cmd_font_bkcolor")) ;
+    pimpl->color   = Utility::hex2COLOREF(iParams::get_s("cmd_font_color")) ;
+    pimpl->bkcolor = Utility::hex2COLOREF(iParams::get_s("cmd_font_bkcolor")) ;
 
     const auto pos = iParams::get_s("cmd_pos") ;
     const auto xma = iParams::get_i("cmd_xmargin") ;

@@ -113,6 +113,27 @@ namespace Utility
         if(exp < 0) return pow_d(base, exp + 1) / base ;
         return (exp == 0 ? 1.0 : base * pow_d(base, exp - 1)) ;
     }
+
+    inline const auto hex2COLOREF(std::string hex) {
+        if(hex.front() == '#') {
+            hex.erase(0, 1) ;
+        }
+
+        unsigned char r = 0 ;
+        unsigned char g = 0 ;
+        unsigned char b = 0 ;
+
+        if(hex.length() == 6) {
+            auto r_hex = hex.substr(0, 2) ;
+            auto g_hex = hex.substr(2, 2) ;
+            auto b_hex = hex.substr(4, 2) ;
+            r = static_cast<unsigned char>(strtol(r_hex.c_str(), nullptr, 16)) ;
+            g = static_cast<unsigned char>(strtol(g_hex.c_str(), nullptr, 16)) ;
+            b = static_cast<unsigned char>(strtol(b_hex.c_str(), nullptr, 16)) ;
+        }
+
+        return RGB(r, g, b) ;
+    }
 }
 
 #define UNUSED(identifier) /* identifier */

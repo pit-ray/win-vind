@@ -25,11 +25,7 @@ namespace wxGUI
     class SystemThread : public wxThread {
     private:
         virtual ExitCode Entry() override {
-            while(System::update() && runnable.load()) {
-                //MessageRoop
-                Utility::get_win_message() ;
-                Sleep(5) ; //5ms
-            }
+            while(System::update() && runnable.load()) ;
             return static_cast<ExitCode>(0) ;
         }
 
@@ -48,7 +44,7 @@ namespace wxGUI
             wxMessageBox("not supported System Tray", "Warning", wxOK | wxICON_EXCLAMATION) ;
         }
 
-        if(!System::init()) {
+        if(!System::initialize()) {
             ERROR_PRINT("failed initializing system") ;
             return false ;
         }
@@ -58,7 +54,6 @@ namespace wxGUI
         }
 
         auto ppd = new PropDlg() ;
-        //ppd->Show(true) ;
         ppd->Show(false) ;
 
         //enable opening window by command

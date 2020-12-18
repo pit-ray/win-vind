@@ -36,7 +36,7 @@ SOFTWARE.
 
 namespace System
 {
-    bool init() noexcept ;
+    bool initialize() noexcept ;
 
     bool load_config() noexcept ;
     bool load_option_config() noexcept ;

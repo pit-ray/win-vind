@@ -4,14 +4,15 @@
 
 #include <iostream>
 
-#include "key_binder.hpp"
-#include "vkc_converter.hpp"
-#include "key_absorber.hpp"
-#include "path.hpp"
-#include "option_loader.hpp"
-#include "keybrd_eventer.hpp"
 #include "i_params.hpp"
+#include "key_absorber.hpp"
+#include "key_binder.hpp"
+#include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
+#include "option_loader.hpp"
+#include "path.hpp"
+#include "uia_global.hpp"
+#include "vkc_converter.hpp"
 
 #include "change_mode.hpp"
 #include "edi_change_mode.hpp"
@@ -21,7 +22,7 @@ namespace System
 {
     using namespace std ;
 
-    bool init() noexcept {
+    bool initialize() noexcept {
         try {
             //show mouse cursor
             //When Windows was started up, cursor is hidden until move mouse by default.
@@ -43,6 +44,8 @@ namespace System
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             VKCConverter::load_input_combination() ;
+
+            UIA::initialize() ;
 
             //lower keyboard hook
             KeyAbsorber::install_hook() ;
@@ -105,6 +108,9 @@ namespace System
 
     bool update() noexcept {
         try {
+            Sleep(5) ;
+            Utility::get_win_message() ;
+
             KeyBinder::call_matched_funcs() ;
             OptionLoader::call_active_funcs() ;
 

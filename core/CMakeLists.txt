@@ -28,6 +28,7 @@ add_library(Common STATIC
     src/common/simpl_text_selecter.cpp
     src/common/smart_clipboard.cpp
     src/common/text_analyzer.cpp
+    src/common/uia.cpp
     src/common/vkc_converter.cpp
 )
 enable_cotire(Common)
@@ -69,7 +70,7 @@ add_library(GUIBindings STATIC
     src/gui_bindings/select.cpp
     src/gui_bindings/switch_vdesktop.cpp
 )
-target_link_libraries(GUIBindings Psapi Common Kernel32)
+target_link_libraries(GUIBindings Psapi Common)
 enable_cotire(GUIBindings)
 
 add_library(Options

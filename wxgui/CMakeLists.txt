@@ -32,6 +32,7 @@ add_library(wxGUI STATIC
     ${SRCDIR}/settings_ctrls/choices_manager.cpp
     ${SRCDIR}/settings_ctrls/common_ctrl.cpp
     ${SRCDIR}/settings_ctrls/ctrl_core.cpp
+    ${SRCDIR}/settings_ctrls/easy_click_ctrl.cpp
     ${SRCDIR}/settings_ctrls/move_cursor_ctrl.cpp
     ${SRCDIR}/settings_ctrls/options_ctrl.cpp
     ${SRCDIR}/settings_ctrls/scroll_page_ctrl.cpp

@@ -1,4 +1,4 @@
-#include "virtual_cmd_line_ctrl.hpp"
+#include "easy_click_ctrl.hpp"
 
 #include <unordered_map>
 #include <sstream>
@@ -21,7 +21,7 @@
 
 namespace wxGUI
 {
-    struct VirtualCmdLineCtrl::Impl {
+    struct EasyClcikCtrl::Impl {
         std::unordered_map<std::string, wxSpinCtrl*> scs ;
         std::unordered_map<std::string, wxColourPickerCtrl*> cpcs ;
         std::unordered_map<std::string, wxSlider*> sls ;
@@ -68,7 +68,7 @@ namespace wxGUI
         Impl& operator=(const Impl&) = delete ;
     } ;
 
-    VirtualCmdLineCtrl::VirtualCmdLineCtrl(wxWindow* parent, wxWindowID id)
+    EasyClcikCtrl::EasyClcikCtrl(wxWindow* parent, wxWindowID id)
     : CtrlCore(parent, id),
       pimpl(std::make_unique<Impl>(this))
     {
@@ -107,45 +107,33 @@ namespace wxGUI
             ) ;
             root_sizer->Add(pimpl->sls[name], flags) ;
         } ;
-        auto create_ch = [this, root_sizer, &flags](const auto obj_name) {
-            pimpl->lbs[obj_name] = new wxStaticText(this, wxID_ANY, obj_name) ;
-            root_sizer->Add(pimpl->lbs[obj_name], flags) ;
 
-            root_sizer->Add(pimpl->chm.create(obj_name), flags) ;
-        } ;
-
-        create_sc("cmd_max_char", 5, 1024, 32) ;
-        create_sc("cmd_max_history_num", 1, 1024, 10) ;
-        create_sc("cmd_font_size", 5, 200, 20) ;
-        create_sl("cmd_font_weight", 0, 1000, 600) ;
-        create_cp("cmd_font_color") ;
-        create_cp("cmd_font_bkcolor") ;
-        create_sc("cmd_font_extra", 0, 100, 3) ;
-        create_ch("cmd_pos") ;
-        create_sc("cmd_xmargin", -500, 500, 32) ;
-        create_sc("cmd_ymargin", -500, 500, 64) ;
-        create_sc("cmd_fadeout_time", 0, 3600, 5) ;
+        create_sc("easy_click_font_size", 5, 200, 14) ;
+        create_sl("easy_click_font_weight", 0, 1000, 500) ;
+        create_cp("easy_click_font_color") ;
+        create_cp("easy_click_font_bkcolor") ;
+        create_sc("easy_click_matching_color_decay", 0, 255, 100) ;
 
         SetSizerAndFit(root_sizer) ;
     }
-    VirtualCmdLineCtrl::~VirtualCmdLineCtrl() noexcept = default ;
+    EasyClcikCtrl::~EasyClcikCtrl() noexcept = default ;
 
-    void VirtualCmdLineCtrl::translate() noexcept {
+    void EasyClcikCtrl::translate() noexcept {
         pimpl->update_labels() ;
         pimpl->chm.update_config() ;
     }
 
-    void VirtualCmdLineCtrl::do_load_config() noexcept {
+    void EasyClcikCtrl::do_load_config() noexcept {
         pimpl->load_config_common(ioParams::get_vi, ioParams::get_vs) ;
         pimpl->chm.load_config() ;
     }
 
-    void VirtualCmdLineCtrl::do_load_config_default() noexcept {
+    void EasyClcikCtrl::do_load_config_default() noexcept {
         pimpl->load_config_common(ioParams::Default::get_vi, ioParams::Default::get_vs) ;
         pimpl->chm.load_config_default() ;
     }
 
-    void VirtualCmdLineCtrl::do_save_config() noexcept {
+    void EasyClcikCtrl::do_save_config() noexcept {
         for(const auto& p : pimpl->scs) {
             ioParams::set(p.first, p.second->GetValue()) ;
         }
@@ -172,7 +160,7 @@ namespace wxGUI
         pimpl->chm.save_config() ;
     }
 
-    const wxString VirtualCmdLineCtrl::name() noexcept {
-        return UITrans::trans("notify/preferences/settings/virtual_cmdline") ;
+    const wxString EasyClcikCtrl::name() noexcept {
+        return UITrans::trans("notify/preferences/settings/easy_click") ;
     }
 }

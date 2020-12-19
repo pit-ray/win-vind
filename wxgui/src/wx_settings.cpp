@@ -16,6 +16,7 @@
 #include "move_cursor_ctrl.hpp"
 #include "scroll_page_ctrl.hpp"
 #include "virtual_cmd_line_ctrl.hpp"
+#include "easy_click_ctrl.hpp"
 
 #include "msg_logger.hpp"
 #include "wx_constant.hpp"
@@ -84,7 +85,8 @@ namespace wxGUI
             new OptionsCtrl(this),
             new MoveCursorCtrl(this),
             new ScrollPageCtrl(this),
-            new VirtualCmdLineCtrl(this)
+            new VirtualCmdLineCtrl(this),
+            new EasyClcikCtrl(this)
         } ;
         pimpl->ctrls = std::move(_init) ;
 

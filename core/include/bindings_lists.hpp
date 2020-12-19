@@ -110,6 +110,7 @@ namespace BindingsLists {
             OpenNewCurrentWindow::create(),
             OpenNewTab::create(),
             OpenOtherFile::create(),
+            OpenStartMenu::create(),
             ReloadCurrentWindow::create(),
             SCRedo::create(),
             SCUndo::create(),

@@ -112,4 +112,6 @@ struct OpenNewTab : public BindedFuncWithCreator<OpenNewTab>
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
+
+
 #endif

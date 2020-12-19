@@ -160,3 +160,21 @@ void StartExplorer::sprocess(
     Sleep(100) ; //wait until select window by OS.
     Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }
+
+//OpenStartMenu
+const std::string OpenStartMenu::sname() noexcept
+{
+    return "open_start_menu" ;
+}
+
+void OpenStartMenu::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+    KeybrdEventer::pushup(VKC_LWIN) ;
+    Sleep(100) ; //wait until select window by OS.
+    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+}

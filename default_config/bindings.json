@@ -754,6 +754,19 @@
         "ja": "エクスプローラーを起動"
     },
     {
+        "name": "open_start_menu",
+        "guin": ["<win>"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["win"],
+        "en": "Open Start Menu",
+        "ja": "スタートメニューを開く"
+    },
+    {
         "name": "start_any_app",
         "guin": [],
         "guii": [],

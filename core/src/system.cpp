@@ -2,27 +2,83 @@
 
 #include <windows.h>
 
+#include <memory>
 #include <iostream>
+#include <cstring>
 
 #include "i_params.hpp"
+#include "interval_timer.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
+#include "msg_logger.hpp"
 #include "option_loader.hpp"
 #include "path.hpp"
+#include "shared/winerror.h"
+#include "um/errhandlingapi.h"
+#include "um/memoryapi.h"
+#include "um/winnt.h"
 #include "vkc_converter.hpp"
 
 #include "change_mode.hpp"
 #include "edi_change_mode.hpp"
 #include "mywindow_ctrl.hpp"
 
+#define MEMORY_MAPPED_FILE_NAME ("qvCI980BTny1ZSFfY76sO71w7MtLTzuPVd6RQs47_p7Kn4SJZ7cnaH8QwPS901VFd2N5WuxECvx7N3hP7caWK44ZSq6")
+#define MEMORY_MAPPED_FILE_SIZE (1024)
+
 namespace System
 {
     using namespace std ;
 
-    bool initialize() noexcept {
+    auto delete_handle = [] (void* handle) {
+        CloseHandle(handle) ;
+    } ;
+    static std::unique_ptr<void, decltype(delete_handle)> g_map(NULL, delete_handle) ;
+
+    auto unmap_view = [] (void* view) {
+        UnmapViewOfFile(view) ;
+    } ;
+    inline static auto get_memmapped_file(HANDLE map) {
+        return std::unique_ptr<void, decltype(unmap_view)>(
+                MapViewOfFile(map, FILE_MAP_WRITE, 0, 0, 0), unmap_view) ;
+    }
+
+    bool initialize(const std::string func_name) noexcept {
         try {
+            auto created_map = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
+            if(GetLastError() == ERROR_ALREADY_EXISTS) {
+                if(!func_name.empty()) {
+                    auto hmap = OpenFileMappingA(FILE_MAP_WRITE, FALSE, MEMORY_MAPPED_FILE_NAME) ;
+                    if(hmap == NULL) {
+                        return false ;
+                    }
+
+                    auto data = get_memmapped_file(hmap) ;
+                    if(data != NULL) {
+                        std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
+                    }
+                }
+                return false ;
+            }
+
+            Logger::initialize() ;
+
+            if(created_map == NULL) {
+                ERROR_PRINT("Could not create memory-mapped file.") ;
+                return false ;
+            }
+
+            g_map.reset(created_map) ;
+
+            auto data = get_memmapped_file(g_map.get()) ;
+            if(data.get() == NULL) {
+                ERROR_PRINT("Could not open memory-mapped file.") ;
+                return false ;
+            }
+            std::memset(data.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
+
             //show mouse cursor
             //When Windows was started up, cursor is hidden until move mouse by default.
             //Thus, send lowlevel move event in order to show cursor.
@@ -59,6 +115,12 @@ namespace System
                 {"edi_insert", Change2EdiInsert::create()}
             } ;
             cm.at(iParams::get_s("initial_mode"))->process(true, 1) ;
+
+            if(!func_name.empty()) {
+                auto func = KeyBinder::find_func_byname(func_name) ;
+                func->process(true, 1, nullptr, nullptr) ;
+            }
+
             return true ;
         }
         catch(const std::exception& e) {
@@ -105,8 +167,29 @@ namespace System
 
     bool update() noexcept {
         try {
+            static IntervalTimer timer{5000'000} ; //500 ms
             Sleep(5) ;
             Utility::get_win_message() ;
+
+            if(timer.is_passed()) {
+                //check if received messages from another win-vind.
+                auto mmf = get_memmapped_file(g_map.get()) ;
+                if(mmf.get() != NULL) {
+                    std::string name(reinterpret_cast<const char*>(mmf.get())) ;
+                    if(!name.empty()) {
+                        auto func = KeyBinder::find_func_byname(name) ;
+                        if(func != nullptr) {
+                            func->process(true, 1, nullptr, nullptr) ;
+                        }
+                        else {
+                            ERROR_PRINT(name + " is invalid function name.") ;
+                        }
+
+                        std::memset(mmf.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
+                    }
+                    return true ;
+                }
+            }
 
             KeyBinder::call_matched_funcs() ;
             OptionLoader::call_active_funcs() ;

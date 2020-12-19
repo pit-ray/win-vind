@@ -8,6 +8,8 @@
 #include <wx/taskbar.h>
 #include <wx/msgdlg.h>
 #include <wx/thread.h>
+#include <wx/cmdline.h>
+#include <wx/string.h>
 #include "enable_gcc_warning.hpp"
 
 #include "utility.hpp"
@@ -35,6 +37,19 @@ namespace wxGUI
         {}
     } ;
 
+    static std::string g_function_name{} ;
+
+    void App::OnInitCmdLine(wxCmdLineParser& parser) {
+        parser.AddOption(wxT("f"), wxT("func"), wxT("FunctionName"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL) ;
+    }
+    bool App::OnCmdLineParsed(wxCmdLineParser& parser) {
+        wxString fn ;
+        if(parser.Found(wxT("func"), &fn)) {
+            g_function_name = fn.ToStdString() ;
+        }
+        return true ;
+    }
+
     bool App::OnInit() {
         if(!wxApp::OnInit()) {
             return false ;
@@ -44,7 +59,7 @@ namespace wxGUI
             wxMessageBox("not supported System Tray", "Warning", wxOK | wxICON_EXCLAMATION) ;
         }
 
-        if(!System::initialize()) {
+        if(!System::initialize(g_function_name)) {
             ERROR_PRINT("failed initializing system") ;
             return false ;
         }

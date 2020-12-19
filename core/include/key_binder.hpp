@@ -25,6 +25,10 @@ namespace KeyBinder
             const bool full_scan=false, //The cost for computing is high.
             ModeManager::Mode mode=ModeManager::get_mode()) ;
 
+    const BindedFunc::shp_t find_func_byname(
+            const std::string& name,
+            ModeManager::Mode mode=ModeManager::get_mode()) ;
+
     void load_config() ;
     void call_matched_funcs() ;
 }

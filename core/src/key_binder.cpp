@@ -364,6 +364,19 @@ namespace KeyBinder
         return nullptr ;
     }
 
+    const BindedFunc::shp_t find_func_byname(
+            const std::string& name,
+            ModeManager::Mode mode) {
+
+            for(const auto& func : g_func_list) {
+                if(func->name() == name) {
+                    return func ;
+                }
+            }
+
+            return nullptr ;
+    }
+
     void call_matched_funcs() {
         using Utility::remove_from_back ;
 

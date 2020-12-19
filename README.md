@@ -55,6 +55,9 @@ It has differences from the latest release.
 - Supported file-properties of the installer
 - Changed methods of the key eventer to faster one.
 - If a command called by `!*` is not existed, will print out message.
+- Prohibited multiple running of win-vind.
+- add a CUI-based feature to call BindedFunc from another win-vind with the inter-process communication.  
+  (ex: `$./win-vind --func change_to_normal`)
 
 ### New
 #### Options

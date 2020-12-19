@@ -49,12 +49,13 @@ namespace Utility
         }
     }
 
-    void get_win_message() noexcept {
-        static MSG msg ;
+    MSG get_win_message() noexcept {
+        MSG msg ;
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg) ;
             DispatchMessage(&msg) ;
         }
+        return msg ;
     }
 
     rgb_t hex2rgb(std::string hex) {

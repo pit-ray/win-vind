@@ -35,7 +35,7 @@ namespace Utility
 
     void replace_all(std::string& s, const std::string from, const std::string to) ;
 
-    void get_win_message() noexcept ;
+    MSG get_win_message() noexcept ;
 
     template <typename T>
     void remove_from_top(std::vector<T>& v, const std::size_t num_from_top) {

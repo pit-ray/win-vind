@@ -77,6 +77,7 @@ add_library(Options
     src/options/autotrack_popup.cpp
     src/options/dedicate_to_window.cpp
     src/options/virtual_cmd_line.cpp
+    src/options/suppress_for_vim.cpp
 )
 target_link_libraries(Options Common)
 enable_cotire(Options)

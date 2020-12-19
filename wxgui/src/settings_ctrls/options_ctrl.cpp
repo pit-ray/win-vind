@@ -50,6 +50,7 @@ namespace wxGUI
         create_cb("autotrack_popup") ;
         create_cb("virtual_cmd_line") ;
         create_cb("dedicate_to_window") ;
+        create_cb("suppress_for_vim") ;
         create_cb("char_cache_enable") ;
 
         SetSizerAndFit(root_sizer) ;

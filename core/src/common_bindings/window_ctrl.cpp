@@ -14,6 +14,7 @@
 #include "keybrd_eventer.hpp"
 #include "move_cursor.hpp"
 #include "msg_logger.hpp"
+#include "um/winuser.h"
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
 
@@ -167,14 +168,12 @@ const string SnapCurrentWindow2Left::sname() noexcept
 
 void SnapCurrentWindow2Left::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        KeybrdEventer::pushup(VKC_LWIN, VKC_LEFT) ;
-    }
+    KeybrdEventer::pushup(VKC_LWIN, VKC_LEFT) ;
 }
 
 
@@ -186,14 +185,12 @@ const string SnapCurrentWindow2Right::sname() noexcept
 
 void SnapCurrentWindow2Right::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        KeybrdEventer::pushup(VKC_LWIN, VKC_RIGHT) ;
-    }
+    KeybrdEventer::pushup(VKC_LWIN, VKC_RIGHT) ;
 }
 
 

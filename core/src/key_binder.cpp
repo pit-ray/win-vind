@@ -57,11 +57,11 @@ namespace KeyBinder
         {Mode::EdiNormal,       "edin"},
         {Mode::EdiInsert,       "edii"},
         {Mode::EdiVisual,       "ediv"},
-        {Mode::EdiLineVisual,   "edivl"}
+        {Mode::EdiLineVisual,   "edivl"},
     } ;
 
     template <typename T>
-    inline const auto _parse_strcmd(T&& cmdstr) {
+    inline auto _parse_strcmd(T&& cmdstr) {
         auto get_specode = [](std::string k) {
             if(k == "space")   return ' ' ;
             if(k == "hbar")    return '-' ;

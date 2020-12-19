@@ -10,6 +10,7 @@
 #include "autotrack_popup.hpp"
 #include "dedicate_to_window.hpp"
 #include "virtual_cmd_line.hpp"
+#include "suppress_for_vim.hpp"
 
 
 namespace OptionLoader
@@ -18,7 +19,8 @@ namespace OptionLoader
     vector<op::shp_t> g_vpop {
         AutotrackPopup::create(),
         VirtualCmdLine::create(),
-        Dedicate2Window::create()
+        Dedicate2Window::create(),
+        SuppressForVim::create()
     } ;
 
     void load_config()

@@ -61,7 +61,8 @@ It has differences from the latest release.
 
 ### New
 #### Options
-- Char Cache Option for faster edit.
+- `Char Cache Option`; for faster edit.
+- `Suppress For Vim`; in order to disable win-vind in Vim.
 
 #### Functions
 - Change Lines And Start Insert (`c->c`, `S`)
@@ -70,7 +71,7 @@ It has differences from the latest release.
 - Delete Text by Motion (`d{Motion}`)
 - Change Text by Motion (`c{Motion}`)
 - Start Explorer (`ex`, `explorer`)
-- Open Windows Start Menu (`Win`)
+- Open Windows Start Menu (`<Win>`)
 - Switch Case of characters (`~`)
 - EasyClick; feature like EasyMotion or Vimium. (`F`)
 

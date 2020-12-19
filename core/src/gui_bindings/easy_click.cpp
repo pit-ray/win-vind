@@ -314,11 +314,15 @@ namespace EsyClk
         scan_object_from_hwnd(hwnd) ;
 
         //Scan GUI object in child window
-        EnumChildWindows(hwnd, EnumChildProc, 0) ;
+        if(!EnumChildWindows(hwnd, EnumChildProc, 0)) {
+            return ;
+        }
 
         //enumerate all window owned by the foreground window process.
         DWORD procid ;
-        GetWindowThreadProcessId(hwnd, &procid) ;
+        if(!GetWindowThreadProcessId(hwnd, &procid)) {
+            return ;
+        }
 
         TargetWindowInfo info(hwnd, procid) ;
 
@@ -546,10 +550,13 @@ namespace EsyClk
                 throw RUNTIME_EXCEPT("SetTextCharacterExtra") ;
             }
 
-            TextOutA(hdc.get(),
+            if(!TextOutA(hdc.get(),
                     point.x() - delta,
                     point.y() - delta,
-                    str.c_str(), lstrlenA(str.c_str())) ;
+                    str.c_str(), lstrlenA(str.c_str()))) {
+
+                throw RUNTIME_EXCEPT("Could not draw label. TextOutA") ;
+            }
         } ;
 
         for(std::size_t i = 0 ; i < points.size() ; i ++) {

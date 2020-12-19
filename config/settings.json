@@ -298,6 +298,11 @@
         "en": "Virtual Command Line",
         "ja": "仮想コマンドライン"
     },
+    "suppress_for_vim": {
+        "value": true,
+        "en": "Suppress For Vim",
+        "ja": "Vim用に機能を抑制"
+    },
     "easy_click_font_size": {
         "value": 14,
         "en": "EasyClick Font Size",

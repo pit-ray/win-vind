@@ -310,3 +310,21 @@ void Switch2RightTab::sprocess(
         KeybrdEventer::pushup(VKC_LCTRL, VKC_TAB) ;
     }
 }
+
+//OpenNewTab
+const string OpenNewTab::sname() noexcept
+{
+    return "open_new_tab" ;
+}
+
+void OpenNewTab::sprocess(
+        const bool first_call,
+        unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_T) ;
+    }
+}

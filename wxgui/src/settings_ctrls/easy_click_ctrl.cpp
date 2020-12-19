@@ -12,8 +12,6 @@
 #include <wx/stattext.h>
 #include "enable_gcc_warning.hpp"
 
-#include "choices_manager.hpp"
-
 #include "wx_constant.hpp"
 #include "io_params.hpp"
 #include "ui_translator.hpp"
@@ -25,14 +23,12 @@ namespace wxGUI
         std::unordered_map<std::string, wxSpinCtrl*> scs ;
         std::unordered_map<std::string, wxColourPickerCtrl*> cpcs ;
         std::unordered_map<std::string, wxSlider*> sls ;
-        ChoicesManager chm ;
         std::unordered_map<std::string, wxStaticText*> lbs ;
 
-        explicit Impl(wxWindow* const self)
+        explicit Impl(wxWindow* const UNUSED(self))
         : scs(),
           cpcs(),
           sls(),
-          chm(self),
           lbs()
         {}
 
@@ -60,12 +56,6 @@ namespace wxGUI
                 p.second->SetColour(hex2wxColour(get_vs_func(p.first))) ;
             }
         }
-
-        ~Impl() noexcept = default ;
-        Impl(Impl&&)                 = delete ;
-        Impl& operator=(Impl&&)      = delete ;
-        Impl(const Impl&)            = delete ;
-        Impl& operator=(const Impl&) = delete ;
     } ;
 
     EasyClcikCtrl::EasyClcikCtrl(wxWindow* parent, wxWindowID id)
@@ -120,17 +110,14 @@ namespace wxGUI
 
     void EasyClcikCtrl::translate() noexcept {
         pimpl->update_labels() ;
-        pimpl->chm.update_config() ;
     }
 
     void EasyClcikCtrl::do_load_config() noexcept {
         pimpl->load_config_common(ioParams::get_vi, ioParams::get_vs) ;
-        pimpl->chm.load_config() ;
     }
 
     void EasyClcikCtrl::do_load_config_default() noexcept {
         pimpl->load_config_common(ioParams::Default::get_vi, ioParams::Default::get_vs) ;
-        pimpl->chm.load_config_default() ;
     }
 
     void EasyClcikCtrl::do_save_config() noexcept {
@@ -156,8 +143,6 @@ namespace wxGUI
             auto&& chex = to_hex(col.Red()) + to_hex(col.Green()) + to_hex(col.Blue()) ;
             ioParams::set(p.first, std::move(chex)) ;
         }
-
-        pimpl->chm.save_config() ;
     }
 
     const wxString EasyClcikCtrl::name() noexcept {

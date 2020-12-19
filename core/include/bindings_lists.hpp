@@ -108,6 +108,7 @@ namespace BindingsLists {
             MoveRight::create(),
             MoveUp::create(),
             OpenNewCurrentWindow::create(),
+            OpenNewTab::create(),
             OpenOtherFile::create(),
             ReloadCurrentWindow::create(),
             SCRedo::create(),

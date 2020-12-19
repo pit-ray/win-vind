@@ -89,7 +89,9 @@ namespace Utility
     }
 }
 
+#ifndef UNUSED
 #define UNUSED(identifier) /* identifier */
+#endif
 
 //exception class with scope identifier
 #if defined(__GNUC__)

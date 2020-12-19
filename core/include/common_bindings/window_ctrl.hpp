@@ -102,4 +102,14 @@ struct Switch2RightTab : public BindedFuncWithCreator<Switch2RightTab>
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
+
+struct OpenNewTab : public BindedFuncWithCreator<OpenNewTab>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
 #endif

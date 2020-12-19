@@ -559,6 +559,19 @@
         "ja": "右のタブへ切替"
     },
     {
+        "name": "open_new_tab",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["tabnew"],
+        "en": "Open New Tab",
+        "ja": "新しいタブを開く"
+    },
+    {
         "name": "search_pattern",
         "guin": ["/", "?"],
         "guii": [],

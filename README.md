@@ -65,6 +65,7 @@ It has differences from the latest release.
 - Change Text by Motion (`c{Motion}`)
 - Start Explorer (`ex`, `explorer`)
 - Open Windows Start Menu (`Win`)
+- Switch Case of characters (`~`)
 - EasyClick; feature like EasyMotion or Vimium. (`F`)
 
 #### Options

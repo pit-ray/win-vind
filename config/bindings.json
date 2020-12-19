@@ -1313,6 +1313,19 @@
         "ja": "置換モード"
     },
     {
+        "name": "edi_switch_char_case",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": ["~"],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [],
+        "en": "Switch Char Case",
+        "ja": "大文字と小文字を切替"
+    },
+    {
         "name": "edi_delete_motion",
         "guin": [],
         "guii": [],

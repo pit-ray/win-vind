@@ -23,4 +23,14 @@ struct EdiNReplaceSequence : public BindedFuncWithCreator<EdiNReplaceSequence>
     static const std::string sname() noexcept ;
 } ;
 
+struct EdiSwitchCharCase : public BindedFuncWithCreator<EdiSwitchCharCase>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
 #endif

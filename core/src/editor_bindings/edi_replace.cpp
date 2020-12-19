@@ -6,8 +6,10 @@
 #include "key_absorber.hpp"
 #include "keybrd_eventer.hpp"
 #include "system.hpp"
+#include "text_analyzer.hpp"
 #include "utility.hpp"
 #include "virtual_cmd_line.hpp"
+#include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
 
 namespace EREPUtility {
@@ -142,4 +144,46 @@ void EdiNReplaceSequence::sprocess(
     VirtualCmdLine::clear() ;
     VirtualCmdLine::refresh() ;
     VirtualCmdLine::msgout("-- EDI NORMAL --") ;
+}
+
+//EdiSwitchCharCase
+const std::string EdiSwitchCharCase::sname() noexcept
+{
+    return "edi_switch_char_case" ;
+}
+void EdiSwitchCharCase::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+
+    auto res = TextAnalyzer::get_selected_text([&repeat_num] {
+            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+                KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+            }
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+        }) ;
+
+    for(char c : res.str) {
+        if(c >= 'a' && c <= 'z') {
+            KeybrdEventer::pushup(VKC_LSHIFT, VKCConverter::get_vkc(c)) ;
+        }
+        else if(c >= 'A' && c <= 'Z') {
+            static constexpr char delta = 'a' - 'A' ;
+            KeybrdEventer::pushup(VKCConverter::get_vkc(c + delta)) ;
+        }
+        else {
+            unsigned char vkc = 0 ;
+            if((vkc = VKCConverter::get_vkc(c))) {
+                KeybrdEventer::pushup(vkc) ;
+                continue ;
+            }
+            else if((vkc = VKCConverter::get_shifted_vkc(c))) {
+                KeybrdEventer::pushup(VKC_LSHIFT, vkc) ;
+                continue ;
+            }
+        }
+    }
 }

@@ -89,6 +89,7 @@ namespace BindingsLists {
             EdiNRemoveEOL::create(),
             EdiNReplaceChar::create(),
             EdiNReplaceSequence::create(),
+            EdiSwitchCharCase::create(),
             EnableTargetingOfDedicate2Window::create(),
             ExitConfigWindow::create(),
             Jump2ActiveWindow::create(),

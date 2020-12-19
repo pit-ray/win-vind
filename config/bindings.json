@@ -541,7 +541,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": [],
+        "cmd": ["tabprevious"],
         "en": "Switch to Left Tab",
         "ja": "左のタブへ切替"
     },
@@ -554,7 +554,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": [],
+        "cmd": ["tabnext"],
         "en": "Switch to Right Tab",
         "ja": "右のタブへ切替"
     },
@@ -710,7 +710,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["q", "qa", "q!", "qa!"],
+        "cmd": ["q", "qa", "q!", "qa!", "tabclose"],
         "en": "Close Document(Tab)",
         "ja": "ドキュメント(タブ)を閉じる"
     },
@@ -726,6 +726,19 @@
         "cmd": ["sh", "shell", "terminal", "term"],
         "en": "Start Shell",
         "ja": "ターミナル起動"
+    },
+    {
+        "name": "start_explorer",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["ex", "explorer"],
+        "en": "Start Explorer",
+        "ja": "エクスプローラーを起動"
     },
     {
         "name": "start_any_app",
@@ -775,7 +788,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["find", "e", "e!", "open", "edit", "edit!"],
+        "cmd": ["find", "open", "e", "e!", "edit", "edit!"],
         "en": "Open Other File",
         "ja": "ファイルを開く"
     },

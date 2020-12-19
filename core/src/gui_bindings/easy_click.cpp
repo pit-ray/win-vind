@@ -1,16 +1,16 @@
 #include "easy_click.hpp"
 
+#include "i_params.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
+#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
+#include "mouse_eventer.hpp"
 #include "msg_logger.hpp"
 #include "uia.hpp"
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
-#include "key_logger.hpp"
-#include "mouse_eventer.hpp"
-#include "i_params.hpp"
 
 #include <windows.h>
 #include <wingdi.h>

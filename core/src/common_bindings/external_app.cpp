@@ -12,10 +12,10 @@
 
 #include "jump_cursor.hpp"
 #include "key_logger.hpp"
+#include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
 #include "utility.hpp"
-
 #include "virtual_cmd_line.hpp"
 
 namespace ExAppUtility
@@ -138,4 +138,25 @@ void StartAnyApp::sprocess(
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
     }
+}
+
+
+//StartExplorer
+const std::string StartExplorer::sname() noexcept
+{
+    return "start_explorer" ;
+}
+
+void StartExplorer::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+    //_create_process("explorer") ;
+    KeybrdEventer::pushup(VKC_LWIN, VKC_E) ;
+
+    Sleep(100) ; //wait until select window by OS.
+    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }

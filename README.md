@@ -62,6 +62,7 @@ It has differences from the latest release.
 - Change Text Until EOL And Start Insert (`C`)
 - Delete Text by Motion (`d{Motion}`)
 - Change Text by Motion (`c{Motion}`)
+- Start Explorer (`ex`, `explorer`)
 - EasyClick; feature like EasyMotion or Vimium. (`F`)
 
 ### Bugs

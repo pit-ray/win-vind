@@ -129,6 +129,7 @@ namespace BindingsLists {
             SnapCurrentWindow2Left::create(),
             SnapCurrentWindow2Right::create(),
             StartAnyApp::create(),
+            StartExplorer::create(),
             StartShell::create(),
             Switch2LeftTab::create(),
             Switch2RightTab::create(),

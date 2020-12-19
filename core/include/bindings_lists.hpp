@@ -59,6 +59,7 @@ namespace BindingsLists {
             DisableTargetingOfDedicate2Window::create(),
             EasyClick::create(),
             EdiCopyHighlightText::create(),
+            EdiCopyMotion::create(),
             EdiDeleteCharsAndStartInsert::create(),
             EdiDeleteHighlightText::create(),
             EdiDeleteLinesAndStartInsert::create(),

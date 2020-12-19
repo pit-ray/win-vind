@@ -57,13 +57,18 @@ It has differences from the latest release.
 - If a command called by `!*` is not existed, will print out message.
 
 ### New
+#### Functions
 - Change Lines And Start Insert (`c->c`, `S`)
 - Change Characters And Start Insert (`s`)
 - Change Text Until EOL And Start Insert (`C`)
 - Delete Text by Motion (`d{Motion}`)
 - Change Text by Motion (`c{Motion}`)
 - Start Explorer (`ex`, `explorer`)
+- Open Windows Start Menu (`Win`)
 - EasyClick; feature like EasyMotion or Vimium. (`F`)
+
+#### Options
+- Char Cache Option for faster edit.
 
 ### Bugs
 - Nothing

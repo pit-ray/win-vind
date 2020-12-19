@@ -7,6 +7,7 @@
 #include <iostream> //for debug
 
 #include "edi_change_mode.hpp"
+#include "i_params.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
 #include "key_logger.hpp"
@@ -21,7 +22,7 @@
 #include "utility.hpp"
 #include "vkc_converter.hpp"
 
-namespace ECBUtility
+namespace EdiEdit
 {
     enum class _RegisteredType : unsigned char {
         None,
@@ -35,7 +36,7 @@ namespace ECBUtility
     //If the line has only null characters, it does not select.
     //  <EOL mark exists> [select] NONE    [clipboard] null characters with EOL.    (neighborhoods of LSB are 0x00)
     //  <plain text>      [select] NONE    [clipboard] null characters without EOL. (neighborhoods of LSB are 0x?0)
-    inline static bool _select_line_until_EOL(const TextAnalyzer::SelRes* const exres) {
+    inline static bool select_line_until_EOL(const TextAnalyzer::SelRes* const exres) {
         using namespace KeybrdEventer ;
         if(exres != nullptr) {
             pushup(VKC_LSHIFT, VKC_END) ;
@@ -71,6 +72,60 @@ namespace ECBUtility
         scb.set("") ;
         scb.close() ;
     }
+
+    //return: is succecced?
+    inline static bool select_by_motion(unsigned int repeat_num, KeyLogger* parent_vkclgr) {
+        using Utility::remove_from_back ;
+        using namespace ModeManager ;
+        KeyLogger lgr ;
+
+        for(auto key : KeyAbsorber::get_pressed_list())
+            KeyAbsorber::release_vertually(key) ;
+
+        while(true) {
+            Sleep(30) ;
+            Utility::get_win_message() ;
+
+            if(!KyLgr::log_as_vkc(lgr)) {
+                remove_from_back(lgr, 1) ;
+                continue ;
+            }
+
+            KyLgr::log_as_vkc(*parent_vkclgr) ;
+
+            if(KeyBinder::is_invalid_log(lgr,
+                        KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
+                remove_from_back(*parent_vkclgr, 1) ;
+                remove_from_back(lgr, 1) ;
+                continue ;
+            }
+
+            //The parent logger is stronger than the child logger.
+            //For example, the child BindedFunc calling this function is binded with 'c{motion}'
+            //and 'cc' are bindings EdiDeleteLinesAndStartInsert.
+            //In this case, if a child process has a message loop, we must consider the parent logger by full scanning.
+            if(auto func = KeyBinder::find_func(*parent_vkclgr, nullptr, true)) {
+                if(func->is_callable()) {
+                    func->process(true, repeat_num, parent_vkclgr) ;
+                    return false ;
+                }
+            }
+
+            if(auto func = KeyBinder::find_func(lgr, nullptr, true,
+                        ModeManager::Mode::EdiLineVisual)) {
+                if(!func->is_for_moving_caret()) return false ;
+
+                if(func->is_callable()) {
+                    change_mode(Mode::EdiLineVisual) ;
+                    func->process(true, repeat_num, &lgr) ;
+                    return true ;
+                }
+            }
+            else {
+                return false ;
+            }
+        }
+    }
 }
 
 
@@ -85,7 +140,7 @@ void EdiCopyHighlightText::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    using namespace ECBUtility ;
+    using namespace EdiEdit ;
     using namespace ModeManager ;
 
     if(!first_call) return ;
@@ -97,8 +152,8 @@ void EdiCopyHighlightText::sprocess(
     else
         g_rgtype = _RegisteredType::Chars ;
 
+    KeybrdEventer::pushup(VKC_LEFT) ; //unselect, but this is for the time being
     Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
-    SimplTextSelecter::unselect() ;
 }
 
 
@@ -124,13 +179,31 @@ void EdiNCopyLine::sprocess(
     for(unsigned int i = 1 ; i < repeat_num ; i ++)
         pushup(VKC_LSHIFT, VKC_DOWN) ;
 
-    if(!ECBUtility::_select_line_until_EOL(exres))
-        ECBUtility::_copy_null() ;
+    if(!EdiEdit::select_line_until_EOL(exres))
+        EdiEdit::_copy_null() ;
 
     pushup(VKC_LCTRL, VKC_C) ;
     pushup(VKC_END) ;
 
-    ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Lines ;
+    EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Lines ;
+}
+
+//EdiCopyMotion
+const std::string EdiCopyMotion::sname() noexcept
+{
+    return "edi_copy_motion" ;
+}
+void EdiCopyMotion::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* parent_vkclgr,
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+    if(EdiEdit::select_by_motion(repeat_num, parent_vkclgr)) {
+        EdiCopyHighlightText::sprocess(true, 1, nullptr, nullptr) ;
+        Change2EdiNormal::sprocess(true, 1, nullptr, nullptr, false) ;
+    }
 }
 
 //EdiNPasteAfter (EdiNormal or EdiVisual)
@@ -148,7 +221,7 @@ EdiNPasteAfter::EdiNPasteAfter(EdiNPasteAfter&&)            = default ;
 EdiNPasteAfter& EdiNPasteAfter::operator=(EdiNPasteAfter&&) = default ;
 
 
-namespace ECBUtility
+namespace EdiEdit
 {
 
     template <typename T1,
@@ -229,7 +302,7 @@ void EdiNPasteAfter::sprocess(
         pushup(VKC_LCTRL, VKC_V) ;
     } ;
 
-    ECBUtility::_common_put_proc(
+    EdiEdit::_common_put_proc(
             first_call, repeat_num, pimpl->ksr,
             put_chars_preproc, put_chars,
             put_lines_preproc, put_lines) ;
@@ -270,7 +343,7 @@ void EdiNPasteBefore::sprocess(
         pushup(VKC_UP) ;
         pushup(VKC_LCTRL, VKC_V) ;
     } ;
-    ECBUtility::_common_put_proc(
+    EdiEdit::_common_put_proc(
             first_call, repeat_num, pimpl->ksr,
             []{return;}, put_chars,
             []{return;}, put_lines) ;
@@ -288,34 +361,44 @@ void EdiDeleteHighlightText::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    using namespace ECBUtility ;
+    using namespace EdiEdit ;
     using namespace ModeManager ;
     using KeybrdEventer::pushup ;
 
     if(!first_call) return ;
 
     pushup(VKC_LCTRL, VKC_X) ;
-
     if(get_mode() == Mode::EdiLineVisual) {
         g_rgtype = _RegisteredType::Lines ;
     }
     else {
         g_rgtype = _RegisteredType::Chars ;
     }
+    Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
 }
 
 
-namespace ECBUtility
+namespace EdiEdit
 {
     inline static void delete_line_when_selecting() {
         using namespace ModeManager ;
         const auto mode = get_mode() ;
         if(mode == Mode::EdiVisual) {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-            g_rgtype = _RegisteredType::Chars ;
+            if(iParams::get_b("char_cache_enable")) {
+                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+                g_rgtype = _RegisteredType::Chars ;
+            }
+            else {
+                KeybrdEventer::pushup(VKC_DELETE) ;
+            }
         }
         else if(mode == Mode::EdiLineVisual) {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            if(iParams::get_b("char_cache_enable")) {
+                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            }
+            else {
+                KeybrdEventer::pushup(VKC_DELETE) ;
+            }
             KeybrdEventer::pushup(VKC_DELETE) ;
             g_rgtype = _RegisteredType::Lines ;
         }
@@ -350,14 +433,14 @@ void EdiNDeleteLine::sprocess(
     using KeybrdEventer::pushup ;
     auto to_head = [] {pushup(VKC_HOME) ;} ;
     auto del = [exres] {
-        if(!ECBUtility::_select_line_until_EOL(exres)) {
-            ECBUtility::_copy_null() ;
+        if(!EdiEdit::select_line_until_EOL(exres)) {
+            EdiEdit::_copy_null() ;
         }
         else {
-            pushup(VKC_LCTRL, VKC_X) ;
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Lines ;
             pushup(VKC_DELETE) ;
         }
-        ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Lines ;
     } ;
 
     if(repeat_num == 1) {
@@ -408,16 +491,22 @@ void EdiNDeleteLineUntilEOL::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr),
         const TextAnalyzer::SelRes* const exres) const
 {
-    using namespace ECBUtility ;
+    using namespace EdiEdit ;
     using KeybrdEventer::pushup ;
 
     auto del = [exres] {
-        if(!_select_line_until_EOL(exres))
+        if(!select_line_until_EOL(exres)) {
             _copy_null() ;
-        else
-            pushup(VKC_LCTRL, VKC_X) ;
-
-        g_rgtype = _RegisteredType::Chars ;
+        }
+        else {
+            if(iParams::get_b("char_cache_enable")) {
+                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+                g_rgtype = _RegisteredType::Chars ;
+            }
+            else {
+                KeybrdEventer::pushup(VKC_DELETE) ;
+            }
+        }
     } ;
 
     if(repeat_num == 1) {
@@ -465,10 +554,14 @@ void EdiNDeleteAfter::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto del = [] {
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-        //KeybrdEventer::pushup(VKC_DELETE) ;
-        ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Chars ;
+        if(iParams::get_b("char_cache_enable")) {
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Chars ;
+        }
+        else {
+            KeybrdEventer::pushup(VKC_DELETE) ;
+        }
     } ;
     if(repeat_num == 1) {
         if(first_call) {
@@ -512,11 +605,14 @@ void EdiNDeleteBefore::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto del = [] {
-        ECBUtility::delete_line_when_selecting() ;
-        KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-        //KeybrdEventer::pushup(VKC_BKSPACE) ;
-        ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Chars ;
+        if(iParams::get_b("char_cache_enable")) {
+            KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Chars ;
+        }
+        else {
+            KeybrdEventer::pushup(VKC_BKSPACE) ;
+        }
     } ;
 
     if(repeat_num == 1) {
@@ -536,64 +632,6 @@ void EdiNDeleteBefore::sprocess(
     }
 }
 
-namespace ECBUtility
-{
-    //return: Is deleted by motion
-    inline static bool _delete_by_motion(unsigned int repeat_num, KeyLogger* parent_vkclgr) {
-        using Utility::remove_from_back ;
-        using namespace ModeManager ;
-        KeyLogger lgr ;
-
-        for(auto key : KeyAbsorber::get_pressed_list())
-            KeyAbsorber::release_vertually(key) ;
-
-        while(true) {
-            Sleep(30) ;
-            Utility::get_win_message() ;
-
-            if(!KyLgr::log_as_vkc(lgr)) {
-                remove_from_back(lgr, 1) ;
-                continue ;
-            }
-
-            KyLgr::log_as_vkc(*parent_vkclgr) ;
-
-            if(KeyBinder::is_invalid_log(lgr,
-                        KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
-                remove_from_back(*parent_vkclgr, 1) ;
-                remove_from_back(lgr, 1) ;
-                continue ;
-            }
-
-            //The parent logger is stronger than the child logger.
-            //For example, the child BindedFunc calling this function is binded with 'c{motion}'
-            //and 'cc' are bindings EdiDeleteLinesAndStartInsert.
-            //In this case, if a child process has a message loop, we must consider the parent logger by full scanning.
-            if(auto func = KeyBinder::find_func(*parent_vkclgr, nullptr, true)) {
-                if(func->is_callable()) {
-                    func->process(true, repeat_num, parent_vkclgr) ;
-                    return false ;
-                }
-            }
-
-            if(auto func = KeyBinder::find_func(lgr, nullptr, true,
-                        ModeManager::Mode::EdiLineVisual)) {
-                if(!func->is_for_moving_caret()) return false ;
-
-                if(func->is_callable()) {
-                    change_mode(Mode::EdiLineVisual) ;
-                    func->process(true, repeat_num, &lgr) ;
-                    EdiDeleteHighlightText::sprocess(true, 1, nullptr, nullptr) ;
-                    Change2EdiNormal::sprocess(true, 1, nullptr, nullptr, false) ;
-                    return true ;
-                }
-            }
-            else {
-                return false ;
-            }
-        }
-    }
-}
 
 //EdiDeleteMotion
 const std::string EdiDeleteMotion::sname() noexcept
@@ -607,7 +645,9 @@ void EdiDeleteMotion::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    ECBUtility::_delete_by_motion(repeat_num, parent_vkclgr) ;
+    if(EdiEdit::select_by_motion(repeat_num, parent_vkclgr)) {
+        EdiDeleteHighlightText::sprocess(true, 1, nullptr, nullptr) ;
+    }
 }
 
 
@@ -623,8 +663,10 @@ void EdiDeleteMotionAndStartInsert::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    if(ECBUtility::_delete_by_motion(repeat_num, parent_vkclgr))
+    if(EdiEdit::select_by_motion(repeat_num, parent_vkclgr)) {
+        EdiDeleteHighlightText::sprocess(true, 1, nullptr, nullptr) ;
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
+    }
 }
 
 
@@ -682,8 +724,13 @@ void EdiDeleteCharsAndStartInsert::sprocess(
     for(unsigned int i = 0 ; i < repeat_num ; i ++)
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
 
-    KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-    ECBUtility::g_rgtype = ECBUtility::_RegisteredType::Chars ;
+    if(iParams::get_b("char_cache_enable")) {
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+        EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Chars ;
+    }
+    else {
+        KeybrdEventer::pushup(VKC_DELETE) ;
+    }
 
     Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
 }
@@ -727,19 +774,24 @@ void EdiDeleteUntilEOLAndStartInsert::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr),
         const TextAnalyzer::SelRes* const exres)
 {
-    using namespace ECBUtility ;
+    using namespace EdiEdit ;
 
     if(!first_call) return ;
 
     for(unsigned int i = 1 ; i < repeat_num ; i ++)
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN) ;
 
-    if(!_select_line_until_EOL(exres))
+    if(!select_line_until_EOL(exres)) {
         _copy_null() ;
-    else
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-
-    g_rgtype = _RegisteredType::Chars ;
-
+    }
+    else {
+        if(iParams::get_b("char_cache_enable")) {
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            g_rgtype = _RegisteredType::Chars ;
+        }
+        else {
+            KeybrdEventer::pushup(VKC_DELETE) ;
+        }
+    }
     Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
 }

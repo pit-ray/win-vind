@@ -50,5 +50,4 @@ struct EdiNJumpCaret2Line_DfEOF : public BindedFuncWithCreator<EdiNJumpCaret2Lin
 
     bool is_for_moving_caret() const noexcept override ;
 } ;
-
 #endif

@@ -4,6 +4,11 @@
         "ja": "ポップアップ自動追従",
         "value": false
     },
+    "char_cache_enable": {
+        "en": "Char Cache Enable",
+        "ja": "文字キャッシュ有効化",
+        "value": true
+    },
     "cmd_fadeout_time": {
         "en": "Fade Out Time (s)",
         "ja": "フェードアウト時間 (s)",
@@ -129,22 +134,22 @@
     "easy_click_font_bkcolor": {
         "en": "EasyClick Font Background Color",
         "ja": "EasyClickの背景の色",
-        "value": "552fec"
+        "value": "323232"
     },
     "easy_click_font_color": {
         "en": "EasyClick Font Color",
         "ja": "EasyClickのフォントの色",
-        "value": "d057e6"
+        "value": "c8c8c8"
     },
     "easy_click_font_size": {
         "en": "EasyClick Font Size",
         "ja": "EasyClickのフォントサイズ",
-        "value": 30
+        "value": 14
     },
     "easy_click_font_weight": {
         "en": "EasyClick Font Weight",
         "ja": "EasyClickのフォントの太さ",
-        "value": 1000
+        "value": 500
     },
     "easy_click_matching_color_decay": {
         "en": "EasyClick Matching Color Decay",

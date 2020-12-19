@@ -322,5 +322,10 @@
         "value": 100,
         "en": "EasyClick Matching Color Decay",
         "ja": "EasyClickの一致文字の色減衰"
+    },
+    "char_cache_enable": {
+        "value": false,
+        "en": "Char Cache Enable",
+        "ja": "文字キャッシュ有効化"
     }
 }

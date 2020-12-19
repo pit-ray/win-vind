@@ -2,12 +2,14 @@
 
 #include "interval_timer.hpp"
 #include "key_absorber.hpp"
+#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "keystroke_repeater.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "simpl_text_selecter.hpp"
 #include "utility.hpp"
+#include <stdexcept>
 
 using namespace std ;
 

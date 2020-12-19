@@ -1170,6 +1170,19 @@
         "ja": "行ヤンク"
     },
     {
+        "name": "edi_copy_motion",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": ["y"],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [],
+        "en": "Yank By Motion",
+        "ja": "移動でヤンク"
+    },
+    {
         "name": "edi_n_paste_after",
         "guin": [],
         "guii": [],
@@ -1309,7 +1322,7 @@
         "ediv": [],
         "edivl": [],
         "cmd": [],
-        "en": "Delete Text by Motion (NOT RELEASED)",
+        "en": "Delete Text by Motion",
         "jp": "移動でテキストを削除"
     },
     {
@@ -1322,7 +1335,7 @@
         "ediv": [],
         "edivl": [],
         "cmd": [],
-        "en": "Delete Text by Motion and Start Insert (NOT RELEASED)",
+        "en": "Delete Text by Motion and Start Insert",
         "jp": "移動でテキストを削除してインサートモード"
     },
     {
@@ -1335,7 +1348,7 @@
         "ediv": [],
         "edivl": [],
         "cmd": [],
-        "en": "Delete Lines And Start Insert (NOT RELEASED)",
+        "en": "Delete Lines And Start Insert",
         "jp": "行を削除してインサートモード"
     },
     {
@@ -1348,7 +1361,7 @@
         "ediv": [],
         "edivl": [],
         "cmd": [],
-        "en": "Delete Chars And Start Insert (NOT RELEASED)",
+        "en": "Delete Chars And Start Insert",
         "jp": "文字を削除してインサートモード"
     },
     {
@@ -1361,7 +1374,7 @@
         "ediv": [],
         "edivl": [],
         "cmd": [],
-        "en": "Delete Until EOL And Start Insert (NOT RELEASED)",
+        "en": "Delete Until EOL And Start Insert",
         "jp": "行末まで削除してインサートモード"
     },
     {
@@ -1374,8 +1387,8 @@
         "ediv": [],
         "edivl": [],
         "cmd": [],
-        "en": "Easy Click (NOT RELEASED)",
-        "jp": "Easy Click"
+        "en": "EasyClick",
+        "jp": "EasyClick"
     },
     {
         "name": "update_easy_click",
@@ -1387,7 +1400,7 @@
         "ediv": [],
         "edivl": [],
         "cmd": ["update EasyClick", "update ec"],
-        "en": "Easy Click (NOT RELEASED)",
-        "jp": "Easy Click"
+        "en": "Update EasyClick",
+        "jp": "Update EasyClick"
     }
 ]

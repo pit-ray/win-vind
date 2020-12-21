@@ -56,10 +56,13 @@ It has differences from the latest release.
 - Changed methods of the key eventer to faster one.
 - If a command called by `!*` is not existed, will print out message.
 - Prohibited multiple running of win-vind.
+
+### New
+#### General
+- supported repeating commands (e.g. `5->h` is equel to `h->h->h->h->h`)  
 - add a CUI-based feature to call BindedFunc from another win-vind with the inter-process communication.  
   (ex: `$./win-vind --func change_to_normal`)
 
-### New
 #### Options
 - `Char Cache Option`; for faster edit.
 - `Suppress For Vim`; in order to disable win-vind in Vim.

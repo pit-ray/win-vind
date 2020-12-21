@@ -41,15 +41,32 @@ namespace KyLgr {
         auto log = KeyAbsorber::get_pressed_list() ;
         lgr.push_back(log) ;
 
-        if(prelog == log) return false ;
-
-        if(lgr.size() > 1) {
-            auto diff = log - prelog ; //remove same keys as prelog
-            prelog = log ;
-            return !diff.empty() ;
+        if(prelog == log) {
+            return false ;
         }
+
+        if(lgr.size() == 1) {
+            prelog = log ;
+            return true ;
+        }
+
+        auto diff = log - prelog ; //remove same keys as prelog
         prelog = log ;
-        return true ;
+        return !diff.empty() ;
+        //
+        // If the number of logs in logger is bigger than 1,
+        // some functions are matched, so save only differences.
+        //
+        // Ex)
+        //  _______________________________________________________
+        // |              |          |        |          |         |
+        // | logger-index |   [1]    |  [2]   |    [3]   |   [4]   |
+        // |--------------|----------|--------|----------|---------|
+        // |     log      | Ctrl + w |  Ctrl  |          |    L    |
+        // |--------------|----------|--------|----------|---------|
+        // |    return    |   true   | false  |   false  |   true  |
+        // |______________|__________|________|__________|_________|
+        //
     }
 
     bool log_as_char(KeyLogger& lgr)

@@ -259,11 +259,10 @@ namespace EdiEdit
                     put_lines() ;
                 }
             }
+            return ;
         }
-        else {
-            //repeat_num >= 2
-            if(!first_call) return ;
-
+        //repeat_num >= 2
+        if(first_call) {
             if(g_rgtype == _RegisteredType::Chars) {
                 put_chars_preproc() ;
                 for(unsigned int i = 0 ; i < repeat_num ; i ++) put_chars() ;
@@ -272,6 +271,7 @@ namespace EdiEdit
                 put_lines_preproc() ;
                 for(unsigned int i = 0 ; i < repeat_num ; i ++) put_lines() ;
             }
+            ksr.reset() ;
         }
     }
 }
@@ -453,15 +453,18 @@ void EdiNDeleteLine::sprocess(
             to_head() ;
             del() ;
         }
+        return ;
     }
-    else {
-        if(!first_call) return ;
+
+    //repeat_num >= 2
+    if(first_call) {
         to_head() ;
 
         for(unsigned int i = 1 ; i < repeat_num ; i ++)
             pushup(VKC_LSHIFT, VKC_DOWN) ;
- 
+
         del() ;
+        pimpl->ksr.reset() ;
     }
 }
 
@@ -517,15 +520,17 @@ void EdiNDeleteLineUntilEOL::sprocess(
         else if(pimpl->ksr.is_pressed()) {
             del() ;
         }
+        return ;
     }
-    else {
-        if(!first_call) return ;
 
+    //repeat_num >= 2
+    if(first_call) {
         //delete N - 1 lines under the current line
         for(unsigned int i = 1 ; i < repeat_num ; i ++)
             pushup(VKC_DOWN) ;
 
         del() ;
+        pimpl->ksr.reset() ;
     }
 }
 
@@ -572,10 +577,13 @@ void EdiNDeleteAfter::sprocess(
             del() ;
         }
     }
-    else {
-        if(!first_call) return ;
+
+    //repeat_num >= 2
+    if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
             del() ;
+
+        pimpl->ksr.reset() ;
     }
 }
 
@@ -624,11 +632,13 @@ void EdiNDeleteBefore::sprocess(
             del() ;
         }
     }
-    else {
-        if(!first_call) return ;
 
+    //repeat_num >= 2
+    if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
             del() ;
+
+        pimpl->ksr.reset() ;
     }
 }
 

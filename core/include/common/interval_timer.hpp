@@ -3,11 +3,7 @@
 
 #include <memory>
 
-namespace IntervalTimerDefaults
-{
-    static constexpr int REPEAT_KEYSTROKE = 1'500'00 ;
-}
-
+// IntervalTimer provides a function that returns true after a certain amount of time.
 class IntervalTimer
 {
 private:

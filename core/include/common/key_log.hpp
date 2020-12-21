@@ -42,6 +42,7 @@ public:
     bool operator==(const KeyLog& rhs) const ;
     bool operator!=(const KeyLog& rhs) const ;
     const KeyLog operator-(const KeyLog& rhs) const ;
+    KeyLog& operator-=(const KeyLog& rhs) ;
 } ;
 
 #endif

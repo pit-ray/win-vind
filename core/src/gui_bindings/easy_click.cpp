@@ -466,7 +466,7 @@ namespace EsyClk
     }
 
     void refresh_display() {
-        if(!InvalidateRect(NULL, NULL, TRUE)) {
+        if(!InvalidateRect(GetForegroundWindow(), NULL, FALSE)) {
             throw RUNTIME_EXCEPT(" failed refresh display") ;
         }
     }

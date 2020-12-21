@@ -73,7 +73,7 @@ add_library(GUIBindings STATIC
 target_link_libraries(GUIBindings Common psapi)
 enable_cotire(GUIBindings)
 
-add_library(Options
+add_library(Options STATIC
     src/options/autotrack_popup.cpp
     src/options/dedicate_to_window.cpp
     src/options/virtual_cmd_line.cpp

@@ -49,8 +49,12 @@ void SCRedo::sprocess(
     }
 
     //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) redo() ;
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            redo() ;
+        }
+        pimpl->ksr.reset() ;
+    }
 }
 
 
@@ -91,9 +95,11 @@ void SCUndo::sprocess(
         return ;
     }
 
-    //repeat_num > 1
-    if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        undo() ;
+    //repeat_num >= 2
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            undo() ;
+        }
+        pimpl->ksr.reset() ;
     }
 }

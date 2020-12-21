@@ -1,6 +1,5 @@
 #include "vkc_converter.hpp"
 
-#include "virtual_key_fwd.hpp"
 #include "msg_logger.hpp"
 
 #include <unordered_map>

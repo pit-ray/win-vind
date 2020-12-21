@@ -40,14 +40,16 @@ inline static void _common_process(
         else n_press_proc() ;
     }
 
-    if(!first_call) return ;
-    if(is_edi_visual()) {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            v_press_proc() ;
-    }
-    else {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            n_press_proc() ;
+    if(first_call) {
+        if(is_edi_visual()) {
+            for(unsigned int i = 0 ; i < repeat_num ; i ++)
+                v_press_proc() ;
+        }
+        else {
+            for(unsigned int i = 0 ; i < repeat_num ; i ++)
+                n_press_proc() ;
+        }
+        ksr.reset() ;
     }
 }
 

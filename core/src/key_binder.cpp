@@ -4,11 +4,14 @@
 #include <array>
 #include <deque>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include <vector>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include <windows.h>
 
@@ -21,6 +24,7 @@
 #include "change_mode.hpp"
 #include "i_params.hpp"
 #include "key_absorber.hpp"
+#include "key_matcher.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
@@ -34,10 +38,6 @@ using namespace std ;
 namespace KeyBinder
 {
     static std::vector<BindedFunc::shp_t> g_func_list{} ;
-
-    static KeyLogger g_logger{} ;
-    static BindedFunc::shp_t g_running_func = nullptr ;
-
     static std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
 
     void init() {
@@ -95,7 +95,7 @@ namespace KeyBinder
                 throw std::runtime_error("command is bad syntax. " + cmdstr +  " does not have a greater-than sign (>)") ;
             }
 
-            KeyMatcher::keyset_t keyset ;
+            KeyMatcher::keyset_t keyset{} ;
             const auto keystrset = Utility::split(cmdstr.substr(i + 1, pairpos - i - 1), "-") ;
             for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
                 if(code != keystrset.begin() && code->length() == 1) { //ascii code
@@ -127,6 +127,10 @@ namespace KeyBinder
                     keyset.push_back(VKC_OPTIONAL) ;
                     continue ;
                 }
+                if(lowercode == "num") {
+                    keyset.push_back(VKC_OPTNUMBER) ;
+                    continue ;
+                }
 
                 if(auto ascii = get_specode(lowercode)) {
                     if(auto vkc = VKCConverter::get_vkc(ascii)) {
@@ -145,7 +149,11 @@ namespace KeyBinder
 
                 if(const auto vkc = VKCConverter::get_sys_vkc(lowercode)) {
                     keyset.push_back(vkc) ;
-                    g_unbinded_syskeys.erase(vkc) ;
+
+                    //If a system key is bindied as a single command.
+                    if(keystrset.size() == 1) {
+                        g_unbinded_syskeys.erase(vkc) ;
+                    }
                     continue ;
                 }
 
@@ -372,36 +380,108 @@ namespace KeyBinder
     }
 
     void call_matched_funcs() {
+        static KeyLogger l_logger{} ;
+        static BindedFunc::shp_t l_running_func = nullptr ;
+        static unsigned int l_repeat_num = 0 ;
+        static bool l_must_release_key_after_repeated = false ;
+
+        static const KeyLog c_nums {
+            VKC_0, VKC_1, VKC_2, VKC_3, VKC_4,
+            VKC_5, VKC_6, VKC_7, VKC_8, VKC_9
+        } ;
+
         using Utility::remove_from_back ;
 
-        if(!KyLgr::log_as_vkc(g_logger)) {
-            if(!g_running_func) {
-                remove_from_back(g_logger, 1) ;
+        if(!KyLgr::log_as_vkc(l_logger)) {
+            if(!l_running_func) {
+                remove_from_back(l_logger, 1) ;
                 return ;
             }
-            g_running_func->process(false, 1, &g_logger, nullptr) ;
-            remove_from_back(g_logger, 1) ;
+            l_running_func->process(false, 1, &l_logger, nullptr) ;
+            remove_from_back(l_logger, 1) ;
             return ;
         }
 
-        if(is_invalid_log(g_logger, InvalidPolicy::UnbindedSystemKey)) {
-            remove_from_back(g_logger, 1) ;
-            g_running_func = nullptr ;
+        if(l_repeat_num != 0) {
+            if(l_logger.back().is_containing(VKC_ESC)) {
+                l_repeat_num = 0 ;
+                VirtualCmdLine::reset() ;
+            }
+        }
+
+        if(is_invalid_log(l_logger, InvalidPolicy::UnbindedSystemKey)) {
+            remove_from_back(l_logger, 1) ;
+            l_running_func = nullptr ;
+
+            if(l_must_release_key_after_repeated) {
+                l_must_release_key_after_repeated = false ;
+            }
             return ;
         }
 
-        auto matched_func = find_func(g_logger, g_running_func) ;
+        // Note about l_must_release_key_after_repeated:
+        // false : same as default.
+        // true  : wait until some unbinded sytem keys are inputed or no keys is inputed.
+        // 
+        // This behavior is needed to prohibit following case.
+        // Ex)
+        //  ________________________________________________________________________________________
+        // |                            |      |         |                   |                      |
+        // |         input keys         |  2   |  Shift  |      Shift + j    |         j            |
+        // |----------------------------|------|---------|-------------------|----------------------|
+        // | called func name (without) |  -   |    -    |  edi_n_remove_EOL | edi_move_caret_down  |
+        // |----------------------------|------|---------|-------------------|----------------------|
+        // | called func name (with)    |  -   |    -    |  edi_n_remove_EOL |          -           |
+        // |____________________________|______|_________|___________________|______________________|
+        //
+        if(l_must_release_key_after_repeated) {
+            remove_from_back(l_logger, 1) ;
+            l_running_func = nullptr ;
+            return ;
+        }
+
+        auto topvkc = *(l_logger.back().begin()) ;
+
+        //If some numbers has inputed, ignore commands binded by numbers.
+        if(l_repeat_num != 0) {
+            l_logger.back() -= c_nums ;
+        }
+        auto matched_func = find_func(l_logger, l_running_func) ;
+
         if(!matched_func) {
-            g_logger.clear() ;
-            g_running_func = nullptr ;
+            if(!VKCConverter::is_number(topvkc)) {
+                if(l_repeat_num != 0) {
+                    l_repeat_num = 0 ;
+                    VirtualCmdLine::reset() ;
+                }
+            }
+            else {
+                static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
+                if(l_repeat_num < max) { //Whether it is not out of range?
+                    l_repeat_num = l_repeat_num * 10 + VKCConverter::to_number(topvkc) ;
+                    VirtualCmdLine::cout(std::to_string(l_repeat_num)) ;
+                }
+            }
+
+            l_logger.clear() ;
+            l_running_func = nullptr ;
             return ;
         }
 
         if(matched_func->is_callable()) {
-            unsigned int repeat_num = 1 ; //in feature, set this variable
-            g_running_func = matched_func ;
-            g_running_func->process(true, repeat_num, &g_logger, nullptr) ;
-            g_logger.clear() ;
+            l_running_func = matched_func ;
+
+            if(l_repeat_num == 0) {
+                l_running_func->process(true, 1, &l_logger, nullptr) ;
+            }
+            else {
+                VirtualCmdLine::reset() ;
+                l_running_func->process(true, l_repeat_num, &l_logger, nullptr) ;
+                l_repeat_num = 0 ;
+                l_must_release_key_after_repeated = true ;
+            }
+
+            l_logger.clear() ;
             return ;
         }
     }

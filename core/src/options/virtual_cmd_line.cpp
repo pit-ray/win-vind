@@ -14,6 +14,8 @@ std::string VirtualCmdLine::outstr{} ;
 std::chrono::system_clock::time_point VirtualCmdLine::msg_start{} ;
 bool VirtualCmdLine::msg_showing = false ;
 
+static POINT g_refresh_pos = {0, 0} ;
+
 struct VirtualCmdLine::Impl
 {
     LOGFONT lf{} ;
@@ -96,6 +98,9 @@ void VirtualCmdLine::do_enable() const
 
     pimpl->extra = iParams::get_i("cmd_font_extra") ;
     pimpl->fadeout_time = std::chrono::seconds(iParams::get_i("cmd_fadeout_time")) ;
+
+    g_refresh_pos.x = pimpl->x ;
+    g_refresh_pos.y = pimpl->y ;
 }
 
 void VirtualCmdLine::do_disable() const
@@ -120,7 +125,7 @@ void VirtualCmdLine::msgout(std::string str) noexcept
 }
 
 void VirtualCmdLine::refresh() {
-    if(!InvalidateRect(NULL, NULL, TRUE)) {
+    if(!InvalidateRect(WindowFromPoint(g_refresh_pos), NULL, FALSE)) {
         throw RUNTIME_EXCEPT(" failed refresh display") ;
     }
 }

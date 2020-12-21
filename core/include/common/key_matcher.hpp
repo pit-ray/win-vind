@@ -12,7 +12,7 @@ private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 
-    unsigned int compare_onelog(const KeyLog& log, const size_t seqidx) const ;
+    unsigned int compare_onelog(const KeyLog& log, size_t seqidx) const ;
 
 public:
     using keyset_t = std::vector<unsigned char> ;

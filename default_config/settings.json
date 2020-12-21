@@ -268,8 +268,8 @@
                 "value": "gvim"
             },
             {
-                "name": "paint",
-                "value": "C:\\WINDOWS\\system32\\mspaint.exe"
+                "name": "mspaint",
+                "value": "mspaint"
             },
             {
                 "name": "bash",

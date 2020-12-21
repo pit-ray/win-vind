@@ -114,6 +114,9 @@ void SwitchWindow::sprocess(
         Sleep(5) ;
     }
 
+    KeyAbsorber::release_vertually(VKC_ESC) ;
+    KeyAbsorber::release_vertually(VKC_ENTER) ;
+
     alt.release() ;
 
     //jump cursor to a selected window after releasing alt and tab.
@@ -149,14 +152,12 @@ const string MinimizeCurrentWindow::sname() noexcept
 
 void MinimizeCurrentWindow::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
-    }
+    KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
 }
 
 
@@ -202,7 +203,7 @@ const string OpenNewCurrentWindow::sname() noexcept
 
 void OpenNewCurrentWindow::sprocess(
         const bool first_call,
-        const unsigned int repeat_num,
+        const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
@@ -243,14 +244,12 @@ void OpenNewCurrentWindow::sprocess(
     PROCESS_INFORMATION pi ;
     ZeroMemory(&pi, sizeof(pi)) ;
 
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        if(!CreateProcess(
-            NULL, path, NULL, NULL, FALSE,
-            CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
-            throw RUNTIME_EXCEPT("Cannot call \"" + std::string(path) + "\".") ;
-        }
-        Sleep(50) ;
+    if(!CreateProcess(
+        NULL, path, NULL, NULL, FALSE,
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+        throw RUNTIME_EXCEPT("Cannot call \"" + std::string(path) + "\".") ;
     }
+    Sleep(50) ;
 }
 
 
@@ -316,12 +315,10 @@ const string OpenNewTab::sname() noexcept
 
 void OpenNewTab::sprocess(
         const bool first_call,
-        unsigned int repeat_num,
+        unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_T) ;
-    }
+    KeybrdEventer::pushup(VKC_LCTRL, VKC_T) ;
 }

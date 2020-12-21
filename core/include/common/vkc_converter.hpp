@@ -4,6 +4,8 @@
 #include <string>
 #include <unordered_set>
 
+#include "virtual_key_fwd.hpp"
+
 namespace VKCConverter
 {
     void load_input_combination() ;
@@ -20,6 +22,18 @@ namespace VKCConverter
 
     unsigned char get_representative_key(const unsigned char key) ;
     bool is_unreal_key(const unsigned char key) noexcept ;
+
+    inline bool is_number(const unsigned char vkc) noexcept {
+        return VKC_0 <= vkc && vkc <= VKC_9 ;
+    }
+
+    inline bool is_number_ascii(const char ascii) noexcept {
+        return '0' <= ascii && ascii <= '9' ;
+    }
+
+    inline unsigned int to_number(const unsigned char vkc) noexcept {
+        return vkc - VKC_0 ;
+    }
 }
 
 #endif

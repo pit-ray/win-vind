@@ -88,6 +88,8 @@ inline static bool _main_loop() {
 
     //decision of input
     if(lgr.back().is_containing(VKC_ENTER) && p_cmdp->func) {
+        KeyAbsorber::release_vertually(VKC_ENTER) ;
+
         remove_from_back(lgr, 1) ; //remove keycode of enter
 
         VirtualCmdLine::clear() ;
@@ -141,6 +143,8 @@ inline static bool _main_loop() {
 
     if(matched_func) {
         if(matched_func->is_callable()) {
+            std::cout << matched_func->name() << std::endl ;
+
             p_cmdp->func = matched_func ;
             return CONTINUE_LOOP ;
         }

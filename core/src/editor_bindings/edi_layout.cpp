@@ -43,14 +43,14 @@ void EdiNRemoveEOL::sprocess(
         else if(pimpl->ksr.is_pressed()) {
             remove() ;
         }
-        change_mode(Mode::EdiNormal) ;
         return ;
     }
 
-    if(!first_call) return ;
+    //repeat_num >= 2
+    if(first_call) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            remove() ;
 
-    for(unsigned int i = 0 ; i < repeat_num ; i ++)
-        remove() ;
-
-    change_mode(Mode::EdiNormal) ;
+        pimpl->ksr.reset() ;
+    }
 }

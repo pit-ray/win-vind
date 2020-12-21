@@ -132,5 +132,6 @@
 #define VKC_CTRL         (static_cast<unsigned char>(17))
 #define VKC_ALT          (static_cast<unsigned char>(18))
 #define VKC_OPTIONAL     (static_cast<unsigned char>(177))
+#define VKC_OPTNUMBER    (static_cast<unsigned char>(178))
 
 #endif

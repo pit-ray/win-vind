@@ -115,8 +115,15 @@ bool KeyLog::operator!=(const KeyLog& rhs) const
 const KeyLog KeyLog::operator-(const KeyLog& rhs) const
 {
     if(!(rhs.pimpl)) return *this ;
-
     auto diff = pimpl->once_log ;
     for(const auto k : rhs) diff.erase(k) ;
     return KeyLog(std::move(diff)) ;
+}
+
+KeyLog& KeyLog::operator-=(const KeyLog& rhs)
+{
+    if(rhs.pimpl) {
+        for(const auto k : rhs) pimpl->once_log.erase(k) ;
+    }
+    return *this ;
 }

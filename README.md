@@ -43,7 +43,8 @@ It has differences from the latest release.
 ### Fix
 - fixed the problem that line's copying functions (e.g. dd, yy) are not working on Microsoft Office Word.
 - fixed the problem repeating key-stroke infinity.
-- fixed not working after BackSpace in Virtual Command Line
+- fixed not working after BackSpace in Virtual Command Line.
+- fixed flicking display caused by VirtualCommandLine.
 
 ### Change
 - The Command Mode was divided as KeyBindings from the inner matching system.

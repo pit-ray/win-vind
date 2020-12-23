@@ -9,7 +9,8 @@
 #include "msg_logger.hpp"
 #include "simpl_text_selecter.hpp"
 #include "utility.hpp"
-#include <stdexcept>
+
+#include <string>
 
 using namespace std ;
 
@@ -123,7 +124,6 @@ void EdiMoveCaretRight::sprocess(
 }
 
 
-
 //EdiMoveCaretUp
 struct EdiMoveCaretUp::Impl
 {
@@ -150,7 +150,7 @@ void EdiMoveCaretUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        const KeyLogger* const parent_charlgr) const
 {
     auto v_press = [] {
         if(SimplTextSelecter::is_first_line_selection())
@@ -161,7 +161,17 @@ void EdiMoveCaretUp::sprocess(
     } ;
     auto n_press = [] {KeybrdEventer::pushup(VKC_UP) ;} ;
 
-    _common_process(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
+    if(parent_charlgr != nullptr) {
+        auto str = KyLgr::log2str(*parent_charlgr) ;
+        if(str.empty()) return ;
+
+        if(auto num = KyLgr::extract_from_str(str)) {
+            _common_process(true, num, pimpl->ksr, v_press, n_press) ;
+        }
+    }
+    else {
+        _common_process(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
+    }
 }
 
 
@@ -192,7 +202,7 @@ void EdiMoveCaretDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        const KeyLogger* const parent_charlgr) const
 {
     auto v_press = [] {
         if(SimplTextSelecter::is_first_line_selection())
@@ -207,7 +217,17 @@ void EdiMoveCaretDown::sprocess(
     } ;
     auto n_press = [] {KeybrdEventer::pushup(VKC_DOWN) ;} ;
 
-    _common_process(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
+    if(parent_charlgr != nullptr) {
+        auto str = KyLgr::log2str(*parent_charlgr) ;
+        if(str.empty()) return ;
+
+        if(auto num = KyLgr::extract_from_str(str)) {
+            _common_process(true, num, pimpl->ksr, v_press, n_press) ;
+        }
+    }
+    else {
+        _common_process(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
+    }
 }
 
 

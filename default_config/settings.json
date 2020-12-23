@@ -299,7 +299,7 @@
         "ja": "仮想コマンドライン"
     },
     "suppress_for_vim": {
-        "value": true,
+        "value": false,
         "en": "Suppress For Vim",
         "ja": "Vim用に機能を抑制"
     },

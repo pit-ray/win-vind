@@ -34,6 +34,17 @@ namespace KyLgr {
         return str ;
     }
 
+    unsigned int extract_from_str(const std::string str) {
+        static constexpr auto c_nums = "0123456789" ;
+
+        auto bpos = str.find_first_of(c_nums) ;
+        if(bpos == std::string::npos) return 0 ;
+
+        auto epos = str.find_first_not_of(c_nums, bpos) ;
+
+        return std::stoi(str.substr(bpos, epos)) ;
+    }
+
     bool log_as_vkc(KeyLogger& lgr)
     {
         static KeyLog prelog{} ;

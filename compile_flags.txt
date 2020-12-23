@@ -10,5 +10,3 @@
 -Iwxgui/include/settings_ctrls
 -IC:/wxWidgets/include
 -Ilibs
--IC:/MinGW/x86_64-w64-mingw32/include
--IC:/Program Files (x86)/Windows Kits/10/Include/10.0.19041.0

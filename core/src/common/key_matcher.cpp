@@ -7,6 +7,7 @@
 #include "msg_logger.hpp"
 #include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
+#include "key_log.hpp"
 
 struct KeyMatcher::Impl
 {
@@ -71,7 +72,8 @@ KeyMatcher& KeyMatcher::operator=(KeyMatcher&&) = default ;
  */
 unsigned int KeyMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const
 {
-    //mutex is already applied
+    //mutex is already applied in a parent scope
+
     if(seqidx >= pimpl->optional_idx) {
         pimpl->accepted     = true ;
         pimpl->code_existed = true ;
@@ -79,6 +81,7 @@ unsigned int KeyMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const
         return std::numeric_limits<unsigned int>::max() ;
     }
 
+    //Whether there are some numbers in the latest log?
     auto is_num_only = [&log] {
         for(auto& key : log) {
             if(!VKCConverter::is_number(key)) {
@@ -88,18 +91,34 @@ unsigned int KeyMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const
         return true ;
     } ;
 
-    if(pimpl->optnum_begin_idx <= seqidx
-            && seqidx <= pimpl->optnum_end_idx) {
-
+    //If the latest log is in a range of <num>?
+    if(pimpl->optnum_begin_idx <= seqidx && seqidx <= pimpl->optnum_end_idx) {
         if(is_num_only()) {
             pimpl->code_existed = true ;
-            pimpl->accepted = pimpl->is_optnum_last ;
+            pimpl->accepted     = pimpl->is_optnum_last ;
             return 1 ;
         }
         pimpl->optnum_end_idx = seqidx - 1 ;
     }
 
     seqidx -= (pimpl->optnum_end_idx - pimpl->optnum_begin_idx) ;
+
+    //
+    // Ex)
+    // command: AB<num>C
+    //  ______________________________________________________________
+    // |              |     |     |              |              |     |
+    // |  latest_log  |  A  |  B  |       1      |      2       |  C  |
+    // |--------------|-----|-----|--------------|--------------|-----|
+    // |    seqidx    |  0  |  1  |       2      |      3       |  4  |
+    // |--------------|-----|-----|--------------|--------------|-----|
+    // | optnum_begin | max | max |       2      |      2       |  2  |
+    // |--------------|-----|-----|--------------|--------------|-----|
+    // | optnum_end   | max | max |      max     |     max      |  3  |
+    // |--------------|-----|-----|--------------|--------------|-----|
+    // | fixed seqidx |  0  |  1  |  2(in range) |  3(in range) |  3  |
+    // |______________|_____|_____|______________|______________|_____|
+    //
 
     unsigned int most_matched_num = 0 ;
     auto at_least_exist = false ;
@@ -119,7 +138,7 @@ unsigned int KeyMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const
                 if(key == VKC_OPTNUMBER) {
                     if(is_num_only()) {
                         pimpl->optnum_begin_idx = seqidx ;
-                        pimpl->is_optnum_last   = (cmd.size() - seqidx - 1) == 0 ;
+                        pimpl->is_optnum_last = (cmd.size() - seqidx - 1) == 0 ;
                         matched_num ++ ;
                         continue ;
                     }
@@ -168,7 +187,10 @@ unsigned int KeyMatcher::compare_to_latestlog(const KeyLogger& logger) const
     if(seqidx < pimpl->optnum_begin_idx) {
         pimpl->is_optnum_last   = false ; 
         pimpl->optnum_begin_idx = std::numeric_limits<std::size_t>::max() ;
-        pimpl->optnum_end_idx   = std::numeric_limits<std::size_t>::max() ;
+    }
+
+    if(seqidx < pimpl->optnum_end_idx) {
+        pimpl->optnum_end_idx = std::numeric_limits<std::size_t>::max() ;
     }
 
     //The search is not needed anymore.
@@ -185,8 +207,11 @@ unsigned int KeyMatcher::compare_to_alllog(const KeyLogger& logger) const
 
     if(logger.empty()) return 0 ;
 
-    pimpl->code_existed   = true ;
-    pimpl->optional_idx = std::numeric_limits<std::size_t>::max() ;
+    pimpl->code_existed     = true ;
+    pimpl->optional_idx     = std::numeric_limits<std::size_t>::max() ;
+    pimpl->is_optnum_last   = false ;
+    pimpl->optnum_begin_idx = std::numeric_limits<unsigned int>::max() ;
+    pimpl->optnum_end_idx   = std::numeric_limits<unsigned int>::max() ;
 
     unsigned int result ;
     for(std::size_t i = 0 ; i < logger.size() ; i ++) {

@@ -502,13 +502,8 @@ void EdiNDeleteLineUntilEOL::sprocess(
             _copy_null() ;
         }
         else {
-            if(iParams::get_b("char_cache_enable")) {
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-                g_rgtype = _RegisteredType::Chars ;
-            }
-            else {
-                KeybrdEventer::pushup(VKC_DELETE) ;
-            }
+            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            g_rgtype = _RegisteredType::Chars ;
         }
     } ;
 
@@ -795,13 +790,8 @@ void EdiDeleteUntilEOLAndStartInsert::sprocess(
         _copy_null() ;
     }
     else {
-        if(iParams::get_b("char_cache_enable")) {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
-            g_rgtype = _RegisteredType::Chars ;
-        }
-        else {
-            KeybrdEventer::pushup(VKC_DELETE) ;
-        }
+        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+        g_rgtype = _RegisteredType::Chars ;
     }
     Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
 }

@@ -9,6 +9,7 @@ using KeyLogger = std::vector<KeyLog> ;
 namespace KyLgr
 {
     const std::string log2str(const KeyLogger& lgr) ;
+    unsigned int extract_from_str(const std::string str) ;
 
     //[true]  logger is changed
     //[false] logger is not changed

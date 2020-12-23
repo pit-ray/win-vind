@@ -42,8 +42,6 @@ namespace CmdMode
         //past logger
         cmd_hist_index = cmd_hist.size() - 1 ;
     }
-
-    static auto need_full_scan = false ;
 }
 
 const std::string CommandMode::sname() noexcept
@@ -112,7 +110,14 @@ inline static bool _main_loop() {
 
         remove_from_back(lgr, 2) ;
         VirtualCmdLine::refresh() ;
-        need_full_scan = true ;
+
+        if(auto mf = KeyBinder::find_func(lgr, p_cmdp->func, true)) {
+            if(mf->is_callable()) {
+                p_cmdp->func = mf ;
+                return CONTINUE_LOOP ;
+            }
+        }
+        p_cmdp->func = nullptr ;
         return CONTINUE_LOOP ;
     }
 
@@ -138,18 +143,13 @@ inline static bool _main_loop() {
         return CONTINUE_LOOP ;
     }
 
-    auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func, need_full_scan) ;
-    need_full_scan = false ;
-
-    if(matched_func) {
+    if(auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func, false)) {
         if(matched_func->is_callable()) {
-            std::cout << matched_func->name() << std::endl ;
-
             p_cmdp->func = matched_func ;
             return CONTINUE_LOOP ;
         }
-        p_cmdp->func = nullptr ;
     }
+    p_cmdp->func = nullptr ;
     return CONTINUE_LOOP ;
 }
 

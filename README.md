@@ -62,6 +62,7 @@ It has differences from the latest release.
 - supported repeating commands (e.g. `5->h` is equel to `h->h->h->h->h`)  
 - add a CUI-based feature to call BindedFunc from another win-vind with the inter-process communication.  
   (ex: `$./win-vind --func change_to_normal`)
+- Supported the number keyword (e.g. `<num>`, `+<num>`, `-<num>`)
 
 #### Options
 - `Char Cache Option`; for faster edit.

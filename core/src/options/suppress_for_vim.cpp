@@ -59,7 +59,8 @@ void SuppressForVim::do_process() const
         Change2Insert::sprocess(true, 1, nullptr, nullptr) ;
     }
     else {
-        Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
+        if(get_mode() == Mode::Insert)
+            Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
     }
 
 }

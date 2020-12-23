@@ -1,5 +1,6 @@
 #include "edi_jump_caret.hpp"
 
+#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "simpl_text_selecter.hpp"
@@ -73,7 +74,7 @@ void EdiNJumpCaret2Line_DfBOF::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        const KeyLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
@@ -82,18 +83,25 @@ void EdiNJumpCaret2Line_DfBOF::sprocess(
 
     using KeybrdEventer::pushup ;
 
+    auto rn = repeat_num ;
+    if(parent_charlgr != nullptr) {
+        auto str = KyLgr::log2str(*parent_charlgr) ;
+        if(str.empty()) return ;
+        rn = KyLgr::extract_from_str(str) ;
+    }
+
     if(ModeManager::is_edi_visual()) {
         pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
 
         //down caret N - 1
-        for(unsigned int i = 1 ; i < repeat_num ; i ++)
+        for(unsigned int i = 1 ; i < rn ; i ++)
             pushup(VKC_LSHIFT, VKC_DOWN) ;
     }
     else {
         KeybrdEventer::pushup(VKC_LCTRL, VKC_HOME) ;
 
         //down caret N - 1
-        for(unsigned int i = 1 ; i < repeat_num ; i ++)
+        for(unsigned int i = 1 ; i < rn ; i ++)
             pushup(VKC_DOWN) ;
     }
 }
@@ -112,12 +120,17 @@ void EdiNJumpCaret2Line_DfEOF::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_logger))
+        const KeyLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
     using KeybrdEventer::pushup ;
     using namespace ModeManager ;
+
+    if(parent_charlgr != nullptr) {
+        EdiNJumpCaret2Line_DfBOF::sprocess(true, 1, nullptr, parent_charlgr) ;
+        return ;
+    }
 
     if(repeat_num == 1) {
         if(is_edi_visual()) {
@@ -134,6 +147,6 @@ void EdiNJumpCaret2Line_DfEOF::sprocess(
         }
     }
     else {
-        EdiNJumpCaret2Line_DfBOF::sprocess(true, repeat_num, nullptr, nullptr) ;
+        EdiNJumpCaret2Line_DfBOF::sprocess(true, repeat_num, nullptr, parent_charlgr) ;
     }
 }

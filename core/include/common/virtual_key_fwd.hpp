@@ -36,7 +36,7 @@
 #define VKC_LBOX_BRACKET (static_cast<unsigned char>(219))
 #define VKC_ENTER        (static_cast<unsigned char>(13))
 
-#define VKC_CAPS_LOCK    (static_cast<unsigned char>(240))
+#define VKC_CAPSLOCK     (static_cast<unsigned char>(240))
 #define VKC_A            (static_cast<unsigned char>(65))
 #define VKC_S            (static_cast<unsigned char>(83))
 #define VKC_D            (static_cast<unsigned char>(68))
@@ -119,7 +119,6 @@
 #define VKC_DOWN         (static_cast<unsigned char>(40))
 
 #define VKC_NUMLOCK      (static_cast<unsigned char>(144))
-
 
 #define VKC_FROM_JP      (static_cast<unsigned char>(244))
 #define VKC_TO_EN        (static_cast<unsigned char>(243))

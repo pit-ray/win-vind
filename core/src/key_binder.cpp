@@ -24,6 +24,7 @@
 #include "change_mode.hpp"
 #include "i_params.hpp"
 #include "key_absorber.hpp"
+#include "key_logger.hpp"
 #include "key_matcher.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
@@ -390,6 +391,7 @@ namespace KeyBinder
             VKC_5, VKC_6, VKC_7, VKC_8, VKC_9
         } ;
 
+
         using Utility::remove_from_back ;
 
         if(!KyLgr::log_as_vkc(l_logger)) {
@@ -409,7 +411,7 @@ namespace KeyBinder
             }
         }
 
-        if(is_invalid_log(l_logger, InvalidPolicy::UnbindedSystemKey)) {
+        if(l_logger.back().empty()) {
             remove_from_back(l_logger, 1) ;
             l_running_func = nullptr ;
 
@@ -439,7 +441,6 @@ namespace KeyBinder
             l_running_func = nullptr ;
             return ;
         }
-
         auto topvkc = *(l_logger.back().begin()) ;
 
         //If some numbers has inputed, ignore commands binded by numbers.

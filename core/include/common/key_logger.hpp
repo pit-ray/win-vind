@@ -15,6 +15,10 @@ namespace KyLgr
     //[false] logger is not changed
     bool log_as_vkc(KeyLogger& lgr) ; //logging direct
     bool log_as_char(KeyLogger& lgr) ; //regard inputed key log as ascii charactor
+
+
+    //for debug
+    void d_print_log(const KeyLogger& lgr) ;
 }
 
 #endif

@@ -34,6 +34,18 @@ namespace VKCConverter
     inline unsigned int to_number(const unsigned char vkc) noexcept {
         return vkc - VKC_0 ;
     }
+
+    inline const std::unordered_set<unsigned char>& get_toggle_keys() {
+        static std::unordered_set<unsigned char> tmp {
+            VKC_CAPSLOCK,
+            VKC_KANA,
+            VKC_NUMLOCK,
+            VKC_FROM_JP,
+            VKC_TO_EN,
+            VKC_IME
+        } ;
+        return tmp ;
+    }
 }
 
 #endif

@@ -77,7 +77,7 @@ namespace VKCConverter
         {"cr",          VKC_ENTER},
         {"enter",       VKC_ENTER},
         {"return",      VKC_ENTER},
-        {"capslock",    VKC_CAPS_LOCK},
+        {"capslock",    VKC_CAPSLOCK},
         {"left",        VKC_LEFT},
         {"right",       VKC_RIGHT},
         {"up",          VKC_UP},

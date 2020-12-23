@@ -45,11 +45,13 @@ namespace KyLgr {
         return std::stoi(str.substr(bpos, epos)) ;
     }
 
+    static const KeyLog g_toggles(VKCConverter::get_toggle_keys()) ;
+
     bool log_as_vkc(KeyLogger& lgr)
     {
         static KeyLog prelog{} ;
 
-        auto log = KeyAbsorber::get_pressed_list() ;
+        auto log = KeyAbsorber::get_pressed_list() - g_toggles ;
         lgr.push_back(log) ;
 
         if(prelog == log) {
@@ -86,7 +88,7 @@ namespace KyLgr {
         static bool changed = true ;
         static KeyStrokeRepeater ksr{} ;
 
-        auto log = KeyAbsorber::get_pressed_list() ;
+        auto log = KeyAbsorber::get_pressed_list() - g_toggles ;
 
         if(log != prelog) { //type is changed
             changed = true ;
@@ -116,5 +118,33 @@ namespace KyLgr {
             }
             return ksr.is_pressed() ; //emulate key stroke
         }
+    }
+
+    void d_print_log(const KeyLogger& lgr) {
+        if(lgr.empty()) {
+            std::cout << "Empty\n" ;
+            return ;
+        }
+        for(const auto& log : lgr) {
+            for(const auto& key : log) {
+                if(key == VKC_SPACE) {
+                    std::cout << "<space> " ;
+                    continue ;
+                }
+
+                if(auto a = VKCConverter::get_ascii(key)) {
+                    std::cout << a << " " ;
+                    continue ;
+                }
+                if(auto a = VKCConverter::get_shifted_ascii(key)) {
+                    std::cout << a << " " ;
+                    continue ;
+                }
+                auto name = VKCConverter::get_name(key) ;
+                std::cout << "<" << name << "> " ;
+            }
+            std::cout << "|" ;
+        }
+        std::cout << std::endl ;
     }
 }

@@ -72,6 +72,7 @@ However, it is based on GUI, so some Vimmer dislike its UI. In this case, rewrit
 |:---:|:---|
 |Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/settings.json|
 |Zip|**&lt;Zip-Root&gt;**/config/settings.json|
+
 <br>
 <hr>
 

@@ -6,10 +6,10 @@ descripption: "How to contibute win-vind."
 ---
 # How to contribute
 
-<hr>
+<hr>  
 
 1. TOC  
-{.toc}
+{:toc}
 
 <hr>
 
@@ -89,7 +89,6 @@ All binded functions of win-vind derive from <a href="https://github.com/pit-ray
 **mybinding.hpp**
 
 ```cpp  
-//
 #ifndef MY_BINDING_HPP
 #define MY_BINDING_HPP
 #include "binded_func_with_creator.hpp"

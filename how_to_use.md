@@ -70,7 +70,10 @@ You can customize all key bindings by rewriting the JSON settings file easily. T
 
 Its syntaxes are based on original Vim, but have some unique keywords.  
 
-#### Mode Keyword
+<hr>
+
+## Keyword Lists
+### Mode Keyword
 |Keyword|Means|
 |:---:|:---:|
 |guin|GUI Normal Mode|
@@ -84,7 +87,7 @@ Its syntaxes are based on original Vim, but have some unique keywords.
 
 <hr>
 
-#### Specific Ascii Key Code  
+### Specific Ascii Key Code  
 |Key Code|Means|
 |:---:|:---|
 |&lt;space&gt;|Space Key|
@@ -94,7 +97,7 @@ Its syntaxes are based on original Vim, but have some unique keywords.
  
  <hr>
  
-#### System Key Code  
+### System Key Code  
 |KeyCode|Means|
 |:---:|:---|
 |&lt;bs&gt;|BackSpace Key|

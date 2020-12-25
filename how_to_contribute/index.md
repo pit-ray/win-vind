@@ -79,7 +79,8 @@ All binded functions of win-vind derive from <a href="https://github.com/pit-ray
 ### New KeyBinding Example  
 1. Make a new derived class (e.g. **MyBinding**) and add files into **core/??_bindings/**.
 1. Add a path of source file into **core/CMakeLists.txt**.   
-1. Define the class.<br>  
+1. Define the class.  
+
 ```cpp  
 //mybinding.hpp
 #ifndef MY_BINDING_HPP

@@ -4,9 +4,10 @@ title: How to use
 nav_order: 3
 descripption: "Usage of win-vind"
 ---
-{:toc}  
-
 This software supports only on Windows 10. Some features may be not working well on the others. If it is unstable despite Windows 10, please post issues to <a href="https://github.com/pit-ray/win-vind/issues">github.com/issues</a>.  
+
+1. TOC  
+{:toc}
 
 ## Installation
 1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. <br>   

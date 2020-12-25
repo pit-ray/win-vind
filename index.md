@@ -15,7 +15,7 @@ You can operate Windows by key-bindings like Vim.
 [![pit-ray/win-vind - GitHub](https://gh-card.dev/repos/pit-ray/win-vind.svg)](https://github.com/pit-ray/win-vind)
 
 ## License
-This software is provided by **MIT License**.
+This software is provided by **MIT License**.  
 Refer to Permissions and Limitations.
 
 |Support|Is it allowed|

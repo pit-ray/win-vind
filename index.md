@@ -5,6 +5,8 @@ nav_order: 1
 descripption: "Document for win-vind"
 permalink: /
 ---
+<link rel="shortcut icon" type="image/png" href="imgs/win-vind-icon.png">  
+
 # Simple Vim Key Binder for Windows
 <hr>
 

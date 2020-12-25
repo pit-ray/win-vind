@@ -62,7 +62,19 @@ It enables to emulate Vim when using general text editors, for instance, notepad
 
 ## Customization
 ### Parameters
+You are able to change all parameters of UI-language, the speed of the mouse, options, etc in **Preferences** window.  
 
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/pref_3.0.png?raw=true" width=740 />  
+
+However, it is based on GUI, so some Vimmer dislike its UI. In this case, rewrite **settings.json** with **Vim**.  The file locates in the following paths.
+
+|Installation Type|Path|
+|:---:|:---|
+|Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/settings.json|
+|Zip|**&lt;Zip-Root&gt;**/config/settings.json|
+
+<br>
+<hr>
 
 ### Key Config
 You can customize all key bindings by rewriting the JSON settings file easily. In the future, going to just write the changes. The location of the file is different depending on the installation way. Refer to the following table.
@@ -91,6 +103,7 @@ Its syntaxes are based on original Vim, but have some unique keywords. You can r
     },
 ```
 **name** is a unique identifier of a linked function. **en** or **ja** are labels used on GUI of win-vind. If you give a unique key as language code and a translated label, win-vind can support another language.  
+<br>
 The meanings of these key config are shown in the following table with the proviso that the column of **String** is case-sensitive, but the column of **Meanings** is not case-sensitive. And, key codes are bolded, (e.g. **Shift**, **A**).
 
 |String|Meanings (but depending on an arrangement of a keyboard)|

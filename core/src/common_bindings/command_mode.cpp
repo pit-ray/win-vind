@@ -74,8 +74,7 @@ inline static bool _main_loop() {
             remove_from_back(lgr, 1) ;
             cmd_hist_index = recent_index ;
         }
-        VirtualCmdLine::clear() ;
-        VirtualCmdLine::refresh() ;
+        VirtualCmdLine::reset() ;
         return BREAK_LOOP ;
     }
 
@@ -90,8 +89,7 @@ inline static bool _main_loop() {
 
         remove_from_back(lgr, 1) ; //remove keycode of enter
 
-        VirtualCmdLine::clear() ;
-        VirtualCmdLine::refresh() ;
+        VirtualCmdLine::reset() ;
 
         p_cmdp->func->process(true, 1, nullptr, &lgr) ;
         update_history() ;
@@ -103,8 +101,7 @@ inline static bool _main_loop() {
         if(lgr.size() == 1) {
             lgr.clear() ;
             p_cmdp->func = nullptr ;
-            VirtualCmdLine::clear() ;
-            VirtualCmdLine::refresh() ;
+            VirtualCmdLine::reset() ;
             return BREAK_LOOP ;
         }
 

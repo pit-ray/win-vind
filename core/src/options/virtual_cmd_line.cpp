@@ -126,7 +126,7 @@ void VirtualCmdLine::msgout(std::string str) noexcept
 }
 
 void VirtualCmdLine::refresh() {
-    if(!InvalidateRect(WindowFromPoint(g_refresh_pos), NULL, FALSE)) {
+    if(!InvalidateRect(WindowFromPoint(g_refresh_pos), NULL, TRUE)) {
         throw RUNTIME_EXCEPT(" failed refresh display") ;
     }
 }
@@ -156,7 +156,8 @@ void VirtualCmdLine::do_process() const
     auto delete_hdc = [] (HDC h) {
         if(h != nullptr) DeleteDC(h) ;
     } ;
-    std::unique_ptr<HDC__, decltype(delete_hdc)> hdc(CreateDCA("DISPLAY", NULL, NULL, NULL), delete_hdc) ;
+    std::unique_ptr<HDC__, decltype(delete_hdc)> hdc(
+            CreateDCA("DISPLAY", NULL, NULL, NULL), delete_hdc) ;
     if(!hdc) {
         throw RUNTIME_EXCEPT("CreateDC") ;
     }
@@ -164,7 +165,8 @@ void VirtualCmdLine::do_process() const
     auto delete_font = [] (HFONT f) {
         if(f != nullptr) DeleteObject(f) ;
     } ;
-    std::unique_ptr<HFONT__, decltype(delete_font)> font(CreateFontIndirect(&pimpl->lf), delete_font) ;
+    std::unique_ptr<HFONT__, decltype(delete_font)> font(
+            CreateFontIndirect(&pimpl->lf), delete_font) ;
     if(!font) {
         throw RUNTIME_EXCEPT("CreateFontIndirectA") ;
     }

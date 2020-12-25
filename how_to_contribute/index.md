@@ -6,7 +6,11 @@ descripption: "How to contibute win-vind."
 ---
 # How to contribute
 
+<hr>
+
 ## Contibute Procedure
+1. Make a discussion at <a href="https://github.com/pit-ray/win-vind/discussions">github.com/discussions</a> in order to prevent conflicts. In addition, post the what you will do, just in a few words.  
+
 1. Clone the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>. For example, you do a follow command.
     <div class="code"><p>$git clone https://github.com/pit-ray/win-vind.git</p></div>
 
@@ -19,6 +23,7 @@ $ git checkout -b UNIQUE_BRANCH_NAME
 ``` bash
 $ ./push_preproc.bat 0.0.0</p></div>
 ```
+1. If you used third party libraries, you must add some essential texts in <a href="https://github.com/pit-ray/win-vind/blob/master/THIRD_PARTY_LICENSES.txt">**THIRD_PARTY_LICENSES.TXT**</a>.  
 1. Please add, commit and push.
 ```bash
 $ git add .
@@ -31,15 +36,14 @@ $ git push -u origin UNIQUE_BRANCH_NAME
 <hr>
 
 ## Note
-- **Your written codes are provided as MIT License.
-- If you used third party libraries, you must add some essential texts in <a href="https://github.com/pit-ray/win-vind/blob/master/THIRD_PARTY_LICENSES.txt">**THIRD_PARTY_LICENSES.TXT**</a> before pull requests.
-- You're most welcomed! All you need is some passions for win-vind.
+- **Your written codes are provided as MIT License**.
+-
 
 <br>
 <hr>
 
 ## Development Environment
-You must install follow softwares or libraries.  
+I recommend to install follow softwares or libraries.  
 
 |Name|Minimum Version|Download Link|
 |:---:|:---:|:---:|
@@ -53,7 +57,7 @@ This project use **&lt;mutex&gt;**, so some MinGW without it will fail a build. 
 <hr>
 
 ## Build Instruction
-- Automatically *(Recommended)*
+- Automatically **(Recommended)**
 ```bash
 $./build.bat [-debug/-release]
 ```
@@ -61,80 +65,81 @@ $./build.bat [-debug/-release]
 ```bash
 $ mkdir debug
 $ cd debug
-$ cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
-$ mingw32-make -f Makefile
+$ cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
+$ cmake --build . --config Debug
 $ cd ..
 ```
 <br>
 
-## Class Information
-There are six base classes in win-vind as follow.
-<table class="long">
-    <tbody>
-        <tr>
-            <th>Pure Base Class</th>
-            <th><div>Base Class With Creator</div></th>
-            <th>Function Examples</th>
-        </tr>
-        <tr>
-            <td>KeyBinding</td>
-            <td><div>KeyBindingWithCreator</div></td>
-            <td><span class="code">d-&gt;d</span>, <span class="code">h</span>, <span class="code">j</span>, <span class="code">k</span>, <span class="code">l</span></td>
-        </tr>
-        <tr>
-            <td>Command</td>
-            <td><div>CommandWithCreator</div></td>
-            <td><span class="code">:exit</span>, <span class="code">:close</span>, <span class="code">:mkdir</span></td>
-        </tr>
-        <tr>
-            <td>DynamicOption</td>
-            <td><div>DynamicOptionWithCreator</div></td>
-            <td>Autotrack Popup</td>
-        </tr>
-    </tbody>
-</table>
+<hr>
 
-<p><b>With Creator</b> means having some factory functions. If you make some new functions, you must register to <b>include/system/key_binder_list.hpp</b>, so I recommend to use <b>With Creator</b> base classes in order to register easily.</p>
+## Information for Development
+All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_with_creator.hpp">**BindedFuncWithCreator**</a> to have a factory function. In addition, you can use some utilities in <a href="https://github.com/pit-ray/win-vind/tree/master/core/include/common">**core/include/common**</a> for developments. 
 
-<div class="sect2">New KeyBinding Example</div>
-<ol>
-    <li>Make a new derived class (e.g. <b>MyBinding</b>) and add files into <b>system/***_bindings/</b>.</li>
-    <p><b>my_binding.hpp</b></p>
-<pre class="prettyprint"><code class="lang-cpp">#ifndef _TEST_BINDING_HPP
-#define _TEST_BINDING_HPP
-#include "key_binding_with_creator.hpp"
+### New KeyBinding Example  
+1. Make a new derived class (e.g. **MyBinding**) and add files into **core/??_bindings/**.
+1. Add a path of source file into **core/CMakeLists.txt**.   
+1. Define the class.
+**mybinding.hpp**
+```cpp
+#ifndef MY_BINDING_HPP
+#define MY_BINDING_HPP
+#include "binded_func_with_creator.hpp"
 
-struct MyBinding : public KeyBindingWithCreator&lt;MyBinding&gt;
+struct MyBinding : public BindedFuncWithCreator<MyBinding>
 {
-static bool sprocess(const bool first_call) ;
-static const std::string sname() noexcept ;
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
 } ;
-#endif
-</code></pre>
 
-    <p><b>my_binding.cpp</b></p>
-<pre class="prettyprint"><code class="lang-cpp">#include "my_binding.hpp"
+#endif
+```
+**mybinding.cpp**
+```cpp
+#include "mybinding.hpp"
+#include "virtual_cmd_line.hpp"
 
 const std::string MyBinding::sname() noexcept
 {
-return "my_binding" ;
+    return "my_binding" ; //Give the unique identifier.
 }
-bool MyBinding::sprocess(const bool first_call)
+
+void MyBinding::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* parent_vkclgr,
+        const KeyLogger* const parent_charlgr)
 {
-//Do something
-return true ;
+    if(first_call) {
+        MouseEventer::click(VKC_MOUSE_LEFT) ; //left click
+    
+        KeybrdEventer::pushup(VKC_LWIN, VKC_D) ; //minimize all window
+    
+        VirtualCmdLine::msgout("Hello World !") ;
+    }
 }
-</code></pre>
-<li>You must register <b>MyBinding</b> to <b>include/system/key_binder_list.hpp</b></li>
-<li>Please add the unique identifier to <b>default_config/bindings.json</b>.</li>
-<pre class="prettyprint"><code class="lang-json">{
-"name": "my_binding",
-"key": ["q-&gt;c"],
-"cmd": [],
-"en": "My Binding"
-}
-</code></pre>
-</ol>
-<br>
-<br>
-<br>
+```
+1. Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bindings_lists.hpp">**core/include/bindings_lists.hpp**</a>.
+```
+    MyBinding::create(),
+```
+1. Assign commands to **MyBinding** in <a href="https://github.com/pit-ray/win-vind/blob/master/config/bindings.json">**config/bindings.json**</a>.  
+```json
+    {
+        "name": "my_binding",
+        "guin": ["Q"],
+        "guii": ["<guin>"],
+        "guiv": ["<guin>"],
+        "edin": ["<guin>"],
+        "edii": ["<guin>"],
+        "ediv": ["<guin>"],
+        "edivl": ["<guin>"],
+        "cmd": ["mybinding"],
+        "en": "My Binding",
+        "ja": "Sample"
+    },
+```

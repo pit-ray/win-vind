@@ -13,7 +13,7 @@ All keywords in win-vind are not case-sensitive.
 
 ## Mode Keyword  
 
-|Keyword|Means|
+|Keyword|Meanings|
 |:---:|:---:|
 |guin|GUI Normal Mode|
 |guii|GUI Insert Mode|
@@ -26,7 +26,7 @@ All keywords in win-vind are not case-sensitive.
 
 ## Specific Keyword  
 
-|Keyword|Means|
+|Keyword|Meanings|
 |:---:|:---|
 |&lt;num&gt;|It is a number of any digits. However, you **must not** multiple uses of this keyword per a command.|
 |&lt;any&gt;|It is an optional string. If you include it into a command, all keywords after that are considered to be matching.|
@@ -34,7 +34,7 @@ All keywords in win-vind are not case-sensitive.
 
 ## Specific Ascii Key Code  
 
-|Key Code|Means|
+|Key Code|Meanings|
 |:---:|:---|
 |&lt;space&gt;|Space Key|
 |&lt;hbar&gt;|Ascii code '-'|
@@ -44,7 +44,7 @@ All keywords in win-vind are not case-sensitive.
  
 ## System Key Code  
 
-|Key Code|Means|
+|Key Code|Meanings|
 |:---:|:---|
 |&lt;bs&gt;|BackSpace Key|
 |&lt;capslock&gt;|CapsLock Key|

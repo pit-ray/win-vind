@@ -35,7 +35,7 @@ $ git push -u origin UNIQUE_BRANCH_NAME
 <br>
 <hr>
 
-## Note
+## Note  
 - **Your written codes are provided as MIT License**.
 -
 

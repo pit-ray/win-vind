@@ -4,83 +4,67 @@ title: How to use
 nav_order: 3
 descripption: "Usage of win-vind"
 ---
-<span class="sect1" id="installation">Installation</span><hr>
-<ol>
-    <li>Please download latest version win-vind from <a href="https://pit-ray.github.io/win-vind/downloads">Downloads</a>. </li>
-    <li>Execute the installer or unzip.</li>
-    <li>Start win-vind.</li>
-    <li>In default, the mode is <b>GUI Nomral</b>. You can setup <span class="code">:set</span> or <span class="code">:config</span> or right-click on the system tray.</li>
-    <li>In the end, you can terminate win-vind by <span class="code">:exit</span> or right-click on the system tray.</li>
-</ol>
+This software supports only Windows 10. Some features may be not working well on the others. If it is unstable despite Windows 10, please post issues to <a href="https://github.com/pit-ray/win-vind/issues">github.com/issues</a>.  
 
-<br>
-<br>
-<span class="sect1" id="overview">Overview</span><hr>
-<!--<img src="../imgs/mode_overview_2.jpg">-->
-<p>win-vind has plenty of hotkeys and commands, but they are based on the original Vim. Some little differences are that its mode has two layers and its unique functions for GUI. Concretely, they are <b>GUI Mode</b> and <b>Editor Mode</b>. </p>
+## Installation
+1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software.
+**Installer version**  
+[Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe){: .btn }
 
-<!--<img src="../imgs/GUIandEditor.jpg">-->
-<ul>
-    <li>GUI Mode</li>
-    <p>The target is the mouse cursor. For instance, if you input h, moves it to left. However, it does not have a concept called rows and columns, so I implemented a wealth of alternative functions.</p>
+ **Zip version**  
+[Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip){: .btn}  
 
+If you want not to receive some warnings, execute next commands.  
+ 
+**Installer version**
+```bash
+$ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe
+```
 
-<li>Editor Mode</li>
-<p>It enables to emulate Vim when using general text editors, for instance, notepad or Microsoft Office Word or some Web forms. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key binds of the original Vim.</p>
-</ul>
-<br>
-<br>
-<span class="sect1" id="note">Note</span><hr>
-<ul>
-    <li><span class="code">F8 + F9</span> is safe forced termination.</li>
-    <li>win-vind <b>cannot</b> operate some windows given high-rank authorization than itself. For example, if you start Task Manager having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use <b>Task Scheduler</b>.)</li>
-</ul>
-<br>
-<br>
+**Zip version**
+```bash
+$ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip
+```
 
-<span class="sect1" id="bindings">Bindings</span><hr>
-<p>You can customize all key bindings by GUI based settings or rewriting JSON settings file easily.</p>
-<ul>
-    <li>GUI based</li>
-    <br>
-    <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/bind_lits.jpg?raw=true">
-    <p>There are settings in <b>Preferences</b> in the system tray.<p>
+1. Execute a downloaded installer or unzip a downloaded zip-file. 
 
+1. Start **win-vind.exe**.
 
-    <li>Rewriting JSON</li>
-    If you use the installer, the file is located in <b>~/.win-vind/bindings.json</b>.<br>
-    If you get zip-version, it is existed in <b>win-vind/config/bindings.json</b>.
-</ul>
-<br>
-<br>
+1. You can set it up by typing `:set` or `:config` or right-click the icon of win-vind on the system tray and select **Preferences**.  
 
-<span class="sect2">Syntax</span>
-<ul>
-    <li><span class="code">[key1](+)[key2]</span> means typing key1 and key2 with same timing.</li>
-    <li><span class="code">[key1]-&gt;[key2]</span> means typing key2 after key1. </li>
-    <li>It distinguished between upper and lowercase letters. For example, <span class="code">a</span> means <span class="code">a</span>, <span class="code">A</span> does <span class="code">Shift+a</span>.</li>
-    <li>If you want to use system keys like Shift or Ctrl, please write KMP key code.</li>
-    <br>
-    <div class='kmp_list'></div>
-</ul>
-<br>
-<span class="sect1" id="details_of_funcs">Details of Functions</span><hr>
-<ul>
-    <li id="jump_to_any"></li>
-    <li id="jump_to_active_window"></li>
-    <li id="start_shell"></li>
-    <li id="start_any_app"></li>
-    <li id="make_dir"></li>
-    <li id="enable_targeting_of_dedicate_to_window"></li>
-    <li id="disable_targeting_of_dedicate_to_window"></li>
-</ul>
+1. In the end, you can terminate win-vind by `:exit` or right-click on the system tray and select **exit**.
 
-<span class="sect1" id="options">Options</span><hr>
-<div class="sect2" id="autotrack_popup">Autotrack Popup</div>
-<p>For example, if shown <b>Are you sure you want to move this file to the Recycle Bin?</b>, it automatically moves the cursor to popup.</p>
-<br>  
-<div class="sect2" id="dedicate_to_window">Dedicate To One Window</div>
-<p>If you focus on a selected window, win-vind is only validated on its window. Concretely, if you select a target window, it changes mode to <b>Editor Normal Mode</b>. Also, selected other windows, it changes to <b>GUI Insert Mode</b>.  You can switch targeting by <a href="https://pit-ray.github.io/win-vind/cheat_sheet/#enable_targeting_of_dedicate_to_window">Enable Targeting</a> and <a href="https://pit-ray.github.io/win-vind/cheat_sheet/#disable_targeting_of_dedicate_to_window">Disable Targeting</a>.</p>
-<br>
-<div class="sect2" id="virtual_cmd_line">Virtual Command Line</div>
-<p>It makes inputed commands to display and the current mode on the screen.</p>
+<hr>
+
+## Overview  
+![mode-overview](https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true)
+win-vind has plenty of hotkeys and commands, but they are based on the original Vim. Some little differences are that its mode has two layers and its unique functions for GUI. Concretely, they are **GUI Mode** and **Editor Mode**.  
+
+![gui-and-editor-pic](https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/GUIandEditor.jpg?raw=true)
+
+### GUI Mode
+The target is the mouse cursor. For instance, if you input h, moves it to left. However, it does not have a concept called rows and columns, so I implemented a wealth of alternative functions.
+
+### Editor Mode
+It enables to emulate Vim when using general text editors, for instance, notepad or Microsoft Office Word or some Web forms. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key binds of the original Vim.
+
+## Note 
+- `F8 + F9` is safe forced termination.
+- win-vind **cannot** operate some windows given high-rank authorization than itself. For example, if you start Task Manager having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**.
+
+## Bindings
+You can customize all key bindings by GUI based settings or rewriting JSON settings file easily.
+
+### GUI based
+!(bind-lits)[https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/bind_lits.jpg?raw=true]
+There are settings in <b>Preferences</b> in the system tray.
+
+### Rewriting JSON
+If you use the installer, the file is located in **~/.win-vind/bindings.json**.  
+If you get zip-version, it is existed in **win-vind/config/bindings.json**.
+
+### Syntax
+- `[key1](+)[key2]` means typing key1 and key2 with same timing.  
+- `[key1]-&gt;[key2]` means typing key2 after key1.  
+- It distinguished between upper and lowercase letters. For example, `a` means `a`, `A` does `Shift+a`.
+- If you want to use system keys like Shift or Ctrl, please write KMP key code.

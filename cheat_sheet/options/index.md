@@ -21,18 +21,19 @@ It is one of standard options of on Windows. For example, if shown **Are you sur
 
 <hr>
 
-## Virtual Command Line<
-<p>It makes inputed commands to display and the current mode on the screen.</p>
+## Virtual Command Line
+It makes inputted commands to display and the current mode on the screen. Even if this option disable, the command mode are available. The computing costs by its features are not so big. I recommend to use it.  
 
 <hr>
 
 ## Dedicate To One Window
-<p>If you focus on a selected window, win-vind is only validated on its window. Concretely, if you select a target window, it changes mode to <b>Editor Normal Mode</b>. Also, selected other windows, it changes to <b>GUI Insert Mode</b>.  You can switch targeting by <a href="https://pit-ray.github.io/win-
-    vind/cheat_sheet/#enable_targeting_of_dedicate_to_window">Enable Targeting</a> and <a href="https://pit-ray.github.io/win-vind/cheat_sheet/#disable_targeting_of_dedicate_to_window">Disable Targeting</a>.</p>
+If it enables, you can select one window with **Enable Targeting** function. In this case, it makes the mode automatically switch to **Editor Normal Mode** on the targeting window. When the foreground window change to another, it makes the mode switch to **GUI Insert Mode**. The targeting becomes disable with **Disable Targeting** function. In other words, this feature transforms some normal editors compared with **Vim** to **fake Vim**. The computing cost is so small.  
+
     
 <hr>
 
 ## Suppress For Vim
+It makes the mode of **win-vind** automatically switch to **GUI Insert Mode** on the applications included the strings called **VIM** in an executable file name. Thus, it allows us to smoothly move from win-vind having the same key-bindings as Vim to **Vim** applications.  
 
 <hr>
 

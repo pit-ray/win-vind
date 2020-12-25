@@ -5,6 +5,7 @@ nav_order: 4
 descripption: "How to contibute win-vind."
 ---
 # How to contribute
+{: .no_toc }
 
 <hr>  
 

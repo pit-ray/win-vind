@@ -62,7 +62,18 @@ It enables to emulate Vim when using general text editors, for instance, notepad
 
 ## Customization
 ### Parameters
+You are able to change all parameters of UI-language, the speed of the mouse, options, etc in **Preferences** window.  
 
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/pref_3.0.png?raw=true" width=740 />  
+
+However, it is based on GUI, so some Vimmer dislike its UI. In this case, rewrite **settings.json** with **Vim**.  The file locates in the following paths.
+
+|Installation Type|Path|
+|:---:|:---|
+|Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/settings.json|
+|Zip|**&lt;Zip-Root&gt;**/config/settings.json|
+
+<br>
 
 ### Key Config
 You can customize all key bindings by rewriting the JSON settings file easily. In the future, going to just write the changes. The location of the file is different depending on the installation way. Refer to the following table.

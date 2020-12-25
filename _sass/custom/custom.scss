@@ -15,7 +15,7 @@ code {
 
 //codes
 .highlight .c {
-  color: #58cc75;   
+  color: #009922;   
 } //comment
 .highlight .err {
   color: #f29888;
@@ -29,25 +29,9 @@ code {
 .highlight .n {
   color: #7fddf5;
 }
-
-.highlight .c {
-  color: #586e75;
-} // comment //
-.highlight .err {
-  color: #93a1a1;
-} // error //
-.highlight .g {
-  color: #93a1a1;
-} // generic //
 .highlight .k {
-  color: #859900;
+  color: $blue-000;
 } // keyword //
-.highlight .l {
-  color: #93a1a1;
-} // literal //
-.highlight .n {
-  color: #93a1a1;
-} // name //
 .highlight .o {
   color: #859900;
 } // operator //
@@ -171,10 +155,10 @@ code {
   color: #268bd2;
 } // name.variable //
 .highlight .ow {
-  color: #859900;
+  color: #268bd2;
 } // operator.word //
 .highlight .w {
-  color: #95a4a3;
+  color: #eeeeee;
 } // text.whitespace //
 .highlight .mf {
   color: #ffbd59;

@@ -7,21 +7,15 @@ descripption: "Usage of win-vind"
 This software supports only Windows 10. Some features may be not working well on the others. If it is unstable despite Windows 10, please post issues to <a href="https://github.com/pit-ray/win-vind/issues">github.com/issues</a>.  
 
 ## Installation
-1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software.
+1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. <br>   
+[Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe){: .btn }   [Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip){: .btn}  <br>  
+If you want not to receive some warnings, execute next commands.  <br>    
 **Installer version**  
-[Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe){: .btn }
-
- **Zip version**  
-[Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip){: .btn}  
-
-If you want not to receive some warnings, execute next commands.  
- 
-**Installer version**
 ```bash
 $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe
 ```
 
-**Zip version**
+**Zip version**  
 ```bash
 $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip
 ```

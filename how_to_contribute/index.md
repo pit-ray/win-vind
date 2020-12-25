@@ -77,12 +77,14 @@ $ cd ..
 All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_with_creator.hpp">**BindedFuncWithCreator**</a> to have a factory function. In addition, you can use some utilities in <a href="https://github.com/pit-ray/win-vind/tree/master/core/include/common">**core/include/common**</a> for developments. 
 
 ### New KeyBinding Example  
-1. Make a new derived class (e.g. **MyBinding**) and add files into **core/??_bindings/**.
-1. Add a path of source file into **core/CMakeLists.txt**.   
-1. Define the class.  
+- Make a new derived class (e.g. **MyBinding**) and add files into **core/??_bindings/**.
+- Add a path of source file into **core/CMakeLists.txt**.   
+- Define the class.  
+
+**mybinding.hpp**
 
 ```cpp  
-//mybinding.hpp
+//
 #ifndef MY_BINDING_HPP
 #define MY_BINDING_HPP
 #include "binded_func_with_creator.hpp"
@@ -99,8 +101,9 @@ struct MyBinding : public BindedFuncWithCreator<MyBinding>
 
 #endif
 ```  
+**mybinding.cpp**
+
 ```cpp  
-//mybinding.cpp
 #include "mybinding.hpp"
 #include "virtual_cmd_line.hpp"
 
@@ -124,11 +127,11 @@ void MyBinding::sprocess(
     }
 }
 ```
-1. Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bindings_lists.hpp">**core/include/bindings_lists.hpp**</a>.
+- Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bindings_lists.hpp">**core/include/bindings_lists.hpp**</a>.
 ```cpp
     MyBinding::create(),
 ```
-1. Assign commands to **MyBinding** in <a href="https://github.com/pit-ray/win-vind/blob/master/config/bindings.json">**config/bindings.json**</a>.  
+- Assign commands to **MyBinding** in <a href="https://github.com/pit-ray/win-vind/blob/master/config/bindings.json">**config/bindings.json**</a>.  
 ```json
     {
         "name": "my_binding",

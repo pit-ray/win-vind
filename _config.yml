@@ -1,1 +1,21 @@
 remote_theme: pmarsceill/just-the-docs
+
+title: win-vind
+description: Simple Vim Key Binder for Windows
+logo: "/imgs/win-vind-icon_wt.png"
+
+search_enabled: true
+
+aux_links:
+    "GitHub":
+        - "//github.com/pit-ray/win-vind"
+    "Download":
+        - "https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe"
+
+aux_links_new_tab: false
+
+heading_anchors: true
+
+go_tracking: UA-121829043-2
+
+color_scheme: mono

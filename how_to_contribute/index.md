@@ -3,85 +3,72 @@ layout: default
 title: How to contribute
 nav_order: 4
 descripption: "How to contibute win-vind."
-has_children: true
 ---
-<span class="sect1">Contibute Procedure</span><hr>
-<ol>
-    <li>Clone the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>. For example, you do a follow command.</li>
+# How to contribute
+
+## Contibute Procedure
+1. Clone the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>. For example, you do a follow command.
     <div class="code"><p>$git clone https://github.com/pit-ray/win-vind.git</p></div>
 
-    <li>Make a unique branch for pull requests.</li>
-    <div class="code"><p>$git checkout -b UNIQUE_BRANCH_NAME</p></div>
-    <li>You can do something for this project.</li>
-    <li>Build project for release in root directory.</li>
-    <div class="code"><p>$./push_preproc.bat 0.0.0</p></div>
-    <li>Please add, commit and push.</li>
-    <div class="code"><p>$git add .</p></div>
-    <div class="code"><p>$git commit -m "Please write a summary of your changes."</p></div>
-    <div class="code"><p>$git push origin UNIQUE_BRANCH_NAME</p></div>
-    <li>Please send pull requests at <a href="https://github.com/pit-ray/win-vind/pulls">Pull requests pit-ray/win-vind</a></li>
-</ol>
+1. Make a unique branch for pull requests.
+```bash
+$ git checkout -b UNIQUE_BRANCH_NAME
+```
+1. You can do something for this project.  
+1. Build project for release in root directory.
+``` bash
+$ ./push_preproc.bat 0.0.0</p></div>
+```
+1. Please add, commit and push.
+```bash
+$ git add .
+$ git commit -m "Please write a summary of your changes."
+$ git push -u origin UNIQUE_BRANCH_NAME
+```
+1. Please send pull requests at <a href="https://github.com/pit-ray/win-vind/pulls">Pull requests pit-ray/win-vind</a></li>
 
 <br>
-<span class="sect1">Note</span><hr>
-<ul>
-    <li><span class="important">Your written codes are provided as <b>MIT License</b></span></li>
-    <li><span class="important">If you used third party libraries, you must add some essential texts in <a href="https://github.com/pit-ray/win-vind/blob/master/THIRD_PARTY_LICENSES.txt"><b>THIRD_PARTY_LICENSES.TXT</b></a> before pull requests.</span></li>
-    <li>You're most welcomed! All you need is some passions for win-vind.</li>
-</ul>
+<hr>
+
+## Note
+- **Your written codes are provided as MIT License.
+- If you used third party libraries, you must add some essential texts in <a href="https://github.com/pit-ray/win-vind/blob/master/THIRD_PARTY_LICENSES.txt">**THIRD_PARTY_LICENSES.TXT**</a> before pull requests.
+- You're most welcomed! All you need is some passions for win-vind.
 
 <br>
-<span class="sect1">Development Environment</span><hr>
-<p>You must install follow softwares or libraries.</p>
-<table class="long">
-    <tbody>
-        <tr>
-            <th>Name</th>
-            <th>Minimum Version</th>
-            <th>Download Link</th>
-        </tr>
-        <tr>
-            <th>MinGW-w64</th>
-            <td>GCC-8.1.0-x86_64-posix-seh</td>
-            <td><a href="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/">MinGW-w64 SourceForge.net</a></td>
-        </tr>
-        <tr>
-            <th>CMake</th>
-            <td>3.14.4</td>
-            <td><a href="https://cmake.org/download/">Download - CMake</a></td>
-        </tr>
-        <tr>
-            <th>wxWidgets</th>
-            <td>3.0.5</td>
-            <td><a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a></td>
-        </tr>
-        <tr>
-            <th>NSIS</th>
-            <td>3.06.1</td>
-            <td><a href="https://nsis.sourceforge.io/Download">Download - NSIS</a></td>
-        </tr>
-    </tbody>
-</table>
-<p>This project use <b>&lt;mutex&gt;</b>, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with <mutex>. (select posix at item called Thread in MinGW-Installer.)</p>
+<hr>
 
-<br>
-<span class="sect1">Build Instruction</span><hr>
-<ul>
-    <li>Automatically <span class="important">(Recommended)</span></li>
-    <div class="code"><p>$./build.bat [-debug/-release]</p></div>
-    <li>Manually</li>
-    <div class="code">
-        <p>$mkdir debug</p>
-        <p>$cd debug</p>
-        <p>$cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..</p>
-        <p>$mingw32-make -f Makefile</p>
-        <p>$cd ..</p>
-    </div>
-</ul>
+## Development Environment
+You must install follow softwares or libraries.  
 
+|Name|Minimum Version|Download Link|
+|:---:|:---:|:---:|
+|MinGW-w64|GCC-8.1.0-x86_64-posix-seh|<a href="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/">MinGW-w64 SourceForge.net</a>|
+|CMake|3.14.4|<a href="https://cmake.org/download/">Download - CMake</a>|
+|wxWidgets|3.0.5|<a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a>|
+|NSIS|3.06.1|<a href="https://nsis.sourceforge.io/Download">Download - NSIS</a>|
+
+This project use **&lt;mutex&gt;**, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with <mutex>. (select posix at item called Thread in MinGW-Installer.)
+
+<hr>
+
+## Build Instruction
+- Automatically *(Recommended)*
+```bash
+$./build.bat [-debug/-release]
+```
+- Manually
+```bash
+$ mkdir debug
+$ cd debug
+$ cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
+$ mingw32-make -f Makefile
+$ cd ..
+```
 <br>
-<span class="sect1">Class Information</span><hr>
-<p>There are six base classes in win-vind as follow.</p>
+
+## Class Information
+There are six base classes in win-vind as follow.
 <table class="long">
     <tbody>
         <tr>

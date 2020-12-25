@@ -15,11 +15,11 @@ This software supports only on Windows 10. Some features may be not working well
 1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. <br>   
 [Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip){: .btn}  <br>  
 If you want not to receive some warnings, execute next commands.  <br>    
-**Installer version**  
+- **Installer version**  
 ```bash
 $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe
 ```  
-**Zip version**  
+- **Zip version**  
 ```bash
 $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip
 ```

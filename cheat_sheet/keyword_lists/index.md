@@ -7,7 +7,9 @@ descripption: "Keyword lists"
 ---
 # Keyword Lists  
 
-<hr>
+<hr>  
+
+All keywords in win-vind are not case-sensitive.  
 
 ## Mode Keyword  
 

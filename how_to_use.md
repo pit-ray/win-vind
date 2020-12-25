@@ -9,6 +9,8 @@ This software supports only on Windows 10. Some features may be not working well
 1. TOC  
 {:toc}
 
+<hr>
+
 ## Installation
 1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. <br>   
 [Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip){: .btn}  <br>  
@@ -33,34 +35,34 @@ $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind
 <hr>
 
 ## Overview  
-![mode-overview](https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true)
-win-vind has plenty of hotkeys and commands, but they are based on the original Vim. Some little differences are that its mode has two layers and its unique functions for GUI. Concretely, they are **GUI Mode** and **Editor Mode**.  
+![mode-overview](https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true)  
+win-vind has plenty of hotkeys and commands, but they are almost based on the original Vim or some famous plugins. The little differences are that its mode has two layers and its unique functions for GUI. Concretely, two layer modes are **GUI Mode** and **Editor Mode**.  
 
 ![gui-and-editor-pic](https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/GUIandEditor.jpg?raw=true)
 
 ### GUI Mode
-The target is the mouse cursor. For instance, if you input h, moves it to left. However, it does not have a concept called rows and columns, so I implemented a wealth of alternative functions.
+You can do an operation of GUI objects, moving the mouse cursor, process execution, operating all windows by key-bindings like Vim. By the way, this mode is applied at the first start after installation. My favorite functions are **EasyClick**. It allows you to select GUI objects by operations like <a href="https://github.com/easymotion/vim-easymotion">**EasyMotion**</a> or <a href="https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=ja">**Vimium**</a>.
+
+![easy-click-demo.gif](https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true)
 
 ### Editor Mode
-It enables to emulate Vim when using general text editors, for instance, notepad or Microsoft Office Word or some Web forms. The target is each caret of text controls. In other words, you can operate a text editor that mainly control by a mouse with key binds of the original Vim.
+It enables to emulate Vim when using general text editors, for instance, notepad or Microsoft Office Word or some Web forms. However, currently not implemented the complete text analyzing system, so some behavior is different from the original. 
+
+<hr>  
 
 ## Note 
 - `F8 + F9` is safe forced termination.
-- win-vind **cannot** operate some windows given high-rank authorization than itself. For example, if you start Task Manager having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**.
+- win-vind **cannot** operate some windows given high-rank authorization than itself. For example, if you start **Task Manager** having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**.
 
-## Bindings
-You can customize all key bindings by GUI based settings or rewriting JSON settings file easily.
+## Customization
+### Parameters
 
-### GUI based
-!(bind-lits)[https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/bind_lits.jpg?raw=true]
-There are settings in <b>Preferences</b> in the system tray.
+### Key Config
+You can customize all key bindings by rewriting the JSON settings file easily. The location of the file is different depending on the installation way. Refer to the following table.
 
-### Rewriting JSON
-If you use the installer, the file is located in **~/.win-vind/bindings.json**.  
-If you get zip-version, it is existed in **win-vind/config/bindings.json**.
+|Installation|Path|
+|:---:|:---|
+|Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/bindings.json|
+|Zip|**&lt;Zip-Root&gt;**/config/bindings.json|
 
-### Syntax
-- `[key1](+)[key2]` means typing key1 and key2 with same timing.  
-- `[key1]-&gt;[key2]` means typing key2 after key1.  
-- It distinguished between upper and lowercase letters. For example, `a` means `a`, `A` does `Shift+a`.
-- If you want to use system keys like Shift or Ctrl, please write KMP key code.
+Its syntaxes are based on original Vim, but have some unique keywords.  

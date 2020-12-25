@@ -100,7 +100,3 @@ The meanings of these key config are shown in the following table with the provi
 |&lt;edin&gt;|It means copying the key config from another mode,<br>so **Editor Visual** and **Editor Line Visual** are same as the configs of **Editor Normal**.|
 |+&lt;num&gt;|&lt;num&gt; is a number of any digits. For example, (**LShift**+**;**)->(**Shift**+**=**)->**1**->**2**.|
 |Example|(**Shift**+**;**)->(**Shift**+**E**)->**X**->**A**->**M**->**P**->**L**->**E**|
-
-===+=+=:;
-= +
-; :

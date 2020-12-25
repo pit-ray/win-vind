@@ -15,11 +15,17 @@ code {
 
 //codes
 .highlight .c {
-  cikir: #58cc75;   
+  color: #58cc75;   
 } //comment
-.highlight .nl {
-  color: #eee000;
-} // name.label //
-.highlight .nx {
-  color: #eee000;
-} //name.other
+.highlight .err {
+  color: #f29888;
+}
+.highlight .g {
+  color: #c2cccc;
+}
+.highlight .l {
+  color: #c2cccc;
+}
+.highlight .n {
+  color: #7fddf5;
+}

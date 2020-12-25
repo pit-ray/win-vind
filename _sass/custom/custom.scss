@@ -15,7 +15,7 @@ code {
 
 //codes
 .highlight .c {
-  color: #009922;   
+  color: #118822;   
 } //comment
 .highlight .err {
   color: #f29888;
@@ -30,7 +30,7 @@ code {
   color: #7fddf5;
 }
 .highlight .k {
-  color: $blue-000;
+  color: $grey-000;
 } // keyword //
 .highlight .o {
   color: #859900;
@@ -42,16 +42,16 @@ code {
   color: #93a1a1;
 } // punctuation //
 .highlight .cm {
-  color: #586e75;
+  color: #118822;
 } // comment.multiline //
 .highlight .cp {
-  color: #859900;
+  color: #118822;
 } // comment.preproc //
 .highlight .c1 {
-  color: #586e75;
+  color: #118822;
 } // comment.single //
 .highlight .cs {
-  color: #859900;
+  color: #118822;
 } // comment.special //
 .highlight .gd {
   color: #ffbd59;
@@ -101,7 +101,7 @@ code {
   color: #268bd2;
 } // keyword.reserved //
 .highlight .kt {
-  color: #dc322f;
+  color: #268bd2;
 } // keyword.type //
 .highlight .ld {
   color: #93a1a1;

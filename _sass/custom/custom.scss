@@ -27,13 +27,13 @@ code {
   color: #c2cccc;
 }
 .highlight .n {
-  color: #7fddf5;
+  color: $grey-lt-000;
 }
 .highlight .k {
-  color: $grey-lt-000;
+  color: #268bd2;
 } // keyword //
 .highlight .o {
-  color: #859900;
+  color: $grey-lt-100;
 } // operator //
 .highlight .x {
   color: #cb4b16;
@@ -42,7 +42,7 @@ code {
   color: #93a1a1;
 } // punctuation //
 .highlight .cm {
-  color: #118822;
+  color: $yellow-000;
 } // comment.multiline //
 .highlight .cp {
   color: #118822;
@@ -92,7 +92,7 @@ code {
   color: #268bd2;
 } // keyword.declaration //
 .highlight .kn {
-  color: #859900;
+  color: #00bbcc;
 } // keyword.namespace //
 .highlight .kp {
   color: #859900;
@@ -110,7 +110,7 @@ code {
   color: #ffbd59;
 } // literal.number //
 .highlight .s {
-  color: #ffbd59;
+  color: $ffbd59;
 } // literal.string //
 .highlight .na {
   color: #cccccc

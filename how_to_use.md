@@ -70,6 +70,7 @@ You can customize all key bindings by rewriting the JSON settings file easily. T
 
 Its syntaxes are based on original Vim, but have some unique keywords.  
 #### Mode Keyword
+
 |Keyword|Means|
 |:---:|:---:|
 |guin|GUI Normal Mode|
@@ -82,6 +83,7 @@ Its syntaxes are based on original Vim, but have some unique keywords.
 |cmd|Command Mode|
 
 #### Specific Ascii Key Code
+
 |Key Code|Means|
 |:---:|:---|
 |&lt;space&gt;|Space Key|
@@ -90,6 +92,7 @@ Its syntaxes are based on original Vim, but have some unique keywords.
 |&lt;lt&gt;|Ascii code '&lt;'|
   
 #### System Key Code
+
 |KeyCode|Means|
 |:---:|:---|
 |&lt;bs&gt;|BackSpace Key|

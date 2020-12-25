@@ -45,7 +45,7 @@ code {
   color: #118822;
 } // comment.multiline //
 .highlight .cp {
-  color: $yellow-100;
+  color: #65BE85;
 } // comment.preproc //
 .highlight .c1 {
   color: #118822;
@@ -98,10 +98,10 @@ code {
   color: #859900;
 } // keyword.pseudo //
 .highlight .kr {
-  color: #268bd2;
+  color: #DE935F;
 } // keyword.reserved //
 .highlight .kt {
-  color: #268bd2;
+  color: #DE935F;
 } // keyword.type //
 .highlight .ld {
   color: #93a1a1;
@@ -110,7 +110,7 @@ code {
   color: #ffbd59;
 } // literal.number //
 .highlight .s {
-  color: #ffbd59;
+  color: $yellow-100;
 } // literal.string //
 .highlight .na {
   color: #cccccc

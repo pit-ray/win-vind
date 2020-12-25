@@ -69,8 +69,8 @@ You can customize all key bindings by rewriting the JSON settings file easily. T
 |Zip|**&lt;Zip-Root&gt;**/config/bindings.json|
 
 Its syntaxes are based on original Vim, but have some unique keywords.  
-#### Mode Keyword
 
+#### Mode Keyword
 |Keyword|Means|
 |:---:|:---:|
 |guin|GUI Normal Mode|
@@ -82,17 +82,19 @@ Its syntaxes are based on original Vim, but have some unique keywords.
 |edivl|Editor Line Visual Mode|
 |cmd|Command Mode|
 
-#### Specific Ascii Key Code
+<hr>
 
+#### Specific Ascii Key Code  
 |Key Code|Means|
 |:---:|:---|
 |&lt;space&gt;|Space Key|
 |&lt;hbar&gt;|Ascii code '-'|
 |&lt;gt&gt;|Ascii code '&gt;'|
 |&lt;lt&gt;|Ascii code '&lt;'|
-  
-#### System Key Code
-
+ 
+ <hr>
+ 
+#### System Key Code  
 |KeyCode|Means|
 |:---:|:---|
 |&lt;bs&gt;|BackSpace Key|

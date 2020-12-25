@@ -82,95 +82,87 @@ Its syntaxes are based on original Vim, but have some unique keywords.
 |cmd|Command Mode|
 
 #### Specific Ascii Key Code
-|Key Code|Means or Usage|
+|Key Code|Means|
 |:---:|:---|
-|&lt;space>|Space Key|
-|&lt;hbar>|Ascii code '-'|
-|<gt>|Ascii code '>'|
-|<lt>|Ascii code '<'|
+|&lt;space&gt;|Space Key|
+|&lt;hbar&gt;|Ascii code '-'|
+|&lt;gt&gt;|Ascii code '&gt;'|
+|&lt;lt&gt;|Ascii code '&lt;'|
   
-#### 
+#### System Key Code
+|KeyCode|Means|
+|:---:|:---|
+|&lt;bs&gt;|BackSpace Key|
+|&lt;capslock&gt;|CapsLock Key|
+|&lt;cr&gt;|Enter Key, Return Key|
+|&lt;enter&gt;|Enter Key, Return Key|
+|&lt;return&gt;|Enter Key, Return Key|
 |&lt;ime&gt;|Key for switching IME|
-|<tab>|Tab Key|
-|<cr>|Enter Key, Return Key|
-|<enter>|Enter Key, Return Key|
-
-        {"return",      VKC_ENTER},
-        {"capslock",    VKC_CAPSLOCK},
-        {"left",        VKC_LEFT},
-        {"right",       VKC_RIGHT},
-        {"up",          VKC_UP},
-        {"down",        VKC_DOWN},
-        {"bs",          VKC_BKSPACE},
-
-        {"shift",       VKC_SHIFT},
-        {"s",           VKC_SHIFT},
-        {"lshift",      VKC_LSHIFT},
-        {"ls",          VKC_LSHIFT},
-        {"rshift",      VKC_RSHIFT},
-        {"rs",          VKC_RSHIFT},
-
-        {"ctrl",        VKC_CTRL},
-        {"c",           VKC_CTRL},
-        {"lctrl",       VKC_LCTRL},
-        {"lc",          VKC_LCTRL},
-        {"rctrl",       VKC_RCTRL},
-        {"rc",          VKC_RCTRL},
-
-        {"win",         VKC_WIN},
-        {"lwin",        VKC_LWIN},
-        {"rwin",        VKC_RWIN},
-
-        {"alt",         VKC_ALT},
-        {"a",           VKC_ALT},
-        {"lalt",        VKC_LALT},
-        {"la",          VKC_LALT},
-        {"ralt",        VKC_RALT},
-        {"ra",          VKC_RALT},
-
-        {"m",           VKC_ALT},
-        {"lm",          VKC_LALT},
-        {"rm",          VKC_RALT},
-
-        {"nocvt",       VKC_NOCONVERT},
-        {"cvt",         VKC_CONVERT},
-        {"kana",        VKC_KANA},
-        {"app",         VKC_APP},
-        {"esc",         VKC_ESC},
-
-        {"f1",          VKC_F1},
-        {"f2",          VKC_F2},
-        {"f3",          VKC_F3},
-        {"f4",          VKC_F4},
-        {"f5",          VKC_F5},
-        {"f6",          VKC_F6},
-        {"f7",          VKC_F7},
-        {"f8",          VKC_F8},
-        {"f9",          VKC_F9},
-        {"f10",         VKC_F10},
-        {"f11",         VKC_F11},
-        {"f12",         VKC_F12},
-        {"f13",         VKC_F13},
-        {"f14",         VKC_F14},
-        {"f15",         VKC_F15},
-        {"f16",         VKC_F16},
-        {"f17",         VKC_F17},
-        {"f18",         VKC_F18},
-        {"f19",         VKC_F19},
-        {"f20",         VKC_F20},
-        {"f21",         VKC_F21},
-        {"f22",         VKC_F22},
-        {"f23",         VKC_F23},
-        {"f24",         VKC_F24},
-
-        {"snapshot",    VKC_SNAPSHOT},
-        {"scroll",      VKC_SCROLL},
-        {"pause",       VKC_PAUSE},
-        {"insert",      VKC_INSERT},
-        {"home",        VKC_HOME},
-        {"pageup",      VKC_PAGEUP},
-        {"del",         VKC_DELETE},
-        {"end",         VKC_END},
-        {"pagedown",    VKC_PAGEDOWN},
-
-        {"numlock",     VKC_NUMLOCK}
+|&lt;tab&gt;|Tab Key|
+|&lt;left&gt;|Left Key|
+|&lt;right&gt;|Right Key|
+|&lt;up&gt;|Up Key|
+|&lt;down&gt;|Down Key|
+|&lt;shift&gt;|Left Shift, Right Shift|
+|&lt;s&gt;|Left Shift, Right Shift|
+|&lt;lshift&gt;|Left Shift|
+|&lt;ls&gt;|Left Shift|
+|&lt;rshift&gt;|Right Shift|
+|&lt;rs&gt;|Right Shift|
+|&lt;ctrl&gt;|Left Control, Right Control|
+|&lt;c&gt;|Left Control, Right Control|
+|&lt;lctrl&gt;|Left Control|
+|&lt;lc&gt;|Left Control|
+|&lt;rctrl&gt;|Right Control|
+|&lt;rc&gt;|Right Control|
+|&lt;win&gt;|Left Windows Key, Right Windows Key|
+|&lt;lwin&gt;|Left Windows Key|
+|&lt;rwin&gt;|Right Windows Key|
+|&lt;agt&gt;|Left Alt, Right Alt|
+|&lt;a&gt;|Left Alt, Right Alt|
+|&lt;lagt&gt;|Left Alt|
+|&lt;la&gt;|Left Alt|
+|&lt;ragt&gt;|Right Alt|
+|&lt;ra&gt;|Right Alt|
+|&lt;m&gt;|Left Alt, Right Alt|
+|&lt;lm&gt;|Left Alt|
+|&lt;rm&gt;|Right Alt|
+|&lt;app&gt;|Application Key to right-click|
+|&lt;cvt&gt;|Convert Key to convert|
+|&lt;esc&gt;|Eescape Key|
+|&lt;kana&gt;|Kana Key to switch IME mode on Japanese keyboard.|
+|&lt;nocvt&gt;|No Convert Key to cancel conversion|
+|&lt;f1&gt;|F1|
+|&lt;f2&gt;|F2|
+|&lt;f3&gt;|F3|
+|&lt;f4&gt;|F4|
+|&lt;f5&gt;|F5|
+|&lt;f6&gt;|F6|
+|&lt;f7&gt;|F7|
+|&lt;f8&gt;|F8|
+|&lt;f9&gt;|F9|
+|&lt;f10&gt;|F10|
+|&lt;f11&gt;|F11|
+|&lt;f12&gt;|F12|
+|&lt;f13&gt;|F13|
+|&lt;f14&gt;|F14|
+|&lt;f15&gt;|F15|
+|&lt;f16&gt;|F16|
+|&lt;f17&gt;|F17|
+|&lt;f18&gt;|F18|
+|&lt;f19&gt;|F19|
+|&lt;f20&gt;|F20|
+|&lt;f21&gt;|F21|
+|&lt;f22&gt;|F22|
+|&lt;f23&gt;|F23|
+|&lt;f24&gt;|F24|
+|&lt;del&gt;|Delete Key|
+|&lt;end&gt;|End Key|
+|&lt;home&gt;|Home Key|
+|&lt;insert&gt;|Insert Key|
+|&lt;numlock&gt;|NumLock Key|
+|&lt;pagedown&gt;|Page Down Key|
+|&lt;pageup&gt;|Page Up Key|
+|&lt;pause&gt;|Pause Key, Break Key|
+|&lt;scroll&gt;|Scroll Key, Scroll Lock Key|
+|&lt;snapshot&gt;|Snapshot Key, Print Screen Key, Sys Rq Key|

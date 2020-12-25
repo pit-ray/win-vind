@@ -63,10 +63,44 @@ It enables to emulate Vim when using general text editors, for instance, notepad
 ### Key Config
 You can customize all key bindings by rewriting the JSON settings file easily. In the future, going to just write the changes. The location of the file is different depending on the installation way. Refer to the following table.
 
-|Installation|Path|
+|Installation Type|Path|
 |:---:|:---|
 |Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/bindings.json|
 |Zip|**&lt;Zip-Root&gt;**/config/bindings.json|
 
-Its syntaxes are based on original Vim, but have some unique keywords. You can refer keywords at 
+Its syntaxes are based on original Vim, but have some unique keywords. You can refer all keywords at <a href="https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/">Keyword Lists</a>.
 
+#### Example  
+```json
+    {
+        "name": "edi_move_caret_down",
+        "guin": ["test", "Te"],
+        "guii": [],
+        "guiv": [],
+        "edin": ["j", "+", "<C-n>", "<C-N>"],
+        "edii": [],
+        "ediv": ["<edin>"],
+        "edivl": ["<edin>"],
+        "cmd": ["+<num>", "Example"],
+        "en": "Move Caret Down",
+        "ja": "キャレットを下へ移動"
+    },
+```
+**name** is a unique identifier of a linked function. **en** or **ja** are labels used on GUI of win-vind. If you give a unique key as language code and a translated label, win-vind can support another language.  
+The meanings of these key config are shown in the following table with the proviso that the column of **String** is case-sensitive, but the column of **Meanings** is not case-sensitive. And, key codes are bolded, (e.g. **Shift**, **A**).
+
+|String|Meanings (but depending on an arrangement of a keyboard)|
+|:----:|:---|
+|test|**T**->**E**->**S**->**T**|
+|Te|(**Shift**+**T**)->**E**|
+|j|**J**|
+|+|**Shift** + **=**|
+|&lt;C-n&gt;|**Ctrl**+**N**|
+|&lt;C-N&gt;|**Ctrl**+**Shift**+**N**|
+|&lt;edin&gt;|It means copying the key config from another mode,<br>so **Editor Visual** and **Editor Line Visual** are same as the configs of **Editor Normal**.|
+|+&lt;num&gt;|&lt;num&gt; is a number of any digits. For example, (**LShift**+**;**)->(**Shift**+**=**)->**1**->**2**.|
+|Example|(**Shift**+**;**)->(**Shift**+**E**)->**X**->**A**->**M**->**P**->**L**->**E**|
+
+===+=+=:;
+= +
+; :

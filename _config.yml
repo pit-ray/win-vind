@@ -2,7 +2,7 @@ remote_theme: pmarsceill/just-the-docs
 
 title: win-vind
 description: Simple Vim Key Binder for Windows
-logo: "/imgs/win-vind-icon.png"
+logo: "/imgs/win-vind-icon_wt.png"
 
 search_enabled: true
 

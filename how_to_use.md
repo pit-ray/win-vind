@@ -56,20 +56,17 @@ It enables to emulate Vim when using general text editors, for instance, notepad
 
 <hr>
 
-
 ## Customization
 ### Parameters
 
+
 ### Key Config
-You can customize all key bindings by rewriting the JSON settings file easily. The location of the file is different depending on the installation way. Refer to the following table.
+You can customize all key bindings by rewriting the JSON settings file easily. In the future, going to just write the changes. The location of the file is different depending on the installation way. Refer to the following table.
 
 |Installation|Path|
 |:---:|:---|
 |Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/bindings.json|
 |Zip|**&lt;Zip-Root&gt;**/config/bindings.json|
 
-Its syntaxes are based on original Vim, but have some unique keywords.  
-
-<hr>
-
+Its syntaxes are based on original Vim, but have some unique keywords. You can refer keywords at 
 

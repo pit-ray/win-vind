@@ -48,7 +48,7 @@
         "ja": "カーソルの最大速度"
     },
     "yscroll_speed": {
-        "value": 4,
+        "value": 15,
         "en": "Vertical Scroll Speed",
         "ja": "縦スクロールの速度"
     },

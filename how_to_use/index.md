@@ -72,9 +72,8 @@ However, it is based on GUI, so some Vimmer dislike its UI. In this case, rewrit
 |:---:|:---|
 |Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/settings.json|
 |Zip|**&lt;Zip-Root&gt;**/config/settings.json|
-
-<hr>
 <br>
+<hr>
 
 ### Key Config
 You can customize all key bindings by rewriting the JSON settings file easily. In the future, going to just write the changes. The location of the file is different depending on the installation way. Refer to the following table.

@@ -8,6 +8,8 @@ descripption: "Usage of win-vind"
 
 This software supports only on Windows 10. Some features may be not working well on the others. If it is unstable despite Windows 10, please post issues to <a href="https://github.com/pit-ray/win-vind/issues">github.com/issues</a>.  
 
+<hr>  
+
 1. TOC  
 {:toc}
 

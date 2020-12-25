@@ -73,7 +73,8 @@ Its syntaxes are based on original Vim, but have some unique keywords.
 <hr>
 
 ## Keyword Lists
-### Mode Keyword
+### Mode Keyword  
+
 |Keyword|Means|
 |:---:|:---:|
 |guin|GUI Normal Mode|
@@ -88,6 +89,7 @@ Its syntaxes are based on original Vim, but have some unique keywords.
 <hr>
 
 ### Specific Ascii Key Code  
+
 |Key Code|Means|
 |:---:|:---|
 |&lt;space&gt;|Space Key|
@@ -98,6 +100,7 @@ Its syntaxes are based on original Vim, but have some unique keywords.
  <hr>
  
 ### System Key Code  
+
 |KeyCode|Means|
 |:---:|:---|
 |&lt;bs&gt;|BackSpace Key|

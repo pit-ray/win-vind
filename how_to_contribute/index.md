@@ -127,11 +127,15 @@ void MyBinding::sprocess(
     }
 }
 ```
-- Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bindings_lists.hpp">**core/include/bindings_lists.hpp**</a>.
+
+- Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bindings_lists.hpp">**core/include/bindings_lists.hpp**</a>.  
+
 ```cpp
     MyBinding::create(),
 ```
+  
 - Assign commands to **MyBinding** in <a href="https://github.com/pit-ray/win-vind/blob/master/config/bindings.json">**config/bindings.json**</a>.  
+
 ```json
     {
         "name": "my_binding",

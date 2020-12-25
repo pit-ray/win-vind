@@ -83,7 +83,7 @@ It has differences from the latest release.
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo">
 
 ### Bugs
-- Nothing
+- On the desktop, cannot refresh virtual command line.  
 
 ## ToDo
 

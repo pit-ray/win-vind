@@ -18,7 +18,7 @@ I regarded original-Vim's operation for changing from Normal to Insert (e.g. **i
 
 
 ### What is the GUI visual mode?  
-It is equal to hold mouse left pressing.  
+It is the same as holding the mouse left pressing.  
 
 ### I want to use **Alt** + **Tab**.
 Please use <a href="https://pit-ray.github.io/win-vind/cheat_sheet/#switch_window">Switch Window</a>.  

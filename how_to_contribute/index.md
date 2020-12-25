@@ -8,6 +8,11 @@ descripption: "How to contibute win-vind."
 
 <hr>
 
+1. TOC
+{.toc}
+
+<hr>
+
 ## Contibute Procedure
 1. Make a discussion at <a href="https://github.com/pit-ray/win-vind/discussions">github.com/discussions</a> in order to prevent conflicts. In addition, post the what you will do, just in a few words.  
 

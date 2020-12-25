@@ -19,7 +19,7 @@ If you want not to receive some warnings, execute next commands.  <br>
 ```bash
 $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/setup_win-vind_2.1.1.exe
 ```  
-**Zip version**  
+**Zip version**
 ```bash
 $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v2.1.1/win-vind_2.1.1.zip
 ```

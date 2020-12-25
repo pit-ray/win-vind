@@ -571,6 +571,7 @@ void EdiNDeleteAfter::sprocess(
         else if(pimpl->ksr.is_pressed()) {
             del() ;
         }
+        return ;
     }
 
     //repeat_num >= 2
@@ -626,6 +627,7 @@ void EdiNDeleteBefore::sprocess(
         else if(pimpl->ksr.is_pressed()) {
             del() ;
         }
+        return ;
     }
 
     //repeat_num >= 2

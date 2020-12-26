@@ -49,3 +49,6 @@ descripption: "Mode Control"
 
 ### Change to Editor Line Visual  
 
+<hr>  
+## Common  
+### Command Mode  

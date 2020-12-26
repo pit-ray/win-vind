@@ -3,9 +3,9 @@ layout: default
 title: Keyword List
 nav_order: 5
 parent: Cheat Sheet
-descripption: "Keyword lists"
+descripption: "Keyword list"
 ---
-# Keyword Lists  
+# Keyword List  
 
 <hr>  
 

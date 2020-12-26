@@ -57,7 +57,7 @@ It enables to emulate Vim when using general text editors, for instance, notepad
 
 ## Note 
 - `F8 + F9` is safe forced termination.
-- win-vind **cannot** operate some windows given high-rank authorization than itself. For example, if you start **Task Manager** having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**.
+- win-vind could **not** operate some windows given high-rank authorization than itself. For example, if you start **Task Manager** having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**.
 
 <hr>
 
@@ -103,7 +103,7 @@ Its syntaxes are based on original Vim, but have some unique keywords. You can r
         "ja": "キャレットを下へ移動"
     },
 ```
-**name** is a unique identifier of a linked function. **en** or **ja** are labels used on GUI of win-vind. If you give a unique key as language code and a translated label, win-vind can support another language.  
+**name** is a unique identifier of a linked function. **en** or **ja** are labels used on GUI of win-vind. If you give a unique key as language code and a translated label, enable to support another language.  
 <br>
 The meanings of these key config are shown in the following table with the proviso that the column of **String** is case-sensitive, but the column of **Meanings** is not case-sensitive. And, key codes are bolded, (e.g. **Shift**, **A**).
 

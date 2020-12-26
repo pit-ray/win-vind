@@ -51,12 +51,13 @@ $ git push -u origin UNIQUE_BRANCH_NAME
 ## Development Environment
 I recommend to install follow softwares or libraries.  
 
-|Name|Minimum Version|Download Link|
+|Name|Recommended Version|Download Link|
 |:---:|:---:|:---:|
 |MinGW-w64|GCC-8.1.0-x86_64-posix-seh|<a href="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/">MinGW-w64 SourceForge.net</a>|
 |CMake|3.14.4|<a href="https://cmake.org/download/">Download - CMake</a>|
 |wxWidgets|3.0.5|<a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a>|
 |NSIS|3.06.1|<a href="https://nsis.sourceforge.io/Download">Download - NSIS</a>|
+|Windows10 SDK|10.0.19041.0|<a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/">Microsoft Windows10 SDK - Windows app development</a>|
 
 This project use **&lt;mutex&gt;**, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with <mutex>. (select posix at item called Thread in MinGW-Installer.)
 
@@ -83,9 +84,9 @@ $ cd ..
 All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_with_creator.hpp">**BindedFuncWithCreator**</a> to have a factory function. In addition, you can use some utilities in <a href="https://github.com/pit-ray/win-vind/tree/master/core/include/common">**core/include/common**</a> for developments. 
 
 ### New KeyBinding Example  
-- Make a new derived class (e.g. **MyBinding**) and add files into **core/??_bindings/**.
+- Make a source file and a header file into **core/include/dev_bindings/** and **core/src/dev_bindings/**.
 - Add a path of source file into **core/CMakeLists.txt**.   
-- Define the class.  
+- Define a new derived class (e.g. **MyBinding**).  
 
 **mybinding.hpp**
 

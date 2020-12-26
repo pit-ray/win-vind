@@ -18,7 +18,7 @@ descripption: "Option lists"
 
 ## Autotrack Popup
 **ID: autotorack_popup**  
-It is one of standard options of on Windows. For example, if shown **Are you sure you want to move this file to the Recycle Bin?**, it automatically moves the cursor to the popup window.
+It is one of standard options on Windows. For example, if shown **Are you sure you want to move this file to the Recycle Bin?**, it automatically moves the cursor to the popup window.
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/autotrack_demo.gif?raw=true" >
 

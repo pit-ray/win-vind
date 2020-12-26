@@ -46,8 +46,8 @@ It makes the mode of **win-vind** automatically switch to **GUI Insert Mode** on
 
 <hr>
 
-## Char Cache Enable
-**ID: char_cache_enable**  
+## Enable Char Cache  
+**ID: enable_char_cache**  
 **Char Cache** is a very small cache for one character used by **x** or **X** commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cache_char.gif?raw=true" >

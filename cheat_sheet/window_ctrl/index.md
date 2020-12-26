@@ -12,7 +12,7 @@ descripption: "Window Control"
 <hr>
 
 1. TOC1  
-{.toc}
+{:toc}
 
 <hr>
 

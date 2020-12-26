@@ -14,48 +14,42 @@ descripption: "Window Control"
 1. TOC1  
 {:toc}
 
-<hr>
+<hr>  
 
-## Close Current Window  
+## Window  
+
+### Close Current Window  
+
+
+### Switch Window  
+
+
+### Maximize Current Window  
+
+
+### Minimize Current Window  
+
+
+### Snap Current Window to Left  
+
+
+### Snap Current Window To Right  
+
+
+### Open New Current Window  
+
+
+### Reload Current Window  
 
 <hr>  
 
-## Switch Window  
+## Tab  
 
-<hr>  
+### Switch to Left Tab  
 
-## Maximize Current Window  
 
-<hr>  
+### Switch to Right Tab  
 
-## Minimize Current Window  
 
-<hr>  
+### Open New Tab  
 
-## Snap Current Window to Left  
-
-<hr>  
-
-## Snap Current Window To Right  
-
-<hr>  
-
-## Open New Current Window  
-
-<hr>  
-
-## Reload Current Window  
-
-<hr>  
-
-## Switch to Left Tab  
-
-<hr>  
-
-## Switch to Right Tab  
-
-<hr>  
-
-## Open New Tab  
-
-<hr>  

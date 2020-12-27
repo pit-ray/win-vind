@@ -21,7 +21,7 @@ descripption: "Window Control"
 ### Switch Window  
 
 |Details|Status|  
-|:---:|:---|  
+|:---|:---|  
 |ID|switch_window|  
 |N-Repeat|Not Supported|  
 |Default Key|&lt;C-w&gt;s|  
@@ -33,7 +33,7 @@ It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by k
 
 ### Maximize Current Window  
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|maximize_current_window|
 |N-Repeat|Supprted|
 |Default Key|&lt;C-w&gt;k, &lt;C-w&gt;a|
@@ -46,7 +46,7 @@ Is is same as **Win + Up** of shortcuts on Windows.
 ### Minimize Current Window  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|minimize_current_window|
 |N-Repeat|Supprted|
 |Default Key|&lt;C-w&gt;j, &lt;C-w&gt;i|
@@ -59,7 +59,7 @@ Is is same as **Win + Down** of shortcuts on Windows.
 ### Snap Current Window to Left  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|snap_current_window_to_left|
 |N-Repeat|Not Supported|
 |Default Key|&lt;C-w&gt;h, &lt;C-w&gt;H, &lt;C-w&gt;&lt;lt&gt;, &lt;C-w&gt;&lt;Left&gt;|
@@ -72,7 +72,7 @@ Is is same as **Win + Left** of shortcuts on Windows.
 ### Snap Current Window To Right  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|snap_current_window_to_right|
 |N-Repeat|Not Supported|
 |Default Key|&lt;C-w&gt;l, &lt;C-w&gt;L, &lt;C-w&gt;&lt;gt&gt;, &lt;C-w&gt;&lt;Right&gt;|
@@ -85,7 +85,7 @@ Is is same as **Win + Right** of shortcuts on Windows.
 ### Open New Current Window  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|open_new_current_window|
 |N-Repeat|Not Supported|
 |Default Key|&lt;C-w&gt;n|
@@ -98,7 +98,7 @@ It searchs the path of a executable file from the selected window and executes i
 ### Close Current Window  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|close_current_window|
 |N-Repeat|Not Supported|
 |Default Key|&lt;C-w&gt;q, &lt;C-w&gt;c|
@@ -111,7 +111,7 @@ Is is same as **Alt + F4** of shortcuts on Windows.
 ### Reload Current Window  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|reload_current_window|
 |N-Repeat|Not Supported|
 |Default Key|-|
@@ -127,7 +127,7 @@ Is is same as **F5** of shortcuts on Windows.
 ### Switch to Left Tab  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|switch_to_right_tab|
 |N-Repeat|Supported|
 |Default Key|gT|
@@ -140,7 +140,7 @@ Is is same as **Ctrl + Shift + Tab** of shortcuts on Windows.
 ### Switch to Right Tab  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|switch_to_right_tab|
 |N-Repeat|Supported|
 |Default Key|gt|
@@ -153,7 +153,7 @@ Is is same as **Ctrl + Tab** of shortcuts on Windows.
 ### Open New Tab  
 
 |Details|Status|
-|:---:|:---|
+|:---|:---|
 |ID|open_new_tab|
 |N-Repeat|Not Supported|
 |Default Key|-|

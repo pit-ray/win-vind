@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Virtual Desktop Control
-nav_order: 5
+nav_order: 2
 parent: Cheat Sheet
 descripption: "Virtual Desktop Control"
 ---

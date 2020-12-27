@@ -205,28 +205,121 @@ Additionaly, positions of key are very hardware-dependent, so if you don't like 
 It makes cursor jump center of most foreground window.   
 
 <br>
-hr>  
+<hr>   
 
 ## Scroll  
 ### Scroll Up
 
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_up**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`<C-y>`, `<C-k>`|  
+|Default Command|-| 
+
+<br>
+
+
 ### Scroll Down
+
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_down**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`<C-e>`, `<C-j>`|  
+|Default Command|-| 
+
+<br>
+
 
 ### Scroll Middle Page Up
 
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_mid_up**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`<C-u>`|  
+|Default Command|-| 
+
+<br>
+
 ### Scroll Middle Page Down
+
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_mid_down**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`<C-d>`|  
+|Default Command|-| 
+
+<br>
+
 
 ### Scroll Page Up
 
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_page_up**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`<C-b>`|  
+|Default Command|-| 
+
+<br>
+
 ### Scroll Page Down  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_page_down**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`<C-f>`|  
+|Default Command|-| 
+
+<br>
 
 ### Scroll Left
 
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_left**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`zh`, `<C-h>`|  
+|Default Command|-| 
+
+<br>
+
 ### Scroll Right
+
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_right**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`zl`, `<C-l>`|  
+|Default Command|-| 
+
+<br>
 
 ### Scroll Middle Page Left  
 
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_mid_left**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`zH`|  
+|Default Command|-| 
+
+<br>
+
 ### Scroll Middle Page Right  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**scroll_mid_right**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`zL`|  
+|Default Command|-| 
+
+<br>
 
 <hr>  
 
@@ -234,10 +327,56 @@ hr>
 
 ### Left Click
 
+|Details|Status|  
+|:---|:---|  
+|ID|**clicke_left**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`o`, `O`|  
+|Default Command|-| 
+
+<br>
+
 ### Right Click  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**click_right**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`a`, `A`|  
+|Default Command|-| 
+
+<br>
+
 
 ### Select All  
 
+|Details|Status|  
+|:---|:---|  
+|ID|**select_all**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`V`|  
+|Default Command|-| 
+
+<br>
+
 ### EasyClick
 
+|Details|Status|  
+|:---|:---|  
+|ID|**easy_click**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`F`|  
+|Default Command|`:ec`| 
+
+<br>
+
 ### Update EasyClick
+
+|Details|Status|  
+|:---|:---|  
+|ID|**update_easy_click**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`<C-F>`|  
+|Default Command|-| 
+
+<br>

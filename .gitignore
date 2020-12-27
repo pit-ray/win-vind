@@ -1,6 +1,5 @@
-build
+:uild
 release
 debug
 .vscode
 .clangd
-bin

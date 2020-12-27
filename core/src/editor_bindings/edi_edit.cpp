@@ -384,7 +384,7 @@ namespace EdiEdit
         using namespace ModeManager ;
         const auto mode = get_mode() ;
         if(mode == Mode::EdiVisual) {
-            if(iParams::get_b("char_cache_enable")) {
+            if(iParams::get_b("enable_char_cache")) {
                 KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
                 g_rgtype = _RegisteredType::Chars ;
             }
@@ -393,7 +393,7 @@ namespace EdiEdit
             }
         }
         else if(mode == Mode::EdiLineVisual) {
-            if(iParams::get_b("char_cache_enable")) {
+            if(iParams::get_b("enable_char_cache")) {
                 KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
             }
             else {
@@ -554,7 +554,7 @@ void EdiNDeleteAfter::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto del = [] {
-        if(iParams::get_b("char_cache_enable")) {
+        if(iParams::get_b("enable_char_cache")) {
             KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
             KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
             EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Chars ;
@@ -609,7 +609,7 @@ void EdiNDeleteBefore::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr)) const
 {
     auto del = [] {
-        if(iParams::get_b("char_cache_enable")) {
+        if(iParams::get_b("enable_char_cache")) {
             KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
             KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
             EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Chars ;
@@ -731,7 +731,7 @@ void EdiDeleteCharsAndStartInsert::sprocess(
     for(unsigned int i = 0 ; i < repeat_num ; i ++)
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
 
-    if(iParams::get_b("char_cache_enable")) {
+    if(iParams::get_b("enable_char_cache")) {
         KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
         EdiEdit::g_rgtype = EdiEdit::_RegisteredType::Chars ;
     }

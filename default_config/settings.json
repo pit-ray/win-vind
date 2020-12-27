@@ -328,9 +328,9 @@
         "en": "EasyClick Matching Color Decay",
         "ja": "EasyClickの一致文字の色減衰"
     },
-    "char_cache_enable": {
+    "enable_char_cache": {
         "value": false,
-        "en": "Char Cache Enable",
+        "en": "Enable Char Cache",
         "ja": "文字キャッシュ有効化"
     }
 }

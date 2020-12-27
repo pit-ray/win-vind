@@ -51,7 +51,7 @@ namespace wxGUI
         create_cb("virtual_cmd_line") ;
         create_cb("dedicate_to_window") ;
         create_cb("suppress_for_vim") ;
-        create_cb("char_cache_enable") ;
+        create_cb("enable_char_cache") ;
 
         SetSizerAndFit(root_sizer) ;
     }

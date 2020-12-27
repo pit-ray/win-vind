@@ -28,7 +28,7 @@ descripption: "Virtual Desktop Control"
   
 It is same as **Ctrl + Win + Left** of shortcuts on Windows.  
 
-<br>
+<br>  
 
 ### Switch VDesktop to Right 
 
@@ -41,7 +41,8 @@ It is same as **Ctrl + Win + Left** of shortcuts on Windows.
   
 It is same as **Ctrl + Win + Right** of shortcuts on Windows.  
 
-<br>
+<br>  
+
 ### Create New VDesktop  
 
 |Details|Status|  
@@ -53,7 +54,8 @@ It is same as **Ctrl + Win + Right** of shortcuts on Windows.
   
 It is same as **Ctrl + Win + D** of shortcuts on Windows.  
 
-<br>
+<br>  
+
 ### Close Current VDesktop
 
 |Details|Status|  
@@ -65,7 +67,8 @@ It is same as **Ctrl + Win + D** of shortcuts on Windows.
   
 It is same as **Ctrl + Win + F4** of shortcuts on Windows.  
 
-<br>
+<br>  
+
 ### Task View  
 
 |Details|Status|  

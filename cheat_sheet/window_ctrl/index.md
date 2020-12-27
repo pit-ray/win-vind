@@ -19,12 +19,13 @@ descripption: "Window Control"
 ## Window  
 
 ### Switch Window  
-|a|a|
-|:---:|:---:|
-|ID|switch_window|
-|N-Repeat|Not Supported|
-|Default Key|&lt;C-w&gt;s|
-|Default Command|:sw, :switch|
+
+|||  
+|:---:|:---:|  
+|ID|switch_window|  
+|N-Repeat|Not Supported|  
+|Default Key|&lt;C-w&gt;s|  
+|Default Command|:sw, :switch|  
   
 It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by keybindings of **move_left** or **move_right**. In addition, the keys for deciding a window are **ESC** or **Enter**.  
 
@@ -43,6 +44,7 @@ Is is same as **Win + Up** of shortcuts on Windows.
 <br>  
 
 ### Minimize Current Window  
+
 |||
 |:---:|:---:|
 |ID|minimize_current_window|
@@ -55,6 +57,7 @@ Is is same as **Win + Down** of shortcuts on Windows.
 <br>  
 
 ### Snap Current Window to Left  
+
 |||
 |:---:|:---:|
 |ID|snap_current_window_to_left|
@@ -67,6 +70,7 @@ Is is same as **Win + Left** of shortcuts on Windows.
 <br>  
 
 ### Snap Current Window To Right  
+
 |||
 |:---:|:---:|
 |ID|snap_current_window_to_right|
@@ -79,6 +83,7 @@ Is is same as **Win + Right** of shortcuts on Windows.
 <br>  
 
 ### Open New Current Window  
+
 |||
 |:---:|:---:|
 |ID|open_new_current_window|
@@ -91,6 +96,7 @@ It searchs the path of a executable file from the selected window and executes i
 <br>  
 
 ### Close Current Window  
+
 |||
 |:---:|:---:|
 |ID|close_current_window|
@@ -103,6 +109,7 @@ Is is same as **Alt + F4** of shortcuts on Windows.
 <br>  
 
 ### Reload Current Window  
+
 |||
 |:---:|:---:|
 |ID|reload_current_window|
@@ -118,6 +125,7 @@ Is is same as **F5** of shortcuts on Windows.
 ## Tab  
 
 ### Switch to Left Tab  
+
 |||
 |:---:|:---:|
 |ID|switch_to_right_tab|
@@ -130,6 +138,7 @@ Is is same as **Ctrl + Shift + Tab** of shortcuts on Windows.
 <br>  
 
 ### Switch to Right Tab  
+
 |||
 |:---:|:---:|
 |ID|switch_to_right_tab|
@@ -142,6 +151,7 @@ Is is same as **Ctrl + Tab** of shortcuts on Windows.
 <br>  
 
 ### Open New Tab  
+
 |||
 |:---:|:---:|
 |ID|open_new_tab|

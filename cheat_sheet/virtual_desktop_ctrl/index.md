@@ -26,7 +26,7 @@ descripption: "Virtual Desktop Control"
 |Default Key|`<C-v>h`|  
 |Default Command|-|  
   
-It is same as **Ctrl + Win + Left** of shortcuts on Windows.  
+It is the same as **Ctrl + Win + Left** of shortcuts on Windows.  
 
 <br>  
 
@@ -39,7 +39,7 @@ It is same as **Ctrl + Win + Left** of shortcuts on Windows.
 |Default Key|`<C-v>l`|  
 |Default Command|-|  
   
-It is same as **Ctrl + Win + Right** of shortcuts on Windows.  
+It is the same as **Ctrl + Win + Right** of shortcuts on Windows.  
 
 <br>  
 
@@ -52,7 +52,7 @@ It is same as **Ctrl + Win + Right** of shortcuts on Windows.
 |Default Key|`<C-v>n`, `<C-v>c`|  
 |Default Command|-|  
   
-It is same as **Ctrl + Win + D** of shortcuts on Windows.  
+It is the same as **Ctrl + Win + D** of shortcuts on Windows.  
 
 <br>  
 
@@ -65,7 +65,7 @@ It is same as **Ctrl + Win + D** of shortcuts on Windows.
 |Default Key|`<C-v>q`|  
 |Default Command|-|  
   
-It is same as **Ctrl + Win + F4** of shortcuts on Windows.  
+It is the same as **Ctrl + Win + F4** of shortcuts on Windows.  
 
 <br>  
 
@@ -78,6 +78,6 @@ It is same as **Ctrl + Win + F4** of shortcuts on Windows.
 |Default Key|`<C-v>s`|  
 |Default Command|`:taskview`, `:tv`, `:vdesktop list`|  
   
-It is same as **Win + Tab** of shortcuts on Windows.  
+It is the same as **Win + Tab** of shortcuts on Windows.  
 
 <br>

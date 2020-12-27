@@ -22,10 +22,10 @@ descripption: "Window Control"
 
 |Details|Status|  
 |:---|:---|  
-|ID|switch_window|  
-|N-Repeat|Not Supported|  
-|Default Key|&lt;C-w&gt;s|  
-|Default Command|:sw, :switch|  
+|ID|**switch_window**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`&lt;C-w&gt;s`|  
+|Default Command|`:sw`, `:switch`|  
   
 It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by keybindings of **move_left** or **move_right**. In addition, the keys for deciding a window are **ESC** or **Enter**.  
 
@@ -34,10 +34,10 @@ It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by k
 ### Maximize Current Window  
 |Details|Status|
 |:---|:---|
-|ID|maximize_current_window|
-|N-Repeat|Supprted|
-|Default Key|&lt;C-w&gt;k, &lt;C-w&gt;a|
-|Default Command|:max, :on, :only|
+|ID|**maximize_current_window**|
+|N-Repeat|<span class="yes">Supprted</span>|
+|Default Key|`&lt;C-w&gt;k`, `&lt;C-w&gt;a`|
+|Default Command|`:max`, `:on`, `:only`|
 
 Is is same as **Win + Up** of shortcuts on Windows.  
 

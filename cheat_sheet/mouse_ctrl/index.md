@@ -202,12 +202,15 @@ Additionaly, positions of key are very hardware-dependent, so if you don't like 
 |Default Key|`t`, `T`|  
 |Default Command|-| 
 
-It makes cursor jump center of most foreground window.   
+It makes the cursor jump to the center of the most foreground window.   
 
 <br>
 <hr>   
 
 ## Scroll  
+
+The parameter ID of these functions are **yscroll_speed**, **xscroll_speed**, **yscroll_screen_ratio** and **xscroll_screen_ratio** in **settings.json**. The word "speed" is a relative value and there are not the concept of column or lines in GUI, so the word "Page" is defined with a ratio from 0.0 to 1.0 against the screen width or height as an alternative way. 
+
 ### Scroll Up
 
 |Details|Status|  
@@ -216,6 +219,8 @@ It makes cursor jump center of most foreground window.
 |N-Repeat|<span class="yes">Supported</span>|  
 |Default Key|`<C-y>`, `<C-k>`|  
 |Default Command|-| 
+
+It directly makes a mouse scroll down event by Windows API.   
 
 <br>
 
@@ -229,6 +234,8 @@ It makes cursor jump center of most foreground window.
 |Default Key|`<C-e>`, `<C-j>`|  
 |Default Command|-| 
 
+It directly makes a mouse scroll up event by Windows API.   
+
 <br>
 
 
@@ -241,6 +248,8 @@ It makes cursor jump center of most foreground window.
 |Default Key|`<C-u>`|  
 |Default Command|-| 
 
+It up-scrolls a virtual mouse wheel substantially.  
+
 <br>
 
 ### Scroll Middle Page Down
@@ -251,6 +260,8 @@ It makes cursor jump center of most foreground window.
 |N-Repeat|<span class="yes">Supported</span>|  
 |Default Key|`<C-d>`|  
 |Default Command|-| 
+
+It down-scrolls a virtual mouse wheel substantially.  
 
 <br>
 
@@ -264,6 +275,8 @@ It makes cursor jump center of most foreground window.
 |Default Key|`<C-b>`|  
 |Default Command|-| 
 
+It up-scrolls a virtual mouse wheel very substantially.  
+
 <br>
 
 ### Scroll Page Down  
@@ -274,6 +287,8 @@ It makes cursor jump center of most foreground window.
 |N-Repeat|<span class="yes">Supported</span>|  
 |Default Key|`<C-f>`|  
 |Default Command|-| 
+
+It down-scrolls a virtual mouse wheel very substantially.  
 
 <br>
 
@@ -286,6 +301,9 @@ It makes cursor jump center of most foreground window.
 |Default Key|`zh`, `<C-h>`|  
 |Default Command|-| 
 
+It directly makes a mouse scroll left event by Windows API.   
+
+
 <br>
 
 ### Scroll Right
@@ -296,6 +314,8 @@ It makes cursor jump center of most foreground window.
 |N-Repeat|<span class="yes">Supported</span>|  
 |Default Key|`zl`, `<C-l>`|  
 |Default Command|-| 
+
+It directly makes a mouse scroll right event by Windows API.   
 
 <br>
 
@@ -308,6 +328,8 @@ It makes cursor jump center of most foreground window.
 |Default Key|`zH`|  
 |Default Command|-| 
 
+It directly makes a mouse scroll left event by Windows API.   
+
 <br>
 
 ### Scroll Middle Page Right  
@@ -318,6 +340,8 @@ It makes cursor jump center of most foreground window.
 |N-Repeat|<span class="yes">Supported</span>|  
 |Default Key|`zL`|  
 |Default Command|-| 
+
+It directly makes a mouse scroll right event by Windows API.   
 
 <br>
 
@@ -334,7 +358,10 @@ It makes cursor jump center of most foreground window.
 |Default Key|`o`, `O`|  
 |Default Command|-| 
 
+It directly makes a mouse left click event by Windows API, so there is no delay.  
+
 <br>
+
 
 ### Right Click  
 
@@ -344,6 +371,8 @@ It makes cursor jump center of most foreground window.
 |N-Repeat|<span class="yes">Supported</span>|  
 |Default Key|`a`, `A`|  
 |Default Command|-| 
+
+It directly makes a mouse right click event by Windows API, so there is no delay.  
 
 <br>
 
@@ -357,6 +386,8 @@ It makes cursor jump center of most foreground window.
 |Default Key|`V`|  
 |Default Command|-| 
 
+It is the same as **Ctrl + A** of shortcut keys on Windows.  
+
 <br>
 
 ### EasyClick
@@ -367,6 +398,16 @@ It makes cursor jump center of most foreground window.
 |N-Repeat|<span class="no">Not Supported</span>|  
 |Default Key|`F`|  
 |Default Command|`:ec`| 
+
+You can jump the cursor and click by typing the character identifiers like <a href="https://github.com/philc/vimium">Vimium</a> which is the famous Google Chrome Plugin or <a href="https://github.com/easymotion/vim-easymotion">EasyMotion</a> which is very famous as Vim Plugin. 
+
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" />
+
+It must deep-scan GUI objects in the selected window, another thread window in the same process, and these child windows. However, its speed is also no problem by using some caches. The caches update automatically at every change of target window or resize one. And, the maximum number of drawn labels are only 676. In other words, all objects are detected, but not drawn than 676.  
+
+The function performs well as long as a target application supported **UI Automation** of Windows API. For example, EasyClick also detects URL like Vimium on Microsoft Edge, but detects the only UI on Google Chrome or Firefox. Basically, it works well on all standard applications of Windows.  
+
+However, you are forced to manually update when your selection of a window has been unchanged and unmoved. It is a very hard procedure, so we should improve the problem. If you have some ideas, please post issues or discussions.  I am considering time-based updating now.   
 
 <br>
 
@@ -379,4 +420,4 @@ It makes cursor jump center of most foreground window.
 |Default Key|`<C-F>`|  
 |Default Command|-| 
 
-<br>
+It scans the GUI objects in the selected window, another thread window in the same process, and these child windows. And, it stores the scanned result as some caches. If you scan a window having a lot of GUI objects (e.g. Microsoft Office Excel), it may take a few seconds.   

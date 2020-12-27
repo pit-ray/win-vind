@@ -405,7 +405,7 @@ You can jump the cursor and click by typing the character identifiers like <a hr
 
 It must deep-scan GUI objects in the selected window, another thread window in the same process, and these child windows. However, its speed is also no problem by using some caches. The caches update automatically at every change of target window or resize one. And, the maximum number of drawn labels are only 676. In other words, all objects are detected, but not drawn than 676.  
 
-The function performs well as long as a target application supported **UI Automation** of Windows API. For example, EasyClick also detects URL like Vimium on Microsoft Edge, but detects the only UI on Google Chrome or Firefox. Basically, it works well on all standard applications of Windows.  
+The function performs well as long as a target application supported **UI Automation** of Windows API. For example, **EasyClick** also detects URL like **Vimium** on **Microsoft Edge**, but detects the only UI on **Google Chrome** or **Firefox**. Basically, it works well on all standard applications of Windows.  
 
 However, you are forced to manually update when your selection of a window has been unchanged and unmoved. It is a very hard procedure, so we should improve the problem. If you have some ideas, please post issues or discussions.  I am considering time-based updating now.   
 
@@ -420,4 +420,4 @@ However, you are forced to manually update when your selection of a window has b
 |Default Key|`<C-F>`|  
 |Default Command|-| 
 
-It scans the GUI objects in the selected window, another thread window in the same process, and these child windows. And, it stores the scanned result as some caches. If you scan a window having a lot of GUI objects (e.g. Microsoft Office Excel), it may take a few seconds.   
+It scans the GUI objects in the selected window, another thread window in the same process, and these child windows. And, it stores the scanned result as some caches. If you scan a window having a lot of GUI objects (e.g. **Microsoft Office Excel**), it may take a few seconds.   

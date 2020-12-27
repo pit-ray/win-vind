@@ -24,7 +24,7 @@ descripption: "Window Control"
 |:---|:---|  
 |ID|**switch_window**|  
 |N-Repeat|<span class="no">Not Supported</span>|  
-|Default Key|`&lt;C-w&gt;s`|  
+|Default Key|`<C-w>s`|  
 |Default Command|`:sw`, `:switch`|  
   
 It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by keybindings of **move_left** or **move_right**. In addition, the keys for deciding a window are **ESC** or **Enter**.  
@@ -32,11 +32,12 @@ It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by k
 <br>  
 
 ### Maximize Current Window  
+
 |Details|Status|
 |:---|:---|
 |ID|**maximize_current_window**|
 |N-Repeat|<span class="yes">Supprted</span>|
-|Default Key|`&lt;C-w&gt;k`, `&lt;C-w&gt;a`|
+|Default Key|`<C-w>k`, `<C-w>a`|
 |Default Command|`:max`, `:on`, `:only`|
 
 Is is same as **Win + Up** of shortcuts on Windows.  
@@ -47,10 +48,10 @@ Is is same as **Win + Up** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|minimize_current_window|
-|N-Repeat|Supprted|
-|Default Key|&lt;C-w&gt;j, &lt;C-w&gt;i|
-|Default Command|:min, :hi, :hide|
+|ID|**minimize_current_window**|
+|N-Repeat|<span class="yes">Supprted</span>|
+|Default Key|`<C-w>j`, `<C-w>i`|
+|Default Command|`:min`, `:hi`, `:hide`|
 
 Is is same as **Win + Down** of shortcuts on Windows.  
 
@@ -60,10 +61,10 @@ Is is same as **Win + Down** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|snap_current_window_to_left|
-|N-Repeat|Not Supported|
-|Default Key|&lt;C-w&gt;h, &lt;C-w&gt;H, &lt;C-w&gt;&lt;lt&gt;, &lt;C-w&gt;&lt;Left&gt;|
-|Default Command|:lsplit, :lsp, :wl|
+|ID|**snap_current_window_to_left**|
+|N-Repeat|<span class="no">Not Supported</span>|
+|Default Key|`<C-w>h`, `<C-w>H`, `<C-w><lt>`, `<C-w><Left>`|
+|Default Command|`:lsplit`, `:lsp`, `:wl`|
 
 Is is same as **Win + Left** of shortcuts on Windows.  
 
@@ -73,10 +74,10 @@ Is is same as **Win + Left** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|snap_current_window_to_right|
-|N-Repeat|Not Supported|
-|Default Key|&lt;C-w&gt;l, &lt;C-w&gt;L, &lt;C-w&gt;&lt;gt&gt;, &lt;C-w&gt;&lt;Right&gt;|
-|Default Command|:rsplit, :rsp, :wh|
+|ID|**snap_current_window_to_right**|
+|N-Repeat|<span class="no">Not Supported</span>|
+|Default Key|`<C-w>l`, `<C-w>L`, `<C-w><gt>`, `<C-w><Right>`|
+|Default Command|`:rsplit`, `:rsp`, `:wh`|
 
 Is is same as **Win + Right** of shortcuts on Windows.  
 
@@ -86,10 +87,10 @@ Is is same as **Win + Right** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|open_new_current_window|
-|N-Repeat|Not Supported|
-|Default Key|&lt;C-w&gt;n|
-|Default Command|:new|
+|ID|**open_new_current_window**|
+|N-Repeat|<span class="no">Not Supported</span>|
+|Default Key|`<C-w>n`|
+|Default Command|`:new`|
 
 It searchs the path of a executable file from the selected window and executes it.  If a authorization of the window is higher than itself, could not start the application.  
 
@@ -99,10 +100,10 @@ It searchs the path of a executable file from the selected window and executes i
 
 |Details|Status|
 |:---|:---|
-|ID|close_current_window|
-|N-Repeat|Not Supported|
-|Default Key|&lt;C-w&gt;q, &lt;C-w&gt;c|
-|Default Command|:cl, :close|
+|ID|**close_current_window**|
+|N-Repeat|<span class="no">Not Supported</span>|
+|Default Key|`<C-w>q`, `<C-w>c`|
+|Default Command|`:cl`, `:close`|
 
 Is is same as **Alt + F4** of shortcuts on Windows.  
 
@@ -112,10 +113,10 @@ Is is same as **Alt + F4** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|reload_current_window|
-|N-Repeat|Not Supported|
+|ID|**reload_current_window**|
+|N-Repeat|<span class="no">Not Supported</span>|
 |Default Key|-|
-|Default Command|:reload|
+|Default Command|`:reload`|
 
 Is is same as **F5** of shortcuts on Windows. 
 
@@ -128,10 +129,10 @@ Is is same as **F5** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|switch_to_right_tab|
-|N-Repeat|Supported|
-|Default Key|gT|
-|Default Command|:tabprevious|
+|ID|**switch_to_right_tab**|
+|N-Repeat|<span class="yes">Supported</span>|
+|Default Key|`gT`|
+|Default Command|`:tabprevious`|
 
 Is is same as **Ctrl + Shift + Tab** of shortcuts on Windows. 
 
@@ -141,10 +142,10 @@ Is is same as **Ctrl + Shift + Tab** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|switch_to_right_tab|
-|N-Repeat|Supported|
-|Default Key|gt|
-|Default Command|:tabnext|
+|ID|**switch_to_right_tab**|
+|N-Repeat|<span class="yes">Supported</span>|
+|Default Key|`gt`|
+|Default Command|`:tabnext`|
 
 Is is same as **Ctrl + Tab** of shortcuts on Windows. 
 
@@ -154,9 +155,9 @@ Is is same as **Ctrl + Tab** of shortcuts on Windows.
 
 |Details|Status|
 |:---|:---|
-|ID|open_new_tab|
-|N-Repeat|Not Supported|
+|ID|**open_new_tab**|
+|N-Repeat|<span class="no">Not Supported</span>|
 |Default Key|-|
-|Default Command|:tabnew|
+|Default Command|`:tabnew`|
 
 Is is same as **Ctrl + T** of shortcuts on Windows. 

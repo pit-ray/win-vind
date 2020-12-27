@@ -3,7 +3,7 @@
 #include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
-#include "simpl_text_selecter.hpp"
+#include "simple_text_selecter.hpp"
 #include "utility.hpp"
 
 
@@ -78,8 +78,8 @@ void EdiNJumpCaret2Line_DfBOF::sprocess(
 {
     if(!first_call) return ;
 
-    if(SimplTextSelecter::is_first_line_selection())
-        SimplTextSelecter::select_line_EOL2BOL() ;
+    if(SimpleTextSelecter::is_first_line_selection())
+        SimpleTextSelecter::select_line_EOL2BOL() ;
 
     using KeybrdEventer::pushup ;
 
@@ -134,8 +134,8 @@ void EdiNJumpCaret2Line_DfEOF::sprocess(
 
     if(repeat_num == 1) {
         if(is_edi_visual()) {
-            if(SimplTextSelecter::is_first_line_selection())
-                SimplTextSelecter::select_line_BOL2EOL() ;
+            if(SimpleTextSelecter::is_first_line_selection())
+                SimpleTextSelecter::select_line_BOL2EOL() ;
 
             pushup(VKC_LSHIFT, VKC_LCTRL, VKC_END) ;
 

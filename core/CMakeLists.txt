@@ -25,7 +25,7 @@ add_library(Common STATIC
     src/common/keystroke_repeater.cpp
     src/common/mode_manager.cpp
     src/common/mouse_eventer.cpp
-    src/common/simpl_text_selecter.cpp
+    src/common/simple_text_selecter.cpp
     src/common/smart_clipboard.cpp
     src/common/text_analyzer.cpp
     src/common/uia.cpp

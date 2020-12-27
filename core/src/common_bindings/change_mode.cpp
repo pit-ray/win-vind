@@ -10,7 +10,7 @@
 #include "mouse_eventer.hpp"
 #include "msg_logger.hpp"
 #include "options/virtual_cmd_line.hpp"
-#include "simpl_text_selecter.hpp"
+#include "simple_text_selecter.hpp"
 #include "text_analyzer.hpp"
 #include "virtual_key_fwd.hpp"
 #include "utility.hpp"
@@ -37,7 +37,7 @@ void Change2Normal::sprocess(
     if(m == Mode::Visual) 
         MouseEventer::click(VKC_MOUSE_LEFT) ; //release holding mouse
     else if(is_edi_visual())
-        SimplTextSelecter::unselect() ; //release shifting
+        SimpleTextSelecter::unselect() ; //release shifting
 
     //When this function is called, binded key is down.
     //Thus, its key is needed to be up before absorbing key.

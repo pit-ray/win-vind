@@ -7,7 +7,7 @@
 #include "keystroke_repeater.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
-#include "simpl_text_selecter.hpp"
+#include "simple_text_selecter.hpp"
 #include "utility.hpp"
 
 #include <string>
@@ -153,11 +153,11 @@ void EdiMoveCaretUp::sprocess(
         const KeyLogger* const parent_charlgr) const
 {
     auto v_press = [] {
-        if(SimplTextSelecter::is_first_line_selection())
-            SimplTextSelecter::select_line_EOL2BOL() ;
+        if(SimpleTextSelecter::is_first_line_selection())
+            SimpleTextSelecter::select_line_EOL2BOL() ;
 
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_UP) ;
-        //SimplTextSelecter::moving_update() ;
+        //SimpleTextSelecter::moving_update() ;
     } ;
     auto n_press = [] {KeybrdEventer::pushup(VKC_UP) ;} ;
 
@@ -205,15 +205,15 @@ void EdiMoveCaretDown::sprocess(
         const KeyLogger* const parent_charlgr) const
 {
     auto v_press = [] {
-        if(SimplTextSelecter::is_first_line_selection())
-            SimplTextSelecter::select_line_BOL2EOL() ;
+        if(SimpleTextSelecter::is_first_line_selection())
+            SimpleTextSelecter::select_line_BOL2EOL() ;
 
         KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN) ;
 
         //If call EdiMoveCaretDown after EdiMoveCaretUp,
         //inner variables of moving_update() are dedicated to EOL2BOL.
         //so we cannot move caret down.
-        //SimplTextSelecter::moving_update() ;
+        //SimpleTextSelecter::moving_update() ;
     } ;
     auto n_press = [] {KeybrdEventer::pushup(VKC_DOWN) ;} ;
 

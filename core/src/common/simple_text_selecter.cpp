@@ -1,9 +1,9 @@
-#include "simpl_text_selecter.hpp"
+#include "simple_text_selecter.hpp"
 
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 
-namespace SimplTextSelecter
+namespace SimpleTextSelecter
 {
     static Mode g_mode{Mode::Unselect} ;
 

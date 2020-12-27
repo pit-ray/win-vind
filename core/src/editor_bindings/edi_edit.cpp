@@ -15,7 +15,7 @@
 #include "keystroke_repeater.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
-#include "simpl_text_selecter.hpp"
+#include "simple_text_selecter.hpp"
 #include "smart_clipboard.hpp"
 #include "system.hpp"
 #include "text_analyzer.hpp"

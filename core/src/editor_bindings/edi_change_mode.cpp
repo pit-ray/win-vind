@@ -8,7 +8,7 @@
 #include "mode_manager.hpp"
 #include "mouse_eventer.hpp"
 #include "options/virtual_cmd_line.hpp"
-#include "simpl_text_selecter.hpp"
+#include "simple_text_selecter.hpp"
 #include "utility.hpp"
 
 
@@ -35,7 +35,7 @@ void Change2EdiNormal::sprocess(
     if(get_mode() == Mode::EdiNormal) return ;
 
     if(is_edi_visual())
-        SimplTextSelecter::unselect() ;
+        SimpleTextSelecter::unselect() ;
 
     KeyAbsorber::close_with_refresh() ;
 
@@ -174,7 +174,7 @@ void Change2EdiVisual::sprocess(
 {
     using namespace ModeManager ;
     if(!first_call) return ;
-    SimplTextSelecter::select_words() ;
+    SimpleTextSelecter::select_words() ;
     change_mode(Mode::EdiVisual) ;
     if(vclmodeout)
         VirtualCmdLine::msgout("-- EDI VISUAL --") ;
@@ -195,7 +195,7 @@ void Change2EdiLineVisual::sprocess(
 {
     using namespace ModeManager ;
     if(!first_call) return ;
-    SimplTextSelecter::select_line_EOL2BOL() ;
+    SimpleTextSelecter::select_line_EOL2BOL() ;
     change_mode(Mode::EdiLineVisual) ;
     if(vclmodeout)
         VirtualCmdLine::msgout("-- EDI VISUAL LINE--") ;

@@ -1,7 +1,7 @@
-#ifndef _SIMPL_TEXT_SELECTER_HPP
-#define _SIMPL_TEXT_SELECTER_HPP
+#ifndef _SIMPLE_TEXT_SELECTER_HPP
+#define _SIMPLE_TEXT_SELECTER_HPP
 
-namespace SimplTextSelecter
+namespace SimpleTextSelecter
 {
     enum class Mode : unsigned char {
         Word,

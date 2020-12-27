@@ -19,7 +19,7 @@ descripption: "Window Control"
 ## Window  
 
 ### Switch Window  
-|||
+|a|a|
 |:---:|:---:|
 |ID|switch_window|
 |N-Repeat|Not Supported|

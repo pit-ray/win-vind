@@ -27,7 +27,7 @@ descripption: "Window Control"
 |Default Key|`<C-w>s`|  
 |Default Command|`:sw`, `:switch`|  
   
-It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by keybindings of **move_left** or **move_right**. In addition, the keys for deciding a window are **ESC** or **Enter**.  
+It is the same as **Alt + Tab** of shortcuts on Windows.  You can select window by keybindings of **move_left** or **move_right**. In addition, the keys for deciding a window are **ESC** or **Enter**.  
 
 <br>  
 
@@ -40,7 +40,7 @@ It is same as **Alt + Tab** of shortcuts on Windows.  You can select window by k
 |Default Key|`<C-w>k`, `<C-w>a`|
 |Default Command|`:max`, `:on`, `:only`|
 
-Is is same as **Win + Up** of shortcuts on Windows.  
+Is is the same as **Win + Up** of shortcuts on Windows.  
 
 <br>  
 
@@ -53,7 +53,7 @@ Is is same as **Win + Up** of shortcuts on Windows.
 |Default Key|`<C-w>j`, `<C-w>i`|
 |Default Command|`:min`, `:hi`, `:hide`|
 
-Is is same as **Win + Down** of shortcuts on Windows.  
+Is is the same as **Win + Down** of shortcuts on Windows.  
 
 <br>  
 
@@ -66,7 +66,7 @@ Is is same as **Win + Down** of shortcuts on Windows.
 |Default Key|`<C-w>h`, `<C-w>H`, `<C-w><lt>`, `<C-w><Left>`|
 |Default Command|`:lsplit`, `:lsp`, `:wl`|
 
-Is is same as **Win + Left** of shortcuts on Windows.  
+Is is the same as **Win + Left** of shortcuts on Windows.  
 
 <br>  
 
@@ -79,7 +79,7 @@ Is is same as **Win + Left** of shortcuts on Windows.
 |Default Key|`<C-w>l`, `<C-w>L`, `<C-w><gt>`, `<C-w><Right>`|
 |Default Command|`:rsplit`, `:rsp`, `:wh`|
 
-Is is same as **Win + Right** of shortcuts on Windows.  
+Is is the same as **Win + Right** of shortcuts on Windows.  
 
 <br>  
 
@@ -105,7 +105,7 @@ It searchs the path of a executable file from the selected window and executes i
 |Default Key|`<C-w>q`, `<C-w>c`|
 |Default Command|`:cl`, `:close`|
 
-Is is same as **Alt + F4** of shortcuts on Windows.  
+Is is the same as **Alt + F4** of shortcuts on Windows.  
 
 <br>  
 
@@ -118,7 +118,7 @@ Is is same as **Alt + F4** of shortcuts on Windows.
 |Default Key|-|
 |Default Command|`:reload`|
 
-Is is same as **F5** of shortcuts on Windows. 
+Is is the same as **F5** of shortcuts on Windows. 
 
 <br>
 <hr>  
@@ -134,7 +134,7 @@ Is is same as **F5** of shortcuts on Windows.
 |Default Key|`gT`|
 |Default Command|`:tabprevious`|
 
-Is is same as **Ctrl + Shift + Tab** of shortcuts on Windows. 
+Is is the same as **Ctrl + Shift + Tab** of shortcuts on Windows. 
 
 <br>  
 
@@ -147,7 +147,7 @@ Is is same as **Ctrl + Shift + Tab** of shortcuts on Windows.
 |Default Key|`gt`|
 |Default Command|`:tabnext`|
 
-Is is same as **Ctrl + Tab** of shortcuts on Windows. 
+Is is the same as **Ctrl + Tab** of shortcuts on Windows. 
 
 <br>  
 
@@ -160,4 +160,4 @@ Is is same as **Ctrl + Tab** of shortcuts on Windows.
 |Default Key|-|
 |Default Command|`:tabnew`|
 
-Is is same as **Ctrl + T** of shortcuts on Windows. 
+Is is the same as **Ctrl + T** of shortcuts on Windows. 

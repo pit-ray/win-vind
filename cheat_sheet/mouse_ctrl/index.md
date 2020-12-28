@@ -14,6 +14,87 @@ descripption: "Mouse Control"
 1. TOC  
 {:toc} 
 
+<br>
+
+<hr>  
+
+## Click  
+
+### Left Click
+
+|Details|Status|  
+|:---|:---|  
+|ID|**clicke_left**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`o`, `O`|  
+|Default Command|-| 
+
+It directly makes a mouse left click event by Windows API, so there is no delay.  
+
+<br>
+
+
+### Right Click  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**click_right**|  
+|N-Repeat|<span class="yes">Supported</span>|  
+|Default Key|`a`, `A`|  
+|Default Command|-| 
+
+It directly makes a mouse right click event by Windows API, so there is no delay.  
+
+<br>
+
+
+### Select All  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**select_all**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`V`|  
+|Default Command|-| 
+
+It is the same as **Ctrl + A** of shortcut keys on Windows.  
+
+<br>
+
+### EasyClick
+
+|Details|Status|  
+|:---|:---|  
+|ID|**easy_click**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`F`|  
+|Default Command|`:ec`| 
+
+You can jump the cursor and click by typing the character identifiers like <a href="https://github.com/philc/vimium">Vimium</a> which is the famous Google Chrome Plugin or <a href="https://github.com/easymotion/vim-easymotion">EasyMotion</a> which is very famous as Vim Plugin. 
+
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" />
+
+It must deep-scan GUI objects in the selected window, another thread window in the same process, and these child windows. However, its speed is also no problem by using some caches. The caches update automatically at every change of target window or resize one. And, the maximum number of drawn labels are only 676. In other words, all objects are detected, but not drawn than 676.  
+
+The function performs well as long as a target application supported **UI Automation** of Windows API. For example, **EasyClick** also detects URL like **Vimium** on **Microsoft Edge**, but detects the only UI on **Google Chrome** or **Firefox**. Basically, it works well on all standard applications of Windows.  
+
+However, you are forced to manually update when your selection of a window has been unchanged and unmoved. It is a very hard procedure, so we should improve the problem. If you have some ideas, please post issues or discussions.  I am considering time-based updating now.   
+
+<br>
+
+### Update EasyClick
+
+|Details|Status|  
+|:---|:---|  
+|ID|**update_easy_click**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`<C-F>`|  
+|Default Command|-| 
+
+It scans the GUI objects in the selected window, another thread window in the same process, and these child windows. And, it stores the scanned result as some caches. If you scan a window having a lot of GUI objects (e.g. **Microsoft Office Excel**), it may take a few seconds.   
+
+<br>  
+
 <hr>  
 
 ## Move  
@@ -343,81 +424,3 @@ It directly makes a mouse scroll left event by Windows API.
 
 It directly makes a mouse scroll right event by Windows API.   
 
-<br>
-
-<hr>  
-
-## Click  
-
-### Left Click
-
-|Details|Status|  
-|:---|:---|  
-|ID|**clicke_left**|  
-|N-Repeat|<span class="yes">Supported</span>|  
-|Default Key|`o`, `O`|  
-|Default Command|-| 
-
-It directly makes a mouse left click event by Windows API, so there is no delay.  
-
-<br>
-
-
-### Right Click  
-
-|Details|Status|  
-|:---|:---|  
-|ID|**click_right**|  
-|N-Repeat|<span class="yes">Supported</span>|  
-|Default Key|`a`, `A`|  
-|Default Command|-| 
-
-It directly makes a mouse right click event by Windows API, so there is no delay.  
-
-<br>
-
-
-### Select All  
-
-|Details|Status|  
-|:---|:---|  
-|ID|**select_all**|  
-|N-Repeat|<span class="no">Not Supported</span>|  
-|Default Key|`V`|  
-|Default Command|-| 
-
-It is the same as **Ctrl + A** of shortcut keys on Windows.  
-
-<br>
-
-### EasyClick
-
-|Details|Status|  
-|:---|:---|  
-|ID|**easy_click**|  
-|N-Repeat|<span class="no">Not Supported</span>|  
-|Default Key|`F`|  
-|Default Command|`:ec`| 
-
-You can jump the cursor and click by typing the character identifiers like <a href="https://github.com/philc/vimium">Vimium</a> which is the famous Google Chrome Plugin or <a href="https://github.com/easymotion/vim-easymotion">EasyMotion</a> which is very famous as Vim Plugin. 
-
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" />
-
-It must deep-scan GUI objects in the selected window, another thread window in the same process, and these child windows. However, its speed is also no problem by using some caches. The caches update automatically at every change of target window or resize one. And, the maximum number of drawn labels are only 676. In other words, all objects are detected, but not drawn than 676.  
-
-The function performs well as long as a target application supported **UI Automation** of Windows API. For example, **EasyClick** also detects URL like **Vimium** on **Microsoft Edge**, but detects the only UI on **Google Chrome** or **Firefox**. Basically, it works well on all standard applications of Windows.  
-
-However, you are forced to manually update when your selection of a window has been unchanged and unmoved. It is a very hard procedure, so we should improve the problem. If you have some ideas, please post issues or discussions.  I am considering time-based updating now.   
-
-<br>
-
-### Update EasyClick
-
-|Details|Status|  
-|:---|:---|  
-|ID|**update_easy_click**|  
-|N-Repeat|<span class="no">Not Supported</span>|  
-|Default Key|`<C-F>`|  
-|Default Command|-| 
-
-It scans the GUI objects in the selected window, another thread window in the same process, and these child windows. And, it stores the scanned result as some caches. If you scan a window having a lot of GUI objects (e.g. **Microsoft Office Excel**), it may take a few seconds.   

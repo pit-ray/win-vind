@@ -197,5 +197,5 @@ It is the same as **V** on the original Vim.
 |Default Key|`:`|  
 |Default Command|-| 
 
-It emulates the command mode of Vim. When you press **Enter**, it will call the function matched the **cmd** in  **bindings.json**. You can then use **Esc** to cancel. And, Moving the history is available with **Up** or **Down**.  However, the order of history is currently not updated. It is recommended to use <a href="https://pit-ray.github.io/win-vind/cheat_sheet/options/#virtual-command-line">**Virtual Command Line**</a> for visualization when using this function.  
+It emulates the command mode of Vim. When you press **Enter**, it will call the function matched the **cmd** in  **bindings.json**. You can then use **Esc** to cancel. And, moving the history is available with **Up** or **Down**.  However, the order of history is currently not updated. It is recommended to use <a href="https://pit-ray.github.io/win-vind/cheat_sheet/options/#virtual-command-line">**Virtual Command Line**</a> for visualization when using this function.  
 

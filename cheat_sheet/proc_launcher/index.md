@@ -40,7 +40,7 @@ It creates a process of your favorite terminal application. The default terminal
 
 It starts a registered application at **Preferences/Shortcut Apps**. If you register **notepad.exe** as **notepad**, could launch it by typing `:!notepad` like below.  
 
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cmd-demo.gif?raw=true" width="400">  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cmd-demo.gif?raw=true" />  
 
 <br>  
 

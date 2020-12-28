@@ -77,7 +77,7 @@ It changes the mode to **GUI Visual Mode**. A left button of a mouse is kept pre
 |Default Key|`I`, `gI`|  
 |Default Command|-| 
 
-It changes the vim emulation mode. 
+It changes the vim emulation mode. Under Editor Mode, it is the same as **Esc** of the original Vim.  
 
 <br>  
 

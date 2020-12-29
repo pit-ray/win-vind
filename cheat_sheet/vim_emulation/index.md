@@ -173,7 +173,7 @@ Vim is the best editor|.
 |ID|**edi_n_jump_caret_to_line_default_BOF**|  
 |N-Repeat|<span class="yes">Supported</span>|  
 |Default Key|`gg`|  
-|Default Command|`<num>`|
+|Default Command|`:<num>`|
 
 It is the same as **gg** on the original Vim. If **N** is one or is not inputted, it makes jump the caret to **Begining Of File**. If inputted than two, it makes it to **N** line from the header.  
 

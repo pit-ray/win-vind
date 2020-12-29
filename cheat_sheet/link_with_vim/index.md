@@ -22,7 +22,7 @@ This page describes some tips for using win-vind with Vim.
 
 ## Operation From Vim  
 
-win-vind is prohibited multiple running, but you can operate win-vind from any consoles by using **-func** option with the inter-process communication.  
+win-vind is prohibited multiple running, but you can operate win-vind from any consoles by using **--func Function-ID** option with the inter-process communication.  
 
 **Example** (long version)
 ```

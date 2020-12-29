@@ -374,7 +374,7 @@ It deletes lines with keeping indents and changes the mode to **Editor Insert Mo
 
 ```cpp
 //Example
-// **|** is a position of the caret.
+// | is a position of the caret.
 
 //Before
 //Pattern1)
@@ -390,7 +390,6 @@ Vim is the b|est editor.
 
 //Pattern2)
     |
-
 ```
 
 <br>  

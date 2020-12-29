@@ -344,7 +344,7 @@ It deletes characters from the current position for **Begining Of Line**. You ca
 |Default Key|`d{Motion}`|  
 |Default Command|-|
 
-Its behavior is the same as <a href="https://pit-ray.github.io/win-vind/cheat_sheet/vim_emulation/#copy_with_motion">Copy With Motion</a>.  
+Its behavior is the same as <a href="https://pit-ray.github.io/win-vind/cheat_sheet/vim_emulation/#copy-with-motion">Copy With Motion</a>.  
 
 <br>  
 
@@ -357,7 +357,7 @@ Its behavior is the same as <a href="https://pit-ray.github.io/win-vind/cheat_sh
 |Default Key|`c{Motion}`|  
 |Default Command|-|
 
-It changes the mode to **Editor Insert Mode** after calling <a href="https://pit-ray.github.io/win-vind/cheat_sheet/options/#delete_with_motion">Delete With Motion</a>.  
+It changes the mode to **Editor Insert Mode** after calling <a href="https://pit-ray.github.io/win-vind/cheat_sheet/vim_emulation/#copy-with-motion">Delete With Motion</a>.  
 
 <br>  
 

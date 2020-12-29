@@ -25,12 +25,12 @@ This page describes some tips for using win-vind with Vim.
 win-vind is prohibited multiple running, but you can operate win-vind from any consoles by using **--func Function-ID** option with the inter-process communication.  
 
 **Example** (long version)
-```
+```bash
 $ ./win-vind.exe --func change_to_normal
 ```
 
 **Example** (short version)
-```
+```bash
 $ ./win-vind.exe -f change_to_normal
 ```
 
@@ -44,7 +44,7 @@ command! GUINormal :AsyncRun win-vind -f change_to_normal
 ```
 
 You can transit from Vim to win-vind.  
-```
+```vim
 :GUINormal
 ```
 

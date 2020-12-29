@@ -28,7 +28,7 @@ descripption: "Others"
 |ID|**enable_targeting_of_dedicate_to_window**|
 |N-Repeat|<span class="no">Not Supported</span>|  
 |Default Key|`<LAlt><LAlt>`, `<F2>`|
-|Default Command|`enable d2w`, `e d2w`, `target`, `d2w on`, `set d2w`|
+|Default Command|`:enable d2w`, `:e d2w`, `:target`, `:d2w on`, `:set d2w`|
 
 It makes the selected window focus as the target of **Dedicate to One Window**.  
 
@@ -43,7 +43,7 @@ It makes the selected window focus as the target of **Dedicate to One Window**.
 |ID|**disable_targeting_of_dedicate_to_window**|
 |N-Repeat|<span class="no">Not Supported</span>|  
 |Default Key|`<RAlt><RAlt>`, `<F10>`|
-|Default Command|`enable d2w`, `e d2w`, `target`, `d2w on`, `set d2w`|
+|Default Command|`:enable d2w`, `:e d2w`, `:target`, `:d2w on`, `:set d2w`|
 
 It fully releases targeting of **Dedicate to One Window**.  
 

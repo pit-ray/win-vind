@@ -20,7 +20,7 @@ I regarded original-Vim's operation for changing from Normal to Insert (e.g. **i
 It is the same as holding the mouse left pressing.  
 <br>
 ### I want to use **Alt** + **Tab**.
-Please use <a href="https://pit-ray.github.io/win-vind/cheat_sheet/#switch_window">Switch Window</a>.  
+Please use <a href="https://pit-ray.github.io/win-vind/cheat_sheet/window_ctrl/#switch-window">Switch Window</a>.  
 <br>
 ### Would it be possible to start without key-bindings and be turn on win-vind whenever my wants?
 Yes. You should set **GUI Insert** at **Preferences/settings/Initial Mode**.

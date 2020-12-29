@@ -20,7 +20,13 @@ descripption: "Vim Emulation"
 
 ### Move Caret Left  
 
+edi_move_caret_left
+        "edin": ["h", "<C-h>", "<BS>", "<Left>"],
+
+
 ### Move Caret Right  
+
+
 
 ### Move Caret Up  
 
@@ -103,4 +109,4 @@ descripption: "Vim Emulation"
 
 
 ## Layout  
-## Remove EOL  
+### Remove EOL  

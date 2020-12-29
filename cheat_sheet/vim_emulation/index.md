@@ -427,6 +427,7 @@ It deletes texts from the current position to **End Of Line**.
 ## Replace  
 
 ### Replace Char  
+
 |Details|Status|  
 |:---|:---|  
 |ID|**edi_n_replace_char**|  

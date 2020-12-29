@@ -13,8 +13,8 @@ If you have some questions, please send me.
 ### Why is the name win-vind?  
 win-vind means for **win**dows **vi**m key b**ind**er.  
 <br>
-### Why is **o** a right click and **a** is a left click?  
-I regarded original-Vim's operation for changing from Normal to Insert (e.g. **i**, **o**, **a**) as the aiming the caret position. Therefore I adopted these commands for deciding mouse positions. Additionaly, **o** is also adopted as the decide key in my favorite Vim plugins like **NERDTree**.  
+### Why is `o` a right click and `a` is a left click?  
+I regarded original-Vim's operation for changing from Normal to Insert (e.g. `i`, `o`, `a`) as the aiming the caret position. Therefore I adopted these commands for deciding mouse positions. Additionaly, `o` is also adopted as the decide key in my favorite Vim plugins like **NERDTree**.  
 <br>
 ### What is the GUI visual mode?  
 It is the same as holding the mouse left pressing.  

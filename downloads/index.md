@@ -10,7 +10,7 @@ descripption: "the lists of links to download win-vind"
 
 ### 3.0.0, (Latest Version) <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.0.0">GitHub</a>  
 Date: 2020/12/30  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.0/setup_win-vind_3.0.0.exe">setup_win-vind_3.0.0.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.0/setup_win-vind_3.0.0.exe.zip">setup_win-vind_3.0.0.exe.zip</a>
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.0/win-vind_3.0.0.zip">win-vind_3.0.0.zip</a>
 <br>
 <hr>

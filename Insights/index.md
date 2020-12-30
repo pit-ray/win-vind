@@ -46,10 +46,15 @@ const chart = new Chart(ctx, {
     labels: names,
     datasets: [
       {
-        label: 'DL',
+        label: 'count',
         data: counts
       }
     ]
+  },
+  options: {
+       legend: {
+          display: false
+       }
   }
 });
 </script>

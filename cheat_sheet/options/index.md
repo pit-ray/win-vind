@@ -56,4 +56,4 @@ It makes the mode of **win-vind** automatically switch to **GUI Insert Mode** on
 
 ## Enable EasyClick HWND Cache  
 **ID: enable_esyclk_hwnd_cache**  
-Scanning of **EasyClick** takes some seconds. If you use this options, update automatically at every change of target window or every resize one. However, the detected position of the object may no longer be correct when your selection of a window has been unchanged and unmoved, so you are forced to manually update. It is a very hard procedure, so we should improve the problem. If you have some ideas, please post issues or discussions.  I am considering time-based updating now.  
+Scanning of **EasyClick** takes some seconds. If you use this options, update automatically at every change of target window or every resize one. However, the detected position of the object may no longer be correct when your selection of a window has been unchanged and unmoved, so it becomes a trade-off between accuracy and time and you are forced to manually update. It is a very hard procedure, so we should improve the problem. If you have some ideas, please post issues or discussions.  I am considering time-based updating now.  

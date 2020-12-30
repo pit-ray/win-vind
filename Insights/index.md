@@ -45,8 +45,10 @@ const chart = new Chart(ctx, {
   data: {
     labels: names,
     datasets: [
-      label: 'DL',
-      data: counts
+      {
+        label: 'DL',
+        data: counts
+      }
     ]
   }
 });

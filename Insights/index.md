@@ -20,13 +20,14 @@ var request = new XMLHttpRequest();
 request.open('GET', 'https://api.github.com/repos/pit-ray/win-vind/releases');  
 
 request.onreadystatechange = function() {
-
-  if(request.readyState != 4) {
-  
-  } else if (request.status == 200) {
-    var data = JSON.parse(request.responseText);
-    console.log(data);  
+  if(request.readyState == 4) {
+    if (request.status == 200) {
+      var data = JSON.parse(request.responseText);
+      console.log(data);  
+    }
   }
 } ;
+
+request.send();
 </script>
 

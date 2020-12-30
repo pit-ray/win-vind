@@ -16,10 +16,9 @@ descripption: "Insights of win-vind."
 <br>    
 
 <script>  
-val request = new XMLHttpRequest();
-val re
-r = requests.get('https://api.github.com/repos/pit-ray/win-vind/releases')
-console.log(r) ;
+var request = new XMLHttpRequest();
+var result = requests.get('https://api.github.com/repos/pit-ray/win-vind/releases')
+console.log(result) ;
 
 /*
 for item in r.json():

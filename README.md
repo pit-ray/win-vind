@@ -13,7 +13,7 @@ Simple Vim Key Binder for Windows
 Mainly, there are five point features.  
 
 ### 1. GUI Operation like Vim  
-You can operate all windows, the mouse, virtual desktops, GUI-objects.  
+You can operate all windows, the mouse, virtual desktops, GUI-objects with key-bindings like Vim.  
 
 **Example**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=700>

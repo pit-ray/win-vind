@@ -13,7 +13,7 @@ descripption: "Insights of win-vind."
 
 <br>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>  
 
 <br>    
 

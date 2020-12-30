@@ -26,7 +26,11 @@ request.onreadystatechange = function() {
       console.log(data);
       for(var item in data) {
         console.log(item.name);
-        console.log(item.assets.download_count);
+        var count = 0 ;
+        for(var a in item.assets) {
+          count += a.download_count;
+        }
+        console.log(count);
       }
     }
   }

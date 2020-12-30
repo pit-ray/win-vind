@@ -19,9 +19,10 @@ descripption: "Insights of win-vind."
 var request = new XMLHttpRequest();
 request.open('GET', 'https://api.github.com/repos/pit-ray/win-vind/releases');  
 
-var names = [];
-var counts = [];
 request.onreadystatechange = function() {
+  var names = [];
+  var counts = [];
+  
   if(request.readyState == 4) {
     if (request.status == 200) {
       var data = JSON.parse(request.responseText);
@@ -36,26 +37,26 @@ request.onreadystatechange = function() {
       }
     }
   }
+  
+  const ctx = document.getElementById('dl_count');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: names.reverse(),
+      datasets: [
+        {
+          label: 'count',
+          data: counts.reverse()
+        }
+      ]
+    },
+    options: {
+         legend: {
+            display: false
+         }
+    }
+  });
 } ;
 request.send();
-
-const ctx = document.getElementById('dl_count');
-const chart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: names.reverse(),
-    datasets: [
-      {
-        label: 'count',
-        data: counts.reverse()
-      }
-    ]
-  },
-  options: {
-       legend: {
-          display: false
-       }
-  }
-});
 </script>
 

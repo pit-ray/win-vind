@@ -9,7 +9,7 @@ descripption: "Insights of win-vind."
 
 ## Download Count  
 
-<canvas id="dl_count" width=400 height=400></canvas>  
+<canvas id="dl_count"></canvas>  
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>  
 
@@ -28,11 +28,11 @@ request.onreadystatechange = function() {
       console.log(data);
       for(var item of data) {
         names.push(item.name);
-        var count = 0 ;
+        var cnt = 0 ;
         for(var a of item.assets) {
-          count += a.download_count;
+          cnt += a.download_count;
         }
-        counts.push(count);
+        counts.push(cnt);
       }
     }
   }

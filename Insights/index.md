@@ -25,6 +25,7 @@ request.onreadystatechange = function() {
       var data = JSON.parse(request.responseText);
       console.log(data);
       for(var item in data) {
+        console.log(item);
         console.log(item["name"]);
         var count = 0 ;
         for(var a in item["assets"]) {

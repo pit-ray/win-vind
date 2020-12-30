@@ -74,7 +74,7 @@ You can jump the cursor and click by typing the character identifiers like <a hr
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" />
 
-It must deep-scan GUI objects in the selected window, another thread window in the same process, and these child windows. Therefore it's not very efficient in some applocations having a lot of objects. You make this efficient by enabling <a href="https://pit-ray.github.io/win-vind/cheat_sheet/options/#enable-easyclick-hwnd-cache">Enable EasyClick HWND Cache</a> option. And, the maximum number of drawn labels are only 676. In other words, all objects are detected, but not drawn than 676.  
+It must deep-scan GUI objects in the selected window, another thread window in the same process, and these child windows. Therefore it's not very efficient in some applications having a lot of objects. You make this efficient by enabling <a href="https://pit-ray.github.io/win-vind/cheat_sheet/options/#enable-easyclick-hwnd-cache">Enable EasyClick HWND Cache</a> option. And, the maximum number of drawn labels are only 676. In other words, all objects are detected, but not drawn than 676.  
 
 The function performs well as long as a target application supported **UI Automation** of Windows API. For example, **EasyClick** also detects URL like **Vimium** on **Microsoft Edge**, but detects the only UI on **Google Chrome** or **Firefox**. Basically, it works well on all standard applications of Windows.    
 

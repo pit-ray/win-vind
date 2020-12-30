@@ -71,7 +71,10 @@ It has differences from the latest release.
 
 ## ToDo
 
--->
+-->  
+
+## License  
+This software is provided by **MIT License**.  
 
 ## Author
 - pit-ray  

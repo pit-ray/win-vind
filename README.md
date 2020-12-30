@@ -1,8 +1,6 @@
 # win-vind
 Simple Vim Key Binder for Windows  
-
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="256" height="256" align="right" title="win-vind">
-
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="256" height="256" align="right" title="win-vind">  
 <a href="https://pit-ray.github.io/win-vind/">Home Page</a>  
 
 <br>  

@@ -43,11 +43,11 @@ const ctx = document.getElementById('dl_count');
 const chart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: names,
+    labels: names.reverse(),
     datasets: [
       {
         label: 'count',
-        data: counts
+        data: counts.reverse()
       }
     ]
   },

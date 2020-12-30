@@ -43,13 +43,13 @@ $ ./win-vind.exe --func change_to_normal
 Therefore, it enables to make Vim link to GUI.  
 Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>  
 
-If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">github.io/win-vind/cheat_sheet</a>.  
+If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## How to use
-Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">github.io/win-vind/how_to_use</a>.  
+Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use - win-vind</a>.  
 
 ## How to contribute
-Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">github.io/win-vind/how_to_contribute</a>.  
+Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How to contribute - win-vind</a>.  
 
 <!--
 ## Latest Log

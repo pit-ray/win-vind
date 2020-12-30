@@ -117,7 +117,7 @@ namespace Utility
         return RGB(ro, go, bo) ;
     }
 
-    void refresh_display(HWND hwnd) {
+    void refresh_display(HWND UNUSED(hwnd)) {
         //Some applications flicker by passing a NULL HWND as the first argument.  
         //This nedes improvement.
         if(!InvalidateRect(NULL, NULL, TRUE)) {

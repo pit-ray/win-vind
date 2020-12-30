@@ -1,0 +1,1 @@
+#define WIN_VIND_VERSION "3.0.0"

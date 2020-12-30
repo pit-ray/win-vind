@@ -3,6 +3,19 @@ project(win-vind VERSION 3.0.0)
 
 enable_language(CXX)
 
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/version.hpp.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/wxgui/include/version.hpp
+    NEWLINE_STYLE LF
+    @ONLY
+)
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc
+    NEWLINE_STYLE LF
+    @ONLY
+)
+
 if(${MSVC})
     add_compile_options("/Wall /std:c++17")
 

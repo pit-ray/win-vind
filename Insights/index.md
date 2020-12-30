@@ -28,7 +28,7 @@ request.onreadystatechange = function() {
         console.log(item["name"]);
         var count = 0 ;
         for(var a in item["assets"]) {
-          count += a.["download_count"];
+          count += a["download_count"];
         }
         console.log(count);
       }

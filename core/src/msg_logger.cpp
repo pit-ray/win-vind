@@ -1,11 +1,9 @@
 #include "msg_logger.hpp"
 
 #include <windows.h>
-#include <mutex>
 
 namespace Logger
 {
-    static std::mutex mtx ;
     static constexpr auto g_er_tag = "[Error] " ;
 
     static constexpr auto efilename{"log/error.log"} ;
@@ -27,9 +25,9 @@ namespace Logger
 
     template <typename T>
     inline void _error(T&& msg, const char* scope) {
-        std::lock_guard<std::mutex> lock(mtx) ;
         if(error_stream.is_open()) {
             error_stream << g_er_tag << "Windows Error Code: [" << GetLastError() << "], " << msg << " (" << scope << ")" << std::endl ;
+            error_stream.flush() ;
         }
     }
     void error(const char* msg, const char* scope) {

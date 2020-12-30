@@ -93,7 +93,7 @@ namespace EdiEdit
 
             KyLgr::log_as_vkc(*parent_vkclgr) ;
 
-            if(KeyBinder::is_invalid_log(lgr,
+            if(KeyBinder::is_invalid_log(lgr.back(),
                         KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
                 remove_from_back(*parent_vkclgr, 1) ;
                 remove_from_back(lgr, 1) ;

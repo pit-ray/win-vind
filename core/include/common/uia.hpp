@@ -9,12 +9,13 @@
 
 namespace UIA
 {
-    auto delete_com = [] (IUnknown* com) {
+    inline void delete_com (IUnknown* com) noexcept {
         if(com != nullptr) com->Release() ;
-    } ;
-    using SmartElement      = std::unique_ptr<IUIAutomationElement, decltype(delete_com)> ;
-    using SmartElementArray = std::unique_ptr<IUIAutomationElementArray, decltype(delete_com)> ;
-    using SmartCacheReq     = std::unique_ptr<IUIAutomationCacheRequest, decltype(delete_com)> ;
+    }
+
+    using SmartElement      = std::unique_ptr<IUIAutomationElement, decltype(&delete_com)> ;
+    using SmartElementArray = std::unique_ptr<IUIAutomationElementArray, decltype(&delete_com)> ;
+    using SmartCacheReq     = std::unique_ptr<IUIAutomationCacheRequest, decltype(&delete_com)> ;
 
     inline SmartElement make_SmartElement(IUIAutomationElement* ptr) {
         return SmartElement(ptr, delete_com) ;
@@ -25,11 +26,6 @@ namespace UIA
     inline SmartCacheReq make_SmartCacheReq(IUIAutomationCacheRequest* ptr) {
         return SmartCacheReq(ptr, delete_com) ;
     }
-
-    auto delete_com_with_clear = [] (IUnknown* com) {
-        if(com != nullptr) com->Release() ;
-        CoUninitialize() ;
-    } ;
 
     HRESULT create_UIAutomation(IUIAutomation** ptr) ;
 

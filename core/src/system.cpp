@@ -1,6 +1,10 @@
 #include "system.hpp"
 
+#include <errhandlingapi.h>
+#include <memoryapi.h>
 #include <windows.h>
+#include <winerror.h>
+#include <winnt.h>
 
 #include <memory>
 #include <iostream>
@@ -15,10 +19,6 @@
 #include "msg_logger.hpp"
 #include "option_loader.hpp"
 #include "path.hpp"
-#include "shared/winerror.h"
-#include "um/errhandlingapi.h"
-#include "um/memoryapi.h"
-#include "um/winnt.h"
 #include "vkc_converter.hpp"
 
 #include "change_mode.hpp"
@@ -83,12 +83,12 @@ namespace System
             //When Windows was started up, cursor is hidden until move mouse by default.
             //Thus, send lowlevel move event in order to show cursor.
             INPUT in ;
-            in.type = INPUT_MOUSE ;
-            in.mi.dx = 1 ;
-            in.mi.dy = 1 ;
-            in.mi.mouseData = 0 ;
-            in.mi.dwFlags = MOUSEEVENTF_MOVE ;
-            in.mi.time = 0 ;
+            in.type           = INPUT_MOUSE ;
+            in.mi.dx          = 1 ;
+            in.mi.dy          = 1 ;
+            in.mi.mouseData   = 0 ;
+            in.mi.dwFlags     = MOUSEEVENTF_MOVE ;
+            in.mi.time        = 0 ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
             if(!SendInput(1, &in, sizeof(INPUT))) {

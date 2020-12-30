@@ -18,6 +18,7 @@
 #include "binded_func.hpp"
 #include "disable_gcc_warning.hpp"
 #include <nlohmann/json.hpp>
+#include "easy_click.hpp"
 #include "enable_gcc_warning.hpp"
 
 #include "bindings_lists.hpp"
@@ -47,6 +48,8 @@ namespace KeyBinder
 
         g_unbinded_syskeys.clear() ;
         g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+
+        EsyClk::initialize() ;
     }
 
     using ModeManager::Mode ;
@@ -284,13 +287,12 @@ namespace KeyBinder
         ExAppUtility::load_config() ;
     }
 
-    bool is_invalid_log(const KeyLogger& lgr, const InvalidPolicy ip) {
-        if(lgr.back().empty()) {
-            return true ;
-        }
+    bool is_invalid_log(const KeyLog& log, const InvalidPolicy ip) {
 
-        auto ignore = [&lgr](auto&& set) {
-            return std::all_of(lgr.back().cbegin(), lgr.back().cend(), [&set](const auto& key) {
+        if(log.empty()) return true ;
+
+        auto ignore = [&log](auto&& set) {
+            return std::all_of(log.cbegin(), log.cend(), [&set](const auto& key) {
                 return set.find(key) != set.end() ;
             }) ;
         } ;
@@ -347,7 +349,6 @@ namespace KeyBinder
         }
 
         unsigned int matched_num ;
-
         if(full_scan) {
             for(const auto& func : g_func_list) {
                 matched_num = func->validate_if_fullmatch(lgr, mode) ;
@@ -382,8 +383,8 @@ namespace KeyBinder
 
     void call_matched_funcs() {
         static KeyLogger l_logger{} ;
-        static BindedFunc::shp_t l_running_func = nullptr ;
-        static unsigned int l_repeat_num = 0 ;
+        static BindedFunc::shp_t l_running_func       = nullptr ;
+        static unsigned int l_repeat_num              = 0 ;
         static bool l_must_release_key_after_repeated = false ;
 
         static const KeyLog c_nums {
@@ -411,7 +412,18 @@ namespace KeyBinder
             }
         }
 
-        if(l_logger.back().empty()) {
+        //Note
+        //it ignores solo system keys.
+        //Ex)
+        //  ______________________________________________________
+        // |                |                       |             |
+        // |   input keys   |        Shift          |  Shift + t  |
+        // |                | (unbinded key only)   |             | 
+        // |----------------|-----------------------|-------------|
+        // |   behavior     |        ignore         |    pass     |
+        // |________________|_______________________|_____________|
+        //
+        if(is_invalid_log(l_logger.back(), InvalidPolicy::UnbindedSystemKey)) {
             remove_from_back(l_logger, 1) ;
             l_running_func = nullptr ;
 
@@ -451,6 +463,7 @@ namespace KeyBinder
 
         if(!matched_func) {
             if(!VKCConverter::is_number(topvkc)) {
+                //If inputed non-numeric key, reset the repeat number.
                 if(l_repeat_num != 0) {
                     l_repeat_num = 0 ;
                     VirtualCmdLine::reset() ;

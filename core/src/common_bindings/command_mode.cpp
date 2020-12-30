@@ -134,7 +134,7 @@ inline static bool _main_loop() {
     }
 
     //invalid keys
-    if(is_invalid_log(lgr, KeyBinder::InvalidPolicy::AllSystemKey) ||
+    if(is_invalid_log(lgr.back(), KeyBinder::InvalidPolicy::AllSystemKey) ||
             lgr.size() > iParams::get_z("cmd_max_char")) {
         remove_from_back(lgr, 1) ;
         return CONTINUE_LOOP ;

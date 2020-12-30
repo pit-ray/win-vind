@@ -5,7 +5,7 @@
 
 namespace EsyClk
 {
-    void init() ;
+    void initialize() ;
 }
 
 struct EasyClick : public BindedFuncWithCreator<EasyClick>
@@ -16,8 +16,6 @@ struct EasyClick : public BindedFuncWithCreator<EasyClick>
             KeyLogger* parent_vkclgr,
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
-
-    explicit EasyClick() ;
 } ;
 
 

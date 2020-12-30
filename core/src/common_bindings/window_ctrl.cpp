@@ -83,7 +83,7 @@ void SwitchWindow::sprocess(
             remove_from_back(logger, 1) ;
             return ;
         }
-        if(KeyBinder::is_invalid_log(logger, KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
+        if(KeyBinder::is_invalid_log(logger.back(), KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
             remove_from_back(logger, 1) ;
             return ;
         }

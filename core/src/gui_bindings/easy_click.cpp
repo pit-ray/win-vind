@@ -95,9 +95,13 @@ namespace EsyClk
     } ;
 
     static std::vector<Point2D> g_objpos ;
-    static auto g_cache_req = UIA::make_SmartCacheReq(nullptr) ;
 
-    void init() {
+    inline static auto& get_cache_req() {
+        static auto g_cache_req = UIA::make_SmartCacheReq(nullptr) ;
+        return g_cache_req ;
+    }
+
+    void initialize() {
         g_objpos.reserve(2048) ;
 
         decltype(auto) cuia = UIA::get_global_cuia() ;
@@ -106,6 +110,7 @@ namespace EsyClk
         if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
             throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
         }
+        decltype(auto) g_cache_req = get_cache_req() ;
         g_cache_req.reset(cr_raw) ;
 
         //g_cache_req->AddProperty(UIA_ClickablePointPropertyId) ;
@@ -237,7 +242,7 @@ namespace EsyClk
         }
         auto elem = UIA::make_SmartElement(elem_raw) ;
 
-        if(FAILED(elem->BuildUpdatedCache(g_cache_req.get(), &elem_raw))) {
+        if(FAILED(elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
         }
         if(elem_raw != nullptr) {
@@ -632,7 +637,7 @@ namespace EsyClk
                 continue ;
             }
 
-            if(KeyBinder::is_invalid_log(lgr, KeyBinder::AllSystemKey)) {
+            if(KeyBinder::is_invalid_log(lgr.back(), KeyBinder::AllSystemKey)) {
                 remove_from_back(lgr, 1) ;
                 continue ;
             }
@@ -673,10 +678,6 @@ namespace EsyClk
 }
 
 //EasyClick
-EasyClick::EasyClick()
-{
-    EsyClk::init() ;
-}
 const std::string EasyClick::sname() noexcept
 {
     return "easy_click" ;

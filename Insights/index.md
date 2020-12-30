@@ -17,7 +17,16 @@ descripption: "Insights of win-vind."
 
 <script>  
 var request = new XMLHttpRequest();
-var result = requests.get('https://api.github.com/repos/pit-ray/win-vind/releases');
-console.log(result);  
+request.open('GET', 'https://api.github.com/repos/pit-ray/win-vind/releases');  
+
+request.onreadystatechange = function() {
+
+  if(request.readyState != 4) {
+  
+  } else if (request.status == 200) {
+    var data = JSON.parse(request.responseText);
+    console.log(data);  
+  }
+} ;
 </script>
 

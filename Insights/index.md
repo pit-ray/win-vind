@@ -1,3 +1,14 @@
+---
+layout: default
+title: Insights  
+nav_order: 6  
+descripption: "Insights of win-vind."  
+---  
+
+# Insights  
+
+## Download Count  
+
 <canvas id="myChart"></canvas>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>  
 <script>  

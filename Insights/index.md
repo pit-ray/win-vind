@@ -24,12 +24,12 @@ request.onreadystatechange = function() {
     if (request.status == 200) {
       var data = JSON.parse(request.responseText);
       console.log(data);
-      for(var item in data) {
+      for(var item of data) {
         console.log(item);
-        console.log(item["name"]);
+        console.log(item.name);
         var count = 0 ;
-        for(var a in item["assets"]) {
-          count += a["download_count"];
+        for(var a of item.assets) {
+          count += a.download_count;
         }
         console.log(count);
       }

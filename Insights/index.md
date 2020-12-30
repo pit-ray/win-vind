@@ -11,14 +11,30 @@ descripption: "Insights of win-vind."
 
 <canvas id="myChart" width=400 height=400></canvas>  
 
-<br>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>  
 
 <br>    
 
-  
-<script>
+<script>  
+val request = new XMLHttpRequest();
+val re
+r = requests.get('https://api.github.com/repos/pit-ray/win-vind/releases')
+console.log(r) ;
+
+/*
+for item in r.json():
+  print("tag_name: ",item["tag_name"])
+  print("name: ", item["name"])
+  print(item["assets"][0]["url"])
+  print("download count: ", item["assets"][0]["download_count"])
+  print("")
+  x.append(item["name"])
+  y.append(item["assets"][0]["download_count"])
+
+x.reverse()
+y.reverse()
+
+
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -56,5 +72,6 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+*/
 </script>
 

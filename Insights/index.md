@@ -25,7 +25,7 @@ request.onreadystatechange = function() {
       var data = JSON.parse(request.responseText);
       for(var item in data) {
         console.log(data.name);
-        console.logy.append(item.assets[0].download_count);
+        console.log(item.assets[0].download_count);
       }
     }
   }

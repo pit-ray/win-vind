@@ -1,6 +1,10 @@
 # win-vind
 Simple Vim Key Binder for Windows  
+
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="256" height="256" align="right" title="win-vind">
+
+<a href="https://pit-ray.github.io/win-vind/">Home Page</a>  
+
 <br>  
 
 ## Description
@@ -38,12 +42,10 @@ You can operate win-vind from command lines.
 ```bash
 $ ./win-vind.exe --func change_to_normal
 ```
-Therefore, win-vind makes Vim link to GUI.  
-
+Therefore, it enables to make Vim link to GUI.  
 Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>  
 
 If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">github.io/win-vind/cheat_sheet</a>.  
-
 
 ## How to use
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">github.io/win-vind/how_to_use</a>.  

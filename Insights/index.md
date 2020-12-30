@@ -9,7 +9,7 @@ descripption: "Insights of win-vind."
 
 ## Download Count  
 
-<canvas id="myChart"></canvas>  
+<canvas id="myChart" width=400 height=400></canvas>  
 
 <br>
 
@@ -17,45 +17,44 @@ descripption: "Insights of win-vind."
 
 <br>    
 
-<script>  
-var ctx = document.getElementById("myLineChart");
-var myLineChart = new Chart(ctx, {
-    type: 'line',
+  
+<script>
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'bar',
     data: {
-      labels: ['8月1日', '8月2日', '8月3日', '8月4日', '8月5日', '8月6日', '8月7日'],
-      datasets: [
-        {
-          label: '最高気温(度）',
-          data: [35, 34, 37, 35, 34, 35, 34, 25],
-          borderColor: "rgba(255,0,0,1)",
-          backgroundColor: "rgba(0,0,0,0)"
-        },
-        {
-          label: '最低気温(度）',
-          data: [25, 27, 27, 25, 26, 27, 25, 21],
-          borderColor: "rgba(0,0,255,1)",
-          backgroundColor: "rgba(0,0,0,0)"
-        }
-      ],
+        labels: ["赤", "青", "黄", "緑", "紫", "橙"],
+        datasets: [{
+            label: '得票数',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
     },
     options: {
-      title: {
-        display: true,
-        text: '気温（8月1日~8月7日）'
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            suggestedMax: 40,
-            suggestedMin: 0,
-            stepSize: 10,
-            callback: function(value, index, values){
-              return  value +  '度'
-            }
-          }
-        }]
-      },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
     }
-  });
+});
 </script>
 

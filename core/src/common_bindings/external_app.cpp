@@ -100,7 +100,7 @@ void StartShell::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    _create_process("shell") ;
+    _create_process(g_proc_list.at("shell")) ;
 
     Sleep(100) ; //wait until select window by OS.
     Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;

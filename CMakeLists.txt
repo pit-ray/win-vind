@@ -77,7 +77,9 @@ message(STATUS "Detected Windows SDK: ${WINDOWS_SDK_INCLUDE_DIR}")
 set(COTIRE_ENABLE OFF)
 set(CCACHE_ENABLE ON)
 set(USE_SIMPL_GUI OFF)
+
 #---------------------------
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules")
 

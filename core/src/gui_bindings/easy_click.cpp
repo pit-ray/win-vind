@@ -24,6 +24,7 @@
 #include <utility>
 #include <vector>
 
+
 inline static bool operator==(const RECT& lhs, const RECT& rhs) noexcept {
     return lhs.left == rhs.left && lhs.top == rhs.top \
                      && lhs.right == rhs.right && lhs.bottom == rhs.bottom ;
@@ -340,6 +341,10 @@ namespace EsyClk
     static RECT g_prerect = {0, 0, 0, 0} ;
 
     inline static bool need_update(HWND hwnd) {
+        if(!iParams::get_b("enable_esyclk_hwnd_cache")) {
+            return true ;
+        }
+
         //If the location of the previous selected window is changed or other window is selected, must update.
         RECT rect ;
         if(hwnd == g_prehwnd) {

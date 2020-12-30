@@ -332,5 +332,11 @@
         "value": false,
         "en": "Enable Char Cache",
         "ja": "文字キャッシュ有効化"
+    },
+    "enable_esyclk_hwnd_cache": {
+        "value": false,
+        "en": "Enable EasyClick HWND Cache",
+        "ja": "HWNDキャッシュを有効化"
     }
+
 }

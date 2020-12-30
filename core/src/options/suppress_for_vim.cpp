@@ -8,6 +8,8 @@
 #include "change_mode.hpp"
 #include "mode_manager.hpp"
 #include "utility.hpp"
+#include "key_absorber.hpp"
+#include "virtual_cmd_line.hpp"
 
 const std::string SuppressForVim::sname() noexcept
 {
@@ -56,7 +58,9 @@ void SuppressForVim::do_process() const
 
     //Whether it is vim
     if(exename.find("vim") != std::string::npos) {
-        Change2Insert::sprocess(true, 1, nullptr, nullptr) ;
+        KeyAbsorber::open() ;
+        change_mode(Mode::Insert) ;
+        VirtualCmdLine::msgout("-- GUI INSERT --") ;
     }
     else {
         if(get_mode() == Mode::Insert)

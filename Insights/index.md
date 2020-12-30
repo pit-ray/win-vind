@@ -12,6 +12,7 @@ descripption: "Insights of win-vind."
 <canvas id="myChart"></canvas>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>  
 <script>  
+var ctx = document.getElementById("myLineChart");
 var myLineChart = new Chart(ctx, {
     type: 'line',
     data: {

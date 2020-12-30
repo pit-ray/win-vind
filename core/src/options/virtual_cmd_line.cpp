@@ -126,9 +126,7 @@ void VirtualCmdLine::msgout(std::string str) noexcept
 }
 
 void VirtualCmdLine::refresh() {
-    if(!InvalidateRect(WindowFromPoint(g_refresh_pos), NULL, TRUE)) {
-        throw RUNTIME_EXCEPT(" failed refresh display") ;
-    }
+    Utility::refresh_display(WindowFromPoint(g_refresh_pos)) ;
 }
 
 void VirtualCmdLine::clear() noexcept

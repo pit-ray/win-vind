@@ -475,12 +475,6 @@ namespace EsyClk
         return hints_str ;
     }
 
-    void refresh_display() {
-        if(!InvalidateRect(GetForegroundWindow(), NULL, FALSE)) {
-            throw RUNTIME_EXCEPT(" failed refresh display") ;
-        }
-    }
-
     static LOGFONTA g_font ;
     void update_font() {
         g_font.lfHeight         = iParams::get_l("easy_click_font_size") ;
@@ -603,6 +597,8 @@ namespace EsyClk
 
         bool at_least_exist = false ;
 
+        const auto hwnd = GetForegroundWindow() ;
+
         while(true) {
             Utility::get_win_message() ;
 
@@ -625,7 +621,7 @@ namespace EsyClk
             }
 
             if(lgr.back().is_containing(VKC_ESC)) {
-                refresh_display() ;
+                Utility::refresh_display(hwnd) ;
                 return ;
             }
 
@@ -635,7 +631,7 @@ namespace EsyClk
 
             if(lgr.back().is_containing(VKC_BKSPACE)) {
                 if(lgr.size() == 1) {
-                    refresh_display() ;
+                    Utility::refresh_display(hwnd) ;
                     return ;
                 }
                 remove_from_back(lgr, 2) ;
@@ -667,7 +663,7 @@ namespace EsyClk
                 if(matched_num[i] == hints[i].size()) {
                     SetCursorPos(points[i].x(), points[i].y()) ;
                     MouseEventer::click(VKC_MOUSE_LEFT) ;
-                    refresh_display() ;
+                    Utility::refresh_display(hwnd) ;
                     return ;
                 }
             }
@@ -676,7 +672,7 @@ namespace EsyClk
                 remove_from_back(lgr, 1) ;
             }
             else if(lgr.size() == 1){
-                refresh_display() ;
+                Utility::refresh_display(hwnd) ;
             }
         }
     }

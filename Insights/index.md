@@ -26,7 +26,6 @@ request.onreadystatechange = function() {
   if(request.readyState == 4) {
     if (request.status == 200) {
       var data = JSON.parse(request.responseText);
-      console.log(data);
       for(var item of data) {
         names.push(item.name);
         var cnt = 0 ;

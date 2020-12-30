@@ -8,30 +8,30 @@ Simple Vim Key Binder for Windows
 
 Mainly, there are five point features.  
 
-### GUI Operation like Vim  
+### 1. GUI Operation like Vim  
 You can operate all windows, the mouse, virtual desktops, GUI-objects.  
 
 **Example**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=700>
 
-### Vim emulation everywhere  
+### 2. Vim emulation everywhere  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  
 
 **Example**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/edi-mode-demo.gif?raw=true" />
 
-### Mode Management like Vim  
+### 3. Mode Management like Vim  
 There are two main modes: **GUI Mode** for GUI operation and **Editor Mode** for Vim emulation.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true" width=700 />  
 
-### Process Control  
+### 4. Process Control  
 If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad` like below.  
 
 **Example**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cmd-demo.gif?raw=true" width=400 title="cmd-demo">  
 
-### Using from command line
+### 5. Using from command line
 You can operate win-vind from command lines.  
 
 **Example**  

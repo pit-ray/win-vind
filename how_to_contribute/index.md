@@ -18,8 +18,9 @@ descripption: "How to contibute win-vind."
 1. Make a discussion at <a href="https://github.com/pit-ray/win-vind/discussions">github.com/discussions</a> in order to prevent conflicts. In addition, post the what you will do, just in a few words.  
 
 1. Clone the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>. For example, you do a follow command.
-    <div class="code"><p>$git clone https://github.com/pit-ray/win-vind.git</p></div>
-
+```bash
+$ git clone https://github.com/pit-ray/win-vind.git
+```
 1. Make a unique branch for pull requests.
 ```bash
 $ git checkout -b UNIQUE_BRANCH_NAME
@@ -27,7 +28,7 @@ $ git checkout -b UNIQUE_BRANCH_NAME
 1. You can do something for this project.  
 1. Build project for release in root directory.
 ``` bash
-$ ./push_preproc.bat 0.0.0</p></div>
+$ ./push_preproc.bat 0.0.0
 ```
 1. If you used third party libraries, you must add some essential texts in <a href="https://github.com/pit-ray/win-vind/blob/master/THIRD_PARTY_LICENSES.txt">**THIRD_PARTY_LICENSES.TXT**</a>.  
 1. Please add, commit and push.

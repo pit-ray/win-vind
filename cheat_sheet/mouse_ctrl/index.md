@@ -266,7 +266,7 @@ Additionaly, positions of key are very hardware-dependent, so if you don't like 
    ```
    [Xposition]    [Yposition]    [KeyCode]
    ```  
-   - The delimiter is some space and multiple spaces is same as one space. You must write a syntax per line. **[Xposition]** and **[Yposition]** are positive values. Also, Left Upper at the real keyboard is (0, 0) and the max value of X means right-end, Y does bottom. And then, **[KeyCode]** is ASCII Code or KMP Key Code. However It is **not** supported **Fn** Key. In addtion, Toggle Key for example, **CapsLock** or **NumLock**, is sometimes ignored because kept the push-release-state of the key by hardware according to a product.  
+   - The delimiter is some space and multiple spaces is same as one space. You must write a syntax per line. **[Xposition]** and **[Yposition]** are positive values. Also, Left Upper at the real keyboard is (0, 0) and the max value of X means right-end, Y does bottom. And then, **[KeyCode]** is ASCII Code or System Key Code. However It is **not** supported **Fn** Key. In addtion, Toggle Key for example, **CapsLock** or **NumLock**, is sometimes ignored because kept the push-release-state of the key by hardware according to a product.  
    - Example  
    <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/kmp_ex.jpg?raw=true" width="512">
 

@@ -31,7 +31,31 @@ else()
     set(CMAKE_CXX_EXTENSIONS OFF)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-align -Wno-unknown-pragmas -Wcast-qual -Wctor-dtor-privacy -Wdelete-non-virtual-dtor -Wdouble-promotion -Weffc++ -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsuggest-override -Wuseless-cast -static -lstdc++ -lgcc -lwinpthread -fdiagnostics-color")
+    set(CMAKE_CXX_FLAGS 
+        ${CMAKE_CXX_FLAGS}
+        -Wall
+        -Wextra
+        -Wcast-align
+        -Wno-unknown-pragmas
+        -Wcast-qual
+        -Wctor-dtor-privacy
+        -Wdelete-non-virtual-dtor
+        -Wdouble-promotion
+        -Weffc++
+        -Wold-style-cast
+        -Woverloaded-virtual
+        -Wreorder
+        -Wshadow
+        -Wsuggest-override
+        -Wuseless-cast
+        -static
+        -lstdc++
+        -lgcc
+        -lwinpthread
+        -fdiagnostics-color
+    )
+    string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGGS}")
+
     set(CMAKE_CXX_DEBUG "-O0 -g3")
     set(CMAKE_CXX_RELEASE "-O2")
 

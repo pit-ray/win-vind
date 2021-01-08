@@ -26,7 +26,7 @@ $ git clone https://github.com/pit-ray/win-vind.git
 $ git checkout -b UNIQUE_BRANCH_NAME
 ```
 1. You can do something for this project.  
-1. Build project for release in root directory.
+1. Build the project for verification.  
 ``` bash
 $ ./push_preproc.bat 0.0.0
 ```
@@ -37,7 +37,7 @@ $ git add .
 $ git commit -m "Please write a summary of your changes."
 $ git push -u origin UNIQUE_BRANCH_NAME
 ```
-1. Please send pull requests at <a href="https://github.com/pit-ray/win-vind/pulls">Pull requests pit-ray/win-vind</a></li>
+1. Please send pull requests at <a href="https://github.com/pit-ray/win-vind/pulls">Pull requests pit-ray/win-vind</a>
 
 <br>
 <hr>

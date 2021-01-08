@@ -78,7 +78,7 @@ However, it is based on GUI, so some Vimmer dislike its UI. In this case, rewrit
 <hr>
 
 ### Key Config
-You can customize all key bindings by rewriting the JSON settings file easily. In the future, going to just write the changes. The location of the file is different depending on the installation way. Refer to the following table.
+You can customize all key bindings by rewriting the JSON settings file easily. The location of the file is different depending on the installation way. Refer to the following table.
 
 |Installation Type|Path|
 |:---:|:---|
@@ -105,16 +105,16 @@ Its syntaxes are based on original Vim, but have some unique keywords. You can r
 ```
 **name** is a unique identifier of a linked function. **en** or **ja** are labels used on GUI of win-vind. If you give a unique key as language code and a translated label, enable to support another language.  
 <br>
-The meanings of these key config are shown in the following table with the proviso that the column of **String** is case-sensitive, but the column of **Meanings** is not case-sensitive. And, key codes are bolded, (e.g. **Shift**, **A**).
+The meanings of these key config are shown in the following table with the proviso that the column of **String** is case-sensitive, but the column of **Meanings** is not case-sensitive.  
 
 |String|Meanings (but depending on an arrangement of a keyboard)|
 |:----:|:---|
-|test|**T**->**E**->**S**->**T**|
-|Te|(**Shift**+**T**)->**E**|
-|j|**J**|
-|+|**Shift** + **=**|
-|&lt;C-n&gt;|**Ctrl**+**N**|
-|&lt;C-N&gt;|**Ctrl**+**Shift**+**N**|
+|test|`T`->`E`->`S`->`T`|
+|Te|`Shift + T`->`E`|
+|j|`J`|
+|+|`Shift + =`|
+|&lt;C-n&gt;|`Ctrl + N`|
+|&lt;C-N&gt;|`Ctrl + Shift + N`|
 |&lt;edin&gt;|It means copying the key config from another mode,<br>so **Editor Visual** and **Editor Line Visual** are same as the configs of **Editor Normal**.|
-|+&lt;num&gt;|&lt;num&gt; is a number of any digits. For example, (**LShift**+**;**)->(**Shift**+**=**)->**1**->**2**.|
-|Example|(**Shift**+**;**)->(**Shift**+**E**)->**X**->**A**->**M**->**P**->**L**->**E**|
+|+&lt;num&gt;|&lt;num&gt; is a number of any digits. For example, `LShift + ;`->`Shift + =`->`1`->`2`.|
+|Example|`Shift + ;`->`Shift + E`->`X`->`A`->`M`->`P`->`L`->`E`|

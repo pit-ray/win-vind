@@ -13,9 +13,7 @@
 <br>  
 
 ## Description
-**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**.  
-
-Mainly, there are five point features.  
+**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**. Mainly, there are five point features.  
 
 ### 1. GUI Operation like Vim  
 You can operate all windows, the mouse, virtual desktops, GUI-objects with key-bindings like Vim.  

@@ -1,7 +1,7 @@
 <p align="center"><font size="100"><b>win-vind</b></font></p>    
 
 <p align="center">
-  <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="256" height="256" />
+  <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="200" height="200" />
 </p>  
 
 <p align="center">  

@@ -5,8 +5,8 @@
 </p>  
 
 <p align="center">  
-<a href="https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" /></a> 
-  <a href="https://pit-ray.github.io/win-vind/"><img src="https://img.shields.io/badge/docs-doxygen-blue.svg" /></a>
+<a href="https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt" target="_blank"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" /></a> 
+  <a href="https://pit-ray.github.io/win-vind/" target="_blank"><img src="https://img.shields.io/badge/docs-doxygen-blue.svg" /></a>
 <p align="center"><b>Simple Vim Key Binder for Windows</b></p>  
 
 <br>  

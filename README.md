@@ -2,6 +2,7 @@
 
 <p align="center">
   <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="200" height="200" />
+  <p align="center"><b>Simple Vim Key Binder for Windows</b></p>  
 </p>  
 
 <p align="center">  
@@ -11,7 +12,7 @@
   <a href="https://pit-ray.github.io/win-vind/" target="_blank"><img src="https://img.shields.io/badge/docs-doxygen-blue.svg" /></a> 
   <a href="https://github.com/pit-ray/win-vind/releases/latest"><img src="https://img.shields.io/github/v/release/pit-ray/win-vind" /></a>
   <a href="https://pit-ray.github.io/win-vind/downloads/" ><img src="https://img.shields.io/github/downloads/pit-ray/win-vind/total" /></a>
-<p align="center"><b>Simple Vim Key Binder for Windows</b></p>  
+
 <br>  
 
 ## Description

@@ -72,11 +72,11 @@ All keywords in win-vind are not case-sensitive.
 |&lt;win&gt;|Left Windows Key, Right Windows Key|
 |&lt;lwin&gt;|Left Windows Key|
 |&lt;rwin&gt;|Right Windows Key|
-|&lt;agt&gt;|Left Alt, Right Alt|
+|&lt;alt&gt;|Left Alt, Right Alt|
 |&lt;a&gt;|Left Alt, Right Alt|
-|&lt;lagt&gt;|Left Alt|
+|&lt;lalt&gt;|Left Alt|
 |&lt;la&gt;|Left Alt|
-|&lt;ragt&gt;|Right Alt|
+|&lt;ralt&gt;|Right Alt|
 |&lt;ra&gt;|Right Alt|
 |&lt;m&gt;|Left Alt, Right Alt|
 |&lt;lm&gt;|Left Alt|

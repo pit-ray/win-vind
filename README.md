@@ -55,6 +55,83 @@ If you want to know the details, refer to <a href="https://pit-ray.github.io/win
 ## How to use
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use - win-vind</a>.  
 
+### Default Key Config  
+#### Window Control  
+
+|Binding|Command|Meanings|
+|:---:|:---:|:---:|
+|`<C-w>s`|`:sw`|Switch Window|
+|`<C-w>q`|`:cl`|Close Current Window|
+|`<C-w>h`|`:lsplit`|Snap Current Window to Left|
+|`<C-w>l`|`:rsplit`|Snap Current Window to Right|
+
+#### Mouse Control  
+
+|Binding|Command|Meanings|
+|:---:|:---:|:---:|
+|`o`|-|Left Click|
+|`a`|-|Right Click|
+|`F`|`:ec`|<a href="https://pit-ray.github.io/win-vind/cheat_sheet/mouse_ctrl/#easyclick">EasyClick</a> (hinting feature)|
+|`h`|-|Move Cursor Left|
+|`j`|-|Move Cursor Down|
+|`k`|-|Move Cursor Up|
+|`l`|-|Move Cursor Right|
+|`0`|-|Jump Cursor to Left|
+|`f`|-|<a href="https://pit-ray.github.io/win-vind/cheat_sheet/mouse_ctrl/#jump-cursor-by-keyboard-mapping">Jump Cursor by Keyboard Mapping</a>|
+|`<C-y>`|-|Scroll Up|
+|`<C-e>`|-|Scroll Down|
+
+#### Virtual Desktop Control
+
+|Binding|Command|Meanings|
+|:---:|:---:|:---:|
+|`<C-v>h`|-|Switch Virtual Desktop to Left|
+|`<C-v>l`|-|Switch Virtual Desktop to Right|
+
+#### Mode Control  
+
+|Binding|Command|Meanings|
+|:---:|:---:|:---:|
+|`<Esc-Left>`, `<Esc-Right>`, `<Esc-Up>`, `<Esc-Down>`|-|Change to GUI Normal|
+|`i`|-|Change to GUI Insert|
+|`v`|-|Change to GUI Visual|
+|`I`|-|Change to Editor Normal|
+|`i`|-|Change to Editor Insert|
+|`v`|-|Change to Editor Visual|
+|`V`|-|Change to Editor Line Visual|
+
+#### Process Launcher
+
+|Binding|Command|Meanings|
+|:---:|:---:|:---:|
+|-|`:sh`, `:term`|Start Command Prompt|
+|-|`:!<any>`|Start Any Application|
+
+
+#### Utilities
+
+|Binding|Command|Meanings|
+|:---:|:---:|:---:|
+|-|`:w`|Save Opened File|
+|-|`:mkdir <any>`|Make Directories|
+|`<gt>`|-|Move to Next Page|
+|`<lt>`|-|Move to Previous Page|
+|`u`|-|Undo|
+|`<C-r>`|-|Redo|
+|`y`|-|Copy|
+|`p`|-|Paste|
+|`dd`|-|Cut|
+|`x`|-|Delete|
+
+#### Others 
+
+|Binding|Command|Meanings|
+|:---:|:---:|:---:|
+|-|`:set`|Show Config Window of win-vind|
+|-|`:exit`|Exit win-vind|  
+
+If you want more details, please see the <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a>.  
+
 ## How to contribute
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How to contribute - win-vind</a>.  
 

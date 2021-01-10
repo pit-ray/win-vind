@@ -48,8 +48,7 @@ You can operate win-vind from command lines.
 ```bash
 $ ./win-vind.exe --func change_to_normal
 ```
-Therefore, it enables to make Vim link to GUI.  
-Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>  
+Therefore, it enables to make Vim link to GUI. Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>  
 
 If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 

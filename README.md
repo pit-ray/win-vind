@@ -92,7 +92,7 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
-|`<Esc-Left>`, `<Esc-Right>`, `<Esc-Up>`, `<Esc-Down>`|-|Change to GUI Normal|
+|`<Esc-Left>`, `<Esc-Down>`|-|Change to GUI Normal|
 |`i`|-|Change to GUI Insert|
 |`v`|-|Change to GUI Visual|
 |`I`|-|Change to Editor Normal|

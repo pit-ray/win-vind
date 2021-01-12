@@ -17,7 +17,7 @@
 #include "msg_logger.hpp"
 #include "simple_text_selecter.hpp"
 #include "smart_clipboard.hpp"
-#include "system.hpp"
+#include "win_vind.hpp"
 #include "text_analyzer.hpp"
 #include "utility.hpp"
 #include "vkc_converter.hpp"
@@ -79,13 +79,9 @@ namespace EdiEdit
         using namespace ModeManager ;
         KeyLogger lgr ;
 
-        for(auto key : KeyAbsorber::get_pressed_list())
-            KeyAbsorber::release_vertually(key) ;
+        KeyAbsorber::InstantKeyAbsorber ika ;
 
-        while(true) {
-            Sleep(30) ;
-            Utility::get_win_message() ;
-
+        while(win_vind::update_background()) {
             if(!KyLgr::log_as_vkc(lgr)) {
                 remove_from_back(lgr, 1) ;
                 continue ;
@@ -125,6 +121,8 @@ namespace EdiEdit
                 return false ;
             }
         }
+
+        return false ;
     }
 }
 

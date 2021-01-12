@@ -58,7 +58,8 @@ void SuppressForVim::do_process() const
 
     //Whether it is vim
     if(exename.find("vim") != std::string::npos) {
-        KeyAbsorber::open() ;
+        KeyAbsorber::open_all_ports() ;
+        KeyAbsorber::unabsorb() ;
         change_mode(Mode::Insert) ;
         VirtualCmdLine::msgout("-- GUI INSERT --") ;
     }

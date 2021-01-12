@@ -5,7 +5,7 @@
 
 #include "key_absorber.hpp"
 #include "keybrd_eventer.hpp"
-#include "system.hpp"
+#include "win_vind.hpp"
 #include "text_analyzer.hpp"
 #include "utility.hpp"
 #include "virtual_cmd_line.hpp"
@@ -26,9 +26,7 @@ namespace EREPUtility {
             KeybrdEventer::release_keystate(key) ;
         }
 
-        while(System::update_options()) {
-            Utility::get_win_message() ;
-
+        while(win_vind::update_background()) {
             if(KeyAbsorber::is_pressed(VKC_ESC)) {
                 return ;
             }
@@ -62,7 +60,6 @@ namespace EREPUtility {
                     }
                 }
             }
-            Sleep(10) ;
         }
     }
 }

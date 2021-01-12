@@ -3,9 +3,11 @@
 #include <array>
 #include <atomic>
 
+#include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "key_absorber.hpp"
+#include "vkc_converter.hpp"
 
 struct BindedFunc::Impl
 {
@@ -41,11 +43,36 @@ void BindedFunc::process(
     pimpl->running_now.store(true) ;
     try {
         do_process(first_call, repeat_num, parent_vkclgr, parent_charlgr) ;
+
+        //correct the state
+        //to avoid cases that a virtual key is judged to be pressed,
+        //though a real key is released.
+        for(auto& key : KeyAbsorber::get_pressed_list()) {
+            if(!KeyAbsorber::is_really_pressed(key)) {
+                KeyAbsorber::release_virtually(key) ;
+            }
+        }
     }
     catch(const std::runtime_error& e) {
         ERROR_PRINT(name() + " failed. " + e.what()) ;
         try {
-            KeyAbsorber::close_with_refresh() ;
+            const auto buf = KeyAbsorber::get_pressed_list() ;
+            if(!buf.empty()) {
+                if(KeyAbsorber::is_absorbed()) {
+                    KeyAbsorber::open_some_ports(buf.get()) ;
+                }
+                for(auto& key : buf) {
+                    KeybrdEventer::release_keystate(key) ;
+                }
+                if(KeyAbsorber::is_absorbed()) {
+                    KeyAbsorber::close_all_ports() ;
+                    KeyAbsorber::absorb() ;
+                }
+                else {
+                    KeyAbsorber::open_all_ports() ;
+                    KeyAbsorber::unabsorb() ;
+                }
+            }
         }
         catch(const std::runtime_error& e2) {
             ERROR_PRINT(name()

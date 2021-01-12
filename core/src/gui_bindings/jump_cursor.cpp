@@ -10,14 +10,15 @@
 #include <unordered_map>
 #include <utility>
 
+#include "i_params.hpp"
 #include "key_absorber.hpp"
+#include "key_log.hpp"
 #include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
-#include "i_params.hpp"
-#include "key_log.hpp"
-#include "vkc_converter.hpp"
-#include "utility.hpp"
 #include "path.hpp"
+#include "win_vind.hpp"
+#include "utility.hpp"
+#include "vkc_converter.hpp"
 
 using namespace std ;
 
@@ -252,14 +253,12 @@ void Jump2Any::sprocess(
 
     //reset key state (binded key)
     
-    KeyAbsorber::close_with_refresh() ;
+    KeyAbsorber::InstantKeyAbsorber ika ;
 
     //ignore toggle keys (for example, CapsLock, NumLock, IME....)
     const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
 
-    while(true) {
-        Utility::get_win_message() ;
-
+    while(win_vind::update_background()) {
         if(KeyAbsorber::is_pressed(VKC_ESC)) return ;
 
         const auto log = KeyAbsorber::get_pressed_list() - toggle_keys ;
@@ -292,8 +291,6 @@ void Jump2Any::sprocess(
         catch(const out_of_range&) {
             continue ;
         }
-
-        Sleep(5) ;
     }
 }
 

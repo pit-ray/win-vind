@@ -41,7 +41,8 @@ void Change2Normal::sprocess(
 
     //When this function is called, binded key is down.
     //Thus, its key is needed to be up before absorbing key.
-    KeyAbsorber::close_with_refresh() ;
+    KeyAbsorber::close_all_ports_with_refresh() ;
+    KeyAbsorber::absorb() ;
 
     change_mode(Mode::Normal) ;
     if(vclmodeout)
@@ -68,7 +69,8 @@ void Change2Insert::sprocess(
     if(ModeManager::get_mode() == ModeManager::Mode::Normal)
         MouseEventer::click(VKC_MOUSE_LEFT) ;
 
-    KeyAbsorber::open() ;
+    KeyAbsorber::open_all_ports() ;
+    KeyAbsorber::unabsorb() ;
     change_mode(Mode::Insert) ;
     if(vclmodeout)
         VirtualCmdLine::msgout("-- GUI INSERT --") ;

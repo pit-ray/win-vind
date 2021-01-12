@@ -1,5 +1,5 @@
 #include "msg_logger.hpp"
-#include "system.hpp"
+#include "win_vind.hpp"
 #include "win32gui.hpp"
 
 #include <memory>
@@ -18,12 +18,12 @@ int WINAPI WinMain(
         return 0 ;
     }
 
-    if(!System::init()) {
+    if(!win_vind::init()) {
         return 0 ;
     }
 
     MSG msg ;
-    while(System::update() && Win32GUI::update()) {
+    while(win_vind::update() && Win32GUI::update()) {
         //MessageRoop
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg) ;

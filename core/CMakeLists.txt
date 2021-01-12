@@ -82,18 +82,18 @@ add_library(Options STATIC
 target_link_libraries(Options Common)
 enable_cotire(Options)
 
-add_library(CoreSystem STATIC
+add_library(win_vindCore STATIC
     src/i_params.cpp
     src/key_binder.cpp
     src/msg_logger.cpp
     src/option_loader.cpp
-    src/system.cpp
     src/utility.cpp
+    src/win_vind.cpp
 
 )
-target_link_libraries(CoreSystem
+target_link_libraries(win_vindCore
     CmnBindings
     EdiBindings
     GUIBindings
     Options)
-enable_cotire(CoreSystem)
+enable_cotire(win_vindCore)

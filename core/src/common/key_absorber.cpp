@@ -15,9 +15,26 @@
 
 using namespace std ;
 
+/*Absorber Overview*/
+//                       _____
+//                      /     \      ->     _____
+//  [User's Keyboard]  /       \           /     \
+//
+//   ____________                         __________
+//  |            |                       |          |
+//  |  Keyboard  |   a key is pressed    |    OS    | [Hooked]
+//  |____________|   ================>>  |__________| LowLevelKeyboardProc
+//
+//   __________
+//  |          |  WM_KEYDOWN       save state as variable
+//  |    OS    |  WM_SYSKEYDOWN        send no message
+//  |__________|  =============>>   LowLevelKeyboardProc  =========== Other Application
+//
+
 namespace KeyAbsorber
 {
-    static array<bool, 256> g_state{false} ;
+    static array<bool, 256> g_real_state{false} ;
+    static array<bool, 256> g_state{false} ;  //Keyboard state win-vind understands.
     static bool g_absorbed_flag{true} ;
     static KeyLog::data_t g_ignored_keys{} ;
 
@@ -43,7 +60,8 @@ namespace KeyAbsorber
         }
         const auto code = static_cast<unsigned char>(reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
         const auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
-        g_state[code] = state ;
+        g_real_state[code] = state ;
+        g_state[code]      = state ;
         g_state[VKCConverter::get_representative_key(code)] = state ;
 
         if(!g_ignored_keys.empty()) {
@@ -55,6 +73,7 @@ namespace KeyAbsorber
     }
 
     void install_hook() {
+        g_real_state.fill(false) ;
         g_state.fill(false) ;
 
         p_handle.reset(new HHOOK{}) ; //added ownership
@@ -81,6 +100,12 @@ namespace KeyAbsorber
         }
         return g_state[keycode] ;
     }
+    bool is_really_pressed(const unsigned char keycode) noexcept {
+        if(keycode < 1 || keycode > 254) {
+            return false ;
+        }
+        return g_real_state[keycode] ;
+    }
 
     const KeyLog get_pressed_list() {
         KeyLog::data_t res{} ;
@@ -91,38 +116,44 @@ namespace KeyAbsorber
     }
 
     //if this object is not hooked, can call following functions.
-    bool is_closed() noexcept {
+    bool is_absorbed() noexcept {
         return g_absorbed_flag ;
     }
 
-    void close() noexcept {
-        g_ignored_keys.clear() ;
+    void absorb() noexcept {
         g_absorbed_flag = true ;
     }
+    void unabsorb() noexcept {
+        g_absorbed_flag = false ;
+    }
 
-    void close_with_refresh() {
+    void close_all_ports() noexcept {
+        g_ignored_keys.clear() ;
+    }
+
+    void close_all_ports_with_refresh() {
         g_ignored_keys.clear() ;
 
         //if this function is called by pressed button,
         //it has to send message "KEYUP" to OS (not absorbed).
         unsigned char vkc = 0 ;
         for(const auto& s : g_state) {
-            if(s) KeybrdEventer::release_keystate(vkc) ;
+            if(s) {
+                KeybrdEventer::release_keystate(vkc) ;
+            }
             vkc ++ ;
         }
-        g_absorbed_flag = true ;
     }
 
-    void open() noexcept {
+    void open_all_ports() noexcept {
         g_ignored_keys.clear() ;
-        g_absorbed_flag = false ;
     }
 
-    void open_keys(const KeyLog::data_t& keys) noexcept {
+    void open_some_ports(const KeyLog::data_t& keys) noexcept {
         g_ignored_keys = keys ;
     }
 
-    void open_key(const unsigned char key) noexcept {
+    void open_port(const unsigned char key) noexcept {
         try {g_ignored_keys.insert(key) ;}
         catch(bad_alloc& e) {
             ERROR_PRINT(e.what()) ;
@@ -130,10 +161,24 @@ namespace KeyAbsorber
         }
     }
 
-    void release_vertually(const unsigned char key) noexcept {
+    void release_virtually(const unsigned char key) noexcept {
         g_state[key] = false ;
     }
-    void press_vertually(const unsigned char key) noexcept {
+    void press_virtually(const unsigned char key) noexcept {
         g_state[key] = true ;
+    }
+
+    struct InstantKeyAbsorber::Impl {
+        bool flag = false ;
+    } ;
+    InstantKeyAbsorber::InstantKeyAbsorber()
+    : pimpl(std::make_unique<Impl>())
+    {
+        pimpl->flag = is_absorbed() ;
+        close_all_ports_with_refresh() ;
+        absorb() ;
+    }
+    InstantKeyAbsorber::~InstantKeyAbsorber() noexcept {
+        if(!pimpl->flag) unabsorb() ;
     }
 }

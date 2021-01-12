@@ -2,7 +2,7 @@
 #include "win_notify_icon.hpp"
 #include "msg_logger.hpp"
 #include "ini_parser.hpp"
-#include "system.hpp"
+#include "win_vind.hpp"
 #include "path.hpp"
 
 #include <iostream>
@@ -311,7 +311,7 @@ namespace Win32GUI
 
                     write_ini(Path::CONFIG_OPTS_BOOL_INI(), pt) ;
 
-                    System::load_option_config() ;
+                    win_vind::load_option_config() ;
                     break ;
                 }
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(win-vind VERSION 3.0.0)
+project(win-vind VERSION 3.0.1)
 
 enable_language(CXX)
 
@@ -177,7 +177,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${MAIN_ENTRY_LIBRARIES} CoreSystem)
+target_link_libraries(${PROJECT_NAME} ${MAIN_ENTRY_LIBRARIES} win_vindCore)
 enable_cotire(${PROJECT_NAME})
 
 

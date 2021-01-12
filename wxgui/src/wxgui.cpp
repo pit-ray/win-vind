@@ -17,7 +17,7 @@
 #include "io_params.hpp"
 #include "msg_logger.hpp"
 
-#include "system.hpp"
+#include "win_vind.hpp"
 
 namespace wxGUI
 {
@@ -27,7 +27,7 @@ namespace wxGUI
     class SystemThread : public wxThread {
     private:
         virtual ExitCode Entry() override {
-            while(System::update() && runnable.load()) ;
+            while(win_vind::update() && runnable.load()) ;
             return static_cast<ExitCode>(0) ;
         }
 
@@ -56,10 +56,10 @@ namespace wxGUI
         }
 
         if(!wxTaskBarIcon::IsAvailable()) {
-            wxMessageBox("not supported System Tray", "Warning", wxOK | wxICON_EXCLAMATION) ;
+            wxMessageBox("not supported win_vind Tray", "Warning", wxOK | wxICON_EXCLAMATION) ;
         }
 
-        if(!System::initialize(g_function_name)) {
+        if(!win_vind::initialize(g_function_name)) {
             ERROR_PRINT("failed initializing system") ;
             return false ;
         }
@@ -72,11 +72,11 @@ namespace wxGUI
         ppd->Show(false) ;
 
         //enable opening window by command
-        System::register_show_window_func([ppd] {
+        win_vind::register_show_window_func([ppd] {
             ppd->Show(true) ;
         }) ;
 
-        System::register_exit_window_func([ppd] {
+        win_vind::register_exit_window_func([ppd] {
             ppd->Show(true) ;
             ppd->Destroy() ;
         }) ;
@@ -94,7 +94,7 @@ namespace wxGUI
 
     App::~App() noexcept {
         if(runnable.load()) {
-            //Core-System is running
+            //Core-win_vind is running
             runnable.store(false) ; //terminate core system
         }
     }

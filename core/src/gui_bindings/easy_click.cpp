@@ -11,6 +11,7 @@
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
+#include "win_vind.hpp"
 
 #include <windows.h>
 #include <wingdi.h>
@@ -278,13 +279,7 @@ namespace EsyClk
         return TRUE ;
     }
 
-    using TargetWindowInfo = std::pair<HWND, DWORD> ;
-
     static BOOL CALLBACK EnumThreadWndProc(HWND hwnd, LPARAM lparam) {
-        if(hwnd == reinterpret_cast<TargetWindowInfo*>(lparam)->first) {
-            return TRUE ;
-        }
-
         if(!IsWindowVisible(hwnd)) {
             return TRUE ;
         }
@@ -293,14 +288,14 @@ namespace EsyClk
         RECT rect ;
         if(GetWindowRect(hwnd, &rect)) {
             g_objpos.emplace_back(
-                    (rect.left + rect.right) / 2,
-                    rect.top + 16) ;
+                    rect.left + (rect.right - rect.left) / 2,
+                    rect.top + (rect.bottom - rect.top) / 2) ;
         }
         return TRUE ;
     }
 
     static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lparam) {
-        auto parent_procid = reinterpret_cast<TargetWindowInfo*>(lparam)->second ;
+        auto parent_procid = static_cast<DWORD>(lparam) ;
 
         DWORD procid ;
         auto thid = GetWindowThreadProcessId(hwnd, &procid) ;
@@ -330,9 +325,7 @@ namespace EsyClk
             return ;
         }
 
-        TargetWindowInfo info(hwnd, procid) ;
-
-        EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&info)) ;
+        EnumWindows(EnumWindowsProc, static_cast<LPARAM>(procid)) ;
 
         Utility::remove_deplication(EsyClk::g_objpos) ;
     }
@@ -591,24 +584,18 @@ namespace EsyClk
         KeyLogger lgr ;
         std::vector<unsigned char> matched_num(points.size(), false) ;
 
-        for(auto& key : KeyAbsorber::get_pressed_list()) {
-            KeyAbsorber::release_vertually(key) ;
-        }
+        KeyAbsorber::InstantKeyAbsorber ika ;
 
         bool at_least_exist = false ;
 
         const auto hwnd = GetForegroundWindow() ;
 
-        while(true) {
-            Utility::get_win_message() ;
-
+        while(win_vind::update_background()) {
             EsyClk::draw_identifiers(
                     EsyClk::g_objpos,
                     EsyClk::g_hints_str,
                     matched_num,
                     at_least_exist) ;
-
-            Sleep(5) ;
 
             if(!KyLgr::log_as_char(lgr)) {
                 remove_from_back(lgr, 1) ;
@@ -704,7 +691,7 @@ void EasyClick::sprocess(
     }
 
     for(auto& key : KeyAbsorber::get_pressed_list()) {
-        KeyAbsorber::release_vertually(key) ;
+        KeyAbsorber::release_virtually(key) ;
     }
 }
 

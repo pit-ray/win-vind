@@ -19,7 +19,7 @@ BEGIN
             VALUE "InternalName",       "win-vind\0"
             VALUE "OriginalFilename",   "win-vind.exe\0"
             VALUE "ProductName",        "win-vind\0"
-            VALUE "ProductVersion",     "3.0.0\0"
+            VALUE "ProductVersion",     "3.0.1\0"
         END
     END
     BLOCK "VarFileInfo"

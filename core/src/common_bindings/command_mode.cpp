@@ -12,7 +12,7 @@
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
-#include "system.hpp"
+#include "win_vind.hpp"
 #include "utility.hpp"
 #include "virtual_cmd_line.hpp"
 #include "vkc_converter.hpp"
@@ -85,7 +85,7 @@ inline static bool _main_loop() {
 
     //decision of input
     if(lgr.back().is_containing(VKC_ENTER) && p_cmdp->func) {
-        KeyAbsorber::release_vertually(VKC_ENTER) ;
+        KeyAbsorber::release_virtually(VKC_ENTER) ;
 
         remove_from_back(lgr, 1) ; //remove keycode of enter
 
@@ -166,15 +166,13 @@ void CommandMode::sprocess(
     change_mode(Mode::Command) ;
 
     VirtualCmdLine::reset() ;
-    KeyAbsorber::close_with_refresh() ;
 
-    while(System::update_options() && _main_loop()) {
-        Utility::get_win_message() ;
+    KeyAbsorber::InstantKeyAbsorber ika ;
 
+    while(win_vind::update_background() && _main_loop()) {
         VirtualCmdLine::cout(":" +
                 KyLgr::log2str(cmd_hist.at(cmd_hist_index)->logger)) ;
-
-        Sleep(10) ;
     }
+
     change_mode(past_mode) ;
 }

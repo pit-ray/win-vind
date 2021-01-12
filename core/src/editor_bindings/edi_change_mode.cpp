@@ -37,7 +37,8 @@ void Change2EdiNormal::sprocess(
     if(is_edi_visual())
         SimpleTextSelecter::unselect() ;
 
-    KeyAbsorber::close_with_refresh() ;
+    KeyAbsorber::close_all_ports_with_refresh() ;
+    KeyAbsorber::absorb() ;
 
     change_mode(Mode::EdiNormal) ;
     if(vclmodeout)
@@ -60,7 +61,8 @@ void Change2EdiInsert::sprocess(
     using namespace ModeManager ;
 
     if(!first_call) return ;
-    KeyAbsorber::open() ;
+    KeyAbsorber::open_all_ports() ;
+    KeyAbsorber::unabsorb() ;
     change_mode(Mode::EdiInsert) ;
     if(vclmodeout)
         VirtualCmdLine::msgout("-- EDI INSERT --") ;

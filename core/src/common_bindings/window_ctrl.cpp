@@ -14,7 +14,7 @@
 #include "keybrd_eventer.hpp"
 #include "move_cursor.hpp"
 #include "msg_logger.hpp"
-#include "um/winuser.h"
+#include "win_vind.hpp"
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
 
@@ -65,26 +65,25 @@ void SwitchWindow::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     using namespace KeybrdEventer ;
-    using Utility::remove_from_back ;
     if(!first_call) {
         return ;
     }
 
-    KeyAbsorber::close_with_refresh() ; //reset all keystate
+    KeyAbsorber::InstantKeyAbsorber ika ;
 
     static SmartKey alt(VKC_LALT) ;
     alt.press() ;
-    KeyAbsorber::release_vertually(VKC_LALT) ;
+    KeyAbsorber::release_virtually(VKC_LALT) ;
     pushup(VKC_TAB) ;
 
     KeyLogger logger{} ;
     auto main_loop = [&logger] {
         if(!KyLgr::log_as_vkc(logger)) {
-            remove_from_back(logger, 1) ;
+            Utility::remove_from_back(logger, 1) ;
             return ;
         }
         if(KeyBinder::is_invalid_log(logger.back(), KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
-            remove_from_back(logger, 1) ;
+            Utility::remove_from_back(logger, 1) ;
             return ;
         }
 
@@ -108,14 +107,18 @@ void SwitchWindow::sprocess(
         }
     } ;
 
-    while(!KeyAbsorber::is_pressed(VKC_ESC) && !KeyAbsorber::is_pressed(VKC_ENTER)) {
-        Utility::get_win_message() ;
+    while(win_vind::update_background()) {
+        if(KeyAbsorber::is_pressed(VKC_ESC)) {
+            break ;
+        }
+        if(KeyAbsorber::is_pressed(VKC_ENTER)) {
+            break ;
+        }
         main_loop() ;
-        Sleep(5) ;
     }
 
-    KeyAbsorber::release_vertually(VKC_ESC) ;
-    KeyAbsorber::release_vertually(VKC_ENTER) ;
+    KeyAbsorber::release_virtually(VKC_ESC) ;
+    KeyAbsorber::release_virtually(VKC_ENTER) ;
 
     alt.release() ;
 

@@ -22,7 +22,7 @@
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
 
-#include "system.hpp"
+#include "win_vind.hpp"
 
 namespace wxGUI
 {
@@ -87,13 +87,13 @@ namespace wxGUI
 
         Bind(wxEVT_BUTTON, [this](auto&) {
             save_config() ;
-            System::load_config() ;
+            win_vind::load_config() ;
             load_config() ;
         }, wxID_APPLY) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
             save_config() ;
-            System::load_config() ;
+            win_vind::load_config() ;
             Show(false) ;
         }, wxID_OK) ;
 

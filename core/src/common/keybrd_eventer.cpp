@@ -23,6 +23,10 @@ using vec_stack = std::stack<T, std::vector<T>> ;
 
 namespace KeybrdEventer
 {
+    bool is_pressed_actually(const unsigned char key) noexcept {
+        return GetAsyncKeyState(key) & 0x8000 ;
+    }
+
     template <typename T>
     inline static auto extended_key_flag(T key) {
         switch(key) {
@@ -81,19 +85,19 @@ namespace KeybrdEventer
     }
 
     void SmartKey::press() {
-        KeyAbsorber::open_key(pimpl->key) ;
+        KeyAbsorber::open_port(pimpl->key) ;
         send_event(true) ;
-        KeyAbsorber::close() ;
-        if(!(GetAsyncKeyState(pimpl->key) & 0x8000)) {
+        KeyAbsorber::close_all_ports() ;
+        if(!is_pressed_actually(pimpl->key)) {
             throw RUNTIME_EXCEPT("You sent a key pressing event successfully, but the state of its key was not changed.") ;
         }
     }
 
     void SmartKey::release() {
-        KeyAbsorber::open_key(pimpl->key) ;
+        KeyAbsorber::open_port(pimpl->key) ;
         send_event(false) ;
-        KeyAbsorber::close() ;
-        if(GetAsyncKeyState(pimpl->key) & 0x8000) {
+        KeyAbsorber::close_all_ports() ;
+        if(is_pressed_actually(pimpl->key)) {
             throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
         }
     }
@@ -130,14 +134,14 @@ namespace KeybrdEventer
     }
 
     void _pushup_core(std::initializer_list<unsigned char>&& initl) {
-        using KeyAbsorber::close ;
-        using KeyAbsorber::open_key ;
-        using KeyAbsorber::open_keys ;
+        using KeyAbsorber::close_all_ports ;
+        using KeyAbsorber::open_port ;
+        using KeyAbsorber::open_some_ports ;
 
         auto state = KeyAbsorber::get_pressed_list() ;
         auto recover_keystate= [&state] {
             for(const auto key : state)
-                KeyAbsorber::press_vertually(key) ;
+                KeyAbsorber::press_virtually(key) ;
         } ;
         static INPUT ins[6] = {
             {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
@@ -158,13 +162,13 @@ namespace KeybrdEventer
             ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin()) ;
             ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-            open_key(*initl.begin()) ;
+            open_port(*initl.begin()) ;
 
             if(!SendInput(2, ins, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
 
-            close() ;
+            close_all_ports() ;
             recover_keystate() ;
             return ;
         }
@@ -187,11 +191,11 @@ namespace KeybrdEventer
             ins[3].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin()) ;
             ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-            open_keys(initl) ;
+            open_some_ports(initl) ;
             if(!SendInput(4, ins, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
-            close() ;
+            close_all_ports() ;
             recover_keystate() ;
             return ;
         }
@@ -222,11 +226,11 @@ namespace KeybrdEventer
             ins[5].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin());
             ins[5].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-            open_keys(initl) ;
+            open_some_ports(initl) ;
             if(!SendInput(6, ins, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
-            close() ;
+            close_all_ports() ;
             recover_keystate() ;
             return ;
         }

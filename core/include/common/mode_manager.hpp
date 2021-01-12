@@ -42,7 +42,6 @@ namespace ModeManager
 
     bool is_edi_visual() noexcept ;
     bool is_editor() noexcept ;
-
     bool is_command() noexcept ;
 }
 

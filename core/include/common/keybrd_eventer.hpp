@@ -13,6 +13,8 @@ class KeyLog ;
 
 namespace KeybrdEventer
 {
+    bool is_pressed_actually(const unsigned char key) noexcept ;
+
     class SmartKey {
     private:
         struct Impl ;

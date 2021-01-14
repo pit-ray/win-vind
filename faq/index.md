@@ -5,8 +5,11 @@ nav_order: 12
 descripption: "frequently asked questions and these answers."
 ---
 # FAQ
-
+{: .no_toc }  
 If you have some questions, please send me.
+
+1. TOC  
+{:toc}  
 
 <hr>
 

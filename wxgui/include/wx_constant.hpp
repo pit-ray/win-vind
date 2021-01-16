@@ -1,5 +1,6 @@
 #ifndef _WX_CONSTANT_HPP
 #define _WX_CONSTANT_HPP
+#include "wxvcdef.hpp"
 #include <unordered_map>
 
 #include "disable_gcc_warning.hpp"

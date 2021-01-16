@@ -233,21 +233,21 @@ void OpenNewCurrentWindow::sprocess(
         throw RUNTIME_EXCEPT("Cannot enumerate process modules.") ;
     }
 
-    TCHAR path[MAX_PATH] = {0} ;
-    if(!GetModuleFileNameEx(hproc, hmod, path, MAX_PATH)) {
+    char path[MAX_PATH] = {0} ;
+    if(!GetModuleFileNameExA(hproc, hmod, path, MAX_PATH)) {
         CloseHandle(hproc) ;
         throw RUNTIME_EXCEPT("Cannot get a process path of current window.") ;
     }
     CloseHandle(hproc) ;
 
-    STARTUPINFO si ;
+    STARTUPINFOA si ;
     ZeroMemory(&si, sizeof(si)) ;
     si.cb = sizeof(si) ;
 
     PROCESS_INFORMATION pi ;
     ZeroMemory(&pi, sizeof(pi)) ;
 
-    if(!CreateProcess(
+    if(!CreateProcessA(
         NULL, path, NULL, NULL, FALSE,
         CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
         throw RUNTIME_EXCEPT("Cannot call \"" + std::string(path) + "\".") ;

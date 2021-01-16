@@ -13,7 +13,7 @@ namespace MouseEventer
     } ;
 
     void click(const unsigned char btcode) {
-        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}};
+        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
         in.mi.dwFlags = (btcode == VKC_MOUSE_LEFT) ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN ;
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
@@ -31,7 +31,7 @@ namespace MouseEventer
     }
 
     inline static void _change_btstate(const DWORD event) {
-        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}};
+        static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
         in.mi.dwFlags = event ;
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 

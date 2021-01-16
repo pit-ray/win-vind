@@ -1,5 +1,6 @@
 #ifndef _COMMON_CTRL_HPP
 #define _COMMON_CTRL_HPP
+#include "wxvcdef.hpp"
 
 #include <memory>
 #include "ctrl_core.hpp"

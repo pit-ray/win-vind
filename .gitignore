@@ -1,5 +1,8 @@
-build
-release
-debug
-.vscode
 .clangd
+.vscode
+bin
+build
+debug
+release
+libs
+cmake_modules

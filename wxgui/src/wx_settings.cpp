@@ -8,6 +8,7 @@
 #include <wx/string.h>
 #include <wx/listbox.h>
 #include <wx/sizer.h>
+#include <wx/colour.h>
 #include "enable_gcc_warning.hpp"
 
 #include "ctrl_core.hpp"
@@ -75,7 +76,7 @@ namespace wxGUI
             wxSize(static_cast<int>(WIDTH() * 0.2), HEIGHT()),
             wxArrayString{}, wxLB_SINGLE
         ) ;
-        root_sizer->Add(pimpl->list, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, BORDER) ;
+        root_sizer->Add(pimpl->list, 0, wxALL | wxALIGN_CENTER, BORDER) ;
 
         pimpl->ctrls_sizer = new wxBoxSizer(wxVERTICAL) ;
         pimpl->ctrls_sizer->SetMinSize(wxSize(WIDTH() * 0.5, wxDefaultCoord)) ;
@@ -92,6 +93,12 @@ namespace wxGUI
 
         for(size_t i = 0 ; i < pimpl->ctrls.size() ; i++) {
             auto& c = pimpl->ctrls[i] ;
+
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+            //fix background color (wxWidgets 3.1.3 problem)
+            c->SetBackgroundColour(wxColour(*wxWHITE)) ;
+#endif
+
             pimpl->ctrls_sizer->Add(c, 0, wxALL | wxEXPAND, BORDER) ;
             if(i == 0) {
                 c->Show() ;

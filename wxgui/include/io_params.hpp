@@ -1,5 +1,6 @@
 #ifndef _IO_PARAMS_HPP
 #define _IO_PARAMS_HPP
+#include "wxvcdef.hpp"
 
 #include <string>
 #include <unordered_map>

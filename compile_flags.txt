@@ -8,5 +8,6 @@
 -Iwin32gui/core
 -Iwxgui/include
 -Iwxgui/include/settings_ctrls
--IC:/wxWidgets/include
 -Ilibs
+-Ilibs/wxWidgets/include
+-Ilibs/wxWidgets/include/wx

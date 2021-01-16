@@ -1,10 +1,13 @@
 #include "win_vind.hpp"
 
+#include <windows.h>
+
+#if defined(__GNUC__)
 #include <errhandlingapi.h>
 #include <memoryapi.h>
-#include <windows.h>
 #include <winerror.h>
 #include <winnt.h>
+#endif
 
 #include <memory>
 #include <iostream>
@@ -47,7 +50,7 @@ namespace win_vind
 
     bool initialize(const std::string func_name) noexcept {
         try {
-            auto created_map = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
+            auto created_map = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
             if(GetLastError() == ERROR_ALREADY_EXISTS) {
                 if(!func_name.empty()) {
                     auto hmap = OpenFileMappingA(FILE_MAP_WRITE, FALSE, MEMORY_MAPPED_FILE_NAME) ;

@@ -15,21 +15,22 @@
 
 using namespace std ;
 
-/*Absorber Overview*/
-//                       _____
-//                      /     \      ->     _____
-//  [User's Keyboard]  /       \           /     \
-//
-//   ____________                         __________
-//  |            |                       |          |
-//  |  Keyboard  |   a key is pressed    |    OS    | [Hooked]
-//  |____________|   ================>>  |__________| LowLevelKeyboardProc
-//
-//   __________
-//  |          |  WM_KEYDOWN       save state as variable
-//  |    OS    |  WM_SYSKEYDOWN        send no message
-//  |__________|  =============>>   LowLevelKeyboardProc  =========== Other Application
-//
+/*Absorber Overview
+                       _____
+                      /     \      ->     _____
+  [User's Keyboard]  /       \           /     \
+
+   ____________                         __________
+  |            |                       |          |
+  |  Keyboard  |   a key is pressed    |    OS    | [Hooked]
+  |____________|   ================>>  |__________| LowLevelKeyboardProc
+
+   __________
+  |          |  WM_KEYDOWN       save state as variable
+  |    OS    |  WM_SYSKEYDOWN        send no message
+  |__________|  =============>>   LowLevelKeyboardProc  =========== Other Application
+
+*/
 
 namespace KeyAbsorber
 {

@@ -1,6 +1,5 @@
 #ifndef _EASY_CLICK_CTRL_HPP
 #define _EASY_CLICK_CTRL_HPP
-
 #include "ctrl_core.hpp"
 #include <memory>
 

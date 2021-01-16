@@ -279,7 +279,7 @@ namespace EsyClk
         return TRUE ;
     }
 
-    static BOOL CALLBACK EnumThreadWndProc(HWND hwnd, LPARAM lparam) {
+    static BOOL CALLBACK EnumThreadWndProc(HWND hwnd, LPARAM UNUSED(lparam)) {
         if(!IsWindowVisible(hwnd)) {
             return TRUE ;
         }
@@ -503,7 +503,7 @@ namespace EsyClk
         auto delete_font = [] (HFONT f) {
             if(f != nullptr) DeleteObject(f) ;
         } ;
-        std::unique_ptr<HFONT__, decltype(delete_font)> font(CreateFontIndirect(&g_font), delete_font) ;
+        std::unique_ptr<HFONT__, decltype(delete_font)> font(CreateFontIndirectA(&g_font), delete_font) ;
         if(!font) {
             throw RUNTIME_EXCEPT("CreateFontIndirectA") ;
         }

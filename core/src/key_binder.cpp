@@ -35,6 +35,8 @@
 #include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
 
+#undef max
+
 using namespace std ;
 
 namespace KeyBinder

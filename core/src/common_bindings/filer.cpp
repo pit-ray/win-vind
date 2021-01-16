@@ -192,8 +192,8 @@ namespace FilerUtility
             std::unique_ptr<ITEMIDLIST, decltype(idl_deleter)> pidl(raw_pidl, idl_deleter) ;
 
             //convert to path
-            TCHAR path[MAX_PATH] = {0} ;
-            if(!SHGetPathFromIDList(pidl.get(), path)) {
+            char path[MAX_PATH] = {0} ;
+            if(!SHGetPathFromIDListA(pidl.get(), path)) {
                 throw RUNTIME_EXCEPT("cannot convert an item ID to a file system path.") ;
             }
 
@@ -244,7 +244,7 @@ void MakeDir::sprocess(
             //over max path num
             arg = arg.substr(0, 248) ;
         }
-        if(!CreateDirectory(arg.c_str(), NULL)) {
+        if(!CreateDirectoryA(arg.c_str(), NULL)) {
             catch_error(arg) ;
         }
     }
@@ -257,7 +257,7 @@ void MakeDir::sprocess(
     }
 
     auto full_path = current_path + "\\" + arg ;
-    if(!CreateDirectory(full_path.c_str(), NULL)) {
+    if(!CreateDirectoryA(full_path.c_str(), NULL)) {
         catch_error(full_path) ;
     }
 }

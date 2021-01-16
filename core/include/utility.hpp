@@ -85,7 +85,7 @@ namespace Utility
     COLORREF to_complementary_COLORREF(unsigned char r, unsigned char g, unsigned char b) noexcept ;
 
     inline unsigned char to_gray(unsigned char r, unsigned char g, unsigned char b) noexcept {
-        return 0.299*r + 0.587*g + 0.114*b ;
+        return static_cast<unsigned char>(0.299*r + 0.587*g + 0.114*b) ;
     }
 
     void refresh_display(HWND hwnd) ;

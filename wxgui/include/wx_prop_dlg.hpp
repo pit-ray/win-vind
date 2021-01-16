@@ -1,5 +1,6 @@
 #ifndef _WX_PROP_DLG_HPP
 #define _WX_PROP_DLG_HPP
+#include "wxvcdef.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <wx/propdlg.h>

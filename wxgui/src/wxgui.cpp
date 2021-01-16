@@ -51,36 +51,40 @@ namespace wxGUI
     }
 
     bool App::OnInit() {
-        if(!wxApp::OnInit()) {
-            return false ;
+        try {
+            if(!wxApp::OnInit()) {
+                return false ;
+            }
+
+            if(!wxTaskBarIcon::IsAvailable()) {
+                wxMessageBox("not supported win_vind Tray", "Warning", wxOK | wxICON_EXCLAMATION) ;
+            }
+
+            if(!win_vind::initialize(g_function_name)) {
+                ERROR_PRINT("failed initializing system") ;
+                return false ;
+            }
+            if(!ioParams::load_config()) {
+                ERROR_PRINT("failed loading config") ;
+                return false ;
+            }
+
+            auto ppd = new PropDlg() ;
+            ppd->Show(false) ;
+
+            //enable opening window by command
+            win_vind::register_show_window_func([ppd] {
+                ppd->Show(true) ;
+            }) ;
+
+            win_vind::register_exit_window_func([ppd] {
+                ppd->Show(true) ;
+                ppd->Destroy() ;
+            }) ;
         }
-
-        if(!wxTaskBarIcon::IsAvailable()) {
-            wxMessageBox("not supported win_vind Tray", "Warning", wxOK | wxICON_EXCLAMATION) ;
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
         }
-
-        if(!win_vind::initialize(g_function_name)) {
-            ERROR_PRINT("failed initializing system") ;
-            return false ;
-        }
-        if(!ioParams::load_config()) {
-            ERROR_PRINT("failed loading config") ;
-            return false ;
-        }
-
-        auto ppd = new PropDlg() ;
-        ppd->Show(false) ;
-
-        //enable opening window by command
-        win_vind::register_show_window_func([ppd] {
-            ppd->Show(true) ;
-        }) ;
-
-        win_vind::register_exit_window_func([ppd] {
-            ppd->Show(true) ;
-            ppd->Destroy() ;
-        }) ;
-
         return true ;
     }
 

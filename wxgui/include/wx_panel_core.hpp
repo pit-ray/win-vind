@@ -1,5 +1,6 @@
 #ifndef _WX_PANEL_CORE_HPP
 #define _WX_PANEL_CORE_HPP
+#include "wxvcdef.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <wx/panel.h>

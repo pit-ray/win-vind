@@ -1,5 +1,6 @@
 #ifndef _UI_TRANSLATOR_HPP
 #define _UI_TRANSLATOR_HPP
+#include "wxvcdef.hpp"
 
 #include <string>
 

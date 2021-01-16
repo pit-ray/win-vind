@@ -1,5 +1,6 @@
 #ifndef _WXGUI_HPP
 #define _WXGUI_HPP
+#include "wxvcdef.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <wx/app.h>

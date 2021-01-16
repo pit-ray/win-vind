@@ -95,7 +95,7 @@ namespace wxGUI
         using namespace UITrans ;
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
-        flags.Align(wxALIGN_CENTER_VERTICAL) ;
+        flags.Align(wxALIGN_CENTER) ;
 
         auto exapps_sizer = new wxBoxSizer(wxVERTICAL) ;
 
@@ -158,8 +158,8 @@ namespace wxGUI
         auto def_sizer = new wxBoxSizer(wxHORIZONTAL) ;
         def_sizer->AddStretchSpacer() ;
         pimpl->def_btn = new wxButton(this, ExappsEvt::DEFAULT, trans("buttons/default")) ;
-        def_sizer->Add(pimpl->def_btn, 0, wxEXPAND | wxALL | wxALIGN_RIGHT, BORDER) ;
-        exapps_sizer->Add(def_sizer, 0, wxEXPAND | wxALL | wxALIGN_BOTTOM, BORDER) ;
+        def_sizer->Add(pimpl->def_btn, 0, wxEXPAND | wxALL, BORDER) ;
+        exapps_sizer->Add(def_sizer, 0, wxEXPAND | wxALL, BORDER) ;
 
         SetSizerAndFit(exapps_sizer) ;
         load_config() ;

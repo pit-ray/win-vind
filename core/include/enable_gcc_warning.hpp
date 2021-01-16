@@ -1,7 +1,9 @@
-#if defined(__MSC_VER) && __MSC_VER >= 1500
-#pragma warning(pop)
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+#pragma warning(default : 4996)
+#pragma warning(default : 5054)
 
 #else
+#pragma warning(disable : 4068)
 #pragma GCC diagnostic warning "-Wcast-function-type"
 #pragma GCC diagnostic warning "-Wcast-qual"
 #pragma GCC diagnostic warning "-Wctor-dtor-privacy"
@@ -13,5 +15,6 @@
 #pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wsuggest-override"
 #pragma GCC diagnostic warning "-Wuseless-cast"
+#pragma warning(default : 4068)
 
 #endif

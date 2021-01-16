@@ -1,5 +1,6 @@
 #ifndef _CHOICES_MANAGER_HPP
 #define _CHOICES_MANAGER_HPP
+#include "wxvcdef.hpp"
 
 #include <memory>
 

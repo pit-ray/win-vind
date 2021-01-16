@@ -1,5 +1,6 @@
 #ifndef _WX_SYSTEM_TRAY_HPP
 #define _WX_SYATEM_TRAY_HPP
+#include "wxvcdef.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <wx/taskbar.h>

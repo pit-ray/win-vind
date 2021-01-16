@@ -22,26 +22,8 @@ This software supports only on Windows 10. Some features may be not working well
    ### 32 bit
    [Download Installer 32bit (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip 32bit (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip){: .btn}  
 
-   - **Installer version**  
-   ```bash
-   $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe
-   ```  
-   - **Zip version**  
-   ```bash
-   $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip
-   ```   
-
    ### 64 bit  
    [Download Installer 64bit (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip 64bit (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_64bit.zip){: .btn}  
-   - **Installer version**  
-   ```bash
-   $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe
-   ```  
-   - **Zip version**  
-   ```bash
-   $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_64bit.zip
-   ```  
-
 
 1. Execute a downloaded installer or unzip a downloaded zip-file. 
 

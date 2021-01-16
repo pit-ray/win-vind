@@ -23,8 +23,8 @@ public:
 
     static const std::string sname() noexcept ;
 
-    static void cout(std::string&& str) noexcept ;
-    static void cout(const std::string& str) noexcept ;
+    static void cout(std::string&& str) ;
+    static void cout(const std::string& str) ;
     static void msgout(std::string str) noexcept ;
 
     static void refresh() ;

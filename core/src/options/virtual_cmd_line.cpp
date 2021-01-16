@@ -107,12 +107,12 @@ void VirtualCmdLine::do_disable() const
 {
 }
 
-void VirtualCmdLine::cout(std::string&& str) noexcept
+void VirtualCmdLine::cout(std::string&& str)
 {
     if(msg_showing) reset() ;
     outstr = std::move(str) ;
 }
-void VirtualCmdLine::cout(const std::string& str) noexcept
+void VirtualCmdLine::cout(const std::string& str)
 {
     outstr = str ;
 }

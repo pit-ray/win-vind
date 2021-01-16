@@ -19,11 +19,8 @@ This software supports only on Windows 10. Some features may be not working well
 ## Installation
 1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. <br>   
 
-   <details>  
-   <summary><bold>32 bit</bold></summary>  
-   <div>  
-   
-   [Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip){: .btn}  <br>  
+   ### 32 bit
+   [Download Installer 32bit (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip 32bit (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip){: .btn}  
    If you want not to receive some warnings, execute next commands.  <br>    
    - **Installer version**  
    ```bash
@@ -32,16 +29,10 @@ This software supports only on Windows 10. Some features may be not working well
    - **Zip version**  
    ```bash
    $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip
-   ```  
-   </div>  
-   </details>  
+   ```   
 
-   <details>  
-   <summary><bold>64 bit</bold></summary>  
-   
-   <div>  
-   
-   [Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_64bit.zip){: .btn}  <br>  
+   ### 64 bit  
+   [Download Installer 64bit (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip 64bit (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_64bit.zip){: .btn}  
    If you want not to receive some warnings, execute next commands.  <br>    
    - **Installer version**  
    ```bash
@@ -51,8 +42,6 @@ This software supports only on Windows 10. Some features may be not working well
    ```bash
    $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_64bit.zip
    ```  
-   </div>  
-   </details>  
 
 
 1. Execute a downloaded installer or unzip a downloaded zip-file. 

@@ -6,6 +6,7 @@
 </p>  
 
 <p align="center">  
+  <a href="https://ci.appveyor.com/project/pit-ray/win-vind"><img src="https://ci.appveyor.com/api/projects/status/qoggl832qqbic5f5?svg=true" /></a>  
   <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/22417/badge.svg"/></a>  
   <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>  
   <a href="https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt" target="_blank"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" /></a> 

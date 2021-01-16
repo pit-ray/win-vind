@@ -9,8 +9,11 @@ search_enabled: true
 aux_links:
     "GitHub":
         - "//github.com/pit-ray/win-vind"
-    "Download":
-        - "https://github.com/pit-ray/win-vind/releases/download/v3.0.0/setup_win-vind_3.0.0.exe.zip"
+    "Download 32bit":
+        - "https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe.zip"
+    
+    "Download 64bit":
+        - "https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe.zip"
 
 aux_links_new_tab: false
 

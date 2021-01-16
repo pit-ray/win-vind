@@ -19,7 +19,7 @@ descripption: "How to contibute win-vind."
 
 1. Clone the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>. For example, you do a follow command.
 ```bash
-$ git clone https://github.com/pit-ray/win-vind.git
+$ git clone https://github.com/pit-ray/win-vind.git --depth=1
 ```
 1. Make a unique branch for pull requests.
 ```bash
@@ -28,7 +28,7 @@ $ git checkout -b UNIQUE_BRANCH_NAME
 1. You can do something for this project.  
 1. Build the project for verification.  
 ``` bash
-$ ./push_preproc.bat 0.0.0
+$ ./create_bin.bat 0.0.0 -msvc
 ```
 1. If you used third party libraries, you must add some essential texts in <a href="https://github.com/pit-ray/win-vind/blob/master/THIRD_PARTY_LICENSES.txt">**THIRD_PARTY_LICENSES.TXT**</a>.  
 1. Please add, commit and push.
@@ -45,7 +45,6 @@ $ git push -u origin UNIQUE_BRANCH_NAME
 ## Note  
 - Your written codes are provided as **MIT License**.
 
-
 <br>
 <hr>
 
@@ -61,19 +60,35 @@ I recommend to install follow softwares or libraries.
 |Windows10 SDK|10.0.19041.0|<a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/">Microsoft Windows10 SDK - Windows app development</a>|
 
 This project use **&lt;mutex&gt;**, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with <mutex>. (select posix at item called Thread in MinGW-Installer.)
+    
+win-vind provides some scripts to prepare the environment for development. If you have already installed MinGW-w64 or Visual Studio 2019, these scripts install needed libraries (e.g. wxWidgets) by executing following commands at a Windows command prompt.  
 
+- MinGW-w64 (64 bit only)  
+```sh
+$ setup_libs.bat -mingw  
+```
+
+- Visual Studio 2019 (Supported 32 bit and 64 bit)
+```sh
+$ setup_libs.bat -msvc 
+```
 <hr>
 
 ## Build Instruction
 - Automatically **(Recommended)**
 ```bash
-$./build.bat [-debug/-release]
+$./build.bat [-debug/-release] [-mingw/-msvc] [32/64]
 ```
+Example
+```bash
+$ ./build.bat -debug -msvc 64
+```
+
 - Manually
 ```bash
 $ mkdir debug
 $ cd debug
-$ cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
+$ cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 ..
 $ cmake --build . --config Debug
 $ cd ..
 ```

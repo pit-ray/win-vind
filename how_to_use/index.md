@@ -17,7 +17,7 @@ This software supports only on Windows 10. Some features may be not working well
 <hr>
 
 ## Installation
-1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. If you want not to receive some warnings, execute next commands.  <br>   
+1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. <br>   
 
    ### 32 bit
    [Download Installer 32bit (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip 32bit (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip){: .btn}  

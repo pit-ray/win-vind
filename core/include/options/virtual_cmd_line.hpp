@@ -28,8 +28,8 @@ public:
     static void msgout(std::string str) noexcept ;
 
     static void refresh() ;
-    static void clear() noexcept ;
-    static void reset() noexcept ;
+    static void clear() ;
+    static void reset() ;
 
     virtual ~VirtualCmdLine() noexcept ;
     VirtualCmdLine(VirtualCmdLine&&) ;

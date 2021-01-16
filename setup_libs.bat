@@ -46,15 +46,32 @@ cd ..
 cd wxWidgets/build/msw
 
 @if "%1" == "-msvc" (
+
+    @if "%2" == "" (
+        @set BUILD_32=TRUE
+        @set BUILD_64=TRUE
+    ) else (
+        @if "%2" == "32" (
+            @set BUILD_32=TRUE
+
+        ) else (
+            @set BUILD_64=TRUE
+        )
+    )
+
     @if exist ../../lib/vc* (
         powershell rm -r "..\\..\\lib\\vc*"
     )
 
-    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-    nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X64 RUNTIME_LIBS=static
+    @if defined BUILD_64 (
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+        nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X64 RUNTIME_LIBS=static
+    )
 
-    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-    nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X86 RUNTIME_LIBS=static
+    @if defined BUILD_32 (
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
+        nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X86 RUNTIME_LIBS=static
+    )
 
 ) else (
     @if exist ../../lib/gcc* (

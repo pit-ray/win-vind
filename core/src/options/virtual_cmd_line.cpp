@@ -129,12 +129,12 @@ void VirtualCmdLine::refresh() {
     Utility::refresh_display(WindowFromPoint(g_refresh_pos)) ;
 }
 
-void VirtualCmdLine::clear() noexcept
+void VirtualCmdLine::clear()
 {
     outstr.clear() ;
 }
 
-void VirtualCmdLine::reset() noexcept
+void VirtualCmdLine::reset()
 {
     clear() ;
     msg_showing = false ;

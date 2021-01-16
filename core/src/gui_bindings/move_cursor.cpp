@@ -61,7 +61,7 @@ namespace MoveUtility
             start_time = system_clock::now() ;
         }
 
-        const auto delta() noexcept {
+        const auto delta() {
             return static_cast<int>(
                     _const_accelerate(v, _compute_deltat(start_time))) ;
         }

@@ -144,9 +144,8 @@ void SmartClipboard::backup() {
 
     std::unique_ptr<void, decltype(unlocker)> locked_gmem(GlobalLock(gmem), unlocker) ;
     if(locked_gmem == NULL) {
-        throw RUNTIME_EXCEPT("cannot lock global memory for backup.") ;
         GlobalFree(gmem) ;
-        return ;
+        throw RUNTIME_EXCEPT("cannot lock global memory for backup.") ;
     }
 
     std::memcpy(locked_gmem.get(), locked_data.get(), data_size) ;

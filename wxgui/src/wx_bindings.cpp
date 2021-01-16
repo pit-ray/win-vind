@@ -62,7 +62,7 @@ namespace wxGUI
 
         nlohmann::json parser{} ;
 
-        void update_shown_details() noexcept {
+        void update_shown_details() {
             auto update = [this](const nlohmann::json& obj) {
                 id->SetLabelText(obj["name"].get<std::string>()) ;
 
@@ -98,7 +98,7 @@ namespace wxGUI
             update(parser.at(index)) ;
         }
 
-        void update_func_list() noexcept {
+        void update_func_list() {
             func_list->Clear() ;
             for(const auto& obj : parser) {
                 try {

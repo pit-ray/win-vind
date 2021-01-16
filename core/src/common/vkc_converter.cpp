@@ -171,7 +171,7 @@ namespace VKCConverter
     //for debug
     const std::string get_name(const unsigned char vkc) noexcept {
         if(auto ascii = get_ascii(vkc)) {
-            char s[] = {ascii} ;
+            char s[] = {ascii, '\0'} ;
             return s ;
         }
 

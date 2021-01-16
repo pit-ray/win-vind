@@ -711,7 +711,9 @@ void UpdateEasyClick::sprocess(
     if(!first_call) return ;
 
     EsyClk::g_prehwnd = GetForegroundWindow() ;
-    GetWindowRect(EsyClk::g_prehwnd, &EsyClk::g_prerect) ;
+    if(!GetWindowRect(EsyClk::g_prehwnd, &EsyClk::g_prerect)) {
+        return ;
+    }
 
     EsyClk::g_objpos.clear() ;
     EsyClk::scan_gui_objects() ;

@@ -170,7 +170,9 @@ namespace win_vind
 
     bool update() noexcept {
         try {
-            update_background() ;
+            if(!update_background()) {
+                return false ;
+            }
 
             static IntervalTimer timer{5000'000} ; //500 ms
 

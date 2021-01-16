@@ -16,6 +16,8 @@ type nul > ".\\log\\message.log"
 copy ".\\default_config\\bindings.json" ".\\config\\bindings.json"
 copy ".\\default_config\\settings.json" ".\\config\\settings.json"
 
+echo y> ".\\default_config\\is_installer_used"
+
 call build.bat -release %2 64
 cd release_64
 cpack . -C Release
@@ -36,11 +38,10 @@ cd ..
     @exit
 )
 
-echo y> ".\\default_config\\is_installer_used"
 del /q ".\\bin\\setup*.exe"
 
-copy ".\\release_64\\setup*.exe" ".\\bin\\*_64bit.exe"
-copy ".\\release_32\\setup*.exe" ".\\bin\\*_32bit.exe"
+copy /Y ".\\release_64\\setup*.exe" ".\\bin\\*_64bit.exe"
+copy /Y ".\\release_32\\setup*.exe" ".\\bin\\*_32bit.exe"
 
 @echo Create Zip Version ----------------------------------------------------------
 echo n> ".\\default_config\\is_installer_used"
@@ -60,7 +61,7 @@ xcopy /e /Y ".\\default_config" ".\\bin\\win-vind_64bit\\default_config"
 xcopy /e /Y ".\\log" ".\\bin\\win-vind_64bit\\log"
 xcopy /e /Y ".\\resources" ".\\bin\\win-vind_64bit\\resources"
 
-powershell Compress-Archive -Path ".\\bin\\win-vind_64bit" -DestinationPath ".\\bin\\win-vind_64bit_"%1".zip"
+powershell Compress-Archive -Path ".\\bin\\win-vind_64bit" -DestinationPath ".\\bin\\win-vind_%1_64bit".zip"
 
 mkdir ".\\bin\\win-vind_32bit"
 mkdir ".\\bin\\win-vind_32bit\\config"
@@ -74,4 +75,4 @@ xcopy /e /Y ".\\default_config" ".\\bin\\win-vind_32bit\\default_config"
 xcopy /e /Y ".\\log" ".\\bin\\win-vind_32bit\\log"
 xcopy /e /Y ".\\resources" ".\\bin\\win-vind_32bit\\resources"
 
-powershell Compress-Archive -Path ".\\bin\\win-vind_32bit" -DestinationPath ".\\bin\\win-vind_32bit_"%1".zip"
+powershell Compress-Archive -Path ".\\bin\\win-vind_32bit" -DestinationPath ".\\bin\\win-vind_%1_32bit.zip"

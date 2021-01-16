@@ -6,3 +6,5 @@ debug
 release
 libs
 cmake_modules
+release_64
+release_32

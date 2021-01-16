@@ -7,13 +7,14 @@ logo: /imgs/win-vind-icon_wt.png
 search_enabled: true
 
 aux_links:
-    "GitHub":
-        - "//github.com/pit-ray/win-vind"
     "Download 32bit":
         - "https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe.zip"
     
     "Download 64bit":
         - "https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe.zip"
+        
+    "GitHub":
+        - "//github.com/pit-ray/win-vind"
 
 aux_links_new_tab: false
 

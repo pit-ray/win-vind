@@ -2,9 +2,9 @@
 .vscode
 bin
 build
-debug
-release
-libs
 cmake_modules
-release_64
+debug
+libs
+release
 release_32
+release_64

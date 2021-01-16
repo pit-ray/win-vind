@@ -40,8 +40,8 @@ cd ..
 
 del /q ".\\bin\\setup*.exe"
 
-copy /Y ".\\release_64\\setup*.exe" ".\\bin\\*_64bit.exe"
-copy /Y ".\\release_32\\setup*.exe" ".\\bin\\*_32bit.exe"
+copy /Y ".\\release_64\\setup*.exe" ".\\bin\\*_%1_64bit.exe"
+copy /Y ".\\release_32\\setup*.exe" ".\\bin\\*_%1_32bit.exe"
 
 @echo Create Zip Version ----------------------------------------------------------
 echo n> ".\\default_config\\is_installer_used"

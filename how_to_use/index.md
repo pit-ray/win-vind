@@ -33,9 +33,9 @@ This software supports only on Windows 10. Some features may be not working well
    $ curl -OL https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip
    ```  
    </details>  
-   
+
    <details>  
-   <sumamry><bold>64 bit</bold></summary>  
+   <summary><bold>64 bit</bold></summary>  
    
    [Download Installer (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_64bit.zip){: .btn}  <br>  
    If you want not to receive some warnings, execute next commands.  <br>    

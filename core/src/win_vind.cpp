@@ -174,7 +174,7 @@ namespace win_vind
                 return false ;
             }
 
-            static IntervalTimer timer{5000'000} ; //500 ms
+            static IntervalTimer timer{1000'000} ; //100 ms
 
             if(timer.is_passed()) {
                 //check if received messages from another win-vind.

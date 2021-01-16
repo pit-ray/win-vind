@@ -30,7 +30,6 @@ $ git checkout -b UNIQUE_BRANCH_NAME
 ``` bash
 $ ./create_bin.bat 0.0.0 -msvc
 ```
-1. If you used third party libraries, you must add some essential texts in <a href="https://github.com/pit-ray/win-vind/blob/master/THIRD_PARTY_LICENSES.txt">**THIRD_PARTY_LICENSES.TXT**</a>.  
 1. Please add, commit and push.
 ```bash
 $ git add .

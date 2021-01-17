@@ -275,7 +275,7 @@ namespace KeyBinder
                 }
 
                 for(std::size_t i = 0 ; i < matcher_list.size() ; i ++) {
-                    func->register_matcher(i, matcher_list[i]) ;
+                    func->register_matcher(static_cast<ModeManager::Mode>(i), matcher_list[i]) ;
                 }
             }
             catch(const std::out_of_range& e) {
@@ -293,7 +293,7 @@ namespace KeyBinder
 
         if(log.empty()) return true ;
 
-        auto ignore = [&log](auto&& set) {
+        auto must_ignore = [&log](auto&& set) {
             return std::all_of(log.cbegin(), log.cend(), [&set](const auto& key) {
                 return set.find(key) != set.end() ;
             }) ;
@@ -305,10 +305,10 @@ namespace KeyBinder
             }
             case AllSystemKey: {
                 static const auto system_keys = VKCConverter::get_all_sys_vkc() ;
-                return ignore(system_keys) ;
+                return must_ignore(system_keys) ;
             }
             case UnbindedSystemKey: {
-                return ignore(g_unbinded_syskeys) ;
+                return must_ignore(g_unbinded_syskeys) ;
             }
             default: {
                 return false ;
@@ -393,7 +393,6 @@ namespace KeyBinder
             VKC_0, VKC_1, VKC_2, VKC_3, VKC_4,
             VKC_5, VKC_6, VKC_7, VKC_8, VKC_9
         } ;
-
 
         using Utility::remove_from_back ;
 
@@ -496,8 +495,8 @@ namespace KeyBinder
                 VirtualCmdLine::reset() ;
                 l_running_func->process(true, l_repeat_num, &l_logger, nullptr) ;
                 l_repeat_num = 0 ;
-                l_must_release_key_after_repeated = true ;
             }
+            l_must_release_key_after_repeated = true ;
 
             l_logger.clear() ;
             return ;

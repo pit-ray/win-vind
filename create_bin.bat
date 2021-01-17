@@ -11,6 +11,9 @@
 rmdir /s /q release_64
 rmdir /s /q release_32
 
+rmdir /s /q bin
+mkdir bin
+
 type nul > ".\\log\\error.log"
 type nul > ".\\log\\message.log"
 copy ".\\default_config\\bindings.json" ".\\config\\bindings.json"
@@ -29,25 +32,14 @@ cpack . -C Release
 cd ..
 
 @echo Create Installer Version -------------------------------------------------------
-@if "%1" == "" (
-    @echo Error: Please pass the compiler type -msvc or -mingw as a first argument.
-    @exit
-)
-@if "%2" == "" (
-    @echo Error: Please pass the bit type 64 or 32 as a second argument.
-    @exit
-)
 
-del /q ".\\bin\\setup*.exe"
-
-copy /Y ".\\release_64\\setup*.exe" ".\\bin\\*_%1_64bit.exe"
-copy /Y ".\\release_32\\setup*.exe" ".\\bin\\*_%1_32bit.exe"
+copy /Y ".\\release_64\\setup*" ".\\bin\\*_%1_64bit.exe"
+copy /Y ".\\release_32\\setup*" ".\\bin\\*_%1_32bit.exe"
+powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_64bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_64bit.exe.zip"
+powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_32bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_32bit.exe.zip"
 
 @echo Create Zip Version ----------------------------------------------------------
 echo n> ".\\default_config\\is_installer_used"
-
-rmdir /q /s ".\\bin\\win-vind_64bit"
-del /q ".\\bin\\*.zip"
 
 mkdir ".\\bin\\win-vind_64bit"
 mkdir ".\\bin\\win-vind_64bit\\config"

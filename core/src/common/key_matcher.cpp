@@ -125,7 +125,7 @@ unsigned int KeyMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const
 
     for(const auto& cmd : pimpl->cmdlist) { 
         try {
-            std::size_t matched_num = 0 ;
+            unsigned int matched_num = 0 ;
             const auto& keyset = cmd.at(seqidx) ;
 
             for(const auto& key : keyset) {
@@ -213,7 +213,7 @@ unsigned int KeyMatcher::compare_to_alllog(const KeyLogger& logger) const
     pimpl->optnum_begin_idx = std::numeric_limits<unsigned int>::max() ;
     pimpl->optnum_end_idx   = std::numeric_limits<unsigned int>::max() ;
 
-    unsigned int result ;
+    unsigned int result = 0 ;
     for(std::size_t i = 0 ; i < logger.size() ; i ++) {
         result = compare_onelog(logger[i], i) ;
 

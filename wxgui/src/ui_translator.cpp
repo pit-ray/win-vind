@@ -38,7 +38,7 @@ namespace UITrans
                 json::json_pointer("/root/" + uipath + "/" + ioParams::get_vs("ui_lang"))
             ).get<std::string>().c_str()) ;
         }
-        catch(const std::exception& e) {
+        catch(const std::exception&) {
             try {
                 const auto choices = ioParams::get_choices("ui_lang") ;
                 if(!choices.empty()) {

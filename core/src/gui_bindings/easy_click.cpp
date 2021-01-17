@@ -13,6 +13,7 @@
 #include "vkc_converter.hpp"
 #include "win_vind.hpp"
 
+#include "disable_gcc_warning.hpp"
 #include <windows.h>
 #include <wingdi.h>
 #include <winuser.h>
@@ -24,6 +25,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include "enable_gcc_warning.hpp"
 
 
 inline static bool operator==(const RECT& lhs, const RECT& rhs) noexcept {
@@ -642,7 +644,7 @@ namespace EsyClk
                             at_least_exist = true ;
                         }
                     }
-                    catch(const std::out_of_range& e) {
+                    catch(const std::out_of_range&) {
                         break ;
                     }
                 }

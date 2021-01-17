@@ -33,7 +33,7 @@ struct AutotrackPopup::Impl
         try {
             Attkpp::_set_param(default_flag) ;
         }
-        catch(const std::runtime_error& e) {
+        catch(const std::runtime_error&) {
             return ;
         }
     }

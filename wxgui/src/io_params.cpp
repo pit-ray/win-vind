@@ -5,6 +5,7 @@
 
 #include "disable_gcc_warning.hpp"
 #include <nlohmann/json.hpp>
+#include <string>
 #include "enable_gcc_warning.hpp"
 
 #include "msg_logger.hpp"
@@ -111,7 +112,7 @@ namespace ioParams
             return v ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT("failed loading choices (" + path + ")") ;
+            ERROR_PRINT(std::string(e.what()) + ", so failed loading choices (" + path + ")") ;
             return choices_t{} ;
         }
     }
@@ -155,7 +156,7 @@ namespace ioParams
             node = ar ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT("failed loading choices (" + path + ")") ;
+            ERROR_PRINT(std::string(e.what()) + ", so failed loading choices (" + path + ")") ;
             return ;
         }
     }

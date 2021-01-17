@@ -62,7 +62,7 @@ namespace wxGUI
                     auto num = path_list->InsertItem(PathListCol::NAME, name) ;
                     path_list->SetItem(num, PathListCol::PATH, value) ;
                 }
-                catch(const std::exception& e) {
+                catch(const std::exception&) {
                     continue ;
                 }
             }

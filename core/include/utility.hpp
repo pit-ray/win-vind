@@ -3,6 +3,7 @@
 
 #include <windows.h>
 
+#include "disable_gcc_warning.hpp"
 #include <algorithm>
 #include <array>
 #include <stdexcept>
@@ -10,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <tuple>
+#include "enable_gcc_warning.hpp"
 
 namespace Utility
 {

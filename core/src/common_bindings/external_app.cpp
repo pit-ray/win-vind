@@ -59,7 +59,7 @@ namespace ExAppUtility
             }
             return "\"" + origin + "\"" ;
         }
-        catch(const std::out_of_range& e) {
+        catch(const std::out_of_range&) {
             VirtualCmdLine::msgout("e: Not a command") ;
             return std::string() ;
         }

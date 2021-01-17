@@ -29,7 +29,7 @@ You can operate all windows, the mouse, virtual desktops, GUI-objects with key-b
 
 It works well in UWP applications.  
   
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/on_uwp.jpg?raw=true" >
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/on_uwp.jpg?raw=true" height=350>
 
 ### 2. Vim emulation everywhere  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  

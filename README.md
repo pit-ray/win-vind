@@ -23,7 +23,8 @@
 ### 1. GUI Operation like Vim  
 You can operate all windows, the mouse, virtual desktops, GUI-objects with key-bindings like Vim.  
 
-**Example**  
+**Example) EasyClick (default keybinding: `F`)**  
+  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=700>  
 
 It works well in UWP applications.  

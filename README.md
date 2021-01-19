@@ -18,7 +18,7 @@
 <br>  
 
 ## Description
-**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**. Mainly, there are five point features.  
+**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**. Mainly, there are five point features. 
 
 ### 1. GUI Operation like Vim  
 You can operate all windows, the mouse, virtual desktops, GUI-objects with key-bindings like Vim.  
@@ -58,6 +58,17 @@ $ ./win-vind.exe --func change_to_normal
 Therefore, it enables to make Vim link to GUI. Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>  
 
 If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
+
+## Download
+### 3.0.1, (Latest Version)
+Date: 2021/1/16  
+#### 64bit
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_64bit.exe.zip">setup_win-vind_3.0.1_64bit.exe.zip</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_64bit.zip">win-vind_3.0.1_64bit.zip</a>
+
+#### 32bit 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.1/setup_win-vind_3.0.1_32bit.exe.zip">setup_win-vind_3.0.1_32bit.exe.zip</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.1/win-vind_3.0.1_32bit.zip">win-vind_3.0.1_32bit.zip</a>
 
 ## How to use
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use - win-vind</a>.  

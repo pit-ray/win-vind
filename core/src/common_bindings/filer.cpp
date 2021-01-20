@@ -188,7 +188,7 @@ namespace FilerUtility
             if(FAILED(ppf2->GetCurFolder(&raw_pidl))) {
                 throw RUNTIME_EXCEPT("cannot get current folder.") ;
             }
-            auto idl_deleter = [](LPITEMIDLIST ptr) {CoTaskMemFree(ptr) ;} ;
+            auto idl_deleter = [](ITEMIDLIST* ptr) {CoTaskMemFree(ptr) ;} ;
             std::unique_ptr<ITEMIDLIST, decltype(idl_deleter)> pidl(raw_pidl, idl_deleter) ;
 
             //convert to path

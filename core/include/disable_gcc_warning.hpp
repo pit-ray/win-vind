@@ -1,6 +1,7 @@
 #if defined(_MSC_VER) && _MSC_VER >= 1500
 #pragma warning(disable : 4996)
 #pragma warning(disable : 5054)
+#pragma warning(disable : 4244)
 
 #else
 #pragma warning(disable : 4068)

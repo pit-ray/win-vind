@@ -5,7 +5,7 @@
 
 namespace TextAnalyzer
 {
-    class SelRes ;
+    struct SelRes ;
 }
 
 //Copy

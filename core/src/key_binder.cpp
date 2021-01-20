@@ -460,6 +460,7 @@ namespace KeyBinder
         if(l_repeat_num != 0) {
             l_logger.back() -= c_nums ;
         }
+
         auto matched_func = find_func(l_logger, l_running_func) ;
 
         if(!matched_func) {

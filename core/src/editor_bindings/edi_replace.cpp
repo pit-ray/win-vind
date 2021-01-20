@@ -172,12 +172,14 @@ void EdiSwitchCharCase::sprocess(
             KeybrdEventer::pushup(VKCConverter::get_vkc(c + delta)) ;
         }
         else {
-            unsigned char vkc = 0 ;
-            if((vkc = VKCConverter::get_vkc(c))) {
+            auto vkc = VKCConverter::get_vkc(c) ;
+            if(vkc) {
                 KeybrdEventer::pushup(vkc) ;
                 continue ;
             }
-            else if((vkc = VKCConverter::get_shifted_vkc(c))) {
+ 
+            vkc = VKCConverter::get_shifted_vkc(c) ;
+            if(vkc) {
                 KeybrdEventer::pushup(VKC_LSHIFT, vkc) ;
                 continue ;
             }

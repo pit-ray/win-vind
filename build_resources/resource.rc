@@ -3,7 +3,7 @@
 IDI_ICON1 ICON DISCARDABLE "icon512.ico"
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION     3,0,1
+FILEVERSION     3,0,2
 FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
 FILEFLAGS       VS_FF_PRERELEASE
 FILEOS          VOS_NT_WINDOWS32
@@ -14,12 +14,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName",        "pit-ray\0"
-            VALUE "FileDescription",    "win-vind (64-bit)\0"
+            VALUE "FileDescription",    "win-vind (32-bit)\0"
             VALUE "LegalCopyright",     "Copyright (c) 2020 pit-ray\0"
-            VALUE "InternalName",       "win-vind (64-bit)\0"
+            VALUE "InternalName",       "win-vind (32-bit)\0"
             VALUE "OriginalFilename",   "win-vind.exe\0"
-            VALUE "ProductName",        "win-vind (64bit)\0"
-            VALUE "ProductVersion",     "3.0.1\0"
+            VALUE "ProductName",        "win-vind (32bit)\0"
+            VALUE "ProductVersion",     "3.0.2\0"
         END
     END
     BLOCK "VarFileInfo"

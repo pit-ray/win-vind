@@ -41,30 +41,18 @@ powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_32bit.exe" -Destina
 @echo Create Zip Version ----------------------------------------------------------
 echo n> ".\\default_config\\is_installer_used"
 
-mkdir ".\\bin\\win-vind_64bit"
-mkdir ".\\bin\\win-vind_64bit\\config"
-mkdir ".\\bin\\win-vind_64bit\\default_config"
-mkdir ".\\bin\\win-vind_64bit\\log"
-mkdir ".\\bin\\win-vind_64bit\\resources"
+mkdir ".\\bin\\win-vind"
+mkdir ".\\bin\\win-vind\\config"
+mkdir ".\\bin\\win-vind\\default_config"
+mkdir ".\\bin\\win-vind\\log"
+mkdir ".\\bin\\win-vind\\resources"
 
-copy ".\\release_64\\win-vind.exe" ".\\bin\\win-vind_64bit\\win-vind.exe"
-xcopy /e /Y ".\\config" ".\\bin\\win-vind_64bit\\config"
-xcopy /e /Y ".\\default_config" ".\\bin\\win-vind_64bit\\default_config"
-xcopy /e /Y ".\\log" ".\\bin\\win-vind_64bit\\log"
-xcopy /e /Y ".\\resources" ".\\bin\\win-vind_64bit\\resources"
+copy /Y ".\\release_64\\win-vind.exe" ".\\bin\\win-vind\\win-vind.exe"
+xcopy /e /Y ".\\config" ".\\bin\\win-vind\\config"
+xcopy /e /Y ".\\default_config" ".\\bin\\win-vind\\default_config"
+xcopy /e /Y ".\\log" ".\\bin\\win-vind\\log"
+xcopy /e /Y ".\\resources" ".\\bin\\win-vind\\resources"
+powershell Compress-Archive -Path ".\\bin\\win-vind" -DestinationPath ".\\bin\\win-vind_%1_64bit".zip"
 
-powershell Compress-Archive -Path ".\\bin\\win-vind_64bit" -DestinationPath ".\\bin\\win-vind_%1_64bit".zip"
-
-mkdir ".\\bin\\win-vind_32bit"
-mkdir ".\\bin\\win-vind_32bit\\config"
-mkdir ".\\bin\\win-vind_32bit\\default_config"
-mkdir ".\\bin\\win-vind_32bit\\log"
-mkdir ".\\bin\\win-vind_32bit\\resources"
-
-copy ".\\release_32\\win-vind.exe" ".\\bin\\win-vind_32bit\\win-vind.exe"
-xcopy /e /Y ".\\config" ".\\bin\\win-vind_32bit\\config"
-xcopy /e /Y ".\\default_config" ".\\bin\\win-vind_32bit\\default_config"
-xcopy /e /Y ".\\log" ".\\bin\\win-vind_32bit\\log"
-xcopy /e /Y ".\\resources" ".\\bin\\win-vind_32bit\\resources"
-
-powershell Compress-Archive -Path ".\\bin\\win-vind_32bit" -DestinationPath ".\\bin\\win-vind_%1_32bit.zip"
+copy /Y ".\\release_32\\win-vind.exe" ".\\bin\\win-vind\\win-vind.exe"
+powershell Compress-Archive -Path ".\\bin\\win-vind" -DestinationPath ".\\bin\\win-vind_%1_32bit.zip"

@@ -45,7 +45,6 @@ void SmartClipboard::open() {
     }
     if(!OpenClipboard(pimpl->hwnd)) {
         throw RUNTIME_EXCEPT("failed opening clipboard") ;
-        return ;
     }
     pimpl->opening = true ;
 }
@@ -56,7 +55,6 @@ void SmartClipboard::close() {
     }
     if(!CloseClipboard()) {
         throw RUNTIME_EXCEPT("failed closing clipboard") ;
-        return ;
     }
     pimpl->opening = false ;
 }
@@ -64,31 +62,26 @@ void SmartClipboard::close() {
 void SmartClipboard::get_as_str(std::string& str, bool& having_EOL) {
     if(!pimpl->opening) {
         throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
-        return ;
     }
 
     if(!IsClipboardFormatAvailable(COMMON_FORMAT)) {
         throw RUNTIME_EXCEPT("the current clipboard data is not supported unicode") ;
-        return ;
     }
 
     auto data = GetClipboardData(COMMON_FORMAT) ;
     if(data == NULL) {
         throw RUNTIME_EXCEPT("cannot get clipboard data") ;
-        return ;
     }
 
     auto unlocker = [](void* ptr) {GlobalUnlock(ptr) ;} ;
     std::unique_ptr<void, decltype(unlocker)> locked_data(GlobalLock(data), unlocker) ;
     if(locked_data == NULL) {
         throw RUNTIME_EXCEPT("cannot lock global clipboard data ") ;
-        return ;
     }
 
     auto data_size = GlobalSize(locked_data.get()) ;
     if(!data_size) {
         throw RUNTIME_EXCEPT("the clipboard does not have data.") ; 
-        return ;
     }
     auto rawstr = reinterpret_cast<char*>(locked_data.get()) ;
     str = rawstr ;
@@ -107,27 +100,23 @@ void SmartClipboard::get_as_str(std::string& str, bool& having_EOL) {
 void SmartClipboard::backup() {
     if(!pimpl->opening) {
         throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
-        return ;
     }
 
     if(pimpl->cache != NULL) {
         if(!GlobalFree(pimpl->cache)) {
             throw RUNTIME_EXCEPT("Cannot free cache for backup") ;
-            return ;
         }
     }
 
     auto data = GetClipboardData(COMMON_FORMAT) ;
     if(data == NULL) {
         throw RUNTIME_EXCEPT("cannot get clipboard data") ;
-        return ;
     }
 
     auto unlocker = [](void* ptr) {GlobalUnlock(ptr) ;} ;
     std::unique_ptr<void, decltype(unlocker)> locked_data(GlobalLock(data), unlocker) ;
     if(locked_data == NULL) {
         throw RUNTIME_EXCEPT("cannot lock global clipboard data") ;
-        return ;
     }
 
     auto data_size = GlobalSize(locked_data.get()) ;
@@ -139,7 +128,6 @@ void SmartClipboard::backup() {
     auto gmem = GlobalAlloc(GHND, data_size) ;
     if(gmem == NULL) {
         throw RUNTIME_EXCEPT("cannot alloc memories in global area.") ;
-        return ;
     }
 
     std::unique_ptr<void, decltype(unlocker)> locked_gmem(GlobalLock(gmem), unlocker) ;
@@ -156,23 +144,19 @@ void SmartClipboard::backup() {
 void SmartClipboard::restore_backup() {
     if(!pimpl->opening) {
         throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
-        return ;
     }
 
     if(pimpl->cache == NULL) {
         throw LOGIC_EXCEPT("cache does not have backup") ;
-        return ;
     }
 
     if(!EmptyClipboard()) {
         throw RUNTIME_EXCEPT("Failed initalization of clipboard") ;
-        return ;
     }
 
     //If SetClipboardData succeeds, the system owns gmem, so should not free gmem.
     if(!SetClipboardData(COMMON_FORMAT, pimpl->cache)) {
         throw RUNTIME_EXCEPT("cannot set data into clipboard") ;
-        return ;
     }
     pimpl->cache = NULL ;
 }
@@ -180,26 +164,22 @@ void SmartClipboard::restore_backup() {
 void SmartClipboard::set(const char* const ar, const std::size_t size) {
     if(!pimpl->opening) {
         throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
-        return ;
     }
 
     auto gmem = GlobalAlloc(GHND, size) ;
     if(gmem == NULL) {
         throw RUNTIME_EXCEPT("cannot alloc memories in global area.") ;
-        return ;
     }
 
     auto unlocker = [](void* ptr) {GlobalUnlock(ptr) ;} ;
     std::unique_ptr<void, decltype(unlocker)> locked_gmem(GlobalLock(gmem), unlocker) ;
     if(locked_gmem == NULL) {
-        throw RUNTIME_EXCEPT("cannot lock global memory for backup.") ;
         GlobalFree(gmem) ;
-        return ;
+        throw RUNTIME_EXCEPT("cannot lock global memory for backup.") ;
     }
 
     if(!EmptyClipboard()) {
         throw RUNTIME_EXCEPT("Failed initalization of clipboard") ;
-        return ;
     }
 
     std::memcpy(locked_gmem.get(), ar, size) ;
@@ -208,6 +188,5 @@ void SmartClipboard::set(const char* const ar, const std::size_t size) {
     //If SetClipboardData succeeds, the system owns gmem, so should not free gmem.
     if(!SetClipboardData(COMMON_FORMAT, gmem)) {
         throw RUNTIME_EXCEPT("cannot set data into clipboard") ;
-        return ;
     }
 }

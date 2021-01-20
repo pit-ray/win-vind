@@ -1,8 +1,10 @@
 #ifndef _TEXT_ANALYZER_HPP
 #define _TEXT_ANALYZER_HPP
 
+#include "disable_gcc_warning.hpp"
 #include <functional>
 #include <string>
+#include "enable_gcc_warning.hpp"
 
 namespace TextAnalyzer
 {
@@ -22,13 +24,6 @@ namespace TextAnalyzer
         : str(),
           having_EOL(false)
         {}
-
-        virtual ~SelRes() noexcept = default ;
-
-        SelRes(SelRes&&) noexcept               = default ;
-        SelRes& operator=(SelRes&&) noexcept    = default ;
-        SelRes(const SelRes&) noexcept          = default ;
-        SelRes& operator=(const SelRes&)        = default ;
     } ;
 
     const SelRes get_selected_text(

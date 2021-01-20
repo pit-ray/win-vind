@@ -51,26 +51,30 @@ namespace KeyAbsorber
     static unique_ptr<HHOOK, decltype(uninstaller)> p_handle(nullptr, uninstaller) ;
 
     static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
-        const auto release = [&wParam, &lParam](const int code) {
-            return CallNextHookEx(*p_handle, code, wParam, lParam) ;
-        } ;
-
         if(nCode < HC_ACTION) {
             //not processed
-            return release(nCode) ;
+            return CallNextHookEx(*p_handle, nCode, wParam, lParam) ;
         }
-        const auto code = static_cast<unsigned char>(reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
+
+        const auto code = static_cast<unsigned char>(
+                reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
+
         const auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
         g_real_state[code] = state ;
         g_state[code]      = state ;
-        g_state[VKCConverter::get_representative_key(code)] = state ;
+
+        const auto rep = VKCConverter::get_representative_key(code) ;
+        g_real_state[rep] = state ;
+        g_state[rep]      = state ;
 
         if(!g_ignored_keys.empty()) {
             if(std::find(g_ignored_keys.cbegin(), g_ignored_keys.cend(), code) != g_ignored_keys.cend()) {
-                return release(HC_ACTION) ;
+                return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
             }
         }
-        return g_absorbed_flag ? -1 : release(HC_ACTION) ;
+
+        if(g_absorbed_flag) return -1 ;
+        else return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
     }
 
     void install_hook() {

@@ -34,7 +34,7 @@ It works well in UWP applications.
 ### 2. Vim emulation everywhere  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  
 
-#### Example    
+#### Example)    
 **Notepad**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/edi-mode-demo.gif?raw=true" /> 
 

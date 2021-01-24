@@ -20,10 +20,10 @@ This software supports only on Windows 10. Some features may be not working well
 1. Download the latest version by following a button. These links will probably be received some warnings. Today, it is very expensive to do code-signing to our application, so it is unavoidable as free software. <br>   
 
    ### 32 bit
-   [Download 32bit (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_32bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download 32bit (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/win-vind_3.0.2_32bit.zip){: .btn}  
+   [Download .exe (32bit)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_32bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download .zip (32bit)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/win-vind_3.0.2_32bit.zip){: .btn}  
 
    ### 64 bit  
-   [Download 64bit (.exe)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_64bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download 64bit (.zip)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/win-vind_3.0.2_64bit.zip){: .btn}  
+   [Download .exe (64bit)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_64bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download .zip (64bit)](https://github.com/pit-ray/win-vind/releases/download/v3.0.2/win-vind_3.0.2_64bit.zip){: .btn}  
 
 1. Execute a downloaded installer or unzip a downloaded zip-file. 
 

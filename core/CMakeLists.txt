@@ -6,6 +6,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/common_bindings
     ${CMAKE_CURRENT_SOURCE_DIR}/include/gui_bindings
     ${CMAKE_CURRENT_SOURCE_DIR}/include/editor_bindings
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/dev_bindings
     ${CMAKE_CURRENT_SOURCE_DIR}/include/options
 
     ${PROJECT_SOURCE_DIR}/libs
@@ -73,6 +74,10 @@ add_library(GUIBindings STATIC
 target_link_libraries(GUIBindings Common psapi)
 enable_cotire(GUIBindings)
 
+#add_library(DevBindings STATIC
+#)
+#target_link_libraries(DevBindings Common)
+
 add_library(Options STATIC
     src/options/autotrack_popup.cpp
     src/options/dedicate_to_window.cpp
@@ -95,5 +100,6 @@ target_link_libraries(WinVindCore
     CmnBindings
     EdiBindings
     GUIBindings
+    #DevBindings
     Options)
 enable_cotire(WinVindCore)

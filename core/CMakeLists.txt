@@ -75,6 +75,7 @@ target_link_libraries(GUIBindings Common psapi)
 enable_cotire(GUIBindings)
 
 #add_library(DevBindings STATIC
+#    src/dev_bindings/mybindings.cpp
 #)
 #target_link_libraries(DevBindings Common)
 

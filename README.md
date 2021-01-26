@@ -79,11 +79,11 @@ Date: 2021/1/20
 You can call a pre-defined function with favorite keybindings. The above-stated mode management has the following features, and all modes can have functions to switch to each mode with your keybindings. All modes have presets of keybindings.
 
 |Mode|Features|
-|:---|:---|
-|GUI Normal, Edi Normal|All keys except hotkeys will be disabled. Therefore, recommended to include functions to transit to Insert Mode.|
-|GUI Insert, Edi Insert|Inputted keys will not be disabled and are transmitted normally to other applications. When the commands are detected, a function will be called.|
-|GUI Visual|It holds right-click.|
-|Edi Visual|Each function works on the assumption you hold down a shift key.|
+|:-----|:---|
+|GUI-Normal, Edi-Normal|All keys except hotkeys will be disabled. Therefore, recommended to include functions to transit to Insert Mode.|
+|GUI-Insert, Edi-Insert|Inputted keys will not be disabled and are transmitted normally to other applications. When the commands are detected, a function will be called.|
+|GUI-Visual|It holds right-click.|
+|Edi-Visual|Each function works on the assumption you hold down a shift key.|
 |Command|This is shared Editor mode and GUI mode. A virtual command line is launched, and Enter is available to decide and BackSpace is available to erase. You can move the history with Up and Down.|
 
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use - win-vind</a> for details.  

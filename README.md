@@ -56,7 +56,7 @@ If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad
 You can operate win-vind from command lines.  
 
 **Example**  
-```bash
+```sh  
 $ ./win-vind.exe --func change_to_normal
 ```
 Therefore, it enables to make Vim link to GUI. Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>  

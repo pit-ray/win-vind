@@ -74,7 +74,10 @@ Date: 2021/1/20
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_64bit.exe.zip">setup_win-vind_3.0.2_64bit.exe.zip</a>
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.2/win-vind_3.0.2_64bit.zip">win-vind_3.0.2_64bit.zip</a>
 
-## How to use
+
+## Usage
+You can call a pre-defined function with favorite keybindings. The above-stated mode management has the following features, and all modes are able to have functions to switch to each mode with your keybindings.  
+
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use - win-vind</a>.  
 
 ### Default Key Config  

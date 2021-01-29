@@ -6,9 +6,21 @@ descripption: "the lists of links to download win-vind"
 ---
 # Downloads
 
+<hr>  
+
+### 3.1.0-beta, (Latest Beta Version) <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.1.0">GitHub</a>  
+Date: 2021/1/29  
+#### 32bit 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/setup_win-vind_3.1.0_32bit.exe.zip">setup_win-vind_3.1.0_32bit.exe.zip</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/win-vind_3.1.0_32bit.zip">win-vind_3.1.0_32bit.zip</a>  
+
+#### 64bit
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/setup_win-vind_3.1.0_64bit.exe.zip">setup_win-vind_3.1.0_64bit.exe.zip</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/win-vind_3.1.0_64bit.zip">win-vind_3.1.0_64bit.zip</a>
+<br>
 <hr>
 
-### 3.0.2, (Latest Version) <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.0.2">GitHub</a>  
+### 3.0.2, (Latest Stable Version) <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.0.2">GitHub</a>  
 Date: 2021/1/20  
 #### 32bit 
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_32bit.exe.zip">setup_win-vind_3.0.2_32bit.exe.zip</a>

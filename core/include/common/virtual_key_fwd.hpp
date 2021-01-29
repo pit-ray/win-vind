@@ -133,4 +133,6 @@
 #define VKC_OPTIONAL     (static_cast<unsigned char>(177))
 #define VKC_OPTNUMBER    (static_cast<unsigned char>(178))
 
+#define VKC_UNDEFINED    (static_cast<unsigned char>(0))
+
 #endif

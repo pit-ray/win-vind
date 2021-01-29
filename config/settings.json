@@ -289,7 +289,7 @@
         "ja": "ポップアップ自動追従"
     },
     "dedicate_to_window": {
-        "value": true,
+        "value": false,
         "en": "Dedicate to One Window",
         "ja": "ウィンドウ特化"
     },

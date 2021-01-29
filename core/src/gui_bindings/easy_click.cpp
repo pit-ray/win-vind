@@ -580,7 +580,8 @@ namespace EsyClk
 
     inline static void loop_for_key_matching(
             const std::vector<Point2D>& points,
-            const std::vector<hint_t>& hints) {
+            const std::vector<hint_t>& hints,
+            const unsigned char sendkey=VKC_UNDEFINED) {
 
         using Utility::remove_from_back ;
         KeyLogger lgr ;
@@ -651,7 +652,9 @@ namespace EsyClk
 
                 if(matched_num[i] == hints[i].size()) {
                     SetCursorPos(points[i].x(), points[i].y()) ;
-                    MouseEventer::click(VKC_MOUSE_LEFT) ;
+                    if(sendkey != VKC_UNDEFINED) {
+                        MouseEventer::click(sendkey) ;
+                    }
                     Utility::refresh_display(hwnd) ;
                     return ;
                 }
@@ -665,41 +668,85 @@ namespace EsyClk
             }
         }
     }
+
+
+    void common_process(const unsigned char sendkey) {
+        if(need_update(GetForegroundWindow())) {
+            g_objpos.clear() ;
+            scan_gui_objects() ;
+
+            g_hints = assign_identifiers_label(g_objpos.size()) ;
+            g_hints_str = convert_hints_to_str(g_hints) ;
+        }
+
+        update_font() ;
+        if(!g_objpos.empty()) {
+            loop_for_key_matching(g_objpos, g_hints, sendkey) ;
+        }
+
+        for(auto& key : KeyAbsorber::get_pressed_list()) {
+            KeyAbsorber::release_virtually(key) ;
+        }
+    }
 }
 
-//EasyClick
-const std::string EasyClick::sname() noexcept
+//EasyClickLeft
+const std::string EasyClickLeft::sname() noexcept
 {
-    return "easy_click" ;
+    return "easy_click_left" ;
 }
-void EasyClick::sprocess(
+void EasyClickLeft::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) {
     if(!first_call) return ;
+    EsyClk::common_process(VKC_MOUSE_LEFT) ;
+}
 
-    if(EsyClk::need_update(GetForegroundWindow())) {
-        EsyClk::g_objpos.clear() ;
-        EsyClk::scan_gui_objects() ;
+//EasyClickRight
+const std::string EasyClickRight::sname() noexcept
+{
+    return "easy_click_right" ;
+}
+void EasyClickRight::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) {
+    if(!first_call) return ;
+    EsyClk::common_process(VKC_MOUSE_RIGHT) ;
+}
 
-        EsyClk::g_hints = EsyClk::assign_identifiers_label(EsyClk::g_objpos.size()) ;
-        EsyClk::g_hints_str = EsyClk::convert_hints_to_str(EsyClk::g_hints) ;
-    }
+//EasyClickMid
+const std::string EasyClickMid::sname() noexcept
+{
+    return "easy_click_mid" ;
+}
+void EasyClickMid::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) {
+    if(!first_call) return ;
+    EsyClk::common_process(VKC_MOUSE_MID) ;
+}
 
-    EsyClk::update_font() ;
-    if(!EsyClk::g_objpos.empty()) {
-        EsyClk::loop_for_key_matching(EsyClk::g_objpos, EsyClk::g_hints) ;
-    }
-
-    for(auto& key : KeyAbsorber::get_pressed_list()) {
-        KeyAbsorber::release_virtually(key) ;
-    }
+//EasyClickHover
+const std::string EasyClickHover::sname() noexcept
+{
+    return "easy_click_hover" ;
+}
+void EasyClickHover::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr)) {
+    if(!first_call) return ;
+    EsyClk::common_process(VKC_UNDEFINED) ;
 }
 
 
-//Ideally, need_update must understand switching of tabs in Microsoft Edge.
-//However, we currently don't implement such a feature.
 //UpdateEasyClick
 const std::string UpdateEasyClick::sname() noexcept
 {

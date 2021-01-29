@@ -8,7 +8,37 @@ namespace EsyClk
     void initialize() ;
 }
 
-struct EasyClick : public BindedFuncWithCreator<EasyClick>
+struct EasyClickLeft : public BindedFuncWithCreator<EasyClickLeft>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EasyClickRight : public BindedFuncWithCreator<EasyClickRight>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EasyClickMid : public BindedFuncWithCreator<EasyClickMid>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct EasyClickHover : public BindedFuncWithCreator<EasyClickHover>
 {
     static void sprocess(
             const bool first_call,

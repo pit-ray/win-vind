@@ -193,6 +193,7 @@ It has differences from the latest release.
 - Add items of GUI for customizing hotkeys. It would be better if we can operate more visually.  
 - Understandable details of functions without looking at the Cheat Sheet over and over again. I have no ideas at the moment.
 - Registration of keybindings by pressing keys.   
+- Make scanning faster in EasyClick.
 
 ## License  
 This software is provided by **MIT License**.  

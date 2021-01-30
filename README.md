@@ -192,6 +192,7 @@ It has differences from the latest release.
 - Change the GUI to a modern one using WinUI, on which we can operate with Vim keybindings.
 - Add items of GUI for customizing hotkeys. It would be better if we can operate more visually.  
 - Understandable details of functions without looking at the Cheat Sheet over and over again. I have no ideas at the moment.
+- Registration of keybindings by pressing keys.   
 
 ## License  
 This software is provided by **MIT License**.  

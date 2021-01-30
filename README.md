@@ -186,9 +186,12 @@ It has differences from the latest release.
 
 ### Bugs
 
-## ToDo
-
 -->  
+
+## ToDo
+- Change the GUI to a modern one using WinUI, on which we can operate with Vim keybindings.
+- Add items of GUI for customizing hotkeys. It would be better if we can operate more visually.  
+- Understandable details of functions without looking at the Cheat Sheet over and over again. I have no ideas at the moment.
 
 ## License  
 This software is provided by **MIT License**.  

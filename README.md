@@ -188,12 +188,13 @@ It has differences from the latest release.
 
 -->  
 
-## ToDo
+## ToDo 
 - Change the GUI to a modern one using WinUI, on which we can operate with Vim keybindings.
 - Add items of GUI for customizing hotkeys. It would be better if we can operate more visually.  
 - Understandable details of functions without looking at the Cheat Sheet over and over again. I have no ideas at the moment.
 - Registration of keybindings by pressing keys.   
 - Make scanning faster in EasyClick.
+- A feature to switch windows with a single push, just like switching weapons in game. (e.g. 1: Google Chrome, 2: Vim, 3: Powershell)
 
 ## License  
 This software is provided by **MIT License**.  

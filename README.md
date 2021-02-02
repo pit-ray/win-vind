@@ -1,4 +1,4 @@
-<p align="center"><font size="100"><b>win-vind</b></font></p>    
+<h1 align="center">win-vind</h1>
 
 <p align="center">
   <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="200" height="200" />

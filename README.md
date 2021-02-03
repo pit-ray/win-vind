@@ -189,7 +189,7 @@ It has differences from the latest release.
 -->  
 
 ## ToDo 
-- Change the GUI to a modern one using WinUI, on which we can operate with Vim keybindings.
+- Using Vim keybindings on GUI of win-vind.
 - Add items of GUI for customizing hotkeys. It would be better if we can operate more visually.  
 - Understandable details of functions without looking at the Cheat Sheet over and over again. I have no ideas at the moment.
 - Registration of keybindings by pressing keys.   

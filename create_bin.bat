@@ -14,8 +14,6 @@ rmdir /s /q release_32
 rmdir /s /q bin
 mkdir bin
 
-type nul > ".\\log\\error.log"
-type nul > ".\\log\\message.log"
 copy ".\\default_config\\bindings.json" ".\\config\\bindings.json"
 copy ".\\default_config\\settings.json" ".\\config\\settings.json"
 
@@ -44,13 +42,11 @@ echo n> ".\\default_config\\is_installer_used"
 mkdir ".\\bin\\win-vind"
 mkdir ".\\bin\\win-vind\\config"
 mkdir ".\\bin\\win-vind\\default_config"
-mkdir ".\\bin\\win-vind\\log"
 mkdir ".\\bin\\win-vind\\resources"
 
 copy /Y ".\\release_64\\win-vind.exe" ".\\bin\\win-vind\\win-vind.exe"
 xcopy /e /Y ".\\config" ".\\bin\\win-vind\\config"
 xcopy /e /Y ".\\default_config" ".\\bin\\win-vind\\default_config"
-xcopy /e /Y ".\\log" ".\\bin\\win-vind\\log"
 xcopy /e /Y ".\\resources" ".\\bin\\win-vind\\resources"
 powershell Compress-Archive -Path ".\\bin\\win-vind" -DestinationPath ".\\bin\\win-vind_%1_64bit".zip"
 

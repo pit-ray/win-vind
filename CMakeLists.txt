@@ -186,7 +186,6 @@ enable_cotire(${PROJECT_NAME})
 install(TARGETS win-vind RUNTIME DESTINATION .)
 install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
-    ${CMAKE_CURRENT_SOURCE_DIR}/log
     ${CMAKE_CURRENT_SOURCE_DIR}/config
     ${CMAKE_CURRENT_SOURCE_DIR}/default_config
     DESTINATION .

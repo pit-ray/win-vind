@@ -166,29 +166,11 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 If you want more details, please see the <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a>.  
 
 ## How to contribute
+
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How to contribute - win-vind</a>.  
 
-<!--
-## Latest Log
-It has differences from the latest release.
-`release` is the so-called stable version.
-
-### Fix
-
-### Change
-
-### New
-#### General
-
-#### Options
-
-#### Functions
-
-### Bugs
-
--->  
-
 ## ToDo 
+
 - Using Vim keybindings on GUI of win-vind.
 - Add items of GUI for customizing hotkeys. It would be better if we can operate more visually.  
 - Understandable details of functions without looking at the Cheat Sheet over and over again. I have no ideas at the moment.
@@ -197,8 +179,10 @@ It has differences from the latest release.
 - A feature to switch windows with a single push, just like switching weapons in game. (e.g. 1: Google Chrome, 2: Vim, 3: Powershell)
 
 ## License  
+
 This software is provided by **MIT License**.  
 
 ## Author
+
 - pit-ray  
 [E-mail] pit-ray(at)outlook.com

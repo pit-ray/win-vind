@@ -58,7 +58,7 @@ namespace wxGUI
         wxButton* key_del_btn = nullptr ;
         wxButton* cmd_add_btn = nullptr ;
         wxButton* cmd_del_btn = nullptr ;
-        wxButton* def_btn   = nullptr ;
+        wxButton* def_btn     = nullptr ;
 
         nlohmann::json parser{} ;
 

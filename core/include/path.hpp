@@ -6,7 +6,6 @@
 #include <windows.h>
 
 #include "i_params.hpp"
-#include "msg_logger.hpp"
 #include "utility.hpp"
 
 namespace Path
@@ -24,27 +23,37 @@ namespace Path
         return obj ;
     }
 
-    inline static const auto _get_path(std::string filename) {
+    inline static auto& _is_installer_used() {
         static const auto flag = [] {
             std::ifstream ifs{"default_config/is_installer_used"} ;
             std::string str{} ;
             std::getline(ifs, str) ;
             return str.front() == 'y' || str.front() == 'Y' ;
         }() ;
-        return flag ? (HOME_PATH() + ".win-vind\\" + filename) : ("config\\" + filename) ;
+        return flag ;
+    }
+
+    inline static const auto& ROOT_PATH() {
+        static const auto path = _is_installer_used() ? HOME_PATH() + ".win-vind\\" : std::string("") ;
+        return path ;
+    }
+
+    inline static const auto& CONFIG_PATH() {
+        static const auto path = _is_installer_used() ? ROOT_PATH() : ROOT_PATH() + "config\\" ;
+        return path ;
     }
 
     inline static const auto& BINDINGS() {
-        static const auto obj = _get_path("bindings.json") ;
+        static const auto obj = CONFIG_PATH() + "bindings.json" ;
         return obj ;
     }
     inline static const auto& SETTINGS() {
-        static const auto obj = _get_path("settings.json") ;
+        static const auto obj = CONFIG_PATH() + "settings.json" ;
         return obj ;
     }
 
     inline static const auto KEYBRD_MAP() {
-        return _get_path(iParams::get_s("kb_type")) ;
+        return CONFIG_PATH() + iParams::get_s("kb_type") ;
     }
 
     namespace Default {

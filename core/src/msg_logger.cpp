@@ -85,8 +85,8 @@ namespace Logger
          msg_stream.open(mfile, std::ios::app) ;
 
          //If the log files exists over five, remove old files.
-         remove_files_over(log_dir + "\\error_*.log", KEEPING_LOG_COUNT) ;
-         remove_files_over(log_dir + "\\message_*.log", KEEPING_LOG_COUNT) ;
+         remove_files_over(log_dir + "error_*.log", KEEPING_LOG_COUNT) ;
+         remove_files_over(log_dir + "message_*.log", KEEPING_LOG_COUNT) ;
     }
 
     template <typename T>

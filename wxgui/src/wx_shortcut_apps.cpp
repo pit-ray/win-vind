@@ -109,6 +109,7 @@ namespace wxGUI
             pimpl->sh_path_picker = new wxFilePickerCtrl(this, wxID_ANY, wxT("cmd"),
                 wxFileSelectorPromptStr, wxFileSelectorDefaultWildcardStr, wxDefaultPosition,
                 wxSize(static_cast<int>(WIDTH() * 0.75), wxDefaultCoord), flp_flags) ;
+            pimpl->sh_path_picker->SetBackgroundColour(wxColour(*wxWHITE)) ;
             sh_sizer->Add(pimpl->sh_path_picker, flags) ;
             exapps_sizer->Add(sh_sizer, flags) ;
         }
@@ -144,6 +145,7 @@ namespace wxGUI
             pimpl->any_path_picker = new wxFilePickerCtrl(this, wxID_ANY, wxT("C\\"),
                 wxFileSelectorPromptStr, wxFileSelectorDefaultWildcardStr, wxDefaultPosition,
                 wxSize(static_cast<int>(WIDTH() * 0.5), wxDefaultCoord), flp_flags) ;
+            pimpl->any_path_picker->SetBackgroundColour(wxColour(*wxWHITE)) ;
             ctrls_sizer->Add(pimpl->any_path_picker, flags) ;
 
             pimpl->add_btn = new wxButton(this, PathListEvt::ADD, trans("buttons/add")) ;
@@ -198,11 +200,11 @@ namespace wxGUI
     ShortcutAppsPanel::~ShortcutAppsPanel() noexcept = default ;
 
 
-    void ShortcutAppsPanel::do_load_config() noexcept {
+    void ShortcutAppsPanel::do_load_config() {
         pimpl->load_path_list(ioParams::get_choices("exapps")) ;
     }
 
-    void ShortcutAppsPanel::do_save_config() noexcept {
+    void ShortcutAppsPanel::do_save_config() {
         ioParams::choices_t ch {
             {
                 {"name", "shell"},
@@ -220,7 +222,7 @@ namespace wxGUI
         ioParams::set("exapps", ch) ;
     }
 
-    void ShortcutAppsPanel::translate() noexcept {
+    void ShortcutAppsPanel::translate() {
         pimpl->update_labels() ;
         Layout() ;
     }

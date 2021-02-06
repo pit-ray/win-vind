@@ -63,11 +63,19 @@ namespace wxGUI
     {
         SetIcon(wxIcon(ioParams::get_vs("icon_style"), wxBITMAP_TYPE_ICO)) ;
 
+
+        SetBackgroundColour(wxColour(*wxWHITE)) ;
+        for(auto node = GetChildren().GetFirst() ; node ; node = node->GetNext()) {
+            node->GetData()->SetBackgroundColour(wxColour(*wxWHITE)) ;
+        }
+
         wxSizerFlags flags ;
         flags.Border(wxALL, BORDER) ;
 
+        //SetBackgroundColour(wxColour(*wxWHITE)) ;
+
         pimpl->panels.emplace_back(new SettingsPanel(GetBookCtrl())) ;
-        //pimpl->panels.emplace_back(new BindingsPanel(GetBookCtrl())) ;
+        pimpl->panels.emplace_back(new BindingsPanel(GetBookCtrl())) ;
         pimpl->panels.emplace_back(new ShortcutAppsPanel(GetBookCtrl())) ;
 
         auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;

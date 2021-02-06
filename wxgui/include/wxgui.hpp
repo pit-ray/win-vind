@@ -18,6 +18,9 @@ namespace wxGUI
         virtual void OnInitCmdLine(wxCmdLineParser& parser) override ;
         virtual bool OnCmdLineParsed(wxCmdLineParser& parser) override ;
 
+        virtual bool OnExceptionInMainLoop() override ;
+        virtual void OnUnhandledException() override ;
+
     public:
         virtual ~App() noexcept ;
     } ;

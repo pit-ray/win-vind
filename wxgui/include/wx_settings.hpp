@@ -11,9 +11,9 @@ namespace wxGUI
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
-        void translate() noexcept override ;
-        void do_load_config() noexcept override ;
-        void do_save_config() noexcept override ;
+        void translate() override ;
+        void do_load_config() override ;
+        void do_save_config() override ;
 
     public:
         explicit SettingsPanel(wxBookCtrlBase* const p_book_ctrl) ;

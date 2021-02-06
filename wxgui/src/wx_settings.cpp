@@ -94,10 +94,8 @@ namespace wxGUI
         for(size_t i = 0 ; i < pimpl->ctrls.size() ; i++) {
             auto& c = pimpl->ctrls[i] ;
 
-#if defined(_MSC_VER) && _MSC_VER >= 1500
             //fix background color (wxWidgets 3.1.3 problem)
             c->SetBackgroundColour(wxColour(*wxWHITE)) ;
-#endif
 
             pimpl->ctrls_sizer->Add(c, 0, wxALL | wxEXPAND, BORDER) ;
             if(i == 0) {
@@ -132,19 +130,19 @@ namespace wxGUI
 
     SettingsPanel::~SettingsPanel() noexcept = default ;
 
-    void SettingsPanel::do_load_config() noexcept {
+    void SettingsPanel::do_load_config() {
         for(const auto& c : pimpl->ctrls) {
             c->load_config() ;
         }
     }
 
-    void SettingsPanel::do_save_config() noexcept {
+    void SettingsPanel::do_save_config() {
         for(const auto& c : pimpl->ctrls) {
             c->save_config() ;
         }
     }
 
-    void SettingsPanel::translate() noexcept {
+    void SettingsPanel::translate() {
         pimpl->update_label() ;
         pimpl->update_list() ;
         Layout() ;

@@ -15,18 +15,18 @@ namespace wxGUI
         wxBookCtrlBase* const pbk ;
         const std::string uip ;
 
-        virtual void translate() noexcept = 0 ;
-        virtual void do_load_config() noexcept = 0 ;
-        virtual void do_save_config() noexcept = 0 ;
+        virtual void translate()      = 0 ;
+        virtual void do_load_config() = 0 ;
+        virtual void do_save_config() = 0 ;
 
-        void trans_page() noexcept ;
+        void trans_page() ;
 
     public:
         explicit PanelCore(wxBookCtrlBase* const p_book_ctrl, const std::string ui_path_code) ;
         virtual ~PanelCore() noexcept ;
 
-        void load_config() noexcept ;
-        void save_config() noexcept ;
+        void load_config() ;
+        void save_config() ;
 
         PanelCore(PanelCore&&)                 = delete ;
         PanelCore& operator=(PanelCore&&)      = delete ;

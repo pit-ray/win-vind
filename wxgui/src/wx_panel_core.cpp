@@ -18,19 +18,19 @@ namespace wxGUI
     }
     PanelCore::~PanelCore() noexcept = default ;
 
-    void PanelCore::trans_page() noexcept {
+    void PanelCore::trans_page() {
         const auto index = pbk->FindPage(this) ;
         if(index != wxNOT_FOUND) {
             pbk->SetPageText(index, UITrans::trans(uip)) ;
         }
     }
 
-    void PanelCore::load_config() noexcept {
+    void PanelCore::load_config() {
         trans_page() ;
         translate() ;
         do_load_config() ;
     }
-    void PanelCore::save_config() noexcept {
+    void PanelCore::save_config() {
         do_save_config() ;
         trans_page() ;
         translate() ;

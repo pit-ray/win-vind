@@ -102,4 +102,25 @@ namespace wxGUI
             runnable.store(false) ; //terminate core system
         }
     }
+
+    bool App::OnExceptionInMainLoop() {
+        try {
+            throw ; //Rethrow the current exception.
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+        }
+
+        return false ; //exit program
+    }
+
+    void App::OnUnhandledException() {
+        try {
+            throw ; //Rethrow the current exception.
+        }
+        catch(const std::exception& e) {
+            ERROR_PRINT(e.what()) ;
+        }
+        //the program is already about to exit.
+    }
 }

@@ -1,7 +1,7 @@
 [
     {
         "name": "change_to_normal",
-        "guin": ["<Esc-Left>", "<Esc-Right>", "<Esc-Up>", "<Esc-Down>", "<F9>"],
+        "guin": ["<Esc-Left>","<Esc-Right>","<Esc-Up>","<Esc-Down>","<F9>"],
         "guii": ["<guin>"],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -66,7 +66,7 @@
     },
     {
         "name": "move_left",
-        "guin": ["h", "<C-h>", "<BS>", "<Left>"],
+        "guin": ["h","<C-h>","<BS>","<Left>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -79,7 +79,7 @@
     },
     {
         "name": "move_right",
-        "guin": ["l", "<Space>", "<Right>"],
+        "guin": ["l","<Space>","<Right>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -92,7 +92,7 @@
     },
     {
         "name": "move_up",
-        "guin": ["k", "-", "gk", "<C-p>", "<Up>"],
+        "guin": ["k","-","gk","<C-p>","<Up>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -105,7 +105,7 @@
     },
     {
         "name": "move_down",
-        "guin": ["j", "+", "gj", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
+        "guin": ["j","+","gj","<C-n>","<Down>","<Enter>","<C-m>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -118,7 +118,7 @@
     },
     {
         "name": "jump_to_left",
-        "guin": ["0", "^", "<Home>", "g0", "g^"],
+        "guin": ["0","^","<Home>","g0","g^"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -131,7 +131,7 @@
     },
     {
         "name": "jump_to_right",
-        "guin": ["$", "<End>", "g$"],
+        "guin": ["$","<End>","g$"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -170,7 +170,7 @@
     },
     {
         "name": "jump_to_xcenter",
-        "guin": ["gm", "gM"],
+        "guin": ["gm","gM"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -209,7 +209,7 @@
     },
     {
         "name": "jump_to_active_window",
-        "guin": ["t", "T"],
+        "guin": ["t","T"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -222,7 +222,7 @@
     },
     {
         "name": "scroll_up",
-        "guin": ["<C-y>", "<C-k>"],
+        "guin": ["<C-y>","<C-k>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -235,7 +235,7 @@
     },
     {
         "name": "scroll_down",
-        "guin": ["<C-e>", "<C-j>"],
+        "guin": ["<C-e>","<C-j>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -300,7 +300,7 @@
     },
     {
         "name": "scroll_left",
-        "guin": ["zh", "<C-h>"],
+        "guin": ["zh","<C-h>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -313,7 +313,7 @@
     },
     {
         "name": "scroll_right",
-        "guin": ["zl", "<C-l>"],
+        "guin": ["zl","<C-l>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": ["<guin>"],
@@ -352,7 +352,7 @@
     },
     {
         "name": "click_left",
-        "guin": ["o", "O"],
+        "guin": ["o","O"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -365,7 +365,7 @@
     },
     {
         "name": "click_right",
-        "guin": ["a", "A"],
+        "guin": ["a","A"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -378,7 +378,7 @@
     },
     {
         "name": "cb_copy",
-        "guin": ["y", "yy", "Y"],
+        "guin": ["y","yy","Y"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -391,7 +391,7 @@
     },
     {
         "name": "cb_paste",
-        "guin": ["p", "P"],
+        "guin": ["p","P"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -404,7 +404,7 @@
     },
     {
         "name": "cb_cut",
-        "guin": ["dd", "D"],
+        "guin": ["dd","D"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -417,7 +417,7 @@
     },
     {
         "name": "cb_delete",
-        "guin": ["x", "<Del>"],
+        "guin": ["x","<Del>"],
         "guii": [],
         "guiv": ["<guin>"],
         "edin": [],
@@ -456,7 +456,7 @@
     },
     {
         "name": "sc_undo",
-        "guin": ["u", "U"],
+        "guin": ["u","U"],
         "guii": [],
         "guiv": [],
         "edin": ["<guin>"],
@@ -495,7 +495,7 @@
     },
     {
         "name": "create_new_vdesktop",
-        "guin": ["<C-v>n", "<C-v>c"],
+        "guin": ["<C-v>n","<C-v>c"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -528,7 +528,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["taskview", "tv", "vdesktop list"],
+        "cmd": ["taskview","tv","vdesktop list"],
         "en": "Task View",
         "ja": "タスクビュー"
     },
@@ -563,7 +563,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["<edin>"],
+        "edin": [],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -573,10 +573,10 @@
     },
     {
         "name": "search_pattern",
-        "guin": ["/", "?"],
+        "guin": ["/","?"],
         "guii": [],
         "guiv": [],
-        "edin": ["<edin>"],
+        "edin": ["<guin>"],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -586,14 +586,14 @@
     },
     {
         "name": "close_current_window",
-        "guin": ["<C-w>q", "<C-w>c"],
+        "guin": ["<C-w>q","<C-w>c"],
         "guii": [],
         "guiv": [],
         "edin": [],
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["cl", "close"],
+        "cmd": ["cl","close"],
         "en": "Close Current Window",
         "ja": "ウィンドウを閉じる"
     },
@@ -606,59 +606,59 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["sw", "switch"],
+        "cmd": ["sw","switch"],
         "en": "Switch Window",
         "ja": "ウィンドウを切替"
     },
     {
         "name": "maximize_current_window",
-        "guin": ["<C-w>k", "<C-w>a"],
+        "guin": ["<C-w>k","<C-w>a"],
         "guii": [],
         "guiv": [],
         "edin": [],
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["max", "on", "only"],
+        "cmd": ["max","on","only"],
         "en": "Maximize Current Window",
         "ja": "ウィンドウを最大化"
     },
     {
         "name": "minimize_current_window",
-        "guin": ["<C-w>j", "<C-w>i"],
+        "guin": ["<C-w>j","<C-w>i"],
         "guii": [],
         "guiv": [],
         "edin": [],
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["min", "hi", "hide"],
+        "cmd": ["min","hi","hide"],
         "en": "Minimize Current Window",
         "ja": "ウィンドウを最小化"
     },
     {
         "name": "snap_current_window_to_left",
-        "guin": ["<C-w>h", "<C-w>H", "<C-w><lt>", "<C-w><Left>"],
+        "guin": ["<C-w>h","<C-w>H","<C-w><lt>","<C-w><Left>"],
         "guii": [],
         "guiv": [],
         "edin": [],
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["lsplit", "lsp", "wl"],
+        "cmd": ["lsplit","lsp","wl"],
         "en": "Snap Current Window to Left",
         "ja": "ウィンドウを画面左半分化"
     },
     {
         "name": "snap_current_window_to_right",
-        "guin": ["<C-w>l", "<C-w>L", "<C-w><gt>", "<C-w><Right>"],
+        "guin": ["<C-w>l","<C-w>L","<C-w><gt>","<C-w><Right>"],
         "guii": [],
         "guiv": [],
         "edin": [],
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["rsplit", "rsp", "wh"],
+        "cmd": ["rsplit","rsp","wh"],
         "en": "Snap Current Window to Right",
         "ja": "ウィンドウを画面右半分化"
     },
@@ -710,7 +710,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["w", "w_f", "w_a", "w_c", "up", "wall"],
+        "cmd": ["w","w_f","w_a","w_c","up","wall"],
         "en": "Save File",
         "ja": "ファイルを保存"
     },
@@ -723,7 +723,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["q", "qa", "q!", "qa!", "tabclose"],
+        "cmd": ["q","qa","q!","qa!","tabclose"],
         "en": "Close Document(Tab)",
         "ja": "ドキュメント(タブ)を閉じる"
     },
@@ -736,7 +736,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["sh", "shell", "terminal", "term"],
+        "cmd": ["sh","shell","terminal","term"],
         "en": "Start Shell",
         "ja": "ターミナル起動"
     },
@@ -749,7 +749,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["ex", "explorer"],
+        "cmd": ["ex","explorer"],
         "en": "Start Explorer",
         "ja": "エクスプローラーを起動"
     },
@@ -762,7 +762,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["win", "start"],
+        "cmd": ["win","start"],
         "en": "Open Start Menu",
         "ja": "スタートメニューを開く"
     },
@@ -788,7 +788,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["set", "config"],
+        "cmd": ["set","config"],
         "en": "Config of win-vind",
         "ja": "win-vindの設定"
     },
@@ -814,7 +814,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["find", "open", "e", "e!", "edit", "edit!"],
+        "cmd": ["find","open","e","e!","edit","edit!"],
         "en": "Open Other File",
         "ja": "ファイルを開く"
     },
@@ -827,7 +827,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["mkdir", "md", "mkdir <any>", "md <any>"],
+        "cmd": ["mkdir","md","mkdir <any>","md <any>"],
         "en": "Make Directory",
         "ja": "ディレクトリ作成"
     },
@@ -846,33 +846,33 @@
     },
     {
         "name": "enable_targeting_of_dedicate_to_window",
-        "guin": ["<LAlt><LAlt>", "<F2>"],
+        "guin": ["<LAlt><LAlt>","<F2>"],
         "guii": [],
         "guiv": [],
         "edin": ["<guin>"],
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["enable d2w", "e d2w", "target", "d2w on", "set d2w"],
+        "cmd": ["enable d2w","e d2w","target","d2w on","set d2w"],
         "en": "Enable Targeting",
         "ja": "ターゲティングの有効化"
     },
     {
         "name": "disable_targeting_of_dedicate_to_window",
-        "guin": ["<RAlt><RAlt>", "<F10>"],
+        "guin": ["<RAlt><RAlt>","<F10>"],
         "guii": [],
         "guiv": [],
         "edin": ["<guin>"],
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["disable d2w", "d d2w", "untarget", "d2w off", "unset d2w"],
+        "cmd": ["disable d2w","d d2w","untarget","d2w off","unset d2w"],
         "en": "Disable Targeting",
         "ja": "ターゲティングの無効化"
     },
     {
         "name": "change_to_edi_normal",
-        "guin": ["I", "gI"],
+        "guin": ["I","gI"],
         "guii": [],
         "guiv": [],
         "edin": ["<Esc>"],
@@ -901,7 +901,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["I", "gI"],
+        "edin": ["I","gI"],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -966,7 +966,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["v", "<C-v>"],
+        "edin": ["v","<C-v>"],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -992,7 +992,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["h", "<C-h>", "<BS>", "<Left>"],
+        "edin": ["h","<C-h>","<BS>","<Left>"],
         "edii": [],
         "ediv": ["<edin>"],
         "edivl": ["<edin>"],
@@ -1005,7 +1005,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["l", "<Space>", "<Right>"],
+        "edin": ["l","<Space>","<Right>"],
         "edii": [],
         "ediv": ["<edin>"],
         "edivl": ["<edin>"],
@@ -1018,7 +1018,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["k", "-", "gk", "<C-p>", "<Up>"],
+        "edin": ["k","-","gk","<C-p>","<Up>"],
         "edii": [],
         "ediv": ["<edin>"],
         "edivl": ["<edin>"],
@@ -1031,7 +1031,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["j", "+", "gj", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
+        "edin": ["j","+","gj","<C-n>","<Down>","<Enter>","<C-m>"],
         "edii": [],
         "ediv": ["<edin>"],
         "edivl": ["<edin>"],
@@ -1096,7 +1096,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["0", "<Home>", "g0"],
+        "edin": ["0","<Home>","g0"],
         "edii": [],
         "ediv": ["<edin>"],
         "edivl": ["<edin>"],
@@ -1109,7 +1109,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["$", "<End>", "g$"],
+        "edin": ["$","<End>","g$"],
         "edii": [],
         "ediv": ["<edin>"],
         "edivl": ["<edin>"],
@@ -1161,7 +1161,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["yy", "Y"],
+        "edin": ["yy","Y"],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -1215,7 +1215,7 @@
         "guiv": [],
         "edin": [],
         "edii": [],
-        "ediv": ["d", "x", "X"],
+        "ediv": ["d","x","X"],
         "edivl": ["<ediv>"],
         "cmd": [],
         "en": "Delete Highlighted Text",
@@ -1252,7 +1252,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["x", "<Del>"],
+        "edin": ["x","<Del>"],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -1336,7 +1336,7 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Text by Motion",
-        "jp": "移動でテキストを削除"
+        "ja": "移動でテキストを削除"
     },
     {
         "name": "edi_delete_motion_and_start_insert",
@@ -1349,20 +1349,20 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Text by Motion and Start Insert",
-        "jp": "移動でテキストを削除してインサートモード"
+        "ja": "移動でテキストを削除してインサートモード"
     },
     {
         "name": "edi_delete_lines_and_start_insert",
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["cc", "S"],
+        "edin": ["cc","S"],
         "edii": [],
         "ediv": [],
         "edivl": [],
         "cmd": [],
         "en": "Delete Lines And Start Insert",
-        "jp": "行を削除してインサートモード"
+        "ja": "行を削除してインサートモード"
     },
     {
         "name": "edi_delete_chars_and_start_insert",
@@ -1375,7 +1375,7 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Chars And Start Insert",
-        "jp": "文字を削除してインサートモード"
+        "ja": "文字を削除してインサートモード"
     },
     {
         "name": "edi_delete_until_eol_and_start_insert",
@@ -1388,11 +1388,11 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Until EOL And Start Insert",
-        "jp": "行末まで削除してインサートモード"
+        "ja": "行末まで削除してインサートモード"
     },
     {
         "name": "easy_click_left",
-        "guin": ["FF", "Fo"],
+        "guin": ["FF","Fo"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -1401,7 +1401,7 @@
         "edivl": [],
         "cmd": ["ecl"],
         "en": "EasyClick (Left Click)",
-        "jp": "EasyClick (左クリック)"
+        "ja": "EasyClick (左クリック)"
     },
     {
         "name": "easy_click_right",
@@ -1414,7 +1414,7 @@
         "edivl": [],
         "cmd": ["ecr"],
         "en": "EasyClick (Right Click)",
-        "jp": "EasyClick (右クリック)"
+        "ja": "EasyClick (右クリック)"
     },
     {
         "name": "easy_click_mid",
@@ -1427,7 +1427,7 @@
         "edivl": [],
         "cmd": ["ecm"],
         "en": "EasyClick (Mid Click)",
-        "jp": "EasyClick (中央クリック)"
+        "ja": "EasyClick (中央クリック)"
     },
     {
         "name": "easy_click_hover",
@@ -1440,7 +1440,7 @@
         "edivl": [],
         "cmd": ["ech"],
         "en": "EasyClick (Hovering)",
-        "jp": "EasyClick (クリックなし)"
+        "ja": "EasyClick (クリックなし)"
     },
     {
         "name": "update_easy_click",
@@ -1451,8 +1451,8 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["update EasyClick", "update ec"],
+        "cmd": ["update EasyClick","update ec"],
         "en": "Update EasyClick",
-        "jp": "Update EasyClick"
+        "ja": "Update EasyClick"
     }
 ]

@@ -45,10 +45,6 @@
                         "en": "Identifier: ",
                         "ja": "識別子: "
                     },
-                    "keys": {
-                        "en": "HotKeys",
-                        "ja": "ホットキー"
-                    },
                     "cmds": {
                         "en": "Commands",
                         "ja": "コマンド"

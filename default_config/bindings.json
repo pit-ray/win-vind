@@ -563,7 +563,7 @@
         "guin": [],
         "guii": [],
         "guiv": [],
-        "edin": ["<edin>"],
+        "edin": [],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -576,7 +576,7 @@
         "guin": ["/", "?"],
         "guii": [],
         "guiv": [],
-        "edin": ["<edin>"],
+        "edin": ["<guin>"],
         "edii": [],
         "ediv": [],
         "edivl": [],
@@ -1336,7 +1336,7 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Text by Motion",
-        "jp": "移動でテキストを削除"
+        "ja": "移動でテキストを削除"
     },
     {
         "name": "edi_delete_motion_and_start_insert",
@@ -1349,7 +1349,7 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Text by Motion and Start Insert",
-        "jp": "移動でテキストを削除してインサートモード"
+        "ja": "移動でテキストを削除してインサートモード"
     },
     {
         "name": "edi_delete_lines_and_start_insert",
@@ -1362,7 +1362,7 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Lines And Start Insert",
-        "jp": "行を削除してインサートモード"
+        "ja": "行を削除してインサートモード"
     },
     {
         "name": "edi_delete_chars_and_start_insert",
@@ -1375,7 +1375,7 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Chars And Start Insert",
-        "jp": "文字を削除してインサートモード"
+        "ja": "文字を削除してインサートモード"
     },
     {
         "name": "edi_delete_until_eol_and_start_insert",
@@ -1388,7 +1388,7 @@
         "edivl": [],
         "cmd": [],
         "en": "Delete Until EOL And Start Insert",
-        "jp": "行末まで削除してインサートモード"
+        "ja": "行末まで削除してインサートモード"
     },
     {
         "name": "easy_click_left",
@@ -1401,7 +1401,7 @@
         "edivl": [],
         "cmd": ["ecl"],
         "en": "EasyClick (Left Click)",
-        "jp": "EasyClick (左クリック)"
+        "ja": "EasyClick (左クリック)"
     },
     {
         "name": "easy_click_right",
@@ -1414,7 +1414,7 @@
         "edivl": [],
         "cmd": ["ecr"],
         "en": "EasyClick (Right Click)",
-        "jp": "EasyClick (右クリック)"
+        "ja": "EasyClick (右クリック)"
     },
     {
         "name": "easy_click_mid",
@@ -1427,7 +1427,7 @@
         "edivl": [],
         "cmd": ["ecm"],
         "en": "EasyClick (Mid Click)",
-        "jp": "EasyClick (中央クリック)"
+        "ja": "EasyClick (中央クリック)"
     },
     {
         "name": "easy_click_hover",
@@ -1440,7 +1440,7 @@
         "edivl": [],
         "cmd": ["ech"],
         "en": "EasyClick (Hovering)",
-        "jp": "EasyClick (クリックなし)"
+        "ja": "EasyClick (クリックなし)"
     },
     {
         "name": "update_easy_click",
@@ -1452,7 +1452,7 @@
         "ediv": [],
         "edivl": [],
         "cmd": ["update EasyClick", "update ec"],
-        "en": "Update EasyClick",
-        "jp": "Update EasyClick"
+        "en": "Re-scan for EasyClick",
+        "ja": "EasyClickの再スキャン"
     }
 ]

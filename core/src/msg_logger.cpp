@@ -16,7 +16,7 @@
 namespace Logger
 {
     static constexpr auto g_er_tag = "[Error] " ;
-    static constexpr auto M{"[Message] "} ;
+    static constexpr auto g_mg_tag = "[Message] " ;
 
     static std::ofstream _init_error_stream ;
     static std::ofstream error_stream ;
@@ -90,7 +90,7 @@ namespace Logger
     }
 
     template <typename T>
-    inline void _error(T&& msg, const char* scope) {
+    inline static void _error(T&& msg, const char* scope) {
         if(error_stream.is_open()) {
             error_stream << g_er_tag \
                 << "Windows Error Code: [" << GetLastError() << "], " \
@@ -106,5 +106,22 @@ namespace Logger
     }
     void error(const std::string& msg, const char* scope) {
         _error(msg, scope) ;
+    }
+
+    template <typename T>
+    inline static void _message(T&& msg, const char* scope) {
+        if(msg_stream.is_open()) {
+            msg_stream << g_mg_tag << msg << " (" << scope << ")" << std::endl ;
+            msg_stream.flush() ;
+        }
+    }
+    void message(const char* msg, const char* scope) {
+        _message(msg, scope) ;
+    }
+    void message(std::string&& msg, const char* scope) {
+        _message(std::move(msg), scope) ;
+    }
+    void message(const std::string& msg, const char* scope) {
+        _message(msg, scope) ;
     }
 }

@@ -1,10 +1,11 @@
 #include "wx_bindings.hpp"
 
 #include <algorithm>
+#include <array>
 #include <fstream>
 #include <iomanip>
 #include <unordered_map>
-#include <array>
+#include <vector>
 
 #include "disable_gcc_warning.hpp"
 #include <wx/arrstr.h>
@@ -12,6 +13,7 @@
 #include <wx/choice.h>
 #include <wx/defs.h>
 #include <wx/event.h>
+#include <wx/gdicmn.h>
 #include <wx/listbox.h>
 #include <wx/sizer.h>
 #include <wx/srchctrl.h>
@@ -98,6 +100,10 @@ namespace wxGUI
 
         nlohmann::json parser{} ;
 
+        using ovvec_t = std::vector<wxStaticText*> ;
+        ovvec_t mode_overview{ovvec_t(8, nullptr)} ;
+        ovvec_t linked_mode_overview{ovvec_t(8, nullptr)} ;
+
         // mode_links states copying from each modes.
         // Each element has following maps.
         using linkmap_t = std::array<std::size_t, 8> ;
@@ -116,6 +122,30 @@ namespace wxGUI
 
         const std::string get_selected_func_name() {
             return get_selected_func_json()["name"].get<std::string>() ;
+        }
+
+        void update_mode_overview() {
+            const auto idstr = get_selected_func_name() ;
+
+            for(std::size_t i = 0 ; i < g_modes_last_idx ; i ++) {
+                const auto links_idx = mode_links[idstr][i] ;
+                if(links_idx != g_modes_last_idx) { //has links
+                    mode_overview[i]->SetForegroundColour(wxColour(*wxBLACK)) ;
+                    mode_overview[i]->SetLabelText(g_modes_key[i]) ; //White
+                    linked_mode_overview[i]->SetForegroundColour(wxColour(30, 150, 255)) ; //Blue
+                    linked_mode_overview[i]->SetLabelText(" -> " + g_modes_key[links_idx]) ;
+                }
+                else if(!get_selected_func_json()[g_modes_key[i]].empty()) { //has own bindings
+                    mode_overview[i]->SetForegroundColour(wxColour(5, 105, 5)) ; //Green
+                    mode_overview[i]->SetLabelText(g_modes_key[i]) ; //White
+                    linked_mode_overview[i]->SetLabelText("") ;
+                }
+                else { //does not have bindings
+                    mode_overview[i]->SetForegroundColour(wxColour(230, 80, 70)) ; //Red
+                    mode_overview[i]->SetLabelText(g_modes_key[i]) ; //White
+                    linked_mode_overview[i]->SetLabelText("") ;
+                }
+            }
         }
 
         void update_static_obj() {
@@ -281,6 +311,32 @@ namespace wxGUI
                 pimpl->id = new wxStaticText(this, wxID_ANY, wxT("undefined")) ;
                 id_sizer->Add(pimpl->id, flags) ;
                 pimpl->right_sizer->Add(id_sizer, flags) ;
+
+                auto mov_sizer = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Mode Overview")) ;
+                for(std::size_t i = 0 ; i < pimpl->mode_overview.size() ; i += 2) {
+                    auto mov_item_sizer = new wxBoxSizer(wxHORIZONTAL) ;
+
+                    for(std::size_t j = 0 ; j < 2 ; j ++) {
+                        if(j != 0) {
+                            //mov_item_sizer->AddStretchSpacer() ;
+                            mov_item_sizer->Add(new wxStaticText(
+                                        this, wxID_ANY, wxT("\t"),
+                                        wxDefaultPosition, wxSize(50, -1)
+                                        ), 0, wxALL | wxALIGN_LEFT, BORDER) ;
+                        }
+                        pimpl->mode_overview[i + j] = new wxStaticText(
+                                this, wxID_ANY, wxT(""),
+                                wxDefaultPosition, wxSize(50, -1)) ;
+                        mov_item_sizer->Add(pimpl->mode_overview[i + j], 0, wxALIGN_LEFT, 0) ;
+
+                        pimpl->linked_mode_overview[i + j] = new wxStaticText(
+                                this, wxID_ANY, wxT(""),
+                                wxDefaultPosition, wxSize(50, -1)) ;
+                        mov_item_sizer->Add(pimpl->linked_mode_overview[i + j], 0, wxALIGN_LEFT, 0) ;
+                    }
+                    mov_sizer->Add(mov_item_sizer, 0, wxLEFT | wxRIGHT | wxALIGN_LEFT, 5) ;
+                }
+                pimpl->right_sizer->Add(mov_sizer, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, BORDER) ;
             }
             {
                 auto mode_sizer = new wxBoxSizer(wxHORIZONTAL) ;
@@ -311,7 +367,7 @@ namespace wxGUI
                 pimpl->cmds_sizer = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Commands")) ;
                 pimpl->cmds = new wxListBox(
                     this, wxID_ANY, wxDefaultPosition,
-                    wxSize(c_right_width, HEIGHT() / 4),
+                    wxSize(c_right_width, HEIGHT() / 8),
                     wxArrayString{}, wxLB_SINGLE
                 ) ;
                 pimpl->cmds_sizer->Add(pimpl->cmds, flags) ;
@@ -334,15 +390,22 @@ namespace wxGUI
             }
 
             pimpl->right_sizer->AddStretchSpacer() ;
-            pimpl->edit_with_vim = new wxButton(
-                    this, BindingsEvt::EDIT_WITH_VIM, wxT("Edit With Vim"),
-                    wxDefaultPosition, wxSize(c_right_width, HEIGHT() / 10)) ;
-            pimpl->right_sizer->Add(pimpl->edit_with_vim, 0, wxALL | wxEXPAND, BORDER) ;
 
-            pimpl->right_sizer->AddStretchSpacer() ;
-            auto df = flags;
-            pimpl->def_btn = new wxButton(this, BindingsEvt::DEFAULT, wxT("Return to Default")) ;
-            pimpl->right_sizer->Add(pimpl->def_btn, std::move(df.Right())) ;
+            {
+                const auto def_btn_size = 150 ;
+                auto bottom_sizer = new wxBoxSizer(wxHORIZONTAL) ;
+                pimpl->edit_with_vim = new wxButton(
+                        this, BindingsEvt::EDIT_WITH_VIM, wxT("Edit With Vim"),
+                        wxDefaultPosition, wxSize(c_right_width - def_btn_size - 20, -1)) ;
+                bottom_sizer->Add(pimpl->edit_with_vim, flags) ;
+
+                bottom_sizer->AddStretchSpacer() ;
+                pimpl->def_btn = new wxButton(this, BindingsEvt::DEFAULT, wxT("Return to Default"),
+                        wxDefaultPosition, wxSize(def_btn_size, -1)) ;
+                bottom_sizer->Add(pimpl->def_btn, flags) ;
+
+                pimpl->right_sizer->Add(bottom_sizer, 0, wxALL | wxEXPAND | wxALIGN_RIGHT, BORDER) ;
+            }
 
             root_sizer->Add(pimpl->right_sizer, 0, wxEXPAND | wxALL | wxALIGN_CENTRE_HORIZONTAL, BORDER) ;
         }
@@ -352,6 +415,7 @@ namespace wxGUI
         Bind(wxEVT_LISTBOX, [this](auto&) {
             pimpl->update_static_obj() ;
             pimpl->update_bindings() ;
+            pimpl->update_mode_overview() ;
         }, BindingsEvt::SELECT_FUNC) ;
 
         Bind(wxEVT_CHOICE, [this](auto&) {
@@ -377,6 +441,7 @@ namespace wxGUI
             }
 
             pimpl->update_bindings_state() ;
+            pimpl->update_mode_overview() ;
         }, BindingsEvt::CHOIDE_LINKED_MODE) ;
 
         //Cmds Add Button
@@ -405,6 +470,7 @@ namespace wxGUI
             }
 
             pimpl->new_cmd->Clear() ;
+            pimpl->update_mode_overview() ;
         }, BindingsEvt::ADD_CMD) ;
 
         //Cmds Delete Button
@@ -416,8 +482,14 @@ namespace wxGUI
             if(func_index == wxNOT_FOUND) return ;
 
             pimpl->cmds->Delete(index) ;
-            try {pimpl->parser.at(func_index).at("cmd").erase(index) ;}
-            catch(const nlohmann::json::exception&){return ;}
+            const auto mode_idx = pimpl->mode->GetSelection() ;
+            if(mode_idx != wxNOT_FOUND) {
+                try {
+                    pimpl->parser.at(func_index).at(g_modes_key[mode_idx]).erase(index) ;
+                }
+                catch(const nlohmann::json::exception&){return ;}
+            }
+            pimpl->update_mode_overview() ;
         }, BindingsEvt::DEL_CMD) ;
 
         //Return to Default Button
@@ -436,6 +508,8 @@ namespace wxGUI
 
                 pimpl->update_static_obj() ;
                 pimpl->update_bindings() ;
+
+                pimpl->update_mode_overview() ;
             }
             catch(const std::exception& e) {
                 ERROR_PRINT(std::string(e.what()) + "BindingsEvt::DEFAULT)") ;
@@ -524,6 +598,8 @@ namespace wxGUI
         pimpl->update_bindings() ;
 
         pimpl->update_labels() ;
+
+        pimpl->update_mode_overview() ;
         Layout() ;
     }
 }

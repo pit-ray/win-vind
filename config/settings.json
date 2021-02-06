@@ -310,7 +310,7 @@
         ],
         "en": "UI Language",
         "ja": "UIの言語",
-        "value": "ja"
+        "value": "en"
     },
     "virtual_cmd_line": {
         "en": "Virtual Command Line",

@@ -34,6 +34,8 @@
 #include "utility.hpp"
 #include "wx_constant.hpp"
 
+#include "common_bindings/change_mode.hpp"
+
 namespace wxGUI
 {
     namespace BindingsEvt {
@@ -62,7 +64,7 @@ namespace wxGUI
         "Command"
     } ;
 
-    static const std::array<std::string, 8> g_modes_key {
+    static const std::array<std::string, 10> g_modes_key {
         "guin",
         "guii",
         "guiv",
@@ -72,10 +74,13 @@ namespace wxGUI
         "ediv",
         "edivl",
 
-        "cmd"
+        "cmd",
+
+        "mycwn",
+        "mycwi"
     } ;
 
-    static const auto g_modes_last_idx = g_modes_key.size() ;
+    static const auto g_modes_last_idx = g_modes_label.size() ;
 
     inline static void write_pretty_json_one(std::ofstream& ofs, const nlohmann::json& obj) {
         const auto& ui_langs = ioParams::get_choices("ui_lang") ;
@@ -724,6 +729,9 @@ namespace wxGUI
                 return true ;
             } ;
 
+            pimpl->edit_with_vim->Disable() ;
+
+            MyConfigWindowInsert::sprocess(true, 1, nullptr, nullptr) ;
             if(!create(gvim_exe)) {
                 create("notepad") ; //If failed a launch of gvim.exe, alternatively starts with notepad.exe.
             }
@@ -733,6 +741,7 @@ namespace wxGUI
                 ERROR_PRINT("Failed the process of gVim in a child process.") ;
                 return ;
             }
+            MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
 
             std::ifstream ifs(temp_path) ;
             ifs >> target_json ; //overwrite the inner json object
@@ -740,6 +749,8 @@ namespace wxGUI
             pimpl->update_static_obj() ;
             pimpl->update_bindings() ;
             pimpl->update_mode_overview() ;
+
+            pimpl->edit_with_vim->Enable() ;
         }, BindingsEvt::EDIT_WITH_VIM) ;
     }
     BindingsPanel::~BindingsPanel() noexcept = default ;

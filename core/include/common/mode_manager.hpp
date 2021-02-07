@@ -16,6 +16,9 @@ namespace ModeManager
         EdiLineVisual,
         EdiCommand,
 
+        MyConfigWindowNormal,
+        MyConfigWindowInsert,
+
         NUM,
         None = 255
     } ;
@@ -31,6 +34,8 @@ namespace ModeManager
             case Mode::EdiInsert:       return "Editor Insert" ;
             case Mode::EdiVisual:       return "Editor Visual" ;
             case Mode::EdiLineVisual:   return "Editor Visual Line" ;
+            case Mode::MyConfigWindowNormal:  return "My Config Window Normal" ;
+            case Mode::MyConfigWindowInsert:  return "My Config Window Insert" ;
             default:                    return "Undefined" ;
         }
     }

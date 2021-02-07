@@ -61,7 +61,7 @@ void Change2EdiInsert::sprocess(
     using namespace ModeManager ;
 
     if(!first_call) return ;
-    KeyAbsorber::open_all_ports() ;
+    KeyAbsorber::close_all_ports() ;
     KeyAbsorber::unabsorb() ;
     change_mode(Mode::EdiInsert) ;
     if(vclmodeout)

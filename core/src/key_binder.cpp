@@ -64,6 +64,8 @@ namespace KeyBinder
         {Mode::EdiInsert,       "edii"},
         {Mode::EdiVisual,       "ediv"},
         {Mode::EdiLineVisual,   "edivl"},
+        {Mode::MyConfigWindowNormal,  "mycwn"},
+        {Mode::MyConfigWindowInsert,  "mycwi"}
     } ;
 
     template <typename T>

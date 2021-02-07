@@ -108,7 +108,7 @@ inline static bool _main_loop() {
         remove_from_back(lgr, 2) ;
         VirtualCmdLine::refresh() ;
 
-        if(auto mf = KeyBinder::find_func(lgr, p_cmdp->func, true)) {
+        if(auto mf = KeyBinder::find_func(lgr, p_cmdp->func, true, ModeManager::Mode::Command)) {
             if(mf->is_callable()) {
                 p_cmdp->func = mf ;
                 return CONTINUE_LOOP ;
@@ -140,7 +140,7 @@ inline static bool _main_loop() {
         return CONTINUE_LOOP ;
     }
 
-    if(auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func, false)) {
+    if(auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func, false, ModeManager::Mode::Command)) {
         if(matched_func->is_callable()) {
             p_cmdp->func = matched_func ;
             return CONTINUE_LOOP ;
@@ -162,9 +162,10 @@ void CommandMode::sprocess(
 
     if(!first_call) return ;
 
+    /*
     const auto past_mode = get_mode() ;
     change_mode(Mode::Command) ;
-
+    */
     VirtualCmdLine::reset() ;
 
     KeyAbsorber::InstantKeyAbsorber ika ;
@@ -173,6 +174,5 @@ void CommandMode::sprocess(
         VirtualCmdLine::cout(":" +
                 KyLgr::log2str(cmd_hist.at(cmd_hist_index)->logger)) ;
     }
-
-    change_mode(past_mode) ;
+    //change_mode(past_mode) ;
 }

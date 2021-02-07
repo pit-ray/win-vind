@@ -5,6 +5,7 @@
 #include "disable_gcc_warning.hpp"
 #include <wx/string.h>
 #include <wx/window.h>
+#include <wx/panel.h>
 #include "enable_gcc_warning.hpp"
 
 #include "wx_constant.hpp"
@@ -12,7 +13,7 @@
 
 namespace wxGUI
 {
-    class CtrlCore : public wxWindow {
+    class CtrlCore : public wxPanel {
     private:
         virtual void do_load_config() noexcept = 0 ;
         virtual void do_save_config() noexcept = 0 ;

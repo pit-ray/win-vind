@@ -171,7 +171,6 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How
 
 ## ToDo 
 
-- Add items of GUI for customizing hotkeys. It would be better if we can operate more visually.  
 - Registration of keybindings by pressing keys.   
 - Make scanning faster in EasyClick.
 - A feature to switch windows with a single push, just like switching weapons in game. (e.g. 1: Google Chrome, 2: Vim, 3: Powershell)

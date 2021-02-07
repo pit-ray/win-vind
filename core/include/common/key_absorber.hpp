@@ -19,7 +19,6 @@ namespace KeyAbsorber
     void close_all_ports() noexcept ;
     void close_all_ports_with_refresh() ;
 
-    void open_all_ports() noexcept ;
     void open_some_ports(const KeyLog::data_t& key) noexcept ;
     void open_port(const unsigned char key) noexcept ;
 

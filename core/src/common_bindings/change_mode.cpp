@@ -69,7 +69,7 @@ void Change2Insert::sprocess(
     if(ModeManager::get_mode() == ModeManager::Mode::Normal)
         MouseEventer::click(VKC_MOUSE_LEFT) ;
 
-    KeyAbsorber::open_all_ports() ;
+    KeyAbsorber::close_all_ports() ;
     KeyAbsorber::unabsorb() ;
     change_mode(Mode::Insert) ;
     if(vclmodeout)
@@ -95,4 +95,44 @@ void Change2Visual::sprocess(
     change_mode(Mode::Visual) ;
     if(vclmodeout) VirtualCmdLine::msgout("-- GUI VISUAL --") ;
     MouseEventer::press(VKC_MOUSE_LEFT) ;
+}
+
+//MyConfigWindowNormal
+const std::string MyConfigWindowNormal::sname() noexcept
+{
+    return "my_config_window_normal" ;
+}
+
+void MyConfigWindowNormal::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    using namespace ModeManager ;
+    if(!first_call) return ;
+
+    KeyAbsorber::close_all_ports_with_refresh() ;
+    KeyAbsorber::absorb() ;
+    change_mode(Mode::MyConfigWindowNormal) ;
+}
+
+//MyConfigWindowInsert
+const std::string MyConfigWindowInsert::sname() noexcept
+{
+    return "my_config_window_insert" ;
+}
+
+void MyConfigWindowInsert::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    using namespace ModeManager ;
+    if(!first_call) return ;
+
+    KeyAbsorber::close_all_ports_with_refresh() ;
+    KeyAbsorber::unabsorb() ;
+    change_mode(Mode::MyConfigWindowInsert) ;
 }

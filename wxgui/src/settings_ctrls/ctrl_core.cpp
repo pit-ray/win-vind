@@ -1,9 +1,10 @@
 #include "ctrl_core.hpp"
+#include "utility.hpp"
 
 namespace wxGUI
 {
     CtrlCore::CtrlCore(wxWindow* parent, wxWindowID id)
-    : wxWindow(parent, id, wxDefaultPosition, wxDefaultSize)
+    : wxPanel(parent, id)
     {}
     CtrlCore::~CtrlCore() noexcept = default ;
 

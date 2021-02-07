@@ -144,7 +144,12 @@ namespace BindingsLists {
             SwitchVDesktop2Right::create(),
             SwitchWindow::create(),
             TaskView::create(),
-            UpdateEasyClick::create()
+            UpdateEasyClick::create(),
+            ForwardUINavigation::create(),
+            BackwardUINavigation::create(),
+            DecideFocusedUIObject::create(),
+            MyConfigWindowNormal::create(),
+            MyConfigWindowInsert::create()
         } ;
         return tmp ;
     }

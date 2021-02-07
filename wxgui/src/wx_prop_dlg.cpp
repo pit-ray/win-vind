@@ -10,6 +10,8 @@
 #include "disable_gcc_warning.hpp"
 #include <wx/button.h>
 #include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/generic/stattextg.h>
 #include "enable_gcc_warning.hpp"
 
 #include "wx_settings.hpp"
@@ -22,7 +24,17 @@
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
 
+#include "common/key_absorber.hpp"
+#include "common/mode_manager.hpp"
+#include "common_bindings/change_mode.hpp"
 #include "win_vind.hpp"
+
+#define KEY_COLOR "#1e96ff"
+#define TXT_COLOR "gray"
+#define CREATE_ITEM(KEY, VAL) "<tt><b><span foreground='" KEY_COLOR \
+                              "'>" KEY \
+                              "</span></b> <span foreground='" TXT_COLOR \
+                              "'>" VAL "</span></tt>"
 
 namespace wxGUI
 {
@@ -79,6 +91,20 @@ namespace wxGUI
         pimpl->panels.emplace_back(new ShortcutAppsPanel(GetBookCtrl())) ;
 
         auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;
+
+        auto usage = new wxGenericStaticText(this, wxID_ANY, wxT("")) ;
+
+        usage->SetLabelMarkup(
+            CREATE_ITEM("Up/Down",      "Select,  ")
+            CREATE_ITEM("Left/Right",   "Focus,  ")
+            CREATE_ITEM("gt/gT",        "Tab,  ")
+            CREATE_ITEM("&lt;Esc&gt;",  "Normal,  ")
+            CREATE_ITEM("i/a",          "Insert,  ")
+            CREATE_ITEM("o",            "Decide")
+        ) ;
+        btn_sizer->Add(usage, 0, wxALIGN_LEFT | wxEXPAND | wxALL, BORDER) ;
+        btn_sizer->AddStretchSpacer() ;
+
         pimpl->ok_btn = new wxButton(this, wxID_OK,  wxT("OK")) ;
         btn_sizer->Add(pimpl->ok_btn, flags) ;
         pimpl->cl_btn = new wxButton(this, wxID_CANCEL, wxT("Cancel")) ;
@@ -150,16 +176,39 @@ namespace wxGUI
         for(auto& p : pimpl->panels) {
             p->load_config() ;
         }
-
-        if(!SetForegroundWindow(GetHandle())) {
-            ERROR_PRINT("Preferences Window was not brought to the foreground") ;
-        } //shown as most top window
     }
 
     bool PropDlg::Show(bool show) {
+        static auto l_mode = ModeManager::Mode::Insert ;
+        static auto l_is_absorbed = false ;
+        static auto l_is_cached   = false ;
+
         //true is shown. false is hidden.
         if(show) {
             load_config() ;
+
+            if(!SetForegroundWindow(GetHandle())) {
+                ERROR_PRINT("Preferences Window was not brought to the foreground") ;
+            } //shown as most top window
+
+            if(!l_is_cached) {
+                l_mode = ModeManager::get_mode() ;
+                l_is_absorbed = KeyAbsorber::is_absorbed() ;
+                l_is_cached = true ;
+                MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
+            }
+        }
+        else {
+            if(l_is_cached) {
+                ModeManager::change_mode(l_mode) ;
+
+                KeyAbsorber::close_all_ports_with_refresh() ;
+                if(!l_is_absorbed) {
+                    KeyAbsorber::unabsorb() ;
+                }
+
+                l_is_cached = false ;
+            }
         }
 
         return wxPropertySheetDialog::Show(show) ;

@@ -150,10 +150,6 @@ namespace KeyAbsorber
         }
     }
 
-    void open_all_ports() noexcept {
-        g_ignored_keys.clear() ;
-    }
-
     void open_some_ports(const KeyLog::data_t& keys) noexcept {
         g_ignored_keys = keys ;
     }

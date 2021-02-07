@@ -69,7 +69,7 @@ void BindedFunc::process(
                     KeyAbsorber::absorb() ;
                 }
                 else {
-                    KeyAbsorber::open_all_ports() ;
+                    KeyAbsorber::close_all_ports() ;
                     KeyAbsorber::unabsorb() ;
                 }
             }

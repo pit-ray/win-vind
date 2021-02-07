@@ -67,7 +67,8 @@ namespace wxGUI
             pimpl->lbs[obj_name] = new wxStaticText(this, wxID_ANY, obj_name) ;
             root_sizer->Add(pimpl->lbs[obj_name], flags) ;
 
-            root_sizer->Add(pimpl->chm.create(obj_name), flags) ;
+            auto ptr = pimpl->chm.create(obj_name) ;
+            root_sizer->Add(ptr, flags) ;
         } ;
         auto create_sc = [this, &flags, root_sizer](const auto name, const auto min, const auto max, const auto init) {
             pimpl->lbs[name] = new wxStaticText(this, wxID_ANY, name) ;

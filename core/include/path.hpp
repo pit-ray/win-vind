@@ -66,6 +66,10 @@ namespace Path
         inline static const auto UI() {
             return std::string("default_config/ui.json") ;
         }
+
+        inline static const auto JSON_USAGE() {
+            return std::string("default_config/usage.json") ;
+        }
     }
 }
 

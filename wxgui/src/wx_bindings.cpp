@@ -82,44 +82,8 @@ namespace wxGUI
 
     static const auto g_modes_last_idx = g_modes_label.size() ;
 
-    inline static void write_pretty_json_one(std::ofstream& ofs, const nlohmann::json& obj) {
-        const auto& ui_langs = ioParams::get_choices("ui_lang") ;
-
-        ofs << "    {\n" ;
-        ofs << "        \"name\": " << obj["name"].dump() << ",\n" ;
-
-        for(const auto& modestr : g_modes_key) {
-            ofs << "        \"" << modestr << "\": " ;
-
-            try {
-                ofs << obj.at(modestr).dump() ;
-            }
-            catch(const std::out_of_range&) {
-                ofs << "[]" ;
-            }
-            ofs << ",\n" ;
-        }
-
-        for(auto lang = ui_langs.cbegin() ;
-                lang != ui_langs.cend() ; lang ++) {
-
-            if(lang != ui_langs.cbegin()) {
-                ofs << ",\n" ;
-            }
-            try {
-                ofs << "        \"" << (*lang).at("value") << "\": " ;
-                try {
-                    ofs << obj.at((*lang).at("value")) ;
-                }
-                catch(const std::out_of_range&) {}
-            }
-            catch(const std::out_of_range&) {
-                continue ;
-            }
-        }
-
-        ofs << "\n    }" ;
-    }
+    inline static void write_pretty_json_one(std::ofstream& ofs, const nlohmann::json& obj) ;
+    inline static void write_usage(std::ofstream& ofs) ;
 
     struct BindingsPanel::Impl {
         wxSearchCtrl* search = nullptr ;
@@ -705,7 +669,9 @@ namespace wxGUI
 
             const auto& temp_path = temp_dir + "edit_with_vim.json" ;
             std::ofstream ofs(temp_path) ;
+            ofs << "[\n" ;
             write_pretty_json_one(ofs, target_json) ;
+            write_usage(ofs) ;
             ofs.flush() ;
 
             STARTUPINFOA si ;
@@ -743,8 +709,10 @@ namespace wxGUI
             }
             MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
 
+            nlohmann::json new_json ;
             std::ifstream ifs(temp_path) ;
-            ifs >> target_json ; //overwrite the inner json object
+            ifs >> new_json ;
+            target_json = new_json[0] ; //overwrite the inner json object
 
             pimpl->update_static_obj() ;
             pimpl->update_bindings() ;
@@ -803,5 +771,55 @@ namespace wxGUI
 
         pimpl->update_mode_overview() ;
         Layout() ;
+    }
+
+    inline static void write_pretty_json_one(std::ofstream& ofs, const nlohmann::json& obj) {
+        const auto& ui_langs = ioParams::get_choices("ui_lang") ;
+
+        ofs << "    {\n" ;
+        ofs << "        \"name\": " << obj["name"].dump() << ",\n" ;
+
+        for(const auto& modestr : g_modes_key) {
+            ofs << "        \"" << modestr << "\": " ;
+
+            try {
+                ofs << obj.at(modestr).dump() ;
+            }
+            catch(const std::out_of_range&) {
+                ofs << "[]" ;
+            }
+            ofs << ",\n" ;
+        }
+
+        for(auto lang = ui_langs.cbegin() ;
+                lang != ui_langs.cend() ; lang ++) {
+
+            if(lang != ui_langs.cbegin()) {
+                ofs << ",\n" ;
+            }
+            try {
+                ofs << "        \"" << (*lang).at("value") << "\": " ;
+                try {
+                    ofs << obj.at((*lang).at("value")) ;
+                }
+                catch(const std::out_of_range&) {}
+            }
+            catch(const std::out_of_range&) {
+                continue ;
+            }
+        }
+
+        ofs << "\n    }" ;
+    }
+
+    inline static void write_usage(std::ofstream& ofs) {
+        ofs << ",\n" ;
+
+        std::ifstream ifs(Path::Default::JSON_USAGE()) ;
+        nlohmann::json usage ;
+        ifs >> usage ;
+
+        ofs << std::setw(4) << usage ;
+        ofs << "]" ;
     }
 }

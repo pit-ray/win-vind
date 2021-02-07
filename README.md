@@ -167,7 +167,20 @@ If you want more details, please see the <a href="https://pit-ray.github.io/win-
 
 ## How to contribute
 
-Please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How to contribute - win-vind</a>.  
+### Quick Start for Build  
+If you have already installed MinGW-w64 or Visual Studio 2019, all you need is the next steps.  
+
+**1.** Install needed libraries into a root directory of win-vind.  
+  ```bash  
+  $ ./setup_libs.bat [-mingw/-msvc]  
+  ```  
+**2.** Build its project.  
+  ```bash
+  $ ./build.bat [-debug/-release] [-mingw/-msvc] [32/64]  
+  ```
+**3.** Finish!  
+
+If you want to contribute, please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How to contribute - win-vind</a>.  
 
 ## ToDo 
 

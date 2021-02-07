@@ -91,6 +91,8 @@ namespace Utility
     }
 
     void refresh_display(HWND hwnd) ;
+
+    bool is_existed_dir(std::string path) noexcept ;
 }
 
 #ifndef UNUSED

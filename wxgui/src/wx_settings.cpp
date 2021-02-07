@@ -79,7 +79,7 @@ namespace wxGUI
         root_sizer->Add(pimpl->list, 0, wxALL | wxALIGN_CENTER, BORDER) ;
 
         pimpl->ctrls_sizer = new wxBoxSizer(wxVERTICAL) ;
-        pimpl->ctrls_sizer->SetMinSize(wxSize(WIDTH() * 0.5, wxDefaultCoord)) ;
+        pimpl->ctrls_sizer->SetMinSize(wxSize(WIDTH() / 2, wxDefaultCoord)) ;
 
         std::vector<CtrlCore*> _init = {
             new CommonCtrl(this),

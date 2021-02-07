@@ -233,7 +233,7 @@
         "ja": "UIの言語"
     },
     "ppi_factor": {
-        "value": 5,
+        "value": 6,
         "en": "Resolution PPI Factor",
         "ja": "解像度PPI倍率"
     },
@@ -337,6 +337,10 @@
         "value": false,
         "en": "Enable EasyClick HWND Cache",
         "ja": "HWNDキャッシュを有効化"
+    },
+    "gvim_exe_path": {
+        "value": "gvim",
+        "en": "Path to gvim.exe",
+        "ja": "gvim.exeのパス"
     }
-
 }

@@ -26,12 +26,6 @@ namespace Logger
 
     static const std::string log_dir = Path::ROOT_PATH() + "log\\" ;
 
-    inline static bool is_existed_dir(std::string path) noexcept
-    {
-      auto flag = GetFileAttributesA(path.c_str());
-      return (flag != INVALID_FILE_ATTRIBUTES && (flag & FILE_ATTRIBUTE_DIRECTORY));
-    }
-
     inline static void remove_files_over(const std::string pattern_withex, const std::size_t num)
     {
         std::vector<std::string> files ;
@@ -69,9 +63,9 @@ namespace Logger
             << std::setw(2) << std::setfill('0') << stime.wHour \
             << std::setw(2) << std::setfill('0') << stime.wMinute ;
 
-        if(!is_existed_dir(log_dir)) {
+        if(!Utility::is_existed_dir(log_dir)) {
             if(!CreateDirectoryA(log_dir.c_str(), NULL)) {
-                throw LOGIC_EXCEPT("Cannot create log directory.") ;
+                throw LOGIC_EXCEPT("Cannot create a log directory.") ;
             }
         }
 

@@ -3,6 +3,7 @@
 #include "disable_gcc_warning.hpp"
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
+#include <wx/filepicker.h>
 #include <wx/sizer.h>
 #include "enable_gcc_warning.hpp"
 
@@ -18,23 +19,32 @@ namespace wxGUI
         std::unordered_map<std::string, wxSpinCtrl*> scs ;
         std::unordered_map<std::string, wxStaticText*> lbs ;
 
+        wxStaticText* gvim_path_label ;
+        wxFilePickerCtrl* gvim_path_picker ;
+
         explicit Impl(wxWindow* const self)
         : chm(self),
           scs(),
-          lbs()
+          lbs(),
+          gvim_path_label(nullptr),
+          gvim_path_picker(nullptr)
         {}
 
         void update_labels() noexcept {
             for(auto& l : lbs) {
                 l.second->SetLabel(ioParams::get_label(l.first)) ;
             }
+
+            gvim_path_label->SetLabel(ioParams::get_label("gvim_exe_path")) ;
         }
 
-        template <typename T>
-        void load_config_common(const T& get_vi_func) noexcept {
+        template <typename T1, typename T2>
+        void load_config_common(const T1& get_vi_func, const T2& get_vs_func) noexcept {
             for(auto& p : scs) {
                 p.second->SetValue(get_vi_func(p.first)) ;
             }
+
+            gvim_path_picker->SetPath(get_vs_func("gvim_exe_path")) ;
         }
 
         ~Impl() noexcept = default ;
@@ -49,7 +59,7 @@ namespace wxGUI
       pimpl(std::make_unique<Impl>(this))
     {
         wxSizerFlags flags ;
-        flags.Border(wxALL, BORDER).Expand() ;
+        flags.Border(wxALL, BORDER) ;
 
         auto root_sizer = new wxFlexGridSizer(2) ;
 
@@ -65,7 +75,7 @@ namespace wxGUI
 
             pimpl->scs[name] = new wxSpinCtrl(
                 this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                wxSize(CTRL_WIDTH, wxDefaultCoord),
+                wxSize(CTRL_WIDTH, -1),
                 wxSP_ARROW_KEYS, min, max, init
             ) ;
             root_sizer->Add(pimpl->scs[name], flags) ;
@@ -76,6 +86,17 @@ namespace wxGUI
         create_ch("kb_type") ;
         create_sc("ppi_factor", 1, 12, 6) ;
         create_ch("initial_mode") ;
+        
+        pimpl->gvim_path_label = new wxStaticText(this, wxID_ANY, wxT("gvim_exe_path")) ;
+        root_sizer->Add(pimpl->gvim_path_label, flags) ;
+
+        pimpl->gvim_path_picker = new wxFilePickerCtrl(this, wxID_ANY, wxT("gvim"),
+                wxFileSelectorPromptStr, wxFileSelectorDefaultWildcardStr, wxDefaultPosition,
+                wxSize(static_cast<int>(WIDTH() / 3.5), -1),
+                wxFLP_SMALL | wxFLP_USE_TEXTCTRL | wxFLP_FILE_MUST_EXIST) ;
+        pimpl->gvim_path_picker->SetBackgroundColour(wxColour(*wxWHITE)) ;
+        root_sizer->Add(pimpl->gvim_path_picker, flags) ;
+
         SetSizerAndFit(root_sizer) ;
     }
     CommonCtrl::~CommonCtrl() noexcept = default ;
@@ -86,12 +107,12 @@ namespace wxGUI
     }
 
     void CommonCtrl::do_load_config() noexcept {
-        pimpl->load_config_common(ioParams::get_vi) ;
+        pimpl->load_config_common(ioParams::get_vi, ioParams::get_vs) ;
         pimpl->chm.load_config() ;
     }
 
     void CommonCtrl::do_load_config_default() noexcept {
-        pimpl->load_config_common(ioParams::Default::get_vi) ;
+        pimpl->load_config_common(ioParams::Default::get_vi, ioParams::Default::get_vs) ;
         pimpl->chm.load_config_default() ;
     }
 
@@ -100,6 +121,7 @@ namespace wxGUI
         for(const auto& p : pimpl->scs) {
             ioParams::set(p.first, p.second->GetValue()) ;
         }
+        ioParams::set("gvim_exe_path", pimpl->gvim_path_picker->GetPath().ToStdString()) ;
     }
 
     const wxString CommonCtrl::name() noexcept {

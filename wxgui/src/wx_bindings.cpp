@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "disable_gcc_warning.hpp"
@@ -43,6 +44,7 @@ namespace wxGUI
             DEL_CMD,
             CHOICE_MODE,
             CHOIDE_LINKED_MODE,
+            SEARCH,
             EDIT_WITH_VIM,
         } ;
     }
@@ -74,6 +76,45 @@ namespace wxGUI
     } ;
 
     static const auto g_modes_last_idx = g_modes_key.size() ;
+
+    inline static void write_pretty_json_one(std::ofstream& ofs, const nlohmann::json& obj) {
+        const auto& ui_langs = ioParams::get_choices("ui_lang") ;
+
+        ofs << "    {\n" ;
+        ofs << "        \"name\": " << obj["name"].dump() << ",\n" ;
+
+        for(const auto& modestr : g_modes_key) {
+            ofs << "        \"" << modestr << "\": " ;
+
+            try {
+                ofs << obj.at(modestr).dump() ;
+            }
+            catch(const std::out_of_range&) {
+                ofs << "[]" ;
+            }
+            ofs << ",\n" ;
+        }
+
+        for(auto lang = ui_langs.cbegin() ;
+                lang != ui_langs.cend() ; lang ++) {
+
+            if(lang != ui_langs.cbegin()) {
+                ofs << ",\n" ;
+            }
+            try {
+                ofs << "        \"" << (*lang).at("value") << "\": " ;
+                try {
+                    ofs << obj.at((*lang).at("value")) ;
+                }
+                catch(const std::out_of_range&) {}
+            }
+            catch(const std::out_of_range&) {
+                continue ;
+            }
+        }
+
+        ofs << "\n    }" ;
+    }
 
     struct BindingsPanel::Impl {
         wxSearchCtrl* search = nullptr ;
@@ -109,23 +150,39 @@ namespace wxGUI
         using linkmap_t = std::array<std::size_t, 8> ;
         std::unordered_map<std::string, linkmap_t> mode_links{} ;
 
-        void initialize() {
-            mode_links.clear() ;
-        }
-        const nlohmann::json& get_selected_func_json() {
+
+        nlohmann::json& get_selected_func_json() {
             const auto index = func_list->GetSelection() ;
             if(index == wxNOT_FOUND) {
-                throw RUNTIME_EXCEPT("Cannot get a selection of func_list.") ;
+                static auto c_empty_obj = nlohmann::json() ;
+                return c_empty_obj ;
             }
-            return parser.at(index) ;
+            const auto func_label = func_list->GetString(index) ;
+
+            for(auto& obj : parser) {
+                const auto label = obj.at(ioParams::get_vs("ui_lang")).get<std::string>() ;
+                if(wxString::FromUTF8(label.c_str()) == func_label) {
+                    return obj ;
+                }
+            }
+            throw LOGIC_EXCEPT(func_label + " does not have a valid label.") ;
         }
 
         const std::string get_selected_func_name() {
-            return get_selected_func_json()["name"].get<std::string>() ;
+            auto obj = get_selected_func_json() ;
+            if(obj.empty()) return std::string() ;
+            return obj["name"].get<std::string>() ;
         }
 
         void update_mode_overview() {
             const auto idstr = get_selected_func_name() ;
+            if(idstr.empty()) {
+                for(std::size_t i = 0 ; i < g_modes_last_idx ; i ++) {
+                    mode_overview[i]->SetLabelText("") ;
+                    linked_mode_overview[i]->SetLabelText("") ;
+                }
+                return ;
+            }
 
             for(std::size_t i = 0 ; i < g_modes_last_idx ; i ++) {
                 const auto links_idx = mode_links[idstr][i] ;
@@ -150,6 +207,11 @@ namespace wxGUI
 
         void update_static_obj() {
             decltype(auto) obj = get_selected_func_json() ;
+            if(obj.empty()) {
+                id->SetLabelText("") ;
+                return ;
+            }
+
             const auto& idstr = obj["name"].get<std::string>() ;
             id->SetLabelText(idstr) ;
 
@@ -188,13 +250,19 @@ namespace wxGUI
             mode_links[idstr] = std::move(linkmap) ;
         }
 
-        void update_linked_mode() {
+        void update_linked_mode_choice() {
+            const auto idstr = get_selected_func_name() ;
+            if(idstr.empty()) {
+                linked_mode->SetSelection(g_modes_last_idx) ;
+                return ;
+            }
+
             const auto mode_idx = mode->GetSelection() ;
             if(mode_idx == wxNOT_FOUND) {
                 throw RUNTIME_EXCEPT("Could not get a selection of mode choices.") ;
             }
             try {
-                const auto links = mode_links.at(get_selected_func_name()) ;
+                const auto links = mode_links.at(idstr) ;
                 try {
                     linked_mode->SetSelection(links.at(mode_idx)) ;
                 }
@@ -231,7 +299,7 @@ namespace wxGUI
 
         void update_bindings() {
             cmds->Clear() ;
-            update_linked_mode() ;
+            update_linked_mode_choice() ;
             if(update_bindings_state()) {
                 auto mode_idx = mode->GetSelection() ;
                 if(mode_idx == wxNOT_FOUND) {
@@ -240,6 +308,9 @@ namespace wxGUI
                 }
 
                 decltype(auto) obj = get_selected_func_json() ;
+                if(obj.empty()) {
+                    return ;
+                }
                 auto modekey = g_modes_key[mode_idx] ;
                 right_sizer->Show(cmds_sizer) ;
                 for(const auto cmd : obj[modekey]) {
@@ -248,15 +319,95 @@ namespace wxGUI
             }
         }
 
-        void update_func_list() {
-            func_list->Clear() ;
+        //tag database for search
+        using tags_t = std::unordered_set<std::string> ;
+        std::unordered_map<std::string, tags_t> tagbase{} ;
+
+        void create_tag_database() {
+            const auto& ui_langs = ioParams::get_choices("ui_lang") ;
+
             for(const auto& obj : parser) {
                 try {
-                    func_list->Append(wxString::FromUTF8(obj.at(
-                        ioParams::get_vs("ui_lang")
-                    ).get<std::string>().c_str())) ;
+                    tags_t tags{} ;
+                    const auto name = obj.at("name").get<std::string>() ;
+
+                    //from name
+                    for(const auto& w : Utility::split(name, "_")) {
+                        tags.insert(w) ;
+                    }
+
+                    //from label
+                    for(const auto& lang : ui_langs) {
+                        try {
+                            const auto& label = obj.at(lang.at("value")) ;
+                            for(const auto& w : Utility::split(Utility::A2a(label), " ")) {
+                                tags.insert(w) ;
+                            }
+                        }
+                        catch(const std::out_of_range&) {
+                            continue ;
+                        }
+                    }
+
+                    //from modes
+                    for(const auto& m : g_modes_key) {
+                        try {
+                            if(!obj[m].empty()) tags.insert(m) ;
+                        }
+                        catch(const std::out_of_range&) {
+                            continue ;
+                        }
+                    }
+
+                    /*
+                    //from tags
+                    try {
+                        for(const auto& t : obj.at("tags")) {
+                            tags.insert(t.get<std::string>()) ;
+                        }
+                    }
+                    catch(const nlohmann::json::out_of_range&) {}
+                    */
+
+                    tagbase[name] = std::move(tags) ;
                 }
-                catch(const std::exception&) {continue ;}
+                catch(const std::out_of_range&)  {
+                    continue ;
+                }
+            }
+        }
+
+
+        void update_func_list(const wxString& search_text) {
+            func_list->Clear() ;
+
+            auto append = [this](const nlohmann::json& obj) {
+                try {
+                    const auto& label = obj.at(ioParams::get_vs("ui_lang")).get<std::string>() ;
+                    func_list->Append(wxString::FromUTF8(label.c_str())) ;
+                }
+                catch(const nlohmann::json::out_of_range&) {
+                    return ;
+                }
+            } ;
+
+            for(const auto& obj : parser) {
+                if(search_text.IsEmpty()) { //search without keyword
+                    append(obj) ;
+                }
+                else { //match with the tag database
+                    for(const auto& tag : tagbase[obj["name"]]) {
+
+                        //compare as UTF-8
+                        if(tag.find(Utility::A2a(search_text.ToUTF8().data())) != std::string::npos) {
+                            append(obj) ;
+                            break ;
+                        }
+                    }
+                }
+            }
+            if(!func_list->IsEmpty()) {
+                func_list->SetSelection(0) ;
             }
         }
 
@@ -282,8 +433,10 @@ namespace wxGUI
             const auto c_left_width = static_cast<int>(WIDTH() * 0.4) ;
             auto left_sizer = new wxBoxSizer(wxVERTICAL) ;
             pimpl->search = new wxSearchCtrl(
-                    this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                    this, BindingsEvt::SEARCH, wxEmptyString, wxDefaultPosition,
                     wxSize(c_left_width, -1)) ;
+            pimpl->search->ShowCancelButton(false) ;
+            pimpl->search->ShowSearchButton(false) ;
             left_sizer->Add(pimpl->search, flags) ;
 
             pimpl->func_list = new wxListBox(
@@ -370,7 +523,7 @@ namespace wxGUI
                     wxSize(c_right_width, HEIGHT() / 8),
                     wxArrayString{}, wxLB_SINGLE
                 ) ;
-                pimpl->cmds_sizer->Add(pimpl->cmds, flags) ;
+                pimpl->cmds_sizer->Add(pimpl->cmds, 0, wxALL, 0) ;
 
                 auto ctrls_sizer = new wxBoxSizer(wxHORIZONTAL) ;
                 auto fl = flags ;
@@ -411,6 +564,13 @@ namespace wxGUI
         }
         SetSizerAndFit(root_sizer) ;
 
+        Bind(wxEVT_TEXT, [this](auto& e) {
+            pimpl->update_func_list(e.GetString()) ;
+            pimpl->update_static_obj() ;
+            pimpl->update_bindings() ;
+            pimpl->update_mode_overview() ;
+        }, BindingsEvt::SEARCH) ;
+
         //left list is selected
         Bind(wxEVT_LISTBOX, [this](auto&) {
             pimpl->update_static_obj() ;
@@ -423,6 +583,11 @@ namespace wxGUI
         }, BindingsEvt::CHOICE_MODE) ;
 
         Bind(wxEVT_CHOICE, [this](auto&) {
+            const auto idstr = pimpl->get_selected_func_name() ;
+            if(idstr.empty()) {
+                return ;
+            }
+
             const auto target_idx = pimpl->mode->GetSelection() ;
             if(target_idx == wxNOT_FOUND) {
                 throw RUNTIME_EXCEPT("Could not get a selection of mode choices.") ;
@@ -434,7 +599,7 @@ namespace wxGUI
             }
 
             try {
-                pimpl->mode_links.at(pimpl->get_selected_func_name()).at(target_idx) = linked_idx ;
+                pimpl->mode_links.at(idstr).at(target_idx) = linked_idx ;
             }
             catch(const std::out_of_range&) {
                 throw RUNTIME_EXCEPT("The link dependencies of a selected function are not registered.") ;
@@ -516,6 +681,66 @@ namespace wxGUI
                 return ;
             }
         }, BindingsEvt::DEFAULT) ;
+
+        //Edit with Vim
+        Bind(wxEVT_BUTTON, [this](auto&) {
+            const auto gvim_exe = ioParams::get_vs("gvim_exe_path") ;
+            static const auto temp_dir = Path::ROOT_PATH() + "temp\\" ;
+
+            if(!Utility::is_existed_dir(temp_dir)) {
+                if(!CreateDirectoryA(temp_dir.c_str(), NULL)) {
+                    throw LOGIC_EXCEPT("Cannot create a temp directory.") ;
+                }
+            }
+
+            auto& target_json = pimpl->get_selected_func_json() ;
+            if(target_json.empty()) {
+                return ;
+            }
+
+            const auto& temp_path = temp_dir + "edit_with_vim.json" ;
+            std::ofstream ofs(temp_path) ;
+            write_pretty_json_one(ofs, target_json) ;
+            ofs.flush() ;
+
+            STARTUPINFOA si ;
+            ZeroMemory(&si, sizeof(si)) ;
+            si.cb = sizeof(si) ;
+
+            PROCESS_INFORMATION pi ;
+            ZeroMemory(&pi, sizeof(pi)) ;
+
+            auto create = [&temp_path, &si, &pi] (const std::string exe) {
+                const auto cmd = exe + " \"" + temp_path + "\"" ;
+                if(!CreateProcessA(
+                    NULL, const_cast<LPSTR>(cmd.c_str()),
+                    NULL, NULL, FALSE,
+                    CREATE_NEW_CONSOLE, NULL, NULL,
+                    &si, &pi)) {
+
+                    ERROR_PRINT("Cannot start \"" + exe  + "\"") ;
+                    return false ;
+                }
+                return true ;
+            } ;
+
+            if(!create(gvim_exe)) {
+                create("notepad") ; //If failed a launch of gvim.exe, alternatively starts with notepad.exe.
+            }
+
+            //wait until finishing a created child process.
+            if(WaitForSingleObject(pi.hProcess, INFINITE) != WAIT_OBJECT_0) {
+                ERROR_PRINT("Failed the process of gVim in a child process.") ;
+                return ;
+            }
+
+            std::ifstream ifs(temp_path) ;
+            ifs >> target_json ; //overwrite the inner json object
+
+            pimpl->update_static_obj() ;
+            pimpl->update_bindings() ;
+            pimpl->update_mode_overview() ;
+        }, BindingsEvt::EDIT_WITH_VIM) ;
     }
     BindingsPanel::~BindingsPanel() noexcept = default ;
     void BindingsPanel::do_load_config() {
@@ -540,59 +765,25 @@ namespace wxGUI
 
         std::ofstream ofs(Path::BINDINGS()) ;
 
-        const auto& ui_langs = ioParams::get_choices("ui_lang") ;
-
         ofs << "[\n" ;
         for(auto func = pimpl->parser.cbegin() ; 
                 func != pimpl->parser.cend() ; func ++) {
+
             if(func != pimpl->parser.cbegin()) {
                 ofs << ",\n" ;
             }
-            ofs << "    {\n" ;
 
-            ofs << "        \"name\": " << (*func)["name"].dump() << ",\n" ;
-
-            for(const auto& modestr : g_modes_key) {
-                ofs << "        \"" << modestr << "\": " ;
-
-                try {
-                    ofs << (*func).at(modestr).dump() ;
-                }
-                catch(const std::out_of_range&) {
-                    ofs << "[]" ;
-                }
-                ofs << ",\n" ;
-            }
-
-            for(auto lang = ui_langs.cbegin() ;
-                    lang != ui_langs.cend() ; lang ++) {
-
-                if(lang != ui_langs.cbegin()) {
-                    ofs << ",\n" ;
-                }
-                try {
-                    ofs << "        \"" << (*lang).at("value") << "\": " ;
-                    try {
-                        ofs << (*func).at((*lang).at("value")) ;
-                    }
-                    catch(const std::out_of_range&) {}
-                }
-                catch(const std::out_of_range&) {
-                    continue ;
-                }
-            }
-
-            ofs << "\n    }" ;
+            write_pretty_json_one(ofs, *func) ;
         }
 
         ofs << "\n]" ;
     }
 
     void BindingsPanel::translate() {
-        pimpl->initialize() ;
+        pimpl->mode_links.clear() ;
 
-        pimpl->update_func_list() ;
-        pimpl->func_list->SetSelection(0) ;
+        pimpl->update_func_list("") ;
+        pimpl->create_tag_database() ;
 
         pimpl->update_static_obj() ;
         pimpl->update_bindings() ;

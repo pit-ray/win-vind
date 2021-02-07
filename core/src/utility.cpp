@@ -124,4 +124,10 @@ namespace Utility
             throw RUNTIME_EXCEPT(" failed refresh display") ;
         }
     }
+
+    bool is_existed_dir(std::string path) noexcept
+    {
+      auto flag = GetFileAttributesA(path.c_str());
+      return (flag != INVALID_FILE_ATTRIBUTES && (flag & FILE_ATTRIBUTE_DIRECTORY));
+    }
 }

@@ -232,11 +232,6 @@
         "en": "UI Language",
         "ja": "UIの言語"
     },
-    "ppi_factor": {
-        "value": 6,
-        "en": "Resolution PPI Factor",
-        "ja": "解像度PPI倍率"
-    },
     "exapps": {
         "choices": [
             {

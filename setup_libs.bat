@@ -34,8 +34,8 @@ cd ..
 @echo.
 @echo wxWidgets --------------------------------------------------------------------------
 @echo.
-@set wxWidgets_VERSION=3.0.5
-@rem set wxWidgets_VERSION=3.1.4-rc1
+@rem @set wxWidgets_VERSION=3.0.5
+set wxWidgets_VERSION=3.1.4-rc1
 
 @if not exist wxWidgets (
     git clone https://github.com/wxWidgets/wxWidgets.git -b v%wxWidgets_VERSION% -j %NUMBER_OF_PROCESSORS% --depth=1
@@ -88,8 +88,8 @@ cd wxWidgets/build/msw
     )
 
     @echo - Build for 64bit -------------------------------------------------------------
-    mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc setup_h BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w"
-    mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w"
+    mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc setup_h BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00"
+    mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00"
     @rem powershell mv "..\\..\\lib\\gcc_lib" "..\\..\\lib\\gcc_x64_lib"
     @rem
     @if exist gcc_mswu (
@@ -97,8 +97,8 @@ cd wxWidgets/build/msw
     )
 
     @rem @echo - Build for 32bit -------------------------------------------------------------
-    @rem mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc setup_h BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m32 -w"
-    @rem mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m32 -w"
+    @rem mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc setup_h BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m32 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00""
+    @rem mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m32 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00""
     @rem powershell rm -r gcc_mswu
     @if exist gcc_mswu (
        powershell rm -r gcc_mswu
@@ -109,8 +109,8 @@ cd ../../../
 cd ..
 
 @rem If you use wxWidgets-3.1.x, it solves linker error.
-@rem if "%1" == "-mingw" (
-@rem    call copy_mingw_libs.bat
+if "%1" == "-mingw" (
+    call copy_mingw_libs.bat
 )
 
 @echo done.

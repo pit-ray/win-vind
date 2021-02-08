@@ -5,9 +5,9 @@ if(NOT BIT_TYPE)
     set(BIT_TYPE 64)
 endif()
 
-option(COTIRE_ENABLE OFF)
-option(CCACHE_ENABLE ON)
-option(USE_SIMPL_GUI OFF)
+set(COTIRE_ENABLE OFF)
+set(CCACHE_ENABLE ON)
+set(USE_SIMPL_GUI OFF)
 
 enable_language(CXX)
 
@@ -78,6 +78,8 @@ else()
         -DUNICODE
         -D_UNICODE
         -Wl,--allow-multiple-definition #UUID of wxWidgets and one of MinGW
+        -DWINVER=0x0A00
+        -D_WIN32_WINNT=0x0A00
     )
     list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS)
     string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

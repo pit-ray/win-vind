@@ -21,6 +21,7 @@
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/generic/stattextg.h>
 #include "enable_gcc_warning.hpp"
 
 #include "disable_gcc_warning.hpp"
@@ -524,10 +525,10 @@ namespace wxGUI
                         wxDefaultPosition, wxSize(def_btn_size, -1)) ;
                 bottom_sizer->Add(pimpl->def_btn, flags) ;
 
-                pimpl->right_sizer->Add(bottom_sizer, 0, wxALL | wxEXPAND | wxALIGN_RIGHT, BORDER) ;
+                pimpl->right_sizer->Add(bottom_sizer, 0, wxALL | wxEXPAND, BORDER) ;
             }
 
-            root_sizer->Add(pimpl->right_sizer, 0, wxEXPAND | wxALL | wxALIGN_CENTRE_HORIZONTAL, BORDER) ;
+            root_sizer->Add(pimpl->right_sizer, 0, wxEXPAND | wxALL, BORDER) ;
         }
         SetSizerAndFit(root_sizer) ;
 

@@ -12,6 +12,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/generic/stattextg.h>
+#include <wx/window.h>
 #include "enable_gcc_warning.hpp"
 
 #include "wx_settings.hpp"
@@ -73,6 +74,7 @@ namespace wxGUI
       pimpl(std::make_unique<Impl>()),
       ptbi(std::make_unique<SystemTray>(ioParams::get_vs("icon_style"), APP_NAME, this))
     {
+        wxGUI::enable_high_dpi_support(GetDPIScaleFactor()) ;
         SetIcon(wxIcon(ioParams::get_vs("icon_style"), wxBITMAP_TYPE_ICO)) ;
 
 

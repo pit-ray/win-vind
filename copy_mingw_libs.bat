@@ -9,9 +9,9 @@ powershell cp "%MINGW_MAKE_PATH:~0,-21%\\*-mingw*\\lib\\libuxtheme.a" "tmp\\libu
 
 
 copy "tmp\\liboleacc.a" "wxWidgets\\lib\\gcc_lib\\liboleacc.a"
-copy "tmp\\liboleacc.a" "wxWidgets\\lib\\gcc_x64_lib\\liboleacc.a"
+@rem copy "tmp\\liboleacc.a" "wxWidgets\\lib\\gcc_x64_lib\\liboleacc.a"
 
 copy "tmp\\libuxtheme.a" "wxWidgets\\lib\\gcc_lib\\libuxtheme.a"
-copy "tmp\\libuxtheme.a" "wxWidgets\\lib\\gcc_x64_lib\\libuxtheme.a"
+@rem copy "tmp\\libuxtheme.a" "wxWidgets\\lib\\gcc_x64_lib\\libuxtheme.a"
 
 cd ..

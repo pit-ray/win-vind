@@ -108,7 +108,6 @@ namespace wxGUI
       pimpl(std::make_unique<Impl>(this)),
       ptbi(std::make_unique<SystemTray>(ioParams::get_vs("icon_style"), APP_NAME, this))
     {
-        wxGUI::enable_high_dpi_support(GetDPIScaleFactor()) ;
         SetIcon(wxIcon(ioParams::get_vs("icon_style"), wxBITMAP_TYPE_ICO)) ;
 
         SetBackgroundColour(wxColour(*wxWHITE)) ;
@@ -138,11 +137,11 @@ namespace wxGUI
 
         btn_sizer->AddStretchSpacer() ;
 
-        pimpl->ok_btn = new wxButton(this, wxID_OK,  wxT("OK"), wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+        pimpl->ok_btn = new wxButton(this, wxID_OK,  wxT("OK"), wxDefaultPosition, wxSize(-1, -1)) ;
         btn_sizer->Add(pimpl->ok_btn, flags) ;
-        pimpl->cl_btn = new wxButton(this, wxID_CANCEL, wxT("Cancel"), wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+        pimpl->cl_btn = new wxButton(this, wxID_CANCEL, wxT("Cancel"), wxDefaultPosition, wxSize(-1, -1)) ;
         btn_sizer->Add(pimpl->cl_btn, flags) ;
-        pimpl->ap_btn = new wxButton(this, wxID_APPLY, wxT("Apply"), wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+        pimpl->ap_btn = new wxButton(this, wxID_APPLY, wxT("Apply"), wxDefaultPosition, wxSize(-1, -1)) ;
         btn_sizer->Add(pimpl->ap_btn, flags) ;
 
         GetInnerSizer()->Add(btn_sizer, flags) ; //The inner sizer contains the book control and button sizer.

@@ -115,7 +115,7 @@ namespace wxGUI
         def_sizer->AddStretchSpacer() ;
         pimpl->def_btn = new wxButton(
                 this, SettingsEvt::DEFAULT, wxT("Return to Default"),
-                wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+                wxDefaultPosition, wxSize(-1, -1)) ;
         def_sizer->Add(pimpl->def_btn, 0, wxALL | wxEXPAND, BORDER) ;
         root_sizer->Add(def_sizer, 0, wxALL | wxEXPAND, BORDER) ;
 

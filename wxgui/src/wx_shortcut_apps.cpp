@@ -150,11 +150,11 @@ namespace wxGUI
 
             pimpl->add_btn = new wxButton(
                     this, PathListEvt::ADD, trans("buttons/add"),
-                    wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+                    wxDefaultPosition, wxSize(-1, -1)) ;
             ctrls_sizer->Add(pimpl->add_btn, flags) ;
             pimpl->del_btn = new wxButton(
                     this, PathListEvt::DEL, trans("buttons/del"),
-                    wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+                    wxDefaultPosition, wxSize(-1, -1)) ;
             ctrls_sizer->Add(pimpl->del_btn, flags) ;
 
             exapps_sizer->Add(ctrls_sizer, flags) ;
@@ -165,7 +165,7 @@ namespace wxGUI
         def_sizer->AddStretchSpacer() ;
         pimpl->def_btn = new wxButton(
                 this, ExappsEvt::DEFAULT, trans("buttons/default"),
-                wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+                wxDefaultPosition, wxSize(-1, -1)) ;
         def_sizer->Add(pimpl->def_btn, 0, wxEXPAND | wxALL, BORDER) ;
         exapps_sizer->Add(def_sizer, 0, wxEXPAND | wxALL, BORDER) ;
 

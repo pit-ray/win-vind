@@ -455,8 +455,9 @@ namespace wxGUI
                                 wxDefaultPosition, wxSize(50, -1)) ;
                         mov_item_sizer->Add(pimpl->linked_mode_overview[i + j], 0, wxUP | wxBOTTOM | wxRIGHT| wxALIGN_LEFT, BORDER) ;
                     }
-                    mov_sizer->Add(mov_item_sizer, 0, wxLEFT | wxRIGHT | wxALIGN_LEFT, 5) ;
+                    mov_sizer->Add(mov_item_sizer, 0, wxLEFT | wxRIGHT | wxALIGN_CENTER_HORIZONTAL, 5) ;
                 }
+                mov_sizer->SetMinSize(wxSize(c_right_width - 20, -1)) ;
                 pimpl->right_sizer->Add(mov_sizer, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, BORDER) ;
             }
             {
@@ -504,12 +505,12 @@ namespace wxGUI
 
                 pimpl->cmd_add_btn = new wxButton(
                         this, BindingsEvt::ADD_CMD, wxT("Add"),
-                        wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+                        wxDefaultPosition, wxSize(-1, -1)) ;
                 ctrls_sizer->Add(pimpl->cmd_add_btn, fl) ;
 
                 pimpl->cmd_del_btn = new wxButton(
                         this, BindingsEvt::DEL_CMD, wxT("Delete"),
-                        wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
+                        wxDefaultPosition, wxSize(-1, -1)) ;
                 ctrls_sizer->Add(pimpl->cmd_del_btn, fl) ;
                 pimpl->cmds_sizer->Add(ctrls_sizer, flags) ;
                 pimpl->right_sizer->Add(pimpl->cmds_sizer, flags) ;
@@ -518,16 +519,15 @@ namespace wxGUI
             pimpl->right_sizer->AddStretchSpacer() ;
 
             {
-                const auto def_btn_size = 150 ;
                 auto bottom_sizer = new wxBoxSizer(wxHORIZONTAL) ;
                 pimpl->edit_with_vim = new wxButton(
                         this, BindingsEvt::EDIT_WITH_VIM, wxT("Edit With Vim"),
-                        wxDefaultPosition, wxSize(c_right_width - def_btn_size - 20, BUTTON_HEIGHT)) ;
+                        wxDefaultPosition, wxSize(c_right_width / 2, -1)) ;
                 bottom_sizer->Add(pimpl->edit_with_vim, flags) ;
 
                 bottom_sizer->AddStretchSpacer() ;
                 pimpl->def_btn = new wxButton(this, BindingsEvt::DEFAULT, wxT("Return to Default"),
-                        wxDefaultPosition, wxSize(def_btn_size, BUTTON_HEIGHT)) ;
+                        wxDefaultPosition, wxSize(-1, -1)) ;
                 bottom_sizer->Add(pimpl->def_btn, flags) ;
 
                 pimpl->right_sizer->Add(bottom_sizer, 0, wxALL | wxEXPAND, BORDER) ;

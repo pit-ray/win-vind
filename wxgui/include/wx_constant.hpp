@@ -10,26 +10,15 @@
 
 namespace wxGUI
 {
-    static double g_dpi_scale_factor = 1.0 ;
-    inline void enable_high_dpi_support(const double factor) noexcept {
-        g_dpi_scale_factor = factor ;
-    }
-
-    //Settings > System > Display > Scale and layout
-    inline const auto RESCALED_FACTOR() noexcept {
-        return g_dpi_scale_factor * WIDTH_STATIC_FACTOR ;
-    }
-
     inline const auto WIDTH() noexcept {
-        return static_cast<int>(wxGetDisplayPPI().GetWidth() * GOLDEN_WIDTH_RATIO * RESCALED_FACTOR()) ;
+        return static_cast<int>(wxGetDisplayPPI().GetWidth() * GOLDEN_WIDTH_RATIO * WIDTH_STATIC_FACTOR) ;
     }
 
     inline const auto HEIGHT() noexcept {
-        return static_cast<int>(wxGetDisplayPPI().GetHeight() * RESCALED_FACTOR()) ;
+        return static_cast<int>(wxGetDisplayPPI().GetHeight() * WIDTH_STATIC_FACTOR) ;
     }
 
     static constexpr int BORDER = 5 ;
-    static constexpr int BUTTON_HEIGHT = 25 ;
 }
 
 #endif

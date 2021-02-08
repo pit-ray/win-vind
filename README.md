@@ -165,6 +165,12 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 
 If you want more details, please see the <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a>.  
 
+### Example  
+
+- You can change default bindings.  
+  
+<a href="https://github.com/pit-ray/win-vind/discussions/7"><img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/video_preview_customizing_mp4.png?raw=true" width="500"></a>
+
 ## How to contribute
 
 ### Quick Start for Build  

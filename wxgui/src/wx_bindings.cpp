@@ -112,7 +112,7 @@ namespace wxGUI
 
         nlohmann::json parser{} ;
 
-        using ovvec_t = std::vector<wxStaticText*> ;
+        using ovvec_t = std::vector<wxGenericStaticText*> ;
         ovvec_t mode_overview{ovvec_t(8, nullptr)} ;
         ovvec_t linked_mode_overview{ovvec_t(8, nullptr)} ;
 
@@ -155,22 +155,27 @@ namespace wxGUI
                 return ;
             }
 
+
+            auto set_markup = [] (
+                    wxGenericStaticText* p_gst,
+                    const std::string& color,
+                    const std::string& text) {
+                p_gst->SetLabelMarkup("<tt><span foreground='" + color + "'>" + text + "</span></tt>") ;
+            } ;
+
             for(std::size_t i = 0 ; i < g_modes_last_idx ; i ++) {
                 const auto links_idx = mode_links[idstr][i] ;
                 if(links_idx != g_modes_last_idx) { //has links
-                    mode_overview[i]->SetForegroundColour(wxColour(*wxBLACK)) ;
-                    mode_overview[i]->SetLabelText(g_modes_key[i]) ; //White
-                    linked_mode_overview[i]->SetForegroundColour(wxColour(30, 150, 255)) ; //Blue
-                    linked_mode_overview[i]->SetLabelText(" -> " + g_modes_key[links_idx]) ;
+                    set_markup(mode_overview[i], "black", g_modes_key[i]) ;
+                    set_markup(linked_mode_overview[i], "#1e96ff", //Blue
+                            "--&gt; " + g_modes_key[links_idx]) ;
                 }
                 else if(!get_selected_func_json()[g_modes_key[i]].empty()) { //has own bindings
-                    mode_overview[i]->SetForegroundColour(wxColour(5, 105, 5)) ; //Green
-                    mode_overview[i]->SetLabelText(g_modes_key[i]) ; //White
+                    set_markup(mode_overview[i], "#056905", g_modes_key[i]) ; //Green
                     linked_mode_overview[i]->SetLabelText("") ;
                 }
                 else { //does not have bindings
-                    mode_overview[i]->SetForegroundColour(wxColour(230, 80, 70)) ; //Red
-                    mode_overview[i]->SetLabelText(g_modes_key[i]) ; //White
+                    set_markup(mode_overview[i], "#e65146", g_modes_key[i]) ; //Red
                     linked_mode_overview[i]->SetLabelText("") ;
                 }
             }
@@ -303,17 +308,13 @@ namespace wxGUI
                     const auto name = obj.at("name").get<std::string>() ;
 
                     //from name
-                    for(const auto& w : Utility::split(name, "_")) {
-                        tags.insert(w) ;
-                    }
+                    tags.insert(name) ;
 
                     //from label
                     for(const auto& lang : ui_langs) {
                         try {
                             const auto& label = obj.at(lang.at("value")) ;
-                            for(const auto& w : Utility::split(Utility::A2a(label), " ")) {
-                                tags.insert(w) ;
-                            }
+                            tags.insert(Utility::A2a(label)) ;
                         }
                         catch(const std::out_of_range&) {
                             continue ;
@@ -401,7 +402,7 @@ namespace wxGUI
 
         auto root_sizer = new wxBoxSizer(wxHORIZONTAL) ;
         {
-            const auto c_left_width = static_cast<int>(WIDTH() * 0.4) ;
+            const auto c_left_width = static_cast<int>(WIDTH() * 0.5) ;
             auto left_sizer = new wxBoxSizer(wxVERTICAL) ;
             pimpl->search = new wxSearchCtrl(
                     this, BindingsEvt::SEARCH, wxEmptyString, wxDefaultPosition,
@@ -422,7 +423,7 @@ namespace wxGUI
         root_sizer->AddStretchSpacer() ;
         {
             pimpl->right_sizer = new wxBoxSizer(wxVERTICAL) ;
-            const auto c_right_width = static_cast<int>(WIDTH() * 0.5) ;
+            const auto c_right_width = static_cast<int>(WIDTH() * 0.4) ;
             {
                auto id_sizer = new wxBoxSizer(wxHORIZONTAL) ;
                 auto fl = flags ;
@@ -439,21 +440,20 @@ namespace wxGUI
 
                     for(std::size_t j = 0 ; j < 2 ; j ++) {
                         if(j != 0) {
-                            //mov_item_sizer->AddStretchSpacer() ;
-                            mov_item_sizer->Add(new wxStaticText(
-                                        this, wxID_ANY, wxT("\t"),
+                            mov_item_sizer->Add(new wxGenericStaticText(
+                                        this, wxID_ANY, wxT(""),
                                         wxDefaultPosition, wxSize(50, -1)
-                                        ), 0, wxALL | wxALIGN_LEFT, BORDER) ;
+                                        ), 0, wxLEFT | wxALIGN_LEFT, BORDER) ;
                         }
-                        pimpl->mode_overview[i + j] = new wxStaticText(
+                        pimpl->mode_overview[i + j] = new wxGenericStaticText(
                                 this, wxID_ANY, wxT(""),
                                 wxDefaultPosition, wxSize(50, -1)) ;
-                        mov_item_sizer->Add(pimpl->mode_overview[i + j], 0, wxALIGN_LEFT, 0) ;
+                        mov_item_sizer->Add(pimpl->mode_overview[i + j], 0, wxUP | wxBOTTOM | wxLEFT | wxALIGN_LEFT, BORDER) ;
 
-                        pimpl->linked_mode_overview[i + j] = new wxStaticText(
+                        pimpl->linked_mode_overview[i + j] = new wxGenericStaticText(
                                 this, wxID_ANY, wxT(""),
                                 wxDefaultPosition, wxSize(50, -1)) ;
-                        mov_item_sizer->Add(pimpl->linked_mode_overview[i + j], 0, wxALIGN_LEFT, 0) ;
+                        mov_item_sizer->Add(pimpl->linked_mode_overview[i + j], 0, wxUP | wxBOTTOM | wxRIGHT| wxALIGN_LEFT, BORDER) ;
                     }
                     mov_sizer->Add(mov_item_sizer, 0, wxLEFT | wxRIGHT | wxALIGN_LEFT, 5) ;
                 }
@@ -468,7 +468,7 @@ namespace wxGUI
                 }
                 pimpl->mode = new wxChoice(
                         this, BindingsEvt::CHOICE_MODE, wxDefaultPosition,
-                        wxDefaultSize, modes) ;
+                        wxSize(-1, -1), modes) ;
                 pimpl->mode->SetSelection(0) ;
                 mode_sizer->Add(pimpl->mode, flags) ;
 
@@ -478,7 +478,7 @@ namespace wxGUI
                 modes.Insert(wxT("None"), g_modes_last_idx) ;
                 pimpl->linked_mode = new wxChoice(
                         this, BindingsEvt::CHOIDE_LINKED_MODE, wxDefaultPosition,
-                        wxDefaultSize, modes) ;
+                        wxSize(-1, -1), modes) ;
                 pimpl->linked_mode->SetSelection(g_modes_last_idx) ;
                 mode_sizer->Add(pimpl->linked_mode, flags) ;
 
@@ -502,9 +502,14 @@ namespace wxGUI
                 ) ;
                 ctrls_sizer->Add(pimpl->new_cmd, fl) ;
 
-                pimpl->cmd_add_btn = new wxButton(this, BindingsEvt::ADD_CMD, wxT("Add")) ;
+                pimpl->cmd_add_btn = new wxButton(
+                        this, BindingsEvt::ADD_CMD, wxT("Add"),
+                        wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
                 ctrls_sizer->Add(pimpl->cmd_add_btn, fl) ;
-                pimpl->cmd_del_btn = new wxButton(this, BindingsEvt::DEL_CMD, wxT("Delete")) ;
+
+                pimpl->cmd_del_btn = new wxButton(
+                        this, BindingsEvt::DEL_CMD, wxT("Delete"),
+                        wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
                 ctrls_sizer->Add(pimpl->cmd_del_btn, fl) ;
                 pimpl->cmds_sizer->Add(ctrls_sizer, flags) ;
                 pimpl->right_sizer->Add(pimpl->cmds_sizer, flags) ;
@@ -517,12 +522,12 @@ namespace wxGUI
                 auto bottom_sizer = new wxBoxSizer(wxHORIZONTAL) ;
                 pimpl->edit_with_vim = new wxButton(
                         this, BindingsEvt::EDIT_WITH_VIM, wxT("Edit With Vim"),
-                        wxDefaultPosition, wxSize(c_right_width - def_btn_size - 20, -1)) ;
+                        wxDefaultPosition, wxSize(c_right_width - def_btn_size - 20, BUTTON_HEIGHT)) ;
                 bottom_sizer->Add(pimpl->edit_with_vim, flags) ;
 
                 bottom_sizer->AddStretchSpacer() ;
                 pimpl->def_btn = new wxButton(this, BindingsEvt::DEFAULT, wxT("Return to Default"),
-                        wxDefaultPosition, wxSize(def_btn_size, -1)) ;
+                        wxDefaultPosition, wxSize(def_btn_size, BUTTON_HEIGHT)) ;
                 bottom_sizer->Add(pimpl->def_btn, flags) ;
 
                 pimpl->right_sizer->Add(bottom_sizer, 0, wxALL | wxEXPAND, BORDER) ;

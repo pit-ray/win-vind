@@ -148,9 +148,13 @@ namespace wxGUI
             pimpl->any_path_picker->SetBackgroundColour(wxColour(*wxWHITE)) ;
             ctrls_sizer->Add(pimpl->any_path_picker, flags) ;
 
-            pimpl->add_btn = new wxButton(this, PathListEvt::ADD, trans("buttons/add")) ;
+            pimpl->add_btn = new wxButton(
+                    this, PathListEvt::ADD, trans("buttons/add"),
+                    wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
             ctrls_sizer->Add(pimpl->add_btn, flags) ;
-            pimpl->del_btn = new wxButton(this, PathListEvt::DEL, trans("buttons/del")) ;
+            pimpl->del_btn = new wxButton(
+                    this, PathListEvt::DEL, trans("buttons/del"),
+                    wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
             ctrls_sizer->Add(pimpl->del_btn, flags) ;
 
             exapps_sizer->Add(ctrls_sizer, flags) ;
@@ -159,7 +163,9 @@ namespace wxGUI
         exapps_sizer->AddStretchSpacer() ;
         auto def_sizer = new wxBoxSizer(wxHORIZONTAL) ;
         def_sizer->AddStretchSpacer() ;
-        pimpl->def_btn = new wxButton(this, ExappsEvt::DEFAULT, trans("buttons/default")) ;
+        pimpl->def_btn = new wxButton(
+                this, ExappsEvt::DEFAULT, trans("buttons/default"),
+                wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
         def_sizer->Add(pimpl->def_btn, 0, wxEXPAND | wxALL, BORDER) ;
         exapps_sizer->Add(def_sizer, 0, wxEXPAND | wxALL, BORDER) ;
 

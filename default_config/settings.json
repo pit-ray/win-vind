@@ -169,6 +169,16 @@
         "en": "Fade Out Time (s)",
         "ja": "フェードアウト時間 (s)"
     },
+    "gui_font_size": {
+        "value": 9,
+        "en": "GUI Font Size",
+        "ja": "GUIのフォントサイズ"
+    },
+    "gui_font_name": {
+        "value": "Consolas",
+        "en": "GUI Font Name",
+        "ja": "GUIのフォント名"
+    },
     "icon_style": {
         "value": "resources\\icon32_dark.ico",
         "choices": [

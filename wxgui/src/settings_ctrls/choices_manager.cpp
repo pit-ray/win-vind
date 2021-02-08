@@ -53,7 +53,7 @@ namespace wxGUI
     wxChoice* ChoicesManager::create(const std::string name) {
         pimpl->chs[name] = new wxChoice(
             pimpl->parent, wxID_ANY, wxDefaultPosition,
-            wxSize(CTRL_WIDTH, wxDefaultCoord),
+            wxSize(CTRL_WIDTH, -1),
             wxArrayString{}
         ) ;
 

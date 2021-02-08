@@ -7,7 +7,6 @@ endif()
 
 set(COTIRE_ENABLE OFF)
 set(CCACHE_ENABLE ON)
-set(USE_SIMPL_GUI OFF)
 
 enable_language(CXX)
 
@@ -161,10 +160,6 @@ add_subdirectory(core)
 
 #add entry with GUI
 set(ENTRY_CMAKE_SOURCE wxgui)
-if(${USE_SIMPL_GUI})
-    message(STATUS "Use Simple GUI System")
-    set(ENTRY_CMAKE_SOURCE win32gui)
-endif()
 add_subdirectory(${ENTRY_CMAKE_SOURCE})
 
 #build all

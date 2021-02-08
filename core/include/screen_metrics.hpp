@@ -1,11 +1,20 @@
 #ifndef _SCREEN_METRICS_HPP
 #define _SCREEN_METRICS_HPP
 
-//for DPI support
 #define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
+
+//for DPI support
+#if !defined(WINVER)
 
 #define WINVER        _WIN32_WINNT_WIN10
 #define _WIN32_WINNT  _WIN32_WINNT_WIN10
+
+#elif WINVER < _WIN32_WINNT_WIN10
+
+#define WINVER        _WIN32_WINNT_WIN10
+#define _WIN32_WINNT  _WIN32_WINNT_WIN10
+
+#endif
 
 #include <windows.h>
 

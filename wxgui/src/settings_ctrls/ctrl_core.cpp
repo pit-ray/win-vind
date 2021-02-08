@@ -10,16 +10,19 @@ namespace wxGUI
 
     void CtrlCore::load_config() noexcept {
         translate() ;
+        wxPanel::Fit() ;
         do_load_config() ;
     }
 
     void CtrlCore::load_config_default() noexcept {
         translate() ;
+        wxPanel::Fit() ;
         do_load_config_default() ;
     }
 
     void CtrlCore::save_config() noexcept {
         do_save_config() ;
         translate() ;
+        wxPanel::Fit() ;
     }
 }

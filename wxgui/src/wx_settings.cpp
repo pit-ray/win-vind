@@ -52,7 +52,8 @@ namespace wxGUI
                 shown_ctrl->Hide() ;
                 shown_ctrl = ctrls[index] ;
                 shown_ctrl->Show() ;
-                ctrls_sizer->Layout() ;
+                ctrls_sizer->Layout() ; //resize sizer
+                shown_ctrl->Fit() ; //fit to new size
             }
         }
 
@@ -112,7 +113,9 @@ namespace wxGUI
 
         auto def_sizer = new wxBoxSizer(wxVERTICAL) ;
         def_sizer->AddStretchSpacer() ;
-        pimpl->def_btn = new wxButton(this, SettingsEvt::DEFAULT, wxT("Return to Default")) ;
+        pimpl->def_btn = new wxButton(
+                this, SettingsEvt::DEFAULT, wxT("Return to Default"),
+                wxDefaultPosition, wxSize(-1, BUTTON_HEIGHT)) ;
         def_sizer->Add(pimpl->def_btn, 0, wxALL | wxEXPAND, BORDER) ;
         root_sizer->Add(def_sizer, 0, wxALL | wxEXPAND, BORDER) ;
 

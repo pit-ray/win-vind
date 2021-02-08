@@ -1,10 +1,11 @@
 #include "common_ctrl.hpp"
 
 #include "disable_gcc_warning.hpp"
-#include <wx/spinctrl.h>
-#include <wx/stattext.h>
 #include <wx/filepicker.h>
 #include <wx/sizer.h>
+#include <wx/spinctrl.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include "enable_gcc_warning.hpp"
 
 #include "choices_manager.hpp"
@@ -22,12 +23,17 @@ namespace wxGUI
         wxStaticText* gvim_path_label ;
         wxFilePickerCtrl* gvim_path_picker ;
 
+        wxStaticText* font_name_label ;
+        wxTextCtrl* font_name ;
+
         explicit Impl(wxWindow* const self)
         : chm(self),
           scs(),
           lbs(),
           gvim_path_label(nullptr),
-          gvim_path_picker(nullptr)
+          gvim_path_picker(nullptr),
+          font_name_label(nullptr),
+          font_name(nullptr)
         {}
 
         void update_labels() noexcept {
@@ -36,6 +42,7 @@ namespace wxGUI
             }
 
             gvim_path_label->SetLabel(ioParams::get_label("gvim_exe_path")) ;
+            font_name_label->SetLabel(ioParams::get_label("gui_font_name")) ;
         }
 
         template <typename T1, typename T2>
@@ -45,6 +52,8 @@ namespace wxGUI
             }
 
             gvim_path_picker->SetPath(get_vs_func("gvim_exe_path")) ;
+
+            font_name->ChangeValue(get_vs_func("gui_font_name")) ;
         }
 
         ~Impl() noexcept = default ;
@@ -70,7 +79,11 @@ namespace wxGUI
             auto ptr = pimpl->chm.create(obj_name) ;
             root_sizer->Add(ptr, flags) ;
         } ;
-        auto create_sc = [this, &flags, root_sizer](const auto name, const auto min, const auto max, const auto init) {
+        auto create_sc = [this, &flags, root_sizer](
+                const auto name,
+                const auto min,
+                const auto max,
+                const auto init) {
             pimpl->lbs[name] = new wxStaticText(this, wxID_ANY, name) ;
             root_sizer->Add(pimpl->lbs[name], flags) ;
 
@@ -86,7 +99,7 @@ namespace wxGUI
         create_ch("icon_style") ;
         create_ch("kb_type") ;
         create_ch("initial_mode") ;
-        
+ 
         pimpl->gvim_path_label = new wxStaticText(this, wxID_ANY, wxT("gvim_exe_path")) ;
         root_sizer->Add(pimpl->gvim_path_label, flags) ;
 
@@ -96,6 +109,14 @@ namespace wxGUI
                 wxFLP_SMALL | wxFLP_USE_TEXTCTRL | wxFLP_FILE_MUST_EXIST) ;
         pimpl->gvim_path_picker->SetBackgroundColour(wxColour(*wxWHITE)) ;
         root_sizer->Add(pimpl->gvim_path_picker, flags) ;
+
+        create_sc("gui_font_size", 2, 20, 9) ;
+
+        pimpl->font_name_label = new wxStaticText(this, wxID_ANY, wxT("GUI Font Name")) ;
+        root_sizer->Add(pimpl->font_name_label, flags) ;
+        pimpl->font_name = new wxTextCtrl(this, wxID_ANY, wxT("Consolas"),
+                wxDefaultPosition, wxSize(static_cast<int>(WIDTH() / 4), -1)) ;
+        root_sizer->Add(pimpl->font_name, flags) ;
 
         SetSizerAndFit(root_sizer) ;
     }
@@ -121,7 +142,8 @@ namespace wxGUI
         for(const auto& p : pimpl->scs) {
             ioParams::set(p.first, p.second->GetValue()) ;
         }
-        ioParams::set("gvim_exe_path", pimpl->gvim_path_picker->GetPath().ToStdString()) ;
+        ioParams::set("gvim_exe_path", pimpl->gvim_path_picker->GetPath()) ;
+        ioParams::set("gui_font_name", pimpl->font_name->GetLineText(0)) ;
     }
 
     const wxString CommonCtrl::name() noexcept {

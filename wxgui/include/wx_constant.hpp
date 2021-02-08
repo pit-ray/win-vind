@@ -29,6 +29,7 @@ namespace wxGUI
     }
 
     static constexpr int BORDER = 5 ;
+    static constexpr int BUTTON_HEIGHT = 25 ;
 }
 
 #endif

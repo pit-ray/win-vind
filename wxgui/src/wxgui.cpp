@@ -36,7 +36,7 @@ namespace wxGUI
     }
 
     inline static bool is_pre_initialized() {
-        std::ifstream ifs(Path::CONFIG_PATH() + "is_initialized") ;
+        std::ifstream ifs(Path::ROOT_PATH() + "is_initialized") ;
         if(!ifs.is_open()) {
             return false ;
         }
@@ -46,7 +46,7 @@ namespace wxGUI
     }
 
     inline static void finish_pre_initialization() {
-        std::ofstream ofs(Path::CONFIG_PATH() + "is_initialized", std::ios::trunc) ;
+        std::ofstream ofs(Path::ROOT_PATH() + "is_initialized", std::ios::trunc) ;
         ofs << "y" ;
     }
 

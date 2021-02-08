@@ -10,6 +10,7 @@
 #include "msg_logger.hpp"
 #include "virtual_cmd_line.hpp"
 #include "virtual_key_fwd.hpp"
+#include "i_params.hpp"
 
 namespace D2WUtility
 {
@@ -32,18 +33,22 @@ void Dedicate2Window::do_disable() const
 
 void Dedicate2Window::enable_targeting()
 {
-    using namespace D2WUtility ;
-    target_hwnd = GetForegroundWindow() ;
-    past_hwnd   = NULL ;
-    VirtualCmdLine::msgout("-- TARGET ON --") ;
+    if(iParams::get_b(sname())) {
+        using namespace D2WUtility ;
+        target_hwnd = GetForegroundWindow() ;
+        past_hwnd   = NULL ;
+        VirtualCmdLine::msgout("-- TARGET ON --") ;
+    }
 }
 
 void Dedicate2Window::disable_targeting()
 {
-    using namespace D2WUtility ;
-    target_hwnd = NULL ;
-    past_hwnd   = NULL ;
-    VirtualCmdLine::msgout("-- TARGET OFF --") ;
+    if(iParams::get_b(sname())) {
+        using namespace D2WUtility ;
+        target_hwnd = NULL ;
+        past_hwnd   = NULL ;
+        VirtualCmdLine::msgout("-- TARGET OFF --") ;
+    }
 }
 
 void Dedicate2Window::do_process() const

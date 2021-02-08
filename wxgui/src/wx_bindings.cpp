@@ -755,6 +755,7 @@ namespace wxGUI
 
         pimpl->update_func_list("") ;
         pimpl->create_tag_database() ;
+        pimpl->search->Clear() ;
 
         pimpl->update_static_obj() ;
         pimpl->update_bindings() ;

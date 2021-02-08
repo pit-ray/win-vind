@@ -117,7 +117,6 @@ namespace wxGUI
         root_sizer->Add(def_sizer, 0, wxALL | wxEXPAND, BORDER) ;
 
         SetSizerAndFit(root_sizer) ;
-        load_config() ;
 
         Bind(wxEVT_LISTBOX, [this](auto&) {
             pimpl->switch_ctrls() ;

@@ -12,6 +12,7 @@
 
 namespace ioParams
 {
+    bool initialize() ;
     bool load_config() ;
     bool save_config() ;
 

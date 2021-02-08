@@ -164,7 +164,6 @@ namespace wxGUI
         exapps_sizer->Add(def_sizer, 0, wxEXPAND | wxALL, BORDER) ;
 
         SetSizerAndFit(exapps_sizer) ;
-        load_config() ;
 
         //set event handler ----------------------
         Bind(wxEVT_BUTTON, [this](auto&) {

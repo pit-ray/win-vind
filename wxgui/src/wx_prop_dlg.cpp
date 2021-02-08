@@ -119,6 +119,9 @@ namespace wxGUI
         Centre() ;
         SetSize(wxSize(WIDTH(), HEIGHT())) ;
 
+        load_config() ;
+        save_config() ; //to arrage style
+
         Bind(wxEVT_BUTTON, [this](auto&) {
             save_config() ;
             win_vind::load_config() ;

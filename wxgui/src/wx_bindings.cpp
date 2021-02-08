@@ -82,8 +82,9 @@ namespace wxGUI
 
     static const auto g_modes_last_idx = g_modes_label.size() ;
 
-    inline static void write_pretty_json_one(std::ofstream& ofs, const nlohmann::json& obj) ;
     inline static void write_usage(std::ofstream& ofs) ;
+    void write_pretty_all(std::ofstream& ofs, const nlohmann::json& obj) ;
+    void write_pretty_one(std::ofstream& ofs, const nlohmann::json& obj) ;
 
     struct BindingsPanel::Impl {
         wxSearchCtrl* search = nullptr ;
@@ -417,9 +418,6 @@ namespace wxGUI
             root_sizer->Add(left_sizer, flags) ;
         }
  
-        //load bindings from json
-        do_load_config() ;
-
         root_sizer->AddStretchSpacer() ;
         {
             pimpl->right_sizer = new wxBoxSizer(wxVERTICAL) ;
@@ -670,7 +668,7 @@ namespace wxGUI
             const auto& temp_path = temp_dir + "edit_with_vim.json" ;
             std::ofstream ofs(temp_path) ;
             ofs << "[\n" ;
-            write_pretty_json_one(ofs, target_json) ;
+            write_pretty_one(ofs, target_json) ;
             write_usage(ofs) ;
             ofs.flush() ;
 
@@ -743,19 +741,7 @@ namespace wxGUI
         }
 
         std::ofstream ofs(Path::BINDINGS()) ;
-
-        ofs << "[\n" ;
-        for(auto func = pimpl->parser.cbegin() ; 
-                func != pimpl->parser.cend() ; func ++) {
-
-            if(func != pimpl->parser.cbegin()) {
-                ofs << ",\n" ;
-            }
-
-            write_pretty_json_one(ofs, *func) ;
-        }
-
-        ofs << "\n]" ;
+        write_pretty_all(ofs, pimpl->parser) ;
     }
 
     void BindingsPanel::translate() {
@@ -773,7 +759,18 @@ namespace wxGUI
         Layout() ;
     }
 
-    inline static void write_pretty_json_one(std::ofstream& ofs, const nlohmann::json& obj) {
+    void write_pretty_all(std::ofstream& ofs, const nlohmann::json& obj) {
+        ofs << "[\n" ;
+        for(auto func = obj.cbegin() ; func != obj.cend() ; func ++) {
+            if(func != obj.cbegin()) {
+                ofs << ",\n" ;
+            }
+            write_pretty_one(ofs, *func) ;
+        }
+        ofs << "\n]" ;
+    }
+
+    void write_pretty_one(std::ofstream& ofs, const nlohmann::json& obj) {
         const auto& ui_langs = ioParams::get_choices("ui_lang") ;
 
         ofs << "    {\n" ;
@@ -815,7 +812,7 @@ namespace wxGUI
     inline static void write_usage(std::ofstream& ofs) {
         ofs << ",\n" ;
 
-        std::ifstream ifs(Path::Default::JSON_USAGE()) ;
+        std::ifstream ifs("resources/usage.json") ;
         nlohmann::json usage ;
         ifs >> usage ;
 

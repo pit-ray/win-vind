@@ -14,22 +14,22 @@
 
 namespace ioParams
 {
-    using namespace nlohmann ;
-    json parser ;
-
-    inline static const auto _init() {
+    using json = nlohmann::json ;
+    static json parser{} ;
+    static json def_parser{} ;
+    bool initialize() {
         try {
-            json j ;
             std::ifstream ifs(Path::Default::SETTINGS()) ;
-            ifs >> j ;
-            return j ;
+            ifs >> def_parser ;
+
+            load_config() ;
+            return true ;
         }
         catch(const std::exception& e) {
             ERROR_PRINT(e.what()) ;
-            return json() ;
+            return false ;
         }
     }
-    static const json def_parser = _init() ;
 
     bool load_config() {
         parser.clear() ;

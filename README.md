@@ -23,7 +23,7 @@
 ### 1. GUI Operation like Vim  
 You can operate all windows, the mouse, virtual desktops, GUI-objects with key-bindings like Vim.  
 
-**Example) EasyClick (default keybinding: `F`)**  
+**Example) EasyClick (default keybinding: `FF`, `Fa`, `Fo`, `Fm`, `Fh`)**  
   
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=700>  
 
@@ -34,7 +34,7 @@ It works well in UWP applications.
 ### 2. Vim emulation everywhere  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  
 
-#### Example)    
+#### Demo    
 **Notepad**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/edi-mode-demo.gif?raw=true" /> 
 
@@ -49,7 +49,7 @@ There are two main modes: **GUI Mode** for GUI operation and **Editor Mode** for
 ### 4. Process Control  
 If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad` like below.  
 
-**Example**  
+#### Demo  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cmd-demo.gif?raw=true" width=400 title="cmd-demo">  
 
 ### 5. Using from command line
@@ -87,6 +87,13 @@ You can call a pre-defined function with favorite keybindings. The above-stated 
 |Command|This is shared Editor mode and GUI mode. A virtual command line is launched, and Enter is available to decide and BackSpace is available to erase. You can move the history with Up and Down.|
 
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use - win-vind</a> for details.  
+
+#### Demo  
+
+- You can change default bindings.  
+  
+<a href="https://github.com/pit-ray/win-vind/discussions/7"><img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/video_preview_customizing_mp4.png?raw=true" width="500"></a>
+
 
 ### Default Key Config  
 #### Window Control  
@@ -164,12 +171,6 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 |-|`:exit`|Exit win-vind|  
 
 If you want more details, please see the <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a>.  
-
-### Example  
-
-- You can change default bindings.  
-  
-<a href="https://github.com/pit-ray/win-vind/discussions/7"><img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/video_preview_customizing_mp4.png?raw=true" width="500"></a>
 
 ## How to contribute
 

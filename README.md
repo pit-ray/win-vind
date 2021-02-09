@@ -1,7 +1,7 @@
 <h1 align="center">win-vind</h1>
 
 <p align="center">
-  <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="200" height="200" />
+  <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/win-vind-icon.png?raw=true" width="150" height="150" />
   <p align="center"><b>Simple Vim Key Binder for Windows</b></p>  
 </p>  
 

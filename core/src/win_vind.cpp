@@ -50,15 +50,30 @@ namespace win_vind
 
     bool initialize(const std::string func_name) noexcept {
         try {
-            auto created_map = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
+            Logger::initialize() ;
+
+            auto created_map = CreateFileMappingA(
+                    INVALID_HANDLE_VALUE, NULL,
+                    PAGE_READWRITE, 0,
+                    MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
+
+            if(created_map == NULL) {
+                ERROR_PRINT("Could not create memory-mapped file.") ;
+                return false ;
+            }
+            g_map.reset(created_map) ;
+
             if(GetLastError() == ERROR_ALREADY_EXISTS) {
+                // Sub win-vind
                 if(!func_name.empty()) {
                     auto hmap = OpenFileMappingA(FILE_MAP_WRITE, FALSE, MEMORY_MAPPED_FILE_NAME) ;
                     if(hmap == NULL) {
                         return false ;
                     }
 
-                    auto data = get_memmapped_file(hmap) ;
+                    std::unique_ptr<void, decltype(delete_handle)> safe_hmap(hmap, delete_handle) ;
+
+                    auto data = get_memmapped_file(safe_hmap.get()) ;
                     if(data != NULL) {
                         std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
                     }
@@ -66,15 +81,7 @@ namespace win_vind
                 return false ;
             }
 
-            Logger::initialize() ;
-
-            if(created_map == NULL) {
-                ERROR_PRINT("Could not create memory-mapped file.") ;
-                return false ;
-            }
-
-            g_map.reset(created_map) ;
-
+            // Main win-vind
             auto data = get_memmapped_file(g_map.get()) ;
             if(data.get() == NULL) {
                 ERROR_PRINT("Could not open memory-mapped file.") ;

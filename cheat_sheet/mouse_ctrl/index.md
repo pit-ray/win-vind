@@ -61,14 +61,14 @@ It is the same as **Ctrl + A** of shortcut keys on Windows.
 
 <br>
 
-### EasyClick
+### EasyClick (Left Click)  
 
 |Details|Status|  
 |:---|:---|  
-|ID|**easy_click**|  
+|ID|**easy_click_left**|  
 |N-Repeat|<span class="no">Not Supported</span>|  
-|Default Key|`F`|  
-|Default Command|`:ec`| 
+|Default Key|`FF`, `Fo`|  
+|Default Command|`:ecl`| 
 
 You can jump the cursor and click by typing the character identifiers like <a href="https://github.com/philc/vimium">Vimium</a> which is the famous Google Chrome Plugin or <a href="https://github.com/easymotion/vim-easymotion">EasyMotion</a> which is very famous as Vim Plugin. 
 
@@ -78,9 +78,49 @@ It must deep-scan GUI objects in the selected window, another thread window in t
 
 The function performs well as long as a target application supported **UI Automation** of Windows API. For example, **EasyClick** also detects URL like **Vimium** on **Microsoft Edge**, but detects the only UI on **Google Chrome** or **Firefox**. Basically, it works well on all standard applications of Windows.    
 
-<br>
+<br>  
 
-### Update EasyClick
+### EasyClick (Right Click)  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**easy_click_right**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`Fa`|  
+|Default Command|`:ecr`| 
+
+This is a right click version of EasyClick.  
+
+<br>  
+
+### EasyClick (Mid Click)  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**easy_click_mid**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`Fm`|  
+|Default Command|`:ecm`| 
+
+This is a middle click version of EasyClick.  
+
+<br>  
+
+### EasyClick (Hovering)  
+
+|Details|Status|  
+|:---|:---|  
+|ID|**easy_click_hover**|  
+|N-Repeat|<span class="no">Not Supported</span>|  
+|Default Key|`Fh`|  
+|Default Command|`:ech`| 
+
+This is a hovering version of EasyClick. In other words, it gives a mouse cursor move but does not click.  
+
+<br>  
+
+
+### Rescan for EasyClick
 
 |Details|Status|  
 |:---|:---|  

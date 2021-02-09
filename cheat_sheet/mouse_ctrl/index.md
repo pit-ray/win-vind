@@ -127,7 +127,7 @@ This is a hovering version of EasyClick. In other words, it gives a mouse cursor
 |ID|**update_easy_click**|  
 |N-Repeat|<span class="no">Not Supported</span>|  
 |Default Key|`<C-F>`|  
-|Default Command|-| 
+|Default Command|`:update ec`, `:update EasyClick`| 
 
 It scans the GUI objects in the selected window, another thread window in the same process, and these child windows. And, it stores the scanned result as some caches. If you scan a window having a lot of GUI objects (e.g. **Microsoft Office Excel**), it may take a few seconds.   
 

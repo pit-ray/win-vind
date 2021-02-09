@@ -26,11 +26,7 @@ You can operate all windows, the mouse, virtual desktops, GUI-objects with key-b
 **Example) EasyClick (default keybinding: `FF`, `Fa`, `Fo`, `Fm`, `Fh`)**  
 It works well in Win32 or UWP applications.  
 
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=700>&nbsp;&nbsp;<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/on_uwp.jpg?raw=true" height=350>    
-
- 
-  
-
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=600>&nbsp;&nbsp;<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/on_uwp.jpg?raw=true" height=300>    
 
 ### 2. Vim emulation everywhere  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  

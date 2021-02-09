@@ -3,6 +3,7 @@ max_jobs: 12
 clone_depth: 1
 install:
 - cmd: cmd /c "call setup_libs.bat -msvc 64"
+cache: libs
 before_build:
 - cmd: build.bat -debug -msvc 64
 build:

@@ -100,7 +100,10 @@ You can change default bindings.
 |:---:|:---:|:---:|
 |`o`|-|Left Click|
 |`a`|-|Right Click|
-|`F`|`:ec`|<a href="https://pit-ray.github.io/win-vind/cheat_sheet/mouse_ctrl/#easyclick">EasyClick</a> (hinting feature)|
+|`FF`, `Fo`|`:ecl`|<a href="https://pit-ray.github.io/win-vind/cheat_sheet/mouse_ctrl/#easyclick">EasyClick (Left Click)</a> (hinting feature)|
+|`Fa`|`:ecr`|EasyClick (Right Click)|
+|`Fm`|`:ecm`|EasyClick (Mid Click)|
+|`Fh`|`:ech`|EasyClick (Hovering)|
 |`h`|-|Move Cursor Left|
 |`j`|-|Move Cursor Down|
 |`k`|-|Move Cursor Up|

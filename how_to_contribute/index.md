@@ -54,7 +54,7 @@ I recommend to install follow softwares or libraries.
 |:---:|:---:|:---:|
 |MinGW-w64|GCC-8.1.0-x86_64-posix-seh|<a href="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/">MinGW-w64 SourceForge.net</a>|
 |CMake|3.14.4|<a href="https://cmake.org/download/">Download - CMake</a>|
-|wxWidgets|3.0.5|<a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a>|
+|wxWidgets|3.1.4-rc1|<a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a>|
 |NSIS|3.06.1|<a href="https://nsis.sourceforge.io/Download">Download - NSIS</a>|
 |Windows10 SDK|10.0.19041.0|<a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/">Microsoft Windows10 SDK - Windows app development</a>|
 

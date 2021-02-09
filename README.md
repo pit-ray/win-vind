@@ -18,55 +18,54 @@
 <br>  
 
 ## Description
-**win-vind** provides the lightweight **Hybrid UI System of CUI and GUI**. Mainly, there are five point features. 
+**win-vind** provides the lightweight Hybrid UI System of CUI and GUI. There are five main features.  
 
-### 1. GUI Operation like Vim  
-You can operate all windows, the mouse, virtual desktops, GUI-objects with key-bindings like Vim.  
+#### 1. GUI Operation like Vim  
+You can operate windows, a mouse cursor , virtual desktops, GUI-objects with key-bindings like Vim.  
 
-**Example) EasyClick (default keybinding: `FF`, `Fa`, `Fo`, `Fm`, `Fh`)**  
+**Example** EasyClick (default: `FF`, `Fa`, `Fm`, `Fh`)  
 It works well in Win32 or UWP applications.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=600>&nbsp;&nbsp;<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/on_uwp.jpg?raw=true" height=300>    
 
-### 2. Vim emulation everywhere  
+#### 2. Vim emulation everywhere  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  
 
-#### Demo  
+**Demo**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/edi-mode-demo.gif?raw=true" width=400/>&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/msword-demo.gif?raw=true" width=400/>   
 
 
-### 3. Mode Management like Vim  
+#### 3. Mode Management like Vim  
 There are two main modes: **GUI Mode** for GUI operation and **Editor Mode** for Vim emulation.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/mode_overview_2.jpg?raw=true" width=700 />  
 
-### 4. Process Control  
+#### 4. Process Control  
 If you register `notepad.exe` as `notepad`, could launch it by typing `:!notepad` like below.  
 
-#### Demo  
+**Demo**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cmd-demo.gif?raw=true" width=400 title="cmd-demo">  
 
-### 5. Using from command line
+#### 5. Using from command line
 You can operate win-vind from command lines.  
 
 **Example**  
 ```sh  
 $ ./win-vind.exe --func change_to_normal
 ```
-Therefore, it enables to make Vim link to GUI. Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>  
-
-If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
+Therefore, it enables to make Vim link to GUI. Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>. If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## Download
-### 3.0.2, (Latest Version)
-Date: 2021/1/20  
-#### 32bit 
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_32bit.exe.zip">setup_win-vind_3.0.2_32bit.exe.zip</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.2/win-vind_3.0.2_32bit.zip">win-vind_3.0.2_32bit.zip</a>  
+### 3.1.0, (Latest Version)
+Date: 2021/2/8    
 
-#### 64bit
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.2/setup_win-vind_3.0.2_64bit.exe.zip">setup_win-vind_3.0.2_64bit.exe.zip</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.0.2/win-vind_3.0.2_64bit.zip">win-vind_3.0.2_64bit.zip</a>
+#### 32bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/setup_win-vind_3.1.0_32bit.exe.zip">setup_win-vind_3.1.0_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/win-vind_3.1.0_32bit.zip">win-vind_3.1.0_32bit.zip</a>  
+
+#### 64bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/setup_win-vind_3.1.0_64bit.exe.zip">setup_win-vind_3.1.0_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/win-vind_3.1.0_64bit.zip">win-vind_3.1.0_64bit.zip</a>
 
 
 ## Usage
@@ -77,21 +76,18 @@ You can call a pre-defined function with favorite keybindings. The above-stated 
 |GUI Normal, Edi Normal|All keys except hotkeys will be disabled. Therefore, recommended to include functions to transit to Insert Mode.|
 |GUI Insert, Edi Insert|Inputted keys will not be disabled and are transmitted normally to other applications. When the commands are detected, a function will be called.|
 |GUI Visual|It holds right-click.|
-|Edi Visual|Each function works on the assumption you hold down a shift key.|
+|Edi Visual, Edi Visual Line|Each function works on the assumption you hold down a shift key.|
 |Command|This is shared Editor mode and GUI mode. A virtual command line is launched, and Enter is available to decide and BackSpace is available to erase. You can move the history with Up and Down.|
 
 Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use - win-vind</a> for details.  
 
-#### Demo  
-
-- You can change default bindings.  
-  
+**Demo**  
+You can change default bindings.    
 <a href="https://github.com/pit-ray/win-vind/discussions/7"><img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/video_preview_customizing_mp4.png?raw=true" width="500"></a>
 
 
 ### Default Key Config  
-#### Window Control  
-
+**Window Control**  
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
 |`<C-w>s`|`:sw`|Switch Window|
@@ -99,8 +95,7 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 |`<C-w>h`|`:lsplit`|Snap Current Window to Left|
 |`<C-w>l`|`:rsplit`|Snap Current Window to Right|
 
-#### Mouse Control  
-
+**Mouse Control**  
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
 |`o`|-|Left Click|
@@ -115,15 +110,13 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 |`<C-y>`|-|Scroll Up|
 |`<C-e>`|-|Scroll Down|
 
-#### Virtual Desktop Control
-
+**Virtual Desktop Control**  
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
 |`<C-v>h`|-|Switch Virtual Desktop to Left|
 |`<C-v>l`|-|Switch Virtual Desktop to Right|
 
-#### Mode Control  
-
+**Mode Control** 
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
 |`<Esc-Left>`|-|Change to GUI Normal|
@@ -134,16 +127,13 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 |`v`|-|Change to Editor Visual|
 |`V`|-|Change to Editor Line Visual|
 
-#### Process Launcher
-
+**Process Launcher**   
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
 |-|`:sh`, `:term`|Start Command Prompt|
 |-|`:!<any>`|Start Any Application|
 
-
-#### Utilities
-
+**Utilities**  
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
 |-|`:w`|Save Opened File|
@@ -157,14 +147,13 @@ Please visit <a href="https://pit-ray.github.io/win-vind/how_to_use/">How to use
 |`dd`|-|Cut|
 |`x`|-|Delete|
 
-#### Others 
-
+**Others**   
 |Binding|Command|Meanings|
 |:---:|:---:|:---:|
 |-|`:set`|Show Config Window of win-vind|
 |-|`:exit`|Exit win-vind|  
 
-If you want more details, please see the <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a>.  
+However, there are more functions, so if you want more details, please see the <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a>.  
 
 ## How to contribute
 

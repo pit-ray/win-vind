@@ -10,12 +10,12 @@
 
 namespace wxGUI
 {
-    inline const auto WIDTH() noexcept {
+    inline int WIDTH() noexcept {
         return static_cast<int>(wxGetDisplayPPI().GetWidth() * GOLDEN_WIDTH_RATIO * WIDTH_STATIC_FACTOR) ;
     }
 
-    inline const auto HEIGHT() noexcept {
-        return static_cast<int>(wxGetDisplayPPI().GetHeight() * WIDTH_STATIC_FACTOR) ;
+    inline int HEIGHT() noexcept {
+        return wxGetDisplayPPI().GetHeight() * WIDTH_STATIC_FACTOR ;
     }
 
     static constexpr int BORDER = 5 ;

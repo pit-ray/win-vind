@@ -50,7 +50,7 @@ namespace wxGUI
         ofs << "y" ;
     }
 
-    inline static bool initialize_config_files() noexcept ;
+    inline static bool initialize_config_files() ;
 
     static std::atomic_bool runnable{true} ;
 
@@ -163,7 +163,7 @@ namespace wxGUI
         //the program is already about to exit.
     }
 
-    inline static bool initialize_config_files() noexcept {
+    inline static bool initialize_config_files() {
         auto overwrite_bindings = [] {
             if(!CopyFileA(Path::Default::BINDINGS().c_str(), Path::BINDINGS().c_str(), FALSE)) {
                 throw std::runtime_error("Could not overwrite " + Path::BINDINGS() + ".") ;

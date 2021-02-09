@@ -11,7 +11,7 @@
 namespace Path
 {
     static inline const auto _get_home_path() {
-        char home_path[200] = {0} ;
+        char home_path[1000] = {0} ;
         if(!GetEnvironmentVariableA("HOMEPATH", home_path, 1000)) {
             throw RUNTIME_EXCEPT("cannot find %HOMEPATH% in GetEnviromentVariable") ;
         }

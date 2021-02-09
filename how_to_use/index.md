@@ -74,12 +74,10 @@ However, it is based on GUI, so some Vimmer dislike its UI. In this case, rewrit
 <hr>
 
 ### Key Config
-You can customize all key bindings by rewriting the JSON settings file easily. The location of the file is different depending on the installation way. Refer to the following table.
+You can customize all key bindings by rewriting the JSON settings file or using GUI easily.  
 
-|Installation Type|Path|
-|:---:|:---|
-|Installer|C:/Users/**&lt;User-Name&gt;**/.win-vind/bindings.json|
-|Zip|**&lt;Zip-Root&gt;**/config/bindings.json|
+**Demo**  
+<a href="https://github.com/pit-ray/win-vind/discussions/7"><img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/video_preview_customizing_mp4.png?raw=true" width="500"></a>  
 
 Its syntaxes are based on original Vim, but have some unique keywords. You can refer all keywords at <a href="https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/">Keyword Lists</a>.
 

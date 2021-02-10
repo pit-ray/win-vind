@@ -160,6 +160,8 @@ However, there are more functions, so if you want more details, please see the <
 
 ## How to contribute
 
+Please read its archtecture at <a href="https://github.com/pit-ray/win-vind/blob/master/architecture.md">architecture.md</a>.  
+
 ### Quick Start for Build  
 If you have already installed MinGW-w64 or Visual Studio 2019, all you need is the next steps.  
 

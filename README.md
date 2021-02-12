@@ -71,7 +71,7 @@ Date: 2021/2/8
 ## Usage
 You can call a pre-defined function with favorite keybindings. The above-stated mode management has the following features, and all modes can have functions to switch to each mode with your keybindings. All modes have presets of keybindings.
 
-|Mode|Features|
+|Mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Features|
 |:-----|:---|
 |GUI Normal, Edi Normal|All keys except hotkeys will be disabled. Therefore, recommended to include functions to transit to Insert Mode.|
 |GUI Insert, Edi Insert|Inputted keys will not be disabled and are transmitted normally to other applications. When the commands are detected, a function will be called.|
@@ -111,7 +111,7 @@ You can change default bindings.
 |`0`|-|Jump Cursor to Left|
 |`f`|-|<a href="https://pit-ray.github.io/win-vind/cheat_sheet/mouse_ctrl/#jump-cursor-by-keyboard-mapping">Jump Cursor by Keyboard Mapping</a>|
 |`<C-y>`|-|Scroll Up|
-|`<C-e>`|-|Scroll Down|
+|`<C-e>`|-|Scroll Down|j
 
 **Virtual Desktop Control**  
 |Binding|Command|Meanings|

@@ -25,7 +25,7 @@ This page describes some tips for using win-vind with Vim.
 win-vind is prohibited multiple running, but you can operate win-vind from any consoles by using **--func Function-ID** option with the inter-process communication.  
 
 <p align="center">
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/interproc_overview.png?raw=true" width=400/>  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/interproc_overview.png?raw=true" width=600/>  
 </p>  
 
 **Example** (long version)

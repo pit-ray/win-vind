@@ -1,6 +1,9 @@
 os: windows
 language: cpp
+env:
+      - NMAKE_PATH="/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/amd64/"
+      - RC_PATH="/c/Program Files (x86)/Windows Kits/10/bin/x64/"
 install:
-  - ./setup_libs.bat -msvc
+  - cmd /c "call setup_libs.bat -msvc 64"
 script:
   - ./build.bat -debug -msvc 64

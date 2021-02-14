@@ -2,6 +2,7 @@ os: windows
 language: cpp]
 before_install:
   - choco install python3
+  - export PATH="/c/Python39:/c/Python39/Scripts:$PATH"
   - choco install pip
   - pip3 install --user cpp-coveralls
 install:

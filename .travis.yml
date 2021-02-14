@@ -2,7 +2,7 @@ os: windows
 language: cpp]
 before_install:
   - choco install python3
-  - choco install pip3
+  - choco install pip
   - pip3 install --user cpp-coveralls
 install:
   - choco install visualstudio2019community

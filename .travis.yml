@@ -1,9 +1,11 @@
 os: windows
-language: cpp
-install:
-  - choco install python
-  - choco install pip
+language: cpp]
+before_install:
+  - choco install python3
+  - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+  - python -m pip install --upgrade pip wheel
   - pip install --user cpp-coveralls
+install:
   - choco install visualstudio2019community
   - choco install visualstudio2019-workload-nativedesktop
   - ./setup_libs.bat -msvc 64

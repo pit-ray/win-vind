@@ -68,6 +68,18 @@ Date: 2021/2/8
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/win-vind_3.1.0_64bit.zip">win-vind_3.1.0_64bit.zip</a>
 
 
+### 3.2.0 (Preview Version)  
+Date: 2021/2/14  
+
+#### 32bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/setup_win-vind_3.2.0_32bit.exe.zip">setup_win-vind_3.2.0_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/win-vind_3.2.0_32bit.zip">win-vind_3.2.0_32bit.zip</a>  
+
+#### 64bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/setup_win-vind_3.2.0_64bit.exe.zip">setup_win-vind_3.2.0_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/win-vind_3.2.0_64bit.zip">win-vind_3.2.0_64bit.zip</a> 
+
+
 ## Usage
 You can call a pre-defined function with favorite keybindings. The above-stated mode management has the following features, and all modes can have functions to switch to each mode with your keybindings. All modes have presets of keybindings.
 
@@ -180,7 +192,6 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 ## ToDo 
 
 - Registration of keybindings by pressing keys.   
-- Make scanning faster in EasyClick.
 - A feature to switch windows with a single push, just like switching weapons in game. (e.g. 1: Google Chrome, 2: Vim, 3: Powershell)
 - Implement `E` or `e` in Editor Mode.
 

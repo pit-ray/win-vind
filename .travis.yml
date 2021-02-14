@@ -1,0 +1,6 @@
+os: windows
+language: cpp
+install:
+  - ./setup_libs.bat -msvc
+script:
+  - ./build.bat -debug -msvc 64

@@ -6,4 +6,5 @@ env:
 install:
   - cmd /c "call setup_libs.bat -msvc 64"
 script:
-  - ./build.bat -debug -msvc 64
+  - export PATH="$NMAKE_PATH:$RC_PATH:$PATH"
+  - build.bat -debug -msvc 64

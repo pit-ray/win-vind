@@ -1,10 +1,8 @@
 os: windows
 language: cpp]
 before_install:
-  - choco install python3 --version=3.8
-  - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
   - choco install pip
-  - pip3 install --user cpp-coveralls
+  - pip install --user cpp-coveralls
 install:
   - choco install visualstudio2019community
   - choco install visualstudio2019-workload-nativedesktop

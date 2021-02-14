@@ -1,0 +1,8 @@
+os: windows
+language: cpp
+install:
+  - choco install visualstudio2019community
+  - choco install visualstudio2019-workload-nativedesktop
+  - ./setup_libs.bat -msvc 64
+script:
+  - ./build.bat -debug -msvc 64

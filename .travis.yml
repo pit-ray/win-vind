@@ -1,6 +1,9 @@
 os: windows
-language: cpp]
+language: cpp
+env: PATH=/c/Python39:/c/Python39/Scripts:$PATH
 before_install:
+  - choco install python
+  - python -m pip install --upgrade pip
   - pip install --user cpp-coveralls
 install:
   - choco install visualstudio2019community

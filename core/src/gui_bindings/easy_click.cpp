@@ -14,6 +14,7 @@
 #include "win_vind.hpp"
 
 #include "disable_gcc_warning.hpp"
+#include <stdexcept>
 #include <windows.h>
 #include <wingdi.h>
 #include <winuser.h>
@@ -366,7 +367,7 @@ namespace EsyClk
     //    @Identifier  Assign  Functions
     //
     // ---------------------------------------
-    static constexpr std::array<unsigned char, 26> labels = {
+    static constexpr std::array<unsigned char, 26> gcx_labels = {
         VKC_A, VKC_S, VKC_D, VKC_G, VKC_H,
         VKC_K, VKC_L, VKC_Q, VKC_W, VKC_E,
         VKC_R, VKC_T, VKC_Y, VKC_U, VKC_I,
@@ -411,49 +412,76 @@ namespace EsyClk
     //   [pos4] c b
     //   [pos5] c c
     //
+    //
+    //
+    //
     inline static auto assign_identifiers_label(const std::size_t target_count) {
-        std::vector<hint_t> idx2hint(target_count) ;
+        std::vector<hint_t> idx2hint(target_count, hint_t{}) ;
+        std::size_t target_idx = 0 ;
 
-        auto left_count = target_count ;
-        std::size_t idx = 0 ;
-
-        //optimizing for 1 digit  (Step1)
-        for(auto& key : labels) {
-            idx2hint[idx].push_back(key) ;
-            idx ++ ;
-            left_count -- ;
-
-            if(left_count == 0) {
-                return idx2hint ;
+        // <= 26
+        if(target_count <= gcx_labels.size()) {
+            for(std::size_t i = 0 ; i < target_count ; i ++) {
+                idx2hint[i].push_back(gcx_labels[i]) ;
             }
+            return idx2hint ;
         }
 
-        //optimizing for 2 digit
-        auto head_idx = labels.size() - 1 ;
-        auto head_itr = labels.cend() - 1 ;
-        while(true) {
-            //(Step2)
-            if(left_count != 0) {
-                idx2hint[head_idx].push_back(labels.front()) ;
+        // <= 26 * 26 (=676)
+        static constexpr auto gcx_labels_size_pow2 = Utility::pow_i(static_cast<unsigned int>(gcx_labels.size()), 2) ;
+        if(target_count <= gcx_labels_size_pow2) {
+
+            const auto l2_num = target_count / gcx_labels.size() ;
+
+            for(auto i = l2_num ; i < gcx_labels.size() ; i ++) {
+                idx2hint[target_idx].push_back(gcx_labels[i]) ;
+                target_idx ++ ;
             }
 
-            //(Step3)
-            for(auto itr = labels.cbegin() + 1 ; itr != labels.cend() ; itr ++) {
-                idx2hint[idx].push_back(*head_itr) ;
-                idx2hint[idx].push_back(*itr) ;
-                idx ++ ;
-                left_count -- ;
-                if(left_count == 0) {
-                    return idx2hint ;
+            for(std::size_t j = 0 ; j < l2_num ; j ++) {
+                try {
+                    for(std::size_t  i = 0 ; i < gcx_labels.size() ; i ++) {
+                        idx2hint.at(target_idx).push_back(gcx_labels[j]) ;
+                        idx2hint[target_idx].push_back(gcx_labels[i]) ;
+                        target_idx ++ ;
+                    }
+                }
+                catch(const std::out_of_range&) {
+                    break ;
                 }
             }
 
-            if(head_itr == labels.cbegin()) {
-                return idx2hint ;
-            }
-            head_itr -- ;
-            head_idx -- ;
+            return idx2hint ;
         }
+
+        // <= 26 * 26 * 26 (=17576)
+        const auto l3_num = target_count / gcx_labels_size_pow2 ;
+
+        for(std::size_t j = l3_num ; j < gcx_labels.size() ; j ++) {
+            for(std::size_t i = 0 ; i < gcx_labels.size() ; i ++) {
+                idx2hint[target_idx].push_back(gcx_labels[j]) ;
+                idx2hint[target_idx].push_back(gcx_labels[i]) ;
+                target_idx ++ ;
+            }
+        }
+
+        for(std::size_t k = 0 ; k < l3_num ; k ++) {
+            try {
+                for(std::size_t j = 0 ; j < gcx_labels.size() ; j ++) {
+                    for(std::size_t i = 0 ; i < gcx_labels.size() ; i ++) {
+                        idx2hint.at(target_idx).push_back(gcx_labels[k]) ;
+                        idx2hint[target_idx].push_back(gcx_labels[j]) ;
+                        idx2hint[target_idx].push_back(gcx_labels[i]) ;
+                        target_idx ++ ;
+                    }
+                }
+            }
+            catch(const std::out_of_range&) {
+                break ;
+            }
+        }
+
+        return idx2hint ;
     }
 
     static std::vector<std::string> g_hints_str{} ;
@@ -471,7 +499,7 @@ namespace EsyClk
     }
 
     static LOGFONTA g_font ;
-    void update_font() {
+    inline static void update_font() {
         g_font.lfHeight         = iParams::get_l("easy_click_font_size") ;
         g_font.lfWidth          = 0 ;
         g_font.lfEscapement     = 0 ;
@@ -558,29 +586,32 @@ namespace EsyClk
             }
         } ;
 
-        for(std::size_t i = 0 ; i < points.size() ; i ++) {
-            auto str = " " + hints_str[i] + " " ; //add margin
+        auto add_margin = [](const auto& str) {
+            return " " + str + " " ;
+        } ;
 
-            if(exist) {
-                if(matched_list[i] == 0) {
-                    continue ;
-                }
-                else {
-                    draw(bkcolor, txcolor, str, points[i]) ;
-
-                    auto overwrite_str = " " + hints_str[i].substr(0, matched_list[i]) ;
-                    draw(bkcolor, txcolor_ready, overwrite_str, points[i]) ;
-                    continue ;
-                }
+        if(!exist) {
+            for(std::size_t i = 0 ; i < points.size() ; i ++) {
+                draw(bkcolor, txcolor, add_margin(hints_str[i]), points[i]) ;
             }
+        }
+        else {
+            for(std::size_t i = 0 ; i < points.size() ; i ++) {
+                if(matched_list[i] == 0)
+                    continue ;
 
-            draw(bkcolor, txcolor, str, points[i]) ;
+                draw(bkcolor, txcolor, add_margin(hints_str[i]), points[i]) ;
+
+                auto overwrite_str = " " + hints_str[i].substr(0, matched_list[i]) ;
+                draw(bkcolor, txcolor_ready, overwrite_str, points[i]) ;
+            }
         }
     }
 
     inline static void loop_for_key_matching(
             const std::vector<Point2D>& points,
             const std::vector<hint_t>& hints,
+            const std::vector<std::string>& hints_str,
             const unsigned char sendkey=VKC_UNDEFINED) {
 
         using Utility::remove_from_back ;
@@ -594,11 +625,7 @@ namespace EsyClk
         const auto hwnd = GetForegroundWindow() ;
 
         while(win_vind::update_background()) {
-            EsyClk::draw_identifiers(
-                    EsyClk::g_objpos,
-                    EsyClk::g_hints_str,
-                    matched_num,
-                    at_least_exist) ;
+            EsyClk::draw_identifiers(points, hints_str, matched_num, at_least_exist) ;
 
             if(!KyLgr::log_as_char(lgr)) {
                 remove_from_back(lgr, 1) ;
@@ -634,15 +661,11 @@ namespace EsyClk
             }
 
             for(std::size_t i = 0 ; i < hints.size() ; i ++) {
-                for(std::size_t j = 0 ; j < lgr.size() ; j ++) {
+                std::size_t seq_idx ;
+                for(seq_idx = 0 ; seq_idx < lgr.size() ; seq_idx ++) {
                     try {
-                        if(!lgr[j].is_containing(hints[i].at(j))) {
+                        if(!lgr[seq_idx].is_containing(hints[i].at(seq_idx))) {
                             break ;
-                        }
-                        matched_num[i] ++ ;
-
-                        if(j == lgr.size() - 1) {
-                            at_least_exist = true ;
                         }
                     }
                     catch(const std::out_of_range&) {
@@ -650,7 +673,13 @@ namespace EsyClk
                     }
                 }
 
-                if(matched_num[i] == hints[i].size()) {
+                matched_num[i] = seq_idx ;
+
+                if(seq_idx == lgr.size()) {
+                    at_least_exist = true ;
+                }
+
+                if(seq_idx == hints[i].size()) {
                     SetCursorPos(points[i].x(), points[i].y()) ;
                     if(sendkey != VKC_UNDEFINED) {
                         MouseEventer::click(sendkey) ;
@@ -663,14 +692,14 @@ namespace EsyClk
             if(!at_least_exist) {
                 remove_from_back(lgr, 1) ;
             }
-            else if(lgr.size() == 1){
+            else if(lgr.size() == 1) {
                 Utility::refresh_display(hwnd) ;
             }
         }
     }
 
 
-    void common_process(const unsigned char sendkey) {
+    inline static void common_process(const unsigned char sendkey) {
         if(need_update(GetForegroundWindow())) {
             g_objpos.clear() ;
             scan_gui_objects() ;
@@ -679,9 +708,9 @@ namespace EsyClk
             g_hints_str = convert_hints_to_str(g_hints) ;
         }
 
-        update_font() ;
         if(!g_objpos.empty()) {
-            loop_for_key_matching(g_objpos, g_hints, sendkey) ;
+            update_font() ;
+            loop_for_key_matching(g_objpos, g_hints, g_hints_str, sendkey) ;
         }
 
         for(auto& key : KeyAbsorber::get_pressed_list()) {
@@ -700,8 +729,9 @@ void EasyClickLeft::sprocess(
         const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) {
-    if(!first_call) return ;
-    EsyClk::common_process(VKC_MOUSE_LEFT) ;
+    if(first_call) {
+        EsyClk::common_process(VKC_MOUSE_LEFT) ;
+    }
 }
 
 //EasyClickRight
@@ -714,8 +744,9 @@ void EasyClickRight::sprocess(
         const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) {
-    if(!first_call) return ;
-    EsyClk::common_process(VKC_MOUSE_RIGHT) ;
+    if(first_call) {
+        EsyClk::common_process(VKC_MOUSE_RIGHT) ;
+    }
 }
 
 //EasyClickMid
@@ -728,8 +759,9 @@ void EasyClickMid::sprocess(
         const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) {
-    if(!first_call) return ;
-    EsyClk::common_process(VKC_MOUSE_MID) ;
+    if(first_call) {
+        EsyClk::common_process(VKC_MOUSE_MID) ;
+    }
 }
 
 //EasyClickHover
@@ -742,8 +774,9 @@ void EasyClickHover::sprocess(
         const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr)) {
-    if(!first_call) return ;
-    EsyClk::common_process(VKC_UNDEFINED) ;
+    if(first_call) {
+        EsyClk::common_process(VKC_UNDEFINED) ;
+    }
 }
 
 

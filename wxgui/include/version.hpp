@@ -1,1 +1,1 @@
-#define WIN_VIND_VERSION "3.1.0"
+#define WIN_VIND_VERSION "3.2.0"

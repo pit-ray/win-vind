@@ -234,9 +234,7 @@ namespace EsyClk
     }
 
     inline static void scan_object_from_hwnd(HWND hwnd) {
-
         decltype(auto) cuia = UIA::get_global_cuia() ;
-
         IUIAutomationElement* elem_raw ;
         if(FAILED(cuia->ElementFromHandle(hwnd, &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
@@ -277,11 +275,6 @@ namespace EsyClk
         }
     }
 
-    static BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM UNUSED(lparam)) {
-        scan_object_from_hwnd(hwnd) ;
-        return TRUE ;
-    }
-
     static BOOL CALLBACK EnumThreadWndProc(HWND hwnd, LPARAM UNUSED(lparam)) {
         if(!IsWindowVisible(hwnd)) {
             return TRUE ;
@@ -314,13 +307,8 @@ namespace EsyClk
     inline static void scan_gui_objects() {
         auto hwnd = GetForegroundWindow() ;
 
-        //scan GUI object in parent window
+        //scan all GUI objects in current window and children
         scan_object_from_hwnd(hwnd) ;
-
-        //Scan GUI object in child window
-        if(!EnumChildWindows(hwnd, EnumChildProc, 0)) {
-            return ;
-        }
 
         //enumerate all window owned by the foreground window process.
         DWORD procid ;
@@ -378,43 +366,7 @@ namespace EsyClk
     using hint_t = std::vector<unsigned char> ;
     static std::vector<hint_t> g_hints{} ;
 
-    //Currrently, supported only 26 x 26 = 676 patterns.
-    //If it would 3 digit combinations, the display is expected to be filled by label.
-    //
-    // -- Algorithm --
-    // ex)
-    // If five GUI-objects are detected and label is only 3.
-    // <g_objpos>           <labels>
-    //   [pos1]                a
-    //   [pos2]                b
-    //   [pos3]                c
-    //   [pos4]
-    //   [pos5]
-    //
-    // Step1: distribute single label
-    //   [pos1] a
-    //   [pos2] b
-    //   [pos3] c
-    //   [pos4]
-    //   [pos5]
-    //
-    // Step2: push_back first label to last element of single identifiers.
-    //   [pos1] a
-    //   [pos2] b
-    //   [pos3] c a
-    //   [pos4]
-    //   [pos5]
-    //
-    // Step3: distribute last-label and remaining labels.
-    //   [pos1] a
-    //   [pos2] b
-    //   [pos3] c a
-    //   [pos4] c b
-    //   [pos5] c c
-    //
-    //
-    //
-    //
+    //Currrently, supported only 26 x 26 x 26 = 17576 patterns.
     inline static auto assign_identifiers_label(const std::size_t target_count) {
         std::vector<hint_t> idx2hint(target_count, hint_t{}) ;
         std::size_t target_idx = 0 ;

@@ -33,17 +33,17 @@
 
     },
     "cursor_acceleration": {
-        "value": 64,
+        "value": 80,
         "en": "Cursor Acceleration",
         "ja": "カーソルの加速度"
     },
     "cursor_weight": {
-        "value": 512,
+        "value": 350,
         "en": "Cursor Weight",
         "ja": "カーソルの重さ"
     },
     "cursor_max_velocity": {
-        "value": 10,
+        "value": 12,
         "en": "Cursor Max Velocity",
         "ja": "カーソルの最大速度"
     },

@@ -13,16 +13,6 @@ struct SaveOpenedFile : public BindedFuncWithCreator<SaveOpenedFile>
     static const std::string sname() noexcept ;
 } ;
 
-struct CloseOpenedFile : public BindedFuncWithCreator<CloseOpenedFile>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
 struct OpenOtherFile : public BindedFuncWithCreator<OpenOtherFile>
 {
     static void sprocess(

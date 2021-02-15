@@ -32,7 +32,7 @@ void SaveOpenedFile::sprocess(
 
     auto hwnd = GetForegroundWindow() ;
     if(hwnd == NULL) {
-        throw RUNTIME_EXCEPT("The foreground window is not existed.") ;
+        RUNTIME_EXCEPT("The foreground window is not existed.") ;
     }
 
     KeybrdEventer::pushup(VKC_LCTRL, VKC_S) ;
@@ -41,24 +41,6 @@ void SaveOpenedFile::sprocess(
     if(hwnd != GetForegroundWindow()) { //opened popup
         Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
     }
-}
-
-
-//CloseOpenedFile
-const string CloseOpenedFile::sname() noexcept
-{
-    return "close_opened_file" ;
-}
-
-void CloseOpenedFile::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-    Change2Normal::sprocess(true, 1, nullptr, nullptr) ; //in order to use cursor
-    KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ;
 }
 
 

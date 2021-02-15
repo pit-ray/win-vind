@@ -1,8 +1,6 @@
 #ifndef _BINDINGS_LISTS_HPP
 #define _BINDINGS_LISTS_HPP
 
-#include <vector>
-
 #include "change_mode.hpp"
 #include "click.hpp"
 #include "clipboard.hpp"
@@ -21,16 +19,21 @@
 #include "move_cursor.hpp"
 #include "mywindow_ctrl.hpp"
 #include "pager.hpp"
+#include "resize_window.hpp"
 #include "scroll.hpp"
 #include "search_pattern.hpp"
 #include "select.hpp"
+#include "select_window.hpp"
 #include "switch_vdesktop.hpp"
+#include "tab_ctrl.hpp"
 #include "undo.hpp"
 #include "window_ctrl.hpp"
 
 namespace BindingsLists {
     const auto get() {
         std::vector<BindedFunc::shp_t> tmp {
+            ArrangeWindow::create(),
+            BackwardUINavigation::create(),
             CBBackSpace::create(),
             CBCopy::create(),
             CBCut::create(),
@@ -52,15 +55,15 @@ namespace BindingsLists {
             ClickRight::create(),
             CloseCurrentVDesktop::create(),
             CloseCurrentWindow::create(),
-            CloseOpenedFile::create(),
             CommandMode::create(),
             CreateNewVDesktop::create(),
+            DecideFocusedUIObject::create(),
             DisableTargetingOfDedicate2Window::create(),
             DisableTargetingOfDedicate2Window::create(),
-            EasyClickLeft::create(),
-            EasyClickRight::create(),
-            EasyClickMid::create(),
             EasyClickHover::create(),
+            EasyClickLeft::create(),
+            EasyClickMid::create(),
+            EasyClickRight::create(),
             EdiCopyHighlightText::create(),
             EdiCopyMotion::create(),
             EdiDeleteCharsAndStartInsert::create(),
@@ -94,7 +97,9 @@ namespace BindingsLists {
             EdiNReplaceSequence::create(),
             EdiSwitchCharCase::create(),
             EnableTargetingOfDedicate2Window::create(),
+            ExchangeWindowWithNextOne::create(),
             ExitConfigWindow::create(),
+            ForwardUINavigation::create(),
             Jump2ActiveWindow::create(),
             Jump2Any::create(),
             Jump2Bottom::create(),
@@ -112,11 +117,14 @@ namespace BindingsLists {
             MoveLeft::create(),
             MoveRight::create(),
             MoveUp::create(),
+            MyConfigWindowInsert::create(),
+            MyConfigWindowNormal::create(),
             OpenNewCurrentWindow::create(),
             OpenNewTab::create(),
             OpenOtherFile::create(),
             OpenStartMenu::create(),
             ReloadCurrentWindow::create(),
+            RotateWindowInCurrentMonitor::create(),
             SCRedo::create(),
             SCUndo::create(),
             SaveOpenedFile::create(),
@@ -132,9 +140,16 @@ namespace BindingsLists {
             ScrollUp::create(),
             SearchPattern::create(),
             SelectAll::create(),
+            SelectLeftWindow::create(),
+            SelectLowerWindow::create(),
+            SelectRightWindow::create(),
+            SelectUpperWindow::create(),
+            SelectWindowWithKeypush::create(),
             ShowConfigWindow::create(),
+            SnapCurrentWindow2Bottom::create(),
             SnapCurrentWindow2Left::create(),
             SnapCurrentWindow2Right::create(),
+            SnapCurrentWindow2Top::create(),
             StartAnyApp::create(),
             StartExplorer::create(),
             StartShell::create(),
@@ -144,12 +159,7 @@ namespace BindingsLists {
             SwitchVDesktop2Right::create(),
             SwitchWindow::create(),
             TaskView::create(),
-            UpdateEasyClick::create(),
-            ForwardUINavigation::create(),
-            BackwardUINavigation::create(),
-            DecideFocusedUIObject::create(),
-            MyConfigWindowNormal::create(),
-            MyConfigWindowInsert::create()
+            UpdateEasyClick::create()
         } ;
         return tmp ;
     }

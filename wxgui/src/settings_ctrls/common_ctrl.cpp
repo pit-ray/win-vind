@@ -115,7 +115,7 @@ namespace wxGUI
         pimpl->font_name_label = new wxStaticText(this, wxID_ANY, wxT("GUI Font Name")) ;
         root_sizer->Add(pimpl->font_name_label, flags) ;
         pimpl->font_name = new wxTextCtrl(this, wxID_ANY, wxT("Consolas"),
-                wxDefaultPosition, wxSize(static_cast<int>(WIDTH() / 4), -1)) ;
+                wxDefaultPosition, wxSize(WIDTH() / 4, -1)) ;
         root_sizer->Add(pimpl->font_name, flags) ;
 
         SetSizerAndFit(root_sizer) ;

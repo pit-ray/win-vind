@@ -39,11 +39,8 @@ add_library(CmnBindings STATIC
     src/common_bindings/command_mode.cpp
     src/common_bindings/dedicate_to_window_ctrl.cpp
     src/common_bindings/external_app.cpp
-    src/common_bindings/filer.cpp
-    src/common_bindings/mywindow_ctrl.cpp
     src/common_bindings/scroll.cpp
     src/common_bindings/undo.cpp
-    src/common_bindings/window_ctrl.cpp
 )
 target_link_libraries(CmnBindings Common)
 enable_cotire(CmnBindings)
@@ -64,12 +61,18 @@ add_library(GUIBindings STATIC
     src/gui_bindings/click.cpp
     src/gui_bindings/clipboard.cpp
     src/gui_bindings/easy_click.cpp
+    src/gui_bindings/filer.cpp
     src/gui_bindings/jump_cursor.cpp
     src/gui_bindings/move_cursor.cpp
+    src/gui_bindings/mywindow_ctrl.cpp
     src/gui_bindings/pager.cpp
+    src/gui_bindings/resize_window.cpp
     src/gui_bindings/search_pattern.cpp
     src/gui_bindings/select.cpp
+    src/gui_bindings/select_window.cpp
     src/gui_bindings/switch_vdesktop.cpp
+    src/gui_bindings/tab_ctrl.cpp
+    src/gui_bindings/window_ctrl.cpp
 )
 target_link_libraries(GUIBindings Common psapi)
 enable_cotire(GUIBindings)

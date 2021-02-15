@@ -706,7 +706,7 @@
     },
     {
         "name": "maximize_current_window",
-        "guin": ["<C-w>k", "<C-w>a"],
+        "guin": ["<C-w>u"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -721,7 +721,7 @@
     },
     {
         "name": "minimize_current_window",
-        "guin": ["<C-w>j", "<C-w>i"],
+        "guin": ["<C-w>d"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -736,7 +736,7 @@
     },
     {
         "name": "snap_current_window_to_left",
-        "guin": ["<C-w>h", "<C-w>H", "<C-w><lt>", "<C-w><Left>"],
+        "guin": ["<C-w>H", "<C-w><lt>", "<C-w><Left>"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -747,11 +747,11 @@
         "mycwn": [],
         "mycwi": [],
         "en": "Snap a Current Window to Left",
-        "ja": "ウィンドウを画面左半分化"
+        "ja": "ウィンドウを画面の左へ移動"
     },
     {
         "name": "snap_current_window_to_right",
-        "guin": ["<C-w>l", "<C-w>L", "<C-w><gt>", "<C-w><Right>"],
+        "guin": ["<C-w>L", "<C-w><gt>", "<C-w><Right>"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -762,7 +762,37 @@
         "mycwn": [],
         "mycwi": [],
         "en": "Snap a Current Window to Right",
-        "ja": "ウィンドウを画面右半分化"
+        "ja": "ウィンドウを画面の右へ移動"
+    },
+    {
+        "name": "snap_current_window_to_top",
+        "guin": ["<C-w>K"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["tsplit", "tsp", "wt"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Snap a Current Window to Top",
+        "ja": "ウィンドウを画面の上へ移動"
+    },
+    {
+        "name": "snap_current_window_to_bottom",
+        "guin": ["<C-w>J"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["bsplit", "bsp", "wb"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Snap a Current Window to Bottom",
+        "ja": "ウィンドウを画面の下へ移動"
     },
     {
         "name": "open_new_current_window",

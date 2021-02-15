@@ -23,17 +23,27 @@
 
 class ScreenMetrics {
 private:
-    LONG w ;
-    LONG h ;
-    LONG pw ;
-    LONG ph ;
+    RECT virtual_size ;
+    RECT primary_size ;
+    RECT primary_client_size ;
 
 public:
-    explicit ScreenMetrics() : w(0), h(0), pw(0), ph() {
+    explicit ScreenMetrics()
+    : virtual_size(RECT{0, 0, 0, 0}),
+      primary_size(RECT{0, 0, 0, 0}),
+      primary_client_size(RECT{0, 0, 0, 0}) {
+
         calibrate() ;
     }
 
     void calibrate() {
+        auto copy_rect = [] (auto& lhs, auto& rhs) {
+            lhs.left   = rhs.left ;
+            lhs.top    = rhs.top ;
+            lhs.right  = rhs.right ;
+            lhs.bottom = rhs.bottom ;
+        } ;
+
         if(!SetProcessDPIAware()) {
             throw RUNTIME_EXCEPT("SetProcessDPIAware failed. Your system is not supported DPI on Windows10.") ;
         }
@@ -42,26 +52,69 @@ public:
         minfo.cbSize = sizeof(MONITORINFO) ;
         const auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTOPRIMARY) ;
         GetMonitorInfo(hmonitor, &minfo) ;
-        pw = minfo.rcMonitor.right - minfo.rcMonitor.left ;
-        ph = minfo.rcMonitor.bottom - minfo.rcMonitor.top ;
+        copy_rect(primary_size, minfo.rcMonitor) ;
+        copy_rect(primary_client_size, minfo.rcWork) ;
 
         WINDOWINFO winfo ;
         winfo.cbSize = sizeof(WINDOWINFO) ;
         GetWindowInfo(GetDesktopWindow(), &winfo) ;
-        w = winfo.rcWindow.right - winfo.rcWindow.left ;
-        h = winfo.rcWindow.bottom - winfo.rcWindow.top ;
+        copy_rect(virtual_size, winfo.rcWindow) ;
     }
-    const auto width() const noexcept {
-        return w ;
+    auto width() const noexcept {
+        return virtual_size.right - virtual_size.left ;
     }
-    const auto height() const noexcept {
-        return h ;
+    auto height() const noexcept {
+        return virtual_size.bottom - virtual_size.top ;
     }
-    const auto primary_width() const noexcept {
-        return pw ;
+    auto left() const noexcept {
+        return virtual_size.left ;
     }
-    const auto primary_height() const noexcept {
-        return ph ;
+    auto top() const noexcept {
+        return virtual_size.top ;
+    }
+    auto right() const noexcept {
+        return virtual_size.right ;
+    }
+    auto bottom() const noexcept {
+        return virtual_size.bottom ;
+    }
+
+    auto primary_width() const noexcept {
+        return primary_size.right - primary_size.left ;
+    }
+    auto primary_height() const noexcept {
+        return primary_size.bottom - primary_size.top ;
+    }
+    auto primary_left() const noexcept {
+        return primary_size.left ;
+    }
+    auto primary_top() const noexcept {
+        return primary_size.top ;
+    }
+    auto primary_right() const noexcept {
+        return primary_size.right ;
+    }
+    auto primary_bottom() const noexcept {
+        return primary_size.bottom ;
+    }
+
+    auto primary_client_width() const noexcept {
+        return primary_client_size.right - primary_client_size.left ;
+    }
+    auto primary_client_height() const noexcept {
+        return primary_client_size.bottom - primary_client_size.top ;
+    }
+    auto primary_client_left() const noexcept {
+        return primary_client_size.left ;
+    }
+    auto primary_client_top() const noexcept {
+        return primary_client_size.top ;
+    }
+    auto primary_client_right() const noexcept {
+        return primary_client_size.right ;
+    }
+    auto primary_client_bottom() const noexcept {
+        return primary_client_size.bottom ;
     }
 
     virtual ~ScreenMetrics() noexcept                       = default ;

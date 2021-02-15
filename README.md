@@ -180,7 +180,7 @@ If you have already installed MinGW-w64 or Visual Studio 2019, all you need is t
 
 **1.** Install needed libraries into a root directory of win-vind.  
   ```bash  
-  $ ./setup_libs.bat [-mingw/-msvc]  
+  $ ./setup_libs.bat [-mingw/-msvc] [32/64]
   ```  
 **2.** Build its project.  
   ```bash

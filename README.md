@@ -195,6 +195,7 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 - Registration of keybindings by pressing keys.   
 - A feature to switch windows with a single push, just like switching weapons in game. (e.g. 1: Google Chrome, 2: Vim, 3: Powershell)
 - Implement `E` or `e` in Editor Mode.
+- Useful window selecter
 
 ## License  
 

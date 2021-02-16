@@ -22,13 +22,6 @@
 
 using namespace std ;
 
-namespace JumpCursorUtility
-{
-    static const ScreenMetrics _scmet{} ;
-}
-
-using namespace JumpCursorUtility ;
-
 //Jump2Left
 const string Jump2Left::sname() noexcept
 {
@@ -63,7 +56,11 @@ void Jump2Right::sprocess(
     if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(_scmet.width() - iParams::get_i("screen_pos_buf"), pos.y) ;
+
+    RECT rect ;
+    ScreenMetrics::get_conbined_metrics(&rect) ;
+
+    SetCursorPos(ScreenMetrics::width(rect) - iParams::get_i("screen_pos_buf"), pos.y) ;
 }
 
 
@@ -101,7 +98,10 @@ void Jump2Bottom::sprocess(
     if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(pos.x, _scmet.height() - iParams::get_i("screen_pos_buf")) ;
+
+    RECT rect ;
+    ScreenMetrics::get_conbined_metrics(&rect) ;
+    SetCursorPos(pos.x, ScreenMetrics::height(rect) - iParams::get_i("screen_pos_buf")) ;
 }
 
 
@@ -120,7 +120,10 @@ void Jump2XCenter::sprocess(
     if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(_scmet.width() / 2, pos.y) ;
+
+    RECT rect ;
+    ScreenMetrics::get_conbined_metrics(&rect) ;
+    SetCursorPos(ScreenMetrics::width(rect) / 2, pos.y) ;
 }
 
 
@@ -139,12 +142,15 @@ void Jump2YCenter::sprocess(
     if(!first_call) return ;
     POINT pos ;
     GetCursorPos(&pos) ;
-    SetCursorPos(pos.x, _scmet.height() / 2) ;
+
+    RECT rect ;
+    ScreenMetrics::get_conbined_metrics(&rect) ;
+    SetCursorPos(pos.x, ScreenMetrics::height(rect) / 2) ;
 }
 
 
 //Jump2Any
-namespace JumpCursorUtility
+namespace JumpCursor
 {
     static float max_keybrd_xposs = 0 ;
     static float max_keybrd_yposs = 0 ;
@@ -249,6 +255,7 @@ void Jump2Any::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    using namespace JumpCursor ;
     if(!first_call) return ;
 
     //reset key state (binded key)
@@ -257,6 +264,12 @@ void Jump2Any::sprocess(
 
     //ignore toggle keys (for example, CapsLock, NumLock, IME....)
     const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
+
+    RECT rect ;
+    ScreenMetrics::get_conbined_metrics(&rect) ;
+
+    const auto width  = ScreenMetrics::width(rect) ;
+    const auto height = ScreenMetrics::height(rect) ;
 
     while(win_vind::update_background()) {
         if(KeyAbsorber::is_pressed(VKC_ESC)) return ;
@@ -270,14 +283,14 @@ void Jump2Any::sprocess(
                     continue ;
 
                 auto x_pos = static_cast<int>( \
-                        _xposs[vkc] / max_keybrd_xposs * _scmet.width()) ;
+                        _xposs[vkc] / max_keybrd_xposs * width) ;
                 auto y_pos = static_cast<int>( \
-                        _yposs[vkc] / max_keybrd_yposs * _scmet.height()) ;
+                        _yposs[vkc] / max_keybrd_yposs * height) ;
 
-                if(x_pos == _scmet.width())
+                if(x_pos == width) 
                     x_pos -= iParams::get_i("screen_pos_buf") ;
 
-                if(y_pos == _scmet.height()) 
+                if(y_pos == height) 
                     y_pos -= iParams::get_i("screen_pos_buf") ;
 
                 SetCursorPos(x_pos, y_pos) ;

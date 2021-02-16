@@ -1,29 +1,17 @@
 #include "resize_window.hpp"
 
+#include <map>
+#include <unordered_map>
 #include <windows.h>
+#include <dwmapi.h>
+#include <psapi.h>
 
-#include "keybrd_eventer.hpp"
-#include "utility.hpp"
+#include "i_params.hpp"
 #include "jump_cursor.hpp"
+#include "keybrd_eventer.hpp"
+#include "msg_logger.hpp"
 #include "screen_metrics.hpp"
-
-namespace ResizeWindow {
-    static ScreenMetrics g_screen_metrics{} ;
-
-    inline static void resize_current_window(const LONG left, const LONG top, const LONG width, const LONG height) {
-        auto hwnd = GetForegroundWindow() ;
-        if(hwnd == NULL) {
-            throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-        }
-
-        using ResizeWindow::g_screen_metrics ;
-        if(!MoveWindow(hwnd, left, top, width, height, TRUE)) {
-            throw RUNTIME_EXCEPT("Could not change window size") ;
-        }
-
-        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
-    }
-}
+#include "utility.hpp"
 
 //MaximizeCurrentWindow
 const std::string MaximizeCurrentWindow::sname() noexcept
@@ -37,6 +25,9 @@ void MaximizeCurrentWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    /*
+     * must be 2 State
+     */
     if(!first_call) return ;
     for(unsigned int i = 0 ; i < repeat_num ; i ++) {
         KeybrdEventer::pushup(VKC_LWIN, VKC_UP) ;
@@ -56,10 +47,26 @@ void MinimizeCurrentWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    /*
+     * must be 2 State
+     */
     if(!first_call) return ;
     KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
 }
 
+namespace ResizeWindow {
+    inline static void resize_window(HWND hwnd, LONG left, LONG top, LONG width, LONG height) {
+        if(hwnd == NULL) {
+            throw RUNTIME_EXCEPT("There is not the foreground window.") ;
+        }
+
+        if(!MoveWindow(hwnd, left, top, width, height, TRUE)) {
+            throw RUNTIME_EXCEPT("Could not change window size") ;
+        }
+
+        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+    }
+}
 
 //SnapCurrentWindow2Left
 const std::string SnapCurrentWindow2Left::sname() noexcept
@@ -73,14 +80,23 @@ void SnapCurrentWindow2Left::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) {
-        using namespace ResizeWindow ;
-        resize_current_window(
-                g_screen_metrics.primary_client_left(),
-                g_screen_metrics.primary_client_top(),
-                g_screen_metrics.primary_client_width() / 2,
-                g_screen_metrics.primary_client_height()) ;
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
     }
+
+    RECT rect ;
+    RECT rect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &rect, &rect_work) ;
+
+    ResizeWindow::resize_window(
+            hwnd,
+            rect_work.left,
+            rect_work.top,
+            ScreenMetrics::width(rect_work) / 2,
+            ScreenMetrics::height(rect_work)) ;
 }
 
 
@@ -96,15 +112,24 @@ void SnapCurrentWindow2Right::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) {
-        using namespace ResizeWindow ;
-        const auto half_of_width = g_screen_metrics.primary_client_width() / 2 ;
-        resize_current_window(
-                g_screen_metrics.primary_client_left() + half_of_width,
-                g_screen_metrics.primary_client_top(),
-                half_of_width,
-                g_screen_metrics.primary_client_height()) ;
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
     }
+
+    RECT rect ;
+    RECT rect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &rect, &rect_work) ;
+
+    const auto half_of_width = ScreenMetrics::width(rect_work) / 2 ;
+    ResizeWindow::resize_window(
+            hwnd,
+            rect_work.left + half_of_width,
+            rect_work.top,
+            half_of_width,
+            ScreenMetrics::height(rect_work)) ;
 }
 
 
@@ -120,14 +145,23 @@ void SnapCurrentWindow2Top::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) {
-        using namespace ResizeWindow ;
-        resize_current_window(
-                g_screen_metrics.primary_client_left(),
-                g_screen_metrics.primary_client_top(),
-                g_screen_metrics.primary_client_width(),
-                g_screen_metrics.primary_client_height() / 2) ;
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
     }
+
+    RECT rect ;
+    RECT rect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &rect, &rect_work) ;
+
+    ResizeWindow::resize_window(
+            hwnd,
+            rect_work.left,
+            rect_work.top,
+            ScreenMetrics::width(rect_work),
+            ScreenMetrics::height(rect_work) / 2) ;
 }
 
 //SnapCurrentWindow2Bottom
@@ -142,15 +176,24 @@ void SnapCurrentWindow2Bottom::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    if(first_call) {
-        using namespace ResizeWindow ;
-        const auto half_of_height = g_screen_metrics.primary_client_height() / 2 ;
-        resize_current_window(
-                g_screen_metrics.primary_client_left(),
-                g_screen_metrics.primary_client_top() + half_of_height,
-                g_screen_metrics.primary_client_width(),
-                half_of_height) ;
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
     }
+
+    RECT rect ;
+    RECT rect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &rect, &rect_work) ;
+
+    const auto half_of_height = ScreenMetrics::height(rect_work) / 2 ;
+    ResizeWindow::resize_window(
+            hwnd,
+            rect_work.left,
+            rect_work.top + half_of_height,
+            ScreenMetrics::width(rect_work),
+            half_of_height) ;
 }
 
 //RotateWindowInCurrentMonitor
@@ -165,6 +208,11 @@ void RotateWindowInCurrentMonitor::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+
+    /*
+     * 一旦整列して、回転。
+     *
+     */
 
     /* NOT IMPLEMENTED*/
 
@@ -182,9 +230,105 @@ void ExchangeWindowWithNextOne::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    /*
+     * 探索して位置とサイズ交換
+     *
+     */
 
     /* NOT IMPLEMENTED*/
 
+}
+
+namespace ResizeWindow
+{
+    static std::unordered_map<HMONITOR, RECT> g_mrects ;
+    static std::unordered_map<HMONITOR, std::map<SIZE_T, HWND>> g_ordered_hwnd ;
+
+    static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lparam) {
+        //is movable window ? -----------
+        if(hwnd == GetDesktopWindow()) {
+            return TRUE ; //continue
+        }
+        if(hwnd == GetShellWindow()) {
+            return TRUE ; //continue
+        }
+
+        //Is visible ? ------------------
+        if(!IsWindowEnabled(hwnd)) {
+            return TRUE ; //continue
+        }
+        if(!IsWindowVisible(hwnd)) {
+            return TRUE ; //continue
+        }
+        if(IsIconic(hwnd)) { //is minimized?
+            return TRUE ; //continue
+        }
+
+        int n_cloaked ;
+        if(DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, &n_cloaked, sizeof(int)) != S_OK) {
+            return FALSE ; //break
+        }
+        if(n_cloaked) return TRUE ; //continue
+
+
+        //is full screen window ?? ------------------
+        RECT rect ;
+        if(!GetWindowRect(hwnd, &rect)) {
+            return FALSE ; //break
+        }
+
+        const auto width  = ScreenMetrics::width(rect) ;
+        if(width == 0) {
+            return TRUE ; //continue
+        }
+
+        const auto height = ScreenMetrics::height(rect) ;
+        if(height == 0) {
+            return TRUE ; //continue
+        }
+
+        RECT client_rect ;
+        if(!GetClientRect(hwnd, &client_rect)) {
+            return FALSE ; //break
+        }
+        if(ScreenMetrics::is_equel(rect, client_rect)) {
+            return TRUE ; //continue
+        }
+
+        HMONITOR hmonitor ;
+        RECT monitor_rect ;
+        RECT monitor_rect_work ;
+        ScreenMetrics::get_monitor_metrics(hwnd, &monitor_rect, &monitor_rect_work, &hmonitor) ;
+
+        //Is in range of work area
+        if(ScreenMetrics::is_out_of_range(rect, monitor_rect_work)) {
+            return TRUE ; //continue
+        }
+
+        DWORD proc_id = 0 ;
+        GetWindowThreadProcessId(hwnd, &proc_id) ;
+        HANDLE hproc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, proc_id) ;
+        if(!hproc) {
+            return TRUE ; //has not permission
+        }
+
+        PROCESS_MEMORY_COUNTERS pmc ;
+        if(!GetProcessMemoryInfo(hproc, &pmc, sizeof(pmc))) {
+            CloseHandle(hproc) ;
+            std::stringstream ss ;
+            ss << "Could not get the memory infomation of " << hwnd ;
+            ERROR_PRINT(ss.str()) ;
+            return FALSE ; //break
+        }
+        CloseHandle(hproc) ;
+
+        //a key is unique and described the priority.
+        auto& gh = g_ordered_hwnd[hmonitor] ;
+        gh[pmc.WorkingSetSize + gh.size()] = hwnd ;
+        g_mrects[hmonitor] = std::move(monitor_rect_work) ;
+
+        return TRUE ;
+    }
 }
 
 //ArrangeWindow
@@ -199,7 +343,60 @@ void ArrangeWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    if(!first_call) return ;
 
-    /* NOT IMPLEMENTED*/
+    //Search visible windows
+    using namespace ResizeWindow ;
+    g_ordered_hwnd.clear() ;
+    g_mrects.clear() ;
 
+    if(!EnumWindows(EnumWindowsProc, 0)) {
+        throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+    }
+
+    //Assign local area in monitors
+    std::unordered_map<HWND, RECT> rects ;
+
+    for(auto& mr : g_mrects) {
+        const auto& hmonitor = mr.first ;
+        const auto& mrect    = mr.second ;
+
+        const auto& oh = g_ordered_hwnd[hmonitor] ;
+
+        //Its priority is the highest (based on the memory use).
+        auto itr = oh.crbegin() ;
+        auto pre_hwnd = itr->second ;
+        rects[itr->second] = mrect ;
+        itr ++ ;
+
+        while(itr != oh.crend()) {
+            const auto hwnd = itr->second ;
+
+            auto& pre_rect = rects[pre_hwnd] ;
+            auto rect = pre_rect ;
+
+            const auto pre_w = ScreenMetrics::width(pre_rect) ;
+            const auto pre_h = ScreenMetrics::height(pre_rect) ;
+            if(pre_w > pre_h) {
+                pre_rect.right -= pre_w / 2 ;
+                rect.left += pre_w / 2 ;
+            }
+            else {
+                pre_rect.bottom -= pre_h / 2 ;
+                rect.top += pre_h / 2 ;
+            }
+            rects[hwnd] = std::move(rect) ;
+
+            pre_hwnd = hwnd ;
+            itr ++ ;
+        }
+    }
+
+    //Resize each windows
+    for(const auto& hr : rects) {
+        const auto hwnd = hr.first ;
+        const auto rect = hr.second ;
+        resize_window(hwnd, rect.left, rect.top,
+                ScreenMetrics::width(rect), ScreenMetrics::height(rect)) ;
+    }
 }

@@ -795,6 +795,21 @@
         "ja": "ウィンドウを画面の下へ移動"
     },
     {
+        "name": "arrange_window",
+        "guin": ["<C-w>="],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["arrange", "arw"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Arrange Window",
+        "ja": "ウィンドウを並べて表示する"
+    },
+    {
         "name": "open_new_current_window",
         "guin": ["<C-w>n"],
         "guii": [],
@@ -855,7 +870,7 @@
         "ja": "ファイルを保存"
     },
     {
-        "name": "close_opened_file",
+        "name": "close_current_tab",
         "guin": [],
         "guii": [],
         "guiv": [],
@@ -866,8 +881,8 @@
         "cmd": ["q", "qa", "q!", "qa!", "tabclose"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Close Document (Tab)",
-        "ja": "ドキュメント(タブ)を閉じる"
+        "en": "Close Current Tab",
+        "ja": "タブを閉じる"
     },
     {
         "name": "start_shell",

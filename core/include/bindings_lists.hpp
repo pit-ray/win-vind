@@ -53,6 +53,7 @@ namespace BindingsLists {
             Change2Visual::create(),
             ClickLeft::create(),
             ClickRight::create(),
+            CloseCurrentTab::create(),
             CloseCurrentVDesktop::create(),
             CloseCurrentWindow::create(),
             CommandMode::create(),

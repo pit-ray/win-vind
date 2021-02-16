@@ -17,111 +17,101 @@
 #endif
 
 #include <windows.h>
-
-#include "msg_logger.hpp"
+#include <sstream>
+#include <string>
 #include "utility.hpp"
 
-class ScreenMetrics {
-private:
-    RECT virtual_size ;
-    RECT primary_size ;
-    RECT primary_client_size ;
+namespace ScreenMetrics {
 
-public:
-    explicit ScreenMetrics()
-    : virtual_size(RECT{0, 0, 0, 0}),
-      primary_size(RECT{0, 0, 0, 0}),
-      primary_client_size(RECT{0, 0, 0, 0}) {
-
-        calibrate() ;
+    inline void copy(RECT& lhs, const RECT& rhs) noexcept {
+        lhs.left   = rhs.left ;
+        lhs.top    = rhs.top ;
+        lhs.right  = rhs.right ;
+        lhs.bottom = rhs.bottom ;
     }
 
-    void calibrate() {
-        auto copy_rect = [] (auto& lhs, auto& rhs) {
-            lhs.left   = rhs.left ;
-            lhs.top    = rhs.top ;
-            lhs.right  = rhs.right ;
-            lhs.bottom = rhs.bottom ;
-        } ;
+    inline auto width(const RECT& rect) noexcept {
+        return rect.right - rect.left ;
+    }
 
+    inline auto height(const RECT& rect) noexcept {
+        return rect.bottom - rect.top ;
+    }
+
+    inline auto is_out_of_range(const RECT& target, const RECT& range) noexcept {
+        return (target.left <= range.left   &&  target.right <= range.left) || \
+               (target.top  <= range.top    && target.bottom <= range.top) || \
+               (target.left >= range.right  && target.right  >= range.right) || \
+               (target.top  >= range.bottom && target.bottom >= range.bottom) ;
+    }
+
+    inline auto is_fully_in_range(const RECT& target, const RECT& range) noexcept {
+        return target.left >= range.left && target.right <= range.right && \
+                              target.top >= range.top && target.bottom <= range.bottom ;
+    }
+
+    inline auto is_in_range(const RECT& target, const RECT& range) noexcept {
+        return target.left >= range.left || target.right <= range.right || \
+                              target.top >= range.top || target.bottom <= range.bottom ;
+    }
+
+    inline auto is_equel(const RECT& rhs, const RECT& lhs) noexcept {
+        return lhs.left   == rhs.left && \
+               lhs.top    == rhs.top && \
+               lhs.right  == rhs.right && \
+               lhs.bottom == rhs.bottom ;
+    }
+
+    inline void get_conbined_metrics(RECT* const rect) {
         if(!SetProcessDPIAware()) {
-            throw RUNTIME_EXCEPT("SetProcessDPIAware failed. Your system is not supported DPI on Windows10.") ;
+            throw RUNTIME_EXCEPT("Your system is not supported DPI.") ;
         }
-
-        MONITORINFO minfo ;
-        minfo.cbSize = sizeof(MONITORINFO) ;
-        const auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTOPRIMARY) ;
-        GetMonitorInfo(hmonitor, &minfo) ;
-        copy_rect(primary_size, minfo.rcMonitor) ;
-        copy_rect(primary_client_size, minfo.rcWork) ;
 
         WINDOWINFO winfo ;
         winfo.cbSize = sizeof(WINDOWINFO) ;
-        GetWindowInfo(GetDesktopWindow(), &winfo) ;
-        copy_rect(virtual_size, winfo.rcWindow) ;
-    }
-    auto width() const noexcept {
-        return virtual_size.right - virtual_size.left ;
-    }
-    auto height() const noexcept {
-        return virtual_size.bottom - virtual_size.top ;
-    }
-    auto left() const noexcept {
-        return virtual_size.left ;
-    }
-    auto top() const noexcept {
-        return virtual_size.top ;
-    }
-    auto right() const noexcept {
-        return virtual_size.right ;
-    }
-    auto bottom() const noexcept {
-        return virtual_size.bottom ;
+        if(!GetWindowInfo(GetDesktopWindow(), &winfo)) {
+            throw RUNTIME_EXCEPT("Could not get window infomation.") ;
+        }
+        copy(*rect, winfo.rcWindow) ;
     }
 
-    auto primary_width() const noexcept {
-        return primary_size.right - primary_size.left ;
-    }
-    auto primary_height() const noexcept {
-        return primary_size.bottom - primary_size.top ;
-    }
-    auto primary_left() const noexcept {
-        return primary_size.left ;
-    }
-    auto primary_top() const noexcept {
-        return primary_size.top ;
-    }
-    auto primary_right() const noexcept {
-        return primary_size.right ;
-    }
-    auto primary_bottom() const noexcept {
-        return primary_size.bottom ;
+    inline void get_primary_metrics(RECT* const rect) {
+        MONITORINFO minfo ;
+        minfo.cbSize = sizeof(MONITORINFO) ;
+        const auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTOPRIMARY) ;
+        if(!GetMonitorInfo(hmonitor, &minfo)) {
+            throw RUNTIME_EXCEPT("Could not get primary monitor infomation.") ;
+        }
+        copy(*rect, minfo.rcMonitor) ;
     }
 
-    auto primary_client_width() const noexcept {
-        return primary_client_size.right - primary_client_size.left ;
-    }
-    auto primary_client_height() const noexcept {
-        return primary_client_size.bottom - primary_client_size.top ;
-    }
-    auto primary_client_left() const noexcept {
-        return primary_client_size.left ;
-    }
-    auto primary_client_top() const noexcept {
-        return primary_client_size.top ;
-    }
-    auto primary_client_right() const noexcept {
-        return primary_client_size.right ;
-    }
-    auto primary_client_bottom() const noexcept {
-        return primary_client_size.bottom ;
+    inline void get_monitor_metrics(HWND hwnd, RECT* const rect, RECT* const work_rect=NULL, HMONITOR* monitor=NULL) {
+        MONITORINFO minfo ;
+        minfo.cbSize = sizeof(MONITORINFO) ;
+        const auto hmonitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST) ;
+        if(!GetMonitorInfo(hmonitor, &minfo)) {
+            throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
+        }
+
+        copy(*rect, minfo.rcMonitor) ;
+
+        if(work_rect != NULL) {
+            copy(*work_rect, minfo.rcWork) ;
+        }
+        if(monitor != NULL) {
+            *monitor = hmonitor ;
+        }
     }
 
-    virtual ~ScreenMetrics() noexcept                       = default ;
-    ScreenMetrics(ScreenMetrics&&) noexcept                 = default ;
-    ScreenMetrics& operator=(ScreenMetrics&&) noexcept      = default ;
-    ScreenMetrics(const ScreenMetrics&) noexcept            = default ;
-    ScreenMetrics& operator=(const ScreenMetrics&) noexcept = default ;
-} ;
+    namespace Debug {
+        inline static std::string info(const RECT& rect) {
+            std::stringstream ss ;
+            ss << "(" << rect.left << ", " << rect.top << ")\t" ;
+            ss << "(" << rect.right << ", " << rect.bottom << ")\t" ;
+            ss << "w: " << width(rect) << ", h:" << height(rect) ;
+            return ss.str() ;
+        }
+    }
+}
 
 #endif

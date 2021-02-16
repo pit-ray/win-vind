@@ -74,7 +74,7 @@ add_library(GUIBindings STATIC
     src/gui_bindings/tab_ctrl.cpp
     src/gui_bindings/window_ctrl.cpp
 )
-target_link_libraries(GUIBindings Common psapi)
+target_link_libraries(GUIBindings Common psapi Dwmapi)
 enable_cotire(GUIBindings)
 
 #add_library(DevBindings STATIC

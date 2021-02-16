@@ -3,7 +3,7 @@
 
 #include "binded_func_with_creator.hpp"
 
-namespace JumpCursorUtility
+namespace JumpCursor
 {
     void load_config() ;
 }

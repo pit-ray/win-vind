@@ -8,6 +8,7 @@
 #include "mode_manager.hpp"
 #include "path.hpp"
 #include "i_params.hpp"
+#include "msg_logger.hpp"
 
 using namespace std ;
 std::string VirtualCmdLine::outstr{} ;
@@ -69,20 +70,24 @@ void VirtualCmdLine::do_enable() const
     const auto xma = iParams::get_i("cmd_xmargin") ;
     const auto yma = iParams::get_i("cmd_ymargin") ;
 
-    static const ScreenMetrics met{} ;
+    RECT rect ;
+    ScreenMetrics::get_primary_metrics(&rect) ;
+
+    const auto width  = ScreenMetrics::width(rect) ;
+    const auto height = ScreenMetrics::height(rect) ;
 
     constexpr auto midxbuf = 256 ;
 
     const std::unordered_map<std::string, std::pair<int, int>> pos_list {
-        {"UpperLeft",  {xma, yma}},
-        {"UpperMid",   {met.primary_width() / 2 - midxbuf, yma}},
-        {"UpperRight", {met.primary_width() - xma - midxbuf, yma}},
-        {"MidLeft",    {xma, met.primary_height() / 2}},
-        {"Center",     {met.primary_width() / 2 - midxbuf, met.primary_height() / 2}},
-        {"MidRight",   {met.primary_width() - xma - midxbuf, met.primary_height() / 2}},
-        {"LowerLeft",  {xma, met.primary_height() - yma}},
-        {"LowerMid",   {met.primary_width() / 2 - midxbuf, met.primary_height() - yma}},
-        {"LowerRight", {met.primary_width() - xma - midxbuf, met.primary_height() - yma}}
+        {"UpperLeft",  {xma,                    yma}},
+        {"UpperMid",   {width / 2 - midxbuf,    yma}},
+        {"UpperRight", {width - xma - midxbuf,  yma}},
+        {"MidLeft",    {xma,                    height / 2}},
+        {"Center",     {width / 2 - midxbuf,    height / 2}},
+        {"MidRight",   {width - xma - midxbuf,  height / 2}},
+        {"LowerLeft",  {xma,                    height - yma}},
+        {"LowerMid",   {width / 2 - midxbuf,    height - yma}},
+        {"LowerRight", {width - xma - midxbuf,  height - yma}}
     } ;
     try {
         const auto& p = pos_list.at(iParams::get_s("cmd_pos")) ;

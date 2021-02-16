@@ -825,6 +825,21 @@
         "ja": "現在のモニタの整列済みウィンドウを回転させる"
     },
     {
+        "name": "exchange_window_with_next_one",
+        "guin": ["<C-w>x"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["exchange", "exw"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Exchange a window with next one",
+        "ja": "隣のウィンドウと交換する"
+    },
+    {
         "name": "open_new_current_window",
         "guin": ["<C-w>n"],
         "guii": [],

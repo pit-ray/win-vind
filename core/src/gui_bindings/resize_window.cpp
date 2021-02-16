@@ -190,26 +190,6 @@ void SnapCurrentWindow2Bottom::sprocess(
             half_of_height) ;
 }
 
-//ExchangeWindowWithNextOne
-const std::string ExchangeWindowWithNextOne::sname() noexcept
-{
-    return "exchange_window_with_next_one" ;
-}
-
-void ExchangeWindowWithNextOne::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
-{
-    /*
-     * 探索して位置とサイズ交換
-     *
-     */
-
-    /* NOT IMPLEMENTED*/
-
-}
 
 namespace ResizeWindow
 {
@@ -246,32 +226,40 @@ namespace ResizeWindow
         return true ;
     }
 
-    static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lparam) {
-        if(!is_valid_hwnd(hwnd)) {
-            return TRUE ; //continue
-        }
-
-        //is full screen window ?? ------------------
-        RECT rect ;
-        if(!GetWindowRect(hwnd, &rect)) {
-            return FALSE ; //break
-        }
-
-        const auto width  = ScreenMetrics::width(rect) ;
+    inline static auto is_valid_rect(HWND hwnd, RECT& rect) {
+        const auto width = ScreenMetrics::width(rect) ;
         if(width == 0) {
-            return TRUE ; //continue
+            return false ;
         }
 
         const auto height = ScreenMetrics::height(rect) ;
         if(height == 0) {
+            return false ;
+        }
+
+        //is full screen window ??
+        RECT client_rect ;
+        if(!GetClientRect(hwnd, &client_rect)) {
+            return false ;
+        }
+        if(ScreenMetrics::is_equel(rect, client_rect)) {
+            return false ;
+        }
+
+        return true ;
+    }
+
+    static BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
+        if(!is_valid_hwnd(hwnd)) {
             return TRUE ; //continue
         }
 
-        RECT client_rect ;
-        if(!GetClientRect(hwnd, &client_rect)) {
-            return FALSE ; //break
+        RECT rect ;
+        if(!GetWindowRect(hwnd, &rect)) {
+            return TRUE ;
         }
-        if(ScreenMetrics::is_equel(rect, client_rect)) {
+
+        if(!is_valid_rect(hwnd, rect)) {
             return TRUE ; //continue
         }
 
@@ -282,7 +270,7 @@ namespace ResizeWindow
 
         //Is in range of work area
         if(ScreenMetrics::is_out_of_range(rect, monitor_rect_work)) {
-            return TRUE ; //continue
+            return TRUE ;
         }
 
         DWORD proc_id = 0 ;
@@ -372,18 +360,31 @@ void ArrangeWindow::sprocess(
 {
     if(!first_call) return ;
 
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    }
+
     //Search visible windows
     using namespace ResizeWindow ;
     g_ordered_hwnd.clear() ;
     g_mrects.clear() ;
 
-    if(!EnumWindows(EnumWindowsProc, 0)) {
+    if(!EnumWindows(EnumWindowsProcForArrangement, 0)) {
         throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+    }
+
+    if(g_ordered_hwnd.empty() || g_mrects.empty()) {
+        return ;
     }
 
     std::unordered_map<HWND, RECT> rects ;
     assign_local_area_in_monitors(rects) ;
     batch_resize(rects) ;
+
+    if(!SetForegroundWindow(hwnd)) {
+        throw RUNTIME_EXCEPT("Could not set the foreground window.") ;
+    }
 }
 
 
@@ -415,24 +416,141 @@ void RotateWindowInCurrentMonitor::sprocess(
         throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
     }
 
-    //rotate-shift a value in hwnd maps
-    auto& oh = g_ordered_hwnd[hmonitor] ;
-
-    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-        auto itr = oh.rbegin() ;
-        auto head_val = itr->second ;
-        auto pre_itr = itr ;
-        itr ++ ;
-        while(itr != oh.rend()) {
-            pre_itr->second = itr->second ;
-            pre_itr = itr ;
-            itr ++ ;
-        }
-        pre_itr->second = head_val ;
+    if(g_ordered_hwnd.empty()) {
+        return ;
     }
 
-    std::unordered_map<HWND, RECT> rects ;
-    assign_local_area_in_monitors(rects) ;
-    batch_resize(rects) ;
+    try {
+        //rotate-shift a value in hwnd maps
+        auto& oh = g_ordered_hwnd.at(hmonitor) ;
+        if(oh.empty()) {
+            return ;
+        }
+
+        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            auto itr = oh.rbegin() ;
+            auto head_val = itr->second ;
+            auto pre_itr = itr ;
+            itr ++ ;
+            while(itr != oh.rend()) {
+                pre_itr->second = itr->second ;
+                pre_itr = itr ;
+                itr ++ ;
+            }
+            pre_itr->second = head_val ;
+        }
+
+        std::unordered_map<HWND, RECT> rects ;
+        assign_local_area_in_monitors(rects) ;
+        batch_resize(rects) ;
+    }
+    catch(const std::out_of_range&) {
+        return ;
+    }
 }
 
+
+namespace ResizeWindow
+{
+    static std::map<LONG, HWND> g_near_hwnds ;
+
+    static BOOL CALLBACK EnumWindowsProcForExchange(HWND hwnd, LPARAM lparam) {
+        auto target_hwnd = reinterpret_cast<HWND>(lparam) ;
+
+        if(target_hwnd == hwnd) {
+            return TRUE ;
+        }
+
+        if(!is_valid_hwnd(hwnd)) {
+            return TRUE ; //continue
+        }
+
+        RECT rect ;
+        if(!GetWindowRect(hwnd, &rect)) {
+            return TRUE ;
+        }
+
+        if(!is_valid_rect(hwnd, rect)) {
+            return TRUE ; //continue
+        }
+
+        HMONITOR hmonitor ;
+        RECT monitor_rect ;
+        RECT monitor_rect_work ;
+        ScreenMetrics::get_monitor_metrics(hwnd, &monitor_rect, &monitor_rect_work, &hmonitor) ;
+
+        const auto target_hmonitor = MonitorFromWindow(target_hwnd, MONITOR_DEFAULTTONEAREST) ;
+        if(hmonitor != target_hmonitor) {
+            return TRUE ;
+        }
+
+        //Is in range of work area
+        if(ScreenMetrics::is_out_of_range(rect, monitor_rect_work)) {
+            return TRUE ;
+        }
+
+        RECT target_rect ;
+        if(!GetWindowRect(target_hwnd, &target_rect)) {
+            return TRUE ;
+        }
+        g_near_hwnds[ScreenMetrics::l2_distance_nosq(rect, target_rect)] = hwnd ;
+        return TRUE ;
+    }
+}
+
+//ExchangeWindowWithNextOne
+const std::string ExchangeWindowWithNextOne::sname() noexcept
+{
+    return "exchange_window_with_next_one" ;
+}
+
+void ExchangeWindowWithNextOne::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+
+    using namespace ResizeWindow ;
+
+    g_near_hwnds.clear() ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("Could not get a position of a mouse cursor.") ;
+    }
+
+    if(!EnumWindows(EnumWindowsProcForExchange, reinterpret_cast<LPARAM>(hwnd))) {
+        throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+    }
+
+    if(g_near_hwnds.empty()) {
+        return ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of the target window.") ;
+    }
+
+    auto nearest_hwnd = g_near_hwnds.begin()->second ;
+    RECT nearest_rect ;
+    if(!GetWindowRect(nearest_hwnd, &nearest_rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of the nearest window.") ;
+    }
+
+    ResizeWindow::resize_window(
+            nearest_hwnd,
+            rect.left,
+            rect.top,
+            ScreenMetrics::width(rect),
+            ScreenMetrics::height(rect)) ;
+
+    ResizeWindow::resize_window(
+            hwnd,
+            nearest_rect.left,
+            nearest_rect.top,
+            ScreenMetrics::width(nearest_rect),
+            ScreenMetrics::height(nearest_rect)) ;
+}

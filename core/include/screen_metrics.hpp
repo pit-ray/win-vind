@@ -19,6 +19,7 @@
 #include <windows.h>
 #include <sstream>
 #include <string>
+#include <cmath>
 #include "utility.hpp"
 
 namespace ScreenMetrics {
@@ -36,6 +37,29 @@ namespace ScreenMetrics {
 
     inline auto height(const RECT& rect) noexcept {
         return rect.bottom - rect.top ;
+    }
+
+    inline auto center_x(const RECT& rect) noexcept {
+        return rect.left + width(rect) / 2 ;
+    }
+
+    inline auto center_y(const RECT& rect) noexcept {
+        return rect.top + height(rect) / 2 ;
+    }
+
+    inline auto l1_distance(const RECT& rhs, const RECT& lhs) noexcept {
+        return std::abs(center_x(rhs) - center_x(lhs)) \
+            + std::abs(center_y(rhs) - center_y(lhs)) ;
+    }
+
+    inline auto l2_distance_nosq(const RECT& rhs, const RECT& lhs) noexcept {
+        auto delta_x = center_x(rhs) - center_x(lhs) ;
+        auto delta_y = center_y(rhs) - center_y(lhs) ;
+        return delta_x*delta_x + delta_y*delta_y ;
+    }
+
+    inline auto l2_distance(const RECT& rhs, const RECT& lhs) noexcept {
+        return std::sqrt(l2_distance_nosq(rhs, lhs)) ;
     }
 
     inline auto is_out_of_range(const RECT& target, const RECT& range) noexcept {

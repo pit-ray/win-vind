@@ -855,6 +855,36 @@
         "ja": "新しいウィンドウを開く"
     },
     {
+        "name": "open_new_current_window_with_hsplit",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["sp", "split"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Open a New Window With Horizontal Split",
+        "ja": "横方向に分割して新しいウィンドウを開く"
+    },
+    {
+        "name": "open_new_current_window_with_vsplit",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["vs", "vsplit"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Open a New Window With Vertical Split",
+        "ja": "縦方向に分割して新しいウィンドウを開く"
+    },
+    {
         "name": "move_to_next_page",
         "guin": ["<gt>"],
         "guii": [],

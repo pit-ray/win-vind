@@ -12,6 +12,7 @@
 #include "msg_logger.hpp"
 #include "screen_metrics.hpp"
 #include "utility.hpp"
+#include "window_ctrl.hpp"
 
 //MaximizeCurrentWindow
 const std::string MaximizeCurrentWindow::sname() noexcept
@@ -553,4 +554,106 @@ void ExchangeWindowWithNextOne::sprocess(
             nearest_rect.top,
             ScreenMetrics::width(nearest_rect),
             ScreenMetrics::height(nearest_rect)) ;
+}
+
+
+//OpenNewCurWinWithHorizontalSplit
+const std::string OpenNewCurWinWithHorizontalSplit::sname() noexcept
+{
+    return "open_new_current_window_with_hsplit" ;
+}
+
+void OpenNewCurWinWithHorizontalSplit::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    const auto w = ScreenMetrics::width(rect) ;
+    const auto h = ScreenMetrics::height(rect) ;
+
+    //snap a original window to top
+    ResizeWindow::resize_window(
+            hwnd,
+            rect.left, rect.top,
+            w, h / 2) ;
+    OpenNewCurrentWindow::sprocess(true, 1, nullptr, nullptr) ;
+
+    auto new_hwnd = GetForegroundWindow() ;
+    if(new_hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
+    }
+    if(new_hwnd == hwnd) {
+        Sleep(500) ;
+        new_hwnd = GetForegroundWindow() ;
+    }
+
+    //snap a new window to bottom
+    ResizeWindow::resize_window(
+            new_hwnd,
+            rect.left, rect.top + h / 2,
+            w, h / 2) ;
+}
+
+
+//OpenNewCurWinWithVerticalSplit
+const std::string OpenNewCurWinWithVerticalSplit::sname() noexcept
+{
+    return "open_new_current_window_with_vsplit" ;
+}
+
+void OpenNewCurWinWithVerticalSplit::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    const auto w = ScreenMetrics::width(rect) ;
+    const auto h = ScreenMetrics::height(rect) ;
+
+    //snap a original window to left
+    ResizeWindow::resize_window(
+            hwnd,
+            rect.left, rect.top,
+            w / 2, h) ;
+    OpenNewCurrentWindow::sprocess(true, 1, nullptr, nullptr) ;
+
+    auto new_hwnd = GetForegroundWindow() ;
+    if(new_hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
+    }
+    if(new_hwnd == hwnd) {
+        Sleep(500) ;
+        new_hwnd = GetForegroundWindow() ;
+    }
+
+    //snap a new window to right
+    ResizeWindow::resize_window(
+            new_hwnd,
+            rect.left + w / 2, rect.top,
+            w / 2, h) ;
 }

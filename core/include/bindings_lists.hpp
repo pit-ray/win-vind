@@ -120,6 +120,8 @@ namespace BindingsLists {
             MoveUp::create(),
             MyConfigWindowInsert::create(),
             MyConfigWindowNormal::create(),
+            OpenNewCurWinWithHorizontalSplit::create(),
+            OpenNewCurWinWithVerticalSplit::create(),
             OpenNewCurrentWindow::create(),
             OpenNewTab::create(),
             OpenOtherFile::create(),

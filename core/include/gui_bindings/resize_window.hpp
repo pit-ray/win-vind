@@ -93,4 +93,24 @@ struct ExchangeWindowWithNextOne : public BindedFuncWithCreator<ExchangeWindowWi
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
+
+struct OpenNewCurWinWithHorizontalSplit : public BindedFuncWithCreator<OpenNewCurWinWithHorizontalSplit>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct OpenNewCurWinWithVerticalSplit : public BindedFuncWithCreator<OpenNewCurWinWithVerticalSplit>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
 #endif

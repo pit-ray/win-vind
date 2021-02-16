@@ -3,6 +3,14 @@
 
 #include "binded_func_with_creator.hpp"
 
+#include <windows.h>
+
+namespace WindowCtrl
+{
+    bool is_valid_hwnd(HWND hwnd) ;
+    bool is_valid_rect(HWND hwnd, RECT& rect) ;
+}
+
 struct OpenNewCurrentWindow : public BindedFuncWithCreator<OpenNewCurrentWindow>
 {
     static void sprocess(

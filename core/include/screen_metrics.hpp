@@ -57,9 +57,17 @@ namespace ScreenMetrics {
         auto delta_y = center_y(rhs) - center_y(lhs) ;
         return delta_x*delta_x + delta_y*delta_y ;
     }
+    inline auto l2_distance_nosq(LONG x1, LONG y1, LONG x2, LONG y2) noexcept {
+        auto delta_x = x2 - x1 ;
+        auto delta_y = y2 - y1 ;
+        return delta_x*delta_x + delta_y*delta_y ;
+    }
 
     inline auto l2_distance(const RECT& rhs, const RECT& lhs) noexcept {
         return std::sqrt(l2_distance_nosq(rhs, lhs)) ;
+    }
+    inline auto l2_distance(LONG x1, LONG y1, LONG x2, LONG y2) noexcept {
+        return std::sqrt(l2_distance_nosq(x1, y1, x2, y2)) ;
     }
 
     inline auto is_out_of_range(const RECT& target, const RECT& range) noexcept {

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <windows.h>
 #include <psapi.h>
+#include <dwmapi.h>
 
 #include "change_mode.hpp"
 #include "interval_timer.hpp"
@@ -17,6 +18,64 @@
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
 #include "win_vind.hpp"
+#include "screen_metrics.hpp"
+
+namespace WindowCtrl
+{
+    bool is_valid_hwnd(HWND hwnd) {
+        //is movable window ? -----------
+        if(hwnd == GetDesktopWindow()) {
+            return false ;
+        }
+        if(hwnd == GetShellWindow()) {
+            return false ;
+        }
+
+        //Is visible ? ------------------
+        if(!IsWindowEnabled(hwnd)) {
+            return false ;
+        }
+        if(!IsWindowVisible(hwnd)) {
+            return false ;
+        }
+        if(IsIconic(hwnd)) { //is minimized?
+            return false ;
+        }
+
+        int n_cloaked ;
+        if(DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, &n_cloaked, sizeof(int)) != S_OK) {
+            return false ;
+        }
+        if(n_cloaked) {
+            return false ;
+        }
+        return true ;
+    }
+
+    bool is_valid_rect(HWND hwnd, RECT& rect) {
+        const auto width = ScreenMetrics::width(rect) ;
+        if(width == 0) {
+            return false ;
+        }
+
+        const auto height = ScreenMetrics::height(rect) ;
+        if(height == 0) {
+            return false ;
+        }
+
+        //is full screen window ??
+        RECT client_rect ;
+        if(!GetClientRect(hwnd, &client_rect)) {
+            return false ;
+        }
+        if(ScreenMetrics::is_equel(rect, client_rect)) {
+            return false ;
+        }
+
+        return true ;
+    }
+}
+
 
 //CloseCurrentWindow
 const std::string CloseCurrentWindow::sname() noexcept
@@ -89,7 +148,7 @@ void OpenNewCurrentWindow::sprocess(
         CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
         throw RUNTIME_EXCEPT("Cannot call \"" + std::string(path) + "\".") ;
     }
-    Sleep(50) ;
+    Sleep(100) ;
 }
 
 //ReloadCurrentWindow

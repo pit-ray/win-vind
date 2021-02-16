@@ -1,13 +1,20 @@
 #include "select_window.hpp"
 
+#include <windows.h>
+
+#include <map>
+#include <unordered_map>
+
 #include "jump_cursor.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
 #include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "move_cursor.hpp"
+#include "screen_metrics.hpp"
 #include "utility.hpp"
 #include "win_vind.hpp"
+#include "window_ctrl.hpp"
 
 //SwitchWindow
 const std::string SwitchWindow::sname() noexcept
@@ -97,6 +104,84 @@ void SwitchWindow::sprocess(
     Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
 }
 
+namespace SelectWindow
+{
+    static std::unordered_map<HWND, RECT> g_rects ;
+    static BOOL CALLBACK EnumWindowsProcForNearest(HWND hwnd, LPARAM lparam) {
+        auto self_hwnd = reinterpret_cast<HWND>(lparam) ;
+        if(self_hwnd == hwnd) {
+            return TRUE ;
+        }
+
+        if(!WindowCtrl::is_valid_hwnd(hwnd)) {
+            return TRUE ;
+        }
+
+        RECT rect ;
+        if(!GetWindowRect(hwnd, &rect)) {
+            return TRUE ;
+        }
+
+        if(!WindowCtrl::is_valid_rect(hwnd, rect)) {
+            return TRUE ;
+        }
+
+        RECT monitor_rect, monitor_rect_work ;
+        ScreenMetrics::get_monitor_metrics(hwnd, &monitor_rect, &monitor_rect_work) ;
+
+        if(ScreenMetrics::is_out_of_range(rect, monitor_rect_work)) {
+            return TRUE ;
+        }
+
+        g_rects[hwnd] = std::move(rect) ;
+        return TRUE ;
+    }
+
+    template <typename T1, typename T2>
+    inline static void select_nearest_window(T1&& is_if_target, T2&& calc_distance) {
+        auto hwnd = GetForegroundWindow() ;
+        if(hwnd == NULL) {
+            throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+        }
+
+        SelectWindow::g_rects.clear() ;
+        if(!EnumWindows(SelectWindow::EnumWindowsProcForNearest,
+                    reinterpret_cast<LPARAM>(hwnd))) {
+
+            throw RUNTIME_EXCEPT("Could not enumerate all top-level windows.") ;
+        }
+
+        RECT rect ;
+        if(!GetWindowRect(hwnd, &rect)) {
+            throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+        }
+
+        std::map<LONG, HWND> nearest ;
+        for(const auto& hr : SelectWindow::g_rects) {
+            auto& ehwnd  = hr.first ;
+            auto& erect = hr.second ;
+
+            auto cx  = ScreenMetrics::center_x(rect) ;
+            auto cy  = ScreenMetrics::center_y(rect) ;
+            auto ecx = ScreenMetrics::center_x(erect) ;
+            auto ecy = ScreenMetrics::center_y(erect) ;
+
+            if(is_if_target(rect, erect, cx, cy, ecx, ecy)) {
+                nearest[calc_distance(rect, erect, cx, cy, ecx, ecy)] = ehwnd ;
+            }
+        }
+
+        if(!nearest.empty()) {
+            auto target_hwnd = nearest.begin()->second ;
+            if(!SetForegroundWindow(target_hwnd)) {
+                throw RUNTIME_EXCEPT("Could not set a foreground window.") ;
+            }
+            Sleep(50) ;
+            Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        }
+    }
+}
+
 
 //SelectLeftWindow
 const std::string SelectLeftWindow::sname() noexcept
@@ -109,9 +194,26 @@ void SelectLeftWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    if(!first_call) return ;
 
-    /* NOT IMPLEMENTED */
+    auto is_if_target = [] (
+            const auto& UNUSED(rect),
+            const auto& UNUSED(erect),
+            auto cx, auto UNUSED(cy),
+            auto ecx, auto UNUSED(ecy)) {
+        return cx >= ecx ;
+    } ;
 
+    auto calc_distance = [] (
+            const auto& rect,
+            const auto& erect,
+            auto UNUSED(cx), auto cy,
+            auto UNUSED(ecx), auto ecy) {
+
+        return ScreenMetrics::l2_distance_nosq(erect.right, ecy, rect.left, cy) / 100 ;
+    } ;
+
+    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
 }
 
 //SelectRightWindow
@@ -125,9 +227,26 @@ void SelectRightWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    if(!first_call) return ;
 
-    /* NOT IMPLEMENTED */
+    auto is_if_target = [] (
+            const auto& UNUSED(rect),
+            const auto& UNUSED(erect),
+            auto cx, auto UNUSED(cy),
+            auto ecx, auto UNUSED(ecy)) {
+        return cx <= ecx ;
+    } ;
 
+    auto calc_distance = [] (
+            const auto& rect,
+            const auto& erect,
+            auto UNUSED(cx), auto cy,
+            auto UNUSED(ecx), auto ecy) {
+
+        return ScreenMetrics::l2_distance_nosq(erect.left, ecy, rect.right, cy) / 100 ;
+    } ;
+
+    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
 }
 
 //SelectUpperWindow
@@ -141,9 +260,26 @@ void SelectUpperWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    if(!first_call) return ;
 
-    /* NOT IMPLEMENTED */
+    auto is_if_target = [] (
+            const auto& UNUSED(rect),
+            const auto& UNUSED(erect),
+            auto UNUSED(cx), auto cy,
+            auto UNUSED(ecx), auto ecy) {
+        return cy >= ecy ;
+    } ;
 
+    auto calc_distance = [] (
+            const auto& rect,
+            const auto& erect,
+            auto cx, auto UNUSED(cy),
+            auto ecx, auto UNUSED(ecy)) {
+
+        return ScreenMetrics::l2_distance_nosq(ecx, erect.bottom, cx, rect.top) / 100 ;
+    } ;
+
+    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
 }
 
 //SelectLowerWindow
@@ -157,23 +293,24 @@ void SelectLowerWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
+    if(!first_call) return ;
 
-    /* NOT IMPLEMENTED */
+    auto is_if_target = [] (
+            const auto& UNUSED(rect),
+            const auto& UNUSED(erect),
+            auto UNUSED(cx), auto cy,
+            auto UNUSED(ecx), auto ecy) {
+        return cy <= ecy ;
+    } ;
 
-}
+    auto calc_distance = [] (
+            const auto& rect,
+            const auto& erect,
+            auto cx, auto UNUSED(cy),
+            auto ecx, auto UNUSED(ecy)) {
 
-//SelectWindowWithKeypush
-const std::string SelectWindowWithKeypush::sname() noexcept
-{
-    return "select_window_with_keypush" ;
-}
-void SelectWindowWithKeypush::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
-{
+        return ScreenMetrics::l2_distance_nosq(ecx, erect.top, cx, rect.bottom) / 100 ;
+    } ;
 
-    /* NOT IMPLEMENTED */
-
+    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
 }

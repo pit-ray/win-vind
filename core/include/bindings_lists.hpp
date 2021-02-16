@@ -147,7 +147,6 @@ namespace BindingsLists {
             SelectLowerWindow::create(),
             SelectRightWindow::create(),
             SelectUpperWindow::create(),
-            SelectWindowWithKeypush::create(),
             ShowConfigWindow::create(),
             SnapCurrentWindow2Bottom::create(),
             SnapCurrentWindow2Left::create(),

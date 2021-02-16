@@ -3,7 +3,6 @@
 #include <map>
 #include <unordered_map>
 #include <windows.h>
-#include <dwmapi.h>
 #include <psapi.h>
 
 #include "i_params.hpp"
@@ -197,61 +196,8 @@ namespace ResizeWindow
     static std::unordered_map<HMONITOR, RECT> g_mrects ;
     static std::unordered_map<HMONITOR, std::map<SIZE_T, HWND>> g_ordered_hwnd ;
 
-    inline static auto is_valid_hwnd(HWND hwnd) {
-        //is movable window ? -----------
-        if(hwnd == GetDesktopWindow()) {
-            return false ;
-        }
-        if(hwnd == GetShellWindow()) {
-            return false ;
-        }
-
-        //Is visible ? ------------------
-        if(!IsWindowEnabled(hwnd)) {
-            return false ;
-        }
-        if(!IsWindowVisible(hwnd)) {
-            return false ;
-        }
-        if(IsIconic(hwnd)) { //is minimized?
-            return false ;
-        }
-
-        int n_cloaked ;
-        if(DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, &n_cloaked, sizeof(int)) != S_OK) {
-            return false ;
-        }
-        if(n_cloaked) {
-            return false ;
-        }
-        return true ;
-    }
-
-    inline static auto is_valid_rect(HWND hwnd, RECT& rect) {
-        const auto width = ScreenMetrics::width(rect) ;
-        if(width == 0) {
-            return false ;
-        }
-
-        const auto height = ScreenMetrics::height(rect) ;
-        if(height == 0) {
-            return false ;
-        }
-
-        //is full screen window ??
-        RECT client_rect ;
-        if(!GetClientRect(hwnd, &client_rect)) {
-            return false ;
-        }
-        if(ScreenMetrics::is_equel(rect, client_rect)) {
-            return false ;
-        }
-
-        return true ;
-    }
-
     static BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
-        if(!is_valid_hwnd(hwnd)) {
+        if(!WindowCtrl::is_valid_hwnd(hwnd)) {
             return TRUE ; //continue
         }
 
@@ -260,7 +206,7 @@ namespace ResizeWindow
             return TRUE ;
         }
 
-        if(!is_valid_rect(hwnd, rect)) {
+        if(!WindowCtrl::is_valid_rect(hwnd, rect)) {
             return TRUE ; //continue
         }
 
@@ -462,7 +408,7 @@ namespace ResizeWindow
             return TRUE ;
         }
 
-        if(!is_valid_hwnd(hwnd)) {
+        if(!WindowCtrl::is_valid_hwnd(hwnd)) {
             return TRUE ; //continue
         }
 
@@ -471,13 +417,12 @@ namespace ResizeWindow
             return TRUE ;
         }
 
-        if(!is_valid_rect(hwnd, rect)) {
+        if(!WindowCtrl::is_valid_rect(hwnd, rect)) {
             return TRUE ; //continue
         }
 
         HMONITOR hmonitor ;
-        RECT monitor_rect ;
-        RECT monitor_rect_work ;
+        RECT monitor_rect, monitor_rect_work ;
         ScreenMetrics::get_monitor_metrics(hwnd, &monitor_rect, &monitor_rect_work, &hmonitor) ;
 
         const auto target_hmonitor = MonitorFromWindow(target_hwnd, MONITOR_DEFAULTTONEAREST) ;
@@ -494,7 +439,7 @@ namespace ResizeWindow
         if(!GetWindowRect(target_hwnd, &target_rect)) {
             return TRUE ;
         }
-        g_near_hwnds[ScreenMetrics::l2_distance_nosq(rect, target_rect)] = hwnd ;
+        g_near_hwnds[ScreenMetrics::l2_distance_nosq(rect, target_rect) / 100] = hwnd ;
         return TRUE ;
     }
 }

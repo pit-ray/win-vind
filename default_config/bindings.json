@@ -806,8 +806,23 @@
         "cmd": ["arrange", "arw"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Arrange Window",
+        "en": "Arrange Windows",
         "ja": "ウィンドウを並べて表示する"
+    },
+    {
+        "name": "rotate_window_in_current_monitor",
+        "guin": ["<C-w>r"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["rotate", "rot"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Rotate arranged windows in a current monitor",
+        "ja": "現在のモニタの整列済みウィンドウを回転させる"
     },
     {
         "name": "open_new_current_window",

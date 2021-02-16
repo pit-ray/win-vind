@@ -25,9 +25,6 @@ void MaximizeCurrentWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    /*
-     * must be 2 State
-     */
     if(!first_call) return ;
     for(unsigned int i = 0 ; i < repeat_num ; i ++) {
         KeybrdEventer::pushup(VKC_LWIN, VKC_UP) ;
@@ -47,9 +44,6 @@ void MinimizeCurrentWindow::sprocess(
         KeyLogger* UNUSED(parent_vkclgr),
         const KeyLogger* const UNUSED(parent_charlgr))
 {
-    /*
-     * must be 2 State
-     */
     if(!first_call) return ;
     KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
 }
@@ -196,28 +190,6 @@ void SnapCurrentWindow2Bottom::sprocess(
             half_of_height) ;
 }
 
-//RotateWindowInCurrentMonitor
-const std::string RotateWindowInCurrentMonitor::sname() noexcept
-{
-    return "rotate_window_in_current_monitor" ;
-}
-
-void RotateWindowInCurrentMonitor::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
-{
-
-    /*
-     * 一旦整列して、回転。
-     *
-     */
-
-    /* NOT IMPLEMENTED*/
-
-}
-
 //ExchangeWindowWithNextOne
 const std::string ExchangeWindowWithNextOne::sname() noexcept
 {
@@ -244,32 +216,40 @@ namespace ResizeWindow
     static std::unordered_map<HMONITOR, RECT> g_mrects ;
     static std::unordered_map<HMONITOR, std::map<SIZE_T, HWND>> g_ordered_hwnd ;
 
-    static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lparam) {
+    inline static auto is_valid_hwnd(HWND hwnd) {
         //is movable window ? -----------
         if(hwnd == GetDesktopWindow()) {
-            return TRUE ; //continue
+            return false ;
         }
         if(hwnd == GetShellWindow()) {
-            return TRUE ; //continue
+            return false ;
         }
 
         //Is visible ? ------------------
         if(!IsWindowEnabled(hwnd)) {
-            return TRUE ; //continue
+            return false ;
         }
         if(!IsWindowVisible(hwnd)) {
-            return TRUE ; //continue
+            return false ;
         }
         if(IsIconic(hwnd)) { //is minimized?
-            return TRUE ; //continue
+            return false ;
         }
 
         int n_cloaked ;
         if(DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, &n_cloaked, sizeof(int)) != S_OK) {
-            return FALSE ; //break
+            return false ;
         }
-        if(n_cloaked) return TRUE ; //continue
+        if(n_cloaked) {
+            return false ;
+        }
+        return true ;
+    }
 
+    static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lparam) {
+        if(!is_valid_hwnd(hwnd)) {
+            return TRUE ; //continue
+        }
 
         //is full screen window ?? ------------------
         RECT rect ;
@@ -329,6 +309,53 @@ namespace ResizeWindow
 
         return TRUE ;
     }
+
+    inline static void assign_local_area_in_monitors(std::unordered_map<HWND, RECT>& rects) {
+        for(auto& mr : g_mrects) {
+            const auto& hmonitor = mr.first ;
+            const auto& mrect    = mr.second ;
+
+            const auto& oh = g_ordered_hwnd[hmonitor] ;
+
+            //Its priority is the highest (based on the memory use).
+            auto itr = oh.crbegin() ;
+            auto pre_hwnd = itr->second ;
+            rects[itr->second] = mrect ;
+            itr ++ ;
+
+            while(itr != oh.crend()) {
+                const auto hwnd = itr->second ;
+
+                auto& pre_rect = rects[pre_hwnd] ;
+                auto rect = pre_rect ;
+
+                const auto pre_w = ScreenMetrics::width(pre_rect) ;
+                const auto pre_h = ScreenMetrics::height(pre_rect) ;
+                if(pre_w > pre_h) {
+                    pre_rect.right -= pre_w / 2 ;
+                    rect.left += pre_w / 2 ;
+                }
+                else {
+                    pre_rect.bottom -= pre_h / 2 ;
+                    rect.top += pre_h / 2 ;
+                }
+                rects[hwnd] = std::move(rect) ;
+
+                pre_hwnd = hwnd ;
+                itr ++ ;
+            }
+        }
+    }
+
+    inline static void batch_resize(std::unordered_map<HWND, RECT>& rects) {
+        //Resize each windows
+        for(const auto& hr : rects) {
+            const auto hwnd = hr.first ;
+            const auto rect = hr.second ;
+            resize_window(hwnd, rect.left, rect.top,
+                    ScreenMetrics::width(rect), ScreenMetrics::height(rect)) ;
+        }
+    }
 }
 
 //ArrangeWindow
@@ -354,49 +381,58 @@ void ArrangeWindow::sprocess(
         throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
     }
 
-    //Assign local area in monitors
     std::unordered_map<HWND, RECT> rects ;
+    assign_local_area_in_monitors(rects) ;
+    batch_resize(rects) ;
+}
 
-    for(auto& mr : g_mrects) {
-        const auto& hmonitor = mr.first ;
-        const auto& mrect    = mr.second ;
 
-        const auto& oh = g_ordered_hwnd[hmonitor] ;
+//RotateWindowInCurrentMonitor
+const std::string RotateWindowInCurrentMonitor::sname() noexcept
+{
+    return "rotate_window_in_current_monitor" ;
+}
 
-        //Its priority is the highest (based on the memory use).
-        auto itr = oh.crbegin() ;
-        auto pre_hwnd = itr->second ;
-        rects[itr->second] = mrect ;
+void RotateWindowInCurrentMonitor::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+
+    using namespace ResizeWindow ;
+
+    POINT pos ;
+    if(!GetCursorPos(&pos)) {
+        throw RUNTIME_EXCEPT("Could not get a position of a mouse cursor.") ;
+    }
+
+    const auto hmonitor = MonitorFromPoint(pos, MONITOR_DEFAULTTONEAREST) ;
+    MONITORINFO minfo ;
+    minfo.cbSize = sizeof(MONITORINFO) ;
+    if(!GetMonitorInfo(hmonitor, &minfo)) {
+        throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
+    }
+
+    //rotate-shift a value in hwnd maps
+    auto& oh = g_ordered_hwnd[hmonitor] ;
+
+    for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        auto itr = oh.rbegin() ;
+        auto head_val = itr->second ;
+        auto pre_itr = itr ;
         itr ++ ;
-
-        while(itr != oh.crend()) {
-            const auto hwnd = itr->second ;
-
-            auto& pre_rect = rects[pre_hwnd] ;
-            auto rect = pre_rect ;
-
-            const auto pre_w = ScreenMetrics::width(pre_rect) ;
-            const auto pre_h = ScreenMetrics::height(pre_rect) ;
-            if(pre_w > pre_h) {
-                pre_rect.right -= pre_w / 2 ;
-                rect.left += pre_w / 2 ;
-            }
-            else {
-                pre_rect.bottom -= pre_h / 2 ;
-                rect.top += pre_h / 2 ;
-            }
-            rects[hwnd] = std::move(rect) ;
-
-            pre_hwnd = hwnd ;
+        while(itr != oh.rend()) {
+            pre_itr->second = itr->second ;
+            pre_itr = itr ;
             itr ++ ;
         }
+        pre_itr->second = head_val ;
     }
 
-    //Resize each windows
-    for(const auto& hr : rects) {
-        const auto hwnd = hr.first ;
-        const auto rect = hr.second ;
-        resize_window(hwnd, rect.left, rect.top,
-                ScreenMetrics::width(rect), ScreenMetrics::height(rect)) ;
-    }
+    std::unordered_map<HWND, RECT> rects ;
+    assign_local_area_in_monitors(rects) ;
+    batch_resize(rects) ;
 }
+

@@ -86,9 +86,9 @@ namespace ScreenMetrics {
     }
 
     inline void get_monitor_metrics(HWND hwnd, RECT* const rect, RECT* const work_rect=NULL, HMONITOR* monitor=NULL) {
+        const auto hmonitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST) ;
         MONITORINFO minfo ;
         minfo.cbSize = sizeof(MONITORINFO) ;
-        const auto hmonitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST) ;
         if(!GetMonitorInfo(hmonitor, &minfo)) {
             throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
         }

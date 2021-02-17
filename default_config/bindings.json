@@ -71,7 +71,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Select All",
+        "en": "Select all",
         "ja": "全て選択"
     },
     {
@@ -86,7 +86,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Move the Mouse Cursor to Left",
+        "en": "Move the mouse cursor to left",
         "ja": "左へマウスカーソルを移動"
     },
     {
@@ -101,7 +101,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Move the Mouse Cursor to Right",
+        "en": "Move the mouse cursor to right",
         "ja": "右へマウスカーソルを移動"
     },
     {
@@ -116,7 +116,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Move the Mouse Cursor Up",
+        "en": "Move the mouse cursor up",
         "ja": "上へマウスカーソルを移動"
     },
     {
@@ -146,7 +146,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Mouse Cursor to Left",
+        "en": "Jump the Mouse cursor to left",
         "ja": "左端へマウスカーソルを移動"
     },
     {
@@ -161,7 +161,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Mouse Cursor to Right",
+        "en": "Jump the mouse cursor to right",
         "ja": "右端へマウスカーソルを移動"
     },
     {
@@ -176,7 +176,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Mouse Cursor to Top",
+        "en": "Jump the mouse cursor to top",
         "ja": "上端へマウスカーソルを移動"
     },
     {
@@ -191,7 +191,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Mouse Cursor to Bottom",
+        "en": "Jump the mouse cursor to bottom",
         "ja": "下端へマウスカーソルを移動"
     },
     {
@@ -206,7 +206,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Mouse Cursor to Horizontal Center",
+        "en": "Jump the mouse cursor to horizontal center",
         "ja": "横中央へマウスカーソルを移動"
     },
     {
@@ -221,7 +221,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump Cursor to Vertical Center",
+        "en": "Jump the mouse cursor to vertical center",
         "ja": "縦中央へマウスカーソルを移動"
     },
     {
@@ -236,7 +236,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Mouse Cursor by Keyboard Mapping",
+        "en": "Jump the mouse cursor by keyboard mapping",
         "ja": "キー配置でマウスカーソルを移動"
     },
     {
@@ -251,7 +251,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Mouse Cursor to Selected Window",
+        "en": "Jump the mouse cursor to selected window",
         "ja": "選択ウィンドウへマウスカーソルを移動"
     },
     {
@@ -266,7 +266,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Up",
+        "en": "Scroll a mouse wheel up",
         "ja": "上へマウスホイールをスクロール"
     },
     {
@@ -281,7 +281,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Down",
+        "en": "Scroll a mouse wheel down",
         "ja": "下へマウスホイールをスクロール"
     },
     {
@@ -296,7 +296,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Up with a Half Page",
+        "en": "Scroll a mouse wheel up with a half page",
         "ja": "上へマウスホイールをスクロール(ページ半分)"
     },
     {
@@ -311,7 +311,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Down with a Half Page",
+        "en": "Scroll a mouse wheel down with a half page",
         "ja": "下へマウスホイールをスクロール(ページ半分)"
     },
     {
@@ -326,7 +326,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Up with a Page",
+        "en": "Scroll a mouse wheel up with a page",
         "ja": "上へマウスホイールをスクロール(1ページ分)"
     },
     {
@@ -341,7 +341,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Down with a Page",
+        "en": "Scroll a mouse wheel down With a page",
         "ja": "下へマウスホイールをスクロール(1ページ分)"
     },
     {
@@ -356,7 +356,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Left",
+        "en": "Scroll a mouse wheel left",
         "ja": "左へマウスホイールをスクロール"
     },
     {
@@ -371,7 +371,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Right",
+        "en": "Scroll a mouse wheel right",
         "ja": "右へマウスホイールをスクロール"
     },
     {
@@ -386,7 +386,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Left with a Half Page",
+        "en": "Scroll a mouse wheel left With a half page",
         "ja": "左へマウスホイールをスクロール(ページ半分)"
     },
     {
@@ -401,7 +401,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Scroll a Mouse Wheel Right with a Half Page",
+        "en": "Scroll a mouse wheel right with a half page",
         "ja": "右へマウスホイールをスクロール(ページ半分)"
     },
     {
@@ -416,7 +416,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Left Button of a Mouse Click",
+        "en": "Left button of a mouse click",
         "ja": "マウスの左ボタンをクリック"
     },
     {
@@ -431,7 +431,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Right Button of a Mouse Click",
+        "en": "Right button of a mouse click",
         "ja": "マウスの右ボタンをクリック"
     },
     {
@@ -551,7 +551,7 @@
         "cmd": ["vdnext"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Switch to a Left Virtual Desktop",
+        "en": "Switch to a left virtual desktop",
         "ja": "左の仮想デスクトップへ切替"
     },
     {
@@ -566,7 +566,7 @@
         "cmd": ["vdprev"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Switch to a Right Virtual Desktop",
+        "en": "Switch to a right virtual desktop",
         "ja": "右の仮想デスクトップへ切替"
     },
     {
@@ -581,7 +581,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Create a New Virtual Desktop",
+        "en": "Create a new virtual desktop",
         "ja": "新しい仮想デスクトップを作成"
     },
     {
@@ -596,7 +596,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Close a Current Virtual Desktop",
+        "en": "Close a current virtual desktop",
         "ja": "現在の仮想デスクトップを閉じる"
     },
     {
@@ -626,7 +626,7 @@
         "cmd": ["tabprevious"],
         "mycwn": ["<guin>"],
         "mycwi": [],
-        "en": "Switch to a Left Tab",
+        "en": "Switch to a left tab",
         "ja": "左のタブへ切替"
     },
     {
@@ -641,7 +641,7 @@
         "cmd": ["tabnext"],
         "mycwn": ["<guin>"],
         "mycwi": [],
-        "en": "Switch to a Right Tab",
+        "en": "Switch to a right tab",
         "ja": "右のタブへ切替"
     },
     {
@@ -656,7 +656,7 @@
         "cmd": ["tabnew"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Open a New Tab",
+        "en": "Open a new tab",
         "ja": "新しいタブを開く"
     },
     {
@@ -686,7 +686,7 @@
         "cmd": ["cl", "close"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Close a Current Window",
+        "en": "Close a current window",
         "ja": "ウィンドウを閉じる"
     },
     {
@@ -701,7 +701,7 @@
         "cmd": ["sw", "switch"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Switch Window",
+        "en": "Switch a window",
         "ja": "ウィンドウを切替"
     },
     {
@@ -776,7 +776,7 @@
         "cmd": ["max", "on", "only"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Maximize a Current Window",
+        "en": "Maximize a current window",
         "ja": "ウィンドウを最大化"
     },
     {
@@ -791,12 +791,12 @@
         "cmd": ["min", "hi", "hide"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Minimize a Current Window",
+        "en": "Minimize a current window",
         "ja": "ウィンドウを最小化"
     },
     {
         "name": "snap_current_window_to_left",
-        "guin": ["<C-w>H", "<C-w><lt>", "<C-w><Left>"],
+        "guin": ["<C-w>H", "<C-w><Left>"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -806,12 +806,12 @@
         "cmd": ["lsplit", "lsp", "wl"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Snap a Current Window to Left",
+        "en": "Snap a current window to left",
         "ja": "ウィンドウを画面の左へ移動"
     },
     {
         "name": "snap_current_window_to_right",
-        "guin": ["<C-w>L", "<C-w><gt>", "<C-w><Right>"],
+        "guin": ["<C-w>L", "<C-w><Right>"],
         "guii": [],
         "guiv": [],
         "edin": [],
@@ -821,7 +821,7 @@
         "cmd": ["rsplit", "rsp", "wh"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Snap a Current Window to Right",
+        "en": "Snap a current window to right",
         "ja": "ウィンドウを画面の右へ移動"
     },
     {
@@ -836,7 +836,7 @@
         "cmd": ["tsplit", "tsp", "wt"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Snap a Current Window to Top",
+        "en": "Snap a current window to top",
         "ja": "ウィンドウを画面の上へ移動"
     },
     {
@@ -851,7 +851,7 @@
         "cmd": ["bsplit", "bsp", "wb"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Snap a Current Window to Bottom",
+        "en": "Snap a current window to bottom",
         "ja": "ウィンドウを画面の下へ移動"
     },
     {
@@ -866,7 +866,7 @@
         "cmd": ["arrange", "arw"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Arrange Windows",
+        "en": "Arrange windows",
         "ja": "ウィンドウを並べて表示する"
     },
     {
@@ -915,6 +915,96 @@
         "ja": "隣のウィンドウと交換する"
     },
     {
+        "name": "resize_window_width",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["vertical resize <num>", "vert res <num>"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Resize the width of a window",
+        "ja": "ウィンドウの幅を変更する"
+    },
+    {
+        "name": "increase_window_width",
+        "guin": ["<C-w><gt>"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["vertical resize +<num>", "vert res +<num>"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Increase the width of a window",
+        "ja": "ウィンドウの幅を増加させる"
+    },
+    {
+        "name": "decrease_window_width",
+        "guin": ["<C-w><lt>"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["vertical resize -<num>", "vert res -<num>"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Decrease the width of a window",
+        "ja": "ウィンドウの幅を減少させる"
+    },
+    {
+        "name": "resize_window_height",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["resize <num>", "res <num>"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Resize the height of a window",
+        "ja": "ウィンドウの高さを変更する"
+    },
+    {
+        "name": "increase_window_height",
+        "guin": ["<C-w>+"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["resize +<num>", "res +<num>"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Increase the height of a window",
+        "ja": "ウィンドウの高さを増加させる"
+    },
+    {
+        "name": "decrease_window_height",
+        "guin": ["<C-w>-"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["resize -<num>", "res -<num>"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Decrease the height of a window",
+        "ja": "ウィンドウの高さを減少させる"
+    },
+    {
         "name": "open_new_current_window",
         "guin": ["<C-w>n"],
         "guii": [],
@@ -926,7 +1016,7 @@
         "cmd": ["new"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Open a New Window",
+        "en": "Open a new window",
         "ja": "新しいウィンドウを開く"
     },
     {
@@ -941,7 +1031,7 @@
         "cmd": ["sp", "split"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Open a New Window With Horizontal Split",
+        "en": "Open a new window with horizontal split",
         "ja": "横方向に分割して新しいウィンドウを開く"
     },
     {
@@ -956,7 +1046,7 @@
         "cmd": ["vs", "vsplit"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Open a New Window With Vertical Split",
+        "en": "Open a new window with vertical split",
         "ja": "縦方向に分割して新しいウィンドウを開く"
     },
     {
@@ -971,7 +1061,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Forward a Next Page",
+        "en": "Forward a next page",
         "ja": "次のページへ進む"
     },
     {
@@ -986,7 +1076,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Backward a Previous Page",
+        "en": "Backward a previous page",
         "ja": "前のページへ戻る"
     },
     {
@@ -1001,7 +1091,7 @@
         "cmd": ["w", "w_f", "w_a", "w_c", "up", "wall"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Save File",
+        "en": "Save a current file",
         "ja": "ファイルを保存"
     },
     {
@@ -1016,7 +1106,7 @@
         "cmd": ["q", "qa", "q!", "qa!", "tabclose"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Close Current Tab",
+        "en": "Close a current tab",
         "ja": "タブを閉じる"
     },
     {
@@ -1031,7 +1121,7 @@
         "cmd": ["sh", "shell", "terminal", "term"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Start a Prompt",
+        "en": "Start a terminal",
         "ja": "ターミナル起動"
     },
     {
@@ -1061,7 +1151,7 @@
         "cmd": ["win", "start"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Open a Start Menu",
+        "en": "Open a start menu",
         "ja": "スタートメニューを開く"
     },
     {
@@ -1076,7 +1166,7 @@
         "cmd": ["!<any>"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Start a Optional Application",
+        "en": "Start a optional application",
         "ja": "任意のアプリを実行"
     },
     {
@@ -1091,7 +1181,7 @@
         "cmd": ["set", "config"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Show a Config Window of win-vind",
+        "en": "Show a config window of win-vind",
         "ja": "win-vindの設定を開く"
     },
     {
@@ -1121,7 +1211,7 @@
         "cmd": ["find", "open", "e", "e!", "edit", "edit!"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Open a Other File",
+        "en": "Open a other file",
         "ja": "ファイルを開く"
     },
     {
@@ -1136,7 +1226,7 @@
         "cmd": ["mkdir", "md", "mkdir <any>", "md <any>"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Make a Directory",
+        "en": "Make a directory",
         "ja": "ディレクトリ作成"
     },
     {
@@ -1151,7 +1241,7 @@
         "cmd": ["reload"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Reload a Current Window",
+        "en": "Reload a current window",
         "ja": "ウィンドウを再読み込み"
     },
     {
@@ -1166,7 +1256,7 @@
         "cmd": ["enable d2w", "e d2w", "target", "d2w on", "set d2w"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Enable Targeting (Dedicate to One Window)",
+        "en": "Enable targeting (Dedicate to One Window)",
         "ja": "ターゲティングの有効化 (ウィンドウ特化)"
     },
     {
@@ -1181,7 +1271,7 @@
         "cmd": ["disable d2w", "d d2w", "untarget", "d2w off", "unset d2w"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Disable Targeting (Dedicate to One Window)",
+        "en": "Disable targeting (Dedicate to One Window)",
         "ja": "ターゲティングの無効化 (ウィンドウ特化)"
     },
     {
@@ -1211,7 +1301,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Insert before a Caret (Vim Emulation: i)",
+        "en": "Insert before a caret (Vim Emulation: i)",
         "ja": "キャレットの前に挿入 (Vimエミュレーション: i)"
     },
     {
@@ -1226,7 +1316,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Insert to Begin of Line (Vim Emulation: I)",
+        "en": "Insert to begin of line (Vim Emulation: I)",
         "ja": "行頭に挿入 (Vimエミュレーション: I)"
     },
     {
@@ -1241,7 +1331,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Append after a Caret (Vim Emulation: a)",
+        "en": "Append after a caret (Vim Emulation: a)",
         "ja": "キャレットの後に追加 (Vimエミュレーション: a)"
     },
     {
@@ -1256,7 +1346,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Append End of Line (Vim Emulation: A)",
+        "en": "Append end of line (Vim Emulation: A)",
         "ja": "行末に追加 (Vimエミュレーション: A)"
     },
     {
@@ -1271,7 +1361,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Begin New Line below Caret (Vim Emulation: o)",
+        "en": "Begin new line below a caret (Vim Emulation: o)",
         "ja": "次の行に新しい行を挿入 (Vimエミュレーション: o)"
     },
     {
@@ -1286,7 +1376,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Begin New Line above Caret (Vim Emulation: O)",
+        "en": "Begin new line above a caret (Vim Emulation: O)",
         "ja": "前の行に新しい行を挿入 (Vimエミュレーション: O)"
     },
     {
@@ -1331,7 +1421,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Move the Caret to Left (Vim Emulation: h)",
+        "en": "Move the caret to left (Vim Emulation: h)",
         "ja": "左へキャレットを移動 (Vimエミュレーション: h)"
     },
     {
@@ -1346,7 +1436,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Move the Caret to Right (Vim Emulation: l)",
+        "en": "Move the caret to right (Vim Emulation: l)",
         "ja": "右へキャレットを移動 (Vimエミュレーション: l)"
     },
     {
@@ -1361,7 +1451,7 @@
         "cmd": ["-<num>"],
         "mycwn": ["<edin>"],
         "mycwi": [],
-        "en": "Move the Caret Up (Vim Emulation: k)",
+        "en": "Move the caret up (Vim Emulation: k)",
         "ja": "上へキャレットを移動 (Vimエミュレーション: k)"
     },
     {
@@ -1376,7 +1466,7 @@
         "cmd": ["+<num>"],
         "mycwn": ["<edin>"],
         "mycwi": [],
-        "en": "Move the Caret Down (Vim Emulation: j)",
+        "en": "Move the caret down (Vim Emulation: j)",
         "ja": "下へキャレットを移動 (Vimエミュレーション: j)"
     },
     {
@@ -1451,7 +1541,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Caret to Begin of Line (Vim Emulation: 0)",
+        "en": "Jump the caret to begin of line (Vim Emulation: 0)",
         "ja": "行頭へキャレットを移動 (Vimエミュレーション: 0)"
     },
     {
@@ -1466,7 +1556,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Caret to End of Line (Vim Emulation: $)",
+        "en": "Jump the caret to end of line (Vim Emulation: $)",
         "ja": "行末へキャレットを移動 (Vimエミュレーション: $)"
     },
     {
@@ -1481,7 +1571,7 @@
         "cmd": ["<num>"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Caret to BOF (Vim Emulation: gg)",
+        "en": "Jump the caret to BOF (Vim Emulation: gg)",
         "ja": "BOFにキャレットを移動 (Vimエミュレーション: gg)"
     },
     {
@@ -1496,7 +1586,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Jump the Caret to EOF (Vim Emulation: G)",
+        "en": "Jump the caret to EOF (Vim Emulation: G)",
         "ja": "EOFにキャレットを移動 (Vimエミュレーション: G)"
     },
     {
@@ -1511,7 +1601,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Yank Highlighted Texts (Vim Emulation: y)",
+        "en": "Yank highlighted texts (Vim Emulation: y)",
         "ja": "選択テキストをヤンク (Vimエミュレーション: y)"
     },
     {
@@ -1526,7 +1616,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Yank Lines (Vim Emulation: yy)",
+        "en": "Yank lines (Vim Emulation: yy)",
         "ja": "行ヤンク (Vimエミュレーション: yy)"
     },
     {
@@ -1541,7 +1631,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Yank Lines with Motion (Vim Emulation: y{Motion})",
+        "en": "Yank lines with motion (Vim Emulation: y{Motion})",
         "ja": "移動でヤンク (Vimエミュレーション: y{Motion})"
     },
     {
@@ -1556,7 +1646,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Put Text after the Caret (Vim Emulation: p)",
+        "en": "Put texts after the caret (Vim Emulation: p)",
         "ja": "後にプット (Vimエミュレーション: p)"
     },
     {
@@ -1571,7 +1661,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Put Text before the Caret (Vim Emulation: P)",
+        "en": "Put texts before the caret (Vim Emulation: P)",
         "ja": "前にプット (Vimエミュレーション: P)"
     },
     {
@@ -1586,7 +1676,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Highlighted Texts (Vim Emulation: d,x)",
+        "en": "Delete highlighted texts (Vim Emulation: d,x)",
         "ja": "選択テキストを削除 (Vimエミュレーション: d,x)"
     },
     {
@@ -1601,7 +1691,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Lines (Vim Emulation: dd)",
+        "en": "Delete lines (Vim Emulation: dd)",
         "ja": "行削除 (Vimエミュレーション: dd)"
     },
     {
@@ -1616,7 +1706,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Texts until End of Line (Vim Emulation: D)",
+        "en": "Delete texts until end of line (Vim Emulation: D)",
         "ja": "行末まで削除 (Vimエミュレーション: D)"
     },
     {
@@ -1631,7 +1721,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Chars after the Caret (Vim Emulation: x)",
+        "en": "Delete chars after the caret (Vim Emulation: x)",
         "ja": "次の文字を削除 (Vimエミュレーション: x)"
     },
     {
@@ -1646,7 +1736,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Chars before the Caret (Vim Emulation: X)",
+        "en": "Delete chars before the caret (Vim Emulation: X)",
         "ja": "前の文字を削除 (Vimエミュレーション: X)"
     },
     {
@@ -1661,7 +1751,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Join a Next Line (Vim Emulation: J)",
+        "en": "Join a next line (Vim Emulation: J)",
         "ja": "次の行を行末に結合 (Vimエミュレーション: J)"
     },
     {
@@ -1676,7 +1766,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Replace a Char (Vim Emulation: r)",
+        "en": "Replace a char (Vim Emulation: r)",
         "ja": "文字を置換 (Vimエミュレーション: r)"
     },
     {
@@ -1706,7 +1796,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Switch Char Case (Vim Emulation: ~)",
+        "en": "Switch char case (Vim Emulation: ~)",
         "ja": "大文字と小文字を切替 (Vimエミュレーション: ~)"
     },
     {
@@ -1721,7 +1811,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Texts with Motion (Vim Emulation: d{Motion})",
+        "en": "Delete texts with motion (Vim Emulation: d{Motion})",
         "ja": "移動でテキストを削除 (Vimエミュレーション: d{Motion})"
     },
     {
@@ -1736,7 +1826,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Texts with Motion and Insert (Vim Emulation: c{Motion})",
+        "en": "Delete texts with motion and insert (Vim Emulation: c{Motion})",
         "ja": "移動でテキストを削除してインサートモード (Vim エミュレーション: c{Motion})"
     },
     {
@@ -1751,7 +1841,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Lines And Insert (Vim Emulation: cc, S)",
+        "en": "Delete lines and insert (Vim Emulation: cc, S)",
         "ja": "行を削除してインサートモード (Vimエミュレーション: cc, S)"
     },
     {
@@ -1766,7 +1856,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete a Char And Insert (Vim Emulation: s)",
+        "en": "Delete a char and insert (Vim Emulation: s)",
         "ja": "文字を削除してインサートモード (Vimエミュレーション: s)"
     },
     {
@@ -1781,7 +1871,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete Until EOL And Insert (Vim Emulation: C)",
+        "en": "Delete until EOL and insert (Vim Emulation: C)",
         "ja": "行末まで削除してインサートモード (Vimエミュレーション: C)"
     },
     {
@@ -1901,7 +1991,7 @@
         "cmd": ["decide"],
         "mycwn": ["o"],
         "mycwi": [],
-        "en": "Decide a Focused UI Object",
+        "en": "Decide a focused UI object",
         "ja": "選択しているUIオブジェクトを決定する"
     },
     {
@@ -1916,7 +2006,7 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": ["<Esc>"],
-        "en": "My Config Window Normal Mode",
+        "en": "My config window Normal Mode",
         "ja": "設定ウィンドウ用Normalモード"
     },
     {
@@ -1931,7 +2021,7 @@
         "cmd": [],
         "mycwn": ["i", "a"],
         "mycwi": [],
-        "en": "My Config Window Insert Mode",
+        "en": "My config window Insert Mode",
         "ja": "設定ウィンドウ用Insertモード"
     }
 ]

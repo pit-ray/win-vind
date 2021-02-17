@@ -83,6 +83,7 @@ add_library(WinVindGUI STATIC
     ${SRCDIR}/settings_ctrls/options_ctrl.cpp
     ${SRCDIR}/settings_ctrls/scroll_page_ctrl.cpp
     ${SRCDIR}/settings_ctrls/virtual_cmd_line_ctrl.cpp
+    ${SRCDIR}/settings_ctrls/resize_window_ctrl.cpp
 
     ${SRCDIR}/wx_bindings.cpp
     ${SRCDIR}/wx_panel_core.cpp

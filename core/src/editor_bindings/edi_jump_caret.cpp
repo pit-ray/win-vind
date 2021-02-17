@@ -87,7 +87,7 @@ void EdiNJumpCaret2Line_DfBOF::sprocess(
     if(parent_charlgr != nullptr) {
         auto str = KyLgr::log2str(*parent_charlgr) ;
         if(str.empty()) return ;
-        rn = KyLgr::extract_from_str(str) ;
+        rn = KyLgr::extract_num(str) ;
     }
 
     if(ModeManager::is_edi_visual()) {

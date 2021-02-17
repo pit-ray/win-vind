@@ -35,6 +35,10 @@
                     "easy_click": {
                         "en": "EasyClick",
                         "ja": "EasyClick"
+                    },
+                    "resize_window": {
+                        "en": "Resize Window",
+                        "ja": "ウィンドウのリサイズ"
                     }
                 },
                 "bindings": {

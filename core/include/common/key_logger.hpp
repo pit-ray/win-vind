@@ -9,16 +9,17 @@ using KeyLogger = std::vector<KeyLog> ;
 namespace KyLgr
 {
     const std::string log2str(const KeyLogger& lgr) ;
-    unsigned int extract_from_str(const std::string str) ;
+    unsigned int extract_num(const std::string str) ;
 
     //[true]  logger is changed
     //[false] logger is not changed
     bool log_as_vkc(KeyLogger& lgr) ; //logging direct
     bool log_as_char(KeyLogger& lgr) ; //regard inputed key log as ascii charactor
 
-
-    //for debug
-    void d_print_log(const KeyLogger& lgr) ;
+    namespace Debug {
+        //for debug
+        void d_print_log(const KeyLogger& lgr) ;
+    }
 }
 
 #endif

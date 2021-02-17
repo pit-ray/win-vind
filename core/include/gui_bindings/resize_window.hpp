@@ -123,4 +123,65 @@ struct OpenNewCurWinWithVerticalSplit : public BindedFuncWithCreator<OpenNewCurW
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
+
+struct ResizeWindowWidth: public BindedFuncWithCreator<ResizeWindowWidth>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct IncreaseWindowWidth : public BindedFuncWithCreator<IncreaseWindowWidth>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct DecreaseWindowWidth: public BindedFuncWithCreator<DecreaseWindowWidth>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct ResizeWindowHeight : public BindedFuncWithCreator<ResizeWindowHeight>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct IncreaseWindowHeight : public BindedFuncWithCreator<IncreaseWindowHeight>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
+struct DecreaseWindowHeight : public BindedFuncWithCreator<DecreaseWindowHeight>
+{
+    static void sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            KeyLogger* parent_vkclgr,
+            const KeyLogger* const parent_charlgr) ;
+    static const std::string sname() noexcept ;
+} ;
+
 #endif

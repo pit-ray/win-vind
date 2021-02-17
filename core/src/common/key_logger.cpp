@@ -34,7 +34,7 @@ namespace KyLgr {
         return str ;
     }
 
-    unsigned int extract_from_str(const std::string str) {
+    unsigned int extract_num(const std::string str) {
         static constexpr auto c_nums = "0123456789" ;
 
         auto bpos = str.find_first_of(c_nums) ;

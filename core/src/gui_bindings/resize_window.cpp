@@ -1,17 +1,20 @@
 #include "resize_window.hpp"
 
-#include <map>
-#include <unordered_map>
 #include <windows.h>
 #include <psapi.h>
+
 #include <functional>
+#include <map>
+#include <unordered_map>
 
 #include "i_params.hpp"
 #include "jump_cursor.hpp"
+#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
 #include "screen_metrics.hpp"
 #include "utility.hpp"
+#include "virtual_cmd_line.hpp"
 #include "window_ctrl.hpp"
 
 //MaximizeCurrentWindow
@@ -339,8 +342,6 @@ void ArrangeWindows::sprocess(
 namespace ResizeWindow
 {
     inline static void change_order_of_arranged_windows(const std::function<void(ordered_hwnd_t&)>& sort_proc) {
-        using namespace ResizeWindow ;
-
         POINT pos ;
         if(!GetCursorPos(&pos)) {
             throw RUNTIME_EXCEPT("Could not get a position of a mouse cursor.") ;
@@ -644,4 +645,268 @@ void OpenNewCurWinWithVerticalSplit::sprocess(
             new_hwnd,
             rect.left + w / 2, rect.top,
             w / 2, h) ;
+}
+
+namespace ResizeWindow
+{
+    inline static auto compute_resize_delta(
+            const unsigned int repeat_num,
+            const KeyLogger* const parent_charlgr,
+            const std::string& param_name) {
+
+        if(parent_charlgr != nullptr) {
+            auto str = KyLgr::log2str(*parent_charlgr) ;
+            return static_cast<LONG>(KyLgr::extract_num(str)) ;
+        }
+        else {
+            return static_cast<LONG>(iParams::get_i(param_name) * repeat_num) ;
+        }
+    }
+}
+
+
+//ResizeWindowWidth
+const std::string ResizeWindowWidth::sname() noexcept
+{
+    return "resize_window_width" ;
+}
+
+void ResizeWindowWidth::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    auto str = KyLgr::log2str(*parent_charlgr) ;
+    if(str.empty()) return ;
+
+    auto width = static_cast<LONG>(KyLgr::extract_num(str)) ;
+
+    RECT mrect ;
+    RECT mrect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &mrect, &mrect_work) ;
+
+    auto max_width = mrect_work.right - rect.left ;
+    if(max_width < width) {
+        width = max_width ;
+    }
+
+    ResizeWindow::resize_window(
+            hwnd, rect.left, rect.top,
+            width, ScreenMetrics::height(rect)) ;
+}
+
+//IncreaseWindowWidth
+const std::string IncreaseWindowWidth::sname() noexcept
+{
+    return "increase_window_width" ;
+}
+
+void IncreaseWindowWidth::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    auto width = ScreenMetrics::width(rect) ;
+    width += ResizeWindow::compute_resize_delta(
+            repeat_num, parent_charlgr, "window_width_delta") ;
+
+    RECT mrect ;
+    RECT mrect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &mrect, &mrect_work) ;
+
+    auto max_width = mrect_work.right - rect.left ;
+    if(max_width < width) {
+        width = max_width ;
+    }
+
+    ResizeWindow::resize_window(
+            hwnd, rect.left, rect.top,
+            width, ScreenMetrics::height(rect)) ;
+}
+
+//DecreaseWindowWidth
+const std::string DecreaseWindowWidth::sname() noexcept
+{
+    return "decrease_window_width" ;
+}
+
+void DecreaseWindowWidth::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    const auto delta = ResizeWindow::compute_resize_delta(
+            repeat_num, parent_charlgr, "window_width_delta") ;
+
+    auto width = ScreenMetrics::width(rect) - delta ;
+    if(width <= 0) { 
+        VirtualCmdLine::msgout("e: Width below zero") ;
+        return ;
+    }
+
+    ResizeWindow::resize_window(
+            hwnd, rect.left, rect.top,
+            width, ScreenMetrics::height(rect)) ;
+}
+
+//ResizeWindowHeight
+const std::string ResizeWindowHeight::sname() noexcept
+{
+    return "resize_window_height" ;
+}
+
+void ResizeWindowHeight::sprocess(
+        const bool first_call,
+        const unsigned int UNUSED(repeat_num),
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    auto str = KyLgr::log2str(*parent_charlgr) ;
+    if(str.empty()) return ;
+
+    auto height = static_cast<LONG>(KyLgr::extract_num(str)) ;
+
+    RECT mrect ;
+    RECT mrect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &mrect, &mrect_work) ;
+
+    auto max_height = mrect_work.bottom - rect.top ;
+    if(max_height < height) {
+        height = max_height ;
+    }
+
+    ResizeWindow::resize_window(
+            hwnd, rect.left, rect.top,
+            ScreenMetrics::width(rect), height) ;
+}
+
+//IncreaseWindowHeight
+const std::string IncreaseWindowHeight::sname() noexcept
+{
+    return "increase_window_height" ;
+}
+
+void IncreaseWindowHeight::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    auto height = ScreenMetrics::height(rect) ;
+    height += ResizeWindow::compute_resize_delta(
+            repeat_num, parent_charlgr, "window_height_delta") ;
+
+    RECT mrect ;
+    RECT mrect_work ;
+    ScreenMetrics::get_monitor_metrics(hwnd, &mrect, &mrect_work) ;
+
+    auto max_height = mrect_work.bottom - rect.top ;
+    if(max_height < height) {
+        height = max_height ;
+    }
+
+    ResizeWindow::resize_window(
+            hwnd, rect.left, rect.top,
+            ScreenMetrics::width(rect), height) ;
+}
+
+//DecreaseWindowHeight
+const std::string DecreaseWindowHeight::sname() noexcept
+{
+    return "decrease_window_height" ;
+}
+
+void DecreaseWindowHeight::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const parent_charlgr)
+{
+    if(!first_call) return ;
+
+    auto hwnd = GetForegroundWindow() ;
+    if(hwnd == NULL) {
+        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    }
+
+    RECT rect ;
+    if(!GetWindowRect(hwnd, &rect)) {
+        throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+    }
+
+    const auto delta = ResizeWindow::compute_resize_delta(
+            repeat_num, parent_charlgr, "window_height_delta") ;
+
+    auto height = ScreenMetrics::height(rect) - delta ;
+    if(height <= 0) { 
+        VirtualCmdLine::msgout("e: Height below zero") ;
+        return ;
+    }
+
+    ResizeWindow::resize_window(
+            hwnd, rect.left, rect.top,
+            ScreenMetrics::width(rect), height) ;
 }

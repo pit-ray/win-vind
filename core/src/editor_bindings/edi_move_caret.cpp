@@ -165,7 +165,7 @@ void EdiMoveCaretUp::sprocess(
         auto str = KyLgr::log2str(*parent_charlgr) ;
         if(str.empty()) return ;
 
-        if(auto num = KyLgr::extract_from_str(str)) {
+        if(auto num = KyLgr::extract_num(str)) {
             _common_process(true, num, pimpl->ksr, v_press, n_press) ;
         }
     }
@@ -221,7 +221,7 @@ void EdiMoveCaretDown::sprocess(
         auto str = KyLgr::log2str(*parent_charlgr) ;
         if(str.empty()) return ;
 
-        if(auto num = KyLgr::extract_from_str(str)) {
+        if(auto num = KyLgr::extract_num(str)) {
             _common_process(true, num, pimpl->ksr, v_press, n_press) ;
         }
     }

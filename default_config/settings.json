@@ -347,5 +347,15 @@
         "value": "gvim",
         "en": "Path to gvim.exe",
         "ja": "gvim.exeのパス"
+    },
+    "window_width_delta": {
+        "value": 100,
+        "en": "Window Width delta for resizing",
+        "ja": "ウィンドウの幅のリサイズ量"
+    },
+    "window_height_delta": {
+        "value": 100,
+        "en": "Window height delta for resizing",
+        "ja": "ウィンドウの高さのリサイズ量"
     }
 }

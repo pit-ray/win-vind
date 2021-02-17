@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <windows.h>
 #include <psapi.h>
+#include <functional>
 
 #include "i_params.hpp"
 #include "jump_cursor.hpp"
@@ -194,7 +195,8 @@ void SnapCurrentWindow2Bottom::sprocess(
 namespace ResizeWindow
 {
     static std::unordered_map<HMONITOR, RECT> g_mrects ;
-    static std::unordered_map<HMONITOR, std::map<SIZE_T, HWND>> g_ordered_hwnd ;
+    using ordered_hwnd_t = std::map<SIZE_T, HWND> ;
+    static std::unordered_map<HMONITOR, ordered_hwnd_t> g_ordered_hwnd ;
 
     static BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
         if(!WindowCtrl::is_valid_hwnd(hwnd)) {
@@ -293,13 +295,13 @@ namespace ResizeWindow
     }
 }
 
-//ArrangeWindow
-const std::string ArrangeWindow::sname() noexcept
+//ArrangeWindows
+const std::string ArrangeWindows::sname() noexcept
 {
-    return "arrange_window" ;
+    return "arrange_windows" ;
 }
 
-void ArrangeWindow::sprocess(
+void ArrangeWindows::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
         KeyLogger* UNUSED(parent_vkclgr),
@@ -334,14 +336,53 @@ void ArrangeWindow::sprocess(
     }
 }
 
-
-//RotateWindowInCurrentMonitor
-const std::string RotateWindowInCurrentMonitor::sname() noexcept
+namespace ResizeWindow
 {
-    return "rotate_window_in_current_monitor" ;
+    inline static void change_order_of_arranged_windows(const std::function<void(ordered_hwnd_t&)>& sort_proc) {
+        using namespace ResizeWindow ;
+
+        POINT pos ;
+        if(!GetCursorPos(&pos)) {
+            throw RUNTIME_EXCEPT("Could not get a position of a mouse cursor.") ;
+        }
+
+        const auto hmonitor = MonitorFromPoint(pos, MONITOR_DEFAULTTONEAREST) ;
+        MONITORINFO minfo ;
+        minfo.cbSize = sizeof(MONITORINFO) ;
+        if(!GetMonitorInfo(hmonitor, &minfo)) {
+            throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
+        }
+
+        if(g_ordered_hwnd.empty()) {
+            return ;
+        }
+
+        try {
+            //rotate-shift a value in hwnd maps
+            auto& oh = g_ordered_hwnd.at(hmonitor) ;
+            if(oh.empty()) {
+                return ;
+            }
+
+            sort_proc(oh) ;
+
+            std::unordered_map<HWND, RECT> rects ;
+            assign_local_area_in_monitors(rects) ;
+            batch_resize(rects) ;
+        }
+        catch(const std::out_of_range&) {
+            return ;
+        }
+    }
 }
 
-void RotateWindowInCurrentMonitor::sprocess(
+//RotateWindow
+const std::string RotateWindows::sname() noexcept
+{
+    return "rotate_windows" ;
+}
+
+void RotateWindows::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
         KeyLogger* UNUSED(parent_vkclgr),
@@ -349,35 +390,11 @@ void RotateWindowInCurrentMonitor::sprocess(
 {
     if(!first_call) return ;
 
-    using namespace ResizeWindow ;
-
-    POINT pos ;
-    if(!GetCursorPos(&pos)) {
-        throw RUNTIME_EXCEPT("Could not get a position of a mouse cursor.") ;
-    }
-
-    const auto hmonitor = MonitorFromPoint(pos, MONITOR_DEFAULTTONEAREST) ;
-    MONITORINFO minfo ;
-    minfo.cbSize = sizeof(MONITORINFO) ;
-    if(!GetMonitorInfo(hmonitor, &minfo)) {
-        throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
-    }
-
-    if(g_ordered_hwnd.empty()) {
-        return ;
-    }
-
-    try {
-        //rotate-shift a value in hwnd maps
-        auto& oh = g_ordered_hwnd.at(hmonitor) ;
-        if(oh.empty()) {
-            return ;
-        }
-
+    auto sort = [repeat_num] (ResizeWindow::ordered_hwnd_t& oh) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-            auto itr = oh.rbegin() ;
+            auto itr      = oh.rbegin() ;
             auto head_val = itr->second ;
-            auto pre_itr = itr ;
+            auto pre_itr  = itr ;
             itr ++ ;
             while(itr != oh.rend()) {
                 pre_itr->second = itr->second ;
@@ -386,16 +403,42 @@ void RotateWindowInCurrentMonitor::sprocess(
             }
             pre_itr->second = head_val ;
         }
+    } ;
 
-        std::unordered_map<HWND, RECT> rects ;
-        assign_local_area_in_monitors(rects) ;
-        batch_resize(rects) ;
-    }
-    catch(const std::out_of_range&) {
-        return ;
-    }
+    ResizeWindow::change_order_of_arranged_windows(sort) ;
 }
 
+//RotateWindowsInReverse
+const std::string RotateWindowsInReverse::sname() noexcept
+{
+    return "rotate_windows_in_reverse" ;
+}
+
+void RotateWindowsInReverse::sprocess(
+        const bool first_call,
+        const unsigned int repeat_num,
+        KeyLogger* UNUSED(parent_vkclgr),
+        const KeyLogger* const UNUSED(parent_charlgr))
+{
+    if(!first_call) return ;
+
+    auto sort = [repeat_num] (ResizeWindow::ordered_hwnd_t& oh) {
+        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            auto itr      = oh.begin() ;
+            auto head_val = itr->second ;
+            auto pre_itr  = itr ;
+            itr ++ ;
+            while(itr != oh.end()) {
+                pre_itr->second = itr->second ;
+                pre_itr = itr ;
+                itr ++ ;
+            }
+            pre_itr->second = head_val ;
+        }
+    } ;
+
+    ResizeWindow::change_order_of_arranged_windows(sort) ;
+}
 
 namespace ResizeWindow
 {

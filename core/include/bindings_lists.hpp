@@ -32,7 +32,7 @@
 namespace BindingsLists {
     const auto get() {
         std::vector<BindedFunc::shp_t> tmp {
-            ArrangeWindow::create(),
+            ArrangeWindows::create(),
             BackwardUINavigation::create(),
             CBBackSpace::create(),
             CBCopy::create(),
@@ -127,7 +127,8 @@ namespace BindingsLists {
             OpenOtherFile::create(),
             OpenStartMenu::create(),
             ReloadCurrentWindow::create(),
-            RotateWindowInCurrentMonitor::create(),
+            RotateWindows::create(),
+            RotateWindowsInReverse::create(),
             SCRedo::create(),
             SCUndo::create(),
             SaveOpenedFile::create(),

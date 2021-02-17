@@ -855,7 +855,7 @@
         "ja": "ウィンドウを画面の下へ移動"
     },
     {
-        "name": "arrange_window",
+        "name": "arrange_windows",
         "guin": ["<C-w>="],
         "guii": [],
         "guiv": [],
@@ -870,7 +870,7 @@
         "ja": "ウィンドウを並べて表示する"
     },
     {
-        "name": "rotate_window_in_current_monitor",
+        "name": "rotate_windows",
         "guin": ["<C-w>r"],
         "guii": [],
         "guiv": [],
@@ -883,6 +883,21 @@
         "mycwi": [],
         "en": "Rotate arranged windows in a current monitor",
         "ja": "現在のモニタの整列済みウィンドウを回転させる"
+    },
+    {
+        "name": "rotate_windows_in_reverse",
+        "guin": ["<C-w>R"],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["rotate", "rot"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Rotate arranged windows in a current monitor in reverse",
+        "ja": "現在のモニタの整列済みウィンドウを逆回転させる"
     },
     {
         "name": "exchange_window_with_next_one",

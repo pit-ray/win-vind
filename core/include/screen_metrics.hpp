@@ -47,12 +47,12 @@ namespace ScreenMetrics {
         return rect.top + height(rect) / 2 ;
     }
 
-    inline auto l1_distance(const RECT& rhs, const RECT& lhs) noexcept {
+    inline auto l1_distance(const RECT& lhs, const RECT& rhs) noexcept {
         return std::abs(center_x(rhs) - center_x(lhs)) \
             + std::abs(center_y(rhs) - center_y(lhs)) ;
     }
 
-    inline auto l2_distance_nosq(const RECT& rhs, const RECT& lhs) noexcept {
+    inline auto l2_distance_nosq(const RECT& lhs, const RECT& rhs) noexcept {
         auto delta_x = center_x(rhs) - center_x(lhs) ;
         auto delta_y = center_y(rhs) - center_y(lhs) ;
         return delta_x*delta_x + delta_y*delta_y ;
@@ -63,7 +63,7 @@ namespace ScreenMetrics {
         return delta_x*delta_x + delta_y*delta_y ;
     }
 
-    inline auto l2_distance(const RECT& rhs, const RECT& lhs) noexcept {
+    inline auto l2_distance(const RECT& lhs, const RECT& rhs) noexcept {
         return std::sqrt(l2_distance_nosq(rhs, lhs)) ;
     }
     inline auto l2_distance(LONG x1, LONG y1, LONG x2, LONG y2) noexcept {
@@ -87,11 +87,16 @@ namespace ScreenMetrics {
                               target.top >= range.top || target.bottom <= range.bottom ;
     }
 
-    inline auto is_equel(const RECT& rhs, const RECT& lhs) noexcept {
+    inline auto is_equel(const RECT& lhs, const RECT& rhs) noexcept {
         return lhs.left   == rhs.left && \
                lhs.top    == rhs.top && \
                lhs.right  == rhs.right && \
                lhs.bottom == rhs.bottom ;
+    }
+
+    inline auto is_bigger_tran(const RECT& lhs, const RECT& rhs) noexcept {
+        return lhs.left <= rhs.left && lhs.top <= rhs.top &&
+               lhs.right >= rhs.right && lhs.bottom >= rhs.bottom ;
     }
 
     inline void get_conbined_metrics(RECT* const rect) {

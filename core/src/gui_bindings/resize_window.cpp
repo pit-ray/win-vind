@@ -68,6 +68,15 @@ namespace ResizeWindow {
         }
 
         if(ScreenMetrics::width(rect) != width || ScreenMetrics::height(rect) != height) {
+
+            RECT mrect ;
+            RECT mrect_work ;
+            ScreenMetrics::get_monitor_metrics(hwnd, &mrect, &mrect_work) ;
+
+            if(ScreenMetrics::is_fully_in_range(rect, mrect_work)) {
+                return ;
+            }
+
             //If a window is Chromium browser (e.g. GoogleChrome or Microsoft Edge) and when it is full screen,
             //could not resize its size, so cancel full screen.
             if(!SetForegroundWindow(hwnd)) {

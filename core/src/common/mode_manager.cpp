@@ -18,6 +18,10 @@ namespace ModeManager
         return m ;
     }
 
+    bool is_insert() noexcept {
+        return m == Mode::Insert || m == Mode::EdiInsert  || m == Mode::MyConfigWindowInsert ;
+    }
+
     bool is_edi_visual() noexcept {
         return m == Mode::EdiVisual || m == Mode::EdiLineVisual ;
     }

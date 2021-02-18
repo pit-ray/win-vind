@@ -45,6 +45,8 @@ namespace ModeManager
     void change_mode(const unsigned char mode) noexcept ;
     Mode get_mode() noexcept ;
 
+    bool is_insert() noexcept ;
+
     bool is_edi_visual() noexcept ;
     bool is_editor() noexcept ;
     bool is_command() noexcept ;

@@ -475,10 +475,7 @@ namespace KeyBinder
             }
             else {
                 static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
-                using ModeManager::Mode ;
-                auto mode = ModeManager::get_mode() ;
-                if(l_repeat_num < max && //Whether it is not out of range?
-                        mode != Mode::Insert && mode != Mode::EdiInsert) {
+                if(l_repeat_num < max && !ModeManager::is_insert()) { //Whether it is not out of range?
                     l_repeat_num = l_repeat_num * 10 + VKCConverter::to_number(topvkc) ;
                     VirtualCmdLine::cout(std::to_string(l_repeat_num)) ;
                 }

@@ -203,19 +203,6 @@ void MakeDir::sprocess(
 
     auto cmd = KyLgr::log2str(*parent_charlgr) ;
 
-    auto catch_error = [](auto&& path) {
-        const auto ercode = GetLastError() ;
-        if(ercode == ERROR_ALREADY_EXISTS) {
-            throw RUNTIME_EXCEPT("This directory is already existed. (" + path + ")") ;
-        }
-        else if(ercode == ERROR_PATH_NOT_FOUND) {
-            throw RUNTIME_EXCEPT("This path is not found. (" + path + ")") ;
-        }
-        else {
-            throw RUNTIME_EXCEPT("Cannot make directory. (" + path + ")") ;
-        }
-    } ;
-
     const auto pos = cmd.find_first_of(" ") ;
     auto arg = cmd.substr(pos + 1) ;
 
@@ -226,9 +213,7 @@ void MakeDir::sprocess(
             //over max path num
             arg = arg.substr(0, 248) ;
         }
-        if(!CreateDirectoryA(arg.c_str(), NULL)) {
-            catch_error(arg) ;
-        }
+        Utility::create_directory(arg) ;
     }
 
     //argument is directory name
@@ -239,7 +224,5 @@ void MakeDir::sprocess(
     }
 
     auto full_path = current_path + "\\" + arg ;
-    if(!CreateDirectoryA(full_path.c_str(), NULL)) {
-        catch_error(full_path) ;
-    }
+    Utility::create_directory(full_path) ;
 }

@@ -661,9 +661,7 @@ namespace wxGUI
             static const auto temp_dir = Path::ROOT_PATH() + "temp\\" ;
 
             if(!Utility::is_existed_dir(temp_dir)) {
-                if(!CreateDirectoryA(temp_dir.c_str(), NULL)) {
-                    throw LOGIC_EXCEPT("Cannot create a temp directory.") ;
-                }
+                Utility::create_directory(temp_dir) ;
             }
 
             auto& target_json = pimpl->get_selected_func_json() ;
@@ -678,36 +676,24 @@ namespace wxGUI
             write_usage(ofs) ;
             ofs.flush() ;
 
-            STARTUPINFOA si ;
-            ZeroMemory(&si, sizeof(si)) ;
-            si.cb = sizeof(si) ;
-
-            PROCESS_INFORMATION pi ;
-            ZeroMemory(&pi, sizeof(pi)) ;
-
-            auto create = [&temp_path, &si, &pi] (const std::string exe) {
-                const auto cmd = exe + " \"" + temp_path + "\"" ;
-                if(!CreateProcessA(
-                    NULL, const_cast<LPSTR>(cmd.c_str()),
-                    NULL, NULL, FALSE,
-                    CREATE_NEW_CONSOLE, NULL, NULL,
-                    &si, &pi)) {
-
-                    ERROR_PRINT("Cannot start \"" + exe  + "\"") ;
-                    return false ;
-                }
-                return true ;
+            HANDLE hproc ;
+            auto create = [&hproc, &temp_path] (const std::string exe) {
+                auto cmd = exe + " \"" + temp_path + "\"" ;
+                hproc = Utility::create_process(cmd, Path::HOME_PATH()) ;
             } ;
 
             pimpl->edit_with_vim->Disable() ;
 
             MyConfigWindowInsert::sprocess(true, 1, nullptr, nullptr) ;
-            if(!create(gvim_exe)) {
+            try {
+                create(gvim_exe) ;
+            }
+            catch(const std::runtime_error&) {
                 create("notepad") ; //If failed a launch of gvim.exe, alternatively starts with notepad.exe.
             }
 
             //wait until finishing a created child process.
-            if(WaitForSingleObject(pi.hProcess, INFINITE) != WAIT_OBJECT_0) {
+            if(WaitForSingleObject(hproc, INFINITE) != WAIT_OBJECT_0) {
                 ERROR_PRINT("Failed the process of gVim in a child process.") ;
                 return ;
             }

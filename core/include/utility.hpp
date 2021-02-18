@@ -13,6 +13,30 @@
 #include <tuple>
 #include "enable_gcc_warning.hpp"
 
+#ifndef UNUSED
+#define UNUSED(identifier) /* identifier */
+#endif
+
+//exception class with scope identifier
+#if defined(__GNUC__)
+#define LOGIC_EXCEPT(msg) \
+    std::logic_error(std::string("An logic exception occurred from ") +\
+            __PRETTY_FUNCTION__ + ". " + msg)
+
+#define RUNTIME_EXCEPT(msg) \
+    std::runtime_error(std::string("An runtime exception occurred from ") +\
+            __PRETTY_FUNCTION__ + ". " + msg)
+
+#elif defined(_MSC_VER) && _MSC_VER >= 1500
+#define LOGIC_EXCEPT(msg) \
+    std::logic_error(std::string("An logic exception occurred from ") +\
+            __FUNCSIG__ + ". " + msg)
+
+#define RUNTIME_EXCEPT(msg) \
+    std::runtime_error(std::string("An runtime exception occurred from ") +\
+            __FUNCSIG__ + ". " + msg)
+#endif
+
 namespace Utility
 {
     std::vector<std::string> split(std::string str, const std::string deliminator=",") ;
@@ -92,31 +116,15 @@ namespace Utility
 
     void refresh_display(HWND hwnd) ;
 
-    bool is_existed_dir(std::string path) noexcept ;
+    bool is_existed_dir(const std::string& path) ;
+
+    void create_directory(const std::string& path) ;
+
+    //It returns a handle to newly created process.
+    HANDLE create_process(const std::string& cmd, const std::string& current_dir) ;
+
+    const std::wstring s_to_ws(const std::string& str) ;
+    const std::string ws_to_s(const std::wstring& wstr) ;
 }
-
-#ifndef UNUSED
-#define UNUSED(identifier) /* identifier */
-#endif
-
-//exception class with scope identifier
-#if defined(__GNUC__)
-#define LOGIC_EXCEPT(msg) \
-    std::logic_error(std::string("An logic exception occurred from ") +\
-            __PRETTY_FUNCTION__ + ". " + msg)
-
-#define RUNTIME_EXCEPT(msg) \
-    std::runtime_error(std::string("An runtime exception occurred from ") +\
-            __PRETTY_FUNCTION__ + ". " + msg)
-
-#elif defined(_MSC_VER) && _MSC_VER >= 1500
-#define LOGIC_EXCEPT(msg) \
-    std::logic_error(std::string("An logic exception occurred from ") +\
-            __FUNCSIG__ + ". " + msg)
-
-#define RUNTIME_EXCEPT(msg) \
-    std::runtime_error(std::string("An runtime exception occurred from ") +\
-            __FUNCSIG__ + ". " + msg)
-#endif
 
 #endif

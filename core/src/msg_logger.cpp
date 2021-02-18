@@ -64,9 +64,7 @@ namespace Logger
             << std::setw(2) << std::setfill('0') << stime.wMinute ;
 
         if(!Utility::is_existed_dir(log_dir)) {
-            if(!CreateDirectoryA(log_dir.c_str(), NULL)) {
-                throw LOGIC_EXCEPT("Cannot create a log directory.") ;
-            }
+            Utility::create_directory(log_dir) ;
         }
 
         const auto efile = log_dir + "error_" + ss.str() + ".log" ;

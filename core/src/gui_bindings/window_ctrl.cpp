@@ -15,10 +15,11 @@
 #include "keybrd_eventer.hpp"
 #include "move_cursor.hpp"
 #include "msg_logger.hpp"
+#include "path.hpp"
+#include "screen_metrics.hpp"
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
 #include "win_vind.hpp"
-#include "screen_metrics.hpp"
 
 namespace WindowCtrl
 {
@@ -129,25 +130,14 @@ void OpenNewCurrentWindow::sprocess(
         throw RUNTIME_EXCEPT("Cannot enumerate process modules.") ;
     }
 
-    char path[MAX_PATH] = {0} ;
-    if(!GetModuleFileNameExA(hproc, hmod, path, MAX_PATH)) {
+    WCHAR path[MAX_PATH] = {0} ;
+    if(!GetModuleFileNameExW(hproc, hmod, path, MAX_PATH)) {
         CloseHandle(hproc) ;
         throw RUNTIME_EXCEPT("Cannot get a process path of current window.") ;
     }
     CloseHandle(hproc) ;
 
-    STARTUPINFOA si ;
-    ZeroMemory(&si, sizeof(si)) ;
-    si.cb = sizeof(si) ;
-
-    PROCESS_INFORMATION pi ;
-    ZeroMemory(&pi, sizeof(pi)) ;
-
-    if(!CreateProcessA(
-        NULL, path, NULL, NULL, FALSE,
-        CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
-        throw RUNTIME_EXCEPT("Cannot call \"" + std::string(path) + "\".") ;
-    }
+    Utility::create_process(Utility::ws_to_s(path), Path::HOME_PATH()) ;
     Sleep(100) ;
 }
 

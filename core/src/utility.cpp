@@ -125,9 +125,82 @@ namespace Utility
         }
     }
 
-    bool is_existed_dir(std::string path) noexcept
+    bool is_existed_dir(const std::string& path)
     {
-      auto flag = GetFileAttributesA(path.c_str());
+      auto flag = GetFileAttributesW(s_to_ws(path).c_str());
       return (flag != INVALID_FILE_ATTRIBUTES && (flag & FILE_ATTRIBUTE_DIRECTORY));
+    }
+
+    void create_directory(const std::string& path) {
+        if(!CreateDirectoryW(Utility::s_to_ws(path).c_str(), NULL)) {
+            throw RUNTIME_EXCEPT("Cannot create a directory " + path + ".") ;
+        }
+    }
+
+    HANDLE create_process(const std::string& cmd, const std::string& current_dir) {
+        STARTUPINFOW si ;
+        ZeroMemory(&si, sizeof(si)) ;
+        si.cb = sizeof(si) ;
+
+        PROCESS_INFORMATION pi ;
+        ZeroMemory(&pi, sizeof(pi)) ;
+
+        if(!CreateProcessW(
+            NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
+            NULL, NULL, FALSE,
+            CREATE_NEW_CONSOLE, NULL, s_to_ws(current_dir).c_str(),
+            &si, &pi)) {
+
+            throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
+        }
+        return pi.hProcess ;
+    }
+
+    const std::wstring s_to_ws(const std::string& str) {
+        std::wstring wstr ;
+
+        auto str_len = static_cast<int>(strlen(str.c_str())) ;
+        auto needed_size = MultiByteToWideChar(
+                CP_UTF8, 0,
+                str.c_str(), str_len,
+                NULL, 0) ;
+        if(needed_size <= 0) {
+            throw LOGIC_EXCEPT("Could not get the needed size of " + str + ".") ;
+        }
+
+        wstr.resize(needed_size) ;
+        if(MultiByteToWideChar(
+                    CP_UTF8, 0,
+                    str.c_str(), str_len,
+                    &wstr[0], static_cast<int>(wstr.size())) <= 0) {
+            throw LOGIC_EXCEPT("Could not convert the string format from UTF-8 to UTF-16.") ;
+        }
+
+        return wstr ;
+    }
+
+    const std::string ws_to_s(const std::wstring& wstr) {
+        std::string str ;
+
+        auto wstr_len = static_cast<int>(wcslen(wstr.c_str())) ;
+        auto needed_size = WideCharToMultiByte(
+                CP_UTF8, 0,
+                wstr.c_str(), wstr_len,
+                NULL, 0,
+                NULL, NULL) ;
+        if(needed_size <= 0) {
+            throw LOGIC_EXCEPT("Could not get the needed size of std::wstring.") ;
+        }
+
+        str.resize(needed_size) ;
+        if(WideCharToMultiByte(
+                    CP_UTF8, 0,
+                    wstr.c_str(), wstr_len,
+                    &str[0], static_cast<int>(str.size()),
+                    NULL, NULL) <= 0) {
+            throw LOGIC_EXCEPT("Could not convert the string format from UTF-16 to UTF-8.") ;
+        }
+
+        return str ;
     }
 }

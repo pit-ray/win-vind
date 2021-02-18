@@ -64,25 +64,6 @@ namespace ExAppUtility
             return std::string() ;
         }
     }
-
-    inline static void _create_process(const std::string path)
-    {
-        STARTUPINFOA si ;
-        ZeroMemory(&si, sizeof(si)) ;
-        si.cb = sizeof(si) ;
-
-        PROCESS_INFORMATION pi ;
-        ZeroMemory(&pi, sizeof(pi)) ;
-
-        if(!CreateProcessA(
-            NULL, const_cast<LPSTR>(path.c_str()),
-            NULL, NULL, FALSE,
-            CREATE_NEW_CONSOLE, NULL,
-            Path::HOME_PATH().c_str(),
-            &si, &pi)) {
-            throw RUNTIME_EXCEPT("Cannot call \"" + path + "\"") ;
-        }
-    }
 }
 
 using namespace ExAppUtility ;
@@ -100,7 +81,7 @@ void StartShell::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    _create_process(g_proc_list.at("shell")) ;
+    Utility::create_process(g_proc_list.at("shell"), Path::HOME_PATH()) ;
 
     Sleep(100) ; //wait until select window by OS.
     Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
@@ -133,7 +114,7 @@ void StartAnyApp::sprocess(
     auto cmd = KyLgr::log2str(*parent_charlgr) ;
     cmd = _cvt_to_protected_path(cmd.substr(1)) ;
     if(!cmd.empty()) {
-        _create_process(cmd) ;
+        Utility::create_process(cmd, Path::HOME_PATH()) ;
 
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;

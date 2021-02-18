@@ -195,9 +195,7 @@ namespace wxGUI
 
         try {
             if(!Utility::is_existed_dir(Path::CONFIG_PATH().c_str())) { //clean install
-                if(!CreateDirectoryA(Path::CONFIG_PATH().c_str(), NULL)) {
-                    throw std::runtime_error("Could not create a directory for settings.") ;
-                }
+                Utility::create_directory(Path::CONFIG_PATH()) ;
                 overwrite_bindings() ;
                 overwrite_settings() ;
                 write_kmp(TRUE) ;

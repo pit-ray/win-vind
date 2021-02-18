@@ -11,11 +11,12 @@
 namespace Path
 {
     static inline const auto _get_home_path() {
-        char home_path[1000] = {0} ;
-        if(!GetEnvironmentVariableA("HOMEPATH", home_path, 1000)) {
-            throw RUNTIME_EXCEPT("cannot find %HOMEPATH% in GetEnviromentVariable") ;
+        WCHAR home_path[MAX_PATH] = {0} ;
+        if(!GetEnvironmentVariableW(L"HOMEPATH", home_path, MAX_PATH)) {
+            throw RUNTIME_EXCEPT("Cannot find %HOMEPATH% with GetEnviromentVariable.") ;
         }
-        return std::string(home_path) + '\\' ;
+
+        return Utility::ws_to_s(home_path) + '\\' ;
     }
 
     inline static const auto& HOME_PATH() {

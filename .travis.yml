@@ -2,7 +2,7 @@ os: windows
 language: cpp
 install:
   #- powershell Invoke-WebRequest https://scan.coverity.com/download/cxx/win64 -OutFile cov.zip -UseBasicParsing
-  - powershell Invoke-WebRequest https://scan.coverity.com/download/win64 -Method Post -Body @{token="${COVERITY_SCAN_TOKEN}";project="pit-ray/win-vind"} -OutFile cov.zip
+  - powershell Invoke-WebRequest https://scan.coverity.com/download/win64 -OutFile cov.zip -Method Post -Body @{token="${COVERITY_SCAN_TOKEN}";project="pit-ray/win-vind"}
   - powershell Expand-Archive -Path cov.zip -DestinationPath C:/bin/cov
   - $ENV:Path+="C:/bin/cov/bin"  
   - "./setup_libs.bat -mingw 64"

@@ -62,6 +62,27 @@ namespace ResizeWindow {
             throw RUNTIME_EXCEPT("Could not change window size") ;
         }
 
+        RECT rect ;
+        if(!GetWindowRect(hwnd, &rect)) {
+            throw RUNTIME_EXCEPT("Could not get a rectangle of a window.") ;
+        }
+
+        if(ScreenMetrics::width(rect) != width || ScreenMetrics::height(rect) != height) {
+            //If a window is Chromium browser (e.g. GoogleChrome or Microsoft Edge) and when it is full screen,
+            //could not resize its size, so cancel full screen.
+            if(!SetForegroundWindow(hwnd)) {
+                throw RUNTIME_EXCEPT("Could not set a foreground window.") ;
+            }
+
+            //minimize once
+            KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
+            Sleep(50) ;
+
+            if(!MoveWindow(hwnd, left, top, width, height, TRUE)) {
+                throw RUNTIME_EXCEPT("Could not change window size in twice.") ;
+            }
+        }
+
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
     }
 }

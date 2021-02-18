@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <chrono>
 
 #include <windows.h>
 
@@ -48,6 +49,9 @@ namespace wxGUI
     using namespace UITrans ;
     constexpr auto APP_NAME = wxT("win-vind") ;
 
+    using namespace std::chrono ;
+    static constexpr auto COOL_TIME = 1s ;
+
     struct PropDlg::Impl {
         std::vector<PanelCore*> panels{} ;
 
@@ -59,13 +63,16 @@ namespace wxGUI
 
         wxFont* font ;
 
+        system_clock::time_point hot_point ;
+
         explicit Impl(wxWindow* const parent_ptr)
         : panels(),
           ok_btn(nullptr),
           cl_btn(nullptr),
           ap_btn(nullptr),
           parent(parent_ptr),
-          font(nullptr)
+          font(nullptr),
+          hot_point(system_clock::now())
         {
             font = wxFont::New(9, wxFONTFAMILY_TELETYPE, wxFONTFLAG_DEFAULT) ;
         }
@@ -154,23 +161,44 @@ namespace wxGUI
         save_config() ; //to arrage style
 
         Bind(wxEVT_BUTTON, [this](auto&) {
+            if(system_clock::now() - pimpl->hot_point < COOL_TIME) {
+                return ;
+            }
+
+            //To avoid duplicate pushes
+            KeyAbsorber::close_all_ports_with_refresh() ;
+
             save_config() ;
             win_vind::load_config() ;
             load_config() ;
+
+            pimpl->hot_point = system_clock::now() ;
         }, wxID_APPLY) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
+            if(system_clock::now() - pimpl->hot_point < COOL_TIME) {
+                return ;
+            }
+
             save_config() ;
             win_vind::load_config() ;
             Show(false) ;
         }, wxID_OK) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
+            if(system_clock::now() - pimpl->hot_point < COOL_TIME) {
+                return ;
+            }
+
             Show(false) ;
         }, wxID_CANCEL) ;
 
         Bind(wxEVT_CLOSE_WINDOW, [this](auto&) {
             Show(false) ;
+        }) ;
+
+        Bind(wxEVT_SIZE, [this](auto&) {
+            SetSize(wxSize(WIDTH(), HEIGHT())) ; //Fix the window size
         }) ;
 
         Bind(wxEVT_CHAR_HOOK, [](auto& e) {

@@ -1,11 +1,6 @@
 os: windows
 language: cpp
 install:
-  #- powershell Invoke-WebRequest https://scan.coverity.com/download/cxx/win64 -OutFile cov.zip -UseBasicParsing
-  #- powershell Invoke-WebRequest https://scan.coverity.com/download/win64 -OutFile "C:/cov.zip" -Method Post -Body @{token="${COVERITY_SCAN_TOKEN}";project="pit-ray/win-vind"}
-  - bash -c "curl https://scan.coverity.com/download/win64 -d 'token=\${COVERITY_SCAN_TOKEN}&project=pit-ray/win-vind' -o 'C:/cov.zip'"
-  - powershell Expand-Archive -Path "C:/cov.zip" -DestinationPath "C:/bin/cov"
-  - setx /M Path "%Path%;C:/bin/cov/bin"  
   - "./setup_libs.bat -mingw 64"
 
 env:
@@ -13,10 +8,4 @@ env:
     secure: etQ9lGyOkC4f+Td/NPIBUApUB+quDjxfByxkXMY+MPLDI5lMbKFgKV9WtGMqLWGT49XY23jVUOy3aQebNdNe9hTs+R0H00MJeJ4dCYEzDxH2aZT1iXN/bF9G83dcWSqXvuL2T9h/jsZq/qq4zOfM5Emfz/R2IgPTKFZ/BaiZKab1MKsLyTkkekgOtloCY0FRJZFhk3d2JvpbxO2jiNebLnEvJ5KnZ5KFjzP2gS84aFOoXkL1AvhExdzZqX/VaRQdTRqR1mraSjv10Aln8a/+SfuUfxDzriMRCamNLhrcUdrHZ4EgVuZ2aW9JOA7NYG0bIkKE1Sp86Nz4oEw/lkEPrq44qK+yW21SgupGgMLwfN1/VSPqSPpMPMtydqtImCRMVU9VepcXXWl45sm3A7Co8Jggv2gKpeq+wvoBwq4OWlnay+zlRxwGLe0qodsT0HVG1pSDLA3DwAANPip/BlFUocDE+X77zcgy9m3+L4FzFDeWoYET5D7M+yVuI8526lD5fdQl+6DwyYCsUBwXbf+Ha1ZzXX/fxAK1Dwl1Uj37tmwgexlDEenRMsLAGro6S6kAy/CTewZUiG6THu5JhiaHXSAy/Qdc6G18EwueuFE5TLStnpMKsQGAmMIjj/W8EgAHFbXYVH0mr9G1sGcOSp//PVNk9XFmM++lFreR70xZ1aA=
 
 script:
-  - mkdir debug ; cd debug
-  - cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
-  - cov-build --dir cov-int cmake --build .
-  
-after_success:
-  - powershell Compress-Archive -Path cov-int -DestinationPath cov-int.zip
-  - powershell Invoke-WebRequest -Method Post -Form token=$COVERITY_SCAN_TOKEN -Form email=pit-ray@outlook.com -Form file=@cov-int.zip -Form version="latest" -Form description="from-travis-ci" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
+  - "./build.bat -debug -mingw 64"

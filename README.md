@@ -108,10 +108,14 @@ You can change default bindings.
 |`<C-w>o`|`:new`|Open a new window|
 |-|`split`|Open a new window with hsplit|
 |-|`vsplit`|Open a new window with vsplit|
-|`<C-w>H`|`:lsplit`|Snap Current Window to Left|
-|`<C-w>L`|`:rsplit`|Snap Current Window to Right|
-|`<C-w>K`|`:tsplit`|Snap Current Window to Top|
-|`<C-w>J`|`:bsplit`|Snap Current Window to Bottom|
+|`<C-w>h`|-|Select a left window|
+|`<C-w>l`|-|Select a right window|
+|`<C-w>k`|-|Select an upper window|
+|`<C-w>j`|-|Select a lower window|
+|`<C-w>H`|`:lsplit`|Snap a current window to left|
+|`<C-w>L`|`:rsplit`|Snap a current window to right|
+|`<C-w>K`|`:tsplit`|Snap a current window to top|
+|`<C-w>J`|`:bsplit`|Snap a current window to bottom|
 |`<C-w>=`|`arrange`|Arrange windows|
 |`<C-w>r`|`rotate`|Rotate windows|
 |`<C-w>R`|`rerotate`|Rotate windows in reverse|

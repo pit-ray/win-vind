@@ -219,6 +219,8 @@ namespace wxGUI
 
         auto result = wxPropertySheetDialog::Show(show) ;
 
+        const auto use_bindings = ioParams::get_vb("enable_specific_bindings_in_mygui") ;
+
         //true is shown. false is hidden.
         if(show) {
             load_config() ;
@@ -227,7 +229,7 @@ namespace wxGUI
                 ERROR_PRINT("Preferences Window was not brought to the foreground") ;
             } //shown as most top window
 
-            if(!l_is_cached) {
+            if(use_bindings && !l_is_cached) {
                 l_mode = ModeManager::get_mode() ;
                 l_is_absorbed = KeyAbsorber::is_absorbed() ;
                 l_is_cached = true ;
@@ -235,7 +237,7 @@ namespace wxGUI
             }
         }
         else {
-            if(l_is_cached) {
+            if(use_bindings && l_is_cached) {
                 ModeManager::change_mode(l_mode) ;
 
                 KeyAbsorber::close_all_ports_with_refresh() ;

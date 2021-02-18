@@ -36,8 +36,6 @@ namespace KeybrdEventer
     } ;
 
 
-    //free function
-
     //change key state without input
     void release_keystate(const unsigned char key) ;
 

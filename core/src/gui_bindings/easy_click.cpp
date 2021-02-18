@@ -7,6 +7,7 @@
 #include "keybrd_eventer.hpp"
 #include "mouse_eventer.hpp"
 #include "msg_logger.hpp"
+#include "screen_metrics.hpp"
 #include "uia.hpp"
 #include "utility.hpp"
 #include "virtual_key_fwd.hpp"
@@ -14,7 +15,6 @@
 #include "win_vind.hpp"
 
 #include "disable_gcc_warning.hpp"
-#include <stdexcept>
 #include <windows.h>
 #include <wingdi.h>
 #include <winuser.h>
@@ -29,24 +29,10 @@
 #include "enable_gcc_warning.hpp"
 
 
-inline static bool operator==(const RECT& lhs, const RECT& rhs) noexcept {
-    return lhs.left == rhs.left && lhs.top == rhs.top \
-                     && lhs.right == rhs.right && lhs.bottom == rhs.bottom ;
-}
-inline static bool operator!=(const RECT& lhs, const RECT& rhs) noexcept {
-    return !(lhs == rhs) ;
-}
-
 namespace EsyClk
 {
     void print_hresult(HRESULT& res) ;
     inline static void draw_rect_by_center(LONG x, LONG y, LONG delta=10) ;
-
-    //Is lhs out of rhs ?
-    inline static bool is_out_of_RECT(const RECT& lhs, const RECT& rhs) {
-        return lhs.left < rhs.left || lhs.top < rhs.top \
-                         || lhs.right > rhs.right || lhs.bottom > rhs.bottom ;
-    }
 
     class Point2D {
     private:
@@ -177,7 +163,7 @@ namespace EsyClk
             return ;
         }
 
-        if(is_out_of_RECT(rect, window_rect)) {
+        if(!ScreenMetrics::is_fully_in_range(rect, window_rect)) {
             return ;
         }
 
@@ -333,7 +319,7 @@ namespace EsyClk
         RECT rect ;
         if(hwnd == g_prehwnd) {
             if(GetWindowRect(hwnd, &rect)) {
-                if(rect == g_prerect) {
+                if(ScreenMetrics::is_equel(rect, g_prerect)) {
                     return false ;
                 }
                 g_prerect = rect ;
@@ -649,7 +635,6 @@ namespace EsyClk
             }
         }
     }
-
 
     inline static void common_process(const unsigned char sendkey) {
         if(need_update(GetForegroundWindow())) {

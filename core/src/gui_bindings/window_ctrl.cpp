@@ -137,7 +137,7 @@ void OpenNewCurrentWindow::sprocess(
     }
     CloseHandle(hproc) ;
 
-    Utility::create_process(Utility::ws_to_s(path), Path::HOME_PATH()) ;
+    Utility::create_process(Path::HOME_PATH(), Utility::ws_to_s(path)) ;
     Sleep(100) ;
 }
 

@@ -357,5 +357,10 @@
         "value": 100,
         "en": "Window height delta for resizing",
         "ja": "ウィンドウの高さのリサイズ量"
+    },
+    "enable_specific_bindings_in_mygui": {
+        "value": true,
+        "en": "Enable specific bindings in Preferences",
+        "ja": "設定ウィンドウで特殊バインディングを有効化"
     }
 }

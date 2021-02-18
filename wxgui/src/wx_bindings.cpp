@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <chrono>
 
 #include "disable_gcc_warning.hpp"
 #include <wx/arrstr.h>
@@ -35,6 +36,8 @@
 #include "utility.hpp"
 #include "wx_constant.hpp"
 
+#include "common/key_absorber.hpp"
+#include "common/mouse_eventer.hpp"
 #include "common_bindings/change_mode.hpp"
 
 namespace wxGUI
@@ -87,6 +90,9 @@ namespace wxGUI
     void write_pretty_all(std::ofstream& ofs, const nlohmann::json& obj) ;
     void write_pretty_one(std::ofstream& ofs, const nlohmann::json& obj) ;
 
+    using namespace std::chrono ;
+    constexpr std::chrono::seconds COOL_TIME = 1s ;
+
     struct BindingsPanel::Impl {
         wxSearchCtrl* search = nullptr ;
         wxListBox* func_list = nullptr ;
@@ -111,6 +117,8 @@ namespace wxGUI
         wxButton* def_btn       = nullptr ;
 
         nlohmann::json parser{} ;
+
+        system_clock::time_point hot_point = system_clock::now() ;
 
         using ovvec_t = std::vector<wxGenericStaticText*> ;
         ovvec_t mode_overview{ovvec_t(8, nullptr)} ;
@@ -657,6 +665,11 @@ namespace wxGUI
 
         //Edit with Vim
         Bind(wxEVT_BUTTON, [this](auto&) {
+            //duplicate clicks are prohibited
+            if(system_clock::now() - pimpl->hot_point < COOL_TIME) {
+                return ;
+            }
+
             const auto gvim_exe = ioParams::get_vs("gvim_exe_path") ;
             static const auto temp_dir = Path::ROOT_PATH() + "temp\\" ;
 
@@ -678,13 +691,22 @@ namespace wxGUI
 
             HANDLE hproc ;
             auto create = [&hproc, &temp_path] (const std::string exe) {
-                auto cmd = exe + " \"" + temp_path + "\"" ;
-                hproc = Utility::create_process(cmd, Path::HOME_PATH()) ;
+                hproc = Utility::create_process(".", exe, "\"" + temp_path + "\"") ;
             } ;
 
             pimpl->edit_with_vim->Disable() ;
 
-            MyConfigWindowInsert::sprocess(true, 1, nullptr, nullptr) ;
+            const auto use_bindings = ioParams::get_vb("enable_specific_bindings_in_mygui") ;
+            if(use_bindings) {
+                MyConfigWindowInsert::sprocess(true, 1, nullptr, nullptr) ;
+            }
+            else {
+                Change2Insert::sprocess(true, 1, nullptr, nullptr) ;
+            }
+
+            //release a message to push [Edit with Vim] button.
+            KeyAbsorber::close_all_ports_with_refresh() ;
+
             try {
                 create(gvim_exe) ;
             }
@@ -697,7 +719,12 @@ namespace wxGUI
                 ERROR_PRINT("Failed the process of gVim in a child process.") ;
                 return ;
             }
-            MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
+
+            KeyAbsorber::close_all_ports_with_refresh() ;
+
+            if(use_bindings) {
+                MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
+            }
 
             nlohmann::json new_json ;
             std::ifstream ifs(temp_path) ;
@@ -708,6 +735,7 @@ namespace wxGUI
             pimpl->update_bindings() ;
             pimpl->update_mode_overview() ;
 
+            pimpl->hot_point = system_clock::now() ;
             pimpl->edit_with_vim->Enable() ;
         }, BindingsEvt::EDIT_WITH_VIM) ;
     }

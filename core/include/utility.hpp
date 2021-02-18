@@ -120,11 +120,47 @@ namespace Utility
 
     void create_directory(const std::string& path) ;
 
-    //It returns a handle to newly created process.
-    HANDLE create_process(const std::string& cmd, const std::string& current_dir) ;
-
     const std::wstring s_to_ws(const std::string& str) ;
     const std::string ws_to_s(const std::wstring& wstr) ;
+
+    //It returns a handle to newly created process.
+    template <typename... Ts>
+    inline HANDLE create_process(const std::string& current_dir, std::string cmd, Ts&&... args) {
+        const std::initializer_list<std::string> arglist = {std::forward<Ts>(args)...} ;
+
+        //protect path with quotation marks for security.
+        if(cmd.find(" ") != std::string::npos) {
+            if(cmd.front() != '\"' || cmd.back() != '\"') {
+                cmd = "\"" + cmd + "\"" ;
+            }
+        }
+
+        for(const auto& arg : arglist) {
+            cmd += " " + arg ;
+        }
+
+        STARTUPINFOW si ;
+        ZeroMemory(&si, sizeof(si)) ;
+        si.cb = sizeof(si) ;
+
+        PROCESS_INFORMATION pi ;
+        ZeroMemory(&pi, sizeof(pi)) ;
+
+        if(!CreateProcessW(
+            NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
+            NULL, NULL, FALSE,
+            CREATE_NEW_CONSOLE, NULL, s_to_ws(current_dir).c_str(),
+            &si, &pi)) {
+
+            throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
+        }
+        return pi.hProcess ;
+    }
+
+    namespace Debug {
+        void bench_start() ;
+        int bench_stop() ;
+    }
 }
 
 #endif

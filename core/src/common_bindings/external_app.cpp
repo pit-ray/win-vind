@@ -46,24 +46,6 @@ namespace ExAppUtility
     void load_config() {
         g_proc_list = _load_proc_list_core() ;
     }
-
-    inline static const auto _cvt_to_protected_path(const std::string name) noexcept {
-        try {
-            const auto& origin = g_proc_list.at(name) ;
-            //is origin path?
-            if(origin.find("/") == std::string::npos) {
-                return origin ;
-            }
-            if(origin.find("\\") == std::string::npos) {
-                return origin ;
-            }
-            return "\"" + origin + "\"" ;
-        }
-        catch(const std::out_of_range&) {
-            VirtualCmdLine::msgout("e: Not a command") ;
-            return std::string() ;
-        }
-    }
 }
 
 using namespace ExAppUtility ;
@@ -81,7 +63,13 @@ void StartShell::sprocess(
         const KeyLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
-    Utility::create_process(g_proc_list.at("shell"), Path::HOME_PATH()) ;
+    try {
+        Utility::create_process(Path::HOME_PATH(), g_proc_list.at("shell")) ;
+    }
+    catch(const std::out_of_range&) {
+        VirtualCmdLine::msgout("e: Not a command") ;
+        return ;
+    }
 
     Sleep(100) ; //wait until select window by OS.
     Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
@@ -112,9 +100,14 @@ void StartAnyApp::sprocess(
         throw LOGIC_EXCEPT("The passed parent logger is null") ;
 
     auto cmd = KyLgr::log2str(*parent_charlgr) ;
-    cmd = _cvt_to_protected_path(cmd.substr(1)) ;
     if(!cmd.empty()) {
-        Utility::create_process(cmd, Path::HOME_PATH()) ;
+        try {
+            Utility::create_process(".", g_proc_list.at(cmd.substr(1))) ;
+        }
+        catch(const std::out_of_range&) {
+            VirtualCmdLine::msgout("e: Not a command") ;
+            return ;
+        }
 
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;

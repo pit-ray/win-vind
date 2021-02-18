@@ -35,6 +35,7 @@ namespace wxGUI
         pimpl->check.create("enable_esyclk_hwnd_cache") ;
         pimpl->check.create("suppress_for_vim") ;
         pimpl->check.create("virtual_cmd_line") ;
+        pimpl->check.create("enable_specific_bindings_in_mygui") ;
 
         SetSizerAndFit(root_sizer) ;
     }

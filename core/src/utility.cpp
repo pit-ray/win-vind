@@ -1,5 +1,7 @@
 #include "utility.hpp"
 
+#include <chrono>
+
 namespace Utility
 {
     std::vector<std::string> split(
@@ -137,27 +139,12 @@ namespace Utility
         }
     }
 
-    HANDLE create_process(const std::string& cmd, const std::string& current_dir) {
-        STARTUPINFOW si ;
-        ZeroMemory(&si, sizeof(si)) ;
-        si.cb = sizeof(si) ;
-
-        PROCESS_INFORMATION pi ;
-        ZeroMemory(&pi, sizeof(pi)) ;
-
-        if(!CreateProcessW(
-            NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
-            NULL, NULL, FALSE,
-            CREATE_NEW_CONSOLE, NULL, s_to_ws(current_dir).c_str(),
-            &si, &pi)) {
-
-            throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
-        }
-        return pi.hProcess ;
-    }
-
     const std::wstring s_to_ws(const std::string& str) {
         std::wstring wstr ;
+
+        if(str.empty()) {
+            return wstr ;
+        }
 
         auto str_len = static_cast<int>(strlen(str.c_str())) ;
         auto needed_size = MultiByteToWideChar(
@@ -182,6 +169,10 @@ namespace Utility
     const std::string ws_to_s(const std::wstring& wstr) {
         std::string str ;
 
+        if(wstr.empty()) {
+            return str ;
+        }
+
         auto wstr_len = static_cast<int>(wcslen(wstr.c_str())) ;
         auto needed_size = WideCharToMultiByte(
                 CP_UTF8, 0,
@@ -202,5 +193,19 @@ namespace Utility
         }
 
         return str ;
+    }
+
+    namespace Debug {
+        static std::chrono::system_clock::time_point tp ;
+        void bench_start() {
+            tp = std::chrono::system_clock::now() ;
+        } ;
+
+        int bench_stop() {
+            using namespace std::chrono ;
+            auto delta = system_clock::now() - tp ;
+            auto du = duration_cast<milliseconds>(delta) ;
+            return static_cast<int>(du.count()) ;
+        } ;
     }
 }

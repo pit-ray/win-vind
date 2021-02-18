@@ -105,8 +105,24 @@ You can change default bindings.
 |:---:|:---:|:---:|
 |`<C-w>s`|`:sw`|Switch Window|
 |`<C-w>q`|`:cl`|Close Current Window|
-|`<C-w>h`|`:lsplit`|Snap Current Window to Left|
-|`<C-w>l`|`:rsplit`|Snap Current Window to Right|
+|`<C-w>o`|`:new`|Open a new window|
+|-|`split`|Open a new window with hsplit|
+|-|`vsplit`|Open a new window with vsplit|
+|`<C-w>H`|`:lsplit`|Snap Current Window to Left|
+|`<C-w>L`|`:rsplit`|Snap Current Window to Right|
+|`<C-w>K`|`:tsplit`|Snap Current Window to Top|
+|`<C-w>J`|`:bsplit`|Snap Current Window to Bottom|
+|`<C-w>=`|`arrange`|Arrange windows|
+|`<C-w>r`|`rotate`|Rotate windows|
+|`<C-w>R`|`rerotate`|Rotate windows in reverse|
+|`<C-w>x`|`exchange`|Exchange a window with next one|
+|-|`resize <num>`|Resize the height of a window|
+|`<C-w>+`|`resize +<num>`|Increase the height of a window|
+|`<C-w>-`|`resize -<num>`|Decrease the height of a window|
+|-|`vertical resize <num>`|Resize the width of a window|
+|`<C-w><gt>`|`vertical resize +<num>`|Increase the width of a window|
+|`<C-w><lt>`|`vertical resize -<num>`|Decrease the width of a window|
+
 
 **Mouse Control**  
 |Binding|Command|Meanings|
@@ -193,9 +209,7 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 ## ToDo 
 
 - Registration of keybindings by pressing keys.   
-- A feature to switch windows with a single push, just like switching weapons in game. (e.g. 1: Google Chrome, 2: Vim, 3: Powershell)
-- Implement `E` or `e` in Editor Mode.
-- Useful window selecter
+- Implement `E` or `e` in Editor Mode with UI Automation.  
 
 ## License  
 

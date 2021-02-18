@@ -893,7 +893,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["rotate", "rot"],
+        "cmd": ["rerotate", "rerot"],
         "mycwn": [],
         "mycwi": [],
         "en": "Rotate arranged windows in a current monitor in reverse",

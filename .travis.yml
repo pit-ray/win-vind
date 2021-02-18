@@ -2,7 +2,7 @@ os: windows
 language: cpp
 install:
   #- powershell Invoke-WebRequest https://scan.coverity.com/download/cxx/win64 -OutFile cov.zip -UseBasicParsing
-  - wget https://scan.coverity.com/download/win64 --post-data "token=ENV['COVERITY_SCAN_TOKEN']&project=pit-ray%2Fwin-vind" -O cov.zip
+  - wget https://scan.coverity.com/download/win64 --post-data "token=$COVERITY_SCAN_TOKEN&project=pit-ray%2Fwin-vind" -O cov.zip
   - Expand-Archive -Path cov.zip -DestinationPath C:/bin/cov
   - $ENV:Path+="C:/bin/cov/bin"  
   - "./setup_libs.bat -mingw 64"
@@ -18,4 +18,4 @@ script:
   
 after_success:
   - Compress-Archive -Path cov-int -DestinationPath cov-int.zip
-  - curl --form token=ENV['COVERITY_SCAN_TOKEN'] --form email=pit-ray@outlook.com --form file=@cov-int.zip --form version="latest" --form description="from-travis-ci" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
+  - curl --form token=$COVERITY_SCAN_TOKEN --form email=pit-ray@outlook.com --form file=@cov-int.zip --form version="latest" --form description="from-travis-ci" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind

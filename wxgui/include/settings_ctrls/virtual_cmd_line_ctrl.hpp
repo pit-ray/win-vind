@@ -11,18 +11,18 @@ namespace wxGUI
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        void translate() noexcept override ;
-        void do_load_config() noexcept override ;
-        void do_load_config_default() noexcept override ;
-        void do_save_config() noexcept override ;
+        void translate() override ;
+        void do_load_config() override ;
+        void do_load_config_default() override ;
+        void do_save_config() override ;
     public:
         explicit VirtualCmdLineCtrl(wxWindow* parent, wxWindowID id=wxID_ANY) ;
 
         virtual ~VirtualCmdLineCtrl() noexcept ;
-        VirtualCmdLineCtrl(VirtualCmdLineCtrl&&) = delete ;
+        VirtualCmdLineCtrl(VirtualCmdLineCtrl&&)            = delete ;
         VirtualCmdLineCtrl& operator=(VirtualCmdLineCtrl&&) = delete ;
-        VirtualCmdLineCtrl(const VirtualCmdLineCtrl&) = delete ;
-        VirtualCmdLineCtrl& operator=(VirtualCmdLineCtrl&) = delete ;
+        VirtualCmdLineCtrl(const VirtualCmdLineCtrl&)       = delete ;
+        VirtualCmdLineCtrl& operator=(VirtualCmdLineCtrl&)  = delete ;
 
         const wxString name() noexcept override ;
     } ;

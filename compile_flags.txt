@@ -8,7 +8,9 @@
 -Ilibs
 -Ilibs/wxWidgets/include
 -Ilibs/wxWidgets/include/wx
+-Ilibs/wxWidgets/include/msvc/wx
 -Iwin32gui/core
 -Iwxgui/include
 -Iwxgui/include/settings_ctrls
+-Iwxgui/include/settings_ctrls/ctrl_assets
 -std=c++17

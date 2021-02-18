@@ -173,7 +173,7 @@ namespace wxGUI
 
         //set event handler ----------------------
         Bind(wxEVT_BUTTON, [this](auto&) {
-            pimpl->load_path_list(ioParams::Default::get_choices("exapps")) ;
+            pimpl->load_path_list(ioParams::Default::get_choices_wxstr("exapps")) ;
         }) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
@@ -206,21 +206,21 @@ namespace wxGUI
 
 
     void ShortcutAppsPanel::do_load_config() {
-        pimpl->load_path_list(ioParams::get_choices("exapps")) ;
+        pimpl->load_path_list(ioParams::get_choices_wxstr("exapps")) ;
     }
 
     void ShortcutAppsPanel::do_save_config() {
-        ioParams::choices_t ch {
+        ioParams::choices_wxstr_t ch {
             {
                 {"name", "shell"},
-                {"value", pimpl->sh_path_picker->GetPath().ToStdString()}
+                {"value", pimpl->sh_path_picker->GetPath()}
             }
         } ;
 
         for(long i = 0 ; i < pimpl->path_list->GetItemCount() ; i ++) {
-            const auto n = pimpl->path_list->GetItemText(i, PathListCol::NAME).ToStdString() ;
-            const auto p  = pimpl->path_list->GetItemText(i, PathListCol::PATH).ToStdString() ;
-            ioParams::item_t a{{"name", n}, {"value", p}} ;
+            const auto n = pimpl->path_list->GetItemText(i, PathListCol::NAME) ;
+            const auto p  = pimpl->path_list->GetItemText(i, PathListCol::PATH) ;
+            ioParams::item_wxstr_t a{{"name", n}, {"value", p}} ;
             ch.emplace_back(std::move(a)) ;
         }
 

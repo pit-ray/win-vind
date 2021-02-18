@@ -16,6 +16,7 @@ namespace ioParams
     bool load_config() ;
     bool save_config() ;
 
+    const wxString get_vwxs(const std::string path) noexcept ;
     const std::string get_vs(const std::string path) noexcept ;
     int get_vi(const std::string path) noexcept ;
     double get_vd(const std::string path) noexcept ;
@@ -27,6 +28,11 @@ namespace ioParams
     const choices_t get_choices(const std::string path) noexcept ;
     void set(const std::string path, const choices_t& choices) noexcept ;
 
+    using item_wxstr_t = std::unordered_map<std::string, wxString> ;
+    using choices_wxstr_t = std::vector<item_wxstr_t> ;
+    const choices_wxstr_t get_choices_wxstr(const std::string path) noexcept ;
+    void set(const std::string path, const choices_wxstr_t& choices) noexcept ;
+
     void set(const std::string path, const wxString value) noexcept ;
     void set(const std::string path, const std::string value) noexcept ;
     void set(const std::string path, const int value) noexcept ;
@@ -36,11 +42,13 @@ namespace ioParams
     void set(const std::string path, const bool value) noexcept ;
 
     namespace Default {
+        const wxString get_vwxs(const std::string path) noexcept ;
         const std::string get_vs(const std::string path) noexcept ;
         int get_vi(const std::string path) noexcept ;
         double get_vd(const std::string path) noexcept ;
         bool get_vb(const std::string path) noexcept ;
         const choices_t get_choices(const std::string path) noexcept ;
+        const choices_wxstr_t get_choices_wxstr(const std::string path) noexcept ;
     }
 }
 

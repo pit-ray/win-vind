@@ -20,7 +20,7 @@ namespace wxGUI
         {}
 
         template <typename T>
-        void load_config_core(const T& get_vs_func) noexcept {
+        void load_config_core(const T& get_vs_func) {
             for(auto& c : chs) {
                 const auto& name = c.first ;
                 const auto& ptr = c.second ;
@@ -38,7 +38,7 @@ namespace wxGUI
             }
         }
 
-        ~Impl() noexcept = default ;
+        ~Impl() noexcept             = default ;
         Impl(Impl&&)                 = delete ;
         Impl& operator=(Impl&&)      = delete ;
         Impl(const Impl&)            = delete ;
@@ -60,15 +60,15 @@ namespace wxGUI
         return pimpl->chs[name] ;
     }
 
-    void ChoicesManager::load_config() noexcept {
-        pimpl->load_config_core(ioParams::get_vs) ;
+    void ChoicesManager::load_config() {
+        pimpl->load_config_core(ioParams::get_vwxs) ;
     }
 
-    void ChoicesManager::load_config_default() noexcept {
+    void ChoicesManager::load_config_default() {
         pimpl->load_config_core(ioParams::Default::get_vs) ;
     }
 
-    void ChoicesManager::save_config() noexcept {
+    void ChoicesManager::save_config() {
         for(const auto& c : pimpl->chs) {
             const auto& obj_name = c.first ;
             const auto index = c.second->GetSelection() ;
@@ -79,7 +79,7 @@ namespace wxGUI
         }
     }
 
-    void ChoicesManager::update_config() noexcept {
+    void ChoicesManager::update_config() {
         for(auto& c : pimpl->chs) {
             const auto& ptr = c.second ;
             const auto& name = c.first ;

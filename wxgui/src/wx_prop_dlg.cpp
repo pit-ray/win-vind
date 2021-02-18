@@ -77,7 +77,7 @@ namespace wxGUI
 
             //create font
             font->SetPointSize(ioParams::get_vi("gui_font_size")) ;
-            const auto fontname = ioParams::get_vs("gui_font_name") ;
+            const auto fontname = ioParams::get_vwxs("gui_font_name") ;
             if(wxFontEnumerator().IsValidFacename(fontname)) {
                 font->SetFaceName(fontname) ;
             }

@@ -19,6 +19,8 @@ namespace wxGUI
     }
 
     static constexpr int BORDER = 5 ;
+
+    static const auto CTRL_WIDTH = static_cast<int>(WIDTH() * 0.15) ;
 }
 
 #endif

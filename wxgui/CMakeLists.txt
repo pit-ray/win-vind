@@ -63,6 +63,7 @@ set(wxWidgets_INCLUDE_DIRS
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include/settings_ctrls
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/settings_ctrls/ctrl_assets
 
     ${PROJECT_SOURCE_DIR}/core/include
     ${PROJECT_SOURCE_DIR}/libs
@@ -74,6 +75,14 @@ set(SRCDIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_library(WinVindGUI STATIC
     ${SRCDIR}/io_params.cpp
     ${SRCDIR}/ui_translator.cpp
+
+    ${SRCDIR}/settings_ctrls/ctrl_assets/checkbox_wl.cpp
+    ${SRCDIR}/settings_ctrls/ctrl_assets/choice_wl.cpp
+    ${SRCDIR}/settings_ctrls/ctrl_assets/clrpicker_wl.cpp
+    ${SRCDIR}/settings_ctrls/ctrl_assets/filepicker_wl.cpp
+    ${SRCDIR}/settings_ctrls/ctrl_assets/slider_wl.cpp
+    ${SRCDIR}/settings_ctrls/ctrl_assets/spin_wl.cpp
+    ${SRCDIR}/settings_ctrls/ctrl_assets/text_wl.cpp
 
     ${SRCDIR}/settings_ctrls/choices_manager.cpp
     ${SRCDIR}/settings_ctrls/common_ctrl.cpp

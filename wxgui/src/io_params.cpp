@@ -64,6 +64,9 @@ namespace ioParams
             return T1{0} ;
         }
     }
+    const wxString get_vwxs(const std::string path) noexcept {
+        return wxString::FromUTF8(_get_v<std::string>(parser, path)) ;
+    }
 
     const std::string get_vs(const std::string path) noexcept {
         return _get_v<std::string>(parser, path) ;
@@ -121,7 +124,27 @@ namespace ioParams
         return _get_choices(parser, path) ;
     }
 
+    template <typename T>
+    inline static const auto to_choices_wxstr(T&& choices) noexcept {
+        choices_wxstr_t wxchoices ;
+        for(const auto& c : choices) {
+            item_wxstr_t wxitems ;
+            for(const auto& i : c) {
+                wxitems[i.first] = wxString::FromUTF8(i.second) ;
+            }
+            wxchoices.push_back(std::move(wxitems)) ;
+        }
+        return wxchoices ;
+    }
+
+    const choices_wxstr_t get_choices_wxstr(const std::string path) noexcept {
+        return to_choices_wxstr(_get_choices(parser, path)) ;
+    }
+
     namespace Default {
+        const wxString get_vwxs(const std::string path) noexcept {
+            return wxString::FromUTF8(_get_v<std::string>(def_parser, path)) ;
+        }
         const std::string get_vs(const std::string path) noexcept {
             return _get_v<std::string>(def_parser, path) ;
         }
@@ -141,6 +164,11 @@ namespace ioParams
         const choices_t get_choices(const std::string path) noexcept {
             return _get_choices(def_parser, path) ;
         }
+
+        const choices_wxstr_t get_choices_wxstr(const std::string path) noexcept {
+            return to_choices_wxstr(_get_choices(def_parser, path)) ;
+        }
+
     }
 
     void set(const std::string path, const choices_t& choices) noexcept {
@@ -161,6 +189,18 @@ namespace ioParams
         }
     }
 
+    void set(const std::string path, const choices_wxstr_t& choices) noexcept {
+        choices_t utf8_choices ;
+        for(const auto& c : choices) {
+            item_t utf8_items ;
+            for(const auto& i : c) {
+                utf8_items[i.first] = i.second.ToUTF8().data() ;
+            }
+            utf8_choices.push_back(std::move(utf8_items)) ;
+        }
+        set(path, utf8_choices) ;
+    }
+
     template <typename T1, typename T2>
     inline static void _set(T1&& path, const T2 value) noexcept {
         try {parser.at(json::json_pointer("/" + path + "/value")) = value ;}
@@ -170,7 +210,7 @@ namespace ioParams
     }
 
     void set(const std::string path, const wxString value) noexcept {
-        _set(path, value.ToStdString()) ;
+        _set(path, value.ToUTF8().data()) ;
     }
     void set(const std::string path, const std::string value) noexcept {
         _set(path, value) ;

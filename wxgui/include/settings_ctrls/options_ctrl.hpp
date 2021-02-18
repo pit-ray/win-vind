@@ -11,19 +11,19 @@ namespace wxGUI
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        void translate() noexcept override ;
-        void do_load_config() noexcept override ;
-        void do_load_config_default() noexcept override ;
-        void do_save_config() noexcept override ;
+        void translate() override ;
+        void do_load_config() override ;
+        void do_load_config_default() override ;
+        void do_save_config() override ;
 
     public:
         explicit OptionsCtrl(wxWindow* parent, wxWindowID id=wxID_ANY) ;
 
         virtual ~OptionsCtrl() noexcept ;
-        OptionsCtrl(OptionsCtrl&&) = delete ;
+        OptionsCtrl(OptionsCtrl&&)            = delete ;
         OptionsCtrl& operator=(OptionsCtrl&&) = delete ;
-        OptionsCtrl(const OptionsCtrl&) = delete ;
-        OptionsCtrl& operator=(OptionsCtrl&) = delete ;
+        OptionsCtrl(const OptionsCtrl&)       = delete ;
+        OptionsCtrl& operator=(OptionsCtrl&)  = delete ;
 
         const wxString name() noexcept override ;
     } ;

@@ -12,19 +12,19 @@ namespace wxGUI
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        void translate() noexcept override ;
-        void do_load_config() noexcept override ;
-        void do_load_config_default() noexcept override ;
-        void do_save_config() noexcept override ;
+        void translate() override ;
+        void do_load_config() override ;
+        void do_load_config_default() override ;
+        void do_save_config() override ;
 
     public:
         explicit MoveCursorCtrl(wxWindow* parent, wxWindowID id=wxID_ANY) ;
 
         virtual ~MoveCursorCtrl() noexcept ;
-        MoveCursorCtrl(MoveCursorCtrl&&) = delete ;
+        MoveCursorCtrl(MoveCursorCtrl&&)            = delete ;
         MoveCursorCtrl& operator=(MoveCursorCtrl&&) = delete ;
-        MoveCursorCtrl(const MoveCursorCtrl&) = delete ;
-        MoveCursorCtrl& operator=(MoveCursorCtrl&) = delete ;
+        MoveCursorCtrl(const MoveCursorCtrl&)       = delete ;
+        MoveCursorCtrl& operator=(MoveCursorCtrl&)  = delete ;
 
         const wxString name() noexcept override ;
     } ;

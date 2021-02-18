@@ -1,25 +1,20 @@
 os: windows
 language: cpp
 install:
-- "./setup_libs.bat -mingw 64"
-script:
-- "./build.bat -debug -mingw 64"
+  - powershell Invoke-WebRequest https://scan.coverity.com/download/cxx/win64 -OutFile cov.zip -UseBasicParsing
+  - Expand-Archive -Path cov.zip -DestinationPath C:/bin/cov
+  - $ENV:Path+="C:/bin/cov/bin"  
+  - "./setup_libs.bat -mingw 64"
+
 env:
   global:
     secure: etQ9lGyOkC4f+Td/NPIBUApUB+quDjxfByxkXMY+MPLDI5lMbKFgKV9WtGMqLWGT49XY23jVUOy3aQebNdNe9hTs+R0H00MJeJ4dCYEzDxH2aZT1iXN/bF9G83dcWSqXvuL2T9h/jsZq/qq4zOfM5Emfz/R2IgPTKFZ/BaiZKab1MKsLyTkkekgOtloCY0FRJZFhk3d2JvpbxO2jiNebLnEvJ5KnZ5KFjzP2gS84aFOoXkL1AvhExdzZqX/VaRQdTRqR1mraSjv10Aln8a/+SfuUfxDzriMRCamNLhrcUdrHZ4EgVuZ2aW9JOA7NYG0bIkKE1Sp86Nz4oEw/lkEPrq44qK+yW21SgupGgMLwfN1/VSPqSPpMPMtydqtImCRMVU9VepcXXWl45sm3A7Co8Jggv2gKpeq+wvoBwq4OWlnay+zlRxwGLe0qodsT0HVG1pSDLA3DwAANPip/BlFUocDE+X77zcgy9m3+L4FzFDeWoYET5D7M+yVuI8526lD5fdQl+6DwyYCsUBwXbf+Ha1ZzXX/fxAK1Dwl1Uj37tmwgexlDEenRMsLAGro6S6kAy/CTewZUiG6THu5JhiaHXSAy/Qdc6G18EwueuFE5TLStnpMKsQGAmMIjj/W8EgAHFbXYVH0mr9G1sGcOSp//PVNk9XFmM++lFreR70xZ1aA=
 
-before_install:
-  - choco install wsl-ubuntu-1804 --ignore-checksums
-   #- wsl -e "adduser master ; gpasswd -a master sudo"
-  #- powershell /c "C:/programdata/chocolatey/lib/wsl-ubuntu-1804/tools/unzipped/ubuntu1804 config --default-user master" 
-  - wsl -e "echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | tee -a /etc/ssl/certs/ca-"
-
-addons:
-  coverity_scan:
-    project:
-      name: "pit-ray/win-vind"
-      description: "Simple Vim Key Binder for Windows"
-    notification_email: pit-ray@outlook.com
-    build_command_prepend: "mkdir debug ; cd debug ; cmake -DCMAKE_BUILD_TYPE=Debug -G \"MinGW Makefiles\" .."
-    build_command: "cmake --build . ; cd .."
-    branch_pattern: coverity_scan
+script:
+  - mkdir debug ; cd debug
+  - cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
+  - cov-build --dir cov-int cmake --build .
+  
+after_success:
+  - Compress-Archive -Path cov-int -DestinationPath cov-int.zip
+  - curl --form token=ENV['COVERITY_SCAN_TOKEN'] --form email=pit-ray@outlook.com --form file=@cov-int.zip --form version="latest" --form description="from-travis-ci" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind

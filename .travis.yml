@@ -9,7 +9,7 @@ env:
     secure: etQ9lGyOkC4f+Td/NPIBUApUB+quDjxfByxkXMY+MPLDI5lMbKFgKV9WtGMqLWGT49XY23jVUOy3aQebNdNe9hTs+R0H00MJeJ4dCYEzDxH2aZT1iXN/bF9G83dcWSqXvuL2T9h/jsZq/qq4zOfM5Emfz/R2IgPTKFZ/BaiZKab1MKsLyTkkekgOtloCY0FRJZFhk3d2JvpbxO2jiNebLnEvJ5KnZ5KFjzP2gS84aFOoXkL1AvhExdzZqX/VaRQdTRqR1mraSjv10Aln8a/+SfuUfxDzriMRCamNLhrcUdrHZ4EgVuZ2aW9JOA7NYG0bIkKE1Sp86Nz4oEw/lkEPrq44qK+yW21SgupGgMLwfN1/VSPqSPpMPMtydqtImCRMVU9VepcXXWl45sm3A7Co8Jggv2gKpeq+wvoBwq4OWlnay+zlRxwGLe0qodsT0HVG1pSDLA3DwAANPip/BlFUocDE+X77zcgy9m3+L4FzFDeWoYET5D7M+yVuI8526lD5fdQl+6DwyYCsUBwXbf+Ha1ZzXX/fxAK1Dwl1Uj37tmwgexlDEenRMsLAGro6S6kAy/CTewZUiG6THu5JhiaHXSAy/Qdc6G18EwueuFE5TLStnpMKsQGAmMIjj/W8EgAHFbXYVH0mr9G1sGcOSp//PVNk9XFmM++lFreR70xZ1aA=
 
 before_install:
-  - bash -c "echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | tee -a /etc/ssl/certs/ca-"
+  - wsl -c "echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | tee -a /etc/ssl/certs/ca-"
 
 addons:
   coverity_scan:

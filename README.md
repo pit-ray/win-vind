@@ -106,8 +106,8 @@ You can change default bindings.
 |`<C-w>s`|`:sw`|Switch windows|
 |`<C-w>q`|`:cl`|Close a current window|
 |`<C-w>n`|`:new`|Open a new window|
-|-|`split`|Open a new window with hsplit|
-|-|`vsplit`|Open a new window with vsplit|
+|-|`:split`|Open a new window with hsplit|
+|-|`:vsplit`|Open a new window with vsplit|
 |`<C-w>h`|-|Select a left window|
 |`<C-w>l`|-|Select a right window|
 |`<C-w>k`|-|Select an upper window|

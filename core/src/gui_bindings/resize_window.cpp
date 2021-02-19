@@ -73,7 +73,7 @@ namespace ResizeWindow {
             RECT mrect_work ;
             ScreenMetrics::get_monitor_metrics(hwnd, &mrect, &mrect_work) ;
 
-            if(ScreenMetrics::is_fully_in_range(rect, mrect_work)) {
+            if(!ScreenMetrics::is_bigger_tran(rect, mrect_work)) {
                 return ;
             }
 

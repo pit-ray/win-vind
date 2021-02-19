@@ -102,9 +102,9 @@ You can change default bindings.
 ### Default Key Config  
 **Window Control**  
 |Binding|Command|Meanings|
-|:---:|:---:|:---:|
-|`<C-w>s`|`:sw`|Switch Window|
-|`<C-w>q`|`:cl`|Close Current Window|
+|:---:|:---:|:---|
+|`<C-w>s`|`:sw`|Switch windows|
+|`<C-w>q`|`:cl`|Close a current window|
 |`<C-w>n`|`:new`|Open a new window|
 |-|`split`|Open a new window with hsplit|
 |-|`vsplit`|Open a new window with vsplit|
@@ -116,21 +116,21 @@ You can change default bindings.
 |`<C-w>L`|`:rsplit`|Snap a current window to right|
 |`<C-w>K`|`:tsplit`|Snap a current window to top|
 |`<C-w>J`|`:bsplit`|Snap a current window to bottom|
-|`<C-w>=`|`arrange`|Arrange windows|
-|`<C-w>r`|`rotate`|Rotate windows|
-|`<C-w>R`|`rerotate`|Rotate windows in reverse|
-|`<C-w>x`|`exchange`|Exchange a window with next one|
-|-|`resize <num>`|Resize the height of a window|
-|`<C-w>+`|`resize +<num>`|Increase the height of a window|
-|`<C-w>-`|`resize -<num>`|Decrease the height of a window|
-|-|`vertical resize <num>`|Resize the width of a window|
-|`<C-w><gt>`|`vertical resize +<num>`|Increase the width of a window|
-|`<C-w><lt>`|`vertical resize -<num>`|Decrease the width of a window|
+|`<C-w>=`|`:arrange`|Arrange windows|
+|`<C-w>r`|`:rotate`|Rotate windows|
+|`<C-w>R`|`:rerotate`|Rotate windows in reverse|
+|`<C-w>x`|`:exchange`|Exchange a window with next one|
+|-|`:resize <num>`|Resize the height of a window|
+|`<C-w>+`|`:resize +<num>`|Increase the height of a window|
+|`<C-w>-`|`:resize -<num>`|Decrease the height of a window|
+|-|`:vertical resize <num>`|Resize the width of a window|
+|`<C-w><gt>`|`:vertical resize +<num>`|Increase the width of a window|
+|`<C-w><lt>`|`:vertical resize -<num>`|Decrease the width of a window|
 
 
 **Mouse Control**  
 |Binding|Command|Meanings|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`o`|-|Left Click|
 |`a`|-|Right Click|
 |`FF`, `Fo`|`:ecl`|<a href="https://pit-ray.github.io/win-vind/cheat_sheet/mouse_ctrl/#easyclick">EasyClick (Left Click)</a> (hinting feature)|
@@ -148,13 +148,13 @@ You can change default bindings.
 
 **Virtual Desktop Control**  
 |Binding|Command|Meanings|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<C-v>h`|-|Switch Virtual Desktop to Left|
 |`<C-v>l`|-|Switch Virtual Desktop to Right|
 
 **Mode Control** 
 |Binding|Command|Meanings|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<Esc-Left>`|-|Change to GUI Normal|
 |`i`|-|Change to GUI Insert|
 |`v`|-|Change to GUI Visual|
@@ -165,13 +165,13 @@ You can change default bindings.
 
 **Process Launcher**   
 |Binding|Command|Meanings|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |-|`:sh`, `:term`|Start Command Prompt|
 |-|`:!<any>`|Start Any Application|
 
 **Utilities**  
 |Binding|Command|Meanings|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |-|`:w`|Save Opened File|
 |-|`:mkdir <any>`|Make Directories|
 |`<gt>`|-|Move to Next Page|
@@ -185,7 +185,7 @@ You can change default bindings.
 
 **Others**   
 |Binding|Command|Meanings|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |-|`:set`|Show Config Window of win-vind|
 |-|`:exit`|Exit win-vind|  
 

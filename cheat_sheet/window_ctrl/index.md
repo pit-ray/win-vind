@@ -378,7 +378,7 @@ Is is the same as **F5** of shortcuts on Windows.
 
 ## Tab  
 
-### Switch to Left Tab  
+### Switch to a left tab  
 
 |Details|Status|
 |:---|:---|
@@ -391,7 +391,7 @@ Is is the same as **Ctrl + Shift + Tab** of shortcuts on Windows.
 
 <br>  
 
-### Switch to Right Tab  
+### Switch to a right tab  
 
 |Details|Status|
 |:---|:---|
@@ -404,7 +404,7 @@ Is is the same as **Ctrl + Tab** of shortcuts on Windows.
 
 <br>  
 
-### Open New Tab  
+### Open a new tab  
 
 |Details|Status|
 |:---|:---|

@@ -83,6 +83,7 @@ It selects the nearest window from the lower-center of a foreground window.
 
 <br>  
 
+<hr>  
 
 ## Resize Window 
 
@@ -302,6 +303,7 @@ It reduces the width of a foreground window.
 
 <br>  
 
+<hr>  
 
 ## Open Window  
 
@@ -327,7 +329,7 @@ It searchs the path of a executable file from the selected window and executes i
 |Default Key|-|
 |Default Command|`:sp`, `:split`|
 
-It changes the height of the foreground window to half and calls <a href="https://pit-ray.github.io/win-vind/cheat_sheet/window_ctrl/open-a-new-current-window">Open a new current window</a> in below direction.  
+It changes the height of the foreground window to half and calls <a href="https://pit-ray.github.io/win-vind/cheat_sheet/window_ctrl/#open-a-new-current-window">Open a new current window</a> in below direction.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/horizontal_split_min.gif?raw=true" width=600 />  
 
@@ -342,8 +344,7 @@ It changes the height of the foreground window to half and calls <a href="https:
 |Default Key|-|
 |Default Command|`:vs`, `:vsplit`|
 
-It changes the width of the foreground window to half and calls <a href="https://pit-ray.github.io/win-vind/cheat_sheet/window_ctrl/open-a-new-current-window">Open a new current window</a> in right direction.  
-
+It changes the width of the foreground window to half and calls <a href="https://pit-ray.github.io/win-vind/cheat_sheet/window_ctrl/#open-a-new-current-window">Open a new current window</a> in right direction.  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/vertical_split_min.gif?raw=true" width=600 />  
 
 <br>  

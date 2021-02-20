@@ -1,4 +1,5 @@
 #include "mouse_eventer.hpp"
+#include "virtual_key_fwd.hpp"
 #include <iostream>
 #include <memory>
 #include <unordered_map>

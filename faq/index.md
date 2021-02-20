@@ -39,10 +39,10 @@ Yes. You should set **GUI Insert** at **Preferences/settings/Initial Mode**.
 <hr> 
 
 ## How to use hinting like Vimium?  
-In default, you can call the hinting feature with `F` (in key, `Shift` + `F`), which you can try after the first launch of win-vind. If you **only** want to use the hinting function, you can easily do it by following the steps.  
+In default, you can call the hinting feature with `FF`, which you can try after the first launch of win-vind. If you **only** want to use the hinting function, you can easily do it by following the steps.  
 
 1. Open the key-config file, which locates **~/.win-vind/bindings.json** by installer or **config/bindings.json** by zip.  
-1. Jump to line 1396. In Vim, you can jump to the line by `/easy_click` command.  
+1. In Vim, you can jump to the line by `/easy_click` command.  
 1. Rewrite the value of **guii**(**GUI Insert Mode**).  In the following example, we can call the feature with **Right Alt -> Right Ctrl**.  <br>  
    ```json
     {

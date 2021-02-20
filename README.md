@@ -18,6 +18,8 @@
   <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/pit-ray/win-vind">
 <br>  
 
+## v3.2.0 is coming soon!! Please look forward to it at end of February.  
+
 ## Description
 **win-vind** provides the lightweight Hybrid UI System of CUI and GUI. There are five main features.  
 

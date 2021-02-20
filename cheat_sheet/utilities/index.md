@@ -32,19 +32,6 @@ It is the same as **Ctrl + S** of shortcuts on Windows.
 <br>  
 
 
-### Close Opened File (Tab) 
-
-|Details|Status|  
-|:---|:---|  
-|ID|**close_opended_file**|  
-|N-Repeat|<span class="no">Not Supported</span>|  
-|Default Key|-|  
-|Default Command|`:q`, `:qa`, `:q!`, `:qa!`, `:tabclose`| 
-
-It is the same as **Ctrl + F4** of shortcuts on Windows.  
-
-<br>
-
 ### Open Other File
 
 |Details|Status|  

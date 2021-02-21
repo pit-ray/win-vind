@@ -7,8 +7,8 @@
 -Icore/include/options
 -Ilibs
 -Ilibs/wxWidgets/include
--Ilibs/wxWidgets/include/wx
 -Ilibs/wxWidgets/include/msvc/wx
+-Ilibs/wxWidgets/include/wx
 -Iwin32gui/core
 -Iwxgui/include
 -Iwxgui/include/settings_ctrls

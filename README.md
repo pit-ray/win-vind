@@ -18,18 +18,19 @@
   <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/pit-ray/win-vind">
 <br>  
 
-## v3.2.0 is coming soon!! Please look forward to it at end of February.  
-
 ## Description
 **win-vind** provides the lightweight Hybrid UI System of CUI and GUI. There are five main features.  
 
 #### 1. GUI Operation like Vim  
 You can operate windows, a mouse cursor , virtual desktops, GUI-objects with key-bindings like Vim.  
 
-**Example: EasyClick (default: `FF`, `Fa`, `Fm`, `Fh`)**    
+**EasyClick (default: `FF`, `Fa`, `Fm`, `Fh`) Demo**    
 It works well in Win32 or UWP applications.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=600>&nbsp;&nbsp;<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/on_uwp.jpg?raw=true" height=300>    
+
+**Window Control Demo**  
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/window_ctrl_demo_min.gif?raw=true" title="WindowControl-demo" width=600 >
 
 #### 2. Vim emulation everywhere  
 It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  
@@ -59,28 +60,16 @@ $ ./win-vind.exe --func change_to_normal
 Therefore, it enables to make Vim link to GUI. Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>. If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## Download
-### 3.1.0 (Latest Version)
-Date: 2021/2/8    
+### 3.2.0 (Latest Version)  
+Date: 2021/2/22  
 
 #### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/setup_win-vind_3.1.0_32bit.exe.zip">setup_win-vind_3.1.0_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/win-vind_3.1.0_32bit.zip">win-vind_3.1.0_32bit.zip</a>  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0/setup_win-vind_3.2.0_32bit.exe.zip">setup_win-vind_3.2.0_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0/win-vind_3.2.0_32bit.zip">win-vind_3.2.0_32bit.zip</a>  
 
 #### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/setup_win-vind_3.1.0_64bit.exe.zip">setup_win-vind_3.1.0_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.1.0/win-vind_3.1.0_64bit.zip">win-vind_3.1.0_64bit.zip</a>
-
-
-### 3.2.0 (Preview Version)  
-Date: 2021/2/14  
-
-#### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/setup_win-vind_3.2.0_32bit.exe.zip">setup_win-vind_3.2.0_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/win-vind_3.2.0_32bit.zip">win-vind_3.2.0_32bit.zip</a>  
-
-#### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/setup_win-vind_3.2.0_64bit.exe.zip">setup_win-vind_3.2.0_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0-preview/win-vind_3.2.0_64bit.zip">win-vind_3.2.0_64bit.zip</a> 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0/setup_win-vind_3.2.0_64bit.exe.zip">setup_win-vind_3.2.0_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.0/win-vind_3.2.0_64bit.zip">win-vind_3.2.0_64bit.zip</a> 
 
 
 ## Usage

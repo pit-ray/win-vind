@@ -1,5 +1,20 @@
 #include "win_vind.hpp"
 
+#define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
+
+//for DPI support
+#if !defined(WINVER)
+
+#define WINVER        _WIN32_WINNT_WIN10
+#define _WIN32_WINNT  _WIN32_WINNT_WIN10
+
+#elif WINVER < _WIN32_WINNT_WIN10
+
+#define WINVER        _WIN32_WINNT_WIN10
+#define _WIN32_WINNT  _WIN32_WINNT_WIN10
+
+#endif
+
 #include <windows.h>
 
 #if defined(__GNUC__)
@@ -103,6 +118,12 @@ namespace win_vind
 
             if(!SendInput(1, &in, sizeof(INPUT))) {
                 ERROR_PRINT("SendInput, MOUSEEVENTF_MOVE") ;
+                return false ;
+            }
+
+            //enable high DPI support
+            if(!SetProcessDPIAware()) {
+                ERROR_PRINT("Your system is not supported DPI.") ;
                 return false ;
             }
 

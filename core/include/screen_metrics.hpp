@@ -1,21 +1,6 @@
 #ifndef _SCREEN_METRICS_HPP
 #define _SCREEN_METRICS_HPP
 
-#define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
-
-//for DPI support
-#if !defined(WINVER)
-
-#define WINVER        _WIN32_WINNT_WIN10
-#define _WIN32_WINNT  _WIN32_WINNT_WIN10
-
-#elif WINVER < _WIN32_WINNT_WIN10
-
-#define WINVER        _WIN32_WINNT_WIN10
-#define _WIN32_WINNT  _WIN32_WINNT_WIN10
-
-#endif
-
 #include <windows.h>
 #include <sstream>
 #include <string>
@@ -100,10 +85,6 @@ namespace ScreenMetrics {
     }
 
     inline void get_conbined_metrics(RECT* const rect) {
-        if(!SetProcessDPIAware()) {
-            throw RUNTIME_EXCEPT("Your system is not supported DPI.") ;
-        }
-
         WINDOWINFO winfo ;
         winfo.cbSize = sizeof(WINDOWINFO) ;
         if(!GetWindowInfo(GetDesktopWindow(), &winfo)) {

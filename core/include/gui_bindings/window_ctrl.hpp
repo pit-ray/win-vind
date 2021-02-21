@@ -7,8 +7,8 @@
 
 namespace WindowCtrl
 {
-    bool is_valid_hwnd(HWND hwnd) ;
-    bool is_valid_rect(HWND hwnd, RECT& rect) ;
+    bool is_visible_hwnd(HWND hwnd) ;
+    bool is_window_mode(HWND hwnd, RECT& rect) ;
 }
 
 struct OpenNewCurrentWindow : public BindedFuncWithCreator<OpenNewCurrentWindow>

@@ -86,7 +86,7 @@ namespace EsyClk
         }
     } ;
 
-    static std::vector<Point2D> g_objpos ;
+    static std::vector<Point2D> g_obj_points ;
 
     inline static auto& get_cache_req() {
         static auto g_cache_req = UIA::make_SmartCacheReq(nullptr) ;
@@ -94,7 +94,7 @@ namespace EsyClk
     }
 
     void initialize() {
-        g_objpos.reserve(2048) ;
+        g_obj_points.reserve(2048) ;
 
         decltype(auto) cuia = UIA::get_global_cuia() ;
 
@@ -136,7 +136,7 @@ namespace EsyClk
                 if(LONG* ppvdata ; SUCCEEDED(SafeArrayAccessData(val.parray,
                                 reinterpret_cast<void**>(&ppvdata)))) {
 
-                    g_objpos.emplace_back(ppvdata[0], ppvdata[1]) ;
+                    g_obj_points.emplace_back(ppvdata[0], ppvdata[1]) ;
                     SafeArrayUnaccessData(val.parray) ;
                 }
             }
@@ -149,6 +149,7 @@ namespace EsyClk
             UIA::SmartElement& elem,
             const RECT& window_rect,
             const BOOL parent_is_focasuable=FALSE) {
+
         if(!parent_is_focasuable) {
             BOOL flag ;
             if(FAILED(elem->get_CachedIsKeyboardFocusable(&flag))) {
@@ -159,6 +160,7 @@ namespace EsyClk
                 return ;
             }
         }
+
         RECT rect ;
         if(FAILED(elem->get_CachedBoundingRectangle(&rect))) {
             return ;
@@ -168,7 +170,7 @@ namespace EsyClk
             return ;
         }
 
-        g_objpos.emplace_back(
+        g_obj_points.emplace_back(
                 rect.left + (rect.right - rect.left) / 2,
                 rect.top  + (rect.bottom - rect.top) / 2) ;
     }
@@ -283,7 +285,7 @@ namespace EsyClk
             return TRUE ;
         }
 
-        g_objpos.emplace_back(
+        g_obj_points.emplace_back(
                 rect.left + (rect.right - rect.left) / 2,
                 rect.top + (rect.bottom - rect.top) / 2) ;
         return TRUE ;
@@ -317,10 +319,10 @@ namespace EsyClk
 
         EnumWindows(EnumWindowsProc, static_cast<LPARAM>(procid)) ;
 
-        Utility::remove_deplication(EsyClk::g_objpos) ;
+        Utility::remove_deplication(EsyClk::g_obj_points) ;
     }
 
-    static HWND g_prehwnd = nullptr ;
+    static HWND g_prehwnd = NULL ; 
     static RECT g_prerect = {0, 0, 0, 0} ;
 
     inline static bool need_update(HWND hwnd) {
@@ -476,6 +478,7 @@ namespace EsyClk
             const std::vector<unsigned char>& matched_list,
             const bool exist) {
 
+        //Handles
         auto delete_hdc = [] (HDC h) {
             if(h != nullptr) DeleteDC(h) ;
         } ;
@@ -496,6 +499,7 @@ namespace EsyClk
             throw RUNTIME_EXCEPT("SelectObject") ;
         }
 
+        //Colors
         auto [bk_r, bk_g, bk_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_bkcolor")) ;
         auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
 
@@ -522,6 +526,7 @@ namespace EsyClk
             throw RUNTIME_EXCEPT("SetTextColor") ;
         }
 
+        //Drawing
         auto draw = [&hdc, &delta] (auto&& str, auto&& point) {
             if(SetTextCharacterExtra(hdc.get(), 1) == static_cast<int>(0x80000000)) {
                 throw RUNTIME_EXCEPT("SetTextCharacterExtra") ;
@@ -554,6 +559,7 @@ namespace EsyClk
                 throw RUNTIME_EXCEPT("SetTextColor") ;
             }
 
+            //overdraw with the weak text color.
             for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
                 if(matched_list[i] == 0) continue ;
                 draw(" " + hints_str[i].substr(0, matched_list[i]), points[i]) ;
@@ -561,6 +567,9 @@ namespace EsyClk
         }
     }
 
+    // [Return value]
+    //   >= 0 : matched something
+    //    < 0 : matched nothing
     inline static long match_with_hints(
             const KeyLogger& lgr,
             const std::vector<hint_t>& hints,
@@ -619,6 +628,8 @@ namespace EsyClk
         static constexpr auto DRAW_INTERVAL_TIME = 600ms ;
 
         while(win_vind::update_background()) {
+
+            // The drawing process is very heavy, so draw in the interval.
             if(system_clock::now() - drawn_point > DRAW_INTERVAL_TIME) {
                 EsyClk::draw_identifiers(points, hints_str, matched_num_list, at_least_exist) ;
                 drawn_point = system_clock::now() ;
@@ -650,7 +661,7 @@ namespace EsyClk
                 }
                 remove_from_back(lgr, 2) ;
                 KeyAbsorber::release_virtually(VKC_BKSPACE) ;
-                match_with_hints(lgr, hints, matched_num_list, at_least_exist) ;
+                match_with_hints(lgr, hints, matched_num_list, at_least_exist) ; //update matching list
                 continue ;
             }
 
@@ -660,7 +671,7 @@ namespace EsyClk
             }
 
 
-            long full_match_idx = match_with_hints(lgr, hints, matched_num_list, at_least_exist) ;
+            const auto full_match_idx = match_with_hints(lgr, hints, matched_num_list, at_least_exist) ;
             if(full_match_idx >= 0) {
                 SetCursorPos(points[full_match_idx].x(), points[full_match_idx].y()) ;
                 if(sendkey != VKC_UNDEFINED) {
@@ -685,18 +696,19 @@ namespace EsyClk
 
     inline static void common_process(const unsigned char sendkey) {
         if(need_update(GetForegroundWindow())) {
-            g_objpos.clear() ;
+            g_obj_points.clear() ;
             scan_gui_objects() ;
 
-            g_hints = assign_identifiers_label(g_objpos.size()) ;
+            g_hints     = assign_identifiers_label(g_obj_points.size()) ;
             g_hints_str = convert_hints_to_str(g_hints) ;
         }
 
-        if(!g_objpos.empty()) {
+        if(!g_obj_points.empty()) {
             update_font() ;
-            loop_for_key_matching(g_objpos, g_hints, g_hints_str, sendkey) ;
+            loop_for_key_matching(g_obj_points, g_hints, g_hints_str, sendkey) ;
         }
 
+        //release all keys
         for(auto& key : KeyAbsorber::get_pressed_list()) {
             KeyAbsorber::release_virtually(key) ;
         }
@@ -782,11 +794,10 @@ void UpdateEasyClick::sprocess(
         return ;
     }
 
-
-    g_objpos.clear() ;
+    g_obj_points.clear() ;
     scan_gui_objects() ;
 
-    g_hints = assign_identifiers_label(g_objpos.size()) ;
+    g_hints     = assign_identifiers_label(g_obj_points.size()) ;
     g_hints_str = convert_hints_to_str(g_hints) ;
 }
 

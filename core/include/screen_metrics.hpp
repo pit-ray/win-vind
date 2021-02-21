@@ -79,7 +79,7 @@ namespace ScreenMetrics {
                lhs.bottom == rhs.bottom ;
     }
 
-    inline auto is_bigger_tran(const RECT& lhs, const RECT& rhs) noexcept {
+    inline auto is_bigger_than(const RECT& lhs, const RECT& rhs) noexcept {
         return lhs.left <= rhs.left && lhs.top <= rhs.top &&
                lhs.right >= rhs.right && lhs.bottom >= rhs.bottom ;
     }
@@ -103,22 +103,21 @@ namespace ScreenMetrics {
         copy(*rect, minfo.rcMonitor) ;
     }
 
-    inline void get_monitor_metrics(HWND hwnd, RECT* const rect, RECT* const work_rect=NULL, HMONITOR* monitor=NULL) {
-        const auto hmonitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST) ;
-        MONITORINFO minfo ;
-        minfo.cbSize = sizeof(MONITORINFO) ;
-        if(!GetMonitorInfo(hmonitor, &minfo)) {
+    struct MonitorInfo {
+        RECT rect         = {0, 0, 0, 0} ;
+        RECT work_rect    = {0, 0, 0, 0} ;
+        HMONITOR hmonitor = NULL ;
+    } ;
+    inline void get_monitor_metrics(HWND hwnd, MonitorInfo& minfo) {
+        minfo.hmonitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST) ;
+        MONITORINFO native_minfo ;
+        native_minfo.cbSize = sizeof(MONITORINFO) ;
+        if(!GetMonitorInfo(minfo.hmonitor, &native_minfo)) {
             throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
         }
 
-        copy(*rect, minfo.rcMonitor) ;
-
-        if(work_rect != NULL) {
-            copy(*work_rect, minfo.rcWork) ;
-        }
-        if(monitor != NULL) {
-            *monitor = hmonitor ;
-        }
+        copy(minfo.rect, native_minfo.rcMonitor) ;
+        copy(minfo.work_rect, native_minfo.rcWork) ;
     }
 
     namespace Debug {

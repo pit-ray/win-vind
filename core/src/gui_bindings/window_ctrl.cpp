@@ -23,7 +23,7 @@
 
 namespace WindowCtrl
 {
-    bool is_valid_hwnd(HWND hwnd) {
+    bool is_visible_hwnd(HWND hwnd) {
         //is movable window ? -----------
         if(hwnd == GetDesktopWindow()) {
             return false ;
@@ -53,14 +53,18 @@ namespace WindowCtrl
         return true ;
     }
 
-    bool is_valid_rect(HWND hwnd, RECT& rect) {
-        const auto width = ScreenMetrics::width(rect) ;
-        if(width == 0) {
+    bool is_window_mode(HWND hwnd, RECT& rect) {
+
+        //Is having title bar ?
+        if(GetWindowTextLengthW(hwnd) == 0) {
             return false ;
         }
 
-        const auto height = ScreenMetrics::height(rect) ;
-        if(height == 0) {
+        if(ScreenMetrics::width(rect) == 0) {
+            return false ;
+        }
+
+        if(ScreenMetrics::height(rect) == 0) {
             return false ;
         }
 

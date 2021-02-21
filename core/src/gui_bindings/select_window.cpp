@@ -113,7 +113,7 @@ namespace SelectWindow
             return TRUE ;
         }
 
-        if(!WindowCtrl::is_valid_hwnd(hwnd)) {
+        if(!WindowCtrl::is_visible_hwnd(hwnd)) {
             return TRUE ;
         }
 
@@ -122,14 +122,14 @@ namespace SelectWindow
             return TRUE ;
         }
 
-        if(!WindowCtrl::is_valid_rect(hwnd, rect)) {
+        if(!WindowCtrl::is_window_mode(hwnd, rect)) {
             return TRUE ;
         }
 
-        RECT monitor_rect, monitor_rect_work ;
-        ScreenMetrics::get_monitor_metrics(hwnd, &monitor_rect, &monitor_rect_work) ;
+        ScreenMetrics::MonitorInfo minfo ;
+        ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
 
-        if(ScreenMetrics::is_out_of_range(rect, monitor_rect_work)) {
+        if(ScreenMetrics::is_out_of_range(rect, minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -139,41 +139,42 @@ namespace SelectWindow
 
     template <typename T1, typename T2>
     inline static void select_nearest_window(T1&& is_if_target, T2&& calc_distance) {
-        auto hwnd = GetForegroundWindow() ;
-        if(hwnd == NULL) {
+        auto fg_hwnd = GetForegroundWindow() ;
+        if(fg_hwnd == NULL) {
             throw RUNTIME_EXCEPT("There is not a foreground window.") ;
         }
 
         SelectWindow::g_rects.clear() ;
         if(!EnumWindows(SelectWindow::EnumWindowsProcForNearest,
-                    reinterpret_cast<LPARAM>(hwnd))) {
+                    reinterpret_cast<LPARAM>(fg_hwnd))) {
 
             throw RUNTIME_EXCEPT("Could not enumerate all top-level windows.") ;
         }
 
-        RECT rect ;
-        if(!GetWindowRect(hwnd, &rect)) {
+        RECT fg_rect ;
+        if(!GetWindowRect(fg_hwnd, &fg_rect)) {
             throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
         }
 
-        std::map<LONG, HWND> nearest ;
-        for(const auto& hr : SelectWindow::g_rects) {
-            auto& ehwnd  = hr.first ;
-            auto& erect = hr.second ;
+        std::map<LONG, HWND> distance_order_hwnd ;
+        for(const auto& enumed_rect : SelectWindow::g_rects) {
+            auto& enu_hwnd = enumed_rect.first ;
+            auto& enu_rect = enumed_rect.second ;
 
-            auto cx  = ScreenMetrics::center_x(rect) ;
-            auto cy  = ScreenMetrics::center_y(rect) ;
-            auto ecx = ScreenMetrics::center_x(erect) ;
-            auto ecy = ScreenMetrics::center_y(erect) ;
+            auto cx  = ScreenMetrics::center_x(fg_rect) ;
+            auto cy  = ScreenMetrics::center_y(fg_rect) ;
+            auto ecx = ScreenMetrics::center_x(enu_rect) ;
+            auto ecy = ScreenMetrics::center_y(enu_rect) ;
 
-            if(is_if_target(rect, erect, cx, cy, ecx, ecy)) {
-                nearest[calc_distance(rect, erect, cx, cy, ecx, ecy)] = ehwnd ;
+            if(is_if_target(fg_rect, enu_rect, cx, cy, ecx, ecy)) {
+                const auto distance = calc_distance(fg_rect, enu_rect, cx, cy, ecx, ecy) ;
+                distance_order_hwnd[distance] = enu_hwnd ;
             }
         }
 
-        if(!nearest.empty()) {
-            auto target_hwnd = nearest.begin()->second ;
-            if(!SetForegroundWindow(target_hwnd)) {
+        if(!distance_order_hwnd.empty()) {
+            auto nearest_hwnd = distance_order_hwnd.begin()->second ;
+            if(!SetForegroundWindow(nearest_hwnd)) {
                 throw RUNTIME_EXCEPT("Could not set a foreground window.") ;
             }
             Sleep(50) ;

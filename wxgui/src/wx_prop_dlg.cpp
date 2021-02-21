@@ -39,9 +39,9 @@
 #define KEY_COLOR "#1e96ff"
 #define TXT_COLOR "gray"
 #define TXT_SIZE "small"
-#define CREATE_ITEM(KEY, VAL) "<tt><span size='"TXT_SIZE"' foreground='" KEY_COLOR \
+#define CREATE_ITEM(KEY, VAL) "<tt><span size='" TXT_SIZE "' foreground='" KEY_COLOR \
                               "'>" KEY \
-                              "</span> <span size='"TXT_SIZE"' foreground='" TXT_COLOR \
+                              "</span> <span size='" TXT_SIZE "' foreground='" TXT_COLOR \
                               "'>" VAL "</span></tt>"
 
 namespace wxGUI

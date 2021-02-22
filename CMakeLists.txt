@@ -5,8 +5,8 @@ if(NOT BIT_TYPE)
     set(BIT_TYPE 64)
 endif()
 
-set(COTIRE_ENABLE OFF)
-set(CCACHE_ENABLE ON)
+option(COTIRE_ENABLE OFF)
+option(CCACHE_ENABLE ON)
 
 enable_language(CXX)
 

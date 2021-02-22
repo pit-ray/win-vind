@@ -1,4 +1,4 @@
-version: 3.1.0-{build}
+version: 3.2.0-{build}
 max_jobs: 12
 clone_depth: 1
 install:

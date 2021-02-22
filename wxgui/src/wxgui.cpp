@@ -177,10 +177,10 @@ namespace wxGUI
 
         auto write_kmp = [] (BOOL allow_overwrite) {
             //The kmp file needs a better format and a dedicated management system.
-            std::vector<const char*> def_kmp = {
-                "default_config/JP.kmp",
-                "default_config/US.kmp",
-                "default_config/custom.kmp"
+            std::vector<std::string> def_kmp = {
+                Path::MODULE_ROOT_PATH() + "default_config\\JP.kmp",
+                Path::MODULE_ROOT_PATH() + "default_config\\US.kmp",
+                Path::MODULE_ROOT_PATH() + "default_config\\custom.kmp"
             } ;
             std::vector<std::string> kmp = {
                 Path::CONFIG_PATH() + "JP.kmp",
@@ -189,7 +189,7 @@ namespace wxGUI
             } ;
 
             for(std::size_t i = 0 ; i < def_kmp.size() ; i ++) {
-                CopyFileA(def_kmp[i], kmp[i].c_str(), !allow_overwrite) ;
+                CopyFileA(def_kmp[i].c_str(), kmp[i].c_str(), !allow_overwrite) ;
             }
         } ;
 

@@ -24,9 +24,27 @@ namespace Path
         return obj ;
     }
 
+    inline static const auto& MODULE_ROOT_PATH() {
+        static const auto path = [] {
+            WCHAR module_path[MAX_PATH] = {0} ;
+            if(GetModuleFileNameW(NULL, module_path, MAX_PATH) == 0) {
+                return std::string() ;
+            }
+            auto module_path_str = Utility::ws_to_s(module_path) ;
+            auto root_dir_pos = module_path_str.find_last_of("/\\") ;
+            if(root_dir_pos == std::string::npos) {
+                return std::string() ;
+            }
+
+            return module_path_str.substr(0, root_dir_pos + 1) ;
+        }() ;
+        return path ;
+    }
+
     inline static auto& _is_installer_used() {
         static const auto flag = [] {
-            std::ifstream ifs{"default_config/is_installer_used"} ;
+
+            std::ifstream ifs{MODULE_ROOT_PATH() + "default_config/is_installer_used"} ;
             std::string str{} ;
             std::getline(ifs, str) ;
             return str.front() == 'y' || str.front() == 'Y' ;
@@ -35,7 +53,7 @@ namespace Path
     }
 
     inline static const auto& ROOT_PATH() {
-        static const auto path = _is_installer_used() ? HOME_PATH() + ".win-vind\\" : std::string("") ;
+        static const auto path = _is_installer_used() ? HOME_PATH() + ".win-vind\\" : MODULE_ROOT_PATH() ;
         return path ;
     }
 
@@ -59,13 +77,13 @@ namespace Path
 
     namespace Default {
         inline static const auto BINDINGS() {
-            return std::string("default_config/bindings.json") ;
+            return std::string(MODULE_ROOT_PATH() + "default_config/bindings.json") ;
         }
         inline static const auto SETTINGS() {
-            return std::string("default_config/settings.json") ;
+            return std::string(MODULE_ROOT_PATH() + "default_config/settings.json") ;
         }
         inline static const auto UI() {
-            return std::string("default_config/ui.json") ;
+            return std::string(MODULE_ROOT_PATH() + "default_config/ui.json") ;
         }
     }
 }

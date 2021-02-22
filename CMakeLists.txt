@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(win-vind VERSION 3.2.0)
+project(win-vind VERSION 3.2.1)
 
 if(NOT BIT_TYPE)
     set(BIT_TYPE 64)

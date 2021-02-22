@@ -201,10 +201,12 @@ If you have already installed MinGW-w64 or Visual Studio 2019, all you need is t
 
 If you want to contribute, please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How to contribute - win-vind</a>.  
 
-## ToDo 
+## ToDo  
 
-- Registration of keybindings by pressing keys.   
-- Implement `E` or `e` in Editor Mode with UI Automation.  
+|State|Description|Type|Priority|
+|:---:|:---|:---:|:---|
+|☐|Registration of keybindings by pressing keys.|Feature|Low|
+|☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
 
 ## License  
 

@@ -53,7 +53,16 @@ namespace Path
     }
 
     inline static const auto& ROOT_PATH() {
-        static const auto path = _is_installer_used() ? HOME_PATH() + ".win-vind\\" : MODULE_ROOT_PATH() ;
+        static const auto path = [] {
+            if(_is_installer_used()) {
+                return HOME_PATH() + ".win-vind\\" ;
+            }
+#if defined(DEBUG)
+            return std::string("") ; //project root
+#else
+            return MODULE_ROOT_PATH() ;
+#endif
+        }() ;
         return path ;
     }
 
@@ -76,14 +85,17 @@ namespace Path
     }
 
     namespace Default {
-        inline static const auto BINDINGS() {
-            return std::string(MODULE_ROOT_PATH() + "default_config/bindings.json") ;
+        inline static const auto& BINDINGS() {
+            static const auto& obj = MODULE_ROOT_PATH() + "default_config/bindings.json" ;
+            return obj ;
         }
-        inline static const auto SETTINGS() {
-            return std::string(MODULE_ROOT_PATH() + "default_config/settings.json") ;
+        inline static const auto& SETTINGS() {
+            static const auto obj = MODULE_ROOT_PATH() + "default_config/settings.json" ;
+            return obj ;
         }
-        inline static const auto UI() {
-            return std::string(MODULE_ROOT_PATH() + "default_config/ui.json") ;
+        inline static const auto& UI() {
+            static const auto& obj = MODULE_ROOT_PATH() + "default_config/ui.json" ;
+            return obj ;
         }
     }
 }

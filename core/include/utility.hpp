@@ -35,7 +35,8 @@
 #define RUNTIME_EXCEPT(msg) \
     std::runtime_error(std::string("An runtime exception occurred from ") +\
             __FUNCSIG__ + ". " + msg)
-#endif
+
+#endif //defubed(__GNUC__)
 
 namespace Utility
 {
@@ -116,9 +117,14 @@ namespace Utility
 
     void refresh_display(HWND hwnd) ;
 
+    inline BOOL b_to_B(bool b) noexcept {
+        return b ? TRUE : FALSE ;
+    }
+
     bool is_existed_dir(const std::string& path) ;
 
     void create_directory(const std::string& path) ;
+    void copy_file(const std::string& src, const std::string& dst, bool allow_overwrite=false) ;
 
     const std::wstring s_to_ws(const std::string& str) ;
     const std::string ws_to_s(const std::wstring& wstr) ;

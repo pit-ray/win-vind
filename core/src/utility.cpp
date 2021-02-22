@@ -138,6 +138,15 @@ namespace Utility
             throw RUNTIME_EXCEPT("Cannot create a directory " + path + ".") ;
         }
     }
+    void copy_file(const std::string& src, const std::string& dst, bool allow_overwrite) {
+        if(!CopyFileW(
+                    s_to_ws(src).c_str(),
+                    s_to_ws(dst).c_str(),
+                    !b_to_B(allow_overwrite))) {
+
+            throw std::runtime_error("Could not copy a file from " + src + " to " + dst + ".") ;
+        }
+    }
 
     const std::wstring s_to_ws(const std::string& str) {
         std::wstring wstr ;

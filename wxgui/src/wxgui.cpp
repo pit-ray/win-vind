@@ -165,14 +165,10 @@ namespace wxGUI
 
     inline static bool initialize_config_files() {
         auto overwrite_bindings = [] {
-            if(!CopyFileA(Path::Default::BINDINGS().c_str(), Path::BINDINGS().c_str(), FALSE)) {
-                throw std::runtime_error("Could not overwrite " + Path::BINDINGS() + ".") ;
-            }
+            Utility::copy_file(Path::Default::BINDINGS(), Path::BINDINGS(), true) ;
         } ;
         auto overwrite_settings = [] {
-            if(!CopyFileA(Path::Default::SETTINGS().c_str(), Path::SETTINGS().c_str(), FALSE)) {
-                throw std::runtime_error("Could not overwrite " + Path::SETTINGS() + ".") ;
-            }
+            Utility::copy_file(Path::Default::SETTINGS(), Path::SETTINGS(), true) ;
         } ;
 
         auto write_kmp = [] (BOOL allow_overwrite) {
@@ -189,7 +185,13 @@ namespace wxGUI
             } ;
 
             for(std::size_t i = 0 ; i < def_kmp.size() ; i ++) {
-                CopyFileA(def_kmp[i].c_str(), kmp[i].c_str(), !allow_overwrite) ;
+                try {
+                    Utility::copy_file(def_kmp[i], kmp[i], allow_overwrite) ;
+                }
+                catch(const std::runtime_error& e) {
+                    if(!allow_overwrite) continue ;
+                    else throw e ;
+                }
             }
         } ;
 
@@ -274,19 +276,20 @@ namespace wxGUI
                     }
 
                     //JP.kmp, US.kmp. custom.kmp
-                    write_kmp(FALSE) ; //If a old file exist, not overwrite.
+                    write_kmp(false) ; //If a old file exist, not overwrite.
                 }
                 else { //overwrite
                     overwrite_bindings() ;
                     overwrite_settings() ;
-                    write_kmp(TRUE) ;
+                    write_kmp(true) ;
                 }
 
             }
         }
         catch(const std::exception& e) {
-            error_box(wxString(e.what())
-                    + wxT(", so could not create setting files of win-vind, so terminate.")) ;
+            error_box(wxString(e.what()) \
+                    + wxT(". So could not create setting files of win-vind, so terminate." \
+                    + wxT(" (Windows Error Code: ") + std::to_string(GetLastError()) + ")")) ;
             return false ;
         }
 

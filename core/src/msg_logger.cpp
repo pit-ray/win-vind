@@ -24,14 +24,12 @@ namespace Logger
     static std::ofstream _init_msg_stream ;
     static std::ofstream msg_stream ;
 
-    static const std::string log_dir = Path::ROOT_PATH() + "log\\" ;
-
-    inline static void remove_files_over(const std::string pattern_withex, const std::size_t num)
+    inline static void remove_files_over(const std::string& log_dir, const std::string pattern_withex, const std::size_t num)
     {
         std::vector<std::wstring> files ;
 
         WIN32_FIND_DATAW wfd = {} ;
-        auto handle = FindFirstFileW(Utility::s_to_ws(pattern_withex).c_str(), &wfd) ;
+        auto handle = FindFirstFileW(Utility::s_to_ws(log_dir + pattern_withex).c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }
@@ -53,6 +51,8 @@ namespace Logger
     }
 
     void initialize() {
+        const std::string log_dir = Path::ROOT_PATH() + "log\\" ;
+
         SYSTEMTIME stime ;
         GetLocalTime(&stime) ;
 
@@ -77,8 +77,8 @@ namespace Logger
          msg_stream.open(Path::to_u8path(mfile), std::ios::app) ;
 
          //If the log files exists over five, remove old files.
-         remove_files_over(log_dir + "error_*.log", KEEPING_LOG_COUNT) ;
-         remove_files_over(log_dir + "message_*.log", KEEPING_LOG_COUNT) ;
+         remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;
+         remove_files_over(log_dir, "message_*.log", KEEPING_LOG_COUNT) ;
     }
 
     template <typename T>

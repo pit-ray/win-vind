@@ -1,5 +1,6 @@
 #include "i_params.hpp"
 
+#include <filesystem>
 #include <fstream>
 
 #include "disable_gcc_warning.hpp"
@@ -14,7 +15,7 @@ namespace iParams
     static nlohmann::json jp ;
     void load_config() {
         jp.clear() ;
-        std::ifstream ifs(Path::SETTINGS()) ;
+        std::ifstream ifs(std::filesystem::u8path(Path::SETTINGS())) ;
         ifs >> jp ;
     }
 

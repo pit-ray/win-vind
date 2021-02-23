@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 #include "disable_gcc_warning.hpp"
 #include <wx/cmdline.h>
@@ -36,8 +37,7 @@ namespace wxGUI
     }
 
     inline static bool is_pre_initialized() {
-        std::cout << Path::ROOT_PATH() + "is_initialized\n" ;
-        std::ifstream ifs(Path::ROOT_PATH() + "is_initialized") ;
+        std::ifstream ifs(std::filesystem::u8path(Path::ROOT_PATH() + "is_initialized")) ;
         if(!ifs.is_open()) {
             return false ;
         }
@@ -47,7 +47,7 @@ namespace wxGUI
     }
 
     inline static void finish_pre_initialization() {
-        std::ofstream ofs(Path::ROOT_PATH() + "is_initialized", std::ios::trunc) ;
+        std::ofstream ofs(std::filesystem::u8path(Path::ROOT_PATH() + "is_initialized"), std::ios::trunc) ;
         ofs << "y" ;
     }
 
@@ -220,7 +220,7 @@ namespace wxGUI
                         using json = nlohmann::json ;
 
                         json dfj ;
-                        std::ifstream def_ifs(default_path) ;
+                        std::ifstream def_ifs(std::filesystem::u8path(default_path)) ;
                         def_ifs >> dfj ; //keep old
 
                         json olj ;
@@ -248,12 +248,12 @@ namespace wxGUI
                             throw std::runtime_error("The format of " + new_path + " is not supported.") ;
                         }
 
-                        std::ofstream ofs(new_path) ;
+                        std::ofstream ofs(std::filesystem::u8path(new_path)) ;
                         ofs << std::setw(4) << dfj << std::endl ;
                     } ;
 
                     //bindings.json
-                    std::ifstream bindings_ifs(Path::BINDINGS()) ;
+                    std::ifstream bindings_ifs(std::filesystem::u8path(Path::BINDINGS())) ;
                     if(!bindings_ifs.is_open()) {
                         overwrite_bindings() ; //does not exist
                     }
@@ -265,7 +265,7 @@ namespace wxGUI
                     }
 
                     //settings.json
-                    std::ifstream settings_ifs(Path::SETTINGS()) ;
+                    std::ifstream settings_ifs(std::filesystem::u8path(Path::SETTINGS())) ;
                     if(!settings_ifs.is_open()) {
                         overwrite_settings() ; //does not exist
                     }

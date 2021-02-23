@@ -1,9 +1,11 @@
 #include "external_app.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <unordered_map>
+
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
@@ -25,7 +27,7 @@ namespace ExAppUtility
         mss_t map{} ;
 
         nlohmann::json j ;
-        std::ifstream ifs(Path::SETTINGS()) ;
+        std::ifstream ifs(std::filesystem::u8path(Path::SETTINGS())) ;
         ifs >> j ;
 
         for(const auto& i : j.at("exapps").at("choices")) {

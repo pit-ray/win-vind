@@ -28,17 +28,17 @@ namespace Logger
 
     inline static void remove_files_over(const std::string pattern_withex, const std::size_t num)
     {
-        std::vector<std::string> files ;
+        std::vector<std::wstring> files ;
 
-        WIN32_FIND_DATAA wfd = {} ;
-        auto handle = FindFirstFileA(pattern_withex.c_str(), &wfd) ;
+        WIN32_FIND_DATAW wfd = {} ;
+        auto handle = FindFirstFileW(Utility::s_to_ws(pattern_withex).c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }
-        files.push_back(log_dir + wfd.cFileName) ;
+        files.push_back(Utility::s_to_ws(log_dir) + wfd.cFileName) ;
 
-        while(FindNextFileA(handle, &wfd)) {
-            files.push_back(log_dir + wfd.cFileName) ;
+        while(FindNextFileW(handle, &wfd)) {
+            files.push_back(Utility::s_to_ws(log_dir) + wfd.cFileName) ;
         }
         FindClose(handle) ;
 
@@ -46,9 +46,9 @@ namespace Logger
             return ;
         }
 
-        std::sort(files.begin(), files.end(), std::greater<std::string>{}) ;
+        std::sort(files.begin(), files.end(), std::greater<std::wstring>{}) ;
         for(std::size_t i = num ; i < files.size() ; i ++) {
-            DeleteFileA(files[i].c_str()) ;
+            DeleteFileW(files[i].c_str()) ;
         }
     }
 
@@ -70,11 +70,11 @@ namespace Logger
         const auto efile = log_dir + "error_" + ss.str() + ".log" ;
         const auto mfile = log_dir + "message_" + ss.str() + ".log" ;
 
-        _init_error_stream.open(efile, std::ios::trunc) ;
-         error_stream.open(efile, std::ios::app) ;
+        _init_error_stream.open(std::filesystem::u8path(efile), std::ios::trunc) ;
+         error_stream.open(std::filesystem::u8path(efile), std::ios::app) ;
 
-        _init_msg_stream.open(mfile, std::ios::trunc) ;
-         msg_stream.open(mfile, std::ios::app) ;
+        _init_msg_stream.open(std::filesystem::u8path(mfile), std::ios::trunc) ;
+         msg_stream.open(std::filesystem::u8path(mfile), std::ios::app) ;
 
          //If the log files exists over five, remove old files.
          remove_files_over(log_dir + "error_*.log", KEEPING_LOG_COUNT) ;

@@ -167,7 +167,7 @@ namespace JumpCursor
         _yposs.fill(0) ;
         const auto filename = Path::KEYBRD_MAP() ;
 
-        ifstream ifs(filename, ios::in) ;
+        std::ifstream ifs(std::filesystem::u8path(filename), ios::in) ;
         string buf ;
         int lnum = 0 ;
 

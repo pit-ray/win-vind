@@ -3,6 +3,7 @@
 
 #include <string>
 #include <fstream>
+#include <filesystem>
 #include <windows.h>
 
 #include "i_params.hpp"
@@ -48,7 +49,7 @@ namespace Path
 
     inline static auto& _is_installer_used() {
         static const auto flag = [] {
-            std::ifstream ifs{MODULE_ROOT_PATH() + "default_config\\is_installer_used"} ;
+            std::ifstream ifs{std::filesystem::u8path(MODULE_ROOT_PATH() + "default_config\\is_installer_used")} ;
             std::string str{} ;
             std::getline(ifs, str) ;
             return str.front() == 'y' || str.front() == 'Y' ;

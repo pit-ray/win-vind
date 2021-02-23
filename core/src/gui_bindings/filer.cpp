@@ -174,12 +174,12 @@ namespace FilerUtility
             std::unique_ptr<ITEMIDLIST, decltype(idl_deleter)> pidl(raw_pidl, idl_deleter) ;
 
             //convert to path
-            char path[MAX_PATH] = {0} ;
-            if(!SHGetPathFromIDListA(pidl.get(), path)) {
+            WCHAR path[MAX_PATH] = {0} ;
+            if(!SHGetPathFromIDListW(pidl.get(), path)) {
                 throw RUNTIME_EXCEPT("cannot convert an item ID to a file system path.") ;
             }
 
-            return path_t(path) ;
+            return Utility::ws_to_s(path) ;
         }
 
         return path_t() ;

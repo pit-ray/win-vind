@@ -1,6 +1,5 @@
 #include "external_app.hpp"
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -27,7 +26,7 @@ namespace ExAppUtility
         mss_t map{} ;
 
         nlohmann::json j ;
-        std::ifstream ifs(std::filesystem::u8path(Path::SETTINGS())) ;
+        std::ifstream ifs(Path::to_u8path(Path::SETTINGS())) ;
         ifs >> j ;
 
         for(const auto& i : j.at("exapps").at("choices")) {

@@ -1,7 +1,6 @@
 #include "ui_translator.hpp"
 
 #include <fstream>
-#include <filesystem>
 
 #include "disable_gcc_warning.hpp"
 #include <nlohmann/json.hpp>
@@ -19,7 +18,7 @@ namespace UITrans
         static const auto init = [](auto&& filepath) {
             json j ;
             try {
-                std::ifstream ifs(std::filesystem::u8path(std::forward<decltype(filepath)>(filepath))) ;
+                std::ifstream ifs(Path::to_u8path(std::forward<decltype(filepath)>(filepath))) ;
                 ifs >> j ;
             }
             catch(const std::exception& e) {

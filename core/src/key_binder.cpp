@@ -177,7 +177,7 @@ namespace KeyBinder
     }
 
     void load_config() {
-        std::ifstream ifs(std::filesystem::u8path(Path::BINDINGS())) ;
+        std::ifstream ifs(Path::to_u8path(Path::BINDINGS())) ;
         nlohmann::json jp ;
         ifs >> jp ;
         if(jp.empty()) {

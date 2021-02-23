@@ -8,7 +8,6 @@
 #include <unordered_set>
 #include <vector>
 #include <chrono>
-#include <filesystem>
 
 #include "disable_gcc_warning.hpp"
 #include <wx/arrstr.h>
@@ -646,7 +645,7 @@ namespace wxGUI
                 const auto index = pimpl->func_list->GetSelection() ;
                 if(index == wxNOT_FOUND) return ;
 
-                std::ifstream ifs(std::filesystem::u8path(Path::Default::BINDINGS())) ;
+                std::ifstream ifs(Path::to_u8path(Path::Default::BINDINGS())) ;
                 nlohmann::json p{} ;
                 ifs >> p ;
 
@@ -684,7 +683,7 @@ namespace wxGUI
             }
 
             const auto& temp_path = temp_dir + "edit_with_vim.json" ;
-            std::ofstream ofs(std::filesystem::u8path(temp_path)) ;
+            std::ofstream ofs(Path::to_u8path(temp_path)) ;
             ofs << "[\n" ;
             write_pretty_one(ofs, target_json) ;
             write_usage(ofs) ;
@@ -728,7 +727,7 @@ namespace wxGUI
             }
 
             nlohmann::json new_json ;
-            std::ifstream ifs(std::filesystem::u8path(temp_path)) ;
+            std::ifstream ifs(Path::to_u8path(temp_path)) ;
             ifs >> new_json ;
             target_json = new_json[0] ; //overwrite the inner json object
 
@@ -742,7 +741,7 @@ namespace wxGUI
     }
     BindingsPanel::~BindingsPanel() noexcept = default ;
     void BindingsPanel::do_load_config() {
-        std::ifstream ifs(std::filesystem::u8path(Path::BINDINGS())) ;
+        std::ifstream ifs(Path::to_u8path(Path::BINDINGS())) ;
         ifs >> pimpl->parser ;
     }
 
@@ -761,7 +760,7 @@ namespace wxGUI
             }
         }
 
-        std::ofstream ofs(std::filesystem::u8path(Path::BINDINGS())) ;
+        std::ofstream ofs(Path::to_u8path(Path::BINDINGS())) ;
         write_pretty_all(ofs, pimpl->parser) ;
     }
 
@@ -834,7 +833,7 @@ namespace wxGUI
     inline static void write_usage(std::ofstream& ofs) {
         ofs << ",\n" ;
 
-        std::ifstream ifs(std::filesystem::u8path(Path::MODULE_ROOT_PATH() + "resources\\usage.json")) ;
+        std::ifstream ifs(Path::to_u8path(Path::MODULE_ROOT_PATH() + "resources\\usage.json")) ;
         nlohmann::json usage ;
         ifs >> usage ;
 

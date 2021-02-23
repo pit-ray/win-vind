@@ -29,9 +29,6 @@ cpack . -C Release
 cd ..
 copy /Y ".\\release_32\\setup*" ".\\bin\\*_%1_32bit.exe"
 
-powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_64bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_64bit.exe.zip"
-powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_32bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_32bit.exe.zip"
-
 @echo Create Zip Version ----------------------------------------------------------
 echo n> ".\\default_config\\is_installer_used"
 
@@ -46,3 +43,6 @@ powershell Compress-Archive -Path ".\\bin\\win-vind" -DestinationPath ".\\bin\\w
 
 copy /Y ".\\release_32\\win-vind.exe" ".\\bin\\win-vind\\win-vind.exe"
 powershell Compress-Archive -Path ".\\bin\\win-vind" -DestinationPath ".\\bin\\win-vind_%1_32bit.zip"
+
+powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_64bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_64bit.exe.zip"
+powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_32bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_32bit.exe.zip"

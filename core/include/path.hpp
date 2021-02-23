@@ -3,7 +3,11 @@
 
 #include <string>
 #include <fstream>
+
+#if defined(_MSC_VER) && _MSC_VER >= 1500
 #include <filesystem>
+#endif
+
 #include <windows.h>
 
 #include "i_params.hpp"
@@ -11,6 +15,17 @@
 
 namespace Path
 {
+    template <typename T>
+    inline static auto to_u8path(T&& str) {
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+#pragma warning(disable : 4996)
+        return std::filesystem::u8path(std::forward<T>(str)) ;
+#pragma warning(default : 4996)
+#else
+        return std::forward<T>(str) ;
+#endif
+    }
+
     static inline const auto _get_home_path() {
         WCHAR home_path[MAX_PATH] = {0} ;
         if(!GetEnvironmentVariableW(L"HOMEPATH", home_path, MAX_PATH)) {
@@ -43,13 +58,12 @@ namespace Path
             return module_path_str.substr(0, root_dir_pos + 1) ;
         }() ;
 #endif
-        std::cout << path << std::endl ;
         return path ;
     }
 
     inline static auto& _is_installer_used() {
         static const auto flag = [] {
-            std::ifstream ifs{std::filesystem::u8path(MODULE_ROOT_PATH() + "default_config\\is_installer_used")} ;
+            std::ifstream ifs{Path::to_u8path(MODULE_ROOT_PATH() + "default_config\\is_installer_used")} ;
             std::string str{} ;
             std::getline(ifs, str) ;
             return str.front() == 'y' || str.front() == 'Y' ;
@@ -83,17 +97,14 @@ namespace Path
     namespace Default {
         inline static const auto& BINDINGS() {
             static const auto& obj = MODULE_ROOT_PATH() + "default_config\\bindings.json" ;
-            std::cout << obj << std::endl ;
             return obj ;
         }
         inline static const auto& SETTINGS() {
             static const auto obj = MODULE_ROOT_PATH() + "default_config\\settings.json" ;
-            std::cout << obj << std::endl ;
             return obj ;
         }
         inline static const auto& UI() {
             static const auto& obj = MODULE_ROOT_PATH() + "default_config\\ui.json" ;
-            std::cout << obj << std::endl ;
             return obj ;
         }
     }

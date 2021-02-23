@@ -6,7 +6,6 @@
 #include "disable_gcc_warning.hpp"
 #include <algorithm>
 #include <array>
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>

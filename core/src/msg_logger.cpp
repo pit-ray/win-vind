@@ -70,11 +70,11 @@ namespace Logger
         const auto efile = log_dir + "error_" + ss.str() + ".log" ;
         const auto mfile = log_dir + "message_" + ss.str() + ".log" ;
 
-        _init_error_stream.open(std::filesystem::u8path(efile), std::ios::trunc) ;
-         error_stream.open(std::filesystem::u8path(efile), std::ios::app) ;
+        _init_error_stream.open(Path::to_u8path(efile), std::ios::trunc) ;
+         error_stream.open(Path::to_u8path(efile), std::ios::app) ;
 
-        _init_msg_stream.open(std::filesystem::u8path(mfile), std::ios::trunc) ;
-         msg_stream.open(std::filesystem::u8path(mfile), std::ios::app) ;
+        _init_msg_stream.open(Path::to_u8path(mfile), std::ios::trunc) ;
+         msg_stream.open(Path::to_u8path(mfile), std::ios::app) ;
 
          //If the log files exists over five, remove old files.
          remove_files_over(log_dir + "error_*.log", KEEPING_LOG_COUNT) ;

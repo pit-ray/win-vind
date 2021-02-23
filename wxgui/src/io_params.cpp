@@ -1,7 +1,6 @@
 #include "io_params.hpp"
 
 #include <fstream>
-#include <filesystem>
 #include <iomanip>
 
 #include "disable_gcc_warning.hpp"
@@ -20,7 +19,7 @@ namespace ioParams
     static json def_parser{} ;
     bool initialize() {
         try {
-            std::ifstream ifs(std::filesystem::u8path(Path::Default::SETTINGS())) ;
+            std::ifstream ifs(Path::to_u8path(Path::Default::SETTINGS())) ;
             ifs >> def_parser ;
 
             load_config() ;
@@ -35,7 +34,7 @@ namespace ioParams
     bool load_config() {
         parser.clear() ;
         try {
-            std::ifstream ifs(std::filesystem::u8path(Path::SETTINGS())) ;
+            std::ifstream ifs(Path::to_u8path(Path::SETTINGS())) ;
             ifs >> parser ;
         }
         catch(const std::exception& e) {
@@ -47,7 +46,7 @@ namespace ioParams
 
     bool save_config() {
         try {
-            std::ofstream ofs(std::filesystem::u8path(Path::SETTINGS())) ;
+            std::ofstream ofs(Path::to_u8path(Path::SETTINGS())) ;
             ofs << std::setw(4) << parser << std::endl ;
         }
         catch(const std::exception& e) {

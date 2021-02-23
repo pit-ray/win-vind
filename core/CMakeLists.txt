@@ -32,6 +32,7 @@ add_library(Common STATIC
     src/common/uia.cpp
     src/common/vkc_converter.cpp
 )
+target_link_libraries(Common Userenv)
 enable_cotire(Common)
 
 add_library(CmnBindings STATIC

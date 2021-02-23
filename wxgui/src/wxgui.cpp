@@ -122,7 +122,9 @@ namespace wxGUI
             }) ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            error_box(wxString::FromUTF8(e.what()) \
+                    + wxT(" Could not initialize win-vind, so terminate." \
+                    + wxT(" (Windows Error Code: ") + std::to_string(GetLastError()) + ")")) ;
         }
         return true ;
     }
@@ -287,8 +289,8 @@ namespace wxGUI
             }
         }
         catch(const std::exception& e) {
-            error_box(wxString(e.what()) \
-                    + wxT(". So could not create setting files of win-vind, so terminate." \
+            error_box(wxString::FromUTF8(e.what()) \
+                    + wxT(" Could not create setting files of win-vind, so terminate." \
                     + wxT(" (Windows Error Code: ") + std::to_string(GetLastError()) + ")")) ;
             return false ;
         }

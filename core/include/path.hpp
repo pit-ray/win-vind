@@ -9,6 +9,7 @@
 #endif
 
 #include <windows.h>
+#include <userenv.h>
 
 #include "i_params.hpp"
 #include "utility.hpp"
@@ -26,17 +27,24 @@ namespace Path
 #endif
     }
 
-    static inline const auto _get_home_path() {
-        WCHAR home_path[MAX_PATH] = {0} ;
-        if(!GetEnvironmentVariableW(L"HOMEPATH", home_path, MAX_PATH)) {
-            throw RUNTIME_EXCEPT("Cannot find %HOMEPATH% with GetEnviromentVariable.") ;
-        }
-
-        return Utility::ws_to_s(home_path) + '\\' ;
-    }
-
     inline static const auto& HOME_PATH() {
-        static const auto obj = _get_home_path() ;
+        static const auto obj = [] {
+            HANDLE token ;
+            if(!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) {
+                throw RUNTIME_EXCEPT("Could not open process token.") ;
+            }
+
+            WCHAR path[MAX_PATH] = {0} ;
+            DWORD size = MAX_PATH ;
+            if(!GetUserProfileDirectoryW(token, path, &size)) {
+                CloseHandle(token) ;
+                throw RUNTIME_EXCEPT("Could not get the home directory.") ;
+            }
+            CloseHandle(token) ;
+
+            return Utility::ws_to_s(path) + '\\' ;
+        } () ;
+
         return obj ;
     }
 

@@ -19,7 +19,7 @@
 <br>  
 
 ## Description
-**win-vind** provides the lightweight Hybrid UI System of CUI and GUI. There are five main features.  
+**win-vind** provides the lightweight hybrid UI system of CUI and GUI. Its core idea is to add a new mode layer to operate GUI when you want to transition from Vim to other windows for a short while. There are five main features.  
 
 #### 1. GUI Operation like Vim  
 You can operate windows, a mouse cursor , virtual desktops, GUI-objects with key-bindings like Vim.  

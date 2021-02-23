@@ -26,9 +26,8 @@ namespace wxGUI
         MoveCursorCtrl(const MoveCursorCtrl&)       = delete ;
         MoveCursorCtrl& operator=(MoveCursorCtrl&)  = delete ;
 
-        const wxString name() noexcept override ;
+        const wxString name() override ;
     } ;
-
 }
 
 #endif

@@ -43,7 +43,7 @@ namespace wxGUI
         wxSizer* ctrls_sizer = nullptr ;
         wxButton* def_btn = nullptr ;
 
-        void update_label() noexcept {
+        void update_label() {
             def_btn->SetLabel(UITrans::trans("buttons/default")) ;
         }
 
@@ -58,7 +58,7 @@ namespace wxGUI
             }
         }
 
-        void update_list() noexcept {
+        void update_list() {
             list->Clear() ;
             for(const auto& l : ctrls) {
                 list->Append(l->name()) ;

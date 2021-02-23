@@ -62,7 +62,7 @@ namespace wxGUI
         pimpl->slider.save_config() ;
     }
 
-    const wxString ScrollPageCtrl::name() noexcept {
+    const wxString ScrollPageCtrl::name() {
         return UITrans::trans("notify/preferences/settings/scroll_page") ;
     }
 }

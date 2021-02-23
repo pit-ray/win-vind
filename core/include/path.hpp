@@ -25,6 +25,9 @@ namespace Path
     }
 
     inline static const auto& MODULE_ROOT_PATH() {
+#ifdef DEBUG
+        static const auto path = std::string("") ; //project root
+#else
         static const auto path = [] {
             WCHAR module_path[MAX_PATH] = {0} ;
             if(GetModuleFileNameW(NULL, module_path, MAX_PATH) == 0) {
@@ -38,13 +41,14 @@ namespace Path
 
             return module_path_str.substr(0, root_dir_pos + 1) ;
         }() ;
+#endif
+        std::cout << path << std::endl ;
         return path ;
     }
 
     inline static auto& _is_installer_used() {
         static const auto flag = [] {
-
-            std::ifstream ifs{MODULE_ROOT_PATH() + "default_config/is_installer_used"} ;
+            std::ifstream ifs{MODULE_ROOT_PATH() + "default_config\\is_installer_used"} ;
             std::string str{} ;
             std::getline(ifs, str) ;
             return str.front() == 'y' || str.front() == 'Y' ;
@@ -53,16 +57,7 @@ namespace Path
     }
 
     inline static const auto& ROOT_PATH() {
-        static const auto path = [] {
-            if(_is_installer_used()) {
-                return HOME_PATH() + ".win-vind\\" ;
-            }
-#if defined(DEBUG)
-            return std::string("") ; //project root
-#else
-            return MODULE_ROOT_PATH() ;
-#endif
-        }() ;
+        static const auto path = _is_installer_used() ? HOME_PATH() + ".win-vind\\" : MODULE_ROOT_PATH() ;
         return path ;
     }
 
@@ -86,15 +81,18 @@ namespace Path
 
     namespace Default {
         inline static const auto& BINDINGS() {
-            static const auto& obj = MODULE_ROOT_PATH() + "default_config/bindings.json" ;
+            static const auto& obj = MODULE_ROOT_PATH() + "default_config\\bindings.json" ;
+            std::cout << obj << std::endl ;
             return obj ;
         }
         inline static const auto& SETTINGS() {
-            static const auto obj = MODULE_ROOT_PATH() + "default_config/settings.json" ;
+            static const auto obj = MODULE_ROOT_PATH() + "default_config\\settings.json" ;
+            std::cout << obj << std::endl ;
             return obj ;
         }
         inline static const auto& UI() {
-            static const auto& obj = MODULE_ROOT_PATH() + "default_config/ui.json" ;
+            static const auto& obj = MODULE_ROOT_PATH() + "default_config\\ui.json" ;
+            std::cout << obj << std::endl ;
             return obj ;
         }
     }

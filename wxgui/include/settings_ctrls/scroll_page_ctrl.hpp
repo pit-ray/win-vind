@@ -25,7 +25,7 @@ namespace wxGUI
         ScrollPageCtrl(const ScrollPageCtrl&)       = delete ;
         ScrollPageCtrl& operator=(ScrollPageCtrl&)  = delete ;
 
-        const wxString name() noexcept override ;
+        const wxString name() override ;
     } ;
 }
 

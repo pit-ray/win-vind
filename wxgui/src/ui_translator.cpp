@@ -13,7 +13,7 @@
 
 namespace UITrans
 {
-    const wxString trans(const std::string uipath) noexcept {
+    const wxString trans(const std::string uipath) {
         using namespace nlohmann ;
         static const auto init = [](auto&& filepath) {
             json j ;

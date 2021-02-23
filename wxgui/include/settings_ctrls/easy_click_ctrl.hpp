@@ -23,7 +23,7 @@ namespace wxGUI
         EasyClcikCtrl(const EasyClcikCtrl&)       = delete ;
         EasyClcikCtrl& operator=(EasyClcikCtrl&)  = delete ;
 
-        const wxString name() noexcept override ;
+        const wxString name() override ;
     } ;
 }
 

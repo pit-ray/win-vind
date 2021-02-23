@@ -25,7 +25,7 @@ namespace wxGUI
         ResizeWindowCtrl(const ResizeWindowCtrl&)       = delete ;
         ResizeWindowCtrl& operator=(ResizeWindowCtrl&)  = delete ;
 
-        const wxString name() noexcept override ;
+        const wxString name() override ;
     } ;
 }
 

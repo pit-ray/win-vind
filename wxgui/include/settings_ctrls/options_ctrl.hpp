@@ -25,9 +25,8 @@ namespace wxGUI
         OptionsCtrl(const OptionsCtrl&)       = delete ;
         OptionsCtrl& operator=(OptionsCtrl&)  = delete ;
 
-        const wxString name() noexcept override ;
+        const wxString name() override ;
     } ;
-
 }
 
 #endif

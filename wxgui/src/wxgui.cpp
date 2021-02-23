@@ -36,6 +36,7 @@ namespace wxGUI
     }
 
     inline static bool is_pre_initialized() {
+        std::cout << Path::ROOT_PATH() + "is_initialized\n" ;
         std::ifstream ifs(Path::ROOT_PATH() + "is_initialized") ;
         if(!ifs.is_open()) {
             return false ;

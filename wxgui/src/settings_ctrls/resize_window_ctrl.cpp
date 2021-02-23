@@ -50,7 +50,7 @@ namespace wxGUI
         pimpl->spin.save_config() ;
     }
 
-    const wxString ResizeWindowCtrl::name() noexcept {
+    const wxString ResizeWindowCtrl::name() {
         return UITrans::trans("notify/preferences/settings/resize_window") ;
     }
 

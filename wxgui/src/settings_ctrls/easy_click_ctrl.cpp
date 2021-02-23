@@ -72,7 +72,7 @@ namespace wxGUI
         pimpl->color.save_config() ;
     }
 
-    const wxString EasyClcikCtrl::name() noexcept {
+    const wxString EasyClcikCtrl::name() {
         return UITrans::trans("notify/preferences/settings/easy_click") ;
     }
 }

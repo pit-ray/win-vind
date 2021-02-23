@@ -86,7 +86,7 @@ namespace wxGUI
         pimpl->choice.save_config() ;
     }
 
-    const wxString VirtualCmdLineCtrl::name() noexcept {
+    const wxString VirtualCmdLineCtrl::name() {
         return UITrans::trans("notify/preferences/settings/virtual_cmdline") ;
     }
 }

@@ -68,7 +68,7 @@ namespace wxGUI
             }
         }
 
-        void update_labels() noexcept {
+        void update_labels() {
             sh_label->SetLabel(UITrans::trans("notify/preferences/exapps/console")) ;
 
             wxListItem lt ;

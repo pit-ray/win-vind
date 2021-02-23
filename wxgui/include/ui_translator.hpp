@@ -10,7 +10,7 @@
 
 namespace UITrans
 {
-    const wxString trans(const std::string uipath) noexcept ;
+    const wxString trans(const std::string uipath) ;
 }
 
 #endif

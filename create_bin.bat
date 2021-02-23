@@ -14,22 +14,21 @@ rmdir /s /q release_32
 rmdir /s /q bin
 mkdir bin
 
+@echo Create Installer Version -------------------------------------------------------
 echo y> ".\\default_config\\is_installer_used"
 
 call build.bat -release %2 64
 cd release_64
 cpack . -C Release
 cd ..
+copy /Y ".\\release_64\\setup*" ".\\bin\\*_%1_64bit.exe"
 
 call build.bat -release %2 32
 cd release_32
 cpack . -C Release
 cd ..
-
-@echo Create Installer Version -------------------------------------------------------
-
-copy /Y ".\\release_64\\setup*" ".\\bin\\*_%1_64bit.exe"
 copy /Y ".\\release_32\\setup*" ".\\bin\\*_%1_32bit.exe"
+
 powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_64bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_64bit.exe.zip"
 powershell Compress-Archive -Path ".\\bin\\setup_win-vind_%1_32bit.exe" -DestinationPath ".\\bin\\setup_win-vind_%1_32bit.exe.zip"
 

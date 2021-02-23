@@ -29,7 +29,7 @@ namespace wxGUI
         void load_config() ;
         void load_config_default() ;
         void save_config() ;
-        virtual const wxString name() noexcept = 0 ;
+        virtual const wxString name() = 0 ;
     } ;
 }
 

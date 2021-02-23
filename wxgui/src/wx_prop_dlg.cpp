@@ -77,7 +77,7 @@ namespace wxGUI
             font = wxFont::New(9, wxFONTFAMILY_TELETYPE, wxFONTFLAG_DEFAULT) ;
         }
 
-        void translate() noexcept {
+        void translate() {
             ok_btn->SetLabel(trans("buttons/ok")) ;
             cl_btn->SetLabel(trans("buttons/cancel")) ;
             ap_btn->SetLabel(trans("buttons/apply")) ;

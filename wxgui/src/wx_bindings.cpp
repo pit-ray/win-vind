@@ -391,7 +391,7 @@ namespace wxGUI
             }
         }
 
-        void update_labels() noexcept {
+        void update_labels() {
             id_label->SetLabel(UITrans::trans("notify/preferences/bindings/id")) ;
             cmds_sizer->GetStaticBox()->SetLabel(UITrans::trans("notify/preferences/bindings/cmds")) ;
 

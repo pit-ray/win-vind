@@ -76,8 +76,7 @@
     mkdir debug
     cd debug
 
-    @rem cov-configure --config ./covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs/.*" --xml-option=skip_file:".*/mingw64/.*"
-    cov-configure --config ./covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:"libs" --xml-option=skip_file:"mingw64"
+    cov-configure --config ./covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
     cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF ..
     cov-build --config ./covtest/cov.xml --dir cov-int cmake --build .
     tar -czvf cov-int.tgz cov-int

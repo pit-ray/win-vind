@@ -83,7 +83,7 @@ namespace wxGUI
         pimpl->file.save_config() ;
     }
 
-    const wxString CommonCtrl::name() noexcept {
+    const wxString CommonCtrl::name() {
         return UITrans::trans("notify/preferences/settings/common") ;
     }
 

@@ -24,7 +24,7 @@ namespace wxGUI
         VirtualCmdLineCtrl(const VirtualCmdLineCtrl&)       = delete ;
         VirtualCmdLineCtrl& operator=(VirtualCmdLineCtrl&)  = delete ;
 
-        const wxString name() noexcept override ;
+        const wxString name() override ;
     } ;
 }
 

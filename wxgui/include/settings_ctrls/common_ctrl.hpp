@@ -25,7 +25,7 @@ namespace wxGUI
         CommonCtrl(const CommonCtrl&)       = delete ;
         CommonCtrl& operator=(CommonCtrl&)  = delete ;
 
-        const wxString name() noexcept override ;
+        const wxString name() override ;
     } ;
 }
 #endif

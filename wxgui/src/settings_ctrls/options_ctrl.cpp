@@ -57,7 +57,7 @@ namespace wxGUI
         pimpl->check.save_config() ;
     }
 
-    const wxString OptionsCtrl::name() noexcept {
+    const wxString OptionsCtrl::name() {
         return UITrans::trans("notify/preferences/settings/options") ;
     }
 }

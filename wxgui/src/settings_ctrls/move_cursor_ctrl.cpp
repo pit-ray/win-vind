@@ -62,7 +62,7 @@ namespace wxGUI
         pimpl->slider.save_config() ;
     }
 
-    const wxString MoveCursorCtrl::name() noexcept {
+    const wxString MoveCursorCtrl::name() {
         return UITrans::trans("notify/preferences/settings/move_cursor") ;
     }
 }

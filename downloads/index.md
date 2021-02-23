@@ -9,7 +9,7 @@ descripption: "the lists of links to download win-vind"
 <hr>  
 
 ### 3.2.1, (Latest Version) <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.2.1">GitHub</a>  
-Date: 2021/2/22  
+Date: 2021/2/23  
 #### 32bit 
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.1/setup_win-vind_3.2.1_32bit.exe.zip">setup_win-vind_3.2.1_32bit.exe.zip</a>
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.1/win-vind_3.2.1_32bit.zip">win-vind_3.2.1_32bit.zip</a>  

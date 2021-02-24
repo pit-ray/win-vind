@@ -204,9 +204,12 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 ## ToDo  
 
 |State|Description|Type|Priority|
-|:---:|:---|:---:|:---|
+|:---:|:---|:---:|:---:|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
+|☐|Modern GUI like UWP (use WinUI 3?)|Change|Low|
+|☐|Update Notification|Feature|Mid|
+|☐|Improve customizability|Architecture|Mid|
 
 ## License  
 

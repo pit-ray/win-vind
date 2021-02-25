@@ -10,7 +10,7 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**Your Environment (please complete the following information):**
+**Environment (please complete the following information):**
 - Windows 10 Edition: [e.g. Home, Pro, Enterprise]
 - OS Type: [64bit/32bit]
 - OS Version: [e.g. 1909, 20H2]

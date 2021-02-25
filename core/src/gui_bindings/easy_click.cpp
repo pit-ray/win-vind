@@ -476,7 +476,7 @@ namespace EsyClk
             const std::vector<Point2D>& points,
             const std::vector<std::string>& hints_str,
             const std::vector<unsigned char>& matched_list,
-            const bool exist) {
+            const bool inputting) {
 
         //Handles
         auto delete_hdc = [] (HDC h) {
@@ -544,7 +544,7 @@ namespace EsyClk
             return " " + str + " " ;
         } ;
 
-        if(!exist) {
+        if(!inputting) {
             for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
                 draw(add_margin(hints_str[i]), points[i]) ;
             }
@@ -567,20 +567,22 @@ namespace EsyClk
         }
     }
 
-    // [Return value]
-    //   >= 0 : matched something
-    //    < 0 : matched nothing
-    inline static long match_with_hints(
+    // [Return value] count that need to draw
+    inline static std::size_t match_with_hints(
             const KeyLogger& lgr,
             const std::vector<hint_t>& hints,
             std::vector<unsigned char>& matched_num_list,
-            bool& at_least_exist) {
+            long* p_matched_index=nullptr) {
 
-        if(lgr.empty()) {
-            at_least_exist = false ;
-            return -1 ;
+        if(p_matched_index) {
+            *p_matched_index = -1 ;
         }
 
+        if(lgr.empty()) {
+            return hints.size() ; //all is matched
+        }
+
+        std::size_t draw_count = 0 ;
         for(std::size_t i = 0 ; i < hints.size() ; i ++) {
             std::size_t seq_idx ;
             for(seq_idx = 0 ; seq_idx < lgr.size() ; seq_idx ++) {
@@ -593,7 +595,7 @@ namespace EsyClk
             }
 
             if(seq_idx == lgr.size()) {
-                at_least_exist = true ;
+                draw_count ++ ;
                 matched_num_list[i] = seq_idx ;
             }
             else {
@@ -601,11 +603,13 @@ namespace EsyClk
             }
 
             if(seq_idx == hints[i].size()) {
-                return i ;
+                if(p_matched_index)
+                    *p_matched_index = i ;
+                return 1 ;
             }
         }
 
-        return -1 ;
+        return draw_count ;
     }
 
     inline static void loop_for_key_matching(
@@ -615,24 +619,40 @@ namespace EsyClk
             const unsigned char sendkey=VKC_UNDEFINED) {
 
         using Utility::remove_from_back ;
+        using namespace std::chrono ;
+
+        static constexpr auto DRAW_INTERVAL_TIME  = 1s ;
+        static constexpr auto THRESHOLD_USE_DELAY = 6500 ;
+
+        const auto hwnd = GetForegroundWindow() ;
+        if(hwnd == NULL) {
+            throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
+        }
+        KeyAbsorber::InstantKeyAbsorber ika ;
+
         KeyLogger lgr ;
         std::vector<unsigned char> matched_num_list(hints.size(), 0) ;
 
-        KeyAbsorber::InstantKeyAbsorber ika ;
-
-        bool at_least_exist = false ;
-        const auto hwnd = GetForegroundWindow() ;
-
-        using namespace std::chrono ;
+        auto drawn_count = hints.size() ;
         auto drawn_point = system_clock::now() ;
-        static constexpr auto DRAW_INTERVAL_TIME = 600ms ;
 
         while(win_vind::update_background()) {
+            if(drawn_count >= THRESHOLD_USE_DELAY) {
+                // The drawing process is very heavy, so draw in the interval when exists a lot of objects.
+                if(system_clock::now() - drawn_point > DRAW_INTERVAL_TIME) {
+                    EsyClk::draw_identifiers(
+                            points, hints_str,
+                            matched_num_list,
+                            drawn_count < hints.size()) ;
 
-            // The drawing process is very heavy, so draw in the interval.
-            if(system_clock::now() - drawn_point > DRAW_INTERVAL_TIME) {
-                EsyClk::draw_identifiers(points, hints_str, matched_num_list, at_least_exist) ;
-                drawn_point = system_clock::now() ;
+                    drawn_point = system_clock::now() ;
+                }
+            }
+            else {
+                EsyClk::draw_identifiers(
+                        points, hints_str,
+                        matched_num_list,
+                        drawn_count < hints.size()) ;
             }
 
             if(!KyLgr::log_as_char(lgr)) {
@@ -650,10 +670,6 @@ namespace EsyClk
                 return ;
             }
 
-            //initialize flags
-            std::fill(matched_num_list.begin(), matched_num_list.end(), 0) ;
-            at_least_exist = false ;
-
             if(lgr.back().is_containing(VKC_BKSPACE)) {
                 if(lgr.size() == 1) {
                     Utility::refresh_display(hwnd) ;
@@ -661,7 +677,7 @@ namespace EsyClk
                 }
                 remove_from_back(lgr, 2) ;
                 KeyAbsorber::release_virtually(VKC_BKSPACE) ;
-                match_with_hints(lgr, hints, matched_num_list, at_least_exist) ; //update matching list
+                drawn_count = match_with_hints(lgr, hints, matched_num_list) ; //update matching list
                 continue ;
             }
 
@@ -670,8 +686,9 @@ namespace EsyClk
                 continue ;
             }
 
+            long full_match_idx ;
+            auto need_draw_count = match_with_hints(lgr, hints, matched_num_list, &full_match_idx) ;
 
-            const auto full_match_idx = match_with_hints(lgr, hints, matched_num_list, at_least_exist) ;
             if(full_match_idx >= 0) {
                 SetCursorPos(points[full_match_idx].x(), points[full_match_idx].y()) ;
                 if(sendkey != VKC_UNDEFINED) {
@@ -681,10 +698,11 @@ namespace EsyClk
                 return ;
             }
 
-            if(!at_least_exist) {
+            if(need_draw_count == 0) {
                 remove_from_back(lgr, 1) ;
             }
             else {
+                drawn_count = need_draw_count ;
                 Utility::refresh_display(hwnd) ;
 
                 for(auto& key : lgr.back()) {

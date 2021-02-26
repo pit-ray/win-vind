@@ -28,13 +28,9 @@ request.onreadystatechange = function() {
       var data = JSON.parse(request.responseText);
       for(var item of data) {
         var splited = item.name.split('.');
-        console.log(splited);
         var version = splited[0] + '.' + splited[1] + '.x';
-        console.log(version);
 
-        console.log(names);
         var idx = names.indexOf(version);
-        console.log(idx) ;
         if(idx == -1) {
           idx = names.length;
           names.push(version);
@@ -68,11 +64,11 @@ request.onreadystatechange = function() {
       ]
     },
     options: {
-         legend: {
-            display: false
-         }
+      legend: {
+        display: false
+      }
     }
   });
-}
+};
 request.send();
 </script>

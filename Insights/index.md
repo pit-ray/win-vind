@@ -33,7 +33,6 @@ request.onreadystatechange = function() {
         var idx = names.indexOf(version);
         console.log(idx) ;
         if(idx == -1) {
-          idx = names.length;
           names.push(version);
         }
 

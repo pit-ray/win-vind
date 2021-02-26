@@ -229,6 +229,7 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 |☐|Improve customizability|Architecture|High|
 |☐|Rotate windows without arrangement|Improve|High|
 |☐|Support multi-monitor in Exchange windows|Improve|High|
+|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|High|
 
 ## License  
 

@@ -22,7 +22,7 @@ request.open('GET', 'https://api.github.com/repos/pit-ray/win-vind/releases');
 request.onreadystatechange = function() {
   var names = [];
   var counts = [];
-  
+
   if(request.readyState == 4) {
     if (request.status == 200) {
       var data = JSON.parse(request.responseText);
@@ -31,9 +31,9 @@ request.onreadystatechange = function() {
         console.log(splited);
         var version = splited[0] + '.' + splited[1] + '.x';
         console.log(version);
-        
+
         console.log(names);
-      　var idx = names.indexOf(version);
+        var idx = names.indexOf(version);
         console.log(idx) ;
         if(idx == -1) {
           idx = names.length;
@@ -44,7 +44,7 @@ request.onreadystatechange = function() {
         for(var a of item.assets) {
           cnt += a.download_count;
         }
-        
+
         if(idx == -1) {
           counts.push(cnt);
         }
@@ -54,7 +54,7 @@ request.onreadystatechange = function() {
       }
     }
   }
-  
+
   const ctx = document.getElementById('dl_count');
   const chart = new Chart(ctx, {
     type: 'line',

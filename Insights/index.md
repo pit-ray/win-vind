@@ -31,26 +31,20 @@ request.onreadystatechange = function() {
         var version = sp[0] + '.' + sp[1] + '.x';
 
         var idx = names.indexOf(version);
-        console.log(idx) ;
         if(idx == -1) {
           names.push(version);
         }
 
-        console.log(item.name) ;
         var cnt = 0 ;
         for(var a of item.assets) {
           cnt += a.download_count;
         }
 
-        console.log(cnt) ;
         if(idx == -1) {
-          console.log('new') ;
           counts.push(cnt);
-          console.log(counts[counts.length - 1]) ;
         }
         else {
           counts[idx] += cnt;
-          console.log(counts[idx]) ;
         }
       }
     }

@@ -31,6 +31,7 @@ request.onreadystatechange = function() {
         var version = sp[0] + '.' + sp[1] + '.x';
 
         var idx = names.indexOf(version);
+        console.log(idx) ;
         if(idx == -1) {
           idx = names.length;
           names.push(version);

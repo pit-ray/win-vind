@@ -36,6 +36,7 @@ request.onreadystatechange = function() {
           names.push(version);
         }
 
+        console.log(item.name) ;
         var cnt = 0 ;
         for(var a of item.assets) {
           cnt += a.download_count;
@@ -43,11 +44,13 @@ request.onreadystatechange = function() {
 
         console.log(cnt) ;
         if(idx == -1) {
+          console.log('new') ;
           counts.push(cnt);
+          console.log(counts[counts.length - 1]) ;
         }
         else {
           counts[idx] += cnt;
-          console.log('counts: ' + counts[idx]) ;
+          console.log(counts[idx]) ;
         }
       }
     }

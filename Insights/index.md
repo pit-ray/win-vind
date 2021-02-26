@@ -27,12 +27,26 @@ request.onreadystatechange = function() {
     if (request.status == 200) {
       var data = JSON.parse(request.responseText);
       for(var item of data) {
-        names.push(item.name);
+        var splited = item.name.split['.'] ;
+        var version = splited[0] + '.' + splited[1] + '.x' ;
+        
+      　var idx = names.indexOf(version) ;
+        if(idx == -1) { //new
+          idx = names.length ;
+          names.push(version);
+        }
+
         var cnt = 0 ;
         for(var a of item.assets) {
           cnt += a.download_count;
         }
-        counts.push(cnt);
+        
+        if(idx == -1) {
+          counts.push(cnt);
+        }
+        else {
+          counts[idx] += cnt ;
+        }
       }
     }
   }

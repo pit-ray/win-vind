@@ -27,8 +27,8 @@ request.onreadystatechange = function() {
     if (request.status == 200) {
       var data = JSON.parse(request.responseText);
       for(var item of data) {
-        var splited = item.name.split('.');
-        var version = splited[0] + '.' + splited[1] + '.x';
+        var sp = item.name.split('.');
+        var version = sp[0] + '.' + sp[1] + '.x';
 
         var idx = names.indexOf(version);
         if(idx == -1) {
@@ -41,11 +41,13 @@ request.onreadystatechange = function() {
           cnt += a.download_count;
         }
 
+        console.log(cnt) ;
         if(idx == -1) {
           counts.push(cnt);
         }
         else {
           counts[idx] += cnt;
+          console.log('counts: ' + counts[idx]) ;
         }
       }
     }

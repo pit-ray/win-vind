@@ -27,7 +27,7 @@ request.onreadystatechange = function() {
     if (request.status == 200) {
       var data = JSON.parse(request.responseText);
       for(var item of data) {
-        var splited = item.name.split['.'];
+        var splited = item.name.split('.');
         console.log(splited);
         var version = splited[0] + '.' + splited[1] + '.x';
         console.log(version);

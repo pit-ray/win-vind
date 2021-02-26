@@ -227,7 +227,7 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 |☐|Modern GUI (use WinUI 3?)|Change|Low|
 |☐|Update Notification|Feature|Mid|
 |☐|Improve customizability|Architecture|High|
-
+|☐|Rotate windows without arrangement|High|
 
 ## License  
 

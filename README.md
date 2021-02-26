@@ -127,7 +127,7 @@ You can change default bindings.
 |`<C-w>=`|`:arrange`|Arrange windows|
 |`<C-w>r`|`:rotate`|Rotate windows|
 |`<C-w>R`|`:rerotate`|Rotate windows in reverse|
-|`<C-w>x`|`:exchange`|Exchange a window with next one|
+|`<C-w>x`|`:exchange`|Exchange a window with nearest one|
 |-|`:resize <num>`|Resize the height of a window|
 |`<C-w>+`|`:resize +<num>`|Increase the height of a window|
 |`<C-w>-`|`:resize -<num>`|Decrease the height of a window|

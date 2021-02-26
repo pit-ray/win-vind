@@ -19,7 +19,9 @@
 <br>  
 
 ## Description
-**win-vind** provides the lightweight hybrid UI system of CUI and GUI. Its core idea is to add a new mode layer to operate GUI when you want to transition from Vim to other windows for a short while. There are five main features.  
+**win-vind** provides the lightweight hybrid UI system of CUI and GUI. Its core idea is to add a new mode layer to operate GUI when you want to transition from Vim to other windows for a short while.  
+
+There are five main features.  
 
 #### 1. GUI Operation like Vim  
 You can operate windows, a mouse cursor , virtual desktops, GUI-objects with key-bindings like Vim.  
@@ -57,7 +59,22 @@ You can operate win-vind from command lines.
 ```sh  
 $ ./win-vind.exe --func change_to_normal
 ```
-Therefore, it enables to make Vim link to GUI. Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>. If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
+Therefore, it enables to make Vim link to GUI and use from AutoHotKey.
+
+If you add next scripts into .vimrc, you can switch a mode to operate GUI with `:GUINormal`.
+```Vim
+Plug 'skywind3000/asyncrun.vim'
+
+command! GUINormal :AsyncRun win-vind -f change_to_normal
+```
+
+If you add next scripts into AHK Script, you can call each function.
+```AHK
+#f::Run, win-vind -f easy_click_left
+#a::Run, win-vind -f arrange_windows
+```
+
+Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>. If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## Download
 ### 3.2.1 (Latest Version)  
@@ -94,8 +111,8 @@ You can change default bindings.
 **Window Control**  
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
-|`<C-w>s`|`:sw`|Switch windows|
-|`<C-w>q`|`:cl`|Close a current window|
+|`<C-w>s`|`:switch`|Switch windows|
+|`<C-w>q`|`:close`|Close a current window|
 |`<C-w>n`|`:new`|Open a new window|
 |-|`:split`|Open a new window with hsplit|
 |-|`:vsplit`|Open a new window with vsplit|
@@ -207,9 +224,10 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 |:---:|:---|:---:|:---:|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
-|☐|Modern GUI like UWP (use WinUI 3?)|Change|Low|
+|☐|Modern GUI (use WinUI 3?)|Change|Low|
 |☐|Update Notification|Feature|Mid|
 |☐|Improve customizability|Architecture|High|
+
 
 ## License  
 

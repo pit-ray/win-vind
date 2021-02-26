@@ -59,7 +59,7 @@ You can operate win-vind from command lines.
 ```sh  
 $ ./win-vind.exe --func change_to_normal
 ```
-Therefore, it enables to make Vim link to GUI and use from AutoHotKey.
+Therefore, it enables to make Vim link to GUI or use from AutoHotKey.
 
 If you add next scripts into .vimrc, you can switch a mode to operate GUI with `:GUINormal`.
 ```Vim

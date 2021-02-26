@@ -233,6 +233,7 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 |☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|High|
 |☐|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|High|
 |☐|`Select Window` respect z-order|Improve|High|
+|☐|Bug reporting feature|Feature|Mid|
 
 ## License  
 

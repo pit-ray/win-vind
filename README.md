@@ -77,16 +77,16 @@ If you add next scripts into AHK Script, you can call each function.
 Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>. If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## Download
-### 3.2.1 (Latest Version)  
-Date: 2021/2/23  
+### 3.2.2 (Latest Version)  
+Date: 2021/2/28  
 
 #### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.1/setup_win-vind_3.2.1_32bit.exe.zip">setup_win-vind_3.2.1_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.1/win-vind_3.2.1_32bit.zip">win-vind_3.2.1_32bit.zip</a>  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/setup_win-vind_3.2.2_32bit.exe.zip">setup_win-vind_3.2.2_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/win-vind_3.2.2_32bit.zip">win-vind_3.2.2_32bit.zip</a>  
 
 #### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.1/setup_win-vind_3.2.1_64bit.exe.zip">setup_win-vind_3.2.1_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.1/win-vind_3.2.1_64bit.zip">win-vind_3.2.1_64bit.zip</a> 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/setup_win-vind_3.2.2_64bit.exe.zip">setup_win-vind_3.2.2_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/win-vind_3.2.2_64bit.zip">win-vind_3.2.2_64bit.zip</a> 
 
 
 ## Usage
@@ -234,6 +234,7 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 |☐|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|High|
 |☐|`Select Window` respect z-order|Improve|High|
 |☐|Bug reporting feature|Feature|Mid|
+|Now|Support multi-thread in EasyClick|Improve|High|
 
 ## License  
 

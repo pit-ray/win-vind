@@ -162,7 +162,7 @@ namespace EasyClick
 
             // A detected positon is the center one of object.
             // And, TextOutA draws from a left-upper coordinate, so must move.
-            const auto delta = fontsize / 2 ;
+            const auto delta = fontsize / 2 ;      
 
             auto add_margin = [](const auto& str) {
                 return " " + str + " " ;

@@ -167,8 +167,7 @@ namespace BindingsLists {
             SwitchVDesktop2Left::create(),
             SwitchVDesktop2Right::create(),
             SwitchWindow::create(),
-            TaskView::create(),
-            UpdateEasyClick::create()
+            TaskView::create()
         } ;
         return tmp ;
     }

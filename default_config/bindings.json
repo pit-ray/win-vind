@@ -1935,21 +1935,6 @@
         "ja": "EasyClick (クリックなし)"
     },
     {
-        "name": "update_easy_click",
-        "guin": ["<C-F>"],
-        "guii": [],
-        "guiv": [],
-        "edin": [],
-        "edii": [],
-        "ediv": [],
-        "edivl": [],
-        "cmd": ["update EasyClick", "update ec"],
-        "mycwn": [],
-        "mycwi": [],
-        "en": "Rescan for EasyClick",
-        "ja": "EasyClickの再スキャン"
-    },
-    {
         "name": "forward_ui_navigation",
         "guin": [],
         "guii": [],

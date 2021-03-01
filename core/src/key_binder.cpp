@@ -51,7 +51,7 @@ namespace KeyBinder
         g_unbinded_syskeys.clear() ;
         g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
 
-        EsyClk::initialize() ;
+        EasyClick::initialize() ;
     }
 
     using ModeManager::Mode ;

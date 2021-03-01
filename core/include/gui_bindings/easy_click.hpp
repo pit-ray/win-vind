@@ -3,7 +3,7 @@
 
 #include "binded_func_with_creator.hpp"
 
-namespace EsyClk
+namespace EasyClick
 {
     void initialize() ;
 }

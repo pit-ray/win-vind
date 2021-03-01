@@ -16,6 +16,7 @@ include_directories(
 
 add_library(Common STATIC
     src/common/binded_func.cpp
+    src/common/display_text_painter.cpp
     src/common/dynamic_option.cpp
     src/common/interval_timer.cpp
     src/common/key_absorber.cpp

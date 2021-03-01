@@ -4,11 +4,12 @@
 #include <windows.h>
 #include <unordered_map>
 
-#include "utility.hpp"
-#include "mode_manager.hpp"
-#include "path.hpp"
+#include "display_text_painter.hpp"
 #include "i_params.hpp"
+#include "mode_manager.hpp"
 #include "msg_logger.hpp"
+#include "path.hpp"
+#include "utility.hpp"
 
 using namespace std ;
 std::string VirtualCmdLine::outstr{} ;
@@ -19,35 +20,16 @@ static POINT g_refresh_pos = {0, 0} ;
 
 struct VirtualCmdLine::Impl
 {
-    LOGFONT lf{} ;
-    COLORREF color{RGB(0, 0, 0)} ;
-    COLORREF bkcolor{RGB(0, 0, 0)} ;
-    int x     = 0 ;
-    int y     = 0 ;
+    DisplayTextPainter  dtp{25, FW_MEDIUM, "Consolas"} ;
+    int x = 0 ;
+    int y = 0 ;
     int extra = 0 ;
-
     std::chrono::seconds fadeout_time{} ;
 } ;
 
 VirtualCmdLine::VirtualCmdLine()
 : pimpl(std::make_unique<Impl>())
-{
-    //default setting
-    pimpl->lf.lfHeight         = 25 ;
-    pimpl->lf.lfWidth          = 0 ;
-    pimpl->lf.lfEscapement     = 0 ;
-    pimpl->lf.lfOrientation    = 0 ;
-    pimpl->lf.lfWeight         = FW_MEDIUM ;
-    pimpl->lf.lfItalic         = FALSE ;
-    pimpl->lf.lfUnderline      = FALSE ;
-    pimpl->lf.lfStrikeOut      = FALSE ;
-    pimpl->lf.lfCharSet        = ANSI_CHARSET ;
-    pimpl->lf.lfOutPrecision   = OUT_TT_ONLY_PRECIS ;
-    pimpl->lf.lfClipPrecision  = CLIP_DEFAULT_PRECIS ;
-    pimpl->lf.lfQuality        = ANTIALIASED_QUALITY ;
-    pimpl->lf.lfPitchAndFamily = 0 ;
-    pimpl->lf.lfFaceName[0]    = '\0' ;
-}
+{}
 VirtualCmdLine::~VirtualCmdLine() noexcept                  = default ;
 VirtualCmdLine::VirtualCmdLine(VirtualCmdLine&&)            = default ;
 VirtualCmdLine& VirtualCmdLine::operator=(VirtualCmdLine&&) = default ;
@@ -60,11 +42,13 @@ const string VirtualCmdLine::sname() noexcept
 void VirtualCmdLine::do_enable() const
 {
     reset() ;
-    pimpl->lf.lfHeight = iParams::get_l("cmd_font_size") ;
-    pimpl->lf.lfWeight = iParams::get_l("cmd_font_weight") ;
+    pimpl->dtp.set_font(
+            iParams::get_l("cmd_font_size"),
+            iParams::get_l("cmd_font_weight"),
+            "Consolas") ;
 
-    pimpl->color   = Utility::hex2COLORREF(iParams::get_s("cmd_font_color")) ;
-    pimpl->bkcolor = Utility::hex2COLORREF(iParams::get_s("cmd_font_bkcolor")) ;
+    pimpl->dtp.set_text_color(iParams::get_s("cmd_font_color")) ;
+    pimpl->dtp.set_back_color(iParams::get_s("cmd_font_bkcolor")) ;
 
     const auto pos = iParams::get_s("cmd_pos") ;
     const auto xma = iParams::get_i("cmd_xmargin") ;
@@ -156,41 +140,5 @@ void VirtualCmdLine::do_process() const
         }
     }
 
-    auto delete_hdc = [] (HDC h) {
-        if(h != nullptr) DeleteDC(h) ;
-    } ;
-    std::unique_ptr<HDC__, decltype(delete_hdc)> hdc(
-            CreateDCA("DISPLAY", NULL, NULL, NULL), delete_hdc) ;
-    if(!hdc) {
-        throw RUNTIME_EXCEPT("CreateDC") ;
-    }
-
-    auto delete_font = [] (HFONT f) {
-        if(f != nullptr) DeleteObject(f) ;
-    } ;
-    std::unique_ptr<HFONT__, decltype(delete_font)> font(
-            CreateFontIndirect(&pimpl->lf), delete_font) ;
-    if(!font) {
-        throw RUNTIME_EXCEPT("CreateFontIndirectA") ;
-    }
-
-    if(!SelectObject(hdc.get(), font.get())) {
-        throw RUNTIME_EXCEPT("SelectObject") ;
-    }
-
-    if(SetBkColor(hdc.get(), pimpl->bkcolor) == CLR_INVALID) {
-        throw RUNTIME_EXCEPT("SetBkColor") ;
-    }
-
-    if(SetTextColor(hdc.get(), pimpl->color) == CLR_INVALID) {
-        throw RUNTIME_EXCEPT("SetTextColor") ;
-    }
-
-    if(SetTextCharacterExtra(hdc.get(), pimpl->extra) == static_cast<int>(0x80000000)) {
-        throw RUNTIME_EXCEPT("SetTextCharacterExtra") ;
-    }
-
-    if(!TextOutA(hdc.get(), pimpl->x, pimpl->y, outstr.c_str(), lstrlenA(outstr.c_str()))) {
-        throw RUNTIME_EXCEPT("TextOutA") ;
-    }
+    pimpl->dtp.draw(outstr, pimpl->x, pimpl->y, pimpl->extra) ;
 }

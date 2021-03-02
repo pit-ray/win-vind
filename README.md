@@ -234,7 +234,7 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 |☐|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|High|
 |☐|`Select Window` respect z-order|Improve|High|
 |☐|Bug reporting feature|Feature|Mid|
-|✅|Support multi-thread in EasyClick|Improve|High|
+|✅|Support multi-thread drawing in EasyClick|Improve|High|
 |☐|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |☐|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Using multi-thread at scanning to be faster in EasyClick.|Improve|Low|

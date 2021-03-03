@@ -220,6 +220,8 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 
 ## ToDo  
 
+It is the difference between master and latest release.
+
 |State|Description|Type|Priority|
 |:---:|:---|:---:|:---:|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
@@ -237,8 +239,8 @@ If you want to contribute, please visit <a href="https://pit-ray.github.io/win-v
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
 |☐|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |☐|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
-|☐|Using multi-thread at scanning to be faster in EasyClick.|Improve|Low|
-|Now|Use double buffering in EasyClick.|Try|Low|
+|☐|Using multi-thread scanning to be faster in EasyClick.|Improve|Low|
+|Now|Support double buffering in EasyClick.|Try|Low|
 
 ## License  
 

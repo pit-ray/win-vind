@@ -11,29 +11,56 @@ private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 
+    static HDC create_display_dc() ;
+
+    static void set_dc_text_color(
+            std::shared_ptr<HDC__>& hdc,
+            const COLORREF& color) ;
+
+    static void set_dc_back_color(
+            std::shared_ptr<HDC__>& hdc,
+            const COLORREF& color) ;
+
 public:
-    explicit DisplayTextPainter(LONG font_size, LONG font_weight, const std::string face_name) ;
+    explicit DisplayTextPainter(
+            LONG font_size,
+            LONG font_weight,
+            const std::string face_name,
+            bool enable_double_buffering=false) ;
     virtual ~DisplayTextPainter() noexcept ;
 
-    void set_font(LONG font_size, LONG font_weight, const std::string face_name) ;
+    void set_font(
+            LONG font_size,
+            LONG font_weight,
+            const std::string face_name) ;
 
     void set_text_color(COLORREF color) ;
-    void set_text_color(unsigned char r, unsigned char g, unsigned char b) ;
+    void set_text_color(
+            unsigned char r,
+            unsigned char g,
+            unsigned char b) ;
     void set_text_color(std::string hex) ;
 
     void set_back_color(COLORREF color) ;
-    void set_back_color(unsigned char r, unsigned char g, unsigned char b) ;
+    void set_back_color(
+            unsigned char r,
+            unsigned char g,
+            unsigned char b) ;
     void set_back_color(std::string hex) ;
 
-    void draw(const std::string& str, int x, int y, int extra=0) ;
+    void draw(
+            const std::string& str,
+            int x,
+            int y,
+            int extra=0) ;
 
-    void enable_double_buffering() ;
-    void update_display_with_compatibleDC() ;
+    void update_with_double_buffering() ;
 
-    DisplayTextPainter(const DisplayTextPainter&)            ;
-    DisplayTextPainter& operator=(const DisplayTextPainter&) ;
     DisplayTextPainter(DisplayTextPainter&&) ;
     DisplayTextPainter& operator=(DisplayTextPainter&&) ;
+
+    DisplayTextPainter(const DisplayTextPainter&)            = delete ;
+    DisplayTextPainter& operator=(const DisplayTextPainter&) = delete ;
 } ;
 
 #endif

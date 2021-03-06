@@ -160,7 +160,7 @@
         "ja": "縦の余白"
     },
     "cmd_font_extra": {
-        "value": 2,
+        "value": 1,
         "en": "Font Extra",
         "ja": "文字同士の間隔"
     },

@@ -19,7 +19,7 @@ descripption: "How to contibute win-vind."
 
 1. Fork the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>. I recommend to clone it as depth=1 like below.  
 ```bash
-$ git clone https://github.com/pit-ray/win-vind.git --depth=1
+$ git clone https://github.com/pit-ray/win-vind.git
 ```
 1. Make a unique branch for pull requests.
 ```bash

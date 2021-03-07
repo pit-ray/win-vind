@@ -232,8 +232,8 @@ It is the difference between master and latest release.
 |☐|Rotate windows without arrangement|Improve|High|
 |☐|Support multi-monitor in `Exchange windows`|Improve|High|
 |☐|Support multi-monitor in `Snap window`|Improve|High|
-|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|High|
-|☐|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|High|
+|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Low|
+|☐|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|Mid|
 |☐|`Select Window` respect z-order|Improve|High|
 |☐|Bug reporting feature|Feature|Mid|
 |✅|Support multi-thread drawing in EasyClick|Improve|High|

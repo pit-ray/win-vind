@@ -11,15 +11,30 @@ private:
     struct Impl ;
     std::unique_ptr<Impl> pimpl ;
 
-    static HDC create_display_dc() ;
+    static void delete_hdc(HDC h) noexcept {
+        if(h != nullptr) DeleteDC(h) ;
+    }
+    static void delete_obj(HGDIOBJ f) noexcept {
+        if(f != nullptr) DeleteObject(f) ;
+    }
 
-    static void set_dc_text_color(
-            std::shared_ptr<HDC__>& hdc,
-            const COLORREF& color) ;
+    using hdc_type        = std::shared_ptr<HDC__> ;
+    using hdc_unique_type = std::unique_ptr<HDC__, decltype(&delete_hdc)> ;
+    using bitmap_type     = std::unique_ptr<HBITMAP__, decltype(&delete_obj)> ;
+    using font_type       = std::unique_ptr<HFONT__, decltype(&delete_obj)> ;
 
-    static void set_dc_back_color(
-            std::shared_ptr<HDC__>& hdc,
-            const COLORREF& color) ;
+    static hdc_unique_type create_display_dc() ;
+
+    static void set_dc_text_color(hdc_type& hdc, const COLORREF& color) ;
+    static void set_dc_back_color(hdc_type& hdc, const COLORREF& color) ;
+
+    void initialize_dc(bool enable_double_buffering) ;
+    void copy(const DisplayTextPainter& rhs) ;
+
+    static font_type create_font(const LOGFONTA& logfont) ;
+
+    static void select_obj(hdc_type& hdc, const bitmap_type& bitmap) ;
+    static void select_obj(hdc_type& hdc, const font_type& font) ;
 
 public:
     explicit DisplayTextPainter(
@@ -54,13 +69,13 @@ public:
             int y,
             int extra=0) ;
 
-    void update_with_double_buffering() ;
+    void refresh() ; //call it per a one drawing cycle.
+
+    DisplayTextPainter(const DisplayTextPainter&) ;
+    DisplayTextPainter& operator=(const DisplayTextPainter&) ;
 
     DisplayTextPainter(DisplayTextPainter&&) ;
     DisplayTextPainter& operator=(DisplayTextPainter&&) ;
-
-    DisplayTextPainter(const DisplayTextPainter&)            = delete ;
-    DisplayTextPainter& operator=(const DisplayTextPainter&) = delete ;
 } ;
 
 #endif

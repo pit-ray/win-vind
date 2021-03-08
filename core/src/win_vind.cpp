@@ -132,6 +132,7 @@ namespace win_vind
             VKCConverter::load_input_combination() ;
 
             //lower keyboard hook
+            //If you use debugger, must be disable this line not to be slow.
             KeyAbsorber::install_hook() ;
 
             KeyBinder::init() ;

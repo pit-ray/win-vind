@@ -156,13 +156,18 @@ namespace EasyClick
             DisplayTextPainter dtp(
                     fontsize,
                     iParams::get_l("easy_click_font_weight"),
-                    "Consolas",
-                    true) ;
+                    "Consolas") ;
             dtp.set_back_color(bkcolor) ;
+            dtp.set_text_color(txcolor) ;
+
+            auto dtp_weak(dtp) ; //copy construct
+            dtp_weak.set_text_color(txcolor_ready) ;
 
             // A detected positon is the center one of object.
             // And, TextOutA draws from a left-upper coordinate, so must move.
-            const auto delta = fontsize / 2 ;
+            auto align = [fontsize] (auto&& v) {
+                return v - fontsize / 2 ;
+            } ;
 
             auto add_margin = [](const auto& str) {
                 return " " + str + " " ;
@@ -170,38 +175,30 @@ namespace EasyClick
 
             using namespace std::chrono ;
             while(input_ft.wait_for(50ms) == std::future_status::timeout) { //about 24 fps
-
                 std::lock_guard<std::mutex> scoped_lock(l_mtx) ; //atomic ---------- (0)
 
                 if(need_draw_count == hints.size()) {
-                    dtp.set_text_color(txcolor) ;
                     for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
                         dtp.draw(add_margin(hints_str[i]),
-                                obj_points[i].x() - delta,
-                                obj_points[i].y() - delta, 1) ;
+                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
                     }
                 }
                 else {
-                    dtp.set_text_color(txcolor) ;
                     for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
                         if(matching_nums[i] == 0) {
                             continue ;
                         }
                         dtp.draw(add_margin(hints_str[i]),
-                                obj_points[i].x() - delta,
-                                obj_points[i].y() - delta, 1) ;
-                    }
+                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
 
-                    //overdraw with the weak text color.
-                    dtp.set_text_color(txcolor_ready) ;
-                    for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
-                        dtp.draw(" " + hints_str[i].substr(0, matching_nums[i]),
-                                obj_points[i].x() - delta,
-                                obj_points[i].y() - delta, 1) ;
+                        //overdraw with the weak text color.
+                        dtp_weak.draw(" " + hints_str[i].substr(0, matching_nums[i]),
+                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
                     }
                 }
 
-                dtp.update_with_double_buffering() ;
+                dtp.refresh() ;
+                dtp_weak.refresh() ;
                 //------------------------------------------------------------------ (0)
             }
 
@@ -423,6 +420,14 @@ namespace EasyClick {
         }
         auto elem = UIA::make_SmartElement(elem_raw) ;
 
+        /* multi thread scan ?
+        auto ft = std::async(std::launch::async, [&elem, &elem_raw] {
+                return elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw) ;
+        }) ;
+        if(FAILED(ft.get())) {
+            throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
+        }
+        */
         if(FAILED(elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
         }

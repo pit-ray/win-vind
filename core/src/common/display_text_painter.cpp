@@ -6,46 +6,29 @@
 #include <cstring>
 #include <memory>
 
-inline static void delete_hdc(HDC h) noexcept {
-    if(h != nullptr) DeleteDC(h) ;
-}
-
-inline static void delete_font(HFONT f) noexcept {
-    if(f != nullptr) DeleteObject(f) ;
-}
-
-inline static void delete_bitmap(HBITMAP b) noexcept {
-    if(b != nullptr) DeleteObject(b) ;
-}
-
 struct DisplayTextPainter::Impl {
-    std::shared_ptr<HDC__> hdc ; //device context for actual use
+    hdc_type hdc ; //device context for actual use
 
-    std::shared_ptr<HDC__> display_dc ;
-    std::shared_ptr<HDC__> compatible_dc ;
+    hdc_type display_dc ;
+    hdc_type compatible_dc ;
 
-    std::unique_ptr<HBITMAP__, decltype(&delete_bitmap)> compatible_bitmap ;
+    bitmap_type compatible_bitmap ;
 
     COLORREF fg_color ;
     COLORREF bg_color ;
 
     LOGFONTA logfont ; //infomation struct for creation of font
-    std::unique_ptr<HFONT__, decltype(&delete_font)> hfont ; //font handle
-
-    int display_width ;
-    int display_height ;
+    font_type hfont ; //font handle
 
     explicit Impl()
     : hdc(nullptr, delete_hdc),
       display_dc(nullptr, delete_hdc),
       compatible_dc(nullptr, delete_hdc),
-      compatible_bitmap(nullptr, delete_bitmap),
+      compatible_bitmap(nullptr, delete_obj),
       fg_color(RGB(0, 0, 0)),
       bg_color(RGB(0, 0, 0)),
       logfont(),
-      hfont(nullptr, delete_font),
-      display_width(0),
-      display_height(0)
+      hfont(nullptr, delete_obj)
     {
         logfont.lfHeight         = 0 ;
         logfont.lfWidth          = 0 ;
@@ -62,29 +45,31 @@ struct DisplayTextPainter::Impl {
         logfont.lfPitchAndFamily = FIXED_PITCH | FF_MODERN ;
         logfont.lfFaceName[0]    = '\0' ;
     }
+    virtual ~Impl() noexcept = default ;
+
+    void copy_copyable_variables(const Impl& rhs) {
+        fg_color = rhs.fg_color ;
+        bg_color = rhs.bg_color ;
+        logfont  = rhs.logfont ;
+    }
+
+    Impl(const Impl&)            = delete ;
+    Impl& operator=(const Impl&) = delete ;
+    Impl(Impl&&)                 = default ;
+    Impl& operator=(Impl&&)      = default ;
 } ;
 
-DisplayTextPainter::DisplayTextPainter(
-        LONG font_size,
-        LONG font_weight,
-        const std::string face_name,
-        bool enable_double_buffering)
-: pimpl(std::make_unique<Impl>())
+void DisplayTextPainter::initialize_dc(bool enable_double_buffering)
 {
-    pimpl->display_dc.reset(create_display_dc()) ;
+    pimpl->display_dc = create_display_dc() ;
 
     if(enable_double_buffering) {
         RECT conbinded_rect ;
         ScreenMetrics::get_conbined_metrics(&conbinded_rect) ;
+        const auto width  = ScreenMetrics::width(conbinded_rect) ;
+        const auto height = ScreenMetrics::height(conbinded_rect) ;
 
-        pimpl->display_width  = ScreenMetrics::width(conbinded_rect) ;
-        pimpl->display_height = ScreenMetrics::height(conbinded_rect) ;
-
-        auto raw_bitmap = CreateCompatibleBitmap(
-                pimpl->display_dc.get(),
-                pimpl->display_width,
-                pimpl->display_height) ;
-
+        auto raw_bitmap = CreateCompatibleBitmap(pimpl->display_dc.get(), width, height) ;
         if(!raw_bitmap) {
             throw RUNTIME_EXCEPT("Could not create a compatible bitmap.") ;
         }
@@ -96,14 +81,10 @@ DisplayTextPainter::DisplayTextPainter(
         }
         pimpl->compatible_dc.reset(raw_compatible_dc) ;
 
-        if(SelectObject(
-                    pimpl->compatible_dc.get(),
-                    pimpl->compatible_bitmap.get())) {
-            throw RUNTIME_EXCEPT("Could not assign a bitmap to a device context.") ;
-        }
+        select_obj(pimpl->compatible_dc, pimpl->compatible_bitmap) ;
 
         if(!BitBlt(pimpl->compatible_dc.get(), 0, 0,
-                   pimpl->display_width, pimpl->display_height,
+                   width, height,
                    pimpl->display_dc.get(), 0, 0, SRCCOPY)) {
             throw RUNTIME_EXCEPT("Could not copy color data of a display device context to a compatible device context.") ;
         }
@@ -113,13 +94,49 @@ DisplayTextPainter::DisplayTextPainter(
     else {
         pimpl->hdc = pimpl->display_dc ;
     }
+}
 
+DisplayTextPainter::DisplayTextPainter(
+        LONG font_size,
+        LONG font_weight,
+        const std::string face_name,
+        bool enable_double_buffering)
+: pimpl(std::make_unique<Impl>())
+{
+    initialize_dc(enable_double_buffering) ;
     set_font(font_size, font_weight, std::move(face_name)) ;
+}
+
+void DisplayTextPainter::copy(const DisplayTextPainter& rhs)
+{
+    if(rhs.pimpl == nullptr) return ;
+
+    pimpl->copy_copyable_variables(*(rhs.pimpl)) ;
+
+    initialize_dc(rhs.pimpl->compatible_dc != nullptr) ;
+
+    pimpl->hfont = create_font(rhs.pimpl->logfont) ;
+    select_obj(pimpl->hdc, pimpl->hfont) ;
+
+    set_dc_text_color(pimpl->hdc, rhs.pimpl->fg_color) ;
+    set_dc_back_color(pimpl->hdc, rhs.pimpl->bg_color) ;
 }
 
 DisplayTextPainter::~DisplayTextPainter() noexcept                      = default ;
 DisplayTextPainter::DisplayTextPainter(DisplayTextPainter&&)            = default ;
 DisplayTextPainter& DisplayTextPainter::operator=(DisplayTextPainter&&) = default ;
+
+DisplayTextPainter::DisplayTextPainter(const DisplayTextPainter& rhs)
+: pimpl(std::make_unique<Impl>())
+{
+    copy(rhs) ;
+}
+
+DisplayTextPainter& DisplayTextPainter::operator=(const DisplayTextPainter& rhs)
+{
+    copy(rhs) ;
+    return *this ;
+}
 
 void DisplayTextPainter::set_font(
         LONG font_size,
@@ -143,16 +160,8 @@ void DisplayTextPainter::set_font(
 #endif
     }
 
-    auto raw_font = CreateFontIndirectA(&(pimpl->logfont)) ;
-
-    if(!raw_font) {
-        throw RUNTIME_EXCEPT("Could not create a font.") ;
-    }
-    pimpl->hfont.reset(raw_font) ;
-
-    if(!SelectObject(pimpl->hdc.get(), pimpl->hfont.get())) {
-        throw RUNTIME_EXCEPT("Could not select a font.") ;
-    }
+    pimpl->hfont = create_font(pimpl->logfont) ;
+    select_obj(pimpl->hdc, pimpl->hfont) ;
 }
 
 //foreground color
@@ -202,24 +211,31 @@ void DisplayTextPainter::draw(const std::string& str, int x, int y, int extra)
 }
 
 
-void DisplayTextPainter::update_with_double_buffering()
+void DisplayTextPainter::refresh()
 {
-    if(!pimpl->compatible_dc) return ;
-    if(!BitBlt(pimpl->display_dc.get(), 0, 0,
-               pimpl->display_width, pimpl->display_height,
-               pimpl->compatible_dc.get(), 0, 0, SRCCOPY)) {
-        throw RUNTIME_EXCEPT("Could not copy color data of a compatible device context to a display device context.") ;
+    if(pimpl->compatible_dc) {
+        RECT conbinded_rect ;
+        ScreenMetrics::get_conbined_metrics(&conbinded_rect) ;
+        if(!BitBlt(pimpl->display_dc.get(), 0, 0,
+                   ScreenMetrics::width(conbinded_rect),
+                   ScreenMetrics::height(conbinded_rect),
+                   pimpl->compatible_dc.get(), 0, 0, SRCCOPY)) {
+            throw RUNTIME_EXCEPT("Could not copy color data of a compatible device context to a display device context.") ;
+        }
+    }
+    else {
+        draw("", 0, 0, 0) ;
     }
 }
 
 //static utility functions
-HDC DisplayTextPainter::create_display_dc()
+DisplayTextPainter::hdc_unique_type DisplayTextPainter::create_display_dc()
 {
     auto raw_hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
     if(!raw_hdc) {
         throw RUNTIME_EXCEPT("Could not create HDC of DISPLAY.") ;
     }
-    return raw_hdc ;
+    return hdc_unique_type(raw_hdc, delete_hdc) ;
 }
 
 void DisplayTextPainter::set_dc_text_color(
@@ -237,5 +253,28 @@ void DisplayTextPainter::set_dc_back_color(
 {
     if(SetBkColor(hdc.get(), color) == CLR_INVALID) {
         throw RUNTIME_EXCEPT("Could not set a background color.") ;
+    }
+}
+
+DisplayTextPainter::font_type DisplayTextPainter::create_font(const LOGFONTA& logfont)
+{
+    auto raw_font = CreateFontIndirectA(&logfont) ;
+    if(!raw_font) {
+        throw RUNTIME_EXCEPT("Could not create a font.") ;
+    }
+    return font_type(raw_font, delete_obj) ;
+}
+
+void DisplayTextPainter::select_obj(hdc_type& hdc, const bitmap_type& bitmap)
+{
+    if(!SelectObject(hdc.get(), bitmap.get())) {
+        throw RUNTIME_EXCEPT("The device context could not select a bitmap object.") ;
+    }
+}
+
+void DisplayTextPainter::select_obj(hdc_type& hdc, const font_type& font)
+{
+    if(!SelectObject(hdc.get(), font.get())) {
+        throw RUNTIME_EXCEPT("The device context could not select a font object.") ;
     }
 }

@@ -138,8 +138,11 @@ namespace EasyClick
 
             //Colors
             auto [bk_r, bk_g, bk_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_bkcolor")) ;
+            auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
+
             auto [tx_r, tx_g, tx_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_color")) ;
             auto txcolor = RGB(tx_r, tx_g, tx_b) ;
+
             const unsigned char decay = iParams::get_uc("easy_click_matching_color_decay") ;
             using Utility::to_gray ;
             char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
@@ -154,34 +157,30 @@ namespace EasyClick
                     fontsize,
                     iParams::get_l("easy_click_font_weight"),
                     "Consolas") ;
+            dtp.set_back_color(bkcolor) ;
             dtp.set_text_color(txcolor) ;
-            dtp.set_back_color(bk_r, bk_g, bk_b) ;
 
-            auto dtp_ready(dtp) ;
-            dtp_ready.set_text_color(txcolor_ready) ;
+            auto dtp_weak(dtp) ; //copy construct
+            dtp_weak.set_text_color(txcolor_ready) ;
 
             // A detected positon is the center one of object.
             // And, TextOutA draws from a left-upper coordinate, so must move.
-            const auto delta = fontsize / 2 ;
+            auto align = [fontsize] (auto&& v) {
+                return v - fontsize / 2 ;
+            } ;
 
             auto add_margin = [](const auto& str) {
                 return " " + str + " " ;
             } ;
 
-            //dtp.enable_double_buffering() ;
-            //dtp_ready.enable_double_buffering() ;
-
             using namespace std::chrono ;
             while(input_ft.wait_for(50ms) == std::future_status::timeout) { //about 24 fps
-
                 std::lock_guard<std::mutex> scoped_lock(l_mtx) ; //atomic ---------- (0)
 
                 if(need_draw_count == hints.size()) {
-                    dtp.set_text_color(txcolor) ;
                     for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
                         dtp.draw(add_margin(hints_str[i]),
-                                obj_points[i].x() - delta,
-                                obj_points[i].y() - delta, 1) ;
+                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
                     }
                 }
                 else {
@@ -190,19 +189,16 @@ namespace EasyClick
                             continue ;
                         }
                         dtp.draw(add_margin(hints_str[i]),
-                                obj_points[i].x() - delta,
-                                obj_points[i].y() - delta, 1) ;
+                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
+
                         //overdraw with the weak text color.
-                        dtp_ready.draw(" " + hints_str[i].substr(0, matching_nums[i]),
-                                obj_points[i].x() - delta,
-                                obj_points[i].y() - delta, 1) ;
+                        dtp_weak.draw(" " + hints_str[i].substr(0, matching_nums[i]),
+                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
                     }
-                    dtp_ready.draw("", 0, 0, 0) ; //flush?
                 }
 
-                //dtp.update_display_with_compatibleDC() ;
-                //dtp_ready.update_display_with_compatibleDC() ;
-
+                dtp.refresh() ;
+                dtp_weak.refresh() ;
                 //------------------------------------------------------------------ (0)
             }
 
@@ -298,10 +294,11 @@ namespace EasyClick {
                         AutomationElementMode::AutomationElementMode_None))) {
             throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
         }
-
         if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
             throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
         }
+
+        //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
     }
 
     // ----------------------------
@@ -424,6 +421,14 @@ namespace EasyClick {
         }
         auto elem = UIA::make_SmartElement(elem_raw) ;
 
+        /*
+        auto ft = std::async(std::launch::async, [&elem, &elem_raw] {
+                return elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw) ;
+        }) ;
+        if(FAILED(ft.get())) {
+            throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
+        }
+        */
         if(FAILED(elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
         }
@@ -688,11 +693,7 @@ namespace EasyClick {
         KeyAbsorber::InstantKeyAbsorber ika ;
         KeyLogger lgr ;
 
-        //while(win_vind::update_background()) {
-        while(true) {
-            Sleep(5) ;
-            Utility::get_win_message() ;
-
+        while(win_vind::update_background()) {
             if(!KyLgr::log_as_char(lgr)) {
                 remove_from_back(lgr, 1) ;
                 continue ;

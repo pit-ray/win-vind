@@ -239,8 +239,8 @@ It is the difference between master and latest release.
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
 |☐|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |☐|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
-|☐|Using multi-thread scanning to be faster in EasyClick.|Improve|Low|
-|Now|Support double buffering in EasyClick.|Try|Low|
+|Now|Using multi-thread scanning to be faster in EasyClick.|Improve|Low|
+|Failed|Support double buffering in EasyClick.|Try|Low|
 
 ## License  
 

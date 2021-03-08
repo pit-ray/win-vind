@@ -294,10 +294,11 @@ namespace EasyClick {
                         AutomationElementMode::AutomationElementMode_None))) {
             throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
         }
-
         if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
             throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
         }
+
+        //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
     }
 
     // ----------------------------
@@ -420,7 +421,7 @@ namespace EasyClick {
         }
         auto elem = UIA::make_SmartElement(elem_raw) ;
 
-        /* multi thread scan ?
+        /*
         auto ft = std::async(std::launch::async, [&elem, &elem_raw] {
                 return elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw) ;
         }) ;

@@ -174,7 +174,7 @@ namespace EasyClick
             } ;
 
             using namespace std::chrono ;
-            while(input_ft.wait_for(50ms) == std::future_status::timeout) { //about 24 fps
+            while(input_ft.wait_for(50ms) == std::future_status::timeout) {
                 std::lock_guard<std::mutex> scoped_lock(l_mtx) ; //atomic ---------- (0)
 
                 if(need_draw_count == hints.size()) {
@@ -399,7 +399,6 @@ namespace EasyClick {
             }
 
             //scan GUI objects only at leaves in tree.
-            //get_clickable_point(elem) ;
             try {
                 obj_points.push_back(get_keyboard_focusable_point(elem, window_rect, parent_is_focusable)) ;
             }
@@ -421,14 +420,6 @@ namespace EasyClick {
         }
         auto elem = UIA::make_SmartElement(elem_raw) ;
 
-        /*
-        auto ft = std::async(std::launch::async, [&elem, &elem_raw] {
-                return elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw) ;
-        }) ;
-        if(FAILED(ft.get())) {
-            throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
-        }
-        */
         if(FAILED(elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
         }

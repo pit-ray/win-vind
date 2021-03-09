@@ -156,7 +156,7 @@ namespace EasyClick
             DisplayTextPainter dtp(
                     fontsize,
                     iParams::get_l("easy_click_font_weight"),
-                    "Consolas") ;
+                    iParams::get_s("easy_click_font_name")) ;
             dtp.set_back_color(bkcolor) ;
             dtp.set_text_color(txcolor) ;
 

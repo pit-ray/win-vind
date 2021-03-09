@@ -11,6 +11,7 @@
 #include "ctrl_assets/slider_wl.hpp"
 #include "ctrl_assets/clrpicker_wl.hpp"
 #include "ctrl_assets/choice_wl.hpp"
+#include "ctrl_assets/text_wl.hpp"
 
 namespace wxGUI
 {
@@ -19,12 +20,14 @@ namespace wxGUI
         SliderWithLabel slider ;
         ColourPickerWithLabel color ;
         ChoiceWithLabel choice ;
+        TextWithLabel text ;
 
         explicit Impl(wxWindow* const self)
         : spin(self),
           slider(self),
           color(self),
-          choice(self)
+          choice(self),
+          text(self)
         {}
     } ;
 
@@ -41,11 +44,13 @@ namespace wxGUI
         pimpl->slider.set_sizer(root_sizer, flags) ;
         pimpl->color.set_sizer(root_sizer, flags) ;
         pimpl->choice.set_sizer(root_sizer, flags) ;
+        pimpl->text.set_sizer(root_sizer, flags) ;
 
         pimpl->spin.create("cmd_max_char", 5, 1024, 32) ;
         pimpl->spin.create("cmd_max_history_num", 1, 1024, 10) ;
         pimpl->spin.create("cmd_font_size", 5, 200, 20) ;
         pimpl->slider.create("cmd_font_weight", 0, 1000, 600) ;
+        pimpl->text.create("cmd_font_name") ;
         pimpl->color.create("cmd_font_color") ;
         pimpl->color.create("cmd_font_bkcolor") ;
         pimpl->spin.create("cmd_font_extra", 0, 100, 3) ;
@@ -63,6 +68,7 @@ namespace wxGUI
         pimpl->slider.translate() ;
         pimpl->color.translate() ;
         pimpl->choice.translate() ;
+        pimpl->text.translate() ;
     }
 
     void VirtualCmdLineCtrl::do_load_config() {
@@ -70,6 +76,7 @@ namespace wxGUI
         pimpl->slider.load_config() ;
         pimpl->color.load_config() ;
         pimpl->choice.load_config() ;
+        pimpl->text.load_config() ;
     }
 
     void VirtualCmdLineCtrl::do_load_config_default() {
@@ -77,6 +84,7 @@ namespace wxGUI
         pimpl->slider.load_config_default() ;
         pimpl->color.load_config_default() ;
         pimpl->choice.load_config_default() ;
+        pimpl->text.load_config_default() ;
     }
 
     void VirtualCmdLineCtrl::do_save_config() {
@@ -84,6 +92,7 @@ namespace wxGUI
         pimpl->slider.save_config() ;
         pimpl->color.save_config() ;
         pimpl->choice.save_config() ;
+        pimpl->text.save_config() ;
     }
 
     const wxString VirtualCmdLineCtrl::name() {

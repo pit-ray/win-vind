@@ -164,6 +164,11 @@
         "en": "Font Extra",
         "ja": "文字同士の間隔"
     },
+    "cmd_font_name": {
+        "value": "Consolas",
+        "en": "Font Name",
+        "ja": "フォント名"
+    },
     "cmd_fadeout_time": {
         "value": 5,
         "en": "Fade Out Time (s)",
@@ -317,6 +322,11 @@
         "value": 500,
         "en": "EasyClick Font Weight",
         "ja": "EasyClickのフォントの太さ"
+    },
+    "easy_click_font_name": {
+        "value": "Consolas",
+        "en": "EasyClick Font Name",
+        "ja": "EasyClickのフォント名"
     },
     "easy_click_font_color": {
         "value": "c8c8c8",

@@ -10,6 +10,7 @@
 #include "ctrl_assets/spin_wl.hpp"
 #include "ctrl_assets/slider_wl.hpp"
 #include "ctrl_assets/clrpicker_wl.hpp"
+#include "ctrl_assets/text_wl.hpp"
 
 namespace wxGUI
 {
@@ -17,11 +18,13 @@ namespace wxGUI
         SpinWithLabel spin ;
         SliderWithLabel slider ;
         ColourPickerWithLabel color ;
+        TextWithLabel text ;
 
         explicit Impl(wxWindow* const self)
         : spin(self),
           slider(self),
-          color(self)
+          color(self),
+          text(self)
         {}
     } ;
 
@@ -37,9 +40,11 @@ namespace wxGUI
         pimpl->spin.set_sizer(root_sizer, flags) ;
         pimpl->slider.set_sizer(root_sizer, flags) ;
         pimpl->color.set_sizer(root_sizer, flags) ;
+        pimpl->text.set_sizer(root_sizer, flags) ;
 
         pimpl->spin.create("easy_click_font_size", 5, 200, 14) ;
         pimpl->slider.create("easy_click_font_weight", 0, 1000, 500) ;
+        pimpl->text.create("easy_click_font_name") ;
         pimpl->color.create("easy_click_font_color") ;
         pimpl->color.create("easy_click_font_bkcolor") ;
         pimpl->spin.create("easy_click_matching_color_decay", 0, 255, 100) ;
@@ -52,24 +57,28 @@ namespace wxGUI
         pimpl->spin.translate() ;
         pimpl->slider.translate() ;
         pimpl->color.translate() ;
+        pimpl->text.translate() ;
     }
 
     void EasyClcikCtrl::do_load_config() {
         pimpl->spin.load_config() ;
         pimpl->slider.load_config() ;
         pimpl->color.load_config() ;
+        pimpl->text.load_config() ;
     }
 
     void EasyClcikCtrl::do_load_config_default() {
         pimpl->spin.load_config_default() ;
         pimpl->slider.load_config_default() ;
         pimpl->color.load_config_default() ;
+        pimpl->text.load_config_default() ;
     }
 
     void EasyClcikCtrl::do_save_config() {
         pimpl->spin.save_config() ;
         pimpl->slider.save_config() ;
         pimpl->color.save_config() ;
+        pimpl->text.save_config() ;
     }
 
     const wxString EasyClcikCtrl::name() {

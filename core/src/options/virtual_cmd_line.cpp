@@ -45,7 +45,7 @@ void VirtualCmdLine::do_enable() const
     pimpl->dtp.set_font(
             iParams::get_l("cmd_font_size"),
             iParams::get_l("cmd_font_weight"),
-            "Consolas") ;
+            iParams::get_s("cmd_font_name")) ;
 
     pimpl->dtp.set_text_color(iParams::get_s("cmd_font_color")) ;
     pimpl->dtp.set_back_color(iParams::get_s("cmd_font_bkcolor")) ;

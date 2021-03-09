@@ -10,7 +10,7 @@
 #include "key_binder.hpp"
 #include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
-#include "move_cursor.hpp"
+#include "edi_move_caret.hpp"
 #include "screen_metrics.hpp"
 #include "utility.hpp"
 #include "win_vind.hpp"
@@ -73,7 +73,7 @@ void SwitchWindow::sprocess(
 
         auto matched_func = KeyBinder::find_func(
                 logger, nullptr, false,
-                ModeManager::Mode::Normal) ;
+                ModeManager::Mode::EdiNormal) ;
 
         if(!matched_func) {
             logger.clear() ;
@@ -83,11 +83,11 @@ void SwitchWindow::sprocess(
         if(matched_func->is_callable()) {
             const auto name = matched_func->name() ;
             logger.clear() ;
-            if(name == MoveLeft::sname()) {
+            if(name == EdiMoveCaretLeft::sname()) {
                 preserve_pushup(VKC_LEFT) ;
                 continue ;
             }
-            if(name == MoveRight::sname()) {
+            if(name == EdiMoveCaretRight::sname()) {
                 preserve_pushup(VKC_RIGHT) ;
                 continue ;
             }

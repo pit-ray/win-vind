@@ -5,11 +5,16 @@
   <p align="center"><b>Simple Vim Key Binder for Windows</b></p>  
 </p>  
 
-## Code status
-<table>
+<table align="center">
+    <tr>
+        <th colspan="2">Code status</th>
+        <th colspan="2">Build status</th>
+    </tr>
     <tr>
         <th>Coverity</th>
         <th>Codacy</th>
+        <th>MinGW-w64</th>
+        <th>Visual Studio 2019</th>
     </tr>
     <tr>
         <td align="center">
@@ -18,16 +23,6 @@
         <td align="center">
             <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>
         </td>
-    </tr>
-</table>
-
-## Build status
-<table>
-    <tr>
-        <th>MinGW-w64 GNU 8.1.0</th>
-        <th>Visual Studio 2019</th>
-    </tr>
-    <tr>
         <td align="center">
             <a href="https://travis-ci.org/pit-ray/win-vind"><img src="https://travis-ci.org/pit-ray/win-vind.svg?branch=master" /></a>
         </td>

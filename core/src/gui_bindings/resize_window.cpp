@@ -522,10 +522,6 @@ namespace ResizeWindow
             return TRUE ;
         }
 
-        if(minfo.hmonitor != fginfo->hmonitor) {
-            return TRUE ;
-        }
-
         g_near_hwnds[ScreenMetrics::l2_distance_nosq(rect, fginfo->rect) / 100] = hwnd ;
         return TRUE ;
     }

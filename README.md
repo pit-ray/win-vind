@@ -248,7 +248,7 @@ It is the difference between master and latest release.
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
 |☐|Add a reference option in a command line.|Feature|Mid|
 |☐|Update Notification|Feature|Mid|
-|Ready|Support multi-monitor in `Exchange windows`|Improve|Mid|
+|✅|Support multi-monitor in `Exchange windows`|Improve|Mid|
 |Ready|Support multi-monitor in `Snap window`|Improve|Mid|
 |Ready|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|Mid|
 |☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Low|

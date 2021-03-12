@@ -208,11 +208,11 @@ void SelectLeftWindow::sprocess(
 
     auto calc_distance = [] (
             const auto& rect,
-            const auto& erect,
+            const auto& UNUSED(erect),
             auto UNUSED(cx), auto cy,
-            auto UNUSED(ecx), auto ecy) {
+            auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(erect.right, ecy, rect.left, cy) / 100 ;
+        return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
     } ;
 
     SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
@@ -241,11 +241,11 @@ void SelectRightWindow::sprocess(
 
     auto calc_distance = [] (
             const auto& rect,
-            const auto& erect,
+            const auto& UNUSED(erect),
             auto UNUSED(cx), auto cy,
-            auto UNUSED(ecx), auto ecy) {
+            auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(erect.left, ecy, rect.right, cy) / 100 ;
+        return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
     } ;
 
     SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
@@ -274,11 +274,11 @@ void SelectUpperWindow::sprocess(
 
     auto calc_distance = [] (
             const auto& rect,
-            const auto& erect,
+            const auto& UNUSED(erect),
             auto cx, auto UNUSED(cy),
-            auto ecx, auto UNUSED(ecy)) {
+            auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(ecx, erect.bottom, cx, rect.top) / 100 ;
+        return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
     } ;
 
     SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
@@ -307,11 +307,11 @@ void SelectLowerWindow::sprocess(
 
     auto calc_distance = [] (
             const auto& rect,
-            const auto& erect,
+            const auto& UNUSED(erect),
             auto cx, auto UNUSED(cy),
-            auto ecx, auto UNUSED(ecy)) {
+            auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(ecx, erect.top, cx, rect.bottom) / 100 ;
+        return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
     } ;
 
     SelectWindow::select_nearest_window(is_if_target, calc_distance) ;

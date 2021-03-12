@@ -238,7 +238,6 @@ It is the difference between master and latest release.
 
 |State|Description|Type|Priority|
 |:---:|:---|:---:|:---:|
-|Ready|`Select Window` respect z-order|Bug|High|
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
 |Ready|Rotate windows without arrangement|Improve|High|
 |☐|Improve customizability|Architecture|High|

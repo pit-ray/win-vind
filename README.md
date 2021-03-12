@@ -5,7 +5,7 @@
   <p align="center"><b>Simple Vim Key Binder for Windows</b></p>  
 </p>  
 
-## Code Status
+## Code status
 <table>
     <tr>
         <th>Coverity</th>

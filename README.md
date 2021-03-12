@@ -253,8 +253,6 @@ It is the difference between master and latest release.
 |☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Low|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
 |☐|Modern GUI (use WinUI3 or Flutter2?)|Change|Low|
-|Failed|Using multi-thread scanning to be faster in EasyClick.|Improve|Low|
-|Failed|Support double buffering in EasyClick.|Try|Low|
 
 ## License  
 

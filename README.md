@@ -12,7 +12,6 @@
   <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>
   <br>  
   <a href="https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt" target="_blank"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" /></a> 
-  <a href="https://pit-ray.github.io/win-vind/" target="_blank"><img src="https://img.shields.io/badge/docs-doxygen-blue.svg" /></a> 
   <a href="https://github.com/pit-ray/win-vind/releases/latest"><img src="https://img.shields.io/github/v/release/pit-ray/win-vind" /></a>
   <a href="https://pit-ray.github.io/win-vind/downloads/" ><img src="https://img.shields.io/github/downloads/pit-ray/win-vind/total" /></a>
   <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/pit-ray/win-vind">
@@ -229,7 +228,7 @@ It is the difference between master and latest release.
 |☐|Rotate windows without arrangement|Improve|High|
 |☐|Improve customizability|Architecture|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
-|☐|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
+|✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Bug reporting feature|Feature|Mid|
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
 |☐|Add a reference option in a command line.|Feature|Mid|

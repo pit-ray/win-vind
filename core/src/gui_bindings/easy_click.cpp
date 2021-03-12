@@ -627,7 +627,7 @@ namespace EasyClick {
 
     // [Return value] count that need to draw
     inline static std::size_t match_with_hints(
-            const CharLogger& lgr,
+            const KeyLoggerBase* const pc_lgr,
             const std::vector<hint_t>& hints,
             std::vector<unsigned char>& matching_nums,
             long* p_matched_index=nullptr) {
@@ -636,23 +636,23 @@ namespace EasyClick {
             *p_matched_index = -1 ;
         }
 
-        if(lgr.empty()) {
+        if(pc_lgr->empty()) {
             return hints.size() ; //all is matched
         }
 
         std::size_t draw_count = 0 ;
         for(std::size_t i = 0 ; i < hints.size() ; i ++) {
             std::size_t seq_idx ;
-            for(seq_idx = 0 ; seq_idx < lgr.size() ; seq_idx ++) {
+            for(seq_idx = 0 ; seq_idx < pc_lgr->size() ; seq_idx ++) {
                 try {
-                    if(!lgr.at(seq_idx).is_containing(hints[i].at(seq_idx))) {
+                    if(!pc_lgr->at(seq_idx).is_containing(hints[i].at(seq_idx))) {
                         break ;
                     }
                 }
                 catch(const std::out_of_range&) {break ;}
             }
 
-            if(seq_idx == lgr.size()) {
+            if(seq_idx == pc_lgr->size()) {
                 draw_count ++ ;
                 matching_nums[i] = static_cast<unsigned char>(seq_idx) ;
             }
@@ -679,9 +679,8 @@ namespace EasyClick {
             std::mutex& mtx,
             const unsigned char sendkey) {
 
-        using Utility::remove_from_back ;
         KeyAbsorber::InstantKeyAbsorber ika ;
-        CharLogger lgr ;
+        VKCLogger lgr ;
 
         while(win_vind::update_background()) {
             lgr.update() ;
@@ -709,7 +708,7 @@ namespace EasyClick {
 
                 std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic ---------- (1)
 
-                need_draw_count = match_with_hints(lgr, hints, matching_nums) ; //update matching list
+                need_draw_count = match_with_hints(&lgr, hints, matching_nums) ; //update matching list
 
                 continue ; //------------------------------------------------------ (1)
             }
@@ -722,7 +721,7 @@ namespace EasyClick {
             std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic -------------- (2)
 
             long full_match_idx ;
-            need_draw_count = match_with_hints(lgr, hints, matching_nums, &full_match_idx) ;
+            need_draw_count = match_with_hints(&lgr, hints, matching_nums, &full_match_idx) ;
 
             if(full_match_idx >= 0) {
                 SetCursorPos(points[full_match_idx].x(), points[full_match_idx].y()) ;
@@ -732,17 +731,10 @@ namespace EasyClick {
                 return ;
             }
 
-            if(need_draw_count == 0) {
+            if(need_draw_count == 0)
                 lgr.remove_from_back(1) ;
-            }
-            else {
-                for(const auto& key : lgr.latest()) {
-                    KeyAbsorber::release_virtually(key) ;
-                }
-
+            else
                 Utility::refresh_display(hwnd) ;
-            }
-
             //--------------------------------------------------------------------- (2)
         }
     }

@@ -59,6 +59,13 @@ public:
 
 namespace KeyLoggerUtility
 {
+    // Extracts a number from a string.
+    // Its range is from the appearance of the number to a non-numeric character.
+    // Example:
+    //      std::string: hBah0784hlk503
+    //      -> std::stoi(0784)
+    //      uint: 784
+    //
     unsigned int extract_num(const std::string str) ;
 
     namespace Debug {

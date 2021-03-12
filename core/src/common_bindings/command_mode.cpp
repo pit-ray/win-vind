@@ -53,7 +53,6 @@ const std::string CommandMode::sname() noexcept
 #define BREAK_LOOP    (false)
 inline static bool _main_loop() {
     using namespace CmdMode ;
-    using Utility::remove_from_back ;
 
     auto& p_cmdp = cmd_hist.at(cmd_hist_index) ;
     auto& lgr    = p_cmdp->logger ;

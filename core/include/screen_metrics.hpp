@@ -108,8 +108,11 @@ namespace ScreenMetrics {
         RECT work_rect    = {0, 0, 0, 0} ;
         HMONITOR hmonitor = NULL ;
     } ;
-    inline void get_monitor_metrics(HWND hwnd, MonitorInfo& minfo) {
-        minfo.hmonitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST) ;
+
+    inline void get_monitor_metrics(HMONITOR hmonitor, MonitorInfo& minfo) {
+        if(hmonitor == NULL) return ;
+        minfo.hmonitor = hmonitor ;
+
         MONITORINFO native_minfo ;
         native_minfo.cbSize = sizeof(MONITORINFO) ;
         if(!GetMonitorInfo(minfo.hmonitor, &native_minfo)) {
@@ -118,6 +121,20 @@ namespace ScreenMetrics {
 
         copy(minfo.rect, native_minfo.rcMonitor) ;
         copy(minfo.work_rect, native_minfo.rcWork) ;
+    }
+
+
+    inline void get_monitor_metrics(HWND hwnd, MonitorInfo& minfo) {
+        if(hwnd == NULL) return ;
+        get_monitor_metrics(MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST), minfo) ;
+    }
+
+    inline void get_monitor_metrics(const POINT& pos, MonitorInfo& minfo) {
+        get_monitor_metrics(MonitorFromPoint(pos, MONITOR_DEFAULTTONEAREST), minfo) ;
+    }
+
+    inline void get_monitor_metrics(POINT&& pos, MonitorInfo& minfo) {
+        get_monitor_metrics(MonitorFromPoint(std::move(pos), MONITOR_DEFAULTTONEAREST), minfo) ;
     }
 
     namespace Debug {

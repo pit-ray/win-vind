@@ -95,6 +95,40 @@ namespace ResizeWindow {
 
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
     }
+
+    inline static void snap_foreground_window(
+            const std::function<void(RECT&, const RECT&)>& calc_half_size,
+            const std::function<POINT(const RECT&)>& next_monitor_pos) {
+
+        auto hwnd = GetForegroundWindow() ;
+        if(hwnd == NULL) {
+            throw RUNTIME_EXCEPT("There is not the foreground window.") ;
+        }
+
+        ScreenMetrics::MonitorInfo minfo ;
+        ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+
+        RECT half_rect ;
+        calc_half_size(half_rect, minfo.work_rect) ;
+
+        RECT cur_rect ;
+        if(!GetWindowRect(hwnd, &cur_rect)) {
+            throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
+        }
+
+        if(ScreenMetrics::is_equel(cur_rect, half_rect)) {
+            ScreenMetrics::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
+
+            calc_half_size(half_rect, minfo.work_rect) ;
+        }
+
+        ResizeWindow::resize(
+                hwnd,
+                half_rect.left,
+                half_rect.top,
+                ScreenMetrics::width(half_rect),
+                ScreenMetrics::height(half_rect)) ;
+    }
 }
 
 //SnapCurrentWindow2Left
@@ -111,20 +145,18 @@ void SnapCurrentWindow2Left::sprocess(
 {
     if(!first_call) return ;
 
-    auto hwnd = GetForegroundWindow() ;
-    if(hwnd == NULL) {
-        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-    }
+    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+        rect.left   = mrect.left ;
+        rect.top    = mrect.top ;
+        rect.right  = rect.left + ScreenMetrics::width(mrect) / 2 ;
+        rect.bottom = mrect.bottom ;
+    } ;
 
-    ScreenMetrics::MonitorInfo minfo ;
-    ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+    auto next_monitor_pos = [] (const RECT& rect) {
+        return POINT{rect.left - 100, ScreenMetrics::center_y(rect)} ;
+    } ;
 
-    ResizeWindow::resize(
-            hwnd,
-            minfo.work_rect.left,
-            minfo.work_rect.top,
-            ScreenMetrics::width(minfo.work_rect) / 2,
-            ScreenMetrics::height(minfo.work_rect)) ;
+    ResizeWindow::snap_foreground_window(calc_half_size, next_monitor_pos) ;
 }
 
 
@@ -142,21 +174,18 @@ void SnapCurrentWindow2Right::sprocess(
 {
     if(!first_call) return ;
 
-    auto hwnd = GetForegroundWindow() ;
-    if(hwnd == NULL) {
-        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-    }
+    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+        rect.left   = mrect.left + ScreenMetrics::width(mrect) / 2 ;
+        rect.top    = mrect.top ;
+        rect.right  = mrect.right ;
+        rect.bottom = mrect.bottom ;
+    } ;
 
-    ScreenMetrics::MonitorInfo minfo ;
-    ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+    auto next_monitor_pos = [] (const RECT& rect) {
+        return POINT{rect.right + 100, ScreenMetrics::center_y(rect)} ;
+    } ;
 
-    const auto half_of_width = ScreenMetrics::width(minfo.work_rect) / 2 ;
-    ResizeWindow::resize(
-            hwnd,
-            minfo.work_rect.left + half_of_width,
-            minfo.work_rect.top,
-            half_of_width,
-            ScreenMetrics::height(minfo.work_rect)) ;
+    ResizeWindow::snap_foreground_window(calc_half_size, next_monitor_pos) ;
 }
 
 
@@ -174,20 +203,18 @@ void SnapCurrentWindow2Top::sprocess(
 {
     if(!first_call) return ;
 
-    auto hwnd = GetForegroundWindow() ;
-    if(hwnd == NULL) {
-        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-    }
+    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+        rect.left   = mrect.left ;
+        rect.top    = mrect.top ;
+        rect.right  = mrect.right ;
+        rect.bottom = rect.top + ScreenMetrics::height(mrect) / 2 ;
+    } ;
 
-    ScreenMetrics::MonitorInfo minfo ;
-    ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+    auto next_monitor_pos = [] (const RECT& rect) {
+        return POINT{ScreenMetrics::center_x(rect), rect.top - 100} ;
+    } ;
 
-    ResizeWindow::resize(
-            hwnd,
-            minfo.work_rect.left,
-            minfo.work_rect.top,
-            ScreenMetrics::width(minfo.work_rect),
-            ScreenMetrics::height(minfo.work_rect) / 2) ;
+    ResizeWindow::snap_foreground_window(calc_half_size, next_monitor_pos) ;
 }
 
 //SnapCurrentWindow2Bottom
@@ -204,21 +231,18 @@ void SnapCurrentWindow2Bottom::sprocess(
 {
     if(!first_call) return ;
 
-    auto hwnd = GetForegroundWindow() ;
-    if(hwnd == NULL) {
-        throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-    }
+    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+        rect.left   = mrect.left ;
+        rect.top    = mrect.top + ScreenMetrics::height(mrect) / 2 ;
+        rect.right  = mrect.right ;
+        rect.bottom = mrect.bottom ;
+    } ;
 
-    ScreenMetrics::MonitorInfo minfo ;
-    ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+    auto next_monitor_pos = [] (const RECT& rect) {
+        return POINT{ScreenMetrics::center_x(rect), rect.bottom + 100} ;
+    } ;
 
-    const auto half_of_height = ScreenMetrics::height(minfo.work_rect) / 2 ;
-    ResizeWindow::resize(
-            hwnd,
-            minfo.work_rect.left,
-            minfo.work_rect.top + half_of_height,
-            ScreenMetrics::width(minfo.work_rect),
-            half_of_height) ;
+    ResizeWindow::snap_foreground_window(calc_half_size, next_monitor_pos) ;
 }
 
 

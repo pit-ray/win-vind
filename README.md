@@ -232,6 +232,7 @@ It is the difference between master and latest release.
 |☐|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Bug reporting feature|Feature|Mid|
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
+|☐|Add a reference option in a command line.|Feature|Mid|
 |☐|Update Notification|Feature|Mid|
 |☐|Support multi-monitor in `Exchange windows`|Improve|Mid|
 |☐|Support multi-monitor in `Snap window`|Improve|Mid|

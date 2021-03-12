@@ -238,9 +238,9 @@ It is the difference between master and latest release.
 
 |State|Description|Type|Priority|
 |:---:|:---|:---:|:---:|
-|☐|`Select Window` respect z-order|Improve|High|
+|Ready|`Select Window` respect z-order|Bug|High|
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
-|☐|Rotate windows without arrangement|Improve|High|
+|Ready|Rotate windows without arrangement|Improve|High|
 |☐|Improve customizability|Architecture|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
@@ -248,12 +248,12 @@ It is the difference between master and latest release.
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
 |☐|Add a reference option in a command line.|Feature|Mid|
 |☐|Update Notification|Feature|Mid|
-|☐|Support multi-monitor in `Exchange windows`|Improve|Mid|
-|☐|Support multi-monitor in `Snap window`|Improve|Mid|
-|☐|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|Mid|
+|Ready|Support multi-monitor in `Exchange windows`|Improve|Mid|
+|Ready|Support multi-monitor in `Snap window`|Improve|Mid|
+|Ready|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|Mid|
 |☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Low|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
-|☐|Modern GUI (use WinUI 3?)|Change|Low|
+|☐|Modern GUI (use WinUI3 or Flutter2?)|Change|Low|
 |Failed|Using multi-thread scanning to be faster in EasyClick.|Improve|Low|
 |Failed|Support double buffering in EasyClick.|Try|Low|
 

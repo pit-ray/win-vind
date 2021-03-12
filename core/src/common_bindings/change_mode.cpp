@@ -24,8 +24,8 @@ const std::string Change2Normal::sname() noexcept
 void Change2Normal::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr),
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
     using namespace ModeManager ;
@@ -59,8 +59,8 @@ const std::string Change2Insert::sname() noexcept
 void Change2Insert::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr),
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
     using namespace ModeManager ;
@@ -86,8 +86,8 @@ const std::string Change2Visual::sname() noexcept
 void Change2Visual::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr),
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr),
         const bool vclmodeout)
 {
     using namespace ModeManager ;
@@ -106,8 +106,8 @@ const std::string MyConfigWindowNormal::sname() noexcept
 void MyConfigWindowNormal::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     using namespace ModeManager ;
     if(!first_call) return ;
@@ -126,8 +126,8 @@ const std::string MyConfigWindowInsert::sname() noexcept
 void MyConfigWindowInsert::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     using namespace ModeManager ;
     if(!first_call) return ;

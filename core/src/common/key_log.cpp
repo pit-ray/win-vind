@@ -50,8 +50,7 @@ KeyLog::KeyLog(const KeyLog& rhs)
 
 KeyLog& KeyLog::operator=(const KeyLog& rhs)
 {
-    if(!(rhs.pimpl)) return *this ; //if already moved, not copy
-    *pimpl = *rhs.pimpl ;
+    if(rhs.pimpl) *pimpl = *rhs.pimpl ;
     return *this ;
 }
 

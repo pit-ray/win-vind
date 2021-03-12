@@ -15,8 +15,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit SCRedo() ;
@@ -39,8 +39,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     explicit SCUndo() ;

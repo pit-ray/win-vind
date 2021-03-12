@@ -1,6 +1,5 @@
 #include "edi_jump_caret.hpp"
 
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "simple_text_selecter.hpp"
@@ -19,8 +18,8 @@ bool EdiJumpCaret2BOL::is_for_moving_caret() const noexcept
 void EdiJumpCaret2BOL::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(ModeManager::is_edi_visual())
@@ -42,8 +41,8 @@ bool EdiJumpCaret2EOL::is_for_moving_caret() const noexcept
 void EdiJumpCaret2EOL::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -73,8 +72,8 @@ bool EdiNJumpCaret2Line_DfBOF::is_for_moving_caret() const noexcept
 void EdiNJumpCaret2Line_DfBOF::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
@@ -85,9 +84,9 @@ void EdiNJumpCaret2Line_DfBOF::sprocess(
 
     auto rn = repeat_num ;
     if(parent_charlgr != nullptr) {
-        auto str = KyLgr::log2str(*parent_charlgr) ;
+        auto str = parent_charlgr->to_str() ;
         if(str.empty()) return ;
-        rn = KyLgr::extract_num(str) ;
+        rn = KeyLoggerUtility::extract_num(str) ;
     }
 
     if(ModeManager::is_edi_visual()) {
@@ -119,8 +118,8 @@ bool EdiNJumpCaret2Line_DfEOF::is_for_moving_caret() const noexcept
 void EdiNJumpCaret2Line_DfEOF::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 

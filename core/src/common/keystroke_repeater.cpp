@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <random>
+#include <mutex>
 
 #include "interval_timer.hpp"
 
@@ -44,17 +45,40 @@ static constexpr auto REPEAT_SAMPLING_DELTA_US = 25'600 ;
 static constexpr auto INITIAL_VELOCITY         = 0.000'1f ;
 
 struct KeyStrokeRepeater::Impl {
-    IntervalTimer timer{REPEAT_SAMPLING_DELTA_US} ;
-    float v = INITIAL_VELOCITY ;
-    system_clock::time_point start_time{system_clock::now()} ;
+    IntervalTimer timer ;
+    float v ;
+    system_clock::time_point start_time ;
     const milliseconds wait_time ;
+    std::mutex mtx ;
 
-    explicit Impl(const unsigned int wait_time_for_starting_ms)
+    explicit Impl(const unsigned int wait_time_for_starting_ms=512)
     : timer(REPEAT_SAMPLING_DELTA_US),
       v(INITIAL_VELOCITY),
       start_time(system_clock::now()),
-      wait_time(wait_time_for_starting_ms)
+      wait_time(wait_time_for_starting_ms),
+      mtx()
     {}
+
+    virtual ~Impl() noexcept = default ;
+
+    Impl(const Impl& rhs)
+    : timer(rhs.timer),
+      v(rhs.v),
+      start_time(rhs.start_time),
+      wait_time(rhs.wait_time),
+      mtx()
+    {}
+
+    Impl& operator=(const Impl& rhs)
+    {
+        timer      = rhs.timer ;
+        v          = rhs.v ;
+        start_time = rhs.start_time ;
+        return *this ;
+    }
+
+    Impl(Impl&& rhs)            = default ;
+    Impl& operator=(Impl&& rhs) = default ;
 } ;
 
 KeyStrokeRepeater::KeyStrokeRepeater(const unsigned int wait_time_for_starting_ms)
@@ -62,15 +86,27 @@ KeyStrokeRepeater::KeyStrokeRepeater(const unsigned int wait_time_for_starting_m
 {}
 
 KeyStrokeRepeater::~KeyStrokeRepeater() noexcept                     = default ;
+
 KeyStrokeRepeater::KeyStrokeRepeater(KeyStrokeRepeater&&)            = default ;
 KeyStrokeRepeater& KeyStrokeRepeater::operator=(KeyStrokeRepeater&&) = default ;
+
+KeyStrokeRepeater::KeyStrokeRepeater(const KeyStrokeRepeater& rhs)
+: pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+{}
+KeyStrokeRepeater& KeyStrokeRepeater::operator=(const KeyStrokeRepeater& rhs)
+{
+    if(rhs.pimpl) *pimpl = *(rhs.pimpl) ;
+    return *this ;
+}
 
 void KeyStrokeRepeater::reset() noexcept {
     pimpl->v = INITIAL_VELOCITY ;
     pimpl->start_time = system_clock::now() ;
 }
 
-bool KeyStrokeRepeater::is_pressed() {
+bool KeyStrokeRepeater::is_pressed() const {
+    std::lock_guard<std::mutex> scoped_lock(pimpl->mtx) ;
+
     const auto dt = _compute_deltat(pimpl->start_time) ;
 
     if(dt < pimpl->wait_time) return false ;

@@ -24,8 +24,8 @@ const std::string EdiNRemoveEOL::sname() noexcept
 void EdiNRemoveEOL::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     auto remove = [] {
         KeybrdEventer::pushup(VKC_END) ;

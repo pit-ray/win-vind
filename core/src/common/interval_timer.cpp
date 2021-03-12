@@ -12,12 +12,32 @@ struct IntervalTimer::Impl
     bool first_call ;
     mutex mtx ;
 
-    explicit Impl(const int delta_t)
+    explicit Impl(const int delta_t=30)
     : delta_time(static_cast<microseconds>(delta_t)),
       start_time(system_clock::now()),
       first_call(true),
       mtx()
     {}
+
+    virtual ~Impl() noexcept = default ;
+
+    Impl(const Impl& rhs)
+    : delta_time(rhs.delta_time),
+      start_time(rhs.start_time),
+      first_call(rhs.first_call),
+      mtx()
+    {}
+
+    Impl& operator=(const Impl& rhs)
+    {
+        delta_time = rhs.delta_time ;
+        start_time = rhs.start_time ;
+        first_call = rhs.first_call ;
+        return *this ;
+    }
+
+    Impl(Impl&& rhs)            = default ;
+    Impl& operator=(Impl&& rhs) = default ;
 } ;
 
 
@@ -26,6 +46,16 @@ IntervalTimer::IntervalTimer(const int delta_us)
 {}
 
 IntervalTimer::~IntervalTimer() noexcept = default ;
+
+IntervalTimer::IntervalTimer(const IntervalTimer& rhs)
+: pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+{}
+
+IntervalTimer& IntervalTimer::operator=(const IntervalTimer& rhs)
+{
+    if(rhs.pimpl) *pimpl = *(rhs.pimpl) ;
+    return *this ;
+}
 
 IntervalTimer::IntervalTimer(IntervalTimer&&)               = default ;
 IntervalTimer& IntervalTimer::operator=(IntervalTimer&&)    = default ;

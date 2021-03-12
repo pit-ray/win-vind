@@ -9,8 +9,8 @@ const std::string MyBinding::sname() noexcept
 void MyBinding::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* parent_vkclgr,
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const parent_vkclgr,
+        const CharLogger* const parent_charlgr)
 {
     if(first_call) {
         MouseEventer::click(VKC_MOUSE_LEFT) ; //left click

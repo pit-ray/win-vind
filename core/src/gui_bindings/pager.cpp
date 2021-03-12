@@ -13,8 +13,8 @@ const string Move2NextPage::sname() noexcept
 void Move2NextPage::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
@@ -32,8 +32,8 @@ const string Move2PrevPage::sname() noexcept
 void Move2PrevPage::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++)

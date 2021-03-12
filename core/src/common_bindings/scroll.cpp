@@ -44,8 +44,8 @@ const string ScrollUp::sname() noexcept
 void ScrollUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     auto scroll = [first_call, repeat_num] {
         MouseEventer::vscroll(iParams::get_i("yscroll_speed") \
@@ -84,8 +84,8 @@ const string ScrollDown::sname() noexcept
 void ScrollDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     auto scroll = [first_call, repeat_num] {
         MouseEventer::vscroll(-iParams::get_i("yscroll_speed") \
@@ -124,8 +124,8 @@ const string ScrollMidUp::sname() noexcept
 void ScrollMidUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;
@@ -160,8 +160,8 @@ const string ScrollMidDown::sname() noexcept
 void ScrollMidDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;
@@ -196,8 +196,8 @@ const string ScrollPageUp::sname() noexcept
 void ScrollPageUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;
@@ -232,8 +232,8 @@ const string ScrollPageDown::sname() noexcept
 void ScrollPageDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;
@@ -269,8 +269,8 @@ const string ScrollLeft::sname() noexcept
 void ScrollLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;
@@ -305,8 +305,8 @@ const string ScrollRight::sname() noexcept
 void ScrollRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;
@@ -341,8 +341,8 @@ const string ScrollMidLeft::sname() noexcept
 void ScrollMidLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;
@@ -377,8 +377,8 @@ const string ScrollMidRight::sname() noexcept
 void ScrollMidRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) {
         pimpl->timer.reset() ;

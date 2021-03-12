@@ -2,7 +2,6 @@
 
 #include "interval_timer.hpp"
 #include "key_absorber.hpp"
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "keystroke_repeater.hpp"
 #include "mode_manager.hpp"
@@ -79,8 +78,8 @@ bool EdiMoveCaretLeft::is_for_moving_caret() const noexcept
 void EdiMoveCaretLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     _common_process(first_call, repeat_num, pimpl->ksr,
@@ -114,8 +113,8 @@ bool EdiMoveCaretRight::is_for_moving_caret() const noexcept
 void EdiMoveCaretRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     _common_process(first_call, repeat_num, pimpl->ksr,
@@ -149,8 +148,8 @@ bool EdiMoveCaretUp::is_for_moving_caret() const noexcept
 void EdiMoveCaretUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr) const
 {
     auto v_press = [] {
         if(SimpleTextSelecter::is_first_line_selection())
@@ -162,10 +161,10 @@ void EdiMoveCaretUp::sprocess(
     auto n_press = [] {KeybrdEventer::pushup(VKC_UP) ;} ;
 
     if(parent_charlgr != nullptr) {
-        auto str = KyLgr::log2str(*parent_charlgr) ;
+        auto str = parent_charlgr->to_str() ;
         if(str.empty()) return ;
 
-        if(auto num = KyLgr::extract_num(str)) {
+        if(auto num = KeyLoggerUtility::extract_num(str)) {
             _common_process(true, num, pimpl->ksr, v_press, n_press) ;
         }
     }
@@ -201,8 +200,8 @@ bool EdiMoveCaretDown::is_for_moving_caret() const noexcept
 void EdiMoveCaretDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr) const
 {
     auto v_press = [] {
         if(SimpleTextSelecter::is_first_line_selection())
@@ -218,10 +217,10 @@ void EdiMoveCaretDown::sprocess(
     auto n_press = [] {KeybrdEventer::pushup(VKC_DOWN) ;} ;
 
     if(parent_charlgr != nullptr) {
-        auto str = KyLgr::log2str(*parent_charlgr) ;
+        auto str = parent_charlgr->to_str() ;
         if(str.empty()) return ;
 
-        if(auto num = KyLgr::extract_num(str)) {
+        if(auto num = KeyLoggerUtility::extract_num(str)) {
             _common_process(true, num, pimpl->ksr, v_press, n_press) ;
         }
     }
@@ -256,8 +255,8 @@ bool EdiNMoveCaretwordsForward::is_for_moving_caret() const noexcept
 void EdiNMoveCaretwordsForward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     _common_process(first_call, repeat_num, pimpl->ksr,
@@ -291,8 +290,8 @@ bool EdiNMoveCaretwordsBackward::is_for_moving_caret() const noexcept
 void EdiNMoveCaretwordsBackward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     _common_process(first_call, repeat_num, pimpl->ksr,
@@ -326,8 +325,8 @@ bool EdiNMoveCaretWORDSForward::is_for_moving_caret() const noexcept
 void EdiNMoveCaretWORDSForward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     _common_process(first_call, repeat_num, pimpl->ksr,
@@ -361,8 +360,8 @@ bool EdiNMoveCaretWORDSBackward::is_for_moving_caret() const noexcept
 void EdiNMoveCaretWORDSBackward::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     _common_process(first_call, repeat_num, pimpl->ksr,

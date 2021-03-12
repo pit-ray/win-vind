@@ -9,8 +9,8 @@ struct CommandMode : public BindedFuncWithCreator<CommandMode>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
 } ;
 
 #endif

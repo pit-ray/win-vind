@@ -4,7 +4,6 @@
 #include "i_params.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mouse_eventer.hpp"
 #include "msg_logger.hpp"
@@ -220,8 +219,8 @@ const std::string EasyClickLeft::sname() noexcept
 void EasyClickLeft::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) {
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) {
     if(first_call) {
         EasyClick::do_easy_click(VKC_MOUSE_LEFT) ;
     }
@@ -235,8 +234,8 @@ const std::string EasyClickRight::sname() noexcept
 void EasyClickRight::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) {
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) {
     if(first_call) {
         EasyClick::do_easy_click(VKC_MOUSE_RIGHT) ;
     }
@@ -250,8 +249,8 @@ const std::string EasyClickMid::sname() noexcept
 void EasyClickMid::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) {
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) {
     if(first_call) {
         EasyClick::do_easy_click(VKC_MOUSE_MID) ;
     }
@@ -265,8 +264,8 @@ const std::string EasyClickHover::sname() noexcept
 void EasyClickHover::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) {
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) {
     if(first_call) {
         EasyClick::do_easy_click(VKC_UNDEFINED) ;
     }
@@ -628,7 +627,7 @@ namespace EasyClick {
 
     // [Return value] count that need to draw
     inline static std::size_t match_with_hints(
-            const KeyLogger& lgr,
+            const CharLogger& lgr,
             const std::vector<hint_t>& hints,
             std::vector<unsigned char>& matching_nums,
             long* p_matched_index=nullptr) {
@@ -646,7 +645,7 @@ namespace EasyClick {
             std::size_t seq_idx ;
             for(seq_idx = 0 ; seq_idx < lgr.size() ; seq_idx ++) {
                 try {
-                    if(!lgr[seq_idx].is_containing(hints[i].at(seq_idx))) {
+                    if(!lgr.at(seq_idx).is_containing(hints[i].at(seq_idx))) {
                         break ;
                     }
                 }
@@ -682,29 +681,30 @@ namespace EasyClick {
 
         using Utility::remove_from_back ;
         KeyAbsorber::InstantKeyAbsorber ika ;
-        KeyLogger lgr ;
+        CharLogger lgr ;
 
         while(win_vind::update_background()) {
-            if(!KyLgr::log_as_char(lgr)) {
-                remove_from_back(lgr, 1) ;
+            lgr.update() ;
+            if(!lgr.is_changed()) {
+                lgr.remove_from_back(1) ;
                 continue ;
             }
 
-            if(lgr.back().empty()) {
-                remove_from_back(lgr, 1) ;
+            if(lgr.latest().empty()) {
+                lgr.remove_from_back(1) ;
                 continue ;
             }
 
-            if(lgr.back().is_containing(VKC_ESC)) {
+            if(lgr.latest().is_containing(VKC_ESC)) {
                 return ;
             }
 
-            if(lgr.back().is_containing(VKC_BKSPACE)) {
+            if(lgr.latest().is_containing(VKC_BKSPACE)) {
                 if(lgr.size() == 1) {
                     return ;
                 }
 
-                remove_from_back(lgr, 2) ;
+                lgr.remove_from_back(2) ;
                 KeyAbsorber::release_virtually(VKC_BKSPACE) ;
 
                 std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic ---------- (1)
@@ -714,8 +714,8 @@ namespace EasyClick {
                 continue ; //------------------------------------------------------ (1)
             }
 
-            if(KeyBinder::is_invalid_log(lgr.back(), KeyBinder::AllSystemKey)) {
-                remove_from_back(lgr, 1) ;
+            if(KeyBinder::is_invalid_log(lgr.latest(), KeyBinder::AllSystemKey)) {
+                lgr.remove_from_back(1) ;
                 continue ;
             }
 
@@ -733,10 +733,10 @@ namespace EasyClick {
             }
 
             if(need_draw_count == 0) {
-                remove_from_back(lgr, 1) ;
+                lgr.remove_from_back(1) ;
             }
             else {
-                for(const auto& key : lgr.back()) {
+                for(const auto& key : lgr.latest()) {
                     KeyAbsorber::release_virtually(key) ;
                 }
 

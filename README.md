@@ -228,7 +228,7 @@ It is the difference between master and latest release.
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
 |☐|Rotate windows without arrangement|Improve|High|
 |☐|Improve customizability|Architecture|High|
-|☐|Change KeyLogger from STL to packaged classes.|Architecture|High|
+|✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |☐|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Bug reporting feature|Feature|Mid|
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|

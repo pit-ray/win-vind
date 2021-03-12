@@ -7,8 +7,8 @@ struct SelectAll : public BindedFuncWithCreator<SelectAll>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -17,8 +17,8 @@ struct ForwardUINavigation : public BindedFuncWithCreator<ForwardUINavigation>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -27,8 +27,8 @@ struct BackwardUINavigation : public BindedFuncWithCreator<BackwardUINavigation>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -37,8 +37,8 @@ struct DecideFocusedUIObject : public BindedFuncWithCreator<DecideFocusedUIObjec
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 

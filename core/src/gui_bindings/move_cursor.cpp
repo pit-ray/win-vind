@@ -92,8 +92,8 @@ const std::string MoveLeft::sname() noexcept
 void MoveLeft::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;
     _move_cursor(-pimpl->calcer.delta() * repeat_num, 0) ;
@@ -122,8 +122,8 @@ const std::string MoveRight::sname() noexcept
 void MoveRight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;
     _move_cursor(pimpl->calcer.delta() * repeat_num, 0) ;
@@ -152,8 +152,8 @@ const std::string MoveUp::sname() noexcept
 void MoveUp::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;
     _move_cursor(0, -pimpl->calcer.delta() * repeat_num) ;
@@ -181,8 +181,8 @@ const std::string MoveDown::sname() noexcept
 void MoveDown::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     if(first_call) pimpl->calcer.reset() ;
     _move_cursor(0, pimpl->calcer.delta() * repeat_num) ;

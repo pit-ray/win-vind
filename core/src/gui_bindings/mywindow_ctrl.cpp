@@ -19,8 +19,8 @@ const std::string ShowConfigWindow::sname() noexcept
 void ShowConfigWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     MYWUtility::show_func() ;
@@ -41,8 +41,8 @@ const std::string ExitConfigWindow::sname() noexcept
 void ExitConfigWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     MYWUtility::exit_func() ;

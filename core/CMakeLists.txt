@@ -16,12 +16,13 @@ include_directories(
 
 add_library(Common STATIC
     src/common/binded_func.cpp
+    src/common/char_logger.cpp
     src/common/display_text_painter.cpp
     src/common/dynamic_option.cpp
     src/common/interval_timer.cpp
     src/common/key_absorber.cpp
     src/common/key_log.cpp
-    src/common/key_logger.cpp
+    src/common/key_logger_base.cpp
     src/common/key_matcher.cpp
     src/common/keybrd_eventer.cpp
     src/common/keystroke_repeater.cpp
@@ -32,6 +33,7 @@ add_library(Common STATIC
     src/common/text_analyzer.cpp
     src/common/uia.cpp
     src/common/vkc_converter.cpp
+    src/common/vkc_logger.cpp
 )
 target_link_libraries(Common Userenv)
 enable_cotire(Common)

@@ -3,6 +3,8 @@
 #include <array>
 #include <atomic>
 
+#include "vkc_logger.hpp"
+#include "char_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
@@ -35,8 +37,8 @@ BindedFunc& BindedFunc::operator=(BindedFunc&&) = default ;
 void BindedFunc::process(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* parent_vkclgr,
-        const KeyLogger* const parent_charlgr) const
+        VKCLogger* parent_vkclgr,
+        const CharLogger* const parent_charlgr) const
 {
     if(repeat_num == 0) return ;
 
@@ -100,27 +102,27 @@ void BindedFunc::register_matcher(
 }
 
 unsigned int BindedFunc::validate_if_match(
-        const KeyLogger& logger,
+        const KeyLoggerBase* const pc_lgr,
         ModeManager::Mode mode) const
 {
     if(pimpl->running_now.load()) return 0 ;
 
     pimpl->modeidx = static_cast<unsigned char>(mode) ;
     if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
-        return ptr->compare_to_latestlog(logger) ;
+        return ptr->compare_to_latestlog(pc_lgr) ;
 
     return 0 ;
 }
 
 unsigned int BindedFunc::validate_if_fullmatch(
-        const KeyLogger& logger,
+        const KeyLoggerBase* const pc_lgr,
         ModeManager::Mode mode) const
 {
     if(pimpl->running_now.load()) return 0 ;
 
     pimpl->modeidx = static_cast<unsigned char>(mode) ;
     if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
-        return ptr->compare_to_alllog(logger) ;
+        return ptr->compare_to_alllog(pc_lgr) ;
 
     return 0 ;
 }

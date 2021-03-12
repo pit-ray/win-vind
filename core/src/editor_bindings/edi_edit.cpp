@@ -10,7 +10,6 @@
 #include "i_params.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "keystroke_repeater.hpp"
 #include "mode_manager.hpp"
@@ -74,25 +73,25 @@ namespace EdiEdit
     }
 
     //return: is succecced?
-    inline static bool select_by_motion(unsigned int repeat_num, KeyLogger* parent_vkclgr) {
-        using Utility::remove_from_back ;
+    inline static bool select_by_motion(unsigned int repeat_num, VKCLogger* const parent_vkclgr) {
         using namespace ModeManager ;
-        KeyLogger lgr ;
+        VKCLogger lgr ;
 
         KeyAbsorber::InstantKeyAbsorber ika ;
 
         while(win_vind::update_background()) {
-            if(!KyLgr::log_as_vkc(lgr)) {
-                remove_from_back(lgr, 1) ;
+            lgr.update() ;
+            if(!lgr.is_changed()) {
+                lgr.remove_from_back(1) ;
                 continue ;
             }
 
-            KyLgr::log_as_vkc(*parent_vkclgr) ;
+            parent_vkclgr->update() ;
 
-            if(KeyBinder::is_invalid_log(lgr.back(),
+            if(KeyBinder::is_invalid_log(lgr.latest(),
                         KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
-                remove_from_back(*parent_vkclgr, 1) ;
-                remove_from_back(lgr, 1) ;
+                parent_vkclgr->remove_from_back(1) ;
+                lgr.remove_from_back(1) ;
                 continue ;
             }
 
@@ -100,14 +99,14 @@ namespace EdiEdit
             //For example, the child BindedFunc calling this function is binded with 'c{motion}'
             //and 'cc' are bindings EdiDeleteLinesAndStartInsert.
             //In this case, if a child process has a message loop, we must consider the parent logger by full scanning.
-            if(auto func = KeyBinder::find_func(*parent_vkclgr, nullptr, true)) {
+            if(auto func = KeyBinder::find_func(parent_vkclgr, nullptr, true)) {
                 if(func->is_callable()) {
                     func->process(true, repeat_num, parent_vkclgr) ;
                     return false ;
                 }
             }
 
-            if(auto func = KeyBinder::find_func(lgr, nullptr, true,
+            if(auto func = KeyBinder::find_func(&lgr, nullptr, true,
                         ModeManager::Mode::EdiLineVisual)) {
                 if(!func->is_for_moving_caret()) return false ;
 
@@ -135,8 +134,8 @@ const std::string EdiCopyHighlightText::sname() noexcept
 void EdiCopyHighlightText::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     using namespace EdiEdit ;
     using namespace ModeManager ;
@@ -163,8 +162,8 @@ const std::string EdiNCopyLine::sname() noexcept
 void EdiNCopyLine::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr),
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr),
         const TextAnalyzer::SelRes* const exres)
 {
     if(!first_call) return ;
@@ -194,8 +193,8 @@ const std::string EdiCopyMotion::sname() noexcept
 void EdiCopyMotion::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* parent_vkclgr,
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const parent_vkclgr,
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(EdiEdit::select_by_motion(repeat_num, parent_vkclgr)) {
@@ -281,8 +280,8 @@ const std::string EdiNPasteAfter::sname() noexcept
 void EdiNPasteAfter::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     auto put_chars_preproc = [] {
@@ -328,8 +327,8 @@ const std::string EdiNPasteBefore::sname() noexcept
 void EdiNPasteBefore::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     using KeybrdEventer::pushup ;
     auto put_chars = [] {
@@ -356,8 +355,8 @@ const std::string EdiDeleteHighlightText::sname() noexcept
 void EdiDeleteHighlightText::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     using namespace EdiEdit ;
     using namespace ModeManager ;
@@ -424,8 +423,8 @@ const std::string EdiNDeleteLine::sname() noexcept
 void EdiNDeleteLine::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr),
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr),
         const TextAnalyzer::SelRes* const exres) const
 {
     using KeybrdEventer::pushup ;
@@ -488,8 +487,8 @@ const std::string EdiNDeleteLineUntilEOL::sname() noexcept
 void EdiNDeleteLineUntilEOL::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr),
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr),
         const TextAnalyzer::SelRes* const exres) const
 {
     using namespace EdiEdit ;
@@ -548,8 +547,8 @@ const std::string EdiNDeleteAfter::sname() noexcept
 void EdiNDeleteAfter::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     auto del = [] {
         if(iParams::get_b("enable_char_cache")) {
@@ -603,8 +602,8 @@ const std::string EdiNDeleteBefore::sname() noexcept
 void EdiNDeleteBefore::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     auto del = [] {
         if(iParams::get_b("enable_char_cache")) {
@@ -646,8 +645,8 @@ const std::string EdiDeleteMotion::sname() noexcept
 void EdiDeleteMotion::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* parent_vkclgr,
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const parent_vkclgr,
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(EdiEdit::select_by_motion(repeat_num, parent_vkclgr)) {
@@ -664,8 +663,8 @@ const std::string EdiDeleteMotionAndStartInsert::sname() noexcept
 void EdiDeleteMotionAndStartInsert::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* parent_vkclgr,
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const parent_vkclgr,
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     if(EdiEdit::select_by_motion(repeat_num, parent_vkclgr)) {
@@ -684,8 +683,8 @@ const std::string EdiDeleteLinesAndStartInsert::sname() noexcept
 void EdiDeleteLinesAndStartInsert::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -721,8 +720,8 @@ const std::string EdiDeleteCharsAndStartInsert::sname() noexcept
 void EdiDeleteCharsAndStartInsert::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -775,8 +774,8 @@ const std::string EdiDeleteUntilEOLAndStartInsert::sname() noexcept
 void EdiDeleteUntilEOLAndStartInsert::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr),
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr),
         const TextAnalyzer::SelRes* const exres)
 {
     using namespace EdiEdit ;

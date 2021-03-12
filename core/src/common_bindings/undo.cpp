@@ -31,8 +31,8 @@ const string SCRedo::sname() noexcept
 void SCRedo::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     auto redo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Y) ;} ;
     if(repeat_num == 1) {
@@ -78,8 +78,8 @@ const string SCUndo::sname() noexcept
 void SCUndo::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr)) const
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr)) const
 {
     auto undo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Z) ;} ;
     if(repeat_num == 1) {

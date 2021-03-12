@@ -11,7 +11,6 @@
 #include "jump_cursor.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "move_cursor.hpp"
 #include "msg_logger.hpp"
@@ -91,8 +90,8 @@ const std::string CloseCurrentWindow::sname() noexcept
 void CloseCurrentWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         KeybrdEventer::pushup(VKC_LALT, VKC_F4) ;
@@ -108,8 +107,8 @@ const std::string OpenNewCurrentWindow::sname() noexcept
 void OpenNewCurrentWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) {
         return ;
@@ -154,8 +153,8 @@ const std::string ReloadCurrentWindow::sname() noexcept
 void ReloadCurrentWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         KeybrdEventer::pushup(VKC_F5) ;

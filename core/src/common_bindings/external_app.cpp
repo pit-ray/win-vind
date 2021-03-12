@@ -12,7 +12,6 @@
 #include "enable_gcc_warning.hpp"
 
 #include "jump_cursor.hpp"
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"
@@ -60,8 +59,8 @@ const std::string StartShell::sname() noexcept
 void StartShell::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     try {
@@ -92,15 +91,15 @@ const std::string StartAnyApp::sname() noexcept
 void StartAnyApp::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
     if(!parent_charlgr)
         throw LOGIC_EXCEPT("The passed parent logger is null") ;
 
-    auto cmd = KyLgr::log2str(*parent_charlgr) ;
+    auto cmd = parent_charlgr->to_str() ;
     if(!cmd.empty()) {
         try {
             Utility::create_process(".", g_proc_list.at(cmd.substr(1))) ;
@@ -125,8 +124,8 @@ const std::string StartExplorer::sname() noexcept
 void StartExplorer::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     //_create_process("explorer") ;
@@ -145,8 +144,8 @@ const std::string OpenStartMenu::sname() noexcept
 void OpenStartMenu::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     KeybrdEventer::pushup(VKC_LWIN) ;

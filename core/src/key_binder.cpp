@@ -25,7 +25,7 @@
 #include "change_mode.hpp"
 #include "i_params.hpp"
 #include "key_absorber.hpp"
-#include "key_logger.hpp"
+#include "key_log.hpp"
 #include "key_matcher.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
@@ -34,6 +34,7 @@
 #include "virtual_cmd_line.hpp"
 #include "virtual_key_fwd.hpp"
 #include "vkc_converter.hpp"
+#include "vkc_logger.hpp"
 
 #undef max
 
@@ -321,7 +322,7 @@ namespace KeyBinder
     //This function regards as other functions is stronger than the running function.
     //If the 2nd argument is not passed, it regards as not processing.
     const BindedFunc::shp_t find_func(
-            const KeyLogger& lgr,
+            const KeyLoggerBase* const pc_lgr,
             const BindedFunc::shp_t& running_func,
             const bool full_scan,
             ModeManager::Mode mode) {
@@ -343,11 +344,11 @@ namespace KeyBinder
         if(!running_func) { //lower cost version
             if(full_scan) {
                 for(const auto& func : g_func_list)
-                    choose(func, func->validate_if_fullmatch(lgr, mode)) ;
+                    choose(func, func->validate_if_fullmatch(pc_lgr, mode)) ;
             }
             else {
                 for(const auto& func : g_func_list)
-                    choose(func, func->validate_if_match(lgr, mode)) ;
+                    choose(func, func->validate_if_match(pc_lgr, mode)) ;
             }
             return matched_func ;
         }
@@ -355,14 +356,14 @@ namespace KeyBinder
         unsigned int matched_num ;
         if(full_scan) {
             for(const auto& func : g_func_list) {
-                matched_num = func->validate_if_fullmatch(lgr, mode) ;
+                matched_num = func->validate_if_fullmatch(pc_lgr, mode) ;
                 if(running_func == func) continue ;
                 choose(func, matched_num) ;
             }
         }
         else {
             for(const auto& func : g_func_list) {
-                matched_num = func->validate_if_match(lgr, mode) ;
+                matched_num = func->validate_if_match(pc_lgr, mode) ;
                 if(running_func == func) continue ;
                 choose(func, matched_num) ;
             }
@@ -385,32 +386,31 @@ namespace KeyBinder
             return nullptr ;
     }
 
-    void call_matched_funcs() {
-        static KeyLogger l_logger{} ;
-        static BindedFunc::shp_t l_running_func       = nullptr ;
-        static unsigned int l_repeat_num              = 0 ;
-        static bool l_must_release_key_after_repeated = false ;
+    static VKCLogger g_logger{} ;
+    static BindedFunc::shp_t g_running_func       = nullptr ;
+    static unsigned int g_repeat_num              = 0 ;
+    static bool g_must_release_key_after_repeated = false ;
 
+    void call_matched_funcs() {
         static const KeyLog c_nums {
             VKC_0, VKC_1, VKC_2, VKC_3, VKC_4,
             VKC_5, VKC_6, VKC_7, VKC_8, VKC_9
         } ;
 
-        using Utility::remove_from_back ;
-
-        if(!KyLgr::log_as_vkc(l_logger)) {
-            if(!l_running_func) {
-                remove_from_back(l_logger, 1) ;
+        g_logger.update() ;
+        if(!g_logger.is_changed()) {
+            if(!g_running_func) {
+                g_logger.remove_from_back(1) ;
                 return ;
             }
-            l_running_func->process(false, 1, &l_logger, nullptr) ;
-            remove_from_back(l_logger, 1) ;
+            g_running_func->process(false, 1, &g_logger, nullptr) ;
+            g_logger.remove_from_back(1) ;
             return ;
         }
 
-        if(l_repeat_num != 0) {
-            if(l_logger.back().is_containing(VKC_ESC)) {
-                l_repeat_num = 0 ;
+        if(g_repeat_num != 0) {
+            if(g_logger.latest().is_containing(VKC_ESC)) {
+                g_repeat_num = 0 ;
                 VirtualCmdLine::reset() ;
             }
         }
@@ -426,17 +426,18 @@ namespace KeyBinder
         // |   behavior     |        ignore         |    pass     |
         // |________________|_______________________|_____________|
         //
-        if(is_invalid_log(l_logger.back(), InvalidPolicy::UnbindedSystemKey)) {
-            remove_from_back(l_logger, 1) ;
-            l_running_func = nullptr ;
+        if(is_invalid_log(g_logger.latest(), InvalidPolicy::UnbindedSystemKey)) {
+            g_logger.remove_from_back(1) ;
+            g_running_func = nullptr ;
 
-            if(l_must_release_key_after_repeated) {
-                l_must_release_key_after_repeated = false ;
+            if(g_must_release_key_after_repeated) {
+                g_must_release_key_after_repeated = false ;
             }
+
             return ;
         }
 
-        // Note about l_must_release_key_after_repeated:
+        // Note about g_must_release_key_after_repeated:
         // false : same as default.
         // true  : wait until some unbinded sytem keys are inputed or no keys is inputed.
         // 
@@ -451,55 +452,55 @@ namespace KeyBinder
         // | called func name (with)    |  -   |    -    |  edi_n_remove_EOL |          -           |
         // |____________________________|______|_________|___________________|______________________|
         //
-        if(l_must_release_key_after_repeated) {
-            remove_from_back(l_logger, 1) ;
-            l_running_func = nullptr ;
+        if(g_must_release_key_after_repeated) {
+            g_logger.remove_from_back(1) ;
+            g_running_func = nullptr ;
             return ;
         }
-        auto topvkc = *(l_logger.back().begin()) ;
+        auto topvkc = *(g_logger.latest().begin()) ;
 
         //If some numbers has inputed, ignore commands binded by numbers.
-        if(l_repeat_num != 0) {
-            l_logger.back() -= c_nums ;
+        if(g_repeat_num != 0) {
+            g_logger.latest() -= c_nums ;
         }
 
-        auto matched_func = find_func(l_logger, l_running_func) ;
+        auto matched_func = find_func(&g_logger, g_running_func) ;
 
         if(!matched_func) {
             if(!VKCConverter::is_number(topvkc)) {
                 //If inputed non-numeric key, reset the repeat number.
-                if(l_repeat_num != 0) {
-                    l_repeat_num = 0 ;
+                if(g_repeat_num != 0) {
+                    g_repeat_num = 0 ;
                     VirtualCmdLine::reset() ;
                 }
             }
             else {
                 static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
-                if(l_repeat_num < max && !ModeManager::is_insert()) { //Whether it is not out of range?
-                    l_repeat_num = l_repeat_num * 10 + VKCConverter::to_number(topvkc) ;
-                    VirtualCmdLine::cout(std::to_string(l_repeat_num)) ;
+                if(g_repeat_num < max && !ModeManager::is_insert()) { //Whether it is not out of range?
+                    g_repeat_num = g_repeat_num * 10 + VKCConverter::to_number(topvkc) ;
+                    VirtualCmdLine::cout(std::to_string(g_repeat_num)) ;
                 }
             }
 
-            l_logger.clear() ;
-            l_running_func = nullptr ;
+            g_logger.clear() ;
+            g_running_func = nullptr ;
             return ;
         }
 
         if(matched_func->is_callable()) {
-            l_running_func = matched_func ;
+            g_running_func = matched_func ;
 
-            if(l_repeat_num == 0) {
-                l_running_func->process(true, 1, &l_logger, nullptr) ;
+            if(g_repeat_num == 0) {
+                g_running_func->process(true, 1, &g_logger, nullptr) ;
             }
             else {
                 VirtualCmdLine::reset() ;
-                l_running_func->process(true, l_repeat_num, &l_logger, nullptr) ;
-                l_repeat_num = 0 ;
-                l_must_release_key_after_repeated = true ;
+                g_running_func->process(true, g_repeat_num, &g_logger, nullptr) ;
+                g_repeat_num = 0 ;
+                g_must_release_key_after_repeated = true ;
             }
 
-            l_logger.clear() ;
+            g_logger.clear() ;
             return ;
         }
     }

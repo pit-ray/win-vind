@@ -14,8 +14,8 @@ const string SelectAll::sname() noexcept
 void SelectAll::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         MouseEventer::click(VKC_MOUSE_LEFT) ;
@@ -33,8 +33,8 @@ const string ForwardUINavigation::sname() noexcept
 void ForwardUINavigation::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -52,8 +52,8 @@ const string BackwardUINavigation::sname() noexcept
 void BackwardUINavigation::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -71,8 +71,8 @@ const string DecideFocusedUIObject::sname() noexcept
 void DecideFocusedUIObject::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         KeybrdEventer::pushup(VKC_SPACE) ;

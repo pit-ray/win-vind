@@ -13,8 +13,8 @@ const string SwitchVDesktop2Left::sname() noexcept
 void SwitchVDesktop2Left::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
@@ -32,8 +32,8 @@ const string SwitchVDesktop2Right::sname() noexcept
 void SwitchVDesktop2Right::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
@@ -50,8 +50,8 @@ const std::string CreateNewVDesktop::sname() noexcept
 void CreateNewVDesktop::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_D) ;
@@ -67,8 +67,8 @@ const std::string CloseCurrentVDesktop::sname() noexcept
 void CloseCurrentVDesktop::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call) {
         KeybrdEventer::pushup(VKC_LCTRL, VKC_LWIN, VKC_F4) ;
@@ -85,8 +85,8 @@ const std::string TaskView::sname() noexcept
 void TaskView::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(first_call)
         KeybrdEventer::pushup(VKC_LWIN, VKC_TAB) ;

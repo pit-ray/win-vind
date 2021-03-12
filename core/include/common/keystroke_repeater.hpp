@@ -16,11 +16,11 @@ public:
     KeyStrokeRepeater(KeyStrokeRepeater&&) ;
     KeyStrokeRepeater& operator=(KeyStrokeRepeater&&) ;
 
-    KeyStrokeRepeater(const KeyStrokeRepeater&)            = delete ;
-    KeyStrokeRepeater& operator=(const KeyStrokeRepeater&) = delete ;
+    KeyStrokeRepeater(const KeyStrokeRepeater&) ;
+    KeyStrokeRepeater& operator=(const KeyStrokeRepeater&) ;
 
-    void reset() noexcept ;
-    bool is_pressed() ;
+    virtual void reset() noexcept ;
+    virtual bool is_pressed() const ;
 } ;
 
 

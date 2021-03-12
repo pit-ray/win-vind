@@ -7,6 +7,9 @@
 #include "key_matcher.hpp"
 #include "mode_manager.hpp"
 
+#include "vkc_logger.hpp"
+#include "char_logger.hpp"
+
 class BindedFunc
 {
 private:
@@ -16,8 +19,8 @@ private:
     virtual void do_process(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const = 0 ;
+            VKCLogger* parent_vkclgr,
+            const CharLogger* const parent_charlgr) const = 0 ;
 
 public:
     using shp_t = std::shared_ptr<BindedFunc> ;
@@ -35,8 +38,8 @@ public:
     void process(
             const bool first_call=true,
             const unsigned int repeat_num=1,
-            KeyLogger* parent_vkclgr=nullptr,
-            const KeyLogger* const parent_charlgr=nullptr) const ;
+            VKCLogger* parent_vkclgr=nullptr,
+            const CharLogger* const parent_charlgr=nullptr) const ;
 
     void register_matcher(
             const ModeManager::Mode mode,
@@ -47,13 +50,13 @@ public:
 
     //[return] matched num in latest log
     unsigned int validate_if_match(
-            const KeyLogger& logger,
+            const KeyLoggerBase* const pc_lgr,
             ModeManager::Mode mode=ModeManager::get_mode()) const ;
 
     //[return] matched num in latest log
     //The cost for computing is bigger than validate_if_match.
     unsigned int validate_if_fullmatch(
-            const KeyLogger& logger,
+            const KeyLoggerBase* const pc_lgr,
             ModeManager::Mode mode=ModeManager::get_mode()) const ;
 
     bool is_callable() const noexcept ;

@@ -14,8 +14,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;
@@ -39,8 +39,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;
@@ -64,8 +64,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;
@@ -89,8 +89,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;
@@ -115,8 +115,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;
@@ -140,8 +140,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;
@@ -166,8 +166,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;
@@ -191,8 +191,8 @@ public:
     void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) const ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) const ;
     static const std::string sname() noexcept ;
 
     bool is_for_moving_caret() const noexcept override ;

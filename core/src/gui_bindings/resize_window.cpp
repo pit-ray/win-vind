@@ -9,7 +9,6 @@
 
 #include "i_params.hpp"
 #include "jump_cursor.hpp"
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
 #include "screen_metrics.hpp"
@@ -26,8 +25,8 @@ const std::string MaximizeCurrentWindow::sname() noexcept
 void MaximizeCurrentWindow::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -45,8 +44,8 @@ const std::string MinimizeCurrentWindow::sname() noexcept
 void MinimizeCurrentWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     KeybrdEventer::pushup(VKC_LWIN, VKC_DOWN) ;
@@ -107,8 +106,8 @@ const std::string SnapCurrentWindow2Left::sname() noexcept
 void SnapCurrentWindow2Left::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -138,8 +137,8 @@ const std::string SnapCurrentWindow2Right::sname() noexcept
 void SnapCurrentWindow2Right::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -170,8 +169,8 @@ const std::string SnapCurrentWindow2Top::sname() noexcept
 void SnapCurrentWindow2Top::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -200,8 +199,8 @@ const std::string SnapCurrentWindow2Bottom::sname() noexcept
 void SnapCurrentWindow2Bottom::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -340,8 +339,8 @@ const std::string ArrangeWindows::sname() noexcept
 void ArrangeWindows::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -414,8 +413,8 @@ const std::string RotateWindows::sname() noexcept
 void RotateWindows::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -446,8 +445,8 @@ const std::string RotateWindowsInReverse::sname() noexcept
 void RotateWindowsInReverse::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -541,8 +540,8 @@ const std::string ExchangeWindowWithNextOne::sname() noexcept
 void ExchangeWindowWithNextOne::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -590,8 +589,8 @@ const std::string OpenNewCurWinWithHorizontalSplit::sname() noexcept
 void OpenNewCurWinWithHorizontalSplit::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -633,8 +632,8 @@ const std::string OpenNewCurWinWithVerticalSplit::sname() noexcept
 void OpenNewCurWinWithVerticalSplit::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -670,12 +669,11 @@ namespace ResizeWindow
 {
     inline static auto compute_resize_delta(
             const unsigned int repeat_num,
-            const KeyLogger* const parent_charlgr,
+            const CharLogger* const parent_charlgr,
             const std::string& param_name) {
 
         if(parent_charlgr != nullptr) {
-            auto str = KyLgr::log2str(*parent_charlgr) ;
-            return static_cast<LONG>(KyLgr::extract_num(str)) ;
+            return static_cast<LONG>(KeyLoggerUtility::extract_num(parent_charlgr->to_str())) ;
         }
         else {
             return static_cast<LONG>(iParams::get_i(param_name) * repeat_num) ;
@@ -693,17 +691,17 @@ const std::string ResizeWindowWidth::sname() noexcept
 void ResizeWindowWidth::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
     ResizeWindow::ForegroundInfo fginfo ;
 
-    auto str = KyLgr::log2str(*parent_charlgr) ;
+    auto str = parent_charlgr->to_str() ;
     if(str.empty()) return ;
 
-    auto width = static_cast<LONG>(KyLgr::extract_num(str)) ;
+    auto width = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
 
     ScreenMetrics::MonitorInfo minfo ;
     ScreenMetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
@@ -727,8 +725,8 @@ const std::string IncreaseWindowWidth::sname() noexcept
 void IncreaseWindowWidth::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
@@ -760,8 +758,8 @@ const std::string DecreaseWindowWidth::sname() noexcept
 void DecreaseWindowWidth::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
@@ -790,17 +788,17 @@ const std::string ResizeWindowHeight::sname() noexcept
 void ResizeWindowHeight::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
     ResizeWindow::ForegroundInfo fginfo ;
 
-    auto str = KyLgr::log2str(*parent_charlgr) ;
+    auto str = parent_charlgr->to_str() ;
     if(str.empty()) return ;
 
-    auto height = static_cast<LONG>(KyLgr::extract_num(str)) ;
+    auto height = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
 
     ScreenMetrics::MonitorInfo minfo ;
     ScreenMetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
@@ -824,8 +822,8 @@ const std::string IncreaseWindowHeight::sname() noexcept
 void IncreaseWindowHeight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
@@ -857,8 +855,8 @@ const std::string DecreaseWindowHeight::sname() noexcept
 void DecreaseWindowHeight::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 

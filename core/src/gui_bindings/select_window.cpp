@@ -8,7 +8,7 @@
 #include "jump_cursor.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
-#include "key_logger.hpp"
+#include "vkc_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "edi_move_caret.hpp"
 #include "screen_metrics.hpp"
@@ -25,8 +25,8 @@ const std::string SwitchWindow::sname() noexcept
 void SwitchWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     using namespace KeybrdEventer ;
     if(!first_call) return ;
@@ -51,7 +51,7 @@ void SwitchWindow::sprocess(
         press_keystate(vkc) ;
     } ;
 
-    KeyLogger logger{} ;
+    VKCLogger logger{} ;
     while(win_vind::update_background()) {
         if(KeyAbsorber::is_pressed(VKC_ESC)) {
             break ;
@@ -60,19 +60,20 @@ void SwitchWindow::sprocess(
             break ;
         }
 
-        if(!KyLgr::log_as_vkc(logger)) {
-            Utility::remove_from_back(logger, 1) ;
+        logger.update() ;
+        if(!logger.is_changed()) {
+            logger.remove_from_back(1) ;
             continue ;
         }
-        if(KeyBinder::is_invalid_log(logger.back(),
+        if(KeyBinder::is_invalid_log(logger.latest(),
                     KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
 
-            Utility::remove_from_back(logger, 1) ;
+            logger.remove_from_back(1) ;
             continue ;
         }
 
         auto matched_func = KeyBinder::find_func(
-                logger, nullptr, false,
+                &logger, nullptr, false,
                 ModeManager::Mode::EdiNormal) ;
 
         if(!matched_func) {
@@ -192,8 +193,8 @@ const std::string SelectLeftWindow::sname() noexcept
 void SelectLeftWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -225,8 +226,8 @@ const std::string SelectRightWindow::sname() noexcept
 void SelectRightWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -258,8 +259,8 @@ const std::string SelectUpperWindow::sname() noexcept
 void SelectUpperWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -291,8 +292,8 @@ const std::string SelectLowerWindow::sname() noexcept
 void SelectLowerWindow::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 

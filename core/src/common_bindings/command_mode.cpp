@@ -8,7 +8,7 @@
 #include "i_params.hpp"
 #include "key_absorber.hpp"
 #include "key_binder.hpp"
-#include "key_logger.hpp"
+#include "char_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
@@ -20,7 +20,7 @@
 namespace CmdMode
 {
     struct CmdPoint {
-        KeyLogger logger{} ;
+        CharLogger logger{} ;
         BindedFunc::shp_t func = nullptr ;
     } ;
     static std::deque<std::shared_ptr<CmdPoint>>
@@ -58,36 +58,37 @@ inline static bool _main_loop() {
     auto& p_cmdp = cmd_hist.at(cmd_hist_index) ;
     auto& lgr    = p_cmdp->logger ;
 
-    if(!KyLgr::log_as_char(lgr)) { //update log as character input
-        remove_from_back(lgr, 1) ;
+    lgr.update() ;
+    if(!lgr.is_changed()) { //update log as character input
+        lgr.remove_from_back(1) ;
         return CONTINUE_LOOP ;
     }
 
     //canceling operation
-    if(lgr.back().is_containing(VKC_ESC)){
+    if(lgr.latest().is_containing(VKC_ESC)){
         const auto recent_index = cmd_hist.size() - 1 ;
         if(cmd_hist_index == recent_index) {
             lgr.clear() ;
             p_cmdp->func = nullptr ;
         }
         else {
-            remove_from_back(lgr, 1) ;
+            lgr.remove_from_back(1) ;
             cmd_hist_index = recent_index ;
         }
         VirtualCmdLine::reset() ;
         return BREAK_LOOP ;
     }
 
-    if(lgr.back().empty()) {
-        remove_from_back(lgr, 1) ;
+    if(lgr.latest().empty()) {
+        lgr.remove_from_back(1) ;
         return CONTINUE_LOOP ;
     }
 
     //decision of input
-    if(lgr.back().is_containing(VKC_ENTER) && p_cmdp->func) {
+    if(lgr.latest().is_containing(VKC_ENTER) && p_cmdp->func) {
         KeyAbsorber::release_virtually(VKC_ENTER) ;
 
-        remove_from_back(lgr, 1) ; //remove keycode of enter
+        lgr.remove_from_back(1) ; //remove keycode of enter
 
         VirtualCmdLine::reset() ;
 
@@ -97,7 +98,7 @@ inline static bool _main_loop() {
     }
 
     //edit command
-    if(lgr.back().is_containing(VKC_BKSPACE)) {
+    if(lgr.latest().is_containing(VKC_BKSPACE)) {
         if(lgr.size() == 1) {
             lgr.clear() ;
             p_cmdp->func = nullptr ;
@@ -105,10 +106,10 @@ inline static bool _main_loop() {
             return BREAK_LOOP ;
         }
 
-        remove_from_back(lgr, 2) ;
+        lgr.remove_from_back(2) ;
         VirtualCmdLine::refresh() ;
 
-        if(auto mf = KeyBinder::find_func(lgr, p_cmdp->func, true, ModeManager::Mode::Command)) {
+        if(auto mf = KeyBinder::find_func(&lgr, p_cmdp->func, true, ModeManager::Mode::Command)) {
             if(mf->is_callable()) {
                 p_cmdp->func = mf ;
                 return CONTINUE_LOOP ;
@@ -119,28 +120,28 @@ inline static bool _main_loop() {
     }
 
     //command history operation
-    if(lgr.back().is_containing(VKC_UP) && cmd_hist_index > 0) {
+    if(lgr.latest().is_containing(VKC_UP) && cmd_hist_index > 0) {
         cmd_hist_index -- ;
-        remove_from_back(lgr, 1) ;
+        lgr.remove_from_back(1) ;
         VirtualCmdLine::refresh() ;
         return CONTINUE_LOOP ;
     }
-    if(lgr.back().is_containing(VKC_DOWN)
+    if(lgr.latest().is_containing(VKC_DOWN)
             && cmd_hist_index < cmd_hist.size() - 1) {
         cmd_hist_index ++ ;
-        remove_from_back(lgr, 1) ;
+        lgr.remove_from_back(1) ;
         VirtualCmdLine::refresh() ;
         return CONTINUE_LOOP ;
     }
 
     //invalid keys
-    if(is_invalid_log(lgr.back(), KeyBinder::InvalidPolicy::AllSystemKey) ||
+    if(is_invalid_log(lgr.latest(), KeyBinder::InvalidPolicy::AllSystemKey) ||
             lgr.size() > iParams::get_z("cmd_max_char")) {
-        remove_from_back(lgr, 1) ;
+        lgr.remove_from_back(1) ;
         return CONTINUE_LOOP ;
     }
 
-    if(auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func, false, ModeManager::Mode::Command)) {
+    if(auto matched_func = KeyBinder::find_func(&lgr, p_cmdp->func, false, ModeManager::Mode::Command)) {
         if(matched_func->is_callable()) {
             p_cmdp->func = matched_func ;
             return CONTINUE_LOOP ;
@@ -154,8 +155,8 @@ inline static bool _main_loop() {
 void CommandMode::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     using namespace CmdMode ;
     using namespace ModeManager ;
@@ -172,7 +173,7 @@ void CommandMode::sprocess(
 
     while(win_vind::update_background() && _main_loop()) {
         VirtualCmdLine::cout(":" +
-                KyLgr::log2str(cmd_hist.at(cmd_hist_index)->logger)) ;
+                cmd_hist.at(cmd_hist_index)->logger.to_str()) ;
     }
     //change_mode(past_mode) ;
 }

@@ -8,8 +8,8 @@ struct MaximizeCurrentWindow : public BindedFuncWithCreator<MaximizeCurrentWindo
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -18,8 +18,8 @@ struct MinimizeCurrentWindow : public BindedFuncWithCreator<MinimizeCurrentWindo
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -28,8 +28,8 @@ struct SnapCurrentWindow2Left : public BindedFuncWithCreator<SnapCurrentWindow2L
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -38,8 +38,8 @@ struct SnapCurrentWindow2Right : public BindedFuncWithCreator<SnapCurrentWindow2
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -49,8 +49,8 @@ struct SnapCurrentWindow2Top : public BindedFuncWithCreator<SnapCurrentWindow2To
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -59,8 +59,8 @@ struct SnapCurrentWindow2Bottom : public BindedFuncWithCreator<SnapCurrentWindow
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -69,8 +69,8 @@ struct ArrangeWindows : public BindedFuncWithCreator<ArrangeWindows>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -79,8 +79,8 @@ struct RotateWindows : public BindedFuncWithCreator<RotateWindows>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -89,8 +89,8 @@ struct RotateWindowsInReverse: public BindedFuncWithCreator<RotateWindowsInRever
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -99,8 +99,8 @@ struct ExchangeWindowWithNextOne : public BindedFuncWithCreator<ExchangeWindowWi
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -109,8 +109,8 @@ struct OpenNewCurWinWithHorizontalSplit : public BindedFuncWithCreator<OpenNewCu
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -119,8 +119,8 @@ struct OpenNewCurWinWithVerticalSplit : public BindedFuncWithCreator<OpenNewCurW
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -129,8 +129,8 @@ struct ResizeWindowWidth: public BindedFuncWithCreator<ResizeWindowWidth>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -139,8 +139,8 @@ struct IncreaseWindowWidth : public BindedFuncWithCreator<IncreaseWindowWidth>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -149,8 +149,8 @@ struct DecreaseWindowWidth: public BindedFuncWithCreator<DecreaseWindowWidth>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -159,8 +159,8 @@ struct ResizeWindowHeight : public BindedFuncWithCreator<ResizeWindowHeight>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -169,8 +169,8 @@ struct IncreaseWindowHeight : public BindedFuncWithCreator<IncreaseWindowHeight>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 
@@ -179,8 +179,8 @@ struct DecreaseWindowHeight : public BindedFuncWithCreator<DecreaseWindowHeight>
     static void sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
+            VKCLogger* const parent_vkclgr,
+            const CharLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
 

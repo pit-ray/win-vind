@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "change_mode.hpp"
-#include "key_logger.hpp"
 #include "keybrd_eventer.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
@@ -25,8 +24,8 @@ const string SaveOpenedFile::sname() noexcept
 void SaveOpenedFile::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
 
@@ -53,8 +52,8 @@ const string OpenOtherFile::sname() noexcept
 void OpenOtherFile::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
@@ -193,15 +192,15 @@ const string MakeDir::sname() noexcept
 void MakeDir::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const parent_charlgr)
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const parent_charlgr)
 {
     if(!first_call) return ;
 
     if(!parent_charlgr)
         throw LOGIC_EXCEPT("KeyLogger is nullptr for character.") ;
 
-    auto cmd = KyLgr::log2str(*parent_charlgr) ;
+    auto cmd = parent_charlgr->to_str() ;
 
     const auto pos = cmd.find_first_of(" ") ;
     auto arg = cmd.substr(pos + 1) ;

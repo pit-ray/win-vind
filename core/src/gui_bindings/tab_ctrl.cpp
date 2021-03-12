@@ -16,8 +16,8 @@ const std::string Switch2LeftTab::sname() noexcept
 void Switch2LeftTab::sprocess(
         const bool first_call,
         const unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -35,8 +35,8 @@ const std::string Switch2RightTab::sname() noexcept
 void Switch2RightTab::sprocess(
         const bool first_call,
         unsigned int repeat_num,
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -53,8 +53,8 @@ const std::string OpenNewTab::sname() noexcept
 void OpenNewTab::sprocess(
         const bool first_call,
         unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     KeybrdEventer::pushup(VKC_LCTRL, VKC_T) ;
@@ -71,8 +71,8 @@ const std::string CloseCurrentTab::sname() noexcept
 void CloseCurrentTab::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        KeyLogger* UNUSED(parent_vkclgr),
-        const KeyLogger* const UNUSED(parent_charlgr))
+        VKCLogger* const UNUSED(parent_vkclgr),
+        const CharLogger* const UNUSED(parent_charlgr))
 {
     if(!first_call) return ;
     KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ;

@@ -10,11 +10,11 @@
         <th colspan="2">Code status</th>
         <th colspan="2">Build status</th>
     </tr>
-    <tr>
-        <th>Coverity</th>
-        <th>Codacy</th>
-        <th>MinGW-w64</th>
-        <th>Visual Studio 2019</th>
+    <tr align="center">
+        <td>Coverity</td>
+        <td>Codacy</td>
+        <td>MinGW-w64</td>
+        <td>Visual Studio 2019</td>
     </tr>
     <tr>
         <td align="center">

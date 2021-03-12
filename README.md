@@ -5,17 +5,37 @@
   <p align="center"><b>Simple Vim Key Binder for Windows</b></p>  
 </p>  
 
-<p align="center">   
-  <a href="https://travis-ci.org/pit-ray/win-vind"><img src="https://travis-ci.org/pit-ray/win-vind.svg?branch=master" /></a>  
-  <a href="https://ci.appveyor.com/project/pit-ray/win-vind"><img src="https://ci.appveyor.com/api/projects/status/qoggl832qqbic5f5?svg=true" /></a>  
-  <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/22417/badge.svg"/></a>  
-  <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>
-  <br>  
-  <a href="https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt" target="_blank"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" /></a> 
-  <a href="https://github.com/pit-ray/win-vind/releases/latest"><img src="https://img.shields.io/github/v/release/pit-ray/win-vind" /></a>
-  <a href="https://pit-ray.github.io/win-vind/downloads/" ><img src="https://img.shields.io/github/downloads/pit-ray/win-vind/total" /></a>
-  <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/pit-ray/win-vind">
-<br>  
+## Code Status
+<table>
+    <tr>
+        <th>Coverity</th>
+        <th>Codacy</th>
+    </tr>
+    <tr>
+        <td align="center">
+            <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/22417/badge.svg"/></a>  
+        </td>
+        <td align="center">
+            <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>
+        </td>
+    </tr>
+</table>
+
+## Build status
+<table>
+    <tr>
+        <th>MinGW-w64 GNU 8.1.0</th>
+        <th>Visual Studio 2019</th>
+    </tr>
+    <tr>
+        <td align="center">
+            <a href="https://travis-ci.org/pit-ray/win-vind"><img src="https://travis-ci.org/pit-ray/win-vind.svg?branch=master" /></a>
+        </td>
+        <td align="center">
+            <a href="https://ci.appveyor.com/project/pit-ray/win-vind"><img src="https://ci.appveyor.com/api/projects/status/qoggl832qqbic5f5?svg=true" /></a>  
+        </td>
+    </tr>
+</table>
 
 ## Description
 **win-vind** provides the lightweight hybrid UI system of CUI and GUI. Its core idea is to add a new mode layer to operate GUI when you want to transition from Vim to other windows for a short while.  

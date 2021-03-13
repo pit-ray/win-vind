@@ -1,6 +1,7 @@
 #include "char_logger.hpp"
 
 #include "key_absorber.hpp"
+#include "key_logger_base.hpp"
 #include "keystroke_repeater.hpp"
 #include "vkc_converter.hpp"
 
@@ -18,18 +19,23 @@ struct CharLogger::Impl
 } ;
 
 CharLogger::CharLogger()
-: pimpl(std::make_unique<Impl>())
+: KeyLoggerBase(),
+  pimpl(std::make_unique<Impl>())
 {}
 
 CharLogger::~CharLogger() noexcept = default ;
 
 CharLogger::CharLogger(const CharLogger& rhs)
-: pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+: KeyLoggerBase(rhs),
+  pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
 {}
 
 CharLogger& CharLogger::operator=(const CharLogger& rhs)
 {
-    if(rhs.pimpl) *pimpl = *(rhs.pimpl) ;
+    if(rhs.pimpl) {
+        KeyLoggerBase::operator=(rhs) ;
+        *pimpl = *(rhs.pimpl) ;
+    }
     return *this ;
 }
 

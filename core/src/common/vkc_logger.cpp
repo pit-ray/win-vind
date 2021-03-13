@@ -1,6 +1,7 @@
 #include "vkc_logger.hpp"
 
 #include "key_absorber.hpp"
+#include "key_logger_base.hpp"
 #include "msg_logger.hpp"
 #include "vkc_converter.hpp"
 
@@ -11,17 +12,22 @@ struct VKCLogger::Impl
 } ;
 
 VKCLogger::VKCLogger()
-: pimpl(std::make_unique<Impl>())
+: KeyLoggerBase(),
+  pimpl(std::make_unique<Impl>())
 {}
 
 VKCLogger::~VKCLogger() noexcept = default ;
 
 VKCLogger::VKCLogger(const VKCLogger& rhs)
-: pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+: KeyLoggerBase(rhs),
+  pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
 {}
 VKCLogger& VKCLogger::operator=(const VKCLogger& rhs)
 {
-    if(rhs.pimpl) *pimpl = *(rhs.pimpl) ;
+    if(rhs.pimpl) {
+        KeyLoggerBase::operator=(rhs) ;
+        *pimpl = *(rhs.pimpl) ;
+    }
     return *this ;
 }
 

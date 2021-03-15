@@ -240,7 +240,7 @@ It is the difference between master and latest release.
 |:---:|:---|:---:|:---:|
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
 |Ready|Rotate windows without arrangement|Improve|High|
-|☐|Improve customizability (preset function like Gaming device utility)|Architecture|High|
+|☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Bug reporting feature|Feature|Mid|

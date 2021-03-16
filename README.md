@@ -239,8 +239,11 @@ It is the difference between master and latest release.
 |State|Description|Type|Priority|
 |:---:|:---|:---:|:---:|
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
-|✅|Rotate windows without arrangement|Improve|High|
+|✅|Rotate windows without arrangement|Feature|High|
 |☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
+|☐|Add test codes|Improve|High|
+|☐|Refactor directory structure.|Improve|High|
+|☐|Add global namespace|Improve|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Bug reporting feature|Feature|Mid|
@@ -249,7 +252,7 @@ It is the difference between master and latest release.
 |☐|Update Notification|Feature|Mid|
 |✅|Support multi-monitor in `Exchange windows`|Improve|Mid|
 |✅|Support multi-monitor in `Snap window`|Improve|Mid|
-|Ready|Move left-upper point of a window when the height or the width are over in `Resize Window`|Improve|Mid|
+|Ready|Move left-upper point of a window when the height or the width are over in `Resize Window`|Feature|Mid|
 |☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Low|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
 |☐|Modern GUI (use WinUI3 or Flutter2?)|Change|Low|

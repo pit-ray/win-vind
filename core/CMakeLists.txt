@@ -62,21 +62,34 @@ target_link_libraries(EdiBindings Common)
 enable_cotire(EdiBindings)
 
 add_library(GUIBindings STATIC
+    src/gui_bindings/arrange_window.cpp
     src/gui_bindings/click.cpp
     src/gui_bindings/clipboard.cpp
+    src/gui_bindings/close_window.cpp
     src/gui_bindings/easy_click.cpp
+    src/gui_bindings/exchange_window.cpp
     src/gui_bindings/filer.cpp
+    src/gui_bindings/jump_actwin.cpp
     src/gui_bindings/jump_cursor.cpp
+    src/gui_bindings/jump_keybrd.cpp
+    src/gui_bindings/min_max_window.cpp
+    src/gui_bindings/mkdir.cpp
     src/gui_bindings/move_cursor.cpp
     src/gui_bindings/mywindow_ctrl.cpp
+    src/gui_bindings/open_window.cpp
     src/gui_bindings/pager.cpp
+    src/gui_bindings/reload_window.cpp
     src/gui_bindings/resize_window.cpp
+    src/gui_bindings/rotate_window.cpp
     src/gui_bindings/search_pattern.cpp
     src/gui_bindings/select.cpp
     src/gui_bindings/select_window.cpp
+    src/gui_bindings/snap_window.cpp
+    src/gui_bindings/split_open_window.cpp
     src/gui_bindings/switch_vdesktop.cpp
+    src/gui_bindings/switch_window.cpp
     src/gui_bindings/tab_ctrl.cpp
-    src/gui_bindings/window_ctrl.cpp
+    src/gui_bindings/window_utility.cpp
 )
 target_link_libraries(GUIBindings Common psapi Dwmapi)
 enable_cotire(GUIBindings)

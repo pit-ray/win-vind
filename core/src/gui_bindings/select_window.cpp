@@ -1,111 +1,12 @@
 #include "select_window.hpp"
 
-#include <windows.h>
-
 #include <map>
-#include <unordered_map>
 
-#include "jump_cursor.hpp"
-#include "key_absorber.hpp"
-#include "key_binder.hpp"
-#include "vkc_logger.hpp"
-#include "keybrd_eventer.hpp"
-#include "edi_move_caret.hpp"
+#include "jump_actwin.hpp"
 #include "screen_metrics.hpp"
-#include "utility.hpp"
-#include "win_vind.hpp"
-#include "window_ctrl.hpp"
+#include "window_utility.hpp"
 
-//SwitchWindow
-const std::string SwitchWindow::sname() noexcept
-{
-    return "switch_window" ;
-}
-
-void SwitchWindow::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    using namespace KeybrdEventer ;
-    if(!first_call) return ;
-
-    KeyAbsorber::InstantKeyAbsorber ika ;
-
-    SmartKey alt(VKC_LALT) ;
-    alt.press() ;
-    KeyAbsorber::release_virtually(VKC_LALT) ;
-
-    pushup(VKC_TAB) ;
-
-    auto preserve_pushup = [] (const auto vkc) {
-        using namespace KeybrdEventer ;
-        if(!KeyAbsorber::is_pressed(vkc)) {
-            pushup(vkc) ;
-            return ;
-        }
-
-        release_keystate(vkc) ;
-        pushup(vkc) ;
-        press_keystate(vkc) ;
-    } ;
-
-    VKCLogger logger{} ;
-    while(win_vind::update_background()) {
-        if(KeyAbsorber::is_pressed(VKC_ESC)) {
-            break ;
-        }
-        if(KeyAbsorber::is_pressed(VKC_ENTER)) {
-            break ;
-        }
-
-        logger.update() ;
-        if(!logger.is_changed()) {
-            logger.remove_from_back(1) ;
-            continue ;
-        }
-        if(KeyBinder::is_invalid_log(logger.latest(),
-                    KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
-
-            logger.remove_from_back(1) ;
-            continue ;
-        }
-
-        auto matched_func = KeyBinder::find_func(
-                &logger, nullptr, false,
-                ModeManager::Mode::EdiNormal) ;
-
-        if(!matched_func) {
-            logger.clear() ;
-            continue ;
-        }
-
-        if(matched_func->is_callable()) {
-            const auto name = matched_func->name() ;
-            logger.clear() ;
-            if(name == EdiMoveCaretLeft::sname()) {
-                preserve_pushup(VKC_LEFT) ;
-                continue ;
-            }
-            if(name == EdiMoveCaretRight::sname()) {
-                preserve_pushup(VKC_RIGHT) ;
-                continue ;
-            }
-        }
-    }
-
-    KeyAbsorber::release_virtually(VKC_ESC) ;
-    KeyAbsorber::release_virtually(VKC_ENTER) ;
-
-    alt.release() ;
-
-    //jump cursor to a selected window after releasing alt and tab.
-    Sleep(50) ; //send select-message to OS(wait)
-    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
-}
-
-namespace SelectWindow
+namespace SelectWindowCommon
 {
     static std::unordered_map<HWND, RECT> g_rects ;
     static BOOL CALLBACK EnumWindowsProcForNearest(HWND hwnd, LPARAM lparam) {
@@ -114,7 +15,7 @@ namespace SelectWindow
             return TRUE ;
         }
 
-        if(!WindowCtrl::is_visible_hwnd(hwnd)) {
+        if(!WindowUtility::is_visible_hwnd(hwnd)) {
             return TRUE ;
         }
 
@@ -123,7 +24,7 @@ namespace SelectWindow
             return TRUE ;
         }
 
-        if(!WindowCtrl::is_window_mode(hwnd, rect)) {
+        if(!WindowUtility::is_window_mode(hwnd, rect)) {
             return TRUE ;
         }
 
@@ -139,14 +40,16 @@ namespace SelectWindow
     }
 
     template <typename T1, typename T2>
-    inline static void select_nearest_window(T1&& is_if_target, T2&& calc_distance) {
+    inline static void select_nearest_window(
+            T1&& is_if_target,
+            T2&& calc_distance) {
         auto fg_hwnd = GetForegroundWindow() ;
         if(fg_hwnd == NULL) {
             throw RUNTIME_EXCEPT("There is not a foreground window.") ;
         }
 
-        SelectWindow::g_rects.clear() ;
-        if(!EnumWindows(SelectWindow::EnumWindowsProcForNearest,
+        g_rects.clear() ;
+        if(!EnumWindows(EnumWindowsProcForNearest,
                     reinterpret_cast<LPARAM>(fg_hwnd))) {
 
             throw RUNTIME_EXCEPT("Could not enumerate all top-level windows.") ;
@@ -158,7 +61,7 @@ namespace SelectWindow
         }
 
         std::map<LONG, HWND> distance_order_hwnd ;
-        for(const auto& enumed_rect : SelectWindow::g_rects) {
+        for(const auto& enumed_rect : SelectWindowCommon::g_rects) {
             auto& enu_hwnd = enumed_rect.first ;
             auto& enu_rect = enumed_rect.second ;
 
@@ -215,7 +118,7 @@ void SelectLeftWindow::sprocess(
         return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
     } ;
 
-    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
+    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
 }
 
 //SelectRightWindow
@@ -248,7 +151,7 @@ void SelectRightWindow::sprocess(
         return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
     } ;
 
-    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
+    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
 }
 
 //SelectUpperWindow
@@ -281,7 +184,7 @@ void SelectUpperWindow::sprocess(
         return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
     } ;
 
-    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
+    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
 }
 
 //SelectLowerWindow
@@ -314,5 +217,5 @@ void SelectLowerWindow::sprocess(
         return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
     } ;
 
-    SelectWindow::select_nearest_window(is_if_target, calc_distance) ;
+    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
 }

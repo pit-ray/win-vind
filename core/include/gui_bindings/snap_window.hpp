@@ -1,9 +1,9 @@
-#ifndef _RESIZE_WINDOW_HPP
-#define _RESIZE_WINDOW_HPP
+#ifndef _SNAP_WINDOW_HPP
+#define _SNAP_WINDOW_HPP
 
 #include "binded_func_with_creator.hpp"
 
-struct ResizeWindowWidth: public BindedFuncWithCreator<ResizeWindowWidth>
+struct SnapCurrentWindow2Left : public BindedFuncWithCreator<SnapCurrentWindow2Left>
 {
     static void sprocess(
             const bool first_call,
@@ -13,7 +13,7 @@ struct ResizeWindowWidth: public BindedFuncWithCreator<ResizeWindowWidth>
     static const std::string sname() noexcept ;
 } ;
 
-struct IncreaseWindowWidth : public BindedFuncWithCreator<IncreaseWindowWidth>
+struct SnapCurrentWindow2Right : public BindedFuncWithCreator<SnapCurrentWindow2Right>
 {
     static void sprocess(
             const bool first_call,
@@ -23,7 +23,8 @@ struct IncreaseWindowWidth : public BindedFuncWithCreator<IncreaseWindowWidth>
     static const std::string sname() noexcept ;
 } ;
 
-struct DecreaseWindowWidth: public BindedFuncWithCreator<DecreaseWindowWidth>
+
+struct SnapCurrentWindow2Top : public BindedFuncWithCreator<SnapCurrentWindow2Top>
 {
     static void sprocess(
             const bool first_call,
@@ -33,27 +34,7 @@ struct DecreaseWindowWidth: public BindedFuncWithCreator<DecreaseWindowWidth>
     static const std::string sname() noexcept ;
 } ;
 
-struct ResizeWindowHeight : public BindedFuncWithCreator<ResizeWindowHeight>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
-struct IncreaseWindowHeight : public BindedFuncWithCreator<IncreaseWindowHeight>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
-struct DecreaseWindowHeight : public BindedFuncWithCreator<DecreaseWindowHeight>
+struct SnapCurrentWindow2Bottom : public BindedFuncWithCreator<SnapCurrentWindow2Bottom>
 {
     static void sprocess(
             const bool first_call,

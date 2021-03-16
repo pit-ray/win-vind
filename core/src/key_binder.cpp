@@ -288,7 +288,7 @@ namespace KeyBinder
         }
 
         //post process
-        JumpCursor::load_config() ;
+        Jump2Any::load_config() ;
         ExAppUtility::load_config() ;
     }
 

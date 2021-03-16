@@ -65,7 +65,7 @@
         cmake --build . --config Debug
         xcopy /e /Y ".\\Debug" .
     ) else (
-        cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=ON ..
+        cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF ..
         cmake --build . --config Debug
     )
     cd ..

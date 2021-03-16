@@ -3,11 +3,6 @@
 
 #include "binded_func_with_creator.hpp"
 
-namespace JumpCursor
-{
-    void load_config() ;
-}
-
 struct Jump2Left : public BindedFuncWithCreator<Jump2Left>
 {
     static void sprocess(
@@ -59,26 +54,6 @@ struct Jump2XCenter : public BindedFuncWithCreator<Jump2XCenter>
 } ;
 
 struct Jump2YCenter : public BindedFuncWithCreator<Jump2YCenter>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
-struct Jump2Any : public BindedFuncWithCreator<Jump2Any>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
-struct Jump2ActiveWindow : public BindedFuncWithCreator<Jump2ActiveWindow>
 {
     static void sprocess(
             const bool first_call,

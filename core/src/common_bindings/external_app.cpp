@@ -11,7 +11,7 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
-#include "jump_cursor.hpp"
+#include "jump_actwin.hpp"
 #include "keybrd_eventer.hpp"
 #include "msg_logger.hpp"
 #include "path.hpp"

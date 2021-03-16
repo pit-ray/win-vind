@@ -2,13 +2,13 @@
 
 #include <windows.h>
 
-#include "jump_cursor.hpp"
+#include "jump_actwin.hpp"
 #include "utility.hpp"
 
 namespace MYWUtility
 {
-    std::function<void()> show_func = [] {return ;} ;
-    std::function<void()> exit_func = [] {return ;} ;
+    static std::function<void()> show_func = [] {return ;} ;
+    static std::function<void()> exit_func = [] {return ;} ;
 }
 
 //ShowConfigWindow

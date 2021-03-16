@@ -15,7 +15,9 @@
 #include "edi_replace.hpp"
 #include "external_app.hpp"
 #include "filer.hpp"
+#include "mkdir.hpp"
 #include "jump_cursor.hpp"
+#include "jump_keybrd.hpp"
 #include "move_cursor.hpp"
 #include "mywindow_ctrl.hpp"
 #include "pager.hpp"
@@ -27,7 +29,18 @@
 #include "switch_vdesktop.hpp"
 #include "tab_ctrl.hpp"
 #include "undo.hpp"
-#include "window_ctrl.hpp"
+#include "jump_actwin.hpp"
+
+#include "arrange_window.hpp"
+#include "close_window.hpp"
+#include "exchange_window.hpp"
+#include "min_max_window.hpp"
+#include "open_window.hpp"
+#include "reload_window.hpp"
+#include "rotate_window.hpp"
+#include "snap_window.hpp"
+#include "split_open_window.hpp"
+#include "switch_window.hpp"
 
 namespace BindingsLists {
     const auto get() {

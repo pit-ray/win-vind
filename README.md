@@ -239,7 +239,7 @@ It is the difference between master and latest release.
 |State|Description|Type|Priority|
 |:---:|:---|:---:|:---:|
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
-|Ready|Rotate windows without arrangement|Improve|High|
+|✅|Rotate windows without arrangement|Improve|High|
 |☐|Improve customizability|Architecture|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|

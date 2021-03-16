@@ -3,6 +3,8 @@
 #include "screen_metrics.hpp"
 #include "i_params.hpp"
 
+#include "utility.hpp"
+
 //Jump2Left
 const std::string Jump2Left::sname() noexcept
 {

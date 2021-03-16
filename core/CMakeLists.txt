@@ -30,6 +30,7 @@ add_library(Common STATIC
     src/common/mouse_eventer.cpp
     src/common/simple_text_selecter.cpp
     src/common/smart_clipboard.cpp
+    src/common/screen_metrics.cpp
     src/common/text_analyzer.cpp
     src/common/uia.cpp
     src/common/vkc_converter.cpp
@@ -115,7 +116,6 @@ add_library(WinVindCore STATIC
     src/option_loader.cpp
     src/utility.cpp
     src/win_vind.cpp
-
 )
 target_link_libraries(WinVindCore
     CmnBindings

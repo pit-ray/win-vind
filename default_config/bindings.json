@@ -881,8 +881,8 @@
         "cmd": ["rotate", "rot"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Rotate arranged windows in a current monitor",
-        "ja": "現在のモニタの整列済みウィンドウを回転させる"
+        "en": "Rotate windows in a current monitor",
+        "ja": "現在のモニタのウィンドウを回転させる"
     },
     {
         "name": "rotate_windows_in_reverse",
@@ -896,8 +896,8 @@
         "cmd": ["rerotate", "rerot"],
         "mycwn": [],
         "mycwi": [],
-        "en": "Rotate arranged windows in a current monitor in reverse",
-        "ja": "現在のモニタの整列済みウィンドウを逆回転させる"
+        "en": "Rotate windows in a current monitor in reverse",
+        "ja": "現在のモニタのウィンドウを逆回転させる"
     },
     {
         "name": "exchange_window_with_next_one",

@@ -3,9 +3,11 @@
 #include <windows.h>
 #include <psapi.h>
 
+
 #include <functional>
-#include <unordered_map>
 #include <map>
+#include <sstream>
+#include <unordered_map>
 
 #include "msg_logger.hpp"
 #include "screen_metrics.hpp"

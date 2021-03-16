@@ -2,10 +2,9 @@
 #define _SCREEN_METRICS_HPP
 
 #include <windows.h>
-#include <sstream>
-#include <string>
+
 #include <cmath>
-#include "utility.hpp"
+#include <string>
 
 namespace ScreenMetrics {
 
@@ -84,24 +83,9 @@ namespace ScreenMetrics {
                lhs.right >= rhs.right && lhs.bottom >= rhs.bottom ;
     }
 
-    inline void get_conbined_metrics(RECT* const rect) {
-        WINDOWINFO winfo ;
-        winfo.cbSize = sizeof(WINDOWINFO) ;
-        if(!GetWindowInfo(GetDesktopWindow(), &winfo)) {
-            throw RUNTIME_EXCEPT("Could not get window infomation.") ;
-        }
-        copy(*rect, winfo.rcWindow) ;
-    }
+    void get_conbined_metrics(RECT* const rect) ;
 
-    inline void get_primary_metrics(RECT* const rect) {
-        MONITORINFO minfo ;
-        minfo.cbSize = sizeof(MONITORINFO) ;
-        const auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTOPRIMARY) ;
-        if(!GetMonitorInfo(hmonitor, &minfo)) {
-            throw RUNTIME_EXCEPT("Could not get primary monitor infomation.") ;
-        }
-        copy(*rect, minfo.rcMonitor) ;
-    }
+    void get_primary_metrics(RECT* const rect) ;
 
     struct MonitorInfo {
         RECT rect         = {0, 0, 0, 0} ;
@@ -109,42 +93,16 @@ namespace ScreenMetrics {
         HMONITOR hmonitor = NULL ;
     } ;
 
-    inline void get_monitor_metrics(HMONITOR hmonitor, MonitorInfo& minfo) {
-        if(hmonitor == NULL) return ;
-        minfo.hmonitor = hmonitor ;
+    void get_monitor_metrics(HMONITOR hmonitor, MonitorInfo& minfo) ;
 
-        MONITORINFO native_minfo ;
-        native_minfo.cbSize = sizeof(MONITORINFO) ;
-        if(!GetMonitorInfo(minfo.hmonitor, &native_minfo)) {
-            throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
-        }
+    void get_monitor_metrics(HWND hwnd, MonitorInfo& minfo) ;
 
-        copy(minfo.rect, native_minfo.rcMonitor) ;
-        copy(minfo.work_rect, native_minfo.rcWork) ;
-    }
+    void get_monitor_metrics(const POINT& pos, MonitorInfo& minfo) ;
 
-
-    inline void get_monitor_metrics(HWND hwnd, MonitorInfo& minfo) {
-        if(hwnd == NULL) return ;
-        get_monitor_metrics(MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST), minfo) ;
-    }
-
-    inline void get_monitor_metrics(const POINT& pos, MonitorInfo& minfo) {
-        get_monitor_metrics(MonitorFromPoint(pos, MONITOR_DEFAULTTONEAREST), minfo) ;
-    }
-
-    inline void get_monitor_metrics(POINT&& pos, MonitorInfo& minfo) {
-        get_monitor_metrics(MonitorFromPoint(std::move(pos), MONITOR_DEFAULTTONEAREST), minfo) ;
-    }
+    void get_monitor_metrics(POINT&& pos, MonitorInfo& minfo) ;
 
     namespace Debug {
-        inline static std::string info(const RECT& rect) {
-            std::stringstream ss ;
-            ss << "(" << rect.left << ", " << rect.top << ")\t" ;
-            ss << "(" << rect.right << ", " << rect.bottom << ")\t" ;
-            ss << "w: " << width(rect) << ", h:" << height(rect) ;
-            return ss.str() ;
-        }
+        std::string info(const RECT& rect) ;
     }
 }
 

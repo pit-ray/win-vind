@@ -12,7 +12,6 @@
 #include "key_binder.hpp"
 #include "key_logger_base.hpp"
 #include "keybrd_eventer.hpp"
-#include "keystroke_repeater.hpp"
 #include "mode_manager.hpp"
 #include "msg_logger.hpp"
 #include "utility.hpp"
@@ -95,7 +94,6 @@ public:
 struct CommandMode::Impl
 {
     CmdHist ch{} ;
-    KeyStrokeRepeater ksr{} ;
 } ;
 
 CommandMode::CommandMode()
@@ -132,7 +130,6 @@ void CommandMode::sprocess(
         lgr.update() ;
 
         if(!lgr.is_changed()) { //update log as character input
-            pimpl->ksr.reset() ;
             lgr.remove_from_back(1) ;
             continue ;
         }

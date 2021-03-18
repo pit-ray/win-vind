@@ -46,14 +46,30 @@ void ResizeWindowWidth::sprocess(
     ScreenMetrics::MonitorInfo minfo ;
     ScreenMetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-    auto max_width = minfo.work_rect.right - fginfo.rect.left ;
-    if(max_width < width) {
-        width = max_width ;
-    }
+    const auto window_height = ScreenMetrics::height(fginfo.rect) ;
+    const auto monitor_width = ScreenMetrics::width(minfo.work_rect) ;
 
-    WindowUtility::resize(
-            fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-            width, ScreenMetrics::height(fginfo.rect)) ;
+    if(width >= monitor_width) {
+        WindowUtility::resize(
+                fginfo.hwnd,
+                minfo.work_rect.left, fginfo.rect.top,
+                monitor_width, window_height) ;
+    }
+    else {
+        auto right_max_width = minfo.work_rect.right - fginfo.rect.left ;
+
+        if(width <= right_max_width) {
+            WindowUtility::resize(
+                    fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
+                    width, window_height) ;
+        }
+        else {
+            auto left_shift_delta = width - right_max_width ;
+            WindowUtility::resize(
+                    fginfo.hwnd, fginfo.rect.left - left_shift_delta, fginfo.rect.top,
+                    width, window_height) ;
+        }
+    }
 }
 
 //IncreaseWindowWidth

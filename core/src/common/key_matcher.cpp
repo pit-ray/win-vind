@@ -168,15 +168,15 @@ unsigned int KeyMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const
     return most_matched_num ;
 }
 
-unsigned int KeyMatcher::compare_to_latestlog(const KeyLoggerBase* const pc_lgr) const
+unsigned int KeyMatcher::compare_to_latestlog(const KeyLoggerBase& lgr) const
 {
     std::lock_guard<std::mutex> lock(pimpl->mtx) ;
 
     pimpl->accepted = false ;
 
-    if(pc_lgr->empty()) return 0 ;
+    if(lgr.empty()) return 0 ;
 
-    const auto seqidx = pc_lgr->size() - 1 ;
+    const auto seqidx = lgr.size() - 1 ;
     if(seqidx == 0) {
         pimpl->code_existed = true ;
     }
@@ -197,16 +197,16 @@ unsigned int KeyMatcher::compare_to_latestlog(const KeyLoggerBase* const pc_lgr)
     //The search is not needed anymore.
     if(!pimpl->code_existed) return 0 ;
 
-    return compare_onelog(pc_lgr->latest(), seqidx) ;
+    return compare_onelog(lgr.latest(), seqidx) ;
 }
 
-unsigned int KeyMatcher::compare_to_alllog(const KeyLoggerBase* const pc_lgr) const
+unsigned int KeyMatcher::compare_to_alllog(const KeyLoggerBase& lgr) const
 {
     std::lock_guard<std::mutex> lock(pimpl->mtx) ;
 
     pimpl->accepted = false ;
 
-    if(pc_lgr->empty()) return 0 ;
+    if(lgr.empty()) return 0 ;
 
     pimpl->code_existed     = true ;
     pimpl->optional_idx     = std::numeric_limits<std::size_t>::max() ;
@@ -215,8 +215,8 @@ unsigned int KeyMatcher::compare_to_alllog(const KeyLoggerBase* const pc_lgr) co
     pimpl->optnum_end_idx   = std::numeric_limits<unsigned int>::max() ;
 
     unsigned int result = 0 ;
-    for(std::size_t i = 0 ; i < pc_lgr->size() ; i ++) {
-        result = compare_onelog(pc_lgr->at(i), i) ;
+    for(std::size_t i = 0 ; i < lgr.size() ; i ++) {
+        result = compare_onelog(lgr.at(i), i) ;
 
         if(pimpl->accepted || !pimpl->code_existed) break ;
     }

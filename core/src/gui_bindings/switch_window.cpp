@@ -65,7 +65,7 @@ void SwitchWindow::sprocess(
         }
 
         auto matched_func = KeyBinder::find_func(
-                &logger, nullptr, false,
+                logger, nullptr, false,
                 ModeManager::Mode::EdiNormal) ;
 
         if(!matched_func) {

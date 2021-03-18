@@ -21,7 +21,7 @@ namespace KeyBinder
             const InvalidPolicy ip=InvalidPolicy::AllSystemKey) ;
 
     const BindedFunc::shp_t find_func(
-            const KeyLoggerBase* const pc_lgr,
+            const KeyLoggerBase& lgr,
             const BindedFunc::shp_t& running_func=nullptr,
             const bool full_scan=false, //The cost for computing is high.
             ModeManager::Mode mode=ModeManager::get_mode()) ;

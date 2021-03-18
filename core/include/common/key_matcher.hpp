@@ -27,8 +27,8 @@ public:
     virtual ~KeyMatcher() noexcept ;
 
     //return most matched quantity of key in log
-    unsigned int compare_to_latestlog(const KeyLoggerBase* const pc_lgr) const ;
-    unsigned int compare_to_alllog(const KeyLoggerBase* const pc_lgr) const ;
+    unsigned int compare_to_latestlog(const KeyLoggerBase& lgr) const ;
+    unsigned int compare_to_alllog(const KeyLoggerBase& lgr) const ;
     bool is_accepted() const noexcept ;
 
     KeyMatcher(KeyMatcher&&) ;

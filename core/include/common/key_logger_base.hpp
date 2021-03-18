@@ -70,7 +70,7 @@ namespace KeyLoggerUtility
 
     namespace Debug {
         //for debug
-        std::string print_log(const KeyLoggerBase* const lgr) ;
+        std::string print_log(const KeyLoggerBase& lgr) ;
     }
 }
 

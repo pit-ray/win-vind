@@ -50,13 +50,13 @@ public:
 
     //[return] matched num in latest log
     unsigned int validate_if_match(
-            const KeyLoggerBase* const pc_lgr,
+            const KeyLoggerBase& pc_lgr,
             ModeManager::Mode mode=ModeManager::get_mode()) const ;
 
     //[return] matched num in latest log
     //The cost for computing is bigger than validate_if_match.
     unsigned int validate_if_fullmatch(
-            const KeyLoggerBase* const pc_lgr,
+            const KeyLoggerBase& pc_lgr,
             ModeManager::Mode mode=ModeManager::get_mode()) const ;
 
     bool is_callable() const noexcept ;

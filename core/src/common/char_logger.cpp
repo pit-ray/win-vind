@@ -5,9 +5,10 @@
 #include "keystroke_repeater.hpp"
 #include "vkc_converter.hpp"
 
-enum FlagBits
+enum FlagBits : unsigned char
 {
-    CHAR_CHANGED     = 0x01,
+    ALL_FLASE         = 0x00,
+    CHAR_CHANGED      = 0x01,
     KEYSTROKE_CHANGED = 0x10,
 } ;
 
@@ -15,7 +16,7 @@ struct CharLogger::Impl
 {
     KeyLog prelog{} ;
     unsigned char flags = FlagBits::KEYSTROKE_CHANGED ;
-    KeyStrokeRepeater ksr{} ;
+    KeyStrokeRepeater ksr{} ; 
 } ;
 
 CharLogger::CharLogger()
@@ -46,41 +47,46 @@ void CharLogger::update()
 {
     static const KeyLog cl_toggles(VKCConverter::get_toggle_keys()) ;
 
+    //ignore all toggle keys
     auto log = KeyAbsorber::get_pressed_list() - cl_toggles ;
 
     if(log != pimpl->prelog) { //type is changed
-        pimpl->flags |= FlagBits::KEYSTROKE_CHANGED ; //true
-
         const auto diff = log - pimpl->prelog ;
         pimpl->prelog = log ;
 
-        if(!log.is_containing(VKC_SHIFT)) {
+        if(log.is_containing(VKC_SHIFT)) { //shfited
+            auto data = diff.get() ;
+            data.insert(VKC_SHIFT) ;
+
+            //construct KeyLog inside logs directly from std::vector
+            logging(std::move(data)) ;
+        }
+        else {
             logging(std::move(diff)) ;
-            pimpl->flags |= FlagBits::CHAR_CHANGED ; //true
-            return ;
         }
 
-        //shfited
-        auto data = diff.get() ;
-        data.insert(VKC_SHIFT) ;
-
-        //construct KeyLog inside logs directly from std::vector
-        logging(std::move(data)) ;
-        pimpl->flags |= CHAR_CHANGED ; //true
+        //the key stroke is new and logger is changed
+        pimpl->flags = FlagBits::KEYSTROKE_CHANGED | FlagBits::CHAR_CHANGED ;
     }
     else { //long pressing
         logging(log) ;
+
+        if(log.empty()) {
+            pimpl->flags = FlagBits::ALL_FLASE ;
+            return ;
+        }
+
         if(pimpl->flags & FlagBits::KEYSTROKE_CHANGED) {
-            pimpl->flags &= !(FlagBits::CHAR_CHANGED | FlagBits::KEYSTROKE_CHANGED) ; //make all false
+            pimpl->flags = FlagBits::ALL_FLASE ;
             pimpl->ksr.reset() ;
             return ;
         }
 
         //emulate key stroke
         if(pimpl->ksr.is_pressed())
-            pimpl->flags |= FlagBits::CHAR_CHANGED ;
+            pimpl->flags = FlagBits::CHAR_CHANGED ;
         else
-            pimpl->flags &= !FlagBits::CHAR_CHANGED ;
+            pimpl->flags = FlagBits::ALL_FLASE ;
     }
 }
 

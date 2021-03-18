@@ -102,27 +102,27 @@ void BindedFunc::register_matcher(
 }
 
 unsigned int BindedFunc::validate_if_match(
-        const KeyLoggerBase* const pc_lgr,
+        const KeyLoggerBase& lgr,
         ModeManager::Mode mode) const
 {
     if(pimpl->running_now.load()) return 0 ;
 
     pimpl->modeidx = static_cast<unsigned char>(mode) ;
     if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
-        return ptr->compare_to_latestlog(pc_lgr) ;
+        return ptr->compare_to_latestlog(lgr) ;
 
     return 0 ;
 }
 
 unsigned int BindedFunc::validate_if_fullmatch(
-        const KeyLoggerBase* const pc_lgr,
+        const KeyLoggerBase& lgr,
         ModeManager::Mode mode) const
 {
     if(pimpl->running_now.load()) return 0 ;
 
     pimpl->modeidx = static_cast<unsigned char>(mode) ;
     if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
-        return ptr->compare_to_alllog(pc_lgr) ;
+        return ptr->compare_to_alllog(lgr) ;
 
     return 0 ;
 }

@@ -322,7 +322,7 @@ namespace KeyBinder
     //This function regards as other functions is stronger than the running function.
     //If the 2nd argument is not passed, it regards as not processing.
     const BindedFunc::shp_t find_func(
-            const KeyLoggerBase* const pc_lgr,
+            const KeyLoggerBase& lgr,
             const BindedFunc::shp_t& running_func,
             const bool full_scan,
             ModeManager::Mode mode) {
@@ -344,11 +344,11 @@ namespace KeyBinder
         if(!running_func) { //lower cost version
             if(full_scan) {
                 for(const auto& func : g_func_list)
-                    choose(func, func->validate_if_fullmatch(pc_lgr, mode)) ;
+                    choose(func, func->validate_if_fullmatch(lgr, mode)) ;
             }
             else {
                 for(const auto& func : g_func_list)
-                    choose(func, func->validate_if_match(pc_lgr, mode)) ;
+                    choose(func, func->validate_if_match(lgr, mode)) ;
             }
             return matched_func ;
         }
@@ -356,14 +356,14 @@ namespace KeyBinder
         unsigned int matched_num ;
         if(full_scan) {
             for(const auto& func : g_func_list) {
-                matched_num = func->validate_if_fullmatch(pc_lgr, mode) ;
+                matched_num = func->validate_if_fullmatch(lgr, mode) ;
                 if(running_func == func) continue ;
                 choose(func, matched_num) ;
             }
         }
         else {
             for(const auto& func : g_func_list) {
-                matched_num = func->validate_if_match(pc_lgr, mode) ;
+                matched_num = func->validate_if_match(lgr, mode) ;
                 if(running_func == func) continue ;
                 choose(func, matched_num) ;
             }
@@ -464,7 +464,7 @@ namespace KeyBinder
             g_logger.latest() -= c_nums ;
         }
 
-        auto matched_func = find_func(&g_logger, g_running_func) ;
+        auto matched_func = find_func(g_logger, g_running_func) ;
 
         if(!matched_func) {
             if(!VKCConverter::is_number(topvkc)) {

@@ -99,14 +99,14 @@ namespace EdiEdit
             //For example, the child BindedFunc calling this function is binded with 'c{motion}'
             //and 'cc' are bindings EdiDeleteLinesAndStartInsert.
             //In this case, if a child process has a message loop, we must consider the parent logger by full scanning.
-            if(auto func = KeyBinder::find_func(parent_vkclgr, nullptr, true)) {
+            if(auto func = KeyBinder::find_func(*parent_vkclgr, nullptr, true)) {
                 if(func->is_callable()) {
                     func->process(true, repeat_num, parent_vkclgr) ;
                     return false ;
                 }
             }
 
-            if(auto func = KeyBinder::find_func(&lgr, nullptr, true,
+            if(auto func = KeyBinder::find_func(lgr, nullptr, true,
                         ModeManager::Mode::EdiLineVisual)) {
                 if(!func->is_for_moving_caret()) return false ;
 

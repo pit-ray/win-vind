@@ -143,12 +143,12 @@ namespace KeyLoggerUtility
     }
 
     namespace Debug {
-        std::string print_log(const KeyLoggerBase* const lgr) {
+        std::string print_log(const KeyLoggerBase& lgr) {
             std::stringstream ss ;
-            if(lgr->empty()) {
+            if(lgr.empty()) {
                 return "Empty" ;
             }
-            for(const auto& log : *lgr) {
+            for(const auto& log : lgr) {
                 for(const auto& key : log) {
                     if(key == VKC_SPACE) {
                         ss << "<space> " ;

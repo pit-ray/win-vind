@@ -5,7 +5,7 @@ nav_order: 1
 descripption: "Document for win-vind"
 permalink: /
 ---
-# Simple Vim Key Binder for Windows
+# Vim Key Binder for Windows
 <hr>
 
 ## Description

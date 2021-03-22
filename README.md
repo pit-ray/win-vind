@@ -252,7 +252,7 @@ It is the difference between master and latest release.
 |☐|Update Notification|Feature|Mid|
 |✅|Support multi-monitor in `Exchange windows`|Improve|Mid|
 |✅|Support multi-monitor in `Snap window`|Improve|Mid|
-|Ready|Move left-upper point of a window when the height or the width are over in `Resize Window`|Feature|Mid|
+|✅|Move left-upper point of a window when the height or the width are over in `Resize Window`|Feature|Mid|
 |☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Low|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
 |☐|Modern GUI (use WinUI3 or Flutter2?)|Change|Low|

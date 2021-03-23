@@ -18,14 +18,14 @@
 #include "utility.hpp"
 #include "virtual_cmd_line.hpp"
 
-namespace ExAppUtility
+namespace
 {
     using mss_t = std::unordered_map<std::string, std::string> ;
-    inline static const mss_t _load_proc_list_core() {
+    inline const mss_t _load_proc_list_core() {
         mss_t map{} ;
 
         nlohmann::json j ;
-        std::ifstream ifs(Path::to_u8path(Path::SETTINGS())) ;
+        std::ifstream ifs(vind::Path::to_u8path(vind::Path::SETTINGS())) ;
         ifs >> j ;
 
         for(const auto& i : j.at("exapps").at("choices")) {
@@ -42,67 +42,32 @@ namespace ExAppUtility
         return map ;
     }
 
-    static mss_t g_proc_list{} ;
-    void load_config() {
-        g_proc_list = _load_proc_list_core() ;
-    }
+    mss_t g_proc_list{} ;
 }
 
-using namespace ExAppUtility ;
 
-//StartShell
-const std::string StartShell::sname() noexcept
+namespace vind
 {
-    return "start_shell" ;
-}
-
-void StartShell::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-    try {
-        Utility::create_process(Path::HOME_PATH(), g_proc_list.at("shell")) ;
-    }
-    catch(const std::out_of_range&) {
-        VirtualCmdLine::msgout("e: Not a command") ;
-        return ;
+    namespace ExternalApplication
+    {
+        void load_config() {
+            g_proc_list = _load_proc_list_core() ;
+        }
     }
 
-    Sleep(100) ; //wait until select window by OS.
-    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
-}
+    //StartShell
+    const std::string StartShell::sname() noexcept {
+        return "start_shell" ;
+    }
 
-
-/*
- * -- ToDo --
- * connect directly to command prompt
- *
- */
-
-//StartAnyApp
-const std::string StartAnyApp::sname() noexcept
-{
-    return "start_any_app" ;
-}
-
-void StartAnyApp::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
-
-    if(!parent_charlgr)
-        throw LOGIC_EXCEPT("The passed parent logger is null") ;
-
-    auto cmd = parent_charlgr->to_str() ;
-    if(!cmd.empty()) {
+    void StartShell::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
         try {
-            Utility::create_process(".", g_proc_list.at(cmd.substr(1))) ;
+            Utility::create_process(Path::HOME_PATH(), g_proc_list.at("shell")) ;
         }
         catch(const std::out_of_range&) {
             VirtualCmdLine::msgout("e: Not a command") ;
@@ -112,43 +77,76 @@ void StartAnyApp::sprocess(
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
     }
-}
 
 
-//StartExplorer
-const std::string StartExplorer::sname() noexcept
-{
-    return "start_explorer" ;
-}
+    /*
+     * -- ToDo --
+     * connect directly to command prompt
+     *
+     */
 
-void StartExplorer::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-    //_create_process("explorer") ;
-    KeybrdEventer::pushup(VKC_LWIN, VKC_E) ;
+    //StartAnyApp
+    const std::string StartAnyApp::sname() noexcept {
+        return "start_any_app" ;
+    }
 
-    Sleep(100) ; //wait until select window by OS.
-    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
-}
+    void StartAnyApp::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
 
-//OpenStartMenu
-const std::string OpenStartMenu::sname() noexcept
-{
-    return "open_start_menu" ;
-}
+        if(!parent_charlgr)
+            throw LOGIC_EXCEPT("The passed parent logger is null") ;
 
-void OpenStartMenu::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-    KeybrdEventer::pushup(VKC_LWIN) ;
-    Sleep(100) ; //wait until select window by OS.
-    Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        auto cmd = parent_charlgr->to_str() ;
+        if(!cmd.empty()) {
+            try {
+                Utility::create_process(".", g_proc_list.at(cmd.substr(1))) ;
+            }
+            catch(const std::out_of_range&) {
+                VirtualCmdLine::msgout("e: Not a command") ;
+                return ;
+            }
+
+            Sleep(100) ; //wait until select window by OS.
+            Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        }
+    }
+
+
+    //StartExplorer
+    const std::string StartExplorer::sname() noexcept {
+        return "start_explorer" ;
+    }
+
+    void StartExplorer::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+        //_create_process("explorer") ;
+        KeybrdEventer::pushup(VKC_LWIN, VKC_E) ;
+
+        Sleep(100) ; //wait until select window by OS.
+        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+    }
+
+    //OpenStartMenu
+    const std::string OpenStartMenu::sname() noexcept {
+        return "open_start_menu" ;
+    }
+
+    void OpenStartMenu::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+        KeybrdEventer::pushup(VKC_LWIN) ;
+        Sleep(100) ; //wait until select window by OS.
+        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+    }
 }

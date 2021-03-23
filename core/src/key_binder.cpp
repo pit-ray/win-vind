@@ -38,25 +38,16 @@
 
 #undef max
 
-using namespace std ;
-
-namespace KeyBinder
+//internal linkage
+namespace
 {
-    static std::vector<BindedFunc::shp_t> g_func_list{} ;
-    static std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
+    using namespace vind ;
 
-    void init() {
-        g_func_list.clear() ;
-        g_func_list = BindingsLists::get() ;
-
-        g_unbinded_syskeys.clear() ;
-        g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
-
-        EasyClick::initialize() ;
-    }
+    std::vector<BindedFunc::shp_t> g_func_list{} ;
+    std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
 
     using ModeManager::Mode ;
-    static const std::unordered_map<Mode, const char*> g_modeidxs {
+    const std::unordered_map<Mode, const char*> g_modeidxs {
         {Mode::Normal,          "guin"},
         {Mode::Insert,          "guii"},
         {Mode::Visual,          "guiv"},
@@ -69,15 +60,15 @@ namespace KeyBinder
         {Mode::MyConfigWindowInsert,  "mycwi"}
     } ;
 
-    template <typename T>
-    inline auto _parse_strcmd(T&& cmdstr) {
-        auto get_specode = [](std::string k) {
-            if(k == "space")   return ' ' ;
-            if(k == "hbar")    return '-' ;
-            if(k == "gt")      return '>' ;
-            if(k == "lt")      return '<' ;
-            return static_cast<char>(0) ;
-        } ;
+    inline char get_specode(std::string k) noexcept {
+        if(k == "space")   return ' ' ;
+        if(k == "hbar")    return '-' ;
+        if(k == "gt")      return '>' ;
+        if(k == "lt")      return '<' ;
+        return static_cast<char>(0) ;
+    }
+
+    auto parse_string_command(std::string cmdstr) {
         KeyMatcher::cmd_t cmd ;
 
         for(std::size_t i = 0 ; i < cmdstr.length() ; i ++) {
@@ -176,332 +167,357 @@ namespace KeyBinder
         }
         return cmd ;
     }
+}
 
-    void load_config() {
-        std::ifstream ifs(Path::to_u8path(Path::BINDINGS())) ;
-        nlohmann::json jp ;
-        ifs >> jp ;
-        if(jp.empty()) {
-            throw std::runtime_error(Path::BINDINGS() + " is empty.") ;
+namespace vind
+{
+    namespace KeyBinder {
+        void init() {
+            g_func_list.clear() ;
+            g_func_list = BindingsLists::get() ;
+
+            g_unbinded_syskeys.clear() ;
+            g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+
+            EasyClick::initialize() ;
         }
 
-        if(!jp.is_array()) {
-            throw std::runtime_error("The root element of " + Path::BINDINGS() + " should be array.") ;
-        }
+        void load_config() {
+            std::ifstream ifs(Path::to_u8path(Path::BINDINGS())) ;
+            nlohmann::json jp ;
+            ifs >> jp ;
+            if(jp.empty()) {
+                throw std::runtime_error(Path::BINDINGS() + " is empty.") ;
+            }
 
-        constexpr auto mode_num = static_cast<unsigned char>(Mode::NUM) ;
+            if(!jp.is_array()) {
+                throw std::runtime_error("The root element of " + Path::BINDINGS() + " should be array.") ;
+            }
 
-        std::array<KeyMatcher::shp_t, mode_num> matcher_list ;
+            constexpr auto mode_num = static_cast<unsigned char>(Mode::NUM) ;
 
-        //if JSON's data is "edin": ["<guin>"], index_links[edin-index] = guin-index
-        std::array<unsigned char, mode_num> index_links ;
+            std::array<KeyMatcher::shp_t, mode_num> matcher_list ;
 
-        if(g_func_list.empty()) {
-            throw std::logic_error("KeyBinder has no defined BindFunc.") ;
-        }
+            //if JSON's data is "edin": ["<guin>"], index_links[edin-index] = guin-index
+            std::array<unsigned char, mode_num> index_links ;
 
-        //initialize the ignoring key list
-        g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+            if(g_func_list.empty()) {
+                throw std::logic_error("KeyBinder has no defined BindFunc.") ;
+            }
 
-        //create name lists of BindidFunc
-        std::unordered_map<std::string, BindedFunc::shp_t> funclist ;
-        for(auto& func : g_func_list) {
-            funclist[func->name()] = func ;
-        }
+            //initialize the ignoring key list
+            g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
 
-        for(auto& obj : jp) {
-            try {
-                auto& func = funclist.at(obj.at("name")) ;
-                if(!obj.is_object()) {
-                    ERROR_PRINT("The child of root-array should be object. (" \
-                            + Path::BINDINGS() + ", name: " + obj["name"].get<std::string>() + ").") ;
-                }
+            //create name lists of BindidFunc
+            std::unordered_map<std::string, BindedFunc::shp_t> funclist ;
+            for(auto& func : g_func_list) {
+                funclist[func->name()] = func ;
+            }
 
-                matcher_list.fill(nullptr) ;
-                index_links.fill(static_cast<unsigned char>(Mode::None)) ;
+            for(auto& obj : jp) {
+                try {
+                    auto& func = funclist.at(obj.at("name")) ;
+                    if(!obj.is_object()) {
+                        ERROR_PRINT("The child of root-array should be object. (" \
+                                + Path::BINDINGS() + ", name: " + obj["name"].get<std::string>() + ").") ;
+                    }
 
-                for(const auto& index : g_modeidxs) {
-                    try {
-                        const auto& cmds = obj.at(index.second) ;
-                        if(!cmds.is_array()) {
-                            ERROR_PRINT("The command lists should be array (" \
-                                    + func->name() + "/" + index.second + ").") ;
-                            continue ;
-                        }
-                        if(cmds.empty()) {
-                            continue ;
-                        }
-                        KeyMatcher::cmdlist_t cmdlist ;
+                    matcher_list.fill(nullptr) ;
+                    index_links.fill(static_cast<unsigned char>(Mode::None)) ;
 
-                        for(std::string cmdstr : cmds) {
-                            if(cmdstr.empty()) continue ;
-                            KeyMatcher::cmd_t cmd ;
-                            try {
-                                cmd = _parse_strcmd(cmdstr) ;
-                            }
-                            catch(const std::runtime_error& e) {
-                                ERROR_PRINT(func->name() + "::" + index.second \
-                                        + " in " + Path::BINDINGS() + " " + e.what()) ;
+                    for(const auto& index : g_modeidxs) {
+                        try {
+                            const auto& cmds = obj.at(index.second) ;
+                            if(!cmds.is_array()) {
+                                ERROR_PRINT("The command lists should be array (" \
+                                        + func->name() + "/" + index.second + ").") ;
                                 continue ;
                             }
-                            catch(const Mode m) {
-                                index_links[static_cast<unsigned char>(index.first)] \
-                                    = static_cast<unsigned char>(m) ;
-                                cmdlist.clear() ;
-                                break ;
+                            if(cmds.empty()) {
+                                continue ;
                             }
-                            cmdlist.push_back(cmd) ;
+                            KeyMatcher::cmdlist_t cmdlist ;
+
+                            for(std::string cmdstr : cmds) {
+                                if(cmdstr.empty()) continue ;
+                                KeyMatcher::cmd_t cmd ;
+                                try {
+                                    cmd = parse_string_command(cmdstr) ;
+                                }
+                                catch(const std::runtime_error& e) {
+                                    ERROR_PRINT(func->name() + "::" + index.second \
+                                            + " in " + Path::BINDINGS() + " " + e.what()) ;
+                                    continue ;
+                                }
+                                catch(const Mode m) {
+                                    index_links[static_cast<unsigned char>(index.first)] \
+                                        = static_cast<unsigned char>(m) ;
+                                    cmdlist.clear() ;
+                                    break ;
+                                }
+                                cmdlist.push_back(cmd) ;
+                            }
+
+                            if(cmdlist.empty()) continue ;
+
+                            //create KeyMatcher for one mode
+                            matcher_list[static_cast<unsigned char>(index.first)] \
+                                = std::make_shared<KeyMatcher>(std::move(cmdlist)) ;
                         }
-
-                        if(cmdlist.empty()) continue ;
-
-                        //create KeyMatcher for one mode
-                        matcher_list[static_cast<unsigned char>(index.first)] \
-                            = std::make_shared<KeyMatcher>(std::move(cmdlist)) ;
+                        catch(const std::out_of_range& e) {
+                            ERROR_PRINT(e.what()) ;
+                            continue ;
+                        }
                     }
-                    catch(const std::out_of_range& e) {
-                        ERROR_PRINT(e.what()) ;
-                        continue ;
+
+                    //If there are some key-bindings fields of the mode having <mode-name> (e.q. <guin>, <edin>) in bindings.json ,
+                    //they are copied key-bindings from the first mode in json-array to them.
+                    //Ex) "guin": ["<Esc>", "happy"]
+                    //    "edin": ["<guin>", "<guii>"]    -> same as "guin"'s key-bindings(<Esc>, "happy")
+                    for(std::size_t i = 0 ; i < index_links.size() ; i ++) {
+                        const auto link_idx = index_links[i] ;
+                        if(link_idx == static_cast<unsigned char>(Mode::None)) 
+                            continue ;
+
+                        matcher_list[i] = matcher_list[link_idx] ;
+                    }
+
+                    for(std::size_t i = 0 ; i < matcher_list.size() ; i ++) {
+                        func->register_matcher(static_cast<ModeManager::Mode>(i), matcher_list[i]) ;
                     }
                 }
-
-                //If there are some key-bindings fields of the mode having <mode-name> (e.q. <guin>, <edin>) in bindings.json ,
-                //they are copied key-bindings from the first mode in json-array to them.
-                //Ex) "guin": ["<Esc>", "happy"]
-                //    "edin": ["<guin>", "<guii>"]    -> same as "guin"'s key-bindings(<Esc>, "happy")
-                for(std::size_t i = 0 ; i < index_links.size() ; i ++) {
-                    const auto link_idx = index_links[i] ;
-                    if(link_idx == static_cast<unsigned char>(Mode::None)) 
-                        continue ;
-
-                    matcher_list[i] = matcher_list[link_idx] ;
-                }
-
-                for(std::size_t i = 0 ; i < matcher_list.size() ; i ++) {
-                    func->register_matcher(static_cast<ModeManager::Mode>(i), matcher_list[i]) ;
+                catch(const std::out_of_range& e) {
+                    ERROR_PRINT(std::string(e.what()) + ". The following syntax is invalid." + obj.dump()) ;
+                    continue ;
                 }
             }
-            catch(const std::out_of_range& e) {
-                ERROR_PRINT(std::string(e.what()) + ". The following syntax is invalid." + obj.dump()) ;
-                continue ;
+
+            //post process
+            Jump2Any::load_config() ;
+            ExternalApplication::load_config() ;
+        }
+
+        bool is_invalid_log(const KeyLog& log, const InvalidPolicy ip) {
+
+            if(log.empty()) return true ;
+
+            auto must_ignore = [&log](auto&& set) {
+                return std::all_of(log.cbegin(), log.cend(), [&set](const auto& key) {
+                    return set.find(key) != set.end() ;
+                }) ;
+            } ;
+
+            switch(ip) {
+                case None: {
+                    return false ;
+                }
+                case AllSystemKey: {
+                    static const auto system_keys = VKCConverter::get_all_sys_vkc() ;
+                    return must_ignore(system_keys) ;
+                }
+                case UnbindedSystemKey: {
+                    return must_ignore(g_unbinded_syskeys) ;
+                }
+                default: {
+                    return false ;
+                }
             }
         }
 
-        //post process
-        Jump2Any::load_config() ;
-        ExAppUtility::load_config() ;
-    }
+        //This function regards as other functions is stronger than the running function.
+        //If the 2nd argument is not passed, it regards as not processing.
+        const BindedFunc::shp_t find_func(
+                const KeyLoggerBase& lgr,
+                const BindedFunc::shp_t& running_func,
+                const bool full_scan,
+                ModeManager::Mode mode) {
 
-    bool is_invalid_log(const KeyLog& log, const InvalidPolicy ip) {
+            unsigned int most_matched_num  = 0 ;
+            BindedFunc::shp_t matched_func = nullptr ;
 
-        if(log.empty()) return true ;
+            auto choose = [&most_matched_num, &matched_func](auto& func, auto num) {
+                if(num > most_matched_num) {
+                    most_matched_num = num ;
+                    matched_func     = func ;
+                }
+                else if(num == most_matched_num && func->is_callable()) {
+                    //On same matching level, the callable function is the strongest.
+                    matched_func = func ;
+                }
+            } ;
 
-        auto must_ignore = [&log](auto&& set) {
-            return std::all_of(log.cbegin(), log.cend(), [&set](const auto& key) {
-                return set.find(key) != set.end() ;
-            }) ;
-        } ;
-
-        switch(ip) {
-            case None: {
-                return false ;
+            if(!running_func) { //lower cost version
+                if(full_scan) {
+                    for(const auto& func : g_func_list)
+                        choose(func, func->validate_if_fullmatch(lgr, mode)) ;
+                }
+                else {
+                    for(const auto& func : g_func_list)
+                        choose(func, func->validate_if_match(lgr, mode)) ;
+                }
+                return matched_func ;
             }
-            case AllSystemKey: {
-                static const auto system_keys = VKCConverter::get_all_sys_vkc() ;
-                return must_ignore(system_keys) ;
-            }
-            case UnbindedSystemKey: {
-                return must_ignore(g_unbinded_syskeys) ;
-            }
-            default: {
-                return false ;
-            }
-        }
-    }
 
-    //This function regards as other functions is stronger than the running function.
-    //If the 2nd argument is not passed, it regards as not processing.
-    const BindedFunc::shp_t find_func(
-            const KeyLoggerBase& lgr,
-            const BindedFunc::shp_t& running_func,
-            const bool full_scan,
-            ModeManager::Mode mode) {
-
-        unsigned int most_matched_num  = 0 ;
-        BindedFunc::shp_t matched_func = nullptr ;
-
-        auto choose = [&most_matched_num, &matched_func](auto& func, auto num) {
-            if(num > most_matched_num) {
-                most_matched_num = num ;
-                matched_func     = func ;
-            }
-            else if(num == most_matched_num && func->is_callable()) {
-                //On same matching level, the callable function is the strongest.
-                matched_func = func ;
-            }
-        } ;
-
-        if(!running_func) { //lower cost version
+            unsigned int matched_num ;
             if(full_scan) {
-                for(const auto& func : g_func_list)
-                    choose(func, func->validate_if_fullmatch(lgr, mode)) ;
+                for(const auto& func : g_func_list) {
+                    matched_num = func->validate_if_fullmatch(lgr, mode) ;
+                    if(running_func == func) continue ;
+                    choose(func, matched_num) ;
+                }
             }
             else {
-                for(const auto& func : g_func_list)
-                    choose(func, func->validate_if_match(lgr, mode)) ;
+                for(const auto& func : g_func_list) {
+                    matched_num = func->validate_if_match(lgr, mode) ;
+                    if(running_func == func) continue ;
+                    choose(func, matched_num) ;
+                }
             }
-            return matched_func ;
-        }
 
-        unsigned int matched_num ;
-        if(full_scan) {
-            for(const auto& func : g_func_list) {
-                matched_num = func->validate_if_fullmatch(lgr, mode) ;
-                if(running_func == func) continue ;
-                choose(func, matched_num) ;
-            }
-        }
-        else {
-            for(const auto& func : g_func_list) {
-                matched_num = func->validate_if_match(lgr, mode) ;
-                if(running_func == func) continue ;
-                choose(func, matched_num) ;
-            }
-        }
+            //New matched function is given priority over running func.
+            if(matched_func)
+                return matched_func ;
 
-        //New matched function is given priority over running func.
-        if(matched_func)
-            return matched_func ;
+            if(running_func->is_callable())
+                return running_func ;
 
-        if(running_func->is_callable())
-            return running_func ;
-
-        return nullptr ;
-    }
-
-    const BindedFunc::shp_t find_func_byname(const std::string& name) {
-            for(const auto& func : g_func_list) {
-                if(func->name() == name) return func ;
-            }
             return nullptr ;
+        }
+
+        const BindedFunc::shp_t find_func_byname(const std::string& name) {
+                for(const auto& func : g_func_list) {
+                    if(func->name() == name) return func ;
+                }
+                return nullptr ;
+        }
     }
+}
 
-    static VKCLogger g_logger{} ;
-    static BindedFunc::shp_t g_running_func       = nullptr ;
-    static unsigned int g_repeat_num              = 0 ;
-    static bool g_must_release_key_after_repeated = false ;
 
-    void call_matched_funcs() {
-        static const KeyLog c_nums {
-            VKC_0, VKC_1, VKC_2, VKC_3, VKC_4,
-            VKC_5, VKC_6, VKC_7, VKC_8, VKC_9
-        } ;
+//internal linkage
+namespace
+{
+    VKCLogger g_logger{} ;
+    BindedFunc::shp_t g_running_func       = nullptr ;
+    unsigned int g_repeat_num              = 0 ;
+    bool g_must_release_key_after_repeated = false ;
+}
 
-        g_logger.update() ;
-        if(!g_logger.is_changed()) {
-            if(!g_running_func) {
+namespace vind
+{
+    namespace KeyBinder {
+        void call_matched_funcs() {
+            static const KeyLog c_nums {
+                VKC_0, VKC_1, VKC_2, VKC_3, VKC_4,
+                VKC_5, VKC_6, VKC_7, VKC_8, VKC_9
+            } ;
+
+            g_logger.update() ;
+            if(!g_logger.is_changed()) {
+                if(!g_running_func) {
+                    g_logger.remove_from_back(1) ;
+                    return ;
+                }
+                g_running_func->process(false, 1, &g_logger, nullptr) ;
                 g_logger.remove_from_back(1) ;
                 return ;
             }
-            g_running_func->process(false, 1, &g_logger, nullptr) ;
-            g_logger.remove_from_back(1) ;
-            return ;
-        }
 
-        if(g_repeat_num != 0) {
-            if(g_logger.latest().is_containing(VKC_ESC)) {
-                g_repeat_num = 0 ;
-                VirtualCmdLine::reset() ;
-            }
-        }
-
-        //Note
-        //it ignores solo system keys.
-        //Ex)
-        //  ______________________________________________________
-        // |                |                       |             |
-        // |   input keys   |        Shift          |  Shift + t  |
-        // |                | (unbinded key only)   |             | 
-        // |----------------|-----------------------|-------------|
-        // |   behavior     |        ignore         |    pass     |
-        // |________________|_______________________|_____________|
-        //
-        if(is_invalid_log(g_logger.latest(), InvalidPolicy::UnbindedSystemKey)) {
-            g_logger.remove_from_back(1) ;
-            g_running_func = nullptr ;
-
-            if(g_must_release_key_after_repeated) {
-                g_must_release_key_after_repeated = false ;
-            }
-
-            return ;
-        }
-
-        // Note about g_must_release_key_after_repeated:
-        // false : same as default.
-        // true  : wait until some unbinded sytem keys are inputed or no keys is inputed.
-        // 
-        // This behavior is needed to prohibit following case.
-        // Ex)
-        //  ________________________________________________________________________________________
-        // |                            |      |         |                   |                      |
-        // |         input keys         |  2   |  Shift  |      Shift + j    |         j            |
-        // |----------------------------|------|---------|-------------------|----------------------|
-        // | called func name (without) |  -   |    -    |  edi_n_remove_EOL | edi_move_caret_down  |
-        // |----------------------------|------|---------|-------------------|----------------------|
-        // | called func name (with)    |  -   |    -    |  edi_n_remove_EOL |          -           |
-        // |____________________________|______|_________|___________________|______________________|
-        //
-        if(g_must_release_key_after_repeated) {
-            g_logger.remove_from_back(1) ;
-            g_running_func = nullptr ;
-            return ;
-        }
-        auto topvkc = *(g_logger.latest().begin()) ;
-
-        //If some numbers has inputed, ignore commands binded by numbers.
-        if(g_repeat_num != 0) {
-            g_logger.latest() -= c_nums ;
-        }
-
-        auto matched_func = find_func(g_logger, g_running_func) ;
-
-        if(!matched_func) {
-            if(!VKCConverter::is_number(topvkc)) {
-                //If inputed non-numeric key, reset the repeat number.
-                if(g_repeat_num != 0) {
+            if(g_repeat_num != 0) {
+                if(g_logger.latest().is_containing(VKC_ESC)) {
                     g_repeat_num = 0 ;
                     VirtualCmdLine::reset() ;
                 }
             }
-            else {
-                static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
-                if(g_repeat_num < max && !ModeManager::is_insert()) { //Whether it is not out of range?
-                    g_repeat_num = g_repeat_num * 10 + VKCConverter::to_number(topvkc) ;
-                    VirtualCmdLine::cout(std::to_string(g_repeat_num)) ;
+
+            //Note
+            //it ignores solo system keys.
+            //Ex)
+            //  ______________________________________________________
+            // |                |                       |             |
+            // |   input keys   |        Shift          |  Shift + t  |
+            // |                | (unbinded key only)   |             | 
+            // |----------------|-----------------------|-------------|
+            // |   behavior     |        ignore         |    pass     |
+            // |________________|_______________________|_____________|
+            //
+            if(is_invalid_log(g_logger.latest(), InvalidPolicy::UnbindedSystemKey)) {
+                g_logger.remove_from_back(1) ;
+                g_running_func = nullptr ;
+
+                if(g_must_release_key_after_repeated) {
+                    g_must_release_key_after_repeated = false ;
                 }
+
+                return ;
             }
 
-            g_logger.clear() ;
-            g_running_func = nullptr ;
-            return ;
-        }
-
-        if(matched_func->is_callable()) {
-            g_running_func = matched_func ;
-
-            if(g_repeat_num == 0) {
-                g_running_func->process(true, 1, &g_logger, nullptr) ;
+            // Note about g_must_release_key_after_repeated:
+            // false : same as default.
+            // true  : wait until some unbinded sytem keys are inputed or no keys is inputed.
+            // 
+            // This behavior is needed to prohibit following case.
+            // Ex)
+            //  ________________________________________________________________________________________
+            // |                            |      |         |                   |                      |
+            // |         input keys         |  2   |  Shift  |      Shift + j    |         j            |
+            // |----------------------------|------|---------|-------------------|----------------------|
+            // | called func name (without) |  -   |    -    |  edi_n_remove_EOL | edi_move_caret_down  |
+            // |----------------------------|------|---------|-------------------|----------------------|
+            // | called func name (with)    |  -   |    -    |  edi_n_remove_EOL |          -           |
+            // |____________________________|______|_________|___________________|______________________|
+            //
+            if(g_must_release_key_after_repeated) {
+                g_logger.remove_from_back(1) ;
+                g_running_func = nullptr ;
+                return ;
             }
-            else {
-                VirtualCmdLine::reset() ;
-                g_running_func->process(true, g_repeat_num, &g_logger, nullptr) ;
-                g_repeat_num = 0 ;
-                g_must_release_key_after_repeated = true ;
+            auto topvkc = *(g_logger.latest().begin()) ;
+
+            //If some numbers has inputed, ignore commands binded by numbers.
+            if(g_repeat_num != 0) {
+                g_logger.latest() -= c_nums ;
             }
 
-            g_logger.clear() ;
-            return ;
+            auto matched_func = find_func(g_logger, g_running_func) ;
+
+            if(!matched_func) {
+                if(!VKCConverter::is_number(topvkc)) {
+                    //If inputed non-numeric key, reset the repeat number.
+                    if(g_repeat_num != 0) {
+                        g_repeat_num = 0 ;
+                        VirtualCmdLine::reset() ;
+                    }
+                }
+                else {
+                    static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
+                    if(g_repeat_num < max && !ModeManager::is_insert()) { //Whether it is not out of range?
+                        g_repeat_num = g_repeat_num * 10 + VKCConverter::to_number(topvkc) ;
+                        VirtualCmdLine::cout(std::to_string(g_repeat_num)) ;
+                    }
+                }
+
+                g_logger.clear() ;
+                g_running_func = nullptr ;
+                return ;
+            }
+
+            if(matched_func->is_callable()) {
+                g_running_func = matched_func ;
+
+                if(g_repeat_num == 0) {
+                    g_running_func->process(true, 1, &g_logger, nullptr) ;
+                }
+                else {
+                    VirtualCmdLine::reset() ;
+                    g_running_func->process(true, g_repeat_num, &g_logger, nullptr) ;
+                    g_repeat_num = 0 ;
+                    g_must_release_key_after_repeated = true ;
+                }
+
+                g_logger.clear() ;
+                return ;
+            }
         }
     }
 }

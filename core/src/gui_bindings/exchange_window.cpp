@@ -6,11 +6,13 @@
 #include "utility.hpp"
 #include "window_utility.hpp"
 
-namespace ExchangeWindowStatic
+namespace
 {
-    static std::map<LONG, HWND> g_near_hwnds ;
+    using namespace vind ;
 
-    static BOOL CALLBACK EnumWindowsProcForExchange(HWND hwnd, LPARAM lparam) {
+    std::map<LONG, HWND> g_near_hwnds ;
+
+    BOOL CALLBACK EnumWindowsProcForExchange(HWND hwnd, LPARAM lparam) {
         const auto fginfo = reinterpret_cast<WindowUtility::ForegroundInfo*>(lparam) ;
 
         if(fginfo->hwnd == hwnd) {
@@ -42,50 +44,49 @@ namespace ExchangeWindowStatic
     }
 }
 
-//ExchangeWindowWithNextOne
-const std::string ExchangeWindowWithNextOne::sname() noexcept
+namespace vind
 {
-    return "exchange_window_with_next_one" ;
-}
-
-void ExchangeWindowWithNextOne::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-
-    using namespace ExchangeWindowStatic ;
-
-    g_near_hwnds.clear() ;
-
-    WindowUtility::ForegroundInfo fginfo ;
-    if(!EnumWindows(EnumWindowsProcForExchange, reinterpret_cast<LPARAM>(&fginfo))) {
-        throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+    //ExchangeWindowWithNextOne
+    const std::string ExchangeWindowWithNextOne::sname() noexcept {
+        return "exchange_window_with_next_one" ;
     }
 
-    if(g_near_hwnds.empty()) {
-        return ;
+    void ExchangeWindowWithNextOne::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+
+        g_near_hwnds.clear() ;
+
+        WindowUtility::ForegroundInfo fginfo ;
+        if(!EnumWindows(EnumWindowsProcForExchange, reinterpret_cast<LPARAM>(&fginfo))) {
+            throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+        }
+
+        if(g_near_hwnds.empty()) {
+            return ;
+        }
+
+        auto nearest_hwnd = g_near_hwnds.begin()->second ;
+        RECT nearest_rect ;
+        if(!GetWindowRect(nearest_hwnd, &nearest_rect)) {
+            throw RUNTIME_EXCEPT("Could not get a rectangle of the nearest window.") ;
+        }
+
+        WindowUtility::resize(
+                nearest_hwnd,
+                fginfo.rect.left,
+                fginfo.rect.top,
+                ScreenMetrics::width(fginfo.rect),
+                ScreenMetrics::height(fginfo.rect)) ;
+
+        WindowUtility::resize(
+                fginfo.hwnd,
+                nearest_rect.left,
+                nearest_rect.top,
+                ScreenMetrics::width(nearest_rect),
+                ScreenMetrics::height(nearest_rect)) ;
     }
-
-    auto nearest_hwnd = g_near_hwnds.begin()->second ;
-    RECT nearest_rect ;
-    if(!GetWindowRect(nearest_hwnd, &nearest_rect)) {
-        throw RUNTIME_EXCEPT("Could not get a rectangle of the nearest window.") ;
-    }
-
-    WindowUtility::resize(
-            nearest_hwnd,
-            fginfo.rect.left,
-            fginfo.rect.top,
-            ScreenMetrics::width(fginfo.rect),
-            ScreenMetrics::height(fginfo.rect)) ;
-
-    WindowUtility::resize(
-            fginfo.hwnd,
-            nearest_rect.left,
-            nearest_rect.top,
-            ScreenMetrics::width(nearest_rect),
-            ScreenMetrics::height(nearest_rect)) ;
 }

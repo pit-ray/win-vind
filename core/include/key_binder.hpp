@@ -4,32 +4,35 @@
 #include "binded_func.hpp"
 #include "mode_manager.hpp"
 
-class KeyLoggerBase ;
-
-namespace KeyBinder
+namespace vind
 {
-    void init() ;
+    class KeyLoggerBase ;
 
-    enum InvalidPolicy {
-        None,
-        AllSystemKey,
-        UnbindedSystemKey
-    } ;
+    namespace KeyBinder
+    {
+        void init() ;
 
-    bool is_invalid_log(
-            const KeyLog& log,
-            const InvalidPolicy ip=InvalidPolicy::AllSystemKey) ;
+        enum InvalidPolicy {
+            None,
+            AllSystemKey,
+            UnbindedSystemKey
+        } ;
 
-    const BindedFunc::shp_t find_func(
-            const KeyLoggerBase& lgr,
-            const BindedFunc::shp_t& running_func=nullptr,
-            const bool full_scan=false, //The cost for computing is high.
-            ModeManager::Mode mode=ModeManager::get_mode()) ;
+        bool is_invalid_log(
+                const KeyLog& log,
+                const InvalidPolicy ip=InvalidPolicy::AllSystemKey) ;
 
-    const BindedFunc::shp_t find_func_byname(const std::string& name) ;
+        const BindedFunc::shp_t find_func(
+                const KeyLoggerBase& lgr,
+                const BindedFunc::shp_t& running_func=nullptr,
+                const bool full_scan=false, //The cost for computing is high.
+                ModeManager::Mode mode=ModeManager::get_mode()) ;
 
-    void load_config() ;
-    void call_matched_funcs() ;
+        const BindedFunc::shp_t find_func_byname(const std::string& name) ;
+
+        void load_config() ;
+        void call_matched_funcs() ;
+    }
 }
 
 #endif

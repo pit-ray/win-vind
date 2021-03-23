@@ -14,6 +14,8 @@
 
 namespace ioParams
 {
+    using namespace vind ;
+
     using json = nlohmann::json ;
     static json parser{} ;
     static json def_parser{} ;

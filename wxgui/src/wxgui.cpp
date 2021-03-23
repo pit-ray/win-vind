@@ -31,6 +31,8 @@
 
 namespace wxGUI
 {
+    using namespace vind ;
+
     inline static void error_box(const wxString& msg) {
         wxMessageBox(msg, wxT("Error - win-vind"), wxOK | wxICON_EXCLAMATION) ;
     }
@@ -58,7 +60,7 @@ namespace wxGUI
     class SystemThread : public wxThread {
     private:
         virtual ExitCode Entry() override {
-            while(win_vind::update() && runnable.load()) ;
+            while(vind::update() && runnable.load()) ;
             return static_cast<ExitCode>(0) ;
         }
 
@@ -100,7 +102,7 @@ namespace wxGUI
                 }
             }
 
-            if(!win_vind::initialize(g_function_name)) {
+            if(!vind::initialize(g_function_name)) {
                 return false ;
             }
             if(!ioParams::initialize()) {
@@ -112,11 +114,11 @@ namespace wxGUI
             ppd->Show(false) ;
 
             //enable opening window by command
-            win_vind::register_show_window_func([ppd] {
+            vind::register_show_window_func([ppd] {
                 ppd->Show(true) ;
             }) ;
 
-            win_vind::register_exit_window_func([ppd] {
+            vind::register_exit_window_func([ppd] {
                 ppd->Show(true) ;
                 ppd->Destroy() ;
             }) ;

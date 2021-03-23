@@ -14,13 +14,16 @@
 #include "utility.hpp"
 #include "window_utility.hpp"
 
-namespace ArrangeWindowStatic {
-    static std::unordered_map<HMONITOR, RECT> g_mrects ;
+namespace
+{
+    using namespace vind ;
+
+    std::unordered_map<HMONITOR, RECT> g_mrects ;
 
     using ordered_hwnd_t = std::map<SIZE_T, HWND> ;
-    static std::unordered_map<HMONITOR, ordered_hwnd_t> g_m_ordered_hwnd ;
+    std::unordered_map<HMONITOR, ordered_hwnd_t> g_m_ordered_hwnd ;
 
-    static BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
+    BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
         if(!WindowUtility::is_visible_hwnd(hwnd)) {
             return TRUE ; //continue
         }
@@ -71,7 +74,7 @@ namespace ArrangeWindowStatic {
         return TRUE ;
     }
 
-    inline static void assign_local_area_in_monitors(std::unordered_map<HWND, RECT>& rects) {
+    inline void assign_local_area_in_monitors(std::unordered_map<HWND, RECT>& rects) {
         for(auto& mr : g_mrects) {
             const auto& hmonitor = mr.first ;
             const auto& mrect    = mr.second ;
@@ -111,43 +114,43 @@ namespace ArrangeWindowStatic {
     }
 }
 
-//ArrangeWindows
-const std::string ArrangeWindows::sname() noexcept
+namespace vind
 {
-    return "arrange_windows" ;
-}
-
-void ArrangeWindows::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-
-    auto hwnd = GetForegroundWindow() ;
-    if(hwnd == NULL) {
-        throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+    //ArrangeWindows
+    const std::string ArrangeWindows::sname() noexcept {
+        return "arrange_windows" ;
     }
 
-    //Search visible windows
-    using namespace ArrangeWindowStatic ;
-    g_m_ordered_hwnd.clear() ;
-    g_mrects.clear() ;
+    void ArrangeWindows::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
 
-    if(!EnumWindows(EnumWindowsProcForArrangement, 0)) {
-        throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
-    }
+        auto hwnd = GetForegroundWindow() ;
+        if(hwnd == NULL) {
+            throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+        }
 
-    if(g_m_ordered_hwnd.empty() || g_mrects.empty()) {
-        return ;
-    }
+        //Search visible windows
+        g_m_ordered_hwnd.clear() ;
+        g_mrects.clear() ;
 
-    std::unordered_map<HWND, RECT> rects ;
-    assign_local_area_in_monitors(rects) ;
-    WindowUtility::batch_resize(rects) ;
+        if(!EnumWindows(EnumWindowsProcForArrangement, 0)) {
+            throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+        }
 
-    if(!SetForegroundWindow(hwnd)) {
-        throw RUNTIME_EXCEPT("Could not set the foreground window.") ;
+        if(g_m_ordered_hwnd.empty() || g_mrects.empty()) {
+            return ;
+        }
+
+        std::unordered_map<HWND, RECT> rects ;
+        assign_local_area_in_monitors(rects) ;
+        WindowUtility::batch_resize(rects) ;
+
+        if(!SetForegroundWindow(hwnd)) {
+            throw RUNTIME_EXCEPT("Could not set the foreground window.") ;
+        }
     }
 }

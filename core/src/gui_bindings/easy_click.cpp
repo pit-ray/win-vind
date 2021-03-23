@@ -33,9 +33,10 @@
 #include <vector>
 #include "enable_gcc_warning.hpp"
 
-
-namespace EasyClick
+namespace
 {
+    using namespace vind ;
+
     class Point2D {
     private:
         LONG mx ;
@@ -87,19 +88,19 @@ namespace EasyClick
         }
     } ;
 
-    inline static auto& get_cache_req() {
+    inline auto& get_cache_req() {
         static auto g_cache_req = UIA::make_SmartCacheReq(nullptr) ;
         return g_cache_req ;
     }
 
-    static void scan_gui_objects(std::vector<Point2D>& obj_points) ;
+    void scan_gui_objects(std::vector<Point2D>& obj_points) ;
 
     using hint_t = std::vector<unsigned char> ;
 
-    static const std::vector<hint_t> assign_identifiers_label(const std::size_t target_count) ;
-    inline static const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) ;
+    const std::vector<hint_t> assign_identifiers_label(const std::size_t target_count) ;
+    inline const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) ;
 
-    static void loop_for_key_matching(
+    void loop_for_key_matching(
             HWND hwnd,
             const std::vector<Point2D>& points,
             const std::vector<hint_t>& hints,
@@ -108,7 +109,7 @@ namespace EasyClick
             std::mutex& mtx,
             const unsigned char sendkey=VKC_UNDEFINED) ;
 
-    inline static void do_easy_click(const unsigned char sendkey=VKC_UNDEFINED) {
+    inline void do_easy_click(const unsigned char sendkey=VKC_UNDEFINED) {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("There is not a foreground window.") ;
@@ -209,97 +210,96 @@ namespace EasyClick
             }
         }
     }
+
 }
 
-//EasyClickLeft
-const std::string EasyClickLeft::sname() noexcept
+namespace vind
 {
-    return "easy_click_left" ;
-}
-void EasyClickLeft::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) {
-    if(first_call) {
-        EasyClick::do_easy_click(VKC_MOUSE_LEFT) ;
+    //EasyClickLeft
+    const std::string EasyClickLeft::sname() noexcept {
+        return "easy_click_left" ;
     }
-}
-
-//EasyClickRight
-const std::string EasyClickRight::sname() noexcept
-{
-    return "easy_click_right" ;
-}
-void EasyClickRight::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) {
-    if(first_call) {
-        EasyClick::do_easy_click(VKC_MOUSE_RIGHT) ;
+    void EasyClickLeft::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+        do_easy_click(VKC_MOUSE_LEFT) ;
     }
-}
 
-//EasyClickMid
-const std::string EasyClickMid::sname() noexcept
-{
-    return "easy_click_mid" ;
-}
-void EasyClickMid::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) {
-    if(first_call) {
-        EasyClick::do_easy_click(VKC_MOUSE_MID) ;
+    //EasyClickRight
+    const std::string EasyClickRight::sname() noexcept {
+        return "easy_click_right" ;
     }
-}
-
-//EasyClickHover
-const std::string EasyClickHover::sname() noexcept
-{
-    return "easy_click_hover" ;
-}
-void EasyClickHover::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) {
-    if(first_call) {
-        EasyClick::do_easy_click(VKC_UNDEFINED) ;
+    void EasyClickRight::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+        do_easy_click(VKC_MOUSE_RIGHT) ;
     }
-}
 
-namespace EasyClick {
+    //EasyClickMid
+    const std::string EasyClickMid::sname() noexcept {
+        return "easy_click_mid" ;
+    }
+    void EasyClickMid::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+        do_easy_click(VKC_MOUSE_MID) ;
+    }
 
-    void initialize() {
-        decltype(auto) cuia = UIA::get_global_cuia() ;
+    //EasyClickHover
+    const std::string EasyClickHover::sname() noexcept {
+        return "easy_click_hover" ;
+    }
+    void EasyClickHover::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+        do_easy_click(VKC_UNDEFINED) ;
+    }
 
-        IUIAutomationCacheRequest* cr_raw ;
-        if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
-            throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
+    namespace EasyClick {
+
+        void initialize() {
+            decltype(auto) cuia = UIA::get_global_cuia() ;
+
+            IUIAutomationCacheRequest* cr_raw ;
+            if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
+                throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
+            }
+            decltype(auto) g_cache_req = get_cache_req() ;
+            g_cache_req.reset(cr_raw) ;
+
+            //g_cache_req->AddProperty(UIA_ClickablePointPropertyId) ;
+            g_cache_req->AddProperty(UIA_IsEnabledPropertyId) ;
+            g_cache_req->AddProperty(UIA_IsOffscreenPropertyId) ;
+            g_cache_req->AddProperty(UIA_IsKeyboardFocusablePropertyId) ;
+            g_cache_req->AddProperty(UIA_BoundingRectanglePropertyId) ;
+
+            if(FAILED(g_cache_req->put_AutomationElementMode(
+                            AutomationElementMode::AutomationElementMode_None))) {
+                throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
+            }
+            if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
+                throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
+            }
+
+            //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
         }
-        decltype(auto) g_cache_req = get_cache_req() ;
-        g_cache_req.reset(cr_raw) ;
-
-        //g_cache_req->AddProperty(UIA_ClickablePointPropertyId) ;
-        g_cache_req->AddProperty(UIA_IsEnabledPropertyId) ;
-        g_cache_req->AddProperty(UIA_IsOffscreenPropertyId) ;
-        g_cache_req->AddProperty(UIA_IsKeyboardFocusablePropertyId) ;
-        g_cache_req->AddProperty(UIA_BoundingRectanglePropertyId) ;
-
-        if(FAILED(g_cache_req->put_AutomationElementMode(
-                        AutomationElementMode::AutomationElementMode_None))) {
-            throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
-        }
-        if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
-            throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
-        }
-
-        //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
     }
+}
 
+namespace
+{
     // ----------------------------
     //
     //    @GUI  Scan  Functions
@@ -308,7 +308,7 @@ namespace EasyClick {
 
     //Why, cannot get the value of ClickablePointPropertyId with GetCachedProperyValue.
     //We must use cache in order not to freeze.
-    inline static auto get_clickable_point(UIA::SmartElement& elem) {
+    inline auto get_clickable_point(UIA::SmartElement& elem) {
         if(VARIANT val ; SUCCEEDED(elem->GetCachedPropertyValue(UIA_ClickablePointPropertyId, &val))) {
             if(val.vt == (VT_R8 | VT_ARRAY)) {
                 if(LONG* ppvdata ; SUCCEEDED(SafeArrayAccessData(val.parray,
@@ -323,7 +323,7 @@ namespace EasyClick {
         throw std::runtime_error("Could not get a clickable point.") ;
     }
 
-    inline static auto get_keyboard_focusable_point(
+    inline auto get_keyboard_focusable_point(
             UIA::SmartElement& elem,
             const RECT& window_rect,
             const BOOL parent_is_focasuable=FALSE) {
@@ -353,7 +353,7 @@ namespace EasyClick {
                 rect.top  + (rect.bottom - rect.top) / 2) ;
     }
 
-    static void scan_children_enumurately(
+    void scan_children_enumurately(
             UIA::SmartElementArray& parents,
             std::vector<Point2D>& obj_points,
             const RECT& window_rect,
@@ -407,7 +407,9 @@ namespace EasyClick {
         }
     }
 
-    static void scan_object_from_hwnd(HWND hwnd, std::vector<Point2D>& obj_points) {
+    void scan_object_from_hwnd(
+            HWND hwnd,
+            std::vector<Point2D>& obj_points) {
         decltype(auto) cuia = UIA::get_global_cuia() ;
         IUIAutomationElement* elem_raw ;
         if(FAILED(cuia->ElementFromHandle(hwnd, &elem_raw))) {
@@ -454,7 +456,7 @@ namespace EasyClick {
         }
     }
 
-    static BOOL CALLBACK ScanCenterPoint(HWND hwnd, LPARAM lparam) {
+    BOOL CALLBACK ScanCenterPoint(HWND hwnd, LPARAM lparam) {
         auto obj_points = reinterpret_cast<std::vector<Point2D>*>(lparam) ;
 
         if(!IsWindowVisible(hwnd)) {
@@ -493,7 +495,7 @@ namespace EasyClick {
         {}
     } ;
 
-    static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lparam) {
+    BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lparam) {
         auto psinfo = reinterpret_cast<ProcessScanInfo*>(lparam) ;
 
         DWORD procid ;
@@ -507,7 +509,7 @@ namespace EasyClick {
         return TRUE ;
     }
 
-    static void scan_gui_objects(std::vector<Point2D>& obj_points) {
+    void scan_gui_objects(std::vector<Point2D>& obj_points) {
         auto hwnd = GetForegroundWindow() ;
 
         //scan all GUI objects in current window and children
@@ -531,7 +533,7 @@ namespace EasyClick {
     //    @Identifier  Assign  Functions
     //
     // ---------------------------------------
-    static constexpr std::array<unsigned char, 26> gcx_labels = {
+    constexpr std::array<unsigned char, 26> gcx_labels = {
         VKC_A, VKC_S, VKC_D, VKC_G, VKC_H,
         VKC_K, VKC_L, VKC_Q, VKC_W, VKC_E,
         VKC_R, VKC_T, VKC_Y, VKC_U, VKC_I,
@@ -540,7 +542,7 @@ namespace EasyClick {
     } ;
 
     //Currrently, supported only 26 x 26 x 26 = 17576 patterns.
-    static const std::vector<hint_t> assign_identifiers_label(const std::size_t target_count) {
+    const std::vector<hint_t> assign_identifiers_label(const std::size_t target_count) {
         // <= 26
         if(target_count <= gcx_labels.size()) {
             std::vector<hint_t> hints(target_count) ;
@@ -612,7 +614,7 @@ namespace EasyClick {
         return hints ;
     }
 
-    inline static const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) {
+    inline const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) {
         std::vector<std::string> hints_str(hints.size()) ;
 
         for(std::size_t i = 0 ; i < hints.size() ; i ++) {
@@ -626,7 +628,7 @@ namespace EasyClick {
     }
 
     // [Return value] count that need to draw
-    inline static std::size_t match_with_hints(
+    inline std::size_t match_with_hints(
             const KeyLoggerBase* const pc_lgr,
             const std::vector<hint_t>& hints,
             std::vector<unsigned char>& matching_nums,
@@ -670,7 +672,7 @@ namespace EasyClick {
         return draw_count ;
     }
 
-    static void loop_for_key_matching(
+    void loop_for_key_matching(
             HWND hwnd,
             const std::vector<Point2D>& points,
             const std::vector<hint_t>& hints,
@@ -682,7 +684,7 @@ namespace EasyClick {
         KeyAbsorber::InstantKeyAbsorber ika ;
         VKCLogger lgr ;
 
-        while(win_vind::update_background()) {
+        while(vind::update_background()) {
             lgr.update() ;
             if(!lgr.is_changed()) {
                 lgr.remove_from_back(1) ;

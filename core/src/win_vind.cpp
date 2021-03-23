@@ -46,23 +46,26 @@
 #define MEMORY_MAPPED_FILE_NAME ("qvCI980BTny1ZSFfY76sO71w7MtLTzuPVd6RQs47_p7Kn4SJZ7cnaH8QwPS901VFd2N5WuxECvx7N3hP7caWK44ZSq6")
 #define MEMORY_MAPPED_FILE_SIZE (1024)
 
-namespace win_vind
+//internal linkage
+namespace
 {
-    using namespace std ;
-
     auto delete_handle = [] (void* handle) {
         CloseHandle(handle) ;
     } ;
-    static std::unique_ptr<void, decltype(delete_handle)> g_map(NULL, delete_handle) ;
+
+    std::unique_ptr<void, decltype(delete_handle)> g_map(NULL, delete_handle) ;
 
     auto unmap_view = [] (void* view) {
         UnmapViewOfFile(view) ;
     } ;
-    inline static auto get_memmapped_file(HANDLE map) {
+    inline auto get_memmapped_file(HANDLE map) {
         return std::unique_ptr<void, decltype(unmap_view)>(
                 MapViewOfFile(map, FILE_MAP_WRITE, 0, 0, 0), unmap_view) ;
     }
+}
 
+namespace vind
+{
     bool initialize(const std::string func_name) noexcept {
         try {
             Logger::initialize() ;

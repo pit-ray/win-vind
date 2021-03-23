@@ -42,6 +42,8 @@
 
 namespace wxGUI
 {
+    using namespace vind ;
+
     namespace BindingsEvt {
         enum : unsigned int {
             DEFAULT = 10200,

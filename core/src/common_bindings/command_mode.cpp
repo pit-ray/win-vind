@@ -21,78 +21,82 @@
 #include "vkc_logger.hpp"
 #include "win_vind.hpp"
 
-struct CmdPoint
+namespace
 {
-    CharLogger logger{} ;
-    BindedFunc::shp_t func = nullptr ;
-} ;
-using hist_point_t = std::shared_ptr<CmdPoint> ;
-using hist_t = std::deque<hist_point_t> ;
+    using namespace vind ;
 
-class CmdHist
-{
-private:
-    hist_t hist ;
-    std::size_t idx ;
+    struct CmdPoint
+    {
+        CharLogger logger{} ;
+        BindedFunc::shp_t func = nullptr ;
+    } ;
+    using hist_point_t = std::shared_ptr<CmdPoint> ;
+    using hist_t = std::deque<hist_point_t> ;
 
-public:
-    explicit CmdHist()
-    : hist{std::make_shared<CmdPoint>()},
-      idx(0)
-    {}
+    class CmdHist
+    {
+    private:
+        hist_t hist ;
+        std::size_t idx ;
 
-    const hist_point_t& get_hist_point() {
-        return hist.at(idx) ;
-    }
+    public:
+        explicit CmdHist()
+        : hist{std::make_shared<CmdPoint>()},
+          idx(0)
+        {}
 
-    bool forward() noexcept {
-        if(idx == hist.size() - 1) {
-            return false ; //Could not forward
+        const hist_point_t& get_hist_point() {
+            return hist.at(idx) ;
         }
 
-        idx ++ ;
-        return true ;
-    }
-
-    bool backward() noexcept {
-        if(idx == 0) {
-            return false ; //Could not backward
-        }
-        idx -- ;
-        return true ;
-    }
-
-    void forward_to_latest() noexcept {
-        idx = hist.size() - 1 ;
-    }
-
-    void generate_new_hist() {
-        if(idx == hist.size() - 1) {
-            //recently logger
-            while(hist.size() >= iParams::get_z("cmd_max_history_num")) {
-                hist.pop_front() ;
+        bool forward() noexcept {
+            if(idx == hist.size() - 1) {
+                return false ; //Could not forward
             }
 
-            idx = hist.size() ; //update to index of recently history
-            hist.push_back(std::make_shared<CmdPoint>()) ;
+            idx ++ ;
+            return true ;
         }
-        else {
-            //the current point is past one, so move to latest one.
-            forward_to_latest() ;
 
-            auto p = hist.at(idx) ;
-            p->logger.clear() ;
-            p->func = nullptr ;
+        bool backward() noexcept {
+            if(idx == 0) {
+                return false ; //Could not backward
+            }
+            idx -- ;
+            return true ;
         }
-    }
 
-    bool is_pointing_latest() noexcept {
-        return idx == hist.size() - 1 ;
-    }
-} ;
+        void forward_to_latest() noexcept {
+            idx = hist.size() - 1 ;
+        }
 
-struct CommandMode::Impl
-{
+        void generate_new_hist() {
+            if(idx == hist.size() - 1) {
+                //recently logger
+                while(hist.size() >= iParams::get_z("cmd_max_history_num")) {
+                    hist.pop_front() ;
+                }
+
+                idx = hist.size() ; //update to index of recently history
+                hist.push_back(std::make_shared<CmdPoint>()) ;
+            }
+            else {
+                //the current point is past one, so move to latest one.
+                forward_to_latest() ;
+
+                auto p = hist.at(idx) ;
+                p->logger.clear() ;
+                p->func = nullptr ;
+            }
+        }
+
+        bool is_pointing_latest() noexcept {
+            return idx == hist.size() - 1 ;
+        }
+    } ;
+}
+
+struct CommandMode::Impl {
     CmdHist ch{} ;
 } ;
 
@@ -104,8 +108,7 @@ CommandMode::~CommandMode() noexcept               = default ;
 CommandMode::CommandMode(CommandMode&&)            = default ;
 CommandMode& CommandMode::operator=(CommandMode&&) = default ;
 
-const std::string CommandMode::sname() noexcept
-{
+const std::string CommandMode::sname() noexcept {
     return "command_mode" ;
 }
 
@@ -113,15 +116,14 @@ void CommandMode::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
         VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) const
-{
+        const CharLogger* const UNUSED(parent_charlgr)) const {
     if(!first_call) return ;
 
     VirtualCmdLine::reset() ;
 
     KeyAbsorber::InstantKeyAbsorber ika ;
 
-    while(win_vind::update_background()) {
+    while(vind::update_background()) {
         auto& p_cmdp = pimpl->ch.get_hist_point() ;
         auto& lgr    = p_cmdp->logger ;
 

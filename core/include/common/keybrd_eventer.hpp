@@ -9,46 +9,48 @@
 #include "virtual_key_fwd.hpp"
 #include "key_absorber.hpp"
 
-class KeyLog ;
-
-namespace KeybrdEventer
+namespace vind
 {
-    bool is_pressed_actually(const unsigned char key) noexcept ;
+    class KeyLog ;
 
-    class SmartKey {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+    namespace KeybrdEventer {
+        bool is_pressed_actually(const unsigned char key) noexcept ;
 
-        void send_event(const bool pressed) ;
+        class SmartKey {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        explicit SmartKey(const unsigned char key) ;
-        virtual ~SmartKey() noexcept ;
+            void send_event(const bool pressed) ;
 
-        void press() ;
-        void release() ;
+        public:
+            explicit SmartKey(const unsigned char key) ;
+            virtual ~SmartKey() noexcept ;
 
-        SmartKey(SmartKey&&) ;
-        SmartKey& operator=(SmartKey&&) ;
-        SmartKey(const SmartKey&)            = delete ;
-        SmartKey& operator=(const SmartKey&) = delete ;
-    } ;
+            void press() ;
+            void release() ;
+
+            SmartKey(SmartKey&&) ;
+            SmartKey& operator=(SmartKey&&) ;
+            SmartKey(const SmartKey&)            = delete ;
+            SmartKey& operator=(const SmartKey&) = delete ;
+        } ;
 
 
-    //change key state without input
-    void release_keystate(const unsigned char key) ;
+        //change key state without input
+        void release_keystate(const unsigned char key) ;
 
-    //change key state without input
-    void press_keystate(const unsigned char key) ;
+        //change key state without input
+        void press_keystate(const unsigned char key) ;
 
-    void _pushup_core(std::initializer_list<unsigned char>&& initlist) ;
+        void pushup_core(std::initializer_list<unsigned char>&& initlist) ;
 
-    //perfect forwarding
-    template <typename... Ts>
-    inline void pushup(Ts&&... keys) {
-        auto initl = {std::forward<Ts>(keys)...} ;
-        return _pushup_core(std::move(initl)) ;
+        //perfect forwarding
+        template <typename... Ts>
+        inline void pushup(Ts&&... keys) {
+            auto initl = {std::forward<Ts>(keys)...} ;
+            return pushup_core(std::move(initl)) ;
+        }
     }
 }
 

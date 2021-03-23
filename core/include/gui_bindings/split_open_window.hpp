@@ -3,24 +3,25 @@
 
 #include "binded_func_with_creator.hpp"
 
-struct OpenNewCurWinWithHorizontalSplit : public BindedFuncWithCreator<OpenNewCurWinWithHorizontalSplit>
+namespace vind
 {
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct OpenNewCurWinWithHorizontalSplit : public BindedFuncWithCreator<OpenNewCurWinWithHorizontalSplit> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
 
-struct OpenNewCurWinWithVerticalSplit : public BindedFuncWithCreator<OpenNewCurWinWithVerticalSplit>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct OpenNewCurWinWithVerticalSplit : public BindedFuncWithCreator<OpenNewCurWinWithVerticalSplit> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
+}
 
 #endif

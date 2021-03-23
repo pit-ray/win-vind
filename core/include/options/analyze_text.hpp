@@ -9,27 +9,29 @@
 
 #include "dynamic_option.hpp"
 
-class AnalyzeText : public DynamicOption
+namespace vind
 {
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
-    bool do_enable() const noexcept override ;
-    bool do_disable() const noexcept override ;
-    bool do_process() const override ;
+    class AnalyzeText : public DynamicOption
+    {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+        bool do_enable() const noexcept override ;
+        bool do_disable() const noexcept override ;
+        bool do_process() const override ;
 
-public:
-    const std::string name() const noexcept override ;
+    public:
+        const std::string name() const noexcept override ;
 
-    static std::unique_ptr<DynamicOption> create() ;
+        static std::unique_ptr<DynamicOption> create() ;
 
-    explicit AnalyzeText() ;
-    virtual ~AnalyzeText() ;
-    AnalyzeText(AnalyzeText&&) ;
-    AnalyzeText& operator=(AnalyzeText&&) ;
+        explicit AnalyzeText() ;
+        virtual ~AnalyzeText() ;
+        AnalyzeText(AnalyzeText&&) ;
+        AnalyzeText& operator=(AnalyzeText&&) ;
 
-    AnalyzeText(const AnalyzeText&) = delete ;
-    AnalyzeText& operator=(const AnalyzeText&) = delete ;
-} ;
-
+        AnalyzeText(const AnalyzeText&) = delete ;
+        AnalyzeText& operator=(const AnalyzeText&) = delete ;
+    } ;
+}
 #endif

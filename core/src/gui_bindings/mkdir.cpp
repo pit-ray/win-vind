@@ -7,10 +7,10 @@
 #include "msg_logger.hpp"
 
 //MakeDir
-namespace MkdirStatic
+namespace
 {
     //This is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
-    inline static auto get_current_explorer_path() {
+    inline auto get_current_explorer_path() {
         using path_t = std::string ;
 
         const auto hwnd = GetForegroundWindow() ;
@@ -123,50 +123,51 @@ namespace MkdirStatic
                 throw RUNTIME_EXCEPT("cannot convert an item ID to a file system path.") ;
             }
 
-            return Utility::ws_to_s(path) ;
+            return vind::Utility::ws_to_s(path) ;
         }
 
         return path_t() ;
     }
 }
 
-const std::string MakeDir::sname() noexcept
+namespace vind
 {
-    return "make_dir" ;
-}
-void MakeDir::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
+    const std::string MakeDir::sname() noexcept {
+        return "make_dir" ;
+    }
+    void MakeDir::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
 
-    if(!parent_charlgr)
-        throw LOGIC_EXCEPT("KeyLogger is nullptr for character.") ;
+        if(!parent_charlgr)
+            throw LOGIC_EXCEPT("KeyLogger is nullptr for character.") ;
 
-    auto cmd = parent_charlgr->to_str() ;
+        auto cmd = parent_charlgr->to_str() ;
 
-    const auto pos = cmd.find_first_of(" ") ;
-    auto arg = cmd.substr(pos + 1) ;
+        const auto pos = cmd.find_first_of(" ") ;
+        auto arg = cmd.substr(pos + 1) ;
 
-    if(arg.find("\\") != std::string::npos ||
-            arg.find("/") != std::string::npos) {
-        //argument is directory path
-        if(arg.length() > 248) {
-            //over max path num
-            arg = arg.substr(0, 248) ;
+        if(arg.find("\\") != std::string::npos ||
+                arg.find("/") != std::string::npos) {
+            //argument is directory path
+            if(arg.length() > 248) {
+                //over max path num
+                arg = arg.substr(0, 248) ;
+            }
+            Utility::create_directory(arg) ;
         }
-        Utility::create_directory(arg) ;
-    }
 
-    //argument is directory name
-    //get current directory
-    auto current_path = MkdirStatic::get_current_explorer_path() ;
-    if(current_path.empty()) {
-        current_path = Path::HOME_PATH() + "/Desktop" ;
-    }
+        //argument is directory name
+        //get current directory
+        auto current_path = get_current_explorer_path() ;
+        if(current_path.empty()) {
+            current_path = Path::HOME_PATH() + "/Desktop" ;
+        }
 
-    auto full_path = current_path + "\\" + arg ;
-    Utility::create_directory(full_path) ;
+        auto full_path = current_path + "\\" + arg ;
+        Utility::create_directory(full_path) ;
+    }
 }

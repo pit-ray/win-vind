@@ -3,26 +3,28 @@
 
 #include "key_logger_base.hpp"
 
-class CharLogger : public KeyLoggerBase
+namespace vind
 {
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    class CharLogger : public KeyLoggerBase {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
 
-public:
-    explicit CharLogger() ;
-    virtual ~CharLogger() noexcept ;
+    public:
+        explicit CharLogger() ;
+        virtual ~CharLogger() noexcept ;
 
-    CharLogger(const CharLogger&) ;
-    CharLogger& operator=(const CharLogger&) ;
+        CharLogger(const CharLogger&) ;
+        CharLogger& operator=(const CharLogger&) ;
 
-    CharLogger(CharLogger&&) ;
-    CharLogger& operator=(CharLogger&&) ;
+        CharLogger(CharLogger&&) ;
+        CharLogger& operator=(CharLogger&&) ;
 
-    virtual void update() override ;
-    virtual bool is_changed() const noexcept override ;
+        virtual void update() override ;
+        virtual bool is_changed() const noexcept override ;
 
-    virtual const std::string to_str() const ;
-} ;
+        virtual const std::string to_str() const ;
+    } ;
+}
 
 #endif

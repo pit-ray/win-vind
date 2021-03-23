@@ -3,26 +3,29 @@
 
 #include "dynamic_option_with_creator.hpp"
 
-class AutotrackPopup : public DynamicOptionWithCreator<AutotrackPopup>
+namespace vind
 {
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    class AutotrackPopup : public DynamicOptionWithCreator<AutotrackPopup>
+    {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
 
-    void do_enable() const override ;
-    void do_disable() const override ;
-    void do_process() const override ;
+        void do_enable() const override ;
+        void do_disable() const override ;
+        void do_process() const override ;
 
-public:
-    static const std::string sname() noexcept ;
+    public:
+        static const std::string sname() noexcept ;
 
-    explicit AutotrackPopup() ;
-    virtual ~AutotrackPopup() noexcept ;
+        explicit AutotrackPopup() ;
+        virtual ~AutotrackPopup() noexcept ;
 
-    AutotrackPopup(AutotrackPopup&&) ;
-    AutotrackPopup& operator=(AutotrackPopup&&)  ;
-    AutotrackPopup(const AutotrackPopup&)            = delete ;
-    AutotrackPopup& operator=(const AutotrackPopup&) = delete ;
-} ;
+        AutotrackPopup(AutotrackPopup&&) ;
+        AutotrackPopup& operator=(AutotrackPopup&&)  ;
+        AutotrackPopup(const AutotrackPopup&)            = delete ;
+        AutotrackPopup& operator=(const AutotrackPopup&) = delete ;
+    } ;
+}
 
 #endif

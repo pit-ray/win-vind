@@ -10,16 +10,17 @@
 #include "msg_logger.hpp"
 #include "utility.hpp"
 
-using namespace std ;
-using namespace std::chrono ;
 
-namespace MoveUtility
+namespace
 {
+    using namespace vind ;
+
+    using namespace std::chrono ;
     //hardcoded (The cursor move 1px necessarilly by one press)
-    static constexpr auto INITIAL_VELOCITY = 1.0f ;
+    constexpr auto INITIAL_VELOCITY = 1.0f ;
 
     template <typename T>
-    inline static const auto _const_accelerate(float& velocity, T&& us) {
+    inline const auto constant_accelerate(float& velocity, T&& us) {
         const auto acc = iParams::get_f("cursor_acceleration") ;
         const auto mvc = iParams::get_f("cursor_max_velocity") ;
 
@@ -32,7 +33,7 @@ namespace MoveUtility
         return x ;
     }
 
-    inline static void _move_cursor(const int dx, const int dy) {
+    inline void _move_cursor(const int dx, const int dy) {
         static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, MOUSEEVENTF_MOVE, 0, 0}}} ;
 
         in.mi.dx = dx ;
@@ -43,7 +44,7 @@ namespace MoveUtility
         }
     }
 
-    inline static const auto _compute_deltat(
+    inline const auto _compute_deltat(
             const system_clock::time_point& start_time) {
 
         return duration_cast<microseconds>(
@@ -63,127 +64,114 @@ namespace MoveUtility
 
         const auto delta() {
             return static_cast<int>(
-                    _const_accelerate(v, _compute_deltat(start_time))) ;
+                    constant_accelerate(v, _compute_deltat(start_time))) ;
         }
     } ;
 }
 
-using namespace MoveUtility ;
-
-//MoveLeft
-struct MoveLeft::Impl
+namespace vind
 {
-    MoveDeltaCalculator calcer{} ;
-} ;
+    //MoveLeft
+    struct MoveLeft::Impl {
+        MoveDeltaCalculator calcer{} ;
+    } ;
 
-MoveLeft::MoveLeft()
-: pimpl(make_unique<Impl>())
-{}
+    MoveLeft::MoveLeft()
+    : pimpl(std::make_unique<Impl>())
+    {}
 
-MoveLeft::~MoveLeft()                     = default ;
-MoveLeft::MoveLeft(MoveLeft&&)            = default ;
-MoveLeft& MoveLeft::operator=(MoveLeft&&) = default ;
+    MoveLeft::~MoveLeft()                     = default ;
+    MoveLeft::MoveLeft(MoveLeft&&)            = default ;
+    MoveLeft& MoveLeft::operator=(MoveLeft&&) = default ;
 
-const std::string MoveLeft::sname() noexcept
-{
-    return "move_left" ;
-}
+    const std::string MoveLeft::sname() noexcept {
+        return "move_left" ;
+    }
 
-void MoveLeft::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) const
-{
-    if(first_call) pimpl->calcer.reset() ;
-    _move_cursor(-pimpl->calcer.delta() * repeat_num, 0) ;
-}
-
-
-//MoveRight
-struct MoveRight::Impl
-{
-    MoveDeltaCalculator calcer{} ;
-} ;
-
-MoveRight::MoveRight()
-: pimpl(make_unique<Impl>())
-{}
-
-MoveRight::~MoveRight()                      = default ;
-MoveRight::MoveRight(MoveRight&&)            = default ;
-MoveRight& MoveRight::operator=(MoveRight&&) = default ;
-
-const std::string MoveRight::sname() noexcept
-{
-    return "move_right" ;
-}
-
-void MoveRight::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) const
-{
-    if(first_call) pimpl->calcer.reset() ;
-    _move_cursor(pimpl->calcer.delta() * repeat_num, 0) ;
-}
+    void MoveLeft::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) const {
+        if(first_call) pimpl->calcer.reset() ;
+        _move_cursor(-pimpl->calcer.delta() * repeat_num, 0) ;
+    }
 
 
-//MoveUp
-struct MoveUp::Impl
-{
-    MoveDeltaCalculator calcer{} ;
-} ;
+    //MoveRight
+    struct MoveRight::Impl {
+        MoveDeltaCalculator calcer{} ;
+    } ;
 
-MoveUp::MoveUp()
-: pimpl(make_unique<Impl>())
-{}
+    MoveRight::MoveRight()
+    : pimpl(std::make_unique<Impl>())
+    {}
 
-MoveUp::~MoveUp()                   = default ;
-MoveUp::MoveUp(MoveUp&&)            = default ;
-MoveUp& MoveUp::operator=(MoveUp&&) = default ;
+    MoveRight::~MoveRight()                      = default ;
+    MoveRight::MoveRight(MoveRight&&)            = default ;
+    MoveRight& MoveRight::operator=(MoveRight&&) = default ;
 
-const std::string MoveUp::sname() noexcept
-{
-    return "move_up" ;
-}
+    const std::string MoveRight::sname() noexcept {
+        return "move_right" ;
+    }
 
-void MoveUp::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) const
-{
-    if(first_call) pimpl->calcer.reset() ;
-    _move_cursor(0, -pimpl->calcer.delta() * repeat_num) ;
-}
+    void MoveRight::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) const {
+        if(first_call) pimpl->calcer.reset() ;
+        _move_cursor(pimpl->calcer.delta() * repeat_num, 0) ;
+    }
 
-//MoveDown
-struct MoveDown::Impl
-{
-    MoveDeltaCalculator calcer{} ;
-} ;
 
-MoveDown::MoveDown()
-: pimpl(make_unique<Impl>())
-{}
+    //MoveUp
+    struct MoveUp::Impl {
+        MoveDeltaCalculator calcer{} ;
+    } ;
 
-MoveDown::~MoveDown()                     = default ;
-MoveDown::MoveDown(MoveDown&&)            = default ;
-MoveDown& MoveDown::operator=(MoveDown&&) = default ;
+    MoveUp::MoveUp()
+    : pimpl(std::make_unique<Impl>())
+    {}
 
-const std::string MoveDown::sname() noexcept
-{
-    return "move_down" ;
-}
+    MoveUp::~MoveUp()                   = default ;
+    MoveUp::MoveUp(MoveUp&&)            = default ;
+    MoveUp& MoveUp::operator=(MoveUp&&) = default ;
 
-void MoveDown::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr)) const
-{
-    if(first_call) pimpl->calcer.reset() ;
-    _move_cursor(0, pimpl->calcer.delta() * repeat_num) ;
+    const std::string MoveUp::sname() noexcept {
+        return "move_up" ;
+    }
+    void MoveUp::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) const {
+        if(first_call) pimpl->calcer.reset() ;
+        _move_cursor(0, -pimpl->calcer.delta() * repeat_num) ;
+    }
+
+    //MoveDown
+    struct MoveDown::Impl {
+        MoveDeltaCalculator calcer{} ;
+    } ;
+
+    MoveDown::MoveDown()
+    : pimpl(std::make_unique<Impl>())
+    {}
+
+    MoveDown::~MoveDown()                     = default ;
+    MoveDown::MoveDown(MoveDown&&)            = default ;
+    MoveDown& MoveDown::operator=(MoveDown&&) = default ;
+
+    const std::string MoveDown::sname() noexcept {
+        return "move_down" ;
+    }
+    void MoveDown::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) const {
+        if(first_call) pimpl->calcer.reset() ;
+        _move_cursor(0, pimpl->calcer.delta() * repeat_num) ;
+    }
 }

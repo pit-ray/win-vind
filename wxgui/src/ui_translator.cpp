@@ -18,7 +18,7 @@ namespace UITrans
         static const auto init = [](auto&& filepath) {
             json j ;
             try {
-                std::ifstream ifs(Path::to_u8path(std::forward<decltype(filepath)>(filepath))) ;
+                std::ifstream ifs(vind::Path::to_u8path(std::forward<decltype(filepath)>(filepath))) ;
                 ifs >> j ;
             }
             catch(const std::exception& e) {
@@ -26,7 +26,7 @@ namespace UITrans
             }
             return j ;
         } ;
-        static const auto j = init(Path::Default::UI()) ;
+        static const auto j = init(vind::Path::Default::UI()) ;
         static constexpr auto error_str = wxT("ERROR_PRINT") ;
 
         if(j.empty()) {

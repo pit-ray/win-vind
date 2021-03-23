@@ -6,37 +6,38 @@
 
 #include "key_log.hpp"
 
-class KeyLoggerBase ;
-
-class KeyMatcher
+namespace vind
 {
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    class KeyLoggerBase ;
 
-    unsigned int compare_onelog(const KeyLog& log, size_t seqidx) const ;
+    class KeyMatcher {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
 
-public:
-    using keyset_t = std::vector<unsigned char> ;
-    using cmd_t = std::vector<keyset_t> ;
-    using cmdlist_t = std::vector<cmd_t> ;
-    using shp_t = std::shared_ptr<KeyMatcher> ;
+        unsigned int compare_onelog(const KeyLog& log, size_t seqidx) const ;
 
-    explicit KeyMatcher(cmdlist_t&& keyset) ;
-    explicit KeyMatcher(const cmdlist_t& keyset) ;
-    virtual ~KeyMatcher() noexcept ;
+    public:
+        using keyset_t = std::vector<unsigned char> ;
+        using cmd_t = std::vector<keyset_t> ;
+        using cmdlist_t = std::vector<cmd_t> ;
+        using shp_t = std::shared_ptr<KeyMatcher> ;
 
-    //return most matched quantity of key in log
-    unsigned int compare_to_latestlog(const KeyLoggerBase& lgr) const ;
-    unsigned int compare_to_alllog(const KeyLoggerBase& lgr) const ;
-    bool is_accepted() const noexcept ;
+        explicit KeyMatcher(cmdlist_t&& keyset) ;
+        explicit KeyMatcher(const cmdlist_t& keyset) ;
+        virtual ~KeyMatcher() noexcept ;
 
-    KeyMatcher(KeyMatcher&&) ;
-    KeyMatcher& operator=(KeyMatcher&&) ;
+        //return most matched quantity of key in log
+        unsigned int compare_to_latestlog(const KeyLoggerBase& lgr) const ;
+        unsigned int compare_to_alllog(const KeyLoggerBase& lgr) const ;
+        bool is_accepted() const noexcept ;
 
-    KeyMatcher(const KeyMatcher&)               = delete ;
-    KeyMatcher& operator=(const KeyMatcher&)    = delete ;
-} ;
+        KeyMatcher(KeyMatcher&&) ;
+        KeyMatcher& operator=(KeyMatcher&&) ;
 
+        KeyMatcher(const KeyMatcher&)               = delete ;
+        KeyMatcher& operator=(const KeyMatcher&)    = delete ;
+    } ;
+}
 
 #endif

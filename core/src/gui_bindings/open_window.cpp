@@ -6,49 +6,49 @@
 #include "path.hpp"
 #include "utility.hpp"
 
-//OpenNewCurrentWindow
-const std::string OpenNewCurrentWindow::sname() noexcept
+namespace vind
 {
-    return "open_new_current_window" ;
-}
-
-void OpenNewCurrentWindow::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) {
-        return ;
-    }
-    auto hwnd = GetForegroundWindow() ;
-    if(!hwnd) {
-        throw RUNTIME_EXCEPT("The foreground window is not existed") ;
+    //OpenNewCurrentWindow
+    const std::string OpenNewCurrentWindow::sname() noexcept {
+        return "open_new_current_window" ;
     }
 
-    DWORD proc_id = 0 ;
-    GetWindowThreadProcessId(hwnd, &proc_id) ;
+    void OpenNewCurrentWindow::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) {
+            return ;
+        }
+        auto hwnd = GetForegroundWindow() ;
+        if(!hwnd) {
+            throw RUNTIME_EXCEPT("The foreground window is not existed") ;
+        }
 
-    HANDLE hproc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, proc_id) ;
-    if(!hproc) {
-        throw RUNTIME_EXCEPT("OpenProcess Failed.") ;
-    }
+        DWORD proc_id = 0 ;
+        GetWindowThreadProcessId(hwnd, &proc_id) ;
 
-    HMODULE hmod = NULL ;
-    DWORD cbneed = 0 ;
-    if(!EnumProcessModules(hproc, &hmod, sizeof(HMODULE), &cbneed)) {
+        HANDLE hproc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, proc_id) ;
+        if(!hproc) {
+            throw RUNTIME_EXCEPT("OpenProcess Failed.") ;
+        }
+
+        HMODULE hmod = NULL ;
+        DWORD cbneed = 0 ;
+        if(!EnumProcessModules(hproc, &hmod, sizeof(HMODULE), &cbneed)) {
+            CloseHandle(hproc) ;
+            throw RUNTIME_EXCEPT("Cannot enumerate process modules.") ;
+        }
+
+        WCHAR path[MAX_PATH] = {0} ;
+        if(!GetModuleFileNameExW(hproc, hmod, path, MAX_PATH)) {
+            CloseHandle(hproc) ;
+            throw RUNTIME_EXCEPT("Cannot get a process path of current window.") ;
+        }
         CloseHandle(hproc) ;
-        throw RUNTIME_EXCEPT("Cannot enumerate process modules.") ;
-    }
 
-    WCHAR path[MAX_PATH] = {0} ;
-    if(!GetModuleFileNameExW(hproc, hmod, path, MAX_PATH)) {
-        CloseHandle(hproc) ;
-        throw RUNTIME_EXCEPT("Cannot get a process path of current window.") ;
+        Utility::create_process(Path::HOME_PATH(), Utility::ws_to_s(path)) ;
+        Sleep(100) ;
     }
-    CloseHandle(hproc) ;
-
-    Utility::create_process(Path::HOME_PATH(), Utility::ws_to_s(path)) ;
-    Sleep(100) ;
 }
-

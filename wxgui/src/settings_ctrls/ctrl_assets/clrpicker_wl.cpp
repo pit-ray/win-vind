@@ -70,7 +70,7 @@ namespace wxGUI
     }
 
     inline static const auto hex2wxColour(const std::string hex) {
-        auto [r, g, b] = Utility::hex2rgb(hex) ;
+        auto [r, g, b] = vind::Utility::hex2rgb(hex) ;
         return wxColour(r, g, b) ;
     }
 

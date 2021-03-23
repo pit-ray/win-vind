@@ -3,24 +3,26 @@
 
 #include "key_logger_base.hpp"
 
-class VKCLogger : public KeyLoggerBase
+namespace vind
 {
-private:
-    struct Impl ;
-    std::unique_ptr<Impl> pimpl ;
+    class VKCLogger : public KeyLoggerBase {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
 
-public:
-    explicit VKCLogger() ;
-    virtual ~VKCLogger() noexcept ;
+    public:
+        explicit VKCLogger() ;
+        virtual ~VKCLogger() noexcept ;
 
-    VKCLogger(const VKCLogger&) ;
-    VKCLogger& operator=(const VKCLogger&) ;
+        VKCLogger(const VKCLogger&) ;
+        VKCLogger& operator=(const VKCLogger&) ;
 
-    VKCLogger(VKCLogger&&) ;
-    VKCLogger& operator=(VKCLogger&&) ;
+        VKCLogger(VKCLogger&&) ;
+        VKCLogger& operator=(VKCLogger&&) ;
 
-    virtual void update() override ;
-    virtual bool is_changed() const noexcept override ;
-} ;
+        virtual void update() override ;
+        virtual bool is_changed() const noexcept override ;
+    } ;
+}
 
 #endif

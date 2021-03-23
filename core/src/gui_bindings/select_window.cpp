@@ -6,10 +6,12 @@
 #include "screen_metrics.hpp"
 #include "window_utility.hpp"
 
-namespace SelectWindowCommon
+namespace
 {
-    static std::unordered_map<HWND, RECT> g_rects ;
-    static BOOL CALLBACK EnumWindowsProcForNearest(HWND hwnd, LPARAM lparam) {
+    using namespace vind ;
+
+    std::unordered_map<HWND, RECT> g_rects ;
+    BOOL CALLBACK EnumWindowsProcForNearest(HWND hwnd, LPARAM lparam) {
         auto self_hwnd = reinterpret_cast<HWND>(lparam) ;
         if(self_hwnd == hwnd) {
             return TRUE ;
@@ -40,7 +42,7 @@ namespace SelectWindowCommon
     }
 
     template <typename T1, typename T2>
-    inline static void select_nearest_window(
+    inline void select_nearest_window(
             T1&& is_if_target,
             T2&& calc_distance) {
         auto fg_hwnd = GetForegroundWindow() ;
@@ -61,7 +63,7 @@ namespace SelectWindowCommon
         }
 
         std::map<LONG, HWND> distance_order_hwnd ;
-        for(const auto& enumed_rect : SelectWindowCommon::g_rects) {
+        for(const auto& enumed_rect : g_rects) {
             auto& enu_hwnd = enumed_rect.first ;
             auto& enu_rect = enumed_rect.second ;
 
@@ -88,134 +90,129 @@ namespace SelectWindowCommon
 }
 
 
-//SelectLeftWindow
-const std::string SelectLeftWindow::sname() noexcept
+namespace vind
 {
-    return "select_left_window" ;
-}
-void SelectLeftWindow::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
+    //SelectLeftWindow
+    const std::string SelectLeftWindow::sname() noexcept {
+        return "select_left_window" ;
+    }
+    void SelectLeftWindow::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
 
-    auto is_if_target = [] (
-            const auto& UNUSED(rect),
-            const auto& UNUSED(erect),
-            auto cx, auto UNUSED(cy),
-            auto ecx, auto UNUSED(ecy)) {
-        return cx >= ecx ;
-    } ;
+        auto is_if_target = [] (
+                const auto& UNUSED(rect),
+                const auto& UNUSED(erect),
+                auto cx, auto UNUSED(cy),
+                auto ecx, auto UNUSED(ecy)) {
+            return cx >= ecx ;
+        } ;
 
-    auto calc_distance = [] (
-            const auto& rect,
-            const auto& UNUSED(erect),
-            auto UNUSED(cx), auto cy,
-            auto ecx, auto ecy) {
+        auto calc_distance = [] (
+                const auto& rect,
+                const auto& UNUSED(erect),
+                auto UNUSED(cx), auto cy,
+                auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
-    } ;
+            return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
+        } ;
 
-    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
-}
+        select_nearest_window(is_if_target, calc_distance) ;
+    }
 
-//SelectRightWindow
-const std::string SelectRightWindow::sname() noexcept
-{
-    return "select_right_window" ;
-}
-void SelectRightWindow::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
+    //SelectRightWindow
+    const std::string SelectRightWindow::sname() noexcept {
+        return "select_right_window" ;
+    }
+    void SelectRightWindow::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
 
-    auto is_if_target = [] (
-            const auto& UNUSED(rect),
-            const auto& UNUSED(erect),
-            auto cx, auto UNUSED(cy),
-            auto ecx, auto UNUSED(ecy)) {
-        return cx <= ecx ;
-    } ;
+        auto is_if_target = [] (
+                const auto& UNUSED(rect),
+                const auto& UNUSED(erect),
+                auto cx, auto UNUSED(cy),
+                auto ecx, auto UNUSED(ecy)) {
+            return cx <= ecx ;
+        } ;
 
-    auto calc_distance = [] (
-            const auto& rect,
-            const auto& UNUSED(erect),
-            auto UNUSED(cx), auto cy,
-            auto ecx, auto ecy) {
+        auto calc_distance = [] (
+                const auto& rect,
+                const auto& UNUSED(erect),
+                auto UNUSED(cx), auto cy,
+                auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
-    } ;
+            return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
+        } ;
 
-    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
-}
+        select_nearest_window(is_if_target, calc_distance) ;
+    }
 
-//SelectUpperWindow
-const std::string SelectUpperWindow::sname() noexcept
-{
-    return "select_upper_window" ;
-}
-void SelectUpperWindow::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
+    //SelectUpperWindow
+    const std::string SelectUpperWindow::sname() noexcept {
+        return "select_upper_window" ;
+    }
+    void SelectUpperWindow::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
 
-    auto is_if_target = [] (
-            const auto& UNUSED(rect),
-            const auto& UNUSED(erect),
-            auto UNUSED(cx), auto cy,
-            auto UNUSED(ecx), auto ecy) {
-        return cy >= ecy ;
-    } ;
+        auto is_if_target = [] (
+                const auto& UNUSED(rect),
+                const auto& UNUSED(erect),
+                auto UNUSED(cx), auto cy,
+                auto UNUSED(ecx), auto ecy) {
+            return cy >= ecy ;
+        } ;
 
-    auto calc_distance = [] (
-            const auto& rect,
-            const auto& UNUSED(erect),
-            auto cx, auto UNUSED(cy),
-            auto ecx, auto ecy) {
+        auto calc_distance = [] (
+                const auto& rect,
+                const auto& UNUSED(erect),
+                auto cx, auto UNUSED(cy),
+                auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
-    } ;
+            return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
+        } ;
 
-    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
-}
+        select_nearest_window(is_if_target, calc_distance) ;
+    }
 
-//SelectLowerWindow
-const std::string SelectLowerWindow::sname() noexcept
-{
-    return "select_lower_window" ;
-}
-void SelectLowerWindow::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
+    //SelectLowerWindow
+    const std::string SelectLowerWindow::sname() noexcept {
+        return "select_lower_window" ;
+    }
+    void SelectLowerWindow::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
 
-    auto is_if_target = [] (
-            const auto& UNUSED(rect),
-            const auto& UNUSED(erect),
-            auto UNUSED(cx), auto cy,
-            auto UNUSED(ecx), auto ecy) {
-        return cy <= ecy ;
-    } ;
+        auto is_if_target = [] (
+                const auto& UNUSED(rect),
+                const auto& UNUSED(erect),
+                auto UNUSED(cx), auto cy,
+                auto UNUSED(ecx), auto ecy) {
+            return cy <= ecy ;
+        } ;
 
-    auto calc_distance = [] (
-            const auto& rect,
-            const auto& UNUSED(erect),
-            auto cx, auto UNUSED(cy),
-            auto ecx, auto ecy) {
+        auto calc_distance = [] (
+                const auto& rect,
+                const auto& UNUSED(erect),
+                auto cx, auto UNUSED(cy),
+                auto ecx, auto ecy) {
 
-        return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
-    } ;
+            return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
+        } ;
 
-    SelectWindowCommon::select_nearest_window(is_if_target, calc_distance) ;
+        select_nearest_window(is_if_target, calc_distance) ;
+    }
 }

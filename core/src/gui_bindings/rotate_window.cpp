@@ -13,7 +13,9 @@
 #include "utility.hpp"
 #include "window_utility.hpp"
 
-namespace RotateWindowCommon {
+namespace {
+    using namespace vind ;
+
     using ordered_hwnd_t = std::map<float, HWND> ;
     using ordered_rect_t = std::map<float, std::unique_ptr<RECT>> ;
 
@@ -23,7 +25,7 @@ namespace RotateWindowCommon {
         HMONITOR hmonitor = NULL ;
     } ;
 
-    static BOOL CALLBACK EnumWindowsProcForRotation(HWND hwnd, LPARAM lparam) {
+    BOOL CALLBACK EnumWindowsProcForRotation(HWND hwnd, LPARAM lparam) {
         if(!WindowUtility::is_visible_hwnd(hwnd)) {
             return TRUE ;
         }
@@ -68,7 +70,7 @@ namespace RotateWindowCommon {
         return TRUE ;
     }
 
-    inline static void rotate_windows_core(
+    inline void rotate_windows_core(
             const std::function<void(ordered_hwnd_t&)>& sort_func) {
 
         WindowUtility::ForegroundInfo fginfo ;
@@ -104,69 +106,67 @@ namespace RotateWindowCommon {
     }
 }
 
-//RotateWindow
-const std::string RotateWindows::sname() noexcept
+namespace vind
 {
-    return "rotate_windows" ;
-}
+    //RotateWindow
+    const std::string RotateWindows::sname() noexcept {
+        return "rotate_windows" ;
+    }
 
-void RotateWindows::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
+    void RotateWindows::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
 
-    auto sort = [repeat_num] (RotateWindowCommon::ordered_hwnd_t& angle_hwnds) {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-            auto itr     = angle_hwnds.rbegin() ;
-            auto pre_itr = itr ;
-            const auto last_hwnd = itr->second ;
-            itr ++ ;
-
-            while(itr != angle_hwnds.rend()) {
-                pre_itr->second = itr->second ; //rotate-shift hwnd (counter-clockwise)
-                pre_itr = itr ;
+        auto sort = [repeat_num] (ordered_hwnd_t& angle_hwnds) {
+            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+                auto itr     = angle_hwnds.rbegin() ;
+                auto pre_itr = itr ;
+                const auto last_hwnd = itr->second ;
                 itr ++ ;
+
+                while(itr != angle_hwnds.rend()) {
+                    pre_itr->second = itr->second ; //rotate-shift hwnd (counter-clockwise)
+                    pre_itr = itr ;
+                    itr ++ ;
+                }
+                pre_itr->second = last_hwnd ;
             }
-            pre_itr->second = last_hwnd ;
-        }
-    } ;
+        } ;
 
-    RotateWindowCommon::rotate_windows_core(sort) ;
-}
+        rotate_windows_core(sort) ;
+    }
 
-//RotateWindowsInReverse
-const std::string RotateWindowsInReverse::sname() noexcept
-{
-    return "rotate_windows_in_reverse" ;
-}
+    //RotateWindowsInReverse
+    const std::string RotateWindowsInReverse::sname() noexcept {
+        return "rotate_windows_in_reverse" ;
+    }
 
-void RotateWindowsInReverse::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
+    void RotateWindowsInReverse::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
 
-    auto sort = [repeat_num] (RotateWindowCommon::ordered_hwnd_t& angle_hwnds) {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-            auto itr     = angle_hwnds.begin() ;
-            auto pre_itr = itr ;
-            const auto last_hwnd = itr->second ;
-            itr ++ ;
-
-            while(itr != angle_hwnds.end()) {
-                pre_itr->second = itr->second ; //rotate-shift hwnd (clockwise)
-                pre_itr = itr ;
+        auto sort = [repeat_num] (ordered_hwnd_t& angle_hwnds) {
+            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+                auto itr     = angle_hwnds.begin() ;
+                auto pre_itr = itr ;
+                const auto last_hwnd = itr->second ;
                 itr ++ ;
+
+                while(itr != angle_hwnds.end()) {
+                    pre_itr->second = itr->second ; //rotate-shift hwnd (clockwise)
+                    pre_itr = itr ;
+                    itr ++ ;
+                }
+                pre_itr->second = last_hwnd ;
             }
-            pre_itr->second = last_hwnd ;
-        }
-    } ;
+        } ;
 
-    RotateWindowCommon::rotate_windows_core(sort) ;
+        rotate_windows_core(sort) ;
+    }
 }
-

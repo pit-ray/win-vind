@@ -34,7 +34,7 @@ SOFTWARE.
 
 #include <functional>
 
-namespace win_vind
+namespace vind
 {
     bool initialize(const std::string func_name=std::string()) noexcept ;
 

@@ -8,11 +8,9 @@
 #include <iostream>
 #include <array>
 
-using namespace std ;
-
-namespace VKCConverter
+namespace
 {
-    inline static const auto& g_printable_ascii() noexcept {
+    inline const auto& g_printable_ascii() noexcept {
         static const auto data = {
             ' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')',
             '*', '+', ',', '-', '.', '/', '0', '1', '2', '3',
@@ -28,48 +26,58 @@ namespace VKCConverter
         return data ;
     }
 
-    static std::array<unsigned char, 256> char2vkc{0} ;
-    static std::array<char, 256> vkc2char{0} ;
-    static std::array<unsigned char, 256> shifted_char2vkc{0} ;
-    static std::array<char, 256> shifted_vkc2char{0} ;
+    std::array<unsigned char, 256> char2vkc{0} ;
+    std::array<char, 256> vkc2char{0} ;
+    std::array<unsigned char, 256> shifted_char2vkc{0} ;
+    std::array<char, 256> shifted_vkc2char{0} ;
+}
 
-    void load_input_combination() {
-        char2vkc.fill(0) ;
-        vkc2char.fill(0) ;
-        shifted_char2vkc.fill(0) ;
-        shifted_vkc2char.fill(0) ;
+namespace vind
+{
+    namespace VKCConverter {
 
-        for(const auto c : g_printable_ascii()) {
-            const auto res = VkKeyScanA(c) ;
+        void load_input_combination() {
+            char2vkc.fill(0) ;
+            vkc2char.fill(0) ;
+            shifted_char2vkc.fill(0) ;
+            shifted_vkc2char.fill(0) ;
 
-            const auto vkc = static_cast<unsigned char>(res & 0xff) ;
-            const auto shifted = (res & 0x0100) != 0 ;
+            for(const auto c : g_printable_ascii()) {
+                const auto res = VkKeyScanA(c) ;
 
-            if(shifted) {
-                shifted_char2vkc[static_cast<unsigned char>(c)] = vkc ;
-                shifted_vkc2char[vkc] = c ;
-            }
-            else {
-                char2vkc[static_cast<unsigned char>(c)] = vkc ;
-                vkc2char[vkc] = c ;
+                const auto vkc = static_cast<unsigned char>(res & 0xff) ;
+                const auto shifted = (res & 0x0100) != 0 ;
+
+                if(shifted) {
+                    shifted_char2vkc[static_cast<unsigned char>(c)] = vkc ;
+                    shifted_vkc2char[vkc] = c ;
+                }
+                else {
+                    char2vkc[static_cast<unsigned char>(c)] = vkc ;
+                    vkc2char[vkc] = c ;
+                }
             }
         }
-    }
 
-    unsigned char get_vkc(const char ascii) noexcept {
-        return char2vkc[static_cast<unsigned char>(ascii)] ;
-    }
-    char get_ascii(const unsigned char vkc) noexcept {
-        return vkc2char[vkc] ;
-    }
-    unsigned char get_shifted_vkc(const char ascii) noexcept {
-        return shifted_char2vkc[static_cast<unsigned char>(ascii)] ;
-    }
-    char get_shifted_ascii(const unsigned char vkc) noexcept {
-        return shifted_vkc2char[vkc] ;
-    }
+        unsigned char get_vkc(const char ascii) noexcept {
+            return char2vkc[static_cast<unsigned char>(ascii)] ;
+        }
+        char get_ascii(const unsigned char vkc) noexcept {
+            return vkc2char[vkc] ;
+        }
+        unsigned char get_shifted_vkc(const char ascii) noexcept {
+            return shifted_char2vkc[static_cast<unsigned char>(ascii)] ;
+        }
+        char get_shifted_ascii(const unsigned char vkc) noexcept {
+            return shifted_vkc2char[vkc] ;
+        }
 
-    static const unordered_map<string, unsigned char> g_sys_vkc {
+    }
+}
+
+namespace
+{
+    const std::unordered_map<std::string, unsigned char> g_sys_vkc {
         {"ime",         VKC_IME},
         {"ime1",        VKC_FROM_EN},
         {"ime2",        VKC_TO_JP},
@@ -157,32 +165,7 @@ namespace VKCConverter
         {"numlock",     VKC_NUMLOCK}
     } ;
 
-    unsigned char get_sys_vkc(const string& strkey) noexcept {
-        try {return g_sys_vkc.at(strkey) ;}
-        catch(const std::out_of_range&) {return 0 ;}
-    }
-
-    const unordered_set<unsigned char> get_all_sys_vkc() {
-        unordered_set<unsigned char> set ;
-        for(const auto& i : g_sys_vkc) set.insert(i.second) ;
-        return set ;
-    }
-
-    //for debug
-    const std::string get_name(const unsigned char vkc) noexcept {
-        if(auto ascii = get_ascii(vkc)) {
-            char s[] = {ascii, '\0'} ;
-            return s ;
-        }
-
-        for(const auto& sk : g_sys_vkc) {
-            if(sk.second == vkc) return sk.first ;
-        }
-
-        return "Unknown" ;
-    }
-
-    inline static const auto _create_related_keys() {
+    inline const auto create_related_keys() {
             std::array<unsigned char, 256> a{0} ;
             a[VKC_LSHIFT]  = VKC_SHIFT ;
             a[VKC_RSHIFT]  = VKC_SHIFT ;
@@ -197,20 +180,51 @@ namespace VKCConverter
             return a ;
     }
 
-    unsigned char get_representative_key(const unsigned char key) {
-        static const auto a = _create_related_keys() ;
-        return a[key] ;
-    }
-
-    inline static const auto _create_unreal_keys() {
+    inline const auto create_unreal_keys() {
         std::array<bool, 256> a{false} ;
-        for(const auto i : _create_related_keys()) {
+        for(const auto i : create_related_keys()) {
             if(i) a[i] = true ;
         }
         return a ;
     }
-    bool is_unreal_key(const unsigned char key) noexcept {
-        static const auto a = _create_unreal_keys() ;
-        return a[key] ;
+}
+
+namespace vind
+{
+    namespace VKCConverter {
+        unsigned char get_sys_vkc(const std::string& strkey) noexcept {
+            try {return g_sys_vkc.at(strkey) ;}
+            catch(const std::out_of_range&) {return 0 ;}
+        }
+
+        const std::unordered_set<unsigned char> get_all_sys_vkc() {
+            std::unordered_set<unsigned char> set ;
+            for(const auto& i : g_sys_vkc) set.insert(i.second) ;
+            return set ;
+        }
+
+        //for debug
+        const std::string get_name(const unsigned char vkc) noexcept {
+            if(auto ascii = get_ascii(vkc)) {
+                char s[] = {ascii, '\0'} ;
+                return s ;
+            }
+
+            for(const auto& sk : g_sys_vkc) {
+                if(sk.second == vkc) return sk.first ;
+            }
+
+            return "Unknown" ;
+        }
+
+        unsigned char get_representative_key(const unsigned char key) {
+            static const auto a = create_related_keys() ;
+            return a[key] ;
+        }
+
+        bool is_unreal_key(const unsigned char key) noexcept {
+            static const auto a = create_unreal_keys() ;
+            return a[key] ;
+        }
     }
 }

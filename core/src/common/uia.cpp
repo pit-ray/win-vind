@@ -12,43 +12,46 @@
 
 #include <memory>
 
-namespace UIA
+namespace vind
 {
-    CUIA::CUIA()
-    : cuia(nullptr)
-    {
-        CoInitialize(NULL) ;
-        if(FAILED(create_UIAutomation(&cuia))) {
-            throw LOGIC_EXCEPT("Could not create UIAutomation.") ;
+    namespace UIA {
+
+        CUIA::CUIA()
+        : cuia(nullptr)
+        {
+            CoInitialize(NULL) ;
+            if(FAILED(create_UIAutomation(&cuia))) {
+                throw LOGIC_EXCEPT("Could not create UIAutomation.") ;
+            }
+            if(!cuia) {
+                throw LOGIC_EXCEPT("Could not initialize UIAutomation.") ;
+            }
         }
-        if(!cuia) {
-            throw LOGIC_EXCEPT("Could not initialize UIAutomation.") ;
+
+        CUIA::~CUIA() {
+            if(cuia != nullptr) cuia->Release() ;
+            CoUninitialize() ;
         }
-    }
 
-    CUIA::~CUIA() {
-        if(cuia != nullptr) cuia->Release() ;
-        CoUninitialize() ;
-    }
+        IUIAutomation* CUIA::get() const noexcept {
+            return cuia ;
+        }
+        CUIA::operator IUIAutomation*() const noexcept {
+            return cuia ;
+        }
+        IUIAutomation* CUIA::operator->() const noexcept {
+            return cuia ;
+        }
 
-    IUIAutomation* CUIA::get() const noexcept {
-        return cuia ;
-    }
-    CUIA::operator IUIAutomation*() const noexcept {
-        return cuia ;
-    }
-    IUIAutomation* CUIA::operator->() const noexcept {
-        return cuia ;
-    }
+        HRESULT create_UIAutomation(IUIAutomation** ptr) {
+            return CoCreateInstance(CLSID_CUIAutomation, NULL,
+                    CLSCTX_INPROC_SERVER, IID_IUIAutomation,
+                    reinterpret_cast<void**>(ptr)) ;
+        }
 
-    HRESULT create_UIAutomation(IUIAutomation** ptr) {
-        return CoCreateInstance(CLSID_CUIAutomation, NULL,
-                CLSCTX_INPROC_SERVER, IID_IUIAutomation,
-                reinterpret_cast<void**>(ptr)) ;
-    }
-
-    const CUIA& get_global_cuia() {
-        static CUIA g_cuia{} ;
-        return g_cuia ;
+        const CUIA& get_global_cuia() {
+            static CUIA g_cuia{} ;
+            return g_cuia ;
+        }
     }
 }

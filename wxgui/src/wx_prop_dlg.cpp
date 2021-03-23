@@ -47,6 +47,7 @@
 namespace wxGUI
 {
     using namespace UITrans ;
+    using namespace vind ;
     constexpr auto APP_NAME = wxT("win-vind") ;
 
     using namespace std::chrono ;
@@ -169,7 +170,7 @@ namespace wxGUI
             KeyAbsorber::close_all_ports_with_refresh() ;
 
             save_config() ;
-            win_vind::load_config() ;
+            vind::load_config() ;
             load_config() ;
 
             pimpl->hot_point = system_clock::now() ;
@@ -181,7 +182,7 @@ namespace wxGUI
             }
 
             save_config() ;
-            win_vind::load_config() ;
+            vind::load_config() ;
             Show(false) ;
         }, wxID_OK) ;
 

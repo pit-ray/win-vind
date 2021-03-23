@@ -3,49 +3,47 @@
 
 #include "binded_func_with_creator.hpp"
 
-namespace ExAppUtility
+namespace vind
 {
-    void load_config() ;
+    namespace ExternalApplication {
+        void load_config() ;
+    }
+
+    struct StartShell : public BindedFuncWithCreator<StartShell> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
+
+    struct StartAnyApp : public BindedFuncWithCreator<StartAnyApp> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
+
+    struct StartExplorer : public BindedFuncWithCreator<StartExplorer> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
+
+    struct OpenStartMenu : public BindedFuncWithCreator<OpenStartMenu> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
 }
-
-struct StartShell : public BindedFuncWithCreator<StartShell>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
-struct StartAnyApp : public BindedFuncWithCreator<StartAnyApp>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
-struct StartExplorer : public BindedFuncWithCreator<StartExplorer>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
-
-struct OpenStartMenu : public BindedFuncWithCreator<OpenStartMenu>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
 
 #endif

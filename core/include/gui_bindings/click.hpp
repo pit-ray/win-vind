@@ -2,25 +2,26 @@
 #define _CLICK_HPP
 #include "binded_func_with_creator.hpp"
 
-struct ClickLeft : public BindedFuncWithCreator<ClickLeft>
+namespace vind
 {
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct ClickLeft : public BindedFuncWithCreator<ClickLeft> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
 
 
-struct ClickRight : public BindedFuncWithCreator<ClickRight>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct ClickRight : public BindedFuncWithCreator<ClickRight> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
+}
 
 #endif

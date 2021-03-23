@@ -3,34 +3,34 @@
 
 #include "binded_func_with_creator.hpp"
 
-struct EdiNReplaceChar : public BindedFuncWithCreator<EdiNReplaceChar>
+namespace vind
 {
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct EdiNReplaceChar : public BindedFuncWithCreator<EdiNReplaceChar> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
 
-struct EdiNReplaceSequence : public BindedFuncWithCreator<EdiNReplaceSequence>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct EdiNReplaceSequence : public BindedFuncWithCreator<EdiNReplaceSequence> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
 
-struct EdiSwitchCharCase : public BindedFuncWithCreator<EdiSwitchCharCase>
-{
-    static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
-            const CharLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct EdiSwitchCharCase : public BindedFuncWithCreator<EdiSwitchCharCase> {
+        static void sprocess(
+                const bool first_call,
+                const unsigned int repeat_num,
+                VKCLogger* const parent_vkclgr,
+                const CharLogger* const parent_charlgr) ;
+        static const std::string sname() noexcept ;
+    } ;
+}
 
 #endif

@@ -6,45 +6,47 @@
 
 #include "virtual_key_fwd.hpp"
 
-namespace VKCConverter
+namespace vind
 {
-    void load_input_combination() ;
+    namespace VKCConverter {
+        void load_input_combination() ;
 
-    unsigned char get_vkc(const char ascii) noexcept ;
-    char get_ascii(const unsigned char vkc) noexcept ;
+        unsigned char get_vkc(const char ascii) noexcept ;
+        char get_ascii(const unsigned char vkc) noexcept ;
 
-    unsigned char get_shifted_vkc(const char ascii) noexcept ;
-    char get_shifted_ascii(const unsigned char vkc) noexcept ;
+        unsigned char get_shifted_vkc(const char ascii) noexcept ;
+        char get_shifted_ascii(const unsigned char vkc) noexcept ;
 
-    unsigned char get_sys_vkc(const std::string& strkey) noexcept ;
-    const std::unordered_set<unsigned char> get_all_sys_vkc() ;
-    const std::string get_name(const unsigned char vkc) noexcept ; //for debug
+        unsigned char get_sys_vkc(const std::string& strkey) noexcept ;
+        const std::unordered_set<unsigned char> get_all_sys_vkc() ;
+        const std::string get_name(const unsigned char vkc) noexcept ; //for debug
 
-    unsigned char get_representative_key(const unsigned char key) ;
-    bool is_unreal_key(const unsigned char key) noexcept ;
+        unsigned char get_representative_key(const unsigned char key) ;
+        bool is_unreal_key(const unsigned char key) noexcept ;
 
-    inline bool is_number(const unsigned char vkc) noexcept {
-        return VKC_0 <= vkc && vkc <= VKC_9 ;
-    }
+        inline bool is_number(const unsigned char vkc) noexcept {
+            return VKC_0 <= vkc && vkc <= VKC_9 ;
+        }
 
-    inline bool is_number_ascii(const char ascii) noexcept {
-        return '0' <= ascii && ascii <= '9' ;
-    }
+        inline bool is_number_ascii(const char ascii) noexcept {
+            return '0' <= ascii && ascii <= '9' ;
+        }
 
-    inline unsigned int to_number(const unsigned char vkc) noexcept {
-        return vkc - VKC_0 ;
-    }
+        inline unsigned int to_number(const unsigned char vkc) noexcept {
+            return vkc - VKC_0 ;
+        }
 
-    inline const std::unordered_set<unsigned char>& get_toggle_keys() {
-        static std::unordered_set<unsigned char> tmp {
-            VKC_CAPSLOCK,
-            VKC_KANA,
-            VKC_NUMLOCK,
-            VKC_FROM_JP,
-            VKC_TO_EN,
-            VKC_IME
-        } ;
-        return tmp ;
+        inline const std::unordered_set<unsigned char>& get_toggle_keys() {
+            static std::unordered_set<unsigned char> tmp {
+                VKC_CAPSLOCK,
+                VKC_KANA,
+                VKC_NUMLOCK,
+                VKC_FROM_JP,
+                VKC_TO_EN,
+                VKC_IME
+            } ;
+            return tmp ;
+        }
     }
 }
 

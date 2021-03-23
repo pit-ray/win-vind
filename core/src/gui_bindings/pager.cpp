@@ -2,41 +2,38 @@
 #include "keybrd_eventer.hpp"
 #include "utility.hpp"
 
-using namespace std ;
-
-//Move2NextPage
-const string Move2NextPage::sname() noexcept
+namespace vind
 {
-    return "move_to_next_page" ;
-}
-
-void Move2NextPage::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(first_call) {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
+    //Move2NextPage
+    const std::string Move2NextPage::sname() noexcept {
+        return "move_to_next_page" ;
     }
-}
+
+    void Move2NextPage::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(first_call) {
+            for(unsigned int i = 0 ; i < repeat_num ; i ++)
+                KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
+        }
+    }
 
 
-//Move2PrevPage
-const string Move2PrevPage::sname() noexcept
-{
-    return "move_to_prev_page" ;
-}
+    //Move2PrevPage
+    const std::string Move2PrevPage::sname() noexcept {
+        return "move_to_prev_page" ;
+    }
 
-void Move2PrevPage::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(first_call) {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
+    void Move2PrevPage::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(first_call) {
+            for(unsigned int i = 0 ; i < repeat_num ; i ++)
+                KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
+        }
     }
 }

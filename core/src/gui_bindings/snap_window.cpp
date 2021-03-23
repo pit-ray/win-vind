@@ -6,10 +6,13 @@
 #include "utility.hpp"
 #include "window_utility.hpp"
 
-namespace ResizeWindowCommon {
-    inline static void snap_foreground_window(
+namespace
+{
+    inline void snap_foreground_window(
             const std::function<void(RECT&, const RECT&)>& calc_half_size,
             const std::function<POINT(const RECT&)>& next_monitor_pos) {
+
+        using namespace vind ;
 
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
@@ -42,117 +45,111 @@ namespace ResizeWindowCommon {
     }
 }
 
-//SnapCurrentWindow2Left
-const std::string SnapCurrentWindow2Left::sname() noexcept
+namespace vind
 {
-    return "snap_current_window_to_left" ;
+    //SnapCurrentWindow2Left
+    const std::string SnapCurrentWindow2Left::sname() noexcept {
+        return "snap_current_window_to_left" ;
+    }
+
+    void SnapCurrentWindow2Left::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+
+        auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+            rect.left   = mrect.left ;
+            rect.top    = mrect.top ;
+            rect.right  = rect.left + ScreenMetrics::width(mrect) / 2 ;
+            rect.bottom = mrect.bottom ;
+        } ;
+
+        auto next_monitor_pos = [] (const RECT& rect) {
+            return POINT{rect.left - 100, ScreenMetrics::center_y(rect)} ;
+        } ;
+
+        snap_foreground_window(calc_half_size, next_monitor_pos) ;
+    }
+
+
+    //SnapCurrentWindow2Right
+    const std::string SnapCurrentWindow2Right::sname() noexcept {
+        return "snap_current_window_to_right" ;
+    }
+
+    void SnapCurrentWindow2Right::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+
+        auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+            rect.left   = mrect.left + ScreenMetrics::width(mrect) / 2 ;
+            rect.top    = mrect.top ;
+            rect.right  = mrect.right ;
+            rect.bottom = mrect.bottom ;
+        } ;
+
+        auto next_monitor_pos = [] (const RECT& rect) {
+            return POINT{rect.right + 100, ScreenMetrics::center_y(rect)} ;
+        } ;
+
+        snap_foreground_window(calc_half_size, next_monitor_pos) ;
+    }
+
+
+    //SnapCurrentWindow2Top
+    const std::string SnapCurrentWindow2Top::sname() noexcept {
+        return "snap_current_window_to_top" ;
+    }
+
+    void SnapCurrentWindow2Top::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+
+        auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+            rect.left   = mrect.left ;
+            rect.top    = mrect.top ;
+            rect.right  = mrect.right ;
+            rect.bottom = rect.top + ScreenMetrics::height(mrect) / 2 ;
+        } ;
+
+        auto next_monitor_pos = [] (const RECT& rect) {
+            return POINT{ScreenMetrics::center_x(rect), rect.top - 100} ;
+        } ;
+
+        snap_foreground_window(calc_half_size, next_monitor_pos) ;
+    }
+
+    //SnapCurrentWindow2Bottom
+    const std::string SnapCurrentWindow2Bottom::sname() noexcept {
+        return "snap_current_window_to_bottom" ;
+    }
+
+    void SnapCurrentWindow2Bottom::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
+        if(!first_call) return ;
+
+        auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
+            rect.left   = mrect.left ;
+            rect.top    = mrect.top + ScreenMetrics::height(mrect) / 2 ;
+            rect.right  = mrect.right ;
+            rect.bottom = mrect.bottom ;
+        } ;
+
+        auto next_monitor_pos = [] (const RECT& rect) {
+            return POINT{ScreenMetrics::center_x(rect), rect.bottom + 100} ;
+        } ;
+
+        snap_foreground_window(calc_half_size, next_monitor_pos) ;
+    }
 }
-
-void SnapCurrentWindow2Left::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-
-    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
-        rect.left   = mrect.left ;
-        rect.top    = mrect.top ;
-        rect.right  = rect.left + ScreenMetrics::width(mrect) / 2 ;
-        rect.bottom = mrect.bottom ;
-    } ;
-
-    auto next_monitor_pos = [] (const RECT& rect) {
-        return POINT{rect.left - 100, ScreenMetrics::center_y(rect)} ;
-    } ;
-
-    ResizeWindowCommon::snap_foreground_window(calc_half_size, next_monitor_pos) ;
-}
-
-
-//SnapCurrentWindow2Right
-const std::string SnapCurrentWindow2Right::sname() noexcept
-{
-    return "snap_current_window_to_right" ;
-}
-
-void SnapCurrentWindow2Right::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-
-    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
-        rect.left   = mrect.left + ScreenMetrics::width(mrect) / 2 ;
-        rect.top    = mrect.top ;
-        rect.right  = mrect.right ;
-        rect.bottom = mrect.bottom ;
-    } ;
-
-    auto next_monitor_pos = [] (const RECT& rect) {
-        return POINT{rect.right + 100, ScreenMetrics::center_y(rect)} ;
-    } ;
-
-    ResizeWindowCommon::snap_foreground_window(calc_half_size, next_monitor_pos) ;
-}
-
-
-//SnapCurrentWindow2Top
-const std::string SnapCurrentWindow2Top::sname() noexcept
-{
-    return "snap_current_window_to_top" ;
-}
-
-void SnapCurrentWindow2Top::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-
-    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
-        rect.left   = mrect.left ;
-        rect.top    = mrect.top ;
-        rect.right  = mrect.right ;
-        rect.bottom = rect.top + ScreenMetrics::height(mrect) / 2 ;
-    } ;
-
-    auto next_monitor_pos = [] (const RECT& rect) {
-        return POINT{ScreenMetrics::center_x(rect), rect.top - 100} ;
-    } ;
-
-    ResizeWindowCommon::snap_foreground_window(calc_half_size, next_monitor_pos) ;
-}
-
-//SnapCurrentWindow2Bottom
-const std::string SnapCurrentWindow2Bottom::sname() noexcept
-{
-    return "snap_current_window_to_bottom" ;
-}
-
-void SnapCurrentWindow2Bottom::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const UNUSED(parent_charlgr))
-{
-    if(!first_call) return ;
-
-    auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
-        rect.left   = mrect.left ;
-        rect.top    = mrect.top + ScreenMetrics::height(mrect) / 2 ;
-        rect.right  = mrect.right ;
-        rect.bottom = mrect.bottom ;
-    } ;
-
-    auto next_monitor_pos = [] (const RECT& rect) {
-        return POINT{ScreenMetrics::center_x(rect), rect.bottom + 100} ;
-    } ;
-
-    ResizeWindowCommon::snap_foreground_window(calc_half_size, next_monitor_pos) ;
-}
-

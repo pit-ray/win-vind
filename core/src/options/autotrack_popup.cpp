@@ -6,62 +6,58 @@
 #include "msg_logger.hpp"
 #include "utility.hpp"
 
-using namespace std ;
-
-namespace Attkpp
+//internal linkage
+namespace
 {
-    inline static const auto _set_param(const bool new_flag)
-    {
+    inline void set_windows_mtrack_flag(const bool new_flag) {
         if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
             throw RUNTIME_EXCEPT("cannot set system flag") ;
         }
     }
 }
 
-struct AutotrackPopup::Impl
+namespace vind
 {
-    bool default_flag = false ;
+    struct AutotrackPopup::Impl {
+        bool default_flag = false ;
 
-    explicit Impl() {
-        if(!SystemParametersInfo(SPI_GETSNAPTODEFBUTTON, 0,
-                    reinterpret_cast<PVOID>(&default_flag), 0)) {
-            throw RUNTIME_EXCEPT("cannot get system flag") ;
+        explicit Impl() {
+            if(!SystemParametersInfo(SPI_GETSNAPTODEFBUTTON, 0,
+                        reinterpret_cast<PVOID>(&default_flag), 0)) {
+                throw RUNTIME_EXCEPT("cannot get system flag") ;
+            }
         }
+
+        virtual ~Impl() noexcept {
+            try {
+                set_windows_mtrack_flag(default_flag) ;
+            }
+            catch(const std::runtime_error&) {
+                return ;
+            }
+        }
+    } ;
+
+    AutotrackPopup::AutotrackPopup()
+    : pimpl(std::make_unique<Impl>())
+    {}
+
+    AutotrackPopup::~AutotrackPopup() noexcept                  = default ;
+    AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
+    AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
+
+    const std::string AutotrackPopup::sname() noexcept {
+        return "autotrack_popup" ;
     }
 
-    virtual ~Impl() noexcept {
-        try {
-            Attkpp::_set_param(default_flag) ;
-        }
-        catch(const std::runtime_error&) {
-            return ;
-        }
+    void AutotrackPopup::do_enable() const {
+        set_windows_mtrack_flag(true) ;
     }
-} ;
 
-AutotrackPopup::AutotrackPopup()
-: pimpl(make_unique<Impl>())
-{}
+    void AutotrackPopup::do_disable() const {
+        set_windows_mtrack_flag(false) ;
+    }
 
-AutotrackPopup::~AutotrackPopup() noexcept                  = default ;
-AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
-AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
-
-const string AutotrackPopup::sname() noexcept
-{
-    return "autotrack_popup" ;
-}
-
-void AutotrackPopup::do_enable() const
-{
-    Attkpp::_set_param(true) ;
-}
-
-void AutotrackPopup::do_disable() const
-{
-    Attkpp::_set_param(false) ;
-}
-
-void AutotrackPopup::do_process() const
-{
+    void AutotrackPopup::do_process() const {
+    }
 }

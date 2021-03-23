@@ -6,9 +6,11 @@
 #include "virtual_cmd_line.hpp"
 #include "window_utility.hpp"
 
-namespace ResizeWindowCommon
+namespace
 {
-    inline static auto compute_resize_delta(
+    using namespace vind ;
+
+    inline auto compute_resize_delta(
             const unsigned int repeat_num,
             const CharLogger* const parent_charlgr,
             const std::string& param_name) {
@@ -27,7 +29,7 @@ namespace ResizeWindowCommon
     // [1] Desired width
     // [2] Foreground Window Structure
     //
-    inline static void resize_in_monitor_width(
+    inline void resize_in_monitor_width(
             LONG desired_width,
             const WindowUtility::ForegroundInfo& fginfo) {
 
@@ -66,7 +68,7 @@ namespace ResizeWindowCommon
     // [1] Desired height
     // [2] Foreground Window Structure
     //
-    inline static void resize_in_monitor_height(
+    inline void resize_in_monitor_height(
             LONG desired_height,
             const WindowUtility::ForegroundInfo& fginfo) {
 
@@ -102,156 +104,147 @@ namespace ResizeWindowCommon
     }
 }
 
-//ResizeWindowWidth
-const std::string ResizeWindowWidth::sname() noexcept
+namespace vind
 {
-    return "resize_window_width" ;
-}
-
-void ResizeWindowWidth::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
-
-    WindowUtility::ForegroundInfo fginfo ;
-
-    auto str = parent_charlgr->to_str() ;
-    if(str.empty()) return ;
-
-    auto width = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
-
-    ResizeWindowCommon::resize_in_monitor_width(width, fginfo) ;
-}
-
-//IncreaseWindowWidth
-const std::string IncreaseWindowWidth::sname() noexcept
-{
-    return "increase_window_width" ;
-}
-
-void IncreaseWindowWidth::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
-
-    WindowUtility::ForegroundInfo fginfo ;
-
-    auto width = ScreenMetrics::width(fginfo.rect) + \
-        ResizeWindowCommon::compute_resize_delta(
-            repeat_num, parent_charlgr, "window_width_delta") ;
-
-    ResizeWindowCommon::resize_in_monitor_width(width, fginfo) ;
-}
-
-//DecreaseWindowWidth
-const std::string DecreaseWindowWidth::sname() noexcept
-{
-    return "decrease_window_width" ;
-}
-
-void DecreaseWindowWidth::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
-
-    WindowUtility::ForegroundInfo fginfo ;
-
-    const auto delta = ResizeWindowCommon::compute_resize_delta(
-            repeat_num, parent_charlgr, "window_width_delta") ;
-
-    auto width = ScreenMetrics::width(fginfo.rect) - delta ;
-    if(width <= 0) { 
-        VirtualCmdLine::msgout("e: Width below zero") ;
-        return ;
+    //ResizeWindowWidth
+    const std::string ResizeWindowWidth::sname() noexcept {
+        return "resize_window_width" ;
     }
 
-    WindowUtility::resize(
-            fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-            width, ScreenMetrics::height(fginfo.rect)) ;
-}
+    void ResizeWindowWidth::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
 
-//ResizeWindowHeight
-const std::string ResizeWindowHeight::sname() noexcept
-{
-    return "resize_window_height" ;
-}
+        WindowUtility::ForegroundInfo fginfo ;
 
-void ResizeWindowHeight::sprocess(
-        const bool first_call,
-        const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
+        auto str = parent_charlgr->to_str() ;
+        if(str.empty()) return ;
 
-    WindowUtility::ForegroundInfo fginfo ;
+        auto width = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
 
-    auto str = parent_charlgr->to_str() ;
-    if(str.empty()) return ;
-
-    auto height = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
-
-    ResizeWindowCommon::resize_in_monitor_height(height, fginfo) ;
-}
-
-//IncreaseWindowHeight
-const std::string IncreaseWindowHeight::sname() noexcept
-{
-    return "increase_window_height" ;
-}
-
-void IncreaseWindowHeight::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
-
-    WindowUtility::ForegroundInfo fginfo ;
-
-    auto height = ScreenMetrics::height(fginfo.rect) + \
-        ResizeWindowCommon::compute_resize_delta(
-            repeat_num, parent_charlgr, "window_height_delta") ;
-
-    ResizeWindowCommon::resize_in_monitor_height(height, fginfo) ;
-}
-
-//DecreaseWindowHeight
-const std::string DecreaseWindowHeight::sname() noexcept
-{
-    return "decrease_window_height" ;
-}
-
-void DecreaseWindowHeight::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        VKCLogger* const UNUSED(parent_vkclgr),
-        const CharLogger* const parent_charlgr)
-{
-    if(!first_call) return ;
-
-    WindowUtility::ForegroundInfo fginfo ;
-
-    const auto delta = ResizeWindowCommon::compute_resize_delta(
-            repeat_num, parent_charlgr, "window_height_delta") ;
-
-    auto height = ScreenMetrics::height(fginfo.rect) - delta ;
-    if(height <= 0) { 
-        VirtualCmdLine::msgout("e: Height below zero") ;
-        return ;
+        resize_in_monitor_width(width, fginfo) ;
     }
 
-    WindowUtility::resize(
-            fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-            ScreenMetrics::width(fginfo.rect), height) ;
+    //IncreaseWindowWidth
+    const std::string IncreaseWindowWidth::sname() noexcept {
+        return "increase_window_width" ;
+    }
+
+    void IncreaseWindowWidth::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
+
+        WindowUtility::ForegroundInfo fginfo ;
+
+        auto width = ScreenMetrics::width(fginfo.rect) + \
+            compute_resize_delta(
+                repeat_num, parent_charlgr, "window_width_delta") ;
+
+        resize_in_monitor_width(width, fginfo) ;
+    }
+
+    //DecreaseWindowWidth
+    const std::string DecreaseWindowWidth::sname() noexcept {
+        return "decrease_window_width" ;
+    }
+
+    void DecreaseWindowWidth::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
+
+        WindowUtility::ForegroundInfo fginfo ;
+
+        const auto delta = compute_resize_delta(
+                repeat_num, parent_charlgr, "window_width_delta") ;
+
+        auto width = ScreenMetrics::width(fginfo.rect) - delta ;
+        if(width <= 0) { 
+            VirtualCmdLine::msgout("e: Width below zero") ;
+            return ;
+        }
+
+        WindowUtility::resize(
+                fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
+                width, ScreenMetrics::height(fginfo.rect)) ;
+    }
+
+    //ResizeWindowHeight
+    const std::string ResizeWindowHeight::sname() noexcept {
+        return "resize_window_height" ;
+    }
+
+    void ResizeWindowHeight::sprocess(
+            const bool first_call,
+            const unsigned int UNUSED(repeat_num),
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
+
+        WindowUtility::ForegroundInfo fginfo ;
+
+        auto str = parent_charlgr->to_str() ;
+        if(str.empty()) return ;
+
+        auto height = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
+
+        resize_in_monitor_height(height, fginfo) ;
+    }
+
+    //IncreaseWindowHeight
+    const std::string IncreaseWindowHeight::sname() noexcept {
+        return "increase_window_height" ;
+    }
+
+    void IncreaseWindowHeight::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
+
+        WindowUtility::ForegroundInfo fginfo ;
+
+        auto height = ScreenMetrics::height(fginfo.rect) + \
+            compute_resize_delta(
+                repeat_num, parent_charlgr, "window_height_delta") ;
+
+        resize_in_monitor_height(height, fginfo) ;
+    }
+
+    //DecreaseWindowHeight
+    const std::string DecreaseWindowHeight::sname() noexcept {
+        return "decrease_window_height" ;
+    }
+
+    void DecreaseWindowHeight::sprocess(
+            const bool first_call,
+            const unsigned int repeat_num,
+            VKCLogger* const UNUSED(parent_vkclgr),
+            const CharLogger* const parent_charlgr) {
+        if(!first_call) return ;
+
+        WindowUtility::ForegroundInfo fginfo ;
+
+        const auto delta = compute_resize_delta(
+                repeat_num, parent_charlgr, "window_height_delta") ;
+
+        auto height = ScreenMetrics::height(fginfo.rect) - delta ;
+        if(height <= 0) { 
+            VirtualCmdLine::msgout("e: Height below zero") ;
+            return ;
+        }
+
+        WindowUtility::resize(
+                fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
+                ScreenMetrics::width(fginfo.rect), height) ;
+    }
 }

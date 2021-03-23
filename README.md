@@ -243,7 +243,7 @@ It is the difference between master and latest release.
 |☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
 |☐|Add test codes|Improve|High|
 |☐|Refactor directory structure.|Improve|High|
-|☐|Add global namespace|Improve|High|
+|✅|Add global namespace|Improve|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Bug reporting feature|Feature|Mid|

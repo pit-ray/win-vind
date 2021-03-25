@@ -31,9 +31,9 @@
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
 
-#include "common/key_absorber.hpp"
-#include "common/mode_manager.hpp"
-#include "common_bindings/change_mode.hpp"
+#include "key/key_absorber.hpp"
+#include "bind/mode_manager.hpp"
+#include "bind/mode/change_mode.hpp"
 #include "win_vind.hpp"
 
 #define KEY_COLOR "#1e96ff"

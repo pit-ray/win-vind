@@ -36,9 +36,9 @@
 #include "utility.hpp"
 #include "wx_constant.hpp"
 
-#include "common/key_absorber.hpp"
-#include "common/mouse_eventer.hpp"
-#include "common_bindings/change_mode.hpp"
+#include "key/key_absorber.hpp"
+#include "io/mouse_eventer.hpp"
+#include "bind/mode/change_mode.hpp"
 
 namespace wxGUI
 {

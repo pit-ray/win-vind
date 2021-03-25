@@ -28,20 +28,20 @@
 #include <iostream>
 #include <cstring>
 
+#include "bind/ctrl/mywindow_ctrl.hpp"
+#include "bind/emu/edi_change_mode.hpp"
+#include "bind/key_binder.hpp"
+#include "bind/mode/change_mode.hpp"
+#include "bind/mode_manager.hpp"
 #include "i_params.hpp"
-#include "interval_timer.hpp"
-#include "key_absorber.hpp"
-#include "key_binder.hpp"
-#include "keybrd_eventer.hpp"
-#include "mode_manager.hpp"
+#include "io/keybrd_eventer.hpp"
+#include "key/key_absorber.hpp"
+#include "key/vkc_converter.hpp"
 #include "msg_logger.hpp"
-#include "option_loader.hpp"
+#include "opt/option_loader.hpp"
 #include "path.hpp"
-#include "vkc_converter.hpp"
-
-#include "change_mode.hpp"
-#include "edi_change_mode.hpp"
-#include "mywindow_ctrl.hpp"
+#include "time/interval_timer.hpp"
+#include "utility.hpp"
 
 #define MEMORY_MAPPED_FILE_NAME ("qvCI980BTny1ZSFfY76sO71w7MtLTzuPVd6RQs47_p7Kn4SJZ7cnaH8QwPS901VFd2N5WuxECvx7N3hP7caWK44ZSq6")
 #define MEMORY_MAPPED_FILE_SIZE (1024)

@@ -242,10 +242,12 @@ It is the difference between master and latest release.
 |✅|Rotate windows without arrangement|Feature|High|
 |☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
 |☐|Add test codes|Improve|High|
-|☐|Refactor directory structure.|Improve|High|
+|✅|Refactor directory structure.|Improve|High|
 |✅|Add global namespace|Improve|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
+|☐|Use a real command line system in Virtual Command Line.|Feature|Mid|
+|☐|Add license texts into all source codes.|Improve|Mid|
 |☐|Bug reporting feature|Feature|Mid|
 |☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
 |☐|Add a reference option in a command line.|Feature|Mid|

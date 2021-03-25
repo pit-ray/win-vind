@@ -68,7 +68,7 @@ namespace vind
 {
     bool initialize(const std::string func_name) noexcept {
         try {
-            Logger::initialize() ;
+            log::initialize() ;
 
             auto created_map = CreateFileMappingA(
                     INVALID_HANDLE_VALUE, NULL,
@@ -132,13 +132,13 @@ namespace vind
 
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
-            VKCConverter::load_input_combination() ;
+            keycvt::load_input_combination() ;
 
             //lower keyboard hook
             //If you use debugger, must be disable this line not to be slow.
-            KeyAbsorber::install_hook() ;
+            keyabsorb::install_hook() ;
 
-            KeyBinder::init() ;
+            keybind::init() ;
 
             load_config() ;
 
@@ -149,10 +149,10 @@ namespace vind
                 {"edi_normal", Change2EdiNormal::create()},
                 {"edi_insert", Change2EdiInsert::create()}
             } ;
-            cm.at(iParams::get_s("initial_mode"))->process(true, 1) ;
+            cm.at(iparams::get_s("initial_mode"))->process(true, 1) ;
 
             if(!func_name.empty()) {
-                auto func = KeyBinder::find_func_byname(func_name) ;
+                auto func = keybind::find_func_byname(func_name) ;
                 func->process(true, 1, nullptr, nullptr) ;
             }
 
@@ -170,9 +170,9 @@ namespace vind
 
     bool load_config() noexcept {
         try {
-            iParams::load_config() ;
-            KeyBinder::load_config() ;
-            OptionLoader::load_config() ;
+            iparams::load_config() ;
+            keybind::load_config() ;
+            optloader::load_config() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -187,7 +187,7 @@ namespace vind
 
     bool load_option_config() noexcept {
         try {
-            OptionLoader::load_config() ;
+            optloader::load_config() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -214,7 +214,7 @@ namespace vind
                 if(mmf.get() != NULL) {
                     std::string name(reinterpret_cast<const char*>(mmf.get())) ;
                     if(!name.empty()) {
-                        auto func = KeyBinder::find_func_byname(name) ;
+                        auto func = keybind::find_func_byname(name) ;
                         if(func != nullptr) {
                             func->process(true, 1, nullptr, nullptr) ;
                         }
@@ -228,8 +228,8 @@ namespace vind
                 }
             }
 
-            KeyBinder::call_matched_funcs() ;
-            OptionLoader::call_active_funcs() ;
+            keybind::call_matched_funcs() ;
+            optloader::call_active_funcs() ;
 
             return true ;
         }
@@ -247,11 +247,11 @@ namespace vind
         try {
             Sleep(5) ;
 
-            OptionLoader::call_active_funcs() ;
+            optloader::call_active_funcs() ;
 
-            Utility::get_win_message() ;
+            utility::get_win_message() ;
 
-            using namespace KeyAbsorber ;
+            using namespace keyabsorb ;
             if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
                 ExitConfigWindow::sprocess(true, 1, nullptr, nullptr) ; //exit GUI-window in system tray
                 return false ;

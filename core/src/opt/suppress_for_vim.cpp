@@ -25,7 +25,7 @@ namespace vind
     }
 
     void SuppressForVim::do_process() const {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(get_mode() == Mode::Insert) {
             return ;
         }
@@ -51,14 +51,14 @@ namespace vind
 
         std::string exename(fullpath) ;
         auto lpos = exename.find_last_of("\\") + 1 ;
-        exename = Utility::A2a(exename.substr(lpos)) ;
+        exename = utility::A2a(exename.substr(lpos)) ;
 
         if(exename == "win-vind.exe") return ;
 
         //Whether it is vim
         if(exename.find("vim") != std::string::npos) {
-            KeyAbsorber::close_all_ports() ;
-            KeyAbsorber::unabsorb() ;
+            keyabsorb::close_all_ports() ;
+            keyabsorb::unabsorb() ;
             change_mode(Mode::Insert) ;
             VirtualCmdLine::msgout("-- GUI INSERT --") ;
         }

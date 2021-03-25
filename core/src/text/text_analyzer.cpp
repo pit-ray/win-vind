@@ -14,7 +14,7 @@
 
 namespace vind
 {
-    namespace TextAnalyzer{
+    namespace textanalyze{
         const SelRes get_selected_text(
                 std::function<void()> clip_func,
                 const bool backup) {

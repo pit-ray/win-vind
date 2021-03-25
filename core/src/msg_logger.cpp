@@ -32,14 +32,14 @@ namespace
         std::vector<std::wstring> files ;
 
         WIN32_FIND_DATAW wfd = {} ;
-        auto handle = FindFirstFileW(vind::Utility::s_to_ws(log_dir + pattern_withex).c_str(), &wfd) ;
+        auto handle = FindFirstFileW(vind::utility::s_to_ws(log_dir + pattern_withex).c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }
-        files.push_back(vind::Utility::s_to_ws(log_dir) + wfd.cFileName) ;
+        files.push_back(vind::utility::s_to_ws(log_dir) + wfd.cFileName) ;
 
         while(FindNextFileW(handle, &wfd)) {
-            files.push_back(vind::Utility::s_to_ws(log_dir) + wfd.cFileName) ;
+            files.push_back(vind::utility::s_to_ws(log_dir) + wfd.cFileName) ;
         }
         FindClose(handle) ;
 
@@ -74,9 +74,9 @@ namespace
 
 namespace vind
 {
-    namespace Logger {
+    namespace log {
         void initialize() {
-            const std::string log_dir = Path::ROOT_PATH() + "log\\" ;
+            const std::string log_dir = path::ROOT_PATH() + "log\\" ;
 
             SYSTEMTIME stime ;
             GetLocalTime(&stime) ;
@@ -88,18 +88,18 @@ namespace vind
                 << std::setw(2) << std::setfill('0') << stime.wHour \
                 << std::setw(2) << std::setfill('0') << stime.wMinute ;
 
-            if(!Utility::is_existed_dir(log_dir)) {
-                Utility::create_directory(log_dir) ;
+            if(!utility::is_existed_dir(log_dir)) {
+                utility::create_directory(log_dir) ;
             }
 
             const auto efile = log_dir + "error_" + ss.str() + ".log" ;
             const auto mfile = log_dir + "message_" + ss.str() + ".log" ;
 
-            g_init_error_stream.open(Path::to_u8path(efile), std::ios::trunc) ;
-             g_error_stream.open(Path::to_u8path(efile), std::ios::app) ;
+            g_init_error_stream.open(path::to_u8path(efile), std::ios::trunc) ;
+             g_error_stream.open(path::to_u8path(efile), std::ios::app) ;
 
-            g_init_msg_stream.open(Path::to_u8path(mfile), std::ios::trunc) ;
-             g_msg_stream.open(Path::to_u8path(mfile), std::ios::app) ;
+            g_init_msg_stream.open(path::to_u8path(mfile), std::ios::trunc) ;
+             g_msg_stream.open(path::to_u8path(mfile), std::ios::app) ;
 
              //If the log files exists over five, remove old files.
              remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;

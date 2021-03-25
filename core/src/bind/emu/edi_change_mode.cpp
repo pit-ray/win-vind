@@ -26,17 +26,17 @@ namespace vind
             const bool vclmodeout) {
         if(!first_call) return ;
 
-        if(!ModeManager::is_editor())
-            MouseEventer::click(VKC_MOUSE_LEFT) ;
+        if(!mode::is_editor())
+            mouse::click(VKC_MOUSE_LEFT) ;
 
-        using namespace ModeManager ;
+        using namespace mode ;
         if(get_mode() == Mode::EdiNormal) return ;
 
         if(is_edi_visual())
-            SimpleTextSelecter::unselect() ;
+            textselect::unselect() ;
 
-        KeyAbsorber::close_all_ports_with_refresh() ;
-        KeyAbsorber::absorb() ;
+        keyabsorb::close_all_ports_with_refresh() ;
+        keyabsorb::absorb() ;
 
         change_mode(Mode::EdiNormal) ;
         if(vclmodeout)
@@ -54,11 +54,11 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
-        using namespace ModeManager ;
+        using namespace mode ;
 
         if(!first_call) return ;
-        KeyAbsorber::close_all_ports() ;
-        KeyAbsorber::unabsorb() ;
+        keyabsorb::close_all_ports() ;
+        keyabsorb::unabsorb() ;
         change_mode(Mode::EdiInsert) ;
         if(vclmodeout)
             VirtualCmdLine::msgout("-- EDI INSERT --") ;
@@ -76,7 +76,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_HOME) ;
+        keybrd::pushup(VKC_HOME) ;
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr, vclmodeout) ;
     }
 
@@ -92,7 +92,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_RIGHT) ;
+        keybrd::pushup(VKC_RIGHT) ;
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr, vclmodeout) ;
     }
 
@@ -108,7 +108,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_END) ;
+        keybrd::pushup(VKC_END) ;
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr, vclmodeout) ;
     }
 
@@ -124,8 +124,8 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_END) ;
-        KeybrdEventer::pushup(VKC_ENTER) ;
+        keybrd::pushup(VKC_END) ;
+        keybrd::pushup(VKC_ENTER) ;
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr, vclmodeout) ;
     }
 
@@ -141,9 +141,9 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_HOME) ;
-        KeybrdEventer::pushup(VKC_ENTER) ;
-        KeybrdEventer::pushup(VKC_UP) ;
+        keybrd::pushup(VKC_HOME) ;
+        keybrd::pushup(VKC_ENTER) ;
+        keybrd::pushup(VKC_UP) ;
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr, vclmodeout) ;
     }
 
@@ -158,9 +158,9 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(!first_call) return ;
-        SimpleTextSelecter::select_words() ;
+        textselect::select_words() ;
         change_mode(Mode::EdiVisual) ;
         if(vclmodeout)
             VirtualCmdLine::msgout("-- EDI VISUAL --") ;
@@ -177,9 +177,9 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(!first_call) return ;
-        SimpleTextSelecter::select_line_EOL2BOL() ;
+        textselect::select_line_EOL2BOL() ;
         change_mode(Mode::EdiLineVisual) ;
         if(vclmodeout)
             VirtualCmdLine::msgout("-- EDI VISUAL LINE--") ;

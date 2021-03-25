@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    namespace TextAnalyzer {
+    namespace textanalyze {
         struct SelRes ;
     }
 
@@ -25,7 +25,7 @@ namespace vind
                 const unsigned int repeat_num,
                 VKCLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
-                const TextAnalyzer::SelRes* const exres=nullptr) ;
+                const textanalyze::SelRes* const exres=nullptr) ;
         static const std::string sname() noexcept ;
     } ;
 
@@ -107,7 +107,7 @@ namespace vind
                 const unsigned int repeat_num,
                 VKCLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
-                const TextAnalyzer::SelRes* const exres=nullptr) const ;
+                const textanalyze::SelRes* const exres=nullptr) const ;
         static const std::string sname() noexcept ;
 
         explicit EdiNDeleteLine() ;
@@ -131,7 +131,7 @@ namespace vind
                 const unsigned int repeat_num,
                 VKCLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
-                const TextAnalyzer::SelRes* const exres=nullptr) const ;
+                const textanalyze::SelRes* const exres=nullptr) const ;
         static const std::string sname() noexcept ;
 
         explicit EdiNDeleteLineUntilEOL() ;
@@ -229,7 +229,7 @@ namespace vind
                 const unsigned int repeat_num,
                 VKCLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
-                const TextAnalyzer::SelRes* const exres=nullptr) ;
+                const textanalyze::SelRes* const exres=nullptr) ;
         static const std::string sname() noexcept ;
     } ;
 }

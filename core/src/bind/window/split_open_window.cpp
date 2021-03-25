@@ -19,13 +19,13 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
-        const auto w = ScreenMetrics::width(fginfo.rect) ;
-        const auto h = ScreenMetrics::height(fginfo.rect) ;
+        const auto w = screen::width(fginfo.rect) ;
+        const auto h = screen::height(fginfo.rect) ;
 
         //snap a original window to top
-        WindowUtility::resize(
+        windowutil::resize(
                 fginfo.hwnd,
                 fginfo.rect.left, fginfo.rect.top,
                 w, h / 2) ;
@@ -41,7 +41,7 @@ namespace vind
         }
 
         //snap a new window to bottom
-        WindowUtility::resize(
+        windowutil::resize(
                 new_hwnd,
                 fginfo.rect.left, fginfo.rect.top + h / 2,
                 w, h / 2) ;
@@ -60,13 +60,13 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
-        const auto w = ScreenMetrics::width(fginfo.rect) ;
-        const auto h = ScreenMetrics::height(fginfo.rect) ;
+        const auto w = screen::width(fginfo.rect) ;
+        const auto h = screen::height(fginfo.rect) ;
 
         //snap a original window to left
-        WindowUtility::resize(
+        windowutil::resize(
                 fginfo.hwnd,
                 fginfo.rect.left, fginfo.rect.top,
                 w / 2, h) ;
@@ -82,7 +82,7 @@ namespace vind
         }
 
         //snap a new window to right
-        WindowUtility::resize(
+        windowutil::resize(
                 new_hwnd,
                 fginfo.rect.left + w / 2, fginfo.rect.top,
                 w / 2, h) ;

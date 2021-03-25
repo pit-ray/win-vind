@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    namespace EasyClick {
+    namespace easyclick {
         void initialize() ;
     }
 

@@ -3,7 +3,7 @@
 
 namespace vind
 {
-    namespace SimpleTextSelecter {
+    namespace textselect {
         enum class Mode : unsigned char {
             Word,
             EOL2BOL,

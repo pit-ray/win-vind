@@ -61,7 +61,7 @@ namespace
         g_real_state[code] = state ;
         g_state[code]      = state ;
 
-        const auto rep = vind::VKCConverter::get_representative_key(code) ;
+        const auto rep = vind::keycvt::get_representative_key(code) ;
         g_real_state[rep] = state ;
         g_state[rep]      = state ;
 
@@ -79,7 +79,7 @@ namespace
 
 namespace vind
 {
-    namespace KeyAbsorber
+    namespace keyabsorb
     {
         void install_hook() {
             g_real_state.fill(false) ;
@@ -148,7 +148,7 @@ namespace vind
             unsigned char vkc = 0 ;
             for(const auto& s : g_state) {
                 if(s) {
-                    KeybrdEventer::release_keystate(vkc) ;
+                    keybrd::release_keystate(vkc) ;
                 }
                 vkc ++ ;
             }

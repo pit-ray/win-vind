@@ -28,12 +28,12 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto remove = [] {
-            KeybrdEventer::pushup(VKC_END) ;
-            KeybrdEventer::pushup(VKC_DELETE) ;
+            keybrd::pushup(VKC_END) ;
+            keybrd::pushup(VKC_DELETE) ;
         } ;
 
-        using ModeManager::change_mode ;
-        using ModeManager::Mode ;
+        using mode::change_mode ;
+        using mode::Mode ;
 
         if(repeat_num == 1) {
             if(first_call) {

@@ -21,7 +21,7 @@ namespace
             T1&& v_press_proc,
             T2&& n_press_proc)
     {
-        using ModeManager::is_edi_visual ;
+        using mode::is_edi_visual ;
 
         if(repeat_num == 1) {
             if(first_call) {
@@ -81,7 +81,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
                 [] {pushup(VKC_LSHIFT, VKC_LEFT) ;},
                 [] {pushup(VKC_LEFT) ;}) ;
@@ -112,7 +112,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
                 [] {pushup(VKC_LSHIFT, VKC_RIGHT) ;},
                 [] {pushup(VKC_RIGHT) ;}) ;
@@ -144,19 +144,19 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
-            if(SimpleTextSelecter::is_first_line_selection())
-                SimpleTextSelecter::select_line_EOL2BOL() ;
+            if(textselect::is_first_line_selection())
+                textselect::select_line_EOL2BOL() ;
 
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_UP) ;
-            //SimpleTextSelecter::moving_update() ;
+            keybrd::pushup(VKC_LSHIFT, VKC_UP) ;
+            //textselect::moving_update() ;
         } ;
-        auto n_press = [] {KeybrdEventer::pushup(VKC_UP) ;} ;
+        auto n_press = [] {keybrd::pushup(VKC_UP) ;} ;
 
         if(parent_charlgr != nullptr) {
             auto str = parent_charlgr->to_str() ;
             if(str.empty()) return ;
 
-            if(auto num = KeyLoggerUtility::extract_num(str)) {
+            if(auto num = keyloggerutil::extract_num(str)) {
                 move_caret_with_repeating(true, num, pimpl->ksr, v_press, n_press) ;
             }
         }
@@ -190,23 +190,23 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
-            if(SimpleTextSelecter::is_first_line_selection())
-                SimpleTextSelecter::select_line_BOL2EOL() ;
+            if(textselect::is_first_line_selection())
+                textselect::select_line_BOL2EOL() ;
 
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN) ;
+            keybrd::pushup(VKC_LSHIFT, VKC_DOWN) ;
 
             //If call EdiMoveCaretDown after EdiMoveCaretUp,
             //inner variables of moving_update() are dedicated to EOL2BOL.
             //so we cannot move caret down.
-            //SimpleTextSelecter::moving_update() ;
+            //textselect::moving_update() ;
         } ;
-        auto n_press = [] {KeybrdEventer::pushup(VKC_DOWN) ;} ;
+        auto n_press = [] {keybrd::pushup(VKC_DOWN) ;} ;
 
         if(parent_charlgr != nullptr) {
             auto str = parent_charlgr->to_str() ;
             if(str.empty()) return ;
 
-            if(auto num = KeyLoggerUtility::extract_num(str)) {
+            if(auto num = keyloggerutil::extract_num(str)) {
                 move_caret_with_repeating(true, num, pimpl->ksr, v_press, n_press) ;
             }
         }
@@ -240,7 +240,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
             [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;},
             [] {pushup(VKC_LCTRL, VKC_RIGHT) ;}) ;
@@ -271,7 +271,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
                 [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;},
                 [] {pushup(VKC_LCTRL, VKC_LEFT) ;}) ;
@@ -302,7 +302,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
                 [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;},
                 [] {pushup(VKC_LCTRL, VKC_RIGHT) ;}) ;
@@ -333,7 +333,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
                 [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;},
                 [] {pushup(VKC_LCTRL, VKC_LEFT) ;}) ;

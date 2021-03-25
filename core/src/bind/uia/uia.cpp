@@ -14,7 +14,7 @@
 
 namespace vind
 {
-    namespace UIA {
+    namespace uiauto {
 
         CUIA::CUIA()
         : cuia(nullptr)

@@ -16,7 +16,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++)
-                KeybrdEventer::pushup(VKC_LALT, VKC_RIGHT) ;
+                keybrd::pushup(VKC_LALT, VKC_RIGHT) ;
         }
     }
 
@@ -33,7 +33,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++)
-                KeybrdEventer::pushup(VKC_LALT, VKC_LEFT) ;
+                keybrd::pushup(VKC_LALT, VKC_LEFT) ;
         }
     }
 }

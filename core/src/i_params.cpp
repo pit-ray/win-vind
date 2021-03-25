@@ -22,10 +22,10 @@ namespace
 
 namespace vind
 {
-    namespace iParams {
+    namespace iparams {
         void load_config() {
             jp.clear() ;
-            std::ifstream ifs(Path::to_u8path(Path::SETTINGS())) ;
+            std::ifstream ifs(path::to_u8path(path::SETTINGS())) ;
             ifs >> jp ;
         }
 

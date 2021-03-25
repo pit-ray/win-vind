@@ -7,7 +7,7 @@
 
 namespace vind
 {
-    namespace KeyAbsorber {
+    namespace keyabsorb {
         void install_hook() ;
         bool is_pressed(const unsigned char keycode) noexcept ;
         bool is_really_pressed(const unsigned char keycode) noexcept ;

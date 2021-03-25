@@ -167,7 +167,7 @@ namespace wxGUI
             }
 
             //To avoid duplicate pushes
-            KeyAbsorber::close_all_ports_with_refresh() ;
+            keyabsorb::close_all_ports_with_refresh() ;
 
             save_config() ;
             vind::load_config() ;
@@ -242,7 +242,7 @@ namespace wxGUI
     }
 
     bool PropDlg::Show(bool show) {
-        static auto l_mode = ModeManager::Mode::Insert ;
+        static auto l_mode = mode::Mode::Insert ;
         static auto l_is_absorbed = false ;
         static auto l_is_cached   = false ;
 
@@ -259,19 +259,19 @@ namespace wxGUI
             } //shown as most top window
 
             if(use_bindings && !l_is_cached) {
-                l_mode = ModeManager::get_mode() ;
-                l_is_absorbed = KeyAbsorber::is_absorbed() ;
+                l_mode = mode::get_mode() ;
+                l_is_absorbed = keyabsorb::is_absorbed() ;
                 l_is_cached = true ;
                 MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
             }
         }
         else {
             if(use_bindings && l_is_cached) {
-                ModeManager::change_mode(l_mode) ;
+                mode::change_mode(l_mode) ;
 
-                KeyAbsorber::close_all_ports_with_refresh() ;
+                keyabsorb::close_all_ports_with_refresh() ;
                 if(!l_is_absorbed) {
-                    KeyAbsorber::unabsorb() ;
+                    keyabsorb::unabsorb() ;
                 }
 
                 l_is_cached = false ;

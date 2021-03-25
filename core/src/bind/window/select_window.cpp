@@ -17,7 +17,7 @@ namespace
             return TRUE ;
         }
 
-        if(!WindowUtility::is_visible_hwnd(hwnd)) {
+        if(!windowutil::is_visible_hwnd(hwnd)) {
             return TRUE ;
         }
 
@@ -26,14 +26,14 @@ namespace
             return TRUE ;
         }
 
-        if(!WindowUtility::is_window_mode(hwnd, rect)) {
+        if(!windowutil::is_window_mode(hwnd, rect)) {
             return TRUE ;
         }
 
-        ScreenMetrics::MonitorInfo minfo ;
-        ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+        screen::MonitorInfo minfo ;
+        screen::get_monitor_metrics(hwnd, minfo) ;
 
-        if(ScreenMetrics::is_out_of_range(rect, minfo.work_rect)) {
+        if(screen::is_out_of_range(rect, minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -67,10 +67,10 @@ namespace
             auto& enu_hwnd = enumed_rect.first ;
             auto& enu_rect = enumed_rect.second ;
 
-            auto cx  = ScreenMetrics::center_x(fg_rect) ;
-            auto cy  = ScreenMetrics::center_y(fg_rect) ;
-            auto ecx = ScreenMetrics::center_x(enu_rect) ;
-            auto ecy = ScreenMetrics::center_y(enu_rect) ;
+            auto cx  = screen::center_x(fg_rect) ;
+            auto cy  = screen::center_y(fg_rect) ;
+            auto ecx = screen::center_x(enu_rect) ;
+            auto ecy = screen::center_y(enu_rect) ;
 
             if(is_if_target(fg_rect, enu_rect, cx, cy, ecx, ecy)) {
                 const auto distance = calc_distance(fg_rect, enu_rect, cx, cy, ecx, ecy) ;
@@ -117,7 +117,7 @@ namespace vind
                 auto UNUSED(cx), auto cy,
                 auto ecx, auto ecy) {
 
-            return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
+            return screen::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -148,7 +148,7 @@ namespace vind
                 auto UNUSED(cx), auto cy,
                 auto ecx, auto ecy) {
 
-            return ScreenMetrics::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
+            return screen::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -179,7 +179,7 @@ namespace vind
                 auto cx, auto UNUSED(cy),
                 auto ecx, auto ecy) {
 
-            return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
+            return screen::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -210,7 +210,7 @@ namespace vind
                 auto cx, auto UNUSED(cy),
                 auto ecx, auto ecy) {
 
-            return ScreenMetrics::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
+            return screen::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;

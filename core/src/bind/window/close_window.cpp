@@ -16,7 +16,7 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
-            KeybrdEventer::pushup(VKC_LALT, VKC_F4) ;
+            keybrd::pushup(VKC_LALT, VKC_F4) ;
         }
     }
 }

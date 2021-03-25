@@ -6,9 +6,9 @@
 namespace vind
 {
     //use Curiously Recurring Template Pattern (CRTP)
-    //derived class must implement sprocess and sname.
-    //if derived class does not use variable of member, sprocess prefers static function.
-    //else, sprocess is constant function.
+    //derived class must implement sprocess() and sname().
+    //If derived class does not have any variables of member, sprocess() prefers static function.
+    //If not, sprocess() is constant function.
     template <typename Derived>
     class BindedFuncWithCreator : public BindedFunc {
     private:

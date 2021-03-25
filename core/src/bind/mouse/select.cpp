@@ -17,8 +17,8 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
-            MouseEventer::click(VKC_MOUSE_LEFT) ;
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_A) ;
+            mouse::click(VKC_MOUSE_LEFT) ;
+            keybrd::pushup(VKC_LCTRL, VKC_A) ;
         }
     }
 
@@ -35,7 +35,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                KeybrdEventer::pushup(VKC_TAB) ;
+                keybrd::pushup(VKC_TAB) ;
             }
         }
     }
@@ -52,7 +52,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                KeybrdEventer::pushup(VKC_LSHIFT, VKC_TAB) ;
+                keybrd::pushup(VKC_LSHIFT, VKC_TAB) ;
             }
         }
     }
@@ -68,7 +68,7 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
-            KeybrdEventer::pushup(VKC_SPACE) ;
+            keybrd::pushup(VKC_SPACE) ;
         }
     }
 }

@@ -8,11 +8,11 @@ namespace vind
 {
     class KeyLoggerBase ;
 
-    namespace KeyBinder
+    namespace keybind
     {
         void init() ;
 
-        enum InvalidPolicy {
+        enum class InvalidPolicy : unsigned char {
             None,
             AllSystemKey,
             UnbindedSystemKey
@@ -26,7 +26,7 @@ namespace vind
                 const KeyLoggerBase& lgr,
                 const BindedFunc::shp_t& running_func=nullptr,
                 const bool full_scan=false, //The cost for computing is high.
-                ModeManager::Mode mode=ModeManager::get_mode()) ;
+                mode::Mode mode=mode::get_mode()) ;
 
         const BindedFunc::shp_t find_func_byname(const std::string& name) ;
 

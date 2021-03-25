@@ -19,8 +19,8 @@ namespace
             throw RUNTIME_EXCEPT("There is not the foreground window.") ;
         }
 
-        ScreenMetrics::MonitorInfo minfo ;
-        ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+        screen::MonitorInfo minfo ;
+        screen::get_monitor_metrics(hwnd, minfo) ;
 
         RECT half_rect ;
         calc_half_size(half_rect, minfo.work_rect) ;
@@ -30,18 +30,18 @@ namespace
             throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
         }
 
-        if(ScreenMetrics::is_equel(cur_rect, half_rect)) {
-            ScreenMetrics::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
+        if(screen::is_equel(cur_rect, half_rect)) {
+            screen::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
 
             calc_half_size(half_rect, minfo.work_rect) ;
         }
 
-        WindowUtility::resize(
+        windowutil::resize(
                 hwnd,
                 half_rect.left,
                 half_rect.top,
-                ScreenMetrics::width(half_rect),
-                ScreenMetrics::height(half_rect)) ;
+                screen::width(half_rect),
+                screen::height(half_rect)) ;
     }
 }
 
@@ -62,12 +62,12 @@ namespace vind
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
             rect.top    = mrect.top ;
-            rect.right  = rect.left + ScreenMetrics::width(mrect) / 2 ;
+            rect.right  = rect.left + screen::width(mrect) / 2 ;
             rect.bottom = mrect.bottom ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{rect.left - 100, ScreenMetrics::center_y(rect)} ;
+            return POINT{rect.left - 100, screen::center_y(rect)} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -87,14 +87,14 @@ namespace vind
         if(!first_call) return ;
 
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
-            rect.left   = mrect.left + ScreenMetrics::width(mrect) / 2 ;
+            rect.left   = mrect.left + screen::width(mrect) / 2 ;
             rect.top    = mrect.top ;
             rect.right  = mrect.right ;
             rect.bottom = mrect.bottom ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{rect.right + 100, ScreenMetrics::center_y(rect)} ;
+            return POINT{rect.right + 100, screen::center_y(rect)} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -117,11 +117,11 @@ namespace vind
             rect.left   = mrect.left ;
             rect.top    = mrect.top ;
             rect.right  = mrect.right ;
-            rect.bottom = rect.top + ScreenMetrics::height(mrect) / 2 ;
+            rect.bottom = rect.top + screen::height(mrect) / 2 ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{ScreenMetrics::center_x(rect), rect.top - 100} ;
+            return POINT{screen::center_x(rect), rect.top - 100} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -141,13 +141,13 @@ namespace vind
 
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
-            rect.top    = mrect.top + ScreenMetrics::height(mrect) / 2 ;
+            rect.top    = mrect.top + screen::height(mrect) / 2 ;
             rect.right  = mrect.right ;
             rect.bottom = mrect.bottom ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{ScreenMetrics::center_x(rect), rect.bottom + 100} ;
+            return POINT{screen::center_x(rect), rect.bottom + 100} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;

@@ -23,11 +23,11 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        MouseEventer::release(VKC_MOUSE_LEFT) ;
+        mouse::release(VKC_MOUSE_LEFT) ;
 
         //there are cases in which not editable.
         //thus, not use Message Copy
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
+        keybrd::pushup(VKC_LCTRL, VKC_C) ;
     }
 
 
@@ -43,10 +43,10 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
-        MouseEventer::release(VKC_MOUSE_LEFT) ;
+        mouse::release(VKC_MOUSE_LEFT) ;
 
         //not selecting at paste.
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_V) ;
+        keybrd::pushup(VKC_LCTRL, VKC_V) ;
     }
 
 
@@ -62,8 +62,8 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
-        MouseEventer::release(VKC_MOUSE_LEFT) ;
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+        mouse::release(VKC_MOUSE_LEFT) ;
+        keybrd::pushup(VKC_LCTRL, VKC_X) ;
     }
 
 
@@ -78,12 +78,12 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        MouseEventer::release(VKC_MOUSE_LEFT) ;
+        mouse::release(VKC_MOUSE_LEFT) ;
 
         //selecting->cut
         //unselecting->delete
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
-        KeybrdEventer::pushup(VKC_DELETE) ;
+        keybrd::pushup(VKC_LCTRL, VKC_C) ;
+        keybrd::pushup(VKC_DELETE) ;
     }
 
 
@@ -98,11 +98,11 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        MouseEventer::release(VKC_MOUSE_LEFT) ;
+        mouse::release(VKC_MOUSE_LEFT) ;
 
         //selecting->cut
         //unselecting->delete
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
-        KeybrdEventer::pushup(VKC_BKSPACE) ;
+        keybrd::pushup(VKC_LCTRL, VKC_C) ;
+        keybrd::pushup(VKC_BKSPACE) ;
     }
 }

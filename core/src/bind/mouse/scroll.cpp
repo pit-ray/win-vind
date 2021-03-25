@@ -44,7 +44,7 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto scroll = [first_call, repeat_num] {
-            MouseEventer::vscroll(iParams::get_i("yscroll_speed") \
+            mouse::vscroll(iparams::get_i("yscroll_speed") \
                     * (first_call ? repeat_num : 1)) ;
         } ;
 
@@ -81,7 +81,7 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto scroll = [first_call, repeat_num] {
-            MouseEventer::vscroll(-iParams::get_i("yscroll_speed") \
+            mouse::vscroll(-iparams::get_i("yscroll_speed") \
                     * (first_call ? repeat_num : 1)) ;
         } ;
 
@@ -123,7 +123,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+        mouse::vscroll(iparams::get_f("yscroll_screen_ratio") \
                 * MAX_Y_POS * 0.5f * (first_call ? repeat_num : 1)) ;
     }
 
@@ -156,7 +156,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+        mouse::vscroll(iparams::get_f("yscroll_screen_ratio") \
                 * -0.5f * MAX_Y_POS * (first_call ? repeat_num: 1)) ;
     }
 
@@ -189,7 +189,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+        mouse::vscroll(iparams::get_f("yscroll_screen_ratio") \
                 * MAX_Y_POS * (first_call ? repeat_num : 1)) ;
     }
 
@@ -222,7 +222,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::vscroll(iParams::get_f("yscroll_screen_ratio") \
+        mouse::vscroll(iparams::get_f("yscroll_screen_ratio") \
                 * -MAX_Y_POS * (first_call ? repeat_num : 1)) ;
     }
 
@@ -256,7 +256,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::hscroll(-iParams::get_i("xscroll_speed") \
+        mouse::hscroll(-iparams::get_i("xscroll_speed") \
                 * (first_call ? repeat_num : 1)) ;
     }
 
@@ -289,7 +289,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::hscroll(iParams::get_f("xscroll_speed") \
+        mouse::hscroll(iparams::get_f("xscroll_speed") \
                 * (first_call ? repeat_num : 1)) ;
     }
 
@@ -322,7 +322,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::hscroll(iParams::get_f("xscroll_screen_ratio") \
+        mouse::hscroll(iparams::get_f("xscroll_screen_ratio") \
                 * -0.5f * MAX_X_POS * (first_call ? repeat_num : 1)) ;
     }
 
@@ -355,7 +355,7 @@ namespace vind
         if(!pimpl->timer.is_passed()) {
             return ;
         }
-        MouseEventer::hscroll(iParams::get_f("xscroll_screen_ratio") \
+        mouse::hscroll(iparams::get_f("xscroll_screen_ratio") \
                 * MAX_X_POS * 0.5f * (first_call ? repeat_num : 1)) ;
     }
 }

@@ -8,7 +8,7 @@
 
 namespace vind
 {
-    namespace TextAnalyzer {
+    namespace textanalyze {
         struct SelRes {
             std::string str ;
 

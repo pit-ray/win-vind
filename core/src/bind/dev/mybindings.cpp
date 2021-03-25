@@ -13,9 +13,9 @@ namespace vind
             VKCLogger* const parent_vkclgr,
             const CharLogger* const parent_charlgr) {
         if(first_call) {
-            MouseEventer::click(VKC_MOUSE_LEFT) ; //left click
+            mouse::click(VKC_MOUSE_LEFT) ; //left click
         
-            KeybrdEventer::pushup(VKC_LWIN, VKC_D) ; //minimize all window
+            keybrd::pushup(VKC_LWIN, VKC_D) ; //minimize all window
         
             VirtualCmdLine::msgout("Hello World !") ;
         }

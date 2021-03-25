@@ -39,9 +39,9 @@ namespace vind
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        ScreenMetrics::get_conbined_metrics(&rect) ;
+        screen::get_conbined_metrics(&rect) ;
 
-        SetCursorPos(ScreenMetrics::width(rect) - iParams::get_i("screen_pos_buf"), pos.y) ;
+        SetCursorPos(screen::width(rect) - iparams::get_i("screen_pos_buf"), pos.y) ;
     }
 
 
@@ -77,8 +77,8 @@ namespace vind
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        ScreenMetrics::get_conbined_metrics(&rect) ;
-        SetCursorPos(pos.x, ScreenMetrics::height(rect) - iParams::get_i("screen_pos_buf")) ;
+        screen::get_conbined_metrics(&rect) ;
+        SetCursorPos(pos.x, screen::height(rect) - iparams::get_i("screen_pos_buf")) ;
     }
 
 
@@ -97,8 +97,8 @@ namespace vind
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        ScreenMetrics::get_conbined_metrics(&rect) ;
-        SetCursorPos(ScreenMetrics::width(rect) / 2, pos.y) ;
+        screen::get_conbined_metrics(&rect) ;
+        SetCursorPos(screen::width(rect) / 2, pos.y) ;
     }
 
 
@@ -117,7 +117,7 @@ namespace vind
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        ScreenMetrics::get_conbined_metrics(&rect) ;
-        SetCursorPos(pos.x, ScreenMetrics::height(rect) / 2) ;
+        screen::get_conbined_metrics(&rect) ;
+        SetCursorPos(pos.x, screen::height(rect) / 2) ;
     }
 }

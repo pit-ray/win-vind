@@ -124,7 +124,7 @@ namespace
                 throw RUNTIME_EXCEPT("cannot convert an item ID to a file system path.") ;
             }
 
-            return vind::Utility::ws_to_s(path) ;
+            return vind::utility::ws_to_s(path) ;
         }
 
         return path_t() ;
@@ -158,17 +158,17 @@ namespace vind
                 //over max path num
                 arg = arg.substr(0, 248) ;
             }
-            Utility::create_directory(arg) ;
+            utility::create_directory(arg) ;
         }
 
         //argument is directory name
         //get current directory
         auto current_path = get_current_explorer_path() ;
         if(current_path.empty()) {
-            current_path = Path::HOME_PATH() + "/Desktop" ;
+            current_path = path::HOME_PATH() + "/Desktop" ;
         }
 
         auto full_path = current_path + "\\" + arg ;
-        Utility::create_directory(full_path) ;
+        utility::create_directory(full_path) ;
     }
 }

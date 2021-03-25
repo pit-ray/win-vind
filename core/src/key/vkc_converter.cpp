@@ -34,7 +34,7 @@ namespace
 
 namespace vind
 {
-    namespace VKCConverter {
+    namespace keycvt {
 
         void load_input_combination() {
             char2vkc.fill(0) ;
@@ -191,7 +191,7 @@ namespace
 
 namespace vind
 {
-    namespace VKCConverter {
+    namespace keycvt {
         unsigned char get_sys_vkc(const std::string& strkey) noexcept {
             try {return g_sys_vkc.at(strkey) ;}
             catch(const std::out_of_range&) {return 0 ;}

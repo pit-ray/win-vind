@@ -3,7 +3,7 @@
 
 namespace vind
 {
-    namespace OptionLoader
+    namespace optloader
     {
         void load_config() ;
         void call_active_funcs() ;

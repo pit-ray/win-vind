@@ -25,7 +25,7 @@ namespace
         mss_t map{} ;
 
         nlohmann::json j ;
-        std::ifstream ifs(vind::Path::to_u8path(vind::Path::SETTINGS())) ;
+        std::ifstream ifs(vind::path::to_u8path(vind::path::SETTINGS())) ;
         ifs >> j ;
 
         for(const auto& i : j.at("exapps").at("choices")) {
@@ -48,7 +48,7 @@ namespace
 
 namespace vind
 {
-    namespace ExternalApplication
+    namespace exapp
     {
         void load_config() {
             g_proc_list = _load_proc_list_core() ;
@@ -67,7 +67,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         try {
-            Utility::create_process(Path::HOME_PATH(), g_proc_list.at("shell")) ;
+            utility::create_process(path::HOME_PATH(), g_proc_list.at("shell")) ;
         }
         catch(const std::out_of_range&) {
             VirtualCmdLine::msgout("e: Not a command") ;
@@ -103,7 +103,7 @@ namespace vind
         auto cmd = parent_charlgr->to_str() ;
         if(!cmd.empty()) {
             try {
-                Utility::create_process(".", g_proc_list.at(cmd.substr(1))) ;
+                utility::create_process(".", g_proc_list.at(cmd.substr(1))) ;
             }
             catch(const std::out_of_range&) {
                 VirtualCmdLine::msgout("e: Not a command") ;
@@ -128,7 +128,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         //_create_process("explorer") ;
-        KeybrdEventer::pushup(VKC_LWIN, VKC_E) ;
+        keybrd::pushup(VKC_LWIN, VKC_E) ;
 
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
@@ -145,7 +145,7 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_LWIN) ;
+        keybrd::pushup(VKC_LWIN) ;
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
     }

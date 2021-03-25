@@ -86,7 +86,7 @@ namespace vind
         //Whether there are some numbers in the latest log?
         auto is_num_only = [&log] {
             for(auto& key : log) {
-                if(!VKCConverter::is_number(key)) {
+                if(!keycvt::is_number(key)) {
                     return false ;
                 }
             }

@@ -38,7 +38,7 @@ namespace wxGUI
     }
 
     inline static bool is_pre_initialized() {
-        std::ifstream ifs(Path::to_u8path(Path::ROOT_PATH() + "is_initialized")) ;
+        std::ifstream ifs(path::to_u8path(path::ROOT_PATH() + "is_initialized")) ;
         if(!ifs.is_open()) {
             return false ;
         }
@@ -48,7 +48,7 @@ namespace wxGUI
     }
 
     inline static void finish_pre_initialization() {
-        std::ofstream ofs(Path::to_u8path(Path::ROOT_PATH() + "is_initialized"), std::ios::trunc) ;
+        std::ofstream ofs(path::to_u8path(path::ROOT_PATH() + "is_initialized"), std::ios::trunc) ;
         ofs << "y" ;
     }
 
@@ -169,28 +169,28 @@ namespace wxGUI
 
     inline static bool initialize_config_files() {
         auto overwrite_bindings = [] {
-            Utility::copy_file(Path::Default::BINDINGS(), Path::BINDINGS(), true) ;
+            utility::copy_file(path::Default::BINDINGS(), path::BINDINGS(), true) ;
         } ;
         auto overwrite_settings = [] {
-            Utility::copy_file(Path::Default::SETTINGS(), Path::SETTINGS(), true) ;
+            utility::copy_file(path::Default::SETTINGS(), path::SETTINGS(), true) ;
         } ;
 
         auto write_kmp = [] (BOOL allow_overwrite) {
             //The kmp file needs a better format and a dedicated management system.
             std::vector<std::string> def_kmp = {
-                Path::MODULE_ROOT_PATH() + "default_config\\JP.kmp",
-                Path::MODULE_ROOT_PATH() + "default_config\\US.kmp",
-                Path::MODULE_ROOT_PATH() + "default_config\\custom.kmp"
+                path::MODULE_ROOT_PATH() + "default_config\\JP.kmp",
+                path::MODULE_ROOT_PATH() + "default_config\\US.kmp",
+                path::MODULE_ROOT_PATH() + "default_config\\custom.kmp"
             } ;
             std::vector<std::string> kmp = {
-                Path::CONFIG_PATH() + "JP.kmp",
-                Path::CONFIG_PATH() + "US.kmp",
-                Path::CONFIG_PATH() + "custom.kmp"
+                path::CONFIG_PATH() + "JP.kmp",
+                path::CONFIG_PATH() + "US.kmp",
+                path::CONFIG_PATH() + "custom.kmp"
             } ;
 
             for(std::size_t i = 0 ; i < def_kmp.size() ; i ++) {
                 try {
-                    Utility::copy_file(def_kmp[i], kmp[i], allow_overwrite) ;
+                    utility::copy_file(def_kmp[i], kmp[i], allow_overwrite) ;
                 }
                 catch(const std::runtime_error& e) {
                     if(!allow_overwrite) continue ;
@@ -200,8 +200,8 @@ namespace wxGUI
         } ;
 
         try {
-            if(!Utility::is_existed_dir(Path::CONFIG_PATH().c_str())) { //clean install
-                Utility::create_directory(Path::CONFIG_PATH()) ;
+            if(!utility::is_existed_dir(path::CONFIG_PATH().c_str())) { //clean install
+                utility::create_directory(path::CONFIG_PATH()) ;
                 overwrite_bindings() ;
                 overwrite_settings() ;
                 write_kmp(TRUE) ;
@@ -223,7 +223,7 @@ namespace wxGUI
                         using json = nlohmann::json ;
 
                         json dfj ;
-                        std::ifstream def_ifs(Path::to_u8path(default_path)) ;
+                        std::ifstream def_ifs(path::to_u8path(default_path)) ;
                         def_ifs >> dfj ; //keep old
 
                         json olj ;
@@ -251,31 +251,31 @@ namespace wxGUI
                             throw std::runtime_error("The format of " + new_path + " is not supported.") ;
                         }
 
-                        std::ofstream ofs(Path::to_u8path(new_path)) ;
+                        std::ofstream ofs(path::to_u8path(new_path)) ;
                         ofs << std::setw(4) << dfj << std::endl ;
                     } ;
 
                     //bindings.json
-                    std::ifstream bindings_ifs(Path::to_u8path(Path::BINDINGS())) ;
+                    std::ifstream bindings_ifs(path::to_u8path(path::BINDINGS())) ;
                     if(!bindings_ifs.is_open()) {
                         overwrite_bindings() ; //does not exist
                     }
                     else {
                         keep_old_and_only_write_new(
-                                Path::Default::BINDINGS(),
-                                Path::BINDINGS(),
+                                path::Default::BINDINGS(),
+                                path::BINDINGS(),
                                 bindings_ifs) ;
                     }
 
                     //settings.json
-                    std::ifstream settings_ifs(Path::to_u8path(Path::SETTINGS())) ;
+                    std::ifstream settings_ifs(path::to_u8path(path::SETTINGS())) ;
                     if(!settings_ifs.is_open()) {
                         overwrite_settings() ; //does not exist
                     }
                     else {
                         keep_old_and_only_write_new(
-                                Path::Default::SETTINGS(),
-                                Path::SETTINGS(),
+                                path::Default::SETTINGS(),
+                                path::SETTINGS(),
                                 settings_ifs) ;
                     }
 

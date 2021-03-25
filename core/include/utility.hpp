@@ -41,7 +41,7 @@
 
 namespace vind
 {
-    namespace Utility {
+    namespace utility {
         std::vector<std::string> split(std::string str, const std::string deliminator=",") ;
 
         std::string remove_str(std::string str, const unsigned char target) ;
@@ -165,7 +165,7 @@ namespace vind
             return pi.hProcess ;
         }
 
-        namespace Debug {
+        namespace debug {
             void bench_start() ;
             int bench_stop() ;
         }

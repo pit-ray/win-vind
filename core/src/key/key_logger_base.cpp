@@ -85,7 +85,7 @@ namespace vind
     }
 
     void KeyLoggerBase::remove_from_back(std::size_t num_from_back) {
-        Utility::remove_from_back(pimpl->data, num_from_back) ;
+        utility::remove_from_back(pimpl->data, num_from_back) ;
     }
 
     KeyLoggerBase::data_t::const_reference KeyLoggerBase::at(std::size_t n) const {
@@ -101,14 +101,14 @@ namespace vind
     }
 
     void KeyLoggerBase::update() {
-        logging(KeyAbsorber::get_pressed_list()) ;
+        logging(keyabsorb::get_pressed_list()) ;
     }
 
     bool KeyLoggerBase::is_changed() const noexcept {
         return true ;
     }
 
-    namespace KeyLoggerUtility
+    namespace keyloggerutil
     {
         unsigned int extract_num(const std::string str) {
             static constexpr auto c_nums = "0123456789" ;
@@ -121,7 +121,7 @@ namespace vind
             return std::stoi(str.substr(bpos, epos)) ;
         }
 
-        namespace Debug {
+        namespace debug {
             std::string print_log(const KeyLoggerBase& lgr) {
                 std::stringstream ss ;
                 if(lgr.empty()) {
@@ -134,15 +134,15 @@ namespace vind
                             continue ;
                         }
 
-                        if(auto a = VKCConverter::get_ascii(key)) {
+                        if(auto a = keycvt::get_ascii(key)) {
                             ss << a << " " ;
                             continue ;
                         }
-                        if(auto a = VKCConverter::get_shifted_ascii(key)) {
+                        if(auto a = keycvt::get_shifted_ascii(key)) {
                             ss << a << " " ;
                             continue ;
                         }
-                        auto name = VKCConverter::get_name(key) ;
+                        auto name = keycvt::get_name(key) ;
                         ss << "<" << name << "> " ;
                     }
                     ss << "|" ;

@@ -11,7 +11,7 @@
 
 namespace vind
 {
-    namespace Path {
+    namespace path {
         template <typename T>
         inline auto to_u8path(T&& str) {
 #if defined(_MSC_VER) && _MSC_VER >= 1500
@@ -41,7 +41,7 @@ namespace vind
         }
 
         inline const std::string KEYBRD_MAP() {
-            return CONFIG_PATH() + iParams::get_s("kb_type") ;
+            return CONFIG_PATH() + iparams::get_s("kb_type") ;
         }
 
         namespace Default {

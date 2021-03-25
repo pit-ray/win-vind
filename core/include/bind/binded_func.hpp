@@ -43,7 +43,7 @@ namespace vind
                 const CharLogger* const parent_charlgr=nullptr) const ;
 
         void register_matcher(
-                const ModeManager::Mode mode,
+                const mode::Mode mode,
                 const KeyMatcher::shp_t matcher) const ;
         void register_matcher(
                 const unsigned char mode,
@@ -52,13 +52,13 @@ namespace vind
         //[return] matched num in latest log
         unsigned int validate_if_match(
                 const KeyLoggerBase& pc_lgr,
-                ModeManager::Mode mode=ModeManager::get_mode()) const ;
+                mode::Mode mode=mode::get_mode()) const ;
 
         //[return] matched num in latest log
         //The cost for computing is bigger than validate_if_match.
         unsigned int validate_if_fullmatch(
                 const KeyLoggerBase& pc_lgr,
-                ModeManager::Mode mode=ModeManager::get_mode()) const ;
+                mode::Mode mode=mode::get_mode()) const ;
 
         bool is_callable() const noexcept ;
         virtual bool is_for_moving_caret() const noexcept ;

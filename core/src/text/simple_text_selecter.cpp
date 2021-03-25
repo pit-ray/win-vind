@@ -4,7 +4,7 @@
 
 namespace
 {
-    using namespace vind::SimpleTextSelecter ;
+    using namespace vind::textselect ;
     Mode g_mode{Mode::Unselect} ;
 
     bool g_first_line_selection = false ;
@@ -19,7 +19,7 @@ namespace
 
 namespace vind
 {
-    namespace SimpleTextSelecter
+    namespace textselect
     {
         void select_words() noexcept {
             g_mode = Mode::Word ;
@@ -28,8 +28,8 @@ namespace vind
         void select_line_EOL2BOL() {
             g_first_line_selection = g_first_call ;
 
-            KeybrdEventer::pushup(VKC_END) ;
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
+            keybrd::pushup(VKC_END) ;
+            keybrd::pushup(VKC_LSHIFT, VKC_HOME) ;
 
             g_mode = Mode::EOL2BOL ;
             g_first_call = false ;
@@ -38,8 +38,8 @@ namespace vind
         void select_line_BOL2EOL() {
             g_first_line_selection = g_first_call ;
 
-            KeybrdEventer::pushup(VKC_HOME) ;
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
+            keybrd::pushup(VKC_HOME) ;
+            keybrd::pushup(VKC_LSHIFT, VKC_END) ;
 
             g_mode = Mode::BOL2EOL ;
             g_first_call = false ;
@@ -47,10 +47,10 @@ namespace vind
 
         void unselect() {
             if(g_mode == Mode::EOL2BOL) {
-                KeybrdEventer::pushup(VKC_LEFT) ;
+                keybrd::pushup(VKC_LEFT) ;
             }
             else if(g_mode == Mode::BOL2EOL) {
-                KeybrdEventer::pushup(VKC_RIGHT) ;
+                keybrd::pushup(VKC_RIGHT) ;
             }
             _reset() ;
         }
@@ -61,9 +61,9 @@ namespace vind
 
         void moving_update() {
             if(g_mode == Mode::BOL2EOL)
-                KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
+                keybrd::pushup(VKC_LSHIFT, VKC_END) ;
             else
-                KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
+                keybrd::pushup(VKC_LSHIFT, VKC_HOME) ;
         }
 
         bool is_first_line_selection() noexcept {

@@ -29,21 +29,21 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(!first_call) return ;
 
         const auto m = get_mode() ;
         if(m == Mode::Normal) return ;
 
         if(m == Mode::Visual) 
-            MouseEventer::click(VKC_MOUSE_LEFT) ; //release holding mouse
+            mouse::click(VKC_MOUSE_LEFT) ; //release holding mouse
         else if(is_edi_visual())
-            SimpleTextSelecter::unselect() ; //release shifting
+            textselect::unselect() ; //release shifting
 
         //When this function is called, binded key is down.
         //Thus, its key is needed to be up before absorbing key.
-        KeyAbsorber::close_all_ports_with_refresh() ;
-        KeyAbsorber::absorb() ;
+        keyabsorb::close_all_ports_with_refresh() ;
+        keyabsorb::absorb() ;
 
         change_mode(Mode::Normal) ;
         if(vclmodeout)
@@ -62,14 +62,14 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(!first_call) return ;
 
-        if(ModeManager::get_mode() == ModeManager::Mode::Normal)
-            MouseEventer::click(VKC_MOUSE_LEFT) ;
+        if(mode::get_mode() == mode::Mode::Normal)
+            mouse::click(VKC_MOUSE_LEFT) ;
 
-        KeyAbsorber::close_all_ports() ;
-        KeyAbsorber::unabsorb() ;
+        keyabsorb::close_all_ports() ;
+        keyabsorb::unabsorb() ;
         change_mode(Mode::Insert) ;
         if(vclmodeout)
             VirtualCmdLine::msgout("-- GUI INSERT --") ;
@@ -87,11 +87,11 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(!first_call) return ;
         change_mode(Mode::Visual) ;
         if(vclmodeout) VirtualCmdLine::msgout("-- GUI VISUAL --") ;
-        MouseEventer::press(VKC_MOUSE_LEFT) ;
+        mouse::press(VKC_MOUSE_LEFT) ;
     }
 
     //MyConfigWindowNormal
@@ -104,11 +104,11 @@ namespace vind
             const unsigned int UNUSED(repeat_num),
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(!first_call) return ;
 
-        KeyAbsorber::close_all_ports_with_refresh() ;
-        KeyAbsorber::absorb() ;
+        keyabsorb::close_all_ports_with_refresh() ;
+        keyabsorb::absorb() ;
         change_mode(Mode::MyConfigWindowNormal) ;
     }
 
@@ -122,11 +122,11 @@ namespace vind
             const unsigned int UNUSED(repeat_num),
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
-        using namespace ModeManager ;
+        using namespace mode ;
         if(!first_call) return ;
 
-        KeyAbsorber::close_all_ports_with_refresh() ;
-        KeyAbsorber::unabsorb() ;
+        keyabsorb::close_all_ports_with_refresh() ;
+        keyabsorb::unabsorb() ;
         change_mode(Mode::MyConfigWindowInsert) ;
     }
 }

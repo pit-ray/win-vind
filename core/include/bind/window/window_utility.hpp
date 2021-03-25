@@ -10,7 +10,7 @@
 
 namespace vind
 {
-    namespace WindowUtility {
+    namespace windowutil {
         bool is_visible_hwnd(HWND hwnd) ;
         bool is_window_mode(HWND hwnd, RECT& rect) ;
 

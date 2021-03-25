@@ -31,7 +31,7 @@ namespace
 }
 namespace vind
 {
-    namespace MouseEventer {
+    namespace mouse {
         void click(const unsigned char btcode) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;

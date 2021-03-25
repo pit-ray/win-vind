@@ -73,7 +73,7 @@ namespace
         void generate_new_hist() {
             if(idx == hist.size() - 1) {
                 //recently logger
-                while(hist.size() >= iParams::get_z("cmd_max_history_num")) {
+                while(hist.size() >= iparams::get_z("cmd_max_history_num")) {
                     hist.pop_front() ;
                 }
 
@@ -121,7 +121,7 @@ void CommandMode::sprocess(
 
     VirtualCmdLine::reset() ;
 
-    KeyAbsorber::InstantKeyAbsorber ika ;
+    keyabsorb::InstantKeyAbsorber ika ;
 
     while(vind::update_background()) {
         auto& p_cmdp = pimpl->ch.get_hist_point() ;
@@ -153,7 +153,7 @@ void CommandMode::sprocess(
 
         //decision of input
         if(lgr.latest().is_containing(VKC_ENTER) && p_cmdp->func) {
-            KeyAbsorber::release_virtually(VKC_ENTER) ;
+            keyabsorb::release_virtually(VKC_ENTER) ;
 
             lgr.remove_from_back(1) ; //remove keycode of enter
 
@@ -177,7 +177,7 @@ void CommandMode::sprocess(
             lgr.remove_from_back(2) ;
             VirtualCmdLine::refresh() ;
 
-            if(auto mf = KeyBinder::find_func(lgr, p_cmdp->func, true, ModeManager::Mode::Command)) {
+            if(auto mf = keybind::find_func(lgr, p_cmdp->func, true, mode::Mode::Command)) {
                 if(mf->is_callable()) {
                     p_cmdp->func = mf ;
                     continue ;
@@ -189,7 +189,7 @@ void CommandMode::sprocess(
 
         //command history operation
         if(lgr.latest().is_containing(VKC_UP)) {
-            KeyAbsorber::release_virtually(VKC_UP) ; //prohibit duplicate logging
+            keyabsorb::release_virtually(VKC_UP) ; //prohibit duplicate logging
             lgr.remove_from_back(1) ;
             if(pimpl->ch.backward()) {
                 VirtualCmdLine::refresh() ;
@@ -198,7 +198,7 @@ void CommandMode::sprocess(
         }
 
         if(lgr.latest().is_containing(VKC_DOWN)) {
-            KeyAbsorber::release_virtually(VKC_DOWN) ; //prohibit duplicate logging
+            keyabsorb::release_virtually(VKC_DOWN) ; //prohibit duplicate logging
             lgr.remove_from_back(1) ;
             if(pimpl->ch.forward()) {
                 VirtualCmdLine::refresh() ;
@@ -207,13 +207,13 @@ void CommandMode::sprocess(
         }
 
         //invalid keys
-        if(is_invalid_log(lgr.latest(), KeyBinder::InvalidPolicy::AllSystemKey) ||
-                lgr.size() > iParams::get_z("cmd_max_char")) {
+        if(is_invalid_log(lgr.latest(), keybind::InvalidPolicy::AllSystemKey) ||
+                lgr.size() > iparams::get_z("cmd_max_char")) {
             lgr.remove_from_back(1) ;
             continue ;
         }
 
-        if(auto matched_func = KeyBinder::find_func(lgr, p_cmdp->func, false, ModeManager::Mode::Command)) {
+        if(auto matched_func = keybind::find_func(lgr, p_cmdp->func, false, mode::Mode::Command)) {
             if(matched_func->is_callable()) {
                 p_cmdp->func = matched_func ;
                 continue ;

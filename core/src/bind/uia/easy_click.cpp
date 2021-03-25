@@ -89,7 +89,7 @@ namespace
     } ;
 
     inline auto& get_cache_req() {
-        static auto g_cache_req = UIA::make_SmartCacheReq(nullptr) ;
+        static auto g_cache_req = uiauto::make_SmartCacheReq(nullptr) ;
         return g_cache_req ;
     }
 
@@ -141,14 +141,14 @@ namespace
 
             try {
                 //Colors
-                auto [bk_r, bk_g, bk_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_bkcolor")) ;
+                auto [bk_r, bk_g, bk_b] = utility::hex2rgb(iparams::get_s("easy_click_font_bkcolor")) ;
                 auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
 
-                auto [tx_r, tx_g, tx_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_color")) ;
+                auto [tx_r, tx_g, tx_b] = utility::hex2rgb(iparams::get_s("easy_click_font_color")) ;
                 auto txcolor = RGB(tx_r, tx_g, tx_b) ;
 
-                const unsigned char decay = iParams::get_uc("easy_click_matching_color_decay") ;
-                using Utility::to_gray ;
+                const unsigned char decay = iparams::get_uc("easy_click_matching_color_decay") ;
+                using utility::to_gray ;
                 char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
                 auto txcolor_ready = RGB(
@@ -156,11 +156,11 @@ namespace
                         tx_g < decay ? 0 : tx_g + sign*decay,
                         tx_b < decay ? 0 : tx_b + sign*decay) ;
 
-                const auto fontsize = iParams::get_l("easy_click_font_size") ;
+                const auto fontsize = iparams::get_l("easy_click_font_size") ;
                 DisplayTextPainter dtp(
                         fontsize,
-                        iParams::get_l("easy_click_font_weight"),
-                        iParams::get_s("easy_click_font_name")) ;
+                        iparams::get_l("easy_click_font_weight"),
+                        iparams::get_s("easy_click_font_name")) ;
                 dtp.set_back_color(bkcolor) ;
                 dtp.set_text_color(txcolor) ;
 
@@ -211,11 +211,11 @@ namespace
                 throw e ;
             }
 
-            Utility::refresh_display(NULL) ; //remove hints in display
+            utility::refresh_display(NULL) ; //remove hints in display
 
             //release all keys
-            for(unsigned char key : KeyAbsorber::get_pressed_list()) {
-                KeyAbsorber::release_virtually(key) ;
+            for(unsigned char key : keyabsorb::get_pressed_list()) {
+                keyabsorb::release_virtually(key) ;
             }
         }
     }
@@ -276,10 +276,10 @@ namespace vind
         do_easy_click(VKC_UNDEFINED) ;
     }
 
-    namespace EasyClick {
+    namespace easyclick {
 
         void initialize() {
-            decltype(auto) cuia = UIA::get_global_cuia() ;
+            decltype(auto) cuia = uiauto::get_global_cuia() ;
 
             IUIAutomationCacheRequest* cr_raw ;
             if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
@@ -317,7 +317,7 @@ namespace
 
     //Why, cannot get the value of ClickablePointPropertyId with GetCachedProperyValue.
     //We must use cache in order not to freeze.
-    inline auto get_clickable_point(UIA::SmartElement& elem) {
+    inline auto get_clickable_point(uiauto::SmartElement& elem) {
         if(VARIANT val ; SUCCEEDED(elem->GetCachedPropertyValue(UIA_ClickablePointPropertyId, &val))) {
             if(val.vt == (VT_R8 | VT_ARRAY)) {
                 if(LONG* ppvdata ; SUCCEEDED(SafeArrayAccessData(val.parray,
@@ -333,7 +333,7 @@ namespace
     }
 
     inline auto get_keyboard_focusable_point(
-            UIA::SmartElement& elem,
+            uiauto::SmartElement& elem,
             const RECT& window_rect,
             const BOOL parent_is_focasuable=FALSE) {
 
@@ -353,7 +353,7 @@ namespace
             throw std::runtime_error("Could not get the a rectangle of element.") ;
         }
 
-        if(!ScreenMetrics::is_fully_in_range(rect, window_rect)) {
+        if(!screen::is_fully_in_range(rect, window_rect)) {
             throw std::runtime_error("The rectangle of element exists in a invalid range.") ;
         }
 
@@ -363,7 +363,7 @@ namespace
     }
 
     void scan_children_enumurately(
-            UIA::SmartElementArray& parents,
+            uiauto::SmartElementArray& parents,
             std::vector<Point2D>& obj_points,
             const RECT& window_rect,
             const BOOL parent_is_focusable=FALSE) {
@@ -374,10 +374,10 @@ namespace
         }
 
         IUIAutomationElement* elem_raw ;
-        auto elem = UIA::make_SmartElement(nullptr) ;
+        auto elem = uiauto::make_SmartElement(nullptr) ;
 
         IUIAutomationElementArray* children_raw ;
-        auto children = UIA::make_SmartElementArray(nullptr) ;
+        auto children = uiauto::make_SmartElementArray(nullptr) ;
 
         BOOL flag ;
         for(int i = 0 ; i < length ; i ++) {
@@ -419,7 +419,7 @@ namespace
     void scan_object_from_hwnd(
             HWND hwnd,
             std::vector<Point2D>& obj_points) {
-        decltype(auto) cuia = UIA::get_global_cuia() ;
+        decltype(auto) cuia = uiauto::get_global_cuia() ;
         IUIAutomationElement* elem_raw ;
         if(FAILED(cuia->ElementFromHandle(hwnd, &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
@@ -428,7 +428,7 @@ namespace
             throw RUNTIME_EXCEPT("Could not get UIAutomationElement from HWND.") ;
             return ;
         }
-        auto elem = UIA::make_SmartElement(elem_raw) ;
+        auto elem = uiauto::make_SmartElement(elem_raw) ;
 
         if(FAILED(elem->BuildUpdatedCache(get_cache_req().get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
@@ -450,7 +450,7 @@ namespace
         IUIAutomationElementArray* children_raw ;
         if(SUCCEEDED(elem->GetCachedChildren(&children_raw))) {
             if(children_raw) {
-                auto children = UIA::make_SmartElementArray(children_raw) ;
+                auto children = uiauto::make_SmartElementArray(children_raw) ;
                 scan_children_enumurately(children, obj_points, rect) ;
             }
             else {
@@ -481,7 +481,7 @@ namespace
             return TRUE ;
         }
 
-        if(ScreenMetrics::width(rect) == 0 || ScreenMetrics::height(rect) == 0) {
+        if(screen::width(rect) == 0 || screen::height(rect) == 0) {
             return TRUE ;
         }
         if(rect.left < 0 || rect.top < 0 || rect.right < 0 || rect.bottom < 0) {
@@ -533,7 +533,7 @@ namespace
         ProcessScanInfo psinfo(procid, obj_points) ;
         EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&psinfo)) ;
 
-        Utility::remove_deplication(obj_points) ;
+        utility::remove_deplication(obj_points) ;
     }
 
 
@@ -629,7 +629,7 @@ namespace
         for(std::size_t i = 0 ; i < hints.size() ; i ++) {
             std::string str ;
             for(auto& key : hints[i]) {
-                str.push_back(VKCConverter::get_shifted_ascii(key)) ;
+                str.push_back(keycvt::get_shifted_ascii(key)) ;
             }
             hints_str[i] = std::move(str) ;
         }
@@ -691,7 +691,7 @@ namespace
             const bool& continue_running,
             const unsigned char sendkey) {
 
-        KeyAbsorber::InstantKeyAbsorber ika ;
+        keyabsorb::InstantKeyAbsorber ika ;
         VKCLogger lgr ;
 
         while(vind::update_background() && continue_running) {
@@ -716,7 +716,7 @@ namespace
                 }
 
                 lgr.remove_from_back(2) ;
-                KeyAbsorber::release_virtually(VKC_BKSPACE) ;
+                keyabsorb::release_virtually(VKC_BKSPACE) ;
 
                 std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic ---------- (1)
 
@@ -725,7 +725,7 @@ namespace
                 continue ; //------------------------------------------------------ (1)
             }
 
-            if(KeyBinder::is_invalid_log(lgr.latest(), KeyBinder::AllSystemKey)) {
+            if(keybind::is_invalid_log(lgr.latest(), keybind::InvalidPolicy::AllSystemKey)) {
                 lgr.remove_from_back(1) ;
                 continue ;
             }
@@ -738,7 +738,7 @@ namespace
             if(full_match_idx >= 0) {
                 SetCursorPos(points[full_match_idx].x(), points[full_match_idx].y()) ;
                 if(sendkey != VKC_UNDEFINED) {
-                    MouseEventer::click(sendkey) ;
+                    mouse::click(sendkey) ;
                 }
                 return ;
             }
@@ -746,7 +746,7 @@ namespace
             if(need_draw_count == 0)
                 lgr.remove_from_back(1) ;
             else
-                Utility::refresh_display(hwnd) ;
+                utility::refresh_display(hwnd) ;
             //--------------------------------------------------------------------- (2)
         }
     }

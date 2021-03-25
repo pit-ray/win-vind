@@ -16,10 +16,10 @@ namespace
             const std::string& param_name) {
 
         if(parent_charlgr != nullptr) {
-            return static_cast<LONG>(KeyLoggerUtility::extract_num(parent_charlgr->to_str())) ;
+            return static_cast<LONG>(keyloggerutil::extract_num(parent_charlgr->to_str())) ;
         }
         else {
-            return static_cast<LONG>(iParams::get_i(param_name) * repeat_num) ;
+            return static_cast<LONG>(iparams::get_i(param_name) * repeat_num) ;
         }
     }
 
@@ -31,17 +31,17 @@ namespace
     //
     inline void resize_in_monitor_width(
             LONG desired_width,
-            const WindowUtility::ForegroundInfo& fginfo) {
+            const windowutil::ForegroundInfo& fginfo) {
 
-        ScreenMetrics::MonitorInfo minfo ;
-        ScreenMetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
+        screen::MonitorInfo minfo ;
+        screen::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        const auto window_height = ScreenMetrics::height(fginfo.rect) ;
-        const auto monitor_width = ScreenMetrics::width(minfo.work_rect) ;
+        const auto window_height = screen::height(fginfo.rect) ;
+        const auto monitor_width = screen::width(minfo.work_rect) ;
 
         if(desired_width >= monitor_width) {
             //a maximum width is a width of a foreground monitor.
-            WindowUtility::resize(
+            windowutil::resize(
                     fginfo.hwnd,
                     minfo.work_rect.left, fginfo.rect.top,
                     monitor_width, window_height) ;
@@ -51,13 +51,13 @@ namespace
             auto right_max_width = minfo.work_rect.right - fginfo.rect.left ;
 
             if(desired_width <= right_max_width) {
-                WindowUtility::resize(
+                windowutil::resize(
                         fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
                         desired_width, window_height) ;
             }
             else {
                 auto left_shift_delta = desired_width - right_max_width ;
-                WindowUtility::resize(
+                windowutil::resize(
                         fginfo.hwnd, fginfo.rect.left - left_shift_delta, fginfo.rect.top,
                         desired_width, window_height) ;
             }
@@ -70,17 +70,17 @@ namespace
     //
     inline void resize_in_monitor_height(
             LONG desired_height,
-            const WindowUtility::ForegroundInfo& fginfo) {
+            const windowutil::ForegroundInfo& fginfo) {
 
-        ScreenMetrics::MonitorInfo minfo ;
-        ScreenMetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
+        screen::MonitorInfo minfo ;
+        screen::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        const auto window_width = ScreenMetrics::width(fginfo.rect) ;
-        const auto monitor_height = ScreenMetrics::height(minfo.work_rect) ;
+        const auto window_width = screen::width(fginfo.rect) ;
+        const auto monitor_height = screen::height(minfo.work_rect) ;
 
         if(desired_height >= monitor_height) {
             //a maximum height is a height of a foreground monitor.
-            WindowUtility::resize(
+            windowutil::resize(
                     fginfo.hwnd,
                     fginfo.rect.left, minfo.work_rect.top,
                     window_width, monitor_height) ;
@@ -90,13 +90,13 @@ namespace
             auto lower_max_height = minfo.work_rect.bottom - fginfo.rect.top ;
 
             if(desired_height <= lower_max_height) {
-                WindowUtility::resize(
+                windowutil::resize(
                         fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
                         window_width, desired_height) ;
             }
             else {
                 auto left_shift_delta = desired_height - lower_max_height ;
-                WindowUtility::resize(
+                windowutil::resize(
                         fginfo.hwnd, fginfo.rect.left, fginfo.rect.top - left_shift_delta,
                         window_width, desired_height) ;
             }
@@ -118,12 +118,12 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
         auto str = parent_charlgr->to_str() ;
         if(str.empty()) return ;
 
-        auto width = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
+        auto width = static_cast<LONG>(keyloggerutil::extract_num(str)) ;
 
         resize_in_monitor_width(width, fginfo) ;
     }
@@ -140,9 +140,9 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
-        auto width = ScreenMetrics::width(fginfo.rect) + \
+        auto width = screen::width(fginfo.rect) + \
             compute_resize_delta(
                 repeat_num, parent_charlgr, "window_width_delta") ;
 
@@ -161,20 +161,20 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
         const auto delta = compute_resize_delta(
                 repeat_num, parent_charlgr, "window_width_delta") ;
 
-        auto width = ScreenMetrics::width(fginfo.rect) - delta ;
+        auto width = screen::width(fginfo.rect) - delta ;
         if(width <= 0) { 
             VirtualCmdLine::msgout("e: Width below zero") ;
             return ;
         }
 
-        WindowUtility::resize(
+        windowutil::resize(
                 fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-                width, ScreenMetrics::height(fginfo.rect)) ;
+                width, screen::height(fginfo.rect)) ;
     }
 
     //ResizeWindowHeight
@@ -189,12 +189,12 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
         auto str = parent_charlgr->to_str() ;
         if(str.empty()) return ;
 
-        auto height = static_cast<LONG>(KeyLoggerUtility::extract_num(str)) ;
+        auto height = static_cast<LONG>(keyloggerutil::extract_num(str)) ;
 
         resize_in_monitor_height(height, fginfo) ;
     }
@@ -211,9 +211,9 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
-        auto height = ScreenMetrics::height(fginfo.rect) + \
+        auto height = screen::height(fginfo.rect) + \
             compute_resize_delta(
                 repeat_num, parent_charlgr, "window_height_delta") ;
 
@@ -232,19 +232,19 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
         const auto delta = compute_resize_delta(
                 repeat_num, parent_charlgr, "window_height_delta") ;
 
-        auto height = ScreenMetrics::height(fginfo.rect) - delta ;
+        auto height = screen::height(fginfo.rect) - delta ;
         if(height <= 0) { 
             VirtualCmdLine::msgout("e: Height below zero") ;
             return ;
         }
 
-        WindowUtility::resize(
+        windowutil::resize(
                 fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-                ScreenMetrics::width(fginfo.rect), height) ;
+                screen::width(fginfo.rect), height) ;
     }
 }

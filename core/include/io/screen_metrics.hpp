@@ -8,7 +8,7 @@
 
 namespace vind
 {
-    namespace ScreenMetrics {
+    namespace screen {
 
         inline void copy(RECT& lhs, const RECT& rhs) noexcept {
             lhs.left   = rhs.left ;
@@ -103,7 +103,7 @@ namespace vind
 
         void get_monitor_metrics(POINT&& pos, MonitorInfo& minfo) ;
 
-        namespace Debug {
+        namespace debug {
             std::string info(const RECT& rect) ;
         }
     }

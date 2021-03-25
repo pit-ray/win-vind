@@ -7,7 +7,7 @@
 
 namespace vind
 {
-    namespace Logger
+    namespace log
     {
         void initialize() ;
         void error(const char* msg, const char* scope) ;
@@ -22,16 +22,16 @@ namespace vind
 
 //-----------------
 #if defined(__GNUC__)
-#define ERROR_PRINT(MSG) vind::Logger::error((MSG), __PRETTY_FUNCTION__)
-#define MSG_PRINT(MSG) vind::Logger::message((MSG), __PRETTY_FUNCTION__)
+#define ERROR_PRINT(MSG) vind::log::error((MSG), __PRETTY_FUNCTION__)
+#define MSG_PRINT(MSG) vind::log::message((MSG), __PRETTY_FUNCTION__)
 
 #elif defined(_MSC_VER) && _MSC_VER >= 1500
-#define ERROR_PRINT(MSG) vind::Logger::error((MSG), __FUNCSIG__)
-#define MSG_PRINT(MSG) vind::Logger::message((MSG), __FUNCSIG__)
+#define ERROR_PRINT(MSG) vind::log::error((MSG), __FUNCSIG__)
+#define MSG_PRINT(MSG) vind::log::message((MSG), __FUNCSIG__)
 
 #else
-#define ERROR_PRINT(MSG) vind::Logger::error(MSG)
-#define MSG_PRINT(MSG) vind::Logger::message(MSG)
+#define ERROR_PRINT(MSG) vind::log::error(MSG)
+#define MSG_PRINT(MSG) vind::log::message(MSG)
 
 #endif
 //------------------

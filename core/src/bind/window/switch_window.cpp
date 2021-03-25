@@ -20,20 +20,20 @@ namespace vind
             const unsigned int UNUSED(repeat_num),
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
-        using namespace KeybrdEventer ;
+        using namespace keybrd ;
         if(!first_call) return ;
 
-        KeyAbsorber::InstantKeyAbsorber ika ;
+        keyabsorb::InstantKeyAbsorber ika ;
 
         SmartKey alt(VKC_LALT) ;
         alt.press() ;
-        KeyAbsorber::release_virtually(VKC_LALT) ;
+        keyabsorb::release_virtually(VKC_LALT) ;
 
         pushup(VKC_TAB) ;
 
         auto preserve_pushup = [] (const auto vkc) {
-            using namespace KeybrdEventer ;
-            if(!KeyAbsorber::is_pressed(vkc)) {
+            using namespace keybrd ;
+            if(!keyabsorb::is_pressed(vkc)) {
                 pushup(vkc) ;
                 return ;
             }
@@ -45,10 +45,10 @@ namespace vind
 
         VKCLogger logger{} ;
         while(vind::update_background()) {
-            if(KeyAbsorber::is_pressed(VKC_ESC)) {
+            if(keyabsorb::is_pressed(VKC_ESC)) {
                 break ;
             }
-            if(KeyAbsorber::is_pressed(VKC_ENTER)) {
+            if(keyabsorb::is_pressed(VKC_ENTER)) {
                 break ;
             }
 
@@ -57,16 +57,16 @@ namespace vind
                 logger.remove_from_back(1) ;
                 continue ;
             }
-            if(KeyBinder::is_invalid_log(logger.latest(),
-                        KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
+            if(keybind::is_invalid_log(logger.latest(),
+                        keybind::InvalidPolicy::UnbindedSystemKey)) {
 
                 logger.remove_from_back(1) ;
                 continue ;
             }
 
-            auto matched_func = KeyBinder::find_func(
+            auto matched_func = keybind::find_func(
                     logger, nullptr, false,
-                    ModeManager::Mode::EdiNormal) ;
+                    mode::Mode::EdiNormal) ;
 
             if(!matched_func) {
                 logger.clear() ;
@@ -87,8 +87,8 @@ namespace vind
             }
         }
 
-        KeyAbsorber::release_virtually(VKC_ESC) ;
-        KeyAbsorber::release_virtually(VKC_ENTER) ;
+        keyabsorb::release_virtually(VKC_ESC) ;
+        keyabsorb::release_virtually(VKC_ENTER) ;
 
         alt.release() ;
 

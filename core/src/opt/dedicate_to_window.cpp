@@ -31,7 +31,7 @@ namespace vind
     }
 
     void Dedicate2Window::enable_targeting() {
-        if(iParams::get_b(sname())) {
+        if(iparams::get_b(sname())) {
             target_hwnd = GetForegroundWindow() ;
             past_hwnd   = NULL ;
             VirtualCmdLine::msgout("-- TARGET ON --") ;
@@ -39,7 +39,7 @@ namespace vind
     }
 
     void Dedicate2Window::disable_targeting() {
-        if(iParams::get_b(sname())) {
+        if(iparams::get_b(sname())) {
             target_hwnd = NULL ;
             past_hwnd   = NULL ;
             VirtualCmdLine::msgout("-- TARGET OFF --") ;

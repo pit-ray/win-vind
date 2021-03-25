@@ -13,7 +13,7 @@ namespace vind
 {
     class KeyLog ;
 
-    namespace KeybrdEventer {
+    namespace keybrd {
         bool is_pressed_actually(const unsigned char key) noexcept ;
 
         class SmartKey {

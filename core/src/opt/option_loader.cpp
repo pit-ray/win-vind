@@ -27,13 +27,13 @@ namespace
 
 namespace vind
 {
-    namespace OptionLoader {
+    namespace optloader {
         void load_config()
         {
             std::for_each(g_vpop.cbegin(), g_vpop.cend(), [](auto& op){op->disable() ;}) ;
 
             for(const auto& op : g_vpop) {
-                if(iParams::get_b(op->name())) op->enable() ;
+                if(iparams::get_b(op->name())) op->enable() ;
             }
         }
 

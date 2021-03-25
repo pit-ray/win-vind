@@ -38,9 +38,9 @@ namespace vind
 
         g_xposs.fill(0) ;
         g_yposs.fill(0) ;
-        const auto filename = Path::KEYBRD_MAP() ;
+        const auto filename = path::KEYBRD_MAP() ;
 
-        std::ifstream ifs(Path::to_u8path(filename), std::ios::in) ;
+        std::ifstream ifs(path::to_u8path(filename), std::ios::in) ;
         std::string buf ;
         int lnum = 0 ;
 
@@ -61,7 +61,7 @@ namespace vind
                     continue ;
                 }
 
-                const auto vec = Utility::split(buf, " ") ;
+                const auto vec = utility::split(buf, " ") ;
 
                 if(vec.size() != 3) {
                     ep(" is bad syntax in ") ;
@@ -78,7 +78,7 @@ namespace vind
                 auto code = vec[2] ;
                 //is ascii code
                 if(code.size() == 1) {
-                    if(const auto vkc = VKCConverter::get_vkc(code.front())) {
+                    if(const auto vkc = keycvt::get_vkc(code.front())) {
                         //overwrite
                         g_xposs[vkc] = x ;
                         g_yposs[vkc] = y ;
@@ -88,20 +88,20 @@ namespace vind
                     continue ;
                 }
 
-                code = Utility::A2a(code) ;
+                code = utility::A2a(code) ;
                 if(code.front() != '<' && code.back() != '>') {
                     ep(" is bad syntax in ") ;
                 }
 
                 code = code.substr(1, code.length() - 2) ;
                 if(code == "space") {
-                    auto&& vkc = VKCConverter::get_vkc(' ') ;
+                    auto&& vkc = keycvt::get_vkc(' ') ;
                     g_xposs[vkc] = x ;
                     g_yposs[vkc] = y ;
                     continue ;
                 }
 
-                if(auto vkc = VKCConverter::get_sys_vkc(code)) {
+                if(auto vkc = keycvt::get_sys_vkc(code)) {
                     g_xposs[vkc] = x ;
                     g_yposs[vkc] = y ;
                     continue ;
@@ -129,26 +129,26 @@ namespace vind
 
         //reset key state (binded key)
         
-        KeyAbsorber::InstantKeyAbsorber ika ;
+        keyabsorb::InstantKeyAbsorber ika ;
 
         //ignore toggle keys (for example, CapsLock, NumLock, IME....)
-        const auto toggle_keys = KeyAbsorber::get_pressed_list() ;
+        const auto toggle_keys = keyabsorb::get_pressed_list() ;
 
         RECT rect ;
-        ScreenMetrics::get_conbined_metrics(&rect) ;
+        screen::get_conbined_metrics(&rect) ;
 
-        const auto width  = ScreenMetrics::width(rect) ;
-        const auto height = ScreenMetrics::height(rect) ;
+        const auto width  = screen::width(rect) ;
+        const auto height = screen::height(rect) ;
 
         while(vind::update_background()) {
-            if(KeyAbsorber::is_pressed(VKC_ESC)) return ;
+            if(keyabsorb::is_pressed(VKC_ESC)) return ;
 
-            const auto log = KeyAbsorber::get_pressed_list() - toggle_keys ;
+            const auto log = keyabsorb::get_pressed_list() - toggle_keys ;
             if(log.empty()) continue ;
 
             try {
                 for(const auto& vkc : log) {
-                    if(VKCConverter::is_unreal_key(vkc))
+                    if(keycvt::is_unreal_key(vkc))
                         continue ;
 
                     auto x_pos = static_cast<int>( \
@@ -157,15 +157,15 @@ namespace vind
                             g_yposs[vkc] / g_max_keybrd_yposs * height) ;
 
                     if(x_pos == width) 
-                        x_pos -= iParams::get_i("screen_pos_buf") ;
+                        x_pos -= iparams::get_i("screen_pos_buf") ;
 
                     if(y_pos == height) 
-                        y_pos -= iParams::get_i("screen_pos_buf") ;
+                        y_pos -= iparams::get_i("screen_pos_buf") ;
 
                     SetCursorPos(x_pos, y_pos) ;
 
                     for(const auto& key : log) {
-                        KeybrdEventer::release_keystate(key) ;
+                        keybrd::release_keystate(key) ;
                     }
                     return ;
                 }

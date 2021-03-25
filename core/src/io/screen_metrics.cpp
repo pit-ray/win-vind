@@ -9,7 +9,7 @@
 
 namespace vind
 {
-    namespace ScreenMetrics
+    namespace screen
     {
         void get_conbined_metrics(RECT* const rect) {
             WINDOWINFO winfo ;
@@ -57,7 +57,7 @@ namespace vind
             get_monitor_metrics(MonitorFromPoint(std::move(pos), MONITOR_DEFAULTTONEAREST), minfo) ;
         }
 
-        namespace Debug {
+        namespace debug {
             std::string info(const RECT& rect) {
                 std::stringstream ss ;
                 ss << "("    << std::setw(4) << rect.left ;

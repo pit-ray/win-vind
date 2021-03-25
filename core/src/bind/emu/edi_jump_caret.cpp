@@ -21,10 +21,10 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        if(ModeManager::is_edi_visual())
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_HOME) ;
+        if(mode::is_edi_visual())
+            keybrd::pushup(VKC_LSHIFT, VKC_HOME) ;
         else
-            KeybrdEventer::pushup(VKC_HOME) ;
+            keybrd::pushup(VKC_HOME) ;
     }
 
 
@@ -44,14 +44,14 @@ namespace vind
 
         //down caret N - 1
         for(unsigned int i = 1 ; i < repeat_num ; i ++)
-            KeybrdEventer::pushup(VKC_DOWN) ;
+            keybrd::pushup(VKC_DOWN) ;
 
-        if(ModeManager::is_edi_visual()) {
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
+        if(mode::is_edi_visual()) {
+            keybrd::pushup(VKC_LSHIFT, VKC_END) ;
         }
         else {
-            KeybrdEventer::pushup(VKC_END) ;
-            KeybrdEventer::pushup(VKC_LEFT) ;
+            keybrd::pushup(VKC_END) ;
+            keybrd::pushup(VKC_LEFT) ;
         }
     }
 
@@ -70,19 +70,19 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        if(SimpleTextSelecter::is_first_line_selection())
-            SimpleTextSelecter::select_line_EOL2BOL() ;
+        if(textselect::is_first_line_selection())
+            textselect::select_line_EOL2BOL() ;
 
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
 
         auto rn = repeat_num ;
         if(parent_charlgr != nullptr) {
             auto str = parent_charlgr->to_str() ;
             if(str.empty()) return ;
-            rn = KeyLoggerUtility::extract_num(str) ;
+            rn = keyloggerutil::extract_num(str) ;
         }
 
-        if(ModeManager::is_edi_visual()) {
+        if(mode::is_edi_visual()) {
             pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
 
             //down caret N - 1
@@ -90,7 +90,7 @@ namespace vind
                 pushup(VKC_LSHIFT, VKC_DOWN) ;
         }
         else {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_HOME) ;
+            keybrd::pushup(VKC_LCTRL, VKC_HOME) ;
 
             //down caret N - 1
             for(unsigned int i = 1 ; i < rn ; i ++)
@@ -113,8 +113,8 @@ namespace vind
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
-        using KeybrdEventer::pushup ;
-        using namespace ModeManager ;
+        using keybrd::pushup ;
+        using namespace mode ;
 
         if(parent_charlgr != nullptr) {
             EdiNJumpCaret2Line_DfBOF::sprocess(true, 1, nullptr, parent_charlgr) ;
@@ -123,8 +123,8 @@ namespace vind
 
         if(repeat_num == 1) {
             if(is_edi_visual()) {
-                if(SimpleTextSelecter::is_first_line_selection())
-                    SimpleTextSelecter::select_line_BOL2EOL() ;
+                if(textselect::is_first_line_selection())
+                    textselect::select_line_BOL2EOL() ;
 
                 pushup(VKC_LSHIFT, VKC_LCTRL, VKC_END) ;
 
@@ -132,7 +132,7 @@ namespace vind
                     pushup(VKC_LSHIFT, VKC_HOME) ;
             }
             else {
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_END) ;
+                keybrd::pushup(VKC_LCTRL, VKC_END) ;
             }
         }
         else {

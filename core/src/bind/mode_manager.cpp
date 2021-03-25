@@ -2,7 +2,7 @@
 
 namespace vind
 {
-    namespace ModeManager
+    namespace mode
     {
         static Mode m{Mode::Normal} ;
 

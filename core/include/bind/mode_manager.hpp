@@ -3,7 +3,7 @@
 
 namespace vind
 {
-    namespace ModeManager {
+    namespace mode {
         enum class Mode : unsigned char {
             Normal,
             Insert,

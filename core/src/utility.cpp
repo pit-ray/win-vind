@@ -4,7 +4,7 @@
 
 namespace vind
 {
-    namespace Utility {
+    namespace utility {
         std::vector<std::string> split(
                 std::string str,
                 const std::string deliminator) {
@@ -135,7 +135,7 @@ namespace vind
         }
 
         void create_directory(const std::string& path) {
-            if(!CreateDirectoryW(Utility::s_to_ws(path).c_str(), NULL)) {
+            if(!CreateDirectoryW(utility::s_to_ws(path).c_str(), NULL)) {
                 throw RUNTIME_EXCEPT("Cannot create a directory " + path + ".") ;
             }
         }
@@ -205,7 +205,7 @@ namespace vind
             return str ;
         }
 
-        namespace Debug {
+        namespace debug {
             static std::chrono::system_clock::time_point tp ;
             void bench_start() {
                 tp = std::chrono::system_clock::now() ;

@@ -21,11 +21,11 @@ namespace
 
     template <typename T>
     inline const auto constant_accelerate(float& velocity, T&& us) {
-        const auto acc = iParams::get_f("cursor_acceleration") ;
-        const auto mvc = iParams::get_f("cursor_max_velocity") ;
+        const auto acc = iparams::get_f("cursor_acceleration") ;
+        const auto mvc = iparams::get_f("cursor_max_velocity") ;
 
-        static constexpr auto TIME_COEF = Utility::pow_f(10, -3) ;
-        const auto t = us * TIME_COEF / iParams::get_i("cursor_weight") ; //accuracy
+        static constexpr auto TIME_COEF = utility::pow_f(10, -3) ;
+        const auto t = us * TIME_COEF / iparams::get_i("cursor_weight") ; //accuracy
         const auto x = velocity*t + 0.5f*acc*t*t ;
         const auto delta_v = acc * t ;
         if(velocity + delta_v < mvc) velocity += delta_v ;

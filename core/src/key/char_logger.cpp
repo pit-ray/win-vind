@@ -47,10 +47,10 @@ namespace vind
     CharLogger& CharLogger::operator=(CharLogger&&) = default ;
 
     void CharLogger::update() {
-        static const KeyLog cl_toggles(VKCConverter::get_toggle_keys()) ;
+        static const KeyLog cl_toggles(keycvt::get_toggle_keys()) ;
 
         //ignore all toggle keys
-        auto log = KeyAbsorber::get_pressed_list() - cl_toggles ;
+        auto log = keyabsorb::get_pressed_list() - cl_toggles ;
 
         if(log != pimpl->prelog) { //type is changed
             const auto diff = log - pimpl->prelog ;
@@ -104,13 +104,13 @@ namespace vind
             if(itr->is_containing(VKC_SHIFT)) {
                 //shifted ascii
                 for(const auto vkc : *itr) {
-                    const auto c = VKCConverter::get_shifted_ascii(vkc) ;
+                    const auto c = keycvt::get_shifted_ascii(vkc) ;
                     if(c != 0) str.push_back(c) ;
                 }
                 continue ;
             }
             for(const auto vkc : *itr) {
-                const auto c = VKCConverter::get_ascii(vkc) ;
+                const auto c = keycvt::get_ascii(vkc) ;
                 if(c != 0) str.push_back(c) ;
             }
         }

@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    namespace ExternalApplication {
+    namespace exapp {
         void load_config() ;
     }
 

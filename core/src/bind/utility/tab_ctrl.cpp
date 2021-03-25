@@ -22,7 +22,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_LSHIFT, VKC_TAB) ;
+            keybrd::pushup(VKC_LCTRL, VKC_LSHIFT, VKC_TAB) ;
         }
     }
 
@@ -39,7 +39,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_TAB) ;
+            keybrd::pushup(VKC_LCTRL, VKC_TAB) ;
         }
     }
 
@@ -54,7 +54,7 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_T) ;
+        keybrd::pushup(VKC_LCTRL, VKC_T) ;
     }
 
 
@@ -70,7 +70,7 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_F4) ;
+        keybrd::pushup(VKC_LCTRL, VKC_F4) ;
 
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {

@@ -14,7 +14,7 @@
 namespace vind
 {
     struct BindedFunc::Impl {
-        std::array<KeyMatcher::shp_t, static_cast<int>(ModeManager::Mode::NUM)> mtrs ;
+        std::array<KeyMatcher::shp_t, static_cast<int>(mode::Mode::NUM)> mtrs ;
         unsigned char modeidx ;
         std::atomic_bool running_now ;
 
@@ -49,30 +49,30 @@ namespace vind
             //correct the state
             //to avoid cases that a virtual key is judged to be pressed,
             //though a real key is released.
-            for(auto& key : KeyAbsorber::get_pressed_list()) {
-                if(!KeyAbsorber::is_really_pressed(key)) {
-                    KeyAbsorber::release_virtually(key) ;
+            for(auto& key : keyabsorb::get_pressed_list()) {
+                if(!keyabsorb::is_really_pressed(key)) {
+                    keyabsorb::release_virtually(key) ;
                 }
             }
         }
         catch(const std::runtime_error& e) {
             ERROR_PRINT(name() + " failed. " + e.what()) ;
             try {
-                const auto buf = KeyAbsorber::get_pressed_list() ;
+                const auto buf = keyabsorb::get_pressed_list() ;
                 if(!buf.empty()) {
-                    if(KeyAbsorber::is_absorbed()) {
-                        KeyAbsorber::open_some_ports(buf.get()) ;
+                    if(keyabsorb::is_absorbed()) {
+                        keyabsorb::open_some_ports(buf.get()) ;
                     }
                     for(auto& key : buf) {
-                        KeybrdEventer::release_keystate(key) ;
+                        keybrd::release_keystate(key) ;
                     }
-                    if(KeyAbsorber::is_absorbed()) {
-                        KeyAbsorber::close_all_ports() ;
-                        KeyAbsorber::absorb() ;
+                    if(keyabsorb::is_absorbed()) {
+                        keyabsorb::close_all_ports() ;
+                        keyabsorb::absorb() ;
                     }
                     else {
-                        KeyAbsorber::close_all_ports() ;
-                        KeyAbsorber::unabsorb() ;
+                        keyabsorb::close_all_ports() ;
+                        keyabsorb::unabsorb() ;
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace vind
     }
 
     void BindedFunc::register_matcher(
-            const ModeManager::Mode mode,
+            const mode::Mode mode,
             const KeyMatcher::shp_t matcher) const {
         if(!matcher) return ;
         pimpl->mtrs.at(static_cast<unsigned char>(mode)) = matcher ;
@@ -101,7 +101,7 @@ namespace vind
 
     unsigned int BindedFunc::validate_if_match(
             const KeyLoggerBase& lgr,
-            ModeManager::Mode mode) const {
+            mode::Mode mode) const {
         if(pimpl->running_now.load()) return 0 ;
 
         pimpl->modeidx = static_cast<unsigned char>(mode) ;
@@ -113,7 +113,7 @@ namespace vind
 
     unsigned int BindedFunc::validate_if_fullmatch(
             const KeyLoggerBase& lgr,
-            ModeManager::Mode mode) const {
+            mode::Mode mode) const {
         if(pimpl->running_now.load()) return 0 ;
 
         pimpl->modeidx = static_cast<unsigned char>(mode) ;

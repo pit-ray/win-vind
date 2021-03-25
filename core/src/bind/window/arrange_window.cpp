@@ -24,7 +24,7 @@ namespace
     std::unordered_map<HMONITOR, ordered_hwnd_t> g_m_ordered_hwnd ;
 
     BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
-        if(!WindowUtility::is_visible_hwnd(hwnd)) {
+        if(!windowutil::is_visible_hwnd(hwnd)) {
             return TRUE ; //continue
         }
 
@@ -33,14 +33,14 @@ namespace
             return TRUE ; //continue
         }
 
-        if(!WindowUtility::is_window_mode(hwnd, rect)) {
+        if(!windowutil::is_window_mode(hwnd, rect)) {
             return TRUE ; //continue
         }
 
         //Is existed in work area?
-        ScreenMetrics::MonitorInfo minfo ;
-        ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
-        if(ScreenMetrics::is_out_of_range(rect, minfo.work_rect)) {
+        screen::MonitorInfo minfo ;
+        screen::get_monitor_metrics(hwnd, minfo) ;
+        if(screen::is_out_of_range(rect, minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -95,8 +95,8 @@ namespace
                 auto& pre_rect = rects[pre_hwnd] ;
                 auto rect = pre_rect ;
 
-                const auto pre_w = ScreenMetrics::width(pre_rect) ;
-                const auto pre_h = ScreenMetrics::height(pre_rect) ;
+                const auto pre_w = screen::width(pre_rect) ;
+                const auto pre_h = screen::height(pre_rect) ;
                 if(pre_w > pre_h) {
                     pre_rect.right -= pre_w / 2 ;
                     rect.left      += pre_w / 2 ;
@@ -147,7 +147,7 @@ namespace vind
 
         std::unordered_map<HWND, RECT> rects ;
         assign_local_area_in_monitors(rects) ;
-        WindowUtility::batch_resize(rects) ;
+        windowutil::batch_resize(rects) ;
 
         if(!SetForegroundWindow(hwnd)) {
             throw RUNTIME_EXCEPT("Could not set the foreground window.") ;

@@ -35,9 +35,9 @@ namespace vind
     VKCLogger& VKCLogger::operator=(VKCLogger&&) = default ;
 
     void VKCLogger::update() {
-        static const KeyLog cl_toggles(VKCConverter::get_toggle_keys()) ;
+        static const KeyLog cl_toggles(keycvt::get_toggle_keys()) ;
 
-        auto log = KeyAbsorber::get_pressed_list() - cl_toggles ;
+        auto log = keyabsorb::get_pressed_list() - cl_toggles ;
         logging(log) ;
 
         if(pimpl->prelog == log) {

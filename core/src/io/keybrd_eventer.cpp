@@ -43,7 +43,7 @@ namespace
 
 namespace vind
 {
-    namespace KeybrdEventer {
+    namespace keybrd {
 
         bool is_pressed_actually(const unsigned char key) noexcept {
             return GetAsyncKeyState(key) & 0x8000 ;
@@ -87,18 +87,18 @@ namespace vind
         }
 
         void SmartKey::press() {
-            KeyAbsorber::open_port(pimpl->key) ;
+            keyabsorb::open_port(pimpl->key) ;
             send_event(true) ;
-            KeyAbsorber::close_all_ports() ;
+            keyabsorb::close_all_ports() ;
             if(!is_pressed_actually(pimpl->key)) {
                 throw RUNTIME_EXCEPT("You sent a key pressing event successfully, but the state of its key was not changed.") ;
             }
         }
 
         void SmartKey::release() {
-            KeyAbsorber::open_port(pimpl->key) ;
+            keyabsorb::open_port(pimpl->key) ;
             send_event(false) ;
-            KeyAbsorber::close_all_ports() ;
+            keyabsorb::close_all_ports() ;
             if(is_pressed_actually(pimpl->key)) {
                 throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
             }
@@ -136,14 +136,14 @@ namespace vind
         }
 
         void pushup_core(std::initializer_list<unsigned char>&& initl) {
-            using KeyAbsorber::close_all_ports ;
-            using KeyAbsorber::open_port ;
-            using KeyAbsorber::open_some_ports ;
+            using keyabsorb::close_all_ports ;
+            using keyabsorb::open_port ;
+            using keyabsorb::open_some_ports ;
 
-            auto state = KeyAbsorber::get_pressed_list() ;
+            auto state = keyabsorb::get_pressed_list() ;
             auto recover_keystate= [&state] {
                 for(const auto key : state)
-                    KeyAbsorber::press_virtually(key) ;
+                    keyabsorb::press_virtually(key) ;
             } ;
             static INPUT ins[6] = {
                 {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},

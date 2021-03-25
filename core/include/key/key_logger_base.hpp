@@ -58,7 +58,7 @@ namespace vind
         virtual bool is_changed() const noexcept = 0 ;
     } ;
 
-    namespace KeyLoggerUtility {
+    namespace keyloggerutil {
         // Extracts a number from a string.
         // Its range is from the appearance of the number to a non-numeric character.
         // Example:
@@ -68,7 +68,7 @@ namespace vind
         //
         unsigned int extract_num(const std::string str) ;
 
-        namespace Debug {
+        namespace debug {
             //for debug
             std::string print_log(const KeyLoggerBase& lgr) ;
         }

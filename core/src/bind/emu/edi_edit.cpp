@@ -37,8 +37,8 @@ namespace
     //If the line has only null characters, it does not select.
     //  <EOL mark exists> [select] NONE    [clipboard] null characters with EOL.    (neighborhoods of LSB are 0x00)
     //  <plain text>      [select] NONE    [clipboard] null characters without EOL. (neighborhoods of LSB are 0x?0)
-    inline bool select_line_until_EOL(const TextAnalyzer::SelRes* const exres) {
-        using namespace KeybrdEventer ;
+    inline bool select_line_until_EOL(const textanalyze::SelRes* const exres) {
+        using namespace keybrd ;
         if(exres != nullptr) {
             pushup(VKC_LSHIFT, VKC_END) ;
             if(exres->having_EOL) {
@@ -50,7 +50,7 @@ namespace
             return true ; //selected
         }
 
-        auto res = TextAnalyzer::get_selected_text([] {
+        auto res = textanalyze::get_selected_text([] {
                 pushup(VKC_LSHIFT, VKC_END) ;
                 pushup(VKC_LCTRL, VKC_C) ;
         }) ;
@@ -76,10 +76,10 @@ namespace
 
     //return: is succecced?
     inline bool select_by_motion(unsigned int repeat_num, VKCLogger* const parent_vkclgr) {
-        using namespace ModeManager ;
+        using namespace mode ;
         VKCLogger lgr ;
 
-        KeyAbsorber::InstantKeyAbsorber ika ;
+        keyabsorb::InstantKeyAbsorber ika ;
 
         while(vind::update_background()) {
             lgr.update() ;
@@ -90,8 +90,8 @@ namespace
 
             parent_vkclgr->update() ;
 
-            if(KeyBinder::is_invalid_log(lgr.latest(),
-                        KeyBinder::InvalidPolicy::UnbindedSystemKey)) {
+            if(keybind::is_invalid_log(lgr.latest(),
+                        keybind::InvalidPolicy::UnbindedSystemKey)) {
                 parent_vkclgr->remove_from_back(1) ;
                 lgr.remove_from_back(1) ;
                 continue ;
@@ -101,15 +101,15 @@ namespace
             //For example, the child BindedFunc calling this function is binded with 'c{motion}'
             //and 'cc' are bindings EdiDeleteLinesAndStartInsert.
             //In this case, if a child process has a message loop, we must consider the parent logger by full scanning.
-            if(auto func = KeyBinder::find_func(*parent_vkclgr, nullptr, true)) {
+            if(auto func = keybind::find_func(*parent_vkclgr, nullptr, true)) {
                 if(func->is_callable()) {
                     func->process(true, repeat_num, parent_vkclgr) ;
                     return false ;
                 }
             }
 
-            if(auto func = KeyBinder::find_func(lgr, nullptr, true,
-                        ModeManager::Mode::EdiLineVisual)) {
+            if(auto func = keybind::find_func(lgr, nullptr, true,
+                        mode::Mode::EdiLineVisual)) {
                 if(!func->is_for_moving_caret()) return false ;
 
                 if(func->is_callable()) {
@@ -139,18 +139,18 @@ namespace vind
             const unsigned int UNUSED(repeat_num),
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
-        using namespace ModeManager ;
+        using namespace mode ;
 
         if(!first_call) return ;
 
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
+        keybrd::pushup(VKC_LCTRL, VKC_C) ;
 
         if(get_mode() == Mode::EdiLineVisual)
             g_rgtype = RegisteredType::Lines ;
         else
             g_rgtype = RegisteredType::Chars ;
 
-        KeybrdEventer::pushup(VKC_LEFT) ; //unselect, but this is for the time being
+        keybrd::pushup(VKC_LEFT) ; //unselect, but this is for the time being
         Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     }
 
@@ -164,10 +164,10 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
-            const TextAnalyzer::SelRes* const exres) {
+            const textanalyze::SelRes* const exres) {
         if(!first_call) return ;
 
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
 
         pushup(VKC_HOME) ;
 
@@ -280,7 +280,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         auto put_chars_preproc = [] {
             pushup(VKC_RIGHT) ;
         } ;
@@ -323,7 +323,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        using KeybrdEventer::pushup ;
+        using keybrd::pushup ;
         auto put_chars = [] {
             pushup(VKC_LCTRL, VKC_V) ;
         } ;
@@ -349,8 +349,8 @@ namespace vind
             const unsigned int UNUSED(repeat_num),
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
-        using namespace ModeManager ;
-        using KeybrdEventer::pushup ;
+        using namespace mode ;
+        using keybrd::pushup ;
 
         if(!first_call) return ;
 
@@ -369,25 +369,25 @@ namespace vind
 namespace
 {
     inline void delete_line_when_selecting() {
-        using namespace ModeManager ;
+        using namespace mode ;
         const auto mode = get_mode() ;
         if(mode == Mode::EdiVisual) {
-            if(iParams::get_b("enable_char_cache")) {
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            if(iparams::get_b("enable_char_cache")) {
+                keybrd::pushup(VKC_LCTRL, VKC_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
             else {
-                KeybrdEventer::pushup(VKC_DELETE) ;
+                keybrd::pushup(VKC_DELETE) ;
             }
         }
         else if(mode == Mode::EdiLineVisual) {
-            if(iParams::get_b("enable_char_cache")) {
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            if(iparams::get_b("enable_char_cache")) {
+                keybrd::pushup(VKC_LCTRL, VKC_X) ;
             }
             else {
-                KeybrdEventer::pushup(VKC_DELETE) ;
+                keybrd::pushup(VKC_DELETE) ;
             }
-            KeybrdEventer::pushup(VKC_DELETE) ;
+            keybrd::pushup(VKC_DELETE) ;
             g_rgtype = RegisteredType::Lines ;
         }
     }
@@ -416,15 +416,15 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
-            const TextAnalyzer::SelRes* const exres) const {
-        using KeybrdEventer::pushup ;
+            const textanalyze::SelRes* const exres) const {
+        using keybrd::pushup ;
         auto to_head = [] {pushup(VKC_HOME) ;} ;
         auto del = [exres] {
             if(!select_line_until_EOL(exres)) {
                 clear_clipboard_with_null() ;
             }
             else {
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(VKC_LCTRL, VKC_X) ;
                 g_rgtype = RegisteredType::Lines ;
                 pushup(VKC_DELETE) ;
             }
@@ -477,15 +477,15 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
-            const TextAnalyzer::SelRes* const exres) const {
-        using KeybrdEventer::pushup ;
+            const textanalyze::SelRes* const exres) const {
+        using keybrd::pushup ;
 
         auto del = [exres] {
             if(!select_line_until_EOL(exres)) {
                 clear_clipboard_with_null() ;
             }
             else {
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(VKC_LCTRL, VKC_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
         } ;
@@ -534,13 +534,13 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
-            if(iParams::get_b("enable_char_cache")) {
-                KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            if(iparams::get_b("enable_char_cache")) {
+                keybrd::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+                keybrd::pushup(VKC_LCTRL, VKC_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
             else {
-                KeybrdEventer::pushup(VKC_DELETE) ;
+                keybrd::pushup(VKC_DELETE) ;
             }
         } ;
         if(repeat_num == 1) {
@@ -586,13 +586,13 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
-            if(iParams::get_b("enable_char_cache")) {
-                KeybrdEventer::pushup(VKC_LSHIFT, VKC_LEFT) ;
-                KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            if(iparams::get_b("enable_char_cache")) {
+                keybrd::pushup(VKC_LSHIFT, VKC_LEFT) ;
+                keybrd::pushup(VKC_LCTRL, VKC_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
             else {
-                KeybrdEventer::pushup(VKC_BKSPACE) ;
+                keybrd::pushup(VKC_BKSPACE) ;
             }
         } ;
 
@@ -662,10 +662,10 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
-        auto res = TextAnalyzer::get_selected_text([] {
-            KeybrdEventer::pushup(VKC_HOME) ;
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_END) ;
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_C) ;
+        auto res = textanalyze::get_selected_text([] {
+            keybrd::pushup(VKC_HOME) ;
+            keybrd::pushup(VKC_LSHIFT, VKC_END) ;
+            keybrd::pushup(VKC_LCTRL, VKC_C) ;
         }) ;
         if(res.str.empty()) {
             Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
@@ -677,10 +677,10 @@ namespace vind
             Change2EdiEOLInsert::sprocess(true, 1, nullptr, nullptr) ;
             return ;
         }
-        KeybrdEventer::pushup(VKC_HOME) ;
+        keybrd::pushup(VKC_HOME) ;
 
         for(int i = 0 ; i < static_cast<int>(pos) ; i ++)
-            KeybrdEventer::pushup(VKC_RIGHT) ;
+            keybrd::pushup(VKC_RIGHT) ;
 
         EdiDeleteUntilEOLAndStartInsert::sprocess(true, repeat_num, nullptr, nullptr, &res) ;
     }
@@ -698,14 +698,14 @@ namespace vind
         if(!first_call) return ;
 
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+            keybrd::pushup(VKC_LSHIFT, VKC_RIGHT) ;
 
-        if(iParams::get_b("enable_char_cache")) {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+        if(iparams::get_b("enable_char_cache")) {
+            keybrd::pushup(VKC_LCTRL, VKC_X) ;
             g_rgtype = RegisteredType::Chars ;
         }
         else {
-            KeybrdEventer::pushup(VKC_DELETE) ;
+            keybrd::pushup(VKC_DELETE) ;
         }
 
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
@@ -747,17 +747,17 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
-            const TextAnalyzer::SelRes* const exres) {
+            const textanalyze::SelRes* const exres) {
         if(!first_call) return ;
 
         for(unsigned int i = 1 ; i < repeat_num ; i ++)
-            KeybrdEventer::pushup(VKC_LSHIFT, VKC_DOWN) ;
+            keybrd::pushup(VKC_LSHIFT, VKC_DOWN) ;
 
         if(!select_line_until_EOL(exres)) {
             clear_clipboard_with_null() ;
         }
         else {
-            KeybrdEventer::pushup(VKC_LCTRL, VKC_X) ;
+            keybrd::pushup(VKC_LCTRL, VKC_X) ;
             g_rgtype = RegisteredType::Chars ;
         }
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;

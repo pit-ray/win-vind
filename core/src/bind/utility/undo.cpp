@@ -32,7 +32,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        auto redo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Y) ;} ;
+        auto redo = [] {keybrd::pushup(VKC_LCTRL, VKC_Y) ;} ;
         if(repeat_num == 1) {
             if(first_call) {
                 pimpl->ksr.reset() ;
@@ -76,7 +76,7 @@ namespace vind
             const unsigned int repeat_num,
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        auto undo = [] {KeybrdEventer::pushup(VKC_LCTRL, VKC_Z) ;} ;
+        auto undo = [] {keybrd::pushup(VKC_LCTRL, VKC_Z) ;} ;
         if(repeat_num == 1) {
             if(first_call) {
                 pimpl->ksr.reset() ;

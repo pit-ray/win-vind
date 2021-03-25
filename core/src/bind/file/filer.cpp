@@ -27,7 +27,7 @@ namespace vind
             RUNTIME_EXCEPT("The foreground window is not existed.") ;
         }
 
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_S) ;
+        keybrd::pushup(VKC_LCTRL, VKC_S) ;
 
         Sleep(500) ; //wait by openning the dialog for saving
         if(hwnd != GetForegroundWindow()) { //opened popup
@@ -48,6 +48,6 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
-        KeybrdEventer::pushup(VKC_LCTRL, VKC_O) ;
+        keybrd::pushup(VKC_LCTRL, VKC_O) ;
     }
 }

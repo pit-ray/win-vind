@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    namespace iParams
+    namespace iparams
     {
         const std::string get_s(const std::string name) ;
 

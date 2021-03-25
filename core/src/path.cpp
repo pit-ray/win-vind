@@ -9,7 +9,7 @@
 
 namespace
 {
-    using namespace vind::Path ;
+    using namespace vind::path ;
     inline auto& is_installer_used() {
         static const auto flag = [] {
             std::ifstream ifs{to_u8path(MODULE_ROOT_PATH() + "default_config\\is_installer_used")} ;
@@ -23,7 +23,7 @@ namespace
 
 namespace vind
 {
-    namespace Path {
+    namespace path {
         const std::string& HOME_PATH() {
             static const auto obj = [] {
                 HANDLE token ;
@@ -39,7 +39,7 @@ namespace vind
                 }
                 CloseHandle(token) ;
 
-                return Utility::ws_to_s(path) + '\\' ;
+                return utility::ws_to_s(path) + '\\' ;
             } () ;
 
             return obj ;
@@ -54,7 +54,7 @@ namespace vind
                 if(GetModuleFileNameW(NULL, module_path, MAX_PATH) == 0) {
                     return std::string() ;
                 }
-                auto module_path_str = Utility::ws_to_s(module_path) ;
+                auto module_path_str = utility::ws_to_s(module_path) ;
                 auto root_dir_pos = module_path_str.find_last_of("/\\") ;
                 if(root_dir_pos == std::string::npos) {
                     return std::string() ;

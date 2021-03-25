@@ -66,9 +66,9 @@ namespace vind
 
         if(enable_double_buffering) {
             RECT conbinded_rect ;
-            ScreenMetrics::get_conbined_metrics(&conbinded_rect) ;
-            const auto width  = ScreenMetrics::width(conbinded_rect) ;
-            const auto height = ScreenMetrics::height(conbinded_rect) ;
+            screen::get_conbined_metrics(&conbinded_rect) ;
+            const auto width  = screen::width(conbinded_rect) ;
+            const auto height = screen::height(conbinded_rect) ;
 
             auto raw_bitmap = CreateCompatibleBitmap(pimpl->display_dc.get(), width, height) ;
             if(!raw_bitmap) {
@@ -174,7 +174,7 @@ namespace vind
         set_text_color(RGB(r, g, b)) ;
     }
     void DisplayTextPainter::set_text_color(std::string hex) {
-        set_text_color(Utility::hex2COLORREF(hex)) ;
+        set_text_color(utility::hex2COLORREF(hex)) ;
     }
 
     //background color
@@ -189,7 +189,7 @@ namespace vind
         set_back_color(RGB(r, g, b)) ;
     }
     void DisplayTextPainter::set_back_color(std::string hex) {
-        set_back_color(Utility::hex2COLORREF(hex)) ;
+        set_back_color(utility::hex2COLORREF(hex)) ;
     }
 
     void DisplayTextPainter::draw(const std::string& str, int x, int y, int extra) {
@@ -205,10 +205,10 @@ namespace vind
     void DisplayTextPainter::refresh() {
         if(pimpl->compatible_dc) {
             RECT conbinded_rect ;
-            ScreenMetrics::get_conbined_metrics(&conbinded_rect) ;
+            screen::get_conbined_metrics(&conbinded_rect) ;
             if(!BitBlt(pimpl->display_dc.get(), 0, 0,
-                       ScreenMetrics::width(conbinded_rect),
-                       ScreenMetrics::height(conbinded_rect),
+                       screen::width(conbinded_rect),
+                       screen::height(conbinded_rect),
                        pimpl->compatible_dc.get(), 0, 0, SRCCOPY)) {
                 throw RUNTIME_EXCEPT("Could not copy color data of a compatible device context to a display device context.") ;
             }

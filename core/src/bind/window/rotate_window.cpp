@@ -26,7 +26,7 @@ namespace {
     } ;
 
     BOOL CALLBACK EnumWindowsProcForRotation(HWND hwnd, LPARAM lparam) {
-        if(!WindowUtility::is_visible_hwnd(hwnd)) {
+        if(!windowutil::is_visible_hwnd(hwnd)) {
             return TRUE ;
         }
 
@@ -35,14 +35,14 @@ namespace {
             return TRUE ; //continue
         }
 
-        if(!WindowUtility::is_window_mode(hwnd, *prect)) {
+        if(!windowutil::is_window_mode(hwnd, *prect)) {
             return TRUE ; //continue
         }
 
         auto p_args = reinterpret_cast<RotEnumArgs*>(lparam) ;
 
-        ScreenMetrics::MonitorInfo minfo ;
-        ScreenMetrics::get_monitor_metrics(hwnd, minfo) ;
+        screen::MonitorInfo minfo ;
+        screen::get_monitor_metrics(hwnd, minfo) ;
 
         //search only in the same monitor as a foreground window.
         if(minfo.hmonitor != p_args->hmonitor) {
@@ -50,12 +50,12 @@ namespace {
         }
 
         //Is existed in work area?
-        if(ScreenMetrics::is_out_of_range(*prect, minfo.work_rect)) {
+        if(screen::is_out_of_range(*prect, minfo.work_rect)) {
             return TRUE ;
         }
 
-        const auto x = ScreenMetrics::center_x(*prect) - ScreenMetrics::center_x(minfo.work_rect) ;
-        const auto y = ScreenMetrics::center_y(minfo.work_rect) - ScreenMetrics::center_y(*prect) ;
+        const auto x = screen::center_x(*prect) - screen::center_x(minfo.work_rect) ;
+        const auto y = screen::center_y(minfo.work_rect) - screen::center_y(*prect) ;
 
         if(x == 0 && y == 0) {
             p_args->angle_hwnds[0.0f] = hwnd ;
@@ -73,7 +73,7 @@ namespace {
     inline void rotate_windows_core(
             const std::function<void(ordered_hwnd_t&)>& sort_func) {
 
-        WindowUtility::ForegroundInfo fginfo ;
+        windowutil::ForegroundInfo fginfo ;
 
         RotEnumArgs args ;
         args.hmonitor = fginfo.hmonitor ;
@@ -91,11 +91,11 @@ namespace {
             auto& hwnd  = aw.second ;
             auto& prect = args.angle_rects[aw.first] ;
 
-            WindowUtility::resize(
+            windowutil::resize(
                     hwnd,
                     prect->left, prect->top,
-                    ScreenMetrics::width(*prect),
-                    ScreenMetrics::height(*prect)) ;
+                    screen::width(*prect),
+                    screen::height(*prect)) ;
         }
 
         if(!SetForegroundWindow(fginfo.hwnd)) {

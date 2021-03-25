@@ -324,7 +324,7 @@ namespace wxGUI
                     for(const auto& lang : ui_langs) {
                         try {
                             const auto& label = obj.at(lang.at("value")) ;
-                            tags.insert(Utility::A2a(label)) ;
+                            tags.insert(utility::A2a(label)) ;
                         }
                         catch(const std::out_of_range&) {
                             continue ;
@@ -381,7 +381,7 @@ namespace wxGUI
                     for(const auto& tag : tagbase[obj["name"]]) {
 
                         //compare as UTF-8
-                        if(tag.find(Utility::A2a(search_text.ToUTF8().data())) != std::string::npos) {
+                        if(tag.find(utility::A2a(search_text.ToUTF8().data())) != std::string::npos) {
                             append(obj) ;
                             break ;
                         }
@@ -647,7 +647,7 @@ namespace wxGUI
                 const auto index = pimpl->func_list->GetSelection() ;
                 if(index == wxNOT_FOUND) return ;
 
-                std::ifstream ifs(Path::to_u8path(Path::Default::BINDINGS())) ;
+                std::ifstream ifs(path::to_u8path(path::Default::BINDINGS())) ;
                 nlohmann::json p{} ;
                 ifs >> p ;
 
@@ -673,10 +673,10 @@ namespace wxGUI
             }
 
             const auto gvim_exe = ioParams::get_vs("gvim_exe_path") ;
-            static const auto temp_dir = Path::ROOT_PATH() + "temp\\" ;
+            static const auto temp_dir = path::ROOT_PATH() + "temp\\" ;
 
-            if(!Utility::is_existed_dir(temp_dir)) {
-                Utility::create_directory(temp_dir) ;
+            if(!utility::is_existed_dir(temp_dir)) {
+                utility::create_directory(temp_dir) ;
             }
 
             auto& target_json = pimpl->get_selected_func_json() ;
@@ -685,7 +685,7 @@ namespace wxGUI
             }
 
             const auto& temp_path = temp_dir + "edit_with_vim.json" ;
-            std::ofstream ofs(Path::to_u8path(temp_path)) ;
+            std::ofstream ofs(path::to_u8path(temp_path)) ;
             ofs << "[\n" ;
             write_pretty_one(ofs, target_json) ;
             write_usage(ofs) ;
@@ -693,7 +693,7 @@ namespace wxGUI
 
             HANDLE hproc ;
             auto create = [&hproc, &temp_path] (const std::string exe) {
-                hproc = Utility::create_process(".", exe, "\"" + temp_path + "\"") ;
+                hproc = utility::create_process(".", exe, "\"" + temp_path + "\"") ;
             } ;
 
             pimpl->edit_with_vim->Disable() ;
@@ -707,7 +707,7 @@ namespace wxGUI
             }
 
             //release a message to push [Edit with Vim] button.
-            KeyAbsorber::close_all_ports_with_refresh() ;
+            keyabsorb::close_all_ports_with_refresh() ;
 
             try {
                 create(gvim_exe) ;
@@ -722,14 +722,14 @@ namespace wxGUI
                 return ;
             }
 
-            KeyAbsorber::close_all_ports_with_refresh() ;
+            keyabsorb::close_all_ports_with_refresh() ;
 
             if(use_bindings) {
                 MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
             }
 
             nlohmann::json new_json ;
-            std::ifstream ifs(Path::to_u8path(temp_path)) ;
+            std::ifstream ifs(path::to_u8path(temp_path)) ;
             ifs >> new_json ;
             target_json = new_json[0] ; //overwrite the inner json object
 
@@ -743,7 +743,7 @@ namespace wxGUI
     }
     BindingsPanel::~BindingsPanel() noexcept = default ;
     void BindingsPanel::do_load_config() {
-        std::ifstream ifs(Path::to_u8path(Path::BINDINGS())) ;
+        std::ifstream ifs(path::to_u8path(path::BINDINGS())) ;
         ifs >> pimpl->parser ;
     }
 
@@ -762,7 +762,7 @@ namespace wxGUI
             }
         }
 
-        std::ofstream ofs(Path::to_u8path(Path::BINDINGS())) ;
+        std::ofstream ofs(path::to_u8path(path::BINDINGS())) ;
         write_pretty_all(ofs, pimpl->parser) ;
     }
 
@@ -835,7 +835,7 @@ namespace wxGUI
     inline static void write_usage(std::ofstream& ofs) {
         ofs << ",\n" ;
 
-        std::ifstream ifs(Path::to_u8path(Path::MODULE_ROOT_PATH() + "resources\\usage.json")) ;
+        std::ifstream ifs(path::to_u8path(path::MODULE_ROOT_PATH() + "resources\\usage.json")) ;
         nlohmann::json usage ;
         ifs >> usage ;
 

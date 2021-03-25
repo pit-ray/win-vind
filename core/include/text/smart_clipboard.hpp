@@ -34,7 +34,7 @@ namespace vind
 
         template <typename T>
         void set(const T& arref) {
-            return set(arref, Utility::sizeof_array(arref)) ;
+            return set(arref, utility::sizeof_array(arref)) ;
         }
 
         SmartClipboard(SmartClipboard&&)                    = delete ;

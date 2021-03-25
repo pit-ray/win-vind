@@ -13,7 +13,7 @@
 
 namespace vind
 {
-    namespace MouseEventer {
+    namespace mouse {
         void click(const unsigned char btcode) ;
         void press(const unsigned char btcode) ;
         void release(const unsigned char btcode) ;

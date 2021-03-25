@@ -48,7 +48,7 @@ namespace vind
         }
         CloseHandle(hproc) ;
 
-        Utility::create_process(Path::HOME_PATH(), Utility::ws_to_s(path)) ;
+        utility::create_process(path::HOME_PATH(), utility::ws_to_s(path)) ;
         Sleep(100) ;
     }
 }

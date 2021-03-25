@@ -19,13 +19,13 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        using namespace ModeManager ;
+        using namespace mode ;
         if(get_mode() == Mode::Visual) {
             change_mode(Mode::Normal) ;
         }
 
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            MouseEventer::click(VKC_MOUSE_LEFT) ;
+            mouse::click(VKC_MOUSE_LEFT) ;
     }
 
 
@@ -40,12 +40,12 @@ namespace vind
             VKCLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        using namespace ModeManager ;
+        using namespace mode ;
         if(get_mode() == Mode::Visual) {
             change_mode(Mode::Normal) ;
         }
 
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            MouseEventer::click(VKC_MOUSE_RIGHT) ;
+            mouse::click(VKC_MOUSE_RIGHT) ;
     }
 }

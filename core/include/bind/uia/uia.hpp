@@ -15,7 +15,7 @@
 
 namespace vind
 {
-    namespace UIA {
+    namespace uiauto {
         inline void delete_com (IUnknown* com) noexcept {
             if(com != nullptr) com->Release() ;
         }

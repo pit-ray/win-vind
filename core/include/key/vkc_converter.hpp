@@ -8,7 +8,7 @@
 
 namespace vind
 {
-    namespace VKCConverter {
+    namespace keycvt {
         void load_input_combination() ;
 
         unsigned char get_vkc(const char ascii) noexcept ;

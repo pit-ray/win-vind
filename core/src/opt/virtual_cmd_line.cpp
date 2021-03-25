@@ -45,22 +45,22 @@ namespace vind
     void VirtualCmdLine::do_enable() const {
         reset() ;
         pimpl->dtp.set_font(
-                iParams::get_l("cmd_font_size"),
-                iParams::get_l("cmd_font_weight"),
-                iParams::get_s("cmd_font_name")) ;
+                iparams::get_l("cmd_font_size"),
+                iparams::get_l("cmd_font_weight"),
+                iparams::get_s("cmd_font_name")) ;
 
-        pimpl->dtp.set_text_color(iParams::get_s("cmd_font_color")) ;
-        pimpl->dtp.set_back_color(iParams::get_s("cmd_font_bkcolor")) ;
+        pimpl->dtp.set_text_color(iparams::get_s("cmd_font_color")) ;
+        pimpl->dtp.set_back_color(iparams::get_s("cmd_font_bkcolor")) ;
 
-        const auto pos = iParams::get_s("cmd_pos") ;
-        const auto xma = iParams::get_i("cmd_xmargin") ;
-        const auto yma = iParams::get_i("cmd_ymargin") ;
+        const auto pos = iparams::get_s("cmd_pos") ;
+        const auto xma = iparams::get_i("cmd_xmargin") ;
+        const auto yma = iparams::get_i("cmd_ymargin") ;
 
         RECT rect ;
-        ScreenMetrics::get_primary_metrics(&rect) ;
+        screen::get_primary_metrics(&rect) ;
 
-        const auto width  = ScreenMetrics::width(rect) ;
-        const auto height = ScreenMetrics::height(rect) ;
+        const auto width  = screen::width(rect) ;
+        const auto height = screen::height(rect) ;
 
         constexpr auto midxbuf = 256 ;
 
@@ -76,7 +76,7 @@ namespace vind
             {"LowerRight", {width - xma - midxbuf,  height - yma}}
         } ;
         try {
-            const auto& p = pos_list.at(iParams::get_s("cmd_pos")) ;
+            const auto& p = pos_list.at(iparams::get_s("cmd_pos")) ;
             pimpl->x = p.first ;
             pimpl->y = p.second ;
         }
@@ -84,11 +84,11 @@ namespace vind
             const auto& p = pos_list.at("LowerMid") ;
             pimpl->x = p.first ;
             pimpl->y = p.second ;
-            ERROR_PRINT(std::string(e.what()) + "in " + Path::SETTINGS() + ", " + iParams::get_s("cmd_pos") + "is invalid syntax.") ;
+            ERROR_PRINT(std::string(e.what()) + "in " + path::SETTINGS() + ", " + iparams::get_s("cmd_pos") + "is invalid syntax.") ;
         }
 
-        pimpl->extra = iParams::get_i("cmd_font_extra") ;
-        pimpl->fadeout_time = std::chrono::seconds(iParams::get_i("cmd_fadeout_time")) ;
+        pimpl->extra = iparams::get_i("cmd_font_extra") ;
+        pimpl->fadeout_time = std::chrono::seconds(iparams::get_i("cmd_fadeout_time")) ;
 
         g_refresh_pos.x = pimpl->x ;
         g_refresh_pos.y = pimpl->y ;
@@ -113,7 +113,7 @@ namespace vind
     }
 
     void VirtualCmdLine::refresh() {
-        Utility::refresh_display(WindowFromPoint(g_refresh_pos)) ;
+        utility::refresh_display(WindowFromPoint(g_refresh_pos)) ;
     }
 
     void VirtualCmdLine::clear() {

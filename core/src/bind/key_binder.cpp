@@ -34,6 +34,7 @@
 #include "path.hpp"
 #include "utility.hpp"
 
+// to use std::numeric_limits<T>::max()
 #undef max
 
 //internal linkage
@@ -44,7 +45,7 @@ namespace
     std::vector<BindedFunc::shp_t> g_func_list{} ;
     std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
 
-    using ModeManager::Mode ;
+    using mode::Mode ;
     const std::unordered_map<Mode, const char*> g_modeidxs {
         {Mode::Normal,          "guin"},
         {Mode::Insert,          "guii"},
@@ -73,13 +74,13 @@ namespace
             const auto onechar = cmdstr[i] ;
             if(onechar != '<') {
                 //ascii
-                if(auto vkc = VKCConverter::get_vkc(onechar)) { //ex) a
+                if(auto vkc = keycvt::get_vkc(onechar)) { //ex) a
                     cmd.emplace_back(1, vkc) ;
                     continue ;
                 }
 
                 //shifted ascii
-                if(auto vkc = VKCConverter::get_shifted_vkc(onechar)) { //ex) A (A is divided to a and SHIFT)
+                if(auto vkc = keycvt::get_shifted_vkc(onechar)) { //ex) A (A is divided to a and SHIFT)
                     cmd.push_back(KeyMatcher::keyset_t{vkc, VKC_SHIFT}) ;
                     continue ;
                 }
@@ -94,24 +95,24 @@ namespace
             }
 
             KeyMatcher::keyset_t keyset{} ;
-            const auto keystrset = Utility::split(cmdstr.substr(i + 1, pairpos - i - 1), "-") ;
+            const auto keystrset = utility::split(cmdstr.substr(i + 1, pairpos - i - 1), "-") ;
             for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
                 if(code != keystrset.begin() && code->length() == 1) { //ascii code
                     //ascii
-                    if(auto vkc = VKCConverter::get_vkc(code->front())) {
+                    if(auto vkc = keycvt::get_vkc(code->front())) {
                         keyset.push_back(vkc) ;
                         continue ;
                     }
 
                     //shifted ascii
-                    if(auto vkc = VKCConverter::get_shifted_vkc(code->front())) {
+                    if(auto vkc = keycvt::get_shifted_vkc(code->front())) {
                         keyset.push_back(vkc) ;
                         keyset.push_back(VKC_SHIFT) ;
                         continue ;
                     }
                 }
 
-                auto lowercode = Utility::A2a(*code) ;
+                auto lowercode = utility::A2a(*code) ;
 
                 //if the cmd is same as some mode's key (e.g. <guin>, <edin>),
                 //its pointer use same pointer to target mode.
@@ -131,21 +132,21 @@ namespace
                 }
 
                 if(auto ascii = get_specode(lowercode)) {
-                    if(auto vkc = VKCConverter::get_vkc(ascii)) {
+                    if(auto vkc = keycvt::get_vkc(ascii)) {
                         keyset.push_back(vkc) ;
                         continue ;
                     }
-                    if(auto vkc = VKCConverter::get_shifted_vkc(ascii)) {
+                    if(auto vkc = keycvt::get_shifted_vkc(ascii)) {
                         keyset.push_back(vkc) ;
                         keyset.push_back(VKC_SHIFT) ;
                         continue ;
                     }
 
-                    ERROR_PRINT(*code  + " is not supported. (" + Path::BINDINGS() + ")") ;
+                    ERROR_PRINT(*code  + " is not supported. (" + path::BINDINGS() + ")") ;
                     continue ;
                 }
 
-                if(const auto vkc = VKCConverter::get_sys_vkc(lowercode)) {
+                if(const auto vkc = keycvt::get_sys_vkc(lowercode)) {
                     keyset.push_back(vkc) ;
 
                     //If a system key is bindied as a single command.
@@ -169,27 +170,27 @@ namespace
 
 namespace vind
 {
-    namespace KeyBinder {
+    namespace keybind {
         void init() {
             g_func_list.clear() ;
             g_func_list = BindingsLists::get() ;
 
             g_unbinded_syskeys.clear() ;
-            g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+            g_unbinded_syskeys = keycvt::get_all_sys_vkc() ;
 
-            EasyClick::initialize() ;
+            easyclick::initialize() ;
         }
 
         void load_config() {
-            std::ifstream ifs(Path::to_u8path(Path::BINDINGS())) ;
+            std::ifstream ifs(path::to_u8path(path::BINDINGS())) ;
             nlohmann::json jp ;
             ifs >> jp ;
             if(jp.empty()) {
-                throw std::runtime_error(Path::BINDINGS() + " is empty.") ;
+                throw std::runtime_error(path::BINDINGS() + " is empty.") ;
             }
 
             if(!jp.is_array()) {
-                throw std::runtime_error("The root element of " + Path::BINDINGS() + " should be array.") ;
+                throw std::runtime_error("The root element of " + path::BINDINGS() + " should be array.") ;
             }
 
             constexpr auto mode_num = static_cast<unsigned char>(Mode::NUM) ;
@@ -200,11 +201,11 @@ namespace vind
             std::array<unsigned char, mode_num> index_links ;
 
             if(g_func_list.empty()) {
-                throw std::logic_error("KeyBinder has no defined BindFunc.") ;
+                throw std::logic_error("keybind has no defined BindFunc.") ;
             }
 
             //initialize the ignoring key list
-            g_unbinded_syskeys = VKCConverter::get_all_sys_vkc() ;
+            g_unbinded_syskeys = keycvt::get_all_sys_vkc() ;
 
             //create name lists of BindidFunc
             std::unordered_map<std::string, BindedFunc::shp_t> funclist ;
@@ -217,7 +218,7 @@ namespace vind
                     auto& func = funclist.at(obj.at("name")) ;
                     if(!obj.is_object()) {
                         ERROR_PRINT("The child of root-array should be object. (" \
-                                + Path::BINDINGS() + ", name: " + obj["name"].get<std::string>() + ").") ;
+                                + path::BINDINGS() + ", name: " + obj["name"].get<std::string>() + ").") ;
                     }
 
                     matcher_list.fill(nullptr) ;
@@ -244,7 +245,7 @@ namespace vind
                                 }
                                 catch(const std::runtime_error& e) {
                                     ERROR_PRINT(func->name() + "::" + index.second \
-                                            + " in " + Path::BINDINGS() + " " + e.what()) ;
+                                            + " in " + path::BINDINGS() + " " + e.what()) ;
                                     continue ;
                                 }
                                 catch(const Mode m) {
@@ -281,7 +282,7 @@ namespace vind
                     }
 
                     for(std::size_t i = 0 ; i < matcher_list.size() ; i ++) {
-                        func->register_matcher(static_cast<ModeManager::Mode>(i), matcher_list[i]) ;
+                        func->register_matcher(static_cast<mode::Mode>(i), matcher_list[i]) ;
                     }
                 }
                 catch(const std::out_of_range& e) {
@@ -292,7 +293,7 @@ namespace vind
 
             //post process
             Jump2Any::load_config() ;
-            ExternalApplication::load_config() ;
+            exapp::load_config() ;
         }
 
         bool is_invalid_log(const KeyLog& log, const InvalidPolicy ip) {
@@ -306,14 +307,14 @@ namespace vind
             } ;
 
             switch(ip) {
-                case None: {
+                case InvalidPolicy::None: {
                     return false ;
                 }
-                case AllSystemKey: {
-                    static const auto system_keys = VKCConverter::get_all_sys_vkc() ;
+                case InvalidPolicy::AllSystemKey: {
+                    static const auto system_keys = keycvt::get_all_sys_vkc() ;
                     return must_ignore(system_keys) ;
                 }
-                case UnbindedSystemKey: {
+                case InvalidPolicy::UnbindedSystemKey: {
                     return must_ignore(g_unbinded_syskeys) ;
                 }
                 default: {
@@ -328,7 +329,7 @@ namespace vind
                 const KeyLoggerBase& lgr,
                 const BindedFunc::shp_t& running_func,
                 const bool full_scan,
-                ModeManager::Mode mode) {
+                mode::Mode mode) {
 
             unsigned int most_matched_num  = 0 ;
             BindedFunc::shp_t matched_func = nullptr ;
@@ -403,7 +404,7 @@ namespace
 
 namespace vind
 {
-    namespace KeyBinder {
+    namespace keybind {
         void call_matched_funcs() {
             static const KeyLog c_nums {
                 VKC_0, VKC_1, VKC_2, VKC_3, VKC_4,
@@ -480,7 +481,7 @@ namespace vind
             auto matched_func = find_func(g_logger, g_running_func) ;
 
             if(!matched_func) {
-                if(!VKCConverter::is_number(topvkc)) {
+                if(!keycvt::is_number(topvkc)) {
                     //If inputed non-numeric key, reset the repeat number.
                     if(g_repeat_num != 0) {
                         g_repeat_num = 0 ;
@@ -489,8 +490,8 @@ namespace vind
                 }
                 else {
                     static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
-                    if(g_repeat_num < max && !ModeManager::is_insert()) { //Whether it is not out of range?
-                        g_repeat_num = g_repeat_num * 10 + VKCConverter::to_number(topvkc) ;
+                    if(g_repeat_num < max && !mode::is_insert()) { //Whether it is not out of range?
+                        g_repeat_num = g_repeat_num * 10 + keycvt::to_number(topvkc) ;
                         VirtualCmdLine::cout(std::to_string(g_repeat_num)) ;
                     }
                 }

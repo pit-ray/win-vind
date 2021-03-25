@@ -31,29 +31,29 @@ namespace vind
 
         const std::string& CONFIG_PATH() ;
 
-        inline static const auto& BINDINGS() {
+        inline const auto& BINDINGS() {
             static const auto obj = CONFIG_PATH() + "bindings.json" ;
             return obj ;
         }
-        inline static const auto& SETTINGS() {
+        inline const auto& SETTINGS() {
             static const auto obj = CONFIG_PATH() + "settings.json" ;
             return obj ;
         }
 
-        const std::string KEYBRD_MAP() {
+        inline const std::string KEYBRD_MAP() {
             return CONFIG_PATH() + iParams::get_s("kb_type") ;
         }
 
         namespace Default {
-            inline static const auto& BINDINGS() {
+            inline const auto& BINDINGS() {
                 static const auto& obj = MODULE_ROOT_PATH() + "default_config\\bindings.json" ;
                 return obj ;
             }
-            inline static const auto& SETTINGS() {
+            inline const auto& SETTINGS() {
                 static const auto obj = MODULE_ROOT_PATH() + "default_config\\settings.json" ;
                 return obj ;
             }
-            inline static const auto& UI() {
+            inline const auto& UI() {
                 static const auto& obj = MODULE_ROOT_PATH() + "default_config\\ui.json" ;
                 return obj ;
             }

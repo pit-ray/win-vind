@@ -62,7 +62,7 @@ namespace {
             p_args->angle_rects[0.0f] = std::move(prect) ;
         }
         else {
-            auto angle = std::atan2(y, x) ;
+            auto angle = static_cast<float>(std::atan2(y, x)) ;
             p_args->angle_hwnds[angle] = hwnd ;
             p_args->angle_rects[angle] = std::move(prect) ;
         }

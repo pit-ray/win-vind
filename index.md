@@ -31,4 +31,3 @@ Refer to Permissions and Limitations.
 - pit-ray(Author)  
 **Twitter**: <a href="https://twitter.com/pitxray">@pitxray</a>  
 **E-mail**: pit-ray(at)outlook.com  
-**Blog**: <a href="https://www.pit-ray.com">pit-ray.com</a>  

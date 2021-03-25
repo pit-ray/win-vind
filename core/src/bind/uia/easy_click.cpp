@@ -98,7 +98,7 @@ namespace
     using hint_t = std::vector<unsigned char> ;
 
     const std::vector<hint_t> assign_identifiers_label(const std::size_t target_count) ;
-    inline const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) ;
+    const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) ;
 
     void loop_for_key_matching(
             HWND hwnd,
@@ -107,9 +107,10 @@ namespace
             std::vector<unsigned char>& matching_nums,
             std::size_t& need_draw_count,
             std::mutex& mtx,
+            const bool& continue_running,
             const unsigned char sendkey=VKC_UNDEFINED) ;
 
-    inline void do_easy_click(const unsigned char sendkey=VKC_UNDEFINED) {
+    void do_easy_click(const unsigned char sendkey=VKC_UNDEFINED) {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("There is not a foreground window.") ;
@@ -128,78 +129,86 @@ namespace
             std::vector<unsigned char> matching_nums(hints.size(), 0) ;
             auto need_draw_count = hints.size() ;
 
+            bool continue_running = true ;
+
             //create new thread for matching inputed keys with hints.
             auto input_ft = std::async(
                     std::launch::async,
                     loop_for_key_matching,
                     hwnd, std::cref(obj_points), std::cref(hints),
                     std::ref(matching_nums), std::ref(need_draw_count),
-                    std::ref(l_mtx), sendkey) ;
+                    std::ref(l_mtx), std::cref(continue_running), sendkey) ;
 
-            //Colors
-            auto [bk_r, bk_g, bk_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_bkcolor")) ;
-            auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
+            try {
+                //Colors
+                auto [bk_r, bk_g, bk_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_bkcolor")) ;
+                auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
 
-            auto [tx_r, tx_g, tx_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_color")) ;
-            auto txcolor = RGB(tx_r, tx_g, tx_b) ;
+                auto [tx_r, tx_g, tx_b] = Utility::hex2rgb(iParams::get_s("easy_click_font_color")) ;
+                auto txcolor = RGB(tx_r, tx_g, tx_b) ;
 
-            const unsigned char decay = iParams::get_uc("easy_click_matching_color_decay") ;
-            using Utility::to_gray ;
-            char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
+                const unsigned char decay = iParams::get_uc("easy_click_matching_color_decay") ;
+                using Utility::to_gray ;
+                char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
-            auto txcolor_ready = RGB(
-                    tx_r < decay ? 0 : tx_r + sign*decay,
-                    tx_g < decay ? 0 : tx_g + sign*decay,
-                    tx_b < decay ? 0 : tx_b + sign*decay) ;
+                auto txcolor_ready = RGB(
+                        tx_r < decay ? 0 : tx_r + sign*decay,
+                        tx_g < decay ? 0 : tx_g + sign*decay,
+                        tx_b < decay ? 0 : tx_b + sign*decay) ;
 
-            const auto fontsize = iParams::get_l("easy_click_font_size") ;
-            DisplayTextPainter dtp(
-                    fontsize,
-                    iParams::get_l("easy_click_font_weight"),
-                    iParams::get_s("easy_click_font_name")) ;
-            dtp.set_back_color(bkcolor) ;
-            dtp.set_text_color(txcolor) ;
+                const auto fontsize = iParams::get_l("easy_click_font_size") ;
+                DisplayTextPainter dtp(
+                        fontsize,
+                        iParams::get_l("easy_click_font_weight"),
+                        iParams::get_s("easy_click_font_name")) ;
+                dtp.set_back_color(bkcolor) ;
+                dtp.set_text_color(txcolor) ;
 
-            auto dtp_weak(dtp) ; //copy construct
-            dtp_weak.set_text_color(txcolor_ready) ;
+                auto dtp_weak(dtp) ; //copy construct
+                dtp_weak.set_text_color(txcolor_ready) ;
 
-            // A detected positon is the center one of object.
-            // And, TextOutA draws from a left-upper coordinate, so must move.
-            auto align = [fontsize] (auto&& v) {
-                return v - fontsize / 2 ;
-            } ;
+                // A detected positon is the center one of object.
+                // And, TextOutA draws from a left-upper coordinate, so must move.
+                auto align = [fontsize] (auto&& v) {
+                    return v - fontsize / 2 ;
+                } ;
 
-            auto add_margin = [](const auto& str) {
-                return " " + str + " " ;
-            } ;
+                auto add_margin = [](const auto& str) {
+                    return " " + str + " " ;
+                } ;
 
-            using namespace std::chrono ;
-            while(input_ft.wait_for(50ms) == std::future_status::timeout) {
-                std::lock_guard<std::mutex> scoped_lock(l_mtx) ; //atomic ---------- (0)
+                using namespace std::chrono ;
+                while(input_ft.wait_for(50ms) == std::future_status::timeout) {
+                    std::lock_guard<std::mutex> scoped_lock(l_mtx) ; //atomic ---------- (0)
 
-                if(need_draw_count == hints.size()) {
-                    for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
-                        dtp.draw(add_margin(hints_str[i]),
-                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
-                    }
-                }
-                else {
-                    for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
-                        if(matching_nums[i] == 0) {
-                            continue ;
+                    if(need_draw_count == hints.size()) {
+                        for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
+                            dtp.draw(add_margin(hints_str[i]),
+                                    align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
                         }
-                        dtp.draw(add_margin(hints_str[i]),
-                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
-
-                        //overdraw with the weak text color.
-                        dtp_weak.draw(" " + hints_str[i].substr(0, matching_nums[i]),
-                                align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
                     }
-                }
+                    else {
+                        for(std::size_t i = 0 ; i < hints_str.size() ; i ++) {
+                            if(matching_nums[i] == 0) {
+                                continue ;
+                            }
+                            dtp.draw(add_margin(hints_str[i]),
+                                    align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
 
-                dtp.refresh() ;
-                dtp_weak.refresh() ;
-                //------------------------------------------------------------------ (0)
+                            //overdraw with the weak text color.
+                            dtp_weak.draw(" " + hints_str[i].substr(0, matching_nums[i]),
+                                    align(obj_points[i].x()), align(obj_points[i].y()), 1) ;
+                        }
+                    }
+
+                    dtp.refresh() ;
+                    dtp_weak.refresh() ;
+                    //------------------------------------------------------------------ (0)
+                }
+            }
+            catch(const std::exception& e) {
+                continue_running = false ;
+                throw e ;
             }
 
             Utility::refresh_display(NULL) ; //remove hints in display
@@ -614,7 +623,7 @@ namespace
         return hints ;
     }
 
-    inline const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) {
+    const std::vector<std::string> convert_hints_to_str(const std::vector<hint_t>& hints) {
         std::vector<std::string> hints_str(hints.size()) ;
 
         for(std::size_t i = 0 ; i < hints.size() ; i ++) {
@@ -628,7 +637,7 @@ namespace
     }
 
     // [Return value] count that need to draw
-    inline std::size_t match_with_hints(
+    std::size_t match_with_hints(
             const KeyLoggerBase* const pc_lgr,
             const std::vector<hint_t>& hints,
             std::vector<unsigned char>& matching_nums,
@@ -679,12 +688,13 @@ namespace
             std::vector<unsigned char>& matching_nums,
             std::size_t& need_draw_count,
             std::mutex& mtx,
+            const bool& continue_running,
             const unsigned char sendkey) {
 
         KeyAbsorber::InstantKeyAbsorber ika ;
         VKCLogger lgr ;
 
-        while(vind::update_background()) {
+        while(vind::update_background() && continue_running) {
             lgr.update() ;
             if(!lgr.is_changed()) {
                 lgr.remove_from_back(1) ;

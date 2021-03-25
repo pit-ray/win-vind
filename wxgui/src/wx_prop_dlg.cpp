@@ -26,15 +26,15 @@
 #include "wx_bindings.hpp"
 
 #include "io_params.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "ui_translator.hpp"
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
 
 #include "key/key_absorber.hpp"
-#include "bind/mode_manager.hpp"
+#include "bind/mode.hpp"
 #include "bind/mode/change_mode.hpp"
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 #define KEY_COLOR "#1e96ff"
 #define TXT_COLOR "gray"
@@ -90,7 +90,7 @@ namespace wxGUI
                 font->SetFaceName(fontname) ;
             }
             else {
-                ERROR_PRINT("The font name " + fontname + " is not available.") ;
+                PRINT_ERROR("The font name " + fontname + " is not available.") ;
             }
 
             search_child_recursively(parent) ;
@@ -167,7 +167,7 @@ namespace wxGUI
             }
 
             //To avoid duplicate pushes
-            keyabsorb::close_all_ports_with_refresh() ;
+            keyabsorber::close_all_ports_with_refresh() ;
 
             save_config() ;
             vind::load_config() ;
@@ -224,14 +224,14 @@ namespace wxGUI
             p->save_config() ;
         }
         if(!ioParams::save_config()) {
-            ERROR_PRINT("failed saving config") ;
+            PRINT_ERROR("failed saving config") ;
         }
         pimpl->translate() ;
     }
 
     void PropDlg::load_config() {
         if(!ioParams::load_config()) {
-            ERROR_PRINT(" failed loading config") ;
+            PRINT_ERROR(" failed loading config") ;
         }
         SetLabel(trans("notify/preferences")) ;
 
@@ -255,12 +255,12 @@ namespace wxGUI
             load_config() ;
 
             if(!SetForegroundWindow(GetHandle())) {
-                ERROR_PRINT("Preferences Window was not brought to the foreground") ;
+                PRINT_ERROR("Preferences Window was not brought to the foreground") ;
             } //shown as most top window
 
             if(use_bindings && !l_is_cached) {
                 l_mode = mode::get_mode() ;
-                l_is_absorbed = keyabsorb::is_absorbed() ;
+                l_is_absorbed = keyabsorber::is_absorbed() ;
                 l_is_cached = true ;
                 MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
             }
@@ -269,9 +269,9 @@ namespace wxGUI
             if(use_bindings && l_is_cached) {
                 mode::change_mode(l_mode) ;
 
-                keyabsorb::close_all_ports_with_refresh() ;
+                keyabsorber::close_all_ports_with_refresh() ;
                 if(!l_is_absorbed) {
-                    keyabsorb::unabsorb() ;
+                    keyabsorber::unabsorb() ;
                 }
 
                 l_is_cached = false ;

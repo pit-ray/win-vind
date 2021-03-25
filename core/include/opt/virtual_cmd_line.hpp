@@ -1,11 +1,11 @@
 # ifndef _VIRTUAL_CMD_LINE_HPP
 #define _VIRTUAL_CMD_LINE_HPP
 
-#include "dynamic_option_with_creator.hpp"
+#include "option_with_creator.hpp"
 
 namespace vind
 {
-    class VirtualCmdLine : public DynamicOptionWithCreator<VirtualCmdLine>
+    class VirtualCmdLine : public OptionWithCreator<VirtualCmdLine>
     {
     private:
         struct Impl ;

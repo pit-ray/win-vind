@@ -1,11 +1,11 @@
-#ifndef _MOUSE_EVENTER_HPP
-#define _MOUSE_EVENTER_HPP
+#ifndef _MOUSE_HPP
+#define _MOUSE_HPP
 
 #include <windows.h>
 
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
-#include "key/virtual_key_fwd.hpp"
+#include "key/keycode_def.hpp"
 
 #ifndef MOUSEEVENTF_HWHEEL
 #define MOUSEEVENTF_HWHEEL 0x01000

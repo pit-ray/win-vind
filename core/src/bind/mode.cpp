@@ -1,4 +1,4 @@
-#include "mode_manager.hpp"
+#include "mode.hpp"
 
 namespace vind
 {

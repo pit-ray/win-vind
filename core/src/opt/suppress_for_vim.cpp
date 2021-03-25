@@ -6,9 +6,9 @@
 #include <string>
 
 #include "bind/mode/change_mode.hpp"
-#include "bind/mode_manager.hpp"
+#include "bind/mode.hpp"
 #include "key/key_absorber.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
 #include "virtual_cmd_line.hpp"
 
@@ -57,8 +57,8 @@ namespace vind
 
         //Whether it is vim
         if(exename.find("vim") != std::string::npos) {
-            keyabsorb::close_all_ports() ;
-            keyabsorb::unabsorb() ;
+            keyabsorber::close_all_ports() ;
+            keyabsorber::unabsorb() ;
             change_mode(Mode::Insert) ;
             VirtualCmdLine::msgout("-- GUI INSERT --") ;
         }

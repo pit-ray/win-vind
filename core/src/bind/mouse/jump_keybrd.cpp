@@ -8,15 +8,15 @@
 #include <utility>
 
 #include "i_params.hpp"
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
-#include "key/vkc_converter.hpp"
-#include "msg_logger.hpp"
+#include "key/keycodecvt.hpp"
+#include "err_logger.hpp"
 #include "path.hpp"
 #include "utility.hpp"
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 namespace
 {
@@ -45,7 +45,7 @@ namespace vind
         int lnum = 0 ;
 
         auto ep = [&lnum, &buf, &filename](auto msg) {
-            ERROR_PRINT(buf + msg + "\"" + filename + "\", L" + std::to_string(lnum) + ".") ;
+            PRINT_ERROR(buf + msg + "\"" + filename + "\", L" + std::to_string(lnum) + ".") ;
         } ;
 
         while(getline(ifs, buf)) {
@@ -78,7 +78,7 @@ namespace vind
                 auto code = vec[2] ;
                 //is ascii code
                 if(code.size() == 1) {
-                    if(const auto vkc = keycvt::get_vkc(code.front())) {
+                    if(const auto vkc = keycodecvt::get_vkc(code.front())) {
                         //overwrite
                         g_xposs[vkc] = x ;
                         g_yposs[vkc] = y ;
@@ -95,13 +95,13 @@ namespace vind
 
                 code = code.substr(1, code.length() - 2) ;
                 if(code == "space") {
-                    auto&& vkc = keycvt::get_vkc(' ') ;
+                    auto&& vkc = keycodecvt::get_vkc(' ') ;
                     g_xposs[vkc] = x ;
                     g_yposs[vkc] = y ;
                     continue ;
                 }
 
-                if(auto vkc = keycvt::get_sys_vkc(code)) {
+                if(auto vkc = keycodecvt::get_sys_vkc(code)) {
                     g_xposs[vkc] = x ;
                     g_yposs[vkc] = y ;
                     continue ;
@@ -110,7 +110,7 @@ namespace vind
                 ep(" is invalid system key code in ") ;
             }
             catch(const std::runtime_error& e) {
-                ERROR_PRINT(e.what()) ;
+                PRINT_ERROR(e.what()) ;
                 continue ;
             }
         }
@@ -123,32 +123,32 @@ namespace vind
     void Jump2Any::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         //reset key state (binded key)
         
-        keyabsorb::InstantKeyAbsorber ika ;
+        keyabsorber::InstantKeyAbsorber ika ;
 
         //ignore toggle keys (for example, CapsLock, NumLock, IME....)
-        const auto toggle_keys = keyabsorb::get_pressed_list() ;
+        const auto toggle_keys = keyabsorber::get_pressed_list() ;
 
         RECT rect ;
-        screen::get_conbined_metrics(&rect) ;
+        screenmetrics::get_conbined_metrics(&rect) ;
 
-        const auto width  = screen::width(rect) ;
-        const auto height = screen::height(rect) ;
+        const auto width  = screenmetrics::width(rect) ;
+        const auto height = screenmetrics::height(rect) ;
 
         while(vind::update_background()) {
-            if(keyabsorb::is_pressed(VKC_ESC)) return ;
+            if(keyabsorber::is_pressed(KEYCODE_ESC)) return ;
 
-            const auto log = keyabsorb::get_pressed_list() - toggle_keys ;
+            const auto log = keyabsorber::get_pressed_list() - toggle_keys ;
             if(log.empty()) continue ;
 
             try {
                 for(const auto& vkc : log) {
-                    if(keycvt::is_unreal_key(vkc))
+                    if(keycodecvt::is_unreal_key(vkc))
                         continue ;
 
                     auto x_pos = static_cast<int>( \

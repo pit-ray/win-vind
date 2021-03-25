@@ -1,4 +1,4 @@
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 #define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
 
@@ -30,14 +30,14 @@
 
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"
-#include "bind/key_binder.hpp"
+#include "bind/bind.hpp"
 #include "bind/mode/change_mode.hpp"
-#include "bind/mode_manager.hpp"
+#include "bind/mode.hpp"
 #include "i_params.hpp"
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
-#include "key/vkc_converter.hpp"
-#include "msg_logger.hpp"
+#include "key/keycodecvt.hpp"
+#include "err_logger.hpp"
 #include "opt/option_loader.hpp"
 #include "path.hpp"
 #include "time/interval_timer.hpp"
@@ -68,7 +68,7 @@ namespace vind
 {
     bool initialize(const std::string func_name) noexcept {
         try {
-            log::initialize() ;
+            errlogger::initialize() ;
 
             auto created_map = CreateFileMappingA(
                     INVALID_HANDLE_VALUE, NULL,
@@ -76,7 +76,7 @@ namespace vind
                     MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
 
             if(created_map == NULL) {
-                ERROR_PRINT("Could not create memory-mapped file.") ;
+                PRINT_ERROR("Could not create memory-mapped file.") ;
                 return false ;
             }
             g_map.reset(created_map) ;
@@ -102,7 +102,7 @@ namespace vind
             // Main win-vind
             auto data = get_memmapped_file(g_map.get()) ;
             if(data.get() == NULL) {
-                ERROR_PRINT("Could not open memory-mapped file.") ;
+                PRINT_ERROR("Could not open memory-mapped file.") ;
                 return false ;
             }
             std::memset(data.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
@@ -120,23 +120,23 @@ namespace vind
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
             if(!SendInput(1, &in, sizeof(INPUT))) {
-                ERROR_PRINT("SendInput, MOUSEEVENTF_MOVE") ;
+                PRINT_ERROR("SendInput, MOUSEEVENTF_MOVE") ;
                 return false ;
             }
 
             //enable high DPI support
             if(!SetProcessDPIAware()) {
-                ERROR_PRINT("Your system is not supported DPI.") ;
+                PRINT_ERROR("Your system is not supported DPI.") ;
                 return false ;
             }
 
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
-            keycvt::load_input_combination() ;
+            keycodecvt::load_input_combination() ;
 
             //lower keyboard hook
             //If you use debugger, must be disable this line not to be slow.
-            keyabsorb::install_hook() ;
+            keyabsorber::install_hook() ;
 
             keybind::init() ;
 
@@ -159,11 +159,11 @@ namespace vind
             return true ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(std::string(e.what()) + ", so system was terminated.") ;
+            PRINT_ERROR(std::string(e.what()) + ", so system was terminated.") ;
             return false ;
         }
         catch(...) {
-            ERROR_PRINT("Fatal error occured.") ;
+            PRINT_ERROR("Fatal error occured.") ;
             return false ;
         }
     }
@@ -176,11 +176,11 @@ namespace vind
             return true ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
             return false ;
         }
         catch(...) {
-            ERROR_PRINT("Fatal error occured.") ;
+            PRINT_ERROR("Fatal error occured.") ;
             return false ;
         }
     }
@@ -191,11 +191,11 @@ namespace vind
             return true ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
             return false ;
         }
         catch(...) {
-            ERROR_PRINT("Fatal error occured.") ;
+            PRINT_ERROR("Fatal error occured.") ;
             return false ;
         }
     }
@@ -219,7 +219,7 @@ namespace vind
                             func->process(true, 1, nullptr, nullptr) ;
                         }
                         else {
-                            ERROR_PRINT(name + " is invalid function name.") ;
+                            PRINT_ERROR(name + " is invalid function name.") ;
                         }
 
                         std::memset(mmf.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
@@ -234,11 +234,11 @@ namespace vind
             return true ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
             return false ;
         }
         catch(...) {
-            ERROR_PRINT("Fatal error occured.") ;
+            PRINT_ERROR("Fatal error occured.") ;
             return false ;
         }
     }
@@ -251,8 +251,8 @@ namespace vind
 
             utility::get_win_message() ;
 
-            using namespace keyabsorb ;
-            if(is_pressed(VKC_F8) && is_pressed(VKC_F9)) {
+            using namespace keyabsorber ;
+            if(is_pressed(KEYCODE_F8) && is_pressed(KEYCODE_F9)) {
                 ExitConfigWindow::sprocess(true, 1, nullptr, nullptr) ; //exit GUI-window in system tray
                 return false ;
             }
@@ -260,11 +260,11 @@ namespace vind
             return true ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
             return false ;
         }
         catch(...) {
-            ERROR_PRINT("Fatal error occured.") ;
+            PRINT_ERROR("Fatal error occured.") ;
             return false ;
         }
     }
@@ -275,10 +275,10 @@ namespace vind
             ShowConfigWindow::register_show_func(std::move(func)) ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
         }
         catch(...) {
-            ERROR_PRINT("Fatal error occured.") ;
+            PRINT_ERROR("Fatal error occured.") ;
         }
     }
 
@@ -287,10 +287,10 @@ namespace vind
             ExitConfigWindow::register_exit_func(std::move(func)) ;
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
         }
         catch(...) {
-            ERROR_PRINT("Fatal error occured.") ;
+            PRINT_ERROR("Fatal error occured.") ;
         }
     }
 }

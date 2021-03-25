@@ -1,7 +1,7 @@
 #include "edi_jump_caret.hpp"
 
-#include "io/keybrd_eventer.hpp"
-#include "mode_manager.hpp"
+#include "io/keybrd.hpp"
+#include "mode.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "utility.hpp"
 
@@ -18,13 +18,13 @@ namespace vind
     void EdiJumpCaret2BOL::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         if(mode::is_edi_visual())
-            keybrd::pushup(VKC_LSHIFT, VKC_HOME) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
         else
-            keybrd::pushup(VKC_HOME) ;
+            keybrd::pushup(KEYCODE_HOME) ;
     }
 
 
@@ -38,20 +38,20 @@ namespace vind
     void EdiJumpCaret2EOL::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         //down caret N - 1
         for(unsigned int i = 1 ; i < repeat_num ; i ++)
-            keybrd::pushup(VKC_DOWN) ;
+            keybrd::pushup(KEYCODE_DOWN) ;
 
         if(mode::is_edi_visual()) {
-            keybrd::pushup(VKC_LSHIFT, VKC_END) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
         }
         else {
-            keybrd::pushup(VKC_END) ;
-            keybrd::pushup(VKC_LEFT) ;
+            keybrd::pushup(KEYCODE_END) ;
+            keybrd::pushup(KEYCODE_LEFT) ;
         }
     }
 
@@ -66,7 +66,7 @@ namespace vind
     void EdiNJumpCaret2Line_DfBOF::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -83,18 +83,18 @@ namespace vind
         }
 
         if(mode::is_edi_visual()) {
-            pushup(VKC_LSHIFT, VKC_LCTRL, VKC_HOME) ;
+            pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
             for(unsigned int i = 1 ; i < rn ; i ++)
-                pushup(VKC_LSHIFT, VKC_DOWN) ;
+                pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
         }
         else {
-            keybrd::pushup(VKC_LCTRL, VKC_HOME) ;
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
             for(unsigned int i = 1 ; i < rn ; i ++)
-                pushup(VKC_DOWN) ;
+                pushup(KEYCODE_DOWN) ;
         }
     }
 
@@ -109,7 +109,7 @@ namespace vind
     void EdiNJumpCaret2Line_DfEOF::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -126,13 +126,13 @@ namespace vind
                 if(textselect::is_first_line_selection())
                     textselect::select_line_BOL2EOL() ;
 
-                pushup(VKC_LSHIFT, VKC_LCTRL, VKC_END) ;
+                pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_END) ;
 
                 if(get_mode() != Mode::EdiLineVisual)
-                    pushup(VKC_LSHIFT, VKC_HOME) ;
+                    pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
             }
             else {
-                keybrd::pushup(VKC_LCTRL, VKC_END) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_END) ;
             }
         }
         else {

@@ -33,11 +33,11 @@ namespace
             LONG desired_width,
             const windowutil::ForegroundInfo& fginfo) {
 
-        screen::MonitorInfo minfo ;
-        screen::get_monitor_metrics(fginfo.hwnd, minfo) ;
+        screenmetrics::MonitorInfo minfo ;
+        screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        const auto window_height = screen::height(fginfo.rect) ;
-        const auto monitor_width = screen::width(minfo.work_rect) ;
+        const auto window_height = screenmetrics::height(fginfo.rect) ;
+        const auto monitor_width = screenmetrics::width(minfo.work_rect) ;
 
         if(desired_width >= monitor_width) {
             //a maximum width is a width of a foreground monitor.
@@ -72,11 +72,11 @@ namespace
             LONG desired_height,
             const windowutil::ForegroundInfo& fginfo) {
 
-        screen::MonitorInfo minfo ;
-        screen::get_monitor_metrics(fginfo.hwnd, minfo) ;
+        screenmetrics::MonitorInfo minfo ;
+        screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        const auto window_width = screen::width(fginfo.rect) ;
-        const auto monitor_height = screen::height(minfo.work_rect) ;
+        const auto window_width = screenmetrics::width(fginfo.rect) ;
+        const auto monitor_height = screenmetrics::height(minfo.work_rect) ;
 
         if(desired_height >= monitor_height) {
             //a maximum height is a height of a foreground monitor.
@@ -114,7 +114,7 @@ namespace vind
     void ResizeWindowWidth::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -136,13 +136,13 @@ namespace vind
     void IncreaseWindowWidth::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
         windowutil::ForegroundInfo fginfo ;
 
-        auto width = screen::width(fginfo.rect) + \
+        auto width = screenmetrics::width(fginfo.rect) + \
             compute_resize_delta(
                 repeat_num, parent_charlgr, "window_width_delta") ;
 
@@ -157,7 +157,7 @@ namespace vind
     void DecreaseWindowWidth::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -166,7 +166,7 @@ namespace vind
         const auto delta = compute_resize_delta(
                 repeat_num, parent_charlgr, "window_width_delta") ;
 
-        auto width = screen::width(fginfo.rect) - delta ;
+        auto width = screenmetrics::width(fginfo.rect) - delta ;
         if(width <= 0) { 
             VirtualCmdLine::msgout("e: Width below zero") ;
             return ;
@@ -174,7 +174,7 @@ namespace vind
 
         windowutil::resize(
                 fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-                width, screen::height(fginfo.rect)) ;
+                width, screenmetrics::height(fginfo.rect)) ;
     }
 
     //ResizeWindowHeight
@@ -185,7 +185,7 @@ namespace vind
     void ResizeWindowHeight::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -207,13 +207,13 @@ namespace vind
     void IncreaseWindowHeight::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
         windowutil::ForegroundInfo fginfo ;
 
-        auto height = screen::height(fginfo.rect) + \
+        auto height = screenmetrics::height(fginfo.rect) + \
             compute_resize_delta(
                 repeat_num, parent_charlgr, "window_height_delta") ;
 
@@ -228,7 +228,7 @@ namespace vind
     void DecreaseWindowHeight::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -237,7 +237,7 @@ namespace vind
         const auto delta = compute_resize_delta(
                 repeat_num, parent_charlgr, "window_height_delta") ;
 
-        auto height = screen::height(fginfo.rect) - delta ;
+        auto height = screenmetrics::height(fginfo.rect) - delta ;
         if(height <= 0) { 
             VirtualCmdLine::msgout("e: Height below zero") ;
             return ;
@@ -245,6 +245,6 @@ namespace vind
 
         windowutil::resize(
                 fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-                screen::width(fginfo.rect), height) ;
+                screenmetrics::width(fginfo.rect), height) ;
     }
 }

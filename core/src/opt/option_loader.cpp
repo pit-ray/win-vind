@@ -4,7 +4,7 @@
 #include <memory>
 #include <algorithm>
 
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "i_params.hpp"
 
 #include "autotrack_popup.hpp"

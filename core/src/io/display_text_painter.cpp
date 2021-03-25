@@ -66,9 +66,9 @@ namespace vind
 
         if(enable_double_buffering) {
             RECT conbinded_rect ;
-            screen::get_conbined_metrics(&conbinded_rect) ;
-            const auto width  = screen::width(conbinded_rect) ;
-            const auto height = screen::height(conbinded_rect) ;
+            screenmetrics::get_conbined_metrics(&conbinded_rect) ;
+            const auto width  = screenmetrics::width(conbinded_rect) ;
+            const auto height = screenmetrics::height(conbinded_rect) ;
 
             auto raw_bitmap = CreateCompatibleBitmap(pimpl->display_dc.get(), width, height) ;
             if(!raw_bitmap) {
@@ -205,10 +205,10 @@ namespace vind
     void DisplayTextPainter::refresh() {
         if(pimpl->compatible_dc) {
             RECT conbinded_rect ;
-            screen::get_conbined_metrics(&conbinded_rect) ;
+            screenmetrics::get_conbined_metrics(&conbinded_rect) ;
             if(!BitBlt(pimpl->display_dc.get(), 0, 0,
-                       screen::width(conbinded_rect),
-                       screen::height(conbinded_rect),
+                       screenmetrics::width(conbinded_rect),
+                       screenmetrics::height(conbinded_rect),
                        pimpl->compatible_dc.get(), 0, 0, SRCCOPY)) {
                 throw RUNTIME_EXCEPT("Could not copy color data of a compatible device context to a display device context.") ;
             }

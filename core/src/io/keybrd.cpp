@@ -1,4 +1,4 @@
-#include "keybrd_eventer.hpp"
+#include "keybrd.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -11,9 +11,9 @@
 
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
-#include "key/virtual_key_fwd.hpp"
-#include "key/vkc_converter.hpp"
-#include "msg_logger.hpp"
+#include "key/keycode_def.hpp"
+#include "key/keycodecvt.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
 
 namespace
@@ -24,16 +24,16 @@ namespace
     template <typename T>
     inline auto extended_key_flag(T key) noexcept {
         switch(key) {
-            case VKC_UP:
-            case VKC_DOWN:
-            case VKC_LEFT:
-            case VKC_RIGHT:
-            case VKC_HOME:
-            case VKC_END:
-            case VKC_PAGEUP:
-            case VKC_PAGEDOWN:
-            case VKC_INSERT:
-            case VKC_DELETE:
+            case KEYCODE_UP:
+            case KEYCODE_DOWN:
+            case KEYCODE_LEFT:
+            case KEYCODE_RIGHT:
+            case KEYCODE_HOME:
+            case KEYCODE_END:
+            case KEYCODE_PAGEUP:
+            case KEYCODE_PAGEDOWN:
+            case KEYCODE_INSERT:
+            case KEYCODE_DELETE:
                 return KEYEVENTF_EXTENDEDKEY ;
             default:
                 return 0 ;
@@ -72,7 +72,7 @@ namespace vind
         SmartKey::~SmartKey() noexcept {
             try {release() ;}
             catch(const std::exception& e) {
-                ERROR_PRINT(e.what()) ;
+                PRINT_ERROR(e.what()) ;
             }
         }
 
@@ -87,18 +87,18 @@ namespace vind
         }
 
         void SmartKey::press() {
-            keyabsorb::open_port(pimpl->key) ;
+            keyabsorber::open_port(pimpl->key) ;
             send_event(true) ;
-            keyabsorb::close_all_ports() ;
+            keyabsorber::close_all_ports() ;
             if(!is_pressed_actually(pimpl->key)) {
                 throw RUNTIME_EXCEPT("You sent a key pressing event successfully, but the state of its key was not changed.") ;
             }
         }
 
         void SmartKey::release() {
-            keyabsorb::open_port(pimpl->key) ;
+            keyabsorber::open_port(pimpl->key) ;
             send_event(false) ;
-            keyabsorb::close_all_ports() ;
+            keyabsorber::close_all_ports() ;
             if(is_pressed_actually(pimpl->key)) {
                 throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
             }
@@ -136,14 +136,14 @@ namespace vind
         }
 
         void pushup_core(std::initializer_list<unsigned char>&& initl) {
-            using keyabsorb::close_all_ports ;
-            using keyabsorb::open_port ;
-            using keyabsorb::open_some_ports ;
+            using keyabsorber::close_all_ports ;
+            using keyabsorber::open_port ;
+            using keyabsorber::open_some_ports ;
 
-            auto state = keyabsorb::get_pressed_list() ;
+            auto state = keyabsorber::get_pressed_list() ;
             auto recover_keystate= [&state] {
                 for(const auto key : state)
-                    keyabsorb::press_virtually(key) ;
+                    keyabsorber::press_virtually(key) ;
             } ;
             static INPUT ins[6] = {
                 {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},

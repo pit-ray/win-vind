@@ -1,29 +1,29 @@
-#include "vkc_logger.hpp"
+#include "keycode_logger.hpp"
 
 #include "key_absorber.hpp"
 #include "key_logger_base.hpp"
-#include "msg_logger.hpp"
-#include "vkc_converter.hpp"
+#include "err_logger.hpp"
+#include "keycodecvt.hpp"
 
 namespace vind
 {
-    struct VKCLogger::Impl {
+    struct KeycodeLogger::Impl {
         KeyLog prelog{} ;
         bool vkc_changed = false ;
     } ;
 
-    VKCLogger::VKCLogger()
+    KeycodeLogger::KeycodeLogger()
     : KeyLoggerBase(),
       pimpl(std::make_unique<Impl>())
     {}
 
-    VKCLogger::~VKCLogger() noexcept = default ;
+    KeycodeLogger::~KeycodeLogger() noexcept = default ;
 
-    VKCLogger::VKCLogger(const VKCLogger& rhs)
+    KeycodeLogger::KeycodeLogger(const KeycodeLogger& rhs)
     : KeyLoggerBase(rhs),
       pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
     {}
-    VKCLogger& VKCLogger::operator=(const VKCLogger& rhs) {
+    KeycodeLogger& KeycodeLogger::operator=(const KeycodeLogger& rhs) {
         if(rhs.pimpl) {
             KeyLoggerBase::operator=(rhs) ;
             *pimpl = *(rhs.pimpl) ;
@@ -31,13 +31,13 @@ namespace vind
         return *this ;
     }
 
-    VKCLogger::VKCLogger(VKCLogger&&)            = default ;
-    VKCLogger& VKCLogger::operator=(VKCLogger&&) = default ;
+    KeycodeLogger::KeycodeLogger(KeycodeLogger&&)            = default ;
+    KeycodeLogger& KeycodeLogger::operator=(KeycodeLogger&&) = default ;
 
-    void VKCLogger::update() {
-        static const KeyLog cl_toggles(keycvt::get_toggle_keys()) ;
+    void KeycodeLogger::update() {
+        static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
 
-        auto log = keyabsorb::get_pressed_list() - cl_toggles ;
+        auto log = keyabsorber::get_pressed_list() - cl_toggles ;
         logging(log) ;
 
         if(pimpl->prelog == log) {
@@ -70,7 +70,7 @@ namespace vind
         //
     }
 
-    bool VKCLogger::is_changed() const noexcept {
+    bool KeycodeLogger::is_changed() const noexcept {
         return pimpl->vkc_changed ;
     }
 }

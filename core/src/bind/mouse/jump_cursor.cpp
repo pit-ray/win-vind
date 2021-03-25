@@ -15,7 +15,7 @@ namespace vind
     void Jump2Left::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         POINT pos ;
@@ -32,16 +32,16 @@ namespace vind
     void Jump2Right::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         POINT pos ;
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        screen::get_conbined_metrics(&rect) ;
+        screenmetrics::get_conbined_metrics(&rect) ;
 
-        SetCursorPos(screen::width(rect) - iparams::get_i("screen_pos_buf"), pos.y) ;
+        SetCursorPos(screenmetrics::width(rect) - iparams::get_i("screen_pos_buf"), pos.y) ;
     }
 
 
@@ -53,7 +53,7 @@ namespace vind
     void Jump2Top::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         POINT pos ;
@@ -70,15 +70,15 @@ namespace vind
     void Jump2Bottom::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         POINT pos ;
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        screen::get_conbined_metrics(&rect) ;
-        SetCursorPos(pos.x, screen::height(rect) - iparams::get_i("screen_pos_buf")) ;
+        screenmetrics::get_conbined_metrics(&rect) ;
+        SetCursorPos(pos.x, screenmetrics::height(rect) - iparams::get_i("screen_pos_buf")) ;
     }
 
 
@@ -90,15 +90,15 @@ namespace vind
     void Jump2XCenter::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         POINT pos ;
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        screen::get_conbined_metrics(&rect) ;
-        SetCursorPos(screen::width(rect) / 2, pos.y) ;
+        screenmetrics::get_conbined_metrics(&rect) ;
+        SetCursorPos(screenmetrics::width(rect) / 2, pos.y) ;
     }
 
 
@@ -110,14 +110,14 @@ namespace vind
     void Jump2YCenter::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         POINT pos ;
         GetCursorPos(&pos) ;
 
         RECT rect ;
-        screen::get_conbined_metrics(&rect) ;
-        SetCursorPos(pos.x, screen::height(rect) / 2) ;
+        screenmetrics::get_conbined_metrics(&rect) ;
+        SetCursorPos(pos.x, screenmetrics::height(rect) / 2) ;
     }
 }

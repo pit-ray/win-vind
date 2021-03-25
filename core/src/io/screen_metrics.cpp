@@ -9,7 +9,7 @@
 
 namespace vind
 {
-    namespace screen
+    namespace screenmetrics
     {
         void get_conbined_metrics(RECT* const rect) {
             WINDOWINFO winfo ;

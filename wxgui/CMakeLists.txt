@@ -72,7 +72,7 @@ include_directories(
 )
 
 set(SRCDIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_library(WinVindGUI STATIC
+add_library(wxgui STATIC
     ${SRCDIR}/io_params.cpp
     ${SRCDIR}/ui_translator.cpp
 
@@ -103,9 +103,9 @@ add_library(WinVindGUI STATIC
     ${SRCDIR}/wxgui.cpp
 )
 if(${wxWidgets_VERSION_MINOR} STREQUAL 1)
-    target_link_libraries(WinVindGUI ${wxWidgets_LIBRARIES} uxtheme oleacc)
+    target_link_libraries(wxgui ${wxWidgets_LIBRARIES} uxtheme oleacc)
 else()
-    target_link_libraries(WinVindGUI ${wxWidgets_LIBRARIES})
+    target_link_libraries(wxgui ${wxWidgets_LIBRARIES})
 endif()
 
 set(MAIN_ENTRY_INCLUDE

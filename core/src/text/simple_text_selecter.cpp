@@ -1,6 +1,6 @@
 #include "simple_text_selecter.hpp"
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 
 namespace
 {
@@ -28,8 +28,8 @@ namespace vind
         void select_line_EOL2BOL() {
             g_first_line_selection = g_first_call ;
 
-            keybrd::pushup(VKC_END) ;
-            keybrd::pushup(VKC_LSHIFT, VKC_HOME) ;
+            keybrd::pushup(KEYCODE_END) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
 
             g_mode = Mode::EOL2BOL ;
             g_first_call = false ;
@@ -38,8 +38,8 @@ namespace vind
         void select_line_BOL2EOL() {
             g_first_line_selection = g_first_call ;
 
-            keybrd::pushup(VKC_HOME) ;
-            keybrd::pushup(VKC_LSHIFT, VKC_END) ;
+            keybrd::pushup(KEYCODE_HOME) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
 
             g_mode = Mode::BOL2EOL ;
             g_first_call = false ;
@@ -47,10 +47,10 @@ namespace vind
 
         void unselect() {
             if(g_mode == Mode::EOL2BOL) {
-                keybrd::pushup(VKC_LEFT) ;
+                keybrd::pushup(KEYCODE_LEFT) ;
             }
             else if(g_mode == Mode::BOL2EOL) {
-                keybrd::pushup(VKC_RIGHT) ;
+                keybrd::pushup(KEYCODE_RIGHT) ;
             }
             _reset() ;
         }
@@ -61,9 +61,9 @@ namespace vind
 
         void moving_update() {
             if(g_mode == Mode::BOL2EOL)
-                keybrd::pushup(VKC_LSHIFT, VKC_END) ;
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
             else
-                keybrd::pushup(VKC_LSHIFT, VKC_HOME) ;
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
         }
 
         bool is_first_line_selection() noexcept {

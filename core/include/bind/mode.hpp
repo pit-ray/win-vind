@@ -1,5 +1,5 @@
-#ifndef _MODE_MANAGER_HPP
-#define _MODE_MANAGER_HPP
+#ifndef _MODE_HPP
+#define _MODE_HPP
 
 namespace vind
 {

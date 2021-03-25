@@ -8,7 +8,7 @@
 
 namespace vind
 {
-    namespace screen {
+    namespace screenmetrics {
 
         inline void copy(RECT& lhs, const RECT& rhs) noexcept {
             lhs.left   = rhs.left ;

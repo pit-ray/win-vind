@@ -7,7 +7,7 @@
 #include <cmath>
 
 #include "i_params.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
 
 
@@ -91,7 +91,7 @@ namespace vind
     void MoveLeft::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(-pimpl->calcer.delta() * repeat_num, 0) ;
@@ -118,7 +118,7 @@ namespace vind
     void MoveRight::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(pimpl->calcer.delta() * repeat_num, 0) ;
@@ -144,7 +144,7 @@ namespace vind
     void MoveUp::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(0, -pimpl->calcer.delta() * repeat_num) ;
@@ -169,7 +169,7 @@ namespace vind
     void MoveDown::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(0, pimpl->calcer.delta() * repeat_num) ;

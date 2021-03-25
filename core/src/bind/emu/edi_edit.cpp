@@ -8,18 +8,18 @@
 
 #include "edi_change_mode.hpp"
 #include "i_params.hpp"
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
-#include "key/vkc_converter.hpp"
-#include "key_binder.hpp"
-#include "mode_manager.hpp"
-#include "msg_logger.hpp"
+#include "key/keycodecvt.hpp"
+#include "bind.hpp"
+#include "mode.hpp"
+#include "err_logger.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "text/smart_clipboard.hpp"
 #include "text/text_analyzer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "utility.hpp"
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 namespace
 {
@@ -40,9 +40,9 @@ namespace
     inline bool select_line_until_EOL(const textanalyze::SelRes* const exres) {
         using namespace keybrd ;
         if(exres != nullptr) {
-            pushup(VKC_LSHIFT, VKC_END) ;
+            pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
             if(exres->having_EOL) {
-                pushup(VKC_LSHIFT, VKC_LEFT) ;
+                pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 if(exres->str.empty()) {
                     return false ; //not selected (true text is only null text)
                 }
@@ -51,11 +51,11 @@ namespace
         }
 
         auto res = textanalyze::get_selected_text([] {
-                pushup(VKC_LSHIFT, VKC_END) ;
-                pushup(VKC_LCTRL, VKC_C) ;
+                pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;
         if(res.having_EOL) {
-            pushup(VKC_LSHIFT, VKC_LEFT) ;
+            pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
             if(res.str.empty()) {
                 return false ;
             }
@@ -75,11 +75,11 @@ namespace
     }
 
     //return: is succecced?
-    inline bool select_by_motion(unsigned int repeat_num, VKCLogger* const parent_vkclgr) {
+    inline bool select_by_motion(unsigned int repeat_num, KeycodeLogger* const parent_vkclgr) {
         using namespace mode ;
-        VKCLogger lgr ;
+        KeycodeLogger lgr ;
 
-        keyabsorb::InstantKeyAbsorber ika ;
+        keyabsorber::InstantKeyAbsorber ika ;
 
         while(vind::update_background()) {
             lgr.update() ;
@@ -137,20 +137,20 @@ namespace vind
     void EdiCopyHighlightText::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
 
         if(!first_call) return ;
 
-        keybrd::pushup(VKC_LCTRL, VKC_C) ;
+        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
 
         if(get_mode() == Mode::EdiLineVisual)
             g_rgtype = RegisteredType::Lines ;
         else
             g_rgtype = RegisteredType::Chars ;
 
-        keybrd::pushup(VKC_LEFT) ; //unselect, but this is for the time being
+        keybrd::pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
         Change2EdiNormal::sprocess(true, 1, nullptr, nullptr) ;
     }
 
@@ -162,24 +162,24 @@ namespace vind
     void EdiNCopyLine::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) {
         if(!first_call) return ;
 
         using keybrd::pushup ;
 
-        pushup(VKC_HOME) ;
+        pushup(KEYCODE_HOME) ;
 
         //copy N - 1 lines
         for(unsigned int i = 1 ; i < repeat_num ; i ++)
-            pushup(VKC_LSHIFT, VKC_DOWN) ;
+            pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
         if(!select_line_until_EOL(exres))
             clear_clipboard_with_null() ;
 
-        pushup(VKC_LCTRL, VKC_C) ;
-        pushup(VKC_END) ;
+        pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+        pushup(KEYCODE_END) ;
 
         g_rgtype = RegisteredType::Lines ;
     }
@@ -191,7 +191,7 @@ namespace vind
     void EdiCopyMotion::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_vkclgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         if(select_by_motion(repeat_num, parent_vkclgr)) {
@@ -278,22 +278,22 @@ namespace vind
     void EdiNPasteAfter::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         auto put_chars_preproc = [] {
-            pushup(VKC_RIGHT) ;
+            pushup(KEYCODE_RIGHT) ;
         } ;
         auto put_chars = [] {
-            pushup(VKC_LCTRL, VKC_V) ;
+            pushup(KEYCODE_LCTRL, KEYCODE_V) ;
         } ;
 
         auto put_lines_preproc = [] {
-            pushup(VKC_END) ;
+            pushup(KEYCODE_END) ;
         } ;
         auto put_lines = [] {
-            pushup(VKC_ENTER) ;
-            pushup(VKC_LCTRL, VKC_V) ;
+            pushup(KEYCODE_ENTER) ;
+            pushup(KEYCODE_LCTRL, KEYCODE_V) ;
         } ;
 
         put_with_common_process(
@@ -321,17 +321,17 @@ namespace vind
     void EdiNPasteBefore::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         auto put_chars = [] {
-            pushup(VKC_LCTRL, VKC_V) ;
+            pushup(KEYCODE_LCTRL, KEYCODE_V) ;
         } ;
         auto put_lines = [] {
-            pushup(VKC_HOME) ;
-            pushup(VKC_ENTER) ;
-            pushup(VKC_UP) ;
-            pushup(VKC_LCTRL, VKC_V) ;
+            pushup(KEYCODE_HOME) ;
+            pushup(KEYCODE_ENTER) ;
+            pushup(KEYCODE_UP) ;
+            pushup(KEYCODE_LCTRL, KEYCODE_V) ;
         } ;
         put_with_common_process(
                 first_call, repeat_num, pimpl->ksr,
@@ -347,14 +347,14 @@ namespace vind
     void EdiDeleteHighlightText::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
         using keybrd::pushup ;
 
         if(!first_call) return ;
 
-        pushup(VKC_LCTRL, VKC_X) ;
+        pushup(KEYCODE_LCTRL, KEYCODE_X) ;
         if(get_mode() == Mode::EdiLineVisual) {
             g_rgtype = RegisteredType::Lines ;
         }
@@ -373,21 +373,21 @@ namespace
         const auto mode = get_mode() ;
         if(mode == Mode::EdiVisual) {
             if(iparams::get_b("enable_char_cache")) {
-                keybrd::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
             else {
-                keybrd::pushup(VKC_DELETE) ;
+                keybrd::pushup(KEYCODE_DELETE) ;
             }
         }
         else if(mode == Mode::EdiLineVisual) {
             if(iparams::get_b("enable_char_cache")) {
-                keybrd::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             }
             else {
-                keybrd::pushup(VKC_DELETE) ;
+                keybrd::pushup(KEYCODE_DELETE) ;
             }
-            keybrd::pushup(VKC_DELETE) ;
+            keybrd::pushup(KEYCODE_DELETE) ;
             g_rgtype = RegisteredType::Lines ;
         }
     }
@@ -414,19 +414,19 @@ namespace vind
     void EdiNDeleteLine::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) const {
         using keybrd::pushup ;
-        auto to_head = [] {pushup(VKC_HOME) ;} ;
+        auto to_head = [] {pushup(KEYCODE_HOME) ;} ;
         auto del = [exres] {
             if(!select_line_until_EOL(exres)) {
                 clear_clipboard_with_null() ;
             }
             else {
-                keybrd::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 g_rgtype = RegisteredType::Lines ;
-                pushup(VKC_DELETE) ;
+                pushup(KEYCODE_DELETE) ;
             }
         } ;
 
@@ -448,7 +448,7 @@ namespace vind
             to_head() ;
 
             for(unsigned int i = 1 ; i < repeat_num ; i ++)
-                pushup(VKC_LSHIFT, VKC_DOWN) ;
+                pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
             del() ;
             pimpl->ksr.reset() ;
@@ -475,7 +475,7 @@ namespace vind
     void EdiNDeleteLineUntilEOL::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) const {
         using keybrd::pushup ;
@@ -485,7 +485,7 @@ namespace vind
                 clear_clipboard_with_null() ;
             }
             else {
-                keybrd::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
         } ;
@@ -505,7 +505,7 @@ namespace vind
         if(first_call) {
             //delete N - 1 lines under the current line
             for(unsigned int i = 1 ; i < repeat_num ; i ++)
-                pushup(VKC_DOWN) ;
+                pushup(KEYCODE_DOWN) ;
 
             del() ;
             pimpl->ksr.reset() ;
@@ -531,16 +531,16 @@ namespace vind
     void EdiNDeleteAfter::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
             if(iparams::get_b("enable_char_cache")) {
-                keybrd::pushup(VKC_LSHIFT, VKC_RIGHT) ;
-                keybrd::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
             else {
-                keybrd::pushup(VKC_DELETE) ;
+                keybrd::pushup(KEYCODE_DELETE) ;
             }
         } ;
         if(repeat_num == 1) {
@@ -583,16 +583,16 @@ namespace vind
     void EdiNDeleteBefore::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
             if(iparams::get_b("enable_char_cache")) {
-                keybrd::pushup(VKC_LSHIFT, VKC_LEFT) ;
-                keybrd::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
             else {
-                keybrd::pushup(VKC_BKSPACE) ;
+                keybrd::pushup(KEYCODE_BKSPACE) ;
             }
         } ;
 
@@ -624,7 +624,7 @@ namespace vind
     void EdiDeleteMotion::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_vkclgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         if(select_by_motion(repeat_num, parent_vkclgr)) {
@@ -640,7 +640,7 @@ namespace vind
     void EdiDeleteMotionAndStartInsert::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_vkclgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         if(select_by_motion(repeat_num, parent_vkclgr)) {
@@ -658,14 +658,14 @@ namespace vind
     void EdiDeleteLinesAndStartInsert::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         auto res = textanalyze::get_selected_text([] {
-            keybrd::pushup(VKC_HOME) ;
-            keybrd::pushup(VKC_LSHIFT, VKC_END) ;
-            keybrd::pushup(VKC_LCTRL, VKC_C) ;
+            keybrd::pushup(KEYCODE_HOME) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;
         if(res.str.empty()) {
             Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
@@ -677,10 +677,10 @@ namespace vind
             Change2EdiEOLInsert::sprocess(true, 1, nullptr, nullptr) ;
             return ;
         }
-        keybrd::pushup(VKC_HOME) ;
+        keybrd::pushup(KEYCODE_HOME) ;
 
         for(int i = 0 ; i < static_cast<int>(pos) ; i ++)
-            keybrd::pushup(VKC_RIGHT) ;
+            keybrd::pushup(KEYCODE_RIGHT) ;
 
         EdiDeleteUntilEOLAndStartInsert::sprocess(true, repeat_num, nullptr, nullptr, &res) ;
     }
@@ -693,19 +693,19 @@ namespace vind
     void EdiDeleteCharsAndStartInsert::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            keybrd::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
 
         if(iparams::get_b("enable_char_cache")) {
-            keybrd::pushup(VKC_LCTRL, VKC_X) ;
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             g_rgtype = RegisteredType::Chars ;
         }
         else {
-            keybrd::pushup(VKC_DELETE) ;
+            keybrd::pushup(KEYCODE_DELETE) ;
         }
 
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
@@ -745,19 +745,19 @@ namespace vind
     void EdiDeleteUntilEOLAndStartInsert::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) {
         if(!first_call) return ;
 
         for(unsigned int i = 1 ; i < repeat_num ; i ++)
-            keybrd::pushup(VKC_LSHIFT, VKC_DOWN) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
         if(!select_line_until_EOL(exres)) {
             clear_clipboard_with_null() ;
         }
         else {
-            keybrd::pushup(VKC_LCTRL, VKC_X) ;
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             g_rgtype = RegisteredType::Chars ;
         }
         Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;

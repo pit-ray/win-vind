@@ -4,10 +4,10 @@
 #include <memory>
 #include <string>
 
-#include "key_matcher.hpp"
-#include "mode_manager.hpp"
+#include "bindings_matcher.hpp"
+#include "mode.hpp"
 
-#include "key/vkc_logger.hpp"
+#include "key/keycode_logger.hpp"
 #include "key/char_logger.hpp"
 
 namespace vind
@@ -20,7 +20,7 @@ namespace vind
         virtual void do_process(
                 const bool first_call,
                 const unsigned int repeat_num,
-                VKCLogger* parent_vkclgr,
+                KeycodeLogger* parent_vkclgr,
                 const CharLogger* const parent_charlgr) const = 0 ;
 
     public:
@@ -39,15 +39,15 @@ namespace vind
         void process(
                 const bool first_call=true,
                 const unsigned int repeat_num=1,
-                VKCLogger* parent_vkclgr=nullptr,
+                KeycodeLogger* parent_vkclgr=nullptr,
                 const CharLogger* const parent_charlgr=nullptr) const ;
 
         void register_matcher(
                 const mode::Mode mode,
-                const KeyMatcher::shp_t matcher) const ;
+                const BindingsMatcher::shp_t matcher) const ;
         void register_matcher(
                 const unsigned char mode,
-                const KeyMatcher::shp_t matcher) const ;
+                const BindingsMatcher::shp_t matcher) const ;
 
         //[return] matched num in latest log
         unsigned int validate_if_match(

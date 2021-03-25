@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "mode/change_mode.hpp"
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "utility.hpp"
 
 namespace vind
@@ -18,7 +18,7 @@ namespace vind
     void SaveOpenedFile::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -27,7 +27,7 @@ namespace vind
             RUNTIME_EXCEPT("The foreground window is not existed.") ;
         }
 
-        keybrd::pushup(VKC_LCTRL, VKC_S) ;
+        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
 
         Sleep(500) ; //wait by openning the dialog for saving
         if(hwnd != GetForegroundWindow()) { //opened popup
@@ -44,10 +44,10 @@ namespace vind
     void OpenOtherFile::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
-        keybrd::pushup(VKC_LCTRL, VKC_O) ;
+        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
     }
 }

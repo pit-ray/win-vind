@@ -1,5 +1,5 @@
 #include "search_pattern.hpp"
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "utility.hpp"
 
 #include <iostream>
@@ -14,9 +14,9 @@ namespace vind
     void SearchPattern::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        keybrd::pushup(VKC_F3) ;
+        keybrd::pushup(KEYCODE_F3) ;
     }
 }

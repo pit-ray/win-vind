@@ -1,12 +1,12 @@
 #include "switch_window.hpp"
 
 #include "emu/edi_move_caret.hpp"
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
-#include "key_binder.hpp"
+#include "bind.hpp"
 #include "mouse/jump_actwin.hpp"
 #include "utility.hpp"
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 namespace vind
 {
@@ -18,22 +18,22 @@ namespace vind
     void SwitchWindow::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace keybrd ;
         if(!first_call) return ;
 
-        keyabsorb::InstantKeyAbsorber ika ;
+        keyabsorber::InstantKeyAbsorber ika ;
 
-        SmartKey alt(VKC_LALT) ;
+        SmartKey alt(KEYCODE_LALT) ;
         alt.press() ;
-        keyabsorb::release_virtually(VKC_LALT) ;
+        keyabsorber::release_virtually(KEYCODE_LALT) ;
 
-        pushup(VKC_TAB) ;
+        pushup(KEYCODE_TAB) ;
 
         auto preserve_pushup = [] (const auto vkc) {
             using namespace keybrd ;
-            if(!keyabsorb::is_pressed(vkc)) {
+            if(!keyabsorber::is_pressed(vkc)) {
                 pushup(vkc) ;
                 return ;
             }
@@ -43,12 +43,12 @@ namespace vind
             press_keystate(vkc) ;
         } ;
 
-        VKCLogger logger{} ;
+        KeycodeLogger logger{} ;
         while(vind::update_background()) {
-            if(keyabsorb::is_pressed(VKC_ESC)) {
+            if(keyabsorber::is_pressed(KEYCODE_ESC)) {
                 break ;
             }
-            if(keyabsorb::is_pressed(VKC_ENTER)) {
+            if(keyabsorber::is_pressed(KEYCODE_ENTER)) {
                 break ;
             }
 
@@ -77,18 +77,18 @@ namespace vind
                 const auto name = matched_func->name() ;
                 logger.clear() ;
                 if(name == EdiMoveCaretLeft::sname()) {
-                    preserve_pushup(VKC_LEFT) ;
+                    preserve_pushup(KEYCODE_LEFT) ;
                     continue ;
                 }
                 if(name == EdiMoveCaretRight::sname()) {
-                    preserve_pushup(VKC_RIGHT) ;
+                    preserve_pushup(KEYCODE_RIGHT) ;
                     continue ;
                 }
             }
         }
 
-        keyabsorb::release_virtually(VKC_ESC) ;
-        keyabsorb::release_virtually(VKC_ENTER) ;
+        keyabsorber::release_virtually(KEYCODE_ESC) ;
+        keyabsorber::release_virtually(KEYCODE_ENTER) ;
 
         alt.release() ;
 

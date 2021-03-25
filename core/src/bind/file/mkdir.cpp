@@ -4,7 +4,7 @@
 #include <shlobj.h>
 
 #include "path.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
 
 //MakeDir
@@ -139,7 +139,7 @@ namespace vind
     void MakeDir::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 

@@ -1,18 +1,18 @@
-#ifndef _DYNAMIC_OPTION_HPP
-#define _DYNAMIC_OPTION_HPP
+#ifndef _OPTION_HPP
+#define _OPTION_HPP
 
 #include <string>
 #include <memory>
 
 namespace vind
 {
-    class DynamicOption ;
+    class Option ;
 
     namespace op {
-        using shp_t = std::shared_ptr<DynamicOption> ;
+        using shp_t = std::shared_ptr<Option> ;
     }
 
-    class DynamicOption {
+    class Option {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -21,14 +21,14 @@ namespace vind
         virtual void do_process() const = 0 ;
 
     public:
-        explicit DynamicOption() ;
-        virtual ~DynamicOption() noexcept ;
+        explicit Option() ;
+        virtual ~Option() noexcept ;
 
-        DynamicOption(DynamicOption&&) noexcept ;
-        DynamicOption& operator=(DynamicOption&&) noexcept ;
+        Option(Option&&) noexcept ;
+        Option& operator=(Option&&) noexcept ;
 
-        DynamicOption(const DynamicOption&) = delete ;
-        DynamicOption& operator=(const DynamicOption&) = delete ;
+        Option(const Option&) = delete ;
+        Option& operator=(const Option&) = delete ;
 
         virtual const std::string name() const noexcept =  0 ;
 

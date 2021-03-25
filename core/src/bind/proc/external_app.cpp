@@ -11,9 +11,9 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "mouse/jump_actwin.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "path.hpp"
 #include "utility.hpp"
@@ -35,7 +35,7 @@ namespace
                 map[key]   = val ;
             }
             catch(const std::exception& e) {
-                ERROR_PRINT(std::string(e.what()) + ", so one shortcut application is skipped.") ;
+                PRINT_ERROR(std::string(e.what()) + ", so one shortcut application is skipped.") ;
                 continue ;
             }
         }
@@ -63,7 +63,7 @@ namespace vind
     void StartShell::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         try {
@@ -93,7 +93,7 @@ namespace vind
     void StartAnyApp::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -124,11 +124,11 @@ namespace vind
     void StartExplorer::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         //_create_process("explorer") ;
-        keybrd::pushup(VKC_LWIN, VKC_E) ;
+        keybrd::pushup(KEYCODE_LWIN, KEYCODE_E) ;
 
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
@@ -142,10 +142,10 @@ namespace vind
     void OpenStartMenu::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        keybrd::pushup(VKC_LWIN) ;
+        keybrd::pushup(KEYCODE_LWIN) ;
         Sleep(100) ; //wait until select window by OS.
         Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
     }

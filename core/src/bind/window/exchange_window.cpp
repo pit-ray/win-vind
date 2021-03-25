@@ -33,13 +33,13 @@ namespace
         }
 
         //Is in range of work area
-        screen::MonitorInfo minfo ;
-        screen::get_monitor_metrics(hwnd, minfo) ;
-        if(screen::is_out_of_range(rect, minfo.work_rect)) {
+        screenmetrics::MonitorInfo minfo ;
+        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+        if(screenmetrics::is_out_of_range(rect, minfo.work_rect)) {
             return TRUE ;
         }
 
-        g_near_hwnds[screen::l2_distance_nosq(rect, fginfo->rect) / 100] = hwnd ;
+        g_near_hwnds[screenmetrics::l2_distance_nosq(rect, fginfo->rect) / 100] = hwnd ;
         return TRUE ;
     }
 }
@@ -54,7 +54,7 @@ namespace vind
     void ExchangeWindowWithNextOne::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -79,14 +79,14 @@ namespace vind
                 nearest_hwnd,
                 fginfo.rect.left,
                 fginfo.rect.top,
-                screen::width(fginfo.rect),
-                screen::height(fginfo.rect)) ;
+                screenmetrics::width(fginfo.rect),
+                screenmetrics::height(fginfo.rect)) ;
 
         windowutil::resize(
                 fginfo.hwnd,
                 nearest_rect.left,
                 nearest_rect.top,
-                screen::width(nearest_rect),
-                screen::height(nearest_rect)) ;
+                screenmetrics::width(nearest_rect),
+                screenmetrics::height(nearest_rect)) ;
     }
 }

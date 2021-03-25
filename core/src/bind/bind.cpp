@@ -1,4 +1,4 @@
-#include "key_binder.hpp"
+#include "bind.hpp"
 
 #include <algorithm>
 #include <array>
@@ -24,12 +24,12 @@
 #include "i_params.hpp"
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
-#include "key/virtual_key_fwd.hpp"
-#include "key/vkc_converter.hpp"
-#include "key/vkc_logger.hpp"
-#include "key_matcher.hpp"
-#include "mode_manager.hpp"
-#include "msg_logger.hpp"
+#include "key/keycode_def.hpp"
+#include "key/keycodecvt.hpp"
+#include "key/keycode_logger.hpp"
+#include "bindings_matcher.hpp"
+#include "mode.hpp"
+#include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "path.hpp"
 #include "utility.hpp"
@@ -68,24 +68,24 @@ namespace
     }
 
     auto parse_string_command(std::string cmdstr) {
-        KeyMatcher::cmd_t cmd ;
+        BindingsMatcher::cmd_t cmd ;
 
         for(std::size_t i = 0 ; i < cmdstr.length() ; i ++) {
             const auto onechar = cmdstr[i] ;
             if(onechar != '<') {
                 //ascii
-                if(auto vkc = keycvt::get_vkc(onechar)) { //ex) a
+                if(auto vkc = keycodecvt::get_vkc(onechar)) { //ex) a
                     cmd.emplace_back(1, vkc) ;
                     continue ;
                 }
 
                 //shifted ascii
-                if(auto vkc = keycvt::get_shifted_vkc(onechar)) { //ex) A (A is divided to a and SHIFT)
-                    cmd.push_back(KeyMatcher::keyset_t{vkc, VKC_SHIFT}) ;
+                if(auto vkc = keycodecvt::get_shifted_vkc(onechar)) { //ex) A (A is divided to a and SHIFT)
+                    cmd.push_back(BindingsMatcher::keyset_t{vkc, KEYCODE_SHIFT}) ;
                     continue ;
                 }
 
-                ERROR_PRINT(onechar + std::string(" of ") + cmdstr + "\tis invalid ascii key code") ;
+                PRINT_ERROR(onechar + std::string(" of ") + cmdstr + "\tis invalid ascii key code") ;
                 continue ;
             }
 
@@ -94,20 +94,20 @@ namespace
                 throw std::runtime_error("command is bad syntax. " + cmdstr +  " does not have a greater-than sign (>)") ;
             }
 
-            KeyMatcher::keyset_t keyset{} ;
+            BindingsMatcher::keyset_t keyset{} ;
             const auto keystrset = utility::split(cmdstr.substr(i + 1, pairpos - i - 1), "-") ;
             for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
                 if(code != keystrset.begin() && code->length() == 1) { //ascii code
                     //ascii
-                    if(auto vkc = keycvt::get_vkc(code->front())) {
+                    if(auto vkc = keycodecvt::get_vkc(code->front())) {
                         keyset.push_back(vkc) ;
                         continue ;
                     }
 
                     //shifted ascii
-                    if(auto vkc = keycvt::get_shifted_vkc(code->front())) {
+                    if(auto vkc = keycodecvt::get_shifted_vkc(code->front())) {
                         keyset.push_back(vkc) ;
-                        keyset.push_back(VKC_SHIFT) ;
+                        keyset.push_back(KEYCODE_SHIFT) ;
                         continue ;
                     }
                 }
@@ -123,30 +123,30 @@ namespace
                 }
 
                 if(lowercode == "any") {
-                    keyset.push_back(VKC_OPTIONAL) ;
+                    keyset.push_back(KEYCODE_OPTIONAL) ;
                     continue ;
                 }
                 if(lowercode == "num") {
-                    keyset.push_back(VKC_OPTNUMBER) ;
+                    keyset.push_back(KEYCODE_OPTNUMBER) ;
                     continue ;
                 }
 
                 if(auto ascii = get_specode(lowercode)) {
-                    if(auto vkc = keycvt::get_vkc(ascii)) {
+                    if(auto vkc = keycodecvt::get_vkc(ascii)) {
                         keyset.push_back(vkc) ;
                         continue ;
                     }
-                    if(auto vkc = keycvt::get_shifted_vkc(ascii)) {
+                    if(auto vkc = keycodecvt::get_shifted_vkc(ascii)) {
                         keyset.push_back(vkc) ;
-                        keyset.push_back(VKC_SHIFT) ;
+                        keyset.push_back(KEYCODE_SHIFT) ;
                         continue ;
                     }
 
-                    ERROR_PRINT(*code  + " is not supported. (" + path::BINDINGS() + ")") ;
+                    PRINT_ERROR(*code  + " is not supported. (" + path::BINDINGS() + ")") ;
                     continue ;
                 }
 
-                if(const auto vkc = keycvt::get_sys_vkc(lowercode)) {
+                if(const auto vkc = keycodecvt::get_sys_vkc(lowercode)) {
                     keyset.push_back(vkc) ;
 
                     //If a system key is bindied as a single command.
@@ -156,7 +156,7 @@ namespace
                     continue ;
                 }
 
-                ERROR_PRINT(*code + "\t of " + cmdstr + " is invalid system key code") ;
+                PRINT_ERROR(*code + "\t of " + cmdstr + " is invalid system key code") ;
             }
 
             cmd.push_back(std::move(keyset)) ;
@@ -176,7 +176,7 @@ namespace vind
             g_func_list = BindingsLists::get() ;
 
             g_unbinded_syskeys.clear() ;
-            g_unbinded_syskeys = keycvt::get_all_sys_vkc() ;
+            g_unbinded_syskeys = keycodecvt::get_all_sys_vkc() ;
 
             easyclick::initialize() ;
         }
@@ -195,7 +195,7 @@ namespace vind
 
             constexpr auto mode_num = static_cast<unsigned char>(Mode::NUM) ;
 
-            std::array<KeyMatcher::shp_t, mode_num> matcher_list ;
+            std::array<BindingsMatcher::shp_t, mode_num> matcher_list ;
 
             //if JSON's data is "edin": ["<guin>"], index_links[edin-index] = guin-index
             std::array<unsigned char, mode_num> index_links ;
@@ -205,7 +205,7 @@ namespace vind
             }
 
             //initialize the ignoring key list
-            g_unbinded_syskeys = keycvt::get_all_sys_vkc() ;
+            g_unbinded_syskeys = keycodecvt::get_all_sys_vkc() ;
 
             //create name lists of BindidFunc
             std::unordered_map<std::string, BindedFunc::shp_t> funclist ;
@@ -217,7 +217,7 @@ namespace vind
                 try {
                     auto& func = funclist.at(obj.at("name")) ;
                     if(!obj.is_object()) {
-                        ERROR_PRINT("The child of root-array should be object. (" \
+                        PRINT_ERROR("The child of root-array should be object. (" \
                                 + path::BINDINGS() + ", name: " + obj["name"].get<std::string>() + ").") ;
                     }
 
@@ -228,23 +228,23 @@ namespace vind
                         try {
                             const auto& cmds = obj.at(index.second) ;
                             if(!cmds.is_array()) {
-                                ERROR_PRINT("The command lists should be array (" \
+                                PRINT_ERROR("The command lists should be array (" \
                                         + func->name() + "/" + index.second + ").") ;
                                 continue ;
                             }
                             if(cmds.empty()) {
                                 continue ;
                             }
-                            KeyMatcher::cmdlist_t cmdlist ;
+                            BindingsMatcher::cmdlist_t cmdlist ;
 
                             for(std::string cmdstr : cmds) {
                                 if(cmdstr.empty()) continue ;
-                                KeyMatcher::cmd_t cmd ;
+                                BindingsMatcher::cmd_t cmd ;
                                 try {
                                     cmd = parse_string_command(cmdstr) ;
                                 }
                                 catch(const std::runtime_error& e) {
-                                    ERROR_PRINT(func->name() + "::" + index.second \
+                                    PRINT_ERROR(func->name() + "::" + index.second \
                                             + " in " + path::BINDINGS() + " " + e.what()) ;
                                     continue ;
                                 }
@@ -259,12 +259,12 @@ namespace vind
 
                             if(cmdlist.empty()) continue ;
 
-                            //create KeyMatcher for one mode
+                            //create BindingsMatcher for one mode
                             matcher_list[static_cast<unsigned char>(index.first)] \
-                                = std::make_shared<KeyMatcher>(std::move(cmdlist)) ;
+                                = std::make_shared<BindingsMatcher>(std::move(cmdlist)) ;
                         }
                         catch(const std::out_of_range& e) {
-                            ERROR_PRINT(e.what()) ;
+                            PRINT_ERROR(e.what()) ;
                             continue ;
                         }
                     }
@@ -286,7 +286,7 @@ namespace vind
                     }
                 }
                 catch(const std::out_of_range& e) {
-                    ERROR_PRINT(std::string(e.what()) + ". The following syntax is invalid." + obj.dump()) ;
+                    PRINT_ERROR(std::string(e.what()) + ". The following syntax is invalid." + obj.dump()) ;
                     continue ;
                 }
             }
@@ -311,7 +311,7 @@ namespace vind
                     return false ;
                 }
                 case InvalidPolicy::AllSystemKey: {
-                    static const auto system_keys = keycvt::get_all_sys_vkc() ;
+                    static const auto system_keys = keycodecvt::get_all_sys_vkc() ;
                     return must_ignore(system_keys) ;
                 }
                 case InvalidPolicy::UnbindedSystemKey: {
@@ -396,7 +396,7 @@ namespace vind
 //internal linkage
 namespace
 {
-    VKCLogger g_logger{} ;
+    KeycodeLogger g_logger{} ;
     BindedFunc::shp_t g_running_func       = nullptr ;
     unsigned int g_repeat_num              = 0 ;
     bool g_must_release_key_after_repeated = false ;
@@ -407,8 +407,8 @@ namespace vind
     namespace keybind {
         void call_matched_funcs() {
             static const KeyLog c_nums {
-                VKC_0, VKC_1, VKC_2, VKC_3, VKC_4,
-                VKC_5, VKC_6, VKC_7, VKC_8, VKC_9
+                KEYCODE_0, KEYCODE_1, KEYCODE_2, KEYCODE_3, KEYCODE_4,
+                KEYCODE_5, KEYCODE_6, KEYCODE_7, KEYCODE_8, KEYCODE_9
             } ;
 
             g_logger.update() ;
@@ -423,7 +423,7 @@ namespace vind
             }
 
             if(g_repeat_num != 0) {
-                if(g_logger.latest().is_containing(VKC_ESC)) {
+                if(g_logger.latest().is_containing(KEYCODE_ESC)) {
                     g_repeat_num = 0 ;
                     VirtualCmdLine::reset() ;
                 }
@@ -481,7 +481,7 @@ namespace vind
             auto matched_func = find_func(g_logger, g_running_func) ;
 
             if(!matched_func) {
-                if(!keycvt::is_number(topvkc)) {
+                if(!keycodecvt::is_number(topvkc)) {
                     //If inputed non-numeric key, reset the repeat number.
                     if(g_repeat_num != 0) {
                         g_repeat_num = 0 ;
@@ -491,7 +491,7 @@ namespace vind
                 else {
                     static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
                     if(g_repeat_num < max && !mode::is_insert()) { //Whether it is not out of range?
-                        g_repeat_num = g_repeat_num * 10 + keycvt::to_number(topvkc) ;
+                        g_repeat_num = g_repeat_num * 10 + keycodecvt::to_number(topvkc) ;
                         VirtualCmdLine::cout(std::to_string(g_repeat_num)) ;
                     }
                 }

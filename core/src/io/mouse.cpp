@@ -1,5 +1,5 @@
-#include "mouse_eventer.hpp"
-#include "key/virtual_key_fwd.hpp"
+#include "mouse.hpp"
+#include "key/keycode_def.hpp"
 #include <iostream>
 #include <memory>
 #include <unordered_map>
@@ -7,24 +7,24 @@
 namespace
 {
     std::unordered_map<unsigned char, bool> btstate = {
-        {VKC_MOUSE_LEFT,  false},
-        {VKC_MOUSE_MID,   false},
-        {VKC_MOUSE_RIGHT, false}
+        {KEYCODE_MOUSE_LEFT,  false},
+        {KEYCODE_MOUSE_MID,   false},
+        {KEYCODE_MOUSE_RIGHT, false}
     } ;
 
     inline DWORD btcode_to_upevent(const unsigned btcode) noexcept {
         switch(btcode) {
-            case VKC_MOUSE_LEFT: return MOUSEEVENTF_LEFTUP ;
-            case VKC_MOUSE_RIGHT: return MOUSEEVENTF_RIGHTUP ;
-            case VKC_MOUSE_MID: return MOUSEEVENTF_MIDDLEUP ;
+            case KEYCODE_MOUSE_LEFT: return MOUSEEVENTF_LEFTUP ;
+            case KEYCODE_MOUSE_RIGHT: return MOUSEEVENTF_RIGHTUP ;
+            case KEYCODE_MOUSE_MID: return MOUSEEVENTF_MIDDLEUP ;
             default: return 0 ;
         }
     }
     inline DWORD btcode_to_downevent(const unsigned btcode) noexcept {
         switch(btcode) {
-            case VKC_MOUSE_LEFT: return MOUSEEVENTF_LEFTDOWN ;
-            case VKC_MOUSE_RIGHT: return MOUSEEVENTF_RIGHTDOWN ;
-            case VKC_MOUSE_MID: return MOUSEEVENTF_MIDDLEDOWN ;
+            case KEYCODE_MOUSE_LEFT: return MOUSEEVENTF_LEFTDOWN ;
+            case KEYCODE_MOUSE_RIGHT: return MOUSEEVENTF_RIGHTDOWN ;
+            case KEYCODE_MOUSE_MID: return MOUSEEVENTF_MIDDLEDOWN ;
             default: return 0 ;
         }
     }

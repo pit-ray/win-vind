@@ -24,10 +24,10 @@
 #include "utility.hpp"
 #include "wx_prop_dlg.hpp"
 #include "io_params.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "path.hpp"
 
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 namespace wxGUI
 {
@@ -106,7 +106,7 @@ namespace wxGUI
                 return false ;
             }
             if(!ioParams::initialize()) {
-                ERROR_PRINT("Failed initialize ioParams.") ;
+                PRINT_ERROR("Failed initialize ioParams.") ;
                 return false ;
             }
 
@@ -151,7 +151,7 @@ namespace wxGUI
             throw ; //Rethrow the current exception.
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
         }
 
         return false ; //exit program
@@ -162,7 +162,7 @@ namespace wxGUI
             throw ; //Rethrow the current exception.
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
         }
         //the program is already about to exit.
     }

@@ -30,10 +30,10 @@ namespace
             return TRUE ;
         }
 
-        screen::MonitorInfo minfo ;
-        screen::get_monitor_metrics(hwnd, minfo) ;
+        screenmetrics::MonitorInfo minfo ;
+        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
 
-        if(screen::is_out_of_range(rect, minfo.work_rect)) {
+        if(screenmetrics::is_out_of_range(rect, minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -67,10 +67,10 @@ namespace
             auto& enu_hwnd = enumed_rect.first ;
             auto& enu_rect = enumed_rect.second ;
 
-            auto cx  = screen::center_x(fg_rect) ;
-            auto cy  = screen::center_y(fg_rect) ;
-            auto ecx = screen::center_x(enu_rect) ;
-            auto ecy = screen::center_y(enu_rect) ;
+            auto cx  = screenmetrics::center_x(fg_rect) ;
+            auto cy  = screenmetrics::center_y(fg_rect) ;
+            auto ecx = screenmetrics::center_x(enu_rect) ;
+            auto ecy = screenmetrics::center_y(enu_rect) ;
 
             if(is_if_target(fg_rect, enu_rect, cx, cy, ecx, ecy)) {
                 const auto distance = calc_distance(fg_rect, enu_rect, cx, cy, ecx, ecy) ;
@@ -99,7 +99,7 @@ namespace vind
     void SelectLeftWindow::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -117,7 +117,7 @@ namespace vind
                 auto UNUSED(cx), auto cy,
                 auto ecx, auto ecy) {
 
-            return screen::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
+            return screenmetrics::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -130,7 +130,7 @@ namespace vind
     void SelectRightWindow::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -148,7 +148,7 @@ namespace vind
                 auto UNUSED(cx), auto cy,
                 auto ecx, auto ecy) {
 
-            return screen::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
+            return screenmetrics::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -161,7 +161,7 @@ namespace vind
     void SelectUpperWindow::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -179,7 +179,7 @@ namespace vind
                 auto cx, auto UNUSED(cy),
                 auto ecx, auto ecy) {
 
-            return screen::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
+            return screenmetrics::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -192,7 +192,7 @@ namespace vind
     void SelectLowerWindow::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -210,7 +210,7 @@ namespace vind
                 auto cx, auto UNUSED(cy),
                 auto ecx, auto ecy) {
 
-            return screen::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
+            return screenmetrics::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;

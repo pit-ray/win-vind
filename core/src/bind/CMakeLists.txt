@@ -14,10 +14,10 @@ add_subdirectory(utility)
 add_subdirectory(window)
 
 add_library(bind STATIC
+    bind.cpp
     binded_func.cpp
-    key_binder.cpp
-    key_matcher.cpp
-    mode_manager.cpp
+    bindings_matcher.cpp
+    mode.cpp
 )
 target_link_libraries(bind ctrl emu file mode mouse proc uia utility window)
 enable_cotire(bind)

@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 #include "io/screen_metrics.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
 #include "window_utility.hpp"
 
@@ -38,9 +38,9 @@ namespace
         }
 
         //Is existed in work area?
-        screen::MonitorInfo minfo ;
-        screen::get_monitor_metrics(hwnd, minfo) ;
-        if(screen::is_out_of_range(rect, minfo.work_rect)) {
+        screenmetrics::MonitorInfo minfo ;
+        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+        if(screenmetrics::is_out_of_range(rect, minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -60,7 +60,7 @@ namespace
             CloseHandle(hproc) ;
             std::stringstream ss ;
             ss << "Could not get the memory infomation of " << hwnd ;
-            ERROR_PRINT(ss.str()) ;
+            PRINT_ERROR(ss.str()) ;
             return FALSE ; //break
         }
         CloseHandle(hproc) ;
@@ -95,8 +95,8 @@ namespace
                 auto& pre_rect = rects[pre_hwnd] ;
                 auto rect = pre_rect ;
 
-                const auto pre_w = screen::width(pre_rect) ;
-                const auto pre_h = screen::height(pre_rect) ;
+                const auto pre_w = screenmetrics::width(pre_rect) ;
+                const auto pre_h = screenmetrics::height(pre_rect) ;
                 if(pre_w > pre_h) {
                     pre_rect.right -= pre_w / 2 ;
                     rect.left      += pre_w / 2 ;
@@ -124,7 +124,7 @@ namespace vind
     void ArrangeWindows::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 

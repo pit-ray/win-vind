@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "io/keybrd_eventer.hpp"
-#include "io/mouse_eventer.hpp"
+#include "io/keybrd.hpp"
+#include "io/mouse.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "utility.hpp"
 
@@ -30,9 +30,9 @@ namespace vind
     void SCRedo::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        auto redo = [] {keybrd::pushup(VKC_LCTRL, VKC_Y) ;} ;
+        auto redo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;} ;
         if(repeat_num == 1) {
             if(first_call) {
                 pimpl->ksr.reset() ;
@@ -74,9 +74,9 @@ namespace vind
     void SCUndo::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
-        auto undo = [] {keybrd::pushup(VKC_LCTRL, VKC_Z) ;} ;
+        auto undo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;} ;
         if(repeat_num == 1) {
             if(first_call) {
                 pimpl->ksr.reset() ;

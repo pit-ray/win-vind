@@ -7,7 +7,7 @@
 #include "enable_gcc_warning.hpp"
 
 #include "wx_constant.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "io_params.hpp"
 #include "path.hpp"
 
@@ -22,12 +22,12 @@ namespace UITrans
                 ifs >> j ;
             }
             catch(const std::exception& e) {
-                ERROR_PRINT(std::string(e.what()) + ", failed loading ui.json") ;
+                PRINT_ERROR(std::string(e.what()) + ", failed loading ui.json") ;
             }
             return j ;
         } ;
         static const auto j = init(vind::path::Default::UI()) ;
-        static constexpr auto error_str = wxT("ERROR_PRINT") ;
+        static constexpr auto error_str = wxT("PRINT_ERROR") ;
 
         if(j.empty()) {
             return error_str ;
@@ -48,7 +48,7 @@ namespace UITrans
                 }
             }
             catch(const std::exception& e2) {
-                ERROR_PRINT(std::string(e2.what()) + ", not found") ;
+                PRINT_ERROR(std::string(e2.what()) + ", not found") ;
                 return error_str ;
             }
         }

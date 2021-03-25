@@ -19,8 +19,8 @@ namespace
             throw RUNTIME_EXCEPT("There is not the foreground window.") ;
         }
 
-        screen::MonitorInfo minfo ;
-        screen::get_monitor_metrics(hwnd, minfo) ;
+        screenmetrics::MonitorInfo minfo ;
+        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
 
         RECT half_rect ;
         calc_half_size(half_rect, minfo.work_rect) ;
@@ -30,8 +30,8 @@ namespace
             throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
         }
 
-        if(screen::is_equel(cur_rect, half_rect)) {
-            screen::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
+        if(screenmetrics::is_equel(cur_rect, half_rect)) {
+            screenmetrics::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
 
             calc_half_size(half_rect, minfo.work_rect) ;
         }
@@ -40,8 +40,8 @@ namespace
                 hwnd,
                 half_rect.left,
                 half_rect.top,
-                screen::width(half_rect),
-                screen::height(half_rect)) ;
+                screenmetrics::width(half_rect),
+                screenmetrics::height(half_rect)) ;
     }
 }
 
@@ -55,19 +55,19 @@ namespace vind
     void SnapCurrentWindow2Left::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
             rect.top    = mrect.top ;
-            rect.right  = rect.left + screen::width(mrect) / 2 ;
+            rect.right  = rect.left + screenmetrics::width(mrect) / 2 ;
             rect.bottom = mrect.bottom ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{rect.left - 100, screen::center_y(rect)} ;
+            return POINT{rect.left - 100, screenmetrics::center_y(rect)} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -82,19 +82,19 @@ namespace vind
     void SnapCurrentWindow2Right::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
-            rect.left   = mrect.left + screen::width(mrect) / 2 ;
+            rect.left   = mrect.left + screenmetrics::width(mrect) / 2 ;
             rect.top    = mrect.top ;
             rect.right  = mrect.right ;
             rect.bottom = mrect.bottom ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{rect.right + 100, screen::center_y(rect)} ;
+            return POINT{rect.right + 100, screenmetrics::center_y(rect)} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -109,7 +109,7 @@ namespace vind
     void SnapCurrentWindow2Top::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -117,11 +117,11 @@ namespace vind
             rect.left   = mrect.left ;
             rect.top    = mrect.top ;
             rect.right  = mrect.right ;
-            rect.bottom = rect.top + screen::height(mrect) / 2 ;
+            rect.bottom = rect.top + screenmetrics::height(mrect) / 2 ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{screen::center_x(rect), rect.top - 100} ;
+            return POINT{screenmetrics::center_x(rect), rect.top - 100} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -135,19 +135,19 @@ namespace vind
     void SnapCurrentWindow2Bottom::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
-            rect.top    = mrect.top + screen::height(mrect) / 2 ;
+            rect.top    = mrect.top + screenmetrics::height(mrect) / 2 ;
             rect.right  = mrect.right ;
             rect.bottom = mrect.bottom ;
         } ;
 
         auto next_monitor_pos = [] (const RECT& rect) {
-            return POINT{screen::center_x(rect), rect.bottom + 100} ;
+            return POINT{screenmetrics::center_x(rect), rect.bottom + 100} ;
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;

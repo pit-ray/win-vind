@@ -2,17 +2,17 @@
 
 #include "i_params.hpp"
 #include "io/display_text_painter.hpp"
-#include "io/keybrd_eventer.hpp"
-#include "io/mouse_eventer.hpp"
+#include "io/keybrd.hpp"
+#include "io/mouse.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
-#include "key/virtual_key_fwd.hpp"
-#include "key/vkc_converter.hpp"
-#include "key_binder.hpp"
-#include "msg_logger.hpp"
+#include "key/keycode_def.hpp"
+#include "key/keycodecvt.hpp"
+#include "bind.hpp"
+#include "err_logger.hpp"
 #include "uia.hpp"
 #include "utility.hpp"
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <stdexcept>
@@ -108,9 +108,9 @@ namespace
             std::size_t& need_draw_count,
             std::mutex& mtx,
             const bool& continue_running,
-            const unsigned char sendkey=VKC_UNDEFINED) ;
+            const unsigned char sendkey=KEYCODE_UNDEFINED) ;
 
-    void do_easy_click(const unsigned char sendkey=VKC_UNDEFINED) {
+    void do_easy_click(const unsigned char sendkey=KEYCODE_UNDEFINED) {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("There is not a foreground window.") ;
@@ -214,8 +214,8 @@ namespace
             utility::refresh_display(NULL) ; //remove hints in display
 
             //release all keys
-            for(unsigned char key : keyabsorb::get_pressed_list()) {
-                keyabsorb::release_virtually(key) ;
+            for(unsigned char key : keyabsorber::get_pressed_list()) {
+                keyabsorber::release_virtually(key) ;
             }
         }
     }
@@ -231,10 +231,10 @@ namespace vind
     void EasyClickLeft::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        do_easy_click(VKC_MOUSE_LEFT) ;
+        do_easy_click(KEYCODE_MOUSE_LEFT) ;
     }
 
     //EasyClickRight
@@ -244,10 +244,10 @@ namespace vind
     void EasyClickRight::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        do_easy_click(VKC_MOUSE_RIGHT) ;
+        do_easy_click(KEYCODE_MOUSE_RIGHT) ;
     }
 
     //EasyClickMid
@@ -257,10 +257,10 @@ namespace vind
     void EasyClickMid::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        do_easy_click(VKC_MOUSE_MID) ;
+        do_easy_click(KEYCODE_MOUSE_MID) ;
     }
 
     //EasyClickHover
@@ -270,10 +270,10 @@ namespace vind
     void EasyClickHover::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        do_easy_click(VKC_UNDEFINED) ;
+        do_easy_click(KEYCODE_UNDEFINED) ;
     }
 
     namespace easyclick {
@@ -353,7 +353,7 @@ namespace
             throw std::runtime_error("Could not get the a rectangle of element.") ;
         }
 
-        if(!screen::is_fully_in_range(rect, window_rect)) {
+        if(!screenmetrics::is_fully_in_range(rect, window_rect)) {
             throw std::runtime_error("The rectangle of element exists in a invalid range.") ;
         }
 
@@ -481,7 +481,7 @@ namespace
             return TRUE ;
         }
 
-        if(screen::width(rect) == 0 || screen::height(rect) == 0) {
+        if(screenmetrics::width(rect) == 0 || screenmetrics::height(rect) == 0) {
             return TRUE ;
         }
         if(rect.left < 0 || rect.top < 0 || rect.right < 0 || rect.bottom < 0) {
@@ -543,11 +543,11 @@ namespace
     //
     // ---------------------------------------
     constexpr std::array<unsigned char, 26> gcx_labels = {
-        VKC_A, VKC_S, VKC_D, VKC_G, VKC_H,
-        VKC_K, VKC_L, VKC_Q, VKC_W, VKC_E,
-        VKC_R, VKC_T, VKC_Y, VKC_U, VKC_I,
-        VKC_O, VKC_P, VKC_Z, VKC_X, VKC_C,
-        VKC_V, VKC_B, VKC_N, VKC_M, VKC_F, VKC_J
+        KEYCODE_A, KEYCODE_S, KEYCODE_D, KEYCODE_G, KEYCODE_H,
+        KEYCODE_K, KEYCODE_L, KEYCODE_Q, KEYCODE_W, KEYCODE_E,
+        KEYCODE_R, KEYCODE_T, KEYCODE_Y, KEYCODE_U, KEYCODE_I,
+        KEYCODE_O, KEYCODE_P, KEYCODE_Z, KEYCODE_X, KEYCODE_C,
+        KEYCODE_V, KEYCODE_B, KEYCODE_N, KEYCODE_M, KEYCODE_F, KEYCODE_J
     } ;
 
     //Currrently, supported only 26 x 26 x 26 = 17576 patterns.
@@ -629,7 +629,7 @@ namespace
         for(std::size_t i = 0 ; i < hints.size() ; i ++) {
             std::string str ;
             for(auto& key : hints[i]) {
-                str.push_back(keycvt::get_shifted_ascii(key)) ;
+                str.push_back(keycodecvt::get_shifted_ascii(key)) ;
             }
             hints_str[i] = std::move(str) ;
         }
@@ -691,8 +691,8 @@ namespace
             const bool& continue_running,
             const unsigned char sendkey) {
 
-        keyabsorb::InstantKeyAbsorber ika ;
-        VKCLogger lgr ;
+        keyabsorber::InstantKeyAbsorber ika ;
+        KeycodeLogger lgr ;
 
         while(vind::update_background() && continue_running) {
             lgr.update() ;
@@ -706,17 +706,17 @@ namespace
                 continue ;
             }
 
-            if(lgr.latest().is_containing(VKC_ESC)) {
+            if(lgr.latest().is_containing(KEYCODE_ESC)) {
                 return ;
             }
 
-            if(lgr.latest().is_containing(VKC_BKSPACE)) {
+            if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
                 if(lgr.size() == 1) {
                     return ;
                 }
 
                 lgr.remove_from_back(2) ;
-                keyabsorb::release_virtually(VKC_BKSPACE) ;
+                keyabsorber::release_virtually(KEYCODE_BKSPACE) ;
 
                 std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic ---------- (1)
 
@@ -737,7 +737,7 @@ namespace
 
             if(full_match_idx >= 0) {
                 SetCursorPos(points[full_match_idx].x(), points[full_match_idx].y()) ;
-                if(sendkey != VKC_UNDEFINED) {
+                if(sendkey != KEYCODE_UNDEFINED) {
                     mouse::click(sendkey) ;
                 }
                 return ;

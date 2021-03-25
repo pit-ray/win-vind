@@ -15,14 +15,14 @@ namespace vind
     void OpenNewCurWinWithHorizontalSplit::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         windowutil::ForegroundInfo fginfo ;
 
-        const auto w = screen::width(fginfo.rect) ;
-        const auto h = screen::height(fginfo.rect) ;
+        const auto w = screenmetrics::width(fginfo.rect) ;
+        const auto h = screenmetrics::height(fginfo.rect) ;
 
         //snap a original window to top
         windowutil::resize(
@@ -56,14 +56,14 @@ namespace vind
     void OpenNewCurWinWithVerticalSplit::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         windowutil::ForegroundInfo fginfo ;
 
-        const auto w = screen::width(fginfo.rect) ;
-        const auto h = screen::height(fginfo.rect) ;
+        const auto w = screenmetrics::width(fginfo.rect) ;
+        const auto h = screenmetrics::height(fginfo.rect) ;
 
         //snap a original window to left
         windowutil::resize(

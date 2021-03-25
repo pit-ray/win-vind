@@ -7,7 +7,7 @@
 #include "enable_gcc_warning.hpp"
 
 #include "path.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 
 //internal linkage
 namespace

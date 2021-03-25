@@ -1,7 +1,7 @@
-#ifndef _DYNAMIC_OPTION_WITH_CREATOR_HPP
-#define _DYNAMIC_OPTION_WITH_CREATOR_HPP
+#ifndef _OPTION_WITH_CREATOR_HPP
+#define _OPTION_WITH_CREATOR_HPP
 
-#include "dynamic_option.hpp"
+#include "option.hpp"
 #include <memory>
 
 namespace vind
@@ -11,13 +11,13 @@ namespace vind
     //if derived class does not use variable of member, sprocess prefers static function.
     //else, sprocess is constant function.
     template <typename Derived>
-    class DynamicOptionWithCreator : public DynamicOption {
+    class OptionWithCreator : public Option {
     public:
-        static std::unique_ptr<DynamicOption> create() {
+        static std::unique_ptr<Option> create() {
             return std::make_unique<Derived>() ;
         }
 
-        static std::shared_ptr<DynamicOption> create_with_cache() {
+        static std::shared_ptr<Option> create_with_cache() {
             static std::weak_ptr<Derived> cache ;
 
             auto pobj = cache.lock() ;

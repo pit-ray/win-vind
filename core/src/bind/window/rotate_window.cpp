@@ -41,8 +41,8 @@ namespace {
 
         auto p_args = reinterpret_cast<RotEnumArgs*>(lparam) ;
 
-        screen::MonitorInfo minfo ;
-        screen::get_monitor_metrics(hwnd, minfo) ;
+        screenmetrics::MonitorInfo minfo ;
+        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
 
         //search only in the same monitor as a foreground window.
         if(minfo.hmonitor != p_args->hmonitor) {
@@ -50,12 +50,12 @@ namespace {
         }
 
         //Is existed in work area?
-        if(screen::is_out_of_range(*prect, minfo.work_rect)) {
+        if(screenmetrics::is_out_of_range(*prect, minfo.work_rect)) {
             return TRUE ;
         }
 
-        const auto x = screen::center_x(*prect) - screen::center_x(minfo.work_rect) ;
-        const auto y = screen::center_y(minfo.work_rect) - screen::center_y(*prect) ;
+        const auto x = screenmetrics::center_x(*prect) - screenmetrics::center_x(minfo.work_rect) ;
+        const auto y = screenmetrics::center_y(minfo.work_rect) - screenmetrics::center_y(*prect) ;
 
         if(x == 0 && y == 0) {
             p_args->angle_hwnds[0.0f] = hwnd ;
@@ -94,8 +94,8 @@ namespace {
             windowutil::resize(
                     hwnd,
                     prect->left, prect->top,
-                    screen::width(*prect),
-                    screen::height(*prect)) ;
+                    screenmetrics::width(*prect),
+                    screenmetrics::height(*prect)) ;
         }
 
         if(!SetForegroundWindow(fginfo.hwnd)) {
@@ -116,7 +116,7 @@ namespace vind
     void RotateWindows::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -147,7 +147,7 @@ namespace vind
     void RotateWindowsInReverse::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 

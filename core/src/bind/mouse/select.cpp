@@ -1,7 +1,7 @@
 #include "select.hpp"
 
-#include "io/keybrd_eventer.hpp"
-#include "io/mouse_eventer.hpp"
+#include "io/keybrd.hpp"
+#include "io/mouse.hpp"
 #include "utility.hpp"
 
 namespace vind
@@ -14,11 +14,11 @@ namespace vind
     void SelectAll::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
-            mouse::click(VKC_MOUSE_LEFT) ;
-            keybrd::pushup(VKC_LCTRL, VKC_A) ;
+            mouse::click(KEYCODE_MOUSE_LEFT) ;
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_A) ;
         }
     }
 
@@ -31,11 +31,11 @@ namespace vind
     void ForwardUINavigation::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                keybrd::pushup(VKC_TAB) ;
+                keybrd::pushup(KEYCODE_TAB) ;
             }
         }
     }
@@ -48,11 +48,11 @@ namespace vind
     void BackwardUINavigation::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                keybrd::pushup(VKC_LSHIFT, VKC_TAB) ;
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
             }
         }
     }
@@ -65,10 +65,10 @@ namespace vind
     void DecideFocusedUIObject::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
-            keybrd::pushup(VKC_SPACE) ;
+            keybrd::pushup(KEYCODE_SPACE) ;
         }
     }
 }

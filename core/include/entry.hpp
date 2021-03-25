@@ -1,5 +1,5 @@
-#ifndef _WIN_VIND_HPP
-#define _WIN_VIND_HPP
+#ifndef _ENTRY_HPP
+#define _ENTRY_HPP
 
 /*
              _                  _           __
@@ -8,7 +8,7 @@
   | |/ |/ / / / / /_____/ |/ / / / / / /_/ /
   |__/|__/_/_/ /_/      |___/_/_/ /_/\__,_/
 
-   - Simple Vim Key Binder for Windows -
+       - Vim Key Binder for Windows -
 
 MIT License
 

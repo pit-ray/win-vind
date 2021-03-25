@@ -30,14 +30,14 @@
 #include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "path.hpp"
 #include "ui_translator.hpp"
 #include "utility.hpp"
 #include "wx_constant.hpp"
 
 #include "key/key_absorber.hpp"
-#include "io/mouse_eventer.hpp"
+#include "io/mouse.hpp"
 #include "bind/mode/change_mode.hpp"
 
 namespace wxGUI
@@ -289,7 +289,7 @@ namespace wxGUI
             if(update_bindings_state()) {
                 auto mode_idx = mode->GetSelection() ;
                 if(mode_idx == wxNOT_FOUND) {
-                    ERROR_PRINT("Mode Choise is not selected.") ;
+                    PRINT_ERROR("Mode Choise is not selected.") ;
                     return ;
                 }
 
@@ -614,7 +614,7 @@ namespace wxGUI
                 }
             }
             catch(const std::exception& e) {
-                ERROR_PRINT(e.what()) ;
+                PRINT_ERROR(e.what()) ;
             }
 
             pimpl->new_cmd->Clear() ;
@@ -660,7 +660,7 @@ namespace wxGUI
                 pimpl->update_mode_overview() ;
             }
             catch(const std::exception& e) {
-                ERROR_PRINT(std::string(e.what()) + "BindingsEvt::DEFAULT)") ;
+                PRINT_ERROR(std::string(e.what()) + "BindingsEvt::DEFAULT)") ;
                 return ;
             }
         }, BindingsEvt::DEFAULT) ;
@@ -707,7 +707,7 @@ namespace wxGUI
             }
 
             //release a message to push [Edit with Vim] button.
-            keyabsorb::close_all_ports_with_refresh() ;
+            keyabsorber::close_all_ports_with_refresh() ;
 
             try {
                 create(gvim_exe) ;
@@ -718,11 +718,11 @@ namespace wxGUI
 
             //wait until finishing a created child process.
             if(WaitForSingleObject(hproc, INFINITE) != WAIT_OBJECT_0) {
-                ERROR_PRINT("Failed the process of gVim in a child process.") ;
+                PRINT_ERROR("Failed the process of gVim in a child process.") ;
                 return ;
             }
 
-            keyabsorb::close_all_ports_with_refresh() ;
+            keyabsorber::close_all_ports_with_refresh() ;
 
             if(use_bindings) {
                 MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;

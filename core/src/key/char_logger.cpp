@@ -2,7 +2,7 @@
 
 #include "key_absorber.hpp"
 #include "key_logger_base.hpp"
-#include "vkc_converter.hpp"
+#include "keycodecvt.hpp"
 #include "time/keystroke_repeater.hpp"
 
 namespace
@@ -47,18 +47,18 @@ namespace vind
     CharLogger& CharLogger::operator=(CharLogger&&) = default ;
 
     void CharLogger::update() {
-        static const KeyLog cl_toggles(keycvt::get_toggle_keys()) ;
+        static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
 
         //ignore all toggle keys
-        auto log = keyabsorb::get_pressed_list() - cl_toggles ;
+        auto log = keyabsorber::get_pressed_list() - cl_toggles ;
 
         if(log != pimpl->prelog) { //type is changed
             const auto diff = log - pimpl->prelog ;
             pimpl->prelog = log ;
 
-            if(log.is_containing(VKC_SHIFT)) { //shfited
+            if(log.is_containing(KEYCODE_SHIFT)) { //shfited
                 auto data = diff.get() ;
-                data.insert(VKC_SHIFT) ;
+                data.insert(KEYCODE_SHIFT) ;
 
                 //construct KeyLog inside logs directly from std::vector
                 logging(std::move(data)) ;
@@ -101,16 +101,16 @@ namespace vind
 
         std::string str{} ;
         for(auto itr = cbegin() ; itr != cend() ; itr ++) {
-            if(itr->is_containing(VKC_SHIFT)) {
+            if(itr->is_containing(KEYCODE_SHIFT)) {
                 //shifted ascii
                 for(const auto vkc : *itr) {
-                    const auto c = keycvt::get_shifted_ascii(vkc) ;
+                    const auto c = keycodecvt::get_shifted_ascii(vkc) ;
                     if(c != 0) str.push_back(c) ;
                 }
                 continue ;
             }
             for(const auto vkc : *itr) {
-                const auto c = keycvt::get_ascii(vkc) ;
+                const auto c = keycodecvt::get_ascii(vkc) ;
                 if(c != 0) str.push_back(c) ;
             }
         }

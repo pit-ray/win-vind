@@ -1,6 +1,6 @@
 #include "close_window.hpp"
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "utility.hpp"
 
 namespace vind
@@ -13,10 +13,10 @@ namespace vind
     void CloseCurrentWindow::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
-            keybrd::pushup(VKC_LALT, VKC_F4) ;
+            keybrd::pushup(KEYCODE_LALT, KEYCODE_F4) ;
         }
     }
 }

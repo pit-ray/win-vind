@@ -1,9 +1,9 @@
 #include "edi_move_caret.hpp"
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
-#include "mode_manager.hpp"
-#include "msg_logger.hpp"
+#include "mode.hpp"
+#include "err_logger.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
@@ -79,12 +79,12 @@ namespace vind
     void EdiMoveCaretLeft::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(VKC_LSHIFT, VKC_LEFT) ;},
-                [] {pushup(VKC_LEFT) ;}) ;
+                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;},
+                [] {pushup(KEYCODE_LEFT) ;}) ;
     }
 
 
@@ -110,12 +110,12 @@ namespace vind
     void EdiMoveCaretRight::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(VKC_LSHIFT, VKC_RIGHT) ;},
-                [] {pushup(VKC_RIGHT) ;}) ;
+                [] {pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;},
+                [] {pushup(KEYCODE_RIGHT) ;}) ;
     }
 
 
@@ -141,16 +141,16 @@ namespace vind
     void EdiMoveCaretUp::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
             if(textselect::is_first_line_selection())
                 textselect::select_line_EOL2BOL() ;
 
-            keybrd::pushup(VKC_LSHIFT, VKC_UP) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
             //textselect::moving_update() ;
         } ;
-        auto n_press = [] {keybrd::pushup(VKC_UP) ;} ;
+        auto n_press = [] {keybrd::pushup(KEYCODE_UP) ;} ;
 
         if(parent_charlgr != nullptr) {
             auto str = parent_charlgr->to_str() ;
@@ -187,20 +187,20 @@ namespace vind
     void EdiMoveCaretDown::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
             if(textselect::is_first_line_selection())
                 textselect::select_line_BOL2EOL() ;
 
-            keybrd::pushup(VKC_LSHIFT, VKC_DOWN) ;
+            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
             //If call EdiMoveCaretDown after EdiMoveCaretUp,
             //inner variables of moving_update() are dedicated to EOL2BOL.
             //so we cannot move caret down.
             //textselect::moving_update() ;
         } ;
-        auto n_press = [] {keybrd::pushup(VKC_DOWN) ;} ;
+        auto n_press = [] {keybrd::pushup(KEYCODE_DOWN) ;} ;
 
         if(parent_charlgr != nullptr) {
             auto str = parent_charlgr->to_str() ;
@@ -238,12 +238,12 @@ namespace vind
     void EdiNMoveCaretwordsForward::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-            [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;},
-            [] {pushup(VKC_LCTRL, VKC_RIGHT) ;}) ;
+            [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;},
+            [] {pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;}) ;
     }
 
 
@@ -269,12 +269,12 @@ namespace vind
     void EdiNMoveCaretwordsBackward::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;},
-                [] {pushup(VKC_LCTRL, VKC_LEFT) ;}) ;
+                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;},
+                [] {pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;}) ;
     }
 
 
@@ -300,12 +300,12 @@ namespace vind
     void EdiNMoveCaretWORDSForward::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_RIGHT) ;},
-                [] {pushup(VKC_LCTRL, VKC_RIGHT) ;}) ;
+                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;},
+                [] {pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;}) ;
     }
 
 
@@ -331,11 +331,11 @@ namespace vind
     void EdiNMoveCaretWORDSBackward::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(VKC_LSHIFT, VKC_LCTRL, VKC_LEFT) ;},
-                [] {pushup(VKC_LCTRL, VKC_LEFT) ;}) ;
+                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;},
+                [] {pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;}) ;
     }
 }

@@ -1,7 +1,7 @@
 #include "wx_panel_core.hpp"
 
 #include "ui_translator.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 
 namespace wxGUI
 {
@@ -11,10 +11,10 @@ namespace wxGUI
       uip(std::move(ui_path_code))
     {
         if(!p_book_ctrl) {
-            ERROR_PRINT("the passed wxBookCtrlBase* is nullptr") ;
+            PRINT_ERROR("the passed wxBookCtrlBase* is nullptr") ;
             return ;
         }
-        pbk->AddPage(this, wxT("ERROR_PRINT")) ;
+        pbk->AddPage(this, wxT("PRINT_ERROR")) ;
     }
     PanelCore::~PanelCore() noexcept = default ;
 

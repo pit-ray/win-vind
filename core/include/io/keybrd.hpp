@@ -1,12 +1,12 @@
-#ifndef _KEYBRD_EVENTER_HPP
-#define _KEYBRD_EVENTER_HPP
+#ifndef _KEYBRD_HPP
+#define _KEYBRD_HPP
 
 #include <memory>
 #include <type_traits>
 #include <stack>
 #include <iostream>
 
-#include "key/virtual_key_fwd.hpp"
+#include "key/keycode_def.hpp"
 #include "key/key_absorber.hpp"
 
 namespace vind

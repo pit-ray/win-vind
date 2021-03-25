@@ -3,18 +3,18 @@
 #include <array>
 #include <atomic>
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
-#include "key/vkc_converter.hpp"
-#include "key/vkc_logger.hpp"
-#include "mode_manager.hpp"
-#include "msg_logger.hpp"
+#include "key/keycodecvt.hpp"
+#include "key/keycode_logger.hpp"
+#include "mode.hpp"
+#include "err_logger.hpp"
 
 namespace vind
 {
     struct BindedFunc::Impl {
-        std::array<KeyMatcher::shp_t, static_cast<int>(mode::Mode::NUM)> mtrs ;
+        std::array<BindingsMatcher::shp_t, static_cast<int>(mode::Mode::NUM)> mtrs ;
         unsigned char modeidx ;
         std::atomic_bool running_now ;
 
@@ -38,7 +38,7 @@ namespace vind
     void BindedFunc::process(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* parent_vkclgr,
+            KeycodeLogger* parent_vkclgr,
             const CharLogger* const parent_charlgr) const {
         if(repeat_num == 0) return ;
 
@@ -49,35 +49,35 @@ namespace vind
             //correct the state
             //to avoid cases that a virtual key is judged to be pressed,
             //though a real key is released.
-            for(auto& key : keyabsorb::get_pressed_list()) {
-                if(!keyabsorb::is_really_pressed(key)) {
-                    keyabsorb::release_virtually(key) ;
+            for(auto& key : keyabsorber::get_pressed_list()) {
+                if(!keyabsorber::is_really_pressed(key)) {
+                    keyabsorber::release_virtually(key) ;
                 }
             }
         }
         catch(const std::runtime_error& e) {
-            ERROR_PRINT(name() + " failed. " + e.what()) ;
+            PRINT_ERROR(name() + " failed. " + e.what()) ;
             try {
-                const auto buf = keyabsorb::get_pressed_list() ;
+                const auto buf = keyabsorber::get_pressed_list() ;
                 if(!buf.empty()) {
-                    if(keyabsorb::is_absorbed()) {
-                        keyabsorb::open_some_ports(buf.get()) ;
+                    if(keyabsorber::is_absorbed()) {
+                        keyabsorber::open_some_ports(buf.get()) ;
                     }
                     for(auto& key : buf) {
                         keybrd::release_keystate(key) ;
                     }
-                    if(keyabsorb::is_absorbed()) {
-                        keyabsorb::close_all_ports() ;
-                        keyabsorb::absorb() ;
+                    if(keyabsorber::is_absorbed()) {
+                        keyabsorber::close_all_ports() ;
+                        keyabsorber::absorb() ;
                     }
                     else {
-                        keyabsorb::close_all_ports() ;
-                        keyabsorb::unabsorb() ;
+                        keyabsorber::close_all_ports() ;
+                        keyabsorber::unabsorb() ;
                     }
                 }
             }
             catch(const std::runtime_error& e2) {
-                ERROR_PRINT(name()
+                PRINT_ERROR(name()
                         + " failed. Cannot refresh all key state. "
                         + e2.what()) ;
             }
@@ -87,14 +87,14 @@ namespace vind
 
     void BindedFunc::register_matcher(
             const mode::Mode mode,
-            const KeyMatcher::shp_t matcher) const {
+            const BindingsMatcher::shp_t matcher) const {
         if(!matcher) return ;
         pimpl->mtrs.at(static_cast<unsigned char>(mode)) = matcher ;
     }
 
     void BindedFunc::register_matcher(
             const unsigned char mode,
-            const KeyMatcher::shp_t matcher) const {
+            const BindingsMatcher::shp_t matcher) const {
         if(!matcher) return ;
         pimpl->mtrs.at(mode) = matcher ;
     }

@@ -3,45 +3,45 @@
 #include <windows.h>
 #include <iostream>
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
-#include "key/virtual_key_fwd.hpp"
-#include "key/vkc_converter.hpp"
+#include "key/keycode_def.hpp"
+#include "key/keycodecvt.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "text/text_analyzer.hpp"
 #include "utility.hpp"
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 namespace
 {
     using namespace vind ;
 
     inline auto is_shift(const unsigned key) noexcept {
-        return key == VKC_SHIFT || key == VKC_LSHIFT || key == VKC_RSHIFT ;
+        return key == KEYCODE_SHIFT || key == KEYCODE_LSHIFT || key == KEYCODE_RSHIFT ;
     }
 
     template <typename FuncT>
     inline void loop_for_keymatching(FuncT&& func) {
         //reset keys downed in order to call this function.
-        for(const auto& key : keyabsorb::get_pressed_list()) {
+        for(const auto& key : keyabsorber::get_pressed_list()) {
             if(is_shift(key)) continue ;
             keybrd::release_keystate(key) ;
         }
 
         while(vind::update_background()) {
-            if(keyabsorb::is_pressed(VKC_ESC)) {
+            if(keyabsorber::is_pressed(KEYCODE_ESC)) {
                 return ;
             }
-            const auto log = keyabsorb::get_pressed_list() ;
+            const auto log = keyabsorber::get_pressed_list() ;
 
-            if(!log.is_containing(VKC_SHIFT)) {
+            if(!log.is_containing(KEYCODE_SHIFT)) {
                 //not shifted
                 for(const auto& key : log) {
                     //For example, if replace by 'i' and 'i' key is downed,
                     //immediately will call "insert-mode", so release 'i'.
                     keybrd::release_keystate(key) ;
 
-                    if(!keycvt::get_ascii(key)) {
+                    if(!keycodecvt::get_ascii(key)) {
                         continue ;
                     }
                     if(func(key)) {
@@ -54,7 +54,7 @@ namespace
                 for(const auto& key : log) {
                     if(is_shift(key)) continue ;
                     keybrd::release_keystate(key) ;
-                    if(!keycvt::get_shifted_ascii(key)) {
+                    if(!keycodecvt::get_shifted_ascii(key)) {
                         continue ;
                     }
                     if(func(key, true)) {
@@ -76,20 +76,20 @@ namespace vind
     void EdiNReplaceChar::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         loop_for_keymatching([repeat_num](const auto& vkcs, const bool shifted=false) {
 
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                keybrd::pushup(VKC_DELETE) ;
+                keybrd::pushup(KEYCODE_DELETE) ;
 
-                if(shifted) keybrd::pushup(VKC_LSHIFT, vkcs) ;
+                if(shifted) keybrd::pushup(KEYCODE_LSHIFT, vkcs) ;
                 else keybrd::pushup(vkcs) ;
             }
 
             for(unsigned int i = 0 ; i < repeat_num ; i ++)
-                keybrd::pushup(VKC_LEFT) ;
+                keybrd::pushup(KEYCODE_LEFT) ;
 
             return true ; //terminate looping
         }) ;
@@ -103,7 +103,7 @@ namespace vind
     void EdiNReplaceSequence::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -116,9 +116,9 @@ namespace vind
         std::vector<bool> shifts{} ;
 
         loop_for_keymatching([&strs, &shifts](const auto& vkcs, const bool shifted=false) {
-            pushup(VKC_DELETE) ;
+            pushup(KEYCODE_DELETE) ;
             if(shifted) {
-                pushup(VKC_LSHIFT, vkcs) ;
+                pushup(KEYCODE_LSHIFT, vkcs) ;
                 strs.push_back(vkcs) ;
                 shifts.push_back(true) ;
             }
@@ -132,8 +132,8 @@ namespace vind
 
         for(unsigned int i = 0 ; i < repeat_num - 1 ; i ++) {
             for(std::size_t stridx = 0 ; stridx < strs.size() ; stridx ++) {
-                pushup(VKC_DELETE) ;
-                if(shifts[stridx]) pushup(VKC_LSHIFT, strs[stridx]) ;
+                pushup(KEYCODE_DELETE) ;
+                if(shifts[stridx]) pushup(KEYCODE_LSHIFT, strs[stridx]) ;
                 else pushup(strs[stridx]) ;
             }
         }
@@ -150,35 +150,35 @@ namespace vind
     void EdiSwitchCharCase::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
         auto res = textanalyze::get_selected_text([&repeat_num] {
                 for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                    keybrd::pushup(VKC_LSHIFT, VKC_RIGHT) ;
+                    keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                 }
-                keybrd::pushup(VKC_LCTRL, VKC_X) ;
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             }) ;
 
         for(char c : res.str) {
             if(c >= 'a' && c <= 'z') {
-                keybrd::pushup(VKC_LSHIFT, keycvt::get_vkc(c)) ;
+                keybrd::pushup(KEYCODE_LSHIFT, keycodecvt::get_vkc(c)) ;
             }
             else if(c >= 'A' && c <= 'Z') {
                 static constexpr char delta = 'a' - 'A' ;
-                keybrd::pushup(keycvt::get_vkc(c + delta)) ;
+                keybrd::pushup(keycodecvt::get_vkc(c + delta)) ;
             }
             else {
-                auto vkc = keycvt::get_vkc(c) ;
+                auto vkc = keycodecvt::get_vkc(c) ;
                 if(vkc) {
                     keybrd::pushup(vkc) ;
                     continue ;
                 }
      
-                vkc = keycvt::get_shifted_vkc(c) ;
+                vkc = keycodecvt::get_shifted_vkc(c) ;
                 if(vkc) {
-                    keybrd::pushup(VKC_LSHIFT, vkc) ;
+                    keybrd::pushup(KEYCODE_LSHIFT, vkc) ;
                     continue ;
                 }
             }

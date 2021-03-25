@@ -1,11 +1,11 @@
 #ifndef _AUTOTRACK_POPUP_HPP
 #define _AUTOTRACK_POPUP_HPP
 
-#include "dynamic_option_with_creator.hpp"
+#include "option_with_creator.hpp"
 
 namespace vind
 {
-    class AutotrackPopup : public DynamicOptionWithCreator<AutotrackPopup>
+    class AutotrackPopup : public OptionWithCreator<AutotrackPopup>
     {
     private:
         struct Impl ;

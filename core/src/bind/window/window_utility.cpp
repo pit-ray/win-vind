@@ -2,7 +2,7 @@
 
 #include <dwmapi.h>
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "mouse/jump_actwin.hpp"
 #include "utility.hpp"
@@ -55,11 +55,11 @@ namespace vind
                 return false ;
             }
 
-            if(screen::width(rect) == 0) {
+            if(screenmetrics::width(rect) == 0) {
                 return false ;
             }
 
-            if(screen::height(rect) == 0) {
+            if(screenmetrics::height(rect) == 0) {
                 return false ;
             }
 
@@ -68,7 +68,7 @@ namespace vind
             if(!GetClientRect(hwnd, &client_rect)) {
                 return false ;
             }
-            if(screen::is_equel(rect, client_rect)) {
+            if(screenmetrics::is_equel(rect, client_rect)) {
                 return false ;
             }
 
@@ -95,15 +95,15 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not get a rectangle of a window.") ;
             }
 
-            if(screen::width(rect) != width || screen::height(rect) != height) {
+            if(screenmetrics::width(rect) != width || screenmetrics::height(rect) != height) {
                 //If a window is Chromium browser (e.g. GoogleChrome or Microsoft Edge) and when it is full screen,
                 //could not resize its size, so cancel full screen.
 
-                screen::MonitorInfo minfo ;
-                screen::get_monitor_metrics(hwnd, minfo) ;
+                screenmetrics::MonitorInfo minfo ;
+                screenmetrics::get_monitor_metrics(hwnd, minfo) ;
 
                 //Whether it is a full screen ?
-                if(!screen::is_bigger_than(rect, minfo.work_rect)) {
+                if(!screenmetrics::is_bigger_than(rect, minfo.work_rect)) {
                     return ;
                 }
 
@@ -112,7 +112,7 @@ namespace vind
                 }
 
                 //minimize it once
-                keybrd::pushup(VKC_LWIN, VKC_DOWN) ;
+                keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
                 Sleep(50) ; //50ms
 
                 if(!MoveWindow(hwnd, left, top, width, height, TRUE)) {
@@ -129,7 +129,7 @@ namespace vind
                 const auto hwnd = hr.first ;
                 const auto rect = hr.second ;
                 resize(hwnd, rect.left, rect.top,
-                        screen::width(rect), screen::height(rect)) ;
+                        screenmetrics::width(rect), screenmetrics::height(rect)) ;
             }
         }
     }

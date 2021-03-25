@@ -6,10 +6,10 @@
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "i_params.hpp"
-#include "io/mouse_eventer.hpp"
+#include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
-#include "key/virtual_key_fwd.hpp"
-#include "msg_logger.hpp"
+#include "key/keycode_def.hpp"
+#include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 
 namespace

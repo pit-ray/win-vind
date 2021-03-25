@@ -10,12 +10,12 @@ namespace vind
     void MyBinding::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_vkclgr,
             const CharLogger* const parent_charlgr) {
         if(first_call) {
-            mouse::click(VKC_MOUSE_LEFT) ; //left click
+            mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
         
-            keybrd::pushup(VKC_LWIN, VKC_D) ; //minimize all window
+            keybrd::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
         
             VirtualCmdLine::msgout("Hello World !") ;
         }

@@ -1,8 +1,8 @@
-#ifndef _KEY_BINDER_HPP
-#define _KEY_BINDER_HPP
+#ifndef _BIND_HPP
+#define _BIND_HPP
 
 #include "binded_func.hpp"
-#include "mode_manager.hpp"
+#include "mode.hpp"
 
 namespace vind
 {

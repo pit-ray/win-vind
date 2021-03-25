@@ -3,8 +3,8 @@
 #include <windows.h>
 #include <iostream>
 
-#include "io/mouse_eventer.hpp"
-#include "mode_manager.hpp"
+#include "io/mouse.hpp"
+#include "mode.hpp"
 
 namespace vind
 {
@@ -16,7 +16,7 @@ namespace vind
     void ClickLeft::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         using namespace mode ;
@@ -25,7 +25,7 @@ namespace vind
         }
 
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            mouse::click(VKC_MOUSE_LEFT) ;
+            mouse::click(KEYCODE_MOUSE_LEFT) ;
     }
 
 
@@ -37,7 +37,7 @@ namespace vind
     void ClickRight::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         using namespace mode ;
@@ -46,6 +46,6 @@ namespace vind
         }
 
         for(unsigned int i = 0 ; i < repeat_num ; i ++)
-            mouse::click(VKC_MOUSE_RIGHT) ;
+            mouse::click(KEYCODE_MOUSE_RIGHT) ;
     }
 }

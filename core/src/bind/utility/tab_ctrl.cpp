@@ -2,9 +2,9 @@
 
 #include <windows.h>
 
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "mode/change_mode.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
 
 
@@ -18,11 +18,11 @@ namespace vind
     void Switch2LeftTab::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-            keybrd::pushup(VKC_LCTRL, VKC_LSHIFT, VKC_TAB) ;
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
         }
     }
 
@@ -35,11 +35,11 @@ namespace vind
     void Switch2RightTab::sprocess(
             const bool first_call,
             unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-            keybrd::pushup(VKC_LCTRL, VKC_TAB) ;
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
         }
     }
 
@@ -51,10 +51,10 @@ namespace vind
     void OpenNewTab::sprocess(
             const bool first_call,
             unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        keybrd::pushup(VKC_LCTRL, VKC_T) ;
+        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
     }
 
 
@@ -67,10 +67,10 @@ namespace vind
     void CloseCurrentTab::sprocess(
             const bool first_call,
             const unsigned int UNUSED(repeat_num),
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        keybrd::pushup(VKC_LCTRL, VKC_F4) ;
+        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
 
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {

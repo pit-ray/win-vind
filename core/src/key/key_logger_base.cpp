@@ -2,7 +2,7 @@
 
 #include "key_absorber.hpp"
 #include "utility.hpp"
-#include "vkc_converter.hpp"
+#include "keycodecvt.hpp"
 
 #include <sstream>
 
@@ -101,7 +101,7 @@ namespace vind
     }
 
     void KeyLoggerBase::update() {
-        logging(keyabsorb::get_pressed_list()) ;
+        logging(keyabsorber::get_pressed_list()) ;
     }
 
     bool KeyLoggerBase::is_changed() const noexcept {
@@ -129,20 +129,20 @@ namespace vind
                 }
                 for(const auto& log : lgr) {
                     for(const auto& key : log) {
-                        if(key == VKC_SPACE) {
+                        if(key == KEYCODE_SPACE) {
                             ss << "<space> " ;
                             continue ;
                         }
 
-                        if(auto a = keycvt::get_ascii(key)) {
+                        if(auto a = keycodecvt::get_ascii(key)) {
                             ss << a << " " ;
                             continue ;
                         }
-                        if(auto a = keycvt::get_shifted_ascii(key)) {
+                        if(auto a = keycodecvt::get_shifted_ascii(key)) {
                             ss << a << " " ;
                             continue ;
                         }
-                        auto name = keycvt::get_name(key) ;
+                        auto name = keycodecvt::get_name(key) ;
                         ss << "<" << name << "> " ;
                     }
                     ss << "|" ;

@@ -164,8 +164,7 @@ endif()
 add_subdirectory(core)
 
 #add entry with GUI
-set(ENTRY_CMAKE_SOURCE wxgui)
-add_subdirectory(${ENTRY_CMAKE_SOURCE})
+add_subdirectory(wxgui)
 
 #build all
 include_directories(${MAIN_ENTRY_INCLUDE})
@@ -181,7 +180,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} WinVindGUI WinVindCore)
+target_link_libraries(${PROJECT_NAME} wxgui vindcore)
 enable_cotire(${PROJECT_NAME})
 
 #CPack-----------------------------------------------------------------------------

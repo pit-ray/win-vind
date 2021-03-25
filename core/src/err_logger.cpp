@@ -1,4 +1,4 @@
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 
 #include <unordered_map>
 #include <windows.h>
@@ -74,7 +74,7 @@ namespace
 
 namespace vind
 {
-    namespace log {
+    namespace errlogger {
         void initialize() {
             const std::string log_dir = path::ROOT_PATH() + "log\\" ;
 

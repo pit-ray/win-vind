@@ -1,7 +1,7 @@
 #include "edi_layout.hpp"
 
-#include "io/keybrd_eventer.hpp"
-#include "mode_manager.hpp"
+#include "io/keybrd.hpp"
+#include "mode.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "utility.hpp"
 
@@ -25,11 +25,11 @@ namespace vind
     void EdiNRemoveEOL::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto remove = [] {
-            keybrd::pushup(VKC_END) ;
-            keybrd::pushup(VKC_DELETE) ;
+            keybrd::pushup(KEYCODE_END) ;
+            keybrd::pushup(KEYCODE_DELETE) ;
         } ;
 
         using mode::change_mode ;

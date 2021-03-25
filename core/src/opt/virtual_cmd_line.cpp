@@ -5,11 +5,11 @@
 #include <chrono>
 #include <unordered_map>
 
-#include "bind/mode_manager.hpp"
+#include "bind/mode.hpp"
 #include "i_params.hpp"
 #include "io/display_text_painter.hpp"
 #include "io/screen_metrics.hpp"
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "path.hpp"
 #include "utility.hpp"
 
@@ -57,10 +57,10 @@ namespace vind
         const auto yma = iparams::get_i("cmd_ymargin") ;
 
         RECT rect ;
-        screen::get_primary_metrics(&rect) ;
+        screenmetrics::get_primary_metrics(&rect) ;
 
-        const auto width  = screen::width(rect) ;
-        const auto height = screen::height(rect) ;
+        const auto width  = screenmetrics::width(rect) ;
+        const auto height = screenmetrics::height(rect) ;
 
         constexpr auto midxbuf = 256 ;
 
@@ -84,7 +84,7 @@ namespace vind
             const auto& p = pos_list.at("LowerMid") ;
             pimpl->x = p.first ;
             pimpl->y = p.second ;
-            ERROR_PRINT(std::string(e.what()) + "in " + path::SETTINGS() + ", " + iparams::get_s("cmd_pos") + "is invalid syntax.") ;
+            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + ", " + iparams::get_s("cmd_pos") + "is invalid syntax.") ;
         }
 
         pimpl->extra = iparams::get_i("cmd_font_extra") ;

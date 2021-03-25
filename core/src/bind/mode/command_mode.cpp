@@ -7,19 +7,19 @@
 
 #include "binded_func.hpp"
 #include "i_params.hpp"
-#include "io/keybrd_eventer.hpp"
+#include "io/keybrd.hpp"
 #include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "key/key_logger_base.hpp"
-#include "key/virtual_key_fwd.hpp"
-#include "key/vkc_converter.hpp"
-#include "key/vkc_logger.hpp"
-#include "key_binder.hpp"
-#include "mode_manager.hpp"
-#include "msg_logger.hpp"
+#include "key/keycode_def.hpp"
+#include "key/keycodecvt.hpp"
+#include "key/keycode_logger.hpp"
+#include "bind.hpp"
+#include "mode.hpp"
+#include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "utility.hpp"
-#include "win_vind.hpp"
+#include "entry.hpp"
 
 namespace
 {
@@ -115,13 +115,13 @@ const std::string CommandMode::sname() noexcept {
 void CommandMode::sprocess(
         const bool first_call,
         const unsigned int UNUSED(repeat_num),
-        VKCLogger* const UNUSED(parent_vkclgr),
+        KeycodeLogger* const UNUSED(parent_vkclgr),
         const CharLogger* const UNUSED(parent_charlgr)) const {
     if(!first_call) return ;
 
     VirtualCmdLine::reset() ;
 
-    keyabsorb::InstantKeyAbsorber ika ;
+    keyabsorber::InstantKeyAbsorber ika ;
 
     while(vind::update_background()) {
         auto& p_cmdp = pimpl->ch.get_hist_point() ;
@@ -137,7 +137,7 @@ void CommandMode::sprocess(
         }
 
         //canceling operation
-        if(lgr.latest().is_containing(VKC_ESC)){
+        if(lgr.latest().is_containing(KEYCODE_ESC)){
             if(pimpl->ch.is_pointing_latest()) {
                 lgr.clear() ;
                 p_cmdp->func = nullptr ;
@@ -152,8 +152,8 @@ void CommandMode::sprocess(
         }
 
         //decision of input
-        if(lgr.latest().is_containing(VKC_ENTER) && p_cmdp->func) {
-            keyabsorb::release_virtually(VKC_ENTER) ;
+        if(lgr.latest().is_containing(KEYCODE_ENTER) && p_cmdp->func) {
+            keyabsorber::release_virtually(KEYCODE_ENTER) ;
 
             lgr.remove_from_back(1) ; //remove keycode of enter
 
@@ -166,7 +166,7 @@ void CommandMode::sprocess(
         }
 
         //edit command
-        if(lgr.latest().is_containing(VKC_BKSPACE)) {
+        if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
             if(lgr.size() == 1) {
                 lgr.clear() ;
                 p_cmdp->func = nullptr ;
@@ -188,8 +188,8 @@ void CommandMode::sprocess(
         }
 
         //command history operation
-        if(lgr.latest().is_containing(VKC_UP)) {
-            keyabsorb::release_virtually(VKC_UP) ; //prohibit duplicate logging
+        if(lgr.latest().is_containing(KEYCODE_UP)) {
+            keyabsorber::release_virtually(KEYCODE_UP) ; //prohibit duplicate logging
             lgr.remove_from_back(1) ;
             if(pimpl->ch.backward()) {
                 VirtualCmdLine::refresh() ;
@@ -197,8 +197,8 @@ void CommandMode::sprocess(
             continue ;
         }
 
-        if(lgr.latest().is_containing(VKC_DOWN)) {
-            keyabsorb::release_virtually(VKC_DOWN) ; //prohibit duplicate logging
+        if(lgr.latest().is_containing(KEYCODE_DOWN)) {
+            keyabsorber::release_virtually(KEYCODE_DOWN) ; //prohibit duplicate logging
             lgr.remove_from_back(1) ;
             if(pimpl->ch.forward()) {
                 VirtualCmdLine::refresh() ;

@@ -2,7 +2,7 @@
 
 #include <cstring>
 
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 
 //std::string is 8bit-based object, so CF_UNICODETEXT (UTF-16) does not appropriate.
 //Therefore, only used CF_OEMTEXT in CF_TEXT.
@@ -37,7 +37,7 @@ namespace vind
             }
         }
         catch(const std::exception& e) {
-            ERROR_PRINT(e.what()) ;
+            PRINT_ERROR(e.what()) ;
         }
     }
 

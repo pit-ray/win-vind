@@ -1,5 +1,5 @@
-#include "dynamic_option.hpp"
-#include "msg_logger.hpp"
+#include "option.hpp"
+#include "err_logger.hpp"
 
 #include <iostream>
 #include <mutex>
@@ -9,11 +9,11 @@
 namespace vind
 {
     /*
-    class-DynamicOption use in order to change on running process, use dynamically resource need to refresh resource.
+    class-Option use in order to change on running process, use dynamically resource need to refresh resource.
     else, read directly Options-Section at ini-file.
     */
 
-    struct DynamicOption::Impl {
+    struct Option::Impl {
         bool flag ;
 
         explicit Impl() : flag(false) {}
@@ -27,42 +27,42 @@ namespace vind
     } ;
 
 
-    DynamicOption::DynamicOption()
+    Option::Option()
     : pimpl(std::make_unique<Impl>())
     {}
 
-    DynamicOption::~DynamicOption() noexcept                            = default ;
-    DynamicOption::DynamicOption(DynamicOption&&) noexcept              = default ;
-    DynamicOption& DynamicOption::operator=(DynamicOption&&) noexcept   = default ;
+    Option::~Option() noexcept                            = default ;
+    Option::Option(Option&&) noexcept              = default ;
+    Option& Option::operator=(Option&&) noexcept   = default ;
 
-    void DynamicOption::enable() {
+    void Option::enable() {
         try {
             do_enable() ;
         }
         catch(const std::runtime_error& e) {
-            ERROR_PRINT(name() + " did not enable. " + e.what()) ;
+            PRINT_ERROR(name() + " did not enable. " + e.what()) ;
             return ;
         }
 
         pimpl->flag = true ;
     }
 
-    void DynamicOption::disable() {
+    void Option::disable() {
         try {
             do_disable() ;
         }
         catch(const std::runtime_error& e) {
-            ERROR_PRINT(name() + " did not disable. " + e.what()) ;
+            PRINT_ERROR(name() + " did not disable. " + e.what()) ;
             return ;
         }
         pimpl->flag = false ;
     }
 
-    bool DynamicOption::is_enabled() const noexcept {
+    bool Option::is_enabled() const noexcept {
         return pimpl->flag ;
     }
 
-    void DynamicOption::process() const {
+    void Option::process() const {
         if(!pimpl->flag) {
             return ;
         }
@@ -71,7 +71,7 @@ namespace vind
             do_process() ;
         }
         catch(const std::runtime_error& e) {
-            ERROR_PRINT(name() + " failed. " + e.what()) ;
+            PRINT_ERROR(name() + " failed. " + e.what()) ;
             return ;
         }
     }

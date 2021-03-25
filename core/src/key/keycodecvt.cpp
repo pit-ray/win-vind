@@ -1,6 +1,6 @@
-#include "vkc_converter.hpp"
+#include "keycodecvt.hpp"
 
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 
 #include <unordered_map>
 #include <utility>
@@ -34,7 +34,7 @@ namespace
 
 namespace vind
 {
-    namespace keycvt {
+    namespace keycodecvt {
 
         void load_input_combination() {
             char2vkc.fill(0) ;
@@ -78,105 +78,105 @@ namespace vind
 namespace
 {
     const std::unordered_map<std::string, unsigned char> g_sys_vkc {
-        {"ime",         VKC_IME},
-        {"ime1",        VKC_FROM_EN},
-        {"ime2",        VKC_TO_JP},
-        {"tab",         VKC_TAB},
-        {"cr",          VKC_ENTER},
-        {"enter",       VKC_ENTER},
-        {"return",      VKC_ENTER},
-        {"capslock",    VKC_CAPSLOCK},
-        {"left",        VKC_LEFT},
-        {"right",       VKC_RIGHT},
-        {"up",          VKC_UP},
-        {"down",        VKC_DOWN},
-        {"bs",          VKC_BKSPACE},
+        {"ime",         KEYCODE_IME},
+        {"ime1",        KEYCODE_FROM_EN},
+        {"ime2",        KEYCODE_TO_JP},
+        {"tab",         KEYCODE_TAB},
+        {"cr",          KEYCODE_ENTER},
+        {"enter",       KEYCODE_ENTER},
+        {"return",      KEYCODE_ENTER},
+        {"capslock",    KEYCODE_CAPSLOCK},
+        {"left",        KEYCODE_LEFT},
+        {"right",       KEYCODE_RIGHT},
+        {"up",          KEYCODE_UP},
+        {"down",        KEYCODE_DOWN},
+        {"bs",          KEYCODE_BKSPACE},
 
-        {"shift",       VKC_SHIFT},
-        {"s",           VKC_SHIFT},
-        {"lshift",      VKC_LSHIFT},
-        {"ls",          VKC_LSHIFT},
-        {"rshift",      VKC_RSHIFT},
-        {"rs",          VKC_RSHIFT},
+        {"shift",       KEYCODE_SHIFT},
+        {"s",           KEYCODE_SHIFT},
+        {"lshift",      KEYCODE_LSHIFT},
+        {"ls",          KEYCODE_LSHIFT},
+        {"rshift",      KEYCODE_RSHIFT},
+        {"rs",          KEYCODE_RSHIFT},
 
-        {"ctrl",        VKC_CTRL},
-        {"c",           VKC_CTRL},
-        {"lctrl",       VKC_LCTRL},
-        {"lc",          VKC_LCTRL},
-        {"rctrl",       VKC_RCTRL},
-        {"rc",          VKC_RCTRL},
+        {"ctrl",        KEYCODE_CTRL},
+        {"c",           KEYCODE_CTRL},
+        {"lctrl",       KEYCODE_LCTRL},
+        {"lc",          KEYCODE_LCTRL},
+        {"rctrl",       KEYCODE_RCTRL},
+        {"rc",          KEYCODE_RCTRL},
 
-        {"win",         VKC_WIN},
-        {"lwin",        VKC_LWIN},
-        {"rwin",        VKC_RWIN},
+        {"win",         KEYCODE_WIN},
+        {"lwin",        KEYCODE_LWIN},
+        {"rwin",        KEYCODE_RWIN},
 
-        {"alt",         VKC_ALT},
-        {"a",           VKC_ALT},
-        {"lalt",        VKC_LALT},
-        {"la",          VKC_LALT},
-        {"ralt",        VKC_RALT},
-        {"ra",          VKC_RALT},
+        {"alt",         KEYCODE_ALT},
+        {"a",           KEYCODE_ALT},
+        {"lalt",        KEYCODE_LALT},
+        {"la",          KEYCODE_LALT},
+        {"ralt",        KEYCODE_RALT},
+        {"ra",          KEYCODE_RALT},
 
-        {"m",           VKC_ALT},
-        {"lm",          VKC_LALT},
-        {"rm",          VKC_RALT},
+        {"m",           KEYCODE_ALT},
+        {"lm",          KEYCODE_LALT},
+        {"rm",          KEYCODE_RALT},
 
-        {"nocvt",       VKC_NOCONVERT},
-        {"cvt",         VKC_CONVERT},
-        {"kana",        VKC_KANA},
-        {"app",         VKC_APP},
-        {"esc",         VKC_ESC},
+        {"nocvt",       KEYCODE_NOCONVERT},
+        {"cvt",         KEYCODE_CONVERT},
+        {"kana",        KEYCODE_KANA},
+        {"app",         KEYCODE_APP},
+        {"esc",         KEYCODE_ESC},
 
-        {"f1",          VKC_F1},
-        {"f2",          VKC_F2},
-        {"f3",          VKC_F3},
-        {"f4",          VKC_F4},
-        {"f5",          VKC_F5},
-        {"f6",          VKC_F6},
-        {"f7",          VKC_F7},
-        {"f8",          VKC_F8},
-        {"f9",          VKC_F9},
-        {"f10",         VKC_F10},
-        {"f11",         VKC_F11},
-        {"f12",         VKC_F12},
-        {"f13",         VKC_F13},
-        {"f14",         VKC_F14},
-        {"f15",         VKC_F15},
-        {"f16",         VKC_F16},
-        {"f17",         VKC_F17},
-        {"f18",         VKC_F18},
-        {"f19",         VKC_F19},
-        {"f20",         VKC_F20},
-        {"f21",         VKC_F21},
-        {"f22",         VKC_F22},
-        {"f23",         VKC_F23},
-        {"f24",         VKC_F24},
+        {"f1",          KEYCODE_F1},
+        {"f2",          KEYCODE_F2},
+        {"f3",          KEYCODE_F3},
+        {"f4",          KEYCODE_F4},
+        {"f5",          KEYCODE_F5},
+        {"f6",          KEYCODE_F6},
+        {"f7",          KEYCODE_F7},
+        {"f8",          KEYCODE_F8},
+        {"f9",          KEYCODE_F9},
+        {"f10",         KEYCODE_F10},
+        {"f11",         KEYCODE_F11},
+        {"f12",         KEYCODE_F12},
+        {"f13",         KEYCODE_F13},
+        {"f14",         KEYCODE_F14},
+        {"f15",         KEYCODE_F15},
+        {"f16",         KEYCODE_F16},
+        {"f17",         KEYCODE_F17},
+        {"f18",         KEYCODE_F18},
+        {"f19",         KEYCODE_F19},
+        {"f20",         KEYCODE_F20},
+        {"f21",         KEYCODE_F21},
+        {"f22",         KEYCODE_F22},
+        {"f23",         KEYCODE_F23},
+        {"f24",         KEYCODE_F24},
 
-        {"snapshot",    VKC_SNAPSHOT},
-        {"scroll",      VKC_SCROLL},
-        {"pause",       VKC_PAUSE},
-        {"insert",      VKC_INSERT},
-        {"home",        VKC_HOME},
-        {"pageup",      VKC_PAGEUP},
-        {"del",         VKC_DELETE},
-        {"end",         VKC_END},
-        {"pagedown",    VKC_PAGEDOWN},
+        {"snapshot",    KEYCODE_SNAPSHOT},
+        {"scroll",      KEYCODE_SCROLL},
+        {"pause",       KEYCODE_PAUSE},
+        {"insert",      KEYCODE_INSERT},
+        {"home",        KEYCODE_HOME},
+        {"pageup",      KEYCODE_PAGEUP},
+        {"del",         KEYCODE_DELETE},
+        {"end",         KEYCODE_END},
+        {"pagedown",    KEYCODE_PAGEDOWN},
 
-        {"numlock",     VKC_NUMLOCK}
+        {"numlock",     KEYCODE_NUMLOCK}
     } ;
 
     inline const auto create_related_keys() {
             std::array<unsigned char, 256> a{0} ;
-            a[VKC_LSHIFT]  = VKC_SHIFT ;
-            a[VKC_RSHIFT]  = VKC_SHIFT ;
-            a[VKC_LCTRL]   = VKC_CTRL ;
-            a[VKC_RCTRL]   = VKC_CTRL ;
-            a[VKC_LWIN]    = VKC_WIN ;
-            a[VKC_RWIN]    = VKC_WIN ;
-            a[VKC_LALT]    = VKC_ALT ;
-            a[VKC_RALT]    = VKC_ALT ;
-            a[VKC_FROM_EN] = VKC_IME ;
-            a[VKC_TO_JP]   = VKC_IME ;
+            a[KEYCODE_LSHIFT]  = KEYCODE_SHIFT ;
+            a[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
+            a[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
+            a[KEYCODE_RCTRL]   = KEYCODE_CTRL ;
+            a[KEYCODE_LWIN]    = KEYCODE_WIN ;
+            a[KEYCODE_RWIN]    = KEYCODE_WIN ;
+            a[KEYCODE_LALT]    = KEYCODE_ALT ;
+            a[KEYCODE_RALT]    = KEYCODE_ALT ;
+            a[KEYCODE_FROM_EN] = KEYCODE_IME ;
+            a[KEYCODE_TO_JP]   = KEYCODE_IME ;
             return a ;
     }
 
@@ -191,7 +191,7 @@ namespace
 
 namespace vind
 {
-    namespace keycvt {
+    namespace keycodecvt {
         unsigned char get_sys_vkc(const std::string& strkey) noexcept {
             try {return g_sys_vkc.at(strkey) ;}
             catch(const std::out_of_range&) {return 0 ;}

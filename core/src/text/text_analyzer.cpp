@@ -6,9 +6,9 @@
 #include <memory>
 #include <vector>
 
-#include "io/keybrd_eventer.hpp"
-#include "io/mouse_eventer.hpp"
-#include "msg_logger.hpp"
+#include "io/keybrd.hpp"
+#include "io/mouse.hpp"
+#include "err_logger.hpp"
 #include "smart_clipboard.hpp"
 #include "utility.hpp"
 

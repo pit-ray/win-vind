@@ -8,10 +8,10 @@
 #include <memory>
 #include <unordered_map>
 
-#include "io/keybrd_eventer.hpp"
-#include "msg_logger.hpp"
+#include "io/keybrd.hpp"
+#include "err_logger.hpp"
 #include "utility.hpp"
-#include "vkc_converter.hpp"
+#include "keycodecvt.hpp"
 
 /*Absorber Overview
                        _____
@@ -40,7 +40,7 @@ namespace
     const auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook == nullptr) return ;
         if(!UnhookWindowsHookEx(*p_hook)) {
-            ERROR_PRINT("cannot unhook LowLevelKeyboardProc") ;
+            PRINT_ERROR("cannot unhook LowLevelKeyboardProc") ;
         }
         delete p_hook ;
         p_hook = nullptr ;
@@ -61,7 +61,7 @@ namespace
         g_real_state[code] = state ;
         g_state[code]      = state ;
 
-        const auto rep = vind::keycvt::get_representative_key(code) ;
+        const auto rep = vind::keycodecvt::get_representative_key(code) ;
         g_real_state[rep] = state ;
         g_state[rep]      = state ;
 
@@ -79,7 +79,7 @@ namespace
 
 namespace vind
 {
-    namespace keyabsorb
+    namespace keyabsorber
     {
         void install_hook() {
             g_real_state.fill(false) ;
@@ -161,7 +161,7 @@ namespace vind
         void open_port(const unsigned char key) noexcept {
             try {g_ignored_keys.insert(key) ;}
             catch(const std::bad_alloc& e) {
-                ERROR_PRINT(e.what()) ;
+                PRINT_ERROR(e.what()) ;
                 return ;
             }
         }

@@ -1,14 +1,15 @@
-#ifndef _VKC_CONVERTER_HPP
-#define _VKC_CONVERTER_HPP
+#ifndef _KEYCODECVT_HPP
+#define _KEYCODECVT_HPP
+
 #include <vector>
 #include <string>
 #include <unordered_set>
 
-#include "virtual_key_fwd.hpp"
+#include "keycode_def.hpp"
 
 namespace vind
 {
-    namespace keycvt {
+    namespace keycodecvt {
         void load_input_combination() ;
 
         unsigned char get_vkc(const char ascii) noexcept ;
@@ -25,7 +26,7 @@ namespace vind
         bool is_unreal_key(const unsigned char key) noexcept ;
 
         inline bool is_number(const unsigned char vkc) noexcept {
-            return VKC_0 <= vkc && vkc <= VKC_9 ;
+            return KEYCODE_0 <= vkc && vkc <= KEYCODE_9 ;
         }
 
         inline bool is_number_ascii(const char ascii) noexcept {
@@ -33,17 +34,17 @@ namespace vind
         }
 
         inline unsigned int to_number(const unsigned char vkc) noexcept {
-            return vkc - VKC_0 ;
+            return vkc - KEYCODE_0 ;
         }
 
         inline const std::unordered_set<unsigned char>& get_toggle_keys() {
             static std::unordered_set<unsigned char> tmp {
-                VKC_CAPSLOCK,
-                VKC_KANA,
-                VKC_NUMLOCK,
-                VKC_FROM_JP,
-                VKC_TO_EN,
-                VKC_IME
+                KEYCODE_CAPSLOCK,
+                KEYCODE_KANA,
+                KEYCODE_NUMLOCK,
+                KEYCODE_FROM_JP,
+                KEYCODE_TO_EN,
+                KEYCODE_IME
             } ;
             return tmp ;
         }

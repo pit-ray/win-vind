@@ -3,11 +3,11 @@
 
 #include <vector>
 #include "key_log.hpp"
-#include "virtual_key_fwd.hpp"
+#include "keycode_def.hpp"
 
 namespace vind
 {
-    namespace keyabsorb {
+    namespace keyabsorber {
         void install_hook() ;
         bool is_pressed(const unsigned char keycode) noexcept ;
         bool is_really_pressed(const unsigned char keycode) noexcept ;

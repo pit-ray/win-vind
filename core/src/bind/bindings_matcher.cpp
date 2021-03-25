@@ -1,19 +1,19 @@
-#include "key_matcher.hpp"
+#include "bindings_matcher.hpp"
 
 #include <iostream>
 #include <limits>
 #include <mutex>
 
-#include "msg_logger.hpp"
+#include "err_logger.hpp"
 #include "key/key_log.hpp"
 #include "key/key_logger_base.hpp"
-#include "key/virtual_key_fwd.hpp"
-#include "key/vkc_converter.hpp"
+#include "key/keycode_def.hpp"
+#include "key/keycodecvt.hpp"
 
 
 namespace vind
 {
-    struct KeyMatcher::Impl {
+    struct BindingsMatcher::Impl {
         cmdlist_t cmdlist ;
         bool code_existed ;
         bool accepted ;
@@ -55,17 +55,17 @@ namespace vind
         Impl& operator=(const Impl&) = delete ;
     } ;
 
-    KeyMatcher::KeyMatcher(KeyMatcher::cmdlist_t&& keyset)
+    BindingsMatcher::BindingsMatcher(BindingsMatcher::cmdlist_t&& keyset)
     : pimpl(std::make_unique<Impl>(std::move(keyset)))
     {}
 
-    KeyMatcher::KeyMatcher(const cmdlist_t& keyset)
+    BindingsMatcher::BindingsMatcher(const cmdlist_t& keyset)
     : pimpl(std::make_unique<Impl>(keyset))
     {}
 
-    KeyMatcher::~KeyMatcher() noexcept              = default ;
-    KeyMatcher::KeyMatcher(KeyMatcher&&)            = default ;
-    KeyMatcher& KeyMatcher::operator=(KeyMatcher&&) = default ;
+    BindingsMatcher::~BindingsMatcher() noexcept              = default ;
+    BindingsMatcher::BindingsMatcher(BindingsMatcher&&)            = default ;
+    BindingsMatcher& BindingsMatcher::operator=(BindingsMatcher&&) = default ;
 
     /*
      * -- Key matching system like Automata --
@@ -73,7 +73,7 @@ namespace vind
      * [accepted     == true] reached accepting state
      *
      */
-    unsigned int KeyMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const {
+    unsigned int BindingsMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const {
         //mutex is already applied in a parent scope
 
         if(seqidx >= pimpl->optional_idx) {
@@ -86,7 +86,7 @@ namespace vind
         //Whether there are some numbers in the latest log?
         auto is_num_only = [&log] {
             for(auto& key : log) {
-                if(!keycvt::is_number(key)) {
+                if(!keycodecvt::is_number(key)) {
                     return false ;
                 }
             }
@@ -131,13 +131,13 @@ namespace vind
                 const auto& keyset = cmd.at(seqidx) ;
 
                 for(const auto& key : keyset) {
-                    if(key == VKC_OPTIONAL) {
+                    if(key == KEYCODE_OPTIONAL) {
                         pimpl->optional_idx = seqidx ;
                         pimpl->accepted     = true ;
                         pimpl->code_existed = true ;
                         return std::numeric_limits<unsigned int>::max() ;
                     }
-                    if(key == VKC_OPTNUMBER) {
+                    if(key == KEYCODE_OPTNUMBER) {
                         if(is_num_only()) {
                             pimpl->optnum_begin_idx = seqidx ;
                             pimpl->is_optnum_last = (cmd.size() - seqidx - 1) == 0 ;
@@ -169,7 +169,7 @@ namespace vind
         return most_matched_num ;
     }
 
-    unsigned int KeyMatcher::compare_to_latestlog(const KeyLoggerBase& lgr) const {
+    unsigned int BindingsMatcher::compare_to_latestlog(const KeyLoggerBase& lgr) const {
         std::lock_guard<std::mutex> lock(pimpl->mtx) ;
 
         pimpl->accepted = false ;
@@ -200,7 +200,7 @@ namespace vind
         return compare_onelog(lgr.latest(), seqidx) ;
     }
 
-    unsigned int KeyMatcher::compare_to_alllog(const KeyLoggerBase& lgr) const {
+    unsigned int BindingsMatcher::compare_to_alllog(const KeyLoggerBase& lgr) const {
         std::lock_guard<std::mutex> lock(pimpl->mtx) ;
 
         pimpl->accepted = false ;
@@ -222,7 +222,7 @@ namespace vind
         return result ;
     }
 
-    bool KeyMatcher::is_accepted() const noexcept {
+    bool BindingsMatcher::is_accepted() const noexcept {
         return pimpl->accepted ;
     }
 }

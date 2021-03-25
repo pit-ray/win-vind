@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "i_params.hpp"
-#include "io/mouse_eventer.hpp"
+#include "io/mouse.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "utility.hpp"
@@ -41,7 +41,7 @@ namespace vind
     void ScrollUp::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto scroll = [first_call, repeat_num] {
             mouse::vscroll(iparams::get_i("yscroll_speed") \
@@ -78,7 +78,7 @@ namespace vind
     void ScrollDown::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto scroll = [first_call, repeat_num] {
             mouse::vscroll(-iparams::get_i("yscroll_speed") \
@@ -115,7 +115,7 @@ namespace vind
     void ScrollMidUp::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -148,7 +148,7 @@ namespace vind
     void ScrollMidDown::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -181,7 +181,7 @@ namespace vind
     void ScrollPageUp::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -214,7 +214,7 @@ namespace vind
     void ScrollPageDown::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -248,7 +248,7 @@ namespace vind
     void ScrollLeft::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -281,7 +281,7 @@ namespace vind
     void ScrollRight::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -314,7 +314,7 @@ namespace vind
     void ScrollMidLeft::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -347,7 +347,7 @@ namespace vind
     void ScrollMidRight::sprocess(
             const bool first_call,
             const unsigned int repeat_num,
-            VKCLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;

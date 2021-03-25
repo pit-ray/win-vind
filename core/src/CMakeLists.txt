@@ -5,12 +5,12 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/libs
 )
 
-add_library(WinVindCore STATIC
+add_library(vindcore STATIC
     i_params.cpp
-    msg_logger.cpp
+    err_logger.cpp
     path.cpp
     utility.cpp
-    win_vind.cpp
+    entry.cpp
 )
 
 add_subdirectory(bind)
@@ -20,5 +20,5 @@ add_subdirectory(opt)
 add_subdirectory(text)
 add_subdirectory(time)
 
-target_link_libraries(WinVindCore Userenv bind io key opt text time)
-enable_cotire(WinVindCore)
+target_link_libraries(vindcore Userenv bind io key opt text time)
+enable_cotire(vindcore)

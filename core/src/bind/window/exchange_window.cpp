@@ -3,7 +3,7 @@
 #include <map>
 
 #include "io/screen_metrics.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 #include "window_utility.hpp"
 
 namespace

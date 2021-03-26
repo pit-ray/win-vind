@@ -21,13 +21,14 @@
 
 #include "enable_gcc_warning.hpp"
 
-#include "utility.hpp"
-#include "wx_prop_dlg.hpp"
-#include "io_params.hpp"
 #include "err_logger.hpp"
 #include "path.hpp"
-
 #include "entry.hpp"
+
+#include "util/winwrap.hpp"
+
+#include "io_params.hpp"
+#include "wx_prop_dlg.hpp"
 
 namespace wxGUI
 {
@@ -169,10 +170,10 @@ namespace wxGUI
 
     inline static bool initialize_config_files() {
         auto overwrite_bindings = [] {
-            utility::copy_file(path::Default::BINDINGS(), path::BINDINGS(), true) ;
+            util::copy_file(path::Default::BINDINGS(), path::BINDINGS(), true) ;
         } ;
         auto overwrite_settings = [] {
-            utility::copy_file(path::Default::SETTINGS(), path::SETTINGS(), true) ;
+            util::copy_file(path::Default::SETTINGS(), path::SETTINGS(), true) ;
         } ;
 
         auto write_kmp = [] (BOOL allow_overwrite) {
@@ -190,7 +191,7 @@ namespace wxGUI
 
             for(std::size_t i = 0 ; i < def_kmp.size() ; i ++) {
                 try {
-                    utility::copy_file(def_kmp[i], kmp[i], allow_overwrite) ;
+                    util::copy_file(def_kmp[i], kmp[i], allow_overwrite) ;
                 }
                 catch(const std::runtime_error& e) {
                     if(!allow_overwrite) continue ;
@@ -200,8 +201,8 @@ namespace wxGUI
         } ;
 
         try {
-            if(!utility::is_existed_dir(path::CONFIG_PATH().c_str())) { //clean install
-                utility::create_directory(path::CONFIG_PATH()) ;
+            if(!util::is_existed_dir(path::CONFIG_PATH().c_str())) { //clean install
+                util::create_directory(path::CONFIG_PATH()) ;
                 overwrite_bindings() ;
                 overwrite_settings() ;
                 write_kmp(TRUE) ;

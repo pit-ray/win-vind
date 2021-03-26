@@ -4,8 +4,8 @@
 #include <windows.h>
 
 #include "err_logger.hpp"
-#include "utility.hpp"
 #include "key/keycode_def.hpp"
+#include "util/def.hpp"
 
 #ifndef MOUSEEVENTF_HWHEEL
 #define MOUSEEVENTF_HWHEEL 0x01000

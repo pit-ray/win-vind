@@ -5,7 +5,7 @@
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "mouse/jump_actwin.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

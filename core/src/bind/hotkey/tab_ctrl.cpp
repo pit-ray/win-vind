@@ -5,7 +5,7 @@
 #include "io/keybrd.hpp"
 #include "mode/change_mode.hpp"
 #include "err_logger.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 
 namespace vind

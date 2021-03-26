@@ -2,7 +2,7 @@
 
 #include "io/screen_metrics.hpp"
 #include "proc/open_window.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 #include "window_utility.hpp"
 
 namespace vind

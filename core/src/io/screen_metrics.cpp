@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

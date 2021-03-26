@@ -29,16 +29,17 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
-#include "io_params.hpp"
-#include "err_logger.hpp"
 #include "path.hpp"
-#include "ui_translator.hpp"
-#include "utility.hpp"
-#include "wx_constant.hpp"
 
-#include "key/key_absorber.hpp"
-#include "io/mouse.hpp"
 #include "bind/mode/change_mode.hpp"
+#include "err_logger.hpp"
+#include "io/mouse.hpp"
+#include "io_params.hpp"
+#include "key/key_absorber.hpp"
+#include "util/winwrap.hpp"
+
+#include "ui_translator.hpp"
+#include "wx_constant.hpp"
 
 namespace wxGUI
 {
@@ -324,7 +325,7 @@ namespace wxGUI
                     for(const auto& lang : ui_langs) {
                         try {
                             const auto& label = obj.at(lang.at("value")) ;
-                            tags.insert(utility::A2a(label)) ;
+                            tags.insert(util::A2a(label)) ;
                         }
                         catch(const std::out_of_range&) {
                             continue ;
@@ -381,7 +382,7 @@ namespace wxGUI
                     for(const auto& tag : tagbase[obj["name"]]) {
 
                         //compare as UTF-8
-                        if(tag.find(utility::A2a(search_text.ToUTF8().data())) != std::string::npos) {
+                        if(tag.find(util::A2a(search_text.ToUTF8().data())) != std::string::npos) {
                             append(obj) ;
                             break ;
                         }
@@ -675,8 +676,8 @@ namespace wxGUI
             const auto gvim_exe = ioParams::get_vs("gvim_exe_path") ;
             static const auto temp_dir = path::ROOT_PATH() + "temp\\" ;
 
-            if(!utility::is_existed_dir(temp_dir)) {
-                utility::create_directory(temp_dir) ;
+            if(!util::is_existed_dir(temp_dir)) {
+                util::create_directory(temp_dir) ;
             }
 
             auto& target_json = pimpl->get_selected_func_json() ;
@@ -693,7 +694,7 @@ namespace wxGUI
 
             HANDLE hproc ;
             auto create = [&hproc, &temp_path] (const std::string exe) {
-                hproc = utility::create_process(".", exe, "\"" + temp_path + "\"") ;
+                hproc = util::create_process(".", exe, "\"" + temp_path + "\"") ;
             } ;
 
             pimpl->edit_with_vim->Disable() ;

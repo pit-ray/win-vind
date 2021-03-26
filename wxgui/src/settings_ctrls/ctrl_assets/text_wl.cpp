@@ -9,7 +9,7 @@
 
 #include "wx_constant.hpp"
 #include "io_params.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace wxGUI
 {

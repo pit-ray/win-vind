@@ -31,12 +31,12 @@
 
 #include "uia/easy_click.hpp"
 
-#include "utility/clipboard.hpp"
-#include "utility/pager.hpp"
-#include "utility/search_pattern.hpp"
-#include "utility/switch_vdesktop.hpp"
-#include "utility/tab_ctrl.hpp"
-#include "utility/undo.hpp"
+#include "hotkey/clipboard.hpp"
+#include "hotkey/pager.hpp"
+#include "hotkey/search_pattern.hpp"
+#include "hotkey/switch_vdesktop.hpp"
+#include "hotkey/tab_ctrl.hpp"
+#include "hotkey/undo.hpp"
 
 #include "window/arrange_window.hpp"
 #include "window/close_window.hpp"

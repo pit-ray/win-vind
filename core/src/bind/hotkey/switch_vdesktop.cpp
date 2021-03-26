@@ -1,6 +1,6 @@
 #include "switch_vdesktop.hpp"
 #include "io/keybrd.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

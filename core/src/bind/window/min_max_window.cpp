@@ -2,7 +2,7 @@
 
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

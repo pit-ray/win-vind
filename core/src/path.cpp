@@ -5,7 +5,8 @@
 
 #include <fstream>
 
-#include "utility.hpp"
+#include "util/def.hpp"
+#include "util/string.hpp"
 
 namespace
 {
@@ -39,7 +40,7 @@ namespace vind
                 }
                 CloseHandle(token) ;
 
-                return utility::ws_to_s(path) + '\\' ;
+                return util::ws_to_s(path) + '\\' ;
             } () ;
 
             return obj ;
@@ -54,7 +55,7 @@ namespace vind
                 if(GetModuleFileNameW(NULL, module_path, MAX_PATH) == 0) {
                     return std::string() ;
                 }
-                auto module_path_str = utility::ws_to_s(module_path) ;
+                auto module_path_str = util::ws_to_s(module_path) ;
                 auto root_dir_pos = module_path_str.find_last_of("/\\") ;
                 if(root_dir_pos == std::string::npos) {
                     return std::string() ;

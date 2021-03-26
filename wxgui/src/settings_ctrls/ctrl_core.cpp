@@ -1,5 +1,4 @@
 #include "ctrl_core.hpp"
-#include "utility.hpp"
 
 namespace wxGUI
 {

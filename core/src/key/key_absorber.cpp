@@ -10,7 +10,7 @@
 
 #include "io/keybrd.hpp"
 #include "err_logger.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 #include "keycodecvt.hpp"
 
 /*Absorber Overview

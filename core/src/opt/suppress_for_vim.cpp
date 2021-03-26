@@ -9,7 +9,7 @@
 #include "bind/mode.hpp"
 #include "key/key_absorber.hpp"
 #include "err_logger.hpp"
-#include "utility.hpp"
+#include "util/string.hpp"
 #include "virtual_cmd_line.hpp"
 
 namespace vind
@@ -51,7 +51,7 @@ namespace vind
 
         std::string exename(fullpath) ;
         auto lpos = exename.find_last_of("\\") + 1 ;
-        exename = utility::A2a(exename.substr(lpos)) ;
+        exename = util::A2a(exename.substr(lpos)) ;
 
         if(exename == "win-vind.exe") return ;
 

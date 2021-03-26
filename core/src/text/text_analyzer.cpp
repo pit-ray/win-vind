@@ -10,7 +10,7 @@
 #include "io/mouse.hpp"
 #include "err_logger.hpp"
 #include "smart_clipboard.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

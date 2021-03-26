@@ -3,7 +3,7 @@
 #include "io/screen_metrics.hpp"
 #include "i_params.hpp"
 
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

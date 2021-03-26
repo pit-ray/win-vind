@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

@@ -41,7 +41,7 @@
 #include "opt/option_loader.hpp"
 #include "path.hpp"
 #include "time/interval_timer.hpp"
-#include "utility.hpp"
+#include "util/winwrap.hpp"
 
 #define MEMORY_MAPPED_FILE_NAME ("qvCI980BTny1ZSFfY76sO71w7MtLTzuPVd6RQs47_p7Kn4SJZ7cnaH8QwPS901VFd2N5WuxECvx7N3hP7caWK44ZSq6")
 #define MEMORY_MAPPED_FILE_SIZE (1024)
@@ -249,7 +249,7 @@ namespace vind
 
             optloader::call_active_funcs() ;
 
-            utility::get_win_message() ;
+            util::get_win_message() ;
 
             using namespace keyabsorber ;
             if(is_pressed(KEYCODE_F8) && is_pressed(KEYCODE_F9)) {

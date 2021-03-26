@@ -18,7 +18,7 @@
 #include "text/smart_clipboard.hpp"
 #include "text/text_analyzer.hpp"
 #include "time/keystroke_repeater.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 #include "entry.hpp"
 
 namespace

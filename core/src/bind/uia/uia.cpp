@@ -1,6 +1,6 @@
 #include "uia.hpp"
 
-#include "utility.hpp"
+#include "util/def.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <windows.h>

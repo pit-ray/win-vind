@@ -4,7 +4,8 @@
 #include <psapi.h>
 
 #include "path.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
+#include "util/winwrap.hpp"
 
 namespace vind
 {
@@ -48,7 +49,7 @@ namespace vind
         }
         CloseHandle(hproc) ;
 
-        utility::create_process(path::HOME_PATH(), utility::ws_to_s(path)) ;
+        util::create_process(path::HOME_PATH(), util::ws_to_s(path)) ;
         Sleep(100) ;
     }
 }

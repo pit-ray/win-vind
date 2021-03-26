@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
-include_directories(${BIND_INCLUDE_DIR}/utility)
-add_library(utility STATIC
+include_directories(${BIND_INCLUDE_DIR}/hotkey)
+add_library(hotkey STATIC
     clipboard.cpp
     pager.cpp
     search_pattern.cpp
@@ -8,4 +8,4 @@ add_library(utility STATIC
     tab_ctrl.cpp
     undo.cpp
 )
-enable_cotire(utility)
+enable_cotire(hotkey)

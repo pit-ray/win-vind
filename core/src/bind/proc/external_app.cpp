@@ -16,7 +16,7 @@
 #include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "path.hpp"
-#include "utility.hpp"
+#include "util/winwrap.hpp"
 
 namespace
 {
@@ -67,7 +67,7 @@ namespace vind
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         try {
-            utility::create_process(path::HOME_PATH(), g_proc_list.at("shell")) ;
+            util::create_process(path::HOME_PATH(), g_proc_list.at("shell")) ;
         }
         catch(const std::out_of_range&) {
             VirtualCmdLine::msgout("e: Not a command") ;
@@ -103,7 +103,7 @@ namespace vind
         auto cmd = parent_charlgr->to_str() ;
         if(!cmd.empty()) {
             try {
-                utility::create_process(".", g_proc_list.at(cmd.substr(1))) ;
+                util::create_process(".", g_proc_list.at(cmd.substr(1))) ;
             }
             catch(const std::out_of_range&) {
                 VirtualCmdLine::msgout("e: Not a command") ;

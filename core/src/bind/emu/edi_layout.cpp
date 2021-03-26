@@ -3,7 +3,7 @@
 #include "io/keybrd.hpp"
 #include "mode.hpp"
 #include "time/keystroke_repeater.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

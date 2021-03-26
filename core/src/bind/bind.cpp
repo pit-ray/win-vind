@@ -20,19 +20,22 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
-#include "bindings_lists.hpp"
 #include "i_params.hpp"
+#include "path.hpp"
+#include "err_logger.hpp"
+
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 #include "key/keycode_logger.hpp"
+#include "opt/virtual_cmd_line.hpp"
+#include "util/def.hpp"
+#include "util/string.hpp"
+
+#include "bindings_lists.hpp"
 #include "bindings_matcher.hpp"
 #include "mode.hpp"
-#include "err_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
-#include "path.hpp"
-#include "utility.hpp"
 
 // to use std::numeric_limits<T>::max()
 #undef max
@@ -95,7 +98,7 @@ namespace
             }
 
             BindingsMatcher::keyset_t keyset{} ;
-            const auto keystrset = utility::split(cmdstr.substr(i + 1, pairpos - i - 1), "-") ;
+            const auto keystrset = util::split(cmdstr.substr(i + 1, pairpos - i - 1), "-") ;
             for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
                 if(code != keystrset.begin() && code->length() == 1) { //ascii code
                     //ascii
@@ -112,7 +115,7 @@ namespace
                     }
                 }
 
-                auto lowercode = utility::A2a(*code) ;
+                auto lowercode = util::A2a(*code) ;
 
                 //if the cmd is same as some mode's key (e.g. <guin>, <edin>),
                 //its pointer use same pointer to target mode.

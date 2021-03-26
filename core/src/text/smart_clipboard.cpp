@@ -4,6 +4,8 @@
 
 #include "err_logger.hpp"
 
+#include "util/def.hpp"
+
 //std::string is 8bit-based object, so CF_UNICODETEXT (UTF-16) does not appropriate.
 //Therefore, only used CF_OEMTEXT in CF_TEXT.
 #define COMMON_FORMAT CF_OEMTEXT

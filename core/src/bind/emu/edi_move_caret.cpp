@@ -7,7 +7,7 @@
 #include "text/simple_text_selecter.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace
 {

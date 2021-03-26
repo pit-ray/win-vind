@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-#include "utility.hpp"
+#include "util/container.hpp"
 
 namespace vind
 {
@@ -34,7 +34,7 @@ namespace vind
 
         template <typename T>
         void set(const T& arref) {
-            return set(arref, utility::sizeof_array(arref)) ;
+            return set(arref, util::sizeof_array(arref)) ;
         }
 
         SmartClipboard(SmartClipboard&&)                    = delete ;

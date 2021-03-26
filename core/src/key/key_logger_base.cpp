@@ -1,7 +1,8 @@
 #include "key_logger_base.hpp"
 
+#include "util/container.hpp"
+
 #include "key_absorber.hpp"
-#include "utility.hpp"
 #include "keycodecvt.hpp"
 
 #include <sstream>
@@ -85,7 +86,7 @@ namespace vind
     }
 
     void KeyLoggerBase::remove_from_back(std::size_t num_from_back) {
-        utility::remove_from_back(pimpl->data, num_from_back) ;
+        util::remove_from_back(pimpl->data, num_from_back) ;
     }
 
     KeyLoggerBase::data_t::const_reference KeyLoggerBase::at(std::size_t n) const {

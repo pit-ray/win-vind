@@ -1,8 +1,11 @@
 #include "mouse.hpp"
-#include "key/keycode_def.hpp"
+
 #include <iostream>
 #include <memory>
 #include <unordered_map>
+
+#include "key/keycode_def.hpp"
+#include "util/def.hpp"
 
 namespace
 {

@@ -11,7 +11,8 @@
 
 #include "wx_constant.hpp"
 #include "io_params.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
+#include "util/color.hpp"
 
 namespace wxGUI
 {
@@ -70,7 +71,7 @@ namespace wxGUI
     }
 
     inline static const auto hex2wxColour(const std::string hex) {
-        auto [r, g, b] = vind::utility::hex2rgb(hex) ;
+        auto [r, g, b] = vind::util::hex2rgb(hex) ;
         return wxColour(r, g, b) ;
     }
 

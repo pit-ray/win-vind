@@ -8,8 +8,8 @@
 
 #include "i_params.hpp"
 #include "err_logger.hpp"
-#include "utility.hpp"
-
+#include "util/def.hpp"
+#include "util/math.hpp"
 
 namespace
 {
@@ -24,7 +24,7 @@ namespace
         const auto acc = iparams::get_f("cursor_acceleration") ;
         const auto mvc = iparams::get_f("cursor_max_velocity") ;
 
-        static constexpr auto TIME_COEF = utility::pow_f(10, -3) ;
+        static constexpr auto TIME_COEF = util::pow_f(10, -3) ;
         const auto t = us * TIME_COEF / iparams::get_i("cursor_weight") ; //accuracy
         const auto x = velocity*t + 0.5f*acc*t*t ;
         const auto delta_v = acc * t ;

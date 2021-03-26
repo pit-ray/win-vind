@@ -9,7 +9,7 @@
 #include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "text/simple_text_selecter.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 
 namespace vind

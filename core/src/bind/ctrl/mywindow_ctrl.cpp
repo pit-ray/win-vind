@@ -3,7 +3,7 @@
 #include <windows.h>
 
 #include "mouse/jump_actwin.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace
 {

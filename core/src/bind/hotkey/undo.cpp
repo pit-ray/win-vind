@@ -7,7 +7,7 @@
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "time/keystroke_repeater.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

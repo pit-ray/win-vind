@@ -3,12 +3,15 @@
 #include <windows.h>
 #include <iostream>
 
+#include "mode.hpp"
+
+#include "util/def.hpp"
+
 #include "emu/edi_change_mode.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "mode/change_mode.hpp"
-#include "mode.hpp"
 
 namespace vind
 {

@@ -10,7 +10,7 @@
 
 #include "io/screen_metrics.hpp"
 #include "mouse/jump_actwin.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 #include "window_utility.hpp"
 
 namespace {

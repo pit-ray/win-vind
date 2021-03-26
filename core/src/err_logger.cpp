@@ -3,13 +3,14 @@
 #include <unordered_map>
 #include <windows.h>
 
+#include <algorithm>
 #include <iomanip>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include "path.hpp"
-#include "utility.hpp"
+#include "util/winwrap.hpp"
 
 #define KEEPING_LOG_COUNT (5)
 
@@ -32,14 +33,14 @@ namespace
         std::vector<std::wstring> files ;
 
         WIN32_FIND_DATAW wfd = {} ;
-        auto handle = FindFirstFileW(vind::utility::s_to_ws(log_dir + pattern_withex).c_str(), &wfd) ;
+        auto handle = FindFirstFileW(vind::util::s_to_ws(log_dir + pattern_withex).c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }
-        files.push_back(vind::utility::s_to_ws(log_dir) + wfd.cFileName) ;
+        files.push_back(vind::util::s_to_ws(log_dir) + wfd.cFileName) ;
 
         while(FindNextFileW(handle, &wfd)) {
-            files.push_back(vind::utility::s_to_ws(log_dir) + wfd.cFileName) ;
+            files.push_back(vind::util::s_to_ws(log_dir) + wfd.cFileName) ;
         }
         FindClose(handle) ;
 
@@ -88,8 +89,8 @@ namespace vind
                 << std::setw(2) << std::setfill('0') << stime.wHour \
                 << std::setw(2) << std::setfill('0') << stime.wMinute ;
 
-            if(!utility::is_existed_dir(log_dir)) {
-                utility::create_directory(log_dir) ;
+            if(!util::is_existed_dir(log_dir)) {
+                util::create_directory(log_dir) ;
             }
 
             const auto efile = log_dir + "error_" + ss.str() + ".log" ;

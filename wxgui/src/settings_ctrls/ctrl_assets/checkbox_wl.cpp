@@ -7,7 +7,7 @@
 #include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace wxGUI
 {

@@ -6,7 +6,7 @@
 
 #include "choices_manager.hpp"
 #include "io_params.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace wxGUI
 {

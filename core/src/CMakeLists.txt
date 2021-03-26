@@ -9,7 +9,6 @@ add_library(vindcore STATIC
     i_params.cpp
     err_logger.cpp
     path.cpp
-    utility.cpp
     entry.cpp
 )
 
@@ -19,6 +18,7 @@ add_subdirectory(key)
 add_subdirectory(opt)
 add_subdirectory(text)
 add_subdirectory(time)
+add_subdirectory(util)
 
-target_link_libraries(vindcore Userenv bind io key opt text time)
+target_link_libraries(vindcore bind Userenv opt io key text time util)
 enable_cotire(vindcore)

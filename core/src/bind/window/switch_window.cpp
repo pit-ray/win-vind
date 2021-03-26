@@ -1,12 +1,17 @@
 #include "switch_window.hpp"
 
-#include "emu/edi_move_caret.hpp"
+#include <windows.h>
+
+#include "entry.hpp"
+
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
+#include "util/def.hpp"
+
 #include "bind.hpp"
+
+#include "emu/edi_move_caret.hpp"
 #include "mouse/jump_actwin.hpp"
-#include "utility.hpp"
-#include "entry.hpp"
 
 namespace vind
 {

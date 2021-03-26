@@ -9,7 +9,7 @@
 #include "key/keycodecvt.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "text/text_analyzer.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 #include "entry.hpp"
 
 namespace

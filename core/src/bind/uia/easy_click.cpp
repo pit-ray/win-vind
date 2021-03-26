@@ -1,19 +1,5 @@
 #include "easy_click.hpp"
 
-#include "i_params.hpp"
-#include "io/display_text_painter.hpp"
-#include "io/keybrd.hpp"
-#include "io/mouse.hpp"
-#include "io/screen_metrics.hpp"
-#include "key/key_absorber.hpp"
-#include "key/keycode_def.hpp"
-#include "key/keycodecvt.hpp"
-#include "bind.hpp"
-#include "err_logger.hpp"
-#include "uia.hpp"
-#include "utility.hpp"
-#include "entry.hpp"
-
 #include "disable_gcc_warning.hpp"
 #include <stdexcept>
 #include <windows.h>
@@ -32,6 +18,23 @@
 #include <utility>
 #include <vector>
 #include "enable_gcc_warning.hpp"
+
+#include "i_params.hpp"
+#include "io/display_text_painter.hpp"
+#include "io/keybrd.hpp"
+#include "io/mouse.hpp"
+#include "io/screen_metrics.hpp"
+#include "key/key_absorber.hpp"
+#include "key/keycode_def.hpp"
+#include "key/keycodecvt.hpp"
+#include "bind.hpp"
+#include "err_logger.hpp"
+#include "uia.hpp"
+#include "util/color.hpp"
+#include "util/container.hpp"
+#include "util/winwrap.hpp"
+#include "entry.hpp"
+
 
 namespace
 {
@@ -141,14 +144,14 @@ namespace
 
             try {
                 //Colors
-                auto [bk_r, bk_g, bk_b] = utility::hex2rgb(iparams::get_s("easy_click_font_bkcolor")) ;
+                auto [bk_r, bk_g, bk_b] = util::hex2rgb(iparams::get_s("easy_click_font_bkcolor")) ;
                 auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
 
-                auto [tx_r, tx_g, tx_b] = utility::hex2rgb(iparams::get_s("easy_click_font_color")) ;
+                auto [tx_r, tx_g, tx_b] = util::hex2rgb(iparams::get_s("easy_click_font_color")) ;
                 auto txcolor = RGB(tx_r, tx_g, tx_b) ;
 
                 const unsigned char decay = iparams::get_uc("easy_click_matching_color_decay") ;
-                using utility::to_gray ;
+                using util::to_gray ;
                 char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
                 auto txcolor_ready = RGB(
@@ -211,7 +214,7 @@ namespace
                 throw e ;
             }
 
-            utility::refresh_display(NULL) ; //remove hints in display
+            util::refresh_display(NULL) ; //remove hints in display
 
             //release all keys
             for(unsigned char key : keyabsorber::get_pressed_list()) {
@@ -533,7 +536,7 @@ namespace
         ProcessScanInfo psinfo(procid, obj_points) ;
         EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&psinfo)) ;
 
-        utility::remove_deplication(obj_points) ;
+        util::remove_deplication(obj_points) ;
     }
 
 
@@ -746,7 +749,7 @@ namespace
             if(need_draw_count == 0)
                 lgr.remove_from_back(1) ;
             else
-                utility::refresh_display(hwnd) ;
+                util::refresh_display(hwnd) ;
             //--------------------------------------------------------------------- (2)
         }
     }

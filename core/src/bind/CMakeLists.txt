@@ -10,7 +10,7 @@ add_subdirectory(mode)
 add_subdirectory(mouse)
 add_subdirectory(proc)
 add_subdirectory(uia)
-add_subdirectory(utility)
+add_subdirectory(hotkey)
 add_subdirectory(window)
 
 add_library(bind STATIC
@@ -19,5 +19,5 @@ add_library(bind STATIC
     bindings_matcher.cpp
     mode.cpp
 )
-target_link_libraries(bind ctrl emu file mode mouse proc uia utility window)
+target_link_libraries(bind ctrl emu file mode mouse proc uia hotkey window)
 enable_cotire(bind)

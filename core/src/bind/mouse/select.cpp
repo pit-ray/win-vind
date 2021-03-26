@@ -2,7 +2,7 @@
 
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

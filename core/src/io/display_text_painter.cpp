@@ -1,6 +1,7 @@
 #include "display_text_painter.hpp"
 
-#include "utility.hpp"
+#include "util/def.hpp"
+#include "util/color.hpp"
 #include "screen_metrics.hpp"
 
 #include <cstring>
@@ -174,7 +175,7 @@ namespace vind
         set_text_color(RGB(r, g, b)) ;
     }
     void DisplayTextPainter::set_text_color(std::string hex) {
-        set_text_color(utility::hex2COLORREF(hex)) ;
+        set_text_color(util::hex2COLORREF(hex)) ;
     }
 
     //background color
@@ -189,7 +190,7 @@ namespace vind
         set_back_color(RGB(r, g, b)) ;
     }
     void DisplayTextPainter::set_back_color(std::string hex) {
-        set_back_color(utility::hex2COLORREF(hex)) ;
+        set_back_color(util::hex2COLORREF(hex)) ;
     }
 
     void DisplayTextPainter::draw(const std::string& str, int x, int y, int extra) {

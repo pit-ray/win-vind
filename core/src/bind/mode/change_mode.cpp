@@ -13,7 +13,7 @@
 #include "opt/virtual_cmd_line.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "text/text_analyzer.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 
 namespace vind

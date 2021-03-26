@@ -3,7 +3,7 @@
 #include "i_params.hpp"
 #include "io/screen_metrics.hpp"
 #include "opt/virtual_cmd_line.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 #include "window_utility.hpp"
 
 namespace

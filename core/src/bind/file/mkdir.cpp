@@ -5,7 +5,10 @@
 
 #include "path.hpp"
 #include "err_logger.hpp"
-#include "utility.hpp"
+
+#include "util/def.hpp"
+#include "util/string.hpp"
+#include "util/winwrap.hpp"
 
 //MakeDir
 namespace
@@ -124,7 +127,7 @@ namespace
                 throw RUNTIME_EXCEPT("cannot convert an item ID to a file system path.") ;
             }
 
-            return vind::utility::ws_to_s(path) ;
+            return vind::util::ws_to_s(path) ;
         }
 
         return path_t() ;
@@ -158,7 +161,7 @@ namespace vind
                 //over max path num
                 arg = arg.substr(0, 248) ;
             }
-            utility::create_directory(arg) ;
+            util::create_directory(arg) ;
         }
 
         //argument is directory name
@@ -169,6 +172,6 @@ namespace vind
         }
 
         auto full_path = current_path + "\\" + arg ;
-        utility::create_directory(full_path) ;
+        util::create_directory(full_path) ;
     }
 }

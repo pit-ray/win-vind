@@ -14,7 +14,7 @@
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 #include "err_logger.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 namespace
 {

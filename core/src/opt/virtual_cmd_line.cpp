@@ -11,7 +11,7 @@
 #include "io/screen_metrics.hpp"
 #include "err_logger.hpp"
 #include "path.hpp"
-#include "utility.hpp"
+#include "util/winwrap.hpp"
 
 namespace
 {
@@ -113,7 +113,7 @@ namespace vind
     }
 
     void VirtualCmdLine::refresh() {
-        utility::refresh_display(WindowFromPoint(g_refresh_pos)) ;
+        util::refresh_display(WindowFromPoint(g_refresh_pos)) ;
     }
 
     void VirtualCmdLine::clear() {

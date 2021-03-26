@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "utility.hpp"
 #include "opt/dedicate_to_window.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {

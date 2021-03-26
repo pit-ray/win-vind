@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "err_logger.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
 
 //internal linkage
 namespace

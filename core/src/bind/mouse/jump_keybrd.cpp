@@ -1,6 +1,7 @@
 #include "jump_keybrd.hpp"
 
 #include <algorithm>
+#include <array>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -15,7 +16,8 @@
 #include "key/keycodecvt.hpp"
 #include "err_logger.hpp"
 #include "path.hpp"
-#include "utility.hpp"
+#include "util/def.hpp"
+#include "util/string.hpp"
 #include "entry.hpp"
 
 namespace
@@ -61,7 +63,7 @@ namespace vind
                     continue ;
                 }
 
-                const auto vec = utility::split(buf, " ") ;
+                const auto vec = util::split(buf, " ") ;
 
                 if(vec.size() != 3) {
                     ep(" is bad syntax in ") ;
@@ -88,7 +90,7 @@ namespace vind
                     continue ;
                 }
 
-                code = utility::A2a(code) ;
+                code = util::A2a(code) ;
                 if(code.front() != '<' && code.back() != '>') {
                     ep(" is bad syntax in ") ;
                 }

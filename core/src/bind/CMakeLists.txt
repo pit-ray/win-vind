@@ -16,6 +16,7 @@ add_subdirectory(window)
 add_library(bind STATIC
     bind.cpp
     binded_func.cpp
+    bindings_lists.cpp
     bindings_matcher.cpp
     mode.cpp
 )

@@ -37,6 +37,10 @@
 #include "bindings_matcher.hpp"
 #include "mode.hpp"
 
+#include "mouse/jump_keybrd.hpp"
+#include "proc/external_app.hpp"
+#include "uia/easy_click.hpp"
+
 // to use std::numeric_limits<T>::max()
 #undef max
 
@@ -176,7 +180,7 @@ namespace vind
     namespace keybind {
         void init() {
             g_func_list.clear() ;
-            g_func_list = BindingsLists::get() ;
+            g_func_list = bindingslists::get() ;
 
             g_unbinded_syskeys.clear() ;
             g_unbinded_syskeys = keycodecvt::get_all_sys_vkc() ;

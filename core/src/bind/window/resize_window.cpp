@@ -11,7 +11,7 @@ namespace
     using namespace vind ;
 
     inline auto compute_resize_delta(
-            const unsigned int repeat_num,
+            unsigned int repeat_num,
             const CharLogger* const parent_charlgr,
             const std::string& param_name) {
 
@@ -112,8 +112,8 @@ namespace vind
     }
 
     void ResizeWindowWidth::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
@@ -134,8 +134,8 @@ namespace vind
     }
 
     void IncreaseWindowWidth::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
@@ -155,8 +155,8 @@ namespace vind
     }
 
     void DecreaseWindowWidth::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
@@ -183,8 +183,8 @@ namespace vind
     }
 
     void ResizeWindowHeight::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
@@ -205,8 +205,8 @@ namespace vind
     }
 
     void IncreaseWindowHeight::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
@@ -226,8 +226,8 @@ namespace vind
     }
 
     void DecreaseWindowHeight::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;

@@ -24,8 +24,8 @@ namespace vind
     }
 
     void Change2Normal::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
@@ -57,8 +57,8 @@ namespace vind
     }
 
     void Change2Insert::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
@@ -82,8 +82,8 @@ namespace vind
     }
 
     void Change2Visual::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
@@ -100,8 +100,8 @@ namespace vind
     }
 
     void MyConfigWindowNormal::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
@@ -118,8 +118,8 @@ namespace vind
     }
 
     void MyConfigWindowInsert::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;

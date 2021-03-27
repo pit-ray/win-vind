@@ -15,8 +15,8 @@ namespace
 
     template <typename T1, typename T2>
     inline void move_caret_with_repeating(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeyStrokeRepeater& ksr,
             T1&& v_press_proc,
             T2&& n_press_proc)
@@ -77,8 +77,8 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretLeft::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
@@ -108,8 +108,8 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretRight::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
@@ -139,8 +139,8 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretUp::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
@@ -185,8 +185,8 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretDown::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
@@ -236,8 +236,8 @@ namespace vind
         return true ;
     }
     void EdiNMoveCaretwordsForward::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
@@ -267,8 +267,8 @@ namespace vind
         return true ;
     }
     void EdiNMoveCaretwordsBackward::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
@@ -298,8 +298,8 @@ namespace vind
         return true ;
     }
     void EdiNMoveCaretWORDSForward::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
@@ -329,8 +329,8 @@ namespace vind
         return true ;
     }
     void EdiNMoveCaretWORDSBackward::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;

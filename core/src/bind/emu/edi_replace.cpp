@@ -74,8 +74,8 @@ namespace vind
         return "edi_n_replace_char" ;
     }
     void EdiNReplaceChar::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -101,8 +101,8 @@ namespace vind
         return "edi_n_replace_sequence" ;
     }
     void EdiNReplaceSequence::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -148,8 +148,8 @@ namespace vind
         return "edi_switch_char_case" ;
     }
     void EdiSwitchCharCase::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -166,7 +166,7 @@ namespace vind
                 keybrd::pushup(KEYCODE_LSHIFT, keycodecvt::get_vkc(c)) ;
             }
             else if(c >= 'A' && c <= 'Z') {
-                static constexpr char delta = 'a' - 'A' ;
+                constexpr char delta = 'a' - 'A' ;
                 keybrd::pushup(keycodecvt::get_vkc(c + delta)) ;
             }
             else {

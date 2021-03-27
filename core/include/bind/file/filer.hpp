@@ -7,8 +7,8 @@ namespace vind
 {
     struct SaveOpenedFile : public BindedFuncWithCreator<SaveOpenedFile> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -16,8 +16,8 @@ namespace vind
 
     struct OpenOtherFile : public BindedFuncWithCreator<OpenOtherFile> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;

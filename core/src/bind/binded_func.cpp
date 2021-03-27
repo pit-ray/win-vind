@@ -36,8 +36,8 @@ namespace vind
     BindedFunc& BindedFunc::operator=(BindedFunc&&) = default ;
 
     void BindedFunc::process(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* parent_vkclgr,
             const CharLogger* const parent_charlgr) const {
         if(repeat_num == 0) return ;

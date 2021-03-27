@@ -16,8 +16,8 @@ namespace vind
         return true ;
     }
     void EdiJumpCaret2BOL::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -36,8 +36,8 @@ namespace vind
         return true ;
     }
     void EdiJumpCaret2EOL::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -64,8 +64,8 @@ namespace vind
         return true ;
     }
     void EdiNJumpCaret2Line_DfBOF::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
@@ -107,8 +107,8 @@ namespace vind
         return true ;
     }
     void EdiNJumpCaret2Line_DfEOF::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;

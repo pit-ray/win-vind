@@ -135,8 +135,8 @@ namespace vind
         return "edi_copy_highlight_text" ;
     }
     void EdiCopyHighlightText::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
@@ -160,8 +160,8 @@ namespace vind
         return "edi_n_copy_line" ;
     }
     void EdiNCopyLine::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) {
@@ -189,8 +189,8 @@ namespace vind
         return "edi_copy_motion" ;
     }
     void EdiCopyMotion::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const parent_vkclgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -210,7 +210,7 @@ namespace
               typename T3,
               typename T4>
     inline void put_with_common_process(
-            const bool first_call,
+            bool first_call,
             unsigned int repeat_num,
             KeyStrokeRepeater& ksr,
             T1&& put_chars_preproc,
@@ -276,8 +276,8 @@ namespace vind
         return "edi_n_paste_after" ;
     }
     void EdiNPasteAfter::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
@@ -319,8 +319,8 @@ namespace vind
         return "edi_n_paste_before" ;
     }
     void EdiNPasteBefore::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
@@ -345,8 +345,8 @@ namespace vind
         return "edi_delete_highlight_text" ;
     }
     void EdiDeleteHighlightText::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
@@ -412,8 +412,8 @@ namespace vind
         return "edi_n_delete_line" ;
     }
     void EdiNDeleteLine::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) const {
@@ -473,8 +473,8 @@ namespace vind
         return "edi_n_delete_line_until_EOL" ;
     }
     void EdiNDeleteLineUntilEOL::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) const {
@@ -529,8 +529,8 @@ namespace vind
         return "edi_n_delete_after" ;
     }
     void EdiNDeleteAfter::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
@@ -581,8 +581,8 @@ namespace vind
         return "edi_n_delete_before" ;
     }
     void EdiNDeleteBefore::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
@@ -622,8 +622,8 @@ namespace vind
         return "edi_delete_motion" ;
     }
     void EdiDeleteMotion::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const parent_vkclgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -638,8 +638,8 @@ namespace vind
         return "edi_delete_motion_and_start_insert" ;
     }
     void EdiDeleteMotionAndStartInsert::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const parent_vkclgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -656,8 +656,8 @@ namespace vind
     }
 
     void EdiDeleteLinesAndStartInsert::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -691,8 +691,8 @@ namespace vind
         return "edi_delete_chars_and_start_insert" ;
     }
     void EdiDeleteCharsAndStartInsert::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -743,8 +743,8 @@ namespace vind
      *
      */
     void EdiDeleteUntilEOLAndStartInsert::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) {

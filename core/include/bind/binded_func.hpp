@@ -18,8 +18,8 @@ namespace vind
         std::unique_ptr<Impl> pimpl ;
 
         virtual void do_process(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* parent_vkclgr,
                 const CharLogger* const parent_charlgr) const = 0 ;
 
@@ -37,8 +37,8 @@ namespace vind
         virtual const std::string name() const noexcept = 0 ;
 
         void process(
-                const bool first_call=true,
-                const unsigned int repeat_num=1,
+                bool first_call=true,
+                unsigned int repeat_num=1,
                 KeycodeLogger* parent_vkclgr=nullptr,
                 const CharLogger* const parent_charlgr=nullptr) const ;
 

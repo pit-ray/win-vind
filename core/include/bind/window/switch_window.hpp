@@ -7,8 +7,8 @@ namespace vind
 {
     struct SwitchWindow : public BindedFuncWithCreator<SwitchWindow> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;

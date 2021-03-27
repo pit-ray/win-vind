@@ -16,8 +16,8 @@ namespace vind
     }
 
     void Switch2LeftTab::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -33,7 +33,7 @@ namespace vind
     }
 
     void Switch2RightTab::sprocess(
-            const bool first_call,
+            bool first_call,
             unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
@@ -49,7 +49,7 @@ namespace vind
     }
 
     void OpenNewTab::sprocess(
-            const bool first_call,
+            bool first_call,
             unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
@@ -65,8 +65,8 @@ namespace vind
     }
 
     void CloseCurrentTab::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;

@@ -24,7 +24,7 @@ namespace
         const auto acc = iparams::get_f("cursor_acceleration") ;
         const auto mvc = iparams::get_f("cursor_max_velocity") ;
 
-        static constexpr auto TIME_COEF = util::pow_f(10, -3) ;
+        constexpr auto TIME_COEF = util::pow_f(10, -3) ;
         const auto t = us * TIME_COEF / iparams::get_i("cursor_weight") ; //accuracy
         const auto x = velocity*t + 0.5f*acc*t*t ;
         const auto delta_v = acc * t ;
@@ -89,8 +89,8 @@ namespace vind
     }
 
     void MoveLeft::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
@@ -116,8 +116,8 @@ namespace vind
     }
 
     void MoveRight::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
@@ -142,8 +142,8 @@ namespace vind
         return "move_up" ;
     }
     void MoveUp::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
@@ -167,8 +167,8 @@ namespace vind
         return "move_down" ;
     }
     void MoveDown::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;

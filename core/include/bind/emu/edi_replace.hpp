@@ -7,8 +7,8 @@ namespace vind
 {
     struct EdiNReplaceChar : public BindedFuncWithCreator<EdiNReplaceChar> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -16,8 +16,8 @@ namespace vind
 
     struct EdiNReplaceSequence : public BindedFuncWithCreator<EdiNReplaceSequence> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -25,8 +25,8 @@ namespace vind
 
     struct EdiSwitchCharCase : public BindedFuncWithCreator<EdiSwitchCharCase> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;

@@ -13,8 +13,8 @@ namespace vind
     class BindedFuncWithCreator : public BindedFunc {
     private:
         void do_process(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* parent_vkclgr,
                 const CharLogger* const parent_charlgr) const override {
             static_cast<const Derived*>(this)->sprocess(

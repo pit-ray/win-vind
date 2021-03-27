@@ -7,8 +7,8 @@ namespace vind
 {
     struct Switch2LeftTab : public BindedFuncWithCreator<Switch2LeftTab> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -16,8 +16,8 @@ namespace vind
 
     struct Switch2RightTab : public BindedFuncWithCreator<Switch2RightTab> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -25,8 +25,8 @@ namespace vind
 
     struct OpenNewTab : public BindedFuncWithCreator<OpenNewTab> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -34,8 +34,8 @@ namespace vind
 
     struct CloseCurrentTab : public BindedFuncWithCreator<CloseCurrentTab> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;

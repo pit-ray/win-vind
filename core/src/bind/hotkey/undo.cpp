@@ -28,8 +28,8 @@ namespace vind
     }
 
     void SCRedo::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto redo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;} ;
@@ -72,8 +72,8 @@ namespace vind
         return "sc_undo" ;
     }
     void SCUndo::sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
+            bool first_call,
+            unsigned int repeat_num,
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto undo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;} ;

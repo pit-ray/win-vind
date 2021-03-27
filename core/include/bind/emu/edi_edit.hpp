@@ -12,8 +12,8 @@ namespace vind
     //Copy
     struct EdiCopyHighlightText : public BindedFuncWithCreator<EdiCopyHighlightText> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -21,8 +21,8 @@ namespace vind
 
     struct EdiNCopyLine : public BindedFuncWithCreator<EdiNCopyLine> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) ;
@@ -32,8 +32,8 @@ namespace vind
 
     struct EdiCopyMotion : public BindedFuncWithCreator<EdiCopyMotion> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -48,8 +48,8 @@ namespace vind
 
     public:
         void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
@@ -70,8 +70,8 @@ namespace vind
 
     public:
         void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
@@ -89,8 +89,8 @@ namespace vind
     //Delete
     struct EdiDeleteHighlightText : public BindedFuncWithCreator<EdiDeleteHighlightText> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -103,8 +103,8 @@ namespace vind
 
     public:
         void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) const ;
@@ -127,8 +127,8 @@ namespace vind
 
     public:
         void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) const ;
@@ -150,8 +150,8 @@ namespace vind
 
     public:
         void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
@@ -172,8 +172,8 @@ namespace vind
 
     public:
         void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
@@ -189,8 +189,8 @@ namespace vind
 
     struct EdiDeleteMotion : public BindedFuncWithCreator<EdiDeleteMotion> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -198,8 +198,8 @@ namespace vind
 
     struct EdiDeleteMotionAndStartInsert : public BindedFuncWithCreator<EdiDeleteMotionAndStartInsert> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -207,8 +207,8 @@ namespace vind
 
     struct EdiDeleteLinesAndStartInsert : public BindedFuncWithCreator<EdiDeleteLinesAndStartInsert> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -216,8 +216,8 @@ namespace vind
 
     struct EdiDeleteCharsAndStartInsert : public BindedFuncWithCreator<EdiDeleteCharsAndStartInsert> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -225,8 +225,8 @@ namespace vind
 
     struct EdiDeleteUntilEOLAndStartInsert : public BindedFuncWithCreator<EdiDeleteUntilEOLAndStartInsert> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) ;

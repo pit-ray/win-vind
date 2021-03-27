@@ -7,8 +7,8 @@ namespace vind
 {
     struct SwitchVDesktop2Left : public BindedFuncWithCreator<SwitchVDesktop2Left> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -17,8 +17,8 @@ namespace vind
 
     struct SwitchVDesktop2Right : public BindedFuncWithCreator<SwitchVDesktop2Right> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -27,8 +27,8 @@ namespace vind
 
     struct CreateNewVDesktop : public BindedFuncWithCreator<CreateNewVDesktop> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -37,8 +37,8 @@ namespace vind
 
     struct CloseCurrentVDesktop : public BindedFuncWithCreator<CloseCurrentVDesktop> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -47,8 +47,8 @@ namespace vind
 
     struct TaskView : public BindedFuncWithCreator<TaskView> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;

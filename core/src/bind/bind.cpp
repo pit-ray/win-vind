@@ -496,7 +496,7 @@ namespace vind
                     }
                 }
                 else {
-                    static constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
+                    constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
                     if(g_repeat_num < max && !mode::is_insert()) { //Whether it is not out of range?
                         g_repeat_num = g_repeat_num * 10 + keycodecvt::to_number(topvkc) ;
                         VirtualCmdLine::cout(std::to_string(g_repeat_num)) ;

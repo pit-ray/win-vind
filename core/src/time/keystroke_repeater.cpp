@@ -15,8 +15,8 @@ namespace
             float& velocity,
             const float ms) noexcept {
         //hardcoded
-        static constexpr auto MAX_ACCELERATION = 1.0f ;
-        static constexpr auto MAX_VELOCITY     = 1.0f ;
+        constexpr auto MAX_ACCELERATION = 1.0f ;
+        constexpr auto MAX_VELOCITY     = 1.0f ;
 
         //ms -> s
         const auto t = ms / 1000 ;
@@ -42,7 +42,7 @@ namespace
     }
 
     //hardcoded
-    //static constexpr auto WAIT_TIME_FOR_STARTING   = 512ms;
+    //constexpr auto WAIT_TIME_FOR_STARTING   = 512ms;
     constexpr auto REPEAT_SAMPLING_DELTA_US = 25'600 ;
     constexpr auto INITIAL_VELOCITY         = 0.000'1f ;
 }

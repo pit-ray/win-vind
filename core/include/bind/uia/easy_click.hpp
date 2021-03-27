@@ -11,8 +11,8 @@ namespace vind
 
     struct EasyClickLeft : public BindedFuncWithCreator<EasyClickLeft> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -20,8 +20,8 @@ namespace vind
 
     struct EasyClickRight : public BindedFuncWithCreator<EasyClickRight> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -29,8 +29,8 @@ namespace vind
 
     struct EasyClickMid : public BindedFuncWithCreator<EasyClickMid> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -38,8 +38,8 @@ namespace vind
 
     struct EasyClickHover : public BindedFuncWithCreator<EasyClickHover> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
@@ -48,8 +48,8 @@ namespace vind
 
     struct UpdateEasyClick : public BindedFuncWithCreator<UpdateEasyClick> {
         static void sprocess(
-                const bool first_call,
-                const unsigned int repeat_num,
+                bool first_call,
+                unsigned int repeat_num,
                 KeycodeLogger* const parent_vkclgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;

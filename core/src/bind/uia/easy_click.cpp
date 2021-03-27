@@ -232,8 +232,8 @@ namespace vind
         return "easy_click_left" ;
     }
     void EasyClickLeft::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -245,8 +245,8 @@ namespace vind
         return "easy_click_right" ;
     }
     void EasyClickRight::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -258,8 +258,8 @@ namespace vind
         return "easy_click_mid" ;
     }
     void EasyClickMid::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -271,8 +271,8 @@ namespace vind
         return "easy_click_hover" ;
     }
     void EasyClickHover::sprocess(
-            const bool first_call,
-            const unsigned int UNUSED(repeat_num),
+            bool first_call,
+            unsigned int UNUSED(repeat_num),
             KeycodeLogger* const UNUSED(parent_vkclgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
@@ -565,7 +565,7 @@ namespace
         }
 
         // <= 26 * 26 (=676)
-        static constexpr auto gcx_labels_size_pow2 = gcx_labels.size() * gcx_labels.size() ;
+        constexpr auto gcx_labels_size_pow2 = gcx_labels.size() * gcx_labels.size() ;
         if(target_count <= gcx_labels_size_pow2) {
             std::vector<hint_t> hints(target_count) ;
 

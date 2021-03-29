@@ -247,15 +247,15 @@ It is the difference between master and latest release.
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Use a real command line system in Virtual Command Line.|Feature|Mid|
-|☐|Add license texts into all source codes.|Improve|Mid|
 |☐|Bug reporting feature|Feature|Mid|
-|☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
+|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Mid|
 |☐|Add a reference option in a command line.|Feature|Mid|
+|☐|Divide GUI and core system.|Architecture|Mid|
 |☐|Update Notification|Feature|Mid|
 |✅|Support multi-monitor in `Exchange windows`|Improve|Mid|
 |✅|Support multi-monitor in `Snap window`|Improve|Mid|
 |✅|Move left-upper point of a window when the height or the width are over in `Resize Window`|Feature|Mid|
-|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Low|
+|☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Low|
 |☐|Registration of keybindings by pressing keys.|Feature|Low|
 |☐|Modern GUI (use WinUI3 or Flutter2?)|Change|Low|
 

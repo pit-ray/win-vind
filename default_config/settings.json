@@ -359,7 +359,7 @@
         "ja": "ウィンドウの高さのリサイズ量"
     },
     "enable_specific_bindings_in_mygui": {
-        "value": true,
+        "value": false,
         "en": "Enable specific bindings in Preferences",
         "ja": "設定ウィンドウで特殊バインディングを有効化"
     }

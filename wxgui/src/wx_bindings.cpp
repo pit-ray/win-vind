@@ -4,6 +4,7 @@
 #include <array>
 #include <fstream>
 #include <iomanip>
+#include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -130,21 +131,31 @@ namespace wxGUI
         std::unordered_map<std::string, linkmap_t> mode_links{} ;
 
 
-        nlohmann::json& get_selected_func_json() {
+        std::size_t get_selected_func_index() {
             const auto index = func_list->GetSelection() ;
             if(index == wxNOT_FOUND) {
-                static auto c_empty_obj = nlohmann::json() ;
-                return c_empty_obj ;
+                throw RUNTIME_EXCEPT("The function list is not selected.") ;
             }
             const auto func_label = func_list->GetString(index) ;
 
-            for(auto& obj : parser) {
-                const auto label = obj.at(ioParams::get_vs("ui_lang")).get<std::string>() ;
+            for(std::size_t i = 0 ; i < parser.size() ; i ++) {
+                const auto label = parser.at(i).at(ioParams::get_vs("ui_lang")).get<std::string>() ;
                 if(wxString::FromUTF8(label.c_str()) == func_label) {
-                    return obj ;
+                    return i ;
                 }
             }
             throw LOGIC_EXCEPT(func_label + " does not have a valid label.") ;
+        }
+
+        nlohmann::json& get_selected_func_json() {
+            try {
+                const auto index = get_selected_func_index() ;
+                return parser.at(index) ;
+            }
+            catch(const std::runtime_error&) {
+                static auto c_empty_obj = nlohmann::json() ;
+                return c_empty_obj ;
+            }
         }
 
         const std::string get_selected_func_name() {
@@ -595,13 +606,10 @@ namespace wxGUI
             const auto str = pimpl->new_cmd->GetLineText(0) ;
             if(str.empty()) return ;
 
-            const auto index = pimpl->func_list->GetSelection() ;
-            if(index == wxNOT_FOUND) return ;
-
             try {
                 const auto mode_idx = pimpl->mode->GetSelection() ;
                 if(mode_idx != wxNOT_FOUND) {
-                    auto& c = pimpl->parser.at(index).at(g_modes_key[mode_idx]) ;
+                    auto& c = pimpl->get_selected_func_json().at(g_modes_key[mode_idx]) ;
                     if(!c.contains(str)) {
                         if(pimpl->cmds->IsEmpty()) {
                             c.clear() ;
@@ -624,14 +632,11 @@ namespace wxGUI
             const auto index = pimpl->cmds->GetSelection() ;
             if(index == wxNOT_FOUND) return ;
 
-            const auto func_index = pimpl->func_list->GetSelection() ;
-            if(func_index == wxNOT_FOUND) return ;
-
             pimpl->cmds->Delete(index) ;
             const auto mode_idx = pimpl->mode->GetSelection() ;
             if(mode_idx != wxNOT_FOUND) {
                 try {
-                    pimpl->parser.at(func_index).at(g_modes_key[mode_idx]).erase(index) ;
+                    pimpl->get_selected_func_json().at(g_modes_key[mode_idx]).erase(index) ;
                 }
                 catch(const nlohmann::json::exception&){return ;}
             }
@@ -642,13 +647,11 @@ namespace wxGUI
         Bind(wxEVT_BUTTON, [this](auto&) {
             //read default json (partial)
             try {
-                const auto index = pimpl->func_list->GetSelection() ;
-                if(index == wxNOT_FOUND) return ;
-
                 std::ifstream ifs(Path::to_u8path(Path::Default::BINDINGS())) ;
                 nlohmann::json p{} ;
                 ifs >> p ;
 
+                const auto index = pimpl->get_selected_func_index() ;
                 pimpl->parser.at(index).clear() ;
                 pimpl->parser.at(index) = std::move(p.at(index)) ;
 

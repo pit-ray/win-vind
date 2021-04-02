@@ -87,7 +87,6 @@ void BindedFunc::register_matcher(
         const ModeManager::Mode mode,
         const KeyMatcher::shp_t matcher) const
 {
-    if(!matcher) return ;
     pimpl->mtrs.at(static_cast<unsigned char>(mode)) = matcher ;
 }
 
@@ -95,7 +94,6 @@ void BindedFunc::register_matcher(
         const unsigned char mode,
         const KeyMatcher::shp_t matcher) const
 {
-    if(!matcher) return ;
     pimpl->mtrs.at(mode) = matcher ;
 }
 

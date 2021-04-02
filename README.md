@@ -91,16 +91,16 @@ If you add next scripts into AHK Script, you can call each function.
 Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>. If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## Download
-### 3.2.2 (Latest Version)  
-Date: 2021/2/28  
+### 3.2.3 (Latest Version)  
+Date: 2021/4/2  
 
 #### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/setup_win-vind_3.2.2_32bit.exe.zip">setup_win-vind_3.2.2_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/win-vind_3.2.2_32bit.zip">win-vind_3.2.2_32bit.zip</a>  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/setup_win-vind_3.2.3_32bit.exe.zip">setup_win-vind_3.2.3_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/win-vind_3.2.3_32bit.zip">win-vind_3.2.3_32bit.zip</a>  
 
 #### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/setup_win-vind_3.2.2_64bit.exe.zip">setup_win-vind_3.2.2_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/win-vind_3.2.2_64bit.zip">win-vind_3.2.2_64bit.zip</a> 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/setup_win-vind_3.2.3_64bit.exe.zip">setup_win-vind_3.2.3_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/win-vind_3.2.3_64bit.zip">win-vind_3.2.3_64bit.zip</a> 
 
 
 ## Usage

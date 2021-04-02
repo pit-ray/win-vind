@@ -20,7 +20,7 @@ Date: 2021/4/2
 <br>
 <hr>
 
-### 3.2.2, (Latest Version) <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.2.2">GitHub</a>  
+### 3.2.2, <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.2.2">GitHub</a>  
 Date: 2021/2/28  
 #### 32bit 
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.2/setup_win-vind_3.2.2_32bit.exe.zip">setup_win-vind_3.2.2_32bit.exe.zip</a>

@@ -247,6 +247,7 @@ It is the difference between master and latest release.
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
 |✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
 |☐|Use a real command line system in Virtual Command Line.|Feature|Mid|
+|☐|Capture coordinates of the key mapping from images in order to generate KMP files.|Feature|Mid|
 |☐|Bug reporting feature|Feature|Mid|
 |☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Mid|
 |☐|Add a reference option in a command line.|Feature|Mid|

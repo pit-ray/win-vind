@@ -29,10 +29,10 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
-#include "path.hpp"
+#include "coreio/path.hpp"
+#include "coreio/err_logger.hpp"
 
 #include "bind/mode/change_mode.hpp"
-#include "err_logger.hpp"
 #include "io/mouse.hpp"
 #include "io_params.hpp"
 #include "key/key_absorber.hpp"

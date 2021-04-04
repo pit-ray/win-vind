@@ -1,8 +1,8 @@
-#include "smart_clipboard.hpp"
+#include "text/smart_clipboard.hpp"
 
 #include <cstring>
 
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 
 #include "util/def.hpp"
 

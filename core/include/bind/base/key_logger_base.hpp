@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <memory>
-#include "key_log.hpp"
+#include "key/key_log.hpp"
 
 namespace vind
 {

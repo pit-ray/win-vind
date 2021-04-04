@@ -1,7 +1,7 @@
 #ifndef _PAGER_HPP
 #define _PAGER_HPP
 
-#include "bind/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_with_creator.hpp"
 
 namespace vind
 {

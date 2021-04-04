@@ -1,4 +1,4 @@
-#include "text_analyzer.hpp"
+#include "text/text_analyzer.hpp"
 
 #include <windows.h>
 
@@ -6,10 +6,10 @@
 #include <memory>
 #include <vector>
 
+#include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
-#include "err_logger.hpp"
-#include "smart_clipboard.hpp"
+#include "text/smart_clipboard.hpp"
 #include "util/def.hpp"
 
 namespace vind

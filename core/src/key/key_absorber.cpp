@@ -1,4 +1,5 @@
-#include "key_absorber.hpp"
+#include "key/key_absorber.hpp"
+#include "key/keycodecvt.hpp"
 
 #include <windows.h>
 
@@ -8,10 +9,9 @@
 #include <memory>
 #include <unordered_map>
 
+#include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
-#include "err_logger.hpp"
 #include "util/def.hpp"
-#include "keycodecvt.hpp"
 
 /*Absorber Overview
                        _____

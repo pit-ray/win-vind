@@ -1,7 +1,7 @@
-#include "keycodecvt.hpp"
+#include "key/keycodecvt.hpp"
 
-#include "err_logger.hpp"
-#include "keycode_def.hpp"
+#include "coreio/err_logger.hpp"
+#include "key/keycode_def.hpp"
 
 #include <unordered_map>
 #include <utility>

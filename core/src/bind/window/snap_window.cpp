@@ -1,10 +1,10 @@
-#include "snap_window.hpp"
+#include "bind/window/snap_window.hpp"
 
 #include <functional>
 
 #include "io/screen_metrics.hpp"
 #include "util/def.hpp"
-#include "window_utility.hpp"
+#include "bind/window/window_utility.hpp"
 
 namespace
 {

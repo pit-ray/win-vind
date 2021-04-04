@@ -1,9 +1,9 @@
-#include "autotrack_popup.hpp"
+#include "opt/autotrack_popup.hpp"
 
 #include <windows.h>
 #include <iostream>
 
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 #include "util/def.hpp"
 
 //internal linkage

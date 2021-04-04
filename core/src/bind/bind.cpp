@@ -1,4 +1,4 @@
-#include "bind.hpp"
+#include "bind/bind.hpp"
 
 #include <algorithm>
 #include <array>
@@ -14,29 +14,29 @@
 
 #include <windows.h>
 
-#include "binded_func.hpp"
+#include "bind/base/binded_func.hpp"
 
-#include "i_params.hpp"
-#include "path.hpp"
-#include "err_logger.hpp"
+#include "coreio/i_params.hpp"
+#include "coreio/path.hpp"
+#include "coreio/err_logger.hpp"
 
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
-#include "key/keycode_logger.hpp"
+#include "bind/base/keycode_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 
-#include "bindings_json_parser.hpp"
-#include "bindings_lists.hpp"
-#include "bindings_matcher.hpp"
-#include "mode.hpp"
+#include "bind/bindings_json_parser.hpp"
+#include "bind/bindings_lists.hpp"
+#include "bind/base/bindings_matcher.hpp"
+#include "bind/base/mode.hpp"
 
-#include "mouse/jump_keybrd.hpp"
-#include "proc/external_app.hpp"
-#include "uia/easy_click.hpp"
+#include "bind/mouse/jump_keybrd.hpp"
+#include "bind/proc/external_app.hpp"
+#include "bind/uia/easy_click.hpp"
 
 // to use std::numeric_limits<T>::max()
 #undef max

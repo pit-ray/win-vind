@@ -1,16 +1,16 @@
-#include "suppress_for_vim.hpp"
+#include "opt/suppress_for_vim.hpp"
 
 #include <windows.h>
 
 #include <psapi.h>
 #include <string>
 
+#include "bind/base/mode.hpp"
 #include "bind/mode/change_mode.hpp"
-#include "bind/mode.hpp"
+#include "coreio/err_logger.hpp"
 #include "key/key_absorber.hpp"
-#include "err_logger.hpp"
+#include "opt/virtual_cmd_line.hpp"
 #include "util/string.hpp"
-#include "virtual_cmd_line.hpp"
 
 namespace vind
 {

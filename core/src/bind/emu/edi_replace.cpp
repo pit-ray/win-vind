@@ -1,4 +1,4 @@
-#include "edi_replace.hpp"
+#include "bind/emu/edi_replace.hpp"
 
 #include <windows.h>
 #include <iostream>

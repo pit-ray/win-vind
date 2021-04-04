@@ -1,4 +1,4 @@
-#include "dedicate_to_window_ctrl.hpp"
+#include "bind/ctrl/dedicate_to_window_ctrl.hpp"
 
 #include <iostream>
 

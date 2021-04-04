@@ -1,8 +1,8 @@
-#include "mywindow_ctrl.hpp"
+#include "bind/ctrl/mywindow_ctrl.hpp"
 
 #include <windows.h>
 
-#include "mouse/jump_actwin.hpp"
+#include "bind/mouse/jump_actwin.hpp"
 #include "util/def.hpp"
 
 namespace

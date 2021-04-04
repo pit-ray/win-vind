@@ -1,4 +1,6 @@
-#include "i_params.hpp"
+#include "coreio/i_params.hpp"
+#include "coreio/path.hpp"
+#include "coreio/err_logger.hpp"
 
 #include <fstream>
 
@@ -6,8 +8,6 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
-#include "path.hpp"
-#include "err_logger.hpp"
 
 //internal linkage
 namespace

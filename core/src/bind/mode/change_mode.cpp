@@ -1,15 +1,15 @@
-#include "change_mode.hpp"
+#include "bind/mode/change_mode.hpp"
 
 #include <iostream>
 
 #include <windows.h>
 
+#include "bind/base/mode.hpp"
+#include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
-#include "mode.hpp"
-#include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "text/text_analyzer.hpp"

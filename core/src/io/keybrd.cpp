@@ -1,4 +1,4 @@
-#include "keybrd.hpp"
+#include "io/keybrd.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -13,7 +13,7 @@
 #include "key/key_log.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 #include "util/def.hpp"
 
 namespace

@@ -1,4 +1,4 @@
-#include "rotate_window.hpp"
+#include "bind/window/rotate_window.hpp"
 
 #include <cmath>
 #include <functional>
@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "io/screen_metrics.hpp"
-#include "mouse/jump_actwin.hpp"
+#include "bind/mouse/jump_actwin.hpp"
 #include "util/def.hpp"
-#include "window_utility.hpp"
+#include "bind/window/window_utility.hpp"
 
 namespace {
     using namespace vind ;

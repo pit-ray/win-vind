@@ -1,10 +1,10 @@
-#include "click.hpp"
+#include "bind/mouse/click.hpp"
 
 #include <windows.h>
 #include <iostream>
 
 #include "io/mouse.hpp"
-#include "mode.hpp"
+#include "bind/base/mode.hpp"
 
 namespace vind
 {

@@ -1,4 +1,4 @@
-#include "arrange_window.hpp"
+#include "bind/window/arrange_window.hpp"
 
 #include <windows.h>
 #include <psapi.h>
@@ -10,9 +10,9 @@
 #include <unordered_map>
 
 #include "io/screen_metrics.hpp"
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 #include "util/def.hpp"
-#include "window_utility.hpp"
+#include "bind/window/window_utility.hpp"
 
 namespace
 {

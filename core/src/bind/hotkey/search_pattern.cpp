@@ -1,4 +1,4 @@
-#include "search_pattern.hpp"
+#include "bind/hotkey/search_pattern.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
 

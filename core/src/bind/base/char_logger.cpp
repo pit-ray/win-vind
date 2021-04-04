@@ -1,8 +1,8 @@
-#include "char_logger.hpp"
+#include "bind/base/char_logger.hpp"
 
-#include "key_absorber.hpp"
-#include "key_logger_base.hpp"
-#include "keycodecvt.hpp"
+#include "key/key_absorber.hpp"
+#include "key/keycodecvt.hpp"
+#include "bind/base/key_logger_base.hpp"
 #include "time/keystroke_repeater.hpp"
 
 namespace

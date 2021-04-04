@@ -1,4 +1,4 @@
-#include "reload_window.hpp"
+#include "bind/window/reload_window.hpp"
 
 #include "io/keybrd.hpp"
 #include "util/def.hpp"

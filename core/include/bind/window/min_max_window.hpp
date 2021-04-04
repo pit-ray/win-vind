@@ -1,7 +1,7 @@
 #ifndef _MIN_MAX_WINDOW_HPP
 #define _MIN_MAX_WINDOW_HPP
 
-#include "bind/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_with_creator.hpp"
 
 namespace vind
 {

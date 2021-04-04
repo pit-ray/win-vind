@@ -1,10 +1,10 @@
-#include "window_utility.hpp"
+#include "bind/window/window_utility.hpp"
 
 #include <dwmapi.h>
 
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
-#include "mouse/jump_actwin.hpp"
+#include "bind/mouse/jump_actwin.hpp"
 #include "util/def.hpp"
 
 namespace vind

@@ -1,7 +1,7 @@
-#include "edi_layout.hpp"
+#include "bind/emu/edi_layout.hpp"
 
 #include "io/keybrd.hpp"
-#include "mode.hpp"
+#include "bind/base/mode.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 

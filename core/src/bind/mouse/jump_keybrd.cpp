@@ -1,4 +1,4 @@
-#include "jump_keybrd.hpp"
+#include "bind/mouse/jump_keybrd.hpp"
 
 #include <algorithm>
 #include <array>
@@ -9,15 +9,15 @@
 #include <unordered_map>
 #include <utility>
 
-#include "i_params.hpp"
+#include "coreio/i_params.hpp"
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
 #include "key/keycodecvt.hpp"
-#include "err_logger.hpp"
-#include "mouse/jump_keybrd.hpp"
-#include "path.hpp"
+#include "coreio/err_logger.hpp"
+#include "bind/mouse/jump_keybrd.hpp"
+#include "coreio/path.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 #include "entry.hpp"

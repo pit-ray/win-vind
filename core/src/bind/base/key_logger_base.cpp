@@ -1,9 +1,9 @@
-#include "key_logger_base.hpp"
+#include "bind/base/key_logger_base.hpp"
 
 #include "util/container.hpp"
 
-#include "key_absorber.hpp"
-#include "keycodecvt.hpp"
+#include "key/key_absorber.hpp"
+#include "key/keycodecvt.hpp"
 
 #include <sstream>
 

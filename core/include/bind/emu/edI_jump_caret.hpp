@@ -1,7 +1,7 @@
 #ifndef _EDI_JUMP_CARET_HPP
 #define _EDI_JUMP_CARET_HPP
 
-#include "bind/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_with_creator.hpp"
 
 namespace vind
 {

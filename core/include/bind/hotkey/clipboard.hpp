@@ -1,7 +1,7 @@
 #ifndef _CLIPBOARD_HPP
 #define _CLIPBOARD_HPP
 
-#include "bind/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_with_creator.hpp"
 
 namespace vind
 {

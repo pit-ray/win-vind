@@ -1,9 +1,9 @@
-#include "scroll.hpp"
+#include "bind/mouse/scroll.hpp"
 
 #include <windows.h>
 #include <iostream>
 
-#include "i_params.hpp"
+#include "coreio/i_params.hpp"
 #include "io/mouse.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"

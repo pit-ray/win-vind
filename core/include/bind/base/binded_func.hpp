@@ -4,11 +4,10 @@
 #include <memory>
 #include <string>
 
-#include "bindings_matcher.hpp"
-#include "mode.hpp"
-
-#include "key/keycode_logger.hpp"
-#include "key/char_logger.hpp"
+#include "bind/base/bindings_matcher.hpp"
+#include "bind/base/mode.hpp"
+#include "bind/base/keycode_logger.hpp"
+#include "bind/base/char_logger.hpp"
 
 namespace vind
 {

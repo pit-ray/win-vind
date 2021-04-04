@@ -1,4 +1,4 @@
-#include "move_cursor.hpp"
+#include "bind/mouse/move_cursor.hpp"
 
 #include <windows.h>
 
@@ -6,8 +6,8 @@
 #include <iostream>
 #include <cmath>
 
-#include "i_params.hpp"
-#include "err_logger.hpp"
+#include "coreio/i_params.hpp"
+#include "coreio/err_logger.hpp"
 #include "util/def.hpp"
 #include "util/math.hpp"
 

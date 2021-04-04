@@ -1,4 +1,4 @@
-#include "external_app.hpp"
+#include "bind/proc/external_app.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -11,13 +11,14 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
+#include "bind/mouse/jump_actwin.hpp"
+#include "bind/proc/external_app.hpp"
+#include "coreio/err_logger.hpp"
+#include "coreio/path.hpp"
 #include "io/keybrd.hpp"
-#include "mouse/jump_actwin.hpp"
-#include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
-#include "path.hpp"
-#include "proc/external_app.hpp"
 #include "util/winwrap.hpp"
+
 
 namespace
 {

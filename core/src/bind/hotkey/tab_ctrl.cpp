@@ -1,10 +1,10 @@
-#include "tab_ctrl.hpp"
+#include "bind/hotkey/tab_ctrl.hpp"
 
 #include <windows.h>
 
 #include "io/keybrd.hpp"
-#include "mode/change_mode.hpp"
-#include "err_logger.hpp"
+#include "bind/mode/change_mode.hpp"
+#include "coreio/err_logger.hpp"
 #include "util/def.hpp"
 
 

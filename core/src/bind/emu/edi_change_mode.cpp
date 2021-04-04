@@ -1,4 +1,4 @@
-#include "edi_change_mode.hpp"
+#include "bind/emu/edi_change_mode.hpp"
 
 #include <iostream>
 #include <windows.h>
@@ -6,7 +6,7 @@
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
-#include "mode.hpp"
+#include "bind/base/mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "util/def.hpp"

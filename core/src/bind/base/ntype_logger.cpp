@@ -1,9 +1,9 @@
-#include "ntype_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 
-#include "key_absorber.hpp"
-#include "key_logger_base.hpp"
-#include "err_logger.hpp"
-#include "keycodecvt.hpp"
+#include "key/key_absorber.hpp"
+#include "key/keycodecvt.hpp"
+#include "bind/base/key_logger_base.hpp"
+#include "coreio/err_logger.hpp"
 #include "time/keystroke_repeater.hpp"
 
 
@@ -105,13 +105,13 @@ namespace vind
             return 0 ;
         }
         logging(log) ;
-        return latest().size() ;
+        return static_cast<int>(latest().size()) ;
     }
 
     int NTypeLogger::logging_pressing_log(const KeyLog& log) {
         if(pimpl->prelog_without_headnum_ == log) {
             pimpl->pressing_ = true ;
-            return latest().size() ;
+            return static_cast<int>(latest().size()) ;
         }
 
         KeyLoggerBase::clear() ;
@@ -129,7 +129,7 @@ namespace vind
         else {
             //inputting keys are changed.
             logging(log) ;
-            return latest().size() ;
+            return static_cast<int>(latest().size()) ;
         }
     }
 

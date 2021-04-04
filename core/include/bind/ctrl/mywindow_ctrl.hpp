@@ -1,7 +1,7 @@
 #ifndef _MYWINDOW_CTRL_HPP
 #define _MYWINDOW_CTRL_HPP
 
-#include "bind/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_with_creator.hpp"
 #include <functional>
 
 namespace vind

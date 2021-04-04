@@ -1,10 +1,10 @@
-#include "select_window.hpp"
+#include "bind/window/select_window.hpp"
 
 #include <map>
 
-#include "mouse/jump_actwin.hpp"
+#include "bind/mouse/jump_actwin.hpp"
 #include "io/screen_metrics.hpp"
-#include "window_utility.hpp"
+#include "bind/window/window_utility.hpp"
 
 namespace
 {

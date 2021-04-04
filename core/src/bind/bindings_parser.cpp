@@ -1,15 +1,15 @@
-#include "bindings_parser.hpp"
+#include "bind/bindings_parser.hpp"
 
 #include <string>
 #include <sstream>
 
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 
 #include "key/keycodecvt.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 
-#include "mode.hpp"
+#include "bind/base/mode.hpp"
 
 namespace vind
 {

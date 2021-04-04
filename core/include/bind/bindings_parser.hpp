@@ -1,8 +1,8 @@
 #ifndef _BINDINGS_PARSER_HPP
 #define _BINDINGS_PARSER_HPP
 
-#include "bindings_matcher.hpp"
-#include "mode.hpp"
+#include "bind/base/bindings_matcher.hpp"
+#include "bind/base/mode.hpp"
 
 namespace vind
 {

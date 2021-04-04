@@ -1,9 +1,9 @@
-#include "split_open_window.hpp"
+#include "bind/window/split_open_window.hpp"
 
 #include "io/screen_metrics.hpp"
-#include "proc/open_window.hpp"
+#include "bind/proc/open_window.hpp"
 #include "util/def.hpp"
-#include "window_utility.hpp"
+#include "bind/window/window_utility.hpp"
 
 namespace vind
 {

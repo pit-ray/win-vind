@@ -1,4 +1,4 @@
-#include "min_max_window.hpp"
+#include "bind/window/min_max_window.hpp"
 
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"

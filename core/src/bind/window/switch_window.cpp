@@ -1,4 +1,4 @@
-#include "switch_window.hpp"
+#include "bind/window/switch_window.hpp"
 
 #include <windows.h>
 
@@ -8,10 +8,10 @@
 #include "key/key_absorber.hpp"
 #include "util/def.hpp"
 
-#include "bind.hpp"
+#include "bind/bind.hpp"
 
-#include "emu/edi_move_caret.hpp"
-#include "mouse/jump_actwin.hpp"
+#include "bind/emu/edi_move_caret.hpp"
+#include "bind/mouse/jump_actwin.hpp"
 
 namespace vind
 {

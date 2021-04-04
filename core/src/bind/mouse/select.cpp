@@ -1,4 +1,4 @@
-#include "select.hpp"
+#include "bind/mouse/select.hpp"
 
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"

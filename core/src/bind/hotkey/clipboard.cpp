@@ -1,17 +1,17 @@
-#include "clipboard.hpp"
+#include "bind/hotkey/clipboard.hpp"
 
 #include <windows.h>
 #include <iostream>
 
-#include "mode.hpp"
+#include "bind/base/mode.hpp"
 
 #include "util/def.hpp"
 
-#include "emu/edi_change_mode.hpp"
+#include "bind/emu/edi_change_mode.hpp"
+#include "bind/mode/change_mode.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
-#include "mode/change_mode.hpp"
 
 namespace vind
 {

@@ -1,7 +1,7 @@
 #include "wx_panel_core.hpp"
 
 #include "ui_translator.hpp"
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 
 namespace wxGUI
 {

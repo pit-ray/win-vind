@@ -1,22 +1,22 @@
-#include "command_mode.hpp"
+#include "bind/mode/command_mode.hpp"
 
 #include <algorithm>
 #include <windows.h>
 
 #include <vector>
 
-#include "binded_func.hpp"
-#include "i_params.hpp"
+#include "bind/base/binded_func.hpp"
+#include "coreio/i_params.hpp"
 #include "io/keybrd.hpp"
-#include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
-#include "key/key_logger_base.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
-#include "key/keycode_logger.hpp"
-#include "bind.hpp"
-#include "mode.hpp"
-#include "err_logger.hpp"
+#include "bind/base/char_logger.hpp"
+#include "bind/base/key_logger_base.hpp"
+#include "bind/base/keycode_logger.hpp"
+#include "bind/bind.hpp"
+#include "bind/base/mode.hpp"
+#include "coreio/err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 #include "entry.hpp"

@@ -1,10 +1,10 @@
-#include "resize_window.hpp"
+#include "bind/window/resize_window.hpp"
 
-#include "i_params.hpp"
+#include "coreio/i_params.hpp"
 #include "io/screen_metrics.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
-#include "window_utility.hpp"
+#include "bind/window/window_utility.hpp"
 
 namespace
 {

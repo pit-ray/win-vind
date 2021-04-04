@@ -1,11 +1,11 @@
-#include "keystroke_repeater.hpp"
+#include "time/keystroke_repeater.hpp"
 
 #include <chrono>
 #include <iostream>
 #include <random>
 #include <mutex>
 
-#include "interval_timer.hpp"
+#include "time/interval_timer.hpp"
 
 namespace
 {

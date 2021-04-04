@@ -8,8 +8,8 @@
 #include <string>
 #include "enable_gcc_warning.hpp"
 
-#include "err_logger.hpp"
-#include "path.hpp"
+#include "coreio/err_logger.hpp"
+#include "coreio/path.hpp"
 
 
 namespace ioParams

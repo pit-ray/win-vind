@@ -1,4 +1,4 @@
-#include "pager.hpp"
+#include "bind/hotkey/pager.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
 

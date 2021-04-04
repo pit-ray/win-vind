@@ -1,8 +1,8 @@
 #ifndef _BIND_HPP
 #define _BIND_HPP
 
-#include "binded_func.hpp"
-#include "mode.hpp"
+#include "bind/base/binded_func.hpp"
+#include "bind/base/mode.hpp"
 
 namespace vind
 {

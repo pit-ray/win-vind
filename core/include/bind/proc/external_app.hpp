@@ -1,7 +1,7 @@
 #ifndef _EXTERNAL_APP_HPP
 #define _EXTERNAL_APP_HPP
 
-#include "bind/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_with_creator.hpp"
 
 namespace vind
 {

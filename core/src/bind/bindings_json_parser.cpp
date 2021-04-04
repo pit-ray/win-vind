@@ -1,4 +1,4 @@
-#include "bindings_json_parser.hpp"
+#include "bind/bindings_json_parser.hpp"
 
 #include <exception>
 #include <string>
@@ -9,14 +9,14 @@
 #include <nlohmann/json.hpp>
 #include "enable_gcc_warning.hpp"
 
-#include "path.hpp"
-#include "err_logger.hpp"
+#include "coreio/path.hpp"
+#include "coreio/err_logger.hpp"
 
 #include "util/def.hpp"
 
-#include "binded_func.hpp"
-#include "bindings_parser.hpp"
-#include "mode.hpp"
+#include "bind/base/binded_func.hpp"
+#include "bind/bindings_parser.hpp"
+#include "bind/base/mode.hpp"
 
 namespace
 {
@@ -84,7 +84,7 @@ namespace
                     matcher_list[m_idx] = std::make_shared<BindingsMatcher>(std::move(cmdlist)) ;
                 }
             }
-            catch(const std::out_of_range& e) {
+            catch(const std::out_of_range&) {
                 continue ;
             }
         }

@@ -1,6 +1,7 @@
-#include "mode.hpp"
+#include "bind/base/mode.hpp"
 
 #include <unordered_map>
+#include <stdexcept>
 
 namespace
 {

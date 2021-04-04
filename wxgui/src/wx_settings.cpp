@@ -20,7 +20,7 @@
 #include "easy_click_ctrl.hpp"
 #include "resize_window_ctrl.hpp"
 
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 #include "wx_constant.hpp"
 #include "ui_translator.hpp"
 #include "io_params.hpp"

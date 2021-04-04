@@ -1,4 +1,4 @@
-#include "edi_edit.hpp"
+#include "bind/emu/edi_edit.hpp"
 
 #include <stdio.h>
 #include <windows.h>
@@ -6,14 +6,14 @@
 #include <memory>   //for std::unique_ptr
 #include <iostream> //for debug
 
-#include "edi_change_mode.hpp"
-#include "i_params.hpp"
+#include "bind/base/mode.hpp"
+#include "bind/bind.hpp"
+#include "bind/emu/edi_change_mode.hpp"
+#include "coreio/err_logger.hpp"
+#include "coreio/i_params.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
-#include "bind.hpp"
-#include "mode.hpp"
-#include "err_logger.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "text/smart_clipboard.hpp"
 #include "text/text_analyzer.hpp"

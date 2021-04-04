@@ -26,13 +26,13 @@
 #include "wx_bindings.hpp"
 
 #include "io_params.hpp"
-#include "err_logger.hpp"
+#include "coreio/err_logger.hpp"
 #include "ui_translator.hpp"
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
 
 #include "key/key_absorber.hpp"
-#include "bind/mode.hpp"
+#include "bind/base/mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "entry.hpp"
 

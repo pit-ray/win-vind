@@ -1,9 +1,9 @@
-#include "open_window.hpp"
+#include "bind/proc/open_window.hpp"
 
 #include <windows.h>
 #include <psapi.h>
 
-#include "path.hpp"
+#include "coreio/path.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 

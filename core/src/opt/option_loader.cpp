@@ -1,16 +1,16 @@
-#include "option_loader.hpp"
+#include "opt/option_loader.hpp"
 
 #include <vector>
 #include <memory>
 #include <algorithm>
 
-#include "err_logger.hpp"
-#include "i_params.hpp"
+#include "coreio/err_logger.hpp"
+#include "coreio/i_params.hpp"
 
-#include "autotrack_popup.hpp"
-#include "dedicate_to_window.hpp"
-#include "virtual_cmd_line.hpp"
-#include "suppress_for_vim.hpp"
+#include "opt/autotrack_popup.hpp"
+#include "opt/dedicate_to_window.hpp"
+#include "opt/virtual_cmd_line.hpp"
+#include "opt/suppress_for_vim.hpp"
 
 //internal linkage
 namespace

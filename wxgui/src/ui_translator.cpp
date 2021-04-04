@@ -7,9 +7,11 @@
 #include "enable_gcc_warning.hpp"
 
 #include "wx_constant.hpp"
-#include "err_logger.hpp"
+
+#include "coreio/err_logger.hpp"
+#include "coreio/path.hpp"
+
 #include "io_params.hpp"
-#include "path.hpp"
 
 namespace UITrans
 {

@@ -1,4 +1,4 @@
-#include "mouse.hpp"
+#include "io/mouse.hpp"
 
 #include <iostream>
 #include <memory>

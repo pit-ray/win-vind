@@ -1,4 +1,4 @@
-#include "easy_click.hpp"
+#include "bind/uia/easy_click.hpp"
 
 #include "disable_gcc_warning.hpp"
 #include <stdexcept>
@@ -19,7 +19,10 @@
 #include <vector>
 #include "enable_gcc_warning.hpp"
 
-#include "i_params.hpp"
+#include "bind/bind.hpp"
+#include "bind/uia/uia.hpp"
+#include "coreio/err_logger.hpp"
+#include "coreio/i_params.hpp"
 #include "io/display_text_painter.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
@@ -27,9 +30,6 @@
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
-#include "bind.hpp"
-#include "err_logger.hpp"
-#include "uia.hpp"
 #include "util/color.hpp"
 #include "util/container.hpp"
 #include "util/winwrap.hpp"

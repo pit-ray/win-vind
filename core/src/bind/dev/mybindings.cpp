@@ -1,5 +1,9 @@
-#include "mybinding.hpp"
-#include "virtual_cmd_line.hpp"
+#include "bind/dev/mybindings.hpp"
+
+#include "opt/virtual_cmd_line.hpp"
+#include "io/mouse.hpp"
+#include "io/keybrd.hpp"
+#include "util/def.hpp"
 
 namespace vind
 {
@@ -9,9 +13,9 @@ namespace vind
 
     void MyBinding::sprocess(
             bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const parent_keycodelgr,
-            const CharLogger* const parent_charlgr) {
+            unsigned int UNUSED(repeat_num),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
+            const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
         

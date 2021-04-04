@@ -1,7 +1,7 @@
-#include "edi_jump_caret.hpp"
+#include "bind/emu/edi_jump_caret.hpp"
 
 #include "io/keybrd.hpp"
-#include "mode.hpp"
+#include "bind/base/mode.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "util/def.hpp"
 

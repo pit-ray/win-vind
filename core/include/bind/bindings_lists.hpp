@@ -1,7 +1,7 @@
 #ifndef _BINDINGS_LISTS_HPP
 #define _BINDINGS_LISTS_HPP
 
-#include "binded_func.hpp"
+#include "bind/base/binded_func.hpp"
 
 namespace vind
 {

@@ -20,7 +20,7 @@ namespace vind
         virtual void do_process(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* parent_vkclgr,
+                KeycodeLogger* parent_keycodelgr,
                 const CharLogger* const parent_charlgr) const = 0 ;
 
     public:
@@ -39,7 +39,7 @@ namespace vind
         void process(
                 bool first_call=true,
                 unsigned int repeat_num=1,
-                KeycodeLogger* parent_vkclgr=nullptr,
+                KeycodeLogger* parent_keycodelgr=nullptr,
                 const CharLogger* const parent_charlgr=nullptr) const ;
 
         void register_matcher(
@@ -52,16 +52,20 @@ namespace vind
         //[return] matched num in latest log
         unsigned int validate_if_match(
                 const KeyLoggerBase& pc_lgr,
-                mode::Mode mode=mode::get_mode()) const ;
+                mode::Mode mode=mode::get_global_mode()) const ;
 
         //[return] matched num in latest log
         //The cost for computing is bigger than validate_if_match.
         unsigned int validate_if_fullmatch(
                 const KeyLoggerBase& pc_lgr,
-                mode::Mode mode=mode::get_mode()) const ;
+                mode::Mode mode=mode::get_global_mode()) const ;
 
         bool is_callable() const noexcept ;
         virtual bool is_for_moving_caret() const noexcept ;
+
+        bool is_matched_syskey_in_combined_bindings() const noexcept ;
+
+        virtual void load_config() ;
     } ;
 }
 #endif

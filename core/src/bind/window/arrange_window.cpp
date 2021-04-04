@@ -124,7 +124,7 @@ namespace vind
     void ArrangeWindows::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 

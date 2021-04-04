@@ -23,7 +23,7 @@ namespace vind
     void CBCopy::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         mouse::release(KEYCODE_MOUSE_LEFT) ;
@@ -42,7 +42,7 @@ namespace vind
     void CBPaste::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -61,7 +61,7 @@ namespace vind
     void CBCut::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -78,7 +78,7 @@ namespace vind
     void CBDelete::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         mouse::release(KEYCODE_MOUSE_LEFT) ;
@@ -98,7 +98,7 @@ namespace vind
     void CBBackSpace::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         mouse::release(KEYCODE_MOUSE_LEFT) ;

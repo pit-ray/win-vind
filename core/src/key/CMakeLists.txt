@@ -5,8 +5,9 @@ add_library(key STATIC
     key_absorber.cpp
     key_log.cpp
     key_logger_base.cpp
-    keycodecvt.cpp
     keycode_logger.cpp
+    keycodecvt.cpp
+    ntype_logger.cpp
 )
 enable_cotire(key)
 

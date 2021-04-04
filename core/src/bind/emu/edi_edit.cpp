@@ -75,7 +75,7 @@ namespace
     }
 
     //return: is succecced?
-    inline bool select_by_motion(unsigned int repeat_num, KeycodeLogger* const parent_vkclgr) {
+    inline bool select_by_motion(unsigned int repeat_num, KeycodeLogger* const parent_keycodelgr) {
         using namespace mode ;
         KeycodeLogger lgr ;
 
@@ -84,15 +84,14 @@ namespace
         while(vind::update_background()) {
             lgr.update() ;
             if(!lgr.is_changed()) {
-                lgr.remove_from_back(1) ;
                 continue ;
             }
 
-            parent_vkclgr->update() ;
+            parent_keycodelgr->update() ;
 
             if(keybind::is_invalid_log(lgr.latest(),
                         keybind::InvalidPolicy::UnbindedSystemKey)) {
-                parent_vkclgr->remove_from_back(1) ;
+                parent_keycodelgr->remove_from_back(1) ;
                 lgr.remove_from_back(1) ;
                 continue ;
             }
@@ -101,9 +100,9 @@ namespace
             //For example, the child BindedFunc calling this function is binded with 'c{motion}'
             //and 'cc' are bindings EdiDeleteLinesAndStartInsert.
             //In this case, if a child process has a message loop, we must consider the parent logger by full scanning.
-            if(auto func = keybind::find_func(*parent_vkclgr, nullptr, true)) {
+            if(auto func = keybind::find_func(*parent_keycodelgr, nullptr, true)) {
                 if(func->is_callable()) {
-                    func->process(true, repeat_num, parent_vkclgr) ;
+                    func->process(true, repeat_num, parent_keycodelgr) ;
                     return false ;
                 }
             }
@@ -137,7 +136,7 @@ namespace vind
     void EdiCopyHighlightText::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
 
@@ -145,7 +144,7 @@ namespace vind
 
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
 
-        if(get_mode() == Mode::EdiLineVisual)
+        if(get_global_mode() == Mode::EdiLineVisual)
             g_rgtype = RegisteredType::Lines ;
         else
             g_rgtype = RegisteredType::Chars ;
@@ -162,7 +161,7 @@ namespace vind
     void EdiNCopyLine::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) {
         if(!first_call) return ;
@@ -191,10 +190,13 @@ namespace vind
     void EdiCopyMotion::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_keycodelgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        if(select_by_motion(repeat_num, parent_vkclgr)) {
+        if(!parent_keycodelgr) {
+            throw LOGIC_EXCEPT("The parent keylogger is null.") ;
+        }
+        if(select_by_motion(repeat_num, parent_keycodelgr)) {
             EdiCopyHighlightText::sprocess(true, 1, nullptr, nullptr) ;
             Change2EdiNormal::sprocess(true, 1, nullptr, nullptr, false) ;
         }
@@ -278,7 +280,7 @@ namespace vind
     void EdiNPasteAfter::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         auto put_chars_preproc = [] {
@@ -321,7 +323,7 @@ namespace vind
     void EdiNPasteBefore::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         auto put_chars = [] {
@@ -347,7 +349,7 @@ namespace vind
     void EdiDeleteHighlightText::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
         using keybrd::pushup ;
@@ -355,7 +357,7 @@ namespace vind
         if(!first_call) return ;
 
         pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-        if(get_mode() == Mode::EdiLineVisual) {
+        if(get_global_mode() == Mode::EdiLineVisual) {
             g_rgtype = RegisteredType::Lines ;
         }
         else {
@@ -370,7 +372,7 @@ namespace
 {
     inline void delete_line_when_selecting() {
         using namespace mode ;
-        const auto mode = get_mode() ;
+        const auto mode = get_global_mode() ;
         if(mode == Mode::EdiVisual) {
             if(iparams::get_b("enable_char_cache")) {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -414,7 +416,7 @@ namespace vind
     void EdiNDeleteLine::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) const {
         using keybrd::pushup ;
@@ -475,7 +477,7 @@ namespace vind
     void EdiNDeleteLineUntilEOL::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) const {
         using keybrd::pushup ;
@@ -531,7 +533,7 @@ namespace vind
     void EdiNDeleteAfter::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
             if(iparams::get_b("enable_char_cache")) {
@@ -583,7 +585,7 @@ namespace vind
     void EdiNDeleteBefore::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto del = [] {
             if(iparams::get_b("enable_char_cache")) {
@@ -624,10 +626,14 @@ namespace vind
     void EdiDeleteMotion::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_keycodelgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        if(select_by_motion(repeat_num, parent_vkclgr)) {
+        if(!parent_keycodelgr) {
+            throw LOGIC_EXCEPT("The parent keylogger is null.") ;
+        }
+
+        if(select_by_motion(repeat_num, parent_keycodelgr)) {
             EdiDeleteHighlightText::sprocess(true, 1, nullptr, nullptr) ;
         }
     }
@@ -640,10 +646,13 @@ namespace vind
     void EdiDeleteMotionAndStartInsert::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_keycodelgr,
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        if(select_by_motion(repeat_num, parent_vkclgr)) {
+        if(!parent_keycodelgr) {
+            throw LOGIC_EXCEPT("The parent keylogger is null.") ;
+        }
+        if(select_by_motion(repeat_num, parent_keycodelgr)) {
             EdiDeleteHighlightText::sprocess(true, 1, nullptr, nullptr) ;
             Change2EdiInsert::sprocess(true, 1, nullptr, nullptr) ;
         }
@@ -658,7 +667,7 @@ namespace vind
     void EdiDeleteLinesAndStartInsert::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -693,7 +702,7 @@ namespace vind
     void EdiDeleteCharsAndStartInsert::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -745,7 +754,7 @@ namespace vind
     void EdiDeleteUntilEOLAndStartInsert::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const textanalyze::SelRes* const exres) {
         if(!first_call) return ;

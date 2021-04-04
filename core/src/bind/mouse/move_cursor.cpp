@@ -91,7 +91,7 @@ namespace vind
     void MoveLeft::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(-pimpl->calcer.delta() * repeat_num, 0) ;
@@ -118,7 +118,7 @@ namespace vind
     void MoveRight::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(pimpl->calcer.delta() * repeat_num, 0) ;
@@ -144,7 +144,7 @@ namespace vind
     void MoveUp::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(0, -pimpl->calcer.delta() * repeat_num) ;
@@ -169,7 +169,7 @@ namespace vind
     void MoveDown::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) pimpl->calcer.reset() ;
         _move_cursor(0, pimpl->calcer.delta() * repeat_num) ;

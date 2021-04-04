@@ -76,16 +76,16 @@ namespace vind
     void EdiNReplaceChar::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
-        loop_for_keymatching([repeat_num](const auto& vkcs, const bool shifted=false) {
+        loop_for_keymatching([repeat_num](const auto& keycodes, const bool shifted=false) {
 
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 keybrd::pushup(KEYCODE_DELETE) ;
 
-                if(shifted) keybrd::pushup(KEYCODE_LSHIFT, vkcs) ;
-                else keybrd::pushup(vkcs) ;
+                if(shifted) keybrd::pushup(KEYCODE_LSHIFT, keycodes) ;
+                else keybrd::pushup(keycodes) ;
             }
 
             for(unsigned int i = 0 ; i < repeat_num ; i ++)
@@ -103,7 +103,7 @@ namespace vind
     void EdiNReplaceSequence::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -115,16 +115,16 @@ namespace vind
         std::vector<unsigned char> strs{} ;
         std::vector<bool> shifts{} ;
 
-        loop_for_keymatching([&strs, &shifts](const auto& vkcs, const bool shifted=false) {
+        loop_for_keymatching([&strs, &shifts](const auto& keycodes, const bool shifted=false) {
             pushup(KEYCODE_DELETE) ;
             if(shifted) {
-                pushup(KEYCODE_LSHIFT, vkcs) ;
-                strs.push_back(vkcs) ;
+                pushup(KEYCODE_LSHIFT, keycodes) ;
+                strs.push_back(keycodes) ;
                 shifts.push_back(true) ;
             }
             else {
-                pushup(vkcs) ;
-                strs.push_back(vkcs) ;
+                pushup(keycodes) ;
+                strs.push_back(keycodes) ;
                 shifts.push_back(false) ;
             }
             return false ; //continue looping
@@ -150,7 +150,7 @@ namespace vind
     void EdiSwitchCharCase::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -163,22 +163,22 @@ namespace vind
 
         for(char c : res.str) {
             if(c >= 'a' && c <= 'z') {
-                keybrd::pushup(KEYCODE_LSHIFT, keycodecvt::get_vkc(c)) ;
+                keybrd::pushup(KEYCODE_LSHIFT, keycodecvt::get_keycode(c)) ;
             }
             else if(c >= 'A' && c <= 'Z') {
                 constexpr char delta = 'a' - 'A' ;
-                keybrd::pushup(keycodecvt::get_vkc(c + delta)) ;
+                keybrd::pushup(keycodecvt::get_keycode(c + delta)) ;
             }
             else {
-                auto vkc = keycodecvt::get_vkc(c) ;
-                if(vkc) {
-                    keybrd::pushup(vkc) ;
+                auto keycode = keycodecvt::get_keycode(c) ;
+                if(keycode) {
+                    keybrd::pushup(keycode) ;
                     continue ;
                 }
      
-                vkc = keycodecvt::get_shifted_vkc(c) ;
-                if(vkc) {
-                    keybrd::pushup(KEYCODE_LSHIFT, vkc) ;
+                keycode = keycodecvt::get_shifted_keycode(c) ;
+                if(keycode) {
+                    keybrd::pushup(KEYCODE_LSHIFT, keycode) ;
                     continue ;
                 }
             }

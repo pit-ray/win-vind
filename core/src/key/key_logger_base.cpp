@@ -67,7 +67,7 @@ namespace vind
         return pimpl->data.empty() ;
     }
 
-    void KeyLoggerBase::clear() {
+    void KeyLoggerBase::clear() noexcept {
         return pimpl->data.clear() ;
     }
 
@@ -99,6 +99,11 @@ namespace vind
 
     bool KeyLoggerBase::operator!=(const KeyLoggerBase& rhs) const {
         return pimpl->data != rhs.pimpl->data ;
+    }
+
+    int KeyLoggerBase::logging_state() {
+        logging(keyabsorber::get_pressed_list()) ;
+        return latest().size() ;
     }
 
     void KeyLoggerBase::update() {
@@ -146,7 +151,7 @@ namespace vind
                         auto name = keycodecvt::get_name(key) ;
                         ss << "<" << name << "> " ;
                     }
-                    ss << "|" ;
+                    ss << "| " ;
                 }
                 ss << std::endl ;
                 return ss.str() ;

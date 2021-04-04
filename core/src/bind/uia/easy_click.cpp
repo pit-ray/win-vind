@@ -234,7 +234,7 @@ namespace vind
     void EasyClickLeft::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         do_easy_click(KEYCODE_MOUSE_LEFT) ;
@@ -247,7 +247,7 @@ namespace vind
     void EasyClickRight::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         do_easy_click(KEYCODE_MOUSE_RIGHT) ;
@@ -260,7 +260,7 @@ namespace vind
     void EasyClickMid::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         do_easy_click(KEYCODE_MOUSE_MID) ;
@@ -273,7 +273,7 @@ namespace vind
     void EasyClickHover::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         do_easy_click(KEYCODE_UNDEFINED) ;
@@ -700,7 +700,6 @@ namespace
         while(vind::update_background() && continue_running) {
             lgr.update() ;
             if(!lgr.is_changed()) {
-                lgr.remove_from_back(1) ;
                 continue ;
             }
 

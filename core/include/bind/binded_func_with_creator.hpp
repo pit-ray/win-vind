@@ -15,10 +15,10 @@ namespace vind
         void do_process(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* parent_vkclgr,
+                KeycodeLogger* parent_keycodelgr,
                 const CharLogger* const parent_charlgr) const override {
             static_cast<const Derived*>(this)->sprocess(
-                    first_call, repeat_num, parent_vkclgr, parent_charlgr) ;
+                    first_call, repeat_num, parent_keycodelgr, parent_charlgr) ;
         }
 
     public:

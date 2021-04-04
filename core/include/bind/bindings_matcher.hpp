@@ -15,7 +15,16 @@ namespace vind
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        unsigned int compare_onelog(const KeyLog& log, size_t seqidx) const ;
+        bool is_optional_area(std::size_t seqidx) const noexcept ;
+        bool is_optional_num_area(std::size_t seqidx) const noexcept ;
+
+        unsigned int accept_with_high_priority() const noexcept ;
+
+        void regard_numbers_as_one_keycode(std::size_t& seqidx) const noexcept ;
+
+        void calibrate_range_params(std::size_t seqidx) const noexcept ;
+
+        unsigned int compare_onelog(const KeyLog& log, std::size_t seqidx) const ;
 
     public:
         using keyset_t = std::vector<unsigned char> ;
@@ -31,6 +40,8 @@ namespace vind
         unsigned int compare_to_latestlog(const KeyLoggerBase& lgr) const ;
         unsigned int compare_to_alllog(const KeyLoggerBase& lgr) const ;
         bool is_accepted() const noexcept ;
+
+        bool is_matched_syskey_in_combined_bindings() const noexcept ;
 
         BindingsMatcher(BindingsMatcher&&) ;
         BindingsMatcher& operator=(BindingsMatcher&&) ;

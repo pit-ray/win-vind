@@ -1,6 +1,7 @@
 #include "keycodecvt.hpp"
 
 #include "err_logger.hpp"
+#include "keycode_def.hpp"
 
 #include <unordered_map>
 #include <utility>
@@ -26,10 +27,10 @@ namespace
         return data ;
     }
 
-    std::array<unsigned char, 256> char2vkc{0} ;
-    std::array<char, 256> vkc2char{0} ;
-    std::array<unsigned char, 256> shifted_char2vkc{0} ;
-    std::array<char, 256> shifted_vkc2char{0} ;
+    std::array<unsigned char, 256> char2keycode{0} ;
+    std::array<char, 256> keycode2char{0} ;
+    std::array<unsigned char, 256> shifted_char2keycode{0} ;
+    std::array<char, 256> shifted_keycode2char{0} ;
 }
 
 namespace vind
@@ -37,39 +38,39 @@ namespace vind
     namespace keycodecvt {
 
         void load_input_combination() {
-            char2vkc.fill(0) ;
-            vkc2char.fill(0) ;
-            shifted_char2vkc.fill(0) ;
-            shifted_vkc2char.fill(0) ;
+            char2keycode.fill(0) ;
+            keycode2char.fill(0) ;
+            shifted_char2keycode.fill(0) ;
+            shifted_keycode2char.fill(0) ;
 
             for(const auto c : g_printable_ascii()) {
                 const auto res = VkKeyScanA(c) ;
 
-                const auto vkc = static_cast<unsigned char>(res & 0xff) ;
+                const auto keycode = static_cast<unsigned char>(res & 0xff) ;
                 const auto shifted = (res & 0x0100) != 0 ;
 
                 if(shifted) {
-                    shifted_char2vkc[static_cast<unsigned char>(c)] = vkc ;
-                    shifted_vkc2char[vkc] = c ;
+                    shifted_char2keycode[static_cast<unsigned char>(c)] = keycode ;
+                    shifted_keycode2char[keycode] = c ;
                 }
                 else {
-                    char2vkc[static_cast<unsigned char>(c)] = vkc ;
-                    vkc2char[vkc] = c ;
+                    char2keycode[static_cast<unsigned char>(c)] = keycode ;
+                    keycode2char[keycode] = c ;
                 }
             }
         }
 
-        unsigned char get_vkc(const char ascii) noexcept {
-            return char2vkc[static_cast<unsigned char>(ascii)] ;
+        unsigned char get_keycode(const char ascii) noexcept {
+            return char2keycode[static_cast<unsigned char>(ascii)] ;
         }
-        char get_ascii(const unsigned char vkc) noexcept {
-            return vkc2char[vkc] ;
+        char get_ascii(const unsigned char keycode) noexcept {
+            return keycode2char[keycode] ;
         }
-        unsigned char get_shifted_vkc(const char ascii) noexcept {
-            return shifted_char2vkc[static_cast<unsigned char>(ascii)] ;
+        unsigned char get_shifted_keycode(const char ascii) noexcept {
+            return shifted_char2keycode[static_cast<unsigned char>(ascii)] ;
         }
-        char get_shifted_ascii(const unsigned char vkc) noexcept {
-            return shifted_vkc2char[vkc] ;
+        char get_shifted_ascii(const unsigned char keycode) noexcept {
+            return shifted_keycode2char[keycode] ;
         }
 
     }
@@ -77,7 +78,7 @@ namespace vind
 
 namespace
 {
-    const std::unordered_map<std::string, unsigned char> g_sys_vkc {
+    const std::unordered_map<std::string, unsigned char> g_sys_keycode {
         {"ime",         KEYCODE_IME},
         {"ime1",        KEYCODE_FROM_EN},
         {"ime2",        KEYCODE_TO_JP},
@@ -187,31 +188,43 @@ namespace
         }
         return a ;
     }
+
+    const std::unordered_map<std::string, unsigned char> g_magic_words {
+        {"any", KEYCODE_OPTIONAL},
+        {"num", KEYCODE_OPTNUMBER}
+    } ;
+
+    const std::unordered_map<std::string, char> g_magic_ascii {
+        {"space",   ' '},
+        {"hbar",    '-'},
+        {"gt",      '>'},
+        {"lt",      '<'}
+    } ;
 }
 
 namespace vind
 {
     namespace keycodecvt {
-        unsigned char get_sys_vkc(const std::string& strkey) noexcept {
-            try {return g_sys_vkc.at(strkey) ;}
-            catch(const std::out_of_range&) {return 0 ;}
+        unsigned char get_sys_keycode(const std::string& strkey) noexcept {
+            try {return g_sys_keycode.at(strkey) ;}
+            catch(const std::out_of_range&) {return KEYCODE_UNDEFINED ;}
         }
 
-        const std::unordered_set<unsigned char> get_all_sys_vkc() {
+        const std::unordered_set<unsigned char> get_all_sys_keycode() {
             std::unordered_set<unsigned char> set ;
-            for(const auto& i : g_sys_vkc) set.insert(i.second) ;
+            for(const auto& i : g_sys_keycode) set.insert(i.second) ;
             return set ;
         }
 
         //for debug
-        const std::string get_name(const unsigned char vkc) noexcept {
-            if(auto ascii = get_ascii(vkc)) {
+        const std::string get_name(const unsigned char keycode) noexcept {
+            if(auto ascii = get_ascii(keycode)) {
                 char s[] = {ascii, '\0'} ;
                 return s ;
             }
 
-            for(const auto& sk : g_sys_vkc) {
-                if(sk.second == vkc) return sk.first ;
+            for(const auto& sk : g_sys_keycode) {
+                if(sk.second == keycode) return sk.first ;
             }
 
             return "Unknown" ;
@@ -225,6 +238,28 @@ namespace vind
         bool is_unreal_key(const unsigned char key) noexcept {
             static const auto a = create_unreal_keys() ;
             return a[key] ;
+        }
+
+        unsigned char get_keycode_of_magic(const std::string& str) {
+            try {
+                return g_magic_words.at(str) ;
+            }
+            catch(const std::out_of_range&) {
+                try {
+                    auto ascii = g_magic_ascii.at(str) ;
+                    if(auto keycode = get_keycode(ascii)) {
+                        return keycode ;
+                    }
+                    if(auto keycode = get_shifted_keycode(ascii)) {
+                        return keycode ;
+                    }
+
+                    return KEYCODE_UNDEFINED ;
+                }
+                catch(const std::out_of_range&) {
+                    return KEYCODE_UNDEFINED ;
+                }
+            }
         }
     }
 }

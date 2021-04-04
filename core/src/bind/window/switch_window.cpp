@@ -23,7 +23,7 @@ namespace vind
     void SwitchWindow::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace keybrd ;
         if(!first_call) return ;
@@ -36,16 +36,16 @@ namespace vind
 
         pushup(KEYCODE_TAB) ;
 
-        auto preserve_pushup = [] (const auto vkc) {
+        auto preserve_pushup = [] (const auto keycode) {
             using namespace keybrd ;
-            if(!keyabsorber::is_pressed(vkc)) {
-                pushup(vkc) ;
+            if(!keyabsorber::is_pressed(keycode)) {
+                pushup(keycode) ;
                 return ;
             }
 
-            release_keystate(vkc) ;
-            pushup(vkc) ;
-            press_keystate(vkc) ;
+            release_keystate(keycode) ;
+            pushup(keycode) ;
+            press_keystate(keycode) ;
         } ;
 
         KeycodeLogger logger{} ;
@@ -59,7 +59,6 @@ namespace vind
 
             logger.update() ;
             if(!logger.is_changed()) {
-                logger.remove_from_back(1) ;
                 continue ;
             }
             if(keybind::is_invalid_log(logger.latest(),

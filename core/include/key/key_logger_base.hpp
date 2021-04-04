@@ -39,7 +39,7 @@ namespace vind
         std::size_t size() const noexcept ;
         bool empty() const noexcept ;
 
-        void clear() ;
+        virtual void clear() noexcept ;
 
         void logging(const KeyLog& log) ;
         void logging(KeyLog&& log) ;
@@ -54,6 +54,7 @@ namespace vind
         bool operator==(const KeyLoggerBase& rhs) const ;
         bool operator!=(const KeyLoggerBase& rhs) const ;
 
+        virtual int logging_state() ;
         virtual void update() = 0 ;
         virtual bool is_changed() const noexcept = 0 ;
     } ;

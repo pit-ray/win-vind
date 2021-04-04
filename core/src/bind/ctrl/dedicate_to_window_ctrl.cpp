@@ -14,7 +14,7 @@ namespace vind
     void EnableTargetingOfDedicate2Window::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         Dedicate2Window::enable_targeting() ;
@@ -27,7 +27,7 @@ namespace vind
     void DisableTargetingOfDedicate2Window::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         Dedicate2Window::disable_targeting() ;

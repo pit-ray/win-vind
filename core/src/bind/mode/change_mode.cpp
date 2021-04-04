@@ -26,13 +26,13 @@ namespace vind
     void Change2Normal::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         using namespace mode ;
         if(!first_call) return ;
 
-        const auto m = get_mode() ;
+        const auto m = get_global_mode() ;
         if(m == Mode::Normal) return ;
 
         if(m == Mode::Visual) 
@@ -59,13 +59,13 @@ namespace vind
     void Change2Insert::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         using namespace mode ;
         if(!first_call) return ;
 
-        if(mode::get_mode() == mode::Mode::Normal)
+        if(mode::get_global_mode() == mode::Mode::Normal)
             mouse::click(KEYCODE_MOUSE_LEFT) ;
 
         keyabsorber::close_all_ports() ;
@@ -84,7 +84,7 @@ namespace vind
     void Change2Visual::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         using namespace mode ;
@@ -102,7 +102,7 @@ namespace vind
     void MyConfigWindowNormal::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
         if(!first_call) return ;
@@ -120,7 +120,7 @@ namespace vind
     void MyConfigWindowInsert::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         using namespace mode ;
         if(!first_call) return ;

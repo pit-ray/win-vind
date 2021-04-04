@@ -5,15 +5,29 @@
 
 namespace vind
 {
-    struct Jump2Any : public BindedFuncWithCreator<Jump2Any> {
-        static void sprocess(
+    class Jump2Any : public BindedFuncWithCreator<Jump2Any> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
+        explicit Jump2Any() ;
+        virtual ~Jump2Any() noexcept ;
+
+        Jump2Any(Jump2Any&&) ;
+        Jump2Any& operator=(Jump2Any&&) ;
+
+        Jump2Any(const Jump2Any&)            = delete ;
+        Jump2Any& operator=(const Jump2Any&) = delete ;
+
+        void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
-                const CharLogger* const parent_charlgr) ;
+                KeycodeLogger* const parent_keycodelgr,
+                const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
 
-        static void load_config() ;
+        void load_config() override ;
     } ;
 }
 

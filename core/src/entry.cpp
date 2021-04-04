@@ -33,6 +33,8 @@
 #include "bind/bind.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/mode.hpp"
+#include "bind/global_bindings_caller.hpp"
+
 #include "i_params.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
@@ -138,7 +140,8 @@ namespace vind
             //If you use debugger, must be disable this line not to be slow.
             keyabsorber::install_hook() ;
 
-            keybind::init() ;
+            keybind::initialize() ;
+            gbindcaller::initialize() ;
 
             load_config() ;
 
@@ -228,7 +231,7 @@ namespace vind
                 }
             }
 
-            keybind::call_matched_funcs() ;
+            gbindcaller::call_matched_func() ;
             optloader::call_active_funcs() ;
 
             return true ;

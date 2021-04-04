@@ -14,7 +14,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
     } ;
@@ -23,7 +23,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) ;
         static const std::string sname() noexcept ;
@@ -34,7 +34,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
     } ;
@@ -50,7 +50,7 @@ namespace vind
         void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
 
@@ -72,7 +72,7 @@ namespace vind
         void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
 
@@ -91,7 +91,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
     } ;
@@ -105,7 +105,7 @@ namespace vind
         void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) const ;
         static const std::string sname() noexcept ;
@@ -129,7 +129,7 @@ namespace vind
         void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) const ;
         static const std::string sname() noexcept ;
@@ -152,7 +152,7 @@ namespace vind
         void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
 
@@ -174,7 +174,7 @@ namespace vind
         void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) const ;
         static const std::string sname() noexcept ;
 
@@ -191,7 +191,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
     } ;
@@ -200,7 +200,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
     } ;
@@ -209,7 +209,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
     } ;
@@ -218,7 +218,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr) ;
         static const std::string sname() noexcept ;
     } ;
@@ -227,7 +227,7 @@ namespace vind
         static void sprocess(
                 bool first_call,
                 unsigned int repeat_num,
-                KeycodeLogger* const parent_vkclgr,
+                KeycodeLogger* const parent_keycodelgr,
                 const CharLogger* const parent_charlgr,
                 const textanalyze::SelRes* const exres=nullptr) ;
         static const std::string sname() noexcept ;

@@ -4,6 +4,7 @@
 #include <array>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -15,108 +16,31 @@
 #include "key/key_log.hpp"
 #include "key/keycodecvt.hpp"
 #include "err_logger.hpp"
+#include "mouse/jump_keybrd.hpp"
 #include "path.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 #include "entry.hpp"
 
-namespace
-{
-    //Jump2Any
-    float g_max_keybrd_xposs = 0 ;
-    float g_max_keybrd_yposs = 0 ;
-
-    using key_pos_t = std::array<float, 256> ;
-    key_pos_t g_xposs{} ;
-    key_pos_t g_yposs{} ;
-}
 
 namespace vind
 {
-    void Jump2Any::load_config() {
-        //initilize
-        g_max_keybrd_xposs = 0 ;
-        g_max_keybrd_yposs = 0 ;
 
-        g_xposs.fill(0) ;
-        g_yposs.fill(0) ;
-        const auto filename = path::KEYBRD_MAP() ;
+    struct Jump2Any::Impl {
+        float max_keybrd_xposs = 0 ;
+        float max_keybrd_yposs = 0 ;
 
-        std::ifstream ifs(path::to_u8path(filename), std::ios::in) ;
-        std::string buf ;
-        int lnum = 0 ;
+        using key_pos_t = std::array<float, 256> ;
+        key_pos_t xposs{} ;
+        key_pos_t yposs{} ;
+    } ;
 
-        auto ep = [&lnum, &buf, &filename](auto msg) {
-            PRINT_ERROR(buf + msg + "\"" + filename + "\", L" + std::to_string(lnum) + ".") ;
-        } ;
-
-        while(getline(ifs, buf)) {
-            try {
-                lnum ++ ;
-
-                if(buf.empty()) {
-                    continue ;
-                }
-
-                //if top character is #, this line is assumed comment-out.
-                if(buf.front() == '#') {
-                    continue ;
-                }
-
-                const auto vec = util::split(buf, " ") ;
-
-                if(vec.size() != 3) {
-                    ep(" is bad syntax in ") ;
-                    continue ;
-                }
-
-                const auto x = std::stof(vec[0]) ;
-                const auto y = stof(vec[1]) ;
-
-                if(x > g_max_keybrd_xposs) g_max_keybrd_xposs = x ;
-                if(y > g_max_keybrd_yposs) g_max_keybrd_yposs = y ;
-
-                //specific code
-                auto code = vec[2] ;
-                //is ascii code
-                if(code.size() == 1) {
-                    if(const auto vkc = keycodecvt::get_vkc(code.front())) {
-                        //overwrite
-                        g_xposs[vkc] = x ;
-                        g_yposs[vkc] = y ;
-                        continue ;
-                    }
-                    ep(" is not supported in ") ;
-                    continue ;
-                }
-
-                code = util::A2a(code) ;
-                if(code.front() != '<' && code.back() != '>') {
-                    ep(" is bad syntax in ") ;
-                }
-
-                code = code.substr(1, code.length() - 2) ;
-                if(code == "space") {
-                    auto&& vkc = keycodecvt::get_vkc(' ') ;
-                    g_xposs[vkc] = x ;
-                    g_yposs[vkc] = y ;
-                    continue ;
-                }
-
-                if(auto vkc = keycodecvt::get_sys_vkc(code)) {
-                    g_xposs[vkc] = x ;
-                    g_yposs[vkc] = y ;
-                    continue ;
-                }
-
-                ep(" is invalid system key code in ") ;
-            }
-            catch(const std::runtime_error& e) {
-                PRINT_ERROR(e.what()) ;
-                continue ;
-            }
-        }
-    }
+    Jump2Any::Jump2Any()
+    :pimpl(std::make_unique<Impl>())
+    {}
+    Jump2Any::~Jump2Any() noexcept            = default ;
+    Jump2Any::Jump2Any(Jump2Any&&)            = default ;
+    Jump2Any& Jump2Any::operator=(Jump2Any&&) = default ;
 
     const std::string Jump2Any::sname() noexcept {
         return "jump_to_any" ;
@@ -125,8 +49,8 @@ namespace vind
     void Jump2Any::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
+            const CharLogger* const UNUSED(parent_charlgr)) const {
         if(!first_call) return ;
 
         //reset key state (binded key)
@@ -149,14 +73,14 @@ namespace vind
             if(log.empty()) continue ;
 
             try {
-                for(const auto& vkc : log) {
-                    if(keycodecvt::is_unreal_key(vkc))
+                for(const auto& keycode : log) {
+                    if(keycodecvt::is_unreal_key(keycode))
                         continue ;
 
                     auto x_pos = static_cast<int>( \
-                            g_xposs[vkc] / g_max_keybrd_xposs * width) ;
+                            pimpl->xposs[keycode] / pimpl->max_keybrd_xposs * width) ;
                     auto y_pos = static_cast<int>( \
-                            g_yposs[vkc] / g_max_keybrd_yposs * height) ;
+                            pimpl->yposs[keycode] / pimpl->max_keybrd_yposs * height) ;
 
                     if(x_pos == width) 
                         x_pos -= iparams::get_i("screen_pos_buf") ;
@@ -177,4 +101,90 @@ namespace vind
             }
         }
     }
+
+    void Jump2Any::load_config() {
+        //initilize
+        pimpl->max_keybrd_xposs = 0 ;
+        pimpl->max_keybrd_yposs = 0 ;
+
+        pimpl->xposs.fill(0) ;
+        pimpl->yposs.fill(0) ;
+        const auto filename = path::KEYBRD_MAP() ;
+
+        std::ifstream ifs(path::to_u8path(filename), std::ios::in) ;
+        std::string buf ;
+        int lnum = 0 ;
+
+        auto ep = [&lnum, &buf, &filename](auto msg) {
+            PRINT_ERROR(buf + msg + "\"" + filename + "\", L" + std::to_string(lnum) + ".") ;
+        } ;
+
+        while(getline(ifs, buf)) {
+            try {
+                lnum ++ ;
+
+                if(buf.empty()) {
+                    continue ;
+                }
+
+                //if top character is #, this line is regarded as comment-out.
+                if(buf.front() == '#') {
+                    continue ;
+                }
+
+                const auto vec = util::split(buf, " ") ;
+
+                if(vec.size() != 3) {
+                    ep(" is bad syntax in ") ;
+                    continue ;
+                }
+
+                const auto x = std::stof(vec[0]) ;
+                const auto y = stof(vec[1]) ;
+
+                if(x > pimpl->max_keybrd_xposs) pimpl->max_keybrd_xposs = x ;
+                if(y > pimpl->max_keybrd_yposs) pimpl->max_keybrd_yposs = y ;
+
+                //specific code
+                auto code = vec[2] ;
+                //is ascii code
+                if(code.size() == 1) {
+                    if(const auto keycode = keycodecvt::get_keycode(code.front())) {
+                        //overwrite
+                        pimpl->xposs[keycode] = x ;
+                        pimpl->yposs[keycode] = y ;
+                        continue ;
+                    }
+                    ep(" is not supported in ") ;
+                    continue ;
+                }
+
+                code = util::A2a(code) ;
+                if(code.front() != '<' && code.back() != '>') {
+                    ep(" is bad syntax in ") ;
+                }
+
+                code = code.substr(1, code.length() - 2) ;
+                if(code == "space") {
+                    auto&& keycode = keycodecvt::get_keycode(' ') ;
+                    pimpl->xposs[keycode] = x ;
+                    pimpl->yposs[keycode] = y ;
+                    continue ;
+                }
+
+                if(auto keycode = keycodecvt::get_sys_keycode(code)) {
+                    pimpl->xposs[keycode] = x ;
+                    pimpl->yposs[keycode] = y ;
+                    continue ;
+                }
+
+                ep(" is invalid system key code in ") ;
+            }
+            catch(const std::runtime_error& e) {
+                PRINT_ERROR(e.what()) ;
+                continue ;
+            }
+        }
+    }
+
 }

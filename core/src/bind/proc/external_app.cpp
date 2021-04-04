@@ -16,6 +16,7 @@
 #include "err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "path.hpp"
+#include "proc/external_app.hpp"
 #include "util/winwrap.hpp"
 
 namespace
@@ -63,10 +64,11 @@ namespace vind
     void StartShell::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         try {
+
             util::create_process(path::HOME_PATH(), g_proc_list.at("shell")) ;
         }
         catch(const std::out_of_range&) {
@@ -93,7 +95,7 @@ namespace vind
     void StartAnyApp::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -115,6 +117,10 @@ namespace vind
         }
     }
 
+    //must fix
+    void StartAnyApp::load_config() {
+        exapp::load_config() ;
+    }
 
     //StartExplorer
     const std::string StartExplorer::sname() noexcept {
@@ -124,7 +130,7 @@ namespace vind
     void StartExplorer::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         //_create_process("explorer") ;
@@ -142,7 +148,7 @@ namespace vind
     void OpenStartMenu::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         keybrd::pushup(KEYCODE_LWIN) ;

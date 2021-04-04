@@ -14,7 +14,7 @@ namespace vind
     void SelectAll::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             mouse::click(KEYCODE_MOUSE_LEFT) ;
@@ -31,7 +31,7 @@ namespace vind
     void ForwardUINavigation::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -48,7 +48,7 @@ namespace vind
     void BackwardUINavigation::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -65,7 +65,7 @@ namespace vind
     void DecideFocusedUIObject::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(first_call) {
             keybrd::pushup(KEYCODE_SPACE) ;

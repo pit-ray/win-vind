@@ -115,7 +115,7 @@ const std::string CommandMode::sname() noexcept {
 void CommandMode::sprocess(
         bool first_call,
         unsigned int UNUSED(repeat_num),
-        KeycodeLogger* const UNUSED(parent_vkclgr),
+        KeycodeLogger* const UNUSED(parent_keycodelgr),
         const CharLogger* const UNUSED(parent_charlgr)) const {
     if(!first_call) return ;
 
@@ -132,7 +132,6 @@ void CommandMode::sprocess(
         lgr.update() ;
 
         if(!lgr.is_changed()) { //update log as character input
-            lgr.remove_from_back(1) ;
             continue ;
         }
 

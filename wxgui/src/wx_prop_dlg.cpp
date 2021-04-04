@@ -259,7 +259,7 @@ namespace wxGUI
             } //shown as most top window
 
             if(use_bindings && !l_is_cached) {
-                l_mode = mode::get_mode() ;
+                l_mode = mode::get_global_mode() ;
                 l_is_absorbed = keyabsorber::is_absorbed() ;
                 l_is_cached = true ;
                 MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;

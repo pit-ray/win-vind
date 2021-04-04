@@ -14,16 +14,16 @@
 namespace vind
 {
     struct BindedFunc::Impl {
-        std::array<BindingsMatcher::shp_t, static_cast<int>(mode::Mode::NUM)> mtrs ;
-        unsigned char modeidx ;
-        std::atomic_bool running_now ;
+        std::array<BindingsMatcher::shp_t, static_cast<int>(mode::Mode::NUM)> matchers_ ;
+        unsigned char current_mode_ ;
+        std::atomic_bool running_now_ ;
 
         explicit Impl()
-        : mtrs(),
-          modeidx(0),
-          running_now(false)
+        : matchers_(),
+          current_mode_(0),
+          running_now_(false)
         {
-            mtrs.fill(nullptr) ;
+            matchers_.fill(nullptr) ;
         }
     } ;
 
@@ -38,13 +38,13 @@ namespace vind
     void BindedFunc::process(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* parent_vkclgr,
+            KeycodeLogger* parent_keycodelgr,
             const CharLogger* const parent_charlgr) const {
         if(repeat_num == 0) return ;
 
-        pimpl->running_now.store(true) ;
+        pimpl->running_now_.store(true) ;
         try {
-            do_process(first_call, repeat_num, parent_vkclgr, parent_charlgr) ;
+            do_process(first_call, repeat_num, parent_keycodelgr, parent_charlgr) ;
 
             //correct the state
             //to avoid cases that a virtual key is judged to be pressed,
@@ -82,30 +82,28 @@ namespace vind
                         + e2.what()) ;
             }
         }
-        pimpl->running_now.store(false) ;
+        pimpl->running_now_.store(false) ;
     }
 
     void BindedFunc::register_matcher(
             const mode::Mode mode,
             const BindingsMatcher::shp_t matcher) const {
-        if(!matcher) return ;
-        pimpl->mtrs.at(static_cast<unsigned char>(mode)) = matcher ;
+        pimpl->matchers_.at(static_cast<unsigned char>(mode)) = matcher ;
     }
 
     void BindedFunc::register_matcher(
             const unsigned char mode,
             const BindingsMatcher::shp_t matcher) const {
-        if(!matcher) return ;
-        pimpl->mtrs.at(mode) = matcher ;
+        pimpl->matchers_.at(mode) = matcher ;
     }
 
     unsigned int BindedFunc::validate_if_match(
             const KeyLoggerBase& lgr,
             mode::Mode mode) const {
-        if(pimpl->running_now.load()) return 0 ;
+        if(pimpl->running_now_.load()) return 0 ;
 
-        pimpl->modeidx = static_cast<unsigned char>(mode) ;
-        if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
+        pimpl->current_mode_ = static_cast<unsigned char>(mode) ;
+        if(auto& ptr = pimpl->matchers_.at(pimpl->current_mode_))
             return ptr->compare_to_latestlog(lgr) ;
 
         return 0 ;
@@ -114,23 +112,34 @@ namespace vind
     unsigned int BindedFunc::validate_if_fullmatch(
             const KeyLoggerBase& lgr,
             mode::Mode mode) const {
-        if(pimpl->running_now.load()) return 0 ;
+        if(pimpl->running_now_.load()) return 0 ;
 
-        pimpl->modeidx = static_cast<unsigned char>(mode) ;
-        if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
+        pimpl->current_mode_ = static_cast<unsigned char>(mode) ;
+        if(auto& ptr = pimpl->matchers_.at(pimpl->current_mode_))
             return ptr->compare_to_alllog(lgr) ;
 
         return 0 ;
     }
 
     bool BindedFunc::is_callable() const noexcept {
-        if(pimpl->running_now.load()) return false ;
-        if(auto& ptr = pimpl->mtrs.at(pimpl->modeidx))
+        if(pimpl->running_now_.load()) return false ;
+        if(auto& ptr = pimpl->matchers_.at(pimpl->current_mode_))
             return ptr->is_accepted() ;
         return false ;
     }
 
     bool BindedFunc::is_for_moving_caret() const noexcept {
+        return false ;
+    }
+
+    void BindedFunc::load_config() {
+        return ;
+    }
+
+    bool BindedFunc::is_matched_syskey_in_combined_bindings() const noexcept {
+        if(pimpl->running_now_.load()) return false ;
+        if(auto& ptr = pimpl->matchers_.at(pimpl->current_mode_))
+            return ptr->is_matched_syskey_in_combined_bindings() ;
         return false ;
     }
 }

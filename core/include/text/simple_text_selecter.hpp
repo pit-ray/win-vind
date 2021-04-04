@@ -17,7 +17,7 @@ namespace vind
         void select_line_BOL2EOL() ;
         void unselect() ;
 
-        Mode get_mode() noexcept ;
+        Mode get_global_mode() noexcept ;
         void moving_update() ;
 
         bool is_first_line_selection() noexcept ;

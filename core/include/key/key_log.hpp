@@ -41,9 +41,24 @@ namespace vind
         bool is_containing(const unsigned char key) const ;
 
         bool operator==(const KeyLog& rhs) const ;
+        bool operator==(KeyLog&& rhs) const ;
+        bool operator==(const data_t& rhsraw) const ;
+        bool operator==(data_t&& rhsraw) const ;
+
         bool operator!=(const KeyLog& rhs) const ;
+        bool operator!=(KeyLog&& rhs) const ;
+        bool operator!=(const data_t& rhs) const ;
+        bool operator!=(data_t&& rhsw) const ;
+
         const KeyLog operator-(const KeyLog& rhs) const ;
+        const KeyLog operator-(KeyLog&& rhs) const ;
+        const KeyLog operator-(const data_t& rhs) const ;
+        const KeyLog operator-(data_t&& rhs) const ;
+
         KeyLog& operator-=(const KeyLog& rhs) ;
+        KeyLog& operator-=(KeyLog&& rhs) ;
+        KeyLog& operator-=(const data_t& rhs) ;
+        KeyLog& operator-=(data_t&& rhs) ;
     } ;
 }
 

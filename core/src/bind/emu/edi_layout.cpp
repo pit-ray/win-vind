@@ -25,7 +25,7 @@ namespace vind
     void EdiNRemoveEOL::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto remove = [] {
             keybrd::pushup(KEYCODE_END) ;

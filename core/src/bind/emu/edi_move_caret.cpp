@@ -79,7 +79,7 @@ namespace vind
     void EdiMoveCaretLeft::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
@@ -110,7 +110,7 @@ namespace vind
     void EdiMoveCaretRight::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
@@ -141,7 +141,7 @@ namespace vind
     void EdiMoveCaretUp::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
             if(textselect::is_first_line_selection())
@@ -187,7 +187,7 @@ namespace vind
     void EdiMoveCaretDown::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) const {
         auto v_press = [] {
             if(textselect::is_first_line_selection())
@@ -238,7 +238,7 @@ namespace vind
     void EdiNMoveCaretwordsForward::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
@@ -269,7 +269,7 @@ namespace vind
     void EdiNMoveCaretwordsBackward::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
@@ -300,7 +300,7 @@ namespace vind
     void EdiNMoveCaretWORDSForward::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
@@ -331,7 +331,7 @@ namespace vind
     void EdiNMoveCaretWORDSBackward::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         using keybrd::pushup ;
         move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,

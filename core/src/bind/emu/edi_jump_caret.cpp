@@ -18,7 +18,7 @@ namespace vind
     void EdiJumpCaret2BOL::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         if(mode::is_edi_visual())
@@ -38,7 +38,7 @@ namespace vind
     void EdiJumpCaret2EOL::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
 
@@ -66,7 +66,7 @@ namespace vind
     void EdiNJumpCaret2Line_DfBOF::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -109,7 +109,7 @@ namespace vind
     void EdiNJumpCaret2Line_DfEOF::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -128,7 +128,7 @@ namespace vind
 
                 pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_END) ;
 
-                if(get_mode() != Mode::EdiLineVisual)
+                if(get_global_mode() != Mode::EdiLineVisual)
                     pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
             }
             else {

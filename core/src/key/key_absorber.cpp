@@ -145,12 +145,12 @@ namespace vind
 
             //if this function is called by pressed button,
             //it has to send message "KEYUP" to OS (not absorbed).
-            unsigned char vkc = 0 ;
+            unsigned char keycode = 0 ;
             for(const auto& s : g_state) {
                 if(s) {
-                    keybrd::release_keystate(vkc) ;
+                    keybrd::release_keystate(keycode) ;
                 }
-                vkc ++ ;
+                keycode ++ ;
             }
         }
 

@@ -114,7 +114,7 @@ namespace vind
     void ResizeWindowWidth::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -136,7 +136,7 @@ namespace vind
     void IncreaseWindowWidth::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -157,7 +157,7 @@ namespace vind
     void DecreaseWindowWidth::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -185,7 +185,7 @@ namespace vind
     void ResizeWindowHeight::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -207,7 +207,7 @@ namespace vind
     void IncreaseWindowHeight::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 
@@ -228,7 +228,7 @@ namespace vind
     void DecreaseWindowHeight::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const parent_charlgr) {
         if(!first_call) return ;
 

@@ -18,7 +18,7 @@ namespace vind
     void Switch2LeftTab::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -35,7 +35,7 @@ namespace vind
     void Switch2RightTab::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -51,7 +51,7 @@ namespace vind
     void OpenNewTab::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
@@ -67,7 +67,7 @@ namespace vind
     void CloseCurrentTab::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) {
         if(!first_call) return ;
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;

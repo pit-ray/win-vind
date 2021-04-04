@@ -10,7 +10,7 @@ namespace vind
     void MyBinding::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const parent_vkclgr,
+            KeycodeLogger* const parent_keycodelgr,
             const CharLogger* const parent_charlgr) {
         if(first_call) {
             mouse::click(KEYCODE_MOUSE_LEFT) ; //left click

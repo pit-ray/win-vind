@@ -7,8 +7,7 @@
 
 namespace
 {
-    enum FlagBits : unsigned char
-    {
+    enum FlagBits : unsigned char {
         ALL_FLASE         = 0x00,
         CHAR_CHANGED      = 0x01,
         KEYSTROKE_CHANGED = 0x10,
@@ -71,8 +70,6 @@ namespace vind
             pimpl->flags = FlagBits::KEYSTROKE_CHANGED | FlagBits::CHAR_CHANGED ;
         }
         else { //long pressing
-            logging(log) ;
-
             if(log.empty()) {
                 pimpl->flags = FlagBits::ALL_FLASE ;
                 return ;
@@ -85,10 +82,13 @@ namespace vind
             }
 
             //emulate key stroke
-            if(pimpl->ksr.is_pressed())
+            if(pimpl->ksr.is_pressed()) {
                 pimpl->flags = FlagBits::CHAR_CHANGED ;
-            else
+                logging(log) ;
+            }
+            else {
                 pimpl->flags = FlagBits::ALL_FLASE ;
+            }
         }
     }
 
@@ -103,14 +103,14 @@ namespace vind
         for(auto itr = cbegin() ; itr != cend() ; itr ++) {
             if(itr->is_containing(KEYCODE_SHIFT)) {
                 //shifted ascii
-                for(const auto vkc : *itr) {
-                    const auto c = keycodecvt::get_shifted_ascii(vkc) ;
+                for(const auto keycode : *itr) {
+                    const auto c = keycodecvt::get_shifted_ascii(keycode) ;
                     if(c != 0) str.push_back(c) ;
                 }
                 continue ;
             }
-            for(const auto vkc : *itr) {
-                const auto c = keycodecvt::get_ascii(vkc) ;
+            for(const auto keycode : *itr) {
+                const auto c = keycodecvt::get_ascii(keycode) ;
                 if(c != 0) str.push_back(c) ;
             }
         }

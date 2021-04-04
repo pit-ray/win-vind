@@ -30,7 +30,7 @@ namespace vind
     void SCRedo::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto redo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;} ;
         if(repeat_num == 1) {
@@ -74,7 +74,7 @@ namespace vind
     void SCUndo::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto undo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;} ;
         if(repeat_num == 1) {

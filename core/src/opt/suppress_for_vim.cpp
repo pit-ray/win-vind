@@ -26,7 +26,7 @@ namespace vind
 
     void SuppressForVim::do_process() const {
         using namespace mode ;
-        if(get_mode() == Mode::Insert) {
+        if(get_global_mode() == Mode::Insert) {
             return ;
         }
 
@@ -63,7 +63,7 @@ namespace vind
             VirtualCmdLine::msgout("-- GUI INSERT --") ;
         }
         else {
-            if(get_mode() == Mode::Insert)
+            if(get_global_mode() == Mode::Insert)
                 Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
         }
 

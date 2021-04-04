@@ -1,6 +1,8 @@
 #ifndef _MODE_HPP
 #define _MODE_HPP
 
+#include <string>
+
 namespace vind
 {
     namespace mode {
@@ -44,13 +46,22 @@ namespace vind
         void change_mode(const Mode mode) noexcept ;
         void change_mode(const int mode) noexcept ;
         void change_mode(const unsigned char mode) noexcept ;
-        Mode get_mode() noexcept ;
+        Mode get_global_mode() noexcept ;
 
         bool is_insert() noexcept ;
 
         bool is_edi_visual() noexcept ;
         bool is_editor() noexcept ;
         bool is_command() noexcept ;
+
+        const std::string get_mode_strcode(Mode mode) noexcept ;
+
+        template <typename T>
+        inline const std::string get_mode_strcode(T mode) noexcept {
+            return get_mode_strcode(static_cast<Mode>(mode)) ;
+        }
+
+        Mode get_mode_from_strcode(std::string strcode) noexcept ;
     }
 }
 

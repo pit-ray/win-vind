@@ -18,6 +18,9 @@ add_library(bind STATIC
     binded_func.cpp
     bindings_lists.cpp
     bindings_matcher.cpp
+    bindings_parser.cpp
+    bindings_json_parser.cpp
+    global_bindings_caller.cpp
     mode.cpp
 )
 target_link_libraries(bind ctrl emu file mode mouse proc uia hotkey window)

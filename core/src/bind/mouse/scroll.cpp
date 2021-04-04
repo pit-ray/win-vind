@@ -41,7 +41,7 @@ namespace vind
     void ScrollUp::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto scroll = [first_call, repeat_num] {
             mouse::vscroll(iparams::get_i("yscroll_speed") \
@@ -78,7 +78,7 @@ namespace vind
     void ScrollDown::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         auto scroll = [first_call, repeat_num] {
             mouse::vscroll(-iparams::get_i("yscroll_speed") \
@@ -115,7 +115,7 @@ namespace vind
     void ScrollMidUp::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -148,7 +148,7 @@ namespace vind
     void ScrollMidDown::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -181,7 +181,7 @@ namespace vind
     void ScrollPageUp::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -214,7 +214,7 @@ namespace vind
     void ScrollPageDown::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -248,7 +248,7 @@ namespace vind
     void ScrollLeft::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -281,7 +281,7 @@ namespace vind
     void ScrollRight::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -314,7 +314,7 @@ namespace vind
     void ScrollMidLeft::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;
@@ -347,7 +347,7 @@ namespace vind
     void ScrollMidRight::sprocess(
             bool first_call,
             unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr)) const {
         if(first_call) {
             pimpl->timer.reset() ;

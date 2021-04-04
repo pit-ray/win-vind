@@ -9,7 +9,7 @@ namespace vind
 {
     struct KeycodeLogger::Impl {
         KeyLog prelog{} ;
-        bool vkc_changed = false ;
+        bool keycode_changed = false ;
     } ;
 
     KeycodeLogger::KeycodeLogger()
@@ -38,22 +38,28 @@ namespace vind
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
 
         auto log = keyabsorber::get_pressed_list() - cl_toggles ;
-        logging(log) ;
 
         if(pimpl->prelog == log) {
-            pimpl->vkc_changed = false ;
+            pimpl->keycode_changed = false ;
             return ;
         }
 
         if(size() == 1) {
             pimpl->prelog = log ;
-            pimpl->vkc_changed = true ;
+            pimpl->keycode_changed = true ;
+            logging(log) ;
             return ;
         }
 
         auto diff = log - pimpl->prelog ; //remove same keys as prelog
         pimpl->prelog = log ;
-        pimpl->vkc_changed = !diff.empty() ;
+        if(!diff.empty()) {
+            pimpl->keycode_changed = true ;
+            logging(log) ;
+        }
+        else {
+            pimpl->keycode_changed = false ;
+        }
         //
         // If the number of logs in logger is bigger than 1,
         // some functions are matched, so save only differences.
@@ -71,6 +77,6 @@ namespace vind
     }
 
     bool KeycodeLogger::is_changed() const noexcept {
-        return pimpl->vkc_changed ;
+        return pimpl->keycode_changed ;
     }
 }

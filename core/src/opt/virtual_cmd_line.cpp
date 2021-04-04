@@ -121,9 +121,11 @@ namespace vind
     }
 
     void VirtualCmdLine::reset() {
-        clear() ;
         g_msg_showing = false ;
-        refresh() ;
+        if(!g_outstr.empty()) {
+            clear() ;
+            refresh() ;
+        }
     }
 
     void VirtualCmdLine::do_process() const {

@@ -10,43 +10,68 @@
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 
+namespace
+{
+    using namespace vind ;
+    inline bool is_num_only(const KeyLog& log) noexcept {
+        for(auto& key : log) {
+            if(!keycodecvt::is_number(key)) {
+                return false ;
+            }
+        }
+        return true ;
+    }
+}
+
 
 namespace vind
 {
     struct BindingsMatcher::Impl {
-        cmdlist_t cmdlist ;
-        bool code_existed ;
-        bool accepted ;
-        std::size_t optional_idx ;
-        std::size_t optnum_begin_idx ;
-        std::size_t optnum_end_idx ;
-        bool is_optnum_last ;
-        std::mutex mtx ;
+        cmdlist_t cmdlist_ ;
+        bool keyset_is_matched_ ;
+        bool accepted_ ;
+        std::size_t opt_any_idx_ ;
+        std::size_t optnum_begin_idx_ ;
+        std::size_t optnum_end_idx_ ;
+        bool optnum_is_last_ ;
+        bool matched_syskey_in_combined_bind_ ;
+        std::mutex mtx_ ;
 
         explicit Impl(cmdlist_t&& cl)
-        : cmdlist(std::move(cl)),
-          code_existed(true),
-          accepted(false),
-          optional_idx(std::numeric_limits<std::size_t>::max()),
-          optnum_begin_idx(std::numeric_limits<std::size_t>::max()),
-          optnum_end_idx(std::numeric_limits<std::size_t>::max()),
-          is_optnum_last(false),
-          mtx()
+        : cmdlist_(std::move(cl)),
+          keyset_is_matched_(true),
+          accepted_(false),
+          opt_any_idx_(std::numeric_limits<std::size_t>::max()),
+          optnum_begin_idx_(std::numeric_limits<std::size_t>::max()),
+          optnum_end_idx_(std::numeric_limits<std::size_t>::max()),
+          optnum_is_last_(false),
+          matched_syskey_in_combined_bind_(false),
+          mtx_()
         {}
 
         explicit Impl(const cmdlist_t& cl)
-        : cmdlist(cl),
-          code_existed(true),
-          accepted(false),
-          optional_idx(std::numeric_limits<std::size_t>::max()),
-          optnum_begin_idx(std::numeric_limits<std::size_t>::max()),
-          optnum_end_idx(std::numeric_limits<std::size_t>::max()),
-          is_optnum_last(false),
-          mtx()
+        : cmdlist_(cl),
+          keyset_is_matched_(true),
+          accepted_(false),
+          opt_any_idx_(std::numeric_limits<std::size_t>::max()),
+          optnum_begin_idx_(std::numeric_limits<std::size_t>::max()),
+          optnum_end_idx_(std::numeric_limits<std::size_t>::max()),
+          optnum_is_last_(false),
+          matched_syskey_in_combined_bind_(false),
+          mtx_()
         {}
 
+        void reset() {
+            accepted_         = false ;
+            keyset_is_matched_     = true ;
+            opt_any_idx_      = std::numeric_limits<std::size_t>::max() ;
+            optnum_is_last_   = false ;
+            optnum_begin_idx_ = std::numeric_limits<unsigned int>::max() ;
+            optnum_end_idx_   = std::numeric_limits<unsigned int>::max() ;
+        }
+
         virtual ~Impl() noexcept {
-            cmdlist.clear() ;
+            cmdlist_.clear() ;
         }
 
         Impl(Impl&&)                 = delete ;
@@ -63,47 +88,27 @@ namespace vind
     : pimpl(std::make_unique<Impl>(keyset))
     {}
 
-    BindingsMatcher::~BindingsMatcher() noexcept              = default ;
+    BindingsMatcher::~BindingsMatcher() noexcept = default ;
     BindingsMatcher::BindingsMatcher(BindingsMatcher&&)            = default ;
     BindingsMatcher& BindingsMatcher::operator=(BindingsMatcher&&) = default ;
 
-    /*
-     * -- Key matching system like Automata --
-     * [code_existed == true] state transitioned successfully
-     * [accepted     == true] reached accepting state
-     *
-     */
-    unsigned int BindingsMatcher::compare_onelog(const KeyLog& log, size_t seqidx) const {
-        //mutex is already applied in a parent scope
+    bool BindingsMatcher::is_optional_area(std::size_t seqidx) const noexcept {
+        return seqidx >= pimpl->opt_any_idx_ ;
+    }
 
-        if(seqidx >= pimpl->optional_idx) {
-            pimpl->accepted     = true ;
-            pimpl->code_existed = true ;
+    unsigned int BindingsMatcher::accept_with_high_priority() const noexcept {
+        pimpl->accepted_     = true ;
+        pimpl->keyset_is_matched_ = true ;
+        return std::numeric_limits<unsigned int>::max() ;
+    }
 
-            return std::numeric_limits<unsigned int>::max() ;
-        }
+    //If the latest log is in a range of <num>?
+    bool BindingsMatcher::is_optional_num_area(std::size_t seqidx) const noexcept {
+        return pimpl->optnum_begin_idx_ <= seqidx && seqidx <= pimpl->optnum_end_idx_ ;
+    }
 
-        //Whether there are some numbers in the latest log?
-        auto is_num_only = [&log] {
-            for(auto& key : log) {
-                if(!keycodecvt::is_number(key)) {
-                    return false ;
-                }
-            }
-            return true ;
-        } ;
-
-        //If the latest log is in a range of <num>?
-        if(pimpl->optnum_begin_idx <= seqidx && seqidx <= pimpl->optnum_end_idx) {
-            if(is_num_only()) {
-                pimpl->code_existed = true ;
-                pimpl->accepted     = pimpl->is_optnum_last ;
-                return 1 ;
-            }
-            pimpl->optnum_end_idx = seqidx - 1 ;
-        }
-
-        seqidx -= (pimpl->optnum_end_idx - pimpl->optnum_begin_idx) ;
+    void BindingsMatcher::regard_numbers_as_one_keycode(std::size_t& seqidx) const noexcept {
+        seqidx -= (pimpl->optnum_end_idx_ - pimpl->optnum_begin_idx_) ;
 
         //
         // Ex)
@@ -121,108 +126,158 @@ namespace vind
         // | fixed seqidx |  0  |  1  |  2(in range) |  3(in range) |  3  |
         // |______________|_____|_____|______________|______________|_____|
         //
+    }
+
+    /*
+     * -- Key matching system like Automata --
+     * [code_existed == true] state transitioned successfully
+     * [accepted     == true] reached accepting state
+     *
+     */
+    unsigned int BindingsMatcher::compare_onelog(const KeyLog& log, std::size_t seqidx) const {
+        //By the way, mutex is already applied in a parent scope.
+
+        if(is_optional_area(seqidx)) {
+            return accept_with_high_priority() ;
+        }
+
+        const auto is_log_num_only = is_num_only(log) ;
+
+        if(is_optional_num_area(seqidx)) {
+            //Whether there are some numbers in the latest log?
+            if(is_log_num_only) {
+                pimpl->keyset_is_matched_ = true ;
+                pimpl->accepted_     = pimpl->optnum_is_last_ ;
+                return 1 ;
+            }
+            else {
+                pimpl->optnum_end_idx_ = seqidx - 1 ;
+            }
+        }
+
+        regard_numbers_as_one_keycode(seqidx) ;
 
         unsigned int most_matched_num = 0 ;
-        auto at_least_exist = false ;
 
-        for(const auto& cmd : pimpl->cmdlist) { 
+        pimpl->keyset_is_matched_ = false ;
+
+        // Example) cmd : `gT` <- cmdlist : [`gT`, `gt`, `gg`, `G`]
+        for(const auto& cmd : pimpl->cmdlist_) { 
             try {
                 unsigned int matched_num = 0 ;
-                const auto& keyset = cmd.at(seqidx) ;
+                const auto& keyset = cmd.at(seqidx) ; // Example) `T` <- `gT`  (seqidx==1)
 
-                for(const auto& key : keyset) {
-                    if(key == KEYCODE_OPTIONAL) {
-                        pimpl->optional_idx = seqidx ;
-                        pimpl->accepted     = true ;
-                        pimpl->code_existed = true ;
-                        return std::numeric_limits<unsigned int>::max() ;
+                // Example)  keycode : KEYCODE_SHIFT <- {KEYCODE_SHIFT, KEYCODE_T}
+                for(auto itr = keyset.cbegin() ; itr != keyset.cend() ; itr ++) {
+                    if(*itr == KEYCODE_OPTIONAL) { //<any>
+                        pimpl->opt_any_idx_ = seqidx ;
+                        return accept_with_high_priority() ;
                     }
-                    if(key == KEYCODE_OPTNUMBER) {
-                        if(is_num_only()) {
-                            pimpl->optnum_begin_idx = seqidx ;
-                            pimpl->is_optnum_last = (cmd.size() - seqidx - 1) == 0 ;
+                    if(*itr == KEYCODE_OPTNUMBER) { //<num>
+                        if(is_log_num_only) {
+                            pimpl->optnum_begin_idx_ = seqidx ;
+                            pimpl->optnum_is_last_ = (cmd.size() - 1 - seqidx) == 0 ; //Whether `a<num>` or `a<num>b`?
                             matched_num ++ ;
                             continue ;
                         }
                     }
-                    if(log.is_containing(key)) {
+                    if(log.is_containing(*itr)) {
                         matched_num ++ ;
+
+                        // Is keyset combined bindings?
+                        if(keyset.size() > 1) {
+                            if(itr == keyset.cbegin()) {
+                                pimpl->matched_syskey_in_combined_bind_ = true ;
+                            }
+                            else {
+                                pimpl->matched_syskey_in_combined_bind_ = false ;
+                            }
+                        }
                     }
                 }
 
-                //not matched, so search next command
-                if(matched_num != keyset.size()) continue ;
-                at_least_exist = true ;
+                // log is the same as keyset(`T` in `gT`, seqidx==1)
+                if(matched_num == keyset.size()) {
+                    pimpl->keyset_is_matched_ = true ;
 
-                if(most_matched_num < matched_num)
-                    most_matched_num = matched_num ;
+                    if(most_matched_num < matched_num) {
+                        most_matched_num = matched_num ;
+                    }
 
-                if(seqidx == (cmd.size() - 1))
-                    pimpl->accepted = true ;
+                    // `gT` is accepted
+                    if(seqidx == (cmd.size() - 1)) {
+                        pimpl->accepted_ = true ;
+                    }
+                }
             }
             catch(const std::out_of_range&) {
                 continue ;
             }
         }
 
-        pimpl->code_existed = at_least_exist ;
         return most_matched_num ;
     }
 
-    unsigned int BindingsMatcher::compare_to_latestlog(const KeyLoggerBase& lgr) const {
-        std::lock_guard<std::mutex> lock(pimpl->mtx) ;
+    void BindingsMatcher::calibrate_range_params(std::size_t seqidx) const noexcept {
+        //is not in <any> range
+        if(seqidx < pimpl->opt_any_idx_) {
+            pimpl->opt_any_idx_ = std::numeric_limits<std::size_t>::max() ;
+        }
 
-        pimpl->accepted = false ;
+        //is not in <num> range
+        if(seqidx < pimpl->optnum_begin_idx_) {
+            pimpl->optnum_is_last_   = false ; 
+            pimpl->optnum_begin_idx_ = std::numeric_limits<std::size_t>::max() ;
+        }
+
+        if(seqidx < pimpl->optnum_end_idx_) {
+            pimpl->optnum_end_idx_ = std::numeric_limits<std::size_t>::max() ;
+        }
+    }
+
+    unsigned int BindingsMatcher::compare_to_latestlog(const KeyLoggerBase& lgr) const {
+        std::lock_guard<std::mutex> scoped_lock(pimpl->mtx_) ;
+
+        pimpl->accepted_ = false ;
 
         if(lgr.empty()) return 0 ;
 
         const auto seqidx = lgr.size() - 1 ;
-        if(seqidx == 0) {
-            pimpl->code_existed = true ;
-        }
-
-        if(seqidx < pimpl->optional_idx) {
-            pimpl->optional_idx = std::numeric_limits<std::size_t>::max() ;
-        }
-
-        if(seqidx < pimpl->optnum_begin_idx) {
-            pimpl->is_optnum_last   = false ; 
-            pimpl->optnum_begin_idx = std::numeric_limits<std::size_t>::max() ;
-        }
-
-        if(seqidx < pimpl->optnum_end_idx) {
-            pimpl->optnum_end_idx = std::numeric_limits<std::size_t>::max() ;
+        if(lgr.size() == 1) {
+            pimpl->keyset_is_matched_ = true ;
         }
 
         //The search is not needed anymore.
-        if(!pimpl->code_existed) return 0 ;
+        if(!pimpl->keyset_is_matched_) return 0 ;
+
+        calibrate_range_params(seqidx) ;
 
         return compare_onelog(lgr.latest(), seqidx) ;
     }
 
     unsigned int BindingsMatcher::compare_to_alllog(const KeyLoggerBase& lgr) const {
-        std::lock_guard<std::mutex> lock(pimpl->mtx) ;
+        std::lock_guard<std::mutex> scoped_lock(pimpl->mtx_) ;
 
-        pimpl->accepted = false ;
+        pimpl->accepted_ = false ;
 
         if(lgr.empty()) return 0 ;
 
-        pimpl->code_existed     = true ;
-        pimpl->optional_idx     = std::numeric_limits<std::size_t>::max() ;
-        pimpl->is_optnum_last   = false ;
-        pimpl->optnum_begin_idx = std::numeric_limits<unsigned int>::max() ;
-        pimpl->optnum_end_idx   = std::numeric_limits<unsigned int>::max() ;
+        pimpl->reset() ;
 
         unsigned int result = 0 ;
         for(std::size_t i = 0 ; i < lgr.size() ; i ++) {
             result = compare_onelog(lgr.at(i), i) ;
 
-            if(pimpl->accepted || !pimpl->code_existed) break ;
+            if(pimpl->accepted_ || !pimpl->keyset_is_matched_) break ;
         }
         return result ;
     }
 
     bool BindingsMatcher::is_accepted() const noexcept {
-        return pimpl->accepted ;
+        return pimpl->accepted_ ;
+    }
+
+    bool BindingsMatcher::is_matched_syskey_in_combined_bindings() const noexcept {
+        return pimpl->matched_syskey_in_combined_bind_ ;
     }
 }

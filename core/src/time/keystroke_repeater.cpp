@@ -11,7 +11,7 @@ namespace
 {
     using namespace std::chrono ;
 
-    inline const auto _const_accelerate(
+    inline const auto const_accelerate(
             float& velocity,
             const float ms) noexcept {
         //hardcoded
@@ -22,14 +22,16 @@ namespace
         const auto t = ms / 1000 ;
 
         const auto delta_v = MAX_ACCELERATION * t ;
-        if(velocity + delta_v < MAX_VELOCITY)
+        if(velocity + delta_v < MAX_VELOCITY) {
             velocity += delta_v ;
-        else
+        }
+        else {
             velocity = MAX_VELOCITY ;
+        }
         return velocity ;
     }
 
-    inline const auto _compute_deltat(
+    inline const auto compute_delta_t(
             const system_clock::time_point& start_time) noexcept {
         return duration_cast<milliseconds>(system_clock::now() - start_time) ;
     }
@@ -111,14 +113,14 @@ namespace vind
     bool KeyStrokeRepeater::is_pressed() const {
         std::lock_guard<std::mutex> scoped_lock(pimpl->mtx) ;
 
-        const auto dt = _compute_deltat(pimpl->start_time) ;
+        const auto dt = compute_delta_t(pimpl->start_time) ;
 
         if(dt < pimpl->wait_time) return false ;
 
         //sampling
         if(!pimpl->timer.is_passed()) return false ;
 
-        if(_const_accelerate(pimpl->v, static_cast<float>(dt.count()))
+        if(const_accelerate(pimpl->v, static_cast<float>(dt.count()))
                 < _generate_uniform()) {
             return false ;
         }

@@ -21,7 +21,7 @@ namespace vind
     void Change2EdiNormal::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
@@ -30,7 +30,7 @@ namespace vind
             mouse::click(KEYCODE_MOUSE_LEFT) ;
 
         using namespace mode ;
-        if(get_mode() == Mode::EdiNormal) return ;
+        if(get_global_mode() == Mode::EdiNormal) return ;
 
         if(is_edi_visual())
             textselect::unselect() ;
@@ -51,7 +51,7 @@ namespace vind
     void Change2EdiInsert::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         using namespace mode ;
@@ -72,7 +72,7 @@ namespace vind
     void Change2EdiBOLInsert::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
@@ -88,7 +88,7 @@ namespace vind
     void Change2EdiBkInsert::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
@@ -104,7 +104,7 @@ namespace vind
     void Change2EdiEOLInsert::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
@@ -120,7 +120,7 @@ namespace vind
     void Change2EdiNlInsertBelow::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
@@ -137,7 +137,7 @@ namespace vind
     void Change2EdiNlInsertAbove::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         if(!first_call) return ;
@@ -155,7 +155,7 @@ namespace vind
     void Change2EdiVisual::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         using namespace mode ;
@@ -174,7 +174,7 @@ namespace vind
     void Change2EdiLineVisual::sprocess(
             bool first_call,
             unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_vkclgr),
+            KeycodeLogger* const UNUSED(parent_keycodelgr),
             const CharLogger* const UNUSED(parent_charlgr),
             const bool vclmodeout) {
         using namespace mode ;

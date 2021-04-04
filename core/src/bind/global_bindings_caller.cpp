@@ -41,7 +41,7 @@ namespace vind
 
             if(auto func = vind::keybind::find_func(ntlgr, g_running_func, true)) {
                 if(func->is_callable()) {
-                    if(!ntlgr.is_pressing()) {
+                    if(!ntlgr.is_long_pressing()) {
                         VirtualCmdLine::reset() ;
                         g_running_func = func ;
                         ntlgr.accept() ;
@@ -49,7 +49,7 @@ namespace vind
 
                     // If the keys more than two are long pressing,
                     // continue calling a first selected function to prohibit calling the functions alternately.
-                    g_running_func->process(!ntlgr.is_pressing(), ntlgr.get_head_num(), nullptr, nullptr) ;
+                    g_running_func->process(!ntlgr.is_long_pressing(), ntlgr.get_head_num(), nullptr, nullptr) ;
                     return ;
                 }
 

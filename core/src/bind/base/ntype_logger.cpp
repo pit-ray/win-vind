@@ -187,7 +187,7 @@ namespace vind
         return pimpl->head_num_ == 0 ? 1 : pimpl->head_num_ ;
     }
 
-    bool NTypeLogger::is_pressing() const noexcept {
+    bool NTypeLogger::is_long_pressing() const noexcept {
         return pimpl->pressing_ ;
     }
 

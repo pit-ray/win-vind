@@ -39,7 +39,7 @@ namespace vind
         virtual int logging_state() override ;
         virtual unsigned int get_head_num() const noexcept ;
 
-        virtual bool is_pressing() const noexcept ;
+        virtual bool is_long_pressing() const noexcept ;
 
         virtual void clear() noexcept override ;
 

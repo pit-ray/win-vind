@@ -33,8 +33,11 @@ Please use <a href="https://pit-ray.github.io/win-vind/cheat_sheet/window_ctrl/#
 <br>
 <hr> 
 
-## Would it be possible to start without key-bindings and be turn on win-vind whenever my wants?
-Yes. You should set **GUI Insert** at **Preferences/settings/Initial Mode**.  
+## Is it possible to start the program in GUI Insert instead of GUI Normal?  
+Yes. Please set **GUI Insert** at **Preferences/settings/Initial Mode**.  
+![initmode](https://user-images.githubusercontent.com/42631247/113421839-b443f800-9406-11eb-9c32-df9f4dfd66f8.jpg)
+
+link: <a href="https://github.com/pit-ray/win-vind/issues/14">GitHub issues #14</a>  
 <br>
 <hr> 
 
@@ -62,4 +65,66 @@ In default, you can call the hinting feature with `FF`, which you can try after 
    Please refer to <a href="https://pit-ray.github.io/win-vind/how_to_use/#key-config">How to Use/Customization/Key Config</a>.  
 1. Input `:set` command, or right-click on the tray and select **Preference**.  
 1. **Settings/Common/Initial Mode** -> **GUI Insert** and [   OK   ].
+
+
+## Is there a way to customize layers of mode?
+Yes.
+
+<img src="https://github.com/pit-ray/pit-ray.github.io/raw/master/win-vind/imgs/mode_overview_2.jpg?raw=true" />
+
+This model describes just the default, so you can customize the layer.
+
+All mode state transitions exist as functions and each function has bindings in each mode. <a href="https://pit-ray.github.io/win-vind/cheat_sheet/mode_ctrl/">Cheat Sheet/Mode Control</a>
+
+**Method**
+- Use GUI
+1. Show **Preferences/Bindings**.
+1. Search `change_to_edi_insert` and push `Edit With Vim`
+
+- Use your editors
+1. Open `~/.win-vind/bindings.json` with your editor.
+1. If you use Vim, search the line by `/change_to_edi_insert`.
+
+Then, you can see it.
+```json
+    {
+        "name": "change_to_edi_insert",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": ["i"],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Insert before a caret (Vim Emulation: i)",
+        "ja": "キャレットの前に挿入 (Vimエミュレーション: i)"
+    },
+```
+
+"`edin`": ["`i`"], means,
+"`If the current mode is this`": ["`the function is called by this bindings`"]
+
+Thus, if you want to call `change_to_edi_insert` in **GUI Insert** with `<alt-i>`.
+```json
+    {
+        "name": "change_to_edi_insert",
+        "guin": [],
+        "guii": ["<alt-i>"],  <----THIS
+        "guiv": [],
+        "edin": ["i"],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Insert before a caret (Vim Emulation: i)",
+        "ja": "キャレットの前に挿入 (Vimエミュレーション: i)"
+    },
+```
+
+And, you can refer to the keywords in <a href="https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/">Cheat Sheet/Keyword List</a>
 

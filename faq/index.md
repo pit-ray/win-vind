@@ -37,7 +37,7 @@ Please use <a href="https://pit-ray.github.io/win-vind/cheat_sheet/window_ctrl/#
 Yes. Please set **GUI Insert** at **Preferences/settings/Initial Mode**.  
 ![initmode](https://user-images.githubusercontent.com/42631247/113421839-b443f800-9406-11eb-9c32-df9f4dfd66f8.jpg)
 
-link: <a href="https://github.com/pit-ray/win-vind/issues/14">GitHub issues #14</a>  
+link: <a href="https://github.com/pit-ray/win-vind/issues/14">GitHub Issues #14</a>  
 <br>
 <hr> 
 
@@ -129,6 +129,8 @@ Thus, if you want to call `change_to_edi_insert` in **GUI Insert** with `<alt-i>
 ```
 
 And, you can refer to the keywords in <a href="https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/">Cheat Sheet/Keyword List</a>
+
+link: <a href="https://github.com/pit-ray/win-vind/issues/15">GitHub Issues #15</a>  
 
 <br>
 <hr> 

@@ -66,6 +66,8 @@ In default, you can call the hinting feature with `FF`, which you can try after 
 1. Input `:set` command, or right-click on the tray and select **Preference**.  
 1. **Settings/Common/Initial Mode** -> **GUI Insert** and [   OK   ].
 
+<br>
+<hr> 
 
 ## Is there a way to customize layers of mode?
 Yes.
@@ -128,3 +130,5 @@ Thus, if you want to call `change_to_edi_insert` in **GUI Insert** with `<alt-i>
 
 And, you can refer to the keywords in <a href="https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/">Cheat Sheet/Keyword List</a>
 
+<br>
+<hr> 

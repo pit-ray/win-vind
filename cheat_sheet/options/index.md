@@ -32,7 +32,7 @@ It makes inputted commands to display and the current mode on the screen. Even i
 
 ## Dedicate To One Window
 **ID: dedicate_to_window**  
-If it enables, you can select one window with **Enable Targeting** function. In this case, it makes the mode automatically switch to **Editor Normal Mode** on the targeting window. When the foreground window change to another, it makes the mode switch to **GUI Insert Mode**. The targeting becomes disable with **Disable Targeting** function. In other words, this feature transforms some normal editors compared with **Vim** to **fake Vim**. The computing cost is so small.  
+If it enables, you can select one window with <a href="https://pit-ray.github.io/win-vind/cheat_sheet/others/#enable-targeting">Enable Targeting</a> function. In this case, it makes the mode automatically switch to **Editor Normal Mode** on the targeting window. When the foreground window change to another, it makes the mode switch to **GUI Insert Mode**. The targeting becomes disable with <a href="https://pit-ray.github.io/win-vind/cheat_sheet/others/#disable-targeting">Disable Targeting</a> function. In other words, this feature transforms some normal editors compared with **Vim** to **fake Vim**. The computing cost is so small.  
 
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/dedicate-demo.gif?raw=true" >
     

@@ -19,9 +19,6 @@
 namespace
 {
     template <typename T>
-    using vec_stack = std::stack<T, std::vector<T>> ;
-
-    template <typename T>
     inline auto extended_key_flag(T key) noexcept {
         switch(key) {
             case KEYCODE_UP:
@@ -238,23 +235,22 @@ namespace vind
             }
 
             //>=4
-            static vec_stack<std::unique_ptr<SmartKey>> st ;
-            const auto clear_stack = [] {while(!st.empty()) st.pop() ;} ;
+            using SmartKeyStack = std::stack<SmartKey, std::vector<SmartKey>> ;
+            static SmartKeyStack st ;
 
             try {
                 for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
-                    st.push(std::make_unique<SmartKey>(
-                                static_cast<unsigned char>(*iter))) ;
-                    st.top()->press() ;
+                    st.push(SmartKey(static_cast<unsigned char>(*iter))) ;
+                    st.top().press() ;
                 }
             }
             catch(const std::runtime_error& e) {
-                clear_stack() ;
+                SmartKeyStack().swap(st) ; //clear
                 recover_keystate() ;
                 throw e ;
             }
 
-            clear_stack() ;
+            SmartKeyStack().swap(st) ; //clear
             recover_keystate() ;
         }
     }

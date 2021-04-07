@@ -1,8 +1,7 @@
 -Icore/include
 -Ilibs
 -Ilibs/wxWidgets/include
--Ilibs/wxWidgets/include/msvc/wx
--Ilibs/wxWidgets/include/wx
+-Ilibs/wxWidgets/include/msvc
 -Iwxgui/include
 -Iwxgui/include/settings_ctrls
 -Iwxgui/include/settings_ctrls/ctrl_assets

@@ -149,6 +149,7 @@ add_library(bind STATIC
     src/bind/bindings_json_parser.cpp
     src/bind/bindings_lists.cpp
     src/bind/bindings_parser.cpp
+    src/bind/logger_parser.cpp
     src/bind/global_bindings_caller.cpp
 )
 target_link_libraries(bind ctrl emu file hotkey mode mouse proc uia window)

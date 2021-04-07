@@ -1,29 +1,25 @@
 #ifndef _BINDINGS_PARSER_HPP
 #define _BINDINGS_PARSER_HPP
 
-#include "bind/base/mode.hpp"
-#include <vector>
 #include "bind/base/bindings_matcher.hpp"
+#include "bind/base/mode.hpp"
 
 namespace vind
 {
     namespace bindparser
     {
-        using KeySet  = std::vector<unsigned char> ;
-        using Command = std::vector<KeySet> ;
-
         //
         // It parses a ascii, which consist of a character, as keyset class.
-        // KeySet: std::vector<unsigned char>
+        // keyset_t: std::vector<unsigned char>
         //
         // Ex)
         //     'a' -> {KEYCODE_A}
         //     'A' -> {KEYCODE_SHIFT, KEYCODE_A}
         //
-        const KeySet parse_pure_one_character_command(char onechar) ;
+        const BindingsMatcher::keyset_t parse_pure_one_character_command(char onechar) ;
         //
         // It parse a combined command, which is sandwiched between '<' and '>', as keyset class.
-        // KeySet: std::vector<unsigned char>
+        // keyset_t: std::vector<unsigned char>
         //
         // Note: Its argument is a inside string in brackets. If the command is "<s-a>", it is "s-a".
         //
@@ -35,31 +31,11 @@ namespace vind
         //      "s-s"    -> {KEYCODE_SHIFT, KEYCODE_S}
         //      "c-S"    -> {KEYCODE_CTRL, KEYCODE_SHIFT, KEYCODE_S}
         //
-        const KeySet parse_combined_command(std::string inside_of_brackets) ;
-
-
-        //
-        // It parses a string command as Command.
-        // Command:: std::vector<std::vector<unsigned char>>
-        //
-        //  Ex)
-        //      abc     -> {
-        //                     {KEYCODE_A},
-        //                     {KEYCODE_B},
-        //                     {KEYCODE_C}
-        //                 }
-        //
-        //      <s-d>e  -> {
-        //                     {KEYCODE_SHIFT, KEYCODE_D},
-        //                     {KEYCODE_E},
-        //                 }
-        //
-        //
-        const Command parse_string_binding(std::string cmdstr) ;
+        const BindingsMatcher::keyset_t parse_combined_command(std::string inside_of_brackets) ;
 
         //
-        // It parses a string command as Command.
-        // Command:: std::vector<std::vector<unsigned char>>
+        // It parses a string command as cmd_t.
+        // cmd_t:: std::vector<std::vector<unsigned char>>
         //
         // Note: If it includes some mode strings,
         //       will give empty value to cmd and return value other than Mode::None.
@@ -83,7 +59,7 @@ namespace vind
         //      <guin>  -> {}
         //                 return Mode::Normal
         //
-        mode::Mode parse_bindings(Command& cmd, std::string cmdstr) ;
+        mode::Mode parse_bindings(BindingsMatcher::cmd_t& cmd, std::string cmdstr) ;
 
         namespace debug {
             std::string print(const BindingsMatcher::cmdlist_t& list) ;

@@ -242,6 +242,7 @@ It is the difference between master and latest release.
 |✅|Rotate windows without arrangement|Feature|High|
 |☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
 |☐|Add test codes|Improve|High|
+|☐|Refactor key matching system|Architecture|High|
 |✅|Refactor directory structure.|Improve|High|
 |✅|Add global namespace|Improve|High|
 |✅|Change KeyLogger from STL to packaged classes.|Architecture|High|

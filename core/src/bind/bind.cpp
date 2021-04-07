@@ -38,6 +38,8 @@
 #include "bind/proc/external_app.hpp"
 #include "bind/uia/easy_click.hpp"
 
+#include "bind/logger_parser.hpp"
+
 // to use std::numeric_limits<T>::max()
 #undef max
 
@@ -48,6 +50,9 @@ namespace
     std::vector<BindedFunc::shp_t> g_func_list{} ;
     std::vector<BindedFunc::shp_t> g_all_func_list{} ;
     std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
+
+    using LoggerParserList = std::vector<LoggerParser::SPtr> ;
+    std::array<LoggerParserList, static_cast<std::size_t>(mode::Mode::NUM)> g_parser_list{} ;
 }
 
 namespace vind
@@ -60,6 +65,10 @@ namespace vind
 
             g_unbinded_syskeys.clear() ;
             g_unbinded_syskeys = keycodecvt::get_all_sys_keycode() ;
+
+            for(auto& list : g_parser_list) {
+                list.clear() ;
+            }
 
             easyclick::initialize() ;
         }

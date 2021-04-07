@@ -131,7 +131,7 @@ namespace vind
             std::string print_log(const KeyLoggerBase& lgr) {
                 std::stringstream ss ;
                 if(lgr.empty()) {
-                    return "Empty" ;
+                    return "<Empty>\n" ;
                 }
                 for(const auto& log : lgr) {
                     for(const auto& key : log) {

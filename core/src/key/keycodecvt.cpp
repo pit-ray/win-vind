@@ -72,7 +72,6 @@ namespace vind
         char get_shifted_ascii(const unsigned char keycode) noexcept {
             return shifted_keycode2char[keycode] ;
         }
-
     }
 }
 

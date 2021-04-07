@@ -13,3 +13,5 @@ temp
 config
 win32gui
 is_initialized
+
+test

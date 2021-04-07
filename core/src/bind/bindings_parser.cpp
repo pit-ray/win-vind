@@ -17,28 +17,28 @@ namespace vind
     {
         //
         // It parses a ascii, which consist of a character, as keyset class.
-        // keyset_t: std::vector<unsigned char>
+        // KeySet: std::vector<unsigned char>
         //
         // Ex)
         //     'a' -> {KEYCODE_A}
         //     'A' -> {KEYCODE_SHIFT, KEYCODE_A}
         //
-        const BindingsMatcher::keyset_t parse_pure_one_character_command(char onechar) {
+        const KeySet parse_pure_one_character_command(char onechar) {
             //ascii
             if(auto keycode = keycodecvt::get_keycode(onechar)) { //ex) a
-                return BindingsMatcher::keyset_t{keycode} ;
+                return KeySet{keycode} ;
             }
 
             //shifted ascii
             if(auto keycode = keycodecvt::get_shifted_keycode(onechar)) { //ex) A (A is divided to a and SHIFT)
-                return BindingsMatcher::keyset_t{KEYCODE_SHIFT, keycode} ;
+                return KeySet{KEYCODE_SHIFT, keycode} ;
             }
             throw RUNTIME_EXCEPT(std::string("The character '") + onechar + "' is invalid ascii key code.") ;
         }
 
         //
         // It parse a combined command, which is sandwiched between '<' and '>', as keyset class.
-        // keyset_t: std::vector<unsigned char>
+        // KeySet: std::vector<unsigned char>
         //
         // Note: Its argument is a inside string in brackets. If the command is "<s-a>", it is "s-a".
         //
@@ -50,8 +50,8 @@ namespace vind
         //      "s-s"    -> {KEYCODE_SHIFT, KEYCODE_S}
         //      "c-S"    -> {KEYCODE_CTRL, KEYCODE_SHIFT, KEYCODE_S}
         //
-        const BindingsMatcher::keyset_t parse_combined_command(std::string inside_of_brackets) {
-                BindingsMatcher::keyset_t keyset ;
+        const KeySet parse_combined_command(std::string inside_of_brackets) {
+                KeySet keyset ;
 
                 const auto keystrset = util::split(inside_of_brackets, "-") ;
                 for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
@@ -90,9 +90,32 @@ namespace vind
                 return keyset ; //RVO
         }
 
+        const Command parse_string_binding(std::string cmdstr) {
+            Command cmd ;
+            for(std::size_t i = 0 ; i < cmdstr.length() ; i ++) {
+                const auto onechar = cmdstr[i] ;
+                if(onechar != '<') {
+                    cmd.push_back(parse_pure_one_character_command(onechar)) ;
+                    continue ;
+                }
+
+                auto pairpos = cmdstr.find('>', i + 1) ;
+                if(pairpos == std::string::npos) {
+                    throw RUNTIME_EXCEPT(cmdstr + " is bad syntax. It does not have a greater-than sign '>'.") ;
+                }
+
+                auto inside_cmd = cmdstr.substr(i + 1, pairpos - i - 1) ;
+                cmd.push_back(parse_combined_command(inside_cmd)) ;
+
+                i = pairpos ;
+            }
+            return cmd ;
+        }
+
+
         //
-        // It parses a string command as cmd_t.
-        // cmd_t:: std::vector<std::vector<unsigned char>>
+        // It parses a string command as Command.
+        // Command:: std::vector<std::vector<unsigned char>>
         //
         // Note: If it includes some mode strings,
         //       will give empty value to cmd and return value other than Mode::None.
@@ -117,7 +140,7 @@ namespace vind
         //                 return Mode::Normal
         //
         mode::Mode parse_bindings(
-                BindingsMatcher::cmd_t& cmd,
+                Command& cmd,
                 std::string cmdstr) {
 
             cmd.clear() ;

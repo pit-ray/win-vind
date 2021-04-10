@@ -46,6 +46,7 @@ namespace vind
         void bind_function(std::shared_ptr<BindedFunc>&& func) ;
 
         bool has_function() const noexcept ;
+        bool has_bindings() const noexcept ;
 
         const std::shared_ptr<BindedFunc>& get_func() const noexcept ;
 
@@ -59,7 +60,7 @@ namespace vind
         bool is_accepted() const noexcept ;
         bool is_rejected() const noexcept ;
         bool is_waiting() const noexcept ;
-        bool is_rejected_with_headsys_ready() const noexcept ;
+        bool is_rejected_with_ready() const noexcept ;
     } ;
 }
 

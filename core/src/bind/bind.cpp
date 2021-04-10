@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <map>
 #include <vector>
 
 #include <windows.h>
@@ -52,7 +53,7 @@ namespace
     std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
 
     using LoggerParserList = std::vector<LoggerParser::SPtr> ;
-    std::array<LoggerParserList, static_cast<std::size_t>(mode::Mode::NUM)> g_parser_list{} ;
+    std::array<LoggerParserList, mode::mode_num()> g_mode_parser_list{} ;
 }
 
 namespace vind
@@ -66,7 +67,7 @@ namespace vind
             g_unbinded_syskeys.clear() ;
             g_unbinded_syskeys = keycodecvt::get_all_sys_keycode() ;
 
-            for(auto& list : g_parser_list) {
+            for(auto& list : g_mode_parser_list) {
                 list.clear() ;
             }
 
@@ -74,10 +75,18 @@ namespace vind
         }
 
         void load_config() {
+            /*
             bindjsonparser::load_bindings_json(path::BINDINGS(), g_all_func_list, g_func_list) ;
-
             for(auto& func : g_func_list) {
                 func->load_config() ;
+            }
+            */
+
+            bindjsonparser::load_bindings_as_parser(path::BINDINGS(), g_all_func_list, g_mode_parser_list) ;
+            for(auto& parser_list : g_mode_parser_list) {
+                for(auto& parser : parser_list) {
+                    parser->get_func()->load_config() ;
+                }
             }
         }
 
@@ -211,6 +220,50 @@ namespace vind
             constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
             if(number < max) { //prohibit to overflow
                 number = number*10 + keycodecvt::to_number<unsigned int>(num_keycode) ;
+            }
+        }
+
+        enum LgrParserStateIdx : unsigned char {
+            ACCEPT,
+            WAITING,
+            READY,
+
+            NUM,
+        } ;
+
+        const LoggerParser::SPtr find_parser(
+                const KeyLog& log,
+                const LoggerParser::SPtr& low_priority_parser,
+                mode::Mode mode) {
+            LoggerParser::SPtr ptr = nullptr ;
+            unsigned char mostnum = 0 ;
+
+            for(auto& parser : g_mode_parser_list[static_cast<std::size_t>(mode)]) {
+                auto num = parser->validate_if_match(log) ;
+                if(!parser->is_rejected() && mostnum < num && parser != low_priority_parser) {
+                    ptr = parser ;
+                    mostnum = num ;
+                }
+            }
+
+            if(ptr) {
+                return ptr ;
+            }
+            if(low_priority_parser && low_priority_parser->is_accepted()) {
+                return low_priority_parser ;
+            }
+            return nullptr ;
+        }
+
+        void undo_parsers(std::size_t n, mode::Mode mode) {
+            for(auto& parser : g_mode_parser_list[static_cast<std::size_t>(mode)]) {
+                parser->undo_state(n) ;
+            }
+        }
+
+        void reset_parsers(mode::Mode mode) {
+            for(auto& parser : g_mode_parser_list[static_cast<std::size_t>(mode)]) {
+                parser->reset_state() ;
             }
         }
     }

@@ -26,6 +26,11 @@ namespace vind
             None = 255
         } ;
 
+
+        constexpr std::size_t mode_num() noexcept {
+            return static_cast<std::size_t>(Mode::NUM) ;
+        }
+
         template <typename T>
         constexpr auto mode_name(const T mode) noexcept {
             switch(static_cast<Mode>(mode)) {

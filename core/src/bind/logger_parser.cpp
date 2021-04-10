@@ -24,7 +24,7 @@ namespace
         WAITING          = 0b0000'0001,
         WAITING_IN_NUM   = 0b0000'1001,
         REJECT           = 0b0000'0010,
-        REJECT_WITH_HEAD = 0b0000'1010,
+        REJECT_WITH_PARTSET = 0b0000'1010,
         ACCEPT_IN_NUM    = 0b0000'0100,
         ACCEPT           = 0b0000'1100,
 
@@ -65,7 +65,7 @@ namespace
     using LogStatusRawType = std::uint32_t ;
     enum LogStatus : std::uint32_t {
         ALL_FALSE        = 0x0000,
-        SYSONLY_HASHEAD  = 0x0100,
+        HAS_KEYSET_PART  = 0x0100,
         ACCEPTED         = 0x0200,
         HAS_KEYSET       = 0x0400,
         ACCEPTED_OPTNUM  = 0x0800,
@@ -121,10 +121,6 @@ namespace vind
                     itr ++ ;
 
                     if(itr != keyset.cend()) { //keyset.size() > 1
-                        if(!is_containing_ascii(log)) {
-                            logstatus |= LogStatus::SYSONLY_HASHEAD ;
-                        }
-
                         while(itr != keyset.cend()) {
                             if(*itr == KEYCODE_OPTIONAL) {
                                 logstatus = LogStatus::ACCEPTED ;
@@ -149,6 +145,9 @@ namespace vind
                         if(cmdidx_ == cmd.size() - 1) {
                             logstatus |= LogStatus::ACCEPTED ;
                         }
+                    }
+                    else {
+                        logstatus |= LogStatus::HAS_KEYSET_PART ;
                     }
 
                     if(most_matched_num < matched_num) {
@@ -187,8 +186,8 @@ namespace vind
             else if(status & LogStatus::HAS_KEYSET) {
                 state_hist_.push(ParserState::WAITING) ;
             }
-            else if(status & LogStatus::SYSONLY_HASHEAD) {
-                state_hist_.push(ParserState::REJECT_WITH_HEAD) ;
+            else if(status & LogStatus::HAS_KEYSET_PART) {
+                state_hist_.push(ParserState::REJECT_WITH_PARTSET) ;
             }
             else {
                 state_hist_.push(ParserState::REJECT) ;
@@ -206,7 +205,7 @@ namespace vind
             return res ;
         }
 
-        unsigned char do_reject_with_head_matching(const KeyLog& UNUSED(log)) {
+        unsigned char do_reject_with_keyset_part(const KeyLog& UNUSED(log)) {
             state_hist_.push(ParserState::REJECT) ;
             return 0 ;
         }
@@ -340,6 +339,10 @@ namespace vind
         return static_cast<bool>(pimpl->func_) ;
     }
 
+    bool LoggerParser::has_bindings() const noexcept {
+        return !pimpl->cmdlist_.empty() ;
+    }
+
     const std::shared_ptr<BindedFunc>& LoggerParser::get_func() const noexcept {
         return pimpl->func_ ;
     }
@@ -359,8 +362,8 @@ namespace vind
             case ParserState::REJECT:
                 return pimpl->do_reject(log) ;
 
-            case ParserState::REJECT_WITH_HEAD:
-                return pimpl->do_reject_with_head_matching(log) ;
+            case ParserState::REJECT_WITH_PARTSET:
+                return pimpl->do_reject_with_keyset_part(log) ;
 
             case ParserState::ACCEPT_IN_NUM:
                 return pimpl->do_accept_in_num(log) ;
@@ -410,9 +413,9 @@ namespace vind
         if(pimpl->state_hist_.empty()) return false ;
         return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT ;
     }
-    bool LoggerParser::is_rejected_with_headsys_ready() const noexcept {
+    bool LoggerParser::is_rejected_with_ready() const noexcept {
         if(pimpl->state_hist_.empty()) return false ;
-        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT_WITH_HEAD ;
+        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT_WITH_PARTSET ;
     }
 
     bool LoggerParser::is_waiting() const noexcept {
@@ -424,4 +427,3 @@ namespace vind
         return pimpl->state_hist_.size() ;
     }
 }
-

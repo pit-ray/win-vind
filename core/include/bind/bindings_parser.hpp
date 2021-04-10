@@ -57,6 +57,7 @@ namespace vind
         //
         const Command parse_string_binding(std::string cmdstr) ;
 
+
         //
         // It parses a string command as Command.
         // Command:: std::vector<std::vector<unsigned char>>

@@ -10,14 +10,14 @@ namespace vind
     namespace bindjsonparser {
         void load_bindings_json(
                 const std::string& filepath,
-                const std::vector<BindedFunc::shp_t>& all_func_list,
-                std::vector<BindedFunc::shp_t>& loaded_func_list) ;
+                const std::vector<BindedFunc::SPtr>& all_func_list,
+                std::vector<BindedFunc::SPtr>& loaded_func_list) ;
 
         using LoggerParserList = std::vector<LoggerParser::SPtr> ;
 
         void load_bindings_as_parser(
                 const std::string& filepath,
-                const std::vector<BindedFunc::shp_t>& all_func_list,
+                const std::vector<BindedFunc::SPtr>& all_func_list,
                 std::array<LoggerParserList, mode::mode_num()>& mode_parser_list) ;
     }
 }

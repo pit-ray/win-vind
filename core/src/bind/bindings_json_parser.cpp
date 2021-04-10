@@ -26,14 +26,14 @@ namespace
     using namespace vind ;
 
     bool setup_matcher_with_links(
-            const BindedFunc::shp_t& func,
+            const BindedFunc::SPtr& func,
             const nlohmann::json& funcobj,
             const std::string& filepath) {
         //filepath is used only to print error message
 
         constexpr auto lcx_mode_num = static_cast<unsigned char>(mode::Mode::NUM) ;
 
-        std::array<BindingsMatcher::shp_t, lcx_mode_num> matcher_list ;
+        std::array<BindingsMatcher::SPtr, lcx_mode_num> matcher_list ;
         matcher_list.fill(nullptr) ;
 
         //if JSON's data is "edin": ["<guin>"], index_links[edin-index] = guin-index
@@ -125,8 +125,8 @@ namespace vind
     namespace bindjsonparser {
         void load_bindings_json(
                 const std::string& filepath,
-                const std::vector<BindedFunc::shp_t>& all_func_list,
-                std::vector<BindedFunc::shp_t>& loaded_func_list) {
+                const std::vector<BindedFunc::SPtr>& all_func_list,
+                std::vector<BindedFunc::SPtr>& loaded_func_list) {
             std::ifstream ifs(path::to_u8path(filepath)) ;
             nlohmann::json json ;
             ifs >> json ;
@@ -146,7 +146,7 @@ namespace vind
             loaded_func_list.clear() ;
 
             //create name lists of BindidFunc
-            std::unordered_map<std::string, BindedFunc::shp_t> name2func ;
+            std::unordered_map<std::string, BindedFunc::SPtr> name2func ;
             for(const auto& func : all_func_list) {
                 name2func[func->name()] = func ;
             }
@@ -178,7 +178,7 @@ namespace vind
 
     namespace bindjsonparser {
         void setup_logger_parser_with_links(
-                const BindedFunc::shp_t& func,
+                const BindedFunc::SPtr& func,
                 const nlohmann::json& funcobj,
                 std::array<LoggerParserList, mode::mode_num()>& mode_parser_list,
                 const std::string& filepath) { //filepath is used only to print error message
@@ -256,7 +256,7 @@ namespace vind
 
         void load_bindings_as_parser(
                 const std::string& filepath,
-                const std::vector<BindedFunc::shp_t>& all_func_list,
+                const std::vector<BindedFunc::SPtr>& all_func_list,
                 std::array<LoggerParserList, mode::mode_num()>& mode_parser_list) {
 
             std::ifstream ifs(path::to_u8path(filepath)) ;
@@ -280,7 +280,7 @@ namespace vind
             }
 
             //create name lists of BindidFunc
-            std::unordered_map<std::string, BindedFunc::shp_t> name2func ;
+            std::unordered_map<std::string, BindedFunc::SPtr> name2func ;
             for(const auto& func : all_func_list) {
                 name2func[func->name()] = func ;
             }

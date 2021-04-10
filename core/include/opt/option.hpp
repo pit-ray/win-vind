@@ -9,7 +9,7 @@ namespace vind
     class Option ;
 
     namespace op {
-        using shp_t = std::shared_ptr<Option> ;
+        using SPtr = std::shared_ptr<Option> ;
     }
 
     class Option {

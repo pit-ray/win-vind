@@ -33,13 +33,13 @@ namespace vind
         //                     In default, BindingsMatcher matching like Automata, so each function compares once.
         //                     If you full_scan=true, BindingsMatcher will not match sequentially, but match all logs by comparing the same times as logger.size().
         //
-        const BindedFunc::shp_t find_func(
+        const BindedFunc::SPtr find_func(
                 const KeyLoggerBase& lgr,
-                const BindedFunc::shp_t& low_priority_func=nullptr,
+                const BindedFunc::SPtr& low_priority_func=nullptr,
                 const bool full_scan=false, //The cost for computing is high.
                 mode::Mode mode=mode::get_global_mode()) ;
 
-        const BindedFunc::shp_t find_func_byname(const std::string& name) ;
+        const BindedFunc::SPtr find_func_byname(const std::string& name) ;
 
         const LoggerParser::SPtr find_parser(
                 const KeyLog& log,

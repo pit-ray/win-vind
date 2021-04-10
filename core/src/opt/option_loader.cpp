@@ -17,7 +17,7 @@ namespace
 {
     using namespace vind ;
 
-    std::vector<op::shp_t> g_vpop {
+    std::vector<op::SPtr> g_vpop {
         AutotrackPopup::create(),
         VirtualCmdLine::create(),
         Dedicate2Window::create(),

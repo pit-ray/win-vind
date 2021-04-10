@@ -28,7 +28,7 @@ namespace
     struct CmdPoint
     {
         CharLogger logger{} ;
-        BindedFunc::shp_t func = nullptr ;
+        BindedFunc::SPtr func = nullptr ;
     } ;
     using hist_point_t = std::shared_ptr<CmdPoint> ;
     using hist_t = std::deque<hist_point_t> ;

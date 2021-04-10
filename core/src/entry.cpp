@@ -146,7 +146,7 @@ namespace vind
             load_config() ;
 
             //initialize system mode
-            const std::unordered_map<std::string, BindedFunc::shp_t> cm {
+            const std::unordered_map<std::string, BindedFunc::SPtr> cm {
                 {"gui_normal", Change2Normal::create()},
                 {"gui_insert", Change2Insert::create()},
                 {"edi_normal", Change2EdiNormal::create()},

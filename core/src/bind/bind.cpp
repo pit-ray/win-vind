@@ -48,8 +48,8 @@
 namespace
 {
     using namespace vind ;
-    std::vector<BindedFunc::shp_t> g_func_list{} ;
-    std::vector<BindedFunc::shp_t> g_all_func_list{} ;
+    std::vector<BindedFunc::SPtr> g_func_list{} ;
+    std::vector<BindedFunc::SPtr> g_all_func_list{} ;
     std::unordered_set<unsigned char> g_unbinded_syskeys{} ;
 
     using LoggerParserList = std::vector<LoggerParser::SPtr> ;
@@ -119,15 +119,15 @@ namespace vind
 
         //This function regards as other functions is stronger than the running function.
         //If the 2nd argument is not passed, it regards as not processing.
-        const BindedFunc::shp_t find_func(
+        const BindedFunc::SPtr find_func(
                 const KeyLoggerBase& lgr,
-                const BindedFunc::shp_t& low_priority_func,
+                const BindedFunc::SPtr& low_priority_func,
                 const bool full_scan,
                 mode::Mode mode) {
 
             unsigned int most_matched_num  = 0 ;
-            BindedFunc::shp_t matched_func = nullptr ;
-            BindedFunc::shp_t part_matched_func = nullptr ;
+            BindedFunc::SPtr matched_func = nullptr ;
+            BindedFunc::SPtr part_matched_func = nullptr ;
 
             auto choose = [&most_matched_num, &matched_func, &part_matched_func](auto& func, auto num) {
                 if(num > most_matched_num) {
@@ -194,7 +194,7 @@ namespace vind
             return nullptr ;
         }
 
-        const BindedFunc::shp_t find_func_byname(const std::string& name) {
+        const BindedFunc::SPtr find_func_byname(const std::string& name) {
                 for(const auto& func : g_func_list) {
                     if(func->name() == name) return func ;
                 }
@@ -274,7 +274,7 @@ namespace vind
 namespace
 {
     KeycodeLogger g_logger{} ;
-    BindedFunc::shp_t g_running_func       = nullptr ;
+    BindedFunc::SPtr g_running_func       = nullptr ;
     unsigned int g_repeat_num              = 0 ;
     bool g_must_release_key_after_repeated = false ;
 }

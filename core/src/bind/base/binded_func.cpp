@@ -14,7 +14,7 @@
 namespace vind
 {
     struct BindedFunc::Impl {
-        std::array<BindingsMatcher::shp_t, static_cast<int>(mode::Mode::NUM)> matchers_ ;
+        std::array<BindingsMatcher::SPtr, static_cast<int>(mode::Mode::NUM)> matchers_ ;
         unsigned char current_mode_ ;
         std::atomic_bool running_now_ ;
 
@@ -87,13 +87,13 @@ namespace vind
 
     void BindedFunc::register_matcher(
             const mode::Mode mode,
-            const BindingsMatcher::shp_t matcher) const {
+            const BindingsMatcher::SPtr matcher) const {
         pimpl->matchers_.at(static_cast<unsigned char>(mode)) = matcher ;
     }
 
     void BindedFunc::register_matcher(
             const unsigned char mode,
-            const BindingsMatcher::shp_t matcher) const {
+            const BindingsMatcher::SPtr matcher) const {
         pimpl->matchers_.at(mode) = matcher ;
     }
 

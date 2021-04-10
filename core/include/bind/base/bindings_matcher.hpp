@@ -30,7 +30,7 @@ namespace vind
         using keyset_t = std::vector<unsigned char> ;
         using cmd_t = std::vector<keyset_t> ;
         using cmdlist_t = std::vector<cmd_t> ;
-        using shp_t = std::shared_ptr<BindingsMatcher> ;
+        using SPtr = std::shared_ptr<BindingsMatcher> ;
 
         explicit BindingsMatcher(cmdlist_t&& keyset) ;
         explicit BindingsMatcher(const cmdlist_t& keyset) ;

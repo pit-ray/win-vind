@@ -23,7 +23,7 @@ namespace vind
                 const CharLogger* const parent_charlgr) const = 0 ;
 
     public:
-        using shp_t = std::shared_ptr<BindedFunc> ;
+        using SPtr = std::shared_ptr<BindedFunc> ;
 
         explicit BindedFunc() ;
         virtual ~BindedFunc() noexcept ;
@@ -43,10 +43,10 @@ namespace vind
 
         void register_matcher(
                 const mode::Mode mode,
-                const BindingsMatcher::shp_t matcher) const ;
+                const BindingsMatcher::SPtr matcher) const ;
         void register_matcher(
                 const unsigned char mode,
-                const BindingsMatcher::shp_t matcher) const ;
+                const BindingsMatcher::SPtr matcher) const ;
 
         //[return] matched num in latest log
         unsigned int validate_if_match(

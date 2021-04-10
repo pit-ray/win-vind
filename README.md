@@ -213,6 +213,10 @@ You can change default bindings.
 
 However, there are more functions, so if you want more details, please see the <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a>.  
 
+## Related pages
+- <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>
+- <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>
+
 ## How to contribute
 
 Please read its architecture at <a href="https://github.com/pit-ray/win-vind/blob/master/architecture.md">architecture.md</a>.  

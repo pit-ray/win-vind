@@ -44,12 +44,12 @@ namespace vind
         std::unique_ptr<void, decltype(close_proc)> hproc(
                 OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, procid), close_proc) ;
 
-        char fullpath[1024] ;
-        if(!GetModuleFileNameExA(hproc.get(), NULL, fullpath, 1024)) {
+        WCHAR fullpath[MAX_PATH] ;
+        if(!GetModuleFileNameExW(hproc.get(), NULL, fullpath, 1024)) {
             return ;
         }
 
-        std::string exename(fullpath) ;
+        auto exename = util::ws_to_s(fullpath) ;
         auto lpos = exename.find_last_of("\\") + 1 ;
         exename = util::A2a(exename.substr(lpos)) ;
 

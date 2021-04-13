@@ -118,9 +118,9 @@ All binded functions of win-vind derive from <a href="https://github.com/pit-ray
 struct MyBinding : public BindedFuncWithCreator<MyBinding>
 {
     static void sprocess(
-            const bool first_call,
-            const unsigned int repeat_num,
-            KeyLogger* parent_vkclgr,
+            bool first_call,
+            unsigned int repeat_num,
+            KeyLogger* const parent_vkclgr,
             const KeyLogger* const parent_charlgr) ;
     static const std::string sname() noexcept ;
 } ;
@@ -139,9 +139,9 @@ const std::string MyBinding::sname() noexcept
 }
 
 void MyBinding::sprocess(
-        const bool first_call,
-        const unsigned int repeat_num,
-        KeyLogger* parent_vkclgr,
+        bool first_call,
+        unsigned int repeat_num,
+        KeyLogger* const parent_vkclgr,
         const KeyLogger* const parent_charlgr)
 {
     if(first_call) {

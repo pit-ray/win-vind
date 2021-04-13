@@ -41,7 +41,7 @@ namespace vind
 
             if(g_ntlgr.is_long_pressing()) {
                 if(g_active_parser) {
-                    g_active_parser->get_func()->process(!g_ntlgr.is_long_pressing(), g_ntlgr.get_head_num(), nullptr, nullptr) ;
+                    g_active_parser->get_func()->process(g_ntlgr) ;
                 }
                 return ;
             }
@@ -54,7 +54,7 @@ namespace vind
                     VirtualCmdLine::reset() ;
 
                     g_active_parser = parser ;
-                    g_active_parser->get_func()->process(!g_ntlgr.is_long_pressing(), g_ntlgr.get_head_num(), nullptr, nullptr) ;
+                    g_active_parser->get_func()->process(g_ntlgr) ;
 
                     g_ntlgr.accept() ;
                     keybind::reset_parsers() ;

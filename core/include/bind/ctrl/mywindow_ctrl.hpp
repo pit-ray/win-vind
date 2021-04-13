@@ -6,24 +6,20 @@
 
 namespace vind
 {
-    struct ShowConfigWindow : public BindedFuncWithCreator<ShowConfigWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct ShowConfigWindow : public BindedFuncCreator<ShowConfigWindow> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
 
         static void register_show_func(std::function<void()> func) noexcept ;
     } ;
 
 
-    struct ExitConfigWindow : public BindedFuncWithCreator<ExitConfigWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct ExitConfigWindow : public BindedFuncCreator<ExitConfigWindow> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
 
         static void register_exit_func(std::function<void()> func) noexcept ;

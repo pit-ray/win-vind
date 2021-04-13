@@ -5,21 +5,17 @@
 
 namespace vind
 {
-    struct RotateWindows : public BindedFuncWithCreator<RotateWindows> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct RotateWindows : public BindedFuncCreator<RotateWindows> {
+        static void sprocess(unsigned int repeat_num=1) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct RotateWindowsInReverse: public BindedFuncWithCreator<RotateWindowsInReverse> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct RotateWindowsInReverse: public BindedFuncCreator<RotateWindowsInReverse> {
+        static void sprocess(unsigned int repeat_num=1) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

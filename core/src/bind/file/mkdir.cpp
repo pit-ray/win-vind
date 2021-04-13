@@ -3,6 +3,8 @@
 #include <exdisp.h>
 #include <shlobj.h>
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "coreio/path.hpp"
 #include "coreio/err_logger.hpp"
 
@@ -139,39 +141,35 @@ namespace vind
     const std::string MakeDir::sname() noexcept {
         return "make_dir" ;
     }
-    void MakeDir::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
-
-        if(!parent_charlgr)
-            throw LOGIC_EXCEPT("KeyLogger is nullptr for character.") ;
-
-        auto cmd = parent_charlgr->to_str() ;
-
-        const auto pos = cmd.find_first_of(" ") ;
-        auto arg = cmd.substr(pos + 1) ;
-
-        if(arg.find("\\") != std::string::npos ||
-                arg.find("/") != std::string::npos) {
-            //argument is directory path
-            if(arg.length() > 248) {
+    void MakeDir::sprocess(std::string path) {
+        if(path.find("\\") != std::string::npos ||
+                path.find("/") != std::string::npos) {
+            //pathument is directory path
+            if(path.length() > 248) {
                 //over max path num
-                arg = arg.substr(0, 248) ;
+                path = path.substr(0, 248) ;
             }
-            util::create_directory(arg) ;
+            util::create_directory(path) ;
         }
 
-        //argument is directory name
+        //pathument is directory name
         //get current directory
         auto current_path = get_current_explorer_path() ;
         if(current_path.empty()) {
             current_path = path::HOME_PATH() + "/Desktop" ;
         }
 
-        auto full_path = current_path + "\\" + arg ;
+        auto full_path = current_path + "\\" + path ;
         util::create_directory(full_path) ;
+    }
+    void MakeDir::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void MakeDir::sprocess(const CharLogger& parent_lgr) {
+        auto cmd = parent_lgr.to_str() ;
+        const auto pos = cmd.find_first_of(" ") ;
+        sprocess(cmd.substr(pos + 1)) ;
     }
 }

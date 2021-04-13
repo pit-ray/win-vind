@@ -5,41 +5,33 @@
 
 namespace vind
 {
-    struct StartShell : public BindedFuncWithCreator<StartShell> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct StartShell : public BindedFuncCreator<StartShell> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct StartAnyApp : public BindedFuncWithCreator<StartAnyApp> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct StartAnyApp : public BindedFuncCreator<StartAnyApp> {
+        static void sprocess(std::string cmd="") ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
 
         void load_config() override ;
     } ;
 
-    struct StartExplorer : public BindedFuncWithCreator<StartExplorer> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct StartExplorer : public BindedFuncCreator<StartExplorer> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct OpenStartMenu : public BindedFuncWithCreator<OpenStartMenu> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct OpenStartMenu : public BindedFuncCreator<OpenStartMenu> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

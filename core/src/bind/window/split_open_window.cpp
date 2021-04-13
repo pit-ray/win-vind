@@ -4,6 +4,7 @@
 #include "bind/proc/open_window.hpp"
 #include "util/def.hpp"
 #include "bind/window/window_utility.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 namespace vind
 {
@@ -12,13 +13,7 @@ namespace vind
         return "open_new_current_window_with_hsplit" ;
     }
 
-    void OpenNewCurWinWithHorizontalSplit::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void OpenNewCurWinWithHorizontalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
         const auto w = screenmetrics::width(fginfo.rect) ;
@@ -29,7 +24,7 @@ namespace vind
                 fginfo.hwnd,
                 fginfo.rect.left, fginfo.rect.top,
                 w, h / 2) ;
-        OpenNewCurrentWindow::sprocess(true, 1, nullptr, nullptr) ;
+        OpenNewCurrentWindow::sprocess() ;
 
         auto new_hwnd = GetForegroundWindow() ;
         if(new_hwnd == NULL) {
@@ -46,20 +41,21 @@ namespace vind
                 fginfo.rect.left, fginfo.rect.top + h / 2,
                 w, h / 2) ;
     }
+    void OpenNewCurWinWithHorizontalSplit::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void OpenNewCurWinWithHorizontalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
 
 
     //OpenNewCurWinWithVerticalSplit
     const std::string OpenNewCurWinWithVerticalSplit::sname() noexcept {
         return "open_new_current_window_with_vsplit" ;
     }
-
-    void OpenNewCurWinWithVerticalSplit::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void OpenNewCurWinWithVerticalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
         const auto w = screenmetrics::width(fginfo.rect) ;
@@ -70,7 +66,7 @@ namespace vind
                 fginfo.hwnd,
                 fginfo.rect.left, fginfo.rect.top,
                 w / 2, h) ;
-        OpenNewCurrentWindow::sprocess(true, 1, nullptr, nullptr) ;
+        OpenNewCurrentWindow::sprocess() ;
 
         auto new_hwnd = GetForegroundWindow() ;
         if(new_hwnd == NULL) {
@@ -86,5 +82,13 @@ namespace vind
                 new_hwnd,
                 fginfo.rect.left + w / 2, fginfo.rect.top,
                 w / 2, h) ;
+    }
+    void OpenNewCurWinWithVerticalSplit::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void OpenNewCurWinWithVerticalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

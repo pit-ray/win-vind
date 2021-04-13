@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class SuppressForVim : public OptionWithCreator<SuppressForVim>
+    class SuppressForVim : public OptionCreator<SuppressForVim>
     {
     private:
         void do_enable() const override ;

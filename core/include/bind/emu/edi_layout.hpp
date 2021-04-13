@@ -5,17 +5,16 @@
 
 namespace vind
 {
-    class EdiNRemoveEOL : public BindedFuncWithCreator<EdiNRemoveEOL> {
+    class EdiNRemoveEOL : public BindedFuncCreator<EdiNRemoveEOL> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
+
         static const std::string sname() noexcept ;
 
         explicit EdiNRemoveEOL() ;

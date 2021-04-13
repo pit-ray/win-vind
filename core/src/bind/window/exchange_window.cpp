@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "io/screen_metrics.hpp"
 #include "util/def.hpp"
 #include "bind/window/window_utility.hpp"
@@ -50,14 +52,7 @@ namespace vind
     const std::string ExchangeWindowWithNextOne::sname() noexcept {
         return "exchange_window_with_next_one" ;
     }
-
-    void ExchangeWindowWithNextOne::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void ExchangeWindowWithNextOne::sprocess() {
         g_near_hwnds.clear() ;
 
         windowutil::ForegroundInfo fginfo ;
@@ -88,5 +83,13 @@ namespace vind
                 nearest_rect.top,
                 screenmetrics::width(nearest_rect),
                 screenmetrics::height(nearest_rect)) ;
+    }
+    void ExchangeWindowWithNextOne::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void ExchangeWindowWithNextOne::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

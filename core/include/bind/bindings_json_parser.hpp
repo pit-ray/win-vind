@@ -8,11 +8,6 @@
 namespace vind
 {
     namespace bindjsonparser {
-        void load_bindings_json(
-                const std::string& filepath,
-                const std::vector<BindedFunc::SPtr>& all_func_list,
-                std::vector<BindedFunc::SPtr>& loaded_func_list) ;
-
         using LoggerParserList = std::vector<LoggerParser::SPtr> ;
 
         void load_bindings_as_parser(

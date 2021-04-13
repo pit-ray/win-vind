@@ -3,6 +3,8 @@
 
 #include "bind/base/binded_func.hpp"
 
+#include <vector>
+
 namespace vind
 {
     namespace bindingslists {

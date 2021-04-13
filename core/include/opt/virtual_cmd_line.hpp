@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class VirtualCmdLine : public OptionWithCreator<VirtualCmdLine>
+    class VirtualCmdLine : public OptionCreator<VirtualCmdLine>
     {
     private:
         struct Impl ;

@@ -5,6 +5,9 @@
 #include "text/simple_text_selecter.hpp"
 #include "util/def.hpp"
 
+#include "bind/base/ntype_logger.hpp"
+#include "bind/base/char_logger.hpp"
+
 
 namespace vind
 {
@@ -15,16 +18,19 @@ namespace vind
     bool EdiJumpCaret2BOL::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiJumpCaret2BOL::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EdiJumpCaret2BOL::sprocess() {
         if(mode::is_edi_visual())
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
         else
             keybrd::pushup(KEYCODE_HOME) ;
+    }
+    void EdiJumpCaret2BOL::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EdiJumpCaret2BOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
 
@@ -35,15 +41,9 @@ namespace vind
     bool EdiJumpCaret2EOL::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiJumpCaret2EOL::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void EdiJumpCaret2EOL::sprocess(unsigned int repeat_num) {
         //down caret N - 1
-        for(unsigned int i = 1 ; i < repeat_num ; i ++)
+        for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++)
             keybrd::pushup(KEYCODE_DOWN) ;
 
         if(mode::is_edi_visual()) {
@@ -54,6 +54,14 @@ namespace vind
             keybrd::pushup(KEYCODE_LEFT) ;
         }
     }
+    void EdiJumpCaret2EOL::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiJumpCaret2EOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(1) ;
+    }
 
 
     //EdiJumpCaret2NLine_DfBOF
@@ -63,38 +71,40 @@ namespace vind
     bool EdiNJumpCaret2Line_DfBOF::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNJumpCaret2Line_DfBOF::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
-
+    void EdiNJumpCaret2Line_DfBOF::sprocess(unsigned int repeat_num) {
         if(textselect::is_first_line_selection())
             textselect::select_line_EOL2BOL() ;
 
         using keybrd::pushup ;
 
-        auto rn = repeat_num ;
-        if(parent_charlgr != nullptr) {
-            auto str = parent_charlgr->to_str() ;
-            if(str.empty()) return ;
-            rn = keyloggerutil::extract_num(str) ;
-        }
-
         if(mode::is_edi_visual()) {
             pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
-            for(unsigned int i = 1 ; i < rn ; i ++)
+            for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++)
                 pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
         }
         else {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
-            for(unsigned int i = 1 ; i < rn ; i ++)
+            for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++)
                 pushup(KEYCODE_DOWN) ;
+        }
+    }
+    void EdiNJumpCaret2Line_DfBOF::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiNJumpCaret2Line_DfBOF::sprocess(const CharLogger& parent_lgr) {
+        auto str = parent_lgr.to_str() ;
+        if(str.empty()) return ;
+        if(auto num = keyloggerutil::extract_num(str)) {
+            sprocess(num) ;
+        }
+        else {
+            throw RUNTIME_EXCEPT("There is no numeric character in the passed command.") ;
         }
     }
 
@@ -106,20 +116,9 @@ namespace vind
     bool EdiNJumpCaret2Line_DfEOF::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNJumpCaret2Line_DfEOF::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
-
+    void EdiNJumpCaret2Line_DfEOF::sprocess(unsigned int repeat_num) {
         using keybrd::pushup ;
         using namespace mode ;
-
-        if(parent_charlgr != nullptr) {
-            EdiNJumpCaret2Line_DfBOF::sprocess(true, 1, nullptr, parent_charlgr) ;
-            return ;
-        }
 
         if(repeat_num == 1) {
             if(is_edi_visual()) {
@@ -136,7 +135,15 @@ namespace vind
             }
         }
         else {
-            EdiNJumpCaret2Line_DfBOF::sprocess(true, repeat_num, nullptr, parent_charlgr) ;
+            EdiNJumpCaret2Line_DfBOF::sprocess(repeat_num) ;
         }
+    }
+    void EdiNJumpCaret2Line_DfEOF::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void EdiNJumpCaret2Line_DfEOF::sprocess(const CharLogger& parent_lgr) {
+        EdiNJumpCaret2Line_DfBOF::sprocess(parent_lgr) ;
     }
 }

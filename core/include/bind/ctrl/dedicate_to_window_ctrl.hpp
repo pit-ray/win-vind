@@ -5,21 +5,17 @@
 
 namespace vind
 {
-    struct EnableTargetingOfDedicate2Window : public BindedFuncWithCreator<EnableTargetingOfDedicate2Window> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct EnableTargetingOfDedicate2Window : public BindedFuncCreator<EnableTargetingOfDedicate2Window> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct DisableTargetingOfDedicate2Window : public BindedFuncWithCreator<DisableTargetingOfDedicate2Window> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct DisableTargetingOfDedicate2Window : public BindedFuncCreator<DisableTargetingOfDedicate2Window> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

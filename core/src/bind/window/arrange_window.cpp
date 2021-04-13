@@ -13,6 +13,7 @@
 #include "coreio/err_logger.hpp"
 #include "util/def.hpp"
 #include "bind/window/window_utility.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 namespace
 {
@@ -120,14 +121,7 @@ namespace vind
     const std::string ArrangeWindows::sname() noexcept {
         return "arrange_windows" ;
     }
-
-    void ArrangeWindows::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void ArrangeWindows::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("There is not a foreground window.") ;
@@ -152,5 +146,13 @@ namespace vind
         if(!SetForegroundWindow(hwnd)) {
             throw RUNTIME_EXCEPT("Could not set the foreground window.") ;
         }
+    }
+    void ArrangeWindows::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void ArrangeWindows::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

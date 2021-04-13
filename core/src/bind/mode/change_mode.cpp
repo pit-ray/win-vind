@@ -4,6 +4,7 @@
 
 #include <windows.h>
 
+#include "bind/base/char_logger.hpp"
 #include "bind/base/mode.hpp"
 #include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
@@ -14,6 +15,7 @@
 #include "text/simple_text_selecter.hpp"
 #include "text/text_analyzer.hpp"
 #include "util/def.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 
 namespace vind
@@ -22,15 +24,8 @@ namespace vind
     const std::string Change2Normal::sname() noexcept {
         return "change_to_normal" ;
     }
-
-    void Change2Normal::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr),
-            const bool vclmodeout) {
+    void Change2Normal::sprocess(bool vclmodeout) {
         using namespace mode ;
-        if(!first_call) return ;
 
         const auto m = get_global_mode() ;
         if(m == Mode::Normal) return ;
@@ -49,22 +44,22 @@ namespace vind
         if(vclmodeout)
             VirtualCmdLine::msgout("-- GUI NORMAL --") ;
     }
+    void Change2Normal::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(true) ;
+        }
+    }
+    void Change2Normal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(true) ;
+    }
 
 
     //Change2Insert
     const std::string Change2Insert::sname() noexcept {
         return "change_to_insert" ;
     }
-
-    void Change2Insert::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr),
-            const bool vclmodeout) {
+    void Change2Insert::sprocess(bool vclmodeout) {
         using namespace mode ;
-        if(!first_call) return ;
-
         if(mode::get_global_mode() == mode::Mode::Normal)
             mouse::click(KEYCODE_MOUSE_LEFT) ;
 
@@ -74,6 +69,14 @@ namespace vind
         if(vclmodeout)
             VirtualCmdLine::msgout("-- GUI INSERT --") ;
     }
+    void Change2Insert::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(true) ;
+        }
+    }
+    void Change2Insert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(true) ;
+    }
 
 
     //Change2Visual
@@ -81,52 +84,58 @@ namespace vind
         return "change_to_visual" ;
     }
 
-    void Change2Visual::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr),
-            const bool vclmodeout) {
+    void Change2Visual::sprocess(bool vclmodeout) {
         using namespace mode ;
-        if(!first_call) return ;
         change_mode(Mode::Visual) ;
         if(vclmodeout) VirtualCmdLine::msgout("-- GUI VISUAL --") ;
         mouse::press(KEYCODE_MOUSE_LEFT) ;
     }
+    void Change2Visual::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(true) ;
+        }
+    }
+    void Change2Visual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(true) ;
+    }
+
 
     //MyConfigWindowNormal
     const std::string MyConfigWindowNormal::sname() noexcept {
         return "my_config_window_normal" ;
     }
-
-    void MyConfigWindowNormal::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
+    void MyConfigWindowNormal::sprocess() {
         using namespace mode ;
-        if(!first_call) return ;
-
         keyabsorber::close_all_ports_with_refresh() ;
         keyabsorber::absorb() ;
         change_mode(Mode::MyConfigWindowNormal) ;
     }
+    void MyConfigWindowNormal::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void MyConfigWindowNormal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //MyConfigWindowInsert
     const std::string MyConfigWindowInsert::sname() noexcept {
         return "my_config_window_insert" ;
     }
-
-    void MyConfigWindowInsert::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
+    void MyConfigWindowInsert::sprocess() {
         using namespace mode ;
-        if(!first_call) return ;
-
         keyabsorber::close_all_ports_with_refresh() ;
         keyabsorber::unabsorb() ;
         change_mode(Mode::MyConfigWindowInsert) ;
+    }
+    void MyConfigWindowInsert::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void MyConfigWindowInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

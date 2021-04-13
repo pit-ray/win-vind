@@ -5,20 +5,24 @@
 
 namespace vind
 {
+    class NTypeLogger ;
+    class CharLogger ;
+
     //use Curiously Recurring Template Pattern (CRTP)
     //derived class must implement sprocess() and sname().
     //If derived class does not have any variables of member, sprocess() prefers static function.
     //If not, sprocess() is constant function.
     template <typename Derived>
-    class BindedFuncWithCreator : public BindedFunc {
+    class BindedFuncCreator : public BindedFunc {
     private:
-        void do_process(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const override {
-            static_cast<const Derived*>(this)->sprocess(
-                    first_call, repeat_num, parent_keycodelgr, parent_charlgr) ;
+        void do_process() const override {
+            static_cast<const Derived*>(this)->sprocess() ;
+        }
+        void do_process(NTypeLogger& parent_lgr) const override {
+            static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+        }
+        void do_process(const CharLogger& parent_lgr) const override {
+            static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
         }
 
     public:

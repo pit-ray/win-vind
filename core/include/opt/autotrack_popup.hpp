@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class AutotrackPopup : public OptionWithCreator<AutotrackPopup>
+    class AutotrackPopup : public OptionCreator<AutotrackPopup>
     {
     private:
         struct Impl ;

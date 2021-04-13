@@ -21,6 +21,8 @@
 
 #include "bind/bind.hpp"
 #include "bind/uia/uia.hpp"
+#include "bind/base/ntype_logger.hpp"
+#include "bind/base/keycode_logger.hpp"
 #include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
 #include "io/display_text_painter.hpp"
@@ -231,53 +233,69 @@ namespace vind
     const std::string EasyClickLeft::sname() noexcept {
         return "easy_click_left" ;
     }
-    void EasyClickLeft::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickLeft::sprocess() {
         do_easy_click(KEYCODE_MOUSE_LEFT) ;
     }
+    void EasyClickLeft::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EasyClickLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //EasyClickRight
     const std::string EasyClickRight::sname() noexcept {
         return "easy_click_right" ;
     }
-    void EasyClickRight::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickRight::sprocess() {
         do_easy_click(KEYCODE_MOUSE_RIGHT) ;
     }
+    void EasyClickRight::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EasyClickRight::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //EasyClickMid
     const std::string EasyClickMid::sname() noexcept {
         return "easy_click_mid" ;
     }
-    void EasyClickMid::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickMid::sprocess() {
         do_easy_click(KEYCODE_MOUSE_MID) ;
     }
+    void EasyClickMid::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EasyClickMid::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //EasyClickHover
     const std::string EasyClickHover::sname() noexcept {
         return "easy_click_hover" ;
     }
-    void EasyClickHover::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickHover::sprocess() {
         do_easy_click(KEYCODE_UNDEFINED) ;
     }
+    void EasyClickHover::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EasyClickHover::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     namespace easyclick {
 
@@ -727,10 +745,12 @@ namespace
                 continue ; //------------------------------------------------------ (1)
             }
 
+            /*
             if(keybind::is_invalid_log(lgr.latest(), keybind::InvalidPolicy::AllSystemKey)) {
                 lgr.remove_from_back(1) ;
                 continue ;
             }
+            */
 
             std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic -------------- (2)
 

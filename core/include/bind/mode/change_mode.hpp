@@ -5,53 +5,40 @@
 
 namespace vind
 {
-    struct Change2Normal : public BindedFuncWithCreator<Change2Normal> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2Normal : public BindedFuncCreator<Change2Normal> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
 
-    struct Change2Insert : public BindedFuncWithCreator<Change2Insert> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2Insert : public BindedFuncCreator<Change2Insert> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
 
-    struct Change2Visual : public BindedFuncWithCreator<Change2Visual> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2Visual : public BindedFuncCreator<Change2Visual> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct MyConfigWindowNormal : public BindedFuncWithCreator<MyConfigWindowNormal> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct MyConfigWindowNormal : public BindedFuncCreator<MyConfigWindowNormal> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct MyConfigWindowInsert : public BindedFuncWithCreator<MyConfigWindowInsert> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct MyConfigWindowInsert : public BindedFuncCreator<MyConfigWindowInsert> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

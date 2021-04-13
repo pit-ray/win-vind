@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class Dedicate2Window : public OptionWithCreator<Dedicate2Window>
+    class Dedicate2Window : public OptionCreator<Dedicate2Window>
     {
     private:
         void do_enable() const override ;

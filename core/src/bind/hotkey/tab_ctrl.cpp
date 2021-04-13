@@ -2,10 +2,13 @@
 
 #include <windows.h>
 
+#include "bind/base/char_logger.hpp"
 #include "io/keybrd.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "coreio/err_logger.hpp"
 #include "util/def.hpp"
+
+#include "bind/base/ntype_logger.hpp"
 
 
 namespace vind
@@ -14,16 +17,18 @@ namespace vind
     const std::string Switch2LeftTab::sname() noexcept {
         return "switch_to_left_tab" ;
     }
-
-    void Switch2LeftTab::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+    void Switch2LeftTab::sprocess(unsigned int repeat_num) {
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
         }
+    }
+    void Switch2LeftTab::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void Switch2LeftTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
 
@@ -31,45 +36,42 @@ namespace vind
     const std::string Switch2RightTab::sname() noexcept {
         return "switch_to_right_tab" ;
     }
-
-    void Switch2RightTab::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+    void Switch2RightTab::sprocess(unsigned repeat_num) {
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
         }
+    }
+    void Switch2RightTab::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void Switch2RightTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
     //OpenNewTab
     const std::string OpenNewTab::sname() noexcept {
         return "open_new_tab" ;
     }
-
-    void OpenNewTab::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void OpenNewTab::sprocess() {
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
     }
-
+    void OpenNewTab::sprocess(NTypeLogger& parent_lgr) {
+        if(parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void OpenNewTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
 
 
     //CloseCurrentTab
     const std::string CloseCurrentTab::sname() noexcept {
         return "close_current_tab" ;
     }
-
-    void CloseCurrentTab::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void CloseCurrentTab::sprocess() {
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
 
         auto hwnd = GetForegroundWindow() ;
@@ -79,7 +81,15 @@ namespace vind
 
         Sleep(500) ; //wait by openning the dialog for saving
         if(hwnd != GetForegroundWindow()) { //opened popup
-            Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
+            Change2Normal::sprocess(true) ;
         }
+    }
+    void CloseCurrentTab::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void CloseCurrentTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

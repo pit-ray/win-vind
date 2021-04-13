@@ -21,6 +21,7 @@
 #include "util/def.hpp"
 #include "util/string.hpp"
 #include "entry.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 
 namespace vind
@@ -45,16 +46,8 @@ namespace vind
     const std::string Jump2Any::sname() noexcept {
         return "jump_to_any" ;
     }
-
-    void Jump2Any::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        if(!first_call) return ;
-
+    void Jump2Any::sprocess() const {
         //reset key state (binded key)
-        
         keyabsorber::InstantKeyAbsorber ika ;
 
         //ignore toggle keys (for example, CapsLock, NumLock, IME....)
@@ -101,6 +94,15 @@ namespace vind
             }
         }
     }
+    void Jump2Any::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void Jump2Any::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess() ;
+    }
+
 
     void Jump2Any::load_config() {
         //initilize

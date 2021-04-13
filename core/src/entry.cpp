@@ -152,11 +152,11 @@ namespace vind
                 {"edi_normal", Change2EdiNormal::create()},
                 {"edi_insert", Change2EdiInsert::create()}
             } ;
-            cm.at(iparams::get_s("initial_mode"))->process(true, 1) ;
+            cm.at(iparams::get_s("initial_mode"))->process() ;
 
             if(!func_name.empty()) {
                 auto func = keybind::find_func_byname(func_name) ;
-                func->process(true, 1, nullptr, nullptr) ;
+                func->process() ;
             }
 
             return true ;
@@ -217,9 +217,8 @@ namespace vind
                 if(mmf.get() != NULL) {
                     std::string name(reinterpret_cast<const char*>(mmf.get())) ;
                     if(!name.empty()) {
-                        auto func = keybind::find_func_byname(name) ;
-                        if(func != nullptr) {
-                            func->process(true, 1, nullptr, nullptr) ;
+                        if(auto func = keybind::find_func_byname(name)) {
+                            func->process() ;
                         }
                         else {
                             PRINT_ERROR(name + " is invalid function name.") ;
@@ -256,7 +255,7 @@ namespace vind
 
             using namespace keyabsorber ;
             if(is_pressed(KEYCODE_F8) && is_pressed(KEYCODE_F9)) {
-                ExitConfigWindow::sprocess(true, 1, nullptr, nullptr) ; //exit GUI-window in system tray
+                ExitConfigWindow::sprocess() ; //exit GUI-window in system tray
                 return false ;
             }
 

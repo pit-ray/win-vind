@@ -5,21 +5,17 @@
 
 namespace vind
 {
-    struct MinimizeCurrentWindow : public BindedFuncWithCreator<MinimizeCurrentWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct MinimizeCurrentWindow : public BindedFuncCreator<MinimizeCurrentWindow> {
+        static void sprocess(unsigned int repeat_num=1) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct MaximizeCurrentWindow : public BindedFuncWithCreator<MaximizeCurrentWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct MaximizeCurrentWindow : public BindedFuncCreator<MaximizeCurrentWindow> {
+        static void sprocess(unsigned int repeat_num=1) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

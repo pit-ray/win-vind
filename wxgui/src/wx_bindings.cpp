@@ -701,10 +701,10 @@ namespace wxGUI
 
             const auto use_bindings = ioParams::get_vb("enable_specific_bindings_in_mygui") ;
             if(use_bindings) {
-                MyConfigWindowInsert::sprocess(true, 1, nullptr, nullptr) ;
+                MyConfigWindowInsert::sprocess() ;
             }
             else {
-                Change2Insert::sprocess(true, 1, nullptr, nullptr) ;
+                Change2Insert::sprocess() ;
             }
 
             //release a message to push [Edit with Vim] button.
@@ -726,7 +726,7 @@ namespace wxGUI
             keyabsorber::close_all_ports_with_refresh() ;
 
             if(use_bindings) {
-                MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
+                MyConfigWindowNormal::sprocess() ;
             }
 
             nlohmann::json new_json ;

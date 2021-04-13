@@ -1,9 +1,8 @@
 #ifndef _BINDINGS_PARSER_HPP
 #define _BINDINGS_PARSER_HPP
 
-#include "bind/base/mode.hpp"
 #include <vector>
-#include "bind/base/bindings_matcher.hpp"
+#include <string>
 
 namespace vind
 {
@@ -57,37 +56,8 @@ namespace vind
         //
         const Command parse_string_binding(std::string cmdstr) ;
 
-
-        //
-        // It parses a string command as Command.
-        // Command:: std::vector<std::vector<unsigned char>>
-        //
-        // Note: If it includes some mode strings,
-        //       will give empty value to cmd and return value other than Mode::None.
-        //
-        //  Ex)
-        //      abc     -> {
-        //                     {KEYCODE_A},
-        //                     {KEYCODE_B},
-        //                     {KEYCODE_C}
-        //                 }
-        //
-        //                 return Mode::None
-        //
-        //      <s-d>e  -> {
-        //                     {KEYCODE_SHIFT, KEYCODE_D},
-        //                     {KEYCODE_E},
-        //                 }
-        //
-        //                 return Mode::None
-        //
-        //      <guin>  -> {}
-        //                 return Mode::Normal
-        //
-        mode::Mode parse_bindings(Command& cmd, std::string cmdstr) ;
-
         namespace debug {
-            std::string print(const BindingsMatcher::cmdlist_t& list) ;
+            std::string print(const Command& list) ;
         }
     }
 }

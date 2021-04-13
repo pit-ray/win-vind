@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <iostream>
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
@@ -73,12 +75,7 @@ namespace vind
     const std::string EdiNReplaceChar::sname() noexcept {
         return "edi_n_replace_char" ;
     }
-    void EdiNReplaceChar::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EdiNReplaceChar::sprocess(unsigned int repeat_num) {
         loop_for_keymatching([repeat_num](const auto& keycodes, const bool shifted=false) {
 
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -94,19 +91,21 @@ namespace vind
             return true ; //terminate looping
         }) ;
     }
+    void EdiNReplaceChar::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void EdiNReplaceChar::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(1) ;
+    }
 
 
     //EdiNReplaceSequence
     const std::string EdiNReplaceSequence::sname() noexcept {
         return "edi_n_replace_sequence" ;
     }
-    void EdiNReplaceSequence::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void EdiNReplaceSequence::sprocess(unsigned int repeat_num) {
         using keybrd::pushup ;
 
         VirtualCmdLine::clear() ;
@@ -142,18 +141,21 @@ namespace vind
         VirtualCmdLine::refresh() ;
         VirtualCmdLine::msgout("-- EDI NORMAL --") ;
     }
+    void EdiNReplaceSequence::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void EdiNReplaceSequence::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(1) ;
+    }
+
 
     //EdiSwitchCharCase
     const std::string EdiSwitchCharCase::sname() noexcept {
         return "edi_switch_char_case" ;
     }
-    void EdiSwitchCharCase::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void EdiSwitchCharCase::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([&repeat_num] {
                 for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                     keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
@@ -183,5 +185,13 @@ namespace vind
                 }
             }
         }
+    }
+    void EdiSwitchCharCase::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void EdiSwitchCharCase::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(1) ;
     }
 }

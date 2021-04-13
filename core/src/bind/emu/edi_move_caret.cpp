@@ -1,5 +1,7 @@
 #include "bind/emu/edi_move_caret.hpp"
 
+#include "bind/base/ntype_logger.hpp"
+#include "bind/base/char_logger.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "bind/base/mode.hpp"
@@ -8,51 +10,6 @@
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
-
-namespace
-{
-    using namespace vind ;
-
-    template <typename T1, typename T2>
-    inline void move_caret_with_repeating(
-            bool first_call,
-            unsigned int repeat_num,
-            KeyStrokeRepeater& ksr,
-            T1&& v_press_proc,
-            T2&& n_press_proc)
-    {
-        using mode::is_edi_visual ;
-
-        if(repeat_num == 1) {
-            if(first_call) {
-                ksr.reset() ;
-
-                if(is_edi_visual()) v_press_proc() ;
-                else n_press_proc() ;
-
-                return ;
-            }
-            if(!ksr.is_pressed()) {
-                return ;
-            }
-
-            if(is_edi_visual()) v_press_proc() ;
-            else n_press_proc() ;
-        }
-
-        if(first_call) {
-            if(is_edi_visual()) {
-                for(unsigned int i = 0 ; i < repeat_num ; i ++)
-                    v_press_proc() ;
-            }
-            else {
-                for(unsigned int i = 0 ; i < repeat_num ; i ++)
-                    n_press_proc() ;
-            }
-            ksr.reset() ;
-        }
-    }
-}
 
 
 namespace vind
@@ -76,15 +33,29 @@ namespace vind
     bool EdiMoveCaretLeft::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretLeft::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        using keybrd::pushup ;
-        move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;},
-                [] {pushup(KEYCODE_LEFT) ;}) ;
+    void EdiMoveCaretLeft::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+            }
+        }
+        else {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LEFT) ;
+            }
+        }
+    }
+    void EdiMoveCaretLeft::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+            pimpl->ksr.reset() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiMoveCaretLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess(1) ;
     }
 
 
@@ -107,15 +78,29 @@ namespace vind
     bool EdiMoveCaretRight::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretRight::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        using keybrd::pushup ;
-        move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;},
-                [] {pushup(KEYCODE_RIGHT) ;}) ;
+    void EdiMoveCaretRight::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+            }
+        }
+        else {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_RIGHT) ;
+            }
+        }
+    }
+    void EdiMoveCaretRight::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+            pimpl->ksr.reset() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiMoveCaretRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess(1) ;
     }
 
 
@@ -138,32 +123,43 @@ namespace vind
     bool EdiMoveCaretUp::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretUp::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) const {
-        auto v_press = [] {
-            if(textselect::is_first_line_selection())
+    void EdiMoveCaretUp::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            if(textselect::is_first_line_selection()) {
                 textselect::select_line_EOL2BOL() ;
-
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
-            //textselect::moving_update() ;
-        } ;
-        auto n_press = [] {keybrd::pushup(KEYCODE_UP) ;} ;
-
-        if(parent_charlgr != nullptr) {
-            auto str = parent_charlgr->to_str() ;
-            if(str.empty()) return ;
-
-            if(auto num = keyloggerutil::extract_num(str)) {
-                move_caret_with_repeating(true, num, pimpl->ksr, v_press, n_press) ;
+            }
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
+                //textselect::moving_update() ;
             }
         }
         else {
-            move_caret_with_repeating(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_UP) ;
+            }
         }
     }
+    void EdiMoveCaretUp::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+            pimpl->ksr.reset() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiMoveCaretUp::sprocess(const CharLogger& parent_lgr) const {
+        auto str = parent_lgr.to_str() ;
+        if(str.empty()) return ;
+
+        if(auto num = keyloggerutil::extract_num(str)) {
+            sprocess(num) ;
+        }
+        else {
+            throw RUNTIME_EXCEPT("There is no number in the passed command.") ;
+        }
+    }
+
 
     //EdiMoveCaretDown
     struct EdiMoveCaretDown::Impl {
@@ -184,34 +180,44 @@ namespace vind
     bool EdiMoveCaretDown::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretDown::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) const {
-        auto v_press = [] {
-            if(textselect::is_first_line_selection())
+    void EdiMoveCaretDown::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            if(textselect::is_first_line_selection()) {
                 textselect::select_line_BOL2EOL() ;
+            }
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
-
-            //If call EdiMoveCaretDown after EdiMoveCaretUp,
-            //inner variables of moving_update() are dedicated to EOL2BOL.
-            //so we cannot move caret down.
-            //textselect::moving_update() ;
-        } ;
-        auto n_press = [] {keybrd::pushup(KEYCODE_DOWN) ;} ;
-
-        if(parent_charlgr != nullptr) {
-            auto str = parent_charlgr->to_str() ;
-            if(str.empty()) return ;
-
-            if(auto num = keyloggerutil::extract_num(str)) {
-                move_caret_with_repeating(true, num, pimpl->ksr, v_press, n_press) ;
+                //If call EdiMoveCaretDown after EdiMoveCaretUp,
+                //inner variables of moving_update() are dedicated to EOL2BOL.
+                //so we cannot move caret down.
+                //textselect::moving_update() ;
             }
         }
         else {
-            move_caret_with_repeating(first_call, repeat_num, pimpl->ksr, v_press, n_press) ;
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_DOWN) ;
+            }
+        }
+    }
+    void EdiMoveCaretDown::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+            pimpl->ksr.reset() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiMoveCaretDown::sprocess(const CharLogger& parent_lgr) const {
+        auto str = parent_lgr.to_str() ;
+        if(str.empty()) return ;
+
+        if(auto num = keyloggerutil::extract_num(str)) {
+            sprocess(num) ;
+        }
+        else {
+            throw RUNTIME_EXCEPT("There is no number in the passed command.") ;
         }
     }
 
@@ -235,15 +241,29 @@ namespace vind
     bool EdiNMoveCaretwordsForward::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNMoveCaretwordsForward::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        using keybrd::pushup ;
-        move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-            [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;},
-            [] {pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;}) ;
+    void EdiNMoveCaretwordsForward::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+            }
+        }
+        else {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+            }
+        }
+    }
+    void EdiNMoveCaretwordsForward::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+            pimpl->ksr.reset() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiNMoveCaretwordsForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess(1) ;
     }
 
 
@@ -266,15 +286,29 @@ namespace vind
     bool EdiNMoveCaretwordsBackward::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNMoveCaretwordsBackward::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        using keybrd::pushup ;
-        move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;},
-                [] {pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;}) ;
+    void EdiNMoveCaretwordsBackward::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
+            }
+        }
+        else {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
+            }
+        }
+    }
+    void EdiNMoveCaretwordsBackward::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+            pimpl->ksr.reset() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiNMoveCaretwordsBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess(1) ;
     }
 
 
@@ -297,15 +331,30 @@ namespace vind
     bool EdiNMoveCaretWORDSForward::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNMoveCaretWORDSForward::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        using keybrd::pushup ;
-        move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;},
-                [] {pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;}) ;
+
+    void EdiNMoveCaretWORDSForward::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+            }
+        }
+        else {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+            }
+        }
+    }
+    void EdiNMoveCaretWORDSForward::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+            pimpl->ksr.reset() ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiNMoveCaretWORDSForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess(1) ;
     }
 
 
@@ -328,14 +377,27 @@ namespace vind
     bool EdiNMoveCaretWORDSBackward::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNMoveCaretWORDSBackward::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        using keybrd::pushup ;
-        move_caret_with_repeating(first_call, repeat_num, pimpl->ksr,
-                [] {pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;},
-                [] {pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;}) ;
+    void EdiNMoveCaretWORDSBackward::sprocess(unsigned int repeat_num) const {
+        if(mode::is_edi_visual()) {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
+            }
+        }
+        else {
+            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
+            }
+        }
+    }
+    void EdiNMoveCaretWORDSBackward::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiNMoveCaretWORDSBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess(1) ;
     }
 }

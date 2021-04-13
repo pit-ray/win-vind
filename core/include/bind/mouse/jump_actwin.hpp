@@ -5,12 +5,10 @@
 
 namespace vind
 {
-    struct Jump2ActiveWindow : public BindedFuncWithCreator<Jump2ActiveWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct Jump2ActiveWindow : public BindedFuncCreator<Jump2ActiveWindow> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

@@ -5,6 +5,7 @@
 #include "bind/mouse/jump_actwin.hpp"
 #include "io/screen_metrics.hpp"
 #include "bind/window/window_utility.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 namespace
 {
@@ -84,7 +85,7 @@ namespace
                 throw RUNTIME_EXCEPT("Could not set a foreground window.") ;
             }
             Sleep(50) ;
-            Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+            Jump2ActiveWindow::sprocess() ;
         }
     }
 }
@@ -96,13 +97,7 @@ namespace vind
     const std::string SelectLeftWindow::sname() noexcept {
         return "select_left_window" ;
     }
-    void SelectLeftWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void SelectLeftWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),
                 const auto& UNUSED(erect),
@@ -122,18 +117,21 @@ namespace vind
 
         select_nearest_window(is_if_target, calc_distance) ;
     }
+    void SelectLeftWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SelectLeftWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //SelectRightWindow
     const std::string SelectRightWindow::sname() noexcept {
         return "select_right_window" ;
     }
-    void SelectRightWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void SelectRightWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),
                 const auto& UNUSED(erect),
@@ -153,18 +151,21 @@ namespace vind
 
         select_nearest_window(is_if_target, calc_distance) ;
     }
+    void SelectRightWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SelectRightWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //SelectUpperWindow
     const std::string SelectUpperWindow::sname() noexcept {
         return "select_upper_window" ;
     }
-    void SelectUpperWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void SelectUpperWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),
                 const auto& UNUSED(erect),
@@ -184,18 +185,21 @@ namespace vind
 
         select_nearest_window(is_if_target, calc_distance) ;
     }
+    void SelectUpperWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SelectUpperWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //SelectLowerWindow
     const std::string SelectLowerWindow::sname() noexcept {
         return "select_lower_window" ;
     }
-    void SelectLowerWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void SelectLowerWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),
                 const auto& UNUSED(erect),
@@ -214,5 +218,13 @@ namespace vind
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
+    }
+    void SelectLowerWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SelectLowerWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

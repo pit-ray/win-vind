@@ -83,5 +83,16 @@ namespace vind
             }
             return false ;
         }
+
+        void move_cursor(int dx, int dy) {
+            static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, MOUSEEVENTF_MOVE, 0, 0}}} ;
+
+            in.mi.dx = dx ;
+            in.mi.dy = dy ;
+
+            if(!SendInput(1, &in, sizeof(INPUT))) {
+                throw RUNTIME_EXCEPT("cannot send the moving event of the mouse") ;
+            }
+        }
     }
 }

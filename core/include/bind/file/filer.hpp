@@ -5,21 +5,17 @@
 
 namespace vind
 {
-    struct SaveOpenedFile : public BindedFuncWithCreator<SaveOpenedFile> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct SaveOpenedFile : public BindedFuncCreator<SaveOpenedFile> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct OpenOtherFile : public BindedFuncWithCreator<OpenOtherFile> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct OpenOtherFile : public BindedFuncCreator<OpenOtherFile> {
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

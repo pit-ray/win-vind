@@ -5,57 +5,45 @@
 
 namespace vind
 {
-    struct ResizeWindowWidth: public BindedFuncWithCreator<ResizeWindowWidth> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct ResizeWindowWidth: public BindedFuncCreator<ResizeWindowWidth> {
+        static void sprocess(long width=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct IncreaseWindowWidth : public BindedFuncWithCreator<IncreaseWindowWidth> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct IncreaseWindowWidth : public BindedFuncCreator<IncreaseWindowWidth> {
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct DecreaseWindowWidth: public BindedFuncWithCreator<DecreaseWindowWidth> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct DecreaseWindowWidth: public BindedFuncCreator<DecreaseWindowWidth> {
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct ResizeWindowHeight : public BindedFuncWithCreator<ResizeWindowHeight> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct ResizeWindowHeight : public BindedFuncCreator<ResizeWindowHeight> {
+        static void sprocess(long height=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct IncreaseWindowHeight : public BindedFuncWithCreator<IncreaseWindowHeight> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct IncreaseWindowHeight : public BindedFuncCreator<IncreaseWindowHeight> {
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct DecreaseWindowHeight : public BindedFuncWithCreator<DecreaseWindowHeight> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
+    struct DecreaseWindowHeight : public BindedFuncCreator<DecreaseWindowHeight> {
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

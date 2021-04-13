@@ -5,95 +5,68 @@
 
 namespace vind
 {
-    struct Change2EdiNormal : public BindedFuncWithCreator<Change2EdiNormal> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiNormal : public BindedFuncCreator<Change2EdiNormal> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
 
-    struct Change2EdiInsert : public BindedFuncWithCreator<Change2EdiInsert> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiInsert : public BindedFuncCreator<Change2EdiInsert> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct Change2EdiBOLInsert : public BindedFuncWithCreator<Change2EdiBOLInsert> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiBOLInsert : public BindedFuncCreator<Change2EdiBOLInsert> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct Change2EdiBkInsert : public BindedFuncWithCreator<Change2EdiBkInsert> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiBkInsert : public BindedFuncCreator<Change2EdiBkInsert> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct Change2EdiEOLInsert : public BindedFuncWithCreator<Change2EdiEOLInsert> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiEOLInsert : public BindedFuncCreator<Change2EdiEOLInsert> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct Change2EdiNlInsertBelow : public BindedFuncWithCreator<Change2EdiNlInsertBelow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiNlInsertBelow : public BindedFuncCreator<Change2EdiNlInsertBelow> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct Change2EdiNlInsertAbove : public BindedFuncWithCreator<Change2EdiNlInsertAbove> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiNlInsertAbove : public BindedFuncCreator<Change2EdiNlInsertAbove> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
-    struct Change2EdiVisual : public BindedFuncWithCreator<Change2EdiVisual> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiVisual : public BindedFuncCreator<Change2EdiVisual> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 
 
-    struct Change2EdiLineVisual : public BindedFuncWithCreator<Change2EdiLineVisual> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr,
-                const bool vclmodeout=true) ;
+    struct Change2EdiLineVisual : public BindedFuncCreator<Change2EdiLineVisual> {
+        static void sprocess(bool vclmodeout=true) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
         static const std::string sname() noexcept ;
     } ;
 }

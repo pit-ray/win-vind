@@ -5,17 +5,15 @@
 
 namespace vind
 {
-    class EdiMoveCaretLeft : public BindedFuncWithCreator<EdiMoveCaretLeft> {
+    class EdiMoveCaretLeft : public BindedFuncCreator<EdiMoveCaretLeft> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
@@ -29,17 +27,15 @@ namespace vind
         EdiMoveCaretLeft& operator=(const EdiMoveCaretLeft&) = delete ;
     } ;
 
-    class EdiMoveCaretRight : public BindedFuncWithCreator<EdiMoveCaretRight> {
+    class EdiMoveCaretRight : public BindedFuncCreator<EdiMoveCaretRight> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
@@ -53,17 +49,15 @@ namespace vind
         EdiMoveCaretRight& operator=(const EdiMoveCaretRight&) = delete ;
     } ;
 
-    class EdiMoveCaretUp : public BindedFuncWithCreator<EdiMoveCaretUp> {
+    class EdiMoveCaretUp : public BindedFuncCreator<EdiMoveCaretUp> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
@@ -77,17 +71,15 @@ namespace vind
         EdiMoveCaretUp& operator=(const EdiMoveCaretUp&) = delete ;
     } ;
 
-    class EdiMoveCaretDown : public BindedFuncWithCreator<EdiMoveCaretDown> {
+    class EdiMoveCaretDown : public BindedFuncCreator<EdiMoveCaretDown> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
@@ -102,17 +94,15 @@ namespace vind
     } ;
 
 
-    class EdiNMoveCaretwordsForward : public BindedFuncWithCreator<EdiNMoveCaretwordsForward> {
+    class EdiNMoveCaretwordsForward : public BindedFuncCreator<EdiNMoveCaretwordsForward> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
@@ -126,17 +116,15 @@ namespace vind
         EdiNMoveCaretwordsForward& operator=(const EdiNMoveCaretwordsForward&) = delete ;
     } ;
 
-    class EdiNMoveCaretwordsBackward : public BindedFuncWithCreator<EdiNMoveCaretwordsBackward> {
+    class EdiNMoveCaretwordsBackward : public BindedFuncCreator<EdiNMoveCaretwordsBackward> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
@@ -151,17 +139,15 @@ namespace vind
     } ;
 
 
-    class EdiNMoveCaretWORDSForward : public BindedFuncWithCreator<EdiNMoveCaretWORDSForward> {
+    class EdiNMoveCaretWORDSForward : public BindedFuncCreator<EdiNMoveCaretWORDSForward> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
@@ -175,17 +161,15 @@ namespace vind
         EdiMoveCaretDown& operator=(const EdiMoveCaretDown&) = delete ;
     } ;
 
-    class EdiNMoveCaretWORDSBackward : public BindedFuncWithCreator<EdiNMoveCaretWORDSBackward> {
+    class EdiNMoveCaretWORDSBackward : public BindedFuncCreator<EdiNMoveCaretWORDSBackward> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
         static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;

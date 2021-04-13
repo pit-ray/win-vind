@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <psapi.h>
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "coreio/path.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
@@ -13,15 +15,7 @@ namespace vind
     const std::string OpenNewCurrentWindow::sname() noexcept {
         return "open_new_current_window" ;
     }
-
-    void OpenNewCurrentWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) {
-            return ;
-        }
+    void OpenNewCurrentWindow::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
             throw RUNTIME_EXCEPT("The foreground window is not existed") ;
@@ -51,5 +45,13 @@ namespace vind
 
         util::create_process(path::HOME_PATH(), util::ws_to_s(path)) ;
         Sleep(100) ;
+    }
+    void OpenNewCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void OpenNewCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

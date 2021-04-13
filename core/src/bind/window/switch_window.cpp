@@ -12,6 +12,8 @@
 
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/mouse/jump_actwin.hpp"
+#include "bind/base/ntype_logger.hpp"
+#include "bind/base/keycode_logger.hpp"
 
 namespace vind
 {
@@ -20,14 +22,8 @@ namespace vind
         return "switch_window" ;
     }
 
-    void SwitchWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
+    void SwitchWindow::sprocess() {
         using namespace keybrd ;
-        if(!first_call) return ;
-
         keyabsorber::InstantKeyAbsorber ika ;
 
         SmartKey alt(KEYCODE_LALT) ;
@@ -61,6 +57,7 @@ namespace vind
             if(!logger.is_changed()) {
                 continue ;
             }
+            /*
             if(keybind::is_invalid_log(logger.latest(),
                         keybind::InvalidPolicy::UnbindedSystemKey)) {
 
@@ -89,6 +86,7 @@ namespace vind
                     continue ;
                 }
             }
+            */
         }
 
         keyabsorber::release_virtually(KEYCODE_ESC) ;
@@ -98,6 +96,14 @@ namespace vind
 
         //jump cursor to a selected window after releasing alt and tab.
         Sleep(50) ; //send select-message to OS(wait)
-        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        Jump2ActiveWindow::sprocess() ;
+    }
+    void SwitchWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SwitchWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

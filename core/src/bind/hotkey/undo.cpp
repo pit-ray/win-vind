@@ -8,6 +8,7 @@
 #include "io/mouse.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 namespace vind
 {
@@ -26,33 +27,22 @@ namespace vind
     const std::string SCRedo::sname() noexcept {
         return "sc_redo" ;
     }
-
-    void SCRedo::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        auto redo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;} ;
-        if(repeat_num == 1) {
-            if(first_call) {
-                pimpl->ksr.reset() ;
-                redo() ;
-                return ;
-            }
-            if(pimpl->ksr.is_pressed()) {
-                redo() ;
-                return ;
-            }
-            return ;
+    void SCRedo::sprocess(unsigned int repeat_num) const {
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;
         }
-
-        //repeat_num > 1
-        if(first_call) {
-            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                redo() ;
-            }
+    }
+    void SCRedo::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
         }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void SCRedo::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess() ;
     }
 
 
@@ -71,31 +61,21 @@ namespace vind
     const std::string SCUndo::sname() noexcept {
         return "sc_undo" ;
     }
-    void SCUndo::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        auto undo = [] {keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;} ;
-        if(repeat_num == 1) {
-            if(first_call) {
-                pimpl->ksr.reset() ;
-                undo() ;
-                return ;
-            }
-            if(pimpl->ksr.is_pressed()) {
-                undo() ;
-                return ;
-            }
-            return ;
+    void SCUndo::sprocess(unsigned int repeat_num) const {
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;
         }
-
-        //repeat_num >= 2
-        if(first_call) {
-            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
-                undo() ;
-            }
+    }
+    void SCUndo::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
         }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void SCUndo::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess() ;
     }
 }

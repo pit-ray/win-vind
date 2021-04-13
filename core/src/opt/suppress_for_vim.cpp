@@ -64,7 +64,7 @@ namespace vind
         }
         else {
             if(get_global_mode() == Mode::Insert)
-                Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
+                Change2Normal::sprocess(true) ;
         }
 
     }

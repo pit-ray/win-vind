@@ -11,7 +11,7 @@ namespace vind
     //if derived class does not use variable of member, sprocess prefers static function.
     //else, sprocess is constant function.
     template <typename Derived>
-    class OptionWithCreator : public Option {
+    class OptionCreator : public Option {
     public:
         static std::unique_ptr<Option> create() {
             return std::make_unique<Derived>() ;

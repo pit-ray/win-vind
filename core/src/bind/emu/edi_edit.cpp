@@ -20,6 +20,7 @@
 #include "text/text_analyzer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
+#include "opt/virtual_cmd_line.hpp"
 #include "entry.hpp"
 
 namespace
@@ -77,15 +78,20 @@ namespace
 
     //return: is succecced?
     bool select_by_motion(unsigned int repeat_num, NTypeLogger* const parent_lgr) {
-        /*
         using namespace mode ;
-        KeycodeLogger lgr ;
+        NTypeLogger lgr ;
 
         keyabsorber::InstantKeyAbsorber ika ;
 
         while(vind::update_background()) {
-            lgr.update() ;
-            if(!lgr.is_changed()) {
+            auto result = lgr.logging_state() ;
+            if(parent_lgr) parent_lgr->logging_state() ;
+
+            if(NTYPE_EMPTY(result)) {
+                continue ;
+            }
+            if(NTYPE_HEAD_NUM(result)) {
+                VirtualCmdLine::cout(std::to_string(lgr.get_head_num())) ;
                 continue ;
             }
 
@@ -123,7 +129,6 @@ namespace
                 return false ;
             }
         }
-        */
 
         return false ;
     }

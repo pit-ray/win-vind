@@ -111,9 +111,9 @@ namespace {
 namespace vind
 {
     //RotateWindow
-    const std::string RotateWindows::sname() noexcept {
-        return "rotate_windows" ;
-    }
+    RotateWindows::RotateWindows()
+    : BindedFuncCreator("rotate_windows")
+    {}
     void RotateWindows::sprocess(unsigned int repeat_num) {
         rotate_windows_core([repeat_num] (ordered_hwnd_t& angle_hwnds) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
@@ -142,9 +142,9 @@ namespace vind
 
 
     //RotateWindowsInReverse
-    const std::string RotateWindowsInReverse::sname() noexcept {
-        return "rotate_windows_in_reverse" ;
-    }
+    RotateWindowsInReverse::RotateWindowsInReverse()
+    : BindedFuncCreator("rotate_windows_in_reverse")
+    {}
     void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
         rotate_windows_core([repeat_num] (ordered_hwnd_t& angle_hwnds) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {

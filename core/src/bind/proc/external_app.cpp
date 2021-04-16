@@ -60,9 +60,9 @@ namespace vind
     }
 
     //StartShell
-    const std::string StartShell::sname() noexcept {
-        return "start_shell" ;
-    }
+    StartShell::StartShell()
+    : BindedFuncCreator("start_shell")
+    {}
     void StartShell::sprocess() {
         try {
             util::create_process(path::HOME_PATH(), g_proc_list.at("shell")) ;
@@ -92,9 +92,9 @@ namespace vind
      */
 
     //StartAnyApp
-    const std::string StartAnyApp::sname() noexcept {
-        return "start_any_app" ;
-    }
+    StartAnyApp::StartAnyApp()
+    : BindedFuncCreator("start_any_app")
+    {}
     void StartAnyApp::sprocess(std::string cmd) {
         if(!cmd.empty()) {
             try {
@@ -125,9 +125,9 @@ namespace vind
     }
 
     //StartExplorer
-    const std::string StartExplorer::sname() noexcept {
-        return "start_explorer" ;
-    }
+    StartExplorer::StartExplorer()
+    : BindedFuncCreator("start_explorer")
+    {}
     void StartExplorer::sprocess() {
         keybrd::pushup(KEYCODE_LWIN, KEYCODE_E) ;
         Sleep(100) ; //wait until select window by OS.
@@ -144,9 +144,9 @@ namespace vind
 
 
     //OpenStartMenu
-    const std::string OpenStartMenu::sname() noexcept {
-        return "open_start_menu" ;
-    }
+    OpenStartMenu::OpenStartMenu()
+    : BindedFuncCreator("open_start_menu")
+    {}
     void OpenStartMenu::sprocess() {
         keybrd::pushup(KEYCODE_LWIN) ;
         Sleep(100) ; //wait until select window by OS.

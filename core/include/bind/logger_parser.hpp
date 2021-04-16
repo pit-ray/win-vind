@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+#include "bind/bindings_def.hpp"
+
 namespace vind
 {
     class BindedFunc ;
@@ -34,11 +36,15 @@ namespace vind
         void append_binding_list(const std::vector<std::string>& list) ;
         void append_binding_list(std::vector<std::string>&& list) ;
 
+        void share_parsed_binding_list(const std::shared_ptr<CommandList>& cmdlist) ;
+
         void reset_binding(const std::string& command) ;
         void reset_binding(std::string&& command) ;
 
         void reset_binding_list(const std::vector<std::string>& list) ;
         void reset_binding_list(std::vector<std::string>&& list) ;
+
+        void reset_binding_list() ;
 
         void unbind_function() noexcept ;
 

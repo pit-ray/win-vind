@@ -21,9 +21,9 @@
 namespace vind
 {
     //Change2Normal
-    const std::string Change2Normal::sname() noexcept {
-        return "change_to_normal" ;
-    }
+    Change2Normal::Change2Normal()
+    : BindedFuncCreator("change_to_normal")
+    {}
     void Change2Normal::sprocess(bool vclmodeout) {
         using namespace mode ;
 
@@ -55,9 +55,9 @@ namespace vind
 
 
     //Change2Insert
-    const std::string Change2Insert::sname() noexcept {
-        return "change_to_insert" ;
-    }
+    Change2Insert::Change2Insert()
+    : BindedFuncCreator("change_to_insert")
+    {}
     void Change2Insert::sprocess(bool vclmodeout) {
         using namespace mode ;
         if(mode::get_global_mode() == mode::Mode::Normal)
@@ -80,9 +80,9 @@ namespace vind
 
 
     //Change2Visual
-    const std::string Change2Visual::sname() noexcept {
-        return "change_to_visual" ;
-    }
+    Change2Visual::Change2Visual()
+    : BindedFuncCreator("change_to_visual")
+    {}
 
     void Change2Visual::sprocess(bool vclmodeout) {
         using namespace mode ;
@@ -101,9 +101,9 @@ namespace vind
 
 
     //MyConfigWindowNormal
-    const std::string MyConfigWindowNormal::sname() noexcept {
-        return "my_config_window_normal" ;
-    }
+    MyConfigWindowNormal::MyConfigWindowNormal()
+    : BindedFuncCreator("my_config_window_normal")
+    {}
     void MyConfigWindowNormal::sprocess() {
         using namespace mode ;
         keyabsorber::close_all_ports_with_refresh() ;
@@ -121,9 +121,9 @@ namespace vind
 
 
     //MyConfigWindowInsert
-    const std::string MyConfigWindowInsert::sname() noexcept {
-        return "my_config_window_insert" ;
-    }
+    MyConfigWindowInsert::MyConfigWindowInsert()
+    : BindedFuncCreator("my_config_window_insert")
+    {}
     void MyConfigWindowInsert::sprocess() {
         using namespace mode ;
         keyabsorber::close_all_ports_with_refresh() ;

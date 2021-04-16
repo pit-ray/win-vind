@@ -12,9 +12,9 @@
 namespace vind
 {
     //EdiJumpCaret2BOL
-    const std::string EdiJumpCaret2BOL::sname() noexcept {
-        return "edi_jump_caret_to_BOL" ;
-    }
+    EdiJumpCaret2BOL::EdiJumpCaret2BOL()
+    : BindedFuncCreator("edi_jump_caret_to_BOL")
+    {}
     bool EdiJumpCaret2BOL::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -35,9 +35,9 @@ namespace vind
 
 
     //EdiJumpCaret2EOL
-    const std::string EdiJumpCaret2EOL::sname() noexcept {
-        return "edi_jump_caret_to_EOL" ;
-    }
+    EdiJumpCaret2EOL::EdiJumpCaret2EOL()
+    : BindedFuncCreator("edi_jump_caret_to_EOL")
+    {}
     bool EdiJumpCaret2EOL::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -65,9 +65,9 @@ namespace vind
 
 
     //EdiJumpCaret2NLine_DfBOF
-    const std::string EdiNJumpCaret2Line_DfBOF::sname() noexcept {
-        return "edi_n_jump_caret_to_line_default_BOF" ;
-    }
+    EdiNJumpCaret2Line_DfBOF::EdiNJumpCaret2Line_DfBOF()
+    : BindedFuncCreator("edi_n_jump_caret_to_line_default_BOF")
+    {}
     bool EdiNJumpCaret2Line_DfBOF::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -110,9 +110,9 @@ namespace vind
 
 
     //EdiJumpCaret2NLine_DfEOF
-    const std::string EdiNJumpCaret2Line_DfEOF::sname() noexcept {
-        return "edi_n_jump_caret_to_line_default_EOF" ;
-    }
+    EdiNJumpCaret2Line_DfEOF::EdiNJumpCaret2Line_DfEOF()
+    : BindedFuncCreator("edi_n_jump_caret_to_line_default_EOF")
+    {}
     bool EdiNJumpCaret2Line_DfEOF::is_for_moving_caret() const noexcept {
         return true ;
     }

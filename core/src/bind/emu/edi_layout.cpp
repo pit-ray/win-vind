@@ -14,16 +14,14 @@ namespace vind
     } ;
 
     EdiNRemoveEOL::EdiNRemoveEOL()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_remove_EOL"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNRemoveEOL::~EdiNRemoveEOL() noexcept                    = default ;
     EdiNRemoveEOL::EdiNRemoveEOL(EdiNRemoveEOL&&)               = default ;
     EdiNRemoveEOL& EdiNRemoveEOL::operator=(EdiNRemoveEOL&&)    = default ;
 
-    const std::string EdiNRemoveEOL::sname() noexcept {
-        return "edi_n_remove_EOL" ;
-    }
     void EdiNRemoveEOL::sprocess(unsigned int repeat_num) const {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_END) ;

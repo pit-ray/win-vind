@@ -112,8 +112,16 @@ namespace vind
             return cmd ;
         }
 
+        mode::Mode parse_string_modecode(std::string modestr) {
+            if(modestr.front() == '<' && modestr.back() == '>') {
+                auto inside = util::A2a(modestr.substr(1, modestr.size() - 2)) ;
+                return mode::get_mode_from_strcode(inside) ;
+            }
+            return mode::Mode::None ;
+        }
+
         namespace debug {
-            std::string print(const std::vector<Command>& list) {
+            std::string print(const CommandList& list) {
                 std::stringstream ss ;
 
                 ss << "[" ;

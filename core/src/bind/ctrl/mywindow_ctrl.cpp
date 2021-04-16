@@ -15,9 +15,9 @@ namespace
 namespace vind
 {
     //ShowConfigWindow
-    const std::string ShowConfigWindow::sname() noexcept {
-        return "show_config_window" ;
-    }
+    ShowConfigWindow::ShowConfigWindow()
+    : BindedFuncCreator("show_config_window")
+    {}
     void ShowConfigWindow::sprocess() {
         show_func() ;
         Sleep(50) ; //wait until opened window.
@@ -37,9 +37,9 @@ namespace vind
 
 
     //ExitConfigWindow
-    const std::string ExitConfigWindow::sname() noexcept {
-        return "exit_config_window" ;
-    }
+    ExitConfigWindow::ExitConfigWindow()
+    : BindedFuncCreator("exit_config_window")
+    {}
     void ExitConfigWindow::sprocess() {
         exit_func() ;
     }

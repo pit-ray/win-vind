@@ -16,7 +16,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit SCRedo() ;
         virtual ~SCRedo() noexcept ;
@@ -37,7 +36,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit SCUndo() ;
         virtual ~SCUndo() noexcept ;

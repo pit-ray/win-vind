@@ -4,16 +4,15 @@
 #include "bind/base/binded_func.hpp"
 #include "bind/logger_parser.hpp"
 
+#include "bind/bindings_def.hpp"
 
 namespace vind
 {
     namespace bindjsonparser {
-        using LoggerParserList = std::vector<LoggerParser::SPtr> ;
-
-        void load_bindings_as_parser(
+        void parse_bindings_as_list(
                 const std::string& filepath,
                 const std::vector<BindedFunc::SPtr>& all_func_list,
-                std::array<LoggerParserList, mode::mode_num()>& mode_parser_list) ;
+                ParsedStringBindingLists& parsed_bindings) ;
     }
 }
 

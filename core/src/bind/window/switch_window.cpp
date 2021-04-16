@@ -18,9 +18,9 @@
 namespace vind
 {
     //SwitchWindow
-    const std::string SwitchWindow::sname() noexcept {
-        return "switch_window" ;
-    }
+    SwitchWindow::SwitchWindow()
+    : BindedFuncCreator("switch_window")
+    {}
 
     void SwitchWindow::sprocess() {
         using namespace keybrd ;

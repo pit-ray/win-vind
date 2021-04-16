@@ -2,6 +2,7 @@
 
 #include <array>
 #include <atomic>
+#include <functional>
 
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
@@ -17,9 +18,21 @@ namespace vind
 {
     struct BindedFunc::Impl {
         std::atomic_bool running_now_ ;
+        std::string name_ ;
+        std::size_t id_ ;
 
         explicit Impl()
-        : running_now_(false)
+        : Impl("UndefinedFunction")
+        {}
+        explicit Impl(const std::string& name)
+        : running_now_(false),
+          name_(name),
+          id_(std::hash<std::string>()(name_))
+        {}
+        explicit Impl(std::string&& name)
+        : running_now_(false),
+          name_(std::move(name)),
+          id_(std::hash<std::string>()(name_))
         {}
 
         void release_fake_press() {
@@ -56,10 +69,23 @@ namespace vind
     BindedFunc::BindedFunc()
     : pimpl(std::make_unique<Impl>())
     {}
+    BindedFunc::BindedFunc(const std::string& name)
+    : pimpl(std::make_unique<Impl>(name))
+    {}
+    BindedFunc::BindedFunc(std::string&& name)
+    : pimpl(std::make_unique<Impl>(std::move(name)))
+    {}
 
     BindedFunc::~BindedFunc() noexcept              = default ;
     BindedFunc::BindedFunc(BindedFunc&&)            = default ;
     BindedFunc& BindedFunc::operator=(BindedFunc&&) = default ;
+
+    const std::string& BindedFunc::name() const noexcept {
+        return pimpl->name_ ;
+    }
+    std::size_t BindedFunc::id() const noexcept {
+        return pimpl->id_ ;
+    }
 
     void BindedFunc::error_process(const std::exception& e) const {
         PRINT_ERROR(name() + " failed. " + e.what()) ;

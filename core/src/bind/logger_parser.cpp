@@ -8,6 +8,7 @@
 #include <stack>
 
 #include "bind/base/binded_func.hpp"
+#include "bind/bindings_def.hpp"
 #include "bind/bindings_lists.hpp"
 #include "bind/bindings_parser.hpp"
 #include "key/key_log.hpp"
@@ -81,16 +82,48 @@ namespace vind
 
     struct LoggerParser::Impl {
         std::shared_ptr<BindedFunc> func_ ;
-        std::vector<bindparser::Command> cmdlist_ ;
+        std::shared_ptr<CommandList> cmdlist_ptr_ ;
         StateHistory state_hist_ ;
         std::size_t cmdidx_ ;
 
+        explicit Impl()
+        : func_(nullptr),
+          cmdlist_ptr_(nullptr),
+          state_hist_(),
+          cmdidx_(0)
+        {}
+
+        explicit Impl(const std::shared_ptr<BindedFunc>& func)
+        : func_(func),
+          cmdlist_ptr_(nullptr),
+          state_hist_(),
+          cmdidx_(0)
+        {}
+
+        explicit Impl(std::shared_ptr<BindedFunc>&& func)
+        : func_(std::move(func)),
+          cmdlist_ptr_(nullptr),
+          state_hist_(),
+          cmdidx_(0)
+        {}
+
+        virtual ~Impl() noexcept = default ;
+
+        Impl(Impl&&)                 = default ;
+        Impl& operator=(Impl&&)      = default ;
+        Impl(const Impl&)            = default ;
+        Impl& operator=(const Impl&) = default ;
+
         LogStatusRawType parse_log(const KeyLog& log) {
+            if(!cmdlist_ptr_) {
+                return 0 ;
+            }
+
             LogStatusRawType logstatus = LogStatus::ALL_FALSE ;
 
             unsigned char most_matched_num = 0 ;
 
-            for(const auto& cmd : cmdlist_) {
+            for(const auto& cmd : *cmdlist_ptr_) {
                 try {
                     const auto& keyset = cmd.at(cmdidx_) ;
 
@@ -237,35 +270,6 @@ namespace vind
             }
             return do_waiting(log) ;
         }
-
-        explicit Impl()
-        : func_(nullptr),
-          cmdlist_(),
-          state_hist_(),
-          cmdidx_(0)
-        {}
-
-        explicit Impl(const std::shared_ptr<BindedFunc>& func)
-        : func_(func),
-          cmdlist_(),
-          state_hist_(),
-          cmdidx_(0)
-        {}
-
-        explicit Impl(std::shared_ptr<BindedFunc>&& func)
-        : func_(std::move(func)),
-          cmdlist_(),
-          state_hist_(),
-          cmdidx_(0)
-        {}
-
-
-        virtual ~Impl() noexcept = default ;
-
-        Impl(Impl&&)                 = default ;
-        Impl& operator=(Impl&&)      = default ;
-        Impl(const Impl&)            = default ;
-        Impl& operator=(const Impl&) = default ;
     } ;
 
 
@@ -295,34 +299,60 @@ namespace vind
 
     void LoggerParser::append_binding(std::string command) {
         if(command.empty()) return ;
-        pimpl->cmdlist_.push_back(bindparser::parse_string_binding(command)) ;
+        if(!pimpl->cmdlist_ptr_) {
+            pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
+        }
+
+        if(pimpl->cmdlist_ptr_.use_count() == 1) {
+            pimpl->cmdlist_ptr_->push_back(bindparser::parse_string_binding(command)) ;
+        }
     }
 
     void LoggerParser::append_binding_list(const std::vector<std::string>& list) {
         if(list.empty()) return ;
-        for(const auto& cmd : list) append_binding(cmd) ;
+        if(!pimpl->cmdlist_ptr_) {
+            pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
+        }
+
+        if(pimpl->cmdlist_ptr_.use_count() == 1) {
+            for(const auto& cmd : list) append_binding(cmd) ;
+        }
     }
     void LoggerParser::append_binding_list(std::vector<std::string>&& list) {
         if(list.empty()) return ;
-        for(auto&& cmd : list) append_binding(std::move(cmd)) ;
+        if(!pimpl->cmdlist_ptr_) {
+            pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
+        }
+        if(pimpl->cmdlist_ptr_.use_count() == 1) {
+            for(auto&& cmd : list) append_binding(std::move(cmd)) ;
+        }
     }
 
     void LoggerParser::reset_binding(const std::string& command) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding(command) ;
     }
     void LoggerParser::reset_binding(std::string&& command) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding(std::move(command)) ;
     }
 
+    void LoggerParser::share_parsed_binding_list(const std::shared_ptr<CommandList>& cmdlist) {
+        pimpl->cmdlist_ptr_.reset() ;
+        pimpl->cmdlist_ptr_ = cmdlist ;
+    }
+
     void LoggerParser::reset_binding_list(const std::vector<std::string>& list) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding_list(list) ;
     }
     void LoggerParser::reset_binding_list(std::vector<std::string>&& list) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding_list(std::move(list)) ;
+    }
+
+    void LoggerParser::reset_binding_list() {
+        pimpl->cmdlist_ptr_.reset() ;
     }
 
     void LoggerParser::unbind_function() noexcept {
@@ -340,7 +370,8 @@ namespace vind
     }
 
     bool LoggerParser::has_bindings() const noexcept {
-        return !pimpl->cmdlist_.empty() ;
+        if(!pimpl->cmdlist_ptr_) return false ;
+        return !pimpl->cmdlist_ptr_->empty() ;
     }
 
     const std::shared_ptr<BindedFunc>& LoggerParser::get_func() const noexcept {

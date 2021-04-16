@@ -26,6 +26,13 @@ namespace vind
         }
 
     public:
+        explicit BindedFuncCreator(const std::string& name)
+        : BindedFunc(name)
+        {}
+        explicit BindedFuncCreator(std::string&& name)
+        : BindedFunc(std::move(name))
+        {}
+
         static std::unique_ptr<BindedFunc> create() {
             return std::make_unique<Derived>() ;
         }
@@ -39,10 +46,6 @@ namespace vind
                 cache = pobj ;
             }
             return pobj ;
-        }
-
-        const std::string name() const noexcept override {
-            return Derived::sname() ;
         }
     } ;
 }

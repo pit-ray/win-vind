@@ -230,9 +230,9 @@ namespace
 namespace vind
 {
     //EasyClickLeft
-    const std::string EasyClickLeft::sname() noexcept {
-        return "easy_click_left" ;
-    }
+    EasyClickLeft::EasyClickLeft()
+    : BindedFuncCreator("easy_click_left")
+    {}
     void EasyClickLeft::sprocess() {
         do_easy_click(KEYCODE_MOUSE_LEFT) ;
     }
@@ -247,9 +247,9 @@ namespace vind
 
 
     //EasyClickRight
-    const std::string EasyClickRight::sname() noexcept {
-        return "easy_click_right" ;
-    }
+    EasyClickRight::EasyClickRight()
+    : BindedFuncCreator("easy_click_right")
+    {}
     void EasyClickRight::sprocess() {
         do_easy_click(KEYCODE_MOUSE_RIGHT) ;
     }
@@ -264,9 +264,9 @@ namespace vind
 
 
     //EasyClickMid
-    const std::string EasyClickMid::sname() noexcept {
-        return "easy_click_mid" ;
-    }
+    EasyClickMid::EasyClickMid()
+    : BindedFuncCreator("easy_click_mid")
+    {}
     void EasyClickMid::sprocess() {
         do_easy_click(KEYCODE_MOUSE_MID) ;
     }
@@ -281,9 +281,9 @@ namespace vind
 
 
     //EasyClickHover
-    const std::string EasyClickHover::sname() noexcept {
-        return "easy_click_hover" ;
-    }
+    EasyClickHover::EasyClickHover()
+    : BindedFuncCreator("easy_click_hover")
+    {}
     void EasyClickHover::sprocess() {
         do_easy_click(KEYCODE_UNDEFINED) ;
     }

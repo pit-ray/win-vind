@@ -6,17 +6,17 @@
 namespace vind
 {
     struct MinimizeCurrentWindow : public BindedFuncCreator<MinimizeCurrentWindow> {
+        explicit MinimizeCurrentWindow() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
     struct MaximizeCurrentWindow : public BindedFuncCreator<MaximizeCurrentWindow> {
+        explicit MaximizeCurrentWindow() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 }
 

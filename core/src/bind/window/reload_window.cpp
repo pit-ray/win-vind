@@ -7,9 +7,9 @@
 namespace vind
 {
     //ReloadCurrentWindow
-    const std::string ReloadCurrentWindow::sname() noexcept {
-        return "reload_current_window" ;
-    }
+    ReloadCurrentWindow::ReloadCurrentWindow()
+    : BindedFuncCreator("reload_current_window")
+    {}
     void ReloadCurrentWindow::sprocess() {
         keybrd::pushup(KEYCODE_F5) ;
     }

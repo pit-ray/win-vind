@@ -49,9 +49,9 @@ namespace
 namespace vind
 {
     //ExchangeWindowWithNextOne
-    const std::string ExchangeWindowWithNextOne::sname() noexcept {
-        return "exchange_window_with_next_one" ;
-    }
+    ExchangeWindowWithNextOne::ExchangeWindowWithNextOne()
+    : BindedFuncCreator("exchange_window_with_next_one")
+    {}
     void ExchangeWindowWithNextOne::sprocess() {
         g_near_hwnds.clear() ;
 

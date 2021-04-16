@@ -9,9 +9,9 @@
 namespace vind
 {
     //SearchPattern
-    const std::string SearchPattern::sname() noexcept {
-        return "search_pattern" ;
-    }
+    SearchPattern::SearchPattern()
+    : BindedFuncCreator("search_pattern")
+    {}
     void SearchPattern::sprocess() {
         keybrd::pushup(KEYCODE_F3) ;
     }

@@ -138,9 +138,9 @@ namespace
 
 namespace vind
 {
-    const std::string MakeDir::sname() noexcept {
-        return "make_dir" ;
-    }
+    MakeDir::MakeDir()
+    : BindedFuncCreator("make_dir")
+    {}
     void MakeDir::sprocess(std::string path) {
         if(path.find("\\") != std::string::npos ||
                 path.find("/") != std::string::npos) {

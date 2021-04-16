@@ -12,7 +12,6 @@ namespace vind
 
     public:
         explicit CommandMode() ;
-        static const std::string sname() noexcept ;
 
         void sprocess() const ;
         void sprocess(NTypeLogger& parent_lgr) const ;

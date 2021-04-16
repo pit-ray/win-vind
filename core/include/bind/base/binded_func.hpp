@@ -26,6 +26,8 @@ namespace vind
         using SPtr = std::shared_ptr<BindedFunc> ;
 
         explicit BindedFunc() ;
+        explicit BindedFunc(const std::string& name) ;
+        explicit BindedFunc(std::string&& name) ;
         virtual ~BindedFunc() noexcept ;
 
         BindedFunc(BindedFunc&&) ;
@@ -33,7 +35,8 @@ namespace vind
         BindedFunc(const BindedFunc&)            = delete ;
         BindedFunc& operator=(const BindedFunc&) = delete ;
 
-        virtual const std::string name() const noexcept = 0 ;
+        const std::string& name() const noexcept ;
+        std::size_t id() const noexcept ;
 
         void process() const ;
         void process(NTypeLogger& parent_lgr) const ;

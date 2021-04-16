@@ -9,9 +9,9 @@
 namespace vind
 {
     //OpenNewCurWinWithHorizontalSplit
-    const std::string OpenNewCurWinWithHorizontalSplit::sname() noexcept {
-        return "open_new_current_window_with_hsplit" ;
-    }
+    OpenNewCurWinWithHorizontalSplit::OpenNewCurWinWithHorizontalSplit()
+    : BindedFuncCreator("open_new_current_window_with_hsplit")
+    {}
 
     void OpenNewCurWinWithHorizontalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
@@ -52,9 +52,9 @@ namespace vind
 
 
     //OpenNewCurWinWithVerticalSplit
-    const std::string OpenNewCurWinWithVerticalSplit::sname() noexcept {
-        return "open_new_current_window_with_vsplit" ;
-    }
+    OpenNewCurWinWithVerticalSplit::OpenNewCurWinWithVerticalSplit()
+    : BindedFuncCreator("open_new_current_window_with_vsplit")
+    {}
     void OpenNewCurWinWithVerticalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 

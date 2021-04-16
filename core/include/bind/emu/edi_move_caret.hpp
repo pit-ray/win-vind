@@ -14,7 +14,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 
@@ -36,7 +35,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 
@@ -58,7 +56,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 
@@ -80,7 +77,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 
@@ -103,7 +99,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 
@@ -125,7 +120,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 
@@ -148,7 +142,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 
@@ -170,7 +163,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         bool is_for_moving_caret() const noexcept override ;
 

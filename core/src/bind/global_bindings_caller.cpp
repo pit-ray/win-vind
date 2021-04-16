@@ -12,11 +12,13 @@
 
 #include "bind/logger_parser.hpp"
 #include "bind/mode/change_mode.hpp"
+#include "bind/func_finder.hpp"
 
 //internal linkage
 namespace
 {
     vind::NTypeLogger g_ntlgr{} ;
+    vind::FuncFinder g_funcfinder{} ;
     vind::LoggerParser::SPtr g_active_parser = nullptr ;
 }
 
@@ -27,6 +29,12 @@ namespace vind
         void initialize() {
             g_ntlgr.clear() ;
             g_active_parser = nullptr ;
+        }
+
+        void load_config() {
+            std::cout << "load_config\n" ;
+            funcfinder::load_global_bindings() ;
+            g_funcfinder.reconstruct_funcset() ;
         }
 
         void call_matched_func() {
@@ -46,7 +54,7 @@ namespace vind
                 return ;
             }
 
-            auto parser = keybind::find_parser(g_ntlgr.latest(), g_active_parser) ;
+            auto parser = g_funcfinder.find_parser(g_ntlgr.latest(), g_active_parser) ;
             g_active_parser = nullptr ;
 
             if(parser) {
@@ -57,16 +65,16 @@ namespace vind
                     g_active_parser->get_func()->process(g_ntlgr) ;
 
                     g_ntlgr.accept() ;
-                    keybind::reset_parsers() ;
+                    g_funcfinder.reset_parsers() ;
                 }
                 else if(parser->is_rejected_with_ready()) {
-                    keybind::undo_parsers(1) ;
+                    g_funcfinder.undo_parsers(1) ;
                     g_ntlgr.remove_from_back(1) ;
                 }
             }
             else {
                 g_ntlgr.ignore() ;
-                keybind::reset_parsers() ;
+                g_funcfinder.reset_parsers() ;
 
                 if(g_ntlgr.get_head_num() == 0) {
                     VirtualCmdLine::refresh() ;

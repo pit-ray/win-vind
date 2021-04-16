@@ -15,8 +15,6 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        static const std::string sname() noexcept ;
-
         explicit EdiNRemoveEOL() ;
         virtual ~EdiNRemoveEOL() noexcept ;
 

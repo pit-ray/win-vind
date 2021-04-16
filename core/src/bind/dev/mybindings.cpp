@@ -1,5 +1,6 @@
 #include "bind/dev/mybindings.hpp"
 
+#include "bind/base/binded_func_with_creator.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "io/mouse.hpp"
 #include "io/keybrd.hpp"
@@ -9,10 +10,9 @@
 
 namespace vind
 {
-    const std::string MyBinding::sname() noexcept {
-        return "my_binding" ; //Give the unique identifier.
-    }
-
+    MyBinding::MyBinding()
+    : BindedFuncCreator("my_binding") //Give the unique identifier.
+    {}
     void MyBinding::sprocess() {
         mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
 

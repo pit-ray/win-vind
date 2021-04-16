@@ -7,9 +7,9 @@
 namespace vind
 {
     //CloseCurrentWindow
-    const std::string CloseCurrentWindow::sname() noexcept {
-        return "close_current_window" ;
-    }
+    CloseCurrentWindow::CloseCurrentWindow()
+    : BindedFuncCreator("close_current_window")
+    {}
     void CloseCurrentWindow::sprocess() {
         keybrd::pushup(KEYCODE_LALT, KEYCODE_F4) ;
     }

@@ -13,9 +13,9 @@
 namespace vind
 {
     //SaveOpenedFile
-    const std::string SaveOpenedFile::sname() noexcept {
-        return "save_opened_file" ;
-    }
+    SaveOpenedFile::SaveOpenedFile()
+    : BindedFuncCreator("save_opened_file")
+    {}
     void SaveOpenedFile::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
@@ -40,9 +40,9 @@ namespace vind
 
 
     //OpenOtherFile
-    const std::string OpenOtherFile::sname() noexcept {
-        return "open_other_file" ;
-    }
+    OpenOtherFile::OpenOtherFile()
+    : BindedFuncCreator("open_other_file")
+    {}
     void OpenOtherFile::sprocess() {
         Change2Normal::sprocess(true) ;
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_O) ;

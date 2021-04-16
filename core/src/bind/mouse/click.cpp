@@ -10,9 +10,9 @@
 namespace vind
 {
     //ClickLeft
-    const std::string ClickLeft::sname() noexcept {
-        return "click_left" ;
-    }
+    ClickLeft::ClickLeft()
+    : BindedFuncCreator("click_left")
+    {}
     void ClickLeft::sprocess(unsigned int repeat_num) {
         using namespace mode ;
         if(get_global_mode() == Mode::Visual) {
@@ -34,9 +34,9 @@ namespace vind
 
 
     //ClickRight
-    const std::string ClickRight::sname() noexcept {
-        return "click_right" ;
-    }
+    ClickRight::ClickRight()
+    : BindedFuncCreator("click_right")
+    {}
     void ClickRight::sprocess(unsigned int repeat_num) {
         using namespace mode ;
         if(get_global_mode() == Mode::Visual) {

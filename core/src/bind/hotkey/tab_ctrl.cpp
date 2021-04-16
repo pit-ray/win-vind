@@ -14,9 +14,9 @@
 namespace vind
 {
     //Switch2LeftTab
-    const std::string Switch2LeftTab::sname() noexcept {
-        return "switch_to_left_tab" ;
-    }
+    Switch2LeftTab::Switch2LeftTab()
+    : BindedFuncCreator("switch_to_left_tab")
+    {}
     void Switch2LeftTab::sprocess(unsigned int repeat_num) {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
@@ -33,9 +33,9 @@ namespace vind
 
 
     //Switch2RightTab
-    const std::string Switch2RightTab::sname() noexcept {
-        return "switch_to_right_tab" ;
-    }
+    Switch2RightTab::Switch2RightTab()
+    : BindedFuncCreator("switch_to_right_tab")
+    {}
     void Switch2RightTab::sprocess(unsigned repeat_num) {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
@@ -51,9 +51,9 @@ namespace vind
     }
 
     //OpenNewTab
-    const std::string OpenNewTab::sname() noexcept {
-        return "open_new_tab" ;
-    }
+    OpenNewTab::OpenNewTab()
+    : BindedFuncCreator("open_new_tab")
+    {}
     void OpenNewTab::sprocess() {
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
     }
@@ -68,9 +68,9 @@ namespace vind
 
 
     //CloseCurrentTab
-    const std::string CloseCurrentTab::sname() noexcept {
-        return "close_current_tab" ;
-    }
+    CloseCurrentTab::CloseCurrentTab()
+    : BindedFuncCreator("close_current_tab")
+    {}
     void CloseCurrentTab::sprocess() {
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
 

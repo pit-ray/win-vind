@@ -9,9 +9,9 @@
 namespace vind
 {
     //MinimizeCurrentWindow
-    const std::string MinimizeCurrentWindow::sname() noexcept {
-        return "minimize_current_window" ;
-    }
+    MinimizeCurrentWindow::MinimizeCurrentWindow()
+    : BindedFuncCreator("minimize_current_window")
+    {}
     void MinimizeCurrentWindow::sprocess(unsigned int repeat_num) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
@@ -28,9 +28,9 @@ namespace vind
 
 
     //MaximizeCurrentWindow
-    const std::string MaximizeCurrentWindow::sname() noexcept {
-        return "maximize_current_window" ;
-    }
+    MaximizeCurrentWindow::MaximizeCurrentWindow()
+    : BindedFuncCreator("maximize_current_window")
+    {}
     void MaximizeCurrentWindow::sprocess(unsigned int repeat_num) {
         if(repeat_num == 1) {
             auto hwnd = GetForegroundWindow() ;

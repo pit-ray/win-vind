@@ -63,7 +63,6 @@ namespace vind
                 list.clear() ;
             }
 
-            easyclick::initialize() ;
         }
 
         void load_config() {
@@ -82,40 +81,5 @@ namespace vind
                 return nullptr ;
         }
 
-        const LoggerParser::SPtr find_parser(
-                const KeyLog& log,
-                const LoggerParser::SPtr& low_priority_parser,
-                mode::Mode mode) {
-            LoggerParser::SPtr ptr = nullptr ;
-            unsigned char mostnum = 0 ;
-
-            for(auto& parser : g_mode_parser_list[static_cast<std::size_t>(mode)]) {
-                auto num = parser->validate_if_match(log) ;
-                if(!parser->is_rejected() && mostnum < num && parser != low_priority_parser) {
-                    ptr = parser ;
-                    mostnum = num ;
-                }
-            }
-
-            if(ptr) {
-                return ptr ;
-            }
-            if(low_priority_parser && low_priority_parser->is_accepted()) {
-                return low_priority_parser ;
-            }
-            return nullptr ;
-        }
-
-        void undo_parsers(std::size_t n, mode::Mode mode) {
-            for(auto& parser : g_mode_parser_list[static_cast<std::size_t>(mode)]) {
-                parser->undo_state(n) ;
-            }
-        }
-
-        void reset_parsers(mode::Mode mode) {
-            for(auto& parser : g_mode_parser_list[static_cast<std::size_t>(mode)]) {
-                parser->reset_state() ;
-            }
-        }
     }
 }

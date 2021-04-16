@@ -49,9 +49,9 @@ namespace
 namespace vind
 {
     //SnapCurrentWindow2Left
-    const std::string SnapCurrentWindow2Left::sname() noexcept {
-        return "snap_current_window_to_left" ;
-    }
+    SnapCurrentWindow2Left::SnapCurrentWindow2Left()
+    : BindedFuncCreator("snap_current_window_to_left")
+    {}
 
     void SnapCurrentWindow2Left::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
@@ -78,9 +78,9 @@ namespace vind
 
 
     //SnapCurrentWindow2Right
-    const std::string SnapCurrentWindow2Right::sname() noexcept {
-        return "snap_current_window_to_right" ;
-    }
+    SnapCurrentWindow2Right::SnapCurrentWindow2Right()
+    : BindedFuncCreator("snap_current_window_to_right")
+    {}
     void SnapCurrentWindow2Right::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left + screenmetrics::width(mrect) / 2 ;
@@ -106,9 +106,9 @@ namespace vind
 
 
     //SnapCurrentWindow2Top
-    const std::string SnapCurrentWindow2Top::sname() noexcept {
-        return "snap_current_window_to_top" ;
-    }
+    SnapCurrentWindow2Top::SnapCurrentWindow2Top()
+    : BindedFuncCreator("snap_current_window_to_top")
+    {}
     void SnapCurrentWindow2Top::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
@@ -134,9 +134,9 @@ namespace vind
 
 
     //SnapCurrentWindow2Bottom
-    const std::string SnapCurrentWindow2Bottom::sname() noexcept {
-        return "snap_current_window_to_bottom" ;
-    }
+    SnapCurrentWindow2Bottom::SnapCurrentWindow2Bottom()
+    : BindedFuncCreator("snap_current_window_to_bottom")
+    {}
     void SnapCurrentWindow2Bottom::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;

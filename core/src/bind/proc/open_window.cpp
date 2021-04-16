@@ -12,9 +12,9 @@
 namespace vind
 {
     //OpenNewCurrentWindow
-    const std::string OpenNewCurrentWindow::sname() noexcept {
-        return "open_new_current_window" ;
-    }
+    OpenNewCurrentWindow::OpenNewCurrentWindow()
+    : BindedFuncCreator("open_new_current_window")
+    {}
     void OpenNewCurrentWindow::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {

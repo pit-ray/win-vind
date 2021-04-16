@@ -7,9 +7,9 @@
 namespace vind
 {
     //Move2NextPage
-    const std::string Move2NextPage::sname() noexcept {
-        return "move_to_next_page" ;
-    }
+    Move2NextPage::Move2NextPage()
+    : BindedFuncCreator("move_to_next_page")
+    {}
     void Move2NextPage::sprocess(unsigned int repeat_num) {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LALT, KEYCODE_RIGHT) ;
@@ -26,9 +26,9 @@ namespace vind
 
 
     //Move2PrevPage
-    const std::string Move2PrevPage::sname() noexcept {
-        return "move_to_prev_page" ;
-    }
+    Move2PrevPage::Move2PrevPage()
+    : BindedFuncCreator("move_to_prev_page")
+    {}
     void Move2PrevPage::sprocess(unsigned int repeat_num) {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LALT, KEYCODE_LEFT) ;

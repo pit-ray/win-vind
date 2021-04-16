@@ -23,7 +23,6 @@ namespace vind
         void sprocess() const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         void load_config() override ;
     } ;

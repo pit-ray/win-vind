@@ -10,31 +10,31 @@ namespace vind
     }
 
     struct EasyClickLeft : public BindedFuncCreator<EasyClickLeft> {
+        explicit EasyClickLeft() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
     struct EasyClickRight : public BindedFuncCreator<EasyClickRight> {
+        explicit EasyClickRight() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
     struct EasyClickMid : public BindedFuncCreator<EasyClickMid> {
+        explicit EasyClickMid() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
     struct EasyClickHover : public BindedFuncCreator<EasyClickHover> {
+        explicit EasyClickHover() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 }
 

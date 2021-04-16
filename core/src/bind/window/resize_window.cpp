@@ -96,9 +96,9 @@ namespace
 namespace vind
 {
     //ResizeWindowWidth
-    const std::string ResizeWindowWidth::sname() noexcept {
-        return "resize_window_width" ;
-    }
+    ResizeWindowWidth::ResizeWindowWidth()
+    : BindedFuncCreator("resize_window_width")
+    {}
     void ResizeWindowWidth::sprocess(long width) {
         if(width <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
@@ -117,9 +117,9 @@ namespace vind
 
 
     //IncreaseWindowWidth
-    const std::string IncreaseWindowWidth::sname() noexcept {
-        return "increase_window_width" ;
-    }
+    IncreaseWindowWidth::IncreaseWindowWidth()
+    : BindedFuncCreator("increase_window_width")
+    {}
     void IncreaseWindowWidth::sprocess(long delta) {
         if(delta <= 0) return ;
 
@@ -138,9 +138,9 @@ namespace vind
 
 
     //DecreaseWindowWidth
-    const std::string DecreaseWindowWidth::sname() noexcept {
-        return "decrease_window_width" ;
-    }
+    DecreaseWindowWidth::DecreaseWindowWidth()
+    : BindedFuncCreator("decrease_window_width")
+    {}
     void DecreaseWindowWidth::sprocess(long delta)  {
         if(delta <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
@@ -166,9 +166,9 @@ namespace vind
 
 
     //ResizeWindowHeight
-    const std::string ResizeWindowHeight::sname() noexcept {
-        return "resize_window_height" ;
-    }
+    ResizeWindowHeight::ResizeWindowHeight()
+    : BindedFuncCreator("resize_window_height")
+    {}
     void ResizeWindowHeight::sprocess(long height) {
         if(height == 0) return ;
         windowutil::ForegroundInfo fginfo ;
@@ -187,9 +187,9 @@ namespace vind
 
 
     //IncreaseWindowHeight
-    const std::string IncreaseWindowHeight::sname() noexcept {
-        return "increase_window_height" ;
-    }
+    IncreaseWindowHeight::IncreaseWindowHeight()
+    : BindedFuncCreator("increase_window_height")
+    {}
     void IncreaseWindowHeight::sprocess(long delta) {
         if(delta <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
@@ -208,9 +208,9 @@ namespace vind
 
 
     //DecreaseWindowHeight
-    const std::string DecreaseWindowHeight::sname() noexcept {
-        return "decrease_window_height" ;
-    }
+    DecreaseWindowHeight::DecreaseWindowHeight()
+    : BindedFuncCreator("decrease_window_height")
+    {}
     void DecreaseWindowHeight::sprocess(long delta) {
         if(delta <= 0) return ;
 

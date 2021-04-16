@@ -6,42 +6,42 @@
 namespace vind
 {
     struct CBCopy : public BindedFuncCreator<CBCopy> {
+        explicit CBCopy() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
 
     struct CBPaste : public BindedFuncCreator<CBPaste> {
+        explicit CBPaste() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
 
     struct CBCut : public BindedFuncCreator<CBCut> {
+        explicit CBCut() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
 
     struct CBDelete : public BindedFuncCreator<CBDelete> {
+        explicit CBDelete() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
 
     struct CBBackSpace : public BindedFuncCreator<CBBackSpace> {
+        explicit CBBackSpace() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 }
 #endif

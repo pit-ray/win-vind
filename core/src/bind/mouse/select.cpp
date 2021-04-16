@@ -9,9 +9,9 @@
 namespace vind
 {
     //SelectAll
-    const std::string SelectAll::sname() noexcept {
-        return "select_all" ;
-    }
+    SelectAll::SelectAll()
+    : BindedFuncCreator("select_all")
+    {}
 
     void SelectAll::sprocess() {
         mouse::click(KEYCODE_MOUSE_LEFT) ;
@@ -28,9 +28,9 @@ namespace vind
 
 
     //ForwardUINavigation
-    const std::string ForwardUINavigation::sname() noexcept {
-        return "forward_ui_navigation" ;
-    }
+    ForwardUINavigation::ForwardUINavigation()
+    : BindedFuncCreator("forward_ui_navigation")
+    {}
     void ForwardUINavigation::sprocess(unsigned int repeat_num) {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_TAB) ;
@@ -47,9 +47,9 @@ namespace vind
 
 
     //BackwardUINavigation
-    const std::string BackwardUINavigation::sname() noexcept {
-        return "backward_ui_navigation" ;
-    }
+    BackwardUINavigation::BackwardUINavigation()
+    : BindedFuncCreator("backward_ui_navigation")
+    {}
     void BackwardUINavigation::sprocess(unsigned int repeat_num) {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
@@ -66,9 +66,9 @@ namespace vind
 
 
     //DecideFocusedUIObject
-    const std::string DecideFocusedUIObject::sname() noexcept {
-        return "decide_focused_ui_object" ;
-    }
+    DecideFocusedUIObject::DecideFocusedUIObject()
+    : BindedFuncCreator("decide_focused_ui_object")
+    {}
     void DecideFocusedUIObject::sprocess() {
         keybrd::pushup(KEYCODE_SPACE) ;
     }

@@ -69,16 +69,14 @@ namespace vind
     } ;
 
     MoveLeft::MoveLeft()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("move_left"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     MoveLeft::~MoveLeft()                     = default ;
     MoveLeft::MoveLeft(MoveLeft&&)            = default ;
     MoveLeft& MoveLeft::operator=(MoveLeft&&) = default ;
 
-    const std::string MoveLeft::sname() noexcept {
-        return "move_left" ;
-    }
     void MoveLeft::sprocess(int delta) const {
         mouse::move_cursor(-delta, 0) ;
     }
@@ -99,16 +97,14 @@ namespace vind
     } ;
 
     MoveRight::MoveRight()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("move_right"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     MoveRight::~MoveRight()                      = default ;
     MoveRight::MoveRight(MoveRight&&)            = default ;
     MoveRight& MoveRight::operator=(MoveRight&&) = default ;
 
-    const std::string MoveRight::sname() noexcept {
-        return "move_right" ;
-    }
     void MoveRight::sprocess(int delta) const {
         mouse::move_cursor(delta, 0) ;
     }
@@ -129,16 +125,14 @@ namespace vind
     } ;
 
     MoveUp::MoveUp()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("move_up"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     MoveUp::~MoveUp()                   = default ;
     MoveUp::MoveUp(MoveUp&&)            = default ;
     MoveUp& MoveUp::operator=(MoveUp&&) = default ;
 
-    const std::string MoveUp::sname() noexcept {
-        return "move_up" ;
-    }
     void MoveUp::sprocess(int delta) const {
         mouse::move_cursor(0, -delta) ;
     }
@@ -159,16 +153,14 @@ namespace vind
     } ;
 
     MoveDown::MoveDown()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("move_down"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     MoveDown::~MoveDown()                     = default ;
     MoveDown::MoveDown(MoveDown&&)            = default ;
     MoveDown& MoveDown::operator=(MoveDown&&) = default ;
 
-    const std::string MoveDown::sname() noexcept {
-        return "move_down" ;
-    }
     void MoveDown::sprocess(int delta) const {
         mouse::move_cursor(0, delta) ;
     }

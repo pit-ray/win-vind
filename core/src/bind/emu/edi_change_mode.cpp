@@ -17,9 +17,9 @@
 namespace vind
 {
     //Change2EdiNormal
-    const std::string Change2EdiNormal::sname() noexcept {
-        return "change_to_edi_normal" ;
-    }
+    Change2EdiNormal::Change2EdiNormal()
+    : BindedFuncCreator("change_to_edi_normal")
+    {}
     void Change2EdiNormal::sprocess(bool vclmodeout) {
         if(!mode::is_editor())
             mouse::click(KEYCODE_MOUSE_LEFT) ;
@@ -49,9 +49,9 @@ namespace vind
 
 
     //Change2EdiInsert
-    const std::string Change2EdiInsert::sname() noexcept {
-        return "change_to_edi_insert" ;
-    }
+    Change2EdiInsert::Change2EdiInsert()
+    : BindedFuncCreator("change_to_edi_insert")
+    {}
 
     void Change2EdiInsert::sprocess(bool vclmodeout) {
         using namespace mode ;
@@ -72,9 +72,9 @@ namespace vind
 
 
     //Change2EdiBOLInsert
-    const std::string Change2EdiBOLInsert::sname() noexcept {
-        return "change_to_edi_BOLinsert" ;
-    }
+    Change2EdiBOLInsert::Change2EdiBOLInsert()
+    : BindedFuncCreator("change_to_edi_BOLinsert")
+    {}
     void Change2EdiBOLInsert::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_HOME) ;
         Change2EdiInsert::sprocess(vclmodeout) ;
@@ -90,9 +90,9 @@ namespace vind
 
 
     //Change2EdiBkInsert
-    const std::string Change2EdiBkInsert::sname() noexcept {
-        return "change_to_edi_bkinsert" ;
-    }
+    Change2EdiBkInsert::Change2EdiBkInsert()
+    : BindedFuncCreator("change_to_edi_bkinsert")
+    {}
     void Change2EdiBkInsert::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_RIGHT) ;
         Change2EdiInsert::sprocess(vclmodeout) ;
@@ -108,9 +108,9 @@ namespace vind
 
 
     //Change2EdiEOLInsert
-    const std::string Change2EdiEOLInsert::sname() noexcept {
-        return "change_to_edi_EOLinsert" ;
-    }
+    Change2EdiEOLInsert::Change2EdiEOLInsert()
+    : BindedFuncCreator("change_to_edi_EOLinsert")
+    {}
     void Change2EdiEOLInsert::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_END) ;
         Change2EdiInsert::sprocess(vclmodeout) ;
@@ -126,9 +126,9 @@ namespace vind
 
 
     //Change2EdiNlInsertBelow
-    const std::string Change2EdiNlInsertBelow::sname() noexcept {
-        return "change_to_edi_nlinsert_below" ;
-    }
+    Change2EdiNlInsertBelow::Change2EdiNlInsertBelow()
+    : BindedFuncCreator("change_to_edi_nlinsert_below")
+    {}
     void Change2EdiNlInsertBelow::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_END) ;
         keybrd::pushup(KEYCODE_ENTER) ;
@@ -145,9 +145,9 @@ namespace vind
 
 
     //Change2EdiNlInsertAbove
-    const std::string Change2EdiNlInsertAbove::sname() noexcept {
-        return "change_to_edi_nlinsert_above" ;
-    }
+    Change2EdiNlInsertAbove::Change2EdiNlInsertAbove()
+    : BindedFuncCreator("change_to_edi_nlinsert_above")
+    {}
     void Change2EdiNlInsertAbove::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_HOME) ;
         keybrd::pushup(KEYCODE_ENTER) ;
@@ -165,9 +165,9 @@ namespace vind
 
 
     //Change2EdiVisual
-    const std::string Change2EdiVisual::sname() noexcept {
-        return "change_to_edi_visual" ;
-    }
+    Change2EdiVisual::Change2EdiVisual()
+    : BindedFuncCreator("change_to_edi_visual")
+    {}
     void Change2EdiVisual::sprocess(bool vclmodeout) {
         using namespace mode ;
 
@@ -187,9 +187,9 @@ namespace vind
 
 
     //Change2EdiLineVisual
-    const std::string Change2EdiLineVisual::sname() noexcept {
-        return "change_to_edi_line_visual" ;
-    }
+    Change2EdiLineVisual::Change2EdiLineVisual()
+    : BindedFuncCreator("change_to_edi_line_visual")
+    {}
     void Change2EdiLineVisual::sprocess(bool vclmodeout) {
         using namespace mode ;
 

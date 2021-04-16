@@ -6,40 +6,40 @@
 namespace vind
 {
     struct Change2Normal : public BindedFuncCreator<Change2Normal> {
+        explicit Change2Normal() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
 
     struct Change2Insert : public BindedFuncCreator<Change2Insert> {
+        explicit Change2Insert() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
 
     struct Change2Visual : public BindedFuncCreator<Change2Visual> {
+        explicit Change2Visual() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
     struct MyConfigWindowNormal : public BindedFuncCreator<MyConfigWindowNormal> {
+        explicit MyConfigWindowNormal() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
     struct MyConfigWindowInsert : public BindedFuncCreator<MyConfigWindowInsert> {
+        explicit MyConfigWindowInsert() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 }
 

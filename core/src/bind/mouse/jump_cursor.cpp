@@ -10,9 +10,9 @@
 namespace vind
 {
     //Jump2Left
-    const std::string Jump2Left::sname() noexcept {
-        return "jump_to_left" ;
-    }
+    Jump2Left::Jump2Left()
+    : BindedFuncCreator("jump_to_left")
+    {}
     void Jump2Left::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
@@ -29,9 +29,9 @@ namespace vind
 
 
     //Jump2Right
-    const std::string Jump2Right::sname() noexcept {
-        return "jump_to_right" ;
-    }
+    Jump2Right::Jump2Right()
+    : BindedFuncCreator("jump_to_right")
+    {}
     void Jump2Right::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
@@ -52,9 +52,9 @@ namespace vind
 
 
     //Jump2Top
-    const std::string Jump2Top::sname() noexcept {
-        return "jump_to_top" ;
-    }
+    Jump2Top::Jump2Top()
+    : BindedFuncCreator("jump_to_top")
+    {}
     void Jump2Top::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
@@ -71,9 +71,9 @@ namespace vind
 
 
     //Jump2Bottom
-    const std::string Jump2Bottom::sname() noexcept {
-        return "jump_to_bottom" ;
-    }
+    Jump2Bottom::Jump2Bottom()
+    : BindedFuncCreator("jump_to_bottom")
+    {}
     void Jump2Bottom::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
@@ -93,9 +93,9 @@ namespace vind
 
 
     //Jump2XCenter
-    const std::string Jump2XCenter::sname() noexcept {
-        return "jump_to_xcenter" ;
-    }
+    Jump2XCenter::Jump2XCenter()
+    : BindedFuncCreator("jump_to_xcenter")
+    {}
     void Jump2XCenter::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
@@ -115,9 +115,9 @@ namespace vind
 
 
     //Jump2YCenter
-    const std::string Jump2YCenter::sname() noexcept {
-        return "jump_to_ycenter" ;
-    }
+    Jump2YCenter::Jump2YCenter()
+    : BindedFuncCreator("jump_to_ycenter")
+    {}
     void Jump2YCenter::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;

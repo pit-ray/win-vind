@@ -28,16 +28,13 @@ namespace vind
     } ;
 
     ScrollUp::ScrollUp()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_up"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollUp::~ScrollUp() noexcept            = default ;
     ScrollUp::ScrollUp(ScrollUp&&)            = default ;
     ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
-
-    const std::string ScrollUp::sname() noexcept {
-        return "scroll_up" ;
-    }
 
     void ScrollUp::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(iparams::get_i("yscroll_speed") * repeat_num) ;
@@ -62,16 +59,13 @@ namespace vind
     } ;
 
     ScrollDown::ScrollDown()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_down"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollDown::~ScrollDown() noexcept              = default ;
     ScrollDown::ScrollDown(ScrollDown&&)            = default ;
     ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
-
-    const std::string ScrollDown::sname() noexcept {
-        return "scroll_down" ;
-    }
 
     void ScrollDown::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-iparams::get_i("yscroll_speed") * repeat_num) ;
@@ -96,16 +90,13 @@ namespace vind
     } ;
 
     ScrollMidUp::ScrollMidUp()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_mid_up"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollMidUp::~ScrollMidUp() noexcept               = default ;
     ScrollMidUp::ScrollMidUp(ScrollMidUp&&)            = default ;
     ScrollMidUp& ScrollMidUp::operator=(ScrollMidUp&&) = default ;
-
-    const std::string ScrollMidUp::sname() noexcept {
-        return "scroll_mid_up" ;
-    }
 
     void ScrollMidUp::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * 0.5f * repeat_num * \
@@ -131,16 +122,13 @@ namespace vind
     } ;
 
     ScrollMidDown::ScrollMidDown()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_mid_down"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollMidDown::~ScrollMidDown() noexcept                    = default ;
     ScrollMidDown::ScrollMidDown(ScrollMidDown&&)               = default ;
     ScrollMidDown& ScrollMidDown::operator=(ScrollMidDown&&)    = default ;
-
-    const std::string ScrollMidDown::sname() noexcept {
-        return "scroll_mid_down" ;
-    }
 
     void ScrollMidDown::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-0.5f * MAX_Y_POS * repeat_num * \
@@ -166,16 +154,13 @@ namespace vind
     } ;
 
     ScrollPageUp::ScrollPageUp()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_page_up"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollPageUp::~ScrollPageUp() noexcept                  = default ;
     ScrollPageUp::ScrollPageUp(ScrollPageUp&&)              = default ;
     ScrollPageUp& ScrollPageUp::operator=(ScrollPageUp&&)   = default ;
-
-    const std::string ScrollPageUp::sname() noexcept {
-        return "scroll_page_up" ;
-    }
 
     void ScrollPageUp::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * repeat_num * \
@@ -201,16 +186,13 @@ namespace vind
     } ;
 
     ScrollPageDown::ScrollPageDown()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_page_down"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollPageDown::~ScrollPageDown() noexcept                  = default ;
     ScrollPageDown::ScrollPageDown(ScrollPageDown&&)            = default ;
     ScrollPageDown& ScrollPageDown::operator=(ScrollPageDown&&) = default ;
-
-    const std::string ScrollPageDown::sname() noexcept {
-        return "scroll_page_down" ;
-    }
 
     void ScrollPageDown::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-MAX_Y_POS * repeat_num * \
@@ -237,16 +219,13 @@ namespace vind
     } ;
 
     ScrollLeft::ScrollLeft()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_left"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollLeft::~ScrollLeft() noexcept              = default ;
     ScrollLeft::ScrollLeft(ScrollLeft&&)            = default ;
     ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
-
-    const std::string ScrollLeft::sname() noexcept {
-        return "scroll_left" ;
-    }
 
     void ScrollLeft::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(-iparams::get_i("xscroll_speed") * repeat_num) ;
@@ -271,16 +250,13 @@ namespace vind
     } ;
 
     ScrollRight::ScrollRight()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_right"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollRight::~ScrollRight() noexcept                = default ;
     ScrollRight::ScrollRight(ScrollRight&&)             = default ;
     ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
-
-    const std::string ScrollRight::sname() noexcept {
-        return "scroll_right" ;
-    }
 
     void ScrollRight::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(iparams::get_f("xscroll_speed") * repeat_num) ;
@@ -305,16 +281,13 @@ namespace vind
     } ;
 
     ScrollMidLeft::ScrollMidLeft()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_mid_left"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollMidLeft::~ScrollMidLeft() noexcept                    = default ;
     ScrollMidLeft::ScrollMidLeft(ScrollMidLeft&&)               = default ;
     ScrollMidLeft& ScrollMidLeft::operator=(ScrollMidLeft&&)    = default ;
-
-    const std::string ScrollMidLeft::sname() noexcept {
-        return "scroll_mid_left" ;
-    }
 
     void ScrollMidLeft::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(-0.5f * MAX_X_POS * repeat_num * \
@@ -340,16 +313,13 @@ namespace vind
     } ;
 
     ScrollMidRight::ScrollMidRight()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("scroll_mid_right"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     ScrollMidRight::~ScrollMidRight() noexcept                  = default ;
     ScrollMidRight::ScrollMidRight(ScrollMidRight&&)            = default ;
     ScrollMidRight& ScrollMidRight::operator=(ScrollMidRight&&) = default ;
-
-    const std::string ScrollMidRight::sname() noexcept {
-        return "scroll_mid_right" ;
-    }
 
     void ScrollMidRight::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(MAX_X_POS * 0.5f * repeat_num * \

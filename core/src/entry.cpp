@@ -33,6 +33,7 @@
 #include "bind/bind.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/base/mode.hpp"
+#include "bind/func_finder.hpp"
 #include "bind/global_bindings_caller.hpp"
 
 #include "coreio/i_params.hpp"
@@ -44,6 +45,7 @@
 #include "coreio/path.hpp"
 #include "time/interval_timer.hpp"
 #include "util/winwrap.hpp"
+#include "bind/uia/easy_click.hpp"
 
 #define MEMORY_MAPPED_FILE_NAME ("qvCI980BTny1ZSFfY76sO71w7MtLTzuPVd6RQs47_p7Kn4SJZ7cnaH8QwPS901VFd2N5WuxECvx7N3hP7caWK44ZSq6")
 #define MEMORY_MAPPED_FILE_SIZE (1024)
@@ -140,7 +142,7 @@ namespace vind
             //If you use debugger, must be disable this line not to be slow.
             keyabsorber::install_hook() ;
 
-            keybind::initialize() ;
+            easyclick::initialize() ;
             gbindcaller::initialize() ;
 
             load_config() ;
@@ -155,7 +157,7 @@ namespace vind
             cm.at(iparams::get_s("initial_mode"))->process() ;
 
             if(!func_name.empty()) {
-                auto func = keybind::find_func_byname(func_name) ;
+                auto func = funcfinder::find_func_byname(func_name) ;
                 func->process() ;
             }
 
@@ -174,8 +176,9 @@ namespace vind
     bool load_config() noexcept {
         try {
             iparams::load_config() ;
-            keybind::load_config() ;
+
             optloader::load_config() ;
+            gbindcaller::load_config() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -217,7 +220,7 @@ namespace vind
                 if(mmf.get() != NULL) {
                     std::string name(reinterpret_cast<const char*>(mmf.get())) ;
                     if(!name.empty()) {
-                        if(auto func = keybind::find_func_byname(name)) {
+                        if(auto func = funcfinder::find_func_byname(name)) {
                             func->process() ;
                         }
                         else {

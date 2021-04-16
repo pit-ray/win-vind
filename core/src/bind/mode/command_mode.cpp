@@ -104,16 +104,13 @@ namespace vind
     } ;
 
     CommandMode::CommandMode()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("command_mode"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     CommandMode::~CommandMode() noexcept               = default ;
     CommandMode::CommandMode(CommandMode&&)            = default ;
     CommandMode& CommandMode::operator=(CommandMode&&) = default ;
-
-    const std::string CommandMode::sname() noexcept {
-        return "command_mode" ;
-    }
 
     void CommandMode::sprocess() const {
         VirtualCmdLine::reset() ;

@@ -37,15 +37,13 @@ namespace vind
     } ;
 
     Jump2Any::Jump2Any()
-    :pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("jump_to_any"),
+      pimpl(std::make_unique<Impl>())
     {}
     Jump2Any::~Jump2Any() noexcept            = default ;
     Jump2Any::Jump2Any(Jump2Any&&)            = default ;
     Jump2Any& Jump2Any::operator=(Jump2Any&&) = default ;
 
-    const std::string Jump2Any::sname() noexcept {
-        return "jump_to_any" ;
-    }
     void Jump2Any::sprocess() const {
         //reset key state (binded key)
         keyabsorber::InstantKeyAbsorber ika ;

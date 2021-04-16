@@ -14,7 +14,6 @@ namespace vind
         void sprocess(int delta=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit MoveLeft() ;
         virtual ~MoveLeft() noexcept ;
@@ -35,7 +34,6 @@ namespace vind
         void sprocess(int delta=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit MoveRight() ;
         virtual ~MoveRight() noexcept ;
@@ -56,7 +54,6 @@ namespace vind
         void sprocess(int delta=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit MoveUp() ;
         virtual ~MoveUp() noexcept ;
@@ -77,7 +74,6 @@ namespace vind
         void sprocess(int delta=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit MoveDown() ;
         virtual ~MoveDown() noexcept ;

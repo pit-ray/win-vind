@@ -72,9 +72,9 @@ namespace
 namespace vind
 {
     //EdiNRplaceChar
-    const std::string EdiNReplaceChar::sname() noexcept {
-        return "edi_n_replace_char" ;
-    }
+    EdiNReplaceChar::EdiNReplaceChar()
+    : BindedFuncCreator("edi_n_replace_char")
+    {}
     void EdiNReplaceChar::sprocess(unsigned int repeat_num) {
         loop_for_keymatching([repeat_num](const auto& keycodes, const bool shifted=false) {
 
@@ -102,9 +102,9 @@ namespace vind
 
 
     //EdiNReplaceSequence
-    const std::string EdiNReplaceSequence::sname() noexcept {
-        return "edi_n_replace_sequence" ;
-    }
+    EdiNReplaceSequence::EdiNReplaceSequence()
+    : BindedFuncCreator("edi_n_replace_sequence")
+    {}
     void EdiNReplaceSequence::sprocess(unsigned int repeat_num) {
         using keybrd::pushup ;
 
@@ -152,9 +152,9 @@ namespace vind
 
 
     //EdiSwitchCharCase
-    const std::string EdiSwitchCharCase::sname() noexcept {
-        return "edi_switch_char_case" ;
-    }
+    EdiSwitchCharCase::EdiSwitchCharCase()
+    : BindedFuncCreator("edi_switch_char_case")
+    {}
     void EdiSwitchCharCase::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([&repeat_num] {
                 for(unsigned int i = 0 ; i < repeat_num ; i ++) {

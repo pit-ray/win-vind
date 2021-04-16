@@ -6,17 +6,17 @@
 namespace vind
 {
     struct OpenNewCurWinWithHorizontalSplit : public BindedFuncCreator<OpenNewCurWinWithHorizontalSplit> {
+        explicit OpenNewCurWinWithHorizontalSplit() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 
     struct OpenNewCurWinWithVerticalSplit : public BindedFuncCreator<OpenNewCurWinWithVerticalSplit> {
+        explicit OpenNewCurWinWithVerticalSplit() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
-        static const std::string sname() noexcept ;
     } ;
 }
 

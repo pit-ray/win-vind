@@ -4,13 +4,13 @@
 #include <vector>
 #include <string>
 
+#include "bind/bindings_def.hpp"
+#include "bind/base/mode.hpp"
+
 namespace vind
 {
     namespace bindparser
     {
-        using KeySet  = std::vector<unsigned char> ;
-        using Command = std::vector<KeySet> ;
-
         //
         // It parses a ascii, which consist of a character, as keyset class.
         // KeySet: std::vector<unsigned char>
@@ -56,8 +56,18 @@ namespace vind
         //
         const Command parse_string_binding(std::string cmdstr) ;
 
+
+        //
+        // It parses a string mode with brackets.
+        // Ex)
+        //      <guin>  ->  Mode::Normal
+        //
+        // If Failed, return Mode::None.
+        //
+        mode::Mode parse_string_modecode(std::string modestr) ;
+
         namespace debug {
-            std::string print(const Command& list) ;
+            std::string print(const CommandList& list) ;
         }
     }
 }

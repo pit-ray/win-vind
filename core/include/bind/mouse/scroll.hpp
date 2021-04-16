@@ -13,7 +13,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollUp() ;
         virtual ~ScrollUp() noexcept ;
@@ -34,7 +33,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollDown() ;
         virtual ~ScrollDown() noexcept ;
@@ -55,7 +53,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollMidUp() ;
         virtual ~ScrollMidUp() noexcept ;
@@ -76,7 +73,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollMidDown() ;
         virtual ~ScrollMidDown() noexcept ;
@@ -97,7 +93,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollPageUp() ;
         virtual ~ScrollPageUp() noexcept ;
@@ -119,7 +114,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollPageDown() ;
         virtual ~ScrollPageDown() noexcept ;
@@ -140,7 +134,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollLeft() ;
         virtual ~ScrollLeft() noexcept ;
@@ -161,7 +154,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollRight() ;
         virtual ~ScrollRight() noexcept ;
@@ -182,7 +174,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollMidLeft() ;
         virtual ~ScrollMidLeft() noexcept ;
@@ -203,7 +194,6 @@ namespace vind
         void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
-        static const std::string sname() noexcept ;
 
         explicit ScrollMidRight() ;
         virtual ~ScrollMidRight() noexcept ;

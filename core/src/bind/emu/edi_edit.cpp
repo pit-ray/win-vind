@@ -85,8 +85,9 @@ namespace
 
         while(vind::update_background()) {
             auto result = lgr.logging_state() ;
-            if(parent_lgr) parent_lgr->logging_state() ;
-
+            if(parent_lgr) {
+                parent_lgr->logging_state() ;
+            }
             if(NTYPE_EMPTY(result)) {
                 continue ;
             }
@@ -94,15 +95,7 @@ namespace
                 VirtualCmdLine::cout(std::to_string(lgr.get_head_num())) ;
                 continue ;
             }
-
-            parent_lgr->update() ;
-
-            if(keybind::is_invalid_log(lgr.latest(),
-                        keybind::InvalidPolicy::UnbindedSystemKey)) {
-                parent_lgr->remove_from_back(1) ;
-                lgr.remove_from_back(1) ;
-                continue ;
-            }
+            /*
 
             //The parent logger is stronger than the child logger.
             //For example, the child BindedFunc calling this function is binded with 'c{motion}'
@@ -114,6 +107,9 @@ namespace
                     return false ;
                 }
             }
+            if(parent_lgr) {
+            }
+
 
             if(auto func = keybind::find_func(lgr, nullptr, true,
                         mode::Mode::EdiLineVisual)) {
@@ -128,6 +124,7 @@ namespace
             else {
                 return false ;
             }
+            */
         }
 
         return false ;
@@ -138,9 +135,9 @@ namespace
 namespace vind
 {
     //EdiCopyHighlightText (EdiVisual only)
-    const std::string EdiCopyHighlightText::sname() noexcept {
-        return "edi_copy_highlight_text" ;
-    }
+    EdiCopyHighlightText::EdiCopyHighlightText()
+    : BindedFuncCreator("edi_copy_highlight_text")
+    {}
     void EdiCopyHighlightText::sprocess() {
         using namespace mode ;
 
@@ -165,9 +162,9 @@ namespace vind
 
 
     //EdiNCopyLine (EdiNormal only)
-    const std::string EdiNCopyLine::sname() noexcept {
-        return "edi_n_copy_line" ;
-    }
+    EdiNCopyLine::EdiNCopyLine()
+    : BindedFuncCreator("edi_n_copy_line")
+    {}
     void EdiNCopyLine::sprocess(
             unsigned int repeat_num,
             const textanalyze::SelRes* const exres) {
@@ -198,9 +195,9 @@ namespace vind
 
 
     //EdiCopyMotion
-    const std::string EdiCopyMotion::sname() noexcept {
-        return "edi_copy_motion" ;
-    }
+    EdiCopyMotion::EdiCopyMotion()
+    : BindedFuncCreator("edi_copy_motion")
+    {}
     void EdiCopyMotion::sprocess(bool repeat_num) {
         if(select_by_motion(repeat_num, nullptr)) {
             EdiCopyHighlightText::sprocess() ;
@@ -226,16 +223,14 @@ namespace vind
     } ;
 
     EdiNPasteAfter::EdiNPasteAfter()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_paste_after"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNPasteAfter::~EdiNPasteAfter() noexcept                  = default ;
     EdiNPasteAfter::EdiNPasteAfter(EdiNPasteAfter&&)            = default ;
     EdiNPasteAfter& EdiNPasteAfter::operator=(EdiNPasteAfter&&) = default ;
 
-    const std::string EdiNPasteAfter::sname() noexcept {
-        return "edi_n_paste_after" ;
-    }
     void EdiNPasteAfter::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
         if(g_rgtype == RegisteredType::Chars) {
@@ -272,16 +267,14 @@ namespace vind
     } ;
 
     EdiNPasteBefore::EdiNPasteBefore()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_paste_before"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNPasteBefore::~EdiNPasteBefore() noexcept                   = default ;
     EdiNPasteBefore::EdiNPasteBefore(EdiNPasteBefore&&)            = default ;
     EdiNPasteBefore& EdiNPasteBefore::operator=(EdiNPasteBefore&&) = default ;
 
-    const std::string EdiNPasteBefore::sname() noexcept {
-        return "edi_n_paste_before" ;
-    }
     void EdiNPasteBefore::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
         if(g_rgtype == RegisteredType::Chars) {
@@ -313,9 +306,9 @@ namespace vind
 
 
     //EdiDeleteHighlightText (Visual only)
-    const std::string EdiDeleteHighlightText::sname() noexcept {
-        return "edi_delete_highlight_text" ;
-    }
+    EdiDeleteHighlightText::EdiDeleteHighlightText()
+    : BindedFuncCreator("edi_delete_highlight_text")
+    {}
     void EdiDeleteHighlightText::sprocess() {
         using namespace mode ;
         using keybrd::pushup ;
@@ -375,16 +368,14 @@ namespace vind
     } ;
 
     EdiNDeleteLine::EdiNDeleteLine()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_delete_line"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNDeleteLine::~EdiNDeleteLine() noexcept                  = default ;
     EdiNDeleteLine::EdiNDeleteLine(EdiNDeleteLine&&)            = default ;
     EdiNDeleteLine& EdiNDeleteLine::operator=(EdiNDeleteLine&&) = default ;
 
-    const std::string EdiNDeleteLine::sname() noexcept {
-        return "edi_n_delete_line" ;
-    }
     void EdiNDeleteLine::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
         pushup(KEYCODE_HOME) ;
@@ -422,16 +413,14 @@ namespace vind
     } ;
 
     EdiNDeleteLineUntilEOL::EdiNDeleteLineUntilEOL()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_delete_line_until_EOL"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNDeleteLineUntilEOL::~EdiNDeleteLineUntilEOL() noexcept                          = default ;
     EdiNDeleteLineUntilEOL::EdiNDeleteLineUntilEOL(EdiNDeleteLineUntilEOL&&)            = default ;
     EdiNDeleteLineUntilEOL& EdiNDeleteLineUntilEOL::operator=(EdiNDeleteLineUntilEOL&&) = default ;
 
-    const std::string EdiNDeleteLineUntilEOL::sname() noexcept {
-        return "edi_n_delete_line_until_EOL" ;
-    }
     void EdiNDeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
 
@@ -468,16 +457,14 @@ namespace vind
     } ;
 
     EdiNDeleteAfter::EdiNDeleteAfter()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_delete_after"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNDeleteAfter::~EdiNDeleteAfter() noexcept                   = default ;
     EdiNDeleteAfter::EdiNDeleteAfter(EdiNDeleteAfter&&)            = default ;
     EdiNDeleteAfter& EdiNDeleteAfter::operator=(EdiNDeleteAfter&&) = default ;
 
-    const std::string EdiNDeleteAfter::sname() noexcept {
-        return "edi_n_delete_after" ;
-    }
     void EdiNDeleteAfter::sprocess(unsigned int repeat_num) const {
         if(iparams::get_b("enable_char_cache")) {
             for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
@@ -512,16 +499,14 @@ namespace vind
     } ;
 
     EdiNDeleteBefore::EdiNDeleteBefore()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_delete_before"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNDeleteBefore::~EdiNDeleteBefore() noexcept                    = default ;
     EdiNDeleteBefore::EdiNDeleteBefore(EdiNDeleteBefore&&)            = default ;
     EdiNDeleteBefore& EdiNDeleteBefore::operator=(EdiNDeleteBefore&&) = default ;
 
-    const std::string EdiNDeleteBefore::sname() noexcept {
-        return "edi_n_delete_before" ;
-    }
     void EdiNDeleteBefore::sprocess(unsigned int repeat_num) const {
         if(iparams::get_b("enable_char_cache")) {
             for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
@@ -551,9 +536,9 @@ namespace vind
 
 
     //EdiDeleteMotion
-    const std::string EdiDeleteMotion::sname() noexcept {
-        return "edi_delete_motion" ;
-    }
+    EdiDeleteMotion::EdiDeleteMotion()
+    : BindedFuncCreator("edi_delete_motion")
+    {}
     void EdiDeleteMotion::sprocess(
             unsigned int repeat_num,
             NTypeLogger* const lgrptr) {
@@ -573,9 +558,9 @@ namespace vind
 
 
     //EdiDeleteMotionAndStartInsert
-    const std::string EdiDeleteMotionAndStartInsert::sname() noexcept {
-        return "edi_delete_motion_and_start_insert" ;
-    }
+    EdiDeleteMotionAndStartInsert::EdiDeleteMotionAndStartInsert()
+    : BindedFuncCreator("edi_delete_motion_and_start_insert")
+    {}
     void EdiDeleteMotionAndStartInsert::sprocess(
             unsigned int repeat_num,
             NTypeLogger* const lgrptr) {
@@ -596,9 +581,9 @@ namespace vind
 
 
     //EdiDeleteLinesAndStartInsert
-    const std::string EdiDeleteLinesAndStartInsert::sname() noexcept {
-        return "edi_delete_lines_and_start_insert" ;
-    }
+    EdiDeleteLinesAndStartInsert::EdiDeleteLinesAndStartInsert()
+    : BindedFuncCreator("edi_delete_lines_and_start_insert")
+    {}
     void EdiDeleteLinesAndStartInsert::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([] {
             keybrd::pushup(KEYCODE_HOME) ;
@@ -633,9 +618,9 @@ namespace vind
 
 
     //EdiDeleteCharsAndStartInsert
-    const std::string EdiDeleteCharsAndStartInsert::sname() noexcept {
-        return "edi_delete_chars_and_start_insert" ;
-    }
+    EdiDeleteCharsAndStartInsert::EdiDeleteCharsAndStartInsert()
+    : BindedFuncCreator("edi_delete_chars_and_start_insert")
+    {}
     void EdiDeleteCharsAndStartInsert::sprocess(unsigned int repeat_num) {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
@@ -662,9 +647,9 @@ namespace vind
 
 
     //EdiDeleteUntilEOLAndStartInsert
-    const std::string EdiDeleteUntilEOLAndStartInsert::sname() noexcept {
-        return "edi_delete_until_eol_and_start_insert" ;
-    }
+    EdiDeleteUntilEOLAndStartInsert::EdiDeleteUntilEOLAndStartInsert()
+    : BindedFuncCreator("edi_delete_until_eol_and_start_insert")
+    {}
     /* Actually, If N >= 2
      *
      * Command: 2C

@@ -18,9 +18,9 @@
 namespace vind
 {
     //CBCopy
-    const std::string CBCopy::sname() noexcept {
-        return "cb_copy" ;
-    }
+    CBCopy::CBCopy()
+    : BindedFuncCreator("cb_copy")
+    {}
     void CBCopy::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
 
@@ -39,9 +39,9 @@ namespace vind
 
 
     //CBPaste
-    const std::string CBPaste::sname() noexcept {
-        return "cb_paste" ;
-    }
+    CBPaste::CBPaste()
+    : BindedFuncCreator("cb_paste")
+    {}
     void CBPaste::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
 
@@ -59,9 +59,9 @@ namespace vind
 
 
     //CBCut
-    const std::string CBCut::sname() noexcept {
-        return "cb_cut" ;
-    }
+    CBCut::CBCut()
+    : BindedFuncCreator("cb_cut")
+    {}
     void CBCut::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -77,9 +77,9 @@ namespace vind
 
 
     //CBDelete
-    const std::string CBDelete::sname() noexcept {
-        return "cb_delete" ;
-    }
+    CBDelete::CBDelete()
+    : BindedFuncCreator("cb_delete")
+    {}
     void CBDelete::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
 
@@ -99,9 +99,9 @@ namespace vind
 
 
     //CBBackSpace
-    const std::string CBBackSpace::sname() noexcept {
-        return "cb_back_space" ;
-    }
+    CBBackSpace::CBBackSpace()
+    : BindedFuncCreator("cb_back_space")
+    {}
 
     void CBBackSpace::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;

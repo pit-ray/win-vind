@@ -9,9 +9,9 @@
 namespace vind
 {
     //Jump2ActiveWindow
-    const std::string Jump2ActiveWindow::sname() noexcept {
-        return "jump_to_active_window" ;
-    }
+    Jump2ActiveWindow::Jump2ActiveWindow()
+    : BindedFuncCreator("jump_to_active_window")
+    {}
     void Jump2ActiveWindow::sprocess() {
         const auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {

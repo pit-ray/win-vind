@@ -118,9 +118,9 @@ namespace
 namespace vind
 {
     //ArrangeWindows
-    const std::string ArrangeWindows::sname() noexcept {
-        return "arrange_windows" ;
-    }
+    ArrangeWindows::ArrangeWindows()
+    : BindedFuncCreator("arrange_windows")
+    {}
     void ArrangeWindows::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {

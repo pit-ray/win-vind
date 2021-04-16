@@ -94,9 +94,9 @@ namespace
 namespace vind
 {
     //SelectLeftWindow
-    const std::string SelectLeftWindow::sname() noexcept {
-        return "select_left_window" ;
-    }
+    SelectLeftWindow::SelectLeftWindow()
+    : BindedFuncCreator("select_left_window")
+    {}
     void SelectLeftWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),
@@ -128,9 +128,9 @@ namespace vind
 
 
     //SelectRightWindow
-    const std::string SelectRightWindow::sname() noexcept {
-        return "select_right_window" ;
-    }
+    SelectRightWindow::SelectRightWindow()
+    : BindedFuncCreator("select_right_window")
+    {}
     void SelectRightWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),
@@ -162,9 +162,9 @@ namespace vind
 
 
     //SelectUpperWindow
-    const std::string SelectUpperWindow::sname() noexcept {
-        return "select_upper_window" ;
-    }
+    SelectUpperWindow::SelectUpperWindow()
+    : BindedFuncCreator("select_upper_window")
+    {}
     void SelectUpperWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),
@@ -196,9 +196,9 @@ namespace vind
 
 
     //SelectLowerWindow
-    const std::string SelectLowerWindow::sname() noexcept {
-        return "select_lower_window" ;
-    }
+    SelectLowerWindow::SelectLowerWindow()
+    : BindedFuncCreator("select_lower_window")
+    {}
     void SelectLowerWindow::sprocess() {
         auto is_if_target = [] (
                 const auto& UNUSED(rect),

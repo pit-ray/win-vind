@@ -18,15 +18,14 @@ namespace vind
     } ;
 
     SCRedo::SCRedo()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("sc_redo"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     SCRedo::~SCRedo() noexcept          = default ;
     SCRedo::SCRedo(SCRedo&&)            = default ;
     SCRedo& SCRedo::operator=(SCRedo&&) = default ;
-    const std::string SCRedo::sname() noexcept {
-        return "sc_redo" ;
-    }
+
     void SCRedo::sprocess(unsigned int repeat_num) const {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;
@@ -52,15 +51,14 @@ namespace vind
     } ;
 
     SCUndo::SCUndo()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("sc_undo"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     SCUndo::~SCUndo() noexcept          = default ;
     SCUndo::SCUndo(SCUndo&&)            = default ;
     SCUndo& SCUndo::operator=(SCUndo&&) = default ;
-    const std::string SCUndo::sname() noexcept {
-        return "sc_undo" ;
-    }
+
     void SCUndo::sprocess(unsigned int repeat_num) const {
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;

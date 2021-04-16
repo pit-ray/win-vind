@@ -20,16 +20,14 @@ namespace vind
     } ;
 
     EdiMoveCaretLeft::EdiMoveCaretLeft()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_move_caret_left"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiMoveCaretLeft::~EdiMoveCaretLeft() noexcept                    = default ;
     EdiMoveCaretLeft::EdiMoveCaretLeft(EdiMoveCaretLeft&&)            = default ;
     EdiMoveCaretLeft& EdiMoveCaretLeft::operator=(EdiMoveCaretLeft&&) = default ;
 
-    const std::string EdiMoveCaretLeft::sname() noexcept {
-        return "edi_move_caret_left" ;
-    }
     bool EdiMoveCaretLeft::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -65,16 +63,14 @@ namespace vind
     } ;
 
     EdiMoveCaretRight::EdiMoveCaretRight()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_move_caret_right"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiMoveCaretRight::~EdiMoveCaretRight() noexcept                     = default ;
     EdiMoveCaretRight::EdiMoveCaretRight(EdiMoveCaretRight&&)            = default ;
     EdiMoveCaretRight& EdiMoveCaretRight::operator=(EdiMoveCaretRight&&) = default ;
 
-    const std::string EdiMoveCaretRight::sname() noexcept {
-        return "edi_move_caret_right" ;
-    }
     bool EdiMoveCaretRight::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -110,16 +106,14 @@ namespace vind
     } ;
 
     EdiMoveCaretUp::EdiMoveCaretUp()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_move_caret_up"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiMoveCaretUp::~EdiMoveCaretUp() noexcept                  = default ;
     EdiMoveCaretUp::EdiMoveCaretUp(EdiMoveCaretUp&&)            = default ;
     EdiMoveCaretUp& EdiMoveCaretUp::operator=(EdiMoveCaretUp&&) = default ;
 
-    const std::string EdiMoveCaretUp::sname() noexcept {
-        return "edi_move_caret_up" ;
-    }
     bool EdiMoveCaretUp::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -167,16 +161,14 @@ namespace vind
     } ;
 
     EdiMoveCaretDown::EdiMoveCaretDown()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_move_caret_down"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiMoveCaretDown::~EdiMoveCaretDown() noexcept                    = default ;
     EdiMoveCaretDown::EdiMoveCaretDown(EdiMoveCaretDown&&)            = default ;
     EdiMoveCaretDown& EdiMoveCaretDown::operator=(EdiMoveCaretDown&&) = default ;
 
-    const std::string EdiMoveCaretDown::sname() noexcept {
-        return "edi_move_caret_down" ;
-    }
     bool EdiMoveCaretDown::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -228,16 +220,14 @@ namespace vind
     } ;
 
     EdiNMoveCaretwordsForward::EdiNMoveCaretwordsForward()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_move_caret_words_forward"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNMoveCaretwordsForward::~EdiNMoveCaretwordsForward() noexcept                             = default ;
     EdiNMoveCaretwordsForward::EdiNMoveCaretwordsForward(EdiNMoveCaretwordsForward&&)            = default ;
     EdiNMoveCaretwordsForward& EdiNMoveCaretwordsForward::operator=(EdiNMoveCaretwordsForward&&) = default ;
 
-    const std::string EdiNMoveCaretwordsForward::sname() noexcept {
-        return "edi_n_move_caret_words_forward" ;
-    }
     bool EdiNMoveCaretwordsForward::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -273,16 +263,14 @@ namespace vind
     } ;
 
     EdiNMoveCaretwordsBackward::EdiNMoveCaretwordsBackward()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_move_caret_words_backward"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNMoveCaretwordsBackward::~EdiNMoveCaretwordsBackward() noexcept                              = default ;
     EdiNMoveCaretwordsBackward::EdiNMoveCaretwordsBackward(EdiNMoveCaretwordsBackward&&)            = default ;
     EdiNMoveCaretwordsBackward& EdiNMoveCaretwordsBackward::operator=(EdiNMoveCaretwordsBackward&&) = default ;
 
-    const std::string EdiNMoveCaretwordsBackward::sname() noexcept {
-        return "edi_n_move_caret_words_backward" ;
-    }
     bool EdiNMoveCaretwordsBackward::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -318,16 +306,14 @@ namespace vind
     } ;
 
     EdiNMoveCaretWORDSForward::EdiNMoveCaretWORDSForward()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_move_caret_WORDS_forward"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNMoveCaretWORDSForward::~EdiNMoveCaretWORDSForward() noexcept                             = default ;
     EdiNMoveCaretWORDSForward::EdiNMoveCaretWORDSForward(EdiNMoveCaretWORDSForward&&)            = default ;
     EdiNMoveCaretWORDSForward& EdiNMoveCaretWORDSForward::operator=(EdiNMoveCaretWORDSForward&&) = default ;
 
-    const std::string EdiNMoveCaretWORDSForward::sname() noexcept {
-        return "edi_n_move_caret_WORDS_forward" ;
-    }
     bool EdiNMoveCaretWORDSForward::is_for_moving_caret() const noexcept {
         return true ;
     }
@@ -364,16 +350,14 @@ namespace vind
     } ;
 
     EdiNMoveCaretWORDSBackward::EdiNMoveCaretWORDSBackward()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_move_caret_WORDS_backward"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNMoveCaretWORDSBackward::~EdiNMoveCaretWORDSBackward() noexcept                              = default ;
     EdiNMoveCaretWORDSBackward::EdiNMoveCaretWORDSBackward(EdiNMoveCaretWORDSBackward&&)            = default ;
     EdiNMoveCaretWORDSBackward& EdiNMoveCaretWORDSBackward::operator=(EdiNMoveCaretWORDSBackward&&) = default ;
 
-    const std::string EdiNMoveCaretWORDSBackward::sname() noexcept {
-        return "edi_n_move_caret_WORDS_backward" ;
-    }
     bool EdiNMoveCaretWORDSBackward::is_for_moving_caret() const noexcept {
         return true ;
     }

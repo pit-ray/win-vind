@@ -12,6 +12,7 @@
 namespace vind
 {
     namespace funcfinder {
+        void initialize() ;
         const BindedFunc::SPtr find_func_byname(const std::string& name) ;
         void load_global_bindings() ;
     }

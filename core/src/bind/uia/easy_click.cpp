@@ -1,5 +1,6 @@
 #include "bind/uia/easy_click.hpp"
 
+#include "bind/base/char_logger.hpp"
 #include "disable_gcc_warning.hpp"
 
 #include <stdexcept>
@@ -21,7 +22,7 @@
 
 #include "enable_gcc_warning.hpp"
 
-#include "bind/base/keycode_logger.hpp"
+#include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
 #include "bind/bind.hpp"
 #include "bind/uia/uia.hpp"
@@ -226,7 +227,35 @@ namespace
             }
         }
     }
+    bool g_is_initialized = false ;
 
+    void initialize_global_uia() {
+        decltype(auto) cuia = uiauto::get_global_cuia() ;
+
+        IUIAutomationCacheRequest* cr_raw ;
+        if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
+            throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
+        }
+        decltype(auto) g_cache_req = get_cache_req() ;
+        g_cache_req.reset(cr_raw) ;
+
+        //g_cache_req->AddProperty(UIA_ClickablePointPropertyId) ;
+        g_cache_req->AddProperty(UIA_IsEnabledPropertyId) ;
+        g_cache_req->AddProperty(UIA_IsOffscreenPropertyId) ;
+        g_cache_req->AddProperty(UIA_IsKeyboardFocusablePropertyId) ;
+        g_cache_req->AddProperty(UIA_BoundingRectanglePropertyId) ;
+
+        if(FAILED(g_cache_req->put_AutomationElementMode(
+                        AutomationElementMode::AutomationElementMode_None))) {
+            throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
+        }
+        if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
+            throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
+        }
+
+        //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
+        g_is_initialized = true ;
+    }
 }
 
 namespace vind
@@ -234,7 +263,9 @@ namespace vind
     //EasyClickLeft
     EasyClickLeft::EasyClickLeft()
     : BindedFuncCreator("easy_click_left")
-    {}
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
+    }
     void EasyClickLeft::sprocess() {
         do_easy_click(KEYCODE_MOUSE_LEFT) ;
     }
@@ -251,7 +282,9 @@ namespace vind
     //EasyClickRight
     EasyClickRight::EasyClickRight()
     : BindedFuncCreator("easy_click_right")
-    {}
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
+    }
     void EasyClickRight::sprocess() {
         do_easy_click(KEYCODE_MOUSE_RIGHT) ;
     }
@@ -268,7 +301,9 @@ namespace vind
     //EasyClickMid
     EasyClickMid::EasyClickMid()
     : BindedFuncCreator("easy_click_mid")
-    {}
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
+    }
     void EasyClickMid::sprocess() {
         do_easy_click(KEYCODE_MOUSE_MID) ;
     }
@@ -285,7 +320,9 @@ namespace vind
     //EasyClickHover
     EasyClickHover::EasyClickHover()
     : BindedFuncCreator("easy_click_hover")
-    {}
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
+    }
     void EasyClickHover::sprocess() {
         do_easy_click(KEYCODE_UNDEFINED) ;
     }
@@ -296,37 +333,6 @@ namespace vind
     }
     void EasyClickHover::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
-    }
-
-
-    namespace easyclick {
-
-        void initialize() {
-            decltype(auto) cuia = uiauto::get_global_cuia() ;
-
-            IUIAutomationCacheRequest* cr_raw ;
-            if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
-                throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
-            }
-            decltype(auto) g_cache_req = get_cache_req() ;
-            g_cache_req.reset(cr_raw) ;
-
-            //g_cache_req->AddProperty(UIA_ClickablePointPropertyId) ;
-            g_cache_req->AddProperty(UIA_IsEnabledPropertyId) ;
-            g_cache_req->AddProperty(UIA_IsOffscreenPropertyId) ;
-            g_cache_req->AddProperty(UIA_IsKeyboardFocusablePropertyId) ;
-            g_cache_req->AddProperty(UIA_BoundingRectanglePropertyId) ;
-
-            if(FAILED(g_cache_req->put_AutomationElementMode(
-                            AutomationElementMode::AutomationElementMode_None))) {
-                throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
-            }
-            if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
-                throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
-            }
-
-            //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
-        }
     }
 }
 
@@ -715,31 +721,28 @@ namespace
             const unsigned char sendkey) {
 
         keyabsorber::InstantKeyAbsorber ika ;
-        //KeycodeLogger lgr ;
+        CharLogger lgr{
+            KEYCODE_ESC,
+            KEYCODE_BKSPACE
+        };
 
         while(vind::update_background() && continue_running) {
-            /*
-            lgr.update() ;
-            if(!lgr.is_changed()) {
-                continue ;
-            }
-
-            if(lgr.latest().empty()) {
-                lgr.remove_from_back(1) ;
+            if(!CHAR_LOGGED(lgr.logging_state())) {
                 continue ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_ESC)) {
+                keyabsorber::release_virtually(KEYCODE_ESC) ;
                 return ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
+                keyabsorber::release_virtually(KEYCODE_BKSPACE) ;
                 if(lgr.size() == 1) {
                     return ;
                 }
 
                 lgr.remove_from_back(2) ;
-                keyabsorber::release_virtually(KEYCODE_BKSPACE) ;
 
                 std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic ---------- (1)
 
@@ -748,10 +751,6 @@ namespace
                 continue ; //------------------------------------------------------ (1)
             }
 
-            if(keybind::is_invalid_log(lgr.latest(), keybind::InvalidPolicy::AllSystemKey)) {
-                lgr.remove_from_back(1) ;
-                continue ;
-            }
 
             std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic -------------- (2)
 
@@ -770,7 +769,6 @@ namespace
                 lgr.remove_from_back(1) ;
             else
                 util::refresh_display(hwnd) ;
-            */
             //--------------------------------------------------------------------- (2)
         }
     }

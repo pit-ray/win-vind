@@ -36,7 +36,6 @@
 #include "bind/global_bindings_caller.hpp"
 #include "bind/mode/change_mode.hpp"
 
-#include "bind/uia/easy_click.hpp"
 #include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
 #include "coreio/path.hpp"
@@ -142,7 +141,6 @@ namespace vind
             //If you use debugger, must be disable this line not to be slow.
             keyabsorber::install_hook() ;
 
-            easyclick::initialize() ;
             gbindcaller::initialize() ;
 
             load_config() ;

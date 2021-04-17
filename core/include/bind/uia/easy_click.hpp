@@ -5,10 +5,6 @@
 
 namespace vind
 {
-    namespace easyclick {
-        void initialize() ;
-    }
-
     struct EasyClickLeft : public BindedFuncCreator<EasyClickLeft> {
         explicit EasyClickLeft() ;
         static void sprocess() ;

@@ -11,7 +11,6 @@
 #include "key/keycodecvt.hpp"
 
 #include "bind/base/char_logger.hpp"
-#include "bind/base/keycode_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
 
 namespace vind

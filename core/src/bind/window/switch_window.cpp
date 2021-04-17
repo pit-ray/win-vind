@@ -13,7 +13,6 @@
 
 #include "bind/bind.hpp"
 
-#include "bind/base/keycode_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/func_finder.hpp"

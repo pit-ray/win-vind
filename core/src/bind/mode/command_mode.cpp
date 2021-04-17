@@ -8,7 +8,6 @@
 #include "bind/base/binded_func.hpp"
 #include "bind/base/char_logger.hpp"
 #include "bind/base/key_logger_base.hpp"
-#include "bind/base/keycode_logger.hpp"
 #include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"
 #include "bind/bind.hpp"

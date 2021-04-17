@@ -19,7 +19,7 @@ namespace
 {
     vind::NTypeLogger g_ntlgr{} ;
     vind::FuncFinder g_funcfinder{} ;
-    vind::LoggerParser::SPtr g_active_parser = nullptr ;
+    vind::BindedFunc::SPtr g_active_func = nullptr ;
 }
 
 namespace vind
@@ -28,7 +28,7 @@ namespace vind
 
         void initialize() {
             g_ntlgr.clear() ;
-            g_active_parser = nullptr ;
+            g_active_func = nullptr ;
         }
 
         void load_config() {
@@ -48,21 +48,22 @@ namespace vind
             }
 
             if(g_ntlgr.is_long_pressing()) {
-                if(g_active_parser) {
-                    g_active_parser->get_func()->process(g_ntlgr) ;
+                if(g_active_func) {
+                    g_active_func->process(g_ntlgr) ;
                 }
                 return ;
             }
 
-            auto parser = g_funcfinder.find_parser(g_ntlgr.latest(), g_active_parser) ;
-            g_active_parser = nullptr ;
+            auto actid = g_active_func ? g_active_func->id() : 0 ;
+            auto parser = g_funcfinder.find_parser(g_ntlgr.latest(), actid) ;
+            g_active_func = nullptr ;
 
             if(parser) {
                 if(parser->is_accepted()) {
                     VirtualCmdLine::reset() ;
 
-                    g_active_parser = parser ;
-                    g_active_parser->get_func()->process(g_ntlgr) ;
+                    g_active_func = parser->get_func() ;
+                    g_active_func->process(g_ntlgr) ;
 
                     g_ntlgr.accept() ;
                     g_funcfinder.reset_parsers() ;

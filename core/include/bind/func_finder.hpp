@@ -40,7 +40,7 @@ namespace vind
 
         const LoggerParser::SPtr find_parser(
                 const KeyLog& log,
-                const LoggerParser::SPtr& low_priority_parser=nullptr,
+                std::size_t low_priority_func_id=0,
                 mode::Mode mode=mode::get_global_mode()) ;
 
         void undo_parsers(std::size_t n, mode::Mode mode=mode::get_global_mode()) ;

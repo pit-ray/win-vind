@@ -58,8 +58,9 @@ namespace vind
         for(std::size_t i = 0 ; i < mode::mode_num() ; i ++) {
             for(const auto& func : g_all_func_list) {
                 try {
+                    auto& list = g_parsed_bindlists[i].at(func->name()) ;
                     auto p_parser = std::make_shared<LoggerParser>(func) ;
-                    p_parser->share_parsed_binding_list(g_parsed_bindlists[i].at(func->name())) ;
+                    p_parser->share_parsed_binding_list(list) ;
                     pimpl->parser_ar_[i].push_back(std::move(p_parser)) ;
                 }
                 catch(const std::out_of_range&) {
@@ -74,31 +75,37 @@ namespace vind
             mode::Mode mode) {
         LoggerParser::SPtr ptr = nullptr ;
         for(const auto& log : lgr) {
-            ptr = find_parser(log, nullptr, mode) ;
+            ptr = find_parser(log, 0, mode) ;
         }
         return ptr ;
     }
 
     const LoggerParser::SPtr FuncFinder::find_parser(
             const KeyLog& log,
-            const LoggerParser::SPtr& low_priority_parser,
+            std::size_t low_priority_func_id,
             mode::Mode mode) {
         LoggerParser::SPtr ptr = nullptr ;
+        LoggerParser::SPtr low_priority_ptr = nullptr ;
         unsigned char mostnum = 0 ;
 
         for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
             auto num = parser->validate_if_match(log) ;
-            if(!parser->is_rejected() && mostnum < num && parser != low_priority_parser) {
-                ptr = parser ;
-                mostnum = num ;
+            if(!parser->is_rejected() && mostnum < num) {
+                if(parser->get_func()->id() == low_priority_func_id) {
+                    low_priority_ptr = parser ;
+                }
+                else {
+                    ptr = parser ;
+                    mostnum = num ;
+                }
             }
         }
 
         if(ptr) {
             return ptr ;
         }
-        if(low_priority_parser && low_priority_parser->is_accepted()) {
-            return low_priority_parser ;
+        if(low_priority_ptr && low_priority_ptr->is_accepted()) {
+            return low_priority_ptr ;
         }
         return nullptr ;
     }

@@ -27,11 +27,25 @@ namespace vind
     } ;
 
 
-    struct EdiCopyMotion : public BindedFuncCreator<EdiCopyMotion> {
+    class EdiCopyMotion : public BindedFuncCreator<EdiCopyMotion> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
+
         explicit EdiCopyMotion() ;
-        static void sprocess(bool repeat_num=1) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        virtual ~EdiCopyMotion() noexcept ;
+
+        EdiCopyMotion(EdiCopyMotion&&) ;
+        EdiCopyMotion& operator=(EdiCopyMotion&&) ;
+        EdiCopyMotion(const EdiCopyMotion&)            = delete ;
+        EdiCopyMotion& operator=(const EdiCopyMotion&) = delete ;
+
+        void load_config() override ;
     } ;
 
 
@@ -160,22 +174,46 @@ namespace vind
         EdiNDeleteBefore& operator=(const EdiNDeleteBefore&) = delete ;
     } ;
 
-    struct EdiDeleteMotion : public BindedFuncCreator<EdiDeleteMotion> {
+    class EdiDeleteMotion : public BindedFuncCreator<EdiDeleteMotion> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
+
         explicit EdiDeleteMotion() ;
-        static void sprocess(
-                unsigned int repeat_num=1,
-                NTypeLogger* const lgrptr=nullptr) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+
+        virtual ~EdiDeleteMotion() noexcept ;
+        EdiDeleteMotion(EdiDeleteMotion&&) ;
+        EdiDeleteMotion& operator=(EdiDeleteMotion&&) ;
+        EdiDeleteMotion(const EdiDeleteMotion&)            = delete ;
+        EdiDeleteMotion& operator=(const EdiDeleteMotion&) = delete ;
+
+        void load_config() override ;
     } ;
 
-    struct EdiDeleteMotionAndStartInsert : public BindedFuncCreator<EdiDeleteMotionAndStartInsert> {
+    class EdiDeleteMotionAndStartInsert : public BindedFuncCreator<EdiDeleteMotionAndStartInsert> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
+
         explicit EdiDeleteMotionAndStartInsert() ;
-        static void sprocess(
-                unsigned int repeat_num=1,
-                NTypeLogger* const lgrptr=nullptr) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+
+        virtual ~EdiDeleteMotionAndStartInsert() noexcept ;
+        EdiDeleteMotionAndStartInsert(EdiDeleteMotionAndStartInsert&&) ;
+        EdiDeleteMotionAndStartInsert& operator=(EdiDeleteMotionAndStartInsert&&) ;
+        EdiDeleteMotionAndStartInsert(const EdiDeleteMotionAndStartInsert&)            = delete ;
+        EdiDeleteMotionAndStartInsert& operator=(const EdiDeleteMotionAndStartInsert&) = delete ;
+
+        void load_config() override ;
     } ;
 
     struct EdiDeleteLinesAndStartInsert : public BindedFuncCreator<EdiDeleteLinesAndStartInsert> {

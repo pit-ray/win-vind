@@ -133,7 +133,7 @@ namespace vind
             }
 
             pimpl->ksr_.reset() ;
-            return latest().size() ;
+            return static_cast<int>(latest().size()) ;
         }
         else { //long pressing
             if(!pimpl->is_including_enabled_chars(log) && !is_including_ascii(log)) {
@@ -143,7 +143,7 @@ namespace vind
             //emulate key stroke
             if(pimpl->ksr_.is_pressed()) {
                 logging(std::move(log)) ;
-                return latest().size() ;
+                return static_cast<int>(latest().size()) ;
             }
             else {
                 return 0 ;

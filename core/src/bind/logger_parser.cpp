@@ -128,7 +128,7 @@ namespace vind
                 try {
                     const auto& keyset = cmd.at(cmdidx_) ;
 
-                    unsigned int matched_num = 0 ;
+                    decltype(most_matched_num) matched_num = 0 ;
 
                     auto itr = keyset.cbegin() ;
                     if(*itr == KEYCODE_OPTIONAL) {

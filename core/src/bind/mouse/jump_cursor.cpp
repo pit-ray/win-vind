@@ -58,7 +58,11 @@ namespace vind
     void Jump2Top::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
-        SetCursorPos(pos.x, 0) ;
+
+        RECT rect ;
+        screenmetrics::get_conbined_metrics(&rect) ;
+
+        SetCursorPos(pos.x, rect.top) ;
     }
     void Jump2Top::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

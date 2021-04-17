@@ -1,4 +1,4 @@
-#include "text/simple_text_selecter.hpp"
+#include "bind/emu/simple_text_selecter.hpp"
 
 #include "io/keybrd.hpp"
 

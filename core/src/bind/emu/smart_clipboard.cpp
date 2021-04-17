@@ -1,4 +1,4 @@
-#include "text/smart_clipboard.hpp"
+#include "bind/emu/smart_clipboard.hpp"
 
 #include <cstring>
 

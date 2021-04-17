@@ -35,18 +35,10 @@ add_library(io STATIC
 )
 target_link_libraries(io key)
 
-add_library(text STATIC
-    src/text/simple_text_selecter.cpp
-    src/text/smart_clipboard.cpp
-    src/text/text_analyzer.cpp
-)
-target_link_libraries(text io)
-
 add_library(time STATIC
     src/time/interval_timer.cpp
     src/time/keystroke_repeater.cpp
 )
-
 
 add_library(base STATIC
     src/bind/base/binded_func.cpp
@@ -55,7 +47,7 @@ add_library(base STATIC
     src/bind/base/mode.cpp
     src/bind/base/ntype_logger.cpp
 )
-target_link_libraries(base time text)
+target_link_libraries(base time io)
 
 add_library(ctrl STATIC
     src/bind/ctrl/dedicate_to_window_ctrl.cpp
@@ -71,12 +63,15 @@ target_link_libraries(dev base)
 add_library(emu STATIC
     src/bind/emu/edi_change_mode.cpp
     src/bind/emu/edi_edit.cpp
-    src/bind/emu/edi_motion.cpp
     src/bind/emu/edi_jump_caret.cpp
     src/bind/emu/edi_layout.cpp
+    src/bind/emu/edi_motion.cpp
     src/bind/emu/edi_move_caret.cpp
     src/bind/emu/edi_replace.cpp
     src/bind/emu/edi_search_pattern.cpp
+    src/bind/emu/simple_text_selecter.cpp
+    src/bind/emu/smart_clipboard.cpp
+    src/bind/emu/text_analyzer.cpp
 )
 target_link_libraries(emu base)
 

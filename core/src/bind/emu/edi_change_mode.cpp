@@ -4,11 +4,11 @@
 #include <windows.h>
 
 #include "bind/base/mode.hpp"
+#include "bind/emu/simple_text_selecter.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "opt/virtual_cmd_line.hpp"
-#include "text/simple_text_selecter.hpp"
 #include "util/def.hpp"
 
 #include "bind/base/ntype_logger.hpp"

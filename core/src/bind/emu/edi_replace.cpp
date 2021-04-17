@@ -5,13 +5,13 @@
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/emu/text_analyzer.hpp"
 #include "entry.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 #include "opt/virtual_cmd_line.hpp"
-#include "text/text_analyzer.hpp"
 #include "util/def.hpp"
 
 namespace

@@ -72,6 +72,7 @@ target_link_libraries(dev base)
 add_library(emu STATIC
     src/bind/emu/edi_change_mode.cpp
     src/bind/emu/edi_edit.cpp
+    src/bind/emu/edi_motion.cpp
     src/bind/emu/edi_jump_caret.cpp
     src/bind/emu/edi_layout.cpp
     src/bind/emu/edi_move_caret.cpp

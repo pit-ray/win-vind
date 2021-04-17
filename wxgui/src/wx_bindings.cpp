@@ -650,7 +650,7 @@ namespace wxGUI
         Bind(wxEVT_BUTTON, [this](auto&) {
             //read default json (partial)
             try {
-                std::ifstream ifs(Path::to_u8path(Path::Default::BINDINGS())) ;
+                std::ifstream ifs(path::to_u8path(path::Default::BINDINGS())) ;
 
                 nlohmann::json p{} ;
                 ifs >> p ;

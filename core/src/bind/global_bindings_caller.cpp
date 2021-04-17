@@ -32,7 +32,6 @@ namespace vind
         }
 
         void load_config() {
-            std::cout << "load_config\n" ;
             funcfinder::load_global_bindings() ;
             g_funcfinder.reconstruct_funcset() ;
         }

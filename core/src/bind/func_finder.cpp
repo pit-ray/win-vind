@@ -31,7 +31,7 @@ namespace vind
 {
     using LoggerParserList = std::vector<LoggerParser::SPtr> ;
     struct FuncFinder::Impl {
-        std::array<LoggerParserList, mode::mode_num()> parser_ar_{} ;
+        ModeArray<LoggerParserList> parser_ar_{} ;
     } ;
 
     FuncFinder::FuncFinder()
@@ -54,12 +54,15 @@ namespace vind
     FuncFinder& FuncFinder::operator=(FuncFinder&&) = default ;
 
     void FuncFinder::reconstruct_funcset() {
-        std::cout << "reconstructed\n" ;
+        //clear logger parser list by swapping
+        ModeArray<LoggerParserList>().swap(pimpl->parser_ar_) ;
+
         for(std::size_t i = 0 ; i < mode::mode_num() ; i ++) {
             for(const auto& func : g_all_func_list) {
                 try {
-                    auto& list = g_parsed_bindlists[i].at(func->name()) ;
+                    const auto& list = g_parsed_bindlists[i].at(func->name()) ;
                     auto p_parser = std::make_shared<LoggerParser>(func) ;
+
                     p_parser->share_parsed_binding_list(list) ;
                     pimpl->parser_ar_[i].push_back(std::move(p_parser)) ;
                 }

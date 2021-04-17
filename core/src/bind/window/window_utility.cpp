@@ -2,9 +2,9 @@
 
 #include <dwmapi.h>
 
+#include "bind/mouse/jump_actwin.hpp"
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
-#include "bind/mouse/jump_actwin.hpp"
 #include "util/def.hpp"
 
 namespace vind
@@ -120,7 +120,7 @@ namespace vind
                 }
             }
 
-            Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+            Jump2ActiveWindow::sprocess() ;
         }
 
         void batch_resize(const std::unordered_map<HWND, RECT>& rects) {

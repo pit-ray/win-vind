@@ -8,10 +8,12 @@
 #include <unordered_map>
 #include <utility>
 
-#include "io/screen_metrics.hpp"
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "bind/mouse/jump_actwin.hpp"
-#include "util/def.hpp"
 #include "bind/window/window_utility.hpp"
+#include "io/screen_metrics.hpp"
+#include "util/def.hpp"
 
 namespace {
     using namespace vind ;
@@ -70,8 +72,8 @@ namespace {
         return TRUE ;
     }
 
-    inline void rotate_windows_core(
-            const std::function<void(ordered_hwnd_t&)>& sort_func) {
+    template <typename FuncType>
+    inline void rotate_windows_core(FuncType&& sort_func) {
 
         windowutil::ForegroundInfo fginfo ;
 
@@ -109,18 +111,11 @@ namespace {
 namespace vind
 {
     //RotateWindow
-    const std::string RotateWindows::sname() noexcept {
-        return "rotate_windows" ;
-    }
-
-    void RotateWindows::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
-        auto sort = [repeat_num] (ordered_hwnd_t& angle_hwnds) {
+    RotateWindows::RotateWindows()
+    : BindedFuncCreator("rotate_windows")
+    {}
+    void RotateWindows::sprocess(unsigned int repeat_num) {
+        rotate_windows_core([repeat_num] (ordered_hwnd_t& angle_hwnds) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 auto itr     = angle_hwnds.rbegin() ;
                 auto pre_itr = itr ;
@@ -134,24 +129,24 @@ namespace vind
                 }
                 pre_itr->second = last_hwnd ;
             }
-        } ;
-
-        rotate_windows_core(sort) ;
+        }) ;
     }
+    void RotateWindows::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void RotateWindows::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(1) ;
+    }
+
 
     //RotateWindowsInReverse
-    const std::string RotateWindowsInReverse::sname() noexcept {
-        return "rotate_windows_in_reverse" ;
-    }
-
-    void RotateWindowsInReverse::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
-        auto sort = [repeat_num] (ordered_hwnd_t& angle_hwnds) {
+    RotateWindowsInReverse::RotateWindowsInReverse()
+    : BindedFuncCreator("rotate_windows_in_reverse")
+    {}
+    void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
+        rotate_windows_core([repeat_num] (ordered_hwnd_t& angle_hwnds) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 auto itr     = angle_hwnds.begin() ;
                 auto pre_itr = itr ;
@@ -165,8 +160,14 @@ namespace vind
                 }
                 pre_itr->second = last_hwnd ;
             }
-        } ;
-
-        rotate_windows_core(sort) ;
+        }) ;
+    }
+    void RotateWindowsInReverse::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void RotateWindowsInReverse::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess(1) ;
     }
 }

@@ -1,9 +1,9 @@
 #include "bind/base/ntype_logger.hpp"
 
-#include "key/key_absorber.hpp"
-#include "key/keycodecvt.hpp"
 #include "bind/base/key_logger_base.hpp"
 #include "coreio/err_logger.hpp"
+#include "key/key_absorber.hpp"
+#include "key/keycodecvt.hpp"
 #include "time/keystroke_repeater.hpp"
 
 
@@ -207,13 +207,5 @@ namespace vind
             pimpl->head_num_ = 0 ;
         }
         KeyLoggerBase::clear() ;
-    }
-
-    void NTypeLogger::update() {
-    }
-
-    bool NTypeLogger::is_changed() const noexcept {
-        //return pimpl->keycode_changed ;
-        return false ;
     }
 }

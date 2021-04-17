@@ -1,13 +1,14 @@
 #include "bind/logger_parser.hpp"
 
 #include <cstdint>
-#include <utility>
-#include <memory>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <stack>
+#include <utility>
 
 #include "bind/base/binded_func.hpp"
+#include "bind/bindings_def.hpp"
 #include "bind/bindings_lists.hpp"
 #include "bind/bindings_parser.hpp"
 #include "key/key_log.hpp"
@@ -18,24 +19,25 @@
 
 namespace
 {
-    using ParserStateRawType = unsigned char ;
-    enum ParserState : unsigned char {
+    using ParserStateRawType = std::uint32_t ;
+    enum ParserState : ParserStateRawType {
         //State
-        WAITING          = 0b0000'0001,
-        WAITING_IN_NUM   = 0b0000'1001,
-        REJECT           = 0b0000'0010,
-        REJECT_WITH_HEAD = 0b0000'1010,
-        ACCEPT_IN_NUM    = 0b0000'0100,
-        ACCEPT           = 0b0000'1100,
+        WAITING             = 0b0000'0001'0000'0000,
+        WAITING_IN_NUM      = 0b0000'1001'0000'0000,
+        REJECT              = 0b0000'0010'0000'0000,
+        REJECT_WITH_PARTSET = 0b0000'1010'0000'0000,
+        ACCEPT_IN_NUM       = 0b0000'0100'0000'0000,
+        ACCEPT              = 0b0000'1100'0000'0000,
 
         //Masks
-        STATE_MASK   = 0x0f,
-        WAITING_MASK = 0x01,
-        REJECT_MASK  = 0x02,
-        ACCEPT_MASK  = 0x04,
+        STATE_MASK      = 0x0f00,
+        WAITING_MASK    = 0x0100,
+        REJECT_MASK     = 0x0200,
+        ACCEPT_MASK     = 0x0400,
+        KEYSET_NUM_MASK = 0x00ff,
 
         //Option flags
-        INCLEMENT_CMDIDX= 0x80,
+        INCLEMENT_CMDIDX= 0x8000,
     } ;
 
     using namespace vind ;
@@ -63,9 +65,9 @@ namespace
     }
 
     using LogStatusRawType = std::uint32_t ;
-    enum LogStatus : std::uint32_t {
+    enum LogStatus : LogStatusRawType {
         ALL_FALSE        = 0x0000,
-        SYSONLY_HASHEAD  = 0x0100,
+        HAS_KEYSET_PART  = 0x0100,
         ACCEPTED         = 0x0200,
         HAS_KEYSET       = 0x0400,
         ACCEPTED_OPTNUM  = 0x0800,
@@ -81,16 +83,48 @@ namespace vind
 
     struct LoggerParser::Impl {
         std::shared_ptr<BindedFunc> func_ ;
-        std::vector<bindparser::Command> cmdlist_ ;
+        std::shared_ptr<CommandList> cmdlist_ptr_ ;
         StateHistory state_hist_ ;
         std::size_t cmdidx_ ;
 
+        explicit Impl()
+        : func_(nullptr),
+          cmdlist_ptr_(nullptr),
+          state_hist_(),
+          cmdidx_(0)
+        {}
+
+        explicit Impl(const std::shared_ptr<BindedFunc>& func)
+        : func_(func),
+          cmdlist_ptr_(nullptr),
+          state_hist_(),
+          cmdidx_(0)
+        {}
+
+        explicit Impl(std::shared_ptr<BindedFunc>&& func)
+        : func_(std::move(func)),
+          cmdlist_ptr_(nullptr),
+          state_hist_(),
+          cmdidx_(0)
+        {}
+
+        virtual ~Impl() noexcept = default ;
+
+        Impl(Impl&&)                 = default ;
+        Impl& operator=(Impl&&)      = default ;
+        Impl(const Impl&)            = default ;
+        Impl& operator=(const Impl&) = default ;
+
         LogStatusRawType parse_log(const KeyLog& log) {
+            if(!cmdlist_ptr_) {
+                return 0 ;
+            }
+
             LogStatusRawType logstatus = LogStatus::ALL_FALSE ;
 
             unsigned char most_matched_num = 0 ;
 
-            for(const auto& cmd : cmdlist_) {
+            for(const auto& cmd : *cmdlist_ptr_) {
                 try {
                     const auto& keyset = cmd.at(cmdidx_) ;
 
@@ -121,10 +155,6 @@ namespace vind
                     itr ++ ;
 
                     if(itr != keyset.cend()) { //keyset.size() > 1
-                        if(!is_containing_ascii(log)) {
-                            logstatus |= LogStatus::SYSONLY_HASHEAD ;
-                        }
-
                         while(itr != keyset.cend()) {
                             if(*itr == KEYCODE_OPTIONAL) {
                                 logstatus = LogStatus::ACCEPTED ;
@@ -149,6 +179,9 @@ namespace vind
                         if(cmdidx_ == cmd.size() - 1) {
                             logstatus |= LogStatus::ACCEPTED ;
                         }
+                    }
+                    else {
+                        logstatus |= LogStatus::HAS_KEYSET_PART ;
                     }
 
                     if(most_matched_num < matched_num) {
@@ -176,19 +209,19 @@ namespace vind
                 state_hist_.push(ParserState::REJECT) ;
             }
             else if(status & LogStatus::ACCEPTED_OPTNUM) {
-                state_hist_.push(ParserState::ACCEPT_IN_NUM) ;
+                state_hist_.push(num | ParserState::ACCEPT_IN_NUM) ;
             }
             else if(status & LogStatus::ACCEPTED) {
-                state_hist_.push(ParserState::ACCEPT) ;
+                state_hist_.push(num | ParserState::ACCEPT) ;
             }
             else if(status & LogStatus::WAITING_OPTNUM) {
-                state_hist_.push(ParserState::WAITING_IN_NUM) ;
+                state_hist_.push(num | ParserState::WAITING_IN_NUM) ;
             }
             else if(status & LogStatus::HAS_KEYSET) {
-                state_hist_.push(ParserState::WAITING) ;
+                state_hist_.push(num | ParserState::WAITING) ;
             }
-            else if(status & LogStatus::SYSONLY_HASHEAD) {
-                state_hist_.push(ParserState::REJECT_WITH_HEAD) ;
+            else if(status & LogStatus::HAS_KEYSET_PART) {
+                state_hist_.push(num | ParserState::REJECT_WITH_PARTSET) ;
             }
             else {
                 state_hist_.push(ParserState::REJECT) ;
@@ -206,7 +239,7 @@ namespace vind
             return res ;
         }
 
-        unsigned char do_reject_with_head_matching(const KeyLog& UNUSED(log)) {
+        unsigned char do_reject_with_keyset_part(const KeyLog& UNUSED(log)) {
             state_hist_.push(ParserState::REJECT) ;
             return 0 ;
         }
@@ -217,14 +250,14 @@ namespace vind
         }
 
         unsigned char do_accept(const KeyLog& UNUSED(log)) {
-            state_hist_.push(ParserState::ACCEPT) ;
-            return 0 ;
+            state_hist_.push(state_hist_.top()) ;
+            return state_hist_.top() & KEYSET_NUM_MASK ;
         }
 
         unsigned char do_accept_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(ParserState::ACCEPT_IN_NUM) ;
-                return 1 ;
+                state_hist_.push(state_hist_.top()) ;
+                return state_hist_.top() & KEYSET_NUM_MASK ;
             }
 
             state_hist_.push(ParserState::REJECT) ;
@@ -233,40 +266,11 @@ namespace vind
 
         unsigned char do_waiting_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(ParserState::WAITING_IN_NUM) ;
-                return 1 ;
+                state_hist_.push(state_hist_.top()) ;
+                return state_hist_.top() & KEYSET_NUM_MASK ;
             }
             return do_waiting(log) ;
         }
-
-        explicit Impl()
-        : func_(nullptr),
-          cmdlist_(),
-          state_hist_(),
-          cmdidx_(0)
-        {}
-
-        explicit Impl(const std::shared_ptr<BindedFunc>& func)
-        : func_(func),
-          cmdlist_(),
-          state_hist_(),
-          cmdidx_(0)
-        {}
-
-        explicit Impl(std::shared_ptr<BindedFunc>&& func)
-        : func_(std::move(func)),
-          cmdlist_(),
-          state_hist_(),
-          cmdidx_(0)
-        {}
-
-
-        virtual ~Impl() noexcept = default ;
-
-        Impl(Impl&&)                 = default ;
-        Impl& operator=(Impl&&)      = default ;
-        Impl(const Impl&)            = default ;
-        Impl& operator=(const Impl&) = default ;
     } ;
 
 
@@ -296,34 +300,60 @@ namespace vind
 
     void LoggerParser::append_binding(std::string command) {
         if(command.empty()) return ;
-        pimpl->cmdlist_.push_back(bindparser::parse_string_binding(command)) ;
+        if(!pimpl->cmdlist_ptr_) {
+            pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
+        }
+
+        if(pimpl->cmdlist_ptr_.use_count() == 1) {
+            pimpl->cmdlist_ptr_->push_back(bindparser::parse_string_binding(command)) ;
+        }
     }
 
     void LoggerParser::append_binding_list(const std::vector<std::string>& list) {
         if(list.empty()) return ;
-        for(const auto& cmd : list) append_binding(cmd) ;
+        if(!pimpl->cmdlist_ptr_) {
+            pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
+        }
+
+        if(pimpl->cmdlist_ptr_.use_count() == 1) {
+            for(const auto& cmd : list) append_binding(cmd) ;
+        }
     }
     void LoggerParser::append_binding_list(std::vector<std::string>&& list) {
         if(list.empty()) return ;
-        for(auto&& cmd : list) append_binding(std::move(cmd)) ;
+        if(!pimpl->cmdlist_ptr_) {
+            pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
+        }
+        if(pimpl->cmdlist_ptr_.use_count() == 1) {
+            for(auto&& cmd : list) append_binding(std::move(cmd)) ;
+        }
     }
 
     void LoggerParser::reset_binding(const std::string& command) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding(command) ;
     }
     void LoggerParser::reset_binding(std::string&& command) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding(std::move(command)) ;
     }
 
+    void LoggerParser::share_parsed_binding_list(const std::shared_ptr<CommandList>& cmdlist) {
+        pimpl->cmdlist_ptr_.reset() ;
+        pimpl->cmdlist_ptr_ = cmdlist ;
+    }
+
     void LoggerParser::reset_binding_list(const std::vector<std::string>& list) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding_list(list) ;
     }
     void LoggerParser::reset_binding_list(std::vector<std::string>&& list) {
-        pimpl->cmdlist_.clear() ;
+        pimpl->cmdlist_ptr_.reset() ;
         append_binding_list(std::move(list)) ;
+    }
+
+    void LoggerParser::reset_binding_list() {
+        pimpl->cmdlist_ptr_.reset() ;
     }
 
     void LoggerParser::unbind_function() noexcept {
@@ -338,6 +368,11 @@ namespace vind
 
     bool LoggerParser::has_function() const noexcept {
         return static_cast<bool>(pimpl->func_) ;
+    }
+
+    bool LoggerParser::has_bindings() const noexcept {
+        if(!pimpl->cmdlist_ptr_) return false ;
+        return !pimpl->cmdlist_ptr_->empty() ;
     }
 
     const std::shared_ptr<BindedFunc>& LoggerParser::get_func() const noexcept {
@@ -359,8 +394,8 @@ namespace vind
             case ParserState::REJECT:
                 return pimpl->do_reject(log) ;
 
-            case ParserState::REJECT_WITH_HEAD:
-                return pimpl->do_reject_with_head_matching(log) ;
+            case ParserState::REJECT_WITH_PARTSET:
+                return pimpl->do_reject_with_keyset_part(log) ;
 
             case ParserState::ACCEPT_IN_NUM:
                 return pimpl->do_accept_in_num(log) ;
@@ -378,7 +413,7 @@ namespace vind
         pimpl->cmdidx_ = 0 ;
     }
 
-    void LoggerParser::undo_state(std::size_t n) {
+    void LoggerParser::backward_state(std::size_t n) {
         if(pimpl->state_hist_.size() <= n) {
             reset_state() ;
             return ;
@@ -410,9 +445,9 @@ namespace vind
         if(pimpl->state_hist_.empty()) return false ;
         return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT ;
     }
-    bool LoggerParser::is_rejected_with_headsys_ready() const noexcept {
+    bool LoggerParser::is_rejected_with_ready() const noexcept {
         if(pimpl->state_hist_.empty()) return false ;
-        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT_WITH_HEAD ;
+        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT_WITH_PARTSET ;
     }
 
     bool LoggerParser::is_waiting() const noexcept {
@@ -424,4 +459,3 @@ namespace vind
         return pimpl->state_hist_.size() ;
     }
 }
-

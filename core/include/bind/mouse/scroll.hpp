@@ -1,21 +1,18 @@
 #ifndef _SCROLL_HPP
 #define _SCROLL_HPP
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    class ScrollUp : public BindedFuncWithCreator<ScrollUp> {
+    class ScrollUp : public BindedFuncCreator<ScrollUp> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollUp() ;
         virtual ~ScrollUp() noexcept ;
@@ -27,18 +24,15 @@ namespace vind
     } ;
 
 
-    class ScrollDown : public BindedFuncWithCreator<ScrollDown> {
+    class ScrollDown : public BindedFuncCreator<ScrollDown> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollDown() ;
         virtual ~ScrollDown() noexcept ;
@@ -50,18 +44,15 @@ namespace vind
     } ;
 
 
-    class ScrollMidUp : public BindedFuncWithCreator<ScrollMidUp> {
+    class ScrollMidUp : public BindedFuncCreator<ScrollMidUp> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollMidUp() ;
         virtual ~ScrollMidUp() noexcept ;
@@ -73,18 +64,15 @@ namespace vind
     } ;
 
 
-    class ScrollMidDown : public BindedFuncWithCreator<ScrollMidDown> {
+    class ScrollMidDown : public BindedFuncCreator<ScrollMidDown> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollMidDown() ;
         virtual ~ScrollMidDown() noexcept ;
@@ -96,18 +84,15 @@ namespace vind
     } ;
 
 
-    class ScrollPageUp : public BindedFuncWithCreator<ScrollPageUp> {
+    class ScrollPageUp : public BindedFuncCreator<ScrollPageUp> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollPageUp() ;
         virtual ~ScrollPageUp() noexcept ;
@@ -119,19 +104,16 @@ namespace vind
     } ;
 
 
-    class ScrollPageDown : public BindedFuncWithCreator<ScrollPageDown> {
+    class ScrollPageDown : public BindedFuncCreator<ScrollPageDown> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollPageDown() ;
         virtual ~ScrollPageDown() noexcept ;
@@ -143,18 +125,15 @@ namespace vind
     } ;
 
 
-    class ScrollLeft : public BindedFuncWithCreator<ScrollLeft> {
+    class ScrollLeft : public BindedFuncCreator<ScrollLeft> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollLeft() ;
         virtual ~ScrollLeft() noexcept ;
@@ -166,18 +145,15 @@ namespace vind
     } ;
 
 
-    class ScrollRight : public BindedFuncWithCreator<ScrollRight> {
+    class ScrollRight : public BindedFuncCreator<ScrollRight> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollRight() ;
         virtual ~ScrollRight() noexcept ;
@@ -189,18 +165,15 @@ namespace vind
     } ;
 
 
-    class ScrollMidLeft : public BindedFuncWithCreator<ScrollMidLeft> {
+    class ScrollMidLeft : public BindedFuncCreator<ScrollMidLeft> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollMidLeft() ;
         virtual ~ScrollMidLeft() noexcept ;
@@ -212,18 +185,15 @@ namespace vind
     } ;
 
 
-    class ScrollMidRight : public BindedFuncWithCreator<ScrollMidRight> {
+    class ScrollMidRight : public BindedFuncCreator<ScrollMidRight> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit ScrollMidRight() ;
         virtual ~ScrollMidRight() noexcept ;

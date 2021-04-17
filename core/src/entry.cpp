@@ -24,24 +24,25 @@
 #include <winnt.h>
 #endif
 
-#include <memory>
-#include <iostream>
 #include <cstring>
+#include <iostream>
+#include <memory>
 
+#include "bind/base/mode.hpp"
+#include "bind/bind.hpp"
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"
-#include "bind/bind.hpp"
-#include "bind/mode/change_mode.hpp"
-#include "bind/base/mode.hpp"
+#include "bind/func_finder.hpp"
 #include "bind/global_bindings_caller.hpp"
+#include "bind/mode/change_mode.hpp"
 
+#include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
+#include "coreio/path.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
-#include "coreio/err_logger.hpp"
 #include "opt/option_loader.hpp"
-#include "coreio/path.hpp"
 #include "time/interval_timer.hpp"
 #include "util/winwrap.hpp"
 
@@ -140,23 +141,22 @@ namespace vind
             //If you use debugger, must be disable this line not to be slow.
             keyabsorber::install_hook() ;
 
-            keybind::initialize() ;
             gbindcaller::initialize() ;
 
             load_config() ;
 
             //initialize system mode
-            const std::unordered_map<std::string, BindedFunc::shp_t> cm {
+            const std::unordered_map<std::string, BindedFunc::SPtr> cm {
                 {"gui_normal", Change2Normal::create()},
                 {"gui_insert", Change2Insert::create()},
                 {"edi_normal", Change2EdiNormal::create()},
                 {"edi_insert", Change2EdiInsert::create()}
             } ;
-            cm.at(iparams::get_s("initial_mode"))->process(true, 1) ;
+            cm.at(iparams::get_s("initial_mode"))->process() ;
 
             if(!func_name.empty()) {
-                auto func = keybind::find_func_byname(func_name) ;
-                func->process(true, 1, nullptr, nullptr) ;
+                auto func = funcfinder::find_func_byname(func_name) ;
+                func->process() ;
             }
 
             return true ;
@@ -174,8 +174,9 @@ namespace vind
     bool load_config() noexcept {
         try {
             iparams::load_config() ;
-            keybind::load_config() ;
+
             optloader::load_config() ;
+            gbindcaller::load_config() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -217,9 +218,8 @@ namespace vind
                 if(mmf.get() != NULL) {
                     std::string name(reinterpret_cast<const char*>(mmf.get())) ;
                     if(!name.empty()) {
-                        auto func = keybind::find_func_byname(name) ;
-                        if(func != nullptr) {
-                            func->process(true, 1, nullptr, nullptr) ;
+                        if(auto func = funcfinder::find_func_byname(name)) {
+                            func->process() ;
                         }
                         else {
                             PRINT_ERROR(name + " is invalid function name.") ;
@@ -256,7 +256,7 @@ namespace vind
 
             using namespace keyabsorber ;
             if(is_pressed(KEYCODE_F8) && is_pressed(KEYCODE_F9)) {
-                ExitConfigWindow::sprocess(true, 1, nullptr, nullptr) ; //exit GUI-window in system tray
+                ExitConfigWindow::sprocess() ; //exit GUI-window in system tray
                 return false ;
             }
 

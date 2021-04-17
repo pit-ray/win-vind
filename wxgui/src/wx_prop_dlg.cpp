@@ -1,14 +1,15 @@
 #include "wx_prop_dlg.hpp"
 
-#include <unordered_map>
-#include <string>
-#include <sstream>
-#include <vector>
 #include <chrono>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/defs.h>
@@ -19,22 +20,23 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/window.h>
+
 #include "enable_gcc_warning.hpp"
 
+#include "wx_bindings.hpp"
 #include "wx_settings.hpp"
 #include "wx_shortcut_apps.hpp"
-#include "wx_bindings.hpp"
 
-#include "io_params.hpp"
 #include "coreio/err_logger.hpp"
+#include "io_params.hpp"
 #include "ui_translator.hpp"
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
 
-#include "key/key_absorber.hpp"
 #include "bind/base/mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "entry.hpp"
+#include "key/key_absorber.hpp"
 
 #define KEY_COLOR "#1e96ff"
 #define TXT_COLOR "gray"
@@ -262,7 +264,7 @@ namespace wxGUI
                 l_mode = mode::get_global_mode() ;
                 l_is_absorbed = keyabsorber::is_absorbed() ;
                 l_is_cached = true ;
-                MyConfigWindowNormal::sprocess(true, 1, nullptr, nullptr) ;
+                MyConfigWindowNormal::sprocess() ;
             }
         }
         else {

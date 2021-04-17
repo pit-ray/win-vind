@@ -2,9 +2,10 @@
 
 #include <functional>
 
+#include "bind/base/ntype_logger.hpp"
+#include "bind/window/window_utility.hpp"
 #include "io/screen_metrics.hpp"
 #include "util/def.hpp"
-#include "bind/window/window_utility.hpp"
 
 namespace
 {
@@ -48,17 +49,11 @@ namespace
 namespace vind
 {
     //SnapCurrentWindow2Left
-    const std::string SnapCurrentWindow2Left::sname() noexcept {
-        return "snap_current_window_to_left" ;
-    }
+    SnapCurrentWindow2Left::SnapCurrentWindow2Left()
+    : BindedFuncCreator("snap_current_window_to_left")
+    {}
 
-    void SnapCurrentWindow2Left::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    void SnapCurrentWindow2Left::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
             rect.top    = mrect.top ;
@@ -72,20 +67,21 @@ namespace vind
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
     }
+    void SnapCurrentWindow2Left::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SnapCurrentWindow2Left::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
 
 
     //SnapCurrentWindow2Right
-    const std::string SnapCurrentWindow2Right::sname() noexcept {
-        return "snap_current_window_to_right" ;
-    }
-
-    void SnapCurrentWindow2Right::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    SnapCurrentWindow2Right::SnapCurrentWindow2Right()
+    : BindedFuncCreator("snap_current_window_to_right")
+    {}
+    void SnapCurrentWindow2Right::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left + screenmetrics::width(mrect) / 2 ;
             rect.top    = mrect.top ;
@@ -99,20 +95,21 @@ namespace vind
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
     }
+    void SnapCurrentWindow2Right::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SnapCurrentWindow2Right::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
 
 
     //SnapCurrentWindow2Top
-    const std::string SnapCurrentWindow2Top::sname() noexcept {
-        return "snap_current_window_to_top" ;
-    }
-
-    void SnapCurrentWindow2Top::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    SnapCurrentWindow2Top::SnapCurrentWindow2Top()
+    : BindedFuncCreator("snap_current_window_to_top")
+    {}
+    void SnapCurrentWindow2Top::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
             rect.top    = mrect.top ;
@@ -126,19 +123,21 @@ namespace vind
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
     }
-
-    //SnapCurrentWindow2Bottom
-    const std::string SnapCurrentWindow2Bottom::sname() noexcept {
-        return "snap_current_window_to_bottom" ;
+    void SnapCurrentWindow2Top::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SnapCurrentWindow2Top::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
-    void SnapCurrentWindow2Bottom::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
 
+    //SnapCurrentWindow2Bottom
+    SnapCurrentWindow2Bottom::SnapCurrentWindow2Bottom()
+    : BindedFuncCreator("snap_current_window_to_bottom")
+    {}
+    void SnapCurrentWindow2Bottom::sprocess() {
         auto calc_half_size = [] (RECT& rect, const RECT& mrect) {
             rect.left   = mrect.left ;
             rect.top    = mrect.top + screenmetrics::height(mrect) / 2 ;
@@ -151,5 +150,13 @@ namespace vind
         } ;
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
+    }
+    void SnapCurrentWindow2Bottom::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SnapCurrentWindow2Bottom::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

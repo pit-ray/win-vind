@@ -1,12 +1,14 @@
 #include "resize_window_ctrl.hpp"
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/sizer.h>
+
 #include "enable_gcc_warning.hpp"
 
+#include "ctrl_assets/spin_wl.hpp"
 #include "io_params.hpp"
 #include "ui_translator.hpp"
-#include "ctrl_assets/spin_wl.hpp"
 
 namespace wxGUI
 {

@@ -3,7 +3,9 @@
 #include "wxvcdef.hpp"
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/propdlg.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include <memory>

@@ -3,22 +3,19 @@
 
 #include <memory>
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    class SCRedo : public BindedFuncWithCreator<SCRedo> {
+    class SCRedo : public BindedFuncCreator<SCRedo> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit SCRedo() ;
         virtual ~SCRedo() noexcept ;
@@ -30,18 +27,15 @@ namespace vind
     } ;
 
 
-    struct SCUndo : public BindedFuncWithCreator<SCUndo> {
+    struct SCUndo : public BindedFuncCreator<SCUndo> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit SCUndo() ;
         virtual ~SCUndo() noexcept ;

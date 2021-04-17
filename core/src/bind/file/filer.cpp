@@ -4,6 +4,8 @@
 
 #include <memory>
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
@@ -11,17 +13,10 @@
 namespace vind
 {
     //SaveOpenedFile
-    const std::string SaveOpenedFile::sname() noexcept {
-        return "save_opened_file" ;
-    }
-
-    void SaveOpenedFile::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    SaveOpenedFile::SaveOpenedFile()
+    : BindedFuncCreator("save_opened_file")
+    {}
+    void SaveOpenedFile::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             RUNTIME_EXCEPT("The foreground window is not existed.") ;
@@ -31,23 +26,34 @@ namespace vind
 
         Sleep(500) ; //wait by openning the dialog for saving
         if(hwnd != GetForegroundWindow()) { //opened popup
-            Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
+            Change2Normal::sprocess(true) ;
         }
+    }
+    void SaveOpenedFile::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void SaveOpenedFile::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
 
     //OpenOtherFile
-    const std::string OpenOtherFile::sname() noexcept {
-        return "open_other_file" ;
-    }
-
-    void OpenOtherFile::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-        Change2Normal::sprocess(true, 1, nullptr, nullptr) ;
+    OpenOtherFile::OpenOtherFile()
+    : BindedFuncCreator("open_other_file")
+    {}
+    void OpenOtherFile::sprocess() {
+        Change2Normal::sprocess(true) ;
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
+    }
+    void OpenOtherFile::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void OpenOtherFile::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+
     }
 }

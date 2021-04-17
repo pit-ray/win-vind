@@ -1,11 +1,11 @@
 #ifndef _JUMP_KEYBRD_HPP
 #define _JUMP_KEYBRD_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    class Jump2Any : public BindedFuncWithCreator<Jump2Any> {
+    class Jump2Any : public BindedFuncCreator<Jump2Any> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -20,12 +20,9 @@ namespace vind
         Jump2Any(const Jump2Any&)            = delete ;
         Jump2Any& operator=(const Jump2Any&) = delete ;
 
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         void load_config() override ;
     } ;

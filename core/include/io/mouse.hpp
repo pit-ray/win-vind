@@ -40,6 +40,8 @@ namespace vind
         inline void hscroll(T&& scr_delta) {
             return _scroll_core(MOUSEEVENTF_HWHEEL, std::forward<T>(scr_delta)) ;
         }
+
+        void move_cursor(int dx, int dy) ;
     }
 }
 

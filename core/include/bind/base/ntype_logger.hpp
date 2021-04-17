@@ -17,14 +17,10 @@ namespace vind
         virtual bool parse_head_number(KeyLog& log) ;
 
         virtual int logging_first_log(const KeyLog& log) ;
-
         virtual int logging_pressing_log(const KeyLog& log) ;
-
         virtual int logging_sequence_log(const KeyLog& log) ;
 
         virtual int do_logging_state(const KeyLog& log) ;
-
-        virtual bool is_changed() const noexcept override ;
 
     public:
         explicit NTypeLogger() ;
@@ -45,8 +41,6 @@ namespace vind
 
         virtual void accept() noexcept ;
         virtual void ignore() noexcept ;
-
-        virtual void update() override ;
     } ;
 }
 

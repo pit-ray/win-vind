@@ -1,17 +1,19 @@
 #include "wx_shortcut_apps.hpp"
 
 #include "disable_gcc_warning.hpp"
-#include <wx/sizer.h>
-#include <wx/stattext.h>
+
+#include <wx/button.h>
 #include <wx/filepicker.h>
 #include <wx/listctrl.h>
-#include <wx/button.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+
 #include "enable_gcc_warning.hpp"
 
-#include "wx_constant.hpp"
 #include "coreio/err_logger.hpp"
-#include "ui_translator.hpp"
 #include "io_params.hpp"
+#include "ui_translator.hpp"
+#include "wx_constant.hpp"
 
 namespace wxGUI
 {

@@ -1,23 +1,23 @@
 #include "opt/option_loader.hpp"
 
-#include <vector>
-#include <memory>
 #include <algorithm>
+#include <memory>
+#include <vector>
 
 #include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
 
 #include "opt/autotrack_popup.hpp"
 #include "opt/dedicate_to_window.hpp"
-#include "opt/virtual_cmd_line.hpp"
 #include "opt/suppress_for_vim.hpp"
+#include "opt/virtual_cmd_line.hpp"
 
 //internal linkage
 namespace
 {
     using namespace vind ;
 
-    std::vector<op::shp_t> g_vpop {
+    std::vector<op::SPtr> g_vpop {
         AutotrackPopup::create(),
         VirtualCmdLine::create(),
         Dedicate2Window::create(),

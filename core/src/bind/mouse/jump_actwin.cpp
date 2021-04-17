@@ -1,23 +1,18 @@
 #include "bind/mouse/jump_actwin.hpp"
 
+#include <stdio.h>
 #include <windows.h>
 
+#include "bind/base/ntype_logger.hpp"
 #include "util/def.hpp"
 
 namespace vind
 {
     //Jump2ActiveWindow
-    const std::string Jump2ActiveWindow::sname() noexcept {
-        return "jump_to_active_window" ;
-    }
-
-    void Jump2ActiveWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    Jump2ActiveWindow::Jump2ActiveWindow()
+    : BindedFuncCreator("jump_to_active_window")
+    {}
+    void Jump2ActiveWindow::sprocess() {
         const auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
             throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
@@ -32,5 +27,13 @@ namespace vind
         auto&& ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
 
         SetCursorPos(xpos, ypos) ;
+    }
+    void Jump2ActiveWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void Jump2ActiveWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

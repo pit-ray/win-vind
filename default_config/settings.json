@@ -33,12 +33,12 @@
 
     },
     "cursor_acceleration": {
-        "value": 80,
+        "value": 95,
         "en": "Cursor Acceleration",
         "ja": "カーソルの加速度"
     },
     "cursor_weight": {
-        "value": 350,
+        "value": 250,
         "en": "Cursor Weight",
         "ja": "カーソルの重さ"
     },
@@ -48,12 +48,12 @@
         "ja": "カーソルの最大速度"
     },
     "yscroll_speed": {
-        "value": 15,
+        "value": 30,
         "en": "Vertical Scroll Speed",
         "ja": "縦スクロールの速度"
     },
     "xscroll_speed": {
-        "value": 4,
+        "value": 10,
         "en": "Horizontal Scroll Speed",
         "ja": "横スクロールの速度"
     },

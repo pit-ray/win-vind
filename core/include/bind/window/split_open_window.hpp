@@ -1,26 +1,22 @@
 #ifndef _SPLIT_OPEN_WINDOW_HPP
 #define _SPLIT_OPEN_WINDOW_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    struct OpenNewCurWinWithHorizontalSplit : public BindedFuncWithCreator<OpenNewCurWinWithHorizontalSplit> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct OpenNewCurWinWithHorizontalSplit : public BindedFuncCreator<OpenNewCurWinWithHorizontalSplit> {
+        explicit OpenNewCurWinWithHorizontalSplit() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct OpenNewCurWinWithVerticalSplit : public BindedFuncWithCreator<OpenNewCurWinWithVerticalSplit> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct OpenNewCurWinWithVerticalSplit : public BindedFuncCreator<OpenNewCurWinWithVerticalSplit> {
+        explicit OpenNewCurWinWithVerticalSplit() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 }
 

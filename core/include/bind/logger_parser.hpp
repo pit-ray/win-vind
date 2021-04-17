@@ -2,8 +2,10 @@
 #define _LOGGER_PARSER_HPP
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
+
+#include "bind/bindings_def.hpp"
 
 namespace vind
 {
@@ -34,11 +36,15 @@ namespace vind
         void append_binding_list(const std::vector<std::string>& list) ;
         void append_binding_list(std::vector<std::string>&& list) ;
 
+        void share_parsed_binding_list(const std::shared_ptr<CommandList>& cmdlist) ;
+
         void reset_binding(const std::string& command) ;
         void reset_binding(std::string&& command) ;
 
         void reset_binding_list(const std::vector<std::string>& list) ;
         void reset_binding_list(std::vector<std::string>&& list) ;
+
+        void reset_binding_list() ;
 
         void unbind_function() noexcept ;
 
@@ -46,6 +52,7 @@ namespace vind
         void bind_function(std::shared_ptr<BindedFunc>&& func) ;
 
         bool has_function() const noexcept ;
+        bool has_bindings() const noexcept ;
 
         const std::shared_ptr<BindedFunc>& get_func() const noexcept ;
 
@@ -54,12 +61,12 @@ namespace vind
         std::size_t state_stack_size() const noexcept ;
 
         void reset_state() noexcept ;
-        void undo_state(std::size_t n) ;
+        void backward_state(std::size_t n) ;
 
         bool is_accepted() const noexcept ;
         bool is_rejected() const noexcept ;
         bool is_waiting() const noexcept ;
-        bool is_rejected_with_headsys_ready() const noexcept ;
+        bool is_rejected_with_ready() const noexcept ;
     } ;
 }
 

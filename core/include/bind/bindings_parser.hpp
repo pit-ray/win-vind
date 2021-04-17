@@ -1,17 +1,16 @@
 #ifndef _BINDINGS_PARSER_HPP
 #define _BINDINGS_PARSER_HPP
 
-#include "bind/base/mode.hpp"
+#include <string>
 #include <vector>
-#include "bind/base/bindings_matcher.hpp"
+
+#include "bind/base/mode.hpp"
+#include "bind/bindings_def.hpp"
 
 namespace vind
 {
     namespace bindparser
     {
-        using KeySet  = std::vector<unsigned char> ;
-        using Command = std::vector<KeySet> ;
-
         //
         // It parses a ascii, which consist of a character, as keyset class.
         // KeySet: std::vector<unsigned char>
@@ -57,36 +56,18 @@ namespace vind
         //
         const Command parse_string_binding(std::string cmdstr) ;
 
+
         //
-        // It parses a string command as Command.
-        // Command:: std::vector<std::vector<unsigned char>>
+        // It parses a string mode with brackets.
+        // Ex)
+        //      <guin>  ->  Mode::Normal
         //
-        // Note: If it includes some mode strings,
-        //       will give empty value to cmd and return value other than Mode::None.
+        // If Failed, return Mode::None.
         //
-        //  Ex)
-        //      abc     -> {
-        //                     {KEYCODE_A},
-        //                     {KEYCODE_B},
-        //                     {KEYCODE_C}
-        //                 }
-        //
-        //                 return Mode::None
-        //
-        //      <s-d>e  -> {
-        //                     {KEYCODE_SHIFT, KEYCODE_D},
-        //                     {KEYCODE_E},
-        //                 }
-        //
-        //                 return Mode::None
-        //
-        //      <guin>  -> {}
-        //                 return Mode::Normal
-        //
-        mode::Mode parse_bindings(Command& cmd, std::string cmdstr) ;
+        mode::Mode parse_string_modecode(std::string modestr) ;
 
         namespace debug {
-            std::string print(const BindingsMatcher::cmdlist_t& list) ;
+            std::string print(const CommandList& list) ;
         }
     }
 }

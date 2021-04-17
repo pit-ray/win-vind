@@ -4,7 +4,9 @@
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
+
 #include <tuple>
+
 #include "enable_gcc_warning.hpp"
 
 #include <string>

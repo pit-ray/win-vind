@@ -50,10 +50,8 @@ add_library(time STATIC
 
 add_library(base STATIC
     src/bind/base/binded_func.cpp
-    src/bind/base/bindings_matcher.cpp
     src/bind/base/char_logger.cpp
     src/bind/base/key_logger_base.cpp
-    src/bind/base/keycode_logger.cpp
     src/bind/base/mode.cpp
     src/bind/base/ntype_logger.cpp
 )
@@ -73,6 +71,7 @@ target_link_libraries(dev base)
 add_library(emu STATIC
     src/bind/emu/edi_change_mode.cpp
     src/bind/emu/edi_edit.cpp
+    src/bind/emu/edi_motion.cpp
     src/bind/emu/edi_jump_caret.cpp
     src/bind/emu/edi_layout.cpp
     src/bind/emu/edi_move_caret.cpp
@@ -145,7 +144,7 @@ target_link_libraries(window base Dwmapi)
 
 
 add_library(bind STATIC
-    src/bind/bind.cpp
+    src/bind/func_finder.cpp
     src/bind/bindings_json_parser.cpp
     src/bind/bindings_lists.cpp
     src/bind/bindings_parser.cpp

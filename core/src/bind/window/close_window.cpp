@@ -1,22 +1,24 @@
 #include "bind/window/close_window.hpp"
 
+#include "bind/base/ntype_logger.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
 
 namespace vind
 {
     //CloseCurrentWindow
-    const std::string CloseCurrentWindow::sname() noexcept {
-        return "close_current_window" ;
+    CloseCurrentWindow::CloseCurrentWindow()
+    : BindedFuncCreator("close_current_window")
+    {}
+    void CloseCurrentWindow::sprocess() {
+        keybrd::pushup(KEYCODE_LALT, KEYCODE_F4) ;
     }
-
-    void CloseCurrentWindow::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(first_call) {
-            keybrd::pushup(KEYCODE_LALT, KEYCODE_F4) ;
+    void CloseCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
         }
+    }
+    void CloseCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

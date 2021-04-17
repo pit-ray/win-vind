@@ -1,8 +1,8 @@
 #include "io/display_text_painter.hpp"
 
-#include "util/def.hpp"
-#include "util/color.hpp"
 #include "io/screen_metrics.hpp"
+#include "util/color.hpp"
+#include "util/def.hpp"
 
 #include <cstring>
 #include <memory>

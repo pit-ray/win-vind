@@ -1,28 +1,17 @@
 #include "bind/window/resize_window.hpp"
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/key_logger_base.hpp"
+#include "bind/base/ntype_logger.hpp"
+#include "bind/window/window_utility.hpp"
 #include "coreio/i_params.hpp"
 #include "io/screen_metrics.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
-#include "bind/window/window_utility.hpp"
 
 namespace
 {
     using namespace vind ;
-
-    inline auto compute_resize_delta(
-            unsigned int repeat_num,
-            const CharLogger* const parent_charlgr,
-            const std::string& param_name) {
-
-        if(parent_charlgr != nullptr) {
-            return static_cast<LONG>(keyloggerutil::extract_num(parent_charlgr->to_str())) ;
-        }
-        else {
-            return static_cast<LONG>(iparams::get_i(param_name) * repeat_num) ;
-        }
-    }
-
 
     //
     // Resize the width of a foreground window in a foreground monitor.
@@ -107,64 +96,54 @@ namespace
 namespace vind
 {
     //ResizeWindowWidth
-    const std::string ResizeWindowWidth::sname() noexcept {
-        return "resize_window_width" ;
-    }
-
-    void ResizeWindowWidth::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
-
+    ResizeWindowWidth::ResizeWindowWidth()
+    : BindedFuncCreator("resize_window_width")
+    {}
+    void ResizeWindowWidth::sprocess(long width) {
+        if(width <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
-
-        auto str = parent_charlgr->to_str() ;
-        if(str.empty()) return ;
-
-        auto width = static_cast<LONG>(keyloggerutil::extract_num(str)) ;
-
         resize_in_monitor_width(width, fginfo) ;
     }
+    void ResizeWindowWidth::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void ResizeWindowWidth::sprocess(const CharLogger& parent_lgr) {
+        auto str = parent_lgr.to_str() ;
+        if(str.empty()) return ;
+        sprocess(keyloggerutil::extract_num(str)) ;
+    }
+
 
     //IncreaseWindowWidth
-    const std::string IncreaseWindowWidth::sname() noexcept {
-        return "increase_window_width" ;
-    }
-
-    void IncreaseWindowWidth::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
+    IncreaseWindowWidth::IncreaseWindowWidth()
+    : BindedFuncCreator("increase_window_width")
+    {}
+    void IncreaseWindowWidth::sprocess(long delta) {
+        if(delta <= 0) return ;
 
         windowutil::ForegroundInfo fginfo ;
-
-        auto width = screenmetrics::width(fginfo.rect) + \
-            compute_resize_delta(
-                repeat_num, parent_charlgr, "window_width_delta") ;
-
+        auto width = screenmetrics::width(fginfo.rect) + delta ;
         resize_in_monitor_width(width, fginfo) ;
     }
-
-    //DecreaseWindowWidth
-    const std::string DecreaseWindowWidth::sname() noexcept {
-        return "decrease_window_width" ;
+    void IncreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(iparams::get_l("window_width_delta") * parent_lgr.get_head_num()) ;
+        }
+    }
+    void IncreaseWindowWidth::sprocess(const CharLogger& parent_lgr) {
+        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
     }
 
-    void DecreaseWindowWidth::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
 
+    //DecreaseWindowWidth
+    DecreaseWindowWidth::DecreaseWindowWidth()
+    : BindedFuncCreator("decrease_window_width")
+    {}
+    void DecreaseWindowWidth::sprocess(long delta)  {
+        if(delta <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
-
-        const auto delta = compute_resize_delta(
-                repeat_num, parent_charlgr, "window_width_delta") ;
 
         auto width = screenmetrics::width(fginfo.rect) - delta ;
         if(width <= 0) { 
@@ -176,66 +155,66 @@ namespace vind
                 fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
                 width, screenmetrics::height(fginfo.rect)) ;
     }
+    void DecreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(iparams::get_l("window_width_delta") * parent_lgr.get_head_num()) ;
+        }
+    }
+    void DecreaseWindowWidth::sprocess(const CharLogger& parent_lgr) {
+        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
+    }
+
 
     //ResizeWindowHeight
-    const std::string ResizeWindowHeight::sname() noexcept {
-        return "resize_window_height" ;
-    }
-
-    void ResizeWindowHeight::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
-
+    ResizeWindowHeight::ResizeWindowHeight()
+    : BindedFuncCreator("resize_window_height")
+    {}
+    void ResizeWindowHeight::sprocess(long height) {
+        if(height == 0) return ;
         windowutil::ForegroundInfo fginfo ;
-
-        auto str = parent_charlgr->to_str() ;
-        if(str.empty()) return ;
-
-        auto height = static_cast<LONG>(keyloggerutil::extract_num(str)) ;
-
         resize_in_monitor_height(height, fginfo) ;
     }
+    void ResizeWindowHeight::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void ResizeWindowHeight::sprocess(const CharLogger& parent_lgr) {
+        auto str = parent_lgr.to_str() ;
+        if(str.empty()) return ;
+        sprocess(keyloggerutil::extract_num(str)) ;
+    }
+
 
     //IncreaseWindowHeight
-    const std::string IncreaseWindowHeight::sname() noexcept {
-        return "increase_window_height" ;
-    }
-
-    void IncreaseWindowHeight::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
-
+    IncreaseWindowHeight::IncreaseWindowHeight()
+    : BindedFuncCreator("increase_window_height")
+    {}
+    void IncreaseWindowHeight::sprocess(long delta) {
+        if(delta <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
 
-        auto height = screenmetrics::height(fginfo.rect) + \
-            compute_resize_delta(
-                repeat_num, parent_charlgr, "window_height_delta") ;
-
+        auto height = screenmetrics::height(fginfo.rect) + delta ;
         resize_in_monitor_height(height, fginfo) ;
     }
-
-    //DecreaseWindowHeight
-    const std::string DecreaseWindowHeight::sname() noexcept {
-        return "decrease_window_height" ;
+    void IncreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(iparams::get_l("window_height_delta") * parent_lgr.get_head_num()) ;
+        }
+    }
+    void IncreaseWindowHeight::sprocess(const CharLogger& parent_lgr) {
+        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
     }
 
-    void DecreaseWindowHeight::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
+
+    //DecreaseWindowHeight
+    DecreaseWindowHeight::DecreaseWindowHeight()
+    : BindedFuncCreator("decrease_window_height")
+    {}
+    void DecreaseWindowHeight::sprocess(long delta) {
+        if(delta <= 0) return ;
 
         windowutil::ForegroundInfo fginfo ;
-
-        const auto delta = compute_resize_delta(
-                repeat_num, parent_charlgr, "window_height_delta") ;
 
         auto height = screenmetrics::height(fginfo.rect) - delta ;
         if(height <= 0) { 
@@ -246,5 +225,13 @@ namespace vind
         windowutil::resize(
                 fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
                 screenmetrics::width(fginfo.rect), height) ;
+    }
+    void DecreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(iparams::get_l("window_height_delta") * parent_lgr.get_head_num()) ;
+        }
+    }
+    void DecreaseWindowHeight::sprocess(const CharLogger& parent_lgr) {
+        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
     }
 }

@@ -1,7 +1,9 @@
 #include "choice_wl.hpp"
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/stattext.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include "choices_manager.hpp"

@@ -1,15 +1,17 @@
 #include "easy_click_ctrl.hpp"
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/sizer.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"
 #include "ui_translator.hpp"
 
-#include "ctrl_assets/spin_wl.hpp"
-#include "ctrl_assets/slider_wl.hpp"
 #include "ctrl_assets/clrpicker_wl.hpp"
+#include "ctrl_assets/slider_wl.hpp"
+#include "ctrl_assets/spin_wl.hpp"
 #include "ctrl_assets/text_wl.hpp"
 
 namespace wxGUI

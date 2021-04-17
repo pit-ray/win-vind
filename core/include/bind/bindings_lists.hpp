@@ -3,10 +3,12 @@
 
 #include "bind/base/binded_func.hpp"
 
+#include <vector>
+
 namespace vind
 {
     namespace bindingslists {
-        const std::vector<BindedFunc::shp_t> get() ;
+        const std::vector<BindedFunc::SPtr> get() ;
     }
 }
 #endif

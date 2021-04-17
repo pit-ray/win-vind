@@ -1,8 +1,8 @@
 #ifndef _KEY_LOGGER_BASE_HPP
 #define _KEY_LOGGER_BASE_HPP
 
-#include <vector>
 #include <memory>
+#include <vector>
 #include "key/key_log.hpp"
 
 namespace vind
@@ -54,9 +54,7 @@ namespace vind
         bool operator==(const KeyLoggerBase& rhs) const ;
         bool operator!=(const KeyLoggerBase& rhs) const ;
 
-        virtual int logging_state() ;
-        virtual void update() = 0 ;
-        virtual bool is_changed() const noexcept = 0 ;
+        virtual int logging_state() = 0 ;
     } ;
 
     namespace keyloggerutil {

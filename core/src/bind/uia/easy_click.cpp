@@ -1,6 +1,8 @@
 #include "bind/uia/easy_click.hpp"
 
+#include "bind/base/char_logger.hpp"
 #include "disable_gcc_warning.hpp"
+
 #include <stdexcept>
 #include <windows.h>
 #include <wingdi.h>
@@ -17,12 +19,16 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
 #include "enable_gcc_warning.hpp"
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "bind/bind.hpp"
 #include "bind/uia/uia.hpp"
 #include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
+#include "entry.hpp"
 #include "io/display_text_painter.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
@@ -33,7 +39,6 @@
 #include "util/color.hpp"
 #include "util/container.hpp"
 #include "util/winwrap.hpp"
-#include "entry.hpp"
 
 
 namespace
@@ -222,91 +227,112 @@ namespace
             }
         }
     }
+    bool g_is_initialized = false ;
 
+    void initialize_global_uia() {
+        decltype(auto) cuia = uiauto::get_global_cuia() ;
+
+        IUIAutomationCacheRequest* cr_raw ;
+        if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
+            throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
+        }
+        decltype(auto) g_cache_req = get_cache_req() ;
+        g_cache_req.reset(cr_raw) ;
+
+        //g_cache_req->AddProperty(UIA_ClickablePointPropertyId) ;
+        g_cache_req->AddProperty(UIA_IsEnabledPropertyId) ;
+        g_cache_req->AddProperty(UIA_IsOffscreenPropertyId) ;
+        g_cache_req->AddProperty(UIA_IsKeyboardFocusablePropertyId) ;
+        g_cache_req->AddProperty(UIA_BoundingRectanglePropertyId) ;
+
+        if(FAILED(g_cache_req->put_AutomationElementMode(
+                        AutomationElementMode::AutomationElementMode_None))) {
+            throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
+        }
+        if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
+            throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
+        }
+
+        //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
+        g_is_initialized = true ;
+    }
 }
 
 namespace vind
 {
     //EasyClickLeft
-    const std::string EasyClickLeft::sname() noexcept {
-        return "easy_click_left" ;
+    EasyClickLeft::EasyClickLeft()
+    : BindedFuncCreator("easy_click_left")
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
     }
-    void EasyClickLeft::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickLeft::sprocess() {
         do_easy_click(KEYCODE_MOUSE_LEFT) ;
     }
+    void EasyClickLeft::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EasyClickLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //EasyClickRight
-    const std::string EasyClickRight::sname() noexcept {
-        return "easy_click_right" ;
+    EasyClickRight::EasyClickRight()
+    : BindedFuncCreator("easy_click_right")
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
     }
-    void EasyClickRight::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickRight::sprocess() {
         do_easy_click(KEYCODE_MOUSE_RIGHT) ;
     }
+    void EasyClickRight::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EasyClickRight::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //EasyClickMid
-    const std::string EasyClickMid::sname() noexcept {
-        return "easy_click_mid" ;
+    EasyClickMid::EasyClickMid()
+    : BindedFuncCreator("easy_click_mid")
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
     }
-    void EasyClickMid::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickMid::sprocess() {
         do_easy_click(KEYCODE_MOUSE_MID) ;
     }
+    void EasyClickMid::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EasyClickMid::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
 
     //EasyClickHover
-    const std::string EasyClickHover::sname() noexcept {
-        return "easy_click_hover" ;
+    EasyClickHover::EasyClickHover()
+    : BindedFuncCreator("easy_click_hover")
+    {
+        if(!g_is_initialized) initialize_global_uia() ;
     }
-    void EasyClickHover::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    void EasyClickHover::sprocess() {
         do_easy_click(KEYCODE_UNDEFINED) ;
     }
-
-    namespace easyclick {
-
-        void initialize() {
-            decltype(auto) cuia = uiauto::get_global_cuia() ;
-
-            IUIAutomationCacheRequest* cr_raw ;
-            if(FAILED(cuia->CreateCacheRequest(&cr_raw))) {
-                throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
-            }
-            decltype(auto) g_cache_req = get_cache_req() ;
-            g_cache_req.reset(cr_raw) ;
-
-            //g_cache_req->AddProperty(UIA_ClickablePointPropertyId) ;
-            g_cache_req->AddProperty(UIA_IsEnabledPropertyId) ;
-            g_cache_req->AddProperty(UIA_IsOffscreenPropertyId) ;
-            g_cache_req->AddProperty(UIA_IsKeyboardFocusablePropertyId) ;
-            g_cache_req->AddProperty(UIA_BoundingRectanglePropertyId) ;
-
-            if(FAILED(g_cache_req->put_AutomationElementMode(
-                            AutomationElementMode::AutomationElementMode_None))) {
-                throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
-            }
-            if(FAILED(g_cache_req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
-                throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
-            }
-
-            //g_cache_req->put_TreeScope(static_cast<TreeScope>(TreeScope::TreeScope_Children | TreeScope::TreeScope_Element)) ;
+    void EasyClickHover::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
         }
+    }
+    void EasyClickHover::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }
 
@@ -695,30 +721,28 @@ namespace
             const unsigned char sendkey) {
 
         keyabsorber::InstantKeyAbsorber ika ;
-        KeycodeLogger lgr ;
+        CharLogger lgr{
+            KEYCODE_ESC,
+            KEYCODE_BKSPACE
+        };
 
         while(vind::update_background() && continue_running) {
-            lgr.update() ;
-            if(!lgr.is_changed()) {
-                continue ;
-            }
-
-            if(lgr.latest().empty()) {
-                lgr.remove_from_back(1) ;
+            if(!CHAR_LOGGED(lgr.logging_state())) {
                 continue ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_ESC)) {
+                keyabsorber::release_virtually(KEYCODE_ESC) ;
                 return ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
+                keyabsorber::release_virtually(KEYCODE_BKSPACE) ;
                 if(lgr.size() == 1) {
                     return ;
                 }
 
                 lgr.remove_from_back(2) ;
-                keyabsorber::release_virtually(KEYCODE_BKSPACE) ;
 
                 std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic ---------- (1)
 
@@ -727,10 +751,6 @@ namespace
                 continue ; //------------------------------------------------------ (1)
             }
 
-            if(keybind::is_invalid_log(lgr.latest(), keybind::InvalidPolicy::AllSystemKey)) {
-                lgr.remove_from_back(1) ;
-                continue ;
-            }
 
             std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic -------------- (2)
 

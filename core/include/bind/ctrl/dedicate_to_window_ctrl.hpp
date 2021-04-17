@@ -1,26 +1,22 @@
 #ifndef _DEDICATE_TO_WINDOW_CTRL_HPP
 #define _DEDICATE_TO_WINDOW_CTRL_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    struct EnableTargetingOfDedicate2Window : public BindedFuncWithCreator<EnableTargetingOfDedicate2Window> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct EnableTargetingOfDedicate2Window : public BindedFuncCreator<EnableTargetingOfDedicate2Window> {
+        explicit EnableTargetingOfDedicate2Window() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct DisableTargetingOfDedicate2Window : public BindedFuncWithCreator<DisableTargetingOfDedicate2Window> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct DisableTargetingOfDedicate2Window : public BindedFuncCreator<DisableTargetingOfDedicate2Window> {
+        explicit DisableTargetingOfDedicate2Window() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 }
 

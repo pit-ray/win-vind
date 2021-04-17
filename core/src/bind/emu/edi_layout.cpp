@@ -1,9 +1,11 @@
 #include "bind/emu/edi_layout.hpp"
 
-#include "io/keybrd.hpp"
 #include "bind/base/mode.hpp"
+#include "bind/base/ntype_logger.hpp"
+#include "io/keybrd.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
+
 
 namespace vind
 {
@@ -12,46 +14,30 @@ namespace vind
     } ;
 
     EdiNRemoveEOL::EdiNRemoveEOL()
-    : pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("edi_n_remove_EOL"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     EdiNRemoveEOL::~EdiNRemoveEOL() noexcept                    = default ;
     EdiNRemoveEOL::EdiNRemoveEOL(EdiNRemoveEOL&&)               = default ;
     EdiNRemoveEOL& EdiNRemoveEOL::operator=(EdiNRemoveEOL&&)    = default ;
 
-    const std::string EdiNRemoveEOL::sname() noexcept {
-        return "edi_n_remove_EOL" ;
-    }
-    void EdiNRemoveEOL::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        auto remove = [] {
+    void EdiNRemoveEOL::sprocess(unsigned int repeat_num) const {
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_END) ;
             keybrd::pushup(KEYCODE_DELETE) ;
-        } ;
-
-        using mode::change_mode ;
-        using mode::Mode ;
-
-        if(repeat_num == 1) {
-            if(first_call) {
-                pimpl->ksr.reset() ;
-                remove() ;
-            }
-            else if(pimpl->ksr.is_pressed()) {
-                remove() ;
-            }
-            return ;
         }
-
-        //repeat_num >= 2
-        if(first_call) {
-            for(unsigned int i = 0 ; i < repeat_num ; i ++)
-                remove() ;
-
+    }
+    void EdiNRemoveEOL::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
         }
+        else if(pimpl->ksr.is_pressed()) {
+            sprocess(1) ;
+        }
+    }
+    void EdiNRemoveEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess(1) ;
     }
 }

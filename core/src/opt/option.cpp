@@ -1,5 +1,5 @@
-#include "opt/option.hpp"
 #include "coreio/err_logger.hpp"
+#include "opt/option.hpp"
 
 #include <iostream>
 #include <mutex>

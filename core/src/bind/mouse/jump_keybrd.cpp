@@ -9,18 +9,19 @@
 #include <unordered_map>
 #include <utility>
 
+#include "bind/base/ntype_logger.hpp"
+#include "bind/mouse/jump_keybrd.hpp"
+#include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
+#include "coreio/path.hpp"
+#include "entry.hpp"
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
 #include "key/keycodecvt.hpp"
-#include "coreio/err_logger.hpp"
-#include "bind/mouse/jump_keybrd.hpp"
-#include "coreio/path.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
-#include "entry.hpp"
 
 
 namespace vind
@@ -36,25 +37,15 @@ namespace vind
     } ;
 
     Jump2Any::Jump2Any()
-    :pimpl(std::make_unique<Impl>())
+    : BindedFuncCreator("jump_to_any"),
+      pimpl(std::make_unique<Impl>())
     {}
     Jump2Any::~Jump2Any() noexcept            = default ;
     Jump2Any::Jump2Any(Jump2Any&&)            = default ;
     Jump2Any& Jump2Any::operator=(Jump2Any&&) = default ;
 
-    const std::string Jump2Any::sname() noexcept {
-        return "jump_to_any" ;
-    }
-
-    void Jump2Any::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) const {
-        if(!first_call) return ;
-
+    void Jump2Any::sprocess() const {
         //reset key state (binded key)
-        
         keyabsorber::InstantKeyAbsorber ika ;
 
         //ignore toggle keys (for example, CapsLock, NumLock, IME....)
@@ -101,6 +92,15 @@ namespace vind
             }
         }
     }
+    void Jump2Any::sprocess(NTypeLogger& parent_lgr) const {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void Jump2Any::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+        sprocess() ;
+    }
+
 
     void Jump2Any::load_config() {
         //initilize

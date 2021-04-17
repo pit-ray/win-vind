@@ -9,6 +9,7 @@
 #include "bind/emu/edi_edit.hpp"
 #include "bind/emu/edi_jump_caret.hpp"
 #include "bind/emu/edi_layout.hpp"
+#include "bind/emu/edi_motion.hpp"
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/emu/edi_replace.hpp"
 
@@ -53,8 +54,8 @@
 namespace vind
 {
     namespace bindingslists {
-        const std::vector<BindedFunc::shp_t> get() {
-            std::vector<BindedFunc::shp_t> tmp {
+        const std::vector<BindedFunc::SPtr> get() {
+            std::vector<BindedFunc::SPtr> tmp {
                 ArrangeWindows::create(),
                 BackwardUINavigation::create(),
                 CBBackSpace::create(),

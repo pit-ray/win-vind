@@ -1,62 +1,50 @@
 #ifndef _RESIZE_WINDOW_HPP
 #define _RESIZE_WINDOW_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    struct ResizeWindowWidth: public BindedFuncWithCreator<ResizeWindowWidth> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct ResizeWindowWidth: public BindedFuncCreator<ResizeWindowWidth> {
+        explicit ResizeWindowWidth() ;
+        static void sprocess(long width=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct IncreaseWindowWidth : public BindedFuncWithCreator<IncreaseWindowWidth> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct IncreaseWindowWidth : public BindedFuncCreator<IncreaseWindowWidth> {
+        explicit IncreaseWindowWidth() ;
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct DecreaseWindowWidth: public BindedFuncWithCreator<DecreaseWindowWidth> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct DecreaseWindowWidth: public BindedFuncCreator<DecreaseWindowWidth> {
+        explicit DecreaseWindowWidth() ;
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct ResizeWindowHeight : public BindedFuncWithCreator<ResizeWindowHeight> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct ResizeWindowHeight : public BindedFuncCreator<ResizeWindowHeight> {
+        explicit ResizeWindowHeight() ;
+        static void sprocess(long height=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct IncreaseWindowHeight : public BindedFuncWithCreator<IncreaseWindowHeight> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct IncreaseWindowHeight : public BindedFuncCreator<IncreaseWindowHeight> {
+        explicit IncreaseWindowHeight() ;
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct DecreaseWindowHeight : public BindedFuncWithCreator<DecreaseWindowHeight> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct DecreaseWindowHeight : public BindedFuncCreator<DecreaseWindowHeight> {
+        explicit DecreaseWindowHeight() ;
+        static void sprocess(long delta=0) ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 }
 

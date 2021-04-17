@@ -8,9 +8,13 @@
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
+
 #include <nlohmann/json.hpp>
+
 #include "enable_gcc_warning.hpp"
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "bind/proc/external_app.hpp"
 #include "coreio/err_logger.hpp"
@@ -58,18 +62,11 @@ namespace vind
     }
 
     //StartShell
-    const std::string StartShell::sname() noexcept {
-        return "start_shell" ;
-    }
-
-    void StartShell::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    StartShell::StartShell()
+    : BindedFuncCreator("start_shell")
+    {}
+    void StartShell::sprocess() {
         try {
-
             util::create_process(path::HOME_PATH(), g_proc_list.at("shell")) ;
         }
         catch(const std::out_of_range&) {
@@ -78,7 +75,15 @@ namespace vind
         }
 
         Sleep(100) ; //wait until select window by OS.
-        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        Jump2ActiveWindow::sprocess() ;
+    }
+    void StartShell::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void StartShell::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
 
@@ -89,24 +94,13 @@ namespace vind
      */
 
     //StartAnyApp
-    const std::string StartAnyApp::sname() noexcept {
-        return "start_any_app" ;
-    }
-
-    void StartAnyApp::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const parent_charlgr) {
-        if(!first_call) return ;
-
-        if(!parent_charlgr)
-            throw LOGIC_EXCEPT("The passed parent logger is null") ;
-
-        auto cmd = parent_charlgr->to_str() ;
+    StartAnyApp::StartAnyApp()
+    : BindedFuncCreator("start_any_app")
+    {}
+    void StartAnyApp::sprocess(std::string cmd) {
         if(!cmd.empty()) {
             try {
-                util::create_process(".", g_proc_list.at(cmd.substr(1))) ;
+                util::create_process(".", g_proc_list.at(cmd)) ;
             }
             catch(const std::out_of_range&) {
                 VirtualCmdLine::msgout("e: Not a command") ;
@@ -114,8 +108,17 @@ namespace vind
             }
 
             Sleep(100) ; //wait until select window by OS.
-            Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+            Jump2ActiveWindow::sprocess() ;
         }
+    }
+    void StartAnyApp::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess("shell") ;
+        }
+    }
+    void StartAnyApp::sprocess(const CharLogger& parent_lgr) {
+        auto cmd = parent_lgr.to_str() ;
+        sprocess(cmd.substr(1)) ;
     }
 
     //must fix
@@ -124,36 +127,38 @@ namespace vind
     }
 
     //StartExplorer
-    const std::string StartExplorer::sname() noexcept {
-        return "start_explorer" ;
-    }
-
-    void StartExplorer::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-        //_create_process("explorer") ;
+    StartExplorer::StartExplorer()
+    : BindedFuncCreator("start_explorer")
+    {}
+    void StartExplorer::sprocess() {
         keybrd::pushup(KEYCODE_LWIN, KEYCODE_E) ;
-
         Sleep(100) ; //wait until select window by OS.
-        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        Jump2ActiveWindow::sprocess() ;
+    }
+    void StartExplorer::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void StartExplorer::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
     //OpenStartMenu
-    const std::string OpenStartMenu::sname() noexcept {
-        return "open_start_menu" ;
-    }
-
-    void OpenStartMenu::sprocess(
-            bool first_call,
-            unsigned int UNUSED(repeat_num),
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
+    OpenStartMenu::OpenStartMenu()
+    : BindedFuncCreator("open_start_menu")
+    {}
+    void OpenStartMenu::sprocess() {
         keybrd::pushup(KEYCODE_LWIN) ;
         Sleep(100) ; //wait until select window by OS.
-        Jump2ActiveWindow::sprocess(true, 1, nullptr, nullptr) ;
+        Jump2ActiveWindow::sprocess() ;
+    }
+    void OpenStartMenu::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void OpenStartMenu::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

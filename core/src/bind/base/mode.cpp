@@ -1,7 +1,7 @@
 #include "bind/base/mode.hpp"
 
-#include <unordered_map>
 #include <stdexcept>
+#include <unordered_map>
 
 namespace
 {

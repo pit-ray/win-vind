@@ -3,11 +3,13 @@
 #include "util/def.hpp"
 
 #include "disable_gcc_warning.hpp"
+
 #include <windows.h>
 #include "bind/uia/guid_definition.hpp"
 #include <oleauto.h>
 #include <winerror.h>
 #include <winuser.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include <memory>

@@ -1,22 +1,19 @@
 #ifndef _MOVE_CURSOR_HPP
 #define _MOVE_CURSOR_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    class MoveLeft : public BindedFuncWithCreator<MoveLeft> {
+    class MoveLeft : public BindedFuncCreator<MoveLeft> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(int delta=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit MoveLeft() ;
         virtual ~MoveLeft() noexcept ;
@@ -28,18 +25,15 @@ namespace vind
     } ;
 
 
-    class MoveRight : public BindedFuncWithCreator<MoveRight> {
+    class MoveRight : public BindedFuncCreator<MoveRight> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(int delta=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit MoveRight() ;
         virtual ~MoveRight() noexcept ;
@@ -51,18 +45,15 @@ namespace vind
     } ;
 
 
-    class MoveUp : public BindedFuncWithCreator<MoveUp> {
+    class MoveUp : public BindedFuncCreator<MoveUp> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(int delta=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit MoveUp() ;
         virtual ~MoveUp() noexcept ;
@@ -74,18 +65,15 @@ namespace vind
     } ;
 
 
-    class MoveDown : public BindedFuncWithCreator<MoveDown> {
+    class MoveDown : public BindedFuncCreator<MoveDown> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(int delta=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit MoveDown() ;
         virtual ~MoveDown() noexcept ;

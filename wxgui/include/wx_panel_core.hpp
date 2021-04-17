@@ -3,8 +3,10 @@
 #include "wxvcdef.hpp"
 
 #include "disable_gcc_warning.hpp"
-#include <wx/panel.h>
+
 #include <wx/bookctrl.h>
+#include <wx/panel.h>
+
 #include "enable_gcc_warning.hpp"
 
 namespace wxGUI

@@ -1,30 +1,26 @@
 #ifndef _MYWINDOW_CTRL_HPP
 #define _MYWINDOW_CTRL_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 #include <functional>
 
 namespace vind
 {
-    struct ShowConfigWindow : public BindedFuncWithCreator<ShowConfigWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct ShowConfigWindow : public BindedFuncCreator<ShowConfigWindow> {
+        explicit ShowConfigWindow() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
 
         static void register_show_func(std::function<void()> func) noexcept ;
     } ;
 
 
-    struct ExitConfigWindow : public BindedFuncWithCreator<ExitConfigWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct ExitConfigWindow : public BindedFuncCreator<ExitConfigWindow> {
+        explicit ExitConfigWindow() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
 
         static void register_exit_func(std::function<void()> func) noexcept ;
     } ;

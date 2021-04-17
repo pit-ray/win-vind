@@ -1,11 +1,11 @@
 #ifndef _SUPPRESS_FOR_VIM_HPP
 #define _SUPPRESS_FOR_VIM_HPP
 
-#include "option_with_creator.hpp"
+#include "option_creator.hpp"
 
 namespace vind
 {
-    class SuppressForVim : public OptionWithCreator<SuppressForVim>
+    class SuppressForVim : public OptionCreator<SuppressForVim>
     {
     private:
         void do_enable() const override ;

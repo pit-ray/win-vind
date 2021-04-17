@@ -2,7 +2,9 @@
 #define _WX_CONSTANT_HPP
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/gdicmn.h>
+
 #include "enable_gcc_warning.hpp"
 
 #define GOLDEN_WIDTH_RATIO  (1.618)

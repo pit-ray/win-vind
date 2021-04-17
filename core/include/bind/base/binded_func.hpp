@@ -4,28 +4,30 @@
 #include <memory>
 #include <string>
 
-#include "bind/base/bindings_matcher.hpp"
 #include "bind/base/mode.hpp"
-#include "bind/base/keycode_logger.hpp"
-#include "bind/base/char_logger.hpp"
 
 namespace vind
 {
+    class NTypeLogger ;
+    class CharLogger ;
+
     class BindedFunc {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        virtual void do_process(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const = 0 ;
+        virtual void error_process(const std::exception& e) const ;
+
+        virtual void do_process() const = 0 ;
+        virtual void do_process(NTypeLogger& parent_lgr) const = 0 ;
+        virtual void do_process(const CharLogger& parent_lgr) const = 0 ;
 
     public:
-        using shp_t = std::shared_ptr<BindedFunc> ;
+        using SPtr = std::shared_ptr<BindedFunc> ;
 
         explicit BindedFunc() ;
+        explicit BindedFunc(const std::string& name) ;
+        explicit BindedFunc(std::string&& name) ;
         virtual ~BindedFunc() noexcept ;
 
         BindedFunc(BindedFunc&&) ;
@@ -33,37 +35,14 @@ namespace vind
         BindedFunc(const BindedFunc&)            = delete ;
         BindedFunc& operator=(const BindedFunc&) = delete ;
 
-        virtual const std::string name() const noexcept = 0 ;
+        const std::string& name() const noexcept ;
+        std::size_t id() const noexcept ;
 
-        void process(
-                bool first_call=true,
-                unsigned int repeat_num=1,
-                KeycodeLogger* parent_keycodelgr=nullptr,
-                const CharLogger* const parent_charlgr=nullptr) const ;
+        void process() const ;
+        void process(NTypeLogger& parent_lgr) const ;
+        void process(const CharLogger& parent_lgr) const ;
 
-        void register_matcher(
-                const mode::Mode mode,
-                const BindingsMatcher::shp_t matcher) const ;
-        void register_matcher(
-                const unsigned char mode,
-                const BindingsMatcher::shp_t matcher) const ;
-
-        //[return] matched num in latest log
-        unsigned int validate_if_match(
-                const KeyLoggerBase& pc_lgr,
-                mode::Mode mode=mode::get_global_mode()) const ;
-
-        //[return] matched num in latest log
-        //The cost for computing is bigger than validate_if_match.
-        unsigned int validate_if_fullmatch(
-                const KeyLoggerBase& pc_lgr,
-                mode::Mode mode=mode::get_global_mode()) const ;
-
-        bool is_callable() const noexcept ;
         virtual bool is_for_moving_caret() const noexcept ;
-
-        bool is_matched_syskey_in_combined_bindings() const noexcept ;
-
         virtual void load_config() ;
     } ;
 }

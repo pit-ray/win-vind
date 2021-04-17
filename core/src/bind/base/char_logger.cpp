@@ -1,30 +1,85 @@
 #include "bind/base/char_logger.hpp"
 
+#include "bind/base/key_logger_base.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
-#include "bind/base/key_logger_base.hpp"
 #include "time/keystroke_repeater.hpp"
 
-namespace
+namespace 
 {
-    enum FlagBits : unsigned char {
-        ALL_FLASE         = 0x00,
-        CHAR_CHANGED      = 0x01,
-        KEYSTROKE_CHANGED = 0x10,
-    } ;
+    using namespace vind ;
+    bool is_including_ascii(const KeyLog& log) {
+        for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
+            if(keycodecvt::get_ascii(*itr)) {
+                return true ;
+            }
+        }
+        return false ;
+    }
 }
 
 namespace vind
 {
     struct CharLogger::Impl {
-        KeyLog prelog{} ;
-        unsigned char flags = FlagBits::KEYSTROKE_CHANGED ;
-        KeyStrokeRepeater ksr{} ; 
+        KeyLog prelog_{} ;
+        KeyStrokeRepeater ksr_{} ; 
+        std::set<unsigned char> non_chars_{} ;
+
+        explicit Impl()
+        : prelog_(),
+          ksr_(),
+          non_chars_()
+        {}
+        explicit Impl(const std::initializer_list<unsigned char>& non_chars)
+        : prelog_(),
+          ksr_(),
+          non_chars_(non_chars)
+        {}
+        explicit Impl(std::initializer_list<unsigned char>&& non_chars)
+        : prelog_(),
+          ksr_(),
+          non_chars_(std::move(non_chars))
+        {}
+        explicit Impl(const std::set<unsigned char>& non_chars)
+        : prelog_(),
+          ksr_(),
+          non_chars_(non_chars)
+        {}
+        explicit Impl(std::set<unsigned char>&& non_chars)
+        : prelog_(),
+          ksr_(),
+          non_chars_(std::move(non_chars))
+        {}
+
+        bool is_including_enabled_chars(const KeyLog& log) {
+            for(auto itr = non_chars_.cbegin() ; itr != non_chars_.cend() ; itr ++) {
+                if(log.is_containing(*itr)) {
+                    return true ;
+                }
+            }
+            return false ;
+        }
     } ;
 
     CharLogger::CharLogger()
     : KeyLoggerBase(),
       pimpl(std::make_unique<Impl>())
+    {}
+    CharLogger::CharLogger(const std::initializer_list<unsigned char>& enabled_non_chars)
+    : KeyLoggerBase(),
+      pimpl(std::make_unique<Impl>(enabled_non_chars))
+    {}
+    CharLogger::CharLogger(std::initializer_list<unsigned char>&& enabled_non_chars)
+    : KeyLoggerBase(),
+      pimpl(std::make_unique<Impl>(std::move(enabled_non_chars)))
+    {}
+    CharLogger::CharLogger(const std::set<unsigned char>& enabled_non_chars)
+    : KeyLoggerBase(),
+      pimpl(std::make_unique<Impl>(enabled_non_chars))
+    {}
+    CharLogger::CharLogger(std::set<unsigned char>&& enabled_non_chars)
+    : KeyLoggerBase(),
+      pimpl(std::make_unique<Impl>(std::move(enabled_non_chars)))
     {}
 
     CharLogger::~CharLogger() noexcept = default ;
@@ -45,15 +100,26 @@ namespace vind
     CharLogger::CharLogger(CharLogger&&)            = default ;
     CharLogger& CharLogger::operator=(CharLogger&&) = default ;
 
-    void CharLogger::update() {
+    void CharLogger::enable_non_character(unsigned char keycode) {
+        pimpl->non_chars_.insert(keycode) ;
+    }
+    void CharLogger::disable_non_character(unsigned char keycode) {
+        pimpl->non_chars_.erase(keycode) ;
+    }
+
+    int CharLogger::logging_state() {
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
 
         //ignore all toggle keys
         auto log = keyabsorber::get_pressed_list() - cl_toggles ;
 
-        if(log != pimpl->prelog) { //type is changed
-            const auto diff = log - pimpl->prelog ;
-            pimpl->prelog = log ;
+        if(log != pimpl->prelog_) { //type is changed
+            const auto diff = log - pimpl->prelog_ ;
+            pimpl->prelog_ = log ;
+
+            if(!pimpl->is_including_enabled_chars(log) && !is_including_ascii(diff)) {
+                return 0 ;
+            }
 
             if(log.is_containing(KEYCODE_SHIFT)) { //shfited
                 auto data = diff.get() ;
@@ -66,34 +132,23 @@ namespace vind
                 logging(std::move(diff)) ;
             }
 
-            //the key stroke is new and logger is changed
-            pimpl->flags = FlagBits::KEYSTROKE_CHANGED | FlagBits::CHAR_CHANGED ;
+            pimpl->ksr_.reset() ;
+            return latest().size() ;
         }
         else { //long pressing
-            if(log.empty()) {
-                pimpl->flags = FlagBits::ALL_FLASE ;
-                return ;
-            }
-
-            if(pimpl->flags & FlagBits::KEYSTROKE_CHANGED) {
-                pimpl->flags = FlagBits::ALL_FLASE ;
-                pimpl->ksr.reset() ;
-                return ;
+            if(!pimpl->is_including_enabled_chars(log) && !is_including_ascii(log)) {
+                return 0 ;
             }
 
             //emulate key stroke
-            if(pimpl->ksr.is_pressed()) {
-                pimpl->flags = FlagBits::CHAR_CHANGED ;
-                logging(log) ;
+            if(pimpl->ksr_.is_pressed()) {
+                logging(std::move(log)) ;
+                return latest().size() ;
             }
             else {
-                pimpl->flags = FlagBits::ALL_FLASE ;
+                return 0 ;
             }
         }
-    }
-
-    bool CharLogger::is_changed() const noexcept {
-        return pimpl->flags & FlagBits::CHAR_CHANGED ;
     }
 
     const std::string CharLogger::to_str() const {

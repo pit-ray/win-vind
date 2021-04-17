@@ -1,10 +1,10 @@
 #ifndef _KEY_LOG_HPP
 #define _KEY_LOG_HPP
 
-#include <memory>
-#include <unordered_set>
-#include <string>
 #include <initializer_list>
+#include <memory>
+#include <string>
+#include <unordered_set>
 
 namespace vind
 {

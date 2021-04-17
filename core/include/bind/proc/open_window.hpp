@@ -1,17 +1,15 @@
 #ifndef _OPEN_WINDOW_HPP
 #define _OPEN_WINDOW_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    struct OpenNewCurrentWindow : public BindedFuncWithCreator<OpenNewCurrentWindow> {
-        static void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) ;
-        static const std::string sname() noexcept ;
+    struct OpenNewCurrentWindow : public BindedFuncCreator<OpenNewCurrentWindow> {
+        explicit OpenNewCurrentWindow() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 }
 

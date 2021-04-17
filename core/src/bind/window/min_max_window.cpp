@@ -1,5 +1,7 @@
 #include "bind/window/min_max_window.hpp"
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "util/def.hpp"
@@ -7,34 +9,29 @@
 namespace vind
 {
     //MinimizeCurrentWindow
-    const std::string MinimizeCurrentWindow::sname() noexcept {
-        return "minimize_current_window" ;
-    }
-
-    void MinimizeCurrentWindow::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
-
+    MinimizeCurrentWindow::MinimizeCurrentWindow()
+    : BindedFuncCreator("minimize_current_window")
+    {}
+    void MinimizeCurrentWindow::sprocess(unsigned int repeat_num) {
         for(unsigned int i = 0 ; i < repeat_num ; i ++) {
             keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
         }
     }
-
-    //MaximizeCurrentWindow
-    const std::string MaximizeCurrentWindow::sname() noexcept {
-        return "maximize_current_window" ;
+    void MinimizeCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void MinimizeCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 
-    void MaximizeCurrentWindow::sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeycodeLogger* const UNUSED(parent_keycodelgr),
-            const CharLogger* const UNUSED(parent_charlgr)) {
-        if(!first_call) return ;
 
+    //MaximizeCurrentWindow
+    MaximizeCurrentWindow::MaximizeCurrentWindow()
+    : BindedFuncCreator("maximize_current_window")
+    {}
+    void MaximizeCurrentWindow::sprocess(unsigned int repeat_num) {
         if(repeat_num == 1) {
             auto hwnd = GetForegroundWindow() ;
             if(hwnd == NULL) {
@@ -65,5 +62,13 @@ namespace vind
                 keybrd::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
             }
         }
+    }
+    void MaximizeCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(parent_lgr.get_head_num()) ;
+        }
+    }
+    void MaximizeCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }

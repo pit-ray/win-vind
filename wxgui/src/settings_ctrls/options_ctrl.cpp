@@ -1,7 +1,9 @@
 #include "options_ctrl.hpp"
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/sizer.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"

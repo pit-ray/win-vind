@@ -1,7 +1,7 @@
 #include "bind/bindings_parser.hpp"
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "coreio/err_logger.hpp"
 
@@ -112,69 +112,16 @@ namespace vind
             return cmd ;
         }
 
-
-        //
-        // It parses a string command as Command.
-        // Command:: std::vector<std::vector<unsigned char>>
-        //
-        // Note: If it includes some mode strings,
-        //       will give empty value to cmd and return value other than Mode::None.
-        //
-        //  Ex)
-        //      abc     -> {
-        //                     {KEYCODE_A},
-        //                     {KEYCODE_B},
-        //                     {KEYCODE_C}
-        //                 }
-        //
-        //                 return Mode::None
-        //
-        //      <s-d>e  -> {
-        //                     {KEYCODE_SHIFT, KEYCODE_D},
-        //                     {KEYCODE_E},
-        //                 }
-        //
-        //                 return Mode::None
-        //
-        //      <guin>  -> {}
-        //                 return Mode::Normal
-        //
-        mode::Mode parse_bindings(
-                Command& cmd,
-                std::string cmdstr) {
-
-            cmd.clear() ;
-
-            for(std::size_t i = 0 ; i < cmdstr.length() ; i ++) {
-                const auto onechar = cmdstr[i] ;
-                if(onechar != '<') {
-                    cmd.push_back(parse_pure_one_character_command(onechar)) ;
-                    continue ;
-                }
-
-                auto pairpos = cmdstr.find('>', i + 1) ;
-                if(pairpos == std::string::npos) {
-                    throw RUNTIME_EXCEPT(cmdstr + " is bad syntax. It does not have a greater-than sign '>'.") ;
-                }
-
-                auto inside_cmd = cmdstr.substr(i + 1, pairpos - i - 1) ;
-
-                //if the cmd is same as some mode's key (e.g. <guin>, <edin>),
-                //its pointer use same pointer to target mode.
-                const auto mode = mode::get_mode_from_strcode(util::A2a(inside_cmd)) ;
-                if(mode != mode::Mode::None) {
-                    return mode ;
-                }
-
-                cmd.push_back(parse_combined_command(inside_cmd)) ;
-
-                i = pairpos ;
+        mode::Mode parse_string_modecode(std::string modestr) {
+            if(modestr.front() == '<' && modestr.back() == '>') {
+                auto inside = util::A2a(modestr.substr(1, modestr.size() - 2)) ;
+                return mode::get_mode_from_strcode(inside) ;
             }
             return mode::Mode::None ;
         }
 
         namespace debug {
-            std::string print(const BindingsMatcher::cmdlist_t& list) {
+            std::string print(const CommandList& list) {
                 std::stringstream ss ;
 
                 ss << "[" ;
@@ -184,17 +131,26 @@ namespace vind
                     }
 
                     for(const auto& keyset : *cmditr) {
-                        if(keyset.size() > 1) {
-                            ss << "<" ;
-                        }
-                        for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
-                            if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
-                                ss << "-" ;
+                        if(keyset.size() == 1) {
+                            auto name = keycodecvt::get_name(keyset.front()) ;
+                            if(name.size() == 1) {
+                                ss << name ;
                             }
-                            ss << keycodecvt::get_name(*keyitr) ;
+                            else {
+                                ss << "<" << name << ">" ;
+                            }
                         }
-                        if(keyset.size() > 1) {
-                            ss << ">" ;
+                        else {
+                            ss << "<" ;
+                            for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
+                                if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
+                                    ss << "-" ;
+                                }
+                                ss << keycodecvt::get_name(*keyitr) ;
+                            }
+                            if(keyset.size() > 1) {
+                                ss << ">" ;
+                            }
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 #include "time/interval_timer.hpp"
-#include <mutex>
 #include <chrono>
+#include <mutex>
 
 namespace vind
 {

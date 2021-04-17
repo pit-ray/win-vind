@@ -106,14 +106,6 @@ namespace vind
         return latest().size() ;
     }
 
-    void KeyLoggerBase::update() {
-        logging(keyabsorber::get_pressed_list()) ;
-    }
-
-    bool KeyLoggerBase::is_changed() const noexcept {
-        return true ;
-    }
-
     namespace keyloggerutil
     {
         unsigned int extract_num(const std::string str) {

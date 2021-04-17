@@ -2,8 +2,8 @@
 
 #include <iomanip>
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "util/def.hpp"
 

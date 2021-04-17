@@ -1,12 +1,12 @@
 #include "opt/dedicate_to_window.hpp"
 
-#include <windows.h>
 #include <iostream>
+#include <windows.h>
 
-#include "coreio/i_params.hpp"
-#include "coreio/err_logger.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
+#include "coreio/err_logger.hpp"
+#include "coreio/i_params.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
@@ -57,10 +57,10 @@ namespace vind
         }
 
         if(target_hwnd == foreground_hwnd) { //other -> target
-            Change2EdiNormal::sprocess(true, 1, nullptr, nullptr, past_hwnd) ;
+            Change2EdiNormal::sprocess(true) ;
         }
         else if(past_hwnd == target_hwnd) { //target -> other
-            Change2Insert::sprocess(true, 1, nullptr, nullptr, past_hwnd) ;
+            Change2Insert::sprocess(true) ;
         }
         past_hwnd = foreground_hwnd ;
     }

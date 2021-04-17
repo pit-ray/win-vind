@@ -1,22 +1,19 @@
 #ifndef _EDI_LAYOUT_HPP
 #define _EDI_LAYOUT_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {
-    class EdiNRemoveEOL : public BindedFuncWithCreator<EdiNRemoveEOL> {
+    class EdiNRemoveEOL : public BindedFuncCreator<EdiNRemoveEOL> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        void sprocess(
-                bool first_call,
-                unsigned int repeat_num,
-                KeycodeLogger* const parent_keycodelgr,
-                const CharLogger* const parent_charlgr) const ;
-        static const std::string sname() noexcept ;
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
 
         explicit EdiNRemoveEOL() ;
         virtual ~EdiNRemoveEOL() noexcept ;

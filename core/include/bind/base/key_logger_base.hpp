@@ -54,9 +54,7 @@ namespace vind
         bool operator==(const KeyLoggerBase& rhs) const ;
         bool operator!=(const KeyLoggerBase& rhs) const ;
 
-        virtual int logging_state() ;
-        virtual void update() = 0 ;
-        virtual bool is_changed() const noexcept = 0 ;
+        virtual int logging_state() = 0 ;
     } ;
 
     namespace keyloggerutil {

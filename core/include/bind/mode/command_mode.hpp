@@ -22,6 +22,8 @@ namespace vind
         CommandMode& operator=(CommandMode&&) ;
         CommandMode(const CommandMode&)            = delete ;
         CommandMode& operator=(const CommandMode&) = delete ;
+
+        void load_config() override ;
     } ;
 }
 

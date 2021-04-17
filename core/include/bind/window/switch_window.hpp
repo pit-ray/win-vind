@@ -5,11 +5,25 @@
 
 namespace vind
 {
-    struct SwitchWindow : public BindedFuncCreator<SwitchWindow> {
+    class SwitchWindow : public BindedFuncCreator<SwitchWindow> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
         explicit SwitchWindow() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
+
+        virtual ~SwitchWindow() noexcept ;
+        SwitchWindow(SwitchWindow&&) ;
+        SwitchWindow& operator=(SwitchWindow&&) ;
+        SwitchWindow(const SwitchWindow&)            = delete ;
+        SwitchWindow& operator=(const SwitchWindow&) = delete ;
+
+        void load_config() override ;
     } ;
 }
 

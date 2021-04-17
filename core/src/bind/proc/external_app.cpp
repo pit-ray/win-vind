@@ -144,7 +144,6 @@ namespace vind
         sprocess() ;
     }
 
-
     //OpenStartMenu
     OpenStartMenu::OpenStartMenu()
     : BindedFuncCreator("open_start_menu")

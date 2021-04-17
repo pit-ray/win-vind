@@ -19,9 +19,6 @@ namespace vind
 
         KeycodeLogger(KeycodeLogger&&) ;
         KeycodeLogger& operator=(KeycodeLogger&&) ;
-
-        virtual void update() override ;
-        virtual bool is_changed() const noexcept override ;
     } ;
 }
 

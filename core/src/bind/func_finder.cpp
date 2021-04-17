@@ -78,12 +78,54 @@ namespace vind
             mode::Mode mode) {
         LoggerParser::SPtr ptr = nullptr ;
         for(const auto& log : lgr) {
-            ptr = find_parser(log, 0, mode) ;
+            ptr = find_parser_with_transition(log, 0, mode) ;
         }
         return ptr ;
     }
 
-    const LoggerParser::SPtr FuncFinder::find_parser(
+    void FuncFinder::search_unrejected_parser(
+            std::vector<LoggerParser::SPtr>& results,
+            mode::Mode mode) {
+
+        if(!results.empty()) {
+            results.clear() ;
+        }
+
+        for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
+            if(!parser->is_rejected()) {
+                results.push_back(parser) ;
+            }
+        }
+    }
+
+    const LoggerParser::SPtr FuncFinder::find_rejected_with_ready_parser(mode::Mode mode) {
+        for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
+            if(parser->is_rejected_with_ready()) {
+                return parser ;
+            }
+        }
+        return nullptr ;
+    }
+
+    const LoggerParser::SPtr FuncFinder::find_waiting_parser(mode::Mode mode) {
+        for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
+            if(parser->is_waiting()) {
+                return parser ;
+            }
+        }
+        return nullptr ;
+    }
+
+    const LoggerParser::SPtr FuncFinder::find_accepted_parser(mode::Mode mode) {
+        for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
+            if(parser->is_accepted()) {
+                return parser ;
+            }
+        }
+        return nullptr ;
+    }
+
+    const LoggerParser::SPtr FuncFinder::find_parser_with_transition(
             const KeyLog& log,
             std::size_t low_priority_func_id,
             mode::Mode mode) {
@@ -113,13 +155,13 @@ namespace vind
         return nullptr ;
     }
 
-    void FuncFinder::undo_parsers(std::size_t n, mode::Mode mode) {
+    void FuncFinder::backward_parser_states(std::size_t n, mode::Mode mode) {
         for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-            parser->undo_state(n) ;
+            parser->backward_state(n) ;
         }
     }
 
-    void FuncFinder::reset_parsers(mode::Mode mode) {
+    void FuncFinder::reset_parser_states(mode::Mode mode) {
         for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
             parser->reset_state() ;
         }

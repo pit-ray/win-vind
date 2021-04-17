@@ -19,24 +19,25 @@
 
 namespace
 {
-    using ParserStateRawType = unsigned char ;
-    enum ParserState : unsigned char {
+    using ParserStateRawType = std::uint32_t ;
+    enum ParserState : ParserStateRawType {
         //State
-        WAITING          = 0b0000'0001,
-        WAITING_IN_NUM   = 0b0000'1001,
-        REJECT           = 0b0000'0010,
-        REJECT_WITH_PARTSET = 0b0000'1010,
-        ACCEPT_IN_NUM    = 0b0000'0100,
-        ACCEPT           = 0b0000'1100,
+        WAITING             = 0b0000'0001'0000'0000,
+        WAITING_IN_NUM      = 0b0000'1001'0000'0000,
+        REJECT              = 0b0000'0010'0000'0000,
+        REJECT_WITH_PARTSET = 0b0000'1010'0000'0000,
+        ACCEPT_IN_NUM       = 0b0000'0100'0000'0000,
+        ACCEPT              = 0b0000'1100'0000'0000,
 
         //Masks
-        STATE_MASK   = 0x0f,
-        WAITING_MASK = 0x01,
-        REJECT_MASK  = 0x02,
-        ACCEPT_MASK  = 0x04,
+        STATE_MASK      = 0x0f00,
+        WAITING_MASK    = 0x0100,
+        REJECT_MASK     = 0x0200,
+        ACCEPT_MASK     = 0x0400,
+        KEYSET_NUM_MASK = 0x00ff,
 
         //Option flags
-        INCLEMENT_CMDIDX= 0x80,
+        INCLEMENT_CMDIDX= 0x8000,
     } ;
 
     using namespace vind ;
@@ -64,7 +65,7 @@ namespace
     }
 
     using LogStatusRawType = std::uint32_t ;
-    enum LogStatus : std::uint32_t {
+    enum LogStatus : LogStatusRawType {
         ALL_FALSE        = 0x0000,
         HAS_KEYSET_PART  = 0x0100,
         ACCEPTED         = 0x0200,
@@ -208,19 +209,19 @@ namespace vind
                 state_hist_.push(ParserState::REJECT) ;
             }
             else if(status & LogStatus::ACCEPTED_OPTNUM) {
-                state_hist_.push(ParserState::ACCEPT_IN_NUM) ;
+                state_hist_.push(num | ParserState::ACCEPT_IN_NUM) ;
             }
             else if(status & LogStatus::ACCEPTED) {
-                state_hist_.push(ParserState::ACCEPT) ;
+                state_hist_.push(num | ParserState::ACCEPT) ;
             }
             else if(status & LogStatus::WAITING_OPTNUM) {
-                state_hist_.push(ParserState::WAITING_IN_NUM) ;
+                state_hist_.push(num | ParserState::WAITING_IN_NUM) ;
             }
             else if(status & LogStatus::HAS_KEYSET) {
-                state_hist_.push(ParserState::WAITING) ;
+                state_hist_.push(num | ParserState::WAITING) ;
             }
             else if(status & LogStatus::HAS_KEYSET_PART) {
-                state_hist_.push(ParserState::REJECT_WITH_PARTSET) ;
+                state_hist_.push(num | ParserState::REJECT_WITH_PARTSET) ;
             }
             else {
                 state_hist_.push(ParserState::REJECT) ;
@@ -249,14 +250,14 @@ namespace vind
         }
 
         unsigned char do_accept(const KeyLog& UNUSED(log)) {
-            state_hist_.push(ParserState::ACCEPT) ;
-            return 0 ;
+            state_hist_.push(state_hist_.top()) ;
+            return state_hist_.top() & KEYSET_NUM_MASK ;
         }
 
         unsigned char do_accept_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(ParserState::ACCEPT_IN_NUM) ;
-                return 1 ;
+                state_hist_.push(state_hist_.top()) ;
+                return state_hist_.top() & KEYSET_NUM_MASK ;
             }
 
             state_hist_.push(ParserState::REJECT) ;
@@ -265,8 +266,8 @@ namespace vind
 
         unsigned char do_waiting_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(ParserState::WAITING_IN_NUM) ;
-                return 1 ;
+                state_hist_.push(state_hist_.top()) ;
+                return state_hist_.top() & KEYSET_NUM_MASK ;
             }
             return do_waiting(log) ;
         }
@@ -412,7 +413,7 @@ namespace vind
         pimpl->cmdidx_ = 0 ;
     }
 
-    void LoggerParser::undo_state(std::size_t n) {
+    void LoggerParser::backward_state(std::size_t n) {
         if(pimpl->state_hist_.size() <= n) {
             reset_state() ;
             return ;

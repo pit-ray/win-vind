@@ -61,7 +61,7 @@ namespace vind
         std::size_t state_stack_size() const noexcept ;
 
         void reset_state() noexcept ;
-        void undo_state(std::size_t n) ;
+        void backward_state(std::size_t n) ;
 
         bool is_accepted() const noexcept ;
         bool is_rejected() const noexcept ;

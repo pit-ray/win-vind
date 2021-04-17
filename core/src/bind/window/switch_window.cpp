@@ -1,11 +1,14 @@
 #include "bind/window/switch_window.hpp"
 
+#include <memory>
 #include <windows.h>
 
+#include "bind/base/mode.hpp"
 #include "entry.hpp"
 
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
+#include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 
 #include "bind/bind.hpp"
@@ -13,26 +16,27 @@
 #include "bind/base/keycode_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
 #include "bind/emu/edi_move_caret.hpp"
+#include "bind/func_finder.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 
 namespace vind
 {
-    //SwitchWindow
-    SwitchWindow::SwitchWindow()
-    : BindedFuncCreator("switch_window")
-    {}
+    struct SwitchWindow::Impl {
+        FuncFinder funcfinder_ ;
+        std::size_t left_id_ ;
+        std::size_t right_id_ ;
+        std::size_t active_id_ ;
+        KeyStrokeRepeater ksr_ ;
 
-    void SwitchWindow::sprocess() {
-        using namespace keybrd ;
-        keyabsorber::InstantKeyAbsorber ika ;
+        explicit Impl()
+        : funcfinder_(),
+          left_id_(EdiMoveCaretLeft().id()),
+          right_id_(EdiMoveCaretRight().id()),
+          active_id_(0),
+          ksr_()
+        {}
 
-        SmartKey alt(KEYCODE_LALT) ;
-        alt.press() ;
-        keyabsorber::release_virtually(KEYCODE_LALT) ;
-
-        pushup(KEYCODE_TAB) ;
-
-        auto preserve_pushup = [] (const auto keycode) {
+        static void pushup_with_preserve(unsigned char keycode) {
             using namespace keybrd ;
             if(!keyabsorber::is_pressed(keycode)) {
                 pushup(keycode) ;
@@ -42,51 +46,98 @@ namespace vind
             release_keystate(keycode) ;
             pushup(keycode) ;
             press_keystate(keycode) ;
-        } ;
+        }
 
-        KeycodeLogger logger{} ;
+        bool is_valid_id(std::size_t id) const noexcept {
+            return id == left_id_ || id == right_id_ ;
+        }
+
+        void call_op(std::size_t id) const noexcept {
+            if(id == left_id_) pushup_with_preserve(KEYCODE_LEFT) ;
+            if(id == right_id_) pushup_with_preserve(KEYCODE_RIGHT) ;
+        }
+    } ;
+
+    //SwitchWindow
+    SwitchWindow::SwitchWindow()
+    : BindedFuncCreator("switch_window"),
+      pimpl(std::make_unique<Impl>())
+    {}
+    SwitchWindow::~SwitchWindow() noexcept                = default ;
+    SwitchWindow::SwitchWindow(SwitchWindow&&)            = default ;
+    SwitchWindow& SwitchWindow::operator=(SwitchWindow&&) = default ;
+
+    void SwitchWindow::load_config() {
+        pimpl->funcfinder_.reconstruct_funcset() ;
+    }
+
+    void SwitchWindow::sprocess() const {
+        using namespace keybrd ;
+
+        keyabsorber::InstantKeyAbsorber ika ;
+
+        SmartKey alt(KEYCODE_LALT) ;
+        alt.press() ;
+        keyabsorber::release_virtually(KEYCODE_LALT) ;
+
+        pushup(KEYCODE_TAB) ;
+
+        constexpr auto lcx_vmode = mode::Mode::EdiNormal ;
+
+        pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+
+        NTypeLogger lgr ;
         while(vind::update_background()) {
-            if(keyabsorber::is_pressed(KEYCODE_ESC)) {
+            if(!NTYPE_LOGGED(lgr.logging_state())) {
+                continue ;
+            }
+
+            if(lgr.is_long_pressing()) {
+                if(pimpl->ksr_.is_pressed()) {
+                    pimpl->call_op(pimpl->active_id_) ;
+                }
+                continue ;
+            }
+            pimpl->active_id_ = 0 ;
+
+            if(lgr.latest().is_containing(KEYCODE_ESC)) {
                 break ;
             }
-            if(keyabsorber::is_pressed(KEYCODE_ENTER)) {
+            if(lgr.latest().is_containing(KEYCODE_ENTER)) {
                 break ;
             }
 
-            logger.update() ;
-            if(!logger.is_changed()) {
-                continue ;
-            }
-            /*
-            if(keybind::is_invalid_log(logger.latest(),
-                        keybind::InvalidPolicy::UnbindedSystemKey)) {
+            if(auto parser = pimpl->funcfinder_.find_parser_with_transition(
+                        lgr.latest(), id(), lcx_vmode)) {
 
-                logger.remove_from_back(1) ;
-                continue ;
-            }
+                const auto id = parser->get_func()->id() ;
 
-            auto matched_func = keybind::find_func(
-                    logger, nullptr, false,
-                    mode::Mode::EdiNormal) ;
+                if(parser->is_accepted()) {
+                    if(pimpl->is_valid_id(id)) {
+                        pimpl->active_id_ = id ;
 
-            if(!matched_func) {
-                logger.clear() ;
-                continue ;
-            }
+                        lgr.accept() ;
+                        pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 
-            if(matched_func->is_callable()) {
-                const auto name = matched_func->name() ;
-                logger.clear() ;
-                if(name == EdiMoveCaretLeft::sname()) {
-                    preserve_pushup(KEYCODE_LEFT) ;
-                    continue ;
+                        pimpl->ksr_.reset() ;
+
+                        pimpl->call_op(id) ;
+                        continue ;
+                    }
+                    else {
+                        lgr.ignore() ;
+                        pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                    }
                 }
-                if(name == EdiMoveCaretRight::sname()) {
-                    preserve_pushup(KEYCODE_RIGHT) ;
-                    continue ;
+                else if(parser->is_rejected_with_ready()) {
+                    lgr.remove_from_back(1) ;
+                    pimpl->funcfinder_.backward_parser_states(1, lcx_vmode) ;
                 }
             }
-            */
+            else {
+                lgr.ignore() ;
+                pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+            }
         }
 
         keyabsorber::release_virtually(KEYCODE_ESC) ;
@@ -98,12 +149,12 @@ namespace vind
         Sleep(50) ; //send select-message to OS(wait)
         Jump2ActiveWindow::sprocess() ;
     }
-    void SwitchWindow::sprocess(NTypeLogger& parent_lgr) {
+    void SwitchWindow::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SwitchWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SwitchWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 }

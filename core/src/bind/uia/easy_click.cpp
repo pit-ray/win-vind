@@ -715,9 +715,10 @@ namespace
             const unsigned char sendkey) {
 
         keyabsorber::InstantKeyAbsorber ika ;
-        KeycodeLogger lgr ;
+        //KeycodeLogger lgr ;
 
         while(vind::update_background() && continue_running) {
+            /*
             lgr.update() ;
             if(!lgr.is_changed()) {
                 continue ;
@@ -747,12 +748,10 @@ namespace
                 continue ; //------------------------------------------------------ (1)
             }
 
-            /*
             if(keybind::is_invalid_log(lgr.latest(), keybind::InvalidPolicy::AllSystemKey)) {
                 lgr.remove_from_back(1) ;
                 continue ;
             }
-            */
 
             std::lock_guard<std::mutex> scoped_lock(mtx) ; // atomic -------------- (2)
 
@@ -771,6 +770,7 @@ namespace
                 lgr.remove_from_back(1) ;
             else
                 util::refresh_display(hwnd) ;
+            */
             //--------------------------------------------------------------------- (2)
         }
     }

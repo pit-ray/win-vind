@@ -38,14 +38,30 @@ namespace vind
 
         void reconstruct_funcset() ;
 
-        const LoggerParser::SPtr find_parser(
+        void search_unrejected_parser(
+                std::vector<LoggerParser::SPtr>& results,
+                mode::Mode mode=mode::get_global_mode()) ;
+
+        const LoggerParser::SPtr find_rejected_with_ready_parser(
+                mode::Mode mode=mode::get_global_mode()) ;
+
+        const LoggerParser::SPtr find_waiting_parser(
+                mode::Mode mode=mode::get_global_mode()) ;
+
+        const LoggerParser::SPtr find_accepted_parser(
+                mode::Mode mode=mode::get_global_mode()) ;
+
+        const LoggerParser::SPtr find_parser_with_transition(
                 const KeyLog& log,
                 std::size_t low_priority_func_id=0,
                 mode::Mode mode=mode::get_global_mode()) ;
 
-        void undo_parsers(std::size_t n, mode::Mode mode=mode::get_global_mode()) ;
+        void backward_parser_states(
+                std::size_t n,
+                mode::Mode mode=mode::get_global_mode()) ;
 
-        void reset_parsers(mode::Mode mode=mode::get_global_mode()) ;
+        void reset_parser_states(
+                mode::Mode mode=mode::get_global_mode()) ;
     } ;
 }
 

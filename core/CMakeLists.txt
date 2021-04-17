@@ -52,7 +52,6 @@ add_library(base STATIC
     src/bind/base/binded_func.cpp
     src/bind/base/char_logger.cpp
     src/bind/base/key_logger_base.cpp
-    src/bind/base/keycode_logger.cpp
     src/bind/base/mode.cpp
     src/bind/base/ntype_logger.cpp
 )

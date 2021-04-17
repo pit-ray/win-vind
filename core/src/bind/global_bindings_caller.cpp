@@ -54,7 +54,7 @@ namespace vind
             }
 
             auto actid = g_active_func ? g_active_func->id() : 0 ;
-            auto parser = g_funcfinder.find_parser(g_ntlgr.latest(), actid) ;
+            auto parser = g_funcfinder.find_parser_with_transition(g_ntlgr.latest(), actid) ;
             g_active_func = nullptr ;
 
             if(parser) {
@@ -65,16 +65,16 @@ namespace vind
                     g_active_func->process(g_ntlgr) ;
 
                     g_ntlgr.accept() ;
-                    g_funcfinder.reset_parsers() ;
+                    g_funcfinder.reset_parser_states() ;
                 }
                 else if(parser->is_rejected_with_ready()) {
-                    g_funcfinder.undo_parsers(1) ;
+                    g_funcfinder.backward_parser_states(1) ;
                     g_ntlgr.remove_from_back(1) ;
                 }
             }
             else {
                 g_ntlgr.ignore() ;
-                g_funcfinder.reset_parsers() ;
+                g_funcfinder.reset_parser_states() ;
 
                 if(g_ntlgr.get_head_num() == 0) {
                     VirtualCmdLine::refresh() ;

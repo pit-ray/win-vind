@@ -29,7 +29,7 @@ namespace
                 continue ;
             }
 
-            auto parser = ff.find_parser(lgr.latest(), caller_self_id, mode::Mode::EdiLineVisual) ;
+            auto parser = ff.find_parser_with_transition(lgr.latest(), caller_self_id, mode::Mode::EdiLineVisual) ;
             if(parser && parser->get_func()->is_for_moving_caret()) {
                 if(parser->is_accepted()) {
                     mode::change_mode(mode::Mode::EdiLineVisual) ;
@@ -37,7 +37,7 @@ namespace
                     return true ;
                 }
                 else if(parser->is_rejected_with_ready()) {
-                    ff.undo_parsers(1) ;
+                    ff.backward_parser_states(1) ;
                     lgr.remove_from_back(1) ;
                 }
             }
@@ -63,10 +63,10 @@ namespace
             FuncFinder&parent_ff,
             NTypeLogger& parent_lgr) {
 
-        const auto vmode = mode::Mode::EdiLineVisual ;
+        constexpr auto lcx_vmode = mode::Mode::EdiLineVisual ;
 
-        ff.reset_parsers(vmode) ;
-        parent_ff.reset_parsers() ;
+        ff.reset_parser_states(lcx_vmode) ;
+        parent_ff.reset_parser_states() ;
         parent_ff.transition_parser_states_in_batch(parent_lgr) ;
 
         NTypeLogger lgr ;
@@ -85,7 +85,7 @@ namespace
                 continue ;
             }
 
-            auto parser_1 = parent_ff.find_parser(lgr.latest(), caller_self_id) ;
+            auto parser_1 = parent_ff.find_parser_with_transition(lgr.latest(), caller_self_id) ;
             if(parser_1) {
                 if(parser_1->get_func()->id() == caller_self_id) {
                     parser_1 = nullptr ;
@@ -97,10 +97,10 @@ namespace
                 }
             }
 
-            auto parser_2 = ff.find_parser(lgr.latest(), caller_self_id, vmode) ;
+            auto parser_2 = ff.find_parser_with_transition(lgr.latest(), caller_self_id, lcx_vmode) ;
             if(parser_2) {
                 if(parser_2->is_accepted() && parser_2->get_func()->is_for_moving_caret()) {
-                    mode::change_mode(vmode) ;
+                    mode::change_mode(lcx_vmode) ;
                     for(std::size_t i = 0 ; i < parent_lgr.get_head_num() ; i ++) {
                         parser_2->get_func()->process(lgr) ;
                     }
@@ -113,9 +113,9 @@ namespace
 
             if((parser_1 && parser_1->is_rejected_with_ready()) \
                     || (parser_2 && parser_2->is_rejected_with_ready())) {
-                ff.undo_parsers(1, vmode) ;
+                ff.backward_parser_states(1, lcx_vmode) ;
                 lgr.remove_from_back(1) ;
-                parent_ff.undo_parsers(1) ;
+                parent_ff.backward_parser_states(1) ;
                 parent_lgr.remove_from_back(1) ;
             }
         }

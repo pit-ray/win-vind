@@ -131,17 +131,26 @@ namespace vind
                     }
 
                     for(const auto& keyset : *cmditr) {
-                        if(keyset.size() > 1) {
-                            ss << "<" ;
-                        }
-                        for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
-                            if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
-                                ss << "-" ;
+                        if(keyset.size() == 1) {
+                            auto name = keycodecvt::get_name(keyset.front()) ;
+                            if(name.size() == 1) {
+                                ss << name ;
                             }
-                            ss << keycodecvt::get_name(*keyitr) ;
+                            else {
+                                ss << "<" << name << ">" ;
+                            }
                         }
-                        if(keyset.size() > 1) {
-                            ss << ">" ;
+                        else {
+                            ss << "<" ;
+                            for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
+                                if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
+                                    ss << "-" ;
+                                }
+                                ss << keycodecvt::get_name(*keyitr) ;
+                            }
+                            if(keyset.size() > 1) {
+                                ss << ">" ;
+                            }
                         }
                     }
                 }

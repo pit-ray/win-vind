@@ -29,7 +29,12 @@ namespace
 
     struct CmdPoint
     {
-        CharLogger logger{} ;
+        CharLogger logger{
+            KEYCODE_ESC,
+            KEYCODE_ENTER,
+            KEYCODE_BKSPACE,
+            KEYCODE_UP,
+            KEYCODE_DOWN} ;
         BindedFunc::SPtr func = nullptr ;
     } ;
     using hist_point_t = std::shared_ptr<CmdPoint> ;
@@ -101,7 +106,8 @@ namespace
 namespace vind
 {
     struct CommandMode::Impl {
-        CmdHist ch{} ;
+        CmdHist ch_{} ;
+        FuncFinder funcfinder_{} ;
     } ;
 
     CommandMode::CommandMode()
@@ -113,32 +119,44 @@ namespace vind
     CommandMode::CommandMode(CommandMode&&)            = default ;
     CommandMode& CommandMode::operator=(CommandMode&&) = default ;
 
+    void CommandMode::load_config() {
+        pimpl->funcfinder_.reconstruct_funcset() ;
+    }
+
     void CommandMode::sprocess() const {
+        auto return_mode = [] (mode::Mode* m) {
+            mode::change_mode(*m) ;
+        } ;
+        std::unique_ptr<mode::Mode, decltype(return_mode)>
+            mode_preserver(new mode::Mode(mode::get_global_mode()), return_mode) ;
+
+        mode::change_mode(mode::Mode::Command) ;
+
+        pimpl->funcfinder_.reset_parser_states() ;
+
         VirtualCmdLine::reset() ;
 
         keyabsorber::InstantKeyAbsorber ika ;
 
         while(vind::update_background()) {
-            auto& p_cmdp = pimpl->ch.get_hist_point() ;
+            auto& p_cmdp = pimpl->ch_.get_hist_point() ;
             auto& lgr    = p_cmdp->logger ;
 
             VirtualCmdLine::cout(":" + lgr.to_str()) ;
 
-            lgr.update() ;
-
-            if(!lgr.is_changed()) { //update log as character input
+            if(CHAR_EMPTY(lgr.logging_state())) {
                 continue ;
             }
 
             //canceling operation
             if(lgr.latest().is_containing(KEYCODE_ESC)){
-                if(pimpl->ch.is_pointing_latest()) {
+                if(pimpl->ch_.is_pointing_latest()) {
                     lgr.clear() ;
                     p_cmdp->func = nullptr ;
                 }
                 else {
                     lgr.remove_from_back(1) ;
-                    pimpl->ch.forward_to_latest() ;
+                    pimpl->ch_.forward_to_latest() ;
                 }
 
                 VirtualCmdLine::reset() ;
@@ -146,16 +164,20 @@ namespace vind
             }
 
             //decision of input
-            if(lgr.latest().is_containing(KEYCODE_ENTER) && p_cmdp->func) {
+            if(lgr.latest().is_containing(KEYCODE_ENTER)) {
+                lgr.remove_from_back(1) ; //remove log including KEYCODE_ENTER
                 keyabsorber::release_virtually(KEYCODE_ENTER) ;
-
-                lgr.remove_from_back(1) ; //remove keycode of enter
-
                 VirtualCmdLine::reset() ;
 
-                p_cmdp->func->process(lgr) ;
+                if(p_cmdp->func) {
+                    p_cmdp->func->process(lgr) ;
+                }
+                else {
+                    VirtualCmdLine::msgout("e: Not a command") ;
+                }
 
-                pimpl->ch.generate_new_hist() ;
+                pimpl->ch_.generate_new_hist() ;
+
                 break ;
             }
 
@@ -171,52 +193,50 @@ namespace vind
                 lgr.remove_from_back(2) ;
                 VirtualCmdLine::refresh() ;
 
-                /*
-                if(auto mf = keybind::find_func(lgr, p_cmdp->func, true, mode::Mode::Command)) {
-                    if(mf->is_callable()) {
-                        p_cmdp->func = mf ;
-                        continue ;
-                    }
+                pimpl->funcfinder_.backward_parser_states(1) ;
+
+                if(auto acced = pimpl->funcfinder_.find_accepted_parser()) {
+                    p_cmdp->func = acced->get_func() ;
                 }
-                */
-                p_cmdp->func = nullptr ;
+                else {
+                    p_cmdp->func = nullptr ;
+                }
                 continue ;
             }
 
             //command history operation
             if(lgr.latest().is_containing(KEYCODE_UP)) {
                 keyabsorber::release_virtually(KEYCODE_UP) ; //prohibit duplicate logging
-                lgr.remove_from_back(1) ;
-                if(pimpl->ch.backward()) {
+                lgr.remove_from_back(1) ; //to remove a log including KEYCODE_UP
+                if(pimpl->ch_.backward()) {
                     VirtualCmdLine::refresh() ;
+                    pimpl->funcfinder_.transition_parser_states_in_batch(
+                            pimpl->ch_.get_hist_point()->logger) ;
                 }
                 continue ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_DOWN)) {
                 keyabsorber::release_virtually(KEYCODE_DOWN) ; //prohibit duplicate logging
-                lgr.remove_from_back(1) ;
-                if(pimpl->ch.forward()) {
+                lgr.remove_from_back(1) ; //to remove a log including KEYCODE_DOWN
+                if(pimpl->ch_.forward()) {
                     VirtualCmdLine::refresh() ;
+                    pimpl->funcfinder_.transition_parser_states_in_batch(
+                            pimpl->ch_.get_hist_point()->logger) ;
                 }
                 continue ;
             }
 
-            //invalid keys
-            /*
-            if(is_invalid_log(lgr.latest(), keybind::InvalidPolicy::AllSystemKey) ||
-                    lgr.size() > iparams::get_z("cmd_max_char")) {
-                lgr.remove_from_back(1) ;
-                continue ;
-            }
-
-            if(auto matched_func = keybind::find_func(lgr, p_cmdp->func, false, mode::Mode::Command)) {
-                if(matched_func->is_callable()) {
-                    p_cmdp->func = matched_func ;
+            if(auto parser = pimpl->funcfinder_.find_parser_with_transition(lgr.latest(), id())) {
+                if(parser->is_accepted()) {
+                    p_cmdp->func = parser->get_func() ;
                     continue ;
                 }
+                else if(parser->is_rejected_with_ready()) {
+                    pimpl->funcfinder_.backward_parser_states(1) ;
+                    lgr.remove_from_back(1) ;
+                }
             }
-            */
             p_cmdp->func = nullptr ;
         }
     }

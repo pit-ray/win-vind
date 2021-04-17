@@ -217,6 +217,17 @@ namespace vind
 
         //for debug
         const std::string get_name(const unsigned char keycode) noexcept {
+            for(const auto& m : g_magic_words) {
+                if(keycode == m.second) {
+                    return m.first ;
+                }
+            }
+            for(const auto& m : g_magic_ascii) {
+                if(keycode == m.second) {
+                    return m.first ;
+                }
+            }
+
             if(auto ascii = get_ascii(keycode)) {
                 char s[] = {ascii, '\0'} ;
                 return s ;

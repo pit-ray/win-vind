@@ -208,12 +208,4 @@ namespace vind
         }
         KeyLoggerBase::clear() ;
     }
-
-    void NTypeLogger::update() {
-    }
-
-    bool NTypeLogger::is_changed() const noexcept {
-        //return pimpl->keycode_changed ;
-        return false ;
-    }
 }

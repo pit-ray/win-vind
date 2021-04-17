@@ -1,6 +1,7 @@
 #include "bind/uia/easy_click.hpp"
 
 #include "disable_gcc_warning.hpp"
+
 #include <stdexcept>
 #include <windows.h>
 #include <wingdi.h>
@@ -17,14 +18,16 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
 #include "enable_gcc_warning.hpp"
 
+#include "bind/base/keycode_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "bind/bind.hpp"
 #include "bind/uia/uia.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/keycode_logger.hpp"
 #include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
+#include "entry.hpp"
 #include "io/display_text_painter.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
@@ -35,7 +38,6 @@
 #include "util/color.hpp"
 #include "util/container.hpp"
 #include "util/winwrap.hpp"
-#include "entry.hpp"
 
 
 namespace

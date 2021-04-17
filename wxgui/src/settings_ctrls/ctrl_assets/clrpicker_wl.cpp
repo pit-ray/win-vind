@@ -1,18 +1,20 @@
 #include "clrpicker_wl.hpp"
 
 #include "disable_gcc_warning.hpp"
-#include <wx/stattext.h>
-#include <wx/colour.h>
+
 #include <wx/clrpicker.h>
+#include <wx/colour.h>
+#include <wx/stattext.h>
+
 #include "enable_gcc_warning.hpp"
 
-#include <unordered_map>
 #include <sstream>
+#include <unordered_map>
 
-#include "wx_constant.hpp"
 #include "io_params.hpp"
-#include "util/def.hpp"
 #include "util/color.hpp"
+#include "util/def.hpp"
+#include "wx_constant.hpp"
 
 namespace wxGUI
 {

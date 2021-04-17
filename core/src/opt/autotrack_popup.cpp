@@ -1,7 +1,7 @@
 #include "opt/autotrack_popup.hpp"
 
-#include <windows.h>
 #include <iostream>
+#include <windows.h>
 
 #include "coreio/err_logger.hpp"
 #include "util/def.hpp"

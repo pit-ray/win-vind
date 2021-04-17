@@ -1,11 +1,11 @@
 #ifndef _BINDINGS_PARSER_HPP
 #define _BINDINGS_PARSER_HPP
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "bind/bindings_def.hpp"
 #include "bind/base/mode.hpp"
+#include "bind/bindings_def.hpp"
 
 namespace vind
 {

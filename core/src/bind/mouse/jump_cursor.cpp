@@ -1,7 +1,7 @@
 #include "bind/mouse/jump_cursor.hpp"
 
-#include "io/screen_metrics.hpp"
 #include "coreio/i_params.hpp"
+#include "io/screen_metrics.hpp"
 
 #include "util/def.hpp"
 

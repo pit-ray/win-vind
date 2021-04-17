@@ -1,8 +1,8 @@
 #ifndef _OPTION_HPP
 #define _OPTION_HPP
 
-#include <string>
 #include <memory>
+#include <string>
 
 namespace vind
 {

@@ -4,15 +4,15 @@
 #include <atomic>
 #include <functional>
 
+#include "bind/base/mode.hpp"
+#include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
-#include "bind/base/mode.hpp"
-#include "coreio/err_logger.hpp"
 
 #include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
 #include "bind/base/keycode_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 namespace vind
 {

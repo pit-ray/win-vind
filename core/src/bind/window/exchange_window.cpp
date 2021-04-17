@@ -4,9 +4,9 @@
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/window/window_utility.hpp"
 #include "io/screen_metrics.hpp"
 #include "util/def.hpp"
-#include "bind/window/window_utility.hpp"
 
 namespace
 {

@@ -1,7 +1,7 @@
 #include "bind/hotkey/clipboard.hpp"
 
-#include <windows.h>
 #include <iostream>
+#include <windows.h>
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/mode.hpp"

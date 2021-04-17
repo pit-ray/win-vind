@@ -4,11 +4,11 @@
 
 #include <iostream>
 
+#include "bind/base/ntype_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
-#include "bind/base/ntype_logger.hpp"
 
 namespace vind
 {

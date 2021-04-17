@@ -8,13 +8,15 @@
 #include <windows.h>
 
 #include "disable_gcc_warning.hpp"
+
 #include <nlohmann/json.hpp>
+
 #include "enable_gcc_warning.hpp"
 
+#include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "bind/proc/external_app.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/char_logger.hpp"
 #include "coreio/err_logger.hpp"
 #include "coreio/path.hpp"
 #include "io/keybrd.hpp"

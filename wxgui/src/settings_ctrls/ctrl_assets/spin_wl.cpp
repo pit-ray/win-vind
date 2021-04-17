@@ -4,8 +4,10 @@
 #include <unordered_map>
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"

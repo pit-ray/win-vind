@@ -1,19 +1,19 @@
 #include "bind/window/arrange_window.hpp"
 
 #include <windows.h>
-#include <psapi.h>
 
+#include <psapi.h>
 
 #include <functional>
 #include <map>
 #include <sstream>
 #include <unordered_map>
 
-#include "io/screen_metrics.hpp"
-#include "coreio/err_logger.hpp"
-#include "util/def.hpp"
-#include "bind/window/window_utility.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/window/window_utility.hpp"
+#include "coreio/err_logger.hpp"
+#include "io/screen_metrics.hpp"
+#include "util/def.hpp"
 
 namespace
 {

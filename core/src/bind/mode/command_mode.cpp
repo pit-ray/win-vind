@@ -6,21 +6,22 @@
 #include <vector>
 
 #include "bind/base/binded_func.hpp"
+#include "bind/base/char_logger.hpp"
+#include "bind/base/key_logger_base.hpp"
+#include "bind/base/keycode_logger.hpp"
+#include "bind/base/mode.hpp"
+#include "bind/base/ntype_logger.hpp"
+#include "bind/bind.hpp"
+#include "bind/func_finder.hpp"
+#include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
+#include "entry.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/key_logger_base.hpp"
-#include "bind/base/keycode_logger.hpp"
-#include "bind/bind.hpp"
-#include "bind/base/mode.hpp"
-#include "coreio/err_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
-#include "entry.hpp"
 
 namespace
 {

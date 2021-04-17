@@ -2,8 +2,8 @@
 #define _LOGGER_PARSER_HPP
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "bind/bindings_def.hpp"
 

@@ -4,26 +4,28 @@
 #include <vector>
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/button.h>
-#include <wx/string.h>
+#include <wx/colour.h>
 #include <wx/listbox.h>
 #include <wx/sizer.h>
-#include <wx/colour.h>
+#include <wx/string.h>
+
 #include "enable_gcc_warning.hpp"
 
-#include "ctrl_core.hpp"
 #include "common_ctrl.hpp"
-#include "options_ctrl.hpp"
+#include "ctrl_core.hpp"
+#include "easy_click_ctrl.hpp"
 #include "move_cursor_ctrl.hpp"
+#include "options_ctrl.hpp"
+#include "resize_window_ctrl.hpp"
 #include "scroll_page_ctrl.hpp"
 #include "virtual_cmd_line_ctrl.hpp"
-#include "easy_click_ctrl.hpp"
-#include "resize_window_ctrl.hpp"
 
 #include "coreio/err_logger.hpp"
-#include "wx_constant.hpp"
-#include "ui_translator.hpp"
 #include "io_params.hpp"
+#include "ui_translator.hpp"
+#include "wx_constant.hpp"
 
 namespace wxGUI
 {

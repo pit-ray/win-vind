@@ -2,8 +2,10 @@
 #define _CLRPICKER_WL_HPP
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/sizer.h>
 #include <wx/window.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include <memory>

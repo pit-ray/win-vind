@@ -10,10 +10,10 @@
 
 #include "bind/bind.hpp"
 
+#include "bind/base/keycode_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/mouse/jump_actwin.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/keycode_logger.hpp"
 
 namespace vind
 {

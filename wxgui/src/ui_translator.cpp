@@ -3,7 +3,9 @@
 #include <fstream>
 
 #include "disable_gcc_warning.hpp"
+
 #include <nlohmann/json.hpp>
+
 #include "enable_gcc_warning.hpp"
 
 #include "wx_constant.hpp"

@@ -3,11 +3,11 @@
 #include "coreio/err_logger.hpp"
 #include "key/keycode_def.hpp"
 
+#include <array>
+#include <iostream>
 #include <unordered_map>
 #include <utility>
 #include <windows.h>
-#include <iostream>
-#include <array>
 
 namespace
 {

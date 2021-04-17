@@ -2,10 +2,10 @@
 
 #include <map>
 
-#include "bind/mouse/jump_actwin.hpp"
-#include "io/screen_metrics.hpp"
-#include "bind/window/window_utility.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/mouse/jump_actwin.hpp"
+#include "bind/window/window_utility.hpp"
+#include "io/screen_metrics.hpp"
 
 namespace
 {

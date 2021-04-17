@@ -1,10 +1,11 @@
 #include "bind/emu/edi_replace.hpp"
 
-#include <windows.h>
 #include <iostream>
+#include <windows.h>
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "entry.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
@@ -12,7 +13,6 @@
 #include "opt/virtual_cmd_line.hpp"
 #include "text/text_analyzer.hpp"
 #include "util/def.hpp"
-#include "entry.hpp"
 
 namespace
 {

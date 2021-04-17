@@ -3,7 +3,9 @@
 #include <unordered_map>
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/checkbox.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include "io_params.hpp"

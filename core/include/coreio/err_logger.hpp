@@ -1,9 +1,9 @@
 #ifndef _ERR_LOGGER_HPP
 #define _ERR_LOGGER_HPP
 
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <string>
 
 namespace vind
 {

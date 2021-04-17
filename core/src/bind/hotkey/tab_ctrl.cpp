@@ -3,9 +3,9 @@
 #include <windows.h>
 
 #include "bind/base/char_logger.hpp"
-#include "io/keybrd.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "coreio/err_logger.hpp"
+#include "io/keybrd.hpp"
 #include "util/def.hpp"
 
 #include "bind/base/ntype_logger.hpp"

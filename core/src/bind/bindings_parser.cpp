@@ -1,7 +1,7 @@
 #include "bind/bindings_parser.hpp"
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "coreio/err_logger.hpp"
 

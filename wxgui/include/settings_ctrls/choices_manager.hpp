@@ -5,7 +5,9 @@
 #include <memory>
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/choice.h>
+
 #include "enable_gcc_warning.hpp"
 
 namespace wxGUI

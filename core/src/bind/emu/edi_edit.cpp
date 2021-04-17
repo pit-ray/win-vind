@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <windows.h>
 
-#include <memory>   //for std::unique_ptr
 #include <iostream> //for debug
+#include <memory>   //for std::unique_ptr
 
 #include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"

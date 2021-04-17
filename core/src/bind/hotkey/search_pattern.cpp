@@ -1,6 +1,6 @@
-#include "bind/hotkey/search_pattern.hpp"
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/hotkey/search_pattern.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
 

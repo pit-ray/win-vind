@@ -10,6 +10,7 @@
 #include <string>
 
 #include "disable_gcc_warning.hpp"
+
 #include <wx/cmdline.h>
 #include <wx/defs.h>
 #include <wx/msgdlg.h>
@@ -18,6 +19,7 @@
 #include <wx/thread.h>
 
 #include <nlohmann/json.hpp>
+
 
 #include "enable_gcc_warning.hpp"
 

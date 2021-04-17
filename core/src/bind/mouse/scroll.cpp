@@ -1,14 +1,14 @@
 #include "bind/mouse/scroll.hpp"
 
-#include <windows.h>
 #include <iostream>
+#include <windows.h>
 
+#include "bind/base/ntype_logger.hpp"
 #include "coreio/i_params.hpp"
 #include "io/mouse.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
-#include "bind/base/ntype_logger.hpp"
 
 namespace
 {

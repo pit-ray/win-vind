@@ -2,36 +2,42 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <chrono>
 
 #include "disable_gcc_warning.hpp"
+
+#include <wx/defs.h>
+#include <wx/event.h>
+#include <wx/stattext.h>
+
 #include <wx/arrstr.h>
 #include <wx/button.h>
 #include <wx/choice.h>
-#include <wx/defs.h>
-#include <wx/event.h>
 #include <wx/gdicmn.h>
+#include <wx/generic/stattextg.h>
 #include <wx/listbox.h>
 #include <wx/sizer.h>
 #include <wx/srchctrl.h>
 #include <wx/statbox.h>
-#include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/generic/stattextg.h>
+
 #include "enable_gcc_warning.hpp"
+
 
 #include "disable_gcc_warning.hpp"
+
 #include <nlohmann/json.hpp>
+
 #include "enable_gcc_warning.hpp"
 
-#include "coreio/path.hpp"
 #include "coreio/err_logger.hpp"
+#include "coreio/path.hpp"
 
 #include "bind/mode/change_mode.hpp"
 #include "io/mouse.hpp"

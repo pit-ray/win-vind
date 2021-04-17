@@ -3,15 +3,15 @@
 #include <windows.h>
 
 #include <chrono>
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
-#include "coreio/i_params.hpp"
-#include "coreio/err_logger.hpp"
-#include "util/def.hpp"
-#include "io/mouse.hpp"
-#include "util/math.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "coreio/err_logger.hpp"
+#include "coreio/i_params.hpp"
+#include "io/mouse.hpp"
+#include "util/def.hpp"
+#include "util/math.hpp"
 
 namespace
 {

@@ -24,28 +24,28 @@
 #include <winnt.h>
 #endif
 
-#include <memory>
-#include <iostream>
 #include <cstring>
+#include <iostream>
+#include <memory>
 
+#include "bind/base/mode.hpp"
+#include "bind/bind.hpp"
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"
-#include "bind/bind.hpp"
-#include "bind/mode/change_mode.hpp"
-#include "bind/base/mode.hpp"
 #include "bind/func_finder.hpp"
 #include "bind/global_bindings_caller.hpp"
+#include "bind/mode/change_mode.hpp"
 
+#include "bind/uia/easy_click.hpp"
+#include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"
+#include "coreio/path.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
-#include "coreio/err_logger.hpp"
 #include "opt/option_loader.hpp"
-#include "coreio/path.hpp"
 #include "time/interval_timer.hpp"
 #include "util/winwrap.hpp"
-#include "bind/uia/easy_click.hpp"
 
 #define MEMORY_MAPPED_FILE_NAME ("qvCI980BTny1ZSFfY76sO71w7MtLTzuPVd6RQs47_p7Kn4SJZ7cnaH8QwPS901VFd2N5WuxECvx7N3hP7caWK44ZSq6")
 #define MEMORY_MAPPED_FILE_SIZE (1024)

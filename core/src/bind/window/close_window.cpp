@@ -1,7 +1,7 @@
 #include "bind/window/close_window.hpp"
 
-#include "io/keybrd.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "io/keybrd.hpp"
 #include "util/def.hpp"
 
 namespace vind

@@ -1,11 +1,11 @@
 #include "bind/mouse/click.hpp"
 
-#include <windows.h>
 #include <iostream>
+#include <windows.h>
 
+#include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"
 #include "io/mouse.hpp"
-#include "bind/base/mode.hpp"
 
 namespace vind
 {

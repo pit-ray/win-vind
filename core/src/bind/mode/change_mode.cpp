@@ -6,6 +6,7 @@
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/mode.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
@@ -15,7 +16,6 @@
 #include "text/simple_text_selecter.hpp"
 #include "text/text_analyzer.hpp"
 #include "util/def.hpp"
-#include "bind/base/ntype_logger.hpp"
 
 
 namespace vind

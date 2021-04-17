@@ -1,7 +1,7 @@
 #include "coreio/path.hpp"
 
-#include <windows.h>
 #include <userenv.h>
+#include <windows.h>
 
 #include <fstream>
 

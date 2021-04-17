@@ -2,9 +2,11 @@
 #define _CTRL_CORE_HPP
 
 #include "disable_gcc_warning.hpp"
+
+#include <wx/panel.h>
 #include <wx/string.h>
 #include <wx/window.h>
-#include <wx/panel.h>
+
 #include "enable_gcc_warning.hpp"
 
 #include "wx_constant.hpp"

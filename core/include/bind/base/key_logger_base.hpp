@@ -1,8 +1,8 @@
 #ifndef _KEY_LOGGER_BASE_HPP
 #define _KEY_LOGGER_BASE_HPP
 
-#include <vector>
 #include <memory>
+#include <vector>
 #include "key/key_log.hpp"
 
 namespace vind

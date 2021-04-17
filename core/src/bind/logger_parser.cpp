@@ -1,11 +1,11 @@
 #include "bind/logger_parser.hpp"
 
 #include <cstdint>
-#include <utility>
-#include <memory>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <stack>
+#include <utility>
 
 #include "bind/base/binded_func.hpp"
 #include "bind/bindings_def.hpp"

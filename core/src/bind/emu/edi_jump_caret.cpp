@@ -1,12 +1,12 @@
 #include "bind/emu/edi_jump_caret.hpp"
 
-#include "io/keybrd.hpp"
 #include "bind/base/mode.hpp"
+#include "io/keybrd.hpp"
 #include "text/simple_text_selecter.hpp"
 #include "util/def.hpp"
 
-#include "bind/base/ntype_logger.hpp"
 #include "bind/base/char_logger.hpp"
+#include "bind/base/ntype_logger.hpp"
 
 
 namespace vind

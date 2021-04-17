@@ -101,7 +101,12 @@ Date: 2021/4/2
 #### 64bit  
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/setup_win-vind_3.2.3_64bit.exe.zip">setup_win-vind_3.2.3_64bit.exe</a>
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/win-vind_3.2.3_64bit.zip">win-vind_3.2.3_64bit.zip</a> 
-
+  
+  
+## Related Pages
+- <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
+- <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
+  
 
 ## Usage
 You can call a pre-defined function with favorite keybindings. The above-stated mode management has the following features, and all modes can have functions to switch to each mode with your keybindings. All modes have presets of keybindings.

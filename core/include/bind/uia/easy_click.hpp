@@ -1,7 +1,7 @@
 #ifndef _EASY_CLICK_HPP
 #define _EASY_CLICK_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {

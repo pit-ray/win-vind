@@ -1,7 +1,7 @@
 #ifndef _EDI_CHANGE_MOVE_HPP
 #define _EDI_CHANGE_MOVE_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {

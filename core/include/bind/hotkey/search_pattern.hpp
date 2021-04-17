@@ -1,7 +1,7 @@
 #ifndef _SEARCH_PATTERN_HPP
 #define _SEARCH_PATTERN_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {

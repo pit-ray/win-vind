@@ -1,7 +1,7 @@
 #ifndef _DEDICATE_TO_WINDOW_HPP
 #define _DEDICATE_TO_WINDOW_HPP
 
-#include "option_with_creator.hpp"
+#include "option_creator.hpp"
 
 namespace vind
 {

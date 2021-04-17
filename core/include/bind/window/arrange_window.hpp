@@ -1,7 +1,7 @@
 #ifndef _ARRANGE_WINDOW_HPP
 #define _ARRANGE_WINDOW_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {

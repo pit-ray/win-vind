@@ -1,7 +1,7 @@
 #ifndef _FILER_HPP
 #define _FILER_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {

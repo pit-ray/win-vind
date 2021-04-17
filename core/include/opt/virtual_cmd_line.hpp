@@ -1,7 +1,7 @@
 # ifndef _VIRTUAL_CMD_LINE_HPP
 #define _VIRTUAL_CMD_LINE_HPP
 
-#include "option_with_creator.hpp"
+#include "option_creator.hpp"
 
 namespace vind
 {

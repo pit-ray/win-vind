@@ -1,7 +1,7 @@
 #ifndef _EDI_REPLACE_HPP
 #define _EDI_REPLACE_HPP
 
-#include "bind/base/binded_func_with_creator.hpp"
+#include "bind/base/binded_func_creator.hpp"
 
 namespace vind
 {

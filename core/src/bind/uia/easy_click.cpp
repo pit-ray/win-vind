@@ -24,7 +24,6 @@
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
-#include "bind/bind.hpp"
 #include "bind/uia/uia.hpp"
 #include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"

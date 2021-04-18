@@ -10,7 +10,6 @@
 #include "bind/base/key_logger_base.hpp"
 #include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"
-#include "bind/bind.hpp"
 #include "bind/func_finder.hpp"
 #include "coreio/err_logger.hpp"
 #include "coreio/i_params.hpp"

@@ -8,7 +8,6 @@
 #include "opt/virtual_cmd_line.hpp"
 
 #include "bind/base/binded_func.hpp"
-#include "bind/bind.hpp"
 
 #include "bind/func_finder.hpp"
 #include "bind/logger_parser.hpp"

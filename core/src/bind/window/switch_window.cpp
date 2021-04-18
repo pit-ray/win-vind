@@ -11,8 +11,6 @@
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 
-#include "bind/bind.hpp"
-
 #include "bind/base/ntype_logger.hpp"
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/func_finder.hpp"

@@ -29,7 +29,6 @@
 #include <memory>
 
 #include "bind/base/mode.hpp"
-#include "bind/bind.hpp"
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/func_finder.hpp"

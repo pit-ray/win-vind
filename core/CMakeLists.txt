@@ -139,12 +139,12 @@ target_link_libraries(window base Dwmapi)
 
 
 add_library(bind STATIC
-    src/bind/func_finder.cpp
     src/bind/bindings_json_parser.cpp
     src/bind/bindings_lists.cpp
     src/bind/bindings_parser.cpp
-    src/bind/logger_parser.cpp
+    src/bind/func_finder.cpp
     src/bind/global_bindings_caller.cpp
+    src/bind/logger_parser.cpp
 )
 target_link_libraries(bind ctrl emu file hotkey mode mouse proc uia window)
 #target_link_libraries(bind dev)

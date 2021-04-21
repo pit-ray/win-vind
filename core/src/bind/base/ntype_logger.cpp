@@ -46,6 +46,10 @@ namespace vind
 
         KeyLog::data_t remove_nums{} ;
         if(pimpl->head_num_ == 0) {
+            if((log - pimpl->prelog_).empty()) {
+                return false ;
+            }
+
             for(const unsigned char& keycode : log) {
                 // The repeat number isn't begun with zero.
                 // 01 or 02 are invalid syntax.
@@ -101,17 +105,23 @@ namespace vind
     }
 
     int NTypeLogger::logging_first_log(const KeyLog& log) {
-        if(log.empty() || log == pimpl->prelog_without_headnum_) {
+        if(log.empty()) {
             return 0 ;
         }
         logging(log) ;
+        pimpl->prelog_without_headnum_ = log ;
         return static_cast<int>(latest().size()) ;
     }
 
     int NTypeLogger::logging_pressing_log(const KeyLog& log) {
-        if(pimpl->prelog_without_headnum_ == log) {
-            pimpl->pressing_ = true ;
-            return static_cast<int>(latest().size()) ;
+        if(!log.empty()) {
+            //auto diff = pimpl->prelog_without_headnum_ - log ;
+            //auto diff = log - pimpl->prelog_ ;
+            if(log == pimpl->prelog_without_headnum_) {
+            //if(pimpl->prelog_ == log) {
+                pimpl->pressing_ = true ;
+                return static_cast<int>(latest().size()) ;
+            }
         }
 
         KeyLoggerBase::clear() ;
@@ -121,7 +131,7 @@ namespace vind
     }
 
     int NTypeLogger::logging_sequence_log(const KeyLog& log) {
-        auto diff = log - pimpl->prelog_without_headnum_ ; //remove same keys as prelog
+        auto diff = log - pimpl->prelog_ ; //remove same keys as prelog
         if(diff.empty()) {
             // regards the reducing of the inputted keys as the same empty state.
             return 0 ;
@@ -135,23 +145,21 @@ namespace vind
 
     int NTypeLogger::do_logging_state(const KeyLog& log) {
         if(empty()) { //does not have any log
-
             pimpl->pressing_ = false ;
             pimpl->accepted_ = false ;
+
             if(log.empty()) {
-                pimpl->prelog_without_headnum_ = log ;
                 return 0 ;
             }
 
             auto buf = log ;
             if(parse_head_number(buf)) {
-                pimpl->prelog_without_headnum_ = std::move(buf) ;
+                //pimpl->prelog_without_headnum_ = std::move(buf) ;
                 return -1 ;
             }
 
             //It does not include numeric key code.
             auto result = logging_first_log(buf) ;
-            pimpl->prelog_without_headnum_ = std::move(buf) ;
             return result ;
         }
 

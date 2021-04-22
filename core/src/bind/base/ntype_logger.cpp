@@ -6,6 +6,41 @@
 #include "key/keycodecvt.hpp"
 #include "time/keystroke_repeater.hpp"
 
+namespace
+{
+    using namespace vind ;
+
+    enum LoggerState : unsigned char {
+        INITIAL,
+        WAITING,
+        PRESSING,
+        WAITING_HEADNUM,
+    } ;
+
+    template <typename KeyLogType>
+    const KeyLog extract_number(const KeyLog& log, KeyLogType&& ignore_keys) {
+        auto to_ascii_func = log.is_containing(KEYCODE_SHIFT) ?
+            keycodecvt::get_shifted_ascii : keycodecvt::get_ascii ;
+
+        KeyLog::data_t nums{} ;
+        for(const unsigned char& keycode : log) {
+            // The repeat number isn't begun with zero.
+            // 01 or 02 are invalid syntax.
+            if(ignore_keys.is_containing(keycode)) {
+                continue ;
+            }
+
+            // Once convert inputted keycode to ASCII to distinguish if
+            // a numeric keycode is typed in order to write a number. 
+            if(keycodecvt::is_number_ascii(to_ascii_func(keycode))) {
+                nums.insert(keycode) ;
+            }
+        }
+
+        return KeyLog(nums) ;
+    }
+}
+
 
 namespace vind
 {
@@ -16,6 +51,15 @@ namespace vind
         bool pressing_ = false ;
         bool accepted_ = false ;
         unsigned int head_num_ = 0 ;
+        unsigned char state_ = LoggerState::INITIAL ;
+
+        void concatenate_repeating_number(unsigned char keycode) {
+            auto num = keycodecvt::to_number<unsigned int>(keycode) ;
+            constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
+            if(head_num_ < max) {
+                head_num_ = head_num_ * 10 + num ;
+            }
+        }
     } ;
 
     NTypeLogger::NTypeLogger()
@@ -39,6 +83,67 @@ namespace vind
 
     NTypeLogger::NTypeLogger(NTypeLogger&&)            = default ;
     NTypeLogger& NTypeLogger::operator=(NTypeLogger&&) = default ;
+
+    int NTypeLogger::do_initial_state(const KeyLog& log) {
+        if(log.empty()) {
+            return 0 ;
+        }
+
+        auto nums = extract_number(log, KeyLog{KEYCODE_0}) ;
+        if(!nums.empty()) {
+            pimpl->ksr_.reset() ;
+            pimpl->head_num_ = keycodecvt::to_number<decltype(pimpl->head_num_)>(*nums.cbegin()) ;
+            pimpl->state_ = LoggerState::WAITING_HEADNUM ;
+            return -1 ;
+        }
+
+        logging(log) ;
+        return static_cast<int>(latest().size()) ;
+    }
+
+    int NTypeLogger::do_waiting_state(const KeyLog& log) {
+        if(pimpl->accepted_) {
+            pimpl->state_ = LoggerState::PRESSING ;
+            return do_long_pressing_state(log) ;
+        }
+
+        if((log - pimpl->prelog_).empty()) {
+            return 0 ;
+        }
+        // If increase a variety of the inputted keys, only then call logging.
+        logging(log) ;
+        return static_cast<int>(latest().size()) ;
+    }
+
+    int NTypeLogger::do_long_pressing_state(const KeyLog& log) {
+        if(log != pimpl->prelog_without_headnum_) {
+            KeyLoggerBase::clear() ;
+            pimpl->state_ = LoggerState::INITIAL ;
+            return do_initial_state(log) ;
+        }
+        return static_cast<int>(latest().size()) ;
+    }
+
+    int NTypeLogger::do_waiting_repeat_num_state(const KeyLog& log) {
+        auto nums = extract_number(log, KeyLog{}) ;
+        if(nums.empty()) {
+            pimpl->state_ = LoggerState::WAITING ;
+            return do_waiting_state(log) ;
+        }
+
+        if(log != pimpl->prelog_) {
+            pimpl->concatenate_repeating_number(*nums.cbegin()) ;
+            pimpl->ksr_.reset() ;
+            return -1 ;
+        }
+        else {
+            if(pimpl->ksr_.is_pressed()) {
+                pimpl->concatenate_repeating_number(*nums.cbegin()) ;
+                return -1 ;
+            }
+        }
+        return 0 ;
+    }
 
     bool NTypeLogger::parse_head_number(KeyLog& log) {
         auto to_ascii = log.is_containing(KEYCODE_SHIFT) ?
@@ -179,7 +284,28 @@ namespace vind
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
         const auto log = keyabsorber::get_pressed_list() - cl_toggles ; //ignore toggle keys
 
-        auto result = do_logging_state(log) ;
+        int result ;
+        switch(pimpl->state_) {
+            case LoggerState::INITIAL:
+                result = do_initial_state(log) ;
+                break ;
+
+            case LoggerState::WAITING:
+                result = do_waiting_state(log) ;
+                break ;
+
+            case LoggerState::PRESSING:
+                result = do_long_pressing_state(log) ;
+                break ;
+
+            case LoggerState::WAITING_HEADNUM:
+                result = do_waiting_repeat_num_state(log) ;
+                break ;
+
+            default:
+                result = do_initial_state(log) ;
+                break ;
+        }
 
         //post process
         pimpl->prelog_ = std::move(log) ;

@@ -22,6 +22,11 @@ namespace vind
 
         virtual int do_logging_state(const KeyLog& log) ;
 
+        virtual int do_initial_state(const KeyLog& log) ;
+        virtual int do_waiting_state(const KeyLog& log) ;
+        virtual int do_long_pressing_state(const KeyLog& log) ;
+        virtual int do_waiting_repeat_num_state(const KeyLog& log) ;
+
     public:
         explicit NTypeLogger() ;
         virtual ~NTypeLogger() noexcept ;

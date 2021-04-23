@@ -71,16 +71,15 @@ namespace vind
                 }
                 else if(parser->is_rejected_with_ready()) {
                     g_funcfinder.backward_parser_states(1) ;
-                    g_ntlgr.remove_from_back(1) ;
+                    g_ntlgr.ignore() ;
                 }
             }
             else {
-                g_ntlgr.ignore() ;
-                g_funcfinder.reset_parser_states() ;
-
-                if(g_ntlgr.get_head_num() == 0) {
+                if(g_ntlgr.get_head_num() > 1) {
                     VirtualCmdLine::refresh() ;
                 }
+                g_ntlgr.clear() ;
+                g_funcfinder.reset_parser_states() ;
             }
         }
     }

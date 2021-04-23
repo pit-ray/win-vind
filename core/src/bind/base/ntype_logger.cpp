@@ -6,11 +6,16 @@
 #include "key/keycodecvt.hpp"
 #include "time/keystroke_repeater.hpp"
 
+#include <stack>
+
+
 namespace
 {
     using namespace vind ;
 
-    enum LoggerState : unsigned char {
+    using LoggerStateRawType = unsigned char ;
+
+    enum LoggerState : LoggerStateRawType{
         INITIAL,
         WAITING,
         PRESSING,
@@ -39,6 +44,9 @@ namespace
 
         return KeyLog(nums) ;
     }
+
+
+    using LoggerStateStack = std::stack<LoggerState, std::vector<LoggerState>> ;
 }
 
 
@@ -51,7 +59,8 @@ namespace vind
         bool pressing_ = false ;
         bool accepted_ = false ;
         unsigned int head_num_ = 0 ;
-        unsigned char state_ = LoggerState::INITIAL ;
+        LoggerState state_ = LoggerState::INITIAL ;
+        LoggerStateStack state_hist_{} ;
 
         void concatenate_repeating_number(unsigned char keycode) {
             auto num = keycodecvt::to_number<unsigned int>(keycode) ;
@@ -88,6 +97,8 @@ namespace vind
         if(log.empty()) {
             return 0 ;
         }
+        pimpl->head_num_ = 0 ;
+        pimpl->accepted_ = false ;
 
         auto nums = extract_number(log, KeyLog{KEYCODE_0}) ;
         if(!nums.empty()) {
@@ -97,8 +108,9 @@ namespace vind
             return -1 ;
         }
 
+        pimpl->state_ = LoggerState::WAITING ;
         logging(log) ;
-        return static_cast<int>(latest().size()) ;
+        return static_cast<int>(log.size()) ;
     }
 
     int NTypeLogger::do_waiting_state(const KeyLog& log) {
@@ -112,21 +124,25 @@ namespace vind
         }
         // If increase a variety of the inputted keys, only then call logging.
         logging(log) ;
-        return static_cast<int>(latest().size()) ;
+        return static_cast<int>(log.size()) ;
     }
 
     int NTypeLogger::do_long_pressing_state(const KeyLog& log) {
-        if(log != pimpl->prelog_without_headnum_) {
+        if(log != pimpl->prelog_) {
             KeyLoggerBase::clear() ;
             pimpl->state_ = LoggerState::INITIAL ;
             return do_initial_state(log) ;
         }
-        return static_cast<int>(latest().size()) ;
+        return static_cast<int>(log.size()) ;
     }
 
     int NTypeLogger::do_waiting_repeat_num_state(const KeyLog& log) {
+        if(log.empty()) {
+            return 0 ;
+        }
+
         auto nums = extract_number(log, KeyLog{}) ;
-        if(nums.empty()) {
+        if(nums.size() != log.size()) {
             pimpl->state_ = LoggerState::WAITING ;
             return do_waiting_state(log) ;
         }
@@ -284,25 +300,32 @@ namespace vind
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
         const auto log = keyabsorber::get_pressed_list() - cl_toggles ; //ignore toggle keys
 
+        pimpl->state_hist_.push(pimpl->state_) ;
+
         int result ;
         switch(pimpl->state_) {
             case LoggerState::INITIAL:
+                std::cout << "Initial\n" ;
                 result = do_initial_state(log) ;
                 break ;
 
             case LoggerState::WAITING:
+                std::cout << "Waiting\n" ;
                 result = do_waiting_state(log) ;
                 break ;
 
             case LoggerState::PRESSING:
+                std::cout << "Pressing\n" ;
                 result = do_long_pressing_state(log) ;
                 break ;
 
             case LoggerState::WAITING_HEADNUM:
+                std::cout << "Waiting Head num\n" ;
                 result = do_waiting_repeat_num_state(log) ;
                 break ;
 
             default:
+                std::cout << "nothing\n" ;
                 result = do_initial_state(log) ;
                 break ;
         }
@@ -322,13 +345,16 @@ namespace vind
     }
 
     bool NTypeLogger::is_long_pressing() const noexcept {
-        return pimpl->pressing_ ;
+        //return pimpl->pressing_ ;
+        return pimpl->state_ == LoggerState::PRESSING ;
     }
 
     void NTypeLogger::clear() noexcept {
         pimpl->accepted_ = false ;
         pimpl->pressing_ = false ;
         pimpl->head_num_ =  0 ;
+        pimpl->state_ = LoggerState::INITIAL ;
+        LoggerStateStack().swap(pimpl->state_hist_) ;
         KeyLoggerBase::clear() ;
     }
 
@@ -337,9 +363,20 @@ namespace vind
     }
 
     void NTypeLogger::ignore() noexcept {
+        /*
         if(size() > 1) {
             pimpl->head_num_ = 0 ;
         }
         KeyLoggerBase::clear() ;
+        */
+        if(pimpl->state_hist_.empty()) {
+            pimpl->state_ = LoggerState::INITIAL ;
+        }
+        else {
+            pimpl->state_ = pimpl->state_hist_.top() ;
+            pimpl->state_hist_.pop() ;
+        }
+
+        remove_from_back(1) ;
     }
 }

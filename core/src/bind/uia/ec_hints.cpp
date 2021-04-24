@@ -10,12 +10,6 @@
 namespace vind
 {
     namespace easyclick {
-
-        // ---------------------------------------
-        //
-        //    @Identifier  Assign  Functions
-        //
-        // ---------------------------------------
         constexpr std::array<unsigned char, 26> gcx_labels = {
             KEYCODE_A, KEYCODE_S, KEYCODE_D, KEYCODE_G, KEYCODE_H,
             KEYCODE_K, KEYCODE_L, KEYCODE_Q, KEYCODE_W, KEYCODE_E,

@@ -46,8 +46,6 @@ namespace vind
                 return ;
             }
 
-            std::cout << keyloggerutil::debug::print_log(g_ntlgr) ;
-
             if(g_ntlgr.is_long_pressing()) {
                 if(g_active_func) {
                     g_active_func->process(g_ntlgr) ;
@@ -71,7 +69,7 @@ namespace vind
                 }
                 else if(parser->is_rejected_with_ready()) {
                     g_funcfinder.backward_parser_states(1) ;
-                    g_ntlgr.ignore() ;
+                    g_ntlgr.remove_from_back(1) ;
                 }
             }
             else {

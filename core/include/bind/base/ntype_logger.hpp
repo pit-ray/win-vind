@@ -14,18 +14,13 @@ namespace vind
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        virtual bool parse_head_number(KeyLog& log) ;
-
-        virtual int logging_first_log(const KeyLog& log) ;
-        virtual int logging_pressing_log(const KeyLog& log) ;
-        virtual int logging_sequence_log(const KeyLog& log) ;
-
-        virtual int do_logging_state(const KeyLog& log) ;
+        virtual int transition_to_parsing_num_state(const KeyLog& num_only_log) ;
 
         virtual int do_initial_state(const KeyLog& log) ;
+        virtual int do_initial_waiting_state(const KeyLog& log) ;
         virtual int do_waiting_state(const KeyLog& log) ;
-        virtual int do_long_pressing_state(const KeyLog& log) ;
-        virtual int do_waiting_repeat_num_state(const KeyLog& log) ;
+        virtual int do_accepted_state(const KeyLog& log) ;
+        virtual int do_parsing_num_state(const KeyLog& log) ;
 
     public:
         explicit NTypeLogger() ;
@@ -43,9 +38,7 @@ namespace vind
         virtual bool is_long_pressing() const noexcept ;
 
         virtual void clear() noexcept override ;
-
         virtual void accept() noexcept ;
-        virtual void ignore() noexcept ;
     } ;
 }
 

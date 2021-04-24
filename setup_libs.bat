@@ -110,7 +110,7 @@ cd ..
 
 @rem If you use wxWidgets-3.1.x, it solves linker error.
 if "%1" == "-mingw" (
-    call copy_mingw_libs.bat
+    call "scripts/copy_mingw_libs.bat"
 )
 
 @echo done.

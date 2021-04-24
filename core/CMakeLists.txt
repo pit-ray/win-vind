@@ -116,6 +116,10 @@ target_link_libraries(proc base psapi)
 
 add_library(uia STATIC
     src/bind/uia/easy_click.cpp
+    src/bind/uia/ec_core.cpp
+    src/bind/uia/ec_hints.cpp
+    src/bind/uia/ec_matching.cpp
+    src/bind/uia/ec_scan.cpp
     src/bind/uia/uia.cpp
 )
 target_include_directories(uia PRIVATE ${WINDOWS_SDK_INCLUDE_DIR})

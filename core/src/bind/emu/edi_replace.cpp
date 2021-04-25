@@ -111,7 +111,7 @@ namespace vind
         VirtualCmdLine::clear() ;
         VirtualCmdLine::msgout("-- EDI REPLACE --") ;
 
-        std::vector<unsigned char> strs{} ;
+        std::vector<KeyCode> strs{} ;
         std::vector<bool> shifts{} ;
 
         loop_for_keymatching([&strs, &shifts](const auto& keycodes, bool shifted=false) {

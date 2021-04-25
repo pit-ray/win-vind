@@ -42,15 +42,15 @@ namespace vind
 {
     namespace keybrd {
 
-        bool is_pressed_actually(unsigned char key) noexcept {
+        bool is_pressed_actually(KeyCode key) noexcept {
             return GetAsyncKeyState(key) & 0x8000 ;
         }
 
         struct SmartKey::Impl {
             INPUT in ;
-            unsigned char key ;
+            KeyCode key ;
 
-            explicit Impl(unsigned char keycode)
+            explicit Impl(KeyCode keycode)
             : in(),
               key(keycode)
             {
@@ -62,7 +62,7 @@ namespace vind
             }
         } ;
 
-        SmartKey::SmartKey(unsigned char key)
+        SmartKey::SmartKey(KeyCode key)
         : pimpl(std::make_unique<Impl>(key))
         {}
 
@@ -103,7 +103,7 @@ namespace vind
 
 
         //change key state without input
-        void release_keystate(unsigned char key) {
+        void release_keystate(KeyCode key) {
             static INPUT in ;
             in.type           = INPUT_KEYBOARD ;
             in.ki.wVk         = static_cast<WORD>(key) ;
@@ -118,7 +118,7 @@ namespace vind
         }
 
         //change key state without input
-        void press_keystate(unsigned char key) {
+        void press_keystate(KeyCode key) {
             static INPUT in ;
             in.type           = INPUT_KEYBOARD ;
             in.ki.wVk         = static_cast<WORD>(key) ;
@@ -132,7 +132,7 @@ namespace vind
             }
         }
 
-        void pushup_core(std::initializer_list<unsigned char>&& initl) {
+        void pushup_core(std::initializer_list<KeyCode>&& initl) {
             using keyabsorber::close_all_ports ;
             using keyabsorber::open_port ;
             using keyabsorber::open_some_ports ;
@@ -240,7 +240,7 @@ namespace vind
 
             try {
                 for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
-                    st.push(SmartKey(static_cast<unsigned char>(*iter))) ;
+                    st.push(SmartKey(static_cast<KeyCode>(*iter))) ;
                     st.top().press() ;
                 }
             }

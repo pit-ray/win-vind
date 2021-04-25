@@ -23,29 +23,29 @@ namespace vind
     struct CharLogger::Impl {
         KeyLog prelog_{} ;
         KeyStrokeRepeater ksr_{} ; 
-        std::set<unsigned char> non_chars_{} ;
+        std::set<KeyCode> non_chars_{} ;
 
         explicit Impl()
         : prelog_(),
           ksr_(),
           non_chars_()
         {}
-        explicit Impl(const std::initializer_list<unsigned char>& non_chars)
+        explicit Impl(const std::initializer_list<KeyCode>& non_chars)
         : prelog_(),
           ksr_(),
           non_chars_(non_chars)
         {}
-        explicit Impl(std::initializer_list<unsigned char>&& non_chars)
+        explicit Impl(std::initializer_list<KeyCode>&& non_chars)
         : prelog_(),
           ksr_(),
           non_chars_(std::move(non_chars))
         {}
-        explicit Impl(const std::set<unsigned char>& non_chars)
+        explicit Impl(const std::set<KeyCode>& non_chars)
         : prelog_(),
           ksr_(),
           non_chars_(non_chars)
         {}
-        explicit Impl(std::set<unsigned char>&& non_chars)
+        explicit Impl(std::set<KeyCode>&& non_chars)
         : prelog_(),
           ksr_(),
           non_chars_(std::move(non_chars))
@@ -65,19 +65,19 @@ namespace vind
     : KeyLoggerBase(),
       pimpl(std::make_unique<Impl>())
     {}
-    CharLogger::CharLogger(const std::initializer_list<unsigned char>& enabled_non_chars)
+    CharLogger::CharLogger(const std::initializer_list<KeyCode>& enabled_non_chars)
     : KeyLoggerBase(),
       pimpl(std::make_unique<Impl>(enabled_non_chars))
     {}
-    CharLogger::CharLogger(std::initializer_list<unsigned char>&& enabled_non_chars)
+    CharLogger::CharLogger(std::initializer_list<KeyCode>&& enabled_non_chars)
     : KeyLoggerBase(),
       pimpl(std::make_unique<Impl>(std::move(enabled_non_chars)))
     {}
-    CharLogger::CharLogger(const std::set<unsigned char>& enabled_non_chars)
+    CharLogger::CharLogger(const std::set<KeyCode>& enabled_non_chars)
     : KeyLoggerBase(),
       pimpl(std::make_unique<Impl>(enabled_non_chars))
     {}
-    CharLogger::CharLogger(std::set<unsigned char>&& enabled_non_chars)
+    CharLogger::CharLogger(std::set<KeyCode>&& enabled_non_chars)
     : KeyLoggerBase(),
       pimpl(std::make_unique<Impl>(std::move(enabled_non_chars)))
     {}
@@ -100,10 +100,10 @@ namespace vind
     CharLogger::CharLogger(CharLogger&&)            = default ;
     CharLogger& CharLogger::operator=(CharLogger&&) = default ;
 
-    void CharLogger::enable_non_character(unsigned char keycode) {
+    void CharLogger::enable_non_character(KeyCode keycode) {
         pimpl->non_chars_.insert(keycode) ;
     }
-    void CharLogger::disable_non_character(unsigned char keycode) {
+    void CharLogger::disable_non_character(KeyCode keycode) {
         pimpl->non_chars_.erase(keycode) ;
     }
 

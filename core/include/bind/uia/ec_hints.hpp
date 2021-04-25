@@ -4,10 +4,12 @@
 #include <string>
 #include <vector>
 
+#include "key/keycode_def.hpp"
+
 namespace vind
 {
     namespace easyclick {
-        using Hint = std::vector<unsigned char> ;
+        using Hint = std::vector<KeyCode> ;
 
         std::vector<Hint> assign_identifier_hints(std::size_t target_count) ;
 

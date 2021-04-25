@@ -71,7 +71,7 @@ namespace vind
                 std::size_t& need_draw_count,
                 std::mutex& mtx,
                 const bool& continue_running,
-                unsigned char sendkey) {
+                KeyCode sendkey) {
 
             keyabsorber::InstantKeyAbsorber ika ;
             CharLogger lgr{

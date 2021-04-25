@@ -42,7 +42,7 @@ namespace
 
     using namespace vind ;
     inline bool is_containing_num(const KeyLog& log) noexcept {
-        for(const unsigned char& key : log) {
+        for(const KeyCode& key : log) {
             if(keycodecvt::is_number(key)) {
                 return true ;
             }
@@ -51,7 +51,7 @@ namespace
     }
 
     inline bool is_containing_ascii(const KeyLog& log) noexcept {
-        for(const unsigned char& keycode : log) {
+        for(const KeyCode& keycode : log) {
             if(keycodecvt::get_ascii(keycode) || keycodecvt::get_shifted_ascii(keycode)) {
                 return true ;
             }

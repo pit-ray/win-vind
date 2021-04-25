@@ -14,7 +14,7 @@ namespace vind
     class KeyLog ;
 
     namespace keybrd {
-        bool is_pressed_actually(unsigned char key) noexcept ;
+        bool is_pressed_actually(KeyCode key) noexcept ;
 
         class SmartKey {
         private:
@@ -24,7 +24,7 @@ namespace vind
             void send_event(bool pressed) ;
 
         public:
-            explicit SmartKey(unsigned char key) ;
+            explicit SmartKey(KeyCode key) ;
             virtual ~SmartKey() noexcept ;
 
             void press() ;
@@ -38,12 +38,12 @@ namespace vind
 
 
         //change key state without input
-        void release_keystate(unsigned char key) ;
+        void release_keystate(KeyCode key) ;
 
         //change key state without input
-        void press_keystate(unsigned char key) ;
+        void press_keystate(KeyCode key) ;
 
-        void pushup_core(std::initializer_list<unsigned char>&& initlist) ;
+        void pushup_core(std::initializer_list<KeyCode>&& initlist) ;
 
         //perfect forwarding
         template <typename... Ts>

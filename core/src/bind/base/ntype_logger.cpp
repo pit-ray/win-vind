@@ -34,7 +34,7 @@ namespace
             keycodecvt::get_shifted_ascii : keycodecvt::get_ascii ;
 
         KeyLog::Data nums{} ;
-        for(const unsigned char& keycode : log) {
+        for(const KeyCode& keycode : log) {
             // The repeat number isn't begun with zero.
             // 01 or 02 are invalid syntax.
             if(ignore_keys.is_containing(keycode)) {
@@ -63,7 +63,7 @@ namespace vind
         unsigned int head_num_ = 0 ;
         LoggerStateRawType state_ = LoggerState::INITIAL ;
 
-        void concatenate_repeating_number(unsigned char keycode) {
+        void concatenate_repeating_number(KeyCode keycode) {
             auto num = keycodecvt::to_number<unsigned int>(keycode) ;
             constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
             if(head_num_ < max) {

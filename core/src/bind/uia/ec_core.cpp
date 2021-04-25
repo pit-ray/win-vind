@@ -21,7 +21,7 @@
 namespace vind
 {
     namespace easyclick {
-        void do_easy_click(unsigned char sendkey) {
+        void do_easy_click(KeyCode sendkey) {
             auto hwnd = GetForegroundWindow() ;
             if(hwnd == NULL) {
                 throw RUNTIME_EXCEPT("There is not a foreground window.") ;
@@ -125,7 +125,7 @@ namespace vind
                 util::refresh_display(NULL) ; //remove hints in display
 
                 //release all keys
-                for(unsigned char key : keyabsorber::get_pressed_list()) {
+                for(KeyCode key : keyabsorber::get_pressed_list()) {
                     keyabsorber::release_virtually(key) ;
                 }
             }

@@ -33,7 +33,7 @@ namespace vind
           ksr_()
         {}
 
-        static void pushup_with_preserve(unsigned char keycode) {
+        static void pushup_with_preserve(KeyCode keycode) {
             using namespace keybrd ;
             if(!keyabsorber::is_pressed(keycode)) {
                 pushup(keycode) ;

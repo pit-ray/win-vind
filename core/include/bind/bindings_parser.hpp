@@ -13,7 +13,7 @@ namespace vind
     {
         //
         // It parses a ascii, which consist of a character, as keyset class.
-        // KeySet: std::vector<unsigned char>
+        // KeySet: std::vector<KeyCode>
         //
         // Ex)
         //     'a' -> {KEYCODE_A}
@@ -22,7 +22,7 @@ namespace vind
         KeySet parse_pure_one_character_command(char onechar) ;
         //
         // It parse a combined command, which is sandwiched between '<' and '>', as keyset class.
-        // KeySet: std::vector<unsigned char>
+        // KeySet: std::vector<KeyCode>
         //
         // Note: Its argument is a inside string in brackets. If the command is "<s-a>", it is "s-a".
         //
@@ -39,7 +39,7 @@ namespace vind
 
         //
         // It parses a string command as Command.
-        // Command:: std::vector<std::vector<unsigned char>>
+        // Command:: std::vector<std::vector<KeyCode>>
         //
         //  Ex)
         //      abc     -> {

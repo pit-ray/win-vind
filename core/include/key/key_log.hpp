@@ -6,6 +6,8 @@
 #include <string>
 #include <unordered_set>
 
+#include "keycode_def.hpp"
+
 namespace vind
 {
     class KeyLog {
@@ -14,11 +16,11 @@ namespace vind
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        using Data = std::unordered_set<unsigned char> ;
+        using Data = std::unordered_set<KeyCode> ;
         explicit KeyLog() ;
         explicit KeyLog(const Data& codes) ;
         explicit KeyLog(Data&& codes) ;
-        explicit KeyLog(std::initializer_list<unsigned char>&& codes) ;
+        explicit KeyLog(std::initializer_list<KeyCode>&& codes) ;
 
         virtual ~KeyLog() noexcept ;
 
@@ -38,7 +40,7 @@ namespace vind
 
         std::size_t size() const noexcept ;
         bool empty() const noexcept ;
-        bool is_containing(unsigned char key) const ;
+        bool is_containing(KeyCode key) const ;
 
         bool operator==(const KeyLog& rhs) const ;
         bool operator==(KeyLog&& rhs) const ;

@@ -17,7 +17,7 @@ namespace vind
     {
         //
         // It parses a ascii, which consist of a character, as keyset class.
-        // KeySet: std::vector<unsigned char>
+        // KeySet: std::vector<KeyCode>
         //
         // Ex)
         //     'a' -> {KEYCODE_A}
@@ -38,7 +38,7 @@ namespace vind
 
         //
         // It parse a combined command, which is sandwiched between '<' and '>', as keyset class.
-        // KeySet: std::vector<unsigned char>
+        // KeySet: std::vector<KeyCode>
         //
         // Note: Its argument is a inside string in brackets. If the command is "<s-a>", it is "s-a".
         //

@@ -24,7 +24,7 @@ namespace vind
         : once_log(codes)
         {}
 
-        explicit Impl(std::initializer_list<unsigned char>&& codes)
+        explicit Impl(std::initializer_list<KeyCode>&& codes)
         : once_log(codes)
         {}
 
@@ -48,7 +48,7 @@ namespace vind
         : pimpl(std::make_unique<Impl>(std::move(codes)))
     {}
 
-    KeyLog::KeyLog(std::initializer_list<unsigned char>&& codes)
+    KeyLog::KeyLog(std::initializer_list<KeyCode>&& codes)
     : pimpl(std::make_unique<Impl>(std::move(codes)))
     {}
 
@@ -97,7 +97,7 @@ namespace vind
         return pimpl->once_log.empty() ;
     }
 
-    bool KeyLog::is_containing(unsigned char key) const
+    bool KeyLog::is_containing(KeyCode key) const
     {
         return pimpl->once_log.find(key) != pimpl->once_log.end() ;
     }

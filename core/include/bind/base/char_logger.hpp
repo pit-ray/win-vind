@@ -18,11 +18,11 @@ namespace vind
     public:
         explicit CharLogger() ;
 
-        explicit CharLogger(const std::initializer_list<unsigned char>& enabled_non_chars) ;
-        explicit CharLogger(std::initializer_list<unsigned char>&& enabled_non_chars) ;
+        explicit CharLogger(const std::initializer_list<KeyCode>& enabled_non_chars) ;
+        explicit CharLogger(std::initializer_list<KeyCode>&& enabled_non_chars) ;
 
-        explicit CharLogger(const std::set<unsigned char>& enabled_non_chars) ;
-        explicit CharLogger(std::set<unsigned char>&& enabled_non_chars) ;
+        explicit CharLogger(const std::set<KeyCode>& enabled_non_chars) ;
+        explicit CharLogger(std::set<KeyCode>&& enabled_non_chars) ;
 
         virtual ~CharLogger() noexcept ;
 
@@ -32,8 +32,8 @@ namespace vind
         CharLogger(CharLogger&&) ;
         CharLogger& operator=(CharLogger&&) ;
 
-        void enable_non_character(unsigned char keycode) ;
-        void disable_non_character(unsigned char keycode) ;
+        void enable_non_character(KeyCode keycode) ;
+        void disable_non_character(KeyCode keycode) ;
 
         virtual int logging_state() override ;
         virtual std::string to_str() const ;

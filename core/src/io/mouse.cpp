@@ -9,7 +9,7 @@
 
 namespace
 {
-    std::unordered_map<unsigned char, bool> btstate = {
+    std::unordered_map<vind::KeyCode, bool> btstate = {
         {KEYCODE_MOUSE_LEFT,  false},
         {KEYCODE_MOUSE_MID,   false},
         {KEYCODE_MOUSE_RIGHT, false}
@@ -35,7 +35,7 @@ namespace
 namespace vind
 {
     namespace mouse {
-        void click(unsigned char btcode) {
+        void click(KeyCode btcode) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
@@ -51,7 +51,7 @@ namespace vind
             }
         }
 
-        void press(unsigned char btcode) {
+        void press(KeyCode btcode) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
@@ -61,7 +61,7 @@ namespace vind
             }
         }
 
-        void release(unsigned char btcode) {
+        void release(KeyCode btcode) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
             in.mi.dwFlags = btcode_to_upevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
@@ -71,7 +71,7 @@ namespace vind
             }
         }
 
-        bool is_releasing_occured(unsigned char btcode) {
+        bool is_releasing_occured(KeyCode btcode) {
             if(GetAsyncKeyState(btcode) & 0x8000) {
                 if(!btstate[btcode]) btstate[btcode] = true ;
             }

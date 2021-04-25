@@ -12,22 +12,22 @@ namespace vind
     namespace keycodecvt {
         void load_input_combination() ;
 
-        unsigned char get_keycode(char ascii) noexcept ;
-        char get_ascii(unsigned char keycode) noexcept ;
+        KeyCode get_keycode(char ascii) noexcept ;
+        char get_ascii(KeyCode keycode) noexcept ;
 
-        unsigned char get_shifted_keycode(char ascii) noexcept ;
-        char get_shifted_ascii(unsigned char keycode) noexcept ;
+        KeyCode get_shifted_keycode(char ascii) noexcept ;
+        char get_shifted_ascii(KeyCode keycode) noexcept ;
 
-        unsigned char get_sys_keycode(const std::string& strkey) noexcept ;
-        std::unordered_set<unsigned char> get_all_sys_keycode() ;
-        std::string get_name(unsigned char keycode) noexcept ; //for debug
+        KeyCode get_sys_keycode(const std::string& strkey) noexcept ;
+        std::unordered_set<KeyCode> get_all_sys_keycode() ;
+        std::string get_name(KeyCode keycode) noexcept ; //for debug
 
-        unsigned char get_keycode_of_magic(const std::string& str) ;
+        KeyCode get_keycode_of_magic(const std::string& str) ;
 
-        unsigned char get_representative_key(unsigned char key) ;
-        bool is_unreal_key(unsigned char key) noexcept ;
+        KeyCode get_representative_key(KeyCode key) ;
+        bool is_unreal_key(KeyCode key) noexcept ;
 
-        inline bool is_number(unsigned char keycode) noexcept {
+        inline bool is_number(KeyCode keycode) noexcept {
             return KEYCODE_0 <= keycode && keycode <= KEYCODE_9 ;
         }
 
@@ -36,7 +36,7 @@ namespace vind
         }
 
         template <typename T>
-        inline T to_number(unsigned char keycode) noexcept {
+        inline T to_number(KeyCode keycode) noexcept {
             return static_cast<T>(keycode - KEYCODE_0) ;
         }
 
@@ -45,8 +45,8 @@ namespace vind
             return static_cast<T>(ascii - '0') ;
         }
 
-        inline const std::unordered_set<unsigned char>& get_toggle_keys() {
-            static std::unordered_set<unsigned char> tmp {
+        inline const std::unordered_set<KeyCode>& get_toggle_keys() {
+            static std::unordered_set<KeyCode> tmp {
                 KEYCODE_CAPSLOCK,
                 KEYCODE_KANA,
                 KEYCODE_NUMLOCK,

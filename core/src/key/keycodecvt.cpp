@@ -11,6 +11,8 @@
 
 namespace
 {
+    using vind::KeyCode ;
+
     inline const auto& g_printable_ascii() noexcept {
         static const auto data = {
             ' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')',
@@ -27,9 +29,9 @@ namespace
         return data ;
     }
 
-    std::array<unsigned char, 256> char2keycode{0} ;
+    std::array<KeyCode, 256> char2keycode{0} ;
     std::array<char, 256> keycode2char{0} ;
-    std::array<unsigned char, 256> shifted_char2keycode{0} ;
+    std::array<KeyCode, 256> shifted_char2keycode{0} ;
     std::array<char, 256> shifted_keycode2char{0} ;
 }
 
@@ -46,30 +48,30 @@ namespace vind
             for(auto& c : g_printable_ascii()) {
                 auto res = VkKeyScanA(c) ;
 
-                auto keycode = static_cast<unsigned char>(res & 0xff) ;
+                auto keycode = static_cast<KeyCode>(res & 0xff) ;
                 auto shifted = (res & 0x0100) != 0 ;
 
                 if(shifted) {
-                    shifted_char2keycode[static_cast<unsigned char>(c)] = keycode ;
+                    shifted_char2keycode[static_cast<KeyCode>(c)] = keycode ;
                     shifted_keycode2char[keycode] = c ;
                 }
                 else {
-                    char2keycode[static_cast<unsigned char>(c)] = keycode ;
+                    char2keycode[static_cast<KeyCode>(c)] = keycode ;
                     keycode2char[keycode] = c ;
                 }
             }
         }
 
-        unsigned char get_keycode(char ascii) noexcept {
-            return char2keycode[static_cast<unsigned char>(ascii)] ;
+        KeyCode get_keycode(char ascii) noexcept {
+            return char2keycode[static_cast<KeyCode>(ascii)] ;
         }
-        char get_ascii(unsigned char keycode) noexcept {
+        char get_ascii(KeyCode keycode) noexcept {
             return keycode2char[keycode] ;
         }
-        unsigned char get_shifted_keycode(char ascii) noexcept {
-            return shifted_char2keycode[static_cast<unsigned char>(ascii)] ;
+        KeyCode get_shifted_keycode(char ascii) noexcept {
+            return shifted_char2keycode[static_cast<KeyCode>(ascii)] ;
         }
-        char get_shifted_ascii(unsigned char keycode) noexcept {
+        char get_shifted_ascii(KeyCode keycode) noexcept {
             return shifted_keycode2char[keycode] ;
         }
     }
@@ -77,7 +79,9 @@ namespace vind
 
 namespace
 {
-    const std::unordered_map<std::string, unsigned char> g_sys_keycode {
+    using vind::KeyCode ;
+
+    const std::unordered_map<std::string, KeyCode> g_sys_keycode {
         {"ime",         KEYCODE_IME},
         {"ime1",        KEYCODE_FROM_EN},
         {"ime2",        KEYCODE_TO_JP},
@@ -166,7 +170,7 @@ namespace
     } ;
 
     inline auto create_related_keys() {
-            std::array<unsigned char, 256> a{0} ;
+            std::array<KeyCode, 256> a{0} ;
             a[KEYCODE_LSHIFT]  = KEYCODE_SHIFT ;
             a[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
             a[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
@@ -188,7 +192,7 @@ namespace
         return a ;
     }
 
-    const std::unordered_map<std::string, unsigned char> g_magic_words {
+    const std::unordered_map<std::string, KeyCode> g_magic_words {
         {"any", KEYCODE_OPTIONAL},
         {"num", KEYCODE_OPTNUMBER}
     } ;
@@ -204,19 +208,19 @@ namespace
 namespace vind
 {
     namespace keycodecvt {
-        unsigned char get_sys_keycode(const std::string& strkey) noexcept {
+        KeyCode get_sys_keycode(const std::string& strkey) noexcept {
             try {return g_sys_keycode.at(strkey) ;}
             catch(const std::out_of_range&) {return KEYCODE_UNDEFINED ;}
         }
 
-        std::unordered_set<unsigned char> get_all_sys_keycode() {
-            std::unordered_set<unsigned char> set ;
+        std::unordered_set<KeyCode> get_all_sys_keycode() {
+            std::unordered_set<KeyCode> set ;
             for(const auto& i : g_sys_keycode) set.insert(i.second) ;
             return set ;
         }
 
         //for debug
-        std::string get_name(const unsigned char keycode) noexcept {
+        std::string get_name(const KeyCode keycode) noexcept {
             for(const auto& m : g_magic_words) {
                 if(keycode == m.second) {
                     return m.first ;
@@ -240,17 +244,17 @@ namespace vind
             return "Unknown" ;
         }
 
-        unsigned char get_representative_key(unsigned char key) {
+        KeyCode get_representative_key(KeyCode key) {
             static const auto a = create_related_keys() ;
             return a[key] ;
         }
 
-        bool is_unreal_key(unsigned char key) noexcept {
+        bool is_unreal_key(KeyCode key) noexcept {
             static const auto a = create_unreal_keys() ;
             return a[key] ;
         }
 
-        unsigned char get_keycode_of_magic(const std::string& str) {
+        KeyCode get_keycode_of_magic(const std::string& str) {
             try {
                 return g_magic_words.at(str) ;
             }

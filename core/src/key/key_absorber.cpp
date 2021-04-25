@@ -1,4 +1,6 @@
 #include "key/key_absorber.hpp"
+
+#include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 
 #include <windows.h>
@@ -54,7 +56,7 @@ namespace
             return CallNextHookEx(*p_handle, nCode, wParam, lParam) ;
         }
 
-        auto code = static_cast<unsigned char>(
+        auto code = static_cast<vind::KeyCode>(
                 reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
 
         auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
@@ -103,13 +105,13 @@ namespace vind
             }
         }
 
-        bool is_pressed(unsigned char keycode) noexcept {
+        bool is_pressed(KeyCode keycode) noexcept {
             if(keycode < 1 || keycode > 254) {
                 return false ;
             }
             return g_state[keycode] ;
         }
-        bool is_really_pressed(unsigned char keycode) noexcept {
+        bool is_really_pressed(KeyCode keycode) noexcept {
             if(keycode < 1 || keycode > 254) {
                 return false ;
             }
@@ -118,7 +120,7 @@ namespace vind
 
         KeyLog get_pressed_list() {
             KeyLog::Data res{} ;
-            for(unsigned char i = 1 ; i < 255 ; i ++) {
+            for(KeyCode i = 1 ; i < 255 ; i ++) {
                 if(is_pressed(i)) res.insert(i) ;
             }
             return KeyLog(res) ;
@@ -145,7 +147,7 @@ namespace vind
 
             //if this function is called by pressed button,
             //it has to send message "KEYUP" to OS (not absorbed).
-            unsigned char keycode = 0 ;
+            KeyCode keycode = 0 ;
             for(const auto& s : g_state) {
                 if(s) {
                     keybrd::release_keystate(keycode) ;
@@ -158,7 +160,7 @@ namespace vind
             g_ignored_keys = keys ;
         }
 
-        void open_port(unsigned char key) noexcept {
+        void open_port(KeyCode key) noexcept {
             try {g_ignored_keys.insert(key) ;}
             catch(const std::bad_alloc& e) {
                 PRINT_ERROR(e.what()) ;
@@ -166,10 +168,10 @@ namespace vind
             }
         }
 
-        void release_virtually(unsigned char key) noexcept {
+        void release_virtually(KeyCode key) noexcept {
             g_state[key] = false ;
         }
-        void press_virtually(unsigned char key) noexcept {
+        void press_virtually(KeyCode key) noexcept {
             g_state[key] = true ;
         }
 

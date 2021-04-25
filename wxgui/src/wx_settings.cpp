@@ -80,7 +80,10 @@ namespace wxGUI
             wxSize(static_cast<int>(WIDTH() * 0.2), HEIGHT()),
             wxArrayString{}, wxLB_SINGLE
         ) ;
-        root_sizer->Add(pimpl->list, 0, wxALL | wxALIGN_CENTER, BORDER) ;
+        root_sizer->Add(
+                pimpl->list, 0,
+                static_cast<int>(wxALL) | static_cast<int>(wxALIGN_CENTER),
+                BORDER) ;
 
         pimpl->ctrls_sizer = new wxBoxSizer(wxVERTICAL) ;
         pimpl->ctrls_sizer->SetMinSize(wxSize(WIDTH() / 2, wxDefaultCoord)) ;
@@ -102,7 +105,10 @@ namespace wxGUI
             //fix background color (wxWidgets 3.1.3 problem)
             c->SetBackgroundColour(wxColour(*wxWHITE)) ;
 
-            pimpl->ctrls_sizer->Add(c, 0, wxALL | wxEXPAND, BORDER) ;
+            pimpl->ctrls_sizer->Add(
+                    c, 0,
+                    static_cast<int>(wxALL) | static_cast<int>(wxEXPAND),
+                    BORDER) ;
             if(i == 0) {
                 c->Show() ;
                 pimpl->shown_ctrl = c ;
@@ -112,7 +118,10 @@ namespace wxGUI
             }
         }
 
-        root_sizer->Add(pimpl->ctrls_sizer, 0, wxALL | wxEXPAND, BORDER) ;
+        root_sizer->Add(
+                pimpl->ctrls_sizer, 0,
+                static_cast<int>(wxALL) | static_cast<int>(wxEXPAND),
+                BORDER) ;
         root_sizer->AddStretchSpacer() ;
 
         auto def_sizer = new wxBoxSizer(wxVERTICAL) ;
@@ -120,8 +129,14 @@ namespace wxGUI
         pimpl->def_btn = new wxButton(
                 this, SettingsEvt::DEFAULT, wxT("Return to Default"),
                 wxDefaultPosition, wxSize(-1, -1)) ;
-        def_sizer->Add(pimpl->def_btn, 0, wxALL | wxEXPAND, BORDER) ;
-        root_sizer->Add(def_sizer, 0, wxALL | wxEXPAND, BORDER) ;
+        def_sizer->Add(
+                pimpl->def_btn, 0,
+                static_cast<int>(wxALL) | static_cast<int>(wxEXPAND),
+                BORDER) ;
+        root_sizer->Add(
+                def_sizer, 0,
+                static_cast<int>(wxALL) | static_cast<int>(wxEXPAND),
+                BORDER) ;
 
         SetSizerAndFit(root_sizer) ;
 

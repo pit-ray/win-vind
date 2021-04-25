@@ -471,7 +471,7 @@ namespace wxGUI
                             mov_item_sizer->Add(new wxGenericStaticText(
                                         this, wxID_ANY, wxT(""),
                                         wxDefaultPosition, wxSize(50, -1)
-                                        ), 0, wxLEFT | wxALIGN_LEFT, BORDER) ;
+                                        ), 0, static_cast<int>(wxLEFT) | static_cast<int>(wxALIGN_LEFT), BORDER) ;
                         }
                         pimpl->mode_overview[i + j] = new wxGenericStaticText(
                                 this, wxID_ANY, wxT(""),
@@ -486,7 +486,10 @@ namespace wxGUI
                     mov_sizer->Add(mov_item_sizer, 0, wxLEFT | wxRIGHT | wxALIGN_CENTER_HORIZONTAL, 5) ;
                 }
                 mov_sizer->SetMinSize(wxSize(c_right_width - 20, -1)) ;
-                pimpl->right_sizer->Add(mov_sizer, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, BORDER) ;
+                pimpl->right_sizer->Add(
+                        mov_sizer, 0,
+                        static_cast<int>(wxALL) | static_cast<int>(wxALIGN_CENTER_HORIZONTAL),
+                        BORDER) ;
             }
             {
                 auto mode_sizer = new wxBoxSizer(wxHORIZONTAL) ;
@@ -502,7 +505,10 @@ namespace wxGUI
                 mode_sizer->Add(pimpl->mode, flags) ;
 
                 pimpl->mode_related_text = new wxStaticText(this, wxID_ANY, wxT("copy from")) ;
-                mode_sizer->Add(pimpl->mode_related_text, 0, wxALL | wxALIGN_CENTER_VERTICAL, BORDER) ;
+                mode_sizer->Add(
+                        pimpl->mode_related_text, 0,
+                        static_cast<int>(wxALL) | static_cast<int>(wxALIGN_CENTER_VERTICAL),
+                        BORDER) ;
 
                 modes.Insert(wxT("None"), g_modes_last_idx) ;
                 pimpl->linked_mode = new wxChoice(
@@ -511,7 +517,10 @@ namespace wxGUI
                 pimpl->linked_mode->SetSelection(g_modes_last_idx) ;
                 mode_sizer->Add(pimpl->linked_mode, flags) ;
 
-                pimpl->right_sizer->Add(mode_sizer, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, BORDER) ;
+                pimpl->right_sizer->Add(
+                        mode_sizer, 0,
+                        static_cast<int>(wxALL) | static_cast<int>(wxALIGN_CENTER_HORIZONTAL),
+                        BORDER) ;
             }
             {
                 pimpl->cmds_sizer = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Commands")) ;
@@ -558,10 +567,16 @@ namespace wxGUI
                         wxDefaultPosition, wxSize(-1, -1)) ;
                 bottom_sizer->Add(pimpl->def_btn, flags) ;
 
-                pimpl->right_sizer->Add(bottom_sizer, 0, wxALL | wxEXPAND, BORDER) ;
+                pimpl->right_sizer->Add(
+                        bottom_sizer, 0,
+                        static_cast<int>(wxALL) | static_cast<int>(wxEXPAND),
+                        BORDER) ;
             }
 
-            root_sizer->Add(pimpl->right_sizer, 0, wxEXPAND | wxALL, BORDER) ;
+            root_sizer->Add(
+                    pimpl->right_sizer, 0,
+                    static_cast<int>(wxEXPAND) | static_cast<int>(wxALL),
+                    BORDER) ;
         }
         SetSizerAndFit(root_sizer) ;
 

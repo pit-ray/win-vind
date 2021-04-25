@@ -30,7 +30,7 @@ namespace vind
         Option(const Option&) = delete ;
         Option& operator=(const Option&) = delete ;
 
-        virtual const std::string name() const noexcept =  0 ;
+        virtual std::string name() const noexcept =  0 ;
 
         void enable() ;
         void disable() ;

@@ -14,7 +14,7 @@ namespace vind
 
     struct StartAnyApp : public BindedFuncCreator<StartAnyApp> {
         explicit StartAnyApp() ;
-        static void sprocess(std::string cmd="") ;
+        static void sprocess(const std::string& cmd="") ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
 

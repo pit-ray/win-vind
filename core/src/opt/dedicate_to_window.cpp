@@ -20,7 +20,7 @@ namespace
 
 namespace vind
 {
-    const std::string Dedicate2Window::sname() noexcept {
+    std::string Dedicate2Window::sname() noexcept {
         return "dedicate_to_window" ;
     }
 
@@ -49,7 +49,7 @@ namespace vind
     void Dedicate2Window::do_process() const {
         if(!target_hwnd)  return ;
 
-        const auto foreground_hwnd = GetForegroundWindow() ;
+        auto foreground_hwnd = GetForegroundWindow() ;
 
         //is selected window changed?
         if(past_hwnd == foreground_hwnd) {

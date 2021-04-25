@@ -9,7 +9,7 @@
 //internal linkage
 namespace
 {
-    inline void set_windows_mtrack_flag(const bool new_flag) {
+    inline void set_windows_mtrack_flag(bool new_flag) {
         if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
             throw RUNTIME_EXCEPT("cannot set system flag") ;
         }
@@ -46,7 +46,7 @@ namespace vind
     AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
     AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
 
-    const std::string AutotrackPopup::sname() noexcept {
+    std::string AutotrackPopup::sname() noexcept {
         return "autotrack_popup" ;
     }
 

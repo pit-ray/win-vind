@@ -54,8 +54,8 @@
 namespace vind
 {
     namespace bindingslists {
-        const std::vector<BindedFunc::SPtr> get() {
-            std::vector<BindedFunc::SPtr> tmp {
+        const std::vector<BindedFunc::SPtr>& get() {
+            static const std::vector<BindedFunc::SPtr> tmp {
                 ArrangeWindows::create(),
                 BackwardUINavigation::create(),
                 CBBackSpace::create(),

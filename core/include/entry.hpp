@@ -36,7 +36,7 @@ SOFTWARE.
 
 namespace vind
 {
-    bool initialize(const std::string func_name=std::string()) noexcept ;
+    bool initialize(const std::string& func_name="") noexcept ;
 
     bool load_config() noexcept ;
     bool load_option_config() noexcept ;

@@ -18,14 +18,14 @@ namespace
 {
     using namespace vind ;
 
-    inline auto is_shift(const unsigned key) noexcept {
+    inline auto is_shift(unsigned key) noexcept {
         return key == KEYCODE_SHIFT || key == KEYCODE_LSHIFT || key == KEYCODE_RSHIFT ;
     }
 
     template <typename FuncT>
     inline void loop_for_keymatching(FuncT&& func) {
         //reset keys downed in order to call this function.
-        for(const auto& key : keyabsorber::get_pressed_list()) {
+        for(auto& key : keyabsorber::get_pressed_list()) {
             if(is_shift(key)) continue ;
             keybrd::release_keystate(key) ;
         }
@@ -34,11 +34,11 @@ namespace
             if(keyabsorber::is_pressed(KEYCODE_ESC)) {
                 return ;
             }
-            const auto log = keyabsorber::get_pressed_list() ;
+            auto log = keyabsorber::get_pressed_list() ;
 
             if(!log.is_containing(KEYCODE_SHIFT)) {
                 //not shifted
-                for(const auto& key : log) {
+                for(auto& key : log) {
                     //For example, if replace by 'i' and 'i' key is downed,
                     //immediately will call "insert-mode", so release 'i'.
                     keybrd::release_keystate(key) ;
@@ -53,7 +53,7 @@ namespace
             }
             else {
                 //shifted
-                for(const auto& key : log) {
+                for(auto& key : log) {
                     if(is_shift(key)) continue ;
                     keybrd::release_keystate(key) ;
                     if(!keycodecvt::get_shifted_ascii(key)) {
@@ -76,7 +76,7 @@ namespace vind
     : BindedFuncCreator("edi_n_replace_char")
     {}
     void EdiNReplaceChar::sprocess(unsigned int repeat_num) {
-        loop_for_keymatching([repeat_num](const auto& keycodes, const bool shifted=false) {
+        loop_for_keymatching([repeat_num](const auto& keycodes, bool shifted=false) {
 
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 keybrd::pushup(KEYCODE_DELETE) ;
@@ -114,7 +114,7 @@ namespace vind
         std::vector<unsigned char> strs{} ;
         std::vector<bool> shifts{} ;
 
-        loop_for_keymatching([&strs, &shifts](const auto& keycodes, const bool shifted=false) {
+        loop_for_keymatching([&strs, &shifts](const auto& keycodes, bool shifted=false) {
             pushup(KEYCODE_DELETE) ;
             if(shifted) {
                 pushup(KEYCODE_LSHIFT, keycodes) ;

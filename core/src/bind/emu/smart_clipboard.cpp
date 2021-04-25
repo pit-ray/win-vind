@@ -165,7 +165,7 @@ namespace vind
         pimpl->cache = NULL ;
     }
 
-    void SmartClipboard::set(const char* const ar, const std::size_t size) {
+    void SmartClipboard::set(const char* const ar, std::size_t size) {
         if(!pimpl->opening) {
             throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
         }

@@ -13,7 +13,7 @@ namespace vind
     : BindedFuncCreator("jump_to_active_window")
     {}
     void Jump2ActiveWindow::sprocess() {
-        const auto hwnd = GetForegroundWindow() ;
+        auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
             throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
         }

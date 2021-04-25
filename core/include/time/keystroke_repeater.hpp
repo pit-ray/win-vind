@@ -11,7 +11,7 @@ namespace vind
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        explicit KeyStrokeRepeater(const unsigned int wait_time_for_starting_ms=512) ;
+        explicit KeyStrokeRepeater(unsigned int wait_time_for_starting_ms=512) ;
         virtual ~KeyStrokeRepeater() noexcept ;
 
         KeyStrokeRepeater(KeyStrokeRepeater&&) ;

@@ -11,17 +11,15 @@ namespace
 {
     using namespace std::chrono ;
 
-    inline const auto const_accelerate(
-            float& velocity,
-            const float ms) noexcept {
+    inline auto const_accelerate(float& velocity, float ms) noexcept {
         //hardcoded
         constexpr auto MAX_ACCELERATION = 1.0f ;
         constexpr auto MAX_VELOCITY     = 1.0f ;
 
         //ms -> s
-        const auto t = ms / 1000 ;
+        auto t = ms / 1000 ;
 
-        const auto delta_v = MAX_ACCELERATION * t ;
+        auto delta_v = MAX_ACCELERATION * t ;
         if(velocity + delta_v < MAX_VELOCITY) {
             velocity += delta_v ;
         }
@@ -31,12 +29,11 @@ namespace
         return velocity ;
     }
 
-    inline const auto compute_delta_t(
-            const system_clock::time_point& start_time) noexcept {
+    inline auto compute_delta_t(const system_clock::time_point& start_time) noexcept {
         return duration_cast<milliseconds>(system_clock::now() - start_time) ;
     }
 
-    inline const auto _generate_uniform() {
+    inline auto _generate_uniform() {
         static std::random_device seed_gen ;
         static std::default_random_engine engine(seed_gen()) ;
         static std::uniform_real_distribution<float> dist(0.0f, 1.0f) ;
@@ -55,10 +52,10 @@ namespace vind
         IntervalTimer timer ;
         float v ;
         system_clock::time_point start_time ;
-        const milliseconds wait_time ;
+        milliseconds wait_time ;
         std::mutex mtx ;
 
-        explicit Impl(const unsigned int wait_time_for_starting_ms=512)
+        explicit Impl(unsigned int wait_time_for_starting_ms=512)
         : timer(REPEAT_SAMPLING_DELTA_US),
           v(INITIAL_VELOCITY),
           start_time(system_clock::now()),
@@ -88,7 +85,7 @@ namespace vind
         Impl& operator=(Impl&& rhs) = default ;
     } ;
 
-    KeyStrokeRepeater::KeyStrokeRepeater(const unsigned int wait_time_for_starting_ms)
+    KeyStrokeRepeater::KeyStrokeRepeater(unsigned int wait_time_for_starting_ms)
     : pimpl(std::make_unique<Impl>(wait_time_for_starting_ms))
     {}
 
@@ -113,7 +110,7 @@ namespace vind
     bool KeyStrokeRepeater::is_pressed() const {
         std::lock_guard<std::mutex> scoped_lock(pimpl->mtx) ;
 
-        const auto dt = compute_delta_t(pimpl->start_time) ;
+        auto dt = compute_delta_t(pimpl->start_time) ;
 
         if(dt < pimpl->wait_time) return false ;
 

@@ -49,22 +49,22 @@ namespace vind
         keyabsorber::InstantKeyAbsorber ika ;
 
         //ignore toggle keys (for example, CapsLock, NumLock, IME....)
-        const auto toggle_keys = keyabsorber::get_pressed_list() ;
+        auto toggle_keys = keyabsorber::get_pressed_list() ;
 
         RECT rect ;
         screenmetrics::get_conbined_metrics(&rect) ;
 
-        const auto width  = screenmetrics::width(rect) ;
-        const auto height = screenmetrics::height(rect) ;
+        auto width  = screenmetrics::width(rect) ;
+        auto height = screenmetrics::height(rect) ;
 
         while(vind::update_background()) {
             if(keyabsorber::is_pressed(KEYCODE_ESC)) return ;
 
-            const auto log = keyabsorber::get_pressed_list() - toggle_keys ;
+            auto log = keyabsorber::get_pressed_list() - toggle_keys ;
             if(log.empty()) continue ;
 
             try {
-                for(const auto& keycode : log) {
+                for(auto& keycode : log) {
                     if(keycodecvt::is_unreal_key(keycode))
                         continue ;
 
@@ -81,7 +81,7 @@ namespace vind
 
                     SetCursorPos(x_pos, y_pos) ;
 
-                    for(const auto& key : log) {
+                    for(auto& key : log) {
                         keybrd::release_keystate(key) ;
                     }
                     return ;
@@ -109,7 +109,7 @@ namespace vind
 
         pimpl->xposs.fill(0) ;
         pimpl->yposs.fill(0) ;
-        const auto filename = path::KEYBRD_MAP() ;
+        auto filename = path::KEYBRD_MAP() ;
 
         std::ifstream ifs(path::to_u8path(filename), std::ios::in) ;
         std::string buf ;
@@ -132,15 +132,15 @@ namespace vind
                     continue ;
                 }
 
-                const auto vec = util::split(buf, " ") ;
+                auto vec = util::split(buf, " ") ;
 
                 if(vec.size() != 3) {
                     ep(" is bad syntax in ") ;
                     continue ;
                 }
 
-                const auto x = std::stof(vec[0]) ;
-                const auto y = stof(vec[1]) ;
+                auto x = std::stof(vec[0]) ;
+                auto y = stof(vec[1]) ;
 
                 if(x > pimpl->max_keybrd_xposs) pimpl->max_keybrd_xposs = x ;
                 if(y > pimpl->max_keybrd_yposs) pimpl->max_keybrd_yposs = y ;
@@ -149,7 +149,7 @@ namespace vind
                 auto code = vec[2] ;
                 //is ascii code
                 if(code.size() == 1) {
-                    if(const auto keycode = keycodecvt::get_keycode(code.front())) {
+                    if(auto keycode = keycodecvt::get_keycode(code.front())) {
                         //overwrite
                         pimpl->xposs[keycode] = x ;
                         pimpl->yposs[keycode] = y ;

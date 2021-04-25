@@ -30,7 +30,7 @@ namespace vind
                 const std::string& current_dir,
                 std::string cmd,
                 Ts&&... args) {
-            const std::initializer_list<std::string> arglist = {std::forward<Ts>(args)...} ;
+            std::initializer_list<std::string> arglist = {std::forward<Ts>(args)...} ;
 
             //protect path with quotation marks for security.
             if(cmd.find(" ") != std::string::npos) {

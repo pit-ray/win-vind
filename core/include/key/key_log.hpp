@@ -38,7 +38,7 @@ namespace vind
 
         std::size_t size() const noexcept ;
         bool empty() const noexcept ;
-        bool is_containing(const unsigned char key) const ;
+        bool is_containing(unsigned char key) const ;
 
         bool operator==(const KeyLog& rhs) const ;
         bool operator==(KeyLog&& rhs) const ;

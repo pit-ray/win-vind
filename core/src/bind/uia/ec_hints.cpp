@@ -35,7 +35,7 @@ namespace vind
                 std::vector<Hint> hints(target_count) ;
 
                 std::size_t idx = 0 ;
-                const auto l2_num = target_count / gcx_labels.size() + 1 ;
+                auto l2_num = target_count / gcx_labels.size() + 1 ;
                 for(auto i = l2_num ; i < gcx_labels.size() ; i ++) {
                     hints[idx].push_back(gcx_labels[i]) ;
                     idx ++ ;
@@ -63,7 +63,7 @@ namespace vind
             } else {
                 hints.resize(gcx_labels_size_pow3) ;
             }
-            const auto l3_num = target_count / gcx_labels_size_pow2 + 1 ;
+            auto l3_num = target_count / gcx_labels_size_pow2 + 1 ;
 
             std::size_t idx = 0 ;
             for(std::size_t j = l3_num ; j < gcx_labels.size() ; j ++) {

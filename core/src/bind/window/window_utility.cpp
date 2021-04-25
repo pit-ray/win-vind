@@ -125,9 +125,7 @@ namespace vind
 
         void batch_resize(const std::unordered_map<HWND, RECT>& rects) {
             //Resize each windows
-            for(const auto& hr : rects) {
-                const auto hwnd = hr.first ;
-                const auto rect = hr.second ;
+            for(const auto& [hwnd, rect] : rects) {
                 resize(hwnd, rect.left, rect.top,
                         screenmetrics::width(rect), screenmetrics::height(rect)) ;
             }

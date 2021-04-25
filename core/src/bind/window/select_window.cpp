@@ -74,7 +74,7 @@ namespace
             auto ecy = screenmetrics::center_y(enu_rect) ;
 
             if(is_if_target(fg_rect, enu_rect, cx, cy, ecx, ecy)) {
-                const auto distance = calc_distance(fg_rect, enu_rect, cx, cy, ecx, ecy) ;
+                auto distance = calc_distance(fg_rect, enu_rect, cx, cy, ecx, ecy) ;
                 distance_order_hwnd[distance] = enu_hwnd ;
             }
         }

@@ -137,7 +137,7 @@ namespace vind
                         return logstatus ;
                     }
 
-                    const auto is_last_keyset = cmdidx_ == cmd.size() - 1 ;
+                    auto is_last_keyset = cmdidx_ == cmd.size() - 1 ;
 
                     if(*itr == KEYCODE_OPTNUMBER) {
                         if(!is_containing_num(log)) {
@@ -298,7 +298,7 @@ namespace vind
         return *this ;
     }
 
-    void LoggerParser::append_binding(std::string command) {
+    void LoggerParser::append_binding(const std::string& command) {
         if(command.empty()) return ;
         if(!pimpl->cmdlist_ptr_) {
             pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;

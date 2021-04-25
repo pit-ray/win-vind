@@ -29,7 +29,7 @@ namespace
     } ;
 
     template <typename KeyLogType>
-    const KeyLog extract_numbers(const KeyLog& log, KeyLogType&& ignore_keys) {
+    KeyLog extract_numbers(const KeyLog& log, KeyLogType&& ignore_keys) {
         auto to_ascii_func = log.is_containing(KEYCODE_SHIFT) ?
             keycodecvt::get_shifted_ascii : keycodecvt::get_ascii ;
 
@@ -186,7 +186,7 @@ namespace vind
 
     int NTypeLogger::logging_state() {
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
-        const auto log = keyabsorber::get_pressed_list() - cl_toggles ; //ignore toggle keys
+        auto log = keyabsorber::get_pressed_list() - cl_toggles ; //ignore toggle keys
 
         int result ;
         switch(pimpl->state_ & LoggerState::STATE_MASK) {

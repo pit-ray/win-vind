@@ -26,7 +26,7 @@ namespace vind
     void Change2Normal::sprocess(bool vclmodeout) {
         using namespace mode ;
 
-        const auto m = get_global_mode() ;
+        auto m = get_global_mode() ;
         if(m == Mode::Normal) return ;
 
         if(m == Mode::Visual) 

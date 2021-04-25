@@ -21,7 +21,7 @@ namespace vind
                 std::size_t& need_draw_count,
                 std::mutex& mtx,
                 const bool& continue_running,
-                const unsigned char sendkey=KEYCODE_UNDEFINED) ;
+                unsigned char sendkey=KEYCODE_UNDEFINED) ;
     }
 }
 

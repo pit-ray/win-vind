@@ -31,7 +31,7 @@ namespace
 namespace vind
 {
     namespace funcfinder {
-        const BindedFunc::SPtr find_func_byname(const std::string& name) {
+        BindedFunc::SPtr find_func_byname(const std::string& name) {
                 for(const auto& func : g_all_func_list) {
                     if(func->name() == name) return func ;
                 }
@@ -148,7 +148,7 @@ namespace vind
         }
     }
 
-    const LoggerParser::SPtr FuncFinder::transition_parser_states_in_batch(
+    LoggerParser::SPtr FuncFinder::transition_parser_states_in_batch(
             const KeyLoggerBase& lgr,
             mode::Mode mode) {
         LoggerParser::SPtr ptr = nullptr ;
@@ -173,7 +173,7 @@ namespace vind
         }
     }
 
-    const LoggerParser::SPtr FuncFinder::find_rejected_with_ready_parser(mode::Mode mode) {
+    LoggerParser::SPtr FuncFinder::find_rejected_with_ready_parser(mode::Mode mode) {
         for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
             if(parser->is_rejected_with_ready()) {
                 return parser ;
@@ -182,7 +182,7 @@ namespace vind
         return nullptr ;
     }
 
-    const LoggerParser::SPtr FuncFinder::find_waiting_parser(mode::Mode mode) {
+    LoggerParser::SPtr FuncFinder::find_waiting_parser(mode::Mode mode) {
         for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
             if(parser->is_waiting()) {
                 return parser ;
@@ -191,7 +191,7 @@ namespace vind
         return nullptr ;
     }
 
-    const LoggerParser::SPtr FuncFinder::find_accepted_parser(mode::Mode mode) {
+    LoggerParser::SPtr FuncFinder::find_accepted_parser(mode::Mode mode) {
         for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
             if(parser->is_accepted()) {
                 return parser ;
@@ -200,7 +200,7 @@ namespace vind
         return nullptr ;
     }
 
-    const LoggerParser::SPtr FuncFinder::find_parser_with_transition(
+    LoggerParser::SPtr FuncFinder::find_parser_with_transition(
             const KeyLog& log,
             std::size_t low_priority_func_id,
             mode::Mode mode) {

@@ -43,11 +43,11 @@ namespace vind
             shifted_char2keycode.fill(0) ;
             shifted_keycode2char.fill(0) ;
 
-            for(const auto c : g_printable_ascii()) {
-                const auto res = VkKeyScanA(c) ;
+            for(auto& c : g_printable_ascii()) {
+                auto res = VkKeyScanA(c) ;
 
-                const auto keycode = static_cast<unsigned char>(res & 0xff) ;
-                const auto shifted = (res & 0x0100) != 0 ;
+                auto keycode = static_cast<unsigned char>(res & 0xff) ;
+                auto shifted = (res & 0x0100) != 0 ;
 
                 if(shifted) {
                     shifted_char2keycode[static_cast<unsigned char>(c)] = keycode ;
@@ -60,16 +60,16 @@ namespace vind
             }
         }
 
-        unsigned char get_keycode(const char ascii) noexcept {
+        unsigned char get_keycode(char ascii) noexcept {
             return char2keycode[static_cast<unsigned char>(ascii)] ;
         }
-        char get_ascii(const unsigned char keycode) noexcept {
+        char get_ascii(unsigned char keycode) noexcept {
             return keycode2char[keycode] ;
         }
-        unsigned char get_shifted_keycode(const char ascii) noexcept {
+        unsigned char get_shifted_keycode(char ascii) noexcept {
             return shifted_char2keycode[static_cast<unsigned char>(ascii)] ;
         }
-        char get_shifted_ascii(const unsigned char keycode) noexcept {
+        char get_shifted_ascii(unsigned char keycode) noexcept {
             return shifted_keycode2char[keycode] ;
         }
     }
@@ -165,7 +165,7 @@ namespace
         {"numlock",     KEYCODE_NUMLOCK}
     } ;
 
-    inline const auto create_related_keys() {
+    inline auto create_related_keys() {
             std::array<unsigned char, 256> a{0} ;
             a[KEYCODE_LSHIFT]  = KEYCODE_SHIFT ;
             a[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
@@ -180,9 +180,9 @@ namespace
             return a ;
     }
 
-    inline const auto create_unreal_keys() {
+    inline auto create_unreal_keys() {
         std::array<bool, 256> a{false} ;
-        for(const auto i : create_related_keys()) {
+        for(auto& i : create_related_keys()) {
             if(i) a[i] = true ;
         }
         return a ;
@@ -209,14 +209,14 @@ namespace vind
             catch(const std::out_of_range&) {return KEYCODE_UNDEFINED ;}
         }
 
-        const std::unordered_set<unsigned char> get_all_sys_keycode() {
+        std::unordered_set<unsigned char> get_all_sys_keycode() {
             std::unordered_set<unsigned char> set ;
             for(const auto& i : g_sys_keycode) set.insert(i.second) ;
             return set ;
         }
 
         //for debug
-        const std::string get_name(const unsigned char keycode) noexcept {
+        std::string get_name(const unsigned char keycode) noexcept {
             for(const auto& m : g_magic_words) {
                 if(keycode == m.second) {
                     return m.first ;
@@ -240,12 +240,12 @@ namespace vind
             return "Unknown" ;
         }
 
-        unsigned char get_representative_key(const unsigned char key) {
+        unsigned char get_representative_key(unsigned char key) {
             static const auto a = create_related_keys() ;
             return a[key] ;
         }
 
-        bool is_unreal_key(const unsigned char key) noexcept {
+        bool is_unreal_key(unsigned char key) noexcept {
             static const auto a = create_unreal_keys() ;
             return a[key] ;
         }

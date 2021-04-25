@@ -16,25 +16,25 @@ namespace vind
     namespace util {
         using rgb_t = std::tuple<unsigned char, unsigned char, unsigned char> ;
 
-        const rgb_t hex2rgb(std::string hex) ;
+        rgb_t hex2rgb(std::string hex) ;
 
-        inline COLORREF hex2COLORREF(std::string hex) {
+        inline COLORREF hex2COLORREF(const std::string& hex) {
             auto [r, g, b] = hex2rgb(hex) ;
             return RGB(r, g, b) ;
         }
 
-        const rgb_t to_complementary_rgb(
+        rgb_t to_complementary_rgb(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) noexcept ;
 
-         inline const rgb_t to_complementary_rgb(rgb_t rgb) noexcept {
+         inline rgb_t to_complementary_rgb(rgb_t rgb) noexcept {
             auto [r, g, b] = rgb ;
             return to_complementary_rgb(r, g, b) ;
         }
 
         inline COLORREF to_complementary_COLORREF(rgb_t rgb) noexcept {
-            const auto [r, g, b] = to_complementary_rgb(rgb) ;
+            auto [r, g, b] = to_complementary_rgb(rgb) ;
             return RGB(r, g, b) ;
         }
 
@@ -42,7 +42,7 @@ namespace vind
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) noexcept {
-            const auto [ro, go, bo] = to_complementary_rgb(r, g, b) ;
+            auto [ro, go, bo] = to_complementary_rgb(r, g, b) ;
             return RGB(ro, go, bo) ;
         }
 

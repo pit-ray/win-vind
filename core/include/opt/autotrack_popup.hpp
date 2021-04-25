@@ -16,7 +16,7 @@ namespace vind
         void do_process() const override ;
 
     public:
-        static const std::string sname() noexcept ;
+        static std::string sname() noexcept ;
 
         explicit AutotrackPopup() ;
         virtual ~AutotrackPopup() noexcept ;

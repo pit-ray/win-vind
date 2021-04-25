@@ -107,7 +107,7 @@ namespace vind
             if(auto parser = pimpl->funcfinder_.find_parser_with_transition(
                         lgr.latest(), id(), lcx_vmode)) {
 
-                const auto id = parser->get_func()->id() ;
+                decltype(auto) id = parser->get_func()->id() ;
 
                 if(parser->is_accepted()) {
                     if(pimpl->is_valid_id(id)) {

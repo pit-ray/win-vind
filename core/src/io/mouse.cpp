@@ -15,7 +15,7 @@ namespace
         {KEYCODE_MOUSE_RIGHT, false}
     } ;
 
-    inline DWORD btcode_to_upevent(const unsigned btcode) noexcept {
+    inline DWORD btcode_to_upevent(unsigned btcode) noexcept {
         switch(btcode) {
             case KEYCODE_MOUSE_LEFT: return MOUSEEVENTF_LEFTUP ;
             case KEYCODE_MOUSE_RIGHT: return MOUSEEVENTF_RIGHTUP ;
@@ -23,7 +23,7 @@ namespace
             default: return 0 ;
         }
     }
-    inline DWORD btcode_to_downevent(const unsigned btcode) noexcept {
+    inline DWORD btcode_to_downevent(unsigned btcode) noexcept {
         switch(btcode) {
             case KEYCODE_MOUSE_LEFT: return MOUSEEVENTF_LEFTDOWN ;
             case KEYCODE_MOUSE_RIGHT: return MOUSEEVENTF_RIGHTDOWN ;
@@ -35,7 +35,7 @@ namespace
 namespace vind
 {
     namespace mouse {
-        void click(const unsigned char btcode) {
+        void click(unsigned char btcode) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
@@ -51,7 +51,7 @@ namespace vind
             }
         }
 
-        void press(const unsigned char btcode) {
+        void press(unsigned char btcode) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
@@ -61,7 +61,7 @@ namespace vind
             }
         }
 
-        void release(const unsigned char btcode) {
+        void release(unsigned char btcode) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
             in.mi.dwFlags = btcode_to_upevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
@@ -71,7 +71,7 @@ namespace vind
             }
         }
 
-        bool is_releasing_occured(const unsigned char btcode) {
+        bool is_releasing_occured(unsigned char btcode) {
             if(GetAsyncKeyState(btcode) & 0x8000) {
                 if(!btstate[btcode]) btstate[btcode] = true ;
             }

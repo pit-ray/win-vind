@@ -114,7 +114,7 @@ namespace vind
         auto log = keyabsorber::get_pressed_list() - cl_toggles ;
 
         if(log != pimpl->prelog_) { //type is changed
-            const auto diff = log - pimpl->prelog_ ;
+            auto diff = log - pimpl->prelog_ ;
             pimpl->prelog_ = log ;
 
             if(!pimpl->is_including_enabled_chars(log) && !is_including_ascii(diff)) {
@@ -151,7 +151,7 @@ namespace vind
         }
     }
 
-    const std::string CharLogger::to_str() const {
+    std::string CharLogger::to_str() const {
         if(empty()) return "" ;
 
         std::string str{} ;
@@ -159,13 +159,13 @@ namespace vind
             if(itr->is_containing(KEYCODE_SHIFT)) {
                 //shifted ascii
                 for(const auto keycode : *itr) {
-                    const auto c = keycodecvt::get_shifted_ascii(keycode) ;
+                    auto c = keycodecvt::get_shifted_ascii(keycode) ;
                     if(c != 0) str.push_back(c) ;
                 }
                 continue ;
             }
             for(const auto keycode : *itr) {
-                const auto c = keycodecvt::get_ascii(keycode) ;
+                auto c = keycodecvt::get_ascii(keycode) ;
                 if(c != 0) str.push_back(c) ;
             }
         }

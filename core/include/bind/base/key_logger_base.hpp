@@ -65,7 +65,7 @@ namespace vind
         //      -> std::stoi(0784)
         //      uint: 784
         //
-        unsigned int extract_num(const std::string str) ;
+        unsigned int extract_num(const std::string& str) ;
 
         namespace debug {
             //for debug

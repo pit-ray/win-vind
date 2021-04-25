@@ -7,7 +7,7 @@ namespace vind
 {
     struct MakeDir : public BindedFuncCreator<MakeDir> {
         explicit MakeDir() ;
-        static void sprocess(std::string path="New folder") ;
+        static void sprocess(const std::string& path="New folder") ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;

@@ -54,14 +54,14 @@ namespace
             return CallNextHookEx(*p_handle, nCode, wParam, lParam) ;
         }
 
-        const auto code = static_cast<unsigned char>(
+        auto code = static_cast<unsigned char>(
                 reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
 
-        const auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+        auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
         g_real_state[code] = state ;
         g_state[code]      = state ;
 
-        const auto rep = vind::keycodecvt::get_representative_key(code) ;
+        auto rep = vind::keycodecvt::get_representative_key(code) ;
         g_real_state[rep] = state ;
         g_state[rep]      = state ;
 
@@ -103,20 +103,20 @@ namespace vind
             }
         }
 
-        bool is_pressed(const unsigned char keycode) noexcept {
+        bool is_pressed(unsigned char keycode) noexcept {
             if(keycode < 1 || keycode > 254) {
                 return false ;
             }
             return g_state[keycode] ;
         }
-        bool is_really_pressed(const unsigned char keycode) noexcept {
+        bool is_really_pressed(unsigned char keycode) noexcept {
             if(keycode < 1 || keycode > 254) {
                 return false ;
             }
             return g_real_state[keycode] ;
         }
 
-        const KeyLog get_pressed_list() {
+        KeyLog get_pressed_list() {
             KeyLog::data_t res{} ;
             for(unsigned char i = 1 ; i < 255 ; i ++) {
                 if(is_pressed(i)) res.insert(i) ;
@@ -158,7 +158,7 @@ namespace vind
             g_ignored_keys = keys ;
         }
 
-        void open_port(const unsigned char key) noexcept {
+        void open_port(unsigned char key) noexcept {
             try {g_ignored_keys.insert(key) ;}
             catch(const std::bad_alloc& e) {
                 PRINT_ERROR(e.what()) ;
@@ -166,10 +166,10 @@ namespace vind
             }
         }
 
-        void release_virtually(const unsigned char key) noexcept {
+        void release_virtually(unsigned char key) noexcept {
             g_state[key] = false ;
         }
-        void press_virtually(const unsigned char key) noexcept {
+        void press_virtually(unsigned char key) noexcept {
             g_state[key] = true ;
         }
 

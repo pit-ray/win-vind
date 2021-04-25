@@ -9,9 +9,9 @@ namespace vind
 {
     namespace keyabsorber {
         void install_hook() ;
-        bool is_pressed(const unsigned char keycode) noexcept ;
-        bool is_really_pressed(const unsigned char keycode) noexcept ;
-        const KeyLog get_pressed_list() ;
+        bool is_pressed(unsigned char keycode) noexcept ;
+        bool is_really_pressed(unsigned char keycode) noexcept ;
+        KeyLog get_pressed_list() ;
 
         bool is_absorbed() noexcept ;
         void absorb() noexcept ;
@@ -21,12 +21,12 @@ namespace vind
         void close_all_ports_with_refresh() ;
 
         void open_some_ports(const KeyLog::data_t& key) noexcept ;
-        void open_port(const unsigned char key) noexcept ;
+        void open_port(unsigned char key) noexcept ;
 
         //These functions is existed in order to fool KeyLogger as no-changing.
         //For example, EdiMoveCaretLeft...
-        void release_virtually(const unsigned char key) noexcept ;
-        void press_virtually(const unsigned char key) noexcept ;
+        void release_virtually(unsigned char key) noexcept ;
+        void press_virtually(unsigned char key) noexcept ;
 
         class InstantKeyAbsorber {
         private:

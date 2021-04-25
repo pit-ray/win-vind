@@ -68,8 +68,8 @@ namespace vind
         if(enable_double_buffering) {
             RECT conbinded_rect ;
             screenmetrics::get_conbined_metrics(&conbinded_rect) ;
-            const auto width  = screenmetrics::width(conbinded_rect) ;
-            const auto height = screenmetrics::height(conbinded_rect) ;
+            auto width  = screenmetrics::width(conbinded_rect) ;
+            auto height = screenmetrics::height(conbinded_rect) ;
 
             auto raw_bitmap = CreateCompatibleBitmap(pimpl->display_dc.get(), width, height) ;
             if(!raw_bitmap) {
@@ -101,7 +101,7 @@ namespace vind
     DisplayTextPainter::DisplayTextPainter(
             LONG font_size,
             LONG font_weight,
-            const std::string face_name,
+            const std::string& face_name,
             bool enable_double_buffering)
     : pimpl(std::make_unique<Impl>())
     {
@@ -141,7 +141,7 @@ namespace vind
     void DisplayTextPainter::set_font(
             LONG font_size,
             LONG font_weight,
-            const std::string face_name) {
+            const std::string& face_name) {
         pimpl->logfont.lfHeight = font_size ;
         pimpl->logfont.lfWeight = font_weight ;
 
@@ -174,7 +174,7 @@ namespace vind
             unsigned char b) {
         set_text_color(RGB(r, g, b)) ;
     }
-    void DisplayTextPainter::set_text_color(std::string hex) {
+    void DisplayTextPainter::set_text_color(const std::string& hex) {
         set_text_color(util::hex2COLORREF(hex)) ;
     }
 
@@ -189,7 +189,7 @@ namespace vind
             unsigned char b) {
         set_back_color(RGB(r, g, b)) ;
     }
-    void DisplayTextPainter::set_back_color(std::string hex) {
+    void DisplayTextPainter::set_back_color(const std::string& hex) {
         set_back_color(util::hex2COLORREF(hex)) ;
     }
 

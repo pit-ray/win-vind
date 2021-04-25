@@ -14,14 +14,14 @@
 namespace vind
 {
     namespace mouse {
-        void click(const unsigned char btcode) ;
-        void press(const unsigned char btcode) ;
-        void release(const unsigned char btcode) ;
+        void click(unsigned char btcode) ;
+        void press(unsigned char btcode) ;
+        void release(unsigned char btcode) ;
 
-        bool is_releasing_occured(const unsigned char btcode) ; //(since the last call)
+        bool is_releasing_occured(unsigned char btcode) ; //(since the last call)
 
         template <typename T>
-        inline void _scroll_core(const DWORD event, T&& scr_delta) {
+        inline void _scroll_core(DWORD event, T&& scr_delta) {
             static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}};
             in.mi.mouseData = static_cast<int>(scr_delta) ;
             in.mi.dwFlags = event ;

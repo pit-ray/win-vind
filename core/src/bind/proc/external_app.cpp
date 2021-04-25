@@ -27,7 +27,7 @@
 namespace
 {
     using mss_t = std::unordered_map<std::string, std::string> ;
-    inline const mss_t _load_proc_list_core() {
+    inline mss_t _load_proc_list_core() {
         mss_t map{} ;
 
         nlohmann::json j ;
@@ -97,7 +97,7 @@ namespace vind
     StartAnyApp::StartAnyApp()
     : BindedFuncCreator("start_any_app")
     {}
-    void StartAnyApp::sprocess(std::string cmd) {
+    void StartAnyApp::sprocess(const std::string& cmd) {
         if(!cmd.empty()) {
             try {
                 util::create_process(".", g_proc_list.at(cmd)) ;

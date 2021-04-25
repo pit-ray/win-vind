@@ -18,7 +18,7 @@ namespace vind
             //In the case, if pushup LShift + End, the line is selected including CR-LF.
             bool having_EOL ;
 
-            explicit SelRes(std::string outstr, bool havEOL)
+            explicit SelRes(const std::string& outstr, bool havEOL)
             : str(outstr),
               having_EOL(havEOL)
             {}
@@ -29,9 +29,9 @@ namespace vind
             {}
         } ;
 
-        const SelRes get_selected_text(
+        SelRes get_selected_text(
                 std::function<void()> clip_func,
-                const bool backup=false) ;
+                bool backup=false) ;
     }
 }
 

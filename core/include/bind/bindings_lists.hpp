@@ -8,7 +8,7 @@
 namespace vind
 {
     namespace bindingslists {
-        const std::vector<BindedFunc::SPtr> get() ;
+        const std::vector<BindedFunc::SPtr>& get() ;
     }
 }
 #endif

@@ -31,7 +31,7 @@ namespace vind
         LoggerParser(LoggerParser&&) ;
         LoggerParser& operator=(LoggerParser&&) ;
 
-        void append_binding(std::string command) ;
+        void append_binding(const std::string& command) ;
 
         void append_binding_list(const std::vector<std::string>& list) ;
         void append_binding_list(std::vector<std::string>&& list) ;

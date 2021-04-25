@@ -23,7 +23,7 @@ namespace vind
         void get_primary_metrics(RECT* const rect) {
             MONITORINFO minfo ;
             minfo.cbSize = sizeof(MONITORINFO) ;
-            const auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTOPRIMARY) ;
+            auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTOPRIMARY) ;
             if(!GetMonitorInfo(hmonitor, &minfo)) {
                 throw RUNTIME_EXCEPT("Could not get primary monitor infomation.") ;
             }

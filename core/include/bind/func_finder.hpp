@@ -13,7 +13,7 @@ namespace vind
 {
     namespace funcfinder {
         void initialize() ;
-        const BindedFunc::SPtr find_func_byname(const std::string& name) ;
+        BindedFunc::SPtr find_func_byname(const std::string& name) ;
         void load_global_bindings() ;
     }
 
@@ -33,7 +33,7 @@ namespace vind
         FuncFinder(FuncFinder&&) ;
         FuncFinder& operator=(FuncFinder&&) ;
 
-        const LoggerParser::SPtr transition_parser_states_in_batch(
+        LoggerParser::SPtr transition_parser_states_in_batch(
                 const KeyLoggerBase& lgr,
                 mode::Mode mode=mode::get_global_mode()) ;
 
@@ -43,16 +43,16 @@ namespace vind
                 std::vector<LoggerParser::SPtr>& results,
                 mode::Mode mode=mode::get_global_mode()) ;
 
-        const LoggerParser::SPtr find_rejected_with_ready_parser(
+        LoggerParser::SPtr find_rejected_with_ready_parser(
                 mode::Mode mode=mode::get_global_mode()) ;
 
-        const LoggerParser::SPtr find_waiting_parser(
+        LoggerParser::SPtr find_waiting_parser(
                 mode::Mode mode=mode::get_global_mode()) ;
 
-        const LoggerParser::SPtr find_accepted_parser(
+        LoggerParser::SPtr find_accepted_parser(
                 mode::Mode mode=mode::get_global_mode()) ;
 
-        const LoggerParser::SPtr find_parser_with_transition(
+        LoggerParser::SPtr find_parser_with_transition(
                 const KeyLog& log,
                 std::size_t low_priority_func_id=0,
                 mode::Mode mode=mode::get_global_mode()) ;

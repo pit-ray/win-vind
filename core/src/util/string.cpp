@@ -23,7 +23,7 @@ namespace vind
                     vec.push_back(str) ;
                     return vec ;
                 }
-                const auto head = str.substr(0, pos) ;
+                auto head = str.substr(0, pos) ;
                 if(!head.empty()) {
                     vec.push_back(head) ;
                 }
@@ -39,7 +39,7 @@ namespace vind
             return str ;
         }
 
-        void replace_all(std::string& s, const std::string from, const std::string to) {
+        void replace_all(std::string& s, const std::string& from, const std::string& to) {
             size_t spos = 0 ;
             while((spos = s.find(from, spos)) != std::string::npos) {
                 s.replace(spos, from.length(), to) ;
@@ -47,7 +47,7 @@ namespace vind
             }
         }
 
-        const std::wstring s_to_ws(const std::string& str) {
+        std::wstring s_to_ws(const std::string& str) {
             std::wstring wstr ;
 
             if(str.empty()) {
@@ -74,7 +74,7 @@ namespace vind
             return wstr ;
         }
 
-        const std::string ws_to_s(const std::wstring& wstr) {
+        std::string ws_to_s(const std::wstring& wstr) {
             std::string str ;
 
             if(wstr.empty()) {

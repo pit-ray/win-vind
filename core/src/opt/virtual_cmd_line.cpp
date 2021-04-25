@@ -38,7 +38,7 @@ namespace vind
     VirtualCmdLine::VirtualCmdLine(VirtualCmdLine&&)            = default ;
     VirtualCmdLine& VirtualCmdLine::operator=(VirtualCmdLine&&) = default ;
 
-    const std::string VirtualCmdLine::sname() noexcept {
+    std::string VirtualCmdLine::sname() noexcept {
         return "virtual_cmd_line" ;
     }
 
@@ -52,19 +52,19 @@ namespace vind
         pimpl->dtp.set_text_color(iparams::get_s("cmd_font_color")) ;
         pimpl->dtp.set_back_color(iparams::get_s("cmd_font_bkcolor")) ;
 
-        const auto pos = iparams::get_s("cmd_pos") ;
-        const auto xma = iparams::get_i("cmd_xmargin") ;
-        const auto yma = iparams::get_i("cmd_ymargin") ;
+        auto pos = iparams::get_s("cmd_pos") ;
+        auto xma = iparams::get_i("cmd_xmargin") ;
+        auto yma = iparams::get_i("cmd_ymargin") ;
 
         RECT rect ;
         screenmetrics::get_primary_metrics(&rect) ;
 
-        const auto width  = screenmetrics::width(rect) ;
-        const auto height = screenmetrics::height(rect) ;
+        auto width  = screenmetrics::width(rect) ;
+        auto height = screenmetrics::height(rect) ;
 
         constexpr auto midxbuf = 256 ;
 
-        const std::unordered_map<std::string, std::pair<int, int>> pos_list {
+        std::unordered_map<std::string, std::pair<int, int>> pos_list {
             {"UpperLeft",  {xma,                    yma}},
             {"UpperMid",   {width / 2 - midxbuf,    yma}},
             {"UpperRight", {width - xma - midxbuf,  yma}},
@@ -105,7 +105,7 @@ namespace vind
         g_outstr = str ;
     }
 
-    void VirtualCmdLine::msgout(std::string str) noexcept {
+    void VirtualCmdLine::msgout(const std::string& str) noexcept {
         if(str.empty()) return ;
         g_outstr = std::move(str) ;
         g_msg_start = std::chrono::system_clock::now() ;

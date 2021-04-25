@@ -40,7 +40,7 @@ namespace vind
             return obj ;
         }
 
-        inline const std::string KEYBRD_MAP() {
+        inline std::string KEYBRD_MAP() {
             return CONFIG_PATH() + iparams::get_s("kb_type") ;
         }
 

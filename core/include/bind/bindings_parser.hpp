@@ -19,7 +19,7 @@ namespace vind
         //     'a' -> {KEYCODE_A}
         //     'A' -> {KEYCODE_SHIFT, KEYCODE_A}
         //
-        const KeySet parse_pure_one_character_command(char onechar) ;
+        KeySet parse_pure_one_character_command(char onechar) ;
         //
         // It parse a combined command, which is sandwiched between '<' and '>', as keyset class.
         // KeySet: std::vector<unsigned char>
@@ -34,7 +34,7 @@ namespace vind
         //      "s-s"    -> {KEYCODE_SHIFT, KEYCODE_S}
         //      "c-S"    -> {KEYCODE_CTRL, KEYCODE_SHIFT, KEYCODE_S}
         //
-        const KeySet parse_combined_command(std::string inside_of_brackets) ;
+        KeySet parse_combined_command(const std::string& inside_of_brackets) ;
 
 
         //
@@ -54,7 +54,7 @@ namespace vind
         //                 }
         //
         //
-        const Command parse_string_binding(std::string cmdstr) ;
+        Command parse_string_binding(const std::string& cmdstr) ;
 
 
         //
@@ -64,7 +64,7 @@ namespace vind
         //
         // If Failed, return Mode::None.
         //
-        mode::Mode parse_string_modecode(std::string modestr) ;
+        mode::Mode parse_string_modecode(const std::string& modestr) ;
 
         namespace debug {
             std::string print(const CommandList& list) ;

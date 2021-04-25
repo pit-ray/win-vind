@@ -15,25 +15,25 @@ namespace vind
 
         void replace_all(
                 std::string& s,
-                const std::string from,
-                const std::string to) ;
+                const std::string& from,
+                const std::string& to) ;
 
-        inline const std::string a2A(std::string s) {
+        inline std::string a2A(std::string s) {
             for(char& c : s) {
                 if(c >= 'a' && c <= 'z') c = c - ('a' - 'A') ;
             }
             return s ;
         }
 
-        inline const std::string A2a(std::string s) {
+        inline std::string A2a(std::string s) {
             for(char& c : s) {
                 if(c >= 'A' && c <= 'Z') c = c + ('a' - 'A') ;
             }
             return s ;
         }
 
-        const std::wstring s_to_ws(const std::string& str) ;
-        const std::string ws_to_s(const std::wstring& wstr) ;
+        std::wstring s_to_ws(const std::string& str) ;
+        std::string ws_to_s(const std::wstring& wstr) ;
     }
 }
 

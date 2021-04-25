@@ -42,7 +42,7 @@ namespace vind
 {
     namespace keybrd {
 
-        bool is_pressed_actually(const unsigned char key) noexcept {
+        bool is_pressed_actually(unsigned char key) noexcept {
             return GetAsyncKeyState(key) & 0x8000 ;
         }
 
@@ -50,7 +50,7 @@ namespace vind
             INPUT in ;
             unsigned char key ;
 
-            explicit Impl(const unsigned char keycode)
+            explicit Impl(unsigned char keycode)
             : in(),
               key(keycode)
             {
@@ -62,7 +62,7 @@ namespace vind
             }
         } ;
 
-        SmartKey::SmartKey(const unsigned char key)
+        SmartKey::SmartKey(unsigned char key)
         : pimpl(std::make_unique<Impl>(key))
         {}
 
@@ -76,7 +76,7 @@ namespace vind
         SmartKey::SmartKey(SmartKey&&)            = default ;
         SmartKey& SmartKey::operator=(SmartKey&&) = default ;
 
-        void SmartKey::send_event(const bool pressed) {
+        void SmartKey::send_event(bool pressed) {
             pimpl->in.ki.dwFlags = (pressed ? 0 : KEYEVENTF_KEYUP) | extended_key_flag(pimpl->key) ;
             if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
@@ -103,7 +103,7 @@ namespace vind
 
 
         //change key state without input
-        void release_keystate(const unsigned char key) {
+        void release_keystate(unsigned char key) {
             static INPUT in ;
             in.type           = INPUT_KEYBOARD ;
             in.ki.wVk         = static_cast<WORD>(key) ;
@@ -118,7 +118,7 @@ namespace vind
         }
 
         //change key state without input
-        void press_keystate(const unsigned char key) {
+        void press_keystate(unsigned char key) {
             static INPUT in ;
             in.type           = INPUT_KEYBOARD ;
             in.ki.wVk         = static_cast<WORD>(key) ;
@@ -139,7 +139,7 @@ namespace vind
 
             auto state = keyabsorber::get_pressed_list() ;
             auto recover_keystate= [&state] {
-                for(const auto key : state)
+                for(auto key : state)
                     keyabsorber::press_virtually(key) ;
             } ;
             static INPUT ins[6] = {

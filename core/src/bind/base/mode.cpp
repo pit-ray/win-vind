@@ -26,13 +26,13 @@ namespace vind
     {
         static Mode m{Mode::Normal} ;
 
-        void change_mode(const Mode mode) noexcept {
+        void change_mode(Mode mode) noexcept {
             m = mode ;
         }
-        void change_mode(const int mode) noexcept {
+        void change_mode(int mode) noexcept {
             m = static_cast<Mode>(mode) ;
         }
-        void change_mode(const unsigned char mode) noexcept {
+        void change_mode(unsigned char mode) noexcept {
             m = static_cast<Mode>(mode) ;
         }
 
@@ -54,7 +54,7 @@ namespace vind
             return m == Mode::Command || m == Mode::EdiCommand ;
         }
 
-        const std::string get_mode_strcode(Mode mode) noexcept {
+        std::string get_mode_strcode(Mode mode) noexcept {
             try {
                 return g_modeidxs.at(mode) ;
             }
@@ -63,7 +63,7 @@ namespace vind
             }
         }
 
-        Mode get_mode_from_strcode(std::string strcode) noexcept {
+        Mode get_mode_from_strcode(const std::string& strcode) noexcept {
             static const auto obj = []() {
                 std::unordered_map<std::string, Mode> um ;
                 for(const auto& pair : g_modeidxs) {

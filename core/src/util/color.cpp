@@ -3,7 +3,7 @@
 namespace vind
 {
     namespace util {
-        const rgb_t hex2rgb(std::string hex) {
+        rgb_t hex2rgb(std::string hex) {
             if(hex.front() == '#') {
                 hex.erase(0, 1) ;
             }
@@ -24,7 +24,7 @@ namespace vind
             return {r, g, b} ;
         }
 
-        const rgb_t to_complementary_rgb(
+        rgb_t to_complementary_rgb(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) noexcept {

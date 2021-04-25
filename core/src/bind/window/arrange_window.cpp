@@ -76,10 +76,7 @@ namespace
     }
 
     inline void assign_local_area_in_monitors(std::unordered_map<HWND, RECT>& rects) {
-        for(auto& mr : g_mrects) {
-            const auto& hmonitor = mr.first ;
-            const auto& mrect    = mr.second ;
-
+        for(auto& [hmonitor, mrect] : g_mrects) {
             const auto& ordered_hwnd = g_m_ordered_hwnd[hmonitor] ;
 
             //Its priority is the highest (based on the memory use).
@@ -96,8 +93,8 @@ namespace
                 auto& pre_rect = rects[pre_hwnd] ;
                 auto rect = pre_rect ;
 
-                const auto pre_w = screenmetrics::width(pre_rect) ;
-                const auto pre_h = screenmetrics::height(pre_rect) ;
+                auto pre_w = screenmetrics::width(pre_rect) ;
+                auto pre_h = screenmetrics::height(pre_rect) ;
                 if(pre_w > pre_h) {
                     pre_rect.right -= pre_w / 2 ;
                     rect.left      += pre_w / 2 ;

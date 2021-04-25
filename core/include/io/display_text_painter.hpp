@@ -42,28 +42,28 @@ namespace vind
         explicit DisplayTextPainter(
                 LONG font_size,
                 LONG font_weight,
-                const std::string face_name,
+                const std::string& face_name,
                 bool enable_double_buffering=false) ;
         virtual ~DisplayTextPainter() noexcept ;
 
         void set_font(
                 LONG font_size,
                 LONG font_weight,
-                const std::string face_name) ;
+                const std::string& face_name) ;
 
         void set_text_color(COLORREF color) ;
         void set_text_color(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) ;
-        void set_text_color(std::string hex) ;
+        void set_text_color(const std::string& hex) ;
 
         void set_back_color(COLORREF color) ;
         void set_back_color(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) ;
-        void set_back_color(std::string hex) ;
+        void set_back_color(const std::string& hex) ;
 
         void draw(
                 const std::string& str,

@@ -64,7 +64,7 @@ namespace
     }
 
     inline void clear_clipboard_with_null() {
-        const auto hwnd = GetForegroundWindow() ;
+        auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
             throw RUNTIME_EXCEPT("not exist active window") ;
         }
@@ -262,7 +262,7 @@ namespace
 {
     inline void delete_line_when_selecting() {
         using namespace mode ;
-        const auto mode = get_global_mode() ;
+        auto mode = get_global_mode() ;
         if(mode == Mode::EdiVisual) {
             if(iparams::get_b("enable_char_cache")) {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -475,7 +475,7 @@ namespace vind
             return ;
         }
 
-        const auto pos = res.str.find_first_not_of(" \t") ; //position except for space or tab
+        auto pos = res.str.find_first_not_of(" \t") ; //position except for space or tab
         if(pos == std::string::npos) { //space only
             Change2EdiEOLInsert::sprocess(false) ;
             return ;

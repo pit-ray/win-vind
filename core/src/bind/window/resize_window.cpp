@@ -25,8 +25,8 @@ namespace
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        const auto window_height = screenmetrics::height(fginfo.rect) ;
-        const auto monitor_width = screenmetrics::width(minfo.work_rect) ;
+        auto window_height = screenmetrics::height(fginfo.rect) ;
+        auto monitor_width = screenmetrics::width(minfo.work_rect) ;
 
         if(desired_width >= monitor_width) {
             //a maximum width is a width of a foreground monitor.
@@ -64,8 +64,8 @@ namespace
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        const auto window_width = screenmetrics::width(fginfo.rect) ;
-        const auto monitor_height = screenmetrics::height(minfo.work_rect) ;
+        auto window_width = screenmetrics::width(fginfo.rect) ;
+        auto monitor_height = screenmetrics::height(minfo.work_rect) ;
 
         if(desired_height >= monitor_height) {
             //a maximum height is a height of a foreground monitor.

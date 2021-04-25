@@ -36,7 +36,7 @@ namespace vind
         void disable_non_character(unsigned char keycode) ;
 
         virtual int logging_state() override ;
-        virtual const std::string to_str() const ;
+        virtual std::string to_str() const ;
     } ;
 }
 

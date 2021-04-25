@@ -22,20 +22,20 @@ namespace
     constexpr auto INITIAL_VELOCITY = 1.0f ;
 
     template <typename T>
-    inline const auto constant_accelerate(float& velocity, T&& us) {
-        const auto acc = iparams::get_f("cursor_acceleration") ;
-        const auto mvc = iparams::get_f("cursor_max_velocity") ;
+    inline auto constant_accelerate(float& velocity, T&& us) {
+        auto acc = iparams::get_f("cursor_acceleration") ;
+        auto mvc = iparams::get_f("cursor_max_velocity") ;
 
         constexpr auto TIME_COEF = util::pow_f(10, -3) ;
-        const auto t = us * TIME_COEF / iparams::get_i("cursor_weight") ; //accuracy
-        const auto x = velocity*t + 0.5f*acc*t*t ;
-        const auto delta_v = acc * t ;
+        auto t = us * TIME_COEF / iparams::get_i("cursor_weight") ; //accuracy
+        auto x = velocity*t + 0.5f*acc*t*t ;
+        auto delta_v = acc * t ;
         if(velocity + delta_v < mvc) velocity += delta_v ;
         else velocity = mvc ;
         return x ;
     }
 
-    inline const auto compute_delta_t(
+    inline auto compute_delta_t(
             const system_clock::time_point& start_time) {
 
         return duration_cast<microseconds>(
@@ -54,7 +54,7 @@ namespace
         }
 
         template <typename T>
-        const auto delta() {
+        auto delta() {
             return static_cast<T>(
                     constant_accelerate(v_, compute_delta_t(start_time_))) ;
         }

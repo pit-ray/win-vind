@@ -30,7 +30,7 @@ namespace vind
             return pobj ;
         }
 
-        const std::string name() const noexcept override {
+        std::string name() const noexcept override {
             return Derived::sname() ;
         }
     } ;

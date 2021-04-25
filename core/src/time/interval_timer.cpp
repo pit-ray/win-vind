@@ -13,7 +13,7 @@ namespace vind
         bool first_call ;
         std::mutex mtx ;
 
-        explicit Impl(const int delta_t=30)
+        explicit Impl(int delta_t=30)
         : delta_time(static_cast<microseconds>(delta_t)),
           start_time(system_clock::now()),
           first_call(true),
@@ -42,7 +42,7 @@ namespace vind
     } ;
 
 
-    IntervalTimer::IntervalTimer(const int delta_us)
+    IntervalTimer::IntervalTimer(int delta_us)
     : pimpl(std::make_unique<Impl>(delta_us))
     {}
 
@@ -60,7 +60,7 @@ namespace vind
     IntervalTimer::IntervalTimer(IntervalTimer&&)               = default ;
     IntervalTimer& IntervalTimer::operator=(IntervalTimer&&)    = default ;
 
-    void IntervalTimer::set_delta(const int delta_us) noexcept {
+    void IntervalTimer::set_delta(int delta_us) noexcept {
         pimpl->delta_time = static_cast<microseconds>(delta_us) ;
     }
 

@@ -12,7 +12,7 @@ namespace vind
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        explicit IntervalTimer(const int delta_us=30) ;
+        explicit IntervalTimer(int delta_us=30) ;
 
         virtual ~IntervalTimer() noexcept ;
 
@@ -22,7 +22,7 @@ namespace vind
         IntervalTimer(IntervalTimer&&) ;
         IntervalTimer& operator=(IntervalTimer&&) ;
 
-        void set_delta(const int delta_us) noexcept ;
+        void set_delta(int delta_us) noexcept ;
         void reset() noexcept ;
         bool is_passed() const ;
     } ;

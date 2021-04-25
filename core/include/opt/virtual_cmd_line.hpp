@@ -18,11 +18,11 @@ namespace vind
     public:
         explicit VirtualCmdLine() ;
 
-        static const std::string sname() noexcept ;
+        static std::string sname() noexcept ;
 
         static void cout(std::string&& str) ;
         static void cout(const std::string& str) ;
-        static void msgout(std::string str) noexcept ;
+        static void msgout(const std::string& str) noexcept ;
 
         static void refresh() ;
         static void clear() ;

@@ -14,7 +14,7 @@
 
 namespace vind
 {
-    const std::string SuppressForVim::sname() noexcept {
+    std::string SuppressForVim::sname() noexcept {
         return "suppress_for_vim" ;
     }
 
@@ -32,7 +32,7 @@ namespace vind
 
         static HWND pre_hwnd = NULL ;
 
-        const auto hwnd = GetForegroundWindow() ;
+        auto hwnd = GetForegroundWindow() ;
         if(pre_hwnd == hwnd) return ;
 
         pre_hwnd = hwnd ;

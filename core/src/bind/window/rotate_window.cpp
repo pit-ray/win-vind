@@ -56,8 +56,8 @@ namespace {
             return TRUE ;
         }
 
-        const auto x = screenmetrics::center_x(*prect) - screenmetrics::center_x(minfo.work_rect) ;
-        const auto y = screenmetrics::center_y(minfo.work_rect) - screenmetrics::center_y(*prect) ;
+        auto x = screenmetrics::center_x(*prect) - screenmetrics::center_x(minfo.work_rect) ;
+        auto y = screenmetrics::center_y(minfo.work_rect) - screenmetrics::center_y(*prect) ;
 
         if(x == 0 && y == 0) {
             p_args->angle_hwnds[0.0f] = hwnd ;
@@ -89,9 +89,8 @@ namespace {
 
         sort_func(args.angle_hwnds) ;
 
-        for(const auto& aw : args.angle_hwnds) {
-            auto& hwnd  = aw.second ;
-            auto& prect = args.angle_rects[aw.first] ;
+        for(auto& [angle, hwnd] : args.angle_hwnds) {
+            auto& prect = args.angle_rects[angle] ;
 
             windowutil::resize(
                     hwnd,
@@ -119,7 +118,7 @@ namespace vind
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 auto itr     = angle_hwnds.rbegin() ;
                 auto pre_itr = itr ;
-                const auto last_hwnd = itr->second ;
+                auto last_hwnd = itr->second ;
                 itr ++ ;
 
                 while(itr != angle_hwnds.rend()) {
@@ -150,7 +149,7 @@ namespace vind
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 auto itr     = angle_hwnds.begin() ;
                 auto pre_itr = itr ;
-                const auto last_hwnd = itr->second ;
+                auto last_hwnd = itr->second ;
                 itr ++ ;
 
                 while(itr != angle_hwnds.end()) {

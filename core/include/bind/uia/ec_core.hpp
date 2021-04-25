@@ -6,7 +6,7 @@
 namespace vind
 {
     namespace easyclick {
-        void do_easy_click(const unsigned char sendkey=KEYCODE_UNDEFINED) ;
+        void do_easy_click(unsigned char sendkey=KEYCODE_UNDEFINED) ;
     }
 }
 

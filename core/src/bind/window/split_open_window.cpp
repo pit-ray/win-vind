@@ -16,8 +16,8 @@ namespace vind
     void OpenNewCurWinWithHorizontalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
-        const auto w = screenmetrics::width(fginfo.rect) ;
-        const auto h = screenmetrics::height(fginfo.rect) ;
+        auto w = screenmetrics::width(fginfo.rect) ;
+        auto h = screenmetrics::height(fginfo.rect) ;
 
         //snap a original window to top
         windowutil::resize(
@@ -58,8 +58,8 @@ namespace vind
     void OpenNewCurWinWithVerticalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
-        const auto w = screenmetrics::width(fginfo.rect) ;
-        const auto h = screenmetrics::height(fginfo.rect) ;
+        auto w = screenmetrics::width(fginfo.rect) ;
+        auto h = screenmetrics::height(fginfo.rect) ;
 
         //snap a original window to left
         windowutil::resize(

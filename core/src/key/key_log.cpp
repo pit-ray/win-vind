@@ -31,7 +31,7 @@ namespace vind
         template <typename T>
         KeyLog::data_t erased_diff(T&& rhs) const {
             auto diff = once_log ;
-            for(const auto k : rhs) diff.erase(k) ;
+            for(auto& k : rhs) diff.erase(k) ;
             return diff ;
         }
     } ;
@@ -97,7 +97,7 @@ namespace vind
         return pimpl->once_log.empty() ;
     }
 
-    bool KeyLog::is_containing(const unsigned char key) const
+    bool KeyLog::is_containing(unsigned char key) const
     {
         return pimpl->once_log.find(key) != pimpl->once_log.end() ;
     }
@@ -153,22 +153,22 @@ namespace vind
     //sub assign
     KeyLog& KeyLog::operator-=(const KeyLog& rhs) {
         if(rhs.pimpl) {
-            for(const auto k : rhs) pimpl->once_log.erase(k) ;
+            for(const auto& k : rhs) pimpl->once_log.erase(k) ;
         }
         return *this ;
     }
     KeyLog& KeyLog::operator-=(KeyLog&& rhs) {
         if(rhs.pimpl) {
-            for(const auto k : rhs) pimpl->once_log.erase(k) ;
+            for(const auto& k : rhs) pimpl->once_log.erase(k) ;
         }
         return *this ;
     }
     KeyLog& KeyLog::operator-=(const KeyLog::data_t& rhs) {
-        for(const auto k : rhs) pimpl->once_log.erase(k) ;
+        for(const auto& k : rhs) pimpl->once_log.erase(k) ;
         return *this ;
     }
     KeyLog& KeyLog::operator-=(KeyLog::data_t&& rhs) {
-        for(const auto k : rhs) pimpl->once_log.erase(k) ;
+        for(const auto& k : rhs) pimpl->once_log.erase(k) ;
         return *this ;
     }
 }

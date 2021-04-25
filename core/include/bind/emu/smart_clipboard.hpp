@@ -30,7 +30,7 @@ namespace vind
         //restore cache to clipboard
         void restore_backup() ;
 
-        void set(const char* const ar, const std::size_t size) ;
+        void set(const char* const ar, std::size_t size) ;
 
         template <typename T>
         void set(const T& arref) {

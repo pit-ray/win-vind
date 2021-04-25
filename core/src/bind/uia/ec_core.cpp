@@ -21,7 +21,7 @@
 namespace vind
 {
     namespace easyclick {
-        void do_easy_click(const unsigned char sendkey) {
+        void do_easy_click(unsigned char sendkey) {
             auto hwnd = GetForegroundWindow() ;
             if(hwnd == NULL) {
                 throw RUNTIME_EXCEPT("There is not a foreground window.") ;
@@ -33,8 +33,8 @@ namespace vind
             scan_gui_objects(obj_points) ;
 
             if(!obj_points.empty()) {
-                const auto hints = assign_identifier_hints(obj_points.size()) ;
-                const auto hints_str = convert_hints_to_strings(hints) ;
+                auto hints = assign_identifier_hints(obj_points.size()) ;
+                auto hints_str = convert_hints_to_strings(hints) ;
 
                 std::mutex l_mtx ;
                 std::vector<unsigned char> matching_nums(hints.size(), 0) ;
@@ -58,7 +58,7 @@ namespace vind
                     auto [tx_r, tx_g, tx_b] = util::hex2rgb(iparams::get_s("easy_click_font_color")) ;
                     auto txcolor = RGB(tx_r, tx_g, tx_b) ;
 
-                    const unsigned char decay = iparams::get_uc("easy_click_matching_color_decay") ;
+                    unsigned char decay = iparams::get_uc("easy_click_matching_color_decay") ;
                     using util::to_gray ;
                     char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
@@ -67,7 +67,7 @@ namespace vind
                             tx_g < decay ? 0 : tx_g + sign*decay,
                             tx_b < decay ? 0 : tx_b + sign*decay) ;
 
-                    const auto fontsize = iparams::get_l("easy_click_font_size") ;
+                    auto fontsize = iparams::get_l("easy_click_font_size") ;
                     DisplayTextPainter dtp(
                             fontsize,
                             iparams::get_l("easy_click_font_weight"),

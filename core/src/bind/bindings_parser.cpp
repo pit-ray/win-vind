@@ -23,7 +23,7 @@ namespace vind
         //     'a' -> {KEYCODE_A}
         //     'A' -> {KEYCODE_SHIFT, KEYCODE_A}
         //
-        const KeySet parse_pure_one_character_command(char onechar) {
+        KeySet parse_pure_one_character_command(char onechar) {
             //ascii
             if(auto keycode = keycodecvt::get_keycode(onechar)) { //ex) a
                 return KeySet{keycode} ;
@@ -50,16 +50,16 @@ namespace vind
         //      "s-s"    -> {KEYCODE_SHIFT, KEYCODE_S}
         //      "c-S"    -> {KEYCODE_CTRL, KEYCODE_SHIFT, KEYCODE_S}
         //
-        const KeySet parse_combined_command(std::string inside_of_brackets) {
+        KeySet parse_combined_command(const std::string& inside_of_brackets) {
                 KeySet keyset ;
 
-                const auto keystrset = util::split(inside_of_brackets, "-") ;
+                auto keystrset = util::split(inside_of_brackets, "-") ;
                 for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
 
                     //If isn't begin(), regards it as ascii.
                     if(code != keystrset.begin() && code->length() == 1) {
                         //ascii
-                        for(const auto& keycode : parse_pure_one_character_command(code->front())) {
+                        for(auto& keycode : parse_pure_one_character_command(code->front())) {
                             keyset.push_back(keycode) ;
                         }
                         continue ;
@@ -73,7 +73,7 @@ namespace vind
                         continue ;
                     }
 
-                    if(const auto keycode = keycodecvt::get_sys_keycode(lowercode)) {
+                    if(auto keycode = keycodecvt::get_sys_keycode(lowercode)) {
                         keyset.push_back(keycode) ;
                         continue ;
                     }
@@ -90,10 +90,10 @@ namespace vind
                 return keyset ; //RVO
         }
 
-        const Command parse_string_binding(std::string cmdstr) {
+        Command parse_string_binding(const std::string& cmdstr) {
             Command cmd ;
             for(std::size_t i = 0 ; i < cmdstr.length() ; i ++) {
-                const auto onechar = cmdstr[i] ;
+                auto onechar = cmdstr[i] ;
                 if(onechar != '<') {
                     cmd.push_back(parse_pure_one_character_command(onechar)) ;
                     continue ;
@@ -112,7 +112,7 @@ namespace vind
             return cmd ;
         }
 
-        mode::Mode parse_string_modecode(std::string modestr) {
+        mode::Mode parse_string_modecode(const std::string& modestr) {
             if(modestr.front() == '<' && modestr.back() == '>') {
                 auto inside = util::A2a(modestr.substr(1, modestr.size() - 2)) ;
                 return mode::get_mode_from_strcode(inside) ;

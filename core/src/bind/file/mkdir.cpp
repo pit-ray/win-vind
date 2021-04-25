@@ -116,7 +116,7 @@ namespace
             auto pf2_deleter = [](IPersistFolder2* ptr) {ptr->Release() ;} ;
             std::unique_ptr<IPersistFolder2, decltype(pf2_deleter)> ppf2(raw_ppf2, pf2_deleter) ;
 
-            LPITEMIDLIST raw_pidl = nullptr ;
+            ITEMIDLIST* raw_pidl = nullptr ;
             if(FAILED(ppf2->GetCurFolder(&raw_pidl))) {
                 throw RUNTIME_EXCEPT("cannot get current folder.") ;
             }
@@ -141,15 +141,17 @@ namespace vind
     MakeDir::MakeDir()
     : BindedFuncCreator("make_dir")
     {}
-    void MakeDir::sprocess(std::string path) {
+    void MakeDir::sprocess(const std::string& path) {
         if(path.find("\\") != std::string::npos ||
                 path.find("/") != std::string::npos) {
             //pathument is directory path
             if(path.length() > 248) {
                 //over max path num
-                path = path.substr(0, 248) ;
+                util::create_directory(path.substr(0, 248)) ;
             }
-            util::create_directory(path) ;
+            else {
+                util::create_directory(path) ;
+            }
         }
 
         //pathument is directory name
@@ -169,7 +171,7 @@ namespace vind
     }
     void MakeDir::sprocess(const CharLogger& parent_lgr) {
         auto cmd = parent_lgr.to_str() ;
-        const auto pos = cmd.find_first_of(" ") ;
+        auto pos = cmd.find_first_of(" ") ;
         sprocess(cmd.substr(pos + 1)) ;
     }
 }

@@ -28,8 +28,8 @@ namespace
 
     inline void remove_files_over(
             const std::string& log_dir,
-            const std::string pattern_withex,
-            const std::size_t num) {
+            std::string pattern_withex,
+            std::size_t num) {
         std::vector<std::wstring> files ;
 
         WIN32_FIND_DATAW wfd = {} ;
@@ -77,7 +77,7 @@ namespace vind
 {
     namespace errlogger {
         void initialize() {
-            const std::string log_dir = path::ROOT_PATH() + "log\\" ;
+            std::string log_dir = path::ROOT_PATH() + "log\\" ;
 
             SYSTEMTIME stime ;
             GetLocalTime(&stime) ;
@@ -93,8 +93,8 @@ namespace vind
                 util::create_directory(log_dir) ;
             }
 
-            const auto efile = log_dir + "error_" + ss.str() + ".log" ;
-            const auto mfile = log_dir + "message_" + ss.str() + ".log" ;
+            auto efile = log_dir + "error_" + ss.str() + ".log" ;
+            auto mfile = log_dir + "message_" + ss.str() + ".log" ;
 
             g_init_error_stream.open(path::to_u8path(efile), std::ios::trunc) ;
              g_error_stream.open(path::to_u8path(efile), std::ios::app) ;

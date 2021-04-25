@@ -48,9 +48,9 @@ namespace vind
             }
         }
 
-        void change_mode(const Mode mode) noexcept ;
-        void change_mode(const int mode) noexcept ;
-        void change_mode(const unsigned char mode) noexcept ;
+        void change_mode(Mode mode) noexcept ;
+        void change_mode(int mode) noexcept ;
+        void change_mode(unsigned char mode) noexcept ;
         Mode get_global_mode() noexcept ;
 
         bool is_insert() noexcept ;
@@ -59,14 +59,14 @@ namespace vind
         bool is_editor() noexcept ;
         bool is_command() noexcept ;
 
-        const std::string get_mode_strcode(Mode mode) noexcept ;
+        std::string get_mode_strcode(Mode mode) noexcept ;
 
         template <typename T>
-        inline const std::string get_mode_strcode(T mode) noexcept {
+        inline std::string get_mode_strcode(T mode) noexcept {
             return get_mode_strcode(static_cast<Mode>(mode)) ;
         }
 
-        Mode get_mode_from_strcode(std::string strcode) noexcept ;
+        Mode get_mode_from_strcode(const std::string& strcode) noexcept ;
     }
 }
 

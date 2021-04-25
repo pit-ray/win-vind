@@ -15,10 +15,10 @@
 namespace vind
 {
     namespace textanalyze{
-        const SelRes get_selected_text(
+        SelRes get_selected_text(
                 std::function<void()> clip_func,
-                const bool backup) {
-            const auto hwnd = GetForegroundWindow() ;
+                bool backup) {
+            auto hwnd = GetForegroundWindow() ;
             if(!hwnd) {
                 throw RUNTIME_EXCEPT("not exist active window") ;
             }

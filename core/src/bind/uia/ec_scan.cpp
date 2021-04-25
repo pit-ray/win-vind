@@ -70,7 +70,7 @@ namespace vind
         inline auto get_keyboard_focusable_point(
                 uiauto::SmartElement& elem,
                 const RECT& window_rect,
-                const BOOL parent_is_focasuable=FALSE) {
+                BOOL parent_is_focasuable=FALSE) {
 
             if(parent_is_focasuable == FALSE) {
                 BOOL flag ;
@@ -101,7 +101,7 @@ namespace vind
                 uiauto::SmartElementArray& parents,
                 std::vector<Point2D>& obj_points,
                 const RECT& window_rect,
-                const BOOL parent_is_focusable=FALSE) {
+                BOOL parent_is_focusable=FALSE) {
             int length ;
             parents->get_Length(&length) ;
             if(length == 0) {
@@ -233,7 +233,7 @@ namespace vind
             DWORD pid ;
             std::vector<Point2D>& points ;
 
-            explicit ProcessScanInfo(const DWORD procid, std::vector<Point2D>& obj_points)
+            explicit ProcessScanInfo(DWORD procid, std::vector<Point2D>& obj_points)
             : pid(procid),
               points(obj_points)
             {}

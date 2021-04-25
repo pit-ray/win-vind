@@ -103,12 +103,12 @@ namespace vind
 
     int KeyLoggerBase::logging_state() {
         logging(keyabsorber::get_pressed_list()) ;
-        return latest().size() ;
+        return static_cast<int>(latest().size()) ;
     }
 
     namespace keyloggerutil
     {
-        unsigned int extract_num(const std::string str) {
+        unsigned int extract_num(const std::string& str) {
             constexpr auto c_nums = "0123456789" ;
 
             auto bpos = str.find_first_of(c_nums) ;

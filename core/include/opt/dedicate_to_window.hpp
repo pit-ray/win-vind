@@ -13,7 +13,7 @@ namespace vind
         void do_process() const override ;
 
     public:
-        static const std::string sname() noexcept ;
+        static std::string sname() noexcept ;
 
         static void enable_targeting() ;
         static void disable_targeting() ;

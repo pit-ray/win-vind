@@ -45,7 +45,7 @@ namespace vind
         }
 
         void calibrate_absorber_state() {
-            const auto buf = keyabsorber::get_pressed_list() ;
+            auto buf = keyabsorber::get_pressed_list() ;
             if(!buf.empty()) {
                 if(keyabsorber::is_absorbed()) {
                     keyabsorber::open_some_ports(buf.get()) ;

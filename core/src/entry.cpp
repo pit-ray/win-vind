@@ -68,7 +68,7 @@ namespace
 
 namespace vind
 {
-    bool initialize(const std::string func_name) noexcept {
+    bool initialize(const std::string& func_name) noexcept {
         try {
             errlogger::initialize() ;
 
@@ -145,7 +145,7 @@ namespace vind
             load_config() ;
 
             //initialize system mode
-            const std::unordered_map<std::string, BindedFunc::SPtr> cm {
+            std::unordered_map<std::string, BindedFunc::SPtr> cm {
                 {"gui_normal", Change2Normal::create()},
                 {"gui_insert", Change2Insert::create()},
                 {"edi_normal", Change2EdiNormal::create()},

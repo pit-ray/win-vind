@@ -20,7 +20,7 @@ namespace vind
         void close_all_ports() noexcept ;
         void close_all_ports_with_refresh() ;
 
-        void open_some_ports(const KeyLog::data_t& key) noexcept ;
+        void open_some_ports(const KeyLog::Data& key) noexcept ;
         void open_port(unsigned char key) noexcept ;
 
         //These functions is existed in order to fool KeyLogger as no-changing.

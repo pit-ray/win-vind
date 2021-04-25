@@ -26,9 +26,9 @@
 
 namespace
 {
-    using mss_t = std::unordered_map<std::string, std::string> ;
-    inline mss_t _load_proc_list_core() {
-        mss_t map{} ;
+    using AliasCommandList = std::unordered_map<std::string, std::string> ;
+    inline AliasCommandList load_proc_list_core() {
+        AliasCommandList map{} ;
 
         nlohmann::json j ;
         std::ifstream ifs(vind::path::to_u8path(vind::path::SETTINGS())) ;
@@ -48,7 +48,7 @@ namespace
         return map ;
     }
 
-    mss_t g_proc_list{} ;
+    AliasCommandList g_proc_list{} ;
 }
 
 
@@ -57,7 +57,7 @@ namespace vind
     namespace exapp
     {
         void load_config() {
-            g_proc_list = _load_proc_list_core() ;
+            g_proc_list = load_proc_list_core() ;
         }
     }
 

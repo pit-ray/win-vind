@@ -20,23 +20,23 @@ namespace vind
             if(f != nullptr) DeleteObject(f) ;
         }
 
-        using hdc_type        = std::shared_ptr<HDC__> ;
-        using hdc_unique_type = std::unique_ptr<HDC__, decltype(&delete_hdc)> ;
-        using bitmap_type     = std::unique_ptr<HBITMAP__, decltype(&delete_obj)> ;
-        using font_type       = std::unique_ptr<HFONT__, decltype(&delete_obj)> ;
+        using HDCSPtr        = std::shared_ptr<HDC__> ;
+        using HDCUPtr = std::unique_ptr<HDC__, decltype(&delete_hdc)> ;
+        using HBitmapUPtr     = std::unique_ptr<HBITMAP__, decltype(&delete_obj)> ;
+        using HFontUPtr       = std::unique_ptr<HFONT__, decltype(&delete_obj)> ;
 
-        static hdc_unique_type create_display_dc() ;
+        static HDCUPtr create_display_dc() ;
 
-        static void set_dc_text_color(hdc_type& hdc, const COLORREF& color) ;
-        static void set_dc_back_color(hdc_type& hdc, const COLORREF& color) ;
+        static void set_dc_text_color(HDCSPtr& hdc, const COLORREF& color) ;
+        static void set_dc_back_color(HDCSPtr& hdc, const COLORREF& color) ;
 
         void initialize_dc(bool enable_double_buffering) ;
         void copy(const DisplayTextPainter& rhs) ;
 
-        static font_type create_font(const LOGFONTA& logfont) ;
+        static HFontUPtr create_font(const LOGFONTA& logfont) ;
 
-        static void select_obj(hdc_type& hdc, const bitmap_type& bitmap) ;
-        static void select_obj(hdc_type& hdc, const font_type& font) ;
+        static void select_obj(HDCSPtr& hdc, const HBitmapUPtr& bitmap) ;
+        static void select_obj(HDCSPtr& hdc, const HFontUPtr& font) ;
 
     public:
         explicit DisplayTextPainter(

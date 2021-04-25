@@ -13,7 +13,7 @@ namespace vind
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        using data_t = std::vector<KeyLog> ;
+        using Data = std::vector<KeyLog> ;
 
         explicit KeyLoggerBase() ;
         virtual ~KeyLoggerBase() noexcept ;
@@ -24,17 +24,17 @@ namespace vind
         KeyLoggerBase(KeyLoggerBase&&) ;
         KeyLoggerBase& operator=(KeyLoggerBase&&) ;
 
-        data_t::iterator begin() noexcept ;
-        data_t::iterator end() noexcept ;
+        Data::iterator begin() noexcept ;
+        Data::iterator end() noexcept ;
 
-        data_t::const_iterator begin() const noexcept ;
-        data_t::const_iterator end() const noexcept ;
+        Data::const_iterator begin() const noexcept ;
+        Data::const_iterator end() const noexcept ;
 
-        data_t::const_iterator cbegin() const noexcept ;
-        data_t::const_iterator cend() const noexcept ;
+        Data::const_iterator cbegin() const noexcept ;
+        Data::const_iterator cend() const noexcept ;
 
-        data_t::reference latest() ;
-        data_t::const_reference latest() const ;
+        Data::reference latest() ;
+        Data::const_reference latest() const ;
 
         std::size_t size() const noexcept ;
         bool empty() const noexcept ;
@@ -44,12 +44,12 @@ namespace vind
         void logging(const KeyLog& log) ;
         void logging(KeyLog&& log) ;
 
-        void logging(const KeyLog::data_t& lograw) ;
-        void logging(KeyLog::data_t&& lograw) ;
+        void logging(const KeyLog::Data& lograw) ;
+        void logging(KeyLog::Data&& lograw) ;
 
         void remove_from_back(std::size_t num_from_back) ;
 
-        data_t::const_reference at(std::size_t n) const ;
+        Data::const_reference at(std::size_t n) const ;
 
         bool operator==(const KeyLoggerBase& rhs) const ;
         bool operator!=(const KeyLoggerBase& rhs) const ;

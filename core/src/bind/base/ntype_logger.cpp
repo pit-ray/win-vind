@@ -33,7 +33,7 @@ namespace
         auto to_ascii_func = log.is_containing(KEYCODE_SHIFT) ?
             keycodecvt::get_shifted_ascii : keycodecvt::get_ascii ;
 
-        KeyLog::data_t nums{} ;
+        KeyLog::Data nums{} ;
         for(const unsigned char& keycode : log) {
             // The repeat number isn't begun with zero.
             // 01 or 02 are invalid syntax.

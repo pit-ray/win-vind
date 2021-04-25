@@ -31,9 +31,9 @@ namespace vind
         float max_keybrd_xposs = 0 ;
         float max_keybrd_yposs = 0 ;
 
-        using key_pos_t = std::array<float, 256> ;
-        key_pos_t xposs{} ;
-        key_pos_t yposs{} ;
+        using KeyPos = std::array<float, 256> ;
+        KeyPos xposs{} ;
+        KeyPos yposs{} ;
     } ;
 
     Jump2Any::Jump2Any()

@@ -21,8 +21,8 @@ namespace
 
     std::unordered_map<HMONITOR, RECT> g_mrects ;
 
-    using ordered_hwnd_t = std::map<SIZE_T, HWND> ;
-    std::unordered_map<HMONITOR, ordered_hwnd_t> g_m_ordered_hwnd ;
+    using OrderedHWNDs = std::map<SIZE_T, HWND> ;
+    std::unordered_map<HMONITOR, OrderedHWNDs> g_m_ordered_hwnd ;
 
     BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
         if(!windowutil::is_visible_hwnd(hwnd)) {

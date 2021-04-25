@@ -35,7 +35,7 @@ namespace
     std::array<bool, 256> g_real_state{false} ;
     std::array<bool, 256> g_state{false} ;  //Keyboard state win-vind understands.
     bool g_absorbed_flag{true} ;
-    vind::KeyLog::data_t g_ignored_keys{} ;
+    vind::KeyLog::Data g_ignored_keys{} ;
 
     const auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook == nullptr) return ;
@@ -117,7 +117,7 @@ namespace vind
         }
 
         KeyLog get_pressed_list() {
-            KeyLog::data_t res{} ;
+            KeyLog::Data res{} ;
             for(unsigned char i = 1 ; i < 255 ; i ++) {
                 if(is_pressed(i)) res.insert(i) ;
             }
@@ -154,7 +154,7 @@ namespace vind
             }
         }
 
-        void open_some_ports(const KeyLog::data_t& keys) noexcept {
+        void open_some_ports(const KeyLog::Data& keys) noexcept {
             g_ignored_keys = keys ;
         }
 

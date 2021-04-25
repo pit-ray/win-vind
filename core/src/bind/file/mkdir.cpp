@@ -17,12 +17,12 @@ namespace
 {
     //This is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
     inline auto get_current_explorer_path() {
-        using path_t = std::string ;
+        using PathType = std::string ;
 
         const auto hwnd = GetForegroundWindow() ;
 
         if(hwnd == NULL) {
-            return path_t{} ;
+            return PathType{} ;
         }
 
         if(FAILED(CoInitialize(NULL))) {
@@ -132,7 +132,7 @@ namespace
             return vind::util::ws_to_s(path) ;
         }
 
-        return path_t() ;
+        return PathType() ;
     }
 }
 

@@ -18,12 +18,12 @@
 namespace {
     using namespace vind ;
 
-    using ordered_hwnd_t = std::map<float, HWND> ;
-    using ordered_rect_t = std::map<float, std::unique_ptr<RECT>> ;
+    using AngleOrderedHWND = std::map<float, HWND> ;
+    using AngleOrderedRect = std::map<float, std::unique_ptr<RECT>> ;
 
     struct RotEnumArgs {
-        ordered_hwnd_t angle_hwnds{} ;
-        ordered_rect_t angle_rects{} ;
+        AngleOrderedHWND angle_hwnds{} ;
+        AngleOrderedRect angle_rects{} ;
         HMONITOR hmonitor = NULL ;
     } ;
 
@@ -114,7 +114,7 @@ namespace vind
     : BindedFuncCreator("rotate_windows")
     {}
     void RotateWindows::sprocess(unsigned int repeat_num) {
-        rotate_windows_core([repeat_num] (ordered_hwnd_t& angle_hwnds) {
+        rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 auto itr     = angle_hwnds.rbegin() ;
                 auto pre_itr = itr ;
@@ -145,7 +145,7 @@ namespace vind
     : BindedFuncCreator("rotate_windows_in_reverse")
     {}
     void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
-        rotate_windows_core([repeat_num] (ordered_hwnd_t& angle_hwnds) {
+        rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
             for(unsigned int i = 0 ; i < repeat_num ; i ++) {
                 auto itr     = angle_hwnds.begin() ;
                 auto pre_itr = itr ;

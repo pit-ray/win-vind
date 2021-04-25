@@ -10,18 +10,18 @@
 namespace vind
 {
     struct DisplayTextPainter::Impl {
-        hdc_type hdc ; //device context for actual use
+        HDCSPtr hdc ; //device context for actual use
 
-        hdc_type display_dc ;
-        hdc_type compatible_dc ;
+        HDCSPtr display_dc ;
+        HDCSPtr compatible_dc ;
 
-        bitmap_type compatible_bitmap ;
+        HBitmapUPtr compatible_bitmap ;
 
         COLORREF fg_color ;
         COLORREF bg_color ;
 
         LOGFONTA logfont ; //infomation struct for creation of font
-        font_type hfont ; //font handle
+        HFontUPtr hfont ; //font handle
 
         explicit Impl()
         : hdc(nullptr, delete_hdc),
@@ -220,12 +220,12 @@ namespace vind
     }
 
     //static utility functions
-    DisplayTextPainter::hdc_unique_type DisplayTextPainter::create_display_dc() {
+    DisplayTextPainter::HDCUPtr DisplayTextPainter::create_display_dc() {
         auto raw_hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
         if(!raw_hdc) {
             throw RUNTIME_EXCEPT("Could not create HDC of DISPLAY.") ;
         }
-        return hdc_unique_type(raw_hdc, delete_hdc) ;
+        return HDCUPtr(raw_hdc, delete_hdc) ;
     }
 
     void DisplayTextPainter::set_dc_text_color(
@@ -244,21 +244,21 @@ namespace vind
         }
     }
 
-    DisplayTextPainter::font_type DisplayTextPainter::create_font(const LOGFONTA& logfont) {
+    DisplayTextPainter::HFontUPtr DisplayTextPainter::create_font(const LOGFONTA& logfont) {
         auto raw_font = CreateFontIndirectA(&logfont) ;
         if(!raw_font) {
             throw RUNTIME_EXCEPT("Could not create a font.") ;
         }
-        return font_type(raw_font, delete_obj) ;
+        return HFontUPtr(raw_font, delete_obj) ;
     }
 
-    void DisplayTextPainter::select_obj(hdc_type& hdc, const bitmap_type& bitmap) {
+    void DisplayTextPainter::select_obj(HDCSPtr& hdc, const HBitmapUPtr& bitmap) {
         if(!SelectObject(hdc.get(), bitmap.get())) {
             throw RUNTIME_EXCEPT("The device context could not select a bitmap object.") ;
         }
     }
 
-    void DisplayTextPainter::select_obj(hdc_type& hdc, const font_type& font) {
+    void DisplayTextPainter::select_obj(HDCSPtr& hdc, const HFontUPtr& font) {
         if(!SelectObject(hdc.get(), font.get())) {
             throw RUNTIME_EXCEPT("The device context could not select a font object.") ;
         }

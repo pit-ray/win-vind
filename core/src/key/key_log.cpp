@@ -5,7 +5,7 @@
 namespace vind
 {
     struct KeyLog::Impl {
-        data_t once_log ;
+        Data once_log ;
         explicit Impl()
         : once_log()
         {}
@@ -16,11 +16,11 @@ namespace vind
         explicit Impl(Impl&& rhs)        = default ;
         Impl& operator=(Impl&& rhs)      = default ;
 
-        explicit Impl(const data_t& codes)
+        explicit Impl(const Data& codes)
         : once_log(codes)
         {}
 
-        explicit Impl(data_t&& codes)
+        explicit Impl(Data&& codes)
         : once_log(codes)
         {}
 
@@ -29,7 +29,7 @@ namespace vind
         {}
 
         template <typename T>
-        KeyLog::data_t erased_diff(T&& rhs) const {
+        KeyLog::Data erased_diff(T&& rhs) const {
             auto diff = once_log ;
             for(auto& k : rhs) diff.erase(k) ;
             return diff ;
@@ -40,11 +40,11 @@ namespace vind
     : pimpl(std::make_unique<Impl>())
     {}
 
-    KeyLog::KeyLog(const data_t& codes)
+    KeyLog::KeyLog(const Data& codes)
     : pimpl(std::make_unique<Impl>(codes))
     {}
 
-    KeyLog::KeyLog(data_t&& codes)
+    KeyLog::KeyLog(Data&& codes)
         : pimpl(std::make_unique<Impl>(std::move(codes)))
     {}
 
@@ -65,27 +65,27 @@ namespace vind
         return *this ;
     }
 
-    const KeyLog::data_t& KeyLog::get() const & noexcept {
+    const KeyLog::Data& KeyLog::get() const & noexcept {
         return pimpl->once_log ;
     }
 
-    KeyLog::data_t&& KeyLog::get() && noexcept {
+    KeyLog::Data&& KeyLog::get() && noexcept {
         return std::move(pimpl->once_log) ;
     }
 
-    KeyLog::data_t::const_iterator KeyLog::begin() const noexcept {
+    KeyLog::Data::const_iterator KeyLog::begin() const noexcept {
         return pimpl->once_log.begin() ;
     }
 
-    KeyLog::data_t::const_iterator KeyLog::end() const noexcept {
+    KeyLog::Data::const_iterator KeyLog::end() const noexcept {
         return pimpl->once_log.end() ;
     }
 
-    KeyLog::data_t::const_iterator KeyLog::cbegin() const noexcept {
+    KeyLog::Data::const_iterator KeyLog::cbegin() const noexcept {
         return pimpl->once_log.cbegin() ;
     }
 
-    KeyLog::data_t::const_iterator KeyLog::cend() const noexcept {
+    KeyLog::Data::const_iterator KeyLog::cend() const noexcept {
         return pimpl->once_log.cend() ;
     }
 
@@ -111,10 +111,10 @@ namespace vind
         if(!(rhs.pimpl)) return false ;
         return pimpl->once_log == rhs.pimpl->once_log ;
     }
-    bool KeyLog::operator==(const KeyLog::data_t& rhs) const {
+    bool KeyLog::operator==(const KeyLog::Data& rhs) const {
         return pimpl->once_log == rhs ;
     }
-    bool KeyLog::operator==(KeyLog::data_t&& rhs) const {
+    bool KeyLog::operator==(KeyLog::Data&& rhs) const {
         return pimpl->once_log == rhs ;
     }
 
@@ -127,10 +127,10 @@ namespace vind
         if(!(rhs.pimpl)) return false ; //moved
         return pimpl->once_log != rhs.pimpl->once_log ;
     }
-    bool KeyLog::operator!=(const KeyLog::data_t& rhs) const {
+    bool KeyLog::operator!=(const KeyLog::Data& rhs) const {
         return pimpl->once_log != rhs ;
     }
-    bool KeyLog::operator!=(KeyLog::data_t&& rhs) const {
+    bool KeyLog::operator!=(KeyLog::Data&& rhs) const {
         return pimpl->once_log != rhs ;
     }
 
@@ -143,10 +143,10 @@ namespace vind
         if(!(rhs.pimpl)) return *this ;
         return KeyLog(pimpl->erased_diff(std::move(rhs.pimpl->once_log))) ;
     }
-    const KeyLog KeyLog::operator-(const KeyLog::data_t& rhs) const {
+    const KeyLog KeyLog::operator-(const KeyLog::Data& rhs) const {
         return KeyLog(pimpl->erased_diff(rhs)) ;
     }
-    const KeyLog KeyLog::operator-(KeyLog::data_t&& rhs) const {
+    const KeyLog KeyLog::operator-(KeyLog::Data&& rhs) const {
         return KeyLog(pimpl->erased_diff(std::move(rhs))) ;
     }
 
@@ -163,11 +163,11 @@ namespace vind
         }
         return *this ;
     }
-    KeyLog& KeyLog::operator-=(const KeyLog::data_t& rhs) {
+    KeyLog& KeyLog::operator-=(const KeyLog::Data& rhs) {
         for(const auto& k : rhs) pimpl->once_log.erase(k) ;
         return *this ;
     }
-    KeyLog& KeyLog::operator-=(KeyLog::data_t&& rhs) {
+    KeyLog& KeyLog::operator-=(KeyLog::Data&& rhs) {
         for(const auto& k : rhs) pimpl->once_log.erase(k) ;
         return *this ;
     }

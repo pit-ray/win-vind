@@ -34,14 +34,16 @@ namespace
             KEYCODE_UP,
             KEYCODE_DOWN} ;
         BindedFunc::SPtr func = nullptr ;
+
+        using SPtr = std::shared_ptr<CmdPoint> ;
     } ;
-    using hist_point_t = std::shared_ptr<CmdPoint> ;
-    using hist_t = std::deque<hist_point_t> ;
+
+    using CmdHistory = std::deque<CmdPoint::SPtr> ;
 
     class CmdHist
     {
     private:
-        hist_t hist ;
+        CmdHistory hist ;
         std::size_t idx ;
 
     public:
@@ -50,7 +52,7 @@ namespace
           idx(0)
         {}
 
-        const hist_point_t& get_hist_point() {
+        const CmdPoint::SPtr& get_hist_point() {
             return hist.at(idx) ;
         }
 

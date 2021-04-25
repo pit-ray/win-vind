@@ -14,26 +14,26 @@
 namespace vind
 {
     namespace util {
-        using rgb_t = std::tuple<unsigned char, unsigned char, unsigned char> ;
+        using RGBTuple = std::tuple<unsigned char, unsigned char, unsigned char> ;
 
-        rgb_t hex2rgb(std::string hex) ;
+        RGBTuple hex2rgb(std::string hex) ;
 
         inline COLORREF hex2COLORREF(const std::string& hex) {
             auto [r, g, b] = hex2rgb(hex) ;
             return RGB(r, g, b) ;
         }
 
-        rgb_t to_complementary_rgb(
+        RGBTuple to_complementary_rgb(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) noexcept ;
 
-         inline rgb_t to_complementary_rgb(rgb_t rgb) noexcept {
+         inline RGBTuple to_complementary_rgb(RGBTuple rgb) noexcept {
             auto [r, g, b] = rgb ;
             return to_complementary_rgb(r, g, b) ;
         }
 
-        inline COLORREF to_complementary_COLORREF(rgb_t rgb) noexcept {
+        inline COLORREF to_complementary_COLORREF(RGBTuple rgb) noexcept {
             auto [r, g, b] = to_complementary_rgb(rgb) ;
             return RGB(r, g, b) ;
         }

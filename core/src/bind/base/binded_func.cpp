@@ -141,4 +141,18 @@ namespace vind
     void BindedFunc::load_config() {
         return ;
     }
+
+    bool BindedFunc::operator==(const BindedFunc& rhs) const noexcept {
+        return pimpl->id_ == rhs.pimpl->id_ ;
+    }
+    bool BindedFunc::operator==(BindedFunc&& rhs) const noexcept {
+        return pimpl->id_ == rhs.pimpl->id_ ;
+    }
+
+    bool BindedFunc::operator!=(const BindedFunc& rhs) const noexcept {
+        return pimpl->id_ != rhs.pimpl->id_ ;
+    }
+    bool BindedFunc::operator!=(BindedFunc&& rhs) const noexcept {
+        return pimpl->id_ != rhs.pimpl->id_ ;
+    }
 }

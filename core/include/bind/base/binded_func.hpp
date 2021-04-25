@@ -44,6 +44,11 @@ namespace vind
 
         virtual bool is_for_moving_caret() const noexcept ;
         virtual void load_config() ;
+
+        bool operator==(const BindedFunc& rhs) const noexcept ;
+        bool operator==(BindedFunc&& rhs) const noexcept ;
+        bool operator!=(const BindedFunc& rhs) const noexcept ;
+        bool operator!=(BindedFunc&& rhs) const noexcept ;
     } ;
 }
 #endif

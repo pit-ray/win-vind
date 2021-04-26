@@ -3,34 +3,60 @@
 
 #include "bind/base/binded_func_creator.hpp"
 
+#include <windows.h>
+
+#include <memory>
+
+#include "key/keycode_def.hpp"
+
 namespace vind
 {
-    struct EasyClickLeft : public BindedFuncCreator<EasyClickLeft> {
+    class EasyClick {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
+        explicit EasyClick() ;
+        virtual ~EasyClick() noexcept ;
+
+        EasyClick(const EasyClick&)            = delete ;
+        EasyClick& operator=(const EasyClick&) = delete ;
+
+        EasyClick(EasyClick&&) ;
+        EasyClick& operator=(EasyClick&&) ;
+
+        void scan_ui_objects(HWND hwnd) const ;
+        void create_matching_loop(KeyCode sendkey=KEYCODE_UNDEFINED) const ;
+    } ;
+
+
+    struct EasyClickLeft : public BindedFuncCreator<EasyClickLeft>, public EasyClick {
         explicit EasyClickLeft() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
     } ;
 
-    struct EasyClickRight : public BindedFuncCreator<EasyClickRight> {
+    struct EasyClickRight : public BindedFuncCreator<EasyClickRight>, public EasyClick {
         explicit EasyClickRight() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
     } ;
 
-    struct EasyClickMid : public BindedFuncCreator<EasyClickMid> {
+    struct EasyClickMid : public BindedFuncCreator<EasyClickMid>, public EasyClick {
         explicit EasyClickMid() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
     } ;
 
-    struct EasyClickHover : public BindedFuncCreator<EasyClickHover> {
+    struct EasyClickHover : public BindedFuncCreator<EasyClickHover>, public EasyClick {
         explicit EasyClickHover() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        void sprocess() const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
     } ;
 }
 

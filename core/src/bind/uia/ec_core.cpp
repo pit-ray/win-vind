@@ -7,7 +7,6 @@
 
 #include "bind/uia/ec_hints.hpp"
 #include "bind/uia/ec_matching.hpp"
-#include "bind/uia/ec_scan.hpp"
 #include "bind/uia/point_2d.hpp"
 #include "coreio/i_params.hpp"
 #include "io/display_text_painter.hpp"

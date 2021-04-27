@@ -113,43 +113,53 @@ All binded functions of win-vind derive from <a href="https://github.com/pit-ray
 ```cpp  
 #ifndef MY_BINDING_HPP
 #define MY_BINDING_HPP
-#include "binded_func_with_creator.hpp"
 
-struct MyBinding : public BindedFuncWithCreator<MyBinding>
+#include "bind/base/binded_func_creator.hpp"
+
+namespace vind
 {
-    static void sprocess(
-            bool first_call,
-            unsigned int repeat_num,
-            KeyLogger* const parent_vkclgr,
-            const KeyLogger* const parent_charlgr) ;
-    static const std::string sname() noexcept ;
-} ;
+    struct MyBinding : public BindedFuncCreator<MyBinding> {
+        explicit MyBinding() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
+    } ;
+}
 
 #endif
 ```  
 **mybinding.cpp**
 
 ```cpp  
-#include "mybinding.hpp"
-#include "virtual_cmd_line.hpp"
+#include "bind/dev/mybindings.hpp"
 
-const std::string MyBinding::sname() noexcept
-{
-    return "my_binding" ; //Give the unique identifier.
-}
+#include "bind/base/binded_func_creator.hpp"
+#include "io/keybrd.hpp"
+#include "io/mouse.hpp"
+#include "opt/virtual_cmd_line.hpp"
+#include "util/def.hpp"
 
-void MyBinding::sprocess(
-        bool first_call,
-        unsigned int repeat_num,
-        KeyLogger* const parent_vkclgr,
-        const KeyLogger* const parent_charlgr)
+#include "bind/base/ntype_logger.hpp"
+
+namespace vind
 {
-    if(first_call) {
-        MouseEventer::click(VKC_MOUSE_LEFT) ; //left click
-    
-        KeybrdEventer::pushup(VKC_LWIN, VKC_D) ; //minimize all window
-    
+    MyBinding::MyBinding()
+    : BindedFuncCreator("my_binding") //Give the unique identifier.
+    {}
+    void MyBinding::sprocess() {
+        mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
+
+        keybrd::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
+
         VirtualCmdLine::msgout("Hello World !") ;
+    }
+    void MyBinding::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void MyBinding::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
     }
 }
 ```

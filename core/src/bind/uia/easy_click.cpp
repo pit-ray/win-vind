@@ -14,80 +14,29 @@
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 
+#include "bind/uia/easy_click_core.hpp"
+
 namespace vind
 {
-    struct EasyClick::Impl {
-        UIScanner scanner_{} ;
-        std::vector<Point2D> positions_{} ;
-        std::vector<Hint> hints_{} ;
-        std::vector<std::string> strhints_{} ;
-        InputHinter input_hinter_{} ;
-        DisplayHinter display_hinter_{} ;
-    } ;
-
-    EasyClick::EasyClick()
-    : pimpl(std::make_unique<Impl>())
-    {
-        pimpl->positions_.reserve(4096) ;
-        pimpl->hints_.reserve(2048) ;
-        pimpl->strhints_.reserve(2048) ;
-    }
-
-    EasyClick::~EasyClick() noexcept             = default ;
-    EasyClick::EasyClick(EasyClick&&)            = default ;
-    EasyClick& EasyClick::operator=(EasyClick&&) = default ;
-
-    void EasyClick::scan_ui_objects(HWND hwnd) const {
-        pimpl->scanner_.scan(hwnd, pimpl->positions_, true) ;
-        assign_identifier_hints(pimpl->positions_.size(), pimpl->hints_) ;
-        convert_hints_to_strings(pimpl->hints_, pimpl->strhints_) ;
-    }
-
-    void EasyClick::create_matching_loop(KeyCode sendkey) const {
-
-        auto ft = pimpl->input_hinter_.launch_async_loop(
-                pimpl->positions_,
-                pimpl->hints_) ;
-
-        using namespace std::chrono ;
-        while(ft.wait_for(50ms) == std::future_status::timeout) {
-            try {
-                if(pimpl->input_hinter_.must_draw_hints_num() == pimpl->hints_.size()) {
-                    pimpl->display_hinter_.paint_all_hints(
-                            pimpl->positions_, pimpl->strhints_) ;
-                }
-                else {
-                    pimpl->display_hinter_.paint_matching_hints(
-                            pimpl->positions_, pimpl->strhints_, pimpl->input_hinter_.matched_counts()) ;
-                }
-            }
-            catch(const std::exception& e) {
-                pimpl->input_hinter_.cancel() ;
-                throw e ;
-            }
-        }
-
-        util::refresh_display(NULL) ;
-
-        if(auto pos = ft.get()) {
-            SetCursorPos(pos->x(), pos->y()) ;
-            mouse::click(sendkey) ;
-        }
-    }
-
-
     //EasyClickLeft
+    struct EasyClickLeft::Impl {
+        EasyClickCore core_{} ;
+    } ;
     EasyClickLeft::EasyClickLeft()
     : BindedFuncCreator("easy_click_left"),
-      EasyClick()
+      pimpl(std::make_unique<Impl>())
     {}
+    EasyClickLeft::~EasyClickLeft() noexcept                 = default ;
+    EasyClickLeft::EasyClickLeft(EasyClickLeft&&)            = default ;
+    EasyClickLeft& EasyClickLeft::operator=(EasyClickLeft&&) = default ;
+
     void EasyClickLeft::sprocess() const {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
         }
-        scan_ui_objects(hwnd) ;
-        create_matching_loop(KEYCODE_MOUSE_LEFT) ;
+        pimpl->core_.scan_ui_objects(hwnd) ;
+        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT) ;
     }
     void EasyClickLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -97,20 +46,30 @@ namespace vind
     void EasyClickLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
+    void EasyClickLeft::load_config() {
+        pimpl->core_.load_config() ;
+    }
 
 
     //EasyClickRight
+    struct EasyClickRight::Impl {
+        EasyClickCore core_{} ;
+    } ;
     EasyClickRight::EasyClickRight()
     : BindedFuncCreator("easy_click_right"),
-      EasyClick()
+      pimpl(std::make_unique<Impl>())
     {}
+    EasyClickRight::~EasyClickRight() noexcept                  = default ;
+    EasyClickRight::EasyClickRight(EasyClickRight&&)            = default ;
+    EasyClickRight& EasyClickRight::operator=(EasyClickRight&&) = default ;
+
     void EasyClickRight::sprocess() const {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
         }
-        scan_ui_objects(hwnd) ;
-        create_matching_loop(KEYCODE_MOUSE_RIGHT) ;
+        pimpl->core_.scan_ui_objects(hwnd) ;
+        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT) ;
     }
     void EasyClickRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -120,20 +79,30 @@ namespace vind
     void EasyClickRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
+    void EasyClickRight::load_config() {
+        pimpl->core_.load_config() ;
+    }
 
 
     //EasyClickMid
+    struct EasyClickMid::Impl {
+        EasyClickCore core_{} ;
+    } ;
     EasyClickMid::EasyClickMid()
     : BindedFuncCreator("easy_click_mid"),
-      EasyClick()
+      pimpl(std::make_unique<Impl>())
     {}
+    EasyClickMid::~EasyClickMid() noexcept                = default ;
+    EasyClickMid::EasyClickMid(EasyClickMid&&)            = default ;
+    EasyClickMid& EasyClickMid::operator=(EasyClickMid&&) = default ;
+
     void EasyClickMid::sprocess() const {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
         }
-        scan_ui_objects(hwnd) ;
-        create_matching_loop(KEYCODE_MOUSE_MID) ;
+        pimpl->core_.scan_ui_objects(hwnd) ;
+        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID) ;
     }
     void EasyClickMid::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -143,20 +112,30 @@ namespace vind
     void EasyClickMid::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
+    void EasyClickMid::load_config() {
+        pimpl->core_.load_config() ;
+    }
 
 
     //EasyClickHover
+    struct EasyClickHover::Impl {
+        EasyClickCore core_{} ;
+    } ;
     EasyClickHover::EasyClickHover()
     : BindedFuncCreator("easy_click_hover"),
-      EasyClick()
+      pimpl(std::make_unique<Impl>())
     {}
+    EasyClickHover::~EasyClickHover() noexcept                  = default ;
+    EasyClickHover::EasyClickHover(EasyClickHover&&)            = default ;
+    EasyClickHover& EasyClickHover::operator=(EasyClickHover&&) = default ;
+
     void EasyClickHover::sprocess() const {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
         }
-        scan_ui_objects(hwnd) ;
-        create_matching_loop() ;
+        pimpl->core_.scan_ui_objects(hwnd) ;
+        pimpl->core_.create_matching_loop() ;
     }
     void EasyClickHover::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -165,5 +144,8 @@ namespace vind
     }
     void EasyClickHover::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
+    }
+    void EasyClickHover::load_config() {
+        pimpl->core_.load_config() ;
     }
 }

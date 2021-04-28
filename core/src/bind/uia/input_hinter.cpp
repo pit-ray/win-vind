@@ -14,9 +14,9 @@ namespace vind
 {
     struct InputHinter::Impl {
         std::vector<unsigned char> matched_counts_{} ;
-        std::size_t draw_hints_num_ = 0 ;
+        std::size_t drawable_hints_num_ = 0 ;
         std::atomic_bool cancel_running_ = false ;
-        std::mutex mtx_ ;
+        std::mutex mtx_{} ;
 
         // return : matched index
         long validate_if_match_with_hints(
@@ -26,11 +26,11 @@ namespace vind
             std::lock_guard<std::mutex> socoped_lock{mtx_} ;
 
             if(lgr.empty()) {
-                draw_hints_num_ = hints.size() ; //must draw all hints
+                drawable_hints_num_ = hints.size() ; //must draw all hints
                 return -1 ;
             }
 
-            draw_hints_num_ = 0 ;
+            drawable_hints_num_ = 0 ;
 
             for(std::size_t i = 0 ; i < hints.size() ; i ++) {
 
@@ -47,7 +47,7 @@ namespace vind
                 }
 
                 if(seq_idx == lgr.size()) {
-                    draw_hints_num_ ++ ;
+                    drawable_hints_num_ ++ ;
                     matched_counts_[i] = static_cast<unsigned char>(seq_idx) ;
                 }
                 else {
@@ -78,8 +78,9 @@ namespace vind
             const std::vector<Point2D>& positions,
             const std::vector<Hint>& hints) {
 
+        pimpl->matched_counts_.clear() ;
         pimpl->matched_counts_.resize(positions.size()) ;
-        pimpl->draw_hints_num_ = 0 ;
+        pimpl->drawable_hints_num_ = positions.size() ;
         pimpl->cancel_running_ = false ;
 
         keyabsorber::InstantKeyAbsorber ika ;
@@ -118,7 +119,7 @@ namespace vind
                         positions[full_match_idx].y()) ;
             }
 
-            if(must_draw_hints_num() == 0) {
+            if(pimpl->drawable_hints_num_ == 0) {
                 lgr.remove_from_back(1) ;
             }
             else {
@@ -131,6 +132,7 @@ namespace vind
     std::shared_future<Point2D::SPtr> InputHinter::launch_async_loop(
             const std::vector<Point2D>& positions,
             const std::vector<Hint>& hints) {
+
         auto ft = std::async(
                 std::launch::async,
                 &InputHinter::launch_loop,
@@ -149,7 +151,7 @@ namespace vind
         return pimpl->matched_counts_ ;
     }
 
-    const std::size_t& InputHinter::must_draw_hints_num() const noexcept {
-        return pimpl->draw_hints_num_ ;
+    const std::size_t& InputHinter::drawable_hints_num() const noexcept {
+        return pimpl->drawable_hints_num_ ;
     }
 }

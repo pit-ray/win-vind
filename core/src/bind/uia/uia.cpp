@@ -30,7 +30,7 @@ namespace vind
             }
         }
 
-        CUIA::~CUIA() {
+        CUIA::~CUIA() noexcept {
             if(cuia != nullptr) cuia->Release() ;
             CoUninitialize() ;
         }
@@ -54,20 +54,6 @@ namespace vind
         const CUIA& get_global_cuia() {
             static CUIA g_cuia{} ;
             return g_cuia ;
-        }
-
-        inline void delete_com (IUnknown* com) noexcept {
-            if(com != nullptr) com->Release() ;
-        }
-
-        SmartElement make_SmartElement(IUIAutomationElement* ptr) {
-            return SmartElement(ptr, delete_com) ;
-        }
-        SmartElementArray make_SmartElementArray(IUIAutomationElementArray* ptr) {
-            return SmartElementArray(ptr, delete_com) ;
-        }
-        SmartCacheReq make_SmartCacheReq(IUIAutomationCacheRequest* ptr) {
-            return SmartCacheReq(ptr, delete_com) ;
         }
     }
 }

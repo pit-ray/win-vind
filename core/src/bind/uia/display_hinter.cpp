@@ -1,5 +1,6 @@
 #include "bind/uia/display_hinter.hpp"
 
+#include <iostream>
 #include <mutex>
 #include <string>
 
@@ -27,10 +28,7 @@ namespace vind
         long fontsize_ ;
 
         Impl()
-        : painter_(
-            iparams::get_l("easy_click_font_size"),
-            iparams::get_l("easy_click_font_weight"),
-            iparams::get_s("easy_click_font_name")),
+        : painter_(0, 0, ""),
           weak_painter_(painter_),
           fontsize_(0)
         {}
@@ -88,6 +86,7 @@ namespace vind
             const std::vector<std::string>& strhints) {
 
         if(positions.size() != strhints.size()) {
+            std::cout << "invalid size\n" ;
             return ;
         }
 
@@ -97,6 +96,7 @@ namespace vind
         }
 
         pimpl->painter_.refresh() ;
+        pimpl->weak_painter_.refresh() ;
     }
 
 
@@ -106,6 +106,7 @@ namespace vind
             const std::vector<unsigned char>& matched_counts) {
 
         if(positions.size() != strhints.size()) {
+            std::cout << "invalid matching size\n" ;
             return ;
         }
 

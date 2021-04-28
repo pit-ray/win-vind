@@ -11,52 +11,93 @@
 
 namespace vind
 {
-    class EasyClick {
+
+    class EasyClickLeft : public BindedFuncCreator<EasyClickLeft> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        explicit EasyClick() ;
-        virtual ~EasyClick() noexcept ;
-
-        EasyClick(const EasyClick&)            = delete ;
-        EasyClick& operator=(const EasyClick&) = delete ;
-
-        EasyClick(EasyClick&&) ;
-        EasyClick& operator=(EasyClick&&) ;
-
-        void scan_ui_objects(HWND hwnd) const ;
-        void create_matching_loop(KeyCode sendkey=KEYCODE_UNDEFINED) const ;
-    } ;
-
-
-    struct EasyClickLeft : public BindedFuncCreator<EasyClickLeft>, public EasyClick {
         explicit EasyClickLeft() ;
+        virtual ~EasyClickLeft() noexcept ;
+
+        EasyClickLeft(const EasyClickLeft&)            = delete ;
+        EasyClickLeft& operator=(const EasyClickLeft&) = delete ;
+
+        EasyClickLeft(EasyClickLeft&&) ;
+        EasyClickLeft& operator=(EasyClickLeft&&) ;
+
         void sprocess() const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
+
+        void load_config() override ;
     } ;
 
-    struct EasyClickRight : public BindedFuncCreator<EasyClickRight>, public EasyClick {
+    class EasyClickRight : public BindedFuncCreator<EasyClickRight> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
         explicit EasyClickRight() ;
+        virtual ~EasyClickRight() noexcept ;
+
+        EasyClickRight(const EasyClickRight&)            = delete ;
+        EasyClickRight& operator=(const EasyClickRight&) = delete ;
+
+        EasyClickRight(EasyClickRight&&) ;
+        EasyClickRight& operator=(EasyClickRight&&) ;
+
         void sprocess() const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
+
+        void load_config() override ;
     } ;
 
-    struct EasyClickMid : public BindedFuncCreator<EasyClickMid>, public EasyClick {
+    class EasyClickMid : public BindedFuncCreator<EasyClickMid> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
         explicit EasyClickMid() ;
+        virtual ~EasyClickMid() noexcept ;
+
+        EasyClickMid(const EasyClickMid&)            = delete ;
+        EasyClickMid& operator=(const EasyClickMid&) = delete ;
+
+        EasyClickMid(EasyClickMid&&) ;
+        EasyClickMid& operator=(EasyClickMid&&) ;
+
         void sprocess() const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
+
+        void load_config() override ;
     } ;
 
-    struct EasyClickHover : public BindedFuncCreator<EasyClickHover>, public EasyClick {
+    class EasyClickHover : public BindedFuncCreator<EasyClickHover> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
         explicit EasyClickHover() ;
+        virtual ~EasyClickHover() noexcept ;
+
+        EasyClickHover(const EasyClickHover&)            = delete ;
+        EasyClickHover& operator=(const EasyClickHover&) = delete ;
+
+        EasyClickHover(EasyClickHover&&) ;
+        EasyClickHover& operator=(EasyClickHover&&) ;
+
         void sprocess() const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
+
+        void load_config() override ;
     } ;
 }
 

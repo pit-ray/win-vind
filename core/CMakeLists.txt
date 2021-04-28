@@ -117,8 +117,8 @@ target_link_libraries(proc base psapi)
 add_library(uia STATIC
     src/bind/uia/display_hinter.cpp
     src/bind/uia/easy_click.cpp
+    src/bind/uia/easy_click_core.cpp
     src/bind/uia/ec_hints.cpp
-    src/bind/uia/ec_matching.cpp
     src/bind/uia/input_hinter.cpp
     src/bind/uia/ui_scanner.cpp
     src/bind/uia/uia.cpp

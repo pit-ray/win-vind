@@ -38,7 +38,7 @@ namespace vind
 
         const std::vector<unsigned char>& matched_counts() const noexcept ;
 
-        const std::size_t& must_draw_hints_num() const noexcept ;
+        const std::size_t& drawable_hints_num() const noexcept ;
     } ;
 }
 

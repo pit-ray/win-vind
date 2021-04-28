@@ -18,13 +18,25 @@
 namespace vind
 {
     namespace uiauto {
-        using SmartElement      = std::shared_ptr<IUIAutomationElement> ;
-        using SmartElementArray = std::shared_ptr<IUIAutomationElementArray> ;
-        using SmartCacheReq     = std::shared_ptr<IUIAutomationCacheRequest> ;
+        inline void delete_com (IUnknown* com) noexcept {
+            if(com != nullptr) {
+                com->Release() ;
+            }
+        }
 
-        SmartElement make_SmartElement(IUIAutomationElement* ptr) ;
-        SmartElementArray make_SmartElementArray(IUIAutomationElementArray* ptr) ;
-        SmartCacheReq make_SmartCacheReq(IUIAutomationCacheRequest* ptr) ;
+        using SmartElement      = std::unique_ptr<IUIAutomationElement, decltype(&delete_com)> ;
+        using SmartElementArray = std::unique_ptr<IUIAutomationElementArray, decltype(&delete_com)> ;
+        using SmartCacheReq     = std::unique_ptr<IUIAutomationCacheRequest, decltype(&delete_com)> ;
+
+        inline SmartElement make_SmartElement(IUIAutomationElement* ptr) {
+            return SmartElement(ptr, delete_com) ;
+        }
+        inline SmartElementArray make_SmartElementArray(IUIAutomationElementArray* ptr) {
+            return SmartElementArray(ptr, delete_com) ;
+        }
+        inline SmartCacheReq make_SmartCacheReq(IUIAutomationCacheRequest* ptr) {
+            return SmartCacheReq(ptr, delete_com) ;
+        }
 
         HRESULT create_UIAutomation(IUIAutomation** ptr) ;
 

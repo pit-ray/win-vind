@@ -24,7 +24,7 @@ namespace vind
         UIScanner(UIScanner&&) ;
         UIScanner& operator=(UIScanner&&) ;
 
-        uiauto::SmartCacheReq get_cache_request() const noexcept ;
+        const uiauto::SmartCacheReq& get_cache_request() const noexcept ;
 
         void scan(
                 HWND hwnd,

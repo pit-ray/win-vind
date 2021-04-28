@@ -1,5 +1,6 @@
 #include "bind/uia/ui_scanner.hpp"
 
+#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -74,7 +75,7 @@ namespace vind
 
         explicit Impl()
         : cuia_(uiauto::get_global_cuia()),
-          cache_request_(nullptr)
+          cache_request_(nullptr, uiauto::delete_com)
         {
             IUIAutomationCacheRequest* cr_raw ;
             if(FAILED(cuia_->CreateCacheRequest(&cr_raw))) {
@@ -256,7 +257,7 @@ namespace vind
     UIScanner::UIScanner(UIScanner&&)            = default ;
     UIScanner& UIScanner::operator=(UIScanner&&) = default ;
 
-    uiauto::SmartCacheReq UIScanner::get_cache_request() const noexcept {
+    const uiauto::SmartCacheReq& UIScanner::get_cache_request() const noexcept {
         return pimpl->cache_request_ ;
     }
 
@@ -264,6 +265,11 @@ namespace vind
             HWND hwnd,
             std::vector<Point2D>& return_positions,
             bool scan_all_thread_window) const {
+
+        if(!return_positions.empty()) {
+            return_positions.clear() ;
+        }
+
         //scan all GUI objects in current window and children
         pimpl->scan_object_from_hwnd(hwnd, return_positions) ;
 

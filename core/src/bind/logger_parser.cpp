@@ -28,9 +28,10 @@ namespace
         REJECT_WITH_PARTSET = 0b0000'1010'0000'0000,
         ACCEPT_IN_NUM       = 0b0000'0100'0000'0000,
         ACCEPT              = 0b0000'1100'0000'0000,
+        ACCEPT_IN_ANY       = 0b0001'0100'0000'0000,
 
         //Masks
-        STATE_MASK      = 0x0f00,
+        STATE_MASK      = 0x7f00,
         WAITING_MASK    = 0x0100,
         REJECT_MASK     = 0x0200,
         ACCEPT_MASK     = 0x0400,
@@ -66,12 +67,17 @@ namespace
 
     using LogStatusRawType = std::uint32_t ;
     enum LogStatus : LogStatusRawType {
-        ALL_FALSE        = 0x0000,
-        HAS_KEYSET_PART  = 0x0100,
-        ACCEPTED         = 0x0200,
-        HAS_KEYSET       = 0x0400,
-        ACCEPTED_OPTNUM  = 0x0800,
-        WAITING_OPTNUM   = 0x1000,
+        //Status
+        ALL_FALSE        = 0b0000'0000'0000'0000,
+        HAS_KEYSET_PART  = 0b0000'0001'0000'0000,
+        ACCEPTED         = 0b0000'0010'0000'0000,
+        HAS_KEYSET       = 0b0000'0100'0000'0000,
+        ACCEPTED_OPTNUM  = 0b0000'1000'0000'0000,
+        WAITING_OPTNUM   = 0b0001'0000'0000'0000,
+        ACCEPTED_ANY     = 0b0010'0000'0000'0000,
+
+        //Masks
+        STATUS_MASK      = 0xff00,
         MATCHED_NUM_MASK = 0x00ff,
     } ;
 }
@@ -122,7 +128,7 @@ namespace vind
 
             LogStatusRawType logstatus = LogStatus::ALL_FALSE ;
 
-            unsigned char most_matched_num = 0 ;
+            std::size_t most_matched_num = 0 ;
 
             for(const auto& cmd : *cmdlist_ptr_) {
                 try {
@@ -132,7 +138,7 @@ namespace vind
 
                     auto itr = keyset.cbegin() ;
                     if(*itr == KEYCODE_OPTIONAL) {
-                        logstatus = LogStatus::ACCEPTED ;
+                        logstatus = LogStatus::ACCEPTED_ANY ;
                         logstatus |= 1 ;
                         return logstatus ;
                     }
@@ -157,7 +163,7 @@ namespace vind
                     if(itr != keyset.cend()) { //keyset.size() > 1
                         while(itr != keyset.cend()) {
                             if(*itr == KEYCODE_OPTIONAL) {
-                                logstatus = LogStatus::ACCEPTED ;
+                                logstatus = LogStatus::ACCEPTED_ANY ;
                                 logstatus |= 1 ;
                                 return logstatus ;
                             }
@@ -194,9 +200,14 @@ namespace vind
             }
 
             // Realistically, we could not type a lot of keys at the same time
-            // (e.g. <C-a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u>),
+            // (e.g. <C-a-b-c-d-e-f-g-h-i-j-k>, abcdjfajfaldABfa),
             // so the actual maximum number is lower-bit of logstatus in this implementation.
-            logstatus |= most_matched_num ;
+            if(most_matched_num < 255) {
+                logstatus |= most_matched_num ;
+            }
+            else {
+                logstatus |= LogStatus::MATCHED_NUM_MASK ;
+            }
 
             return logstatus ;
         }
@@ -205,11 +216,21 @@ namespace vind
         // It parses a log status and return matched num.
         unsigned char parse_log_status(LogStatusRawType status) {
             auto num = static_cast<unsigned char>(status & LogStatus::MATCHED_NUM_MASK) ;
+
             if(num == 0) {
                 state_hist_.push(ParserState::REJECT) ;
+                return 0 ;
             }
-            else if(status & LogStatus::ACCEPTED_OPTNUM) {
+
+            if(!state_hist_.empty()) {
+                num += state_hist_.top() & ParserState::KEYSET_NUM_MASK ;
+            }
+
+            if(status & LogStatus::ACCEPTED_OPTNUM) {
                 state_hist_.push(num | ParserState::ACCEPT_IN_NUM) ;
+            }
+            else if(status & LogStatus::ACCEPTED_ANY) {
+                state_hist_.push(num | ParserState::ACCEPT_IN_ANY) ;
             }
             else if(status & LogStatus::ACCEPTED) {
                 state_hist_.push(num | ParserState::ACCEPT) ;
@@ -254,9 +275,14 @@ namespace vind
             return state_hist_.top() & KEYSET_NUM_MASK ;
         }
 
+        unsigned char do_accept_in_any(const KeyLog& UNUSED(log)) {
+            state_hist_.push(state_hist_.top() + 1) ; //count <any>'s keycode
+            return state_hist_.top() & KEYSET_NUM_MASK ;
+        }
+
         unsigned char do_accept_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(state_hist_.top()) ;
+                state_hist_.push(state_hist_.top() + 1) ; //count <num>'s keycode
                 return state_hist_.top() & KEYSET_NUM_MASK ;
             }
 
@@ -266,7 +292,7 @@ namespace vind
 
         unsigned char do_waiting_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(state_hist_.top()) ;
+                state_hist_.push(state_hist_.top() + 1) ; //count <num>'s keycode
                 return state_hist_.top() & KEYSET_NUM_MASK ;
             }
             return do_waiting(log) ;
@@ -403,6 +429,9 @@ namespace vind
             case ParserState::ACCEPT:
                 return pimpl->do_accept(log) ;
 
+            case ParserState::ACCEPT_IN_ANY:
+                return pimpl->do_accept_in_any(log) ;
+
             default:
                 throw LOGIC_EXCEPT("The ParserState is invalid.") ;
         }
@@ -438,7 +467,7 @@ namespace vind
 
     bool LoggerParser::is_accepted() const noexcept {
         if(pimpl->state_hist_.empty()) return false ;
-        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) & ParserState::ACCEPT_MASK ;
+        return pimpl->state_hist_.top() & ParserState::ACCEPT_MASK ;
     }
 
     bool LoggerParser::is_rejected() const noexcept {
@@ -452,7 +481,7 @@ namespace vind
 
     bool LoggerParser::is_waiting() const noexcept {
         if(pimpl->state_hist_.empty()) return true ;
-        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) & ParserState::WAITING_MASK ;
+        return pimpl->state_hist_.top() & ParserState::WAITING_MASK ;
     }
 
     std::size_t LoggerParser::state_stack_size() const noexcept {

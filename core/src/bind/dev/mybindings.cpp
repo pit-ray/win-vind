@@ -1,12 +1,11 @@
 #include "bind/dev/mybindings.hpp"
 
 #include "bind/base/binded_func_creator.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
-
-#include "bind/base/ntype_logger.hpp"
 
 namespace vind
 {

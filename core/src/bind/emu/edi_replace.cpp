@@ -5,6 +5,7 @@
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/text_analyzer.hpp"
 #include "entry.hpp"
 #include "io/keybrd.hpp"
@@ -78,15 +79,16 @@ namespace vind
     void EdiNReplaceChar::sprocess(unsigned int repeat_num) {
         loop_for_keymatching([repeat_num](const auto& keycodes, bool shifted=false) {
 
-            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [&keycodes, shifted] {
                 keybrd::pushup(KEYCODE_DELETE) ;
 
                 if(shifted) keybrd::pushup(KEYCODE_LSHIFT, keycodes) ;
                 else keybrd::pushup(keycodes) ;
-            }
+            }) ;
 
-            for(unsigned int i = 0 ; i < repeat_num ; i ++)
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LEFT) ;
+            }) ;
 
             return true ; //terminate looping
         }) ;
@@ -129,13 +131,13 @@ namespace vind
             return false ; //continue looping
         }) ;
 
-        for(unsigned int i = 0 ; i < repeat_num - 1 ; i ++) {
+        repeater::safe_for(repeat_num, [&strs, shifts] {
             for(std::size_t stridx = 0 ; stridx < strs.size() ; stridx ++) {
                 pushup(KEYCODE_DELETE) ;
                 if(shifts[stridx]) pushup(KEYCODE_LSHIFT, strs[stridx]) ;
                 else pushup(strs[stridx]) ;
             }
-        }
+        }) ;
 
         VirtualCmdLine::clear() ;
         VirtualCmdLine::refresh() ;
@@ -157,9 +159,9 @@ namespace vind
     {}
     void EdiSwitchCharCase::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([&repeat_num] {
-                for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+                repeater::safe_for(repeat_num, [] {
                     keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
-                }
+                }) ;
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             }) ;
 

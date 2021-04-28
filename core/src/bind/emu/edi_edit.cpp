@@ -8,6 +8,7 @@
 
 #include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/simple_text_selecter.hpp"
 #include "bind/emu/smart_clipboard.hpp"
@@ -118,8 +119,9 @@ namespace vind
         pushup(KEYCODE_HOME) ;
 
         //copy N - 1 lines
-        for(unsigned int i = 1 ; i < repeat_num ; i ++)
+        repeater::safe_for(repeat_num - 1, [] {
             pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+        }) ;
 
         if(!select_line_until_EOL(exres))
             clear_clipboard_with_null() ;
@@ -160,16 +162,17 @@ namespace vind
         using keybrd::pushup ;
         if(g_rgtype == RegisteredType::Chars) {
             pushup(KEYCODE_RIGHT) ;
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+
+            repeater::safe_for(repeat_num, [] {
                 pushup(KEYCODE_LCTRL, KEYCODE_V) ;
-            }
+            }) ;
         }
         else if(g_rgtype == RegisteredType::Lines) {
             pushup(KEYCODE_END) ;
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 pushup(KEYCODE_ENTER) ;
                 pushup(KEYCODE_LCTRL, KEYCODE_V) ;
-            }
+            }) ;
         }
     }
     void EdiNPasteAfter::sprocess(NTypeLogger& parent_lgr) const {
@@ -203,17 +206,17 @@ namespace vind
     void EdiNPasteBefore::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
         if(g_rgtype == RegisteredType::Chars) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 pushup(KEYCODE_LCTRL, KEYCODE_V) ;
-            }
+            }) ;
         }
         else if(g_rgtype == RegisteredType::Lines) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 pushup(KEYCODE_HOME) ;
                 pushup(KEYCODE_ENTER) ;
                 pushup(KEYCODE_UP) ;
                 pushup(KEYCODE_LCTRL, KEYCODE_V) ;
-            }
+            }) ;
         }
     }
     void EdiNPasteBefore::sprocess(NTypeLogger& parent_lgr) const {
@@ -305,9 +308,9 @@ namespace vind
         using keybrd::pushup ;
         pushup(KEYCODE_HOME) ;
 
-        for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num - 1, [] {
             pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
-        }
+        }) ;
 
         if(!select_line_until_EOL(nullptr)) {
             clear_clipboard_with_null() ;
@@ -350,9 +353,9 @@ namespace vind
         using keybrd::pushup ;
 
         //delete N - 1 lines under the current line
-        for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num - 1, [] {
             pushup(KEYCODE_DOWN) ;
-        }
+        }) ;
 
         if(!select_line_until_EOL(nullptr)) {
             clear_clipboard_with_null() ;
@@ -392,16 +395,16 @@ namespace vind
 
     void EdiNDeleteAfter::sprocess(unsigned int repeat_num) const {
         if(iparams::get_b("enable_char_cache")) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                     keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                     keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                     g_rgtype = RegisteredType::Chars ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_DELETE) ;
-            }
+            }) ;
         }
     }
     void EdiNDeleteAfter::sprocess(NTypeLogger& parent_lgr) const {
@@ -434,16 +437,16 @@ namespace vind
 
     void EdiNDeleteBefore::sprocess(unsigned int repeat_num) const {
         if(iparams::get_b("enable_char_cache")) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 g_rgtype = RegisteredType::Chars ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_BKSPACE) ;
-            }
+            }) ;
         }
     }
     void EdiNDeleteBefore::sprocess(NTypeLogger& parent_lgr) const {
@@ -482,9 +485,9 @@ namespace vind
         }
         keybrd::pushup(KEYCODE_HOME) ;
 
-        for(int i = 0 ; i < static_cast<int>(pos) ; i ++) {
+        repeater::safe_for(pos, [] {
             keybrd::pushup(KEYCODE_RIGHT) ;
-        }
+        }) ;
         EdiDeleteUntilEOLAndStartInsert::sprocess(repeat_num, &res) ;
     }
     void EdiDeleteLinesAndStartInsert::sprocess(NTypeLogger& parent_lgr) {
@@ -502,9 +505,9 @@ namespace vind
     : BindedFuncCreator("edi_delete_chars_and_start_insert")
     {}
     void EdiDeleteCharsAndStartInsert::sprocess(unsigned int repeat_num) {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
-        }
+        }) ;
 
         if(iparams::get_b("enable_char_cache")) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -560,9 +563,9 @@ namespace vind
             unsigned int repeat_num,
             const textanalyze::SelRes* const exres) {
 
-        for(unsigned int i = 1 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num - 1, [] {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
-        }
+        }) ;
 
         if(!select_line_until_EOL(exres)) {
             clear_clipboard_with_null() ;

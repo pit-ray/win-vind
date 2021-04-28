@@ -2,6 +2,7 @@
 
 #include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "io/keybrd.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
@@ -23,10 +24,10 @@ namespace vind
     EdiNRemoveEOL& EdiNRemoveEOL::operator=(EdiNRemoveEOL&&)    = default ;
 
     void EdiNRemoveEOL::sprocess(unsigned int repeat_num) const {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_END) ;
             keybrd::pushup(KEYCODE_DELETE) ;
-        }
+        }) ;
     }
     void EdiNRemoveEOL::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

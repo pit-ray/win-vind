@@ -3,10 +3,12 @@
 #include "bind/base/char_logger.hpp"
 #include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/simple_text_selecter.hpp"
 #include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
+#include "key/keycode_def.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
@@ -33,14 +35,14 @@ namespace vind
     }
     void EdiMoveCaretLeft::sprocess(unsigned int repeat_num) const {
         if(mode::is_edi_visual()) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LEFT) ;
-            }
+            }) ;
         }
     }
     void EdiMoveCaretLeft::sprocess(NTypeLogger& parent_lgr) const {
@@ -76,14 +78,14 @@ namespace vind
     }
     void EdiMoveCaretRight::sprocess(unsigned int repeat_num) const {
         if(mode::is_edi_visual()) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, []{
                 keybrd::pushup(KEYCODE_RIGHT) ;
-            }
+            }) ;
         }
     }
     void EdiMoveCaretRight::sprocess(NTypeLogger& parent_lgr) const {
@@ -122,15 +124,15 @@ namespace vind
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_EOL2BOL() ;
             }
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
                 //textselect::moving_update() ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_UP) ;
-            }
+            }) ;
         }
     }
     void EdiMoveCaretUp::sprocess(NTypeLogger& parent_lgr) const {
@@ -177,19 +179,19 @@ namespace vind
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_BOL2EOL() ;
             }
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
                 //If call EdiMoveCaretDown after EdiMoveCaretUp,
                 //inner variables of moving_update() are dedicated to EOL2BOL.
                 //so we cannot move caret down.
                 //textselect::moving_update() ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_DOWN) ;
-            }
+            }) ;
         }
     }
     void EdiMoveCaretDown::sprocess(NTypeLogger& parent_lgr) const {
@@ -233,14 +235,14 @@ namespace vind
     }
     void EdiNMoveCaretwordsForward::sprocess(unsigned int repeat_num) const {
         if(mode::is_edi_visual()) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
-            }
+            }) ;
         }
     }
     void EdiNMoveCaretwordsForward::sprocess(NTypeLogger& parent_lgr) const {
@@ -276,14 +278,14 @@ namespace vind
     }
     void EdiNMoveCaretwordsBackward::sprocess(unsigned int repeat_num) const {
         if(mode::is_edi_visual()) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
-            }
+            }) ;
         }
     }
     void EdiNMoveCaretwordsBackward::sprocess(NTypeLogger& parent_lgr) const {
@@ -320,14 +322,14 @@ namespace vind
 
     void EdiNMoveCaretWORDSForward::sprocess(unsigned int repeat_num) const {
         if(mode::is_edi_visual()) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
-            }
+            }) ;
         }
     }
     void EdiNMoveCaretWORDSForward::sprocess(NTypeLogger& parent_lgr) const {
@@ -363,14 +365,14 @@ namespace vind
     }
     void EdiNMoveCaretWORDSBackward::sprocess(unsigned int repeat_num) const {
         if(mode::is_edi_visual()) {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
-            }
+            }) ;
         }
         else {
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
-            }
+            }) ;
         }
     }
     void EdiNMoveCaretWORDSBackward::sprocess(NTypeLogger& parent_lgr) const {

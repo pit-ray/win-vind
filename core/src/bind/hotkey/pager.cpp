@@ -1,3 +1,4 @@
+#include "bind/base/safe_repeater.hpp"
 #include "bind/hotkey/pager.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
@@ -11,9 +12,9 @@ namespace vind
     : BindedFuncCreator("move_to_next_page")
     {}
     void Move2NextPage::sprocess(unsigned int repeat_num) {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LALT, KEYCODE_RIGHT) ;
-        }
+        }) ;
     }
     void Move2NextPage::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -30,9 +31,9 @@ namespace vind
     : BindedFuncCreator("move_to_prev_page")
     {}
     void Move2PrevPage::sprocess(unsigned int repeat_num) {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LALT, KEYCODE_LEFT) ;
-        }
+        }) ;
     }
     void Move2PrevPage::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

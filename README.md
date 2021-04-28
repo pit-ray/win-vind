@@ -245,6 +245,7 @@ It is the difference between master and latest release.
 |:---:|:---|:---:|:---:|
 |✅|Support multi-thread drawing in EasyClick|Improve|High|
 |✅|Rotate windows without arrangement|Feature|High|
+|✅|support safe canceling of command-repeating with <ESC> (e.g. 10000h)|Feature|High|
 |☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
 |☐|Add test codes|Improve|High|
 |✅|Refactor key matching system|Architecture|High|

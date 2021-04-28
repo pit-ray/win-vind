@@ -2,6 +2,7 @@
 
 #include "bind/base/key_logger_base.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/edi_edit.hpp"
 #include "bind/func_finder.hpp"
@@ -101,9 +102,9 @@ namespace
             if(parser_2) {
                 if(parser_2->is_accepted() && parser_2->get_func()->is_for_moving_caret()) {
                     mode::change_mode(lcx_vmode) ;
-                    for(std::size_t i = 0 ; i < parent_lgr.get_head_num() ; i ++) {
-                        parser_2->get_func()->process(lgr) ;
-                    }
+                    repeater::safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
+                        f->process(lgr) ;
+                    }) ;
                     return true ;
                 }
             }

@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include "bind/base/char_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "coreio/err_logger.hpp"
 #include "io/keybrd.hpp"
@@ -18,9 +19,9 @@ namespace vind
     : BindedFuncCreator("switch_to_left_tab")
     {}
     void Switch2LeftTab::sprocess(unsigned int repeat_num) {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
-        }
+        }) ;
     }
     void Switch2LeftTab::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -37,9 +38,9 @@ namespace vind
     : BindedFuncCreator("switch_to_right_tab")
     {}
     void Switch2RightTab::sprocess(unsigned repeat_num) {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
-        }
+        }) ;
     }
     void Switch2RightTab::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

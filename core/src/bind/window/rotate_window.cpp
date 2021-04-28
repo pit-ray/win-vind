@@ -10,6 +10,7 @@
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "bind/window/window_utility.hpp"
 #include "io/screen_metrics.hpp"
@@ -115,7 +116,7 @@ namespace vind
     {}
     void RotateWindows::sprocess(unsigned int repeat_num) {
         rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
-            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [&angle_hwnds] {
                 auto itr     = angle_hwnds.rbegin() ;
                 auto pre_itr = itr ;
                 auto last_hwnd = itr->second ;
@@ -127,7 +128,7 @@ namespace vind
                     itr ++ ;
                 }
                 pre_itr->second = last_hwnd ;
-            }
+            }) ;
         }) ;
     }
     void RotateWindows::sprocess(NTypeLogger& parent_lgr) {
@@ -146,7 +147,7 @@ namespace vind
     {}
     void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
         rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
-            for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+            repeater::safe_for(repeat_num, [&angle_hwnds] {
                 auto itr     = angle_hwnds.begin() ;
                 auto pre_itr = itr ;
                 auto last_hwnd = itr->second ;
@@ -158,7 +159,7 @@ namespace vind
                     itr ++ ;
                 }
                 pre_itr->second = last_hwnd ;
-            }
+            }) ;
         }) ;
     }
     void RotateWindowsInReverse::sprocess(NTypeLogger& parent_lgr) {

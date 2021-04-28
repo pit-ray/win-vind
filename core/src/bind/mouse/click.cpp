@@ -5,6 +5,7 @@
 
 #include "bind/base/mode.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "io/mouse.hpp"
 
 namespace vind
@@ -19,9 +20,9 @@ namespace vind
             change_mode(Mode::Normal) ;
         }
 
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             mouse::click(KEYCODE_MOUSE_LEFT) ;
-        }
+        }) ;
     }
     void ClickLeft::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -43,9 +44,9 @@ namespace vind
             change_mode(Mode::Normal) ;
         }
 
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             mouse::click(KEYCODE_MOUSE_RIGHT) ;
-        }
+        }) ;
     }
     void ClickRight::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

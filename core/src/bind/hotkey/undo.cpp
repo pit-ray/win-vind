@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "time/keystroke_repeater.hpp"
@@ -27,9 +28,9 @@ namespace vind
     SCRedo& SCRedo::operator=(SCRedo&&) = default ;
 
     void SCRedo::sprocess(unsigned int repeat_num) const {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;
-        }
+        }) ;
     }
     void SCRedo::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -60,9 +61,9 @@ namespace vind
     SCUndo& SCUndo::operator=(SCUndo&&) = default ;
 
     void SCUndo::sprocess(unsigned int repeat_num) const {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;
-        }
+        }) ;
     }
     void SCUndo::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

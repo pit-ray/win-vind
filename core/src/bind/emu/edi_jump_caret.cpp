@@ -1,6 +1,7 @@
 #include "bind/emu/edi_jump_caret.hpp"
 
 #include "bind/base/mode.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/simple_text_selecter.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
@@ -43,8 +44,9 @@ namespace vind
     }
     void EdiJumpCaret2EOL::sprocess(unsigned int repeat_num) {
         //down caret N - 1
-        for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++)
+        repeater::safe_for(repeat_num - 1, [] {
             keybrd::pushup(KEYCODE_DOWN) ;
+        }) ; 
 
         if(mode::is_edi_visual()) {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
@@ -81,15 +83,17 @@ namespace vind
             pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
-            for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++)
+            repeater::safe_for(repeat_num - 1, [] {
                 pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+            }) ;
         }
         else {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
-            for(decltype(repeat_num) i = 1 ; i < repeat_num ; i ++)
+            repeater::safe_for(repeat_num - 1, [] {
                 pushup(KEYCODE_DOWN) ;
+            }) ;
         }
     }
     void EdiNJumpCaret2Line_DfBOF::sprocess(NTypeLogger& parent_lgr) {

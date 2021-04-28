@@ -2,6 +2,7 @@
 
 #include "bind/base/char_logger.hpp"
 #include "bind/base/ntype_logger.hpp"
+#include "bind/base/safe_repeater.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "util/def.hpp"
@@ -32,9 +33,9 @@ namespace vind
     : BindedFuncCreator("forward_ui_navigation")
     {}
     void ForwardUINavigation::sprocess(unsigned int repeat_num) {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_TAB) ;
-        }
+        }) ;
     }
     void ForwardUINavigation::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -51,9 +52,9 @@ namespace vind
     : BindedFuncCreator("backward_ui_navigation")
     {}
     void BackwardUINavigation::sprocess(unsigned int repeat_num) {
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
-        }
+        }) ;
     }
     void BackwardUINavigation::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

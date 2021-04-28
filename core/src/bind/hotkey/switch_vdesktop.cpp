@@ -1,3 +1,4 @@
+#include "bind/base/safe_repeater.hpp"
 #include "bind/hotkey/switch_vdesktop.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
@@ -11,9 +12,9 @@ namespace vind
     : BindedFuncCreator("switch_to_left_vdesktop")
     {}
     void SwitchVDesktop2Left::sprocess(unsigned int repeat_num) {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
-        }
+        }) ;
     }
     void SwitchVDesktop2Left::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -30,9 +31,9 @@ namespace vind
     : BindedFuncCreator("switch_to_right_vdesktop")
     {}
     void SwitchVDesktop2Right::sprocess(unsigned int repeat_num) {
-        for(unsigned int i = 0 ; i < repeat_num ; i ++) {
+        repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
-        }
+        }) ;
     }
     void SwitchVDesktop2Right::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

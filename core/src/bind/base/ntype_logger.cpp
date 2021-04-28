@@ -2,6 +2,7 @@
 
 #include "bind/base/binded_func.hpp"
 #include "bind/base/key_logger_base.hpp"
+#include "bind/base/mode.hpp"
 #include "bind/logger_parser.hpp"
 #include "coreio/err_logger.hpp"
 #include "key/key_absorber.hpp"
@@ -107,9 +108,11 @@ namespace vind
             return 0 ;
         }
 
-        auto nums = extract_numbers(log, KeyLog{KEYCODE_0}) ;
-        if(!nums.empty()) {
-            return transition_to_parsing_num_state(nums) ;
+        if(!mode::is_insert()) {
+            auto nums = extract_numbers(log, KeyLog{KEYCODE_0}) ;
+            if(!nums.empty()) {
+                return transition_to_parsing_num_state(nums) ;
+            }
         }
 
         logging(log) ;

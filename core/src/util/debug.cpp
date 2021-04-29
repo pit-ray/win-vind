@@ -6,6 +6,7 @@ namespace vind
 {
     namespace util {
         namespace debug {
+#ifdef DEBUG
             static std::chrono::system_clock::time_point tp ;
             void bench_start() {
                 tp = std::chrono::system_clock::now() ;
@@ -17,6 +18,7 @@ namespace vind
                 auto du = duration_cast<milliseconds>(delta) ;
                 return static_cast<int>(du.count()) ;
             } ;
+#endif
         }
     }
 }

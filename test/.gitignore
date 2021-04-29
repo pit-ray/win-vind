@@ -1,3 +1,6 @@
 doctest
 build
 old
+
+core/util-string-convert-exception-test.cpp
+core/util-string-size-exception-test.cpp

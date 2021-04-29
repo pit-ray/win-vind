@@ -12,6 +12,10 @@ namespace vind
         std::vector<std::string> split(
                 std::string str,
                 std::string deliminator) {
+            if(str.empty()) {
+                return std::vector<std::string>{} ;
+            }
+
             if(str.length() < deliminator.length()) {
                 return std::vector<std::string>{str} ;
             }

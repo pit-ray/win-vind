@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.0.0)
 # -------------
 if(${MSVC})
     add_compile_options(/W4 /std:c++latest /MT /D_UNICODE /DUNICODE)
-    add_compile_options(/DEBUG)
-    add_compile_options(/DDEBUG)
     set(winresobj ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc)
 
 else()
@@ -44,8 +42,6 @@ else()
     string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
-
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g3 -DDEBUG")
     message(STATUS "g++ flags: ${CMAKE_CXX_FLAGS}")
     set(CMAKE_SH "CMAKE_SH-NOTFOUND")
 
@@ -69,5 +65,8 @@ add_library(doctest STATIC
 
 add_executable(core-test
     core/util-color-test.cpp
+    core/util-container-test.cpp
+    core/util-math-test.cpp
+    core/util-string-test.cpp
 )
 target_link_libraries(core-test doctest)

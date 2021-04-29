@@ -28,17 +28,15 @@ namespace vind
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) noexcept {
-            unsigned char max = 0 ;
-            unsigned char min = 255 ;
 
-            if(r >= max) max = r ;
-            if(r <= min) min = r ;
+            auto max = r ;
+            auto min = r ;
 
             if(g >= max) max = g ;
             if(g <= min) min = g ;
 
-            if(g >= max) max = g ;
-            if(g <= min) min = g ;
+            if(b >= max) max = b ;
+            if(b <= min) min = b ;
 
             auto delta = max + min ;
             return {delta - r, delta - g, delta -b} ;

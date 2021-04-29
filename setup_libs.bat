@@ -20,7 +20,7 @@
 )
 cd %LIBS_DIR%
 
-@echo nlohmann/json ----------------------------------------------------------------------
+@echo Setup nlohmann/json ----------------------------------------------------------------------
 @if not exist nlohmann (
     mkdir nlohmann
 )
@@ -32,7 +32,7 @@ cd nlohmann
 cd ..
 
 @echo.
-@echo wxWidgets --------------------------------------------------------------------------
+@echo Setup wxWidgets --------------------------------------------------------------------------
 @echo.
 @rem @set wxWidgets_VERSION=3.0.5
 set wxWidgets_VERSION=3.1.4-rc1
@@ -46,7 +46,6 @@ set wxWidgets_VERSION=3.1.4-rc1
 cd wxWidgets/build/msw
 
 @if "%1" == "-msvc" (
-
     @if "%2" == "" (
         @set BUILD_32=TRUE
         @set BUILD_64=TRUE

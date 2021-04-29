@@ -46,7 +46,7 @@ namespace vind
             return RGB(ro, go, bo) ;
         }
 
-        inline unsigned char to_gray(
+        inline constexpr unsigned char to_gray(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) noexcept {

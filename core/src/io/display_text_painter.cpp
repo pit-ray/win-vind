@@ -149,14 +149,17 @@ namespace vind
             pimpl->logfont.lfFaceName[0] = '\0' ;
         }
         else {
-#if defined(_MSC_VER) && _MSC_VER >= 1500
-#pragma warning(disable : 4996)
-#endif
-            std::strcpy(pimpl->logfont.lfFaceName, face_name.c_str()) ;
+            auto src = face_name.c_str() ;
+            auto dst = pimpl->logfont.lfFaceName ;
 
-#if defined(_MSC_VER) && _MSC_VER >= 1500
-#pragma warning(default : 4996)
-#endif
+            if(face_name.size() < LF_FACESIZE) {
+                std::memcpy(dst, src, sizeof(CHAR) * face_name.size()) ;
+                dst[face_name.size()] = '\0' ;
+            }
+            else {
+                std::memcpy(dst, src, sizeof(CHAR) * (LF_FACESIZE - 1)) ;
+                dst[LF_FACESIZE - 1] = '\0' ;
+            }
         }
 
         pimpl->hfont = create_font(pimpl->logfont) ;

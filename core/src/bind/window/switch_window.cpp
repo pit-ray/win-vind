@@ -49,7 +49,7 @@ namespace vind
             return id == left_id_ || id == right_id_ ;
         }
 
-        void call_op(std::size_t id) const noexcept {
+        void call_op(std::size_t id) const {
             if(id == left_id_) pushup_with_preserve(KEYCODE_LEFT) ;
             if(id == right_id_) pushup_with_preserve(KEYCODE_RIGHT) ;
         }

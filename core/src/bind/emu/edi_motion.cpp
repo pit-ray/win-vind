@@ -76,8 +76,8 @@ namespace
 
         while(vind::update_background()) {
             auto result = lgr.logging_state() ;
-            parent_lgr.logging_state() ;
-            if(NTYPE_EMPTY(result)) {
+            auto parent_result = parent_lgr.logging_state() ;
+            if(NTYPE_EMPTY(result) && NTYPE_EMPTY(parent_result)) {
                 continue ;
             }
             if(NTYPE_HEAD_NUM(result)) {

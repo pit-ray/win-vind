@@ -107,8 +107,9 @@ namespace vind
                     if(LONG* ppvdata ; SUCCEEDED(SafeArrayAccessData(val.parray,
                                     reinterpret_cast<void**>(&ppvdata)))) {
 
-                        return Point2D(ppvdata[0], ppvdata[1]) ;
+                        auto result = Point2D(ppvdata[0], ppvdata[1]) ;
                         SafeArrayUnaccessData(val.parray) ;
+                        return result ;
                     }
                 }
                 VariantClear(&val) ;
@@ -278,7 +279,9 @@ namespace vind
             DWORD procid ;
             if(GetWindowThreadProcessId(hwnd, &procid)) {
                 ProcessScanInfo psinfo{procid, return_positions} ;
-                EnumWindows(EnumerateAllThread, reinterpret_cast<LPARAM>(&psinfo)) ;
+                if(!EnumWindows(EnumerateAllThread, reinterpret_cast<LPARAM>(&psinfo))) {
+                    throw RUNTIME_EXCEPT("Failed EnumerateAllThread.") ;
+                }
             }
         }
 

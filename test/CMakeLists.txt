@@ -70,3 +70,8 @@ add_executable(core-test
     core/util-string-test.cpp
 )
 target_link_libraries(core-test doctest)
+
+add_executable(core-stub-test
+    core/util-string-exception-test.cpp
+)
+target_link_libraries(core-stub-test doctest)

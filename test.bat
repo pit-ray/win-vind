@@ -9,3 +9,4 @@ cmake --build . --config Debug
 cd ../..
 
 "test/build/Debug/core-test.exe"
+"test/build/Debug/core-stub-test.exe"

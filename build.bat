@@ -17,6 +17,8 @@
     @goto release
 ) else if %build_type% == -coverity (
     @goto coverity
+) else if %build_type% == -test (
+   @goto test 
 ) else (
     @goto debug
 )
@@ -80,6 +82,15 @@
     cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF ..
     cov-build --config ./covtest/cov.xml --dir cov-int cmake --build .
     tar -czvf cov-int.tgz cov-int
+    cd ..
+    @goto exit
+
+:test
+    @if not exist debug (
+        mkdir debug
+    )
+    cd debug
+    ctest
     cd ..
     @goto exit
 

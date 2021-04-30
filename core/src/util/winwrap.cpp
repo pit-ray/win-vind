@@ -37,7 +37,7 @@ namespace vind
                         s_to_ws(dst).c_str(),
                         !b_to_B(allow_overwrite))) {
 
-                throw std::runtime_error("Could not copy a file from " + src + " to " + dst + ".") ;
+                throw RUNTIME_EXCEPT("Could not copy a file from " + src + " to " + dst + ".") ;
             }
         }
     }

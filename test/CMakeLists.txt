@@ -68,10 +68,6 @@ add_executable(core-test
     core/util-container-test.cpp
     core/util-math-test.cpp
     core/util-string-test.cpp
+    core/util-winwrap-test.cpp
 )
 target_link_libraries(core-test doctest)
-
-add_executable(core-stub-test
-    core/util-string-exception-test.cpp
-)
-target_link_libraries(core-stub-test doctest)

@@ -9,3 +9,12 @@ env:
 
 script:
   - "./build.bat -debug -mingw 64"
+
+cache:
+  directories:
+  - libs
+
+branchs:
+  only:
+  - master
+  - "/^v?[0-9\\.]+/"

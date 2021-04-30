@@ -2,6 +2,7 @@ version: 3.2-{build}
 branches:
   only:
   - master
+  - "/^v?[0-9\\.]+/"
 max_jobs: 12
 clone_depth: 1
 install:
@@ -12,3 +13,5 @@ build:
   project: debug/win-vind.sln
   parallel: true
   verbosity: minimal
+cache:
+  - libs

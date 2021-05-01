@@ -13,8 +13,12 @@ add_library(doctest STATIC
 add_executable(core-test
     core/util_color_test.cpp
     core/util_container_test.cpp
+    core/util_debug_test.cpp
     core/util_math_test.cpp
     core/util_string_test.cpp
     core/util_winwrap_test.cpp
+
+    core/time_interval_timer_test.cpp
+    core/time_keystroke_repeater_test.cpp
 )
 target_link_libraries(core-test doctest)

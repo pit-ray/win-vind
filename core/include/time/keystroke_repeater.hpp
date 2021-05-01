@@ -11,7 +11,7 @@ namespace vind
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        explicit KeyStrokeRepeater(unsigned int wait_time_for_starting_ms=512) ;
+        explicit KeyStrokeRepeater(int wait_time_for_starting_ms=512) ;
         virtual ~KeyStrokeRepeater() noexcept ;
 
         KeyStrokeRepeater(KeyStrokeRepeater&&) ;
@@ -19,6 +19,9 @@ namespace vind
 
         KeyStrokeRepeater(const KeyStrokeRepeater&) ;
         KeyStrokeRepeater& operator=(const KeyStrokeRepeater&) ;
+
+        void set_wait_time(int delta_ms=512) ;
+        int get_wait_time_ms() const noexcept ;
 
         virtual void reset() noexcept ;
         virtual bool is_pressed() const ;

@@ -8,32 +8,32 @@ namespace vind
 
     struct IntervalTimer::Impl
     {
-        microseconds delta_time ;
-        system_clock::time_point start_time ;
-        bool first_call ;
-        std::mutex mtx ;
+        microseconds delta_time_ ;
+        system_clock::time_point start_time_ ;
+        bool first_call_ ;
+        std::mutex mtx_ ;
 
         explicit Impl(int delta_t=30)
-        : delta_time(static_cast<microseconds>(delta_t)),
-          start_time(system_clock::now()),
-          first_call(true),
-          mtx()
+        : delta_time_(static_cast<microseconds>(delta_t)),
+          start_time_(system_clock::now()),
+          first_call_(true),
+          mtx_()
         {}
 
         virtual ~Impl() noexcept = default ;
 
         Impl(const Impl& rhs)
-        : delta_time(rhs.delta_time),
-          start_time(rhs.start_time),
-          first_call(rhs.first_call),
-          mtx()
+        : delta_time_(rhs.delta_time_),
+          start_time_(rhs.start_time_),
+          first_call_(rhs.first_call_),
+          mtx_()
         {}
 
         Impl& operator=(const Impl& rhs)
         {
-            delta_time = rhs.delta_time ;
-            start_time = rhs.start_time ;
-            first_call = rhs.first_call ;
+            delta_time_ = rhs.delta_time_ ;
+            start_time_ = rhs.start_time_ ;
+            first_call_ = rhs.first_call_ ;
             return *this ;
         }
 
@@ -61,27 +61,31 @@ namespace vind
     IntervalTimer& IntervalTimer::operator=(IntervalTimer&&)    = default ;
 
     void IntervalTimer::set_delta(int delta_us) noexcept {
-        pimpl->delta_time = static_cast<microseconds>(delta_us) ;
+        pimpl->delta_time_ = static_cast<microseconds>(delta_us) ;
+    }
+
+    int IntervalTimer::get_delta_us() const noexcept{
+        return static_cast<int>(duration_cast<microseconds>(pimpl->delta_time_).count()) ;
     }
 
     void IntervalTimer::reset() noexcept {
-        pimpl->start_time = system_clock::now() ;
-        pimpl->first_call = true ;
+        pimpl->start_time_ = system_clock::now() ;
+        pimpl->first_call_ = true ;
     }
 
     bool IntervalTimer::is_passed() const {
-        std::lock_guard<std::mutex> lock{pimpl->mtx} ;
+        std::lock_guard<std::mutex> lock{pimpl->mtx_} ;
 
-        if(pimpl->first_call) {
-            pimpl->first_call = false ;
+        if(pimpl->first_call_) {
+            pimpl->first_call_ = false ;
             return true ;
         }
 
-        if((system_clock::now() - pimpl->start_time) < pimpl->delta_time) {
+        if((system_clock::now() - pimpl->start_time_) < pimpl->delta_time_) {
             return false ;
         }
 
-        pimpl->start_time = system_clock::now() ;
+        pimpl->start_time_ = system_clock::now() ;
         return true ;
     }
 }

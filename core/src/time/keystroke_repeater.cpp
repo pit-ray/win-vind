@@ -11,7 +11,7 @@ namespace
 {
     using namespace std::chrono ;
 
-    inline auto const_accelerate(float& velocity, float ms) noexcept {
+    inline auto const_accelerate(float velocity, float ms) noexcept {
         //hardcoded
         constexpr auto MAX_ACCELERATION = 1.0f ;
         constexpr auto MAX_VELOCITY     = 1.0f ;
@@ -21,19 +21,18 @@ namespace
 
         auto delta_v = MAX_ACCELERATION * t ;
         if(velocity + delta_v < MAX_VELOCITY) {
-            velocity += delta_v ;
+            return velocity + delta_v ;
         }
         else {
-            velocity = MAX_VELOCITY ;
+            return MAX_VELOCITY ;
         }
-        return velocity ;
     }
 
     inline auto compute_delta_t(const system_clock::time_point& start_time) noexcept {
         return duration_cast<milliseconds>(system_clock::now() - start_time) ;
     }
 
-    inline auto _generate_uniform() {
+    inline auto generate_uniform() {
         static std::random_device seed_gen ;
         static std::default_random_engine engine(seed_gen()) ;
         static std::uniform_real_distribution<float> dist(0.0f, 1.0f) ;
@@ -49,35 +48,36 @@ namespace
 namespace vind
 {
     struct KeyStrokeRepeater::Impl {
-        IntervalTimer timer ;
-        float v ;
-        system_clock::time_point start_time ;
-        milliseconds wait_time ;
-        std::mutex mtx ;
+        IntervalTimer timer_ ;
+        float v_ ;
+        system_clock::time_point start_time_ ;
+        milliseconds wait_time_ ;
+        std::mutex mtx_ ;
 
-        explicit Impl(unsigned int wait_time_for_starting_ms=512)
-        : timer(REPEAT_SAMPLING_DELTA_US),
-          v(INITIAL_VELOCITY),
-          start_time(system_clock::now()),
-          wait_time(wait_time_for_starting_ms),
-          mtx()
+        explicit Impl(int wait_time_for_starting_ms=512)
+        : timer_(REPEAT_SAMPLING_DELTA_US),
+          v_(INITIAL_VELOCITY),
+          start_time_(system_clock::now()),
+          wait_time_(wait_time_for_starting_ms),
+          mtx_()
         {}
 
         virtual ~Impl() noexcept = default ;
 
         Impl(const Impl& rhs)
-        : timer(rhs.timer),
-          v(rhs.v),
-          start_time(rhs.start_time),
-          wait_time(rhs.wait_time),
-          mtx()
+        : timer_(rhs.timer_),
+          v_(rhs.v_),
+          start_time_(rhs.start_time_),
+          wait_time_(rhs.wait_time_),
+          mtx_()
         {}
 
         Impl& operator=(const Impl& rhs)
         {
-            timer      = rhs.timer ;
-            v          = rhs.v ;
-            start_time = rhs.start_time ;
+            timer_      = rhs.timer_ ;
+            v_          = rhs.v_ ;
+            start_time_ = rhs.start_time_ ;
+            wait_time_  = rhs.wait_time_ ;
             return *this ;
         }
 
@@ -85,7 +85,7 @@ namespace vind
         Impl& operator=(Impl&& rhs) = default ;
     } ;
 
-    KeyStrokeRepeater::KeyStrokeRepeater(unsigned int wait_time_for_starting_ms)
+    KeyStrokeRepeater::KeyStrokeRepeater(int wait_time_for_starting_ms)
     : pimpl(std::make_unique<Impl>(wait_time_for_starting_ms))
     {}
 
@@ -102,23 +102,30 @@ namespace vind
         return *this ;
     }
 
+    void KeyStrokeRepeater::set_wait_time(int delta_ms) {
+        pimpl->wait_time_ = static_cast<milliseconds>(delta_ms) ;
+    }
+    int KeyStrokeRepeater::get_wait_time_ms() const noexcept {
+        return static_cast<int>(duration_cast<milliseconds>(pimpl->wait_time_).count()) ;
+    }
+
     void KeyStrokeRepeater::reset() noexcept {
-        pimpl->v = INITIAL_VELOCITY ;
-        pimpl->start_time = system_clock::now() ;
+        pimpl->v_ = INITIAL_VELOCITY ;
+        pimpl->start_time_ = system_clock::now() ;
     }
 
     bool KeyStrokeRepeater::is_pressed() const {
-        std::lock_guard<std::mutex> scoped_lock(pimpl->mtx) ;
+        std::lock_guard<std::mutex> scoped_lock(pimpl->mtx_) ;
 
-        auto dt = compute_delta_t(pimpl->start_time) ;
+        auto dt = compute_delta_t(pimpl->start_time_) ;
 
-        if(dt < pimpl->wait_time) return false ;
+        if(dt < pimpl->wait_time_) return false ;
 
         //sampling
-        if(!pimpl->timer.is_passed()) return false ;
+        if(!pimpl->timer_.is_passed()) return false ;
 
-        if(const_accelerate(pimpl->v, static_cast<float>(dt.count()))
-                < _generate_uniform()) {
+        pimpl->v_ = const_accelerate(pimpl->v_, static_cast<float>(dt.count())) ;
+        if(pimpl->v_ < generate_uniform()) {
             return false ;
         }
         return true ;

@@ -23,6 +23,7 @@ namespace vind
         IntervalTimer& operator=(IntervalTimer&&) ;
 
         void set_delta(int delta_us) noexcept ;
+        int get_delta_us() const noexcept;
         void reset() noexcept ;
         bool is_passed() const ;
     } ;

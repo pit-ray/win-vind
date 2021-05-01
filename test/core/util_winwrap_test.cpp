@@ -57,11 +57,11 @@ namespace winwrap_test
 
     using HANDLE = std::pair<std::string, std::string> ;
     struct STARTUPINFOW {
-        std::size_t cb ;
+        std::size_t cb = 0 ;
     } ;
 
     struct PROCESS_INFORMATION {
-        HANDLE hProcess ;
+        HANDLE hProcess{"", ""} ;
     } ;
 
     void ZeroMemory(STARTUPINFOW*, std::size_t) {}

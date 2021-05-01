@@ -11,10 +11,10 @@ add_library(doctest STATIC
 )
 
 add_executable(core-test
-    core/util-color-test.cpp
-    core/util-container-test.cpp
-    core/util-math-test.cpp
-    core/util-string-test.cpp
-    core/util-winwrap-test.cpp
+    core/util_color_test.cpp
+    core/util_container_test.cpp
+    core/util_math_test.cpp
+    core/util_string_test.cpp
+    core/util_winwrap_test.cpp
 )
 target_link_libraries(core-test doctest)

@@ -6,3 +6,4 @@
 -Iwxgui/include/settings_ctrls
 -Iwxgui/include/settings_ctrls/ctrl_assets
 -std=c++17
+-Itest/doctest/doctest/

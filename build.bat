@@ -19,6 +19,8 @@
     @goto coverity
 ) else if %build_type% == -test (
    @goto test 
+) else if %build_type% == -coveralls (
+    @goto coveralls
 ) else (
     @goto debug
 )
@@ -92,6 +94,17 @@
     cd debug
     ctest
     cd ..
+    @goto exit
+
+:coveralls
+    @if not exist debug (
+        mkdir debug
+    )
+    cd debug
+    ctest
+    cd ..
+    coveralls --include core --repo_token "%4" --verbose --gcov-options '\-lp'
+
     @goto exit
 
 :exit

@@ -81,6 +81,7 @@ else()
         -DWINVER=0x0A00
         -D_WIN32_WINNT=0x0A00
         -Wa,-mbig-obj
+        --coverage
     )
     list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS)
     string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -126,7 +127,7 @@ set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 #If use cotire, for some reason, cannot redefine windows version.
 #Now, All CMakeLists.txt in win-vind has no header files at add_executable() or add_library()

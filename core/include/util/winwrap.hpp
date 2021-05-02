@@ -11,7 +11,7 @@
 namespace vind
 {
     namespace util {
-        MSG get_win_message() noexcept ;
+        const MSG& get_win_message() noexcept ;
 
         void refresh_display(HWND hwnd) ;
 

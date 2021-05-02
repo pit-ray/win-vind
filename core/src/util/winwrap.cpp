@@ -1,13 +1,15 @@
 #include "util/winwrap.hpp"
 
+#include <iostream>
+
 namespace vind
 {
     namespace util {
-        MSG get_win_message() noexcept {
-            MSG msg ;
-            if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+        const MSG& get_win_message() noexcept {
+            static MSG msg ;
+            if(PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE)) {
                 TranslateMessage(&msg) ;
-                DispatchMessage(&msg) ;
+                DispatchMessageW(&msg) ;
             }
             return msg ;
         }

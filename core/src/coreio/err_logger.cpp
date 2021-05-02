@@ -97,14 +97,14 @@ namespace vind
             auto mfile = log_dir + "message_" + ss.str() + ".log" ;
 
             g_init_error_stream.open(path::to_u8path(efile), std::ios::trunc) ;
-             g_error_stream.open(path::to_u8path(efile), std::ios::app) ;
+            g_error_stream.open(path::to_u8path(efile), std::ios::app) ;
 
             g_init_msg_stream.open(path::to_u8path(mfile), std::ios::trunc) ;
-             g_msg_stream.open(path::to_u8path(mfile), std::ios::app) ;
+            g_msg_stream.open(path::to_u8path(mfile), std::ios::app) ;
 
              //If the log files exists over five, remove old files.
-             remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;
-             remove_files_over(log_dir, "message_*.log", KEEPING_LOG_COUNT) ;
+            remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;
+            remove_files_over(log_dir, "message_*.log", KEEPING_LOG_COUNT) ;
         }
 
         void error(const char* msg, const char* scope) {

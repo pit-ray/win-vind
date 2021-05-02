@@ -104,7 +104,7 @@ TEST_CASE("(coreio/errlogger/remove_files_over) Under Fake Windows API: ")  {
         CHECK_NOTHROW(remove_files_over(log_dir, pattern, 2)) ;
         CHECK_GT(DeleteFileW_fake.call_count, 0) ;
 
-        //CHECK_EQ(std::strcmp(DeleteFileW_custom_fake_arg0_val.c_str(), "AC"), 0) ;
+        CHECK_EQ(std::strncmp(DeleteFileW_custom_fake_arg0_val.c_str(), "A\0C", 2), 0) ;
     }
 }
 

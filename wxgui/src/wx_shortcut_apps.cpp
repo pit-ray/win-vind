@@ -168,7 +168,7 @@ namespace wxGUI
         pimpl->def_btn = new wxButton(
                 this, ExappsEvt::DEFAULT, trans("buttons/default"),
                 wxDefaultPosition, wxSize(-1, -1)) ;
-        def_sizer->Add(pimpl->def_btn, 0, wxEXPAND | wxALL, BORDER) ;
+        def_sizer->Add(pimpl->def_btn, 0, static_cast<int>(wxEXPAND) | static_cast<int>(wxALL), BORDER) ;
         exapps_sizer->Add(def_sizer, 0, wxEXPAND | wxALL, BORDER) ;
 
         SetSizerAndFit(exapps_sizer) ;

@@ -4,6 +4,18 @@
 
 #include "fakes/util_fake_string.hpp"
 
+namespace vind
+{
+    namespace util {
+        bool is_existed_dir(const std::string&) {
+            return true ;
+        }
+
+        void create_directory(const std::string&) {
+        }
+    }
+}
+
 namespace
 {
     using namespace vind::util ;

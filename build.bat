@@ -103,7 +103,7 @@
     cd debug
     ctest
     cd ..
-    coveralls --include core --repo_token "%4" --verbose --gcov-options '\-lp'
+    coveralls --include core/util --include core/time --include core/coreio --include core/key --include core/io --repo_token "%4" --verbose --gcov-options '\-lp'
 
     @goto exit
 

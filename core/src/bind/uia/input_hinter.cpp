@@ -55,7 +55,7 @@ namespace vind
                 }
 
                 if(seq_idx == hints[i].size()) {
-                    return i ;
+                    return static_cast<long>(i) ;
                 }
             }
             return -1 ;

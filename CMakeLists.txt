@@ -233,9 +233,4 @@ include(CPack)
 # Test ------------
 enable_testing()
 add_subdirectory(test)
-add_test(
-    NAME core-test
-    COMMAND $<TARGET_FILE:core-test>
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
 set(CMAKE_CTEST_ARGUMENTS "${CMAKE_CTEST_ARGUMENTS} --verbose --no-label-summary --parallel ${PROC_N}")

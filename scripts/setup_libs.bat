@@ -10,9 +10,21 @@
     exit
 )
 
-@echo The number of processors is %NUMBER_OF_PROCESSORS%.
+@if exist libs (
+    @if "%3" == "-update" (
+        @goto start_setup
+    )
+    @echo.
+    @echo The needed libraries are already installed. If you want to re-install, pass -update as the third argument.
+    @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
+    @echo.
+    exit
+)
 
+:start_setup
 @chcp 65001
+
+@echo The number of processors is %NUMBER_OF_PROCESSORS%.
 
 @set LIBS_DIR=libs
 @if not exist %LIBS_DIR% (

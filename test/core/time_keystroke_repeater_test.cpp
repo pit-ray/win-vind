@@ -9,7 +9,7 @@ using namespace vind ;
 
 TEST_CASE("(KeyStrokeRepeater::global) Increases an inputted velocity with a constant acceleration base") {
     float v = 0.0001f ;
-    for(int tms = 0 ; tms < 1000 ; tms ++) {
+    for(float tms = 0.0f ; tms < 1000.0f ; tms ++) {
         auto after = const_accelerate(v, tms) ;
         CHECK_GE(after, v) ; // increased from previous velocity (after >= v)
         v = after ; //update

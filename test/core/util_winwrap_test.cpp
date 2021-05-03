@@ -4,8 +4,6 @@
 
 #include "fakes/util_fake_string.hpp"
 
-#include <fff.h>
-
 #include "util/winwrap.cpp"
 
 #include <processthreadsapi.h>
@@ -13,22 +11,27 @@
 #include <stdexcept>
 #include <utility>
 
-FAKE_VALUE_FUNC(BOOL, PeekMessageW, LPMSG, HWND, UINT, UINT, UINT) ;
-FAKE_VALUE_FUNC(BOOL, TranslateMessage, const MSG*) ;
-FAKE_VALUE_FUNC(LRESULT, DispatchMessageW, const MSG*) ;
-FAKE_VALUE_FUNC(BOOL, InvalidateRect, HWND, const RECT*, BOOL) ;
-FAKE_VALUE_FUNC(DWORD, GetFileAttributesW, const wchar_t*) ;
-FAKE_VALUE_FUNC(BOOL, CreateDirectoryW, const wchar_t*, LPSECURITY_ATTRIBUTES) ;
-FAKE_VALUE_FUNC(BOOL, CopyFileW, const wchar_t*, const wchar_t*, BOOL) ;
-FAKE_VALUE_FUNC(BOOL, CreateProcessW, \
-        const wchar_t*, wchar_t*, \
-        LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, \
-        BOOL, DWORD, LPVOID, const wchar_t*, \
-        STARTUPINFOW*, PROCESS_INFORMATION*) ;
 
 // define stub ------------------------------------------
 namespace
 {
+#include <fff.h>
+
+    DEFINE_FFF_GLOBALS ;
+
+    FAKE_VALUE_FUNC(BOOL, PeekMessageW, LPMSG, HWND, UINT, UINT, UINT) ;
+    FAKE_VALUE_FUNC(BOOL, TranslateMessage, const MSG*) ;
+    FAKE_VALUE_FUNC(LRESULT, DispatchMessageW, const MSG*) ;
+    FAKE_VALUE_FUNC(BOOL, InvalidateRect, HWND, const RECT*, BOOL) ;
+    FAKE_VALUE_FUNC(DWORD, GetFileAttributesW, const wchar_t*) ;
+    FAKE_VALUE_FUNC(BOOL, CreateDirectoryW, const wchar_t*, LPSECURITY_ATTRIBUTES) ;
+    FAKE_VALUE_FUNC(BOOL, CopyFileW, const wchar_t*, const wchar_t*, BOOL) ;
+    FAKE_VALUE_FUNC(BOOL, CreateProcessW, \
+            const wchar_t*, wchar_t*, \
+            LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, \
+            BOOL, DWORD, LPVOID, const wchar_t*, \
+            STARTUPINFOW*, PROCESS_INFORMATION*) ;
+
     using namespace vind::util ;
 
     BOOL PeekMessageW_custom_fake(LPMSG msg, HWND, UINT, UINT, UINT) {

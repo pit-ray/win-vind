@@ -1,5 +1,9 @@
+#ifndef _UTIL_FAKE_STRING_HPP
+#define _UTIL_FAKE_STRING_HPP
+
 #include "util/string.hpp"
 #include <cstring>
+
 #include <cwchar>
 #include <string>
 
@@ -29,3 +33,4 @@ namespace
         return truestr ;
     }
 }
+#endif

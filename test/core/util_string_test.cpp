@@ -1,18 +1,20 @@
 #include <doctest.h>
 
 #include "disable_gcc_warning.hpp"
-#include <fff.h>
 
 #include <cstring>
 #include <string>
 
 #include "util/string.cpp"
 
-FAKE_VALUE_FUNC(int, MultiByteToWideChar, UINT, DWORD, const char*, int, LPWSTR, int) ;
-FAKE_VALUE_FUNC(int, WideCharToMultiByte, UINT, DWORD, const wchar_t*, int, LPSTR, int, LPCCH, LPBOOL) ;
-
 namespace
 {
+#include <fff.h>
+
+    DEFINE_FFF_GLOBALS ;
+    FAKE_VALUE_FUNC(int, MultiByteToWideChar, UINT, DWORD, const char*, int, LPWSTR, int) ;
+    FAKE_VALUE_FUNC(int, WideCharToMultiByte, UINT, DWORD, const wchar_t*, int, LPSTR, int, LPCCH, LPBOOL) ;
+
     std::wstring MultiByteToWideChar_dst{} ;
     int MultiByteToWideChar_custom_fake(UINT, DWORD, const char*, int, LPWSTR dst, int) {
         if(dst != NULL) {

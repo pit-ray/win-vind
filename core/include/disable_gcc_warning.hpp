@@ -2,6 +2,8 @@
 #pragma warning(disable : 4996)
 #pragma warning(disable : 5054)
 #pragma warning(disable : 4244)
+#pragma warning(disable : 4702)
+#pragma warning(disable : 4273)
 
 #else
 #pragma warning(disable : 4068)

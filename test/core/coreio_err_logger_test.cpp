@@ -21,6 +21,10 @@ namespace
     using namespace vind::util ;
 }
 
+#include "disable_gcc_warning.hpp"
+
+#include <string>
+
 #include "coreio/err_logger.cpp"
 
 namespace
@@ -28,17 +32,17 @@ namespace
     using namespace vind::errlogger ;
 }
 
-#include "disable_gcc_warning.hpp"
-#include <fff.h>
-#include <string>
-
-FAKE_VALUE_FUNC(HANDLE, FindFirstFileW, const wchar_t*, WIN32_FIND_DATAW*) ;
-FAKE_VALUE_FUNC(BOOL, FindNextFileW, HANDLE, WIN32_FIND_DATAW*) ;
-FAKE_VALUE_FUNC(BOOL, FindClose, HANDLE) ;
-FAKE_VALUE_FUNC(BOOL, DeleteFileW, const wchar_t*) ;
-
 namespace
 {
+#include <fff.h>
+
+    DEFINE_FFF_GLOBALS ;
+
+    FAKE_VALUE_FUNC(HANDLE, FindFirstFileW, const wchar_t*, WIN32_FIND_DATAW*) ;
+    FAKE_VALUE_FUNC(BOOL, FindNextFileW, HANDLE, WIN32_FIND_DATAW*) ;
+    FAKE_VALUE_FUNC(BOOL, FindClose, HANDLE) ;
+    FAKE_VALUE_FUNC(BOOL, DeleteFileW, const wchar_t*) ;
+
     int i = 0 ;
     auto VALID_HANDLE = reinterpret_cast<HANDLE>(&i) ;
 

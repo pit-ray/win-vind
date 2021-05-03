@@ -10,118 +10,43 @@
     exit
 )
 
-@if exist libs (
-    @if "%3" == "-update" (
-        @goto start_setup
-    )
-    @echo.
-    @echo The needed libraries are already installed. If you want to re-install, pass -update as the third argument.
-    @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
-    @echo.
-    exit
-)
-
-:start_setup
 @chcp 65001
 
 @echo The number of processors is %NUMBER_OF_PROCESSORS%.
 
-@set LIBS_DIR=libs
-@if not exist %LIBS_DIR% (
-    @mkdir %LIBS_DIR%
+@if not exist libs (
+    @mkdir libs
 )
-cd %LIBS_DIR%
 
 @echo Setup nlohmann/json ----------------------------------------------------------------------
-@if not exist nlohmann (
-    mkdir nlohmann
+@if exist libs/nlohmann (
+    @if "%3" == "-update" (
+        @goto start_setup_nlohmann_json
+    )
+    @echo.
+    @echo nlohmann/json is already installed. If you want to re-install, pass -update as the third argument.
+    @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
+    @echo.
+    @goto end_of_nlohmann_json
 )
-cd nlohmann
-@if not exist json.hpp (
-    @echo Downloading now from GitHub...
-    powershell Invoke-WebRequest https://github.com/nlohmann/json/releases/download/v3.9.1/json.hpp -OutFile json.hpp -UseBasicParsing
-)
-cd ..
+:start_setup_nlohmann_json
+call "scripts/install_nlohmann_json.bat" %1 %2
+:end_of_nlohmann_json
 
 @echo.
 @echo Setup wxWidgets --------------------------------------------------------------------------
 @echo.
-@rem @set wxWidgets_VERSION=3.0.5
-set wxWidgets_VERSION=3.1.4-rc1
 
-@if not exist wxWidgets (
-    git clone https://github.com/wxWidgets/wxWidgets.git -b v%wxWidgets_VERSION% -j %NUMBER_OF_PROCESSORS% --depth=1
-    cd wxWidgets
-    git submodule update --init -j %NUMBER_OF_PROCESSORS%
-    cd ..
-) 
-cd wxWidgets/build/msw
-
-@if "%1" == "-msvc" (
-    @if "%2" == "" (
-        @set BUILD_32=TRUE
-        @set BUILD_64=TRUE
-    ) else (
-        @if "%2" == "32" (
-            @set BUILD_32=TRUE
-
-        ) else (
-            @set BUILD_64=TRUE
-        )
+@if exist libs/wxWidgets (
+    @if "%3" == "-update" (
+        @goto start_setup_wxWidgets
     )
-
-    @if exist ../../lib/vc* (
-        powershell rm -r "..\\..\\lib\\vc*"
-    )
-    @if exist vc_mswu* (
-        powershell rm -r vc_mswu*
-    )
-
-    @if defined BUILD_64 (
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-        nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X64 RUNTIME_LIBS=static
-    )
-
-    @if defined BUILD_32 (
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-        nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X86 RUNTIME_LIBS=static
-    )
-
-    @if exist vc_mswu* (
-        powershell rm -r vc_mswu*
-    )
-) else (
-    @if exist ../../lib/gcc* (
-       powershell rm -r "..\\..\\lib\\gcc*"
-    )
-    @if exist gcc_mswu (
-        powershell rm -r gcc_mswu
-    )
-
-    @echo - Build for 64bit -------------------------------------------------------------
-    mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc setup_h BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00"
-    mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00"
-    @rem powershell mv "..\\..\\lib\\gcc_lib" "..\\..\\lib\\gcc_x64_lib"
-    @rem
-    @if exist gcc_mswu (
-        powershell rm -r gcc_mswu
-    )
-
-    @rem @echo - Build for 32bit -------------------------------------------------------------
-    @rem mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc setup_h BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m32 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00""
-    @rem mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m32 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00""
-    @rem powershell rm -r gcc_mswu
-    @if exist gcc_mswu (
-       powershell rm -r gcc_mswu
-    )
+    @echo.
+    @echo wxWidgets is already installed. If you want to re-install, pass -update as the third argument.
+    @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
+    @echo.
+    @goto end_of_wxWidgets
 )
-
-cd ../../../
-cd ..
-
-@rem If you use wxWidgets-3.1.x, it solves linker error.
-if "%1" == "-mingw" (
-    call "scripts/copy_mingw_libs.bat"
-)
-
-@echo done.
+:start_setup_wxWidgets
+call "scripts/install_wxWidgets.bat" %1 %2
+:end_of_wxWidgets

@@ -1,3 +1,10 @@
+@if "%1" == "" (
+    @echo.
+    @echo Error: Please pass your compiler type -mingw or -msvc as the first argument.
+    @echo.
+    exit
+)
+
 @rem @set wxWidgets_VERSION=3.0.5
 set wxWidgets_VERSION=3.1.4-rc1
 

@@ -9,7 +9,7 @@ class Model(object):
 
 states = [
     'Waiting first inputs',
-    'Parse head number',
+    'Parsing head number',
     'Waiting first inputs without parsing number',
     'Waiting inputs',
     'Accepted'
@@ -40,6 +40,11 @@ transitions = [
         'source': get_states['first_wait_wnum'],
         'dest': get_states['wait']
     },
+    {
+        'trigger': 'call accept()',
+        'source': get_states['first_wait_wnum'],
+        'dest': get_states['acc']
+    },
 
     # Initial Waiting
     {
@@ -57,12 +62,22 @@ transitions = [
         'source': get_states['first_wait'],
         'dest': get_states['wait']
     },
+    {
+        'trigger': 'call accept()',
+        'source': get_states['first_wait'],
+        'dest': get_states['acc']
+    },
 
     # Waiting
     {
         'trigger': 'Input',
         'source': get_states['wait'],
         'dest': get_states['wait']
+    },
+    {
+        'trigger': 'call accept()',
+        'source': get_states['wait'],
+        'dest': get_states['acc']
     },
 
     # Accepted
@@ -81,6 +96,11 @@ transitions = [
         'source': get_states['acc'],
         'dest': get_states['first_wait']
     },
+    {
+        'trigger': 'call accept()',
+        'source': get_states['acc'],
+        'dest': get_states['acc']
+    },
 
     # Parse number
     {
@@ -97,7 +117,12 @@ transitions = [
         'trigger': 'Except for numbers',
         'source': get_states['parse_num'],
         'dest': get_states['wait']
-    }
+    },
+    {
+        'trigger': 'call accept()',
+        'source': get_states['parse_num'],
+        'dest': get_states['acc']
+    },
 ]
 
 model = Model()

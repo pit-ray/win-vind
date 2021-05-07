@@ -25,7 +25,7 @@ namespace
         WAITING             = 0b0000'0001'0000'0000,
         WAITING_IN_NUM      = 0b0000'1001'0000'0000,
         REJECT              = 0b0000'0010'0000'0000,
-        REJECT_WITH_PARTSET = 0b0000'1010'0000'0000,
+        REJECT_WITH_SUBSET  = 0b0000'1010'0000'0000,
         ACCEPT_IN_NUM       = 0b0000'0100'0000'0000,
         ACCEPT              = 0b0000'1100'0000'0000,
         ACCEPT_IN_ANY       = 0b0001'0100'0000'0000,
@@ -69,7 +69,7 @@ namespace
     enum LogStatus : LogStatusRawType {
         //Status
         ALL_FALSE        = 0b0000'0000'0000'0000,
-        HAS_KEYSET_PART  = 0b0000'0001'0000'0000,
+        HAS_KEYSUBSET    = 0b0000'0001'0000'0000,
         ACCEPTED         = 0b0000'0010'0000'0000,
         HAS_KEYSET       = 0b0000'0100'0000'0000,
         ACCEPTED_OPTNUM  = 0b0000'1000'0000'0000,
@@ -187,7 +187,7 @@ namespace vind
                         }
                     }
                     else {
-                        logstatus |= LogStatus::HAS_KEYSET_PART ;
+                        logstatus |= LogStatus::HAS_KEYSUBSET ;
                     }
 
                     if(most_matched_num < matched_num) {
@@ -241,8 +241,8 @@ namespace vind
             else if(status & LogStatus::HAS_KEYSET) {
                 state_hist_.push(num | ParserState::WAITING) ;
             }
-            else if(status & LogStatus::HAS_KEYSET_PART) {
-                state_hist_.push(num | ParserState::REJECT_WITH_PARTSET) ;
+            else if(status & LogStatus::HAS_KEYSUBSET) {
+                state_hist_.push(num | ParserState::REJECT_WITH_SUBSET) ;
             }
             else {
                 state_hist_.push(ParserState::REJECT) ;
@@ -260,7 +260,7 @@ namespace vind
             return res ;
         }
 
-        unsigned char do_reject_with_keyset_part(const KeyLog& UNUSED(log)) {
+        unsigned char do_reject_with_keysubset(const KeyLog& UNUSED(log)) {
             state_hist_.push(ParserState::REJECT) ;
             return 0 ;
         }
@@ -420,8 +420,8 @@ namespace vind
             case ParserState::REJECT:
                 return pimpl->do_reject(log) ;
 
-            case ParserState::REJECT_WITH_PARTSET:
-                return pimpl->do_reject_with_keyset_part(log) ;
+            case ParserState::REJECT_WITH_SUBSET:
+                return pimpl->do_reject_with_keysubset(log) ;
 
             case ParserState::ACCEPT_IN_NUM:
                 return pimpl->do_accept_in_num(log) ;
@@ -476,7 +476,7 @@ namespace vind
     }
     bool LoggerParser::is_rejected_with_ready() const noexcept {
         if(pimpl->state_hist_.empty()) return false ;
-        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT_WITH_PARTSET ;
+        return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT_WITH_SUBSET ;
     }
 
     bool LoggerParser::is_waiting() const noexcept {

@@ -42,7 +42,8 @@ namespace vind
                 return ;
             }
             if(NTYPE_HEAD_NUM(result)) {
-                VirtualCmdLine::cout(std::to_string(g_ntlgr.get_head_num())) ;
+                VirtualCmdLine::cout(
+                        std::to_string(g_ntlgr.get_head_num())) ;
                 return ;
             }
 
@@ -54,7 +55,8 @@ namespace vind
             }
 
             auto actid = g_active_func ? g_active_func->id() : 0 ;
-            auto parser = g_funcfinder.find_parser_with_transition(g_ntlgr.latest(), actid) ;
+            auto parser = g_funcfinder.find_parser_with_transition(
+                    g_ntlgr.latest(), actid) ;
             g_active_func = nullptr ;
 
             if(parser) {
@@ -68,6 +70,8 @@ namespace vind
                     g_funcfinder.reset_parser_states() ;
                 }
                 else if(parser->is_rejected_with_ready()) {
+                    // It did not accepted, but only matched subsets.
+                    // For example, bindings <ctrl> in <ctrl-f>
                     g_funcfinder.backward_parser_states(1) ;
                     g_ntlgr.remove_from_back(1) ;
                 }

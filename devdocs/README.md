@@ -71,8 +71,6 @@ while(update_background()) {
 <br>  
 
 ## LoggerParser
-<img src="image/logger_parser.png">  
-
 LoggerParser parses the KeyLogger to validate if its sequences satisfy bindings according to the state transition diagram shown above. Internally, each has an associated BindedFunc and a CommandList for comparison as a shared pointer.  
 
 #### BindedFunc

@@ -1,6 +1,6 @@
 {
     "initial_mode": {
-        "value": "gui_normal",
+        "value": "gui_insert",
         "en": "Initial Mode",
         "ja": "初期モード",
         "choices": [

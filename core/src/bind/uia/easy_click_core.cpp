@@ -58,6 +58,7 @@ namespace vind
         while(ft.wait_for(50ms) == std::future_status::timeout) {
             try {
                 if(pimpl->input_hinter_.drawable_hints_num() == pimpl->hints_.size()) {
+                    // Hints were not matched yet, so must draw all hints.
                     pimpl->display_hinter_.paint_all_hints(
                             pimpl->positions_, pimpl->strhints_) ;
                 }

@@ -37,7 +37,10 @@ namespace vind
 
         virtual bool is_long_pressing() const noexcept ;
 
+        // If the sequence is rejected, you must call it.
         virtual void clear() noexcept override ;
+
+        // If the sequence is accepted, you must call it.
         virtual void accept() noexcept ;
     } ;
 }

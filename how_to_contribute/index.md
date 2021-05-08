@@ -97,11 +97,9 @@ $ cd ..
 
 ## Information for Development  
 
-<p align="center"><img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/keyevt_overview.jpg?raw=true" width=600/></p>  
+**Please read its architecture at <a href="https://github.com/pit-ray/win-vind/blob/master/devdocs/README.md">devdocs</a>.**  
 
-**Please read its architecture at <a href="https://github.com/pit-ray/win-vind/blob/master/architecture.md">architecture.md</a>.**  
-
-All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_with_creator.hpp">**BindedFuncWithCreator**</a> to have a factory function. In addition, you can use some utilities in <a href="https://github.com/pit-ray/win-vind/tree/master/core/include/common">**core/include/common**</a> for developments. 
+All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
 
 ### New KeyBinding Example  
 - Make a source file and a header file into **core/include/dev_bindings/** and **core/src/dev_bindings/**.

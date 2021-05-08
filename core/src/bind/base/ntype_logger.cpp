@@ -234,6 +234,10 @@ namespace vind
         return pimpl->state_ & LoggerState::LONG_PRESSING ;
     }
 
+    void NTypeLogger::reject() noexcept {
+        clear() ;
+    }
+
     void NTypeLogger::clear() noexcept {
         pimpl->head_num_ =  0 ;
         pimpl->state_ = LoggerState::INITIAL ;

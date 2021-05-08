@@ -80,7 +80,7 @@ namespace vind
                 if(g_ntlgr.get_head_num() > 1) {
                     VirtualCmdLine::refresh() ;
                 }
-                g_ntlgr.clear() ;
+                g_ntlgr.reject() ;
                 g_funcfinder.reset_parser_states() ;
             }
         }

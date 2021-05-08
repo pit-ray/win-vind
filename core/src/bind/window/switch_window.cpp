@@ -122,7 +122,7 @@ namespace vind
                         continue ;
                     }
                     else {
-                        lgr.clear() ;
+                        lgr.reject() ;
                         pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
                     }
                 }
@@ -132,7 +132,7 @@ namespace vind
                 }
             }
             else {
-                lgr.clear() ;
+                lgr.reject() ;
                 pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
             }
         }

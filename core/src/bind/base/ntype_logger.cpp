@@ -152,7 +152,7 @@ namespace vind
             return 0 ;
         }
 
-        if(!(latest() - log).empty()) {
+        if(latest() != log) {
             clear() ;
             pimpl->state_ = LoggerState::INITIAL_WAITING ;
             return do_initial_waiting_state(log) ; //Epsilon Transition

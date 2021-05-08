@@ -35,6 +35,8 @@ namespace vind
         void enable_non_character(KeyCode keycode) ;
         void disable_non_character(KeyCode keycode) ;
 
+        virtual void sync_state_with(const CharLogger& rhs) ;
+
         virtual int logging_state() override ;
         virtual std::string to_str() const ;
     } ;

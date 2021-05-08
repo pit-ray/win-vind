@@ -90,7 +90,7 @@ transitions = [
     {
         'trigger': 'Input',
         'source': states[4],
-        'dest': states[4]
+        'dest': states[2]
     },
 
     # Accepted in <num>

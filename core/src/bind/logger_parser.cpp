@@ -271,8 +271,8 @@ namespace vind
         }
 
         unsigned char do_accept(const KeyLog& UNUSED(log)) {
-            state_hist_.push(state_hist_.top()) ;
-            return state_hist_.top() & KEYSET_NUM_MASK ;
+            state_hist_.push(ParserState::REJECT) ;
+            return 0 ;
         }
 
         unsigned char do_accept_in_any(const KeyLog& UNUSED(log)) {

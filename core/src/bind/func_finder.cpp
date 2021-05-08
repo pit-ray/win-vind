@@ -205,7 +205,7 @@ namespace vind
             std::size_t low_priority_func_id,
             mode::Mode mode) {
         LoggerParser::SPtr ptr = nullptr ;
-        LoggerParser::SPtr low_priority_ptr = nullptr ;
+        LoggerParser::SPtr low_priority_parser = nullptr ;
         unsigned char mostnum = 0 ;
 
         for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
@@ -217,7 +217,7 @@ namespace vind
 
             if(mostnum < num) {
                 if(parser->get_func()->id() == low_priority_func_id) {
-                    low_priority_ptr = parser ;
+                    low_priority_parser = parser ;
                 }
                 else {
                     ptr = parser ;
@@ -237,8 +237,8 @@ namespace vind
         if(ptr) {
             return ptr ;
         }
-        if(low_priority_ptr && low_priority_ptr->is_accepted()) {
-            return low_priority_ptr ;
+        if(low_priority_parser && low_priority_parser->is_accepted()) {
+            return low_priority_parser ;
         }
         return nullptr ;
     }

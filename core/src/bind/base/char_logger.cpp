@@ -5,6 +5,8 @@
 #include "key/keycodecvt.hpp"
 #include "time/keystroke_repeater.hpp"
 
+#include <iostream>
+
 namespace 
 {
     using namespace vind ;
@@ -107,6 +109,13 @@ namespace vind
         pimpl->non_chars_.erase(keycode) ;
     }
 
+    void CharLogger::sync_state_with(const CharLogger& rhs) {
+        if(rhs.pimpl) {
+            pimpl->prelog_ = rhs.pimpl->prelog_ ;
+            pimpl->ksr_    = rhs.pimpl->ksr_ ;
+        }
+    }
+
     int CharLogger::logging_state() {
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
 
@@ -117,7 +126,8 @@ namespace vind
             auto diff = log - pimpl->prelog_ ;
             pimpl->prelog_ = log ;
 
-            if(!pimpl->is_including_enabled_chars(log) && !is_including_ascii(diff)) {
+            if(!pimpl->is_including_enabled_chars(log) \
+                    && !is_including_ascii(diff)) {
                 return 0 ;
             }
 
@@ -136,7 +146,8 @@ namespace vind
             return static_cast<int>(latest().size()) ;
         }
         else { //long pressing
-            if(!pimpl->is_including_enabled_chars(log) && !is_including_ascii(log)) {
+            if(!pimpl->is_including_enabled_chars(log) \
+                    && !is_including_ascii(log)) {
                 return 0 ;
             }
 
@@ -145,9 +156,7 @@ namespace vind
                 logging(std::move(log)) ;
                 return static_cast<int>(latest().size()) ;
             }
-            else {
-                return 0 ;
-            }
+            return 0 ;
         }
     }
 

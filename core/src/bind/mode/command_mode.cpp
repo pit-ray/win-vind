@@ -19,6 +19,7 @@
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 #include "opt/virtual_cmd_line.hpp"
+#include "util/container.hpp"
 #include "util/def.hpp"
 
 namespace
@@ -38,7 +39,7 @@ namespace
         using SPtr = std::shared_ptr<CmdPoint> ;
     } ;
 
-    using CmdHistory = std::deque<CmdPoint::SPtr> ;
+    using CmdHistory = std::vector<CmdPoint::SPtr> ;
 
     class CmdHist
     {
@@ -80,8 +81,12 @@ namespace
         void generate_new_hist() {
             if(idx == hist.size() - 1) {
                 //recently logger
-                while(hist.size() >= iparams::get_z("cmd_max_history_num")) {
-                    hist.pop_front() ;
+
+                auto over_num =
+                    static_cast<long>(hist.size()) - iparams::get_l("cmd_max_history_num") ;
+
+                if(over_num > 0) {
+                    util::remove_from_top(hist, over_num) ;
                 }
 
                 idx = hist.size() ; //update to index of recently history
@@ -166,7 +171,6 @@ namespace vind
             //decision of input
             if(lgr.latest().is_containing(KEYCODE_ENTER)) {
                 lgr.remove_from_back(1) ; //remove log including KEYCODE_ENTER
-                keyabsorber::release_virtually(KEYCODE_ENTER) ;
                 VirtualCmdLine::reset() ;
 
                 if(p_cmdp->func) {
@@ -177,6 +181,8 @@ namespace vind
                 }
 
                 pimpl->ch_.generate_new_hist() ;
+                auto& new_lgr = pimpl->ch_.get_hist_point()->logger ;
+                new_lgr.sync_state_with(lgr) ;
 
                 break ;
             }
@@ -206,23 +212,29 @@ namespace vind
 
             //command history operation
             if(lgr.latest().is_containing(KEYCODE_UP)) {
-                keyabsorber::release_virtually(KEYCODE_UP) ; //prohibit duplicate logging
                 lgr.remove_from_back(1) ; //to remove a log including KEYCODE_UP
                 if(pimpl->ch_.backward()) {
                     VirtualCmdLine::refresh() ;
-                    pimpl->funcfinder_.transition_parser_states_in_batch(
-                            pimpl->ch_.get_hist_point()->logger) ;
+
+                    auto& b_lgr = pimpl->ch_.get_hist_point()->logger ;
+                    b_lgr.sync_state_with(lgr) ;
+
+                    pimpl->funcfinder_.reset_parser_states() ;
+                    pimpl->funcfinder_.transition_parser_states_in_batch(b_lgr) ;
                 }
                 continue ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_DOWN)) {
-                keyabsorber::release_virtually(KEYCODE_DOWN) ; //prohibit duplicate logging
                 lgr.remove_from_back(1) ; //to remove a log including KEYCODE_DOWN
                 if(pimpl->ch_.forward()) {
                     VirtualCmdLine::refresh() ;
-                    pimpl->funcfinder_.transition_parser_states_in_batch(
-                            pimpl->ch_.get_hist_point()->logger) ;
+
+                    auto& f_lgr = pimpl->ch_.get_hist_point()->logger ;
+                    f_lgr.sync_state_with(lgr) ;
+
+                    pimpl->funcfinder_.reset_parser_states() ;
+                    pimpl->funcfinder_.transition_parser_states_in_batch(f_lgr) ;
                 }
                 continue ;
             }

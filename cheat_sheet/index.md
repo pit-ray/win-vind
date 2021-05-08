@@ -55,7 +55,7 @@ has_children: true
 |`0`|-|Jump Cursor to Left|
 |`f`|-|<a href="https://pit-ray.github.io/win-vind/cheat_sheet/mouse_ctrl/#jump-cursor-by-keyboard-mapping">Jump Cursor by Keyboard Mapping</a>|
 |`<C-y>`|-|Scroll Up|
-|`<C-e>`|-|Scroll Down|j
+|`<C-e>`|-|Scroll Down|
 
 **Virtual Desktop Control**  
   

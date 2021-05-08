@@ -88,9 +88,9 @@ transitions = [
 
     # Accepted
     {
-        'trigger': 'Input',
+        'trigger': 'Input (ε-transitions)',
         'source': states[4],
-        'dest': states[2]
+        'dest': states[0]
     },
 
     # Accepted in <num>

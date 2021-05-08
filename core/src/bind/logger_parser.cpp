@@ -270,9 +270,9 @@ namespace vind
             return 0 ;
         }
 
-        unsigned char do_accept(const KeyLog& UNUSED(log)) {
-            state_hist_.push(ParserState::REJECT) ;
-            return 0 ;
+        unsigned char do_accept(const KeyLog& log) {
+            state_hist_.push(ParserState::WAITING) ;
+            return do_waiting(log) ; // Epsilon Transition
         }
 
         unsigned char do_accept_in_any(const KeyLog& UNUSED(log)) {
@@ -295,7 +295,7 @@ namespace vind
                 state_hist_.push(state_hist_.top() + 1) ; //count <num>'s keycode
                 return state_hist_.top() & KEYSET_NUM_MASK ;
             }
-            return do_waiting(log) ;
+            return do_waiting(log) ; // Epsilon Transition
         }
     } ;
 

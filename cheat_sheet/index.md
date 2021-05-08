@@ -10,6 +10,7 @@ has_children: true
 ## Default Key Config  
 
 **Window Control**  
+
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
 |`<C-w>s`|`:switch`|Switch windows|
@@ -38,6 +39,7 @@ has_children: true
 
 
 **Mouse Control**  
+  
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
 |`o`|-|Left Click|
@@ -56,12 +58,14 @@ has_children: true
 |`<C-e>`|-|Scroll Down|j
 
 **Virtual Desktop Control**  
+  
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
 |`<C-v>h`|-|Switch Virtual Desktop to Left|
 |`<C-v>l`|-|Switch Virtual Desktop to Right|
 
-**Mode Control** 
+**Mode Control**  
+
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
 |`<Esc-Left>`|-|Change to GUI Normal|
@@ -73,12 +77,14 @@ has_children: true
 |`V`|-|Change to Editor Line Visual|
 
 **Process Launcher**   
+  
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
 |-|`:sh`, `:term`|Start Command Prompt|
 |-|`:!<any>`|Start Any Application|
 
 **Utilities**  
+  
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
 |-|`:w`|Save Opened File|
@@ -92,7 +98,8 @@ has_children: true
 |`dd`|-|Cut|
 |`x`|-|Delete|
 
-**Others**   
+**Others**    
+  
 |Binding|Command|Meanings|
 |:---:|:---:|:---|
 |-|`:set`|Show Config Window of win-vind|

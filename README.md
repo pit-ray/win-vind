@@ -32,6 +32,20 @@
     </tr>
 </table>
 
+## [Notice] v3.3.0-preview Avaliable Now!!
+### 3.3.0 (Latest Preview Version)  
+Date: 2021/5/9  
+
+#### 32bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_32bit.exe.zip">setup_win-vind_3.3.0_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/win-vind_3.3.0_32bit.zip">win-vind_3.3.0_32bit.zip</a>  
+
+#### 64bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_64bit.exe.zip">setup_win-vind_3.3.0_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/win-vind_3.3.0_64bit.zip">win-vind_3.3.0_64bit.zip</a> 
+  
+  
+
 ## Description
 **win-vind** provides the lightweight hybrid UI system of CUI and GUI. Its core idea is to add a new mode layer to operate GUI when you want to transition from Vim to other windows for a short while.  
 
@@ -40,19 +54,13 @@ There are five main features.
 #### 1. GUI Operation like Vim  
 You can operate windows, a mouse cursor , virtual desktops, GUI-objects with key-bindings like Vim.  
 
-**EasyClick Demo (default: `FF`, `Fa`, `Fm`, `Fh`)**    
-It works well in Win32 or UWP applications.  
-
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true" title="EasyClick-demo" width=600>&nbsp;&nbsp;<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/on_uwp.jpg?raw=true" height=300>    
-
-**Window Control Demo**  
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/window_ctrl_demo_min.gif?raw=true" title="WindowControl-demo" width=600 >
 
 #### 2. Vim emulation everywhere  
-It enables to emulate Vim when using general text editors, for instance, `notepad.exe` or `Microsoft Office Word`.  
+It enables to emulate Vim when using general text editors (e.g.`notepad.exe`, `Microsoft Office Word`).  
 
 **Demo**  
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/edi-mode-demo.gif?raw=true" width=400/>&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/msword-demo.gif?raw=true" width=400/>   
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/msword-demo.gif?raw=true" width=400/>   
 
 
 #### 3. Mode Management like Vim  
@@ -106,7 +114,7 @@ Date: 2021/4/2
 ## Related Pages
 - <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
 - <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
-  
+
 
 ## Usage  
 Please refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">CheatSheet</a> about the default bindings.  
@@ -137,7 +145,7 @@ If you have already installed MinGW-w64 or Visual Studio 2019, all you need is t
 
 **1.** Install needed libraries into a root directory of win-vind.  
   ```bash  
-  $ ./setup_libs.bat [-mingw/-msvc] [32/64]
+  $ ./scripts/setup_libs.bat [-mingw/-msvc] [32/64]
   ```  
 **2.** Build its project.  
   ```bash
@@ -153,31 +161,18 @@ It is the difference between master and latest release.
 
 |State|Description|Type|Priority|
 |:---:|:---|:---:|:---:|
-|✅|Support multi-thread drawing in EasyClick|Improve|High|
-|✅|Rotate windows without arrangement|Feature|High|
-|✅|support safe canceling of command-repeating with `<ESC>` (e.g. 10000h)|Feature|High|
 |☐|Support to force CapsLock as another keys. (#20)|Feature|High|
 |☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
-|☐|Add test codes|Improve|High|
-|✅|Refactor key matching system|Architecture|High|
-|✅|Refactor directory structure.|Improve|High|
-|✅|Fix the problem refering to the screen metrices of the primary monitor in `jump_top`.|Bug|High|
-|✅|Add global namespace|Improve|High|
-|✅|Change KeyLogger from STL to packaged classes.|Architecture|High|
-|✅|Prohibit repeating key-stroke in EasyClick|Bug|Mid|
-|☐|Use a real command line system in Virtual Command Line.|Feature|Mid|
-|☐|Capture coordinates of the key mapping from images in order to generate KMP files.|Feature|Mid|
-|☐|Bug reporting feature|Feature|Mid|
-|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Mid|
 |☐|Add a reference option in a command line.|Feature|Mid|
+|☐|Capture coordinates of the key mapping from images in order to generate KMP files.|Feature|Mid|
 |☐|Divide GUI and core system.|Architecture|Mid|
-|☐|Update Notification|Feature|Mid|
-|✅|Support multi-monitor in `Exchange windows`|Improve|Mid|
-|✅|Support multi-monitor in `Snap window`|Improve|Mid|
-|✅|Move left-upper point of a window when the height or the width are over in `Resize Window`|Feature|Mid|
-|☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Low|
-|☐|Registration of keybindings by pressing keys.|Feature|Low|
+|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Mid|
+|☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
+|☐|Use a real command line system in Virtual Command Line.|Feature|Mid|
+|☐|Increase the test coverage|Improve|Mid|
+|☐|Bug Reporting feature|Feature|Low|
 |☐|Modern GUI (use WinUI3 or Flutter2?)|Change|Low|
+|☐|Update Notification|Feature|Low|
 
 ## License  
 

@@ -1,3 +1,5 @@
+#ifndef _MSC_VER // MSVC could not solve multiple definition (LNK 2005)
+
 #include <doctest.h>
 
 #include "disable_gcc_warning.hpp"
@@ -13,25 +15,25 @@
 
 
 // define stub ------------------------------------------
-namespace
-{
 #include <fff.h>
 
-    DEFINE_FFF_GLOBALS ;
+DEFINE_FFF_GLOBALS ;
 
-    FAKE_VALUE_FUNC(BOOL, PeekMessageW, LPMSG, HWND, UINT, UINT, UINT) ;
-    FAKE_VALUE_FUNC(BOOL, TranslateMessage, const MSG*) ;
-    FAKE_VALUE_FUNC(LRESULT, DispatchMessageW, const MSG*) ;
-    FAKE_VALUE_FUNC(BOOL, InvalidateRect, HWND, const RECT*, BOOL) ;
-    FAKE_VALUE_FUNC(DWORD, GetFileAttributesW, const wchar_t*) ;
-    FAKE_VALUE_FUNC(BOOL, CreateDirectoryW, const wchar_t*, LPSECURITY_ATTRIBUTES) ;
-    FAKE_VALUE_FUNC(BOOL, CopyFileW, const wchar_t*, const wchar_t*, BOOL) ;
-    FAKE_VALUE_FUNC(BOOL, CreateProcessW, \
-            const wchar_t*, wchar_t*, \
-            LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, \
-            BOOL, DWORD, LPVOID, const wchar_t*, \
-            STARTUPINFOW*, PROCESS_INFORMATION*) ;
+FAKE_VALUE_FUNC(BOOL, PeekMessageW, LPMSG, HWND, UINT, UINT, UINT) ;
+FAKE_VALUE_FUNC(BOOL, TranslateMessage, const MSG*) ;
+FAKE_VALUE_FUNC(LRESULT, DispatchMessageW, const MSG*) ;
+FAKE_VALUE_FUNC(BOOL, InvalidateRect, HWND, const RECT*, BOOL) ;
+FAKE_VALUE_FUNC(DWORD, GetFileAttributesW, const wchar_t*) ;
+FAKE_VALUE_FUNC(BOOL, CreateDirectoryW, const wchar_t*, LPSECURITY_ATTRIBUTES) ;
+FAKE_VALUE_FUNC(BOOL, CopyFileW, const wchar_t*, const wchar_t*, BOOL) ;
+FAKE_VALUE_FUNC(BOOL, CreateProcessW, \
+        const wchar_t*, wchar_t*, \
+        LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, \
+        BOOL, DWORD, LPVOID, const wchar_t*, \
+        STARTUPINFOW*, PROCESS_INFORMATION*) ;
 
+namespace
+{
     using namespace vind::util ;
 
     BOOL PeekMessageW_custom_fake(LPMSG msg, HWND, UINT, UINT, UINT) {
@@ -180,3 +182,5 @@ TEST_CASE("util/winwrap Under Fake Windows API: ") {
 }
 
 #include "enable_gcc_warning.hpp"
+
+#endif // #ifndef _MSC_VER

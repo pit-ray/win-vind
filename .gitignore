@@ -3,13 +3,14 @@
 bin
 build
 cmake_modules
+config
 debug
+debugvs
+is_initialized
 libs
+log
 release
 release_32
 release_64
-log
 temp
-config
 win32gui
-is_initialized

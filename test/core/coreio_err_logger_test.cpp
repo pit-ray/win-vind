@@ -1,8 +1,17 @@
-#include <doctest.h>
+#ifndef _MSC_VER // MSVC could not solve multiple definition (LNK 2005)
 
-#include "fakes/coreio_fake_path.hpp"
+#include "disable_gcc_warning.hpp"
+
+#include <windows.h>
+
+#include <fff.h>
+
+#include <iostream>
+#include <string>
 
 #include "fakes/util_fake_string.hpp"
+
+#include "fakes/coreio_fake_path.hpp"
 
 namespace vind
 {
@@ -15,36 +24,19 @@ namespace vind
         }
     }
 }
+using namespace vind::util ;
+
+DEFINE_FFF_GLOBALS ;
+
+FAKE_VALUE_FUNC(HANDLE, FindFirstFileW, LPCWSTR, LPWIN32_FIND_DATAW) ;
+FAKE_VALUE_FUNC(BOOL, FindNextFileW, HANDLE, WIN32_FIND_DATAW*) ;
+FAKE_VALUE_FUNC(BOOL, FindClose, HANDLE) ;
+FAKE_VALUE_FUNC(BOOL, DeleteFileW, LPCWSTR) ;
 
 namespace
 {
-    using namespace vind::util ;
-}
-
-#include "disable_gcc_warning.hpp"
-
-#include <string>
-
-#include "coreio/err_logger.cpp"
-
-namespace
-{
-    using namespace vind::errlogger ;
-}
-
-namespace
-{
-#include <fff.h>
-
-    DEFINE_FFF_GLOBALS ;
-
-    FAKE_VALUE_FUNC(HANDLE, FindFirstFileW, const wchar_t*, WIN32_FIND_DATAW*) ;
-    FAKE_VALUE_FUNC(BOOL, FindNextFileW, HANDLE, WIN32_FIND_DATAW*) ;
-    FAKE_VALUE_FUNC(BOOL, FindClose, HANDLE) ;
-    FAKE_VALUE_FUNC(BOOL, DeleteFileW, const wchar_t*) ;
-
-    int i = 0 ;
-    auto VALID_HANDLE = reinterpret_cast<HANDLE>(&i) ;
+    long valid_value = 0 ;
+    auto VALID_HANDLE = reinterpret_cast<HANDLE>(&valid_value) ;
 
     //custom fake functions
     std::string FindFirstFileW_custom_fake_arg0_val{} ;
@@ -68,14 +60,20 @@ namespace
     }
 }
 
+#include "coreio/err_logger.cpp"
+
+namespace
+{
+    using namespace vind::errlogger ;
+}
+
+#include <doctest.h>
 
 TEST_CASE("(coreio/errlogger/remove_files_over) Under Fake Windows API: ")  {
     RESET_FAKE(FindFirstFileW) ;
     RESET_FAKE(FindNextFileW) ;
     RESET_FAKE(FindClose) ;
     RESET_FAKE(DeleteFileW) ;
-
-    FFF_RESET_HISTORY() ;
 
     FindFirstFileW_custom_fake_return_val = VALID_HANDLE ;
 
@@ -130,3 +128,5 @@ TEST_CASE("coreio/errlogger: Initialize errlogger under the fake Windows API: ")
 */
 
 #include "enable_gcc_warning.hpp"
+
+#endif // #ifndef _MSC_VER

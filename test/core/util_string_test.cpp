@@ -7,14 +7,16 @@
 
 #include "util/string.cpp"
 
-namespace
-{
+#ifndef _MSC_VER // MSVC could not solve multiple definition (LNK 2005)
 #include <fff.h>
 
-    DEFINE_FFF_GLOBALS ;
-    FAKE_VALUE_FUNC(int, MultiByteToWideChar, UINT, DWORD, const char*, int, LPWSTR, int) ;
-    FAKE_VALUE_FUNC(int, WideCharToMultiByte, UINT, DWORD, const wchar_t*, int, LPSTR, int, LPCCH, LPBOOL) ;
+DEFINE_FFF_GLOBALS ;
 
+FAKE_VALUE_FUNC(int, MultiByteToWideChar, UINT, DWORD, const char*, int, LPWSTR, int) ;
+FAKE_VALUE_FUNC(int, WideCharToMultiByte, UINT, DWORD, const wchar_t*, int, LPSTR, int, LPCCH, LPBOOL) ;
+
+namespace
+{
     std::wstring MultiByteToWideChar_dst{} ;
     int MultiByteToWideChar_custom_fake(UINT, DWORD, const char*, int, LPWSTR dst, int) {
         if(dst != NULL) {
@@ -31,14 +33,17 @@ namespace
         return static_cast<int>(WideCharToMultiByte_dst.size()) ;
     }
 
-    using namespace vind::util ;
 }
+#endif // _MSC_VER
 
+using namespace vind::util ;
 
 TEST_CASE("util/string Under Fake Windows API: ") {
+#ifndef _MSC_VER
     RESET_FAKE(MultiByteToWideChar) ;
     RESET_FAKE(WideCharToMultiByte) ;
     FFF_RESET_HISTORY() ;
+#endif
 
     // util::split
     SUBCASE("(util::split) delimiter is longer than the source string") {
@@ -101,6 +106,7 @@ TEST_CASE("util/string Under Fake Windows API: ") {
     }
 
 
+#ifndef _MSC_VER
     // util::s_to_ws
     SUBCASE("(util::s_to_ws) The string is empty") {
         int returns[] = {10, 10} ;
@@ -163,6 +169,7 @@ TEST_CASE("util/string Under Fake Windows API: ") {
         SET_RETURN_SEQ(WideCharToMultiByte, returns, 2) ;
         CHECK_THROWS_AS(ws_to_s(L"Hello"), std::logic_error) ;
     }
+#endif // #ifndef _MSC_VER
 }
 
 #include "enable_gcc_warning.hpp"

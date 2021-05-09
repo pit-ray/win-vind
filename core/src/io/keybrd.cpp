@@ -138,9 +138,10 @@ namespace vind
             using keyabsorber::open_some_ports ;
 
             auto state = keyabsorber::get_pressed_list() ;
-            auto recover_keystate= [&state] {
-                for(auto key : state)
-                    keyabsorber::press_virtually(key) ;
+            auto recover_keystate = [&state] {
+                for(auto key : (state - keyabsorber::get_pressed_list())) {
+                    press_keystate(key) ;
+                }
             } ;
             static INPUT ins[6] = {
                 {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},

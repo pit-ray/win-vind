@@ -349,19 +349,6 @@ It changes the width of the foreground window to half and calls <a href="https:/
 
 <br>  
 
-### Close a current window  
-
-|Details|Status|
-|:---|:---|
-|ID|**close_current_window**|
-|N-Repeat|<span class="no">Not Supported</span>|
-|Default Key|`<C-w>q`, `<C-w>c`|
-|Default Command|`:cl`, `:close`|
-
-Is is the same as **Alt + F4** of shortcuts on Windows.  
-
-<br>  
-
 ### Reload a current window  
 
 |Details|Status|

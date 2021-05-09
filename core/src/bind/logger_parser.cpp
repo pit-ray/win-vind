@@ -276,13 +276,13 @@ namespace vind
         }
 
         unsigned char do_accept_in_any(const KeyLog& UNUSED(log)) {
-            state_hist_.push(state_hist_.top() + 1) ; //count <any>'s keycode
+            state_hist_.push((state_hist_.top() & ParserState::STATE_MASK) + 1) ; //count <any>'s keycode
             return state_hist_.top() & KEYSET_NUM_MASK ;
         }
 
         unsigned char do_accept_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(state_hist_.top() + 1) ; //count <num>'s keycode
+                state_hist_.push((state_hist_.top() & ParserState::STATE_MASK) + 1) ; //count <num>'s keycode
                 return state_hist_.top() & KEYSET_NUM_MASK ;
             }
 
@@ -292,7 +292,7 @@ namespace vind
 
         unsigned char do_waiting_in_num(const KeyLog& log) {
             if(is_containing_num(log)) {
-                state_hist_.push(state_hist_.top() + 1) ; //count <num>'s keycode
+                state_hist_.push((state_hist_.top() & ParserState::STATE_MASK) + 1) ; //count <num>'s keycode
                 return state_hist_.top() & KEYSET_NUM_MASK ;
             }
             return do_waiting(log) ; // Epsilon Transition

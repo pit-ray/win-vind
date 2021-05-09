@@ -34,7 +34,8 @@
 
 ## [Notice] v3.3.0-preview Avaliable Now!!
 ### 3.3.0 (Latest Preview Version)  
-Date: 2021/5/9  
+Release Date:  
+[1] 2021/5/9  
 
 #### 32bit  
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_32bit.exe.zip">setup_win-vind_3.3.0_32bit.exe</a>

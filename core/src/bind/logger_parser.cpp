@@ -286,8 +286,8 @@ namespace vind
                 return state_hist_.top() & KEYSET_NUM_MASK ;
             }
 
-            state_hist_.push(ParserState::REJECT) ;
-            return 0 ;
+            state_hist_.push(ParserState::WAITING) ;
+            return do_waiting(log) ; // Epsilon Transition
         }
 
         unsigned char do_waiting_in_num(const KeyLog& log) {

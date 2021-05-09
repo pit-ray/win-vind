@@ -102,7 +102,7 @@ transitions = [
     {
         'trigger': 'Input others',
         'source': states[5],
-        'dest': states[2]
+        'dest': states[0]
     },
 
     # Accepted in <any>

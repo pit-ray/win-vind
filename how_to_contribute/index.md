@@ -64,12 +64,12 @@ win-vind provides some scripts to prepare the environment for development. If yo
 
 - MinGW-w64 (64 bit only)  
 ```sh
-$ setup_libs.bat -mingw  
+$ ./scripts/setup_libs.bat -mingw  
 ```
 
 - Visual Studio 2019 (Supported 32 bit and 64 bit)
 ```sh
-$ setup_libs.bat -msvc 
+$ ./scripts/setup_libs.bat -msvc 
 ```
 <hr>
 
@@ -99,10 +99,10 @@ $ cd ..
 
 **Please read its architecture at <a href="https://github.com/pit-ray/win-vind/blob/master/devdocs/README.md">devdocs</a>.**  
 
-All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
+All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/base/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
 
 ### New KeyBinding Example  
-- Make a source file and a header file into **core/include/dev_bindings/** and **core/src/dev_bindings/**.
+- Make a source file and a header file into **core/include/bind/dev/** and **core/src/bind/dev/**.
 - Add a path of source file into **core/CMakeLists.txt**.   
 - Define a new derived class (e.g. **MyBinding**).  
 
@@ -162,13 +162,13 @@ namespace vind
 }
 ```
 
-- Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bindings_lists.hpp">**core/include/bindings_lists.hpp**</a>.  
+- Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/src/bind/bindings_lists.cpp">**core/src/bindings_lists.cpp**</a>.  
 
 ```cpp
     MyBinding::create(),
 ```
   
-- Assign commands to **MyBinding** in <a href="https://github.com/pit-ray/win-vind/blob/master/config/bindings.json">**config/bindings.json**</a>.  
+- Assign commands to **MyBinding** in <a href="https://github.com/pit-ray/win-vind/blob/master/default_config/bindings.json">**config/bindings.json**</a>.  
 
 ```json
     {

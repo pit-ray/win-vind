@@ -9,12 +9,14 @@
     <tr>
         <th colspan="2">Code status</th>
         <th colspan="2">Build status</th>
+        <th colspan="2">Test status</th>
     </tr>
     <tr align="center">
         <td>Coverity</td>
         <td>Codacy</td>
         <td>MinGW-w64</td>
         <td>Visual Studio 2019</td>
+        <td>Windows</td>
     </tr>
     <tr>
         <td align="center">
@@ -28,6 +30,9 @@
         </td>
         <td align="center">
             <a href="https://ci.appveyor.com/project/pit-ray/win-vind"><img src="https://ci.appveyor.com/api/projects/status/qoggl832qqbic5f5?svg=true" /></a>  
+        </td>
+        <td align="center">
+            <a href="https://github.com/pit-ray/win-vind/actions/workflows/cmake.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/cmake.yml/badge.svg?branch=master"></a>  
         </td>
     </tr>
 </table>

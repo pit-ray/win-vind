@@ -155,24 +155,7 @@ If you have already installed MinGW-w64 or Visual Studio 2019, all you need is t
 
 If you want to contribute, please visit <a href="https://pit-ray.github.io/win-vind/how_to_contribute/">How to contribute - win-vind</a>.  
 
-## ToDo  
-
-It is the difference between master and latest release.
-
-|State|Description|Type|Priority|
-|:---:|:---|:---:|:---:|
-|☐|Support to force CapsLock as another keys. (#20)|Feature|High|
-|☐|Improve customizability (preset feature like a gaming device utility? or customize like `.vimrc`?)|Architecture|High|
-|☐|Add a reference option in a command line.|Feature|Mid|
-|☐|Capture coordinates of the key mapping from images in order to generate KMP files.|Feature|Mid|
-|☐|Divide GUI and core system.|Architecture|Mid|
-|☐|Implement <a href="https://github.com/simeji/winresizer">simeji/winresizer</a> in GUI|Feature|Mid|
-|☐|Implement `E` or `e` in Editor Mode with UI Automation.|Feature|Mid|
-|☐|Use a real command line system in Virtual Command Line.|Feature|Mid|
-|☐|Increase the test coverage|Improve|Mid|
-|☐|Bug Reporting feature|Feature|Low|
-|☐|Modern GUI (use WinUI3 or Flutter2?)|Change|Low|
-|☐|Update Notification|Feature|Low|
+You can refer to ToDo in <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a>  
 
 ## License  
 

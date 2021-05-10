@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
+project(win-vind-test VERSION 0.0.1)
 
 enable_testing()
 
@@ -11,8 +12,7 @@ if(${MSVC})
     add_compile_options(/W4 /std:c++latest /MT /D_UNICODE /DUNICODE /DEBUG /DDEBUG)
     add_link_options(/FORCE:MULTIPLE)
 else()
-
-    set(CMAKE_CXX_FLAGS "-static -lstdc++ -lgcc -fdiagnostics-color -DUNICODE -D_UNICODE -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00 -Wa,-mbig-obj --coverage -m64 -O0 -g3 -DDEBUG -Wl,--allow-multiple-definition")
+    set(CMAKE_CXX_FLAGS "-static -lstdc++ -lgcc -fdiagnostics-color -DUNICODE -D_UNICODE -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00 --coverage -m64 -O0 -g3 -DDEBUG -Wl,--allow-multiple-definition")
 endif()
 
 include(ProcessorCount)

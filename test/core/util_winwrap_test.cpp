@@ -1,5 +1,3 @@
-#ifndef _MSC_VER // MSVC could not solve multiple definition (LNK 2005)
-
 #include <doctest.h>
 
 #include "disable_gcc_warning.hpp"
@@ -182,5 +180,3 @@ TEST_CASE("util/winwrap Under Fake Windows API: ") {
 }
 
 #include "enable_gcc_warning.hpp"
-
-#endif // #ifndef _MSC_VER

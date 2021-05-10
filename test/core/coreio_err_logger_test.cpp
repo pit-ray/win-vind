@@ -1,5 +1,3 @@
-#ifndef _MSC_VER // MSVC could not solve multiple definition (LNK 2005)
-
 #include "disable_gcc_warning.hpp"
 
 #include <windows.h>
@@ -128,5 +126,3 @@ TEST_CASE("coreio/errlogger: Initialize errlogger under the fake Windows API: ")
 */
 
 #include "enable_gcc_warning.hpp"
-
-#endif // #ifndef _MSC_VER

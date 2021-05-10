@@ -75,10 +75,10 @@
     @goto exit
 
 :test
-    cd test
-    cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" .
-    cmake --build build
-    cd build
+    cmake -B test/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" test
+    cmake --build test/build
+
+    cd test/build
     ctest
     cd ../..
     @goto exit

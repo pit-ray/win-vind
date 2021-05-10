@@ -33,55 +33,42 @@
         )
     )
 
-    @if not exist release_%3 (
-        mkdir release_%3
-    ) 
-    cd release_%3
-
     @if %compiler% == -msvc (
         if %3 == 32 (
-            cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A Win32 -DBIT_TYPE=32 ..
+            cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A Win32 -DBIT_TYPE=32 .
+            cmake --build release_32 --config Release
+            xcopy /e /Y ".\\release_32\\Release" "release"
         ) else (
-            cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 ..
+            cmake -B release_64 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+            cmake --build release_64 --config Release
+            xcopy /e /Y ".\\release_64\\Release" "release"
         )
-        cmake --build . --config Release
-        xcopy /e /Y ".\\Release" .
     ) else (
         if %3 == 32 (
             @echo Error: Building 32bit win-vind using MinGW is not supported.
             @goto exit
         )
-        cmake -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -DBIT_TYPE=%3 ..
-        cmake --build . --config Release
+        cmake -B release -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -DBIT_TYPE=%3 .
+        cmake --build release --config Release
     )
-    cd ..
     @goto exit
 
 :debug
-    @if not exist debug (
-        mkdir debug
-    )
-    cd debug
-
     @if %compiler% == -msvc (
-        Del /q "Debug"
-        cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 ..
-        cmake --build . --config Debug
-        xcopy /e /Y ".\\Debug" .
+        Del /q "debug/Debug"
+        cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+        cmake --build debug --config Debug
+        xcopy /e /Y ".\\debug\\Debug" "debug"
     ) else (
-        cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF ..
-        cmake --build . --config Debug
+        cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+        cmake --build debug --config Debug
     )
-    cd ..
     @goto exit
 
 :coverity
-    rmdir /s /q debug
-    mkdir debug
-    cd debug
-
     cov-configure --config ./covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
-    cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF ..
+    cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+    cd debug
     cov-build --config ./covtest/cov.xml --dir cov-int cmake --build .
     tar -czvf cov-int.tgz cov-int
     cd ..
@@ -89,23 +76,14 @@
 
 :test
     cd test
-    @if not exist build (
-        mkdir build
-    )
+    cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" .
+    cmake --build build
     cd build
-    cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
-    cmake --build .
     ctest
     cd ../..
     @goto exit
 
 :coveralls
-    @if not exist debug (
-        mkdir debug
-    )
-    cd debug
-    ctest
-    cd ..
     coveralls --include core --exclude core/bind --exclude core/opt --repo_token "%2" --verbose --gcov-options '\-lp'
     @goto exit
 

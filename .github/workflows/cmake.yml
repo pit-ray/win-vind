@@ -1,4 +1,4 @@
-name: Test win-vind
+name: test
 
 on:
   push:

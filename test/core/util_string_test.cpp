@@ -7,7 +7,6 @@
 
 #include "util/string.cpp"
 
-#ifndef _MSC_VER // MSVC could not solve multiple definition (LNK 2005)
 #include <fff.h>
 
 DEFINE_FFF_GLOBALS ;
@@ -34,16 +33,13 @@ namespace
     }
 
 }
-#endif // _MSC_VER
 
 using namespace vind::util ;
 
 TEST_CASE("util/string Under Fake Windows API: ") {
-#ifndef _MSC_VER
     RESET_FAKE(MultiByteToWideChar) ;
     RESET_FAKE(WideCharToMultiByte) ;
     FFF_RESET_HISTORY() ;
-#endif
 
     // util::split
     SUBCASE("(util::split) delimiter is longer than the source string") {
@@ -106,7 +102,6 @@ TEST_CASE("util/string Under Fake Windows API: ") {
     }
 
 
-#ifndef _MSC_VER
     // util::s_to_ws
     SUBCASE("(util::s_to_ws) The string is empty") {
         int returns[] = {10, 10} ;
@@ -169,7 +164,7 @@ TEST_CASE("util/string Under Fake Windows API: ") {
         SET_RETURN_SEQ(WideCharToMultiByte, returns, 2) ;
         CHECK_THROWS_AS(ws_to_s(L"Hello"), std::logic_error) ;
     }
-#endif // #ifndef _MSC_VER
 }
 
 #include "enable_gcc_warning.hpp"
+

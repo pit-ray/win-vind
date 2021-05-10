@@ -88,12 +88,15 @@
     @goto exit
 
 :test
-    @if not exist debug (
-        mkdir debug
+    cd test
+    @if not exist build (
+        mkdir build
     )
-    cd debug
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" ..
+    cmake --build .
     ctest
-    cd ..
+    cd ../..
     @goto exit
 
 :coveralls

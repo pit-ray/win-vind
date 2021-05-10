@@ -6,7 +6,9 @@ This is based on branch coverage.
 
 Only the common code test have been completed. However, each binding is not sufficient.
 
-By the way, the Windows API mock only supports MinGW.
+## Support Env
+- MinGW-w64 (CTest)
+- Visual Studio 2019 (CTest)
 
 ## Status
 

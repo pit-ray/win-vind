@@ -8,7 +8,7 @@ search_enabled: true
 
 aux_links:
     "Download 32bit":
-        - "https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.0.0_32bit.exe.zip"
+        - "https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_32bit.exe.zip"
     
     "Download 64bit":
         - "https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_64bit.exe.zip"

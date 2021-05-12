@@ -36,19 +36,6 @@
         </td>
     </tr>
 </table>
-
-## [Notice] v3.3.0-preview Avaliable Now!!
-### <a href="https://github.com/pit-ray/win-vind/releases/tag/v3.3.0">3.3.0 (Latest Preview Version)</a>
-Last Modified Date: 2021/5/9  
-
-#### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_32bit.exe.zip">setup_win-vind_3.3.0_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/win-vind_3.3.0_32bit.zip">win-vind_3.3.0_32bit.zip</a>  
-
-#### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_64bit.exe.zip">setup_win-vind_3.3.0_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/win-vind_3.3.0_64bit.zip">win-vind_3.3.0_64bit.zip</a> 
-  
   
 
 ## Description
@@ -104,16 +91,16 @@ If you add next scripts into AHK Script, you can call each function.
 Refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/link_with_vim/">Link With Vim - win-vind</a>. If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## Download
-### 3.2.3 (Latest Version)  
-Date: 2021/4/2  
+### 3.3.0 (Latest Version)  
+Date: 2021/5/9  
 
 #### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/setup_win-vind_3.2.3_32bit.exe.zip">setup_win-vind_3.2.3_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/win-vind_3.2.3_32bit.zip">win-vind_3.2.3_32bit.zip</a>  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_32bit.exe.zip">setup_win-vind_3.3.0_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/win-vind_3.3.0_32bit.zip">win-vind_3.3.0_32bit.zip</a>  
 
 #### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/setup_win-vind_3.2.3_64bit.exe.zip">setup_win-vind_3.2.3_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.2.3/win-vind_3.2.3_64bit.zip">win-vind_3.2.3_64bit.zip</a> 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/setup_win-vind_3.3.0_64bit.exe.zip">setup_win-vind_3.3.0_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v3.3.0/win-vind_3.3.0_64bit.zip">win-vind_3.3.0_64bit.zip</a> 
   
   
 ## Related Pages

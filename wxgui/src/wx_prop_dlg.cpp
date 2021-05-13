@@ -27,16 +27,16 @@
 #include "wx_settings.hpp"
 #include "wx_shortcut_apps.hpp"
 
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "io_params.hpp"
 #include "ui_translator.hpp"
 #include "wx_constant.hpp"
 #include "wx_system_tray.hpp"
 
-#include "bind/base/mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "entry.hpp"
 #include "key/key_absorber.hpp"
+#include "mode.hpp"
 
 #define KEY_COLOR "#1e96ff"
 #define TXT_COLOR "gray"

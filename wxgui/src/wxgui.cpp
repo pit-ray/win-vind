@@ -23,9 +23,9 @@
 
 #include "enable_gcc_warning.hpp"
 
-#include "coreio/err_logger.hpp"
-#include "coreio/path.hpp"
 #include "entry.hpp"
+#include "err_logger.hpp"
+#include "path.hpp"
 
 #include "util/winwrap.hpp"
 

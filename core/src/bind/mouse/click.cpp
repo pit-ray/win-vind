@@ -3,10 +3,10 @@
 #include <iostream>
 #include <windows.h>
 
-#include "bind/base/mode.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/safe_repeater.hpp"
+#include "bind/safe_repeater.hpp"
 #include "io/mouse.hpp"
+#include "key/ntype_logger.hpp"
+#include "mode.hpp"
 
 namespace vind
 {

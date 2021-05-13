@@ -1,6 +1,6 @@
 #include "bind/bindings_lists.hpp"
 
-#include "bind/base/binded_func.hpp"
+#include "bind/binded_func.hpp"
 
 #include "bind/ctrl/dedicate_to_window_ctrl.hpp"
 #include "bind/ctrl/mywindow_ctrl.hpp"

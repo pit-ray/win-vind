@@ -13,14 +13,14 @@
 
 #include "enable_gcc_warning.hpp"
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "bind/proc/external_app.hpp"
-#include "coreio/err_logger.hpp"
-#include "coreio/path.hpp"
+#include "err_logger.hpp"
 #include "io/keybrd.hpp"
+#include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
+#include "path.hpp"
 #include "util/winwrap.hpp"
 
 

@@ -4,10 +4,10 @@
 #include <memory>
 #include <string>
 
-#include "bind/base/binded_func.hpp"
-#include "bind/base/key_logger_base.hpp"
-#include "bind/base/mode.hpp"
+#include "bind/binded_func.hpp"
+#include "key/key_logger_base.hpp"
 #include "logger_parser.hpp"
+#include "mode.hpp"
 
 namespace vind
 {

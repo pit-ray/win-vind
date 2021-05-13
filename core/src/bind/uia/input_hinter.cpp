@@ -4,9 +4,9 @@
 #include <memory>
 #include <mutex>
 
-#include "bind/base/char_logger.hpp"
 #include "bind/uia/point_2d.hpp"
 #include "entry.hpp"
+#include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "util/winwrap.hpp"
 

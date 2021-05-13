@@ -1,9 +1,9 @@
 #include "bind/emu/edi_layout.hpp"
 
-#include "bind/base/mode.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/safe_repeater.hpp"
+#include "bind/safe_repeater.hpp"
 #include "io/keybrd.hpp"
+#include "key/ntype_logger.hpp"
+#include "mode.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 

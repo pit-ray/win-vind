@@ -1,11 +1,11 @@
 #include "bind/window/resize_window.hpp"
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/key_logger_base.hpp"
-#include "bind/base/ntype_logger.hpp"
 #include "bind/window/window_utility.hpp"
-#include "coreio/i_params.hpp"
+#include "i_params.hpp"
 #include "io/screen_metrics.hpp"
+#include "key/char_logger.hpp"
+#include "key/key_logger_base.hpp"
+#include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 

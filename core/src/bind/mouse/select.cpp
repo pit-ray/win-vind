@@ -1,10 +1,10 @@
 #include "bind/mouse/select.hpp"
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/safe_repeater.hpp"
+#include "bind/safe_repeater.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
+#include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 
 namespace vind

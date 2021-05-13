@@ -1,7 +1,7 @@
 #ifndef _EXCHANGE_WINDOW_HPP
 #define _EXCHANGE_WINDOW_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

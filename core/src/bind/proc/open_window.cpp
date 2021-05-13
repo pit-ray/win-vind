@@ -4,9 +4,9 @@
 
 #include <psapi.h>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "coreio/path.hpp"
+#include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
+#include "path.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 

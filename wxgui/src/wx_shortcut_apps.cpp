@@ -10,7 +10,7 @@
 
 #include "enable_gcc_warning.hpp"
 
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "io_params.hpp"
 #include "ui_translator.hpp"
 #include "wx_constant.hpp"

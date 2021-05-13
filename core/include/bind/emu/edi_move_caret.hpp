@@ -1,7 +1,7 @@
 #ifndef _EDI_MOVE_CARET_HPP
 #define _EDI_MOVE_CARET_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

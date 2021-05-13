@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
+#include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
 
 #include "opt/dedicate_to_window.hpp"
 #include "util/def.hpp"

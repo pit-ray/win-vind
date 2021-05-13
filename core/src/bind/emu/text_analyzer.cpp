@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "bind/emu/smart_clipboard.hpp"
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "util/def.hpp"

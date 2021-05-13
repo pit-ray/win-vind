@@ -3,7 +3,6 @@
 #include <future>
 #include <memory>
 
-#include "bind/base/ntype_logger.hpp"
 #include "bind/uia/display_hinter.hpp"
 #include "bind/uia/ec_hints.hpp"
 #include "bind/uia/input_hinter.hpp"
@@ -11,6 +10,7 @@
 #include "bind/uia/ui_scanner.hpp"
 #include "io/mouse.hpp"
 #include "key/keycode_def.hpp"
+#include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 

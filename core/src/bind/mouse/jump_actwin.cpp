@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <windows.h>
 
-#include "bind/base/ntype_logger.hpp"
+#include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 
 namespace vind

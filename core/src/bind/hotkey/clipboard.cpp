@@ -3,10 +3,10 @@
 #include <iostream>
 #include <windows.h>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/mode.hpp"
+#include "key/char_logger.hpp"
+#include "mode.hpp"
 
-#include "bind/base/ntype_logger.hpp"
+#include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 
 #include "bind/emu/edi_change_mode.hpp"

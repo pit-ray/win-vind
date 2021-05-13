@@ -1,7 +1,7 @@
-#include "bind/base/char_logger.hpp"
+#include "key/char_logger.hpp"
 
-#include "bind/base/key_logger_base.hpp"
 #include "key/key_absorber.hpp"
+#include "key/key_logger_base.hpp"
 #include "key/keycodecvt.hpp"
 #include "time/keystroke_repeater.hpp"
 

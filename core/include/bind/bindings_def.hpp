@@ -1,7 +1,7 @@
 #ifndef _BINDINGS_DEF_HPP
 #define _BINDINGS_DEF_HPP
 
-#include "bind/base/mode.hpp"
+#include "mode.hpp"
 
 #include <memory>
 #include <unordered_map>

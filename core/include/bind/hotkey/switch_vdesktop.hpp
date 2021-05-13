@@ -1,7 +1,7 @@
 #ifndef _SWITCH_TASKVIEW_HPP
 #define _SWITCH_TASKVIEW_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

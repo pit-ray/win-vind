@@ -1,7 +1,7 @@
 #ifndef _COREIO_FAKE_PATH_HPP
 #define _COREIO_FAKE_PATH_HPP
 
-#include "coreio/path.hpp"
+#include "path.hpp"
 
 namespace vind
 {

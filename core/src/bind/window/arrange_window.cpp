@@ -9,10 +9,10 @@
 #include <sstream>
 #include <unordered_map>
 
-#include "bind/base/ntype_logger.hpp"
 #include "bind/window/window_utility.hpp"
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "io/screen_metrics.hpp"
+#include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 
 namespace

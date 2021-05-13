@@ -1,13 +1,13 @@
 #include "bind/emu/edi_motion.hpp"
 
-#include "bind/base/key_logger_base.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/edi_edit.hpp"
 #include "bind/func_finder.hpp"
+#include "bind/safe_repeater.hpp"
 #include "entry.hpp"
 #include "key/key_absorber.hpp"
+#include "key/key_logger_base.hpp"
+#include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 

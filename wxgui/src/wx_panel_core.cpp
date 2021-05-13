@@ -1,6 +1,6 @@
 #include "wx_panel_core.hpp"
 
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "ui_translator.hpp"
 
 namespace wxGUI

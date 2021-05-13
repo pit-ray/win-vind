@@ -1,9 +1,9 @@
-#include "bind/base/safe_repeater.hpp"
 #include "bind/hotkey/pager.hpp"
+#include "bind/safe_repeater.hpp"
 #include "io/keybrd.hpp"
 #include "util/def.hpp"
 
-#include "bind/base/ntype_logger.hpp"
+#include "key/ntype_logger.hpp"
 
 namespace vind
 {

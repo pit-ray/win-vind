@@ -3,9 +3,9 @@
 #include <iostream>
 #include <windows.h>
 
-#include "bind/base/ntype_logger.hpp"
-#include "coreio/i_params.hpp"
+#include "i_params.hpp"
 #include "io/mouse.hpp"
+#include "key/ntype_logger.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"

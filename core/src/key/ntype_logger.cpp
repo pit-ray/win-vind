@@ -1,12 +1,12 @@
-#include "bind/base/ntype_logger.hpp"
+#include "key/ntype_logger.hpp"
 
-#include "bind/base/binded_func.hpp"
-#include "bind/base/key_logger_base.hpp"
-#include "bind/base/mode.hpp"
+#include "bind/binded_func.hpp"
 #include "bind/logger_parser.hpp"
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "key/key_absorber.hpp"
+#include "key/key_logger_base.hpp"
 #include "key/keycodecvt.hpp"
+#include "mode.hpp"
 #include "time/keystroke_repeater.hpp"
 
 #include <stack>

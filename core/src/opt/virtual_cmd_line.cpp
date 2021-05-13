@@ -5,12 +5,12 @@
 #include <chrono>
 #include <unordered_map>
 
-#include "bind/base/mode.hpp"
-#include "coreio/err_logger.hpp"
-#include "coreio/i_params.hpp"
-#include "coreio/path.hpp"
+#include "err_logger.hpp"
+#include "i_params.hpp"
 #include "io/display_text_painter.hpp"
 #include "io/screen_metrics.hpp"
+#include "mode.hpp"
+#include "path.hpp"
 #include "util/winwrap.hpp"
 
 namespace

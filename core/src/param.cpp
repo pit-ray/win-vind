@@ -18,6 +18,7 @@ namespace vind
         float get_f(const std::string& name) {
             return static_cast<float>(g_num_params.at(name)) ;
         }
+
         double get_d(const std::string& name) {
             return static_cast<double>(g_num_params.at(name)) ;
         }
@@ -25,6 +26,7 @@ namespace vind
         int get_i(const std::string& name) {
             return g_num_params.at(name) ;
         }
+
         long get_l(const std::string& name) {
             return g_num_params.at(name) ;
         }
@@ -32,6 +34,7 @@ namespace vind
         std::size_t get_z(const std::string& name) {
             return static_cast<std::size_t>(g_num_params.at(name)) ;
         }
+
         bool get_b(const std::string& name) {
             return g_num_params.at(name) != 0 ;
         }

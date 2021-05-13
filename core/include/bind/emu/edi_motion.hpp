@@ -1,7 +1,7 @@
 #ifndef _EDI_MOTION_HPP
 #define _EDI_MOTION_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

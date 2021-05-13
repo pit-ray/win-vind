@@ -5,10 +5,10 @@
 #include <psapi.h>
 #include <string>
 
-#include "bind/base/mode.hpp"
 #include "bind/mode/change_mode.hpp"
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "key/key_absorber.hpp"
+#include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/string.hpp"
 

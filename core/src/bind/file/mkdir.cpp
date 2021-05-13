@@ -3,10 +3,10 @@
 #include <exdisp.h>
 #include <shlobj.h>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "coreio/err_logger.hpp"
-#include "coreio/path.hpp"
+#include "err_logger.hpp"
+#include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
+#include "path.hpp"
 
 #include "util/def.hpp"
 #include "util/string.hpp"

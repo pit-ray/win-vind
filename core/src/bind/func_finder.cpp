@@ -1,15 +1,15 @@
 #include "bind/func_finder.hpp"
 
-#include "bind/base/binded_func.hpp"
-#include "bind/base/key_logger_base.hpp"
-#include "bind/base/mode.hpp"
+#include "bind/binded_func.hpp"
 #include "bind/bindings_def.hpp"
-#include "bind/bindings_json_parser.hpp"
 #include "bind/bindings_lists.hpp"
-#include "bind/bindings_parser.hpp"
 #include "bind/logger_parser.hpp"
-#include "coreio/path.hpp"
 #include "entry.hpp"
+#include "key/key_logger_base.hpp"
+#include "mode.hpp"
+#include "parser/bindings_json_parser.hpp"
+#include "parser/bindings_parser.hpp"
+#include "path.hpp"
 #include "util/def.hpp"
 
 #include <array>

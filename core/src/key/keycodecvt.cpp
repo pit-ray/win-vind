@@ -1,6 +1,6 @@
 #include "key/keycodecvt.hpp"
 
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "key/keycode_def.hpp"
 
 #include <array>

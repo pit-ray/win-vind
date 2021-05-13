@@ -58,7 +58,7 @@ namespace
     }
 }
 
-#include "coreio/err_logger.cpp"
+#include "err_logger.cpp"
 
 namespace
 {

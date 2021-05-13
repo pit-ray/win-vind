@@ -5,8 +5,8 @@
 
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
-#include "coreio/err_logger.hpp"
-#include "coreio/i_params.hpp"
+#include "err_logger.hpp"
+#include "i_params.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"

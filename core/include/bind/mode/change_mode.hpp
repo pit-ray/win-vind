@@ -1,7 +1,7 @@
 #ifndef _CHANGE_MODE_HPP
 #define _CHANGE_MODE_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

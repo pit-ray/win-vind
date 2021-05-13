@@ -1,4 +1,4 @@
-#include "bind/bindings_json_parser.hpp"
+#include "parser/bindings_json_parser.hpp"
 
 #include <exception>
 #include <fstream>
@@ -14,15 +14,15 @@
 
 #include "enable_gcc_warning.hpp"
 
-#include "coreio/err_logger.hpp"
-#include "coreio/path.hpp"
+#include "err_logger.hpp"
+#include "path.hpp"
 
 #include "util/def.hpp"
 #include "util/string.hpp"
 
-#include "bind/base/binded_func.hpp"
-#include "bind/base/mode.hpp"
-#include "bind/bindings_parser.hpp"
+#include "bind/binded_func.hpp"
+#include "mode.hpp"
+#include "parser/bindings_parser.hpp"
 
 namespace vind
 {

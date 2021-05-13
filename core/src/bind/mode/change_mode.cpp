@@ -4,15 +4,15 @@
 
 #include <windows.h>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/mode.hpp"
-#include "bind/base/ntype_logger.hpp"
 #include "bind/emu/simple_text_selecter.hpp"
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
+#include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
+#include "key/ntype_logger.hpp"
+#include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 

@@ -6,10 +6,10 @@
 #include <cmath>
 #include <iostream>
 
-#include "bind/base/ntype_logger.hpp"
-#include "coreio/err_logger.hpp"
-#include "coreio/i_params.hpp"
+#include "err_logger.hpp"
+#include "i_params.hpp"
 #include "io/mouse.hpp"
+#include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 #include "util/math.hpp"
 

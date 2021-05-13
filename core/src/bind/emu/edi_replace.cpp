@@ -3,15 +3,15 @@
 #include <iostream>
 #include <windows.h>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/text_analyzer.hpp"
+#include "bind/safe_repeater.hpp"
 #include "entry.hpp"
 #include "io/keybrd.hpp"
+#include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 

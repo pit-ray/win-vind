@@ -2,10 +2,10 @@
 
 #include <map>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
 #include "bind/window/window_utility.hpp"
 #include "io/screen_metrics.hpp"
+#include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 
 namespace

@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "bind/base/mode.hpp"
 #include "bind/bindings_def.hpp"
+#include "mode.hpp"
 
 namespace vind
 {

@@ -59,16 +59,17 @@ SOFTWARE.
 #include <iostream>
 #include <memory>
 
-#include "bind/base/mode.hpp"
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/func_finder.hpp"
-#include "bind/global_bindings_caller.hpp"
 #include "bind/mode/change_mode.hpp"
 
-#include "coreio/err_logger.hpp"
-#include "coreio/i_params.hpp"
-#include "coreio/path.hpp"
+#include "err_logger.hpp"
+#include "global_bindings_caller.hpp"
+#include "i_params.hpp"
+#include "mode.hpp"
+#include "path.hpp"
+
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"

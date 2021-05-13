@@ -1,13 +1,13 @@
-#include "bind/global_bindings_caller.hpp"
+#include "global_bindings_caller.hpp"
 
 #include <iostream>
 
-#include "bind/base/key_logger_base.hpp"
-#include "bind/base/ntype_logger.hpp"
+#include "key/key_logger_base.hpp"
 #include "key/keycode_def.hpp"
+#include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 
-#include "bind/base/binded_func.hpp"
+#include "bind/binded_func.hpp"
 
 #include "bind/func_finder.hpp"
 #include "bind/logger_parser.hpp"

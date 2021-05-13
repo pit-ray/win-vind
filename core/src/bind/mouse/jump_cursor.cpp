@@ -1,11 +1,11 @@
 #include "bind/mouse/jump_cursor.hpp"
 
-#include "coreio/i_params.hpp"
+#include "i_params.hpp"
 #include "io/screen_metrics.hpp"
 
 #include "util/def.hpp"
 
-#include "bind/base/ntype_logger.hpp"
+#include "key/ntype_logger.hpp"
 
 namespace vind
 {

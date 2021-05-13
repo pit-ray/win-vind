@@ -1,17 +1,17 @@
-#include "bind/base/binded_func.hpp"
+#include "bind/binded_func.hpp"
 
 #include <array>
 #include <atomic>
 #include <functional>
 
-#include "bind/base/mode.hpp"
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
+#include "mode.hpp"
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/ntype_logger.hpp"
+#include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
 
 namespace vind
 {

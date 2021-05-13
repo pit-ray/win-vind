@@ -9,7 +9,7 @@
 
 #include <windows.h>
 
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
 #include "key/keycode_def.hpp"

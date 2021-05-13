@@ -1,7 +1,7 @@
 #ifndef _MOVE_CURSOR_HPP
 #define _MOVE_CURSOR_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

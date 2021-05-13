@@ -1,7 +1,7 @@
 #ifndef MY_BINDING_HPP
 #define MY_BINDING_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

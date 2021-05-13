@@ -5,25 +5,20 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/libs
 )
 
-add_library(coreio STATIC
-    src/coreio/err_logger.cpp
-    src/coreio/i_params.cpp
-    src/coreio/path.cpp
-)
-target_link_libraries(coreio Userenv)
-
 add_library(util STATIC
     src/util/color.cpp
     src/util/debug.cpp
     src/util/string.cpp
     src/util/winwrap.cpp
 )
-target_link_libraries(util coreio)
 
 add_library(key STATIC
+    src/key/char_logger.cpp
     src/key/key_absorber.cpp
     src/key/key_log.cpp
+    src/key/key_logger_base.cpp
     src/key/keycodecvt.cpp
+    src/key/ntype_logger.cpp
 )
 target_link_libraries(key util)
 
@@ -40,25 +35,14 @@ add_library(time STATIC
     src/time/keystroke_repeater.cpp
 )
 
-add_library(base STATIC
-    src/bind/base/binded_func.cpp
-    src/bind/base/char_logger.cpp
-    src/bind/base/key_logger_base.cpp
-    src/bind/base/mode.cpp
-    src/bind/base/ntype_logger.cpp
-)
-target_link_libraries(base time io)
-
 add_library(ctrl STATIC
     src/bind/ctrl/dedicate_to_window_ctrl.cpp
     src/bind/ctrl/mywindow_ctrl.cpp
 ) 
-target_link_libraries(ctrl base)
 
 add_library(dev STATIC
     src/bind/dev/mybindings.cpp
 )
-target_link_libraries(dev base)
 
 add_library(emu STATIC
     src/bind/emu/edi_change_mode.cpp
@@ -73,13 +57,11 @@ add_library(emu STATIC
     src/bind/emu/smart_clipboard.cpp
     src/bind/emu/text_analyzer.cpp
 )
-target_link_libraries(emu base)
 
 add_library(file STATIC
     src/bind/file/filer.cpp
     src/bind/file/mkdir.cpp
 )
-target_link_libraries(file base)
 
 add_library(hotkey STATIC
     src/bind/hotkey/clipboard.cpp
@@ -89,13 +71,11 @@ add_library(hotkey STATIC
     src/bind/hotkey/tab_ctrl.cpp
     src/bind/hotkey/undo.cpp
 )
-target_link_libraries(hotkey base)
 
 add_library(mode STATIC
     src/bind/mode/change_mode.cpp
     src/bind/mode/command_mode.cpp
 )
-target_link_libraries(mode base)
 
 add_library(mouse STATIC
     src/bind/mouse/click.cpp
@@ -106,13 +86,12 @@ add_library(mouse STATIC
     src/bind/mouse/scroll.cpp
     src/bind/mouse/select.cpp
 )
-target_link_libraries(mouse base)
 
 add_library(proc STATIC
     src/bind/proc/external_app.cpp
     src/bind/proc/open_window.cpp
 )
-target_link_libraries(proc base psapi)
+target_link_libraries(proc psapi)
 
 add_library(uia STATIC
     src/bind/uia/display_hinter.cpp
@@ -124,7 +103,6 @@ add_library(uia STATIC
     src/bind/uia/uia.cpp
 )
 target_include_directories(uia PRIVATE ${WINDOWS_SDK_INCLUDE_DIR})
-target_link_libraries(uia base)
 
 add_library(window STATIC
     src/bind/window/arrange_window.cpp
@@ -140,15 +118,13 @@ add_library(window STATIC
     src/bind/window/switch_window.cpp
     src/bind/window/window_utility.cpp
 )
-target_link_libraries(window base Dwmapi)
+target_link_libraries(window Dwmapi)
 
 
 add_library(bind STATIC
-    src/bind/bindings_json_parser.cpp
+    src/bind/binded_func.cpp
     src/bind/bindings_lists.cpp
-    src/bind/bindings_parser.cpp
     src/bind/func_finder.cpp
-    src/bind/global_bindings_caller.cpp
     src/bind/logger_parser.cpp
 )
 target_link_libraries(bind ctrl emu file hotkey mode mouse proc uia window)
@@ -164,7 +140,17 @@ add_library(opt STATIC
 )
 target_link_libraries(opt emu mode)
 
+add_library(parser STATIC
+    src/parser/bindings_parser.cpp
+    src/parser/bindings_json_parser.cpp
+)
+
 add_library(vindcore STATIC
     src/entry.cpp
+    src/err_logger.cpp
+    src/global_bindings_caller.cpp
+    src/i_params.cpp
+    src/mode.cpp
+    src/path.cpp
 )
-target_link_libraries(vindcore bind opt)
+target_link_libraries(vindcore bind opt parser io time Userenv)

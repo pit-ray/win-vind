@@ -7,7 +7,7 @@
 #include <filesystem>
 #endif
 
-#include "coreio/i_params.hpp"
+#include "i_params.hpp"
 
 namespace vind
 {

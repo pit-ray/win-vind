@@ -1,7 +1,7 @@
 #ifndef _JUMP_ACTWIN_HPP
 #define _JUMP_ACTWIN_HPP
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/binded_func_creator.hpp"
 
 namespace vind
 {

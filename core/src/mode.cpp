@@ -1,4 +1,4 @@
-#include "bind/base/mode.hpp"
+#include "mode.hpp"
 
 #include <stdexcept>
 #include <unordered_map>

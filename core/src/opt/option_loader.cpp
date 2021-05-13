@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "coreio/err_logger.hpp"
-#include "coreio/i_params.hpp"
+#include "err_logger.hpp"
+#include "i_params.hpp"
 
 #include "opt/autotrack_popup.hpp"
 #include "opt/dedicate_to_window.hpp"

@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "bind/base/mode.hpp"
+#include "mode.hpp"
 
 namespace vind
 {

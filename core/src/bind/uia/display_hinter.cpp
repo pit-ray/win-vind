@@ -4,10 +4,10 @@
 #include <mutex>
 #include <string>
 
-#include "bind/base/char_logger.hpp"
 #include "bind/uia/point_2d.hpp"
-#include "coreio/i_params.hpp"
+#include "i_params.hpp"
 #include "io/display_text_painter.hpp"
+#include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "util/color.hpp"
 

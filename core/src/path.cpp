@@ -1,4 +1,4 @@
-#include "coreio/path.hpp"
+#include "path.hpp"
 
 #include <userenv.h>
 #include <windows.h>

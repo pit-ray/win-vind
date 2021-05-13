@@ -6,18 +6,18 @@
 #include <iostream> //for debug
 #include <memory>   //for std::unique_ptr
 
-#include "bind/base/mode.hpp"
-#include "bind/base/ntype_logger.hpp"
-#include "bind/base/safe_repeater.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/simple_text_selecter.hpp"
 #include "bind/emu/smart_clipboard.hpp"
 #include "bind/emu/text_analyzer.hpp"
-#include "coreio/err_logger.hpp"
-#include "coreio/i_params.hpp"
+#include "bind/safe_repeater.hpp"
+#include "err_logger.hpp"
+#include "i_params.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/ntype_logger.hpp"
+#include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"

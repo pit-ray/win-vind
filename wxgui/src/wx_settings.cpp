@@ -22,7 +22,7 @@
 #include "scroll_page_ctrl.hpp"
 #include "virtual_cmd_line_ctrl.hpp"
 
-#include "coreio/err_logger.hpp"
+#include "err_logger.hpp"
 #include "io_params.hpp"
 #include "ui_translator.hpp"
 #include "wx_constant.hpp"

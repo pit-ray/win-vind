@@ -3,18 +3,18 @@
 #include <memory>
 #include <windows.h>
 
-#include "bind/base/mode.hpp"
 #include "entry.hpp"
+#include "mode.hpp"
 
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 
-#include "bind/base/ntype_logger.hpp"
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/func_finder.hpp"
 #include "bind/mouse/jump_actwin.hpp"
+#include "key/ntype_logger.hpp"
 
 namespace vind
 {

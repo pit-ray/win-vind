@@ -2,14 +2,14 @@
 
 #include <windows.h>
 
-#include "bind/base/char_logger.hpp"
-#include "bind/base/safe_repeater.hpp"
 #include "bind/mode/change_mode.hpp"
-#include "coreio/err_logger.hpp"
+#include "bind/safe_repeater.hpp"
+#include "err_logger.hpp"
 #include "io/keybrd.hpp"
+#include "key/char_logger.hpp"
 #include "util/def.hpp"
 
-#include "bind/base/ntype_logger.hpp"
+#include "key/ntype_logger.hpp"
 
 
 namespace vind

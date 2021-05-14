@@ -1,16 +1,26 @@
-#include "coreio/param.hpp"
+#include "g_params.hpp"
 
 #include <unordered_map>
 
 namespace
 {
     std::unordered_map<std::string, std::string>  g_str_params{} ;
-    std::unordered_map<std::string, std::int32_t> g_num_params{} ;
+    std::unordered_map<std::string, double> g_num_params{} ;
 }
 
 namespace vind
 {
-    namespace param {
+    namespace gparams {
+        void clear() {
+            g_str_params.clear() ;
+            g_num_params.clear() ;
+        }
+
+        void remove(const std::string& name) {
+            g_str_params.erase(name) ;
+            g_num_params.erase(name) ;
+        }
+
         std::string get_s(const std::string& name) {
             return g_str_params.at(name) ;
         }
@@ -20,15 +30,15 @@ namespace vind
         }
 
         double get_d(const std::string& name) {
-            return static_cast<double>(g_num_params.at(name)) ;
+            return g_num_params.at(name) ;
         }
 
         int get_i(const std::string& name) {
-            return g_num_params.at(name) ;
+            return static_cast<int>(g_num_params.at(name)) ;
         }
 
         long get_l(const std::string& name) {
-            return g_num_params.at(name) ;
+            return static_cast<long>(g_num_params.at(name)) ;
         }
 
         std::size_t get_z(const std::string& name) {
@@ -50,6 +60,9 @@ namespace vind
             g_str_params[name] = std::move(val) ;
         }
         void set(const std::string& name, int val) {
+            g_num_params[name] = val ;
+        }
+        void set(const std::string& name, double val) {
             g_num_params[name] = val ;
         }
         void set(const std::string& name, bool val) {

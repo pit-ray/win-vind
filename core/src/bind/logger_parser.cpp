@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "bind/binded_func.hpp"
-#include "bind/bindings_def.hpp"
 #include "bind/bindings_lists.hpp"
 #include "key/key_log.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
+#include "mapdefs.hpp"
 #include "parser/bindings_parser.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"

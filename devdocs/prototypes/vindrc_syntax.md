@@ -6,7 +6,10 @@ Support only UTF-8
 ignore space, deliminator is "\n"
 
 ```vim
-set name = val
+set {name}
+set no{name}
+set {name} = {val}
+set {name} : {val}
 ```
 
 ### Value Type

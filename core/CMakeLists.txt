@@ -140,14 +140,20 @@ add_library(opt STATIC
 )
 target_link_libraries(opt emu mode)
 
+add_library(syscmd STATIC
+    src/syscmd/set.cpp
+)
+
 add_library(parser STATIC
     src/parser/bindings_parser.cpp
     src/parser/bindings_json_parser.cpp
 )
+target_link_libraries(parser syscmd)
 
 add_library(vindcore STATIC
     src/entry.cpp
     src/err_logger.cpp
+    src/g_params.cpp
     src/global_bindings_caller.cpp
     src/i_params.cpp
     src/mode.cpp

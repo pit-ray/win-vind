@@ -1,5 +1,5 @@
-#ifndef _BINDINGS_DEF_HPP
-#define _BINDINGS_DEF_HPP
+#ifndef _MAPDEFS_HPP
+#define _MAPDEFS_HPP
 
 #include "mode.hpp"
 

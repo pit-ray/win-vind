@@ -1,11 +1,11 @@
 #include "bind/func_finder.hpp"
 
 #include "bind/binded_func.hpp"
-#include "bind/bindings_def.hpp"
 #include "bind/bindings_lists.hpp"
 #include "bind/logger_parser.hpp"
 #include "entry.hpp"
 #include "key/key_logger_base.hpp"
+#include "mapdefs.hpp"
 #include "mode.hpp"
 #include "parser/bindings_json_parser.hpp"
 #include "parser/bindings_parser.hpp"

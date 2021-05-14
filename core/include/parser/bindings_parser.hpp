@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "bind/bindings_def.hpp"
+#include "mapdefs.hpp"
 #include "mode.hpp"
 
 namespace vind

@@ -1,11 +1,14 @@
-#ifndef _PARAM_HPP
-#define _PARAM_HPP
+#ifndef _G_PARAMS_HPP
+#define _G_PARAMS_HPP
 
 #include <string>
 
 namespace vind
 {
-    namespace param {
+    namespace gparams {
+        void clear() ;
+        void remove(const std::string& name) ;
+
         std::string get_s(const std::string& name) ;
 
         float get_f(const std::string& name) ;
@@ -24,7 +27,9 @@ namespace vind
 
         void set(const std::string& name, const std::string& val) ;
         void set(const std::string& name, std::string&& val) ;
+
         void set(const std::string& name, int val) ;
+        void set(const std::string& name, double val) ;
         void set(const std::string& name, bool val) ;
     }
 }

@@ -42,7 +42,7 @@ add_executable(core-test
     core/time_interval_timer_test.cpp
     core/time_keystroke_repeater_test.cpp
 
-    core/syscmd_set_test.cpp
+    core/parser_rcparser_test.cpp
 )
 target_link_libraries(core-test doctest)
 add_test(

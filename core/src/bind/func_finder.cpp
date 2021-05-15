@@ -23,7 +23,7 @@
 namespace
 {
     using namespace vind ;
-    std::vector<BindedFunc::SPtr> g_all_func_list ;
+    const auto& g_all_func_list = bindingslists::get() ;
 
     ParsedBindingLists g_parsed_bindlists ;
 }
@@ -38,9 +38,6 @@ namespace vind
                 return nullptr ;
         }
 
-        void initialize() {
-            g_all_func_list = bindingslists::get() ;
-        }
         void load_global_bindings() {
             ParsedBindingLists().swap(g_parsed_bindlists) ; //clear by empty swapping
 
@@ -111,9 +108,7 @@ namespace vind
 
     FuncFinder::FuncFinder()
     : pimpl(std::make_unique<Impl>())
-    {
-        reconstruct_funcset() ;
-    }
+    {}
 
     FuncFinder::~FuncFinder() noexcept = default ;
     FuncFinder::FuncFinder(const FuncFinder& rhs)

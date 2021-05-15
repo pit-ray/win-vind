@@ -26,7 +26,6 @@ namespace vind
     namespace gbindcaller {
 
         void initialize() {
-            funcfinder::initialize() ;
             g_ntlgr.clear() ;
             g_active_func = nullptr ;
         }

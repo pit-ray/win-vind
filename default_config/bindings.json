@@ -1178,7 +1178,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["set", "config"],
+        "cmd": ["setgui"],
         "mycwn": [],
         "mycwi": [],
         "en": "Show a config window of win-vind",
@@ -2008,5 +2008,209 @@
         "mycwi": [],
         "en": "My config window Insert Mode",
         "ja": "設定ウィンドウ用Insertモード"
+    },
+    {
+        "name": "system_command_set",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": ["set", "set<any>"],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command set",
+        "ja": "システムコマンド set"
+    },
+    {
+        "name": "system_command_noremap",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "gnn <any>",
+            "gnno <any>",
+            "gnnor <any>",
+            "gnnore <any>",
+            "gnnorem <any>",
+            "gnnorema <any>",
+            "gnnoremap <any>",
+
+            "gvn <any>",
+            "gvno <any>",
+            "gvnor <any>",
+            "gvnore <any>",
+            "gvnorem <any>",
+            "gvnorema <any>",
+            "gvnoremap <any>",
+
+            "enn <any>",
+            "enno <any>",
+            "ennor <any>",
+            "ennore <any>",
+            "ennorem <any>",
+            "ennorema <any>",
+            "ennoremap <any>",
+
+            "evn <any>",
+            "evno <any>",
+            "evnor <any>",
+            "evnore <any>",
+            "evnorem <any>",
+            "evnorema <any>",
+            "evnoremap <any>",
+
+            "in <any>",
+            "ino <any>",
+            "inor <any>",
+            "inore <any>",
+            "inorem <any>",
+            "inorema <any>",
+            "inoremap <any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command noremap",
+        "ja": "システムコマンド noremap"
+    },
+    {
+        "name": "system_command_unmap",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "gnu <any>",
+            "gnunmap <any>",
+
+            "gvu <any>",
+            "gvunmap <any>",
+
+            "enu <any>",
+            "enunmap <any>",
+
+            "evu <any>",
+            "evunmap <any>",
+
+            "iu <any>",
+            "iunmap <any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command unmap",
+        "ja": "システムコマンド unmap"
+    },
+    {
+        "name": "system_command_mapclear",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "gnu <any>",
+            "gnmapclear <any>",
+
+            "gvu <any>",
+            "gvmapclear <any>",
+
+            "enu <any>",
+            "enmapclear <any>",
+
+            "evu <any>",
+            "evmapclear <any>",
+
+            "iu <any>",
+            "imapclear <any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command mapclear",
+        "ja": "システムコマンド mapclear"
+    },
+    {
+        "name": "system_command_command",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "command",
+            "command<any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command command",
+        "ja": "システムコマンド command"
+    },
+    {
+        "name": "system_command_delcommand",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "delcommand",
+            "delcommand<any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command delcommand",
+        "ja": "システムコマンド delcommand"
+    },
+    {
+        "name": "system_command_comclear",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "comclear",
+            "comclear<any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command comclear",
+        "ja": "システムコマンド comclear"
+    },
+    {
+        "name": "system_command_source",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "so",
+            "source",
+            "so<any>",
+            "source<any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command source",
+        "ja": "システムコマンド source"
     }
 ]

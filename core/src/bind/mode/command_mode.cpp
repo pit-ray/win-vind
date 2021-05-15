@@ -177,7 +177,7 @@ namespace vind
                     p_cmdp->func->process(lgr) ;
                 }
                 else {
-                    VirtualCmdLine::msgout("e: Not a command") ;
+                    VirtualCmdLine::msgout("E: Not a command") ;
                 }
 
                 pimpl->ch_.generate_new_hist() ;

@@ -51,6 +51,11 @@
 #include "bind/window/split_open_window.hpp"
 #include "bind/window/switch_window.hpp"
 
+#include "bind/syscmd/command.hpp"
+#include "bind/syscmd/map.hpp"
+#include "bind/syscmd/set.hpp"
+#include "bind/syscmd/source.hpp"
+
 namespace vind
 {
     namespace bindingslists {
@@ -191,7 +196,16 @@ namespace vind
                 SwitchVDesktop2Left::create(),
                 SwitchVDesktop2Right::create(),
                 SwitchWindow::create(),
-                TaskView::create()
+                TaskView::create(),
+
+                SyscmdSet::create(),
+                SyscmdNoremap::create(),
+                SyscmdUnmap::create(),
+                SyscmdMapclear::create(),
+                SyscmdCommand::create(),
+                SyscmdDelcommand::create(),
+                SyscmdComclear::create(),
+                SyscmdSource::create()
             } ;
             return tmp ;
         }

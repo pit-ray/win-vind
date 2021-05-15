@@ -31,6 +31,11 @@ namespace vind
 
         const std::string& CONFIG_PATH() ;
 
+        inline const auto& RC() {
+            static const auto obj = CONFIG_PATH() + ".vindrc" ;
+            return obj ;
+        }
+
         inline const auto& BINDINGS() {
             static const auto obj = CONFIG_PATH() + "bindings.json" ;
             return obj ;

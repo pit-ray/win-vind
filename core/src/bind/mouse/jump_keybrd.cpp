@@ -112,6 +112,9 @@ namespace vind
         auto filename = path::KEYBRD_MAP() ;
 
         std::ifstream ifs(path::to_u8path(filename), std::ios::in) ;
+        if(!ifs.is_open()) {
+            throw RUNTIME_EXCEPT("Could not open \"" + filename + "\".\n") ;
+        }
         std::string buf ;
         int lnum = 0 ;
 

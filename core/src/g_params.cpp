@@ -1,6 +1,8 @@
 #include "g_params.hpp"
 
+#include <iostream>
 #include <unordered_map>
+
 
 namespace
 {
@@ -54,18 +56,23 @@ namespace vind
         }
 
         void set(const std::string& name, const std::string& val) {
+            std::cout << name << " = \"" << val << "\"\n" ;
             g_str_params[name] = val ;
         }
         void set(const std::string& name, std::string&& val) {
+            std::cout << name << " = \"" << val << "\"\n" ;
             g_str_params[name] = std::move(val) ;
         }
         void set(const std::string& name, int val) {
+            std::cout << name << " = " << val << "\n" ;
             g_num_params[name] = val ;
         }
         void set(const std::string& name, double val) {
+            std::cout << name << " = " << val << "\n" ;
             g_num_params[name] = val ;
         }
         void set(const std::string& name, bool val) {
+            std::cout << name << " = " << (val ? "TRUE" : "FALSE") << std::endl ;
             g_num_params[name] = !val ? 0 : 1 ;
         }
     }

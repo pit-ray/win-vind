@@ -1,74 +1,62 @@
-#include "syscmd/set.hpp"
+#include "bind/syscmd/set.hpp"
 
 #include <iostream>
 #include <string>
 
+#include "bind/binded_func.hpp"
+#include "bind/binded_func_creator.hpp"
 #include "g_params.hpp"
-
+#include "key/char_logger.hpp"
+#include "opt/virtual_cmd_line.hpp"
+#include "parser/rc_parser.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 
-
-namespace
-{
-    inline std::string extract_valid_name_area(const std::string& str) {
-        auto name_first = str.find_first_not_of(" ") ;
-        if(name_first == std::string::npos) {
-            throw RUNTIME_EXCEPT(":set has no option name.") ;
-        }
-        auto name_last = str.find_last_not_of(" ") ;
-        auto name = str.substr(name_first, name_last - name_first + 1) ;
-
-        if(name.find(" ") != std::string::npos) {
-            throw RUNTIME_EXCEPT(":set has a invalid option name.") ;
-        }
-
-        return vind::util::A2a(name) ;
-    }
-}
-
-
 namespace vind
 {
-    namespace syscmd {
-        void do_set(const std::string& args) {
-            if(args.empty()) {
-                throw RUNTIME_EXCEPT(":set has no arguments.") ;
+    SyscmdSet::SyscmdSet()
+    : BindedFuncCreator("system_command_set")
+    {}
+
+    void SyscmdSet::sprocess(const std::string& args) {
+        if(args.empty()) {
+            VirtualCmdLine::msgout("E: Not support list of option yet") ;
+            return ;
+        }
+
+        auto [key, val] = rcparser::divide_key_and_value(args, "=") ;
+        key = util::A2a(key) ;
+
+        if(val.empty()) { // set option_name
+            if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {
+                gparams::set(key.substr(2), false) ;
             }
-
-            auto eq_pos = args.find_first_of("=") ;
-
-            if(eq_pos == std::string::npos) { // bool
-                auto name = extract_valid_name_area(args) ;
-                if(name.size() > 2 && name[0] == 'n' && name[1] == 'o') {
-                    gparams::set(name.substr(2), false) ;
-                }
-                else {
-                    gparams::set(name, true) ;
-                }
-            }
-            else { //string, int, bool
-                // extract name
-                auto name_area = util::A2a(args.substr(0, eq_pos)) ;
-                auto name = extract_valid_name_area(name_area) ;
-
-                // extract value
-                auto value_area = args.substr(eq_pos + 1) ;
-                auto value_first = value_area.find_first_not_of(" ") ;
-                if(value_first == std::string::npos) {
-                    throw RUNTIME_EXCEPT("There is no value in :set {name}" \
-                            + args.substr(eq_pos, 1) + "{value} syntax.") ;
-                }
-                auto value_last = value_area.find_last_not_of(" ") ;
-                auto value = value_area.substr(value_first, value_last - value_first + 1) ;
-
-                if(value.find_first_not_of("0123456789.") == std::string::npos) {
-                    gparams::set(name, std::stod(value)) ;
-                }
-                else {
-                    gparams::set(name, value) ;
-                }
+            else {
+                gparams::set(key, true) ;
             }
         }
+        else { // set option_name = value
+            if(val.find_first_not_of("0123456789.") == std::string::npos) {
+                gparams::set(key, std::stod(val)) ;
+            }
+            else {
+                gparams::set(key, val) ;
+            }
+        }
+    }
+
+    void SyscmdSet::sprocess(NTypeLogger&) {
+        return ;
+    }
+
+    void SyscmdSet::sprocess(const CharLogger& parent_lgr) {
+        std::cout << "called\n" ;
+        auto str = parent_lgr.to_str() ;
+        if(str.empty()) {
+            return ;
+        }
+
+        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+        sprocess(args) ;
     }
 }

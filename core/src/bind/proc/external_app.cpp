@@ -70,7 +70,7 @@ namespace vind
             util::create_process(path::HOME_PATH(), g_proc_list.at("shell")) ;
         }
         catch(const std::out_of_range&) {
-            VirtualCmdLine::msgout("e: Not a command") ;
+            VirtualCmdLine::msgout("E: Not a command") ;
             return ;
         }
 
@@ -103,7 +103,7 @@ namespace vind
                 util::create_process(".", g_proc_list.at(cmd)) ;
             }
             catch(const std::out_of_range&) {
-                VirtualCmdLine::msgout("e: Not a command") ;
+                VirtualCmdLine::msgout("E: Not a command") ;
                 return ;
             }
 

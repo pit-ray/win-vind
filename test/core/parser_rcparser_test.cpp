@@ -1,5 +1,6 @@
 #include <doctest.h>
 
+#include "mode.hpp"
 #include "parser/rc_parser.cpp"
 
 #include <string>
@@ -36,11 +37,15 @@ TEST_CASE("(rcparser::divide_cmd_and_args) line includes only spaces") {
 }
 
 TEST_CASE("(rcparser::divide_cmd_and_args) no argument without delimiter") {
-    CHECK_THROWS(divide_cmd_and_args("set")) ;
+    auto [cmd, args] = divide_cmd_and_args("set") ;
+    CHECK_EQ(cmd, "set") ;
+    CHECK(args.empty()) ;
 }
 
 TEST_CASE("(rcparser::divide_cmd_and_args) no argument with delimiter") {
-    CHECK_THROWS(divide_cmd_and_args("set ")) ;
+    auto [cmd, args] = divide_cmd_and_args("set ") ;
+    CHECK_EQ(cmd, "set") ;
+    CHECK(args.empty()) ;
 }
 
 TEST_CASE("(rcparser::divide_cmd_and_args) Normal input") {
@@ -93,10 +98,14 @@ TEST_CASE("(rcparser::extract_double_args) It includes only one argument with de
     CHECK(arg2.empty()) ;
 }
 
-TEST_CASE("(ecparser::extract_double_args) Normal input") {
+TEST_CASE("(rcparser::extract_double_args) Normal input") {
     auto [arg1, arg2] = extract_double_args("foo bar  ") ;
     CHECK_EQ(arg1, "foo") ;
     CHECK_EQ(arg2, "bar") ;
+}
+
+TEST_CASE("(rcparser::extract_double_args) Triple argument") {
+    CHECK_THROWS(extract_double_args("foo bar bar")) ;
 }
 
 
@@ -127,4 +136,27 @@ TEST_CASE("(rcparser::divide_key_and_value) Normal inputs") {
     auto [key, val] = divide_key_and_value(" foo  = bar ") ;
     CHECK_EQ(key, "foo") ;
     CHECK_EQ(val, "bar") ;
+}
+
+// divide_prefix_and_cmd
+TEST_CASE("(rcparser::divide_prefix_and_cmd) The string has no keyword") {
+    auto [prefix, cmd] = divide_prefix_and_cmd("abcde", "n") ;
+    CHECK(prefix.empty()) ;
+    CHECK_EQ(cmd, "abcde") ;
+}
+
+TEST_CASE("(rcparser::divide_prefix_and_cmd)) Normal input") {
+    auto [prefix, cmd] = divide_prefix_and_cmd("inoremap", "n") ;
+    CHECK_EQ(prefix, "i") ;
+    CHECK_EQ(cmd, "noremap") ;
+}
+
+
+// parse_mode_prefix
+TEST_CASE("(rcparser::parse_mode_prefix) Invalid mode prefix") {
+    CHECK_EQ(parse_mode_prefix("xxxx"), vind::mode::Mode::None) ;
+}
+
+TEST_CASE("(rcparser::parse_mode_prefix) valid mode prefix") {
+    CHECK_EQ(parse_mode_prefix("i"), vind::mode::Mode::Insert) ;
 }

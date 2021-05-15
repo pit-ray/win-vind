@@ -147,7 +147,7 @@ namespace vind
 
         auto width = screenmetrics::width(fginfo.rect) - delta ;
         if(width <= 0) { 
-            VirtualCmdLine::msgout("e: Width below zero") ;
+            VirtualCmdLine::msgout("E: Width below zero") ;
             return ;
         }
 
@@ -218,7 +218,7 @@ namespace vind
 
         auto height = screenmetrics::height(fginfo.rect) - delta ;
         if(height <= 0) { 
-            VirtualCmdLine::msgout("e: Height below zero") ;
+            VirtualCmdLine::msgout("E: Height below zero") ;
             return ;
         }
 

@@ -75,6 +75,7 @@ SOFTWARE.
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/log_map.hpp"
 #include "opt/option_loader.hpp"
 #include "time/interval_timer.hpp"
 #include "util/winwrap.hpp"
@@ -229,6 +230,7 @@ namespace vind
 
     bool reconstruct_all_components() noexcept {
         try {
+            logmap::load_config() ;
             optloader::reconstruct() ;
             gbindcaller::reconstruct() ;
             return true ;

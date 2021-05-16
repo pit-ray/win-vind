@@ -18,6 +18,7 @@ add_library(key STATIC
     src/key/key_log.cpp
     src/key/key_logger_base.cpp
     src/key/keycodecvt.cpp
+    src/key/log_map.cpp
     src/key/ntype_logger.cpp
 )
 target_link_libraries(key util)

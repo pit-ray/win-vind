@@ -50,7 +50,6 @@ namespace vind
     }
 
     void SyscmdSet::sprocess(const CharLogger& parent_lgr) {
-        std::cout << "called\n" ;
         auto str = parent_lgr.to_str() ;
         if(str.empty()) {
             return ;

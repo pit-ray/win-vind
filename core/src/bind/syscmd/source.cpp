@@ -1,6 +1,8 @@
 #include "bind/syscmd/source.hpp"
 
 #include "err_logger.hpp"
+#include "g_maps.hpp"
+#include "g_params.hpp"
 #include "key/char_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "parser/rc_parser.hpp"
@@ -23,6 +25,9 @@ namespace vind
     {}
     void SyscmdSource::sprocess(const std::string& path) {
         std::cout << path << std::endl ;
+
+        gparams::reset() ;
+        gmaps::reset() ;
 
         std::ifstream ifs(path::to_u8path(path), std::ios::in) ;
         if(!ifs.is_open()) {

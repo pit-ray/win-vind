@@ -1,6 +1,7 @@
 #include "bind/syscmd/command.hpp"
 
 #include "err_logger.hpp"
+#include "g_maps.hpp"
 #include "key/char_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "parser/rc_parser.hpp"
@@ -29,6 +30,8 @@ namespace vind
         }
 
         std::cout << "command " << arg1 << " ==> " << arg2 << std::endl ;
+
+        gmaps::map(arg1, arg2, mode::Mode::Command) ;
 
         // mode, src_cmd, target
     }
@@ -63,6 +66,7 @@ namespace vind
         }
 
         // mode unmap
+        gmaps::unmap(arg, mode::Mode::Command) ;
     }
     void SyscmdDelcommand::sprocess(NTypeLogger&) {
     }
@@ -81,6 +85,7 @@ namespace vind
     : BindedFuncCreator("system_command_comclear")
     {}
     void SyscmdComclear::sprocess() {
+        gmaps::mapclear(mode::Mode::Command) ;
         // mode clear
     }
     void SyscmdComclear::sprocess(NTypeLogger&) {

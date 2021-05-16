@@ -3,6 +3,7 @@
 #include "bind/binded_func.hpp"
 #include "bind/binded_func_creator.hpp"
 #include "err_logger.hpp"
+#include "g_maps.hpp"
 #include "key/char_logger.hpp"
 #include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
@@ -36,6 +37,7 @@ namespace vind
         }
 
         std::cout << "map " << mode::mode_name(mode) << ": " << arg1 << " ==> " << arg2 << std::endl ;
+        gmaps::map(arg1, arg2, mode) ;
 
         // mode, src_cmd, target
     }
@@ -81,7 +83,7 @@ namespace vind
         }
 
         std::cout << "unmap " << mode::mode_name(mode) << ": " << arg << std::endl ;
-        // mode unmap
+        gmaps::unmap(arg, mode) ;
     }
     void SyscmdUnmap::sprocess(NTypeLogger&) {
     }
@@ -111,7 +113,8 @@ namespace vind
 
     void SyscmdMapclear::sprocess(mode::Mode mode) {
         std::cout << "clear " << mode::mode_name(mode) << std::endl ;
-        // mode clear
+
+        gmaps::mapclear(mode) ;
     }
     void SyscmdMapclear::sprocess(NTypeLogger&) {
     }

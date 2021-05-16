@@ -63,8 +63,11 @@ SOFTWARE.
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/func_finder.hpp"
 #include "bind/mode/change_mode.hpp"
+#include "bind/syscmd/source.hpp"
 
 #include "err_logger.hpp"
+#include "g_maps.hpp"
+#include "g_params.hpp"
 #include "global_bindings_caller.hpp"
 #include "i_params.hpp"
 #include "mode.hpp"
@@ -164,6 +167,10 @@ namespace vind
                 return false ;
             }
 
+            // Load default config
+            gparams::initialize() ;
+            gmaps::initialize() ;
+
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             keycodecvt::load_input_combination() ;
@@ -205,6 +212,7 @@ namespace vind
     bool load_config() noexcept {
         try {
             iparams::load_config() ;
+            SyscmdSource::sprocess() ;
 
             optloader::load_config() ;
             gbindcaller::load_config() ;

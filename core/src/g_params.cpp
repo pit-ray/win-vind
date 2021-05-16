@@ -1,26 +1,58 @@
 #include "g_params.hpp"
 
+#include <fstream>
 #include <iostream>
 #include <unordered_map>
+
+
+#include "disable_gcc_warning.hpp"
+
+#include <nlohmann/json.hpp>
+
+#include "enable_gcc_warning.hpp"
+
+#include "path.hpp"
 
 
 namespace
 {
     std::unordered_map<std::string, std::string>  g_str_params{} ;
     std::unordered_map<std::string, double> g_num_params{} ;
+
+    using namespace nlohmann ;
+    json g_default_params{} ;
 }
 
 namespace vind
 {
     namespace gparams {
-        void clear() {
-            g_str_params.clear() ;
-            g_num_params.clear() ;
+        void initialize() {
+            g_default_params.clear() ;
+            std::ifstream ifs(path::to_u8path(path::Default::SETTINGS())) ;
+            ifs >> g_default_params ;
         }
 
-        void remove(const std::string& name) {
-            g_str_params.erase(name) ;
-            g_num_params.erase(name) ;
+        void reset() {
+            g_str_params.clear() ;
+            g_num_params.clear() ;
+
+            for(auto& [name, obj] : g_default_params.items()) {
+                try {
+                    auto& val = obj.at("value") ;
+                    if(val.is_boolean()) {
+                        g_num_params[name] = val ? 1 : 0 ;
+                    }
+                    else if(val.is_number()) {
+                        g_num_params[name] = val.get<double>() ;
+                    }
+                    else {
+                        g_str_params[name] = val.get<std::string>() ;
+                    }
+                }
+                catch(const json::out_of_range&) {
+                    continue ;
+                }
+            }
         }
 
         std::string get_s(const std::string& name) {

@@ -6,8 +6,9 @@
 namespace vind
 {
     namespace gparams {
-        void clear() ;
-        void remove(const std::string& name) ;
+        void initialize() ;
+
+        void reset() ;
 
         std::string get_s(const std::string& name) ;
 

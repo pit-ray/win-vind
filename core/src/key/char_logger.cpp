@@ -11,9 +11,18 @@ namespace
 {
     using namespace vind ;
     bool is_including_ascii(const KeyLog& log) {
-        for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
-            if(keycodecvt::get_ascii(*itr)) {
-                return true ;
+        if(log.is_containing(KEYCODE_SHIFT)) {
+            for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
+                if(keycodecvt::get_shifted_ascii(*itr)) {
+                    return true ;
+                }
+            }
+        }
+        else {
+            for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
+                if(keycodecvt::get_ascii(*itr)) {
+                    return true ;
+                }
             }
         }
         return false ;
@@ -127,7 +136,7 @@ namespace vind
             pimpl->prelog_ = log ;
 
             if(!pimpl->is_including_enabled_chars(log) \
-                    && !is_including_ascii(diff)) {
+                    && !is_including_ascii(log)) {
                 return 0 ;
             }
 
@@ -171,11 +180,12 @@ namespace vind
                     auto c = keycodecvt::get_shifted_ascii(keycode) ;
                     if(c != 0) str.push_back(c) ;
                 }
-                continue ;
             }
-            for(const auto keycode : *itr) {
-                auto c = keycodecvt::get_ascii(keycode) ;
-                if(c != 0) str.push_back(c) ;
+            else {
+                for(const auto keycode : *itr) {
+                    auto c = keycodecvt::get_ascii(keycode) ;
+                    if(c != 0) str.push_back(c) ;
+                }
             }
         }
         return str ;

@@ -31,45 +31,6 @@ namespace
 
 namespace vind
 {
-    namespace funcfinder {
-        BindedFunc::SPtr find_func_byname(const std::string& name) {
-            auto id = BindedFunc::name_to_id(name) ;
-            for(const auto& func : g_all_func_list) {
-                if(func->id() == id) return func ;
-            }
-            return nullptr ;
-        }
-
-        void load_global_bindings() {
-            ParsedBindingLists().swap(g_parsed_bindlists) ; //clear by empty swapping
-
-            std::vector<gmaps::UniqueMap> maps{} ;
-
-            for(size_t i = 0 ; i < mode::mode_num() ; i ++) {
-                auto& funcmap = g_parsed_bindlists[i] ;
-
-                maps.clear() ;
-                gmaps::get_maps(static_cast<mode::Mode>(i), maps) ;
-                for(const auto& map : maps) {
-                    if(!map.is_function()) {
-                        continue ;
-                    }
-
-                    auto& shared_cmd_list = funcmap[map.func_name()] ;
-                    if(!shared_cmd_list) {
-                        shared_cmd_list = std::make_shared<CommandList>() ;
-                    }
-                    shared_cmd_list->push_back(map.trigger_command()) ;
-                }
-            }
-
-            // load configs of all function and give a chance to reconstruct FuncFinder automatically.
-            for(auto& func : g_all_func_list) {
-                func->reconstruct() ;
-            }
-        }
-    }
-
     using LoggerParserList = std::vector<LoggerParser::SPtr> ;
     struct FuncFinder::Impl {
         ModeArray<LoggerParserList> parser_ar_{} ;
@@ -218,4 +179,42 @@ namespace vind
             parser->reset_state() ;
         }
     }
+
+    BindedFunc::SPtr FuncFinder::find_func_byname(const std::string& name) {
+        auto id = BindedFunc::name_to_id(name) ;
+        for(const auto& func : g_all_func_list) {
+            if(func->id() == id) return func ;
+        }
+        return nullptr ;
+    }
+
+    void FuncFinder::load_global_bindings() {
+        ParsedBindingLists().swap(g_parsed_bindlists) ; //clear by empty swapping
+
+        std::vector<gmaps::UniqueMap> maps{} ;
+
+        for(size_t i = 0 ; i < mode::mode_num() ; i ++) {
+            auto& funcmap = g_parsed_bindlists[i] ;
+
+            maps.clear() ;
+            gmaps::get_maps(static_cast<mode::Mode>(i), maps) ;
+            for(const auto& map : maps) {
+                if(!map.is_function()) {
+                    continue ;
+                }
+
+                auto& shared_cmd_list = funcmap[map.func_name()] ;
+                if(!shared_cmd_list) {
+                    shared_cmd_list = std::make_shared<CommandList>() ;
+                }
+                shared_cmd_list->push_back(map.trigger_command()) ;
+            }
+        }
+
+        // load configs of all function and give a chance to reconstruct FuncFinder automatically.
+        for(auto& func : g_all_func_list) {
+            func->reconstruct() ;
+        }
+    }
+
 }

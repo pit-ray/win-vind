@@ -31,7 +31,7 @@ namespace vind
         }
 
         void reconstruct() {
-            funcfinder::load_global_bindings() ;
+            FuncFinder::load_global_bindings() ;
             g_funcfinder.reconstruct_funcset() ;
         }
 

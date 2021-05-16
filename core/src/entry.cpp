@@ -194,7 +194,7 @@ namespace vind
             cm.at(gparams::get_s("initial_mode"))->process() ;
 
             if(!func_name.empty()) {
-                auto func = funcfinder::find_func_byname(func_name) ;
+                auto func = FuncFinder::find_func_byname(func_name) ;
                 func->process() ;
             }
 
@@ -257,7 +257,7 @@ namespace vind
                 if(mmf.get() != NULL) {
                     std::string name(reinterpret_cast<const char*>(mmf.get())) ;
                     if(!name.empty()) {
-                        if(auto func = funcfinder::find_func_byname(name)) {
+                        if(auto func = FuncFinder::find_func_byname(name)) {
                             func->process() ;
                         }
                         else {

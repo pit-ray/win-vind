@@ -73,7 +73,7 @@ namespace vind
 
         keyabsorber::InstantKeyAbsorber ika ;
 
-        SmartKey alt(KEYCODE_LALT) ;
+        ScopedKey alt(KEYCODE_LALT) ;
         alt.press() ;
         keyabsorber::release_virtually(KEYCODE_LALT) ;
 

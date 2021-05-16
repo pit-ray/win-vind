@@ -102,7 +102,7 @@ namespace vind
     }
 
 
-    void Jump2Any::load_config() {
+    void Jump2Any::reconstruct() {
         //initilize
         pimpl->max_keybrd_xposs = 0 ;
         pimpl->max_keybrd_yposs = 0 ;

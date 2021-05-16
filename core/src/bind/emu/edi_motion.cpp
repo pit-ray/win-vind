@@ -165,7 +165,7 @@ namespace vind
     void EdiCopyMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EdiCopyMotion::load_config() {
+    void EdiCopyMotion::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
         pimpl->parent_funcfinder_.reconstruct_funcset() ;
     }
@@ -208,7 +208,7 @@ namespace vind
     void EdiDeleteMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EdiDeleteMotion::load_config() {
+    void EdiDeleteMotion::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
         pimpl->parent_funcfinder_.reconstruct_funcset() ;
     }
@@ -252,7 +252,7 @@ namespace vind
     void EdiDeleteMotionAndStartInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EdiDeleteMotionAndStartInsert::load_config() {
+    void EdiDeleteMotionAndStartInsert::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
         pimpl->parent_funcfinder_.reconstruct_funcset() ;
     }

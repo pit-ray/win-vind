@@ -30,7 +30,7 @@ namespace vind
             g_active_func = nullptr ;
         }
 
-        void load_config() {
+        void reconstruct() {
             funcfinder::load_global_bindings() ;
             g_funcfinder.reconstruct_funcset() ;
         }

@@ -64,7 +64,7 @@ namespace vind
     SwitchWindow::SwitchWindow(SwitchWindow&&)            = default ;
     SwitchWindow& SwitchWindow::operator=(SwitchWindow&&) = default ;
 
-    void SwitchWindow::load_config() {
+    void SwitchWindow::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
     }
 

@@ -175,13 +175,15 @@ namespace vind
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             keycodecvt::load_input_combination() ;
 
+            gbindcaller::initialize() ;
+
+            if(!load_config()) {
+                return false ;
+            }
+
             //lower keyboard hook
             //If you use debugger, must be disable this line not to be slow.
             keyabsorber::install_hook() ;
-
-            gbindcaller::initialize() ;
-
-            load_config() ;
 
             //initialize system mode
             std::unordered_map<std::string, BindedFunc::SPtr> cm {
@@ -213,9 +215,7 @@ namespace vind
         try {
             iparams::load_config() ;
             SyscmdSource::sprocess() ;
-
-            optloader::load_config() ;
-            gbindcaller::load_config() ;
+            reconstruct_all_components() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -228,9 +228,11 @@ namespace vind
         }
     }
 
-    bool load_option_config() noexcept {
+
+    bool reconstruct_all_components() noexcept {
         try {
-            optloader::load_config() ;
+            optloader::reconstruct() ;
+            gbindcaller::reconstruct() ;
             return true ;
         }
         catch(const std::exception& e) {

@@ -1,6 +1,7 @@
 #include "bind/syscmd/source.hpp"
 
 #include "bind/binded_func.hpp"
+#include "entry.hpp"
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "g_params.hpp"
@@ -25,13 +26,16 @@ namespace vind
     SyscmdSource::SyscmdSource()
     : BindedFuncCreator("system_command_source")
     {}
-    void SyscmdSource::sprocess(const std::string& path) {
+    void SyscmdSource::sprocess(
+            const std::string& path,
+            bool reload_config) {
         gparams::reset() ;
         gmaps::reset() ;
 
         std::ifstream ifs(path::to_u8path(path), std::ios::in) ;
         if(!ifs.is_open()) {
-            throw RUNTIME_EXCEPT("Could not open \"" + path + "\".\n") ;
+            VirtualCmdLine::msgout("Could not open \"" + path + "\".\n") ;
+            return ;
         }
 
         std::string aline ;
@@ -164,6 +168,10 @@ namespace vind
             } ; //switch
 
         } // while(getline())
+
+        if(reload_config) {
+            vind::reconstruct_all_components() ; // Apply settings
+        }
     }
     void SyscmdSource::sprocess(NTypeLogger&) {
     }

@@ -122,7 +122,7 @@ namespace vind
     }
 
     //must fix
-    void StartAnyApp::load_config() {
+    void StartAnyApp::reconstruct() {
         exapp::load_config() ;
     }
 

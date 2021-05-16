@@ -1253,7 +1253,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["enable d2w", "e d2w", "target", "d2w on", "set d2w"],
+        "cmd": ["enable d2w", "e d2w", "target", "d2w on"],
         "mycwn": [],
         "mycwi": [],
         "en": "Enable targeting (Dedicate to One Window)",
@@ -1268,7 +1268,7 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["disable d2w", "d d2w", "untarget", "d2w off", "unset d2w"],
+        "cmd": ["disable d2w", "d d2w", "untarget", "d2w off"],
         "mycwn": [],
         "mycwi": [],
         "en": "Disable targeting (Dedicate to One Window)",
@@ -2018,7 +2018,16 @@
         "edii": [],
         "ediv": [],
         "edivl": [],
-        "cmd": ["set", "set<any>"],
+        "cmd": [
+            "se",
+            "set",
+
+            "se ",
+            "set ",
+
+            "se <any>",
+            "set <any>"
+        ],
         "mycwn": [],
         "mycwi": [],
         "en": "System Command set",
@@ -2034,44 +2043,39 @@
         "ediv": [],
         "edivl": [],
         "cmd": [
+            "gnn",
+            "ggnoremap",
+            "gnn ",
+            "ggnoremap ",
             "gnn <any>",
-            "gnno <any>",
-            "gnnor <any>",
-            "gnnore <any>",
-            "gnnorem <any>",
-            "gnnorema <any>",
             "gnnoremap <any>",
 
+            "gvn",
+            "gvnoremap",
+            "gvn ",
+            "gvnoremap ",
             "gvn <any>",
-            "gvno <any>",
-            "gvnor <any>",
-            "gvnore <any>",
-            "gvnorem <any>",
-            "gvnorema <any>",
             "gvnoremap <any>",
 
+            "enn",
+            "ennoremap",
+            "enn ",
+            "ennoremap ",
             "enn <any>",
-            "enno <any>",
-            "ennor <any>",
-            "ennore <any>",
-            "ennorem <any>",
-            "ennorema <any>",
             "ennoremap <any>",
 
+            "evn",
+            "evnoremap",
+            "evn ",
+            "evnoremap ",
             "evn <any>",
-            "evno <any>",
-            "evnor <any>",
-            "evnore <any>",
-            "evnorem <any>",
-            "evnorema <any>",
             "evnoremap <any>",
 
-            "in <any>",
+            "ino",
+            "inoremap",
+            "ino ",
+            "inoremap ",
             "ino <any>",
-            "inor <any>",
-            "inore <any>",
-            "inorem <any>",
-            "inorema <any>",
             "inoremap <any>"
         ],
         "mycwn": [],
@@ -2089,18 +2093,38 @@
         "ediv": [],
         "edivl": [],
         "cmd": [
-            "gnu <any>",
+            "gnun",
+            "gnunmap",
+            "gnun ",
+            "gnunmap ",
+            "gnun <any>",
             "gnunmap <any>",
 
-            "gvu <any>",
+            "gvun",
+            "gvunmap",
+            "gvun ",
+            "gvunmap ",
+            "gvun <any>",
             "gvunmap <any>",
 
-            "enu <any>",
+            "enun",
+            "enunmap",
+            "enun ",
+            "enunmap ",
+            "enun <any>",
             "enunmap <any>",
 
-            "evu <any>",
+            "evun",
+            "evunmap",
+            "evun ",
+            "evunmap ",
+            "evun <any>",
             "evunmap <any>",
 
+            "iu",
+            "iunmap",
+            "iu ",
+            "iunmap ",
             "iu <any>",
             "iunmap <any>"
         ],
@@ -2119,19 +2143,39 @@
         "ediv": [],
         "edivl": [],
         "cmd": [
-            "gnu <any>",
+            "gnmapc",
+            "gnmapclear",
+            "gnmapc ",
+            "gnmapclear ",
+            "gnmapc <any>",
             "gnmapclear <any>",
 
-            "gvu <any>",
+            "gvmapc",
+            "gvmapclear",
+            "gvmapc ",
+            "gvmapclear ",
+            "gvmapc <any>",
             "gvmapclear <any>",
 
-            "enu <any>",
+            "enmapc",
+            "enmapclear",
+            "enmapc ",
+            "enmapclear ",
+            "enmapc <any>",
             "enmapclear <any>",
 
-            "evu <any>",
+            "evmapc",
+            "evmapclear",
+            "evmapc ",
+            "evmapclear ",
+            "evmapc <any>",
             "evmapclear <any>",
 
-            "iu <any>",
+            "imapc",
+            "imapclear",
+            "imapc ",
+            "imapclear ",
+            "imapc <any>",
             "imapclear <any>"
         ],
         "mycwn": [],
@@ -2149,8 +2193,14 @@
         "ediv": [],
         "edivl": [],
         "cmd": [
+            "com",
             "command",
-            "command<any>"
+
+            "com ",
+            "command ",
+
+            "com <any>",
+            "command <any>"
         ],
         "mycwn": [],
         "mycwi": [],
@@ -2167,8 +2217,14 @@
         "ediv": [],
         "edivl": [],
         "cmd": [
+            "delc",
             "delcommand",
-            "delcommand<any>"
+
+            "delc ",
+            "delcommand ",
+
+            "delc <any>",
+            "delcommand <any>"
         ],
         "mycwn": [],
         "mycwi": [],
@@ -2185,8 +2241,14 @@
         "ediv": [],
         "edivl": [],
         "cmd": [
+            "comc",
             "comclear",
-            "comclear<any>"
+
+            "comc ",
+            "comclear ",
+
+            "comc <any>",
+            "comclear <any>"
         ],
         "mycwn": [],
         "mycwi": [],
@@ -2205,8 +2267,12 @@
         "cmd": [
             "so",
             "source",
-            "so<any>",
-            "source<any>"
+
+            "so ",
+            "source ",
+
+            "so <any>",
+            "source <any>"
         ],
         "mycwn": [],
         "mycwi": [],

@@ -135,6 +135,10 @@ namespace vind
             auto diff = log - pimpl->prelog_ ;
             pimpl->prelog_ = log ;
 
+            if(diff.empty()) {
+                return 0 ;
+            }
+
             if(!pimpl->is_including_enabled_chars(log) \
                     && !is_including_ascii(log)) {
                 return 0 ;
@@ -155,6 +159,10 @@ namespace vind
             return static_cast<int>(latest().size()) ;
         }
         else { //long pressing
+            if(log.empty()) {
+                return 0 ;
+            }
+
             if(!pimpl->is_including_enabled_chars(log) \
                     && !is_including_ascii(log)) {
                 return 0 ;

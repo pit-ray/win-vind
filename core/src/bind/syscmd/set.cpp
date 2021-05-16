@@ -5,6 +5,7 @@
 
 #include "bind/binded_func.hpp"
 #include "bind/binded_func_creator.hpp"
+#include "entry.hpp"
 #include "g_params.hpp"
 #include "key/char_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
@@ -18,16 +19,30 @@ namespace vind
     : BindedFuncCreator("system_command_set")
     {}
 
-    void SyscmdSet::sprocess(const std::string& args) {
-        if(args.empty()) {
-            VirtualCmdLine::msgout("E: Not support list of option yet") ;
+    void SyscmdSet::sprocess(
+            const std::string& args,
+            bool reload_config) {
+
+        auto [key, val] = rcparser::divide_key_and_value(args, "=") ;
+
+        if(key.empty()) {
+            if(val.empty()) {
+                VirtualCmdLine::msgout("E: Not support list of option yet") ;
+            }
+            else {
+                VirtualCmdLine::msgout("E: Invalid syntax") ;
+            }
             return ;
         }
 
-        auto [key, val] = rcparser::divide_key_and_value(args, "=") ;
         key = util::A2a(key) ;
 
         if(val.empty()) { // set option_name
+            if(key.find(" ") != std::string::npos) {
+                VirtualCmdLine::msgout("E: Unknown option") ;
+                return ;
+            }
+
             if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {
                 gparams::set(key.substr(2), false) ;
             }
@@ -43,6 +58,10 @@ namespace vind
                 gparams::set(key, val) ;
             }
         }
+
+        if(reload_config) {
+            vind::reconstruct_all_components() ;
+        }
     }
 
     void SyscmdSet::sprocess(NTypeLogger&) {
@@ -56,6 +75,6 @@ namespace vind
         }
 
         auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
-        sprocess(args) ;
+        sprocess(args, true) ;
     }
 }

@@ -4,6 +4,7 @@
 #include "bind/bindings_lists.hpp"
 #include "bind/logger_parser.hpp"
 #include "entry.hpp"
+#include "g_maps.hpp"
 #include "key/key_logger_base.hpp"
 #include "mapdefs.hpp"
 #include "mode.hpp"
@@ -32,71 +33,39 @@ namespace vind
 {
     namespace funcfinder {
         BindedFunc::SPtr find_func_byname(const std::string& name) {
-                for(const auto& func : g_all_func_list) {
-                    if(func->name() == name) return func ;
-                }
-                return nullptr ;
+            auto id = BindedFunc::name_to_id(name) ;
+            for(const auto& func : g_all_func_list) {
+                if(func->id() == id) return func ;
+            }
+            return nullptr ;
         }
 
         void load_global_bindings() {
             ParsedBindingLists().swap(g_parsed_bindlists) ; //clear by empty swapping
 
-            ParsedStringBindingLists parsed_strcmds ;
-            bindjsonparser::parse_bindings_as_list(path::BINDINGS(), g_all_func_list, parsed_strcmds) ;
+            std::vector<gmaps::UniqueMap> maps{} ;
 
-            if(parsed_strcmds.empty()) {
-                throw RUNTIME_EXCEPT("Could not parse " + path::BINDINGS()) ;
-            }
+            for(size_t i = 0 ; i < mode::mode_num() ; i ++) {
+                auto& funcmap = g_parsed_bindlists[i] ;
 
-            for(const auto& [name, strcmd_modelists] : parsed_strcmds) {
-                ModeArray<std::size_t> links ;
-                links.fill(static_cast<std::size_t>(mode::Mode::None)) ;
-
-                for(std::size_t i = 0 ; i < mode::mode_num() ; i ++) {
-                    const auto& strcmds = strcmd_modelists[i] ;
-
-                    if(strcmds.empty()) {
+                maps.clear() ;
+                gmaps::get_maps(static_cast<mode::Mode>(i), maps) ;
+                for(const auto& map : maps) {
+                    if(!map.is_function()) {
                         continue ;
                     }
 
-                    if(strcmds.size() == 1) {
-                        auto mode = bindparser::parse_string_modecode(strcmds.front()) ;
-                        if(mode != mode::Mode::None) {
-                            links[i] = static_cast<std::size_t>(mode) ;
-                            continue ;
-                        }
+                    auto& shared_cmd_list = funcmap[map.func_name()] ;
+                    if(!shared_cmd_list) {
+                        shared_cmd_list = std::make_shared<CommandList>() ;
                     }
-
-                    auto cmdlist_ptr = std::make_shared<CommandList>() ;
-                    for(auto& strcmd : strcmds) {
-                        cmdlist_ptr->push_back(bindparser::parse_string_binding(strcmd)) ;
-                    }
-
-                    g_parsed_bindlists[i][name] = std::move(cmdlist_ptr) ;
-                }
-
-                //If there are some key-bindings fields of the mode having <mode-name> (e.q. <guin>, <edin>) in bindings.json ,
-                //they are copied key-bindings from the first mode in json-array to them.
-                //Ex) "guin": ["<Esc>", "happy"]
-                //    "edin": ["<guin>", "<guii>"]    -> same as "guin"'s key-bindings(<Esc>, "happy")
-                for(std::size_t i = 0 ; i < mode::mode_num() ; i ++) {
-                    try {
-                        auto& linked_func_cmdlists = g_parsed_bindlists[links[i]] ;
-                        if(links[i] != static_cast<std::size_t>(mode::Mode::None) \
-                                && linked_func_cmdlists.at(name) != nullptr) {
-                            g_parsed_bindlists[i][name] = linked_func_cmdlists[name] ;
-                        }
-                    }
-                    catch(const std::out_of_range&) {
-                        continue ;
-                    }
+                    shared_cmd_list->push_back(map.trigger_command()) ;
                 }
             }
-
 
             // load configs of all function and give a chance to reconstruct FuncFinder automatically.
             for(auto& func : g_all_func_list) {
-                func->load_config() ;
+                func->reconstruct() ;
             }
         }
     }

@@ -143,7 +143,7 @@ namespace vind
                         return logstatus ;
                     }
 
-                    auto is_last_keyset = cmdidx_ == cmd.size() - 1 ;
+                    auto is_last_keyset = (cmdidx_ == cmd.size() - 1) ;
 
                     if(*itr == KEYCODE_OPTNUMBER) {
                         if(!is_containing_num(log)) {
@@ -271,7 +271,7 @@ namespace vind
         }
 
         unsigned char do_accept(const KeyLog& log) {
-            state_hist_.push(ParserState::WAITING) ;
+            state_hist_.push((state_hist_.top() & ParserState::KEYSET_NUM_MASK) | ParserState::WAITING) ;
             return do_waiting(log) ; // Epsilon Transition
         }
 

@@ -1,5 +1,6 @@
 #include "bind/syscmd/command.hpp"
 
+#include "entry.hpp"
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "key/char_logger.hpp"
@@ -13,7 +14,9 @@ namespace vind
     SyscmdCommand::SyscmdCommand()
     : BindedFuncCreator("system_command_command")
     {}
-    void SyscmdCommand::sprocess(const std::string& args) {
+    void SyscmdCommand::sprocess(
+            const std::string& args,
+            bool reload_config) {
         if(args.empty()) {
             VirtualCmdLine::msgout("E: Not support list of command yet") ;
             return ;
@@ -29,9 +32,11 @@ namespace vind
             return ;
         }
 
-        std::cout << "command " << arg1 << " ==> " << arg2 << std::endl ;
-
         gmaps::map(arg1, arg2, mode::Mode::Command) ;
+
+        if(reload_config) {
+            vind::reconstruct_all_components() ;
+        }
     }
     void SyscmdCommand::sprocess(NTypeLogger&) {
         return ;
@@ -42,7 +47,7 @@ namespace vind
             throw RUNTIME_EXCEPT("Empty command") ;
         }
         auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
-        sprocess(args) ;
+        sprocess(args, true) ;
     }
 
 
@@ -50,7 +55,9 @@ namespace vind
     SyscmdDelcommand::SyscmdDelcommand()
     : BindedFuncCreator("system_command_delcommand")
     {}
-    void SyscmdDelcommand::sprocess(const std::string& args) {
+    void SyscmdDelcommand::sprocess(
+            const std::string& args,
+            bool reload_config) {
         if(args.empty()) {
             // does not have argument is empty
             VirtualCmdLine::msgout("E: Invalid argument") ;
@@ -64,6 +71,10 @@ namespace vind
         }
 
         gmaps::unmap(arg, mode::Mode::Command) ;
+
+        if(reload_config) {
+            vind::reconstruct_all_components() ;
+        }
     }
     void SyscmdDelcommand::sprocess(NTypeLogger&) {
     }
@@ -74,15 +85,18 @@ namespace vind
         }
 
         auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
-        sprocess(args) ;
+        sprocess(args, true) ;
     }
 
     // comclear
     SyscmdComclear::SyscmdComclear()
     : BindedFuncCreator("system_command_comclear")
     {}
-    void SyscmdComclear::sprocess() {
+    void SyscmdComclear::sprocess(bool reload_config) {
         gmaps::mapclear(mode::Mode::Command) ;
+        if(reload_config) {
+            vind::reconstruct_all_components() ;
+        }
     }
     void SyscmdComclear::sprocess(NTypeLogger&) {
     }
@@ -97,6 +111,6 @@ namespace vind
             VirtualCmdLine::msgout("E: Invalid argument") ;
             return ;
         }
-        sprocess() ;
+        sprocess(true) ;
     }
 }

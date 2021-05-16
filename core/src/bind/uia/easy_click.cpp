@@ -46,8 +46,8 @@ namespace vind
     void EasyClickLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EasyClickLeft::load_config() {
-        pimpl->core_.load_config() ;
+    void EasyClickLeft::reconstruct() {
+        pimpl->core_.reconstruct() ;
     }
 
 
@@ -79,8 +79,8 @@ namespace vind
     void EasyClickRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EasyClickRight::load_config() {
-        pimpl->core_.load_config() ;
+    void EasyClickRight::reconstruct() {
+        pimpl->core_.reconstruct() ;
     }
 
 
@@ -112,8 +112,8 @@ namespace vind
     void EasyClickMid::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EasyClickMid::load_config() {
-        pimpl->core_.load_config() ;
+    void EasyClickMid::reconstruct() {
+        pimpl->core_.reconstruct() ;
     }
 
 
@@ -145,7 +145,7 @@ namespace vind
     void EasyClickHover::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EasyClickHover::load_config() {
-        pimpl->core_.load_config() ;
+    void EasyClickHover::reconstruct() {
+        pimpl->core_.reconstruct() ;
     }
 }

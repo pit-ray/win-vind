@@ -23,7 +23,7 @@ namespace vind
         SwitchWindow(const SwitchWindow&)            = delete ;
         SwitchWindow& operator=(const SwitchWindow&) = delete ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 }
 

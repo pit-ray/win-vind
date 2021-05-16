@@ -28,7 +28,7 @@ namespace
 namespace vind
 {
     namespace optloader {
-        void load_config()
+        void reconstruct()
         {
             std::for_each(g_vpop.cbegin(), g_vpop.cend(), [](auto& op){op->disable() ;}) ;
 

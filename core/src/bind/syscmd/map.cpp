@@ -2,6 +2,7 @@
 
 #include "bind/binded_func.hpp"
 #include "bind/binded_func_creator.hpp"
+#include "entry.hpp"
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "key/char_logger.hpp"
@@ -20,7 +21,10 @@ namespace vind
     SyscmdNoremap::SyscmdNoremap()
     : BindedFuncCreator("system_command_noremap")
     {}
-    void SyscmdNoremap::sprocess(const mode::Mode mode, const std::string& args) {
+    void SyscmdNoremap::sprocess(
+            const mode::Mode mode,
+            const std::string& args,
+            bool reload_config) {
         if(args.empty()) {
             VirtualCmdLine::msgout("E: Not support list of map yet") ;
             return ;
@@ -36,8 +40,11 @@ namespace vind
             return ;
         }
 
-        std::cout << "map " << mode::mode_name(mode) << ": " << arg1 << " ==> " << arg2 << std::endl ;
         gmaps::map(arg1, arg2, mode) ;
+
+        if(reload_config) {
+            vind::reconstruct_all_components() ;
+        }
     }
     void SyscmdNoremap::sprocess(NTypeLogger&) {
         return ;
@@ -57,7 +64,7 @@ namespace vind
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;
         }
-        sprocess(mode, args) ;
+        sprocess(mode, args, true) ;
     }
 
 
@@ -66,7 +73,10 @@ namespace vind
     : BindedFuncCreator("system_command_unmap")
     {}
 
-    void SyscmdUnmap::sprocess(mode::Mode mode, const std::string& args) {
+    void SyscmdUnmap::sprocess(
+            mode::Mode mode,
+            const std::string& args,
+            bool reload_config) {
         if(args.empty()) {
             // does not have argument is empty
             VirtualCmdLine::msgout("E: Invalid argument") ;
@@ -78,8 +88,11 @@ namespace vind
             VirtualCmdLine::msgout("E: Invalid argument") ;
             return ;
         }
-        std::cout << "unmap " << mode::mode_name(mode) << ": " << arg << std::endl ;
         gmaps::unmap(arg, mode) ;
+
+        if(reload_config) {
+            vind::reconstruct_all_components() ;
+        }
     }
     void SyscmdUnmap::sprocess(NTypeLogger&) {
     }
@@ -98,7 +111,7 @@ namespace vind
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;
         }
-        sprocess(mode, args) ;
+        sprocess(mode, args, true) ;
     }
 
     // mapclear
@@ -106,9 +119,14 @@ namespace vind
     : BindedFuncCreator("system_command_mapclear")
     {}
 
-    void SyscmdMapclear::sprocess(mode::Mode mode) {
-        std::cout << "clear " << mode::mode_name(mode) << std::endl ;
+    void SyscmdMapclear::sprocess(
+            mode::Mode mode,
+            bool reload_config) {
+
         gmaps::mapclear(mode) ;
+        if(reload_config) {
+            vind::reconstruct_all_components() ;
+        }
     }
     void SyscmdMapclear::sprocess(NTypeLogger&) {
     }
@@ -124,13 +142,13 @@ namespace vind
             return ;
         }
 
-        auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, "u") ;
+        auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, "m") ;
         auto mode = rcparser::parse_mode_prefix(prefix) ;
         if(mode == mode::Mode::None) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;
         }
-        sprocess(mode) ;
+        sprocess(mode, true) ;
     }
 }

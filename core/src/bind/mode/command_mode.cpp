@@ -124,7 +124,7 @@ namespace vind
     CommandMode::CommandMode(CommandMode&&)            = default ;
     CommandMode& CommandMode::operator=(CommandMode&&) = default ;
 
-    void CommandMode::load_config() {
+    void CommandMode::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
     }
 

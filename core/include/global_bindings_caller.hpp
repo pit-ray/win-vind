@@ -5,7 +5,7 @@ namespace vind
 {
     namespace gbindcaller {
         void initialize() ;
-        void load_config() ;
+        void reconstruct() ;
 
         void call_matched_func() ;
     }

@@ -138,7 +138,7 @@ namespace vind
         return false ;
     }
 
-    void BindedFunc::load_config() {
+    void BindedFunc::reconstruct() {
         return ;
     }
 

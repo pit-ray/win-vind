@@ -31,7 +31,7 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 
     class EasyClickRight : public BindedFuncCreator<EasyClickRight> {
@@ -53,7 +53,7 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 
     class EasyClickMid : public BindedFuncCreator<EasyClickMid> {
@@ -75,7 +75,7 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 
     class EasyClickHover : public BindedFuncCreator<EasyClickHover> {
@@ -97,7 +97,7 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 }
 

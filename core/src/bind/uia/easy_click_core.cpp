@@ -86,7 +86,7 @@ namespace vind
         }
     }
 
-    void EasyClickCore::load_config() {
+    void EasyClickCore::reconstruct() {
         pimpl->display_hinter_.load_config() ;
     }
 }

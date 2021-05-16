@@ -38,8 +38,6 @@ namespace vind
 
         std::cout << "map " << mode::mode_name(mode) << ": " << arg1 << " ==> " << arg2 << std::endl ;
         gmaps::map(arg1, arg2, mode) ;
-
-        // mode, src_cmd, target
     }
     void SyscmdNoremap::sprocess(NTypeLogger&) {
         return ;
@@ -59,7 +57,6 @@ namespace vind
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;
         }
-
         sprocess(mode, args) ;
     }
 
@@ -81,7 +78,6 @@ namespace vind
             VirtualCmdLine::msgout("E: Invalid argument") ;
             return ;
         }
-
         std::cout << "unmap " << mode::mode_name(mode) << ": " << arg << std::endl ;
         gmaps::unmap(arg, mode) ;
     }
@@ -102,7 +98,6 @@ namespace vind
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;
         }
-
         sprocess(mode, args) ;
     }
 
@@ -113,7 +108,6 @@ namespace vind
 
     void SyscmdMapclear::sprocess(mode::Mode mode) {
         std::cout << "clear " << mode::mode_name(mode) << std::endl ;
-
         gmaps::mapclear(mode) ;
     }
     void SyscmdMapclear::sprocess(NTypeLogger&) {
@@ -137,7 +131,6 @@ namespace vind
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;
         }
-
         sprocess(mode) ;
     }
 }

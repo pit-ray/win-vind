@@ -32,8 +32,6 @@ namespace vind
         std::cout << "command " << arg1 << " ==> " << arg2 << std::endl ;
 
         gmaps::map(arg1, arg2, mode::Mode::Command) ;
-
-        // mode, src_cmd, target
     }
     void SyscmdCommand::sprocess(NTypeLogger&) {
         return ;
@@ -65,7 +63,6 @@ namespace vind
             return ;
         }
 
-        // mode unmap
         gmaps::unmap(arg, mode::Mode::Command) ;
     }
     void SyscmdDelcommand::sprocess(NTypeLogger&) {
@@ -86,7 +83,6 @@ namespace vind
     {}
     void SyscmdComclear::sprocess() {
         gmaps::mapclear(mode::Mode::Command) ;
-        // mode clear
     }
     void SyscmdComclear::sprocess(NTypeLogger&) {
     }
@@ -101,7 +97,6 @@ namespace vind
             VirtualCmdLine::msgout("E: Invalid argument") ;
             return ;
         }
-
         sprocess() ;
     }
 }

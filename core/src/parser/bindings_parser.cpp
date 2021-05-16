@@ -125,6 +125,33 @@ namespace vind
         }
 
         namespace debug {
+            std::string print(const Command& cmd) {
+                std::stringstream ss ;
+                for(const auto& keyset : cmd) {
+                    if(keyset.size() == 1) {
+                        auto name = keycodecvt::get_name(keyset.front()) ;
+                        if(name.size() == 1) {
+                            ss << name ;
+                        }
+                        else {
+                            ss << "<" << name << ">" ;
+                        }
+                    }
+                    else {
+                        ss << "<" ;
+                        for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
+                            if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
+                                ss << "-" ;
+                            }
+                            ss << keycodecvt::get_name(*keyitr) ;
+                        }
+                        if(keyset.size() > 1) {
+                            ss << ">" ;
+                        }
+                    }
+                }
+                return ss.str() ;
+            }
             std::string print(const CommandList& list) {
                 std::stringstream ss ;
 
@@ -134,29 +161,7 @@ namespace vind
                         ss << ", " ;
                     }
 
-                    for(const auto& keyset : *cmditr) {
-                        if(keyset.size() == 1) {
-                            auto name = keycodecvt::get_name(keyset.front()) ;
-                            if(name.size() == 1) {
-                                ss << name ;
-                            }
-                            else {
-                                ss << "<" << name << ">" ;
-                            }
-                        }
-                        else {
-                            ss << "<" ;
-                            for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
-                                if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
-                                    ss << "-" ;
-                                }
-                                ss << keycodecvt::get_name(*keyitr) ;
-                            }
-                            if(keyset.size() > 1) {
-                                ss << ">" ;
-                            }
-                        }
-                    }
+                    ss << print(*cmditr) ;
                 }
                 ss << "]" ;
 

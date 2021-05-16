@@ -26,12 +26,12 @@ namespace vind
         explicit Impl(const std::string& name)
         : running_now_(false),
           name_(name),
-          id_(std::hash<std::string>()(name_))
+          id_(name_to_id(name_))
         {}
         explicit Impl(std::string&& name)
         : running_now_(false),
           name_(std::move(name)),
-          id_(std::hash<std::string>()(name_))
+          id_(name_to_id(name_))
         {}
 
         void release_fake_press() {

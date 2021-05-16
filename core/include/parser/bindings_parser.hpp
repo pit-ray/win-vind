@@ -67,6 +67,7 @@ namespace vind
         mode::Mode parse_string_modecode(const std::string& modestr) ;
 
         namespace debug {
+            std::string print(const Command& cmd) ;
             std::string print(const CommandList& list) ;
         }
     }

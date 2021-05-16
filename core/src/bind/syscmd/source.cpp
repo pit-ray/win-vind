@@ -1,10 +1,12 @@
 #include "bind/syscmd/source.hpp"
 
+#include "bind/binded_func.hpp"
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "g_params.hpp"
 #include "key/char_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
+#include "parser/bindings_parser.hpp"
 #include "parser/rc_parser.hpp"
 #include "path.hpp"
 #include "util/def.hpp"
@@ -24,8 +26,6 @@ namespace vind
     : BindedFuncCreator("system_command_source")
     {}
     void SyscmdSource::sprocess(const std::string& path) {
-        std::cout << path << std::endl ;
-
         gparams::reset() ;
         gmaps::reset() ;
 
@@ -160,8 +160,10 @@ namespace vind
                     auto msg = "E: Invalid Syntax (L:" + std::to_string(lnum) + ")" ;
                     VirtualCmdLine::msgout(msg) ;
                     throw RUNTIME_EXCEPT(msg) ;
-            } ;
-        }
+
+            } ; //switch
+
+        } // while(getline())
     }
     void SyscmdSource::sprocess(NTypeLogger&) {
     }

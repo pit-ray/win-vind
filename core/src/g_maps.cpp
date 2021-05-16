@@ -1,6 +1,7 @@
 #include "g_maps.hpp"
 
 #include <fstream>
+#include <memory>
 #include <stdexcept>
 #include <unordered_map>
 
@@ -32,54 +33,8 @@ namespace
         return false ;
     }
 
-    class Map {
-    private:
-        Command in_ ;
-        std::string out_ ;
-        bool is_function_ ;
 
-    public:
-        template <typename T1, typename T2>
-        explicit Map(T1&& in, T2& out)
-        : in_(bindparser::parse_string_binding(std::forward<T1>(in))),
-          out_(std::forward<T2>(out)),
-          is_function_(is_func_name(out_))
-        {}
-        template <typename T1, typename T2>
-        explicit Map(T1&& in, T2& out, bool is_function)
-        : in_(bindparser::parse_string_binding(std::forward<T1>(in))),
-          out_(std::forward<T2>(out)),
-          is_function_(is_function)
-        {}
-
-        bool is_function() const noexcept {
-            return is_function_ ;
-        }
-
-        const auto& trigger_command() const noexcept {
-            return in_ ;
-        }
-
-        const auto& func_name() const noexcept {
-            return out_ ;
-        }
-
-        auto create_target_command() const {
-            return bindparser::parse_string_binding(out_) ;
-        }
-
-        std::size_t hash() {
-            std::string strcmd{} ;
-            for(auto& set : in_) {
-                for(auto& key : set) {
-                    strcmd.push_back(key) ;
-                }
-            }
-            return std::hash<std::string>()(std::move(strcmd)) ;
-        }
-    } ;
-
-    using MapModeList = ModeArray<std::unordered_map<std::size_t, std::shared_ptr<Map>>> ;
+    using MapModeList = ModeArray<std::unordered_map<std::size_t, gmaps::UniqueMap>> ;
     MapModeList g_mode_maps{} ;
 
     using namespace nlohmann ;
@@ -90,6 +45,80 @@ namespace
 namespace vind
 {
     namespace gmaps {
+        struct UniqueMap::Impl {
+            Command in_ ;
+            std::string out_ ;
+            bool is_function_ ;
+
+            explicit Impl()
+            : in_(),
+              out_(),
+              is_function_(false)
+            {}
+
+            template <typename T1, typename T2>
+            explicit Impl(T1&& in, T2& out)
+            : in_(bindparser::parse_string_binding(std::forward<T1>(in))),
+              out_(std::forward<T2>(out)),
+              is_function_(is_func_name(out_))
+            {}
+            template <typename T1, typename T2>
+            explicit Impl(T1&& in, T2& out, bool is_function)
+            : in_(bindparser::parse_string_binding(std::forward<T1>(in))),
+              out_(std::forward<T2>(out)),
+              is_function_(is_function)
+            {}
+
+        } ;
+
+        UniqueMap::UniqueMap()
+        : pimpl(std::make_shared<Impl>())
+        {}
+
+        UniqueMap::UniqueMap(
+                const std::string& in,
+                const std::string& out)
+        : pimpl(std::make_shared<Impl>(in, out))
+        {}
+
+        UniqueMap::UniqueMap(
+                const std::string& in,
+                const std::string& out,
+                bool is_function)
+        : pimpl(std::make_shared<Impl>(in, out, is_function))
+        {}
+
+        bool UniqueMap::is_function() const noexcept {
+            return pimpl->is_function_ ;
+        }
+
+        const Command& UniqueMap::trigger_command() const noexcept {
+            return pimpl->in_ ;
+        }
+
+        const std::string& UniqueMap::func_name() const noexcept {
+            return pimpl->out_ ;
+        }
+
+        std::size_t UniqueMap::func_id() const noexcept {
+            return BindedFunc::name_to_id(pimpl->out_) ;
+        }
+
+        Command UniqueMap::create_target_command() const {
+            return bindparser::parse_string_binding(pimpl->out_) ;
+        }
+
+        std::size_t UniqueMap::compute_hash() const {
+            std::string strcmd{} ;
+            for(auto& set : pimpl->in_) {
+                for(auto& key : set) {
+                    strcmd.push_back(key) ;
+                }
+            }
+            return std::hash<std::string>()(std::move(strcmd)) ;
+        }
+
+
         void initialize() {
             g_default_maps.clear() ;
             std::ifstream ifs(path::to_u8path(path::Default::BINDINGS())) ;
@@ -121,8 +150,8 @@ namespace vind
 
                         auto& maps = g_mode_maps[i] ;
                         for(auto& strcmd : cmdlist) {
-                            auto map = std::make_shared<Map>(strcmd, name, true) ;
-                            maps[map->hash()] = std::move(map) ;
+                            UniqueMap map(strcmd, name, true) ;
+                            maps[map.compute_hash()] = std::move(map) ;
                         }
                     }
                 }
@@ -145,16 +174,16 @@ namespace vind
                 throw RUNTIME_EXCEPT("Empty maps") ;
             }
 
-            auto map = std::make_shared<Map>(incmd, outcmd) ;
+            UniqueMap map(incmd, outcmd) ;
 
-            if(map->is_function()) {
+            if(map.is_function()) {
                 // Overwrite if function-name or empty
-                auto hash = map->hash() ;
+                auto hash = map.compute_hash() ;
 
                 auto& maps = g_mode_maps[static_cast<int>(mode)] ;
                 try {
                     auto& oldmap = maps.at(hash) ;
-                    if(oldmap->is_function()) {
+                    if(oldmap.is_function()) {
                         oldmap = std::move(map) ;
                     }
                 }
@@ -164,7 +193,7 @@ namespace vind
             }
             else {
                 // Overwrite map anyway
-                g_mode_maps[static_cast<int>(mode)][map->hash()] = std::move(map) ;
+                g_mode_maps[static_cast<int>(mode)][map.compute_hash()] = std::move(map) ;
             }
         }
 
@@ -174,14 +203,30 @@ namespace vind
             if(incmd.empty()) {
                 throw RUNTIME_EXCEPT("Empty map") ;
             }
-            Map map(incmd, "", true) ;
-            auto hash = map.hash() ;
+            UniqueMap map(incmd, "", true) ;
+            auto hash = map.compute_hash() ;
 
             g_mode_maps[static_cast<int>(mode)].erase(hash) ;
         }
 
         void mapclear(mode::Mode mode) {
             g_mode_maps[static_cast<int>(mode)].clear() ;
+        }
+
+        UniqueMap get_map(
+                const std::string& cmd,
+                mode::Mode mode) {
+            UniqueMap map(cmd, "", true) ;
+            return g_mode_maps[static_cast<int>(mode)].at(map.compute_hash()) ;
+        }
+
+        void get_maps(
+                mode::Mode mode,
+                std::vector<UniqueMap>& returns) {
+            returns.clear() ;
+            for(auto& [hash, map] : g_mode_maps[static_cast<int>(mode)]) {
+                returns.push_back(map) ;
+            }
         }
     }
 }

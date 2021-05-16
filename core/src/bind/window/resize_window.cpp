@@ -1,7 +1,7 @@
 #include "bind/window/resize_window.hpp"
 
 #include "bind/window/window_utility.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/char_logger.hpp"
 #include "key/key_logger_base.hpp"
@@ -129,7 +129,7 @@ namespace vind
     }
     void IncreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(iparams::get_l("window_width_delta") * parent_lgr.get_head_num()) ;
+            sprocess(gparams::get_l("window_width_delta") * parent_lgr.get_head_num()) ;
         }
     }
     void IncreaseWindowWidth::sprocess(const CharLogger& parent_lgr) {
@@ -157,7 +157,7 @@ namespace vind
     }
     void DecreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(iparams::get_l("window_width_delta") * parent_lgr.get_head_num()) ;
+            sprocess(gparams::get_l("window_width_delta") * parent_lgr.get_head_num()) ;
         }
     }
     void DecreaseWindowWidth::sprocess(const CharLogger& parent_lgr) {
@@ -199,7 +199,7 @@ namespace vind
     }
     void IncreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(iparams::get_l("window_height_delta") * parent_lgr.get_head_num()) ;
+            sprocess(gparams::get_l("window_height_delta") * parent_lgr.get_head_num()) ;
         }
     }
     void IncreaseWindowHeight::sprocess(const CharLogger& parent_lgr) {
@@ -228,7 +228,7 @@ namespace vind
     }
     void DecreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(iparams::get_l("window_height_delta") * parent_lgr.get_head_num()) ;
+            sprocess(gparams::get_l("window_height_delta") * parent_lgr.get_head_num()) ;
         }
     }
     void DecreaseWindowHeight::sprocess(const CharLogger& parent_lgr) {

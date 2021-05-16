@@ -6,7 +6,7 @@
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "err_logger.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
@@ -31,7 +31,7 @@ namespace vind
     }
 
     void Dedicate2Window::enable_targeting() {
-        if(iparams::get_b(sname())) {
+        if(gparams::get_b(sname())) {
             target_hwnd = GetForegroundWindow() ;
             past_hwnd   = NULL ;
             VirtualCmdLine::msgout("-- TARGET ON --") ;
@@ -39,7 +39,7 @@ namespace vind
     }
 
     void Dedicate2Window::disable_targeting() {
-        if(iparams::get_b(sname())) {
+        if(gparams::get_b(sname())) {
             target_hwnd = NULL ;
             past_hwnd   = NULL ;
             VirtualCmdLine::msgout("-- TARGET OFF --") ;

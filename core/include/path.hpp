@@ -7,7 +7,7 @@
 #include <filesystem>
 #endif
 
-#include "i_params.hpp"
+#include "g_params.hpp"
 
 namespace vind
 {
@@ -46,7 +46,7 @@ namespace vind
         }
 
         inline std::string KEYBRD_MAP() {
-            return CONFIG_PATH() + iparams::get_s("kb_type") ;
+            return CONFIG_PATH() + gparams::get_s("kb_type") ;
         }
 
         namespace Default {

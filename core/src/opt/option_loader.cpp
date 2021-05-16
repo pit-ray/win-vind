@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "err_logger.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 
 #include "opt/autotrack_popup.hpp"
 #include "opt/dedicate_to_window.hpp"
@@ -33,7 +33,7 @@ namespace vind
             std::for_each(g_vpop.cbegin(), g_vpop.cend(), [](auto& op){op->disable() ;}) ;
 
             for(const auto& op : g_vpop) {
-                if(iparams::get_b(op->name())) op->enable() ;
+                if(gparams::get_b(op->name())) op->enable() ;
             }
         }
 

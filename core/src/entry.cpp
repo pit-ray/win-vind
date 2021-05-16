@@ -69,7 +69,6 @@ SOFTWARE.
 #include "g_maps.hpp"
 #include "g_params.hpp"
 #include "global_bindings_caller.hpp"
-#include "i_params.hpp"
 #include "mode.hpp"
 #include "path.hpp"
 
@@ -192,7 +191,7 @@ namespace vind
                 {"edi_normal", Change2EdiNormal::create()},
                 {"edi_insert", Change2EdiInsert::create()}
             } ;
-            cm.at(iparams::get_s("initial_mode"))->process() ;
+            cm.at(gparams::get_s("initial_mode"))->process() ;
 
             if(!func_name.empty()) {
                 auto func = funcfinder::find_func_byname(func_name) ;
@@ -213,7 +212,6 @@ namespace vind
 
     bool load_config() noexcept {
         try {
-            iparams::load_config() ;
             SyscmdSource::sprocess() ;
             reconstruct_all_components() ;
             return true ;

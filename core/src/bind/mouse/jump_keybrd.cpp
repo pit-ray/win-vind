@@ -12,7 +12,7 @@
 #include "bind/mouse/jump_keybrd.hpp"
 #include "entry.hpp"
 #include "err_logger.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
@@ -74,10 +74,10 @@ namespace vind
                             pimpl->yposs[keycode] / pimpl->max_keybrd_yposs * height) ;
 
                     if(x_pos == width) 
-                        x_pos -= iparams::get_i("screen_pos_buf") ;
+                        x_pos -= gparams::get_i("screen_pos_buf") ;
 
                     if(y_pos == height) 
-                        y_pos -= iparams::get_i("screen_pos_buf") ;
+                        y_pos -= gparams::get_i("screen_pos_buf") ;
 
                     SetCursorPos(x_pos, y_pos) ;
 

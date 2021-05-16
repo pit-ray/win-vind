@@ -156,7 +156,6 @@ add_library(kernel STATIC
     src/err_logger.cpp
     src/g_maps.cpp
     src/g_params.cpp
-    src/i_params.cpp
     src/mode.cpp
     src/path.cpp
 )

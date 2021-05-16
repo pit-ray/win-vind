@@ -3,7 +3,7 @@
 #include <iostream>
 #include <windows.h>
 
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/mouse.hpp"
 #include "key/ntype_logger.hpp"
 #include "time/interval_timer.hpp"
@@ -37,7 +37,7 @@ namespace vind
     ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
     void ScrollUp::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(iparams::get_i("yscroll_speed") * repeat_num) ;
+        mouse::vscroll(gparams::get_i("yscroll_speed") * repeat_num) ;
     }
     void ScrollUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -68,7 +68,7 @@ namespace vind
     ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
 
     void ScrollDown::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(-iparams::get_i("yscroll_speed") * repeat_num) ;
+        mouse::vscroll(-gparams::get_i("yscroll_speed") * repeat_num) ;
     }
     void ScrollDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -100,7 +100,7 @@ namespace vind
 
     void ScrollMidUp::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * 0.5f * repeat_num * \
-                iparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("yscroll_screen_ratio")) ;
     }
     void ScrollMidUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -132,7 +132,7 @@ namespace vind
 
     void ScrollMidDown::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-0.5f * MAX_Y_POS * repeat_num * \
-                iparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("yscroll_screen_ratio")) ;
     }
     void ScrollMidDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -164,7 +164,7 @@ namespace vind
 
     void ScrollPageUp::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * repeat_num * \
-                iparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("yscroll_screen_ratio")) ;
     }
     void ScrollPageUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -196,7 +196,7 @@ namespace vind
 
     void ScrollPageDown::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-MAX_Y_POS * repeat_num * \
-                iparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("yscroll_screen_ratio")) ;
     }
     void ScrollPageDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -228,7 +228,7 @@ namespace vind
     ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
 
     void ScrollLeft::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(-iparams::get_i("xscroll_speed") * repeat_num) ;
+        mouse::hscroll(-gparams::get_i("xscroll_speed") * repeat_num) ;
     }
     void ScrollLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -259,7 +259,7 @@ namespace vind
     ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
 
     void ScrollRight::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(iparams::get_f("xscroll_speed") * repeat_num) ;
+        mouse::hscroll(gparams::get_f("xscroll_speed") * repeat_num) ;
     }
     void ScrollRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -291,7 +291,7 @@ namespace vind
 
     void ScrollMidLeft::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(-0.5f * MAX_X_POS * repeat_num * \
-                iparams::get_f("xscroll_screen_ratio")) ;
+                gparams::get_f("xscroll_screen_ratio")) ;
     }
     void ScrollMidLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -323,7 +323,7 @@ namespace vind
 
     void ScrollMidRight::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(MAX_X_POS * 0.5f * repeat_num * \
-                iparams::get_f("xscroll_screen_ratio")) ;
+                gparams::get_f("xscroll_screen_ratio")) ;
     }
     void ScrollMidRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

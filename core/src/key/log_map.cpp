@@ -2,12 +2,14 @@
 
 #include "g_maps.hpp"
 #include "io/keybrd.hpp"
+#include "key/key_log.hpp"
 #include "key/keycodecvt.hpp"
 #include "mapdefs.hpp"
 #include "mode.hpp"
 
 #include <stdexcept>
 #include <unordered_set>
+#include <utility>
 
 namespace
 {
@@ -16,8 +18,8 @@ namespace
     using ModeKeySetMaps = ModeArray<std::vector<std::pair<KeySet, KeySet>>> ;
     ModeKeySetMaps g_modemaps{} ;
 
-    using KeyCodeMap = ModeArray<std::unordered_map<KeyCode, KeyCode>> ;
-    KeyCodeMap g_keycodemap{} ;
+    using ModeKeyCodeMap = ModeArray<std::unordered_map<KeyCode, KeyCode>> ;
+    ModeKeyCodeMap g_keycodemap{} ;
 }
 
 
@@ -27,7 +29,7 @@ namespace vind
 
         void load_config() {
             ModeKeySetMaps().swap(g_modemaps) ;
-            KeyCodeMap().swap(g_keycodemap) ;
+            ModeKeyCodeMap().swap(g_keycodemap) ;
 
             std::vector<gmaps::UniqueMap> maps ;
 

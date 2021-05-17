@@ -38,7 +38,7 @@ ino B g<c-l>yy
 gnnoremap <esc-left> change_to_normal
 ```
 
-### Key Map
+### Map
 
 |Syntax|Mode|
 |:---:|:---:|
@@ -62,7 +62,7 @@ gnnoremap <esc-left> change_to_normal
 |`cno[remap]`|Command|
 
 
-### Delete
+### Delete Map
 
 |Syntax|Mode|
 |:---:|:---:|
@@ -73,7 +73,7 @@ gnnoremap <esc-left> change_to_normal
 |`iu[nmap]`|Insert|
 |`cu[nmap]`|Command|
 
-### Clear
+### Clear Map
 
 |Syntax|Mode|
 |:---:|:---:|
@@ -84,7 +84,7 @@ gnnoremap <esc-left> change_to_normal
 |`imapc[lear]`|Insert|
 |`cmapc[lear]`|Command|
 
-### Command
+### Command Add/Del/Clear
 |Syntax|Mode|
 |:---:|:---:|
 |`com[mand]`|Command|

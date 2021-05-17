@@ -42,6 +42,7 @@ namespace
 
     using namespace nlohmann ;
     json g_default_maps{} ;
+
 }
 
 
@@ -51,13 +52,16 @@ namespace vind
         struct UniqueMap::Impl {
             Command in_ ;
             std::string out_ ;
-            bool is_function_ ;
+            MapType type_ ;
 
             template <typename T1, typename T2>
-            explicit Impl(T1&& in, T2&& out, bool is_function)
+            explicit Impl(
+                    T1&& in,
+                    T2&& out,
+                    MapType expect_type)
             : in_(bindparser::parse_string_binding(std::forward<T1>(in))),
               out_(std::forward<T2>(out)),
-              is_function_(is_function)
+              type_(expect_type)
             {
                 for(auto& keyset : in_) {
                     if(keyset.empty()) {
@@ -66,15 +70,10 @@ namespace vind
                 }
             }
 
-            template <typename T1, typename T2>
-            explicit Impl(T1&& in, T2&& out)
-            : Impl(in, out, is_func_name(out))
-            {}
-
             explicit Impl()
             : in_(),
               out_(),
-              is_function_(false)
+              type_(MapType::UNDEFINED)
             {}
         } ;
 
@@ -84,19 +83,28 @@ namespace vind
 
         UniqueMap::UniqueMap(
                 const std::string& in,
-                const std::string& out)
-        : pimpl(std::make_shared<Impl>(in, out))
-        {}
-
-        UniqueMap::UniqueMap(
-                const std::string& in,
                 const std::string& out,
-                bool is_function)
-        : pimpl(std::make_shared<Impl>(in, out, is_function))
-        {}
+                MapType expect_type,
+                bool check_if_func)
+        : pimpl(std::make_shared<Impl>(in, out, expect_type))
+        {
+            if(pimpl->type_ == MapType::NOREMAP && check_if_func) {
+                if(is_func_name(out)) {
+                    pimpl->type_ = MapType::NOREMAP_FUNCTION ;
+                }
+            }
+        }
 
-        bool UniqueMap::is_function() const noexcept {
-            return pimpl->is_function_ ;
+        bool UniqueMap::is_noremap_function() const noexcept {
+            return pimpl->type_ == MapType::NOREMAP_FUNCTION ;
+        }
+
+        bool UniqueMap::is_noremap() const noexcept {
+            return pimpl->type_ == MapType::NOREMAP ;
+        }
+
+        bool UniqueMap::is_map() const noexcept {
+            return pimpl->type_ == MapType::MAP ;
         }
 
         const Command& UniqueMap::trigger_command() const noexcept {
@@ -116,8 +124,16 @@ namespace vind
         }
 
         std::size_t UniqueMap::compute_hash() const {
+            return compute_hash(pimpl->in_) ;
+        }
+
+        std::size_t UniqueMap::compute_hash(const std::string& strcmd) {
+            return compute_hash(bindparser::parse_string_binding(strcmd)) ;
+        }
+
+        std::size_t UniqueMap::compute_hash(const Command& cmd) {
             std::string strcmd{} ;
-            for(auto& set : pimpl->in_) {
+            for(auto& set : cmd) {
                 for(auto& key : set) {
                     strcmd.push_back(key) ;
                 }
@@ -184,7 +200,7 @@ namespace vind
                             if(strcmd.empty()) {
                                 continue ;
                             }
-                            UniqueMap map(strcmd, name, true) ;
+                            UniqueMap map(strcmd, name, MapType::NOREMAP_FUNCTION, false) ;
                             maps[map.compute_hash()] = std::move(map) ;
                         }
                     }
@@ -214,16 +230,29 @@ namespace vind
                 throw RUNTIME_EXCEPT("Empty maps") ;
             }
 
-            UniqueMap map(incmd, outcmd) ;
+            UniqueMap map(incmd, outcmd, MapType::MAP, false) ;
+            // Overwrite map anyway
+            g_mode_maps[static_cast<int>(mode)][map.compute_hash()] = std::move(map) ;
+        }
 
-            if(map.is_function()) {
+        void noremap(
+                const std::string& incmd,
+                const std::string& outcmd,
+                mode::Mode mode) {
+            if(incmd.empty() || outcmd.empty()) {
+                throw RUNTIME_EXCEPT("Empty maps") ;
+            }
+
+            UniqueMap map(incmd, outcmd, MapType::NOREMAP, true) ;
+
+            if(map.is_noremap_function()) {
                 // Overwrite if function-name or empty
                 auto hash = map.compute_hash() ;
 
                 auto& maps = g_mode_maps[static_cast<int>(mode)] ;
                 try {
                     auto& oldmap = maps.at(hash) ;
-                    if(oldmap.is_function()) {
+                    if(oldmap.is_noremap_function()) {
                         oldmap = std::move(map) ;
                     }
                 }
@@ -243,8 +272,7 @@ namespace vind
             if(incmd.empty()) {
                 throw RUNTIME_EXCEPT("Empty map") ;
             }
-            UniqueMap map(incmd, "", true) ;
-            auto hash = map.compute_hash() ;
+            auto hash = UniqueMap::compute_hash(incmd) ;
 
             g_mode_maps[static_cast<int>(mode)].erase(hash) ;
         }
@@ -256,8 +284,8 @@ namespace vind
         UniqueMap get_map(
                 const std::string& cmd,
                 mode::Mode mode) {
-            UniqueMap map(cmd, "", true) ;
-            return g_mode_maps[static_cast<int>(mode)].at(map.compute_hash()) ;
+            auto hash = UniqueMap::compute_hash(cmd) ;
+            return g_mode_maps[static_cast<int>(mode)].at(hash) ;
         }
 
         void get_maps(

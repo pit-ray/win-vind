@@ -149,7 +149,8 @@ namespace vind
                 {"gv", Mode::Visual},
                 {"en", Mode::EdiNormal},
                 {"ev", Mode::EdiVisual},
-                {"i",  Mode::Insert}
+                {"i",  Mode::Insert},
+                {"c",  Mode::Command}
             } ;
             try {
                 return to_mode.at(prefix) ;
@@ -161,8 +162,33 @@ namespace vind
 
         RunCommandsIndex parse_run_command(const std::string& strcmd) {
             static std::unordered_map<std::string, RunCommandsIndex> parser {
-                {"se",         RunCommandsIndex::SET},
+                {"se",          RunCommandsIndex::SET},
                 {"set",         RunCommandsIndex::SET},
+
+                {"gnmap",       RunCommandsIndex::MAP_GN},
+                {"gnma",        RunCommandsIndex::MAP_GN},
+                {"gnm",         RunCommandsIndex::MAP_GN},
+
+                {"gvmap",       RunCommandsIndex::MAP_GV},
+                {"gvma",        RunCommandsIndex::MAP_GV},
+                {"gvm",         RunCommandsIndex::MAP_GV},
+
+                {"enmap",       RunCommandsIndex::MAP_EN},
+                {"enma",        RunCommandsIndex::MAP_EN},
+                {"enm",         RunCommandsIndex::MAP_EN},
+
+                {"evmap",       RunCommandsIndex::MAP_EV},
+                {"evma",        RunCommandsIndex::MAP_EV},
+                {"evm",         RunCommandsIndex::MAP_EV},
+
+                {"imap",        RunCommandsIndex::MAP_IN},
+                {"ima",         RunCommandsIndex::MAP_IN},
+                {"im",          RunCommandsIndex::MAP_IN},
+
+                {"cmap",        RunCommandsIndex::MAP_CM},
+                {"cma",         RunCommandsIndex::MAP_CM},
+                {"cm",          RunCommandsIndex::MAP_CM},
+
 
                 {"gnnoremap",   RunCommandsIndex::NOREMAP_GN},
                 {"gnnorema",    RunCommandsIndex::NOREMAP_GN},
@@ -203,6 +229,13 @@ namespace vind
                 {"inor",        RunCommandsIndex::NOREMAP_IN},
                 {"ino",         RunCommandsIndex::NOREMAP_IN},
 
+                {"cnoremap",    RunCommandsIndex::NOREMAP_CM},
+                {"cnorema",     RunCommandsIndex::NOREMAP_CM},
+                {"cnorem",      RunCommandsIndex::NOREMAP_CM},
+                {"cnore",       RunCommandsIndex::NOREMAP_CM},
+                {"cnor",        RunCommandsIndex::NOREMAP_CM},
+                {"cno",         RunCommandsIndex::NOREMAP_CM},
+
 
                 {"gnunmap",     RunCommandsIndex::UNMAP_GN},
                 {"gnunma",      RunCommandsIndex::UNMAP_GN},
@@ -229,6 +262,12 @@ namespace vind
                 {"iunm",        RunCommandsIndex::UNMAP_IN},
                 {"iun",         RunCommandsIndex::UNMAP_IN},
                 {"iu",          RunCommandsIndex::UNMAP_IN},
+
+                {"cunmap",      RunCommandsIndex::UNMAP_CM},
+                {"cunma",       RunCommandsIndex::UNMAP_CM},
+                {"cunm",        RunCommandsIndex::UNMAP_CM},
+                {"cun",         RunCommandsIndex::UNMAP_CM},
+                {"cu",          RunCommandsIndex::UNMAP_CM},
 
 
                 {"gnmapclear",  RunCommandsIndex::MAPCLEAR_GN},
@@ -260,6 +299,12 @@ namespace vind
                 {"imapcle",     RunCommandsIndex::MAPCLEAR_IN},
                 {"imapcl",      RunCommandsIndex::MAPCLEAR_IN},
                 {"imapc",       RunCommandsIndex::MAPCLEAR_IN},
+
+                {"cmapclear",   RunCommandsIndex::MAPCLEAR_CM},
+                {"cmapclea",    RunCommandsIndex::MAPCLEAR_CM},
+                {"cmapcle",     RunCommandsIndex::MAPCLEAR_CM},
+                {"cmapcl",      RunCommandsIndex::MAPCLEAR_CM},
+                {"cmapc",       RunCommandsIndex::MAPCLEAR_CM},
 
 
                 {"command",     RunCommandsIndex::COMMAND},

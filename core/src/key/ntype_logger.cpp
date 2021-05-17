@@ -192,6 +192,8 @@ namespace vind
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
         auto log = keyabsorber::get_pressed_list() - cl_toggles ; //ignore toggle keys
 
+        log = logmap::do_noremap(log) ;
+
         int result ;
         switch(pimpl->state_ & LoggerState::STATE_MASK) {
             case LoggerState::INITIAL:

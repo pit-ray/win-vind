@@ -86,7 +86,6 @@ namespace vind
             const std::vector<std::string>& strhints) {
 
         if(positions.size() != strhints.size()) {
-            std::cout << "invalid size\n" ;
             return ;
         }
 
@@ -106,7 +105,6 @@ namespace vind
             const std::vector<unsigned char>& matched_counts) {
 
         if(positions.size() != strhints.size()) {
-            std::cout << "invalid matching size\n" ;
             return ;
         }
 

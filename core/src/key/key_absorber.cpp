@@ -2,6 +2,7 @@
 
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/log_map.hpp"
 
 #include <windows.h>
 
@@ -60,12 +61,19 @@ namespace
                 reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
 
         auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+
+        auto repcode = vind::keycodecvt::get_representative_key(code) ;
+
+        if(vind::logmap::do_keycode_map(repcode, state)
+                || vind::logmap::do_keycode_map(code, state)) {
+            return -1 ; // remove recived message not to pass other application
+        }
+
         g_real_state[code] = state ;
         g_state[code]      = state ;
 
-        auto rep = vind::keycodecvt::get_representative_key(code) ;
-        g_real_state[rep] = state ;
-        g_state[rep]      = state ;
+        g_real_state[repcode] = state ;
+        g_state[repcode]      = state ;
 
         if(!g_ignored_keys.empty()) {
             if(std::find(g_ignored_keys.cbegin(), g_ignored_keys.cend(), code) != g_ignored_keys.cend()) {

@@ -9,6 +9,13 @@ namespace vind
 {
     namespace gmaps {
 
+        enum class MapType : unsigned char {
+            UNDEFINED           = 0b0000'0000,
+            MAP                 = 0b0001'0000,
+            NOREMAP             = 0b0010'0000,
+            NOREMAP_FUNCTION    = 0b0010'0001,
+        } ;
+
         class UniqueMap {
         private:
             struct Impl ;
@@ -18,14 +25,14 @@ namespace vind
             explicit UniqueMap() ;
             explicit UniqueMap(
                     const std::string& in,
-                    const std::string& out) ;
-
-            explicit UniqueMap(
-                    const std::string& in,
                     const std::string& out,
-                    bool is_function) ;
+                    MapType expect_type,
+                    bool check_if_func=false) ;
 
-            bool is_function() const noexcept ;
+            bool is_noremap() const noexcept ;
+            bool is_noremap_function() const noexcept ;
+
+            bool is_map() const noexcept ;
 
             const Command& trigger_command() const noexcept ;
 
@@ -35,6 +42,8 @@ namespace vind
             Command create_target_command() const ;
 
             std::size_t compute_hash() const ;
+            static std::size_t compute_hash(const std::string& strcmd) ;
+            static std::size_t compute_hash(const Command& cmd) ;
         } ;
 
 
@@ -42,6 +51,11 @@ namespace vind
         void reset() ;
 
         void map(
+                const std::string& incmd,
+                const std::string& outcmd,
+                mode::Mode mode) ;
+
+        void noremap(
                 const std::string& incmd,
                 const std::string& outcmd,
                 mode::Mode mode) ;

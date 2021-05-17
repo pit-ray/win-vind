@@ -83,23 +83,33 @@ namespace vind
 
             SET,
 
+            MAP_GN,
+            MAP_GV,
+            MAP_EN,
+            MAP_EV,
+            MAP_IN,
+            MAP_CM,
+
             NOREMAP_GN,
             NOREMAP_GV,
             NOREMAP_EN,
             NOREMAP_EV,
             NOREMAP_IN,
+            NOREMAP_CM,
 
             UNMAP_GN,
             UNMAP_GV,
             UNMAP_EN,
             UNMAP_EV,
             UNMAP_IN,
+            UNMAP_CM,
 
             MAPCLEAR_GN,
             MAPCLEAR_GV,
             MAPCLEAR_EN,
             MAPCLEAR_EV,
             MAPCLEAR_IN,
+            MAPCLEAR_CM,
 
             COMMAND,
             DELCOMMAND,

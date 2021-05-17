@@ -12,6 +12,12 @@ namespace vind
         KeyLog do_noremap(
                 const KeyLog& log,
                 mode::Mode mode=mode::get_global_mode()) ;
+
+        bool do_keycode_map(
+                KeyCode key,
+                bool press_sync_state=true,
+                mode::Mode mode=mode::get_global_mode()) ;
+
     }
 }
 

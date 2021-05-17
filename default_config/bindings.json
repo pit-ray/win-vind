@@ -2034,6 +2034,63 @@
         "ja": "システムコマンド set"
     },
     {
+        "name": "system_command_map",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": [],
+        "edivl": [],
+        "cmd": [
+            "gnm",
+            "gnmap",
+            "gnm ",
+            "gnmap ",
+            "gnm <any>",
+            "gnmap <any>",
+
+            "gvm",
+            "gvmap",
+            "gvm ",
+            "gvmap ",
+            "gvm <any>",
+            "gvmap <any>",
+
+            "enm",
+            "enmap",
+            "enm ",
+            "enmap ",
+            "enm <any>",
+            "enmap <any>",
+
+            "evm",
+            "evmap",
+            "evm ",
+            "evmap ",
+            "evm <any>",
+            "evmap <any>",
+
+            "im",
+            "imap",
+            "im ",
+            "imap ",
+            "im <any>",
+            "imap <any>",
+
+            "cm",
+            "cmap",
+            "cm ",
+            "cmap ",
+            "cm <any>",
+            "cmap <any>"
+        ],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "System Command map",
+        "ja": "システムコマンド map"
+    },
+    {
         "name": "system_command_noremap",
         "guin": [],
         "guii": [],
@@ -2044,9 +2101,9 @@
         "edivl": [],
         "cmd": [
             "gnn",
-            "ggnoremap",
+            "gnoremap",
             "gnn ",
-            "ggnoremap ",
+            "gnoremap ",
             "gnn <any>",
             "gnnoremap <any>",
 
@@ -2076,7 +2133,14 @@
             "ino ",
             "inoremap ",
             "ino <any>",
-            "inoremap <any>"
+            "inoremap <any>",
+
+            "cno",
+            "cnoremap",
+            "cno ",
+            "cnoremap ",
+            "cno <any>",
+            "cnoremap <any>"
         ],
         "mycwn": [],
         "mycwi": [],
@@ -2126,7 +2190,14 @@
             "iu ",
             "iunmap ",
             "iu <any>",
-            "iunmap <any>"
+            "iunmap <any>",
+
+            "cu",
+            "cunmap",
+            "cu ",
+            "cunmap ",
+            "cu <any>",
+            "cunmap <any>"
         ],
         "mycwn": [],
         "mycwi": [],
@@ -2176,7 +2247,14 @@
             "imapc ",
             "imapclear ",
             "imapc <any>",
-            "imapclear <any>"
+            "imapclear <any>",
+
+            "cmapc",
+            "cmapclear",
+            "cmapc ",
+            "cmapclear ",
+            "cmapc <any>",
+            "cmapclear <any>"
         ],
         "mycwn": [],
         "mycwi": [],

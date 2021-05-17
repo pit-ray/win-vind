@@ -4,7 +4,6 @@
 
 #include "key/key_logger_base.hpp"
 #include "key/keycode_def.hpp"
-#include "key/log_map.hpp"
 #include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 
@@ -46,8 +45,6 @@ namespace vind
                         std::to_string(g_ntlgr.get_head_num())) ;
                 return ;
             }
-
-            g_ntlgr.latest() = logmap::do_noremap(g_ntlgr.latest()) ;
 
             if(g_ntlgr.is_long_pressing()) {
                 if(g_active_func) {

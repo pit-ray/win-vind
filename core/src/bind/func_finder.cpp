@@ -199,7 +199,7 @@ namespace vind
             maps.clear() ;
             gmaps::get_maps(static_cast<mode::Mode>(i), maps) ;
             for(const auto& map : maps) {
-                if(!map.is_function()) {
+                if(!map.is_noremap_function()) {
                     continue ;
                 }
 

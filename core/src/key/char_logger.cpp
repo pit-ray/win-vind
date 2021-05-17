@@ -3,6 +3,7 @@
 #include "key/key_absorber.hpp"
 #include "key/key_logger_base.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/log_map.hpp"
 #include "time/keystroke_repeater.hpp"
 
 #include <iostream>
@@ -130,6 +131,8 @@ namespace vind
 
         //ignore all toggle keys
         auto log = keyabsorber::get_pressed_list() - cl_toggles ;
+
+        log = logmap::do_noremap(log) ;
 
         if(log != pimpl->prelog_) { //type is changed
             auto diff = log - pimpl->prelog_ ;

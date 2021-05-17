@@ -199,6 +199,7 @@ namespace vind
                 TaskView::create(),
 
                 SyscmdSet::create(),
+                SyscmdMap::create(),
                 SyscmdNoremap::create(),
                 SyscmdUnmap::create(),
                 SyscmdMapclear::create(),

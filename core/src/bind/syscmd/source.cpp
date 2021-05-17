@@ -68,6 +68,31 @@ namespace vind
                     break ;
 
 
+                case RunCommandsIndex::MAP_GN:
+                    SyscmdMap::sprocess(Mode::Normal, args) ;
+                    break ;
+
+                case RunCommandsIndex::MAP_GV:
+                    SyscmdMap::sprocess(Mode::Visual, args) ;
+                    break ;
+
+                case RunCommandsIndex::MAP_EN:
+                    SyscmdMap::sprocess(Mode::EdiNormal, args) ;
+                    break ;
+
+                case RunCommandsIndex::MAP_EV:
+                    SyscmdMap::sprocess(Mode::EdiVisual, args) ;
+                    break ;
+
+                case RunCommandsIndex::MAP_IN:
+                    SyscmdMap::sprocess(Mode::Insert, args) ;
+                    break ;
+
+                case RunCommandsIndex::MAP_CM:
+                    SyscmdMap::sprocess(Mode::Command, args) ;
+                    break ;
+
+
                 case RunCommandsIndex::NOREMAP_GN:
                     SyscmdNoremap::sprocess(Mode::Normal, args) ;
                     break ;
@@ -86,6 +111,10 @@ namespace vind
 
                 case RunCommandsIndex::NOREMAP_IN:
                     SyscmdNoremap::sprocess(Mode::Insert, args) ;
+                    break ;
+
+                case RunCommandsIndex::NOREMAP_CM:
+                    SyscmdNoremap::sprocess(Mode::Command, args) ;
                     break ;
 
 
@@ -107,6 +136,10 @@ namespace vind
 
                 case RunCommandsIndex::UNMAP_IN:
                     SyscmdUnmap::sprocess(Mode::Insert, args) ;
+                    break ;
+
+                case RunCommandsIndex::UNMAP_CM:
+                    SyscmdUnmap::sprocess(Mode::Command, args) ;
                     break ;
 
 
@@ -143,6 +176,13 @@ namespace vind
                         error_invalid_argument() ;
                     }
                     SyscmdMapclear::sprocess(Mode::Insert) ;
+                    break ;
+
+                case RunCommandsIndex::MAPCLEAR_CM:
+                    if(!args.empty()) {
+                        error_invalid_argument() ;
+                    }
+                    SyscmdMapclear::sprocess(Mode::Command) ;
                     break ;
 
 

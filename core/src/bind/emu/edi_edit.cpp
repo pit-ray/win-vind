@@ -12,7 +12,7 @@
 #include "bind/emu/text_analyzer.hpp"
 #include "bind/safe_repeater.hpp"
 #include "err_logger.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
@@ -267,7 +267,7 @@ namespace
         using namespace mode ;
         auto mode = get_global_mode() ;
         if(mode == Mode::EdiVisual) {
-            if(iparams::get_b("enable_char_cache")) {
+            if(gparams::get_b("enable_char_cache")) {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 g_rgtype = RegisteredType::Chars ;
             }
@@ -276,7 +276,7 @@ namespace
             }
         }
         else if(mode == Mode::EdiLineVisual) {
-            if(iparams::get_b("enable_char_cache")) {
+            if(gparams::get_b("enable_char_cache")) {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             }
             else {
@@ -394,7 +394,7 @@ namespace vind
     EdiNDeleteAfter& EdiNDeleteAfter::operator=(EdiNDeleteAfter&&) = default ;
 
     void EdiNDeleteAfter::sprocess(unsigned int repeat_num) const {
-        if(iparams::get_b("enable_char_cache")) {
+        if(gparams::get_b("enable_char_cache")) {
             repeater::safe_for(repeat_num, [] {
                     keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                     keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -436,7 +436,7 @@ namespace vind
     EdiNDeleteBefore& EdiNDeleteBefore::operator=(EdiNDeleteBefore&&) = default ;
 
     void EdiNDeleteBefore::sprocess(unsigned int repeat_num) const {
-        if(iparams::get_b("enable_char_cache")) {
+        if(gparams::get_b("enable_char_cache")) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -509,7 +509,7 @@ namespace vind
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
         }) ;
 
-        if(iparams::get_b("enable_char_cache")) {
+        if(gparams::get_b("enable_char_cache")) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             g_rgtype = RegisteredType::Chars ;
         }

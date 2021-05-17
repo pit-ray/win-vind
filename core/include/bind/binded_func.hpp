@@ -38,12 +38,19 @@ namespace vind
         const std::string& name() const noexcept ;
         std::size_t id() const noexcept ;
 
+        static std::size_t name_to_id(const std::string& name) noexcept {
+            return std::hash<std::string>()(name) ;
+        }
+        static std::size_t name_to_id(std::string&& name) noexcept {
+            return std::hash<std::string>()(std::move(name)) ;
+        }
+
         void process() const ;
         void process(NTypeLogger& parent_lgr) const ;
         void process(const CharLogger& parent_lgr) const ;
 
         virtual bool is_for_moving_caret() const noexcept ;
-        virtual void load_config() ;
+        virtual void reconstruct() ;
 
         bool operator==(const BindedFunc& rhs) const noexcept ;
         bool operator==(BindedFunc&& rhs) const noexcept ;

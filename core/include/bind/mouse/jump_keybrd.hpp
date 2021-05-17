@@ -24,7 +24,7 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 }
 

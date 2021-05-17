@@ -5,7 +5,7 @@ namespace vind
 {
     namespace optloader
     {
-        void load_config() ;
+        void reconstruct() ;
         void call_active_funcs() ;
     }
 }

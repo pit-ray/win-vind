@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "err_logger.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/mouse.hpp"
 #include "key/ntype_logger.hpp"
 #include "util/def.hpp"
@@ -23,11 +23,11 @@ namespace
 
     template <typename T>
     inline auto constant_accelerate(float& velocity, T&& us) {
-        auto acc = iparams::get_f("cursor_acceleration") ;
-        auto mvc = iparams::get_f("cursor_max_velocity") ;
+        auto acc = gparams::get_f("cursor_acceleration") ;
+        auto mvc = gparams::get_f("cursor_max_velocity") ;
 
         constexpr auto TIME_COEF = util::pow_f(10, -3) ;
-        auto t = us * TIME_COEF / iparams::get_i("cursor_weight") ; //accuracy
+        auto t = us * TIME_COEF / gparams::get_i("cursor_weight") ; //accuracy
         auto x = velocity*t + 0.5f*acc*t*t ;
         auto delta_v = acc * t ;
         if(velocity + delta_v < mvc) velocity += delta_v ;

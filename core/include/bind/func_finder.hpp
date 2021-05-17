@@ -11,12 +11,6 @@
 
 namespace vind
 {
-    namespace funcfinder {
-        void initialize() ;
-        BindedFunc::SPtr find_func_byname(const std::string& name) ;
-        void load_global_bindings() ;
-    }
-
     class FuncFinder {
     private:
         struct Impl ;
@@ -63,6 +57,9 @@ namespace vind
 
         void reset_parser_states(
                 mode::Mode mode=mode::get_global_mode()) ;
+
+        static BindedFunc::SPtr find_func_byname(const std::string& name) ;
+        static void load_global_bindings() ;
     } ;
 }
 

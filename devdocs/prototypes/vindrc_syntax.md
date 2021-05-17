@@ -6,7 +6,10 @@ Support only UTF-8
 ignore space, deliminator is "\n"
 
 ```vim
-set name = val
+set {name}
+set no{name}
+set {name} = {val}
+set {name} : {val}
 ```
 
 ### Value Type
@@ -35,7 +38,19 @@ ino B g<c-l>yy
 gnnoremap <esc-left> change_to_normal
 ```
 
-### Create
+### Map
+
+|Syntax|Mode|
+|:---:|:---:|
+|`gnm[ap]`|GUI Normal|
+|`gvm[ap]`|GUI Visual|
+|`enm[ap]`|Edi Normal|
+|`evm[ap]`|Edi Visual|
+|`im[ap]`|Insert|
+|`cm[ap]`|Command|
+
+
+### Noremap
 
 |Syntax|Mode|
 |:---:|:---:|
@@ -44,9 +59,10 @@ gnnoremap <esc-left> change_to_normal
 |`enn[oremap]`|Edi Normal|
 |`evn[oremap]`|Edi Visual|
 |`ino[remap]`|Insert|
-|`com[mand]`|Command|
+|`cno[remap]`|Command|
 
-### Delete
+
+### Delete Map
 
 |Syntax|Mode|
 |:---:|:---:|
@@ -55,9 +71,9 @@ gnnoremap <esc-left> change_to_normal
 |`enun[map]`|Edi Normal|
 |`evun[map]`|Edi Visual|
 |`iu[nmap]`|Insert|
-|`delc[ommand]`|Command|
+|`cu[nmap]`|Command|
 
-### Clear
+### Clear Map
 
 |Syntax|Mode|
 |:---:|:---:|
@@ -66,6 +82,13 @@ gnnoremap <esc-left> change_to_normal
 |`enmapc[lear]`|Edi Normal|
 |`evmapc[lear]`|Edi Visual|
 |`imapc[lear]`|Insert|
+|`cmapc[lear]`|Command|
+
+### Command Add/Del/Clear
+|Syntax|Mode|
+|:---:|:---:|
+|`com[mand]`|Command|
+|`delc[ommand]`|Command|
 |`comc[lear]`|Command|
 
 

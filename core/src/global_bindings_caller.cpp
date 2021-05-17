@@ -26,13 +26,12 @@ namespace vind
     namespace gbindcaller {
 
         void initialize() {
-            funcfinder::initialize() ;
             g_ntlgr.clear() ;
             g_active_func = nullptr ;
         }
 
-        void load_config() {
-            funcfinder::load_global_bindings() ;
+        void reconstruct() {
+            FuncFinder::load_global_bindings() ;
             g_funcfinder.reconstruct_funcset() ;
         }
 
@@ -61,7 +60,7 @@ namespace vind
 
             if(parser) {
                 if(parser->is_accepted()) {
-                    VirtualCmdLine::reset() ;
+                    VirtualCmdLine::refresh() ;
 
                     g_active_func = parser->get_func() ;
                     g_active_func->process(g_ntlgr) ;

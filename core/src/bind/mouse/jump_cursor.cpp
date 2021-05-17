@@ -1,6 +1,6 @@
 #include "bind/mouse/jump_cursor.hpp"
 
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/screen_metrics.hpp"
 
 #include "util/def.hpp"
@@ -39,7 +39,7 @@ namespace vind
         RECT rect ;
         screenmetrics::get_conbined_metrics(&rect) ;
 
-        SetCursorPos(screenmetrics::width(rect) - iparams::get_i("screen_pos_buf"), pos.y) ;
+        SetCursorPos(screenmetrics::width(rect) - gparams::get_i("screen_pos_buf"), pos.y) ;
     }
     void Jump2Right::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -84,7 +84,7 @@ namespace vind
 
         RECT rect ;
         screenmetrics::get_conbined_metrics(&rect) ;
-        SetCursorPos(pos.x, screenmetrics::height(rect) - iparams::get_i("screen_pos_buf")) ;
+        SetCursorPos(pos.x, screenmetrics::height(rect) - gparams::get_i("screen_pos_buf")) ;
     }
     void Jump2Bottom::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

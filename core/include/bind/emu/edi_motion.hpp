@@ -23,7 +23,7 @@ namespace vind
         EdiCopyMotion(const EdiCopyMotion&)            = delete ;
         EdiCopyMotion& operator=(const EdiCopyMotion&) = delete ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 
 
@@ -45,7 +45,7 @@ namespace vind
         EdiDeleteMotion(const EdiDeleteMotion&)            = delete ;
         EdiDeleteMotion& operator=(const EdiDeleteMotion&) = delete ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 
     class EdiDeleteMotionAndStartInsert : public BindedFuncCreator<EdiDeleteMotionAndStartInsert> {
@@ -66,7 +66,7 @@ namespace vind
         EdiDeleteMotionAndStartInsert(const EdiDeleteMotionAndStartInsert&)            = delete ;
         EdiDeleteMotionAndStartInsert& operator=(const EdiDeleteMotionAndStartInsert&) = delete ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 }
 

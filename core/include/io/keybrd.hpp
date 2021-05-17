@@ -16,7 +16,7 @@ namespace vind
     namespace keybrd {
         bool is_pressed_actually(KeyCode key) noexcept ;
 
-        class SmartKey {
+        class ScopedKey {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -24,16 +24,16 @@ namespace vind
             void send_event(bool pressed) ;
 
         public:
-            explicit SmartKey(KeyCode key) ;
-            virtual ~SmartKey() noexcept ;
+            explicit ScopedKey(KeyCode key) ;
+            virtual ~ScopedKey() noexcept ;
 
             void press() ;
             void release() ;
 
-            SmartKey(SmartKey&&) ;
-            SmartKey& operator=(SmartKey&&) ;
-            SmartKey(const SmartKey&)            = delete ;
-            SmartKey& operator=(const SmartKey&) = delete ;
+            ScopedKey(ScopedKey&&) ;
+            ScopedKey& operator=(ScopedKey&&) ;
+            ScopedKey(const ScopedKey&)            = delete ;
+            ScopedKey& operator=(const ScopedKey&) = delete ;
         } ;
 
 

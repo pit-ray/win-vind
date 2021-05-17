@@ -9,7 +9,7 @@
 #include "bind/func_finder.hpp"
 #include "entry.hpp"
 #include "err_logger.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/keybrd.hpp"
 #include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
@@ -83,7 +83,7 @@ namespace
                 //recently logger
 
                 auto over_num =
-                    static_cast<long>(hist.size()) - iparams::get_l("cmd_max_history_num") ;
+                    static_cast<long>(hist.size()) - gparams::get_l("cmd_max_history_num") ;
 
                 if(over_num > 0) {
                     util::remove_from_top(hist, over_num) ;
@@ -124,7 +124,7 @@ namespace vind
     CommandMode::CommandMode(CommandMode&&)            = default ;
     CommandMode& CommandMode::operator=(CommandMode&&) = default ;
 
-    void CommandMode::load_config() {
+    void CommandMode::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
     }
 
@@ -177,7 +177,7 @@ namespace vind
                     p_cmdp->func->process(lgr) ;
                 }
                 else {
-                    VirtualCmdLine::msgout("e: Not a command") ;
+                    VirtualCmdLine::msgout("E: Not a command") ;
                 }
 
                 pimpl->ch_.generate_new_hist() ;

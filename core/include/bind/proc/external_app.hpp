@@ -18,7 +18,7 @@ namespace vind
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 
     struct StartExplorer : public BindedFuncCreator<StartExplorer> {

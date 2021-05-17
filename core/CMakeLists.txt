@@ -18,6 +18,7 @@ add_library(key STATIC
     src/key/key_log.cpp
     src/key/key_logger_base.cpp
     src/key/keycodecvt.cpp
+    src/key/log_map.cpp
     src/key/ntype_logger.cpp
 )
 target_link_libraries(key util)
@@ -120,6 +121,12 @@ add_library(window STATIC
 )
 target_link_libraries(window Dwmapi)
 
+add_library(syscmd STATIC
+    src/bind/syscmd/command.cpp
+    src/bind/syscmd/map.cpp
+    src/bind/syscmd/set.cpp
+    src/bind/syscmd/source.cpp
+)
 
 add_library(bind STATIC
     src/bind/binded_func.cpp
@@ -127,7 +134,7 @@ add_library(bind STATIC
     src/bind/func_finder.cpp
     src/bind/logger_parser.cpp
 )
-target_link_libraries(bind ctrl emu file hotkey mode mouse proc uia window)
+target_link_libraries(bind ctrl emu file hotkey mode mouse proc uia window syscmd)
 #target_link_libraries(bind dev)
 
 add_library(opt STATIC
@@ -141,16 +148,21 @@ add_library(opt STATIC
 target_link_libraries(opt emu mode)
 
 add_library(parser STATIC
-    src/parser/bindings_parser.cpp
     src/parser/bindings_json_parser.cpp
+    src/parser/bindings_parser.cpp
+    src/parser/rc_parser.cpp
+)
+
+add_library(kernel STATIC
+    src/err_logger.cpp
+    src/g_maps.cpp
+    src/g_params.cpp
+    src/mode.cpp
+    src/path.cpp
 )
 
 add_library(vindcore STATIC
     src/entry.cpp
-    src/err_logger.cpp
     src/global_bindings_caller.cpp
-    src/i_params.cpp
-    src/mode.cpp
-    src/path.cpp
 )
-target_link_libraries(vindcore bind opt parser io time Userenv)
+target_link_libraries(vindcore bind opt parser io time kernel Userenv)

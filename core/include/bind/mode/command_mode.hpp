@@ -23,7 +23,7 @@ namespace vind
         CommandMode(const CommandMode&)            = delete ;
         CommandMode& operator=(const CommandMode&) = delete ;
 
-        void load_config() override ;
+        void reconstruct() override ;
     } ;
 }
 

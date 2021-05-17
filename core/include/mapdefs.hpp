@@ -1,15 +1,17 @@
-#ifndef _BINDINGS_DEF_HPP
-#define _BINDINGS_DEF_HPP
+#ifndef _MAPDEFS_HPP
+#define _MAPDEFS_HPP
 
+#include "key/keycode_def.hpp"
 #include "mode.hpp"
 
+#include <array>
 #include <memory>
 #include <unordered_map>
 #include <vector>
 
 namespace vind
 {
-    using KeySet = std::vector<unsigned char> ;
+    using KeySet = std::vector<KeyCode> ;
     using Command = std::vector<KeySet> ;
     using CommandList = std::vector<Command> ;
 

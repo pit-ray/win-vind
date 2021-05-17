@@ -3,6 +3,7 @@
 #include "key/key_absorber.hpp"
 #include "key/key_logger_base.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/log_map.hpp"
 #include "time/keystroke_repeater.hpp"
 
 #include <iostream>
@@ -11,9 +12,18 @@ namespace
 {
     using namespace vind ;
     bool is_including_ascii(const KeyLog& log) {
-        for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
-            if(keycodecvt::get_ascii(*itr)) {
-                return true ;
+        if(log.is_containing(KEYCODE_SHIFT)) {
+            for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
+                if(keycodecvt::get_shifted_ascii(*itr)) {
+                    return true ;
+                }
+            }
+        }
+        else {
+            for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
+                if(keycodecvt::get_ascii(*itr)) {
+                    return true ;
+                }
             }
         }
         return false ;
@@ -122,12 +132,18 @@ namespace vind
         //ignore all toggle keys
         auto log = keyabsorber::get_pressed_list() - cl_toggles ;
 
+        log = logmap::do_noremap(log) ;
+
         if(log != pimpl->prelog_) { //type is changed
             auto diff = log - pimpl->prelog_ ;
             pimpl->prelog_ = log ;
 
+            if(diff.empty()) {
+                return 0 ;
+            }
+
             if(!pimpl->is_including_enabled_chars(log) \
-                    && !is_including_ascii(diff)) {
+                    && !is_including_ascii(log)) {
                 return 0 ;
             }
 
@@ -146,6 +162,10 @@ namespace vind
             return static_cast<int>(latest().size()) ;
         }
         else { //long pressing
+            if(log.empty()) {
+                return 0 ;
+            }
+
             if(!pimpl->is_including_enabled_chars(log) \
                     && !is_including_ascii(log)) {
                 return 0 ;
@@ -171,11 +191,12 @@ namespace vind
                     auto c = keycodecvt::get_shifted_ascii(keycode) ;
                     if(c != 0) str.push_back(c) ;
                 }
-                continue ;
             }
-            for(const auto keycode : *itr) {
-                auto c = keycodecvt::get_ascii(keycode) ;
-                if(c != 0) str.push_back(c) ;
+            else {
+                for(const auto keycode : *itr) {
+                    auto c = keycodecvt::get_ascii(keycode) ;
+                    if(c != 0) str.push_back(c) ;
+                }
             }
         }
         return str ;

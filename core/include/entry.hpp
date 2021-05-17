@@ -38,8 +38,15 @@ namespace vind
 {
     bool initialize(const std::string& func_name="") noexcept ;
 
+    //
+    // It load all config and reload them.
+    //
     bool load_config() noexcept ;
-    bool load_option_config() noexcept ;
+
+    //
+    // It apply settings of all components from kernel configs. 
+    //
+    bool reconstruct_all_components() noexcept ;
 
     bool update() noexcept ;
 

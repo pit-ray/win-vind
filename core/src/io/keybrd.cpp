@@ -46,7 +46,7 @@ namespace vind
             return GetAsyncKeyState(key) & 0x8000 ;
         }
 
-        struct SmartKey::Impl {
+        struct ScopedKey::Impl {
             INPUT in ;
             KeyCode key ;
 
@@ -62,28 +62,28 @@ namespace vind
             }
         } ;
 
-        SmartKey::SmartKey(KeyCode key)
+        ScopedKey::ScopedKey(KeyCode key)
         : pimpl(std::make_unique<Impl>(key))
         {}
 
-        SmartKey::~SmartKey() noexcept {
+        ScopedKey::~ScopedKey() noexcept {
             try {release() ;}
             catch(const std::exception& e) {
                 PRINT_ERROR(e.what()) ;
             }
         }
 
-        SmartKey::SmartKey(SmartKey&&)            = default ;
-        SmartKey& SmartKey::operator=(SmartKey&&) = default ;
+        ScopedKey::ScopedKey(ScopedKey&&)            = default ;
+        ScopedKey& ScopedKey::operator=(ScopedKey&&) = default ;
 
-        void SmartKey::send_event(bool pressed) {
+        void ScopedKey::send_event(bool pressed) {
             pimpl->in.ki.dwFlags = (pressed ? 0 : KEYEVENTF_KEYUP) | extended_key_flag(pimpl->key) ;
             if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
         }
 
-        void SmartKey::press() {
+        void ScopedKey::press() {
             keyabsorber::open_port(pimpl->key) ;
             send_event(true) ;
             keyabsorber::close_all_ports() ;
@@ -92,7 +92,7 @@ namespace vind
             }
         }
 
-        void SmartKey::release() {
+        void ScopedKey::release() {
             keyabsorber::open_port(pimpl->key) ;
             send_event(false) ;
             keyabsorber::close_all_ports() ;
@@ -236,22 +236,22 @@ namespace vind
             }
 
             //>=4
-            using SmartKeyStack = std::stack<SmartKey, std::vector<SmartKey>> ;
-            static SmartKeyStack st ;
+            using ScopedKeyStack = std::stack<ScopedKey, std::vector<ScopedKey>> ;
+            static ScopedKeyStack st ;
 
             try {
                 for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
-                    st.push(SmartKey(static_cast<KeyCode>(*iter))) ;
+                    st.push(ScopedKey(static_cast<KeyCode>(*iter))) ;
                     st.top().press() ;
                 }
             }
             catch(const std::runtime_error& e) {
-                SmartKeyStack().swap(st) ; //clear
+                ScopedKeyStack().swap(st) ; //clear
                 recover_keystate() ;
                 throw e ;
             }
 
-            SmartKeyStack().swap(st) ; //clear
+            ScopedKeyStack().swap(st) ; //clear
             recover_keystate() ;
         }
     }

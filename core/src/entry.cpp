@@ -63,16 +63,19 @@ SOFTWARE.
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/func_finder.hpp"
 #include "bind/mode/change_mode.hpp"
+#include "bind/syscmd/source.hpp"
 
 #include "err_logger.hpp"
+#include "g_maps.hpp"
+#include "g_params.hpp"
 #include "global_bindings_caller.hpp"
-#include "i_params.hpp"
 #include "mode.hpp"
 #include "path.hpp"
 
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/log_map.hpp"
 #include "opt/option_loader.hpp"
 #include "time/interval_timer.hpp"
 #include "util/winwrap.hpp"
@@ -164,17 +167,23 @@ namespace vind
                 return false ;
             }
 
+            // Load default config
+            gparams::initialize() ;
+            gmaps::initialize() ;
+
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             keycodecvt::load_input_combination() ;
 
+            gbindcaller::initialize() ;
+
+            if(!load_config()) {
+                return false ;
+            }
+
             //lower keyboard hook
             //If you use debugger, must be disable this line not to be slow.
             keyabsorber::install_hook() ;
-
-            gbindcaller::initialize() ;
-
-            load_config() ;
 
             //initialize system mode
             std::unordered_map<std::string, BindedFunc::SPtr> cm {
@@ -183,10 +192,10 @@ namespace vind
                 {"edi_normal", Change2EdiNormal::create()},
                 {"edi_insert", Change2EdiInsert::create()}
             } ;
-            cm.at(iparams::get_s("initial_mode"))->process() ;
+            cm.at(gparams::get_s("initial_mode"))->process() ;
 
             if(!func_name.empty()) {
-                auto func = funcfinder::find_func_byname(func_name) ;
+                auto func = FuncFinder::find_func_byname(func_name) ;
                 func->process() ;
             }
 
@@ -204,10 +213,8 @@ namespace vind
 
     bool load_config() noexcept {
         try {
-            iparams::load_config() ;
-
-            optloader::load_config() ;
-            gbindcaller::load_config() ;
+            SyscmdSource::sprocess() ;
+            reconstruct_all_components() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -220,9 +227,12 @@ namespace vind
         }
     }
 
-    bool load_option_config() noexcept {
+
+    bool reconstruct_all_components() noexcept {
         try {
-            optloader::load_config() ;
+            logmap::load_config() ;
+            optloader::reconstruct() ;
+            gbindcaller::reconstruct() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -249,7 +259,7 @@ namespace vind
                 if(mmf.get() != NULL) {
                     std::string name(reinterpret_cast<const char*>(mmf.get())) ;
                     if(!name.empty()) {
-                        if(auto func = funcfinder::find_func_byname(name)) {
+                        if(auto func = FuncFinder::find_func_byname(name)) {
                             func->process() ;
                         }
                         else {

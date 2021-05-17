@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 #include "err_logger.hpp"
-#include "i_params.hpp"
+#include "g_params.hpp"
 #include "io/display_text_painter.hpp"
 #include "io/screen_metrics.hpp"
 #include "mode.hpp"
@@ -45,16 +45,16 @@ namespace vind
     void VirtualCmdLine::do_enable() const {
         reset() ;
         pimpl->dtp.set_font(
-                iparams::get_l("cmd_font_size"),
-                iparams::get_l("cmd_font_weight"),
-                iparams::get_s("cmd_font_name")) ;
+                gparams::get_l("cmd_font_size"),
+                gparams::get_l("cmd_font_weight"),
+                gparams::get_s("cmd_font_name")) ;
 
-        pimpl->dtp.set_text_color(iparams::get_s("cmd_font_color")) ;
-        pimpl->dtp.set_back_color(iparams::get_s("cmd_font_bkcolor")) ;
+        pimpl->dtp.set_text_color(gparams::get_s("cmd_font_color")) ;
+        pimpl->dtp.set_back_color(gparams::get_s("cmd_font_bkcolor")) ;
 
-        auto pos = iparams::get_s("cmd_pos") ;
-        auto xma = iparams::get_i("cmd_xmargin") ;
-        auto yma = iparams::get_i("cmd_ymargin") ;
+        auto pos = gparams::get_s("cmd_pos") ;
+        auto xma = gparams::get_i("cmd_xmargin") ;
+        auto yma = gparams::get_i("cmd_ymargin") ;
 
         RECT rect ;
         screenmetrics::get_primary_metrics(&rect) ;
@@ -76,7 +76,7 @@ namespace vind
             {"LowerRight", {width - xma - midxbuf,  height - yma}}
         } ;
         try {
-            const auto& p = pos_list.at(iparams::get_s("cmd_pos")) ;
+            const auto& p = pos_list.at(gparams::get_s("cmd_pos")) ;
             pimpl->x = p.first ;
             pimpl->y = p.second ;
         }
@@ -84,11 +84,11 @@ namespace vind
             const auto& p = pos_list.at("LowerMid") ;
             pimpl->x = p.first ;
             pimpl->y = p.second ;
-            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + ", " + iparams::get_s("cmd_pos") + "is invalid syntax.") ;
+            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + ", " + gparams::get_s("cmd_pos") + "is invalid syntax.") ;
         }
 
-        pimpl->extra = iparams::get_i("cmd_font_extra") ;
-        pimpl->fadeout_time = std::chrono::seconds(iparams::get_i("cmd_fadeout_time")) ;
+        pimpl->extra = gparams::get_i("cmd_font_extra") ;
+        pimpl->fadeout_time = std::chrono::seconds(gparams::get_i("cmd_fadeout_time")) ;
 
         g_refresh_pos.x = pimpl->x ;
         g_refresh_pos.y = pimpl->y ;

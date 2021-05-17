@@ -1,11 +1,13 @@
 #include "parser/bindings_parser.hpp"
 
+#include <algorithm>
 #include <sstream>
 #include <string>
 
 #include "err_logger.hpp"
 
 #include "key/keycodecvt.hpp"
+#include "util/container.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 
@@ -51,43 +53,45 @@ namespace vind
         //      "c-S"    -> {KEYCODE_CTRL, KEYCODE_SHIFT, KEYCODE_S}
         //
         KeySet parse_combined_command(const std::string& inside_of_brackets) {
-                KeySet keyset ;
+            KeySet keyset ;
 
-                auto keystrset = util::split(inside_of_brackets, "-") ;
-                for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
+            auto keystrset = util::split(inside_of_brackets, "-") ;
+            for(auto code = keystrset.begin() ; code != keystrset.end() ; code ++) {
 
-                    //If isn't begin(), regards it as ascii.
-                    if(code != keystrset.begin() && code->length() == 1) {
-                        //ascii
-                        for(auto& keycode : parse_pure_one_character_command(code->front())) {
-                            keyset.push_back(keycode) ;
-                        }
-                        continue ;
-                    }
-
-                    // regard as a specific system keycode.
-                    auto lowercode = util::A2a(*code) ;
-
-                    if(auto keycode = keycodecvt::get_keycode_of_magic(lowercode)) {
+                //If isn't begin(), regards it as ascii.
+                if(code != keystrset.begin() && code->length() == 1) {
+                    //ascii
+                    for(auto& keycode : parse_pure_one_character_command(code->front())) {
                         keyset.push_back(keycode) ;
-                        continue ;
                     }
-
-                    if(auto keycode = keycodecvt::get_sys_keycode(lowercode)) {
-                        keyset.push_back(keycode) ;
-                        continue ;
-                    }
-
-                    if(code == keystrset.begin()) {
-                        PRINT_ERROR("The beginning of a combined command of bindings (" +
-                                *code  + ") must be a system keycode (e.g. <ctrl-x>, <alt-i>).") ;
-                    }
-                    else {
-                        PRINT_ERROR("<" + *code + "> is invalid syntax.") ;
-                    }
+                    continue ;
                 }
 
-                return keyset ; //RVO
+                // regard as a specific system keycode.
+                auto lowercode = util::A2a(*code) ;
+
+                if(auto keycode = keycodecvt::get_keycode_of_magic(lowercode)) {
+                    keyset.push_back(keycode) ;
+                    continue ;
+                }
+
+                if(auto keycode = keycodecvt::get_sys_keycode(lowercode)) {
+                    keyset.push_back(keycode) ;
+                    continue ;
+                }
+
+                if(code == keystrset.begin()) {
+                    PRINT_ERROR("The beginning of a combined command of bindings (" +
+                            *code  + ") must be a system keycode (e.g. <ctrl-x>, <alt-i>).") ;
+                }
+                else {
+                    PRINT_ERROR("<" + *code + "> is invalid syntax.") ;
+                }
+            }
+
+            util::remove_deplication(keyset) ;
+            std::sort(keyset.begin(), keyset.end()) ;
+            return keyset ; //RVO
         }
 
         Command parse_string_binding(const std::string& cmdstr) {
@@ -121,6 +125,33 @@ namespace vind
         }
 
         namespace debug {
+            std::string print(const Command& cmd) {
+                std::stringstream ss ;
+                for(const auto& keyset : cmd) {
+                    if(keyset.size() == 1) {
+                        auto name = keycodecvt::get_name(keyset.front()) ;
+                        if(name.size() == 1) {
+                            ss << name ;
+                        }
+                        else {
+                            ss << "<" << name << ">" ;
+                        }
+                    }
+                    else {
+                        ss << "<" ;
+                        for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
+                            if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
+                                ss << "-" ;
+                            }
+                            ss << keycodecvt::get_name(*keyitr) ;
+                        }
+                        if(keyset.size() > 1) {
+                            ss << ">" ;
+                        }
+                    }
+                }
+                return ss.str() ;
+            }
             std::string print(const CommandList& list) {
                 std::stringstream ss ;
 
@@ -130,29 +161,7 @@ namespace vind
                         ss << ", " ;
                     }
 
-                    for(const auto& keyset : *cmditr) {
-                        if(keyset.size() == 1) {
-                            auto name = keycodecvt::get_name(keyset.front()) ;
-                            if(name.size() == 1) {
-                                ss << name ;
-                            }
-                            else {
-                                ss << "<" << name << ">" ;
-                            }
-                        }
-                        else {
-                            ss << "<" ;
-                            for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
-                                if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
-                                    ss << "-" ;
-                                }
-                                ss << keycodecvt::get_name(*keyitr) ;
-                            }
-                            if(keyset.size() > 1) {
-                                ss << ">" ;
-                            }
-                        }
-                    }
+                    ss << print(*cmditr) ;
                 }
                 ss << "]" ;
 

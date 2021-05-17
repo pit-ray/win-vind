@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "bind/binded_func.hpp"
-#include "bind/bindings_def.hpp"
 #include "bind/bindings_lists.hpp"
 #include "key/key_log.hpp"
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
+#include "mapdefs.hpp"
 #include "parser/bindings_parser.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
@@ -143,7 +143,7 @@ namespace vind
                         return logstatus ;
                     }
 
-                    auto is_last_keyset = cmdidx_ == cmd.size() - 1 ;
+                    auto is_last_keyset = (cmdidx_ == cmd.size() - 1) ;
 
                     if(*itr == KEYCODE_OPTNUMBER) {
                         if(!is_containing_num(log)) {
@@ -271,7 +271,7 @@ namespace vind
         }
 
         unsigned char do_accept(const KeyLog& log) {
-            state_hist_.push(ParserState::WAITING) ;
+            state_hist_.push((state_hist_.top() & ParserState::KEYSET_NUM_MASK) | ParserState::WAITING) ;
             return do_waiting(log) ; // Epsilon Transition
         }
 

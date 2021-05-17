@@ -6,6 +6,7 @@
 #include "key/key_absorber.hpp"
 #include "key/key_logger_base.hpp"
 #include "key/keycodecvt.hpp"
+#include "key/log_map.hpp"
 #include "mode.hpp"
 #include "time/keystroke_repeater.hpp"
 
@@ -190,6 +191,8 @@ namespace vind
     int NTypeLogger::logging_state() {
         static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
         auto log = keyabsorber::get_pressed_list() - cl_toggles ; //ignore toggle keys
+
+        log = logmap::do_noremap(log) ;
 
         int result ;
         switch(pimpl->state_ & LoggerState::STATE_MASK) {

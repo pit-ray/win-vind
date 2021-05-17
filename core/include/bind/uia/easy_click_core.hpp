@@ -27,7 +27,7 @@ namespace vind
         void scan_ui_objects(HWND hwnd) const ;
         void create_matching_loop(KeyCode sendkey=KEYCODE_UNDEFINED) const ;
 
-        void load_config() ;
+        void reconstruct() ;
     } ;
 }
 

@@ -30,6 +30,7 @@ SOFTWARE.
 */
 
 #include "entry.hpp"
+#include "key/keycode_def.hpp"
 
 #define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
 
@@ -72,7 +73,6 @@ SOFTWARE.
 #include "mode.hpp"
 #include "path.hpp"
 
-#include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycodecvt.hpp"
 #include "key/log_map.hpp"
@@ -251,7 +251,7 @@ namespace vind
                 return false ;
             }
 
-            static IntervalTimer timer{1000'000} ; //100 ms
+            static IntervalTimer timer{1000'000} ; //1 s
 
             if(timer.is_passed()) {
                 //check if received messages from another win-vind.
@@ -289,18 +289,19 @@ namespace vind
 
     bool update_background() noexcept {
         try {
+            util::get_win_message() ;
+
             Sleep(5) ;
 
             optloader::call_active_funcs() ;
 
-            util::get_win_message() ;
+            //keyabsorber::refresh_toggle_state() ;
 
             using namespace keyabsorber ;
             if(is_pressed(KEYCODE_F8) && is_pressed(KEYCODE_F9)) {
                 ExitConfigWindow::sprocess() ; //exit GUI-window in system tray
                 return false ;
             }
-
             return true ;
         }
         catch(const std::exception& e) {

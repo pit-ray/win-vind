@@ -39,7 +39,7 @@ namespace vind
             const std::string& func_name() const noexcept ;
             std::size_t func_id() const noexcept ;
 
-            Command create_target_command() const ;
+            const Command& target_command() const ;
 
             std::size_t compute_hash() const ;
             static std::size_t compute_hash(const std::string& strcmd) ;

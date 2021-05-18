@@ -2,6 +2,7 @@
 
 #include "g_maps.hpp"
 #include "io/keybrd.hpp"
+#include "key/key_absorber.hpp"
 #include "key/key_log.hpp"
 #include "key/keycodecvt.hpp"
 #include "mapdefs.hpp"
@@ -58,7 +59,7 @@ namespace vind
                         //      gnnoremap gg <c-w>      " NOT
                         //
                         auto trigger_set = map.trigger_command().front() ;
-                        auto target_set  = map.create_target_command().front() ;
+                        auto target_set  = map.target_command().front() ;
 
                         g_modemaps[i].emplace_back(std::move(trigger_set), std::move(target_set)) ;
                     }
@@ -75,7 +76,7 @@ namespace vind
                         //      gnmap s <s-w>   " NOT
                         //
                         auto trigger_key = map.trigger_command().front().front() ;
-                        auto target_key = map.create_target_command().front().front() ;
+                        auto target_key = map.target_command().front().front() ;
 
                         g_keycodemap[i][trigger_key] = target_key ;
                     }
@@ -123,7 +124,10 @@ namespace vind
                     keybrd::press_keystate(target) ;
                 }
                 else {
-                    keybrd::release_keystate(target) ;
+                    if(keyabsorber::is_really_pressed(target) \
+                            || keyabsorber::is_pressed(target)) {
+                        keybrd::release_keystate(target) ;
+                    }
                 }
                 return true ;
             }

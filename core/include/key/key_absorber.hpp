@@ -8,6 +8,9 @@ namespace vind
 {
     namespace keyabsorber {
         void install_hook() ;
+
+        void refresh_toggle_state() ;
+
         bool is_pressed(KeyCode keycode) noexcept ;
         bool is_really_pressed(KeyCode keycode) noexcept ;
         KeyLog get_pressed_list() ;

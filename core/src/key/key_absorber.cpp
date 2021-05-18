@@ -14,7 +14,9 @@
 
 #include "err_logger.hpp"
 #include "io/keybrd.hpp"
+#include "time/interval_timer.hpp"
 #include "util/def.hpp"
+#include "util/winwrap.hpp"
 
 /*Absorber Overview
                        _____
@@ -40,32 +42,50 @@ namespace
     bool g_absorbed_flag{true} ;
     vind::KeyLog::Data g_ignored_keys{} ;
 
-    const auto uninstaller = [](HHOOK* p_hook) {
-        if(p_hook == nullptr) return ;
+    std::array<bool, 256> g_pressing_toggles{false} ;
+    const auto toggles = vind::keycodecvt::get_toggle_keys() ;
+
+    auto uninstaller = [](HHOOK* p_hook) {
+        if(p_hook == nullptr) {
+            return ;
+        }
+        if(*p_hook == NULL) {
+            return ;
+        }
         if(!UnhookWindowsHookEx(*p_hook)) {
             PRINT_ERROR("cannot unhook LowLevelKeyboardProc") ;
         }
         delete p_hook ;
-        p_hook = nullptr ;
+        p_hook = NULL ;
+
+        // prohibit to keep pressing after termination.
+        for(int i = 0 ; i < 256 ; i ++) {
+            if(g_real_state[i]) {
+                vind::keybrd::release_keystate(i) ;
+            }
+        }
     } ;
 
-    std::unique_ptr<HHOOK, decltype(uninstaller)> p_handle(nullptr, uninstaller) ;
+    std::unique_ptr<HHOOK, decltype(uninstaller)> p_handle(NULL, uninstaller) ;
 
     LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
         if(nCode < HC_ACTION) {
             //not processed
             return CallNextHookEx(*p_handle, nCode, wParam, lParam) ;
         }
-
-        auto code = static_cast<vind::KeyCode>(
-                reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam)->vkCode) ;
-
-        auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+        auto kbd = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam) ;
+        auto code = static_cast<vind::KeyCode>(kbd->vkCode) ;
 
         auto repcode = vind::keycodecvt::get_representative_key(code) ;
 
-        if(vind::logmap::do_keycode_map(repcode, state)
-                || vind::logmap::do_keycode_map(code, state)) {
+        auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+
+        if(toggles.find(code) != toggles.cend()) {
+            g_pressing_toggles[code] = state ;
+        }
+
+        if(vind::logmap::do_keycode_map(code, state) \
+                || vind::logmap::do_keycode_map(repcode, state)) {
             return -1 ; // remove recived message not to pass other application
         }
 
@@ -76,13 +96,17 @@ namespace
         g_state[repcode]      = state ;
 
         if(!g_ignored_keys.empty()) {
-            if(std::find(g_ignored_keys.cbegin(), g_ignored_keys.cend(), code) != g_ignored_keys.cend()) {
+            if(g_ignored_keys.find(code) != g_ignored_keys.cend()) {
                 return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
             }
         }
 
-        if(g_absorbed_flag) return -1 ;
-        else return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
+        if(g_absorbed_flag) {
+            return -1 ;
+        }
+        else {
+            return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
+        }
     }
 }
 
@@ -94,22 +118,43 @@ namespace vind
         void install_hook() {
             g_real_state.fill(false) ;
             g_state.fill(false) ;
+            g_pressing_toggles.fill(false) ;
 
-            p_handle.reset(new HHOOK{}) ; //added ownership
+            p_handle.reset(new HHOOK(NULL)) ; //added ownership
             if(p_handle == nullptr) {
-                RUNTIME_EXCEPT("Cannot alloc a hook handle") ;
-                return ;
+                throw RUNTIME_EXCEPT("Cannot alloc a hook handle") ;
             }
 
             *p_handle = SetWindowsHookEx(
                 WH_KEYBOARD_LL,
-                static_cast<HOOKPROC>(LowLevelKeyboardProc),
-                nullptr, 0
+                LowLevelKeyboardProc,
+                NULL, 0
             ) ;
 
-            if(!*p_handle) {
-                RUNTIME_EXCEPT("KeyAbosorber's hook handle is null") ;
+            if(*p_handle == NULL) {
+                throw RUNTIME_EXCEPT("KeyAbosorber's hook handle is null") ;
+            }
+        }
+
+        void refresh_toggle_state() {
+            /*
+            static vind::IntervalTimer timer{100'000} ; //100 ms
+
+            if(!timer.is_passed()) {
                 return ;
+            }
+            */
+            for(auto k : toggles) {
+                if(!g_pressing_toggles[k]) {
+                    if(g_real_state[k]) {
+                        g_real_state[k] = false ;
+                        g_state[k]      = false ;
+                    }
+                    logmap::do_keycode_map(k, false) ;
+                }
+                else {
+                    g_pressing_toggles[k] = false ;
+                }
             }
         }
 

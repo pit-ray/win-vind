@@ -21,15 +21,9 @@ namespace
     vind::BindedFunc::SPtr g_active_func = nullptr ;
 }
 
-// std::cout
-#include "io/keybrd.hpp"
-#include "key/key_absorber.hpp"
-#include <windows.h>
-
 namespace vind
 {
     namespace gbindcaller {
-
         void initialize() {
             g_ntlgr.clear() ;
             g_active_func = nullptr ;
@@ -50,15 +44,6 @@ namespace vind
                         std::to_string(g_ntlgr.get_head_num())) ;
                 return ;
             }
-
-            /*
-            if(keyabsorber::is_pressed(KEYCODE_CAPSLOCK)) {
-                std::cout << "CAPSLOCK\n" ;
-            }
-            else {
-                std::cout << "NO! CAPSLOCK\n" ;
-            }
-            */
 
             if(g_ntlgr.is_long_pressing()) {
                 if(g_active_func) {

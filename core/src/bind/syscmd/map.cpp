@@ -95,10 +95,17 @@ namespace vind
         return ;
     }
     void SyscmdMap::sprocess(const CharLogger& parent_lgr) {
-        mode::Mode mode ;
-        std::string args ;
-        if(parse_arguments_from_logger(parent_lgr, "m", mode, args)) {
-            sprocess(mode, args, true) ;
+        try {
+            mode::Mode mode ;
+            std::string args ;
+            if(parse_arguments_from_logger(parent_lgr, "m", mode, args)) {
+                sprocess(mode, args, true) ;
+            }
+        }
+        // If received syntax error as std::logic_error,
+        // convert to runtime_error not to terminate application.
+        catch(const std::exception& e) {
+            throw std::runtime_error(e.what()) ;
         }
     }
 
@@ -124,10 +131,17 @@ namespace vind
         return ;
     }
     void SyscmdNoremap::sprocess(const CharLogger& parent_lgr) {
-        mode::Mode mode ;
-        std::string args ;
-        if(parse_arguments_from_logger(parent_lgr, "n", mode, args)) {
-            sprocess(mode, args, true) ;
+        try {
+            mode::Mode mode ;
+            std::string args ;
+            if(parse_arguments_from_logger(parent_lgr, "n", mode, args)) {
+                sprocess(mode, args, true) ;
+            }
+        }
+        // If received syntax error as std::logic_error,
+        // convert to runtime_error not to terminate application.
+        catch(const std::exception& e) {
+            throw std::runtime_error(e.what()) ;
         }
     }
 

@@ -294,8 +294,30 @@ namespace vind
             Sleep(5) ;
 
             optloader::call_active_funcs() ;
+            /*
 
-            //keyabsorber::refresh_toggle_state() ;
+            static bool pre_ = false ;
+            if(keyabsorber::is_really_pressed(KEYCODE_CAPSLOCK)) {
+                if(!pre_) {
+                    std::cout << "| _ \n" ;
+                }
+                else {
+                    std::cout << "   |\n" ;
+                }
+                pre_ = true ;
+            }
+            else {
+                if(pre_) {
+                    std::cout << " _ |\n" ;
+                }
+                else {
+                    std::cout << "|\n" ;
+                }
+                pre_ = false ;
+            }
+
+            keyabsorber::refresh_toggle_state() ;
+            */
 
             using namespace keyabsorber ;
             if(is_pressed(KEYCODE_F8) && is_pressed(KEYCODE_F9)) {

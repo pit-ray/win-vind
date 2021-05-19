@@ -20,6 +20,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 
 namespace vind
@@ -45,10 +46,9 @@ namespace vind
             lnum ++ ;
 
             auto error_invalid_syntax = [lnum, &path] (auto&& e) {
-                VirtualCmdLine::msgout("E: Invalid Syntax") ;
-                std::stringstream ss ;
-                ss << e.what() << " (" + path + ", L:" << lnum << ")" ;
-                return ss.str() ;
+                auto ltag = "L:" + std::to_string(lnum) ;
+                VirtualCmdLine::msgout("E: Invalid Syntax (" + ltag + ")") ;
+                return std::string(e.what()) + " (" + path + ", " + ltag + ")" ;
             } ;
 
             try {
@@ -62,11 +62,10 @@ namespace vind
                 auto rcindex = rcparser::parse_run_command(cmd) ;
 
                 auto error_invalid_argument = [lnum, &aline, &path] {
-                    std::stringstream ss ;
-                    ss << "L: " << lnum ;
-                    VirtualCmdLine::msgout("E: Invalid Argument (" + ss.str() + ")") ;
+                    auto ltag = "L:" + std::to_string(lnum) ;
+                    VirtualCmdLine::msgout("E: Invalid Argument (" + ltag + ")") ;
 
-                    throw RUNTIME_EXCEPT("(" + path + ", " + ss.str() + ") Invalid Argument.") ;
+                    throw RUNTIME_EXCEPT("(" + path + ", " + ltag + ") Invalid Argument.") ;
                 } ;
 
                 switch(rcindex) {
@@ -223,7 +222,6 @@ namespace vind
             catch(const std::runtime_error& e) {
                 throw std::runtime_error(error_invalid_syntax(e)) ;
             }
-
         } // while(getline())
 
         if(reload_config) {
@@ -233,15 +231,22 @@ namespace vind
     void SyscmdSource::sprocess(NTypeLogger&) {
     }
     void SyscmdSource::sprocess(const CharLogger& parent_lgr) {
-        auto str = parent_lgr.to_str() ;
-        if(str.empty()) {
-            throw RUNTIME_EXCEPT("Empty command") ;
+        try {
+            auto str = parent_lgr.to_str() ;
+            if(str.empty()) {
+                throw RUNTIME_EXCEPT("Empty command") ;
+            }
+            auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+            if(args.empty()) {
+                sprocess() ;
+                return ;
+            }
+            sprocess(args, true) ;
         }
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
-        if(args.empty()) {
-            sprocess() ;
-            return ;
+        // If received syntax error as std::logic_error,
+        // convert to runtime_error not to terminate application.
+        catch(const std::exception& e) {
+            throw std::runtime_error(e.what()) ;
         }
-        sprocess(args) ;
     }
 }

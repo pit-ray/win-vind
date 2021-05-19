@@ -15,6 +15,7 @@
 #include "err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "time/interval_timer.hpp"
+#include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 
@@ -42,7 +43,7 @@ namespace
     bool g_absorbed_flag{true} ;
     vind::KeyLog::Data g_ignored_keys{} ;
 
-    std::array<bool, 256> g_pressing_toggles{false} ;
+    std::array<int, 256> g_pressing_keys{0} ;
     const auto toggles = vind::keycodecvt::get_toggle_keys() ;
 
     auto uninstaller = [](HHOOK* p_hook) {
@@ -80,9 +81,7 @@ namespace
 
         auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
 
-        if(toggles.find(code) != toggles.cend()) {
-            g_pressing_toggles[code] = state ;
-        }
+        g_pressing_keys[code] = state ? 1 : 0 ;
 
         if(vind::logmap::do_keycode_map(code, state) \
                 || vind::logmap::do_keycode_map(repcode, state)) {
@@ -118,7 +117,7 @@ namespace vind
         void install_hook() {
             g_real_state.fill(false) ;
             g_state.fill(false) ;
-            g_pressing_toggles.fill(false) ;
+            g_pressing_keys.fill(0) ;
 
             p_handle.reset(new HHOOK(NULL)) ; //added ownership
             if(p_handle == nullptr) {
@@ -138,24 +137,37 @@ namespace vind
 
         void refresh_toggle_state() {
             /*
-            static vind::IntervalTimer timer{100'000} ; //100 ms
+            static vind::KeyStrokeRepeater repeater{} ; //100 ms
 
-            if(!timer.is_passed()) {
+            if(!repeater.is_pressed()) {
                 return ;
             }
             */
+
             for(auto k : toggles) {
-                if(!g_pressing_toggles[k]) {
-                    if(g_real_state[k]) {
+                switch(g_pressing_keys[k]) {
+                    case 0:
                         g_real_state[k] = false ;
                         g_state[k]      = false ;
-                    }
-                    logmap::do_keycode_map(k, false) ;
-                }
-                else {
-                    g_pressing_toggles[k] = false ;
+                        logmap::do_keycode_map(k, false) ;
+                        break ;
+                    case 1:
+                        g_pressing_keys[k] = 2 ;
+                        break ;
+                    case 2:
+                        g_pressing_keys[k] = 0 ;
+                        break ;
+
+                    default:
+                        break ;
                 }
             }
+
+            /*
+            if(released_num == toggles.size()) {
+                repeater.reset() ;
+            }
+            */
         }
 
         bool is_pressed(KeyCode keycode) noexcept {

@@ -110,7 +110,7 @@ namespace
         {"rctrl",       KEYCODE_RCTRL},
         {"rc",          KEYCODE_RCTRL},
 
-        {"win",         KEYCODE_WIN},
+        {"win",         KEYCODE_LWIN}, // @Double-Win-Key
         {"lwin",        KEYCODE_LWIN},
         {"rwin",        KEYCODE_RWIN},
 
@@ -175,8 +175,10 @@ namespace
             a[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
             a[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
             a[KEYCODE_RCTRL]   = KEYCODE_CTRL ;
+            /* @Double-Win-Key
             a[KEYCODE_LWIN]    = KEYCODE_WIN ;
             a[KEYCODE_RWIN]    = KEYCODE_WIN ;
+            */
             a[KEYCODE_LALT]    = KEYCODE_ALT ;
             a[KEYCODE_RALT]    = KEYCODE_ALT ;
             a[KEYCODE_FROM_EN] = KEYCODE_IME ;

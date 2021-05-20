@@ -4,6 +4,7 @@
 #include "key/keycodecvt.hpp"
 #include "key/log_map.hpp"
 
+#include <chrono>
 #include <windows.h>
 
 #include <algorithm>
@@ -143,19 +144,27 @@ namespace vind
                 return ;
             }
             */
+            using namespace std::chrono ;
+            static auto now = system_clock::now() ;
 
             for(auto k : toggles) {
                 switch(g_pressing_keys[k]) {
                     case 0:
-                        g_real_state[k] = false ;
-                        g_state[k]      = false ;
-                        logmap::do_keycode_map(k, false) ;
                         break ;
                     case 1:
                         g_pressing_keys[k] = 2 ;
+                        now = system_clock::now() ;
                         break ;
                     case 2:
-                        g_pressing_keys[k] = 0 ;
+                        if((system_clock::now() - now) > 100ms) {
+                            g_pressing_keys[k] = 0 ;
+
+                            logmap::do_keycode_map(k, false) ;
+                            keybrd::release_keystate(k) ;
+
+                            g_real_state[k] = false ;
+                            g_state[k]      = false ;
+                        }
                         break ;
 
                     default:

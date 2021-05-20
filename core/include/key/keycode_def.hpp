@@ -130,7 +130,12 @@ namespace vind {
 #define KEYCODE_TO_JP        (static_cast<vind::KeyCode>(244))
 #define KEYCODE_IME          (static_cast<vind::KeyCode>(14))
 
-#define KEYCODE_WIN          (static_cast<vind::KeyCode>(15))
+//
+// Keyboards with two Windows-keys are rare, so we don't support them.
+// Replated Code: @Double-Win-Key
+//
+//#define KEYCODE_WIN          (static_cast<vind::KeyCode>(15))
+
 #define KEYCODE_SHIFT        (static_cast<vind::KeyCode>(16))
 #define KEYCODE_CTRL         (static_cast<vind::KeyCode>(17))
 #define KEYCODE_ALT          (static_cast<vind::KeyCode>(18))

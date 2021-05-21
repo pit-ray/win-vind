@@ -3,22 +3,13 @@
 Support only UTF-8
 
 ## Set option
-ignore space, deliminator is "\n"
+ignore space, delimiter is "\n"
 
 ```vim
 set {name}
 set no{name}
 set {name} = {val}
-set {name} : {val}
 ```
-
-### Value Type
-
-|Type|Value|
-|:---:|:---:|
-|bool(int)|zero, non-zero|
-|int|32bit|
-|string|"str", 'str'|
 
 ## Custom Keybindings
 

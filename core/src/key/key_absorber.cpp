@@ -47,6 +47,8 @@ namespace
     std::array<int, 256> g_pressing_keys{0} ;
     const auto toggles = vind::keycodecvt::get_toggle_keys() ;
 
+    auto hook_call_time = std::chrono::system_clock::now() ;
+
     auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook == nullptr) {
             return ;
@@ -78,22 +80,25 @@ namespace
         auto kbd = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam) ;
         auto code = static_cast<vind::KeyCode>(kbd->vkCode) ;
 
-        auto repcode = vind::keycodecvt::get_representative_key(code) ;
+        auto state = (wParam & 0x0001) != 1 ;
 
-        auto state = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) ;
+        g_pressing_keys[code] = 1 ;
 
-        g_pressing_keys[code] = state ? 1 : 0 ;
+        if(auto repcode = vind::keycodecvt::get_representative_key(code)) {
+            if(vind::logmap::do_keycode_map(repcode, state) ||
+                    vind::logmap::do_keycode_map(code, state)) {
+                return 1 ;
+            }
 
-        if(vind::logmap::do_keycode_map(code, state) \
-                || vind::logmap::do_keycode_map(repcode, state)) {
-            return -1 ; // remove recived message not to pass other application
+            g_real_state[repcode] = state ;
+            g_state[repcode]      = state ;
+        }
+        else if(vind::logmap::do_keycode_map(code, state)) {
+            return 1 ;
         }
 
         g_real_state[code] = state ;
         g_state[code]      = state ;
-
-        g_real_state[repcode] = state ;
-        g_state[repcode]      = state ;
 
         if(!g_ignored_keys.empty()) {
             if(g_ignored_keys.find(code) != g_ignored_keys.cend()) {
@@ -102,11 +107,10 @@ namespace
         }
 
         if(g_absorbed_flag) {
-            return -1 ;
-        }
-        else {
-            return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
-        }
+            return 1 ;
+       }
+
+        return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
     }
 }
 
@@ -145,26 +149,33 @@ namespace vind
             }
             */
             using namespace std::chrono ;
-            static auto now = system_clock::now() ;
+            constexpr auto lcx_short_delta_us = 50'000 ;
+            constexpr auto lcx_long_delta_us = 400'000 ;
+            static auto ignore_start = system_clock::now() ;
+
+            static IntervalTimer timer(50'000) ;
+            if(!timer.is_passed()) {
+                return ;
+            }
 
             for(auto k : toggles) {
                 switch(g_pressing_keys[k]) {
                     case 0:
                         break ;
-                    case 1:
+                    case 1: 
                         g_pressing_keys[k] = 2 ;
-                        now = system_clock::now() ;
+                        ignore_start = system_clock::now() ;
                         break ;
+
                     case 2:
-                        if((system_clock::now() - now) > 100ms) {
-                            g_pressing_keys[k] = 0 ;
-
-                            logmap::do_keycode_map(k, false) ;
-                            keybrd::release_keystate(k) ;
-
-                            g_real_state[k] = false ;
-                            g_state[k]      = false ;
+                        if((system_clock::now() - ignore_start) < 500ms) {
+                            break ;
                         }
+                        logmap::do_keycode_map(k, false) ;
+                        keybrd::release_keystate(k) ;
+
+                        g_real_state[k] = false ;
+                        g_state[k]      = false ;
                         break ;
 
                     default:

@@ -299,30 +299,7 @@ namespace vind
 
             keyabsorber::refresh_toggle_state() ;
 
-            static bool pre_ = false ;
-            if(keyabsorber::is_really_pressed(KEYCODE_CAPSLOCK)) {
-                if(!pre_) {
-                    std::cout << "| _ \n" ;
-                    //std::cout << "TIME: " << util::debug::bench_stop() << std::endl ;
-                }
-                else {
-                    std::cout << "   |\n" ;
-                }
-                pre_ = true ;
-            }
-            else {
-                if(pre_) {
-                    std::cout << " _ |\n" ;
-                    //util::debug::bench_start() ;
-                }
-                else {
-                    std::cout << "|\n" ;
-                }
-                pre_ = false ;
-            }
-
-            using namespace keyabsorber ;
-            if(is_pressed(KEYCODE_F8) && is_pressed(KEYCODE_F9)) {
+            if(keyabsorber::is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
                 ExitConfigWindow::sprocess() ; //exit GUI-window in system tray
                 return false ;
             }

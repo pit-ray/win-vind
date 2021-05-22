@@ -89,6 +89,7 @@ namespace
         {"cr",          KEYCODE_ENTER},
         {"enter",       KEYCODE_ENTER},
         {"return",      KEYCODE_ENTER},
+        {"shcapslock",  KEYCODE_SHIFT_CAPSLOCK},
         {"capslock",    KEYCODE_CAPSLOCK},
         {"left",        KEYCODE_LEFT},
         {"right",       KEYCODE_RIGHT},
@@ -128,6 +129,7 @@ namespace
         {"nocvt",       KEYCODE_NOCONVERT},
         {"cvt",         KEYCODE_CONVERT},
         {"kana",        KEYCODE_KANA},
+        {"kanji",       KEYCODE_KANJI},
         {"app",         KEYCODE_APP},
         {"esc",         KEYCODE_ESC},
 
@@ -166,7 +168,9 @@ namespace
         {"end",         KEYCODE_END},
         {"pagedown",    KEYCODE_PAGEDOWN},
 
-        {"numlock",     KEYCODE_NUMLOCK}
+        {"numlock",     KEYCODE_NUMLOCK},
+        {"backtab",     KEYCODE_BACKTAB},
+        {"bktab",       KEYCODE_BACKTAB}
     } ;
 
     inline auto create_related_keys() {

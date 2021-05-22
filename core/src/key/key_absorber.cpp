@@ -17,8 +17,13 @@
 #include "io/keybrd.hpp"
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
+
+
+#define KEYUP_MASK 0x0001
+
 
 /*Absorber Overview
                        _____
@@ -39,28 +44,29 @@
 
 namespace
 {
+    std::array<bool, 256> g_low_level_state{false} ;
     std::array<bool, 256> g_real_state{false} ;
     std::array<bool, 256> g_state{false} ;  //Keyboard state win-vind understands.
     bool g_absorbed_flag{true} ;
     vind::KeyLog::Data g_ignored_keys{} ;
 
-    std::array<int, 256> g_pressing_keys{0} ;
+    std::array<std::chrono::system_clock::time_point, 256>
+        g_time_stamps{std::chrono::system_clock::now()} ;
+
     const auto toggles = vind::keycodecvt::get_toggle_keys() ;
 
-    auto hook_call_time = std::chrono::system_clock::now() ;
-
     auto uninstaller = [](HHOOK* p_hook) {
-        if(p_hook == nullptr) {
-            return ;
+        if(p_hook != nullptr) {
+            if(*p_hook != NULL) {
+                if(!UnhookWindowsHookEx(*p_hook)) {
+                    PRINT_ERROR("cannot unhook LowLevelKeyboardProc") ;
+                }
+                *p_hook = NULL ;
+            }
+
+            delete p_hook ;
+            p_hook = nullptr ;
         }
-        if(*p_hook == NULL) {
-            return ;
-        }
-        if(!UnhookWindowsHookEx(*p_hook)) {
-            PRINT_ERROR("cannot unhook LowLevelKeyboardProc") ;
-        }
-        delete p_hook ;
-        p_hook = NULL ;
 
         // prohibit to keep pressing after termination.
         for(int i = 0 ; i < 256 ; i ++) {
@@ -73,16 +79,17 @@ namespace
     std::unique_ptr<HHOOK, decltype(uninstaller)> p_handle(NULL, uninstaller) ;
 
     LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
-        if(nCode < HC_ACTION) {
-            //not processed
+        if(nCode < HC_ACTION) { //not processed
             return CallNextHookEx(*p_handle, nCode, wParam, lParam) ;
         }
+
         auto kbd = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam) ;
         auto code = static_cast<vind::KeyCode>(kbd->vkCode) ;
+        auto state = !(wParam & KEYUP_MASK) ;
 
-        auto state = (wParam & 0x0001) != 1 ;
+        g_low_level_state[code] = state ;
 
-        g_pressing_keys[code] = 1 ;
+        g_time_stamps[code]   = std::chrono::system_clock::now() ;
 
         if(auto repcode = vind::keycodecvt::get_representative_key(code)) {
             if(vind::logmap::do_keycode_map(repcode, state) ||
@@ -108,8 +115,7 @@ namespace
 
         if(g_absorbed_flag) {
             return 1 ;
-       }
-
+        }
         return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
     }
 }
@@ -122,7 +128,6 @@ namespace vind
         void install_hook() {
             g_real_state.fill(false) ;
             g_state.fill(false) ;
-            g_pressing_keys.fill(0) ;
 
             p_handle.reset(new HHOOK(NULL)) ; //added ownership
             if(p_handle == nullptr) {
@@ -140,54 +145,54 @@ namespace vind
             }
         }
 
+        //
+        // It makes the toggle keys behave just like any general keys. 
+        // However, the current implementation has a small delay in releasing the state.
+        // This is because LowLevelKeyboardProc (LLKP) and SetWindowsHookEx can only
+        // capture the down event of the toggle key, not the up event, and the strange event cycle.
+        // 
+        // (1)
+        // For example, we press CapsLock for 3 seconds. Then we will get the following signal in LLKP.
+        //
+        //      ______________________
+        // ____|               _ _ _ _
+        //     0    1    2    3
+        //
+        // Thus, LLKP could not capture up event.
+        //
+        // (2)
+        // So, let's use g_low_level_state to detect if the LLKP has been called or not.
+        // Then, if the hook is not called for a while, it will release CapsLock.
+        //
+        // ____
+        //
+        //
+        // Unfortunately, for keymap and normal mode, the flow of key messages needs
+        // to be stopped, and this can only be done using Hook.
+        // Therefore, this is a challenging task.  If you have any ideas, we welcome pull requests.
+        //
         void refresh_toggle_state() {
-            /*
-            static vind::KeyStrokeRepeater repeater{} ; //100 ms
-
-            if(!repeater.is_pressed()) {
-                return ;
-            }
-            */
-            using namespace std::chrono ;
-            constexpr auto lcx_short_delta_us = 50'000 ;
-            constexpr auto lcx_long_delta_us = 400'000 ;
-            static auto ignore_start = system_clock::now() ;
-
-            static IntervalTimer timer(50'000) ;
+            static IntervalTimer timer(5'000) ;
             if(!timer.is_passed()) {
                 return ;
             }
 
             for(auto k : toggles) {
-                switch(g_pressing_keys[k]) {
-                    case 0:
-                        break ;
-                    case 1: 
-                        g_pressing_keys[k] = 2 ;
-                        ignore_start = system_clock::now() ;
-                        break ;
+                if(!g_low_level_state[k]) {
+                    continue ;
+                }
 
-                    case 2:
-                        if((system_clock::now() - ignore_start) < 500ms) {
-                            break ;
-                        }
-                        logmap::do_keycode_map(k, false) ;
-                        keybrd::release_keystate(k) ;
+                using namespace std::chrono ;
+                if((system_clock::now() - g_time_stamps[k]) > 515ms) {
+                    logmap::do_keycode_map(k, false) ;
+                    keybrd::release_keystate(k) ;
 
-                        g_real_state[k] = false ;
-                        g_state[k]      = false ;
-                        break ;
+                    g_real_state[k] = false ;
+                    g_state[k]      = false ;
 
-                    default:
-                        break ;
+                    g_low_level_state[k] = false ;
                 }
             }
-
-            /*
-            if(released_num == toggles.size()) {
-                repeater.reset() ;
-            }
-            */
         }
 
         bool is_pressed(KeyCode keycode) noexcept {

@@ -154,6 +154,8 @@ namespace vind
         // (1)
         // For example, we press CapsLock for 3 seconds. Then we will get the following signal in LLKP.
         //
+        // Signal in LLKP:
+        //
         //      ______________________
         // ____|               _ _ _ _
         //     0    1    2    3
@@ -164,7 +166,22 @@ namespace vind
         // So, let's use g_low_level_state to detect if the LLKP has been called or not.
         // Then, if the hook is not called for a while, it will release CapsLock.
         //
-        // ____
+        // Signal out of LLKP:
+        //
+        //      __                          ___________________~~~~_____
+        // ____|  |__(about 500ms)_________|                   ~~~~     |____
+        //     0                                         1     ....  3 (has some delay)
+        //
+        // The toggle key is sending me a stroke instead of a key state (e.g. h.... hhhhhhh).
+        // This means that there will be a buffer time of about 500ms after the first positive signal.
+        // If you assign <CapsLock> to <Ctrl> and press <CapsLock-s>, 
+        // as there is a high chance of collision during this buffer time, so it's so bad.
+        //
+        // (3)
+        // As a result, I implemented to be released toggle keys
+        // when LLKP has not been called for more than the buffer time.
+        // This way, even if the key is actually released, if it is less than 500 ms,
+        // it will continue to be pressed, causing a delay.
         //
         //
         // Unfortunately, for keymap and normal mode, the flow of key messages needs

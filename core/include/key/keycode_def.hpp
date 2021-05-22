@@ -40,7 +40,9 @@ namespace vind {
 #define KEYCODE_LBOX_BRACKET (static_cast<vind::KeyCode>(219))
 #define KEYCODE_ENTER        (static_cast<vind::KeyCode>(13))
 
-#define KEYCODE_CAPSLOCK     (static_cast<vind::KeyCode>(240))
+#define KEYCODE_SHIFT_CAPSLOCK (static_cast<vind::KeyCode>(20))
+#define KEYCODE_CAPSLOCK       (static_cast<vind::KeyCode>(240))
+
 #define KEYCODE_A            (static_cast<vind::KeyCode>(65))
 #define KEYCODE_S            (static_cast<vind::KeyCode>(83))
 #define KEYCODE_D            (static_cast<vind::KeyCode>(68))
@@ -77,6 +79,7 @@ namespace vind {
 #define KEYCODE_SPACE        (static_cast<vind::KeyCode>(32))
 #define KEYCODE_CONVERT      (static_cast<vind::KeyCode>(28))
 #define KEYCODE_KANA         (static_cast<vind::KeyCode>(242))
+#define KEYCODE_KANJI        (static_cast<vind::KeyCode>(25))
 #define KEYCODE_RALT         (static_cast<vind::KeyCode>(165))
 #define KEYCODE_APP          (static_cast<vind::KeyCode>(93))
 #define KEYCODE_RCTRL        (static_cast<vind::KeyCode>(163))
@@ -130,7 +133,14 @@ namespace vind {
 #define KEYCODE_TO_JP        (static_cast<vind::KeyCode>(244))
 #define KEYCODE_IME          (static_cast<vind::KeyCode>(14))
 
-#define KEYCODE_WIN          (static_cast<vind::KeyCode>(15))
+#define KEYCODE_BACKTAB      (static_cast<vind::KeyCode>(245))
+
+//
+// Keyboards with two Windows-keys are rare, so we don't support them.
+// Replated Code: @Double-Win-Key
+//
+//#define KEYCODE_WIN          (static_cast<vind::KeyCode>(15))
+
 #define KEYCODE_SHIFT        (static_cast<vind::KeyCode>(16))
 #define KEYCODE_CTRL         (static_cast<vind::KeyCode>(17))
 #define KEYCODE_ALT          (static_cast<vind::KeyCode>(18))

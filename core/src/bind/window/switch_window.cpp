@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "entry.hpp"
+#include "key/key_logger_base.hpp"
 #include "mode.hpp"
 
 #include "io/keybrd.hpp"
@@ -33,25 +34,17 @@ namespace vind
           ksr_()
         {}
 
-        static void pushup_with_preserve(KeyCode keycode) {
-            using namespace keybrd ;
-            if(!keyabsorber::is_pressed(keycode)) {
-                pushup(keycode) ;
-                return ;
-            }
-
-            release_keystate(keycode) ;
-            pushup(keycode) ;
-            press_keystate(keycode) ;
-        }
-
         bool is_valid_id(std::size_t id) const noexcept {
             return id == left_id_ || id == right_id_ ;
         }
 
         void call_op(std::size_t id) const {
-            if(id == left_id_) pushup_with_preserve(KEYCODE_LEFT) ;
-            if(id == right_id_) pushup_with_preserve(KEYCODE_RIGHT) ;
+            if(id == left_id_) {
+                keybrd::pushup(KEYCODE_LEFT) ;
+            }
+            else if(id == right_id_) {
+                keybrd::pushup(KEYCODE_RIGHT) ;
+            }
         }
     } ;
 

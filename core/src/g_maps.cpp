@@ -51,7 +51,8 @@ namespace vind
     namespace gmaps {
         struct UniqueMap::Impl {
             Command in_ ;
-            std::string out_ ;
+            std::string outstr_ ;
+            Command out_ ;
             MapType type_ ;
 
             template <typename T1, typename T2>
@@ -60,18 +61,14 @@ namespace vind
                     T2&& out,
                     MapType expect_type)
             : in_(bindparser::parse_string_binding(std::forward<T1>(in))),
-              out_(std::forward<T2>(out)),
+              outstr_(std::forward<T2>(out)),
+              out_(),
               type_(expect_type)
-            {
-                for(auto& keyset : in_) {
-                    if(keyset.empty()) {
-                        throw LOGIC_EXCEPT("Invalid Trigger Command") ;
-                    }
-                }
-            }
+            {}
 
             explicit Impl()
             : in_(),
+              outstr_(),
               out_(),
               type_(MapType::UNDEFINED)
             {}
@@ -88,9 +85,22 @@ namespace vind
                 bool check_if_func)
         : pimpl(std::make_shared<Impl>(in, out, expect_type))
         {
+            for(auto& keyset : pimpl->in_) {
+                if(keyset.empty()) {
+                    throw LOGIC_EXCEPT("Invalid Trigger Command") ;
+                }
+            }
+
             if(pimpl->type_ == MapType::NOREMAP && check_if_func) {
                 if(is_func_name(out)) {
                     pimpl->type_ = MapType::NOREMAP_FUNCTION ;
+                }
+            }
+
+            if(pimpl->type_ == MapType::MAP || pimpl->type_ == MapType::NOREMAP) {
+                pimpl->out_ = bindparser::parse_string_binding(pimpl->outstr_) ;
+                if(pimpl->in_ == pimpl->out_) {
+                    throw LOGIC_EXCEPT("Mapping between the same command is not allowed.") ;
                 }
             }
         }
@@ -112,15 +122,15 @@ namespace vind
         }
 
         const std::string& UniqueMap::func_name() const noexcept {
-            return pimpl->out_ ;
+            return pimpl->outstr_ ;
         }
 
         std::size_t UniqueMap::func_id() const noexcept {
-            return BindedFunc::name_to_id(pimpl->out_) ;
+            return BindedFunc::name_to_id(pimpl->outstr_) ;
         }
 
-        Command UniqueMap::create_target_command() const {
-            return bindparser::parse_string_binding(pimpl->out_) ;
+        const Command& UniqueMap::target_command() const {
+            return pimpl->out_ ;
         }
 
         std::size_t UniqueMap::compute_hash() const {

@@ -24,7 +24,6 @@ namespace
 namespace vind
 {
     namespace gbindcaller {
-
         void initialize() {
             g_ntlgr.clear() ;
             g_active_func = nullptr ;

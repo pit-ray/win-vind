@@ -89,6 +89,7 @@ namespace
         {"cr",          KEYCODE_ENTER},
         {"enter",       KEYCODE_ENTER},
         {"return",      KEYCODE_ENTER},
+        {"shcapslock",  KEYCODE_SHIFT_CAPSLOCK},
         {"capslock",    KEYCODE_CAPSLOCK},
         {"left",        KEYCODE_LEFT},
         {"right",       KEYCODE_RIGHT},
@@ -110,7 +111,7 @@ namespace
         {"rctrl",       KEYCODE_RCTRL},
         {"rc",          KEYCODE_RCTRL},
 
-        {"win",         KEYCODE_WIN},
+        {"win",         KEYCODE_LWIN}, // @Double-Win-Key
         {"lwin",        KEYCODE_LWIN},
         {"rwin",        KEYCODE_RWIN},
 
@@ -128,6 +129,7 @@ namespace
         {"nocvt",       KEYCODE_NOCONVERT},
         {"cvt",         KEYCODE_CONVERT},
         {"kana",        KEYCODE_KANA},
+        {"kanji",       KEYCODE_KANJI},
         {"app",         KEYCODE_APP},
         {"esc",         KEYCODE_ESC},
 
@@ -166,7 +168,9 @@ namespace
         {"end",         KEYCODE_END},
         {"pagedown",    KEYCODE_PAGEDOWN},
 
-        {"numlock",     KEYCODE_NUMLOCK}
+        {"numlock",     KEYCODE_NUMLOCK},
+        {"backtab",     KEYCODE_BACKTAB},
+        {"bktab",       KEYCODE_BACKTAB}
     } ;
 
     inline auto create_related_keys() {
@@ -175,8 +179,10 @@ namespace
             a[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
             a[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
             a[KEYCODE_RCTRL]   = KEYCODE_CTRL ;
+            /* @Double-Win-Key
             a[KEYCODE_LWIN]    = KEYCODE_WIN ;
             a[KEYCODE_RWIN]    = KEYCODE_WIN ;
+            */
             a[KEYCODE_LALT]    = KEYCODE_ALT ;
             a[KEYCODE_RALT]    = KEYCODE_ALT ;
             a[KEYCODE_FROM_EN] = KEYCODE_IME ;

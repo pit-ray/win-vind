@@ -115,6 +115,8 @@ namespace vind
             if(!SendInput(1, &in, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
+
+            keyabsorber::release_virtually(key) ;
         }
 
         //change key state without input
@@ -130,6 +132,8 @@ namespace vind
             if(!SendInput(1, &in, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
+
+            keyabsorber::press_virtually(key) ;
         }
 
         void pushup_core(std::initializer_list<KeyCode>&& initl) {
@@ -137,12 +141,6 @@ namespace vind
             using keyabsorber::open_port ;
             using keyabsorber::open_some_ports ;
 
-            auto state = keyabsorber::get_pressed_list() ;
-            auto recover_keystate = [&state] {
-                for(auto key : (state - keyabsorber::get_pressed_list())) {
-                    press_keystate(key) ;
-                }
-            } ;
             static INPUT ins[6] = {
                 {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
                 {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
@@ -152,107 +150,99 @@ namespace vind
                 {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}}
             } ;
 
+            const auto pre_state = keyabsorber::get_pressed_list() ;
+
             //optimizing for 1
-            if(initl.size() == 1) {
-                ins[0].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
-                ins[0].ki.dwFlags     = extended_key_flag(*initl.begin()) ;
-                ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+            switch(initl.size()) {
+                case 1:
+                    ins[0].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
+                    ins[0].ki.dwFlags     = extended_key_flag(*initl.begin()) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                ins[1].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
-                ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin()) ;
-                ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+                    ins[1].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
+                    ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin()) ;
+                    ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                open_port(*initl.begin()) ;
+                    open_port(*initl.begin()) ;
 
-                if(!SendInput(2, ins, sizeof(INPUT))) {
-                    throw RUNTIME_EXCEPT("failed sending keyboard event") ;
-                }
+                    if(!SendInput(2, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+                    break ;
 
-                close_all_ports() ;
-                recover_keystate() ;
-                return ;
+                case 2:
+                    ins[0].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
+                    ins[0].ki.dwFlags     = extended_key_flag(*initl.begin()) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[1].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
+                    ins[1].ki.dwFlags     = extended_key_flag(*(initl.begin() + 1)) ;
+                    ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[2].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
+                    ins[2].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(initl.begin() + 1));
+                    ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[3].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
+                    ins[3].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin()) ;
+                    ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    open_some_ports(initl) ;
+                    if(!SendInput(4, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+                    break ;
+
+                case 3:
+                    ins[0].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
+                    ins[0].ki.dwFlags     = extended_key_flag(*initl.begin()) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[1].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
+                    ins[1].ki.dwFlags     = extended_key_flag(*(initl.begin() + 1)) ;
+                    ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[2].ki.wVk         = static_cast<WORD>(*(initl.begin() + 2)) ;
+                    ins[2].ki.dwFlags     = extended_key_flag(*(initl.begin() + 2)) ;
+                    ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[3].ki.wVk         = static_cast<WORD>(*(initl.begin() + 2)) ;
+                    ins[3].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(initl.begin() + 2)) ;
+                    ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[4].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
+                    ins[4].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(initl.begin() + 1)) ;
+                    ins[4].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[5].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
+                    ins[5].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin());
+                    ins[5].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    open_some_ports(initl) ;
+                    if(!SendInput(6, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+                    break ;
+
+                default: 
+                    //>=4
+                    using ScopedKeyStack = std::stack<ScopedKey, std::vector<ScopedKey>> ;
+                    static ScopedKeyStack st ;
+
+                    for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
+                        st.emplace(static_cast<KeyCode>(*iter)) ;
+                        st.top().press() ;
+                    }
+
+                    ScopedKeyStack().swap(st) ; //clear
+                    break ;
             }
 
-            //optimizing for 2
-            if(initl.size() == 2) {
-                ins[0].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
-                ins[0].ki.dwFlags     = extended_key_flag(*initl.begin()) ;
-                ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+            close_all_ports() ;
 
-                ins[1].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
-                ins[1].ki.dwFlags     = extended_key_flag(*(initl.begin() + 1)) ;
-                ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                ins[2].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
-                ins[2].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(initl.begin() + 1));
-                ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                ins[3].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
-                ins[3].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin()) ;
-                ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                open_some_ports(initl) ;
-                if(!SendInput(4, ins, sizeof(INPUT))) {
-                    throw RUNTIME_EXCEPT("failed sending keyboard event") ;
-                }
-                close_all_ports() ;
-                recover_keystate() ;
-                return ;
+            for(auto key : (pre_state - keyabsorber::get_pressed_list())) {
+                press_keystate(key) ;
             }
-
-            //optimizing for 3
-            if(initl.size() == 3) {
-                ins[0].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
-                ins[0].ki.dwFlags     = extended_key_flag(*initl.begin()) ;
-                ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                ins[1].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
-                ins[1].ki.dwFlags     = extended_key_flag(*(initl.begin() + 1)) ;
-                ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                ins[2].ki.wVk         = static_cast<WORD>(*(initl.begin() + 2)) ;
-                ins[2].ki.dwFlags     = extended_key_flag(*(initl.begin() + 2)) ;
-                ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                ins[3].ki.wVk         = static_cast<WORD>(*(initl.begin() + 2)) ;
-                ins[3].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(initl.begin() + 2)) ;
-                ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                ins[4].ki.wVk         = static_cast<WORD>(*(initl.begin() + 1)) ;
-                ins[4].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(initl.begin() + 1)) ;
-                ins[4].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                ins[5].ki.wVk         = static_cast<WORD>(*initl.begin()) ;
-                ins[5].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*initl.begin());
-                ins[5].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                open_some_ports(initl) ;
-                if(!SendInput(6, ins, sizeof(INPUT))) {
-                    throw RUNTIME_EXCEPT("failed sending keyboard event") ;
-                }
-                close_all_ports() ;
-                recover_keystate() ;
-                return ;
-            }
-
-            //>=4
-            using ScopedKeyStack = std::stack<ScopedKey, std::vector<ScopedKey>> ;
-            static ScopedKeyStack st ;
-
-            try {
-                for(auto iter = initl.begin() ; iter != initl.end() ; iter ++) {
-                    st.push(ScopedKey(static_cast<KeyCode>(*iter))) ;
-                    st.top().press() ;
-                }
-            }
-            catch(const std::runtime_error& e) {
-                ScopedKeyStack().swap(st) ; //clear
-                recover_keystate() ;
-                throw e ;
-            }
-
-            ScopedKeyStack().swap(st) ; //clear
-            recover_keystate() ;
         }
     }
 }

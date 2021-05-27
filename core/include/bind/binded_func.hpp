@@ -36,7 +36,7 @@ namespace vind
         BindedFunc& operator=(const BindedFunc&) = delete ;
 
         const std::string& name() const noexcept ;
-        std::size_t id() const noexcept ;
+        const std::size_t& id() const noexcept ;
 
         static std::size_t name_to_id(const std::string& name) noexcept {
             return std::hash<std::string>()(name) ;

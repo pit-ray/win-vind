@@ -80,43 +80,46 @@ namespace
 
     LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
         if(nCode < HC_ACTION) { //not processed
-            return CallNextHookEx(*p_handle, nCode, wParam, lParam) ;
+            return CallNextHookEx(NULL, nCode, wParam, lParam) ;
         }
 
         auto kbd = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam) ;
         auto code = static_cast<vind::KeyCode>(kbd->vkCode) ;
-        auto state = !(wParam & KEYUP_MASK) ;
+        if(!(kbd->flags & LLKHF_INJECTED)) {
+            // The message is not generated with SendInput.
+            auto state = !(wParam & KEYUP_MASK) ;
 
-        g_low_level_state[code] = state ;
+            g_low_level_state[code] = state ;
 
-        g_time_stamps[code]   = std::chrono::system_clock::now() ;
+            g_time_stamps[code]   = std::chrono::system_clock::now() ;
 
-        if(auto repcode = vind::keycodecvt::get_representative_key(code)) {
-            if(vind::logmap::do_keycode_map(repcode, state) ||
-                    vind::logmap::do_keycode_map(code, state)) {
+            if(auto repcode = vind::keycodecvt::get_representative_key(code)) {
+                if(vind::logmap::do_keycode_map(repcode, state) ||
+                        vind::logmap::do_keycode_map(code, state)) {
+                    return 1 ;
+                }
+
+                g_real_state[repcode] = state ;
+                g_state[repcode]      = state ;
+            }
+            else if(vind::logmap::do_keycode_map(code, state)) {
                 return 1 ;
             }
 
-            g_real_state[repcode] = state ;
-            g_state[repcode]      = state ;
-        }
-        else if(vind::logmap::do_keycode_map(code, state)) {
-            return 1 ;
+            g_real_state[code] = state ;
+            g_state[code]      = state ;
+
         }
 
-        g_real_state[code] = state ;
-        g_state[code]      = state ;
-
-        if(!g_ignored_keys.empty()) {
-            if(g_ignored_keys.find(code) != g_ignored_keys.cend()) {
-                return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
-            }
+        if(g_ignored_keys.find(code) != g_ignored_keys.cend()) {
+            return CallNextHookEx(NULL, HC_ACTION, wParam, lParam) ;
         }
 
         if(g_absorbed_flag) {
             return 1 ;
         }
-        return CallNextHookEx(*p_handle, HC_ACTION, wParam, lParam) ;
+
+        return CallNextHookEx(NULL, HC_ACTION, wParam, lParam) ;
     }
 }
 

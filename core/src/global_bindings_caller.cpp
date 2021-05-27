@@ -36,6 +36,7 @@ namespace vind
 
         void call_matched_func() {
             auto result = g_ntlgr.logging_state() ;
+
             if(NTYPE_EMPTY(result)) {
                 return ;
             }

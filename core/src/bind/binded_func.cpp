@@ -1,7 +1,6 @@
 #include "bind/binded_func.hpp"
 
 #include <array>
-#include <atomic>
 #include <functional>
 
 #include "err_logger.hpp"
@@ -16,21 +15,18 @@
 namespace vind
 {
     struct BindedFunc::Impl {
-        std::atomic_bool running_now_ ;
         std::string name_ ;
         std::size_t id_ ;
 
         explicit Impl()
-        : Impl("UndefinedFunction")
+        : Impl("undefined_function")
         {}
         explicit Impl(const std::string& name)
-        : running_now_(false),
-          name_(name),
+        : name_(name),
           id_(name_to_id(name_))
         {}
         explicit Impl(std::string&& name)
-        : running_now_(false),
-          name_(std::move(name)),
+        : name_(std::move(name)),
           id_(name_to_id(name_))
         {}
 
@@ -82,7 +78,7 @@ namespace vind
     const std::string& BindedFunc::name() const noexcept {
         return pimpl->name_ ;
     }
-    std::size_t BindedFunc::id() const noexcept {
+    const std::size_t& BindedFunc::id() const noexcept {
         return pimpl->id_ ;
     }
 
@@ -99,7 +95,6 @@ namespace vind
     }
 
     void BindedFunc::process() const {
-        pimpl->running_now_.store(true) ;
         try {
             do_process() ;
             pimpl->release_fake_press() ;
@@ -107,11 +102,9 @@ namespace vind
         catch(const std::runtime_error& e) {
             error_process(e) ;
         }
-        pimpl->running_now_.store(false) ;
     }
 
     void BindedFunc::process(NTypeLogger& parent_lgr) const {
-        pimpl->running_now_.store(true) ;
         try {
             do_process(parent_lgr) ;
             pimpl->release_fake_press() ;
@@ -119,11 +112,9 @@ namespace vind
         catch(const std::runtime_error& e) {
             error_process(e) ;
         }
-        pimpl->running_now_.store(false) ;
     }
 
     void BindedFunc::process(const CharLogger& parent_lgr) const {
-        pimpl->running_now_.store(true) ;
         try {
             do_process(parent_lgr) ;
             pimpl->release_fake_press() ;
@@ -131,7 +122,6 @@ namespace vind
         catch(const std::runtime_error& e) {
             error_process(e) ;
         }
-        pimpl->running_now_.store(false) ;
     }
 
     bool BindedFunc::is_for_moving_caret() const noexcept {

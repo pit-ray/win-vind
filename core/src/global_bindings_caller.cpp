@@ -60,7 +60,9 @@ namespace vind
 
             if(parser) {
                 if(parser->is_accepted()) {
-                    VirtualCmdLine::refresh() ;
+                    if(g_ntlgr.has_head_num()) {
+                        VirtualCmdLine::refresh() ;
+                    }
 
                     g_active_func = parser->get_func() ;
                     g_active_func->process(g_ntlgr) ;
@@ -76,7 +78,7 @@ namespace vind
                 }
             }
             else {
-                if(g_ntlgr.get_head_num() > 1) {
+                if(g_ntlgr.has_head_num()) {
                     VirtualCmdLine::refresh() ;
                 }
                 g_ntlgr.reject() ;

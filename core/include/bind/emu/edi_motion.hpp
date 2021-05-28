@@ -48,7 +48,7 @@ namespace vind
         void reconstruct() override ;
     } ;
 
-    class EdiDeleteMotionAndStartInsert : public BindedFuncCreator<EdiDeleteMotionAndStartInsert> {
+    class EdiChangeMotion : public BindedFuncCreator<EdiChangeMotion> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -58,13 +58,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiDeleteMotionAndStartInsert() ;
+        explicit EdiChangeMotion() ;
 
-        virtual ~EdiDeleteMotionAndStartInsert() noexcept ;
-        EdiDeleteMotionAndStartInsert(EdiDeleteMotionAndStartInsert&&) ;
-        EdiDeleteMotionAndStartInsert& operator=(EdiDeleteMotionAndStartInsert&&) ;
-        EdiDeleteMotionAndStartInsert(const EdiDeleteMotionAndStartInsert&)            = delete ;
-        EdiDeleteMotionAndStartInsert& operator=(const EdiDeleteMotionAndStartInsert&) = delete ;
+        virtual ~EdiChangeMotion() noexcept ;
+        EdiChangeMotion(EdiChangeMotion&&) ;
+        EdiChangeMotion& operator=(EdiChangeMotion&&) ;
+        EdiChangeMotion(const EdiChangeMotion&)            = delete ;
+        EdiChangeMotion& operator=(const EdiChangeMotion&) = delete ;
 
         void reconstruct() override ;
     } ;

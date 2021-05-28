@@ -16,22 +16,22 @@ namespace vind
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiDeleteLinesAndStartInsert : public BindedFuncCreator<EdiDeleteLinesAndStartInsert> {
-        explicit EdiDeleteLinesAndStartInsert() ;
+    struct EdiChangeLines : public BindedFuncCreator<EdiChangeLines> {
+        explicit EdiChangeLines() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiDeleteCharsAndStartInsert : public BindedFuncCreator<EdiDeleteCharsAndStartInsert> {
-        explicit EdiDeleteCharsAndStartInsert() ;
+    struct EdiChangeChars : public BindedFuncCreator<EdiChangeChars> {
+        explicit EdiChangeChars() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiDeleteUntilEOLAndStartInsert : public BindedFuncCreator<EdiDeleteUntilEOLAndStartInsert> {
-        explicit EdiDeleteUntilEOLAndStartInsert() ;
+    struct EdiChangeUntilEOL : public BindedFuncCreator<EdiChangeUntilEOL> {
+        explicit EdiChangeUntilEOL() ;
         static void sprocess(
                 unsigned int repeat_num=1,
                 const textanalyze::SelRes* const exres=nullptr) ;

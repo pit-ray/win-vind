@@ -1830,7 +1830,7 @@
         "ja": "選択テキストを変更 (Vimエミュレーション: c, s, S)"
     },
     {
-        "name": "edi_delete_motion_and_start_insert",
+        "name": "edi_change_motion",
         "guin": [],
         "guii": [],
         "guiv": [],
@@ -1841,11 +1841,11 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete texts with motion and insert (Vim Emulation: c{Motion})",
-        "ja": "移動でテキストを削除してインサートモード (Vim エミュレーション: c{Motion})"
+        "en": "Change texts with motion (Vim Emulation: c{Motion})",
+        "ja": "移動でテキストを変更 (Vim エミュレーション: c{Motion})"
     },
     {
-        "name": "edi_delete_lines_and_start_insert",
+        "name": "edi_change_lines",
         "guin": [],
         "guii": [],
         "guiv": [],
@@ -1856,11 +1856,11 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete lines and insert (Vim Emulation: cc, S)",
-        "ja": "行を削除してインサートモード (Vimエミュレーション: cc, S)"
+        "en": "Change Lines(Vim Emulation: cc, S)",
+        "ja": "行を変更 (Vimエミュレーション: cc, S)"
     },
     {
-        "name": "edi_delete_chars_and_start_insert",
+        "name": "edi_change_chars",
         "guin": [],
         "guii": [],
         "guiv": [],
@@ -1871,11 +1871,11 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete a char and insert (Vim Emulation: s)",
-        "ja": "文字を削除してインサートモード (Vimエミュレーション: s)"
+        "en": "Change Characters (Vim Emulation: s)",
+        "ja": "文字を変更 (Vimエミュレーション: s)"
     },
     {
-        "name": "edi_delete_until_eol_and_start_insert",
+        "name": "edi_change_until_eol",
         "guin": [],
         "guii": [],
         "guiv": [],
@@ -1886,8 +1886,8 @@
         "cmd": [],
         "mycwn": [],
         "mycwi": [],
-        "en": "Delete until EOL and insert (Vim Emulation: C)",
-        "ja": "行末まで削除してインサートモード (Vimエミュレーション: C)"
+        "en": "Change until EOL (Vim Emulation: C)",
+        "ja": "行末までを編集 (Vimエミュレーション: C)"
     },
     {
         "name": "easy_click_left",

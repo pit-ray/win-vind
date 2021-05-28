@@ -39,11 +39,11 @@ namespace vind
     }
 
 
-    //EdiDeleteLinesAndStartInsert
-    EdiDeleteLinesAndStartInsert::EdiDeleteLinesAndStartInsert()
-    : BindedFuncCreator("edi_delete_lines_and_start_insert")
+    //EdiChangeLines
+    EdiChangeLines::EdiChangeLines()
+    : BindedFuncCreator("edi_change_lines")
     {}
-    void EdiDeleteLinesAndStartInsert::sprocess(unsigned int repeat_num) {
+    void EdiChangeLines::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([] {
             keybrd::pushup(KEYCODE_HOME) ;
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
@@ -64,23 +64,23 @@ namespace vind
         repeater::safe_for(pos, [] {
             keybrd::pushup(KEYCODE_RIGHT) ;
         }) ;
-        EdiDeleteUntilEOLAndStartInsert::sprocess(repeat_num, &res) ;
+        EdiChangeUntilEOL::sprocess(repeat_num, &res) ;
     }
-    void EdiDeleteLinesAndStartInsert::sprocess(NTypeLogger& parent_lgr) {
+    void EdiChangeLines::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiDeleteLinesAndStartInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void EdiChangeLines::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
 
-    //EdiDeleteCharsAndStartInsert
-    EdiDeleteCharsAndStartInsert::EdiDeleteCharsAndStartInsert()
-    : BindedFuncCreator("edi_delete_chars_and_start_insert")
+    //EdiChangeChars
+    EdiChangeChars::EdiChangeChars()
+    : BindedFuncCreator("edi_change_chars")
     {}
-    void EdiDeleteCharsAndStartInsert::sprocess(unsigned int repeat_num) {
+    void EdiChangeChars::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
         }) ;
@@ -95,19 +95,19 @@ namespace vind
 
         Change2EdiInsert::sprocess(false) ;
     }
-    void EdiDeleteCharsAndStartInsert::sprocess(NTypeLogger& parent_lgr) {
+    void EdiChangeChars::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiDeleteCharsAndStartInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void EdiChangeChars::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
 
-    //EdiDeleteUntilEOLAndStartInsert
-    EdiDeleteUntilEOLAndStartInsert::EdiDeleteUntilEOLAndStartInsert()
-    : BindedFuncCreator("edi_delete_until_eol_and_start_insert")
+    //EdiChangeUntilEOL
+    EdiChangeUntilEOL::EdiChangeUntilEOL()
+    : BindedFuncCreator("edi_change_until_eol")
     {}
     /* Actually, If N >= 2
      *
@@ -135,7 +135,7 @@ namespace vind
      * In future, must fix.
      *
      */
-    void EdiDeleteUntilEOLAndStartInsert::sprocess(
+    void EdiChangeUntilEOL::sprocess(
             unsigned int repeat_num,
             const textanalyze::SelRes* const exres) {
 
@@ -152,12 +152,12 @@ namespace vind
         }
         Change2EdiInsert::sprocess(false) ;
     }
-    void EdiDeleteUntilEOLAndStartInsert::sprocess(NTypeLogger& parent_lgr) {
+    void EdiChangeUntilEOL::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiDeleteUntilEOLAndStartInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void EdiChangeUntilEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 }

@@ -1,6 +1,5 @@
 #include "bind/emu/edi_put.hpp"
 
-#include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/edi_delete.hpp"
 #include "bind/emu/simple_text_register.hpp"
 #include "bind/safe_repeater.hpp"
@@ -102,33 +101,5 @@ namespace vind
     }
     void EdiNPasteBefore::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
-    }
-
-
-    //EdiDeleteHighlightText (Visual only)
-    EdiDeleteHighlightText::EdiDeleteHighlightText()
-    : BindedFuncCreator("edi_delete_highlight_text")
-    {}
-    void EdiDeleteHighlightText::sprocess() {
-        using namespace mode ;
-        using keybrd::pushup ;
-        using namespace simpletxreg ;
-
-        pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-        if(get_global_mode() == Mode::EdiLineVisual) {
-            set_register_type(RegType::Lines) ;
-        }
-        else {
-            set_register_type(RegType::Chars) ;
-        }
-        Change2EdiNormal::sprocess(false) ;
-    }
-    void EdiDeleteHighlightText::sprocess(NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
-        }
-    }
-    void EdiDeleteHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }

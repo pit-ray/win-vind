@@ -103,7 +103,7 @@ namespace vind
 
 
         //change key state without input
-        void release_keystate(KeyCode key) {
+        void release_keystate(KeyCode key, bool enable_vhook) {
             static INPUT in ;
             in.type           = INPUT_KEYBOARD ;
             in.ki.wVk         = static_cast<WORD>(key) ;
@@ -116,11 +116,13 @@ namespace vind
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
 
-            keyabsorber::release_virtually(key) ;
+            if(enable_vhook) {
+                keyabsorber::release_virtually(key) ;
+            }
         }
 
         //change key state without input
-        void press_keystate(KeyCode key) {
+        void press_keystate(KeyCode key, bool enable_vhook) {
             static INPUT in ;
             in.type           = INPUT_KEYBOARD ;
             in.ki.wVk         = static_cast<WORD>(key) ;
@@ -133,7 +135,9 @@ namespace vind
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
 
-            keyabsorber::press_virtually(key) ;
+            if(enable_vhook) {
+                keyabsorber::press_virtually(key) ;
+            }
         }
 
         void pushup_core(std::initializer_list<KeyCode>&& initl) {

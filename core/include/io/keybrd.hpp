@@ -38,10 +38,14 @@ namespace vind
 
 
         //change key state without input
-        void release_keystate(KeyCode key) ;
+        void release_keystate(
+                KeyCode key,
+                bool enable_vhook=true) ;
 
         //change key state without input
-        void press_keystate(KeyCode key) ;
+        void press_keystate(
+                KeyCode key,
+                bool enable_vhook=true) ;
 
         void pushup_core(std::initializer_list<KeyCode>&& initlist) ;
 

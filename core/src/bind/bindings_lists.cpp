@@ -101,6 +101,7 @@ namespace vind
                 EasyClickRight::create(),
                 EdiCopyHighlightText::create(),
                 EdiCopyMotion::create(),
+                EdiChangeHighlightText::create(),
                 EdiDeleteCharsAndStartInsert::create(),
                 EdiDeleteHighlightText::create(),
                 EdiDeleteLinesAndStartInsert::create(),

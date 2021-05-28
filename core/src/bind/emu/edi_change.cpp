@@ -11,6 +11,34 @@
 
 namespace vind
 {
+    //EdiChangeHighlightText (Visual only)
+    EdiChangeHighlightText::EdiChangeHighlightText()
+    : BindedFuncCreator("edi_change_highlight_text")
+    {}
+    void EdiChangeHighlightText::sprocess() {
+        using namespace mode ;
+        using keybrd::pushup ;
+        using namespace simpletxreg ;
+
+        pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+        if(get_global_mode() == Mode::EdiLineVisual) {
+            set_register_type(RegType::Lines) ;
+        }
+        else {
+            set_register_type(RegType::Chars) ;
+        }
+        Change2EdiInsert::sprocess(false) ;
+    }
+    void EdiChangeHighlightText::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    void EdiChangeHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+
+
     //EdiDeleteLinesAndStartInsert
     EdiDeleteLinesAndStartInsert::EdiDeleteLinesAndStartInsert()
     : BindedFuncCreator("edi_delete_lines_and_start_insert")

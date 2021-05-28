@@ -1815,6 +1815,21 @@
         "ja": "移動でテキストを削除 (Vimエミュレーション: d{Motion})"
     },
     {
+        "name": "edi_change_highlight_text",
+        "guin": [],
+        "guii": [],
+        "guiv": [],
+        "edin": [],
+        "edii": [],
+        "ediv": ["c", "s", "S"],
+        "edivl": ["c", "s", "S"],
+        "cmd": [],
+        "mycwn": [],
+        "mycwi": [],
+        "en": "Change highlighted texts (Vim Emulation: c, s, S)",
+        "ja": "選択テキストを変更 (Vimエミュレーション: c, s, S)"
+    },
+    {
         "name": "edi_delete_motion_and_start_insert",
         "guin": [],
         "guii": [],

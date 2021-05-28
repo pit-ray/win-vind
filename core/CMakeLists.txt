@@ -46,17 +46,22 @@ add_library(dev STATIC
 )
 
 add_library(emu STATIC
+    src/bind/emu/edi_change.cpp
     src/bind/emu/edi_change_mode.cpp
-    src/bind/emu/edi_edit.cpp
+    src/bind/emu/edi_delete.cpp
     src/bind/emu/edi_jump_caret.cpp
     src/bind/emu/edi_layout.cpp
     src/bind/emu/edi_motion.cpp
     src/bind/emu/edi_move_caret.cpp
+    src/bind/emu/edi_put.cpp
     src/bind/emu/edi_replace.cpp
     src/bind/emu/edi_search_pattern.cpp
+    src/bind/emu/edi_yank.cpp
+    src/bind/emu/simple_text_register.cpp
     src/bind/emu/simple_text_selecter.cpp
     src/bind/emu/smart_clipboard.cpp
     src/bind/emu/text_analyzer.cpp
+    src/bind/emu/text_util.cpp
 )
 
 add_library(file STATIC

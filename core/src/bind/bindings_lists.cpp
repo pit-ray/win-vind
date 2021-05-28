@@ -5,13 +5,16 @@
 #include "bind/ctrl/dedicate_to_window_ctrl.hpp"
 #include "bind/ctrl/mywindow_ctrl.hpp"
 
+#include "bind/emu/edi_change.hpp"
 #include "bind/emu/edi_change_mode.hpp"
-#include "bind/emu/edi_edit.hpp"
+#include "bind/emu/edi_delete.hpp"
 #include "bind/emu/edi_jump_caret.hpp"
 #include "bind/emu/edi_layout.hpp"
 #include "bind/emu/edi_motion.hpp"
 #include "bind/emu/edi_move_caret.hpp"
+#include "bind/emu/edi_put.hpp"
 #include "bind/emu/edi_replace.hpp"
+#include "bind/emu/edi_yank.hpp"
 
 #include "bind/file/filer.hpp"
 #include "bind/file/mkdir.hpp"

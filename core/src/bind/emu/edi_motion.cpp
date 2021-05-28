@@ -1,7 +1,8 @@
 #include "bind/emu/edi_motion.hpp"
 
 #include "bind/emu/edi_change_mode.hpp"
-#include "bind/emu/edi_edit.hpp"
+#include "bind/emu/edi_delete.hpp"
+#include "bind/emu/edi_yank.hpp"
 #include "bind/func_finder.hpp"
 #include "bind/safe_repeater.hpp"
 #include "entry.hpp"

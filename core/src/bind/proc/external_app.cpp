@@ -51,15 +51,9 @@ namespace vind
     : BindedFuncCreator("start_shell")
     {}
     void StartShell::sprocess() {
-        try {
-            util::create_process(
-                    get_shell_startup_directory(),
-                    gparams::get_s("shell")) ;
-        }
-        catch(const std::out_of_range&) {
-            VirtualCmdLine::msgout("E: Not a command") ;
-            return ;
-        }
+        util::create_process(
+                get_shell_startup_directory(),
+                gparams::get_s("shell")) ;
 
         Sleep(100) ; //wait until the window is selectable
         Jump2ActiveWindow::sprocess() ;
@@ -80,47 +74,41 @@ namespace vind
     {}
     void StartAnyApp::sprocess(std::string cmd) {
         if(!cmd.empty()) {
-            try {
-                auto shell_cmd = gparams::get_s("shell") ;
-                std::string shell_cmd_flag {} ;
+            auto shell_cmd = gparams::get_s("shell") ;
+            std::string shell_cmd_flag {} ;
 
-                auto lower_shell_cmd = util::A2a(shell_cmd) ;
-                if(lower_shell_cmd == "cmd" || lower_shell_cmd== "cmd.exe") { // DOS style
-                    shell_cmd_flag = "/c" ;
-                }
-                else { // shell style
-                    shell_cmd_flag = gparams::get_s("shellcmdflag") ;
-                }
+            auto lower_shell_cmd = util::A2a(shell_cmd) ;
+            if(lower_shell_cmd == "cmd" || lower_shell_cmd== "cmd.exe") { // DOS style
+                shell_cmd_flag = "/c" ;
+            }
+            else { // shell style
+                shell_cmd_flag = gparams::get_s("shellcmdflag") ;
+            }
 
-                auto dir = explorer::get_current_explorer_path() ;
+            auto dir = explorer::get_current_explorer_path() ;
+            if(dir.empty()) {
+                dir = gparams::get_s("shell_startup_dir") ;
                 if(dir.empty()) {
-                    dir = gparams::get_s("shell_startup_dir") ;
-                    if(dir.empty()) {
-                        dir = path::HOME_PATH() ;
-                    }
-                }
-
-                auto last_char_pos = cmd.find_last_not_of(" ") ;
-
-                if(cmd[last_char_pos] == ';') { //keep console window
-                    cmd.erase(last_char_pos) ;
-
-                    // wrap a command with "pause" to keep console window instead of vimrun.exe.
-                    util::create_process(
-                            get_shell_startup_directory(),
-                            "cmd", "/c",
-                            shell_cmd, shell_cmd_flag, cmd,
-                            "& pause") ;
-                }
-                else {
-                    util::create_process(
-                            get_shell_startup_directory(),
-                            shell_cmd, shell_cmd_flag, cmd) ;
+                    dir = path::HOME_PATH() ;
                 }
             }
-            catch(const std::out_of_range&) {
-                VirtualCmdLine::msgout("E: Not a command") ;
-                return ;
+
+            auto last_char_pos = cmd.find_last_not_of(" ") ;
+
+            if(cmd[last_char_pos] == ';') { //keep console window
+                cmd.erase(last_char_pos) ;
+
+                // wrap a command with "pause" to keep console window instead of vimrun.exe.
+                util::create_process(
+                        get_shell_startup_directory(),
+                        "cmd", "/c",
+                        shell_cmd, shell_cmd_flag, cmd,
+                        "& pause") ;
+            }
+            else {
+                util::create_process(
+                        get_shell_startup_directory(),
+                        shell_cmd, shell_cmd_flag, cmd) ;
             }
 
             Sleep(100) ; //wait until the window is selectable

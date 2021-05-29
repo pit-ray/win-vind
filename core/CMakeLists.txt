@@ -65,6 +65,7 @@ add_library(emu STATIC
 )
 
 add_library(file STATIC
+    src/bind/file/explorer_util.cpp
     src/bind/file/filer.cpp
     src/bind/file/mkdir.cpp
 )

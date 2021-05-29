@@ -8,6 +8,11 @@
 #include "def.hpp"
 #include "string.hpp"
 
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
+
 namespace vind
 {
     namespace util {
@@ -22,15 +27,19 @@ namespace vind
         bool is_existed_dir(const std::string& path) ;
 
         void create_directory(const std::string& path) ;
-        void copy_file(const std::string& src, const std::string& dst, bool allow_overwrite=false) ;
+        void copy_file(
+                const std::string& src,
+                const std::string& dst,
+                bool allow_overwrite=false) ;
 
-        //It returns a handle to newly created process.
         template <typename... Ts>
-        inline HANDLE create_process(
+        void create_process(
                 const std::string& current_dir,
                 std::string cmd,
                 Ts&&... args) {
-            std::initializer_list<std::string> arglist = {std::forward<Ts>(args)...} ;
+
+            std::initializer_list<std::string> arglist = {
+                std::forward<Ts>(args)...} ;
 
             //protect path with quotation marks for security.
             if(cmd.find(" ") != std::string::npos) {
@@ -53,12 +62,15 @@ namespace vind
             if(!CreateProcessW(
                 NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
                 NULL, NULL, FALSE,
-                CREATE_NEW_CONSOLE, NULL, s_to_ws(current_dir).c_str(),
+                CREATE_NEW_CONSOLE, NULL,
+                s_to_ws(current_dir).c_str(),
                 &si, &pi)) {
 
                 throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
             }
-            return pi.hProcess ;
+
+            CloseHandle(pi.hProcess) ;
+            CloseHandle(pi.hThread) ;
         }
     }
 }

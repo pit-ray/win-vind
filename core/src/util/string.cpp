@@ -44,11 +44,14 @@ namespace vind
             return str ;
         }
 
-        void replace_all(std::string& s, const std::string& from, const std::string& to) {
+        void replace_all(
+                std::string& s,
+                const std::string& from,
+                const std::string& to) {
             size_t spos = 0 ;
             while((spos = s.find(from, spos)) != std::string::npos) {
                 s.replace(spos, from.length(), to) ;
-                spos += from.length() ;
+                spos += to.length() ;
             }
         }
 

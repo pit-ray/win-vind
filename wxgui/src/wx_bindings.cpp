@@ -717,9 +717,25 @@ namespace wxGUI
             write_usage(ofs) ;
             ofs.flush() ;
 
-            HANDLE hproc ;
-            auto create = [&hproc, &temp_path] (const std::string exe) {
-                hproc = util::create_process(".", exe, "\"" + temp_path + "\"") ;
+            STARTUPINFOW si ;
+            PROCESS_INFORMATION pi ;
+            auto create = [&si, &pi, &temp_path] (const std::string exe) {
+                ZeroMemory(&si, sizeof(si)) ;
+                si.cb = sizeof(si) ;
+
+                ZeroMemory(&pi, sizeof(pi)) ;
+
+                auto cmd = exe + " \"" + temp_path + "\"" ;
+
+                if(!CreateProcessW(
+                    NULL, const_cast<LPWSTR>(util::s_to_ws(cmd).c_str()),
+                    NULL, NULL, FALSE,
+                    CREATE_NEW_CONSOLE, NULL,
+                    util::s_to_ws(".").c_str(),
+                    &si, &pi)) {
+
+                    throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
+                }
             } ;
 
             pimpl->edit_with_vim->Disable() ;
@@ -743,10 +759,13 @@ namespace wxGUI
             }
 
             //wait until finishing a created child process.
-            if(WaitForSingleObject(hproc, INFINITE) != WAIT_OBJECT_0) {
+            if(WaitForSingleObject(pi.hProcess, INFINITE) != WAIT_OBJECT_0) {
                 PRINT_ERROR("Failed the process of gVim in a child process.") ;
                 return ;
             }
+
+            CloseHandle(pi.hProcess) ;
+            CloseHandle(pi.hThread) ;
 
             keyabsorber::close_all_ports_with_refresh() ;
 

@@ -293,6 +293,21 @@
         "en": "Shortcut Apps",
         "ja": "アプリのショートカット"
     },
+    "shell": {
+        "value": "powershell",
+        "en": "Name of the shell to use for \":!\" commands",
+        "ja": "\":!\"等のコマンドで使うシェルの名前"
+    },
+    "shellcmdflag": {
+        "value": "-c",
+        "en": "Flag passed to the shell to execute \":!\" commands",
+        "ja": "\":!\"等のコマンドを実行するためにシェルに渡されるフラグ"
+    },
+    "shell_startup_dir": {
+        "value": "",
+        "en": "Current directory after shell startup",
+        "ja": "シェル起動後の現在のディレクトリ"
+    },
     "autotrack_popup": {
         "value": false,
         "en": "Autotrack Popup",

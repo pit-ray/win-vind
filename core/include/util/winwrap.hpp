@@ -62,7 +62,7 @@ namespace vind
             if(!CreateProcessW(
                 NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
                 NULL, NULL, FALSE,
-                CREATE_NEW_CONSOLE, NULL,
+                CREATE_NEW_CONSOLE | CREATE_DEFAULT_ERROR_MODE, NULL,
                 s_to_ws(current_dir).c_str(),
                 &si, &pi)) {
 

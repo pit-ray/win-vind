@@ -24,11 +24,11 @@ namespace
 namespace vind
 {
     struct VirtualCmdLine::Impl {
-        DisplayTextPainter  dtp{25, FW_MEDIUM, "Consolas"} ;
-        int x = 0 ;
-        int y = 0 ;
-        int extra = 0 ;
-        std::chrono::seconds fadeout_time{} ;
+        DisplayTextPainter  dtp_{25, FW_MEDIUM, "Consolas"} ;
+        int x_ = 0 ;
+        int y_ = 0 ;
+        int extra_ = 0 ;
+        std::chrono::seconds fadeout_time_{} ;
     } ;
 
     VirtualCmdLine::VirtualCmdLine()
@@ -44,13 +44,13 @@ namespace vind
 
     void VirtualCmdLine::do_enable() const {
         reset() ;
-        pimpl->dtp.set_font(
+        pimpl->dtp_.set_font(
                 gparams::get_l("cmd_font_size"),
                 gparams::get_l("cmd_font_weight"),
                 gparams::get_s("cmd_font_name")) ;
 
-        pimpl->dtp.set_text_color(gparams::get_s("cmd_font_color")) ;
-        pimpl->dtp.set_back_color(gparams::get_s("cmd_font_bkcolor")) ;
+        pimpl->dtp_.set_text_color(gparams::get_s("cmd_font_color")) ;
+        pimpl->dtp_.set_back_color(gparams::get_s("cmd_font_bkcolor")) ;
 
         auto pos = gparams::get_s("cmd_pos") ;
         auto xma = gparams::get_i("cmd_xmargin") ;
@@ -77,21 +77,21 @@ namespace vind
         } ;
         try {
             const auto& p = pos_list.at(gparams::get_s("cmd_pos")) ;
-            pimpl->x = p.first ;
-            pimpl->y = p.second ;
+            pimpl->x_ = p.first ;
+            pimpl->y_ = p.second ;
         }
         catch(const std::out_of_range& e) {
             const auto& p = pos_list.at("LowerMid") ;
-            pimpl->x = p.first ;
-            pimpl->y = p.second ;
+            pimpl->x_ = p.first ;
+            pimpl->y_ = p.second ;
             PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + ", " + gparams::get_s("cmd_pos") + "is invalid syntax.") ;
         }
 
-        pimpl->extra = gparams::get_i("cmd_font_extra") ;
-        pimpl->fadeout_time = std::chrono::seconds(gparams::get_i("cmd_fadeout_time")) ;
+        pimpl->extra_ = gparams::get_i("cmd_font_extra") ;
+        pimpl->fadeout_time_ = std::chrono::seconds(gparams::get_i("cmd_fadeout_time")) ;
 
-        g_refresh_pos.x = pimpl->x ;
-        g_refresh_pos.y = pimpl->y ;
+        g_refresh_pos.x = pimpl->x_ ;
+        g_refresh_pos.y = pimpl->y_ ;
     }
 
     void VirtualCmdLine::do_disable() const {
@@ -131,12 +131,12 @@ namespace vind
     void VirtualCmdLine::do_process() const {
         if(g_outstr.empty()) return ;
         if(g_msg_showing) {
-            if(std::chrono::system_clock::now() - g_msg_start > pimpl->fadeout_time) {
+            if(std::chrono::system_clock::now() - g_msg_start > pimpl->fadeout_time_) {
                 reset() ;
                 return ;
             }
         }
 
-        pimpl->dtp.draw(g_outstr, pimpl->x, pimpl->y, pimpl->extra) ;
+        pimpl->dtp_.draw(g_outstr, pimpl->x_, pimpl->y_, pimpl->extra_) ;
     }
 }

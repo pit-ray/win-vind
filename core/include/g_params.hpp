@@ -32,7 +32,15 @@ namespace vind
         void set(const std::string& name, int val) ;
         void set(const std::string& name, double val) ;
         void set(const std::string& name, bool val) ;
+
+        enum ValueType : unsigned char {
+            STRING,
+            NUMBER,
+            BOOL,
+            UNDEFINED
+        } ;
+
+        ValueType get_type(const std::string& name) ;
     }
 }
-
 #endif

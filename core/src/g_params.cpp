@@ -17,6 +17,7 @@
 namespace
 {
     std::unordered_map<std::string, std::string>  g_str_params{} ;
+    std::unordered_map<std::string, bool> g_bool_params{} ;
     std::unordered_map<std::string, double> g_num_params{} ;
 
     using namespace nlohmann ;
@@ -40,7 +41,7 @@ namespace vind
                 try {
                     auto& val = obj.at("value") ;
                     if(val.is_boolean()) {
-                        g_num_params[name] = val ? 1 : 0 ;
+                        g_bool_params[name] = val ;
                     }
                     else if(val.is_number()) {
                         g_num_params[name] = val.get<double>() ;
@@ -80,7 +81,7 @@ namespace vind
         }
 
         bool get_b(const std::string& name) {
-            return g_num_params.at(name) != 0 ;
+            return g_bool_params.at(name) != 0 ;
         }
 
         unsigned char get_uc(const std::string& name) {
@@ -93,14 +94,31 @@ namespace vind
         void set(const std::string& name, std::string&& val) {
             g_str_params[name] = std::move(val) ;
         }
+
         void set(const std::string& name, int val) {
             g_num_params[name] = val ;
         }
         void set(const std::string& name, double val) {
             g_num_params[name] = val ;
         }
+
         void set(const std::string& name, bool val) {
-            g_num_params[name] = !val ? 0 : 1 ;
+            g_bool_params[name] = val ;
+        }
+
+
+        ValueType get_type(const std::string& name) {
+            if(g_bool_params.find(name) != g_bool_params.end()) {
+                return ValueType::BOOL ;
+            }
+            if(g_num_params.find(name) != g_num_params.end()) {
+                return ValueType::NUMBER ;
+            }
+            if(g_str_params.find(name) != g_str_params.end()) {
+                return ValueType::STRING ;
+            }
+
+            return ValueType::UNDEFINED ;
         }
     }
 }

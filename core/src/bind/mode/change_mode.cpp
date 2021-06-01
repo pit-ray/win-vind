@@ -97,44 +97,4 @@ namespace vind
     void Change2Visual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
-
-
-    //MyConfigWindowNormal
-    MyConfigWindowNormal::MyConfigWindowNormal()
-    : BindedFuncCreator("my_config_window_normal")
-    {}
-    void MyConfigWindowNormal::sprocess() {
-        using namespace mode ;
-        keyabsorber::close_all_ports_with_refresh() ;
-        keyabsorber::absorb() ;
-        change_mode(Mode::MyConfigWindowNormal) ;
-    }
-    void MyConfigWindowNormal::sprocess(NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
-        }
-    }
-    void MyConfigWindowNormal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-
-
-    //MyConfigWindowInsert
-    MyConfigWindowInsert::MyConfigWindowInsert()
-    : BindedFuncCreator("my_config_window_insert")
-    {}
-    void MyConfigWindowInsert::sprocess() {
-        using namespace mode ;
-        keyabsorber::close_all_ports_with_refresh() ;
-        keyabsorber::unabsorb() ;
-        change_mode(Mode::MyConfigWindowInsert) ;
-    }
-    void MyConfigWindowInsert::sprocess(NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
-        }
-    }
-    void MyConfigWindowInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 }

@@ -27,20 +27,6 @@ namespace vind
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
-
-    struct MyConfigWindowNormal : public BindedFuncCreator<MyConfigWindowNormal> {
-        explicit MyConfigWindowNormal() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
-    } ;
-
-    struct MyConfigWindowInsert : public BindedFuncCreator<MyConfigWindowInsert> {
-        explicit MyConfigWindowInsert() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
-    } ;
 }
 
 #endif

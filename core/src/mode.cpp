@@ -15,8 +15,6 @@ namespace
         {Mode::EdiInsert,       "edii"},
         {Mode::EdiVisual,       "ediv"},
         {Mode::EdiLineVisual,   "edivl"},
-        {Mode::MyConfigWindowNormal,  "mycwn"},
-        {Mode::MyConfigWindowInsert,  "mycwi"}
     } ;
 }
 
@@ -41,7 +39,7 @@ namespace vind
         }
 
         bool is_insert() noexcept {
-            return m == Mode::Insert || m == Mode::EdiInsert  || m == Mode::MyConfigWindowInsert ;
+            return m == Mode::Insert || m == Mode::EdiInsert ;
         }
 
         bool is_edi_visual() noexcept {

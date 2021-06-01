@@ -740,14 +740,6 @@ namespace wxGUI
 
             pimpl->edit_with_vim->Disable() ;
 
-            const auto use_bindings = ioParams::get_vb("enable_specific_bindings_in_mygui") ;
-            if(use_bindings) {
-                MyConfigWindowInsert::sprocess() ;
-            }
-            else {
-                Change2Insert::sprocess() ;
-            }
-
             //release a message to push [Edit with Vim] button.
             keyabsorber::close_all_ports_with_refresh() ;
 
@@ -768,10 +760,6 @@ namespace wxGUI
             CloseHandle(pi.hThread) ;
 
             keyabsorber::close_all_ports_with_refresh() ;
-
-            if(use_bindings) {
-                MyConfigWindowNormal::sprocess() ;
-            }
 
             nlohmann::json new_json ;
             std::ifstream ifs(path::to_u8path(temp_path)) ;

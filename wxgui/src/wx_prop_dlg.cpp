@@ -38,13 +38,6 @@
 #include "key/key_absorber.hpp"
 #include "mode.hpp"
 
-#define KEY_COLOR "#1e96ff"
-#define TXT_COLOR "gray"
-#define TXT_SIZE "small"
-#define CREATE_ITEM(KEY, VAL) "<tt><span size='" TXT_SIZE "' foreground='" KEY_COLOR \
-                              "'>" KEY \
-                              "</span> <span size='" TXT_SIZE "' foreground='" TXT_COLOR \
-                              "'>" VAL "</span></tt>"
 
 namespace wxGUI
 {
@@ -133,17 +126,6 @@ namespace wxGUI
         flags.Border(wxALL, BORDER).Expand() ;
 
         auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;
-
-        auto usage = new wxGenericStaticText(this, wxID_ANY, wxT("")) ;
-        usage->SetLabelMarkup(
-            CREATE_ITEM("Up/Down",      "Select,  ")
-            CREATE_ITEM("Left/Right",   "Focus,  ")
-            CREATE_ITEM("gt/gT",        "Tab,  ")
-            CREATE_ITEM("&lt;Esc&gt;",  "Normal,  ")
-            CREATE_ITEM("i/a",          "Insert,  ")
-            CREATE_ITEM("o",            "Decide")
-        ) ;
-        btn_sizer->Add(usage, flags) ;
 
         btn_sizer->AddStretchSpacer() ;
 
@@ -244,13 +226,7 @@ namespace wxGUI
     }
 
     bool PropDlg::Show(bool show) {
-        static auto l_mode = mode::Mode::Insert ;
-        static auto l_is_absorbed = false ;
-        static auto l_is_cached   = false ;
-
         auto result = wxPropertySheetDialog::Show(show) ;
-
-        const auto use_bindings = ioParams::get_vb("enable_specific_bindings_in_mygui") ;
 
         //true is shown. false is hidden.
         if(show) {
@@ -259,25 +235,6 @@ namespace wxGUI
             if(!SetForegroundWindow(GetHandle())) {
                 PRINT_ERROR("Preferences Window was not brought to the foreground") ;
             } //shown as most top window
-
-            if(use_bindings && !l_is_cached) {
-                l_mode = mode::get_global_mode() ;
-                l_is_absorbed = keyabsorber::is_absorbed() ;
-                l_is_cached = true ;
-                MyConfigWindowNormal::sprocess() ;
-            }
-        }
-        else {
-            if(use_bindings && l_is_cached) {
-                mode::change_mode(l_mode) ;
-
-                keyabsorber::close_all_ports_with_refresh() ;
-                if(!l_is_absorbed) {
-                    keyabsorber::unabsorb() ;
-                }
-
-                l_is_cached = false ;
-            }
         }
 
         return result ;

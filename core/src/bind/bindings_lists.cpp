@@ -155,8 +155,6 @@ namespace vind
                 MoveLeft::create(),
                 MoveRight::create(),
                 MoveUp::create(),
-                MyConfigWindowInsert::create(),
-                MyConfigWindowNormal::create(),
                 OpenNewCurWinWithHorizontalSplit::create(),
                 OpenNewCurWinWithVerticalSplit::create(),
                 OpenNewCurrentWindow::create(),

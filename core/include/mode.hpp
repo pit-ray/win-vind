@@ -1,46 +1,58 @@
 #ifndef _MODE_HPP
 #define _MODE_HPP
 
+#include <array>
+#include <stdexcept>
 #include <string>
+
 
 namespace vind
 {
     namespace mode {
-        enum class Mode : unsigned char {
-            Normal,
-            Insert,
-            Visual,
-            Command,
+        enum Mode : unsigned char {
+            INSERT       = 0b1100'0000,
 
-            _EditorModeThreshold,
-            EdiNormal,
-            EdiInsert,
-            EdiVisual,
-            EdiLineVisual,
-            EdiCommand,
+            GUI_NORMAL   = 0b0101'0001,
+            GUI_VISUAL   = 0b0110'0010,
 
-            NUM,
-            None = 255
+            EDI_NORMAL   = 0b1001'0011,
+            EDI_VISUAL   = 0b1010'0100,
+            EDI_VISUAL_L = 0b1010'0101,
+
+            COMMAND      = 0b1100'0110,
+
+            MODE_NUM     = 0b0000'0111,
+
+            MASK_INDEX   = 0b0000'1111,
+            MASK_GUI     = 0b0001'0000,
+            MASK_EDI     = 0b0010'0000,
+            MASK_NORMAL  = 0b0010'0001,
+            MASK_VISUAL  = 0b0010'0010,
+
+            UNDEFINED    = 255,
         } ;
-
-
-        constexpr std::size_t mode_num() noexcept {
-            return static_cast<std::size_t>(Mode::NUM) ;
-        }
 
         template <typename T>
         constexpr auto mode_name(const T mode) noexcept {
-            switch(static_cast<Mode>(mode)) {
-                case Mode::Normal:        return "GUI Normal" ;
-                case Mode::Insert:        return "GUI Insert" ;
-                case Mode::Visual:        return "GUI Visual" ;
-                case Mode::Command:       return "Command" ;
-                case Mode::EdiNormal:     return "Editor Normal" ;
-                case Mode::EdiInsert:     return "Editor Insert" ;
-                case Mode::EdiVisual:     return "Editor Visual" ;
-                case Mode::EdiLineVisual: return "Editor Visual Line" ;
-                default: return "Undefined" ;
-            }
+            constexpr auto obj = [] {
+                std::array<std::string, mode::MODE_NUM> ar{} ;
+                ar.fill("Undefined") ;
+
+                ar[Mode::INSERT]       = "Insert" ;
+
+                ar[Mode::GUI_NORMAL]   = "GUI Normal" ;
+                ar[Mode::GUI_VISUAL]   = "GUI Visual" ;
+
+                ar[Mode::EDI_NORMAL]   = "Editor Normal" ;
+                ar[Mode::EDI_VISUAL]   = "Editor Visual" ;
+                ar[Mode::EDI_VISUAL_L] = "Editor Visual Line" ;
+
+                ar[Mode::COMMAND]      = "Command" ;
+
+                return ar ;
+            }() ;
+
+            return obj[mode] ;
         }
 
         void change_mode(Mode mode) noexcept ;

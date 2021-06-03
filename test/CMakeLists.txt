@@ -43,6 +43,8 @@ add_executable(core-test
     core/time_keystroke_repeater_test.cpp
 
     core/parser_rcparser_test.cpp
+
+    core/mode_test.cpp
 )
 target_link_libraries(core-test doctest)
 add_test(

@@ -31,7 +31,7 @@ namespace
         }
         if(dst == first_src_code) {
             PRINT_ERROR("{" + keycodecvt::get_name(first_src_code) \
-                    + "} recursively remaps itself in " + mode::mode_name(mode) + ".") ;
+                    + "} recursively remaps itself in " + mode::to_name(mode) + ".") ;
             return first_src_code ;
         }
         return remap_recursively(dst, first_src_code, mode) ;

@@ -64,7 +64,9 @@ namespace vind
         //
         // If Failed, return Mode::None.
         //
-        mode::Mode parse_string_modecode(const std::string& modestr) ;
+        mode::Mode parse_string_modecode(
+                const std::string& modestr,
+                std::string root="def") ;
 
         namespace debug {
             std::string print(const Command& cmd) ;

@@ -142,192 +142,77 @@ namespace vind
                     str.substr(pos)) ;
         }
 
-        mode::Mode parse_mode_prefix(const std::string& prefix) {
-            using namespace vind::mode ;
-            static std::unordered_map<std::string, Mode> to_mode {
-                {"gn", Mode::Normal},
-                {"gv", Mode::Visual},
-                {"en", Mode::EdiNormal},
-                {"ev", Mode::EdiVisual},
-                {"i",  Mode::Insert},
-                {"c",  Mode::Command}
-            } ;
-            try {
-                return to_mode.at(prefix) ;
-            }
-            catch(const std::out_of_range&) {
-                return Mode::None ;
-            }
-        }
 
         RunCommandsIndex parse_run_command(const std::string& strcmd) {
-            static std::unordered_map<std::string, RunCommandsIndex> parser {
-                {"se",          RunCommandsIndex::SET},
-                {"set",         RunCommandsIndex::SET},
+            using namespace vind::mode ;
+            static auto parser = [] {
+                std::unordered_map<std::string, RunCommandsIndex> tmp {
+                    {"se",          RunCommandsIndex::SET},
+                    {"set",         RunCommandsIndex::SET},
 
-                {"gnmap",       RunCommandsIndex::MAP_GN},
-                {"gnma",        RunCommandsIndex::MAP_GN},
-                {"gnm",         RunCommandsIndex::MAP_GN},
+                    {"command",     RunCommandsIndex::COMMAND},
+                    {"comman",      RunCommandsIndex::COMMAND},
+                    {"comma",       RunCommandsIndex::COMMAND},
+                    {"comm",        RunCommandsIndex::COMMAND},
+                    {"com",         RunCommandsIndex::COMMAND},
 
-                {"gvmap",       RunCommandsIndex::MAP_GV},
-                {"gvma",        RunCommandsIndex::MAP_GV},
-                {"gvm",         RunCommandsIndex::MAP_GV},
-
-                {"enmap",       RunCommandsIndex::MAP_EN},
-                {"enma",        RunCommandsIndex::MAP_EN},
-                {"enm",         RunCommandsIndex::MAP_EN},
-
-                {"evmap",       RunCommandsIndex::MAP_EV},
-                {"evma",        RunCommandsIndex::MAP_EV},
-                {"evm",         RunCommandsIndex::MAP_EV},
-
-                {"imap",        RunCommandsIndex::MAP_IN},
-                {"ima",         RunCommandsIndex::MAP_IN},
-                {"im",          RunCommandsIndex::MAP_IN},
-
-                {"cmap",        RunCommandsIndex::MAP_CM},
-                {"cma",         RunCommandsIndex::MAP_CM},
-                {"cm",          RunCommandsIndex::MAP_CM},
+                    {"delcommand",  RunCommandsIndex::DELCOMMAND},
+                    {"delcomman",   RunCommandsIndex::DELCOMMAND},
+                    {"delcomma",    RunCommandsIndex::DELCOMMAND},
+                    {"delcomm",     RunCommandsIndex::DELCOMMAND},
+                    {"delcom",      RunCommandsIndex::DELCOMMAND},
+                    {"delco",       RunCommandsIndex::DELCOMMAND},
+                    {"delc",        RunCommandsIndex::DELCOMMAND},
 
 
-                {"gnnoremap",   RunCommandsIndex::NOREMAP_GN},
-                {"gnnorema",    RunCommandsIndex::NOREMAP_GN},
-                {"gnnorem",     RunCommandsIndex::NOREMAP_GN},
-                {"gnnore",      RunCommandsIndex::NOREMAP_GN},
-                {"gnnor",       RunCommandsIndex::NOREMAP_GN},
-                {"gnno",        RunCommandsIndex::NOREMAP_GN},
-                {"gnn",         RunCommandsIndex::NOREMAP_GN},
+                    {"comclear",    RunCommandsIndex::COMCLEAR},
+                    {"comclea",     RunCommandsIndex::COMCLEAR},
+                    {"comcle",      RunCommandsIndex::COMCLEAR},
+                    {"comcl",       RunCommandsIndex::COMCLEAR},
+                    {"comc",        RunCommandsIndex::COMCLEAR}
+                } ;
 
-                {"gvnoremap",   RunCommandsIndex::NOREMAP_GV},
-                {"gvnorema",    RunCommandsIndex::NOREMAP_GV},
-                {"gvnorem",     RunCommandsIndex::NOREMAP_GV},
-                {"gvnore",      RunCommandsIndex::NOREMAP_GV},
-                {"gvnor",       RunCommandsIndex::NOREMAP_GV},
-                {"gvno",        RunCommandsIndex::NOREMAP_GV},
-                {"gvn",         RunCommandsIndex::NOREMAP_GV},
+                for(int i = 0 ; i < Mode::MODE_NUM ; i ++) {
+                    auto mode_prefix = mode::to_prefix(i) ;
 
-                {"ennoremap",   RunCommandsIndex::NOREMAP_EN},
-                {"ennorema",    RunCommandsIndex::NOREMAP_EN},
-                {"ennorem",     RunCommandsIndex::NOREMAP_EN},
-                {"ennore",      RunCommandsIndex::NOREMAP_EN},
-                {"ennor",       RunCommandsIndex::NOREMAP_EN},
-                {"enno",        RunCommandsIndex::NOREMAP_EN},
-                {"enn",         RunCommandsIndex::NOREMAP_EN},
+                    // map
+                    auto map_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_MAP) ;
+                    tmp[mode_prefix + "map"] = map_rc_index ;
+                    tmp[mode_prefix + "ma"]  = map_rc_index ;
+                    tmp[mode_prefix + "m"]   = map_rc_index ;
 
-                {"evnoremap",   RunCommandsIndex::NOREMAP_EV},
-                {"evnorema",    RunCommandsIndex::NOREMAP_EV},
-                {"evnorem",     RunCommandsIndex::NOREMAP_EV},
-                {"evnore",      RunCommandsIndex::NOREMAP_EV},
-                {"evnor",       RunCommandsIndex::NOREMAP_EV},
-                {"evno",        RunCommandsIndex::NOREMAP_EV},
-                {"evn",         RunCommandsIndex::NOREMAP_EV},
+                    // noremap
+                    auto noremap_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_NOREMAP) ;
+                    tmp[mode_prefix + "noremap"] = noremap_rc_index ;
+                    tmp[mode_prefix + "norema"]  = noremap_rc_index ;
+                    tmp[mode_prefix + "norem"]   = noremap_rc_index ;
+                    tmp[mode_prefix + "nore"]    = noremap_rc_index ;
+                    tmp[mode_prefix + "nor"]     = noremap_rc_index ;
+                    tmp[mode_prefix + "no"]      = noremap_rc_index ;
+                    if(mode_prefix != "c" && mode_prefix != "i") {
+                        tmp[mode_prefix + "n"]       = noremap_rc_index ;
+                    }
 
-                {"inoremap",    RunCommandsIndex::NOREMAP_IN},
-                {"inorema",     RunCommandsIndex::NOREMAP_IN},
-                {"inorem",      RunCommandsIndex::NOREMAP_IN},
-                {"inore",       RunCommandsIndex::NOREMAP_IN},
-                {"inor",        RunCommandsIndex::NOREMAP_IN},
-                {"ino",         RunCommandsIndex::NOREMAP_IN},
+                    // unmap
+                    auto unmap_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_UNMAP) ;
+                    tmp[mode_prefix + "unmap"] = unmap_rc_index ;
+                    tmp[mode_prefix + "unma"]  = unmap_rc_index ;
+                    tmp[mode_prefix + "unm"]   = unmap_rc_index ;
+                    tmp[mode_prefix + "un"]    = unmap_rc_index ;
+                    if(mode_prefix == "c" && mode_prefix == "i") {
+                        tmp[mode_prefix + "u"] = unmap_rc_index ;
+                    }
 
-                {"cnoremap",    RunCommandsIndex::NOREMAP_CM},
-                {"cnorema",     RunCommandsIndex::NOREMAP_CM},
-                {"cnorem",      RunCommandsIndex::NOREMAP_CM},
-                {"cnore",       RunCommandsIndex::NOREMAP_CM},
-                {"cnor",        RunCommandsIndex::NOREMAP_CM},
-                {"cno",         RunCommandsIndex::NOREMAP_CM},
-
-
-                {"gnunmap",     RunCommandsIndex::UNMAP_GN},
-                {"gnunma",      RunCommandsIndex::UNMAP_GN},
-                {"gnunm",       RunCommandsIndex::UNMAP_GN},
-                {"gnun",        RunCommandsIndex::UNMAP_GN},
-
-                {"gvunmap",     RunCommandsIndex::UNMAP_GV},
-                {"gvunma",      RunCommandsIndex::UNMAP_GV},
-                {"gvunm",       RunCommandsIndex::UNMAP_GV},
-                {"gvun",        RunCommandsIndex::UNMAP_GV},
-
-                {"enunmap",     RunCommandsIndex::UNMAP_EN},
-                {"enunma",      RunCommandsIndex::UNMAP_EN},
-                {"enunm",       RunCommandsIndex::UNMAP_EN},
-                {"enun",        RunCommandsIndex::UNMAP_EN},
-
-                {"evunmap",     RunCommandsIndex::UNMAP_EV},
-                {"evunma",      RunCommandsIndex::UNMAP_EV},
-                {"evunm",       RunCommandsIndex::UNMAP_EV},
-                {"evun",        RunCommandsIndex::UNMAP_EV},
-
-                {"iunmap",      RunCommandsIndex::UNMAP_IN},
-                {"iunma",       RunCommandsIndex::UNMAP_IN},
-                {"iunm",        RunCommandsIndex::UNMAP_IN},
-                {"iun",         RunCommandsIndex::UNMAP_IN},
-                {"iu",          RunCommandsIndex::UNMAP_IN},
-
-                {"cunmap",      RunCommandsIndex::UNMAP_CM},
-                {"cunma",       RunCommandsIndex::UNMAP_CM},
-                {"cunm",        RunCommandsIndex::UNMAP_CM},
-                {"cun",         RunCommandsIndex::UNMAP_CM},
-                {"cu",          RunCommandsIndex::UNMAP_CM},
-
-
-                {"gnmapclear",  RunCommandsIndex::MAPCLEAR_GN},
-                {"gnmapclea",   RunCommandsIndex::MAPCLEAR_GN},
-                {"gnmapcle",    RunCommandsIndex::MAPCLEAR_GN},
-                {"gnmapcl",     RunCommandsIndex::MAPCLEAR_GN},
-                {"gnmapc",      RunCommandsIndex::MAPCLEAR_GN},
-
-                {"gvmapclear",  RunCommandsIndex::MAPCLEAR_GV},
-                {"gvmapclea",   RunCommandsIndex::MAPCLEAR_GV},
-                {"gvmapcle",    RunCommandsIndex::MAPCLEAR_GV},
-                {"gvmapcl",     RunCommandsIndex::MAPCLEAR_GV},
-                {"gvmapc",      RunCommandsIndex::MAPCLEAR_GV},
-
-                {"enmapclear",  RunCommandsIndex::MAPCLEAR_EN},
-                {"enmapclea",   RunCommandsIndex::MAPCLEAR_EN},
-                {"enmapcle",    RunCommandsIndex::MAPCLEAR_EN},
-                {"enmapcl",     RunCommandsIndex::MAPCLEAR_EN},
-                {"enmapc",      RunCommandsIndex::MAPCLEAR_EN},
-
-                {"evmapclear",  RunCommandsIndex::MAPCLEAR_EV},
-                {"evmapclea",   RunCommandsIndex::MAPCLEAR_EV},
-                {"evmapcle",    RunCommandsIndex::MAPCLEAR_EV},
-                {"evmapcl",     RunCommandsIndex::MAPCLEAR_EV},
-                {"evmapc",      RunCommandsIndex::MAPCLEAR_EV},
-
-                {"imapclear",   RunCommandsIndex::MAPCLEAR_IN},
-                {"imapclea",    RunCommandsIndex::MAPCLEAR_IN},
-                {"imapcle",     RunCommandsIndex::MAPCLEAR_IN},
-                {"imapcl",      RunCommandsIndex::MAPCLEAR_IN},
-                {"imapc",       RunCommandsIndex::MAPCLEAR_IN},
-
-                {"cmapclear",   RunCommandsIndex::MAPCLEAR_CM},
-                {"cmapclea",    RunCommandsIndex::MAPCLEAR_CM},
-                {"cmapcle",     RunCommandsIndex::MAPCLEAR_CM},
-                {"cmapcl",      RunCommandsIndex::MAPCLEAR_CM},
-                {"cmapc",       RunCommandsIndex::MAPCLEAR_CM},
-
-
-                {"command",     RunCommandsIndex::COMMAND},
-                {"comman",      RunCommandsIndex::COMMAND},
-                {"comma",       RunCommandsIndex::COMMAND},
-                {"comm",        RunCommandsIndex::COMMAND},
-                {"com",         RunCommandsIndex::COMMAND},
-
-                {"delcommand",  RunCommandsIndex::DELCOMMAND},
-                {"delcomman",   RunCommandsIndex::DELCOMMAND},
-                {"delcomma",    RunCommandsIndex::DELCOMMAND},
-                {"delcomm",     RunCommandsIndex::DELCOMMAND},
-                {"delcom",      RunCommandsIndex::DELCOMMAND},
-                {"delco",       RunCommandsIndex::DELCOMMAND},
-                {"delc",        RunCommandsIndex::DELCOMMAND},
-
-
-                {"comclear",    RunCommandsIndex::COMCLEAR},
-                {"comclea",     RunCommandsIndex::COMCLEAR},
-                {"comcle",      RunCommandsIndex::COMCLEAR},
-                {"comcl",       RunCommandsIndex::COMCLEAR},
-                {"comc",        RunCommandsIndex::COMCLEAR}
-            } ;
+                    // mapclear
+                    auto mapclear_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_MAPCLEAR) ;
+                    tmp[mode_prefix + "mapclear"] = mapclear_rc_index ;
+                    tmp[mode_prefix + "mapclea"]  = mapclear_rc_index ;
+                    tmp[mode_prefix + "mapcle"]   = mapclear_rc_index ;
+                    tmp[mode_prefix + "mapcl"]    = mapclear_rc_index ;
+                    tmp[mode_prefix + "mapc"]     = mapclear_rc_index ;
+                }
+                return tmp ;
+            }() ;
 
             try {
                 return parser.at(strcmd) ;

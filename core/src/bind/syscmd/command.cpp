@@ -32,7 +32,7 @@ namespace vind
             return ;
         }
 
-        gmaps::map(arg1, arg2, mode::Mode::Command) ;
+        gmaps::map(arg1, arg2, mode::Mode::COMMAND) ;
 
         if(reload_config) {
             vind::reconstruct_all_components() ;
@@ -70,7 +70,7 @@ namespace vind
             return ;
         }
 
-        gmaps::unmap(arg, mode::Mode::Command) ;
+        gmaps::unmap(arg, mode::Mode::COMMAND) ;
 
         if(reload_config) {
             vind::reconstruct_all_components() ;
@@ -93,7 +93,7 @@ namespace vind
     : BindedFuncCreator("system_command_comclear")
     {}
     void SyscmdComclear::sprocess(bool reload_config) {
-        gmaps::mapclear(mode::Mode::Command) ;
+        gmaps::mapclear(mode::Mode::COMMAND) ;
         if(reload_config) {
             vind::reconstruct_all_components() ;
         }

@@ -109,7 +109,7 @@ namespace vind
             return 0 ;
         }
 
-        if(!mode::is_insert()) {
+        if(mode::get_global_mode() != mode::Mode::INSERT) {
             auto nums = extract_numbers(log, KeyLog{KEYCODE_0}) ;
             if(!nums.empty()) {
                 return transition_to_parsing_num_state(nums) ;

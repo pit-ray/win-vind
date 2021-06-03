@@ -78,42 +78,42 @@ namespace vind
 
         mode::Mode parse_mode_prefix(const std::string& prefix) ;
 
-        enum class RunCommandsIndex : unsigned char {
-            UNDEFINED,
+        enum RunCommandsIndex : unsigned char {
+            UNDEFINED       = 0,
 
-            SET,
+            SET             = 0b0000'00001,
 
-            MAP_GN,
-            MAP_GV,
-            MAP_EN,
-            MAP_EV,
-            MAP_IN,
-            MAP_CM,
+            MASK_MAP        = 0b0001'0000,
+            MAP_IN          = MASK_MAP | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
+            MAP_GN          = MASK_MAP | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
+            MAP_GV          = MASK_MAP | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
+            MAP_EN          = MASK_MAP | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
+            MAP_EV          = MASK_MAP | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
 
-            NOREMAP_GN,
-            NOREMAP_GV,
-            NOREMAP_EN,
-            NOREMAP_EV,
-            NOREMAP_IN,
-            NOREMAP_CM,
+            MASK_NOREMAP    = 0b0010'0000,
+            NOREMAP_IN      = MASK_NOREMAP | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
+            NOREMAP_GN      = MASK_NOREMAP | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
+            NOREMAP_GV      = MASK_NOREMAP | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
+            NOREMAP_EN      = MASK_NOREMAP | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
+            NOREMAP_EV      = MASK_NOREMAP | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
 
-            UNMAP_GN,
-            UNMAP_GV,
-            UNMAP_EN,
-            UNMAP_EV,
-            UNMAP_IN,
-            UNMAP_CM,
+            MASK_UNMAP     = 0b0100'0000,
+            UNMAP_IN       = MASK_UNMAP | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
+            UNMAP_GN       = MASK_UNMAP | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
+            UNMAP_GV       = MASK_UNMAP | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
+            UNMAP_EN       = MASK_UNMAP | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
+            UNMAP_EV       = MASK_UNMAP | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
 
-            MAPCLEAR_GN,
-            MAPCLEAR_GV,
-            MAPCLEAR_EN,
-            MAPCLEAR_EV,
-            MAPCLEAR_IN,
-            MAPCLEAR_CM,
+            MASK_MAPCLEAR  = 0b1000'0000,
+            MAPCLEAR_IN    = MASK_MAPCLEAR | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
+            MAPCLEAR_GN    = MASK_MAPCLEAR | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
+            MAPCLEAR_GV    = MASK_MAPCLEAR | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
+            MAPCLEAR_EN    = MASK_MAPCLEAR | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
+            MAPCLEAR_EV    = MASK_MAPCLEAR | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
 
-            COMMAND,
-            DELCOMMAND,
-            COMCLEAR,
+            COMMAND        = MASK_MAP      | (mode::Mode::COMMAND & mode::Mode::MASK_INDEX),
+            DELCOMMAND     = MASK_UNMAP    | (mode::Mode::COMMAND & mode::Mode::MASK_INDEX),
+            COMCLEAR       = MASK_MAPCLEAR | (mode::Mode::COMMAND & mode::Mode::MASK_INDEX),
         } ;
 
         RunCommandsIndex parse_run_command(const std::string& strcmd) ;

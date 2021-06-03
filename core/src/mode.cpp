@@ -1,80 +1,82 @@
 #include "mode.hpp"
 
+#include <array>
 #include <stdexcept>
 #include <unordered_map>
+
 
 namespace
 {
     using namespace vind::mode ;
-    const std::unordered_map<Mode, std::string> g_modeidxs {
-        {Mode::Normal,          "guin"},
-        {Mode::Insert,          "guii"},
-        {Mode::Visual,          "guiv"},
-        {Mode::Command,         "cmd"},
-        {Mode::EdiNormal,       "edin"},
-        {Mode::EdiInsert,       "edii"},
-        {Mode::EdiVisual,       "ediv"},
-        {Mode::EdiLineVisual,   "edivl"},
+    static std::unordered_map<Mode, std::string> g_mode_prefix {
+        {Mode::INSERT,     "i"},
+        {Mode::GUI_NORMAL, "gn"},
+        {Mode::GUI_VISUAL, "gv"},
+        {Mode::EDI_NORMAL, "en"},
+        {Mode::EDI_VISUAL, "ev"},
+        {Mode::COMMAND,    "c"}
     } ;
+
+    static Mode g_mode{Mode::INSERT} ;
 }
+
 
 namespace vind
 {
     namespace mode
     {
-        static Mode m{Mode::Normal} ;
-
-        void change_mode(Mode mode) noexcept {
-            m = mode ;
-        }
-        void change_mode(int mode) noexcept {
-            m = static_cast<Mode>(mode) ;
-        }
-        void change_mode(unsigned char mode) noexcept {
-            m = static_cast<Mode>(mode) ;
+        void set_global_mode(Mode mode) noexcept {
+            g_mode = mode ;
         }
 
         Mode get_global_mode() noexcept {
-            return m ;
+            return g_mode ;
         }
 
-        bool is_insert() noexcept {
-            return m == Mode::Insert || m == Mode::EdiInsert ;
-        }
-
-        bool is_edi_visual() noexcept {
-            return m == Mode::EdiVisual || m == Mode::EdiLineVisual ;
-        }
-        bool is_editor() noexcept {
-            return m > Mode::_EditorModeThreshold ;
-        }
-        bool is_command() noexcept {
-            return m == Mode::Command || m == Mode::EdiCommand ;
-        }
-
-        std::string get_mode_strcode(Mode mode) noexcept {
+        std::string to_prefix(Mode mode) noexcept {
             try {
-                return g_modeidxs.at(mode) ;
+                return g_mode_prefix.at(mode) ;
             }
             catch(const std::out_of_range&) {
-                return std::string() ;
+                return "" ;
             }
         }
 
-        Mode get_mode_from_strcode(const std::string& strcode) noexcept {
-            static const auto obj = []() {
+        Mode prefix_to_mode(const std::string& prefix) noexcept {
+            static auto obj = [] {
                 std::unordered_map<std::string, Mode> um ;
-                for(const auto& pair : g_modeidxs) {
-                    um[pair.second] = pair.first ;
+                for(auto& [key, val] : g_mode_prefix) {
+                    um[val] = key ;
                 }
                 return um ;
             }() ;
 
             try {
-                return obj.at(strcode) ;
+                return obj.at(prefix) ;
             }
             catch(const std::out_of_range&) {
-                return Mode::None ;
+                return Mode::UNDEFINED ;
+            }
+        }
+
+        const std::string& to_name(Mode mode) noexcept {
+            static const std::unordered_map<Mode, std::string> obj {
+                {Mode::INSERT,       "Insert"},
+                {Mode::GUI_NORMAL,   "GUI Normal"},
+                {Mode::GUI_VISUAL,   "GUI Visual"},
+                {Mode::EDI_NORMAL,   "Editor Normal"},
+                {Mode::EDI_VISUAL,   "Editor Visual"},
+                {Mode::EDI_VISUAL_L, "Editor Visual Line"},
+                {Mode::INSERT,       "Insert"},
+                {Mode::COMMAND,      "Command"}
+            } ;
+
+            try {
+                return obj.at(mode) ;
+            }
+            catch(const std::out_of_range&) {
+                static const std::string undef_str("Undefined") ;
+                return undef_str ;
             }
         }
     }

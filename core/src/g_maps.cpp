@@ -166,7 +166,7 @@ namespace vind
 
                 auto pretty_error = [&modeidx, &obj] (auto& e) {
                     std::stringstream ss ;
-                    ss << e.what() << " (" << mode::get_mode_strcode(modeidx) \
+                    ss << e.what() << " (" << mode::to_prefix(modeidx) << "def" \
                         << " in" << obj.dump() << ")" ;
                     return ss.str() ;
                 } ;
@@ -184,7 +184,7 @@ namespace vind
 
                     for(modeidx = 0 ; modeidx < mode::mode_num() ; modeidx ++) {
 
-                        auto modekey = mode::get_mode_strcode(modeidx) ;
+                        auto modekey = mode::to_prefix(modeidx) + "def" ;
                         if(modekey.empty()) {
                             continue ;
                         }
@@ -199,9 +199,10 @@ namespace vind
                         //Ex) "guin": ["<Esc>", "happy"]
                         //    "edin": ["<guin>", "<guii>"]    -> same as "guin"'s key-bindings(<Esc>, "happy")
                         if(cmdlist.size() == 1) {
-                            auto copy_mode = bindparser::parse_string_modecode(cmdlist.front()) ;
-                            if(copy_mode != mode::Mode::None) {
-                                cmdlist = obj.at(mode::get_mode_strcode(copy_mode)) ;
+                            auto copy_mode = bindparser::parse_string_modecode(
+                                    cmdlist.front(), "def") ;
+                            if(copy_mode != mode::Mode::UNDEFINED) {
+                                cmdlist = obj.at(mode::to_prefix(copy_mode) + "def") ;
                             }
                         }
 

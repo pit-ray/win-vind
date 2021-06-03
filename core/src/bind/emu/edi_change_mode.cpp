@@ -21,19 +21,24 @@ namespace vind
     : BindedFuncCreator("change_to_edi_normal")
     {}
     void Change2EdiNormal::sprocess(bool vclmodeout) {
-        if(!mode::is_editor())
-            mouse::click(KEYCODE_MOUSE_LEFT) ;
-
         using namespace mode ;
-        if(get_global_mode() == Mode::EdiNormal) return ;
+        auto mode = get_global_mode() ;
+        if(mode & Mode::MASK_GUI) {
+            mouse::click(KEYCODE_MOUSE_LEFT) ;
+        }
 
-        if(is_edi_visual())
+        if(mode == Mode::EDI_NORMAL) {
+            return ;
+        }
+
+        if((mode & Mode::MASK_INDEX) == Mode::EDI_VISUAL) {
             textselect::unselect() ;
+        }
 
         keyabsorber::close_all_ports_with_refresh() ;
         keyabsorber::absorb() ;
 
-        change_mode(Mode::EdiNormal) ;
+        set_global_mode(Mode::EDI_NORMAL) ;
         if(vclmodeout)
             VirtualCmdLine::msgout("-- EDI NORMAL --") ;
 
@@ -57,9 +62,10 @@ namespace vind
         using namespace mode ;
         keyabsorber::close_all_ports() ;
         keyabsorber::unabsorb() ;
-        change_mode(Mode::EdiInsert) ;
-        if(vclmodeout)
-            VirtualCmdLine::msgout("-- EDI INSERT --") ;
+        set_global_mode(Mode::INSERT) ;
+        if(vclmodeout) {
+            VirtualCmdLine::msgout("-- INSERT --") ;
+        }
     }
     void Change2EdiInsert::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

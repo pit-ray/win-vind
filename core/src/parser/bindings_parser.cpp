@@ -116,12 +116,14 @@ namespace vind
             return cmd ;
         }
 
-        mode::Mode parse_string_modecode(const std::string& modestr) {
+        mode::Mode parse_string_modecode(
+                const std::string& modestr,
+                std::string root) {
             if(modestr.front() == '<' && modestr.back() == '>') {
                 auto inside = util::A2a(modestr.substr(1, modestr.size() - 2)) ;
-                return mode::get_mode_from_strcode(inside) ;
+                return mode::prefix_to_mode(inside.substr(0, inside.find_first_of(root))) ;
             }
-            return mode::Mode::None ;
+            return mode::Mode::UNDEFINED ;
         }
 
         namespace debug {

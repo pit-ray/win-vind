@@ -61,7 +61,7 @@ namespace vind
                     auto& mode_array = parsed_bindings[obj.at("name").get<std::string>()] ;
 
                     for(std::size_t m_idx = 0 ; m_idx < mode::mode_num() ; m_idx ++) {
-                        auto mode_strcode = mode::get_mode_strcode(m_idx) ;
+                        auto mode_strcode = mode::to_prefix(m_idx) + "def" ;
                         if(mode_strcode.empty()) {
                             continue ;
                         }

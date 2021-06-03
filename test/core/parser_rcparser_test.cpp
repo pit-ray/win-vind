@@ -150,13 +150,3 @@ TEST_CASE("(rcparser::divide_prefix_and_cmd)) Normal input") {
     CHECK_EQ(prefix, "i") ;
     CHECK_EQ(cmd, "noremap") ;
 }
-
-
-// parse_mode_prefix
-TEST_CASE("(rcparser::parse_mode_prefix) Invalid mode prefix") {
-    CHECK_EQ(parse_mode_prefix("xxxx"), vind::mode::Mode::None) ;
-}
-
-TEST_CASE("(rcparser::parse_mode_prefix) valid mode prefix") {
-    CHECK_EQ(parse_mode_prefix("i"), vind::mode::Mode::Insert) ;
-}

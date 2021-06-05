@@ -1,4 +1,4 @@
-#include "global_bindings_caller.hpp"
+#include "main_loop.hpp"
 
 #include <iostream>
 
@@ -23,7 +23,7 @@ namespace
 
 namespace vind
 {
-    namespace gbindcaller {
+    namespace mainloop {
         void initialize() {
             g_ntlgr.clear() ;
             g_active_func = nullptr ;
@@ -34,7 +34,7 @@ namespace vind
             g_funcfinder.reconstruct_funcset() ;
         }
 
-        void call_matched_func() {
+        void update() {
             auto result = g_ntlgr.logging_state() ;
 
             if(NTYPE_EMPTY(result)) {

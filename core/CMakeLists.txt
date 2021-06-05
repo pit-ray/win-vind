@@ -168,6 +168,6 @@ add_library(kernel STATIC
 
 add_library(vindcore STATIC
     src/entry.cpp
-    src/global_bindings_caller.cpp
+    src/main_loop.cpp
 )
 target_link_libraries(vindcore bind opt parser io time kernel Userenv)

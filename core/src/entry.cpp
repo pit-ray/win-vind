@@ -70,7 +70,7 @@ SOFTWARE.
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "g_params.hpp"
-#include "global_bindings_caller.hpp"
+#include "main_loop.hpp"
 #include "mode.hpp"
 #include "path.hpp"
 
@@ -177,7 +177,7 @@ namespace vind
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             keycodecvt::load_input_combination() ;
 
-            gbindcaller::initialize() ;
+            mainloop::initialize() ;
 
             if(!load_config()) {
                 return false ;
@@ -235,7 +235,7 @@ namespace vind
         try {
             logmap::load_config() ;
             optloader::reconstruct() ;
-            gbindcaller::reconstruct() ;
+            mainloop::reconstruct() ;
             return true ;
         }
         catch(const std::exception& e) {
@@ -275,7 +275,7 @@ namespace vind
                 }
             }
 
-            gbindcaller::call_matched_func() ;
+            mainloop::update() ;
             optloader::call_active_funcs() ;
 
             return true ;

@@ -116,15 +116,15 @@ namespace vind
             if(eq_pos == std::string::npos) {
                 return std::make_pair(args, "") ;
             }
+            auto key = extract_single_arg(args.substr(0, eq_pos)) ;
 
             auto val_area = args.substr(eq_pos + 1) ;
             auto val_first = val_area.find_first_not_of(" ") ;
             if(val_first == std::string::npos) {
-                throw RUNTIME_EXCEPT("In \"" + args + "\", it have no values.") ;
+                return std::make_pair(key, "") ;
             }
             auto val_last = val_area.find_last_not_of(" ") ;
 
-            auto key = extract_single_arg(args.substr(0, eq_pos)) ;
             auto val = val_area.substr(val_first, val_last - val_first + 1) ;
             return std::make_pair(key, val) ;
         }

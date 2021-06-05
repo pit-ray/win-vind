@@ -24,21 +24,31 @@ namespace vind
             const std::string& args,
             bool reload_config) {
 
-        auto [key, val] = rcparser::divide_key_and_value(args, "=") ;
+        if(args.find("=") != std::string::npos) { // set option_name = value
+            auto [key, val] = rcparser::divide_key_and_value(args, "=") ;
 
-        if(key.empty()) {
-            if(val.empty()) {
-                VirtualCmdLine::msgout("E: Not support list of option yet") ;
+            if(key.empty()) {
+                if(val.empty()) {
+                    VirtualCmdLine::msgout("E: Not support list of option yet") ;
+                }
+                else {
+                    VirtualCmdLine::msgout("E: Invalid syntax") ;
+                }
+                return ;
+            }
+
+            key = util::A2a(key) ;
+
+            if(val.find_first_not_of("0123456789.") == std::string::npos) {
+                gparams::set(key, std::stod(val)) ;
             }
             else {
-                VirtualCmdLine::msgout("E: Invalid syntax") ;
+                gparams::set(key, val) ;
             }
-            return ;
         }
+        else { // set option_name
+            auto key = rcparser::extract_single_arg(util::A2a(args)) ;
 
-        key = util::A2a(key) ;
-
-        if(val.empty()) { // set option_name
             bool flag_value = true ;
             if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {
                 key.erase(0, 2) ;
@@ -99,14 +109,6 @@ namespace vind
                 return ;
             }
             gparams::set(key, flag_value) ;
-        }
-        else { // set option_name = value
-            if(val.find_first_not_of("0123456789.") == std::string::npos) {
-                gparams::set(key, std::stod(val)) ;
-            }
-            else {
-                gparams::set(key, val) ;
-            }
         }
 
         if(reload_config) {

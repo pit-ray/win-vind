@@ -129,7 +129,9 @@ TEST_CASE("(rcparser::divide_key_and_value) The arguments has no delimiter.") {
 }
 
 TEST_CASE("(rcparser::divide_key_and_value) Empty values") {
-    CHECK_THROWS(divide_key_and_value("foo =  ")) ;
+    auto [key, val] = divide_key_and_value("foo =  ") ;
+    CHECK_EQ(key, "foo") ;
+    CHECK(val.empty()) ;
 }
 
 TEST_CASE("(rcparser::divide_key_and_value) Normal inputs") {

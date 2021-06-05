@@ -203,8 +203,8 @@
         "en": "Icon Style",
         "ja": "アイコンのスタイル"
     },
-    "kb_type": {
-        "value": "US.kmp",
+    "keybrdlayout": {
+        "value": "",
         "choices": [
             {
                 "name": "us",

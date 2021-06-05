@@ -45,10 +45,6 @@ namespace vind
             return obj ;
         }
 
-        inline std::string KEYBRD_MAP() {
-            return CONFIG_PATH() + gparams::get_s("kb_type") ;
-        }
-
         namespace Default {
             inline const auto& BINDINGS() {
                 static const auto& obj = MODULE_ROOT_PATH() + "default_config\\bindings.json" ;

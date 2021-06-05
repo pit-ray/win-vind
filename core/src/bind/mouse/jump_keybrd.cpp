@@ -19,6 +19,7 @@
 #include "key/key_log.hpp"
 #include "key/keycodecvt.hpp"
 #include "key/ntype_logger.hpp"
+#include "keybrd_layout.hpp"
 #include "path.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
@@ -103,17 +104,30 @@ namespace vind
 
 
     void Jump2Any::reconstruct() {
-        //initilize
+        auto layoutfile = gparams::get_s("keybrdlayout") ;
+        std::string filename ;
+        if(!layoutfile.empty()) {
+            filename = path::CONFIG_PATH() + layoutfile ;
+        }
+        else {
+            auto locale_id = GetKeyboardLayout(0) ;
+            auto lang_id = static_cast<LANGID>(reinterpret_cast<std::size_t>(locale_id) & 0xffff) ;
+            filename = keybrdlayout::get_layout_filepath(lang_id) ;
+        }
+
+        if(filename.empty()) {
+            throw RUNTIME_EXCEPT("The file path of keyboard layout is empty.") ;
+        }
+
         pimpl->max_keybrd_xposs = 0 ;
         pimpl->max_keybrd_yposs = 0 ;
 
         pimpl->xposs.fill(0) ;
         pimpl->yposs.fill(0) ;
-        auto filename = path::KEYBRD_MAP() ;
 
         std::ifstream ifs(path::to_u8path(filename), std::ios::in) ;
         if(!ifs.is_open()) {
-            throw RUNTIME_EXCEPT("Could not open \"" + filename + "\".\n") ;
+            throw RUNTIME_EXCEPT("Could not open \"" + filename + "\"") ;
         }
         std::string buf ;
         int lnum = 0 ;
@@ -164,7 +178,7 @@ namespace vind
 
                 code = util::A2a(code) ;
                 if(code.front() != '<' && code.back() != '>') {
-                    ep(" is bad syntax in ") ;
+                    ep(" is invalid syntax in ") ;
                 }
 
                 code = code.substr(1, code.length() - 2) ;

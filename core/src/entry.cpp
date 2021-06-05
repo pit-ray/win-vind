@@ -188,11 +188,12 @@ namespace vind
             keyabsorber::install_hook() ;
 
             //initialize system mode
+            using namespace vind::mode ;
             std::unordered_map<std::string, BindedFunc::SPtr> cm {
-                {"gui_normal", Change2Normal::create()},
-                {"gui_insert", Change2Insert::create()},
-                {"edi_normal", Change2EdiNormal::create()},
-                {"edi_insert", Change2EdiInsert::create()}
+                {to_prefix(Mode::EDI_NORMAL), Change2EdiNormal::create()},
+                {to_prefix(Mode::GUI_NORMAL), Change2Normal::create()},
+                {to_prefix(Mode::INSERT), Change2Insert::create()},
+                {to_prefix(Mode::RESIDENT), Change2Resident::create()}
             } ;
             cm.at(gparams::get_s("initial_mode"))->process() ;
 

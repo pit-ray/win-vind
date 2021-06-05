@@ -172,7 +172,7 @@ namespace vind
                     {"comc",        RunCommandsIndex::COMCLEAR}
                 } ;
 
-                for(int i = 0 ; i < Mode::MODE_NUM ; i ++) {
+                for(std::size_t i = 0 ; i < mode_num() ; i ++) {
                     auto mode_prefix = mode::to_prefix(i) ;
 
                     // map

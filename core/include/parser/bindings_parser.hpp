@@ -66,7 +66,7 @@ namespace vind
         //
         mode::Mode parse_string_modecode(
                 const std::string& modestr,
-                std::string root="def") ;
+                std::string root=MAP_DEFINE_KEYWORD_IN_JSON) ;
 
         namespace debug {
             std::string print(const Command& cmd) ;

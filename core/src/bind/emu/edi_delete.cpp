@@ -1,13 +1,14 @@
 #include "bind/emu/edi_delete.hpp"
 
-#include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/simple_text_register.hpp"
 #include "bind/emu/text_util.hpp"
+#include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
 #include "g_params.hpp"
 #include "io/keybrd.hpp"
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
+#include "mode.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 
@@ -197,7 +198,7 @@ namespace vind
         using namespace simpletxreg ;
 
         pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-        if(get_global_mode() == Mode::EdiLineVisual) {
+        if(get_global_flags() & ModeFlags::VISUAL_LINE) {
             set_register_type(RegType::Lines) ;
         }
         else {

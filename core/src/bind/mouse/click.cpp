@@ -16,8 +16,8 @@ namespace vind
     {}
     void ClickLeft::sprocess(unsigned int repeat_num) {
         using namespace mode ;
-        if(get_global_mode() == Mode::Visual) {
-            change_mode(Mode::Normal) ;
+        if(get_global_mode() == Mode::GUI_VISUAL) {
+            set_global_mode(Mode::GUI_NORMAL) ;
         }
 
         repeater::safe_for(repeat_num, [] {
@@ -40,8 +40,8 @@ namespace vind
     {}
     void ClickRight::sprocess(unsigned int repeat_num) {
         using namespace mode ;
-        if(get_global_mode() == Mode::Visual) {
-            change_mode(Mode::Normal) ;
+        if(get_global_mode() == Mode::GUI_VISUAL) {
+            set_global_mode(Mode::GUI_NORMAL) ;
         }
 
         repeater::safe_for(repeat_num, [] {

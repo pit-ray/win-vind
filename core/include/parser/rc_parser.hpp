@@ -76,44 +76,44 @@ namespace vind
                 const std::string& split_keyword="n") ;
 
 
-        mode::Mode parse_mode_prefix(const std::string& prefix) ;
-
         enum RunCommandsIndex : unsigned char {
             UNDEFINED       = 0,
 
             SET             = 0b0000'00001,
 
+            MASK_MODE       = 0b0000'1111,
+
             MASK_MAP        = 0b0001'0000,
-            MAP_IN          = MASK_MAP | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
-            MAP_GN          = MASK_MAP | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
-            MAP_GV          = MASK_MAP | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
-            MAP_EN          = MASK_MAP | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
-            MAP_EV          = MASK_MAP | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
+            MAP_IN          = MASK_MAP | static_cast<unsigned char>(mode::Mode::INSERT),
+            MAP_GN          = MASK_MAP | static_cast<unsigned char>(mode::Mode::GUI_NORMAL),
+            MAP_GV          = MASK_MAP | static_cast<unsigned char>(mode::Mode::GUI_VISUAL),
+            MAP_EN          = MASK_MAP | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
+            MAP_EV          = MASK_MAP | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
 
             MASK_NOREMAP    = 0b0010'0000,
-            NOREMAP_IN      = MASK_NOREMAP | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
-            NOREMAP_GN      = MASK_NOREMAP | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
-            NOREMAP_GV      = MASK_NOREMAP | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
-            NOREMAP_EN      = MASK_NOREMAP | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
-            NOREMAP_EV      = MASK_NOREMAP | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
+            NOREMAP_IN      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::INSERT),
+            NOREMAP_GN      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::GUI_NORMAL),
+            NOREMAP_GV      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::GUI_VISUAL),
+            NOREMAP_EN      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
+            NOREMAP_EV      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
 
             MASK_UNMAP     = 0b0100'0000,
-            UNMAP_IN       = MASK_UNMAP | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
-            UNMAP_GN       = MASK_UNMAP | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
-            UNMAP_GV       = MASK_UNMAP | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
-            UNMAP_EN       = MASK_UNMAP | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
-            UNMAP_EV       = MASK_UNMAP | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
+            UNMAP_IN       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::INSERT),
+            UNMAP_GN       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::GUI_NORMAL),
+            UNMAP_GV       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::GUI_VISUAL),
+            UNMAP_EN       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
+            UNMAP_EV       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
 
             MASK_MAPCLEAR  = 0b1000'0000,
-            MAPCLEAR_IN    = MASK_MAPCLEAR | (mode::Mode::INSERT     & mode::Mode::MASK_INDEX),
-            MAPCLEAR_GN    = MASK_MAPCLEAR | (mode::Mode::GUI_NORMAL & mode::Mode::MASK_INDEX),
-            MAPCLEAR_GV    = MASK_MAPCLEAR | (mode::Mode::GUI_VISUAL & mode::Mode::MASK_INDEX), 
-            MAPCLEAR_EN    = MASK_MAPCLEAR | (mode::Mode::EDI_NORMAL & mode::Mode::MASK_INDEX),
-            MAPCLEAR_EV    = MASK_MAPCLEAR | (mode::Mode::EDI_VISUAL & mode::Mode::MASK_INDEX),
+            MAPCLEAR_IN    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::INSERT),
+            MAPCLEAR_GN    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::GUI_NORMAL),
+            MAPCLEAR_GV    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::GUI_VISUAL),
+            MAPCLEAR_EN    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
+            MAPCLEAR_EV    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
 
-            COMMAND        = MASK_MAP      | (mode::Mode::COMMAND & mode::Mode::MASK_INDEX),
-            DELCOMMAND     = MASK_UNMAP    | (mode::Mode::COMMAND & mode::Mode::MASK_INDEX),
-            COMCLEAR       = MASK_MAPCLEAR | (mode::Mode::COMMAND & mode::Mode::MASK_INDEX),
+            COMMAND        = MASK_MAP      | static_cast<unsigned char>(mode::Mode::COMMAND),
+            DELCOMMAND     = MASK_UNMAP    | static_cast<unsigned char>(mode::Mode::COMMAND),
+            COMCLEAR       = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::COMMAND),
         } ;
 
         RunCommandsIndex parse_run_command(const std::string& strcmd) ;

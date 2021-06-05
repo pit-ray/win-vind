@@ -26,7 +26,7 @@ namespace vind
 
     void SuppressForVim::do_process() const {
         using namespace mode ;
-        if(get_global_mode() == Mode::Insert) {
+        if(get_global_mode() == Mode::RESIDENT) {
             return ;
         }
 
@@ -59,12 +59,12 @@ namespace vind
         if(exename.find("vim") != std::string::npos) {
             keyabsorber::close_all_ports() ;
             keyabsorber::unabsorb() ;
-            change_mode(Mode::Insert) ;
-            VirtualCmdLine::msgout("-- GUI INSERT --") ;
+            set_global_mode(Mode::RESIDENT) ;
+            VirtualCmdLine::msgout("-- RESIDENT --") ;
         }
         else {
-            if(get_global_mode() == Mode::Insert)
-                Change2Normal::sprocess(true) ;
+            if(get_global_mode() == Mode::RESIDENT)
+                Change2Insert::sprocess(true) ;
         }
 
     }

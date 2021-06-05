@@ -68,153 +68,33 @@ namespace vind
                     throw RUNTIME_EXCEPT("(" + path + ", " + ltag + ") Invalid Argument.") ;
                 } ;
 
-                switch(rcindex) {
-                    using rcparser::RunCommandsIndex ;
-                    using mode::Mode ;
+                using rcparser::RunCommandsIndex ;
+                using mode::Mode ;
+                auto mode = static_cast<Mode>(rcindex & RunCommandsIndex::MASK_MODE) ;
 
-                    case RunCommandsIndex::SET:
-                        SyscmdSet::sprocess(args) ;
-                        break ;
-
-
-                    case RunCommandsIndex::MAP_GN:
-                        SyscmdMap::sprocess(Mode::Normal, args) ;
-                        break ;
-
-                    case RunCommandsIndex::MAP_GV:
-                        SyscmdMap::sprocess(Mode::Visual, args) ;
-                        break ;
-
-                    case RunCommandsIndex::MAP_EN:
-                        SyscmdMap::sprocess(Mode::EdiNormal, args) ;
-                        break ;
-
-                    case RunCommandsIndex::MAP_EV:
-                        SyscmdMap::sprocess(Mode::EdiVisual, args) ;
-                        break ;
-
-                    case RunCommandsIndex::MAP_IN:
-                        SyscmdMap::sprocess(Mode::Insert, args) ;
-                        break ;
-
-                    case RunCommandsIndex::MAP_CM:
-                        SyscmdMap::sprocess(Mode::Command, args) ;
-                        break ;
-
-
-                    case RunCommandsIndex::NOREMAP_GN:
-                        SyscmdNoremap::sprocess(Mode::Normal, args) ;
-                        break ;
-
-                    case RunCommandsIndex::NOREMAP_GV:
-                        SyscmdNoremap::sprocess(Mode::Visual, args) ;
-                        break ;
-
-                    case RunCommandsIndex::NOREMAP_EN:
-                        SyscmdNoremap::sprocess(Mode::EdiNormal, args) ;
-                        break ;
-
-                    case RunCommandsIndex::NOREMAP_EV:
-                        SyscmdNoremap::sprocess(Mode::EdiVisual, args) ;
-                        break ;
-
-                    case RunCommandsIndex::NOREMAP_IN:
-                        SyscmdNoremap::sprocess(Mode::Insert, args) ;
-                        break ;
-
-                    case RunCommandsIndex::NOREMAP_CM:
-                        SyscmdNoremap::sprocess(Mode::Command, args) ;
-                        break ;
-
-
-                    case RunCommandsIndex::UNMAP_GN:
-                        SyscmdUnmap::sprocess(Mode::Normal, args) ;
-                        break ;
-
-                    case RunCommandsIndex::UNMAP_GV:
-                        SyscmdUnmap::sprocess(Mode::Visual, args) ;
-                        break ;
-
-                    case RunCommandsIndex::UNMAP_EN:
-                        SyscmdUnmap::sprocess(Mode::EdiNormal, args) ;
-                        break ;
-
-                    case RunCommandsIndex::UNMAP_EV:
-                        SyscmdUnmap::sprocess(Mode::EdiVisual, args) ;
-                        break ;
-
-                    case RunCommandsIndex::UNMAP_IN:
-                        SyscmdUnmap::sprocess(Mode::Insert, args) ;
-                        break ;
-
-                    case RunCommandsIndex::UNMAP_CM:
-                        SyscmdUnmap::sprocess(Mode::Command, args) ;
-                        break ;
-
-
-                    case RunCommandsIndex::MAPCLEAR_GN:
-                        if(!args.empty()) {
-                            error_invalid_argument() ;
-                        }
-                        SyscmdMapclear::sprocess(Mode::Normal) ;
-                        break ;
-
-                    case RunCommandsIndex::MAPCLEAR_GV:
-                        if(!args.empty()) {
-                            error_invalid_argument() ;
-                        }
-                        SyscmdMapclear::sprocess(Mode::Visual) ;
-                        break ;
-
-                    case RunCommandsIndex::MAPCLEAR_EN:
-                        if(!args.empty()) {
-                            error_invalid_argument() ;
-                        }
-                        SyscmdMapclear::sprocess(Mode::EdiNormal) ;
-                        break ;
-
-                    case RunCommandsIndex::MAPCLEAR_EV:
-                        if(!args.empty()) {
-                            error_invalid_argument() ;
-                        }
-                        SyscmdMapclear::sprocess(Mode::EdiVisual) ;
-                        break ;
-
-                    case RunCommandsIndex::MAPCLEAR_IN:
-                        if(!args.empty()) {
-                            error_invalid_argument() ;
-                        }
-                        SyscmdMapclear::sprocess(Mode::Insert) ;
-                        break ;
-
-                    case RunCommandsIndex::MAPCLEAR_CM:
-                        if(!args.empty()) {
-                            error_invalid_argument() ;
-                        }
-                        SyscmdMapclear::sprocess(Mode::Command) ;
-                        break ;
-
-
-                    case RunCommandsIndex::COMMAND:
-                        SyscmdCommand::sprocess(args) ;
-                        break ;
-
-                    case RunCommandsIndex::DELCOMMAND:
-                        SyscmdDelcommand::sprocess(args) ;
-                        break ;
-
-                    case RunCommandsIndex::COMCLEAR:
-                        if(!args.empty()) {
-                            error_invalid_argument() ;
-                        }
-                        break ;
-
-                    default:
-                        auto msg = "E: Invalid Syntax (L:" + std::to_string(lnum) + ")" ;
-                        VirtualCmdLine::msgout(msg) ;
-                        throw RUNTIME_EXCEPT(msg) ;
-
-                } ; //switch
+                if(rcindex == RunCommandsIndex::SET) {
+                    SyscmdSet::sprocess(args) ;
+                }
+                else if(rcindex & RunCommandsIndex::MASK_MAP) {
+                    SyscmdMap::sprocess(mode) ;
+                }
+                else if(rcindex & RunCommandsIndex::MASK_NOREMAP) {
+                    SyscmdNoremap::sprocess(mode, args) ;
+                }
+                else if(rcindex & RunCommandsIndex::MASK_UNMAP) {
+                    SyscmdUnmap::sprocess(mode, args) ;
+                }
+                else if(rcindex & RunCommandsIndex::MASK_MAPCLEAR) {
+                    if(!args.empty()) {
+                        error_invalid_argument() ;
+                    }
+                    SyscmdMapclear::sprocess(mode) ;
+                }
+                else {
+                    auto msg = "E: Invalid Syntax (L:" + std::to_string(lnum) + ")" ;
+                    VirtualCmdLine::msgout(msg) ;
+                    throw RUNTIME_EXCEPT(msg) ;
+                }
             }
             catch(const std::logic_error& e) {
                 throw std::logic_error(error_invalid_syntax(e)) ;

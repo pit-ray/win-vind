@@ -1,14 +1,15 @@
 #include "bind/emu/edi_motion.hpp"
 
-#include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/edi_delete.hpp"
 #include "bind/emu/edi_yank.hpp"
 #include "bind/func_finder.hpp"
+#include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
 #include "entry.hpp"
 #include "key/key_absorber.hpp"
 #include "key/key_logger_base.hpp"
 #include "key/ntype_logger.hpp"
+#include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 
@@ -31,10 +32,15 @@ namespace
                 continue ;
             }
 
-            auto parser = ff.find_parser_with_transition(lgr.latest(), caller_self_id, mode::Mode::EdiLineVisual) ;
+            using mode::Mode ;
+            using mode::ModeFlags ;
+            auto parser = ff.find_parser_with_transition(
+                    lgr.latest(),
+                    caller_self_id,
+                    Mode::EDI_VISUAL) ;
             if(parser && parser->get_func()->is_for_moving_caret()) {
                 if(parser->is_accepted()) {
-                    mode::change_mode(mode::Mode::EdiLineVisual) ;
+                    mode::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
                     parser->get_func()->process(lgr) ;
                     return true ;
                 }
@@ -65,9 +71,9 @@ namespace
             FuncFinder&parent_ff,
             NTypeLogger& parent_lgr) {
 
-        constexpr auto lcx_vmode = mode::Mode::EdiLineVisual ;
-
-        ff.reset_parser_states(lcx_vmode) ;
+        using mode::Mode ;
+        using mode::ModeFlags ;
+        ff.reset_parser_states(Mode::EDI_VISUAL) ;
         parent_ff.reset_parser_states() ;
         parent_ff.transition_parser_states_in_batch(parent_lgr) ;
 
@@ -99,10 +105,13 @@ namespace
                 }
             }
 
-            auto parser_2 = ff.find_parser_with_transition(lgr.latest(), caller_self_id, lcx_vmode) ;
+            auto parser_2 = ff.find_parser_with_transition(
+                    lgr.latest(),
+                    caller_self_id,
+                    Mode::EDI_VISUAL) ;
             if(parser_2) {
                 if(parser_2->is_accepted() && parser_2->get_func()->is_for_moving_caret()) {
-                    mode::change_mode(lcx_vmode) ;
+                    mode::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
                     repeater::safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
                         f->process(lgr) ;
                     }) ;
@@ -115,7 +124,7 @@ namespace
 
             if((parser_1 && parser_1->is_rejected_with_ready()) \
                     || (parser_2 && parser_2->is_rejected_with_ready())) {
-                ff.backward_parser_states(1, lcx_vmode) ;
+                ff.backward_parser_states(1, Mode::EDI_VISUAL) ;
                 lgr.remove_from_back(1) ;
                 parent_ff.backward_parser_states(1) ;
                 parent_lgr.remove_from_back(1) ;
@@ -227,7 +236,7 @@ namespace vind
 
         void remove_and_insert() {
             EdiDeleteHighlightText::sprocess() ;
-            Change2EdiInsert::sprocess(false) ;
+            Change2Insert::sprocess(false) ;
         }
     } ;
     EdiChangeMotion::EdiChangeMotion()

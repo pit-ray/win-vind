@@ -74,7 +74,7 @@ namespace vind
                 Change2EdiBOLInsert::create(),
                 Change2EdiBkInsert::create(),
                 Change2EdiEOLInsert::create(),
-                Change2EdiInsert::create(),
+                Change2Resident::create(),
                 Change2EdiLineVisual::create(),
                 Change2EdiNlInsertAbove::create(),
                 Change2EdiNlInsertBelow::create(),

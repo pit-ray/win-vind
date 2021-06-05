@@ -3,10 +3,12 @@
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/simple_text_register.hpp"
 #include "bind/emu/text_util.hpp"
+#include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
 #include "g_params.hpp"
 #include "io/keybrd.hpp"
 #include "key/ntype_logger.hpp"
+#include "mode.hpp"
 #include "util/def.hpp"
 
 namespace vind
@@ -21,13 +23,13 @@ namespace vind
         using namespace simpletxreg ;
 
         pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-        if(get_global_mode() == Mode::EdiLineVisual) {
+        if(get_global_flags() & ModeFlags::VISUAL_LINE) {
             set_register_type(RegType::Lines) ;
         }
         else {
             set_register_type(RegType::Chars) ;
         }
-        Change2EdiInsert::sprocess(false) ;
+        Change2Insert::sprocess(false) ;
     }
     void EdiChangeHighlightText::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -50,7 +52,7 @@ namespace vind
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;
         if(res.str.empty()) {
-            Change2EdiInsert::sprocess(false) ;
+            Change2Insert::sprocess(false) ;
             return ;
         }
 
@@ -93,7 +95,7 @@ namespace vind
             keybrd::pushup(KEYCODE_DELETE) ;
         }
 
-        Change2EdiInsert::sprocess(false) ;
+        Change2Insert::sprocess(false) ;
     }
     void EdiChangeChars::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -150,7 +152,7 @@ namespace vind
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }
-        Change2EdiInsert::sprocess(false) ;
+        Change2Insert::sprocess(false) ;
     }
     void EdiChangeUntilEOL::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

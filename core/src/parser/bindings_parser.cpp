@@ -121,7 +121,8 @@ namespace vind
                 std::string root) {
             if(modestr.front() == '<' && modestr.back() == '>') {
                 auto inside = util::A2a(modestr.substr(1, modestr.size() - 2)) ;
-                return mode::prefix_to_mode(inside.substr(0, inside.find_first_of(root))) ;
+                auto prefix = inside.substr(0, inside.find(root)) ;
+                return mode::parse_prefix(prefix) ;
             }
             return mode::Mode::UNDEFINED ;
         }

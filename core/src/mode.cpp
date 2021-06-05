@@ -8,16 +8,21 @@
 namespace
 {
     using namespace vind::mode ;
-    static std::unordered_map<Mode, std::string> g_mode_prefix {
-        {Mode::INSERT,     "i"},
-        {Mode::GUI_NORMAL, "gn"},
-        {Mode::GUI_VISUAL, "gv"},
-        {Mode::EDI_NORMAL, "en"},
-        {Mode::EDI_VISUAL, "ev"},
-        {Mode::COMMAND,    "c"}
-    } ;
+    const auto g_mode_prefix = [] {
+        std::array<std::string, mode_num()> tmp ;
+        tmp.fill("") ;
+        tmp[static_cast<int>(Mode::INSERT)]     = "i" ;
+        tmp[static_cast<int>(Mode::GUI_NORMAL)] = "gn" ;
+        tmp[static_cast<int>(Mode::GUI_VISUAL)] = "gv" ;
+        tmp[static_cast<int>(Mode::EDI_NORMAL)] = "en" ;
+        tmp[static_cast<int>(Mode::EDI_VISUAL)] = "ev" ;
+        tmp[static_cast<int>(Mode::COMMAND)]    = "c" ;
+        tmp[static_cast<int>(Mode::RESIDENT)]   = "r" ;
+        return tmp ;
+    } () ;
 
-    static Mode g_mode{Mode::INSERT} ;
+    auto g_mode  = Mode::INSERT ;
+    auto g_flags = ModeFlags::NONE ;
 }
 
 
@@ -25,28 +30,27 @@ namespace vind
 {
     namespace mode
     {
-        void set_global_mode(Mode mode) noexcept {
+        void set_global_mode(Mode mode, ModeFlags flags) noexcept {
             g_mode = mode ;
+            g_flags = flags ;
         }
 
         Mode get_global_mode() noexcept {
             return g_mode ;
         }
-
-        std::string to_prefix(Mode mode) noexcept {
-            try {
-                return g_mode_prefix.at(mode) ;
-            }
-            catch(const std::out_of_range&) {
-                return "" ;
-            }
+        ModeFlags get_global_flags() noexcept {
+            return g_flags ;
         }
 
-        Mode prefix_to_mode(const std::string& prefix) noexcept {
+        std::string to_prefix(Mode mode) noexcept {
+            return g_mode_prefix[static_cast<int>(mode)] ;
+        }
+
+        Mode parse_prefix(const std::string& prefix) noexcept {
             static auto obj = [] {
                 std::unordered_map<std::string, Mode> um ;
-                for(auto& [key, val] : g_mode_prefix) {
-                    um[val] = key ;
+                for(std::size_t i = 0 ; i < mode_num() ; i ++) {
+                    um[g_mode_prefix[i]] = static_cast<Mode>(i) ;
                 }
                 return um ;
             }() ;
@@ -66,9 +70,9 @@ namespace vind
                 {Mode::GUI_VISUAL,   "GUI Visual"},
                 {Mode::EDI_NORMAL,   "Editor Normal"},
                 {Mode::EDI_VISUAL,   "Editor Visual"},
-                {Mode::EDI_VISUAL_L, "Editor Visual Line"},
                 {Mode::INSERT,       "Insert"},
-                {Mode::COMMAND,      "Command"}
+                {Mode::COMMAND,      "Command"},
+                {Mode::RESIDENT,     "Resident"}
             } ;
 
             try {

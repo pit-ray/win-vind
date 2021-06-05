@@ -130,12 +130,15 @@ namespace vind
 
     void CommandMode::sprocess() const {
         auto return_mode = [] (mode::Mode* m) {
-            mode::change_mode(*m) ;
+            // If the mode is changed, then do nothing.
+            if(mode::get_global_mode() == mode::Mode::COMMAND) {
+                mode::set_global_mode(*m) ;
+            }
         } ;
         std::unique_ptr<mode::Mode, decltype(return_mode)>
             mode_preserver(new mode::Mode(mode::get_global_mode()), return_mode) ;
 
-        mode::change_mode(mode::Mode::Command) ;
+        mode::set_global_mode(mode::Mode::COMMAND) ;
 
         pimpl->funcfinder_.reset_parser_states() ;
 

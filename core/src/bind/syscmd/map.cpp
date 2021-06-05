@@ -58,8 +58,8 @@ namespace
         auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
         auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, after_prefix) ;
 
-        auto mode = rcparser::parse_mode_prefix(prefix) ;
-        if(mode == mode::Mode::None) {
+        auto mode = mode::parse_prefix(prefix) ;
+        if(mode == mode::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return false ;
@@ -183,8 +183,8 @@ namespace vind
         auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
         auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, "u") ;
 
-        auto mode = rcparser::parse_mode_prefix(prefix) ;
-        if(mode == mode::Mode::None) {
+        auto mode = mode::parse_prefix(prefix) ;
+        if(mode == mode::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;
@@ -221,8 +221,8 @@ namespace vind
         }
 
         auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, "m") ;
-        auto mode = rcparser::parse_mode_prefix(prefix) ;
-        if(mode == mode::Mode::None) {
+        auto mode = mode::parse_prefix(prefix) ;
+        if(mode == mode::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
             VirtualCmdLine::msgout("E: Unsupported mode prefix") ;
             return ;

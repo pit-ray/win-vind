@@ -166,7 +166,8 @@ namespace vind
 
                 auto pretty_error = [&modeidx, &obj] (auto& e) {
                     std::stringstream ss ;
-                    ss << e.what() << " (" << mode::to_prefix(modeidx) << "def" \
+                    ss << e.what() << " (" << mode::to_prefix(modeidx) \
+                        << MAP_DEFINE_KEYWORD_IN_JSON \
                         << " in" << obj.dump() << ")" ;
                     return ss.str() ;
                 } ;
@@ -184,12 +185,16 @@ namespace vind
 
                     for(modeidx = 0 ; modeidx < mode::mode_num() ; modeidx ++) {
 
-                        auto modekey = mode::to_prefix(modeidx) + "def" ;
+                        auto modekey = mode::to_prefix(modeidx) + MAP_DEFINE_KEYWORD_IN_JSON ;
                         if(modekey.empty()) {
                             continue ;
                         }
 
-                        auto cmdlist = obj.at(modekey) ;
+                        if(!obj.contains(modekey)) {
+                            continue ;
+                        }
+
+                        auto cmdlist = obj[modekey] ;
                         if(cmdlist.empty() || !cmdlist.is_array()) {
                             continue ;
                         }
@@ -200,9 +205,9 @@ namespace vind
                         //    "edin": ["<guin>", "<guii>"]    -> same as "guin"'s key-bindings(<Esc>, "happy")
                         if(cmdlist.size() == 1) {
                             auto copy_mode = bindparser::parse_string_modecode(
-                                    cmdlist.front(), "def") ;
+                                    cmdlist.front(), MAP_DEFINE_KEYWORD_IN_JSON) ;
                             if(copy_mode != mode::Mode::UNDEFINED) {
-                                cmdlist = obj.at(mode::to_prefix(copy_mode) + "def") ;
+                                cmdlist = obj.at(mode::to_prefix(copy_mode) + MAP_DEFINE_KEYWORD_IN_JSON) ;
                             }
                         }
 
@@ -216,11 +221,11 @@ namespace vind
                         }
                     }
                 }
-                catch(const std::out_of_range& e) {
+                catch(const json::out_of_range& e) {
                     PRINT_ERROR(pretty_error(e)) ;
                     continue ;
                 }
-                catch(const json::out_of_range& e) {
+                catch(const std::out_of_range& e) {
                     PRINT_ERROR(pretty_error(e)) ;
                     continue ;
                 }

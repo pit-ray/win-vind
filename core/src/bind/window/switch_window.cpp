@@ -72,7 +72,7 @@ namespace vind
 
         pushup(KEYCODE_TAB) ;
 
-        constexpr auto lcx_vmode = mode::Mode::EdiNormal ;
+        constexpr auto lcx_vmode = mode::Mode::EDI_NORMAL ;
 
         pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 

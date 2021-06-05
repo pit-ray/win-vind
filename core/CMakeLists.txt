@@ -154,7 +154,6 @@ add_library(opt STATIC
 target_link_libraries(opt emu mode)
 
 add_library(parser STATIC
-    src/parser/bindings_json_parser.cpp
     src/parser/bindings_parser.cpp
     src/parser/rc_parser.cpp
 )

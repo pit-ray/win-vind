@@ -1,12 +1,13 @@
 #include "bind/emu/edi_yank.hpp"
 
-#include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/simple_text_register.hpp"
 #include "bind/emu/text_util.hpp"
+#include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
 #include "io/keybrd.hpp"
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
+#include "mode.hpp"
 #include "util/def.hpp"
 
 
@@ -22,7 +23,7 @@ namespace vind
 
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
 
-        if(get_global_mode() == Mode::EdiLineVisual) {
+        if(get_global_flags() == ModeFlags::VISUAL_LINE) {
             set_register_type(RegType::Lines) ;
         }
         else {

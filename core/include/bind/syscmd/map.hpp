@@ -8,7 +8,7 @@ namespace vind
     struct SyscmdMap : BindedFuncCreator<SyscmdMap> {
         explicit SyscmdMap() ;
         static void sprocess(
-                const mode::Mode mode = mode::Mode::None,
+                const mode::Mode mode = mode::Mode::UNDEFINED,
                 const std::string& args="",
                 bool reload_config=false) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
@@ -18,7 +18,7 @@ namespace vind
     struct SyscmdNoremap : BindedFuncCreator<SyscmdNoremap> {
         explicit SyscmdNoremap() ;
         static void sprocess(
-                const mode::Mode mode = mode::Mode::None,
+                const mode::Mode mode = mode::Mode::UNDEFINED,
                 const std::string& args="",
                 bool reload_config=false) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
@@ -28,7 +28,7 @@ namespace vind
     struct SyscmdUnmap: BindedFuncCreator<SyscmdUnmap> {
         explicit SyscmdUnmap() ;
         static void sprocess(
-                const mode::Mode mode = mode::Mode::None,
+                const mode::Mode mode = mode::Mode::UNDEFINED,
                 const std::string& args="",
                 bool reload_config=false) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
@@ -38,7 +38,7 @@ namespace vind
     struct SyscmdMapclear : BindedFuncCreator<SyscmdMapclear> {
         explicit SyscmdMapclear() ;
         static void sprocess(
-                const mode::Mode mode = mode::Mode::None,
+                const mode::Mode mode = mode::Mode::UNDEFINED,
                 bool reload_config=false) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

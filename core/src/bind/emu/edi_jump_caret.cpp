@@ -20,10 +20,12 @@ namespace vind
         return true ;
     }
     void EdiJumpCaret2BOL::sprocess() {
-        if(mode::is_edi_visual())
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
-        else
+        }
+        else {
             keybrd::pushup(KEYCODE_HOME) ;
+        }
     }
     void EdiJumpCaret2BOL::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -48,7 +50,7 @@ namespace vind
             keybrd::pushup(KEYCODE_DOWN) ;
         }) ; 
 
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
         }
         else {
@@ -79,7 +81,7 @@ namespace vind
 
         using keybrd::pushup ;
 
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
@@ -122,17 +124,17 @@ namespace vind
     }
     void EdiNJumpCaret2Line_DfEOF::sprocess(unsigned int repeat_num) {
         using keybrd::pushup ;
-        using namespace mode ;
 
         if(repeat_num == 1) {
-            if(is_edi_visual()) {
+            if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
                 if(textselect::is_first_line_selection())
                     textselect::select_line_BOL2EOL() ;
 
                 pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_END) ;
 
-                if(get_global_mode() != Mode::EdiLineVisual)
+                if(!(mode::get_global_flags() & mode::ModeFlags::VISUAL_LINE)) {
                     pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
+                }
             }
             else {
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_END) ;

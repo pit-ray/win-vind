@@ -8,7 +8,6 @@
 #include "key/key_logger_base.hpp"
 #include "mapdefs.hpp"
 #include "mode.hpp"
-#include "parser/bindings_json_parser.hpp"
 #include "parser/bindings_parser.hpp"
 #include "path.hpp"
 #include "util/def.hpp"

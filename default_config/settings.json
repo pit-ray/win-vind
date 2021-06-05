@@ -1,28 +1,28 @@
 {
     "initial_mode": {
-        "value": "gui_normal",
+        "value": "gn",
         "en": "Initial Mode",
         "ja": "初期モード",
         "choices": [
             {
-                "value": "gui_normal",
+                "value": "gn",
                 "en": "GUI Normal",
                 "ja": "GUIノーマル"
             },
             {
-                "value": "gui_insert",
-                "en": "GUI Insert",
-                "ja": "GUIインサート"
+                "value": "i",
+                "en": "Insert",
+                "ja": "インサート"
             },
             {
-                "value": "edi_normal",
+                "value": "en",
                 "en": "Editor Normal",
                 "ja": "エディタノーマル"
             },
             {
-                "value": "edi_insert",
-                "en": "Editor Insert",
-                "ja": "エディタインサート"
+                "value": "r",
+                "en": "Resident",
+                "ja": "常駐"
             }
         ]
     },

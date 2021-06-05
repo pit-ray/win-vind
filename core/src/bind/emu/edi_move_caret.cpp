@@ -34,7 +34,7 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretLeft::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
             }) ;
@@ -77,7 +77,7 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretRight::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
             }) ;
@@ -120,7 +120,7 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretUp::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_EOL2BOL() ;
             }
@@ -175,7 +175,7 @@ namespace vind
         return true ;
     }
     void EdiMoveCaretDown::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_BOL2EOL() ;
             }
@@ -234,7 +234,7 @@ namespace vind
         return true ;
     }
     void EdiNMoveCaretwordsForward::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
@@ -277,7 +277,7 @@ namespace vind
         return true ;
     }
     void EdiNMoveCaretwordsBackward::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;
@@ -321,7 +321,7 @@ namespace vind
     }
 
     void EdiNMoveCaretWORDSForward::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
@@ -364,7 +364,7 @@ namespace vind
         return true ;
     }
     void EdiNMoveCaretWORDSBackward::sprocess(unsigned int repeat_num) const {
-        if(mode::is_edi_visual()) {
+        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;

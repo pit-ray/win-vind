@@ -6,6 +6,7 @@
 #include "g_maps.hpp"
 #include "g_params.hpp"
 #include "key/char_logger.hpp"
+#include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "parser/bindings_parser.hpp"
 #include "parser/rc_parser.hpp"
@@ -73,22 +74,22 @@ namespace vind
                 auto mode = static_cast<Mode>(rcindex & RunCommandsIndex::MASK_MODE) ;
 
                 if(rcindex == RunCommandsIndex::SET) {
-                    SyscmdSet::sprocess(args) ;
+                    SyscmdSet::sprocess(args, false) ;
                 }
                 else if(rcindex & RunCommandsIndex::MASK_MAP) {
-                    SyscmdMap::sprocess(mode) ;
+                    SyscmdMap::sprocess(mode, args, false) ;
                 }
                 else if(rcindex & RunCommandsIndex::MASK_NOREMAP) {
-                    SyscmdNoremap::sprocess(mode, args) ;
+                    SyscmdNoremap::sprocess(mode, args, false) ;
                 }
                 else if(rcindex & RunCommandsIndex::MASK_UNMAP) {
-                    SyscmdUnmap::sprocess(mode, args) ;
+                    SyscmdUnmap::sprocess(mode, args, false) ;
                 }
                 else if(rcindex & RunCommandsIndex::MASK_MAPCLEAR) {
                     if(!args.empty()) {
                         error_invalid_argument() ;
                     }
-                    SyscmdMapclear::sprocess(mode) ;
+                    SyscmdMapclear::sprocess(mode, false) ;
                 }
                 else {
                     auto msg = "E: Invalid Syntax (L:" + std::to_string(lnum) + ")" ;

@@ -127,10 +127,7 @@ namespace vind
     }
 
     int CharLogger::logging_state() {
-        static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
-
-        //ignore all toggle keys
-        auto log = keyabsorber::get_pressed_list() - cl_toggles ;
+        auto log = keyabsorber::get_pressed_list() ;
 
         log = logmap::do_noremap(log) ;
 

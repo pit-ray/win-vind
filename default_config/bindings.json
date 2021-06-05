@@ -19,7 +19,7 @@
         "gndef": ["<rdef>"],
         "gvdef": ["<rdef>"],
         "idef": ["<rdef>"],
-        "rdef": ["<Esc-down>"],
+        "rdef": ["<c-i>"],
         "en": "Resident Mode",
         "ja": "常駐モード"
     },
@@ -1036,7 +1036,7 @@
         "cdef": [],
         "endef": ["i"],
         "evdef": [],
-        "gndef": [],
+        "gndef": ["i"],
         "gvdef": [],
         "idef": [],
         "rdef": [],

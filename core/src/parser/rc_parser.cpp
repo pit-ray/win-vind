@@ -189,7 +189,7 @@ namespace vind
                     tmp[mode_prefix + "nore"]    = noremap_rc_index ;
                     tmp[mode_prefix + "nor"]     = noremap_rc_index ;
                     tmp[mode_prefix + "no"]      = noremap_rc_index ;
-                    if(mode_prefix != "c" && mode_prefix != "i") {
+                    if(mode_prefix.size() > 1) {
                         tmp[mode_prefix + "n"]       = noremap_rc_index ;
                     }
 
@@ -199,7 +199,7 @@ namespace vind
                     tmp[mode_prefix + "unma"]  = unmap_rc_index ;
                     tmp[mode_prefix + "unm"]   = unmap_rc_index ;
                     tmp[mode_prefix + "un"]    = unmap_rc_index ;
-                    if(mode_prefix == "c" && mode_prefix == "i") {
+                    if(mode_prefix.size() > 1) {
                         tmp[mode_prefix + "u"] = unmap_rc_index ;
                     }
 

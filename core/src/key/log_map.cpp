@@ -151,6 +151,7 @@ namespace vind
             if(target == key) {
                 return false ;
             }
+
             if(press_sync_state) {
                 keybrd::press_keystate(target, true) ;
             }

@@ -148,9 +148,14 @@ namespace vind
 
     void Change2Insert::sprocess(bool vclmodeout) {
         using namespace mode ;
+        if(get_global_mode() == Mode::GUI_NORMAL) {
+            mouse::click(KEYCODE_MOUSE_LEFT) ;
+        }
+
         keyabsorber::close_all_ports() ;
         keyabsorber::unabsorb() ;
         set_global_mode(Mode::INSERT) ;
+
         if(vclmodeout) {
             VirtualCmdLine::reset() ;
             VirtualCmdLine::msgout("-- INSERT --") ;

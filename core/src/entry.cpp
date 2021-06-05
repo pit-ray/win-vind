@@ -216,7 +216,7 @@ namespace vind
 
     bool load_config() noexcept {
         try {
-            SyscmdSource::sprocess() ;
+            SyscmdSource::sprocess(path::RC(), false) ;
             reconstruct_all_components() ;
             return true ;
         }

@@ -189,8 +189,7 @@ namespace vind
     }
 
     int NTypeLogger::logging_state() {
-        static const KeyLog cl_toggles(keycodecvt::get_toggle_keys()) ;
-        auto log = keyabsorber::get_pressed_list() - cl_toggles ; //ignore toggle keys
+        auto log = keyabsorber::get_pressed_list() ;
 
         log = logmap::do_noremap(log) ;
 

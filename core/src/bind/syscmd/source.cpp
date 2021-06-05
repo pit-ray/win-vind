@@ -28,7 +28,14 @@ namespace vind
 {
     SyscmdSource::SyscmdSource()
     : BindedFuncCreator("system_command_source")
-    {}
+    {
+        auto f = path::to_u8path(path::RC()) ;
+        std::ifstream ifs(f) ;
+        if(!ifs.is_open()) {
+            std::ofstream ofs(f, std::ios::trunc) ;
+        }
+    }
+
     void SyscmdSource::sprocess(
             const std::string& path,
             bool reload_config) {

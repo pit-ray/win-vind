@@ -8,8 +8,6 @@
 
 #include "enable_gcc_warning.hpp"
 
-#include <memory>
-
 namespace wxGUI
 {
     class App : public wxApp

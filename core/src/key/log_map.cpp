@@ -27,12 +27,12 @@ namespace
     KeyCode remap_recursively(T1 src_code, T2 first_src_code, Mode mode) {
         auto dst = g_keycodemap[mode][src_code] ;
         if(dst == src_code) {
-            return src_code ;
+            return static_cast<KeyCode>(src_code) ;
         }
         if(dst == first_src_code) {
-            PRINT_ERROR("{" + keycodecvt::get_name(first_src_code) \
+            PRINT_ERROR("{" + keycodecvt::get_name(static_cast<KeyCode>(first_src_code)) \
                     + "} recursively remaps itself in " + mode::to_name(mode) + ".") ;
-            return first_src_code ;
+            return static_cast<KeyCode>(first_src_code) ;
         }
         return remap_recursively(dst, first_src_code, mode) ;
     }

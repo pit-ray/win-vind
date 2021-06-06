@@ -165,6 +165,7 @@ add_library(kernel STATIC
     src/mode.cpp
     src/path.cpp
 )
+target_link_libraries(kernel util)
 
 add_library(vindcore STATIC
     src/entry.cpp

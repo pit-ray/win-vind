@@ -71,7 +71,7 @@ namespace
         // prohibit to keep pressing after termination.
         for(int i = 0 ; i < 256 ; i ++) {
             if(g_real_state[i]) {
-                vind::keybrd::release_keystate(i) ;
+                vind::keybrd::release_keystate(static_cast<vind::KeyCode>(i)) ;
             }
         }
     } ;

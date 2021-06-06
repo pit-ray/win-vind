@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(win-vind VERSION 3.3.0)
+project(win-vind VERSION 4.0.0)
 
 if(NOT BIT_TYPE)
     set(BIT_TYPE 64)
@@ -10,20 +10,6 @@ option(CCACHE_ENABLE ON)
 
 enable_language(CXX)
 
-string(REPLACE "." "," FILE_VERSION "${PROJECT_VERSION}")
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/version.hpp.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/wxgui/include/version.hpp
-    NEWLINE_STYLE LF
-    @ONLY
-)
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc
-    NEWLINE_STYLE LF
-    @ONLY
-)
-
 if(${MSVC})
     add_compile_options(/W4 /std:c++latest /MT /D_UNICODE /DUNICODE)
 
@@ -33,8 +19,6 @@ if(${MSVC})
     elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
         add_compile_options(/O2)
     endif()
-
-    set(winresobj ${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc)
 
 else()
     if(NOT WINDOWS_SDK_INCLUDE_DIR)
@@ -100,23 +84,6 @@ else()
 
     message(STATUS "g++ flags: ${CMAKE_CXX_FLAGS}")
 
-    if(NOT CMAKE_RC_COMPILER)
-       set(CMAKE_RC_COMPILER windres.exe)
-    endif()
-
-    #build the file properties
-    set(winres "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/resource.rc")
-
-    set(winresobj "${CMAKE_CURRENT_BINARY_DIR}/resource.rc.obj")
-    add_custom_command(OUTPUT "${winresobj}"
-       COMMAND ${CMAKE_RC_COMPILER}
-       -D GCC_WINDRES
-       -I ${CMAKE_CURRENT_SOURCE_DIR}
-       -I ${CMAKE_CURRENT_BINARY_DIR}
-       -o ${winresobj}
-       -i ${winres}
-    )
-
     set(CMAKE_SH "CMAKE_SH-NOTFOUND")
 endif()
 
@@ -161,28 +128,81 @@ if(CCACHE)
     endif()
 endif()
 
-#add core system
-add_subdirectory(core)
-
 #add entry with GUI
-add_subdirectory(wxgui)
 
-#build all
-include_directories(${MAIN_ENTRY_INCLUDE})
-if(${MSVC})
-    add_executable(${PROJECT_NAME} WIN32 ${MAIN_ENTRY} ${winresobj})
+#Default wxWidgets installed directories
+#If you installed to other directories, you can change like the below.
+#cmake -DCMAKE_BUILD_TYPE=Debug -DwxWidgets_ROOT_DIR=C:/wxWidgets 
+if(NOT wxWidgets_ROOT_DIR)
+    set(wxWidgets_ROOT_DIR ${PROJECT_SOURCE_DIR}/libs/wxWidgets)
+endif()
+if(NOT EXISTS ${wxWidgets_ROOT_DIR})
+    message(FATAL_ERROR "Could not find the directory; ${wxWidgets_ROOT_DIR}."
+        "You can fix by the cmake flag; -DwxWidgets_ROOT_DIR=<Path>")
+endif()
+message(STATUS "Detected wxWidgets Root Directory: ${wxWidgets_ROOT_DIR}")
 
-else()
-    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-        message(STATUS "Enable Console")
-        add_executable(${PROJECT_NAME} ${MAIN_ENTRY} ${winresobj})
+if(NOT wxWidgets_LIB_DIR)
+    if(${MSVC})
+        if(${BIT_TYPE} STREQUAL 32)
+            set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_lib)
+        else()
+            set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)
+        endif()
     else()
-        add_executable(${PROJECT_NAME} WIN32 ${MAIN_ENTRY} ${winresobj})
+        #if(${BIT_TYPE} STREQUAL 32)
+            set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/gcc_lib)
+        #else()
+            #set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/gcc_x64_lib)
+        #endif()
     endif()
 endif()
+if(NOT EXISTS ${wxWidgets_LIB_DIR})
+    message(FATAL_ERROR "Could not find the directory; ${wxWidgets_LIB_DIR}."
+        "You can fix by the cmake flag; -DwxWidgets_LIB_DIR=<Path>")
+endif()
+message(STATUS "Detected wxWidgets Library Directory: ${wxWidgets_LIB_DIR}")
 
-target_link_libraries(${PROJECT_NAME} wxgui vindcore)
-enable_cotire(${PROJECT_NAME})
+if(NOT wxWidgets_CONFIGURATION)
+    set(wxWidgets_CONFIGURATION mswu)
+endif()
+
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    set(wxWidgets_USE_DEBUG ON)
+else()
+    set(wxWidgets_USE_DEBUG OFF)
+endif()
+set(wxWidgets_USE_UNICODE ON)
+set(wxWidgets_USE_UNIVERSAL OFF)
+set(wxWidgets_USE_STATIC ON)
+
+set(wxWidgets_INCLUDE_DIRS ${wxWidgets_ROOT_DIR}/include)
+set(_WX_TOOL gcc_x64 FORCE)
+find_package(wxWidgets COMPONENTS adv core base REQUIRED)
+
+if(NOT wxWidgets_FOUND)
+    message(FATAL_ERROR "Could not find wxWidgets")
+endif()
+
+#include(${wxWidgets_USE_FILE})
+set(wxWidgets_INCLUDE_DIRS
+    ${wxWidgets_INCLUDE_DIRS}
+    ${wxWidgets_LIB_DIR}/${wxWidgets_CONFIGURATION}
+)
+
+function(link_wxWidgets target)
+    if(${wxWidgets_VERSION_MINOR} STREQUAL 1)
+        target_link_libraries(${target} ${wxWidgets_LIBRARIES} uxtheme oleacc)
+    else()
+        target_link_libraries(${target} ${wxWidgets_LIBRARIES})
+    endif()
+endfunction()
+
+add_subdirectory(core)
+
+add_subdirectory(coregui)
+
+add_subdirectory(wxgui)
 
 #CPack-----------------------------------------------------------------------------
 install(TARGETS win-vind RUNTIME DESTINATION .)
@@ -197,22 +217,22 @@ set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
 set(CPACK_GENERATOR NSIS)
 
-set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_NAME ${CPACK_PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION ${CPACK_PROJECT_VERSION})
 set(CPACK_PACKAGE_VENDOR "pit-ray")
 set(CPACK_PACKAGE_COPYRIGHT "Copyright (c) 2020 pit-ray")
 set(CPACK_PACKAGE_DESCRIPTION "win-vind - Simple Vim Key Binder for Windows (${BIT_TYPE}-bit)")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://pit-ray.github.io/win-vind/")
-set(CPACK_PACKAGE_FILE_NAME "setup_${PROJECT_NAME}_${PROJECT_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "setup_${CPACK_PROJECT_NAME}_${CPACK_PROJECT_VERSION}")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "win-vind")
 set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/installer512.ico")
 set(CPACK_NSIS_MUI_UNIICON "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/uninstaller512.ico")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
-set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "applications (${PROJECT_NAME})")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PROJECT_NAME})
+set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "applications (${CPACK_PROJECT_NAME})")
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL FALSE)
 set(CPACK_NSIS_PACKAGE_NAME ${PRODUCT_NAME})
-set(CPACK_NSIS_PACKAGE_VERSION ${PROJECT_VERSION}.0)
+set(CPACK_NSIS_PACKAGE_VERSION ${CPACK_PROJECT_VERSION}.0)
 
 #NSIS
 #set(CPACK_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_resources) #Use custom installer template

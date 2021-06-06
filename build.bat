@@ -37,13 +37,13 @@
         if %3 == 32 (
             cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A Win32 -DBIT_TYPE=32 .
             cmake --build release_32 --config Release
-            xcopy /e /Y ".\\release_32\\coregui\\Release" "release"
-            xcopy /e /Y ".\\release_32\\wxgui\\Release" "release"
+            xcopy /e /Y ".\\release_32\\coregui\\Release\\*.exe" "release"
+            xcopy /e /Y ".\\release_32\\wxgui\\Release\\*.exe" "release"
         ) else (
             cmake -B release_64 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
             cmake --build release_64 --config Release
-            xcopy /e /Y ".\\release_64\\coregui\\Release" "release"
-            xcopy /e /Y ".\\release_64\\wxgui\\Release" "release"
+            xcopy /e /Y ".\\release_64\\coregui\\Release\\*.exe" "release"
+            xcopy /e /Y ".\\release_64\\wxgui\\Release\\*.exe" "release"
         )
     ) else (
         if %3 == 32 (
@@ -52,8 +52,8 @@
         )
         cmake -B release -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -DBIT_TYPE=%3 .
         cmake --build release --config Release
-        xcopy /e /Y ".\\release\\coregui" "release"
-        xcopy /e /Y ".\\release\\wxgui" "release"
+        xcopy /e /Y ".\\release\\coregui\\*.exe" "release"
+        xcopy /e /Y ".\\release\\wxgui\\*.exe" "release"
     )
     @goto exit
 
@@ -62,13 +62,13 @@
         Del /q "debug/Debug"
         cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
         cmake --build debug --config Debug
-        xcopy /e /Y ".\\debug\\coregui\\Debug" "debug"
-        xcopy /e /Y ".\\debug\\wxgui\\Debug" "debug"
+        xcopy /e /Y ".\\debug\\coregui\\Debug\\*.exe" "debug"
+        xcopy /e /Y ".\\debug\\wxgui\\Debug\\*.exe" "debug"
     ) else (
         cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
         cmake --build debug --config Debug
-        xcopy /e /Y ".\\debug\\coregui" "debug"
-        xcopy /e /Y ".\\debug\\wxgui" "debug"
+        xcopy /e /Y ".\\debug\\coregui\\*.exe" "debug"
+        xcopy /e /Y ".\\debug\\wxgui\\*.exe" "debug"
     )
     @goto exit
 

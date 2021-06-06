@@ -36,7 +36,7 @@ namespace vind
         void open_port(KeyCode key) noexcept ;
 
         //These functions is existed in order to fool KeyLogger as no-changing.
-        //For example, EdiMoveCaretLeft...
+        //For example, MoveCaretLeft...
         void release_virtually(KeyCode key) noexcept ;
         void press_virtually(KeyCode key) noexcept ;
 

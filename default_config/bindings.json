@@ -1,7 +1,7 @@
 [
     {
-        "name": "change_to_normal",
-        "cdef": [],
+        "name": "to_gui_normal",
+        "cdef": ["guinormal"],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
         "gndef": ["<Esc-Left>", "<F9>"],
@@ -12,7 +12,7 @@
         "ja": "GUI ノーマルモード"
     },
     {
-        "name": "change_to_resident",
+        "name": "to_resident",
         "cdef": ["resident"],
         "endef": ["<rdef>"],
         "evdef": ["<rdef>"],
@@ -24,8 +24,8 @@
         "ja": "常駐モード"
     },
     {
-        "name": "change_to_visual",
-        "cdef": [],
+        "name": "to_gui_visual",
+        "cdef": ["guivisual"],
         "endef": [],
         "evdef": [],
         "gndef": ["v"],
@@ -36,7 +36,7 @@
         "ja": "GUI ヴィジュアルモード"
     },
     {
-        "name": "command_mode",
+        "name": "to_command",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
@@ -46,6 +46,54 @@
         "rdef": [],
         "en": "Command Mode",
         "ja": "コマンドモード"
+    },
+    {
+        "name": "to_edi_normal",
+        "cdef": [],
+        "endef": ["<Esc>"],
+        "evdef": ["<endef>"],
+        "gndef": ["I", "gI"],
+        "gvdef": [],
+        "idef": ["<endef>"],
+        "rdef": ["<Esc-Right>"],
+        "en": "Normal Mode (Vim Emulation: <Esc>)",
+        "ja": "ノーマルモード (Vim エミュレーション: <Esc>)"
+    },
+    {
+        "name": "to_insert",
+        "cdef": [],
+        "endef": ["i"],
+        "evdef": [],
+        "gndef": ["i"],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Insert",
+        "ja": "インサート"
+    },
+    {
+        "name": "to_edi_visual",
+        "cdef": [],
+        "endef": ["v", "<C-v>"],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Visual Mode (Vim Emulation: v)",
+        "ja": "ヴィジュアルモード (Vimエミュレーション: v)"
+    },
+    {
+        "name": "to_edi_visual_line",
+        "cdef": [],
+        "endef": ["V"],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Visual-Line Mode (Vim Emulation: V)",
+        "ja": "ヴィジュアルモード(行) (Vimエミュレーション: V)"
     },
     {
         "name": "select_all",
@@ -60,7 +108,7 @@
         "ja": "全て選択"
     },
     {
-        "name": "move_left",
+        "name": "move_cursor_left",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -72,7 +120,7 @@
         "ja": "左へマウスカーソルを移動"
     },
     {
-        "name": "move_right",
+        "name": "move_cursor_right",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -84,7 +132,7 @@
         "ja": "右へマウスカーソルを移動"
     },
     {
-        "name": "move_up",
+        "name": "move_cursor_up",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -96,7 +144,7 @@
         "ja": "上へマウスカーソルを移動"
     },
     {
-        "name": "move_down",
+        "name": "move_cursor_down",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -156,7 +204,7 @@
         "ja": "下端へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_xcenter",
+        "name": "jump_to_hcenter",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -168,7 +216,7 @@
         "ja": "横中央へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_ycenter",
+        "name": "jump_to_vcenter",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -180,7 +228,7 @@
         "ja": "縦中央へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_any",
+        "name": "jump_with_keybrd_layout",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -228,7 +276,7 @@
         "ja": "下へマウスホイールをスクロール"
     },
     {
-        "name": "scroll_mid_up",
+        "name": "scroll_up_halfpage",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
@@ -240,7 +288,7 @@
         "ja": "上へマウスホイールをスクロール(ページ半分)"
     },
     {
-        "name": "scroll_mid_down",
+        "name": "scroll_down_halfpage",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
@@ -252,7 +300,7 @@
         "ja": "下へマウスホイールをスクロール(ページ半分)"
     },
     {
-        "name": "scroll_page_up",
+        "name": "scroll_up_onepage",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
@@ -264,7 +312,7 @@
         "ja": "上へマウスホイールをスクロール(1ページ分)"
     },
     {
-        "name": "scroll_page_down",
+        "name": "scroll_down_onepage",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
@@ -300,7 +348,7 @@
         "ja": "右へマウスホイールをスクロール"
     },
     {
-        "name": "scroll_mid_left",
+        "name": "scroll_left_halfpage",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
@@ -312,7 +360,7 @@
         "ja": "左へマウスホイールをスクロール(ページ半分)"
     },
     {
-        "name": "scroll_mid_right",
+        "name": "scroll_right_halfpage",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
@@ -348,7 +396,7 @@
         "ja": "マウスの右ボタンをクリック"
     },
     {
-        "name": "cb_copy",
+        "name": "hotkey_copy",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -360,7 +408,7 @@
         "ja": "標準的なコピー"
     },
     {
-        "name": "cb_paste",
+        "name": "hotkey_paste",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -372,7 +420,7 @@
         "ja": "標準的な貼り付け"
     },
     {
-        "name": "cb_cut",
+        "name": "hotkey_cut",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -384,7 +432,7 @@
         "ja": "標準的な切り取り"
     },
     {
-        "name": "cb_delete",
+        "name": "hotkey_delete",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -396,7 +444,7 @@
         "ja": "標準的な削除"
     },
     {
-        "name": "cb_back_space",
+        "name": "hotkey_backspace",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -408,7 +456,7 @@
         "ja": "標準的なバックスペース"
     },
     {
-        "name": "sc_redo",
+        "name": "redo",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": [],
@@ -420,7 +468,7 @@
         "ja": "やり直す"
     },
     {
-        "name": "sc_undo",
+        "name": "undo",
         "cdef": [],
         "endef": ["<gndef>"],
         "evdef": [],
@@ -469,7 +517,7 @@
     },
     {
         "name": "close_current_vdesktop",
-        "cdef": [],
+        "cdef": ["closev"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-v>q"],
@@ -480,7 +528,7 @@
         "ja": "現在の仮想デスクトップを閉じる"
     },
     {
-        "name": "task_view",
+        "name": "taskview",
         "cdef": ["taskview", "tv", "vdesktop list"],
         "endef": [],
         "evdef": [],
@@ -720,7 +768,7 @@
         "ja": "現在のモニタのウィンドウを逆回転させる"
     },
     {
-        "name": "exchange_window_with_next_one",
+        "name": "exchange_window_with_nearest",
         "cdef": ["exchange", "exw"],
         "endef": [],
         "evdef": [],
@@ -804,7 +852,7 @@
         "ja": "ウィンドウの高さを減少させる"
     },
     {
-        "name": "open_new_current_window",
+        "name": "open_new_window",
         "cdef": ["new"],
         "endef": [],
         "evdef": [],
@@ -816,7 +864,7 @@
         "ja": "新しいウィンドウを開く"
     },
     {
-        "name": "open_new_current_window_with_hsplit",
+        "name": "open_new_window_with_hsplit",
         "cdef": ["sp", "split"],
         "endef": [],
         "evdef": [],
@@ -828,7 +876,7 @@
         "ja": "横方向に分割して新しいウィンドウを開く"
     },
     {
-        "name": "open_new_current_window_with_vsplit",
+        "name": "open_new_window_with_vsplit",
         "cdef": ["vs", "vsplit"],
         "endef": [],
         "evdef": [],
@@ -840,7 +888,7 @@
         "ja": "縦方向に分割して新しいウィンドウを開く"
     },
     {
-        "name": "move_to_next_page",
+        "name": "goto_next_page",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -852,7 +900,7 @@
         "ja": "次のページへ進む"
     },
     {
-        "name": "move_to_prev_page",
+        "name": "goto_prev_page",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -864,7 +912,7 @@
         "ja": "前のページへ戻る"
     },
     {
-        "name": "save_opened_file",
+        "name": "save",
         "cdef": ["w", "w_f", "w_a", "w_c", "up", "wall"],
         "endef": [],
         "evdef": [],
@@ -912,7 +960,7 @@
         "ja": "エクスプローラーを起動"
     },
     {
-        "name": "open_start_menu",
+        "name": "open_startmenu",
         "cdef": ["win", "start"],
         "endef": [],
         "evdef": [],
@@ -924,7 +972,7 @@
         "ja": "スタートメニューを開く"
     },
     {
-        "name": "start_any_app",
+        "name": "start_external",
         "cdef": ["!<any>"],
         "endef": [],
         "evdef": [],
@@ -936,7 +984,7 @@
         "ja": "任意のアプリを実行"
     },
     {
-        "name": "show_config_window",
+        "name": "show_config_gui",
         "cdef": ["setgui"],
         "endef": [],
         "evdef": [],
@@ -948,7 +996,7 @@
         "ja": "win-vindの設定を開く"
     },
     {
-        "name": "exit_config_window",
+        "name": "exit_config_gui",
         "cdef": ["exit"],
         "endef": [],
         "evdef": [],
@@ -960,7 +1008,7 @@
         "ja": "win-vindを終了する"
     },
     {
-        "name": "open_other_file",
+        "name": "open",
         "cdef": ["find", "open", "e", "e!", "edit", "edit!"],
         "endef": [],
         "evdef": [],
@@ -972,7 +1020,7 @@
         "ja": "ファイルを開く"
     },
     {
-        "name": "make_dir",
+        "name": "makedir",
         "cdef": ["mkdir", "md", "mkdir <any>", "md <any>"],
         "endef": [],
         "evdef": [],
@@ -997,7 +1045,7 @@
     },
     {
         "name": "enable_targeting_of_dedicate_to_window",
-        "cdef": ["enable d2w", "e d2w", "target", "d2w on"],
+        "cdef": ["target"],
         "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<LAlt><LAlt>", "<F2>"],
@@ -1009,7 +1057,7 @@
     },
     {
         "name": "disable_targeting_of_dedicate_to_window",
-        "cdef": ["disable d2w", "d d2w", "untarget", "d2w off"],
+        "cdef": ["untarget"],
         "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<RAlt><RAlt>", "<F10>"],
@@ -1020,31 +1068,7 @@
         "ja": "ターゲティングの無効化 (ウィンドウ特化)"
     },
     {
-        "name": "change_to_edi_normal",
-        "cdef": [],
-        "endef": ["<Esc>"],
-        "evdef": ["<endef>"],
-        "gndef": ["I", "gI"],
-        "gvdef": [],
-        "idef": ["<endef>"],
-        "rdef": ["<Esc-Right>"],
-        "en": "Normal Mode (Vim Emulation: <Esc>)",
-        "ja": "ノーマルモード (Vim エミュレーション: <Esc>)"
-    },
-    {
-        "name": "change_to_insert",
-        "cdef": [],
-        "endef": ["i"],
-        "evdef": [],
-        "gndef": ["i"],
-        "gvdef": [],
-        "idef": [],
-        "rdef": [],
-        "en": "Insert",
-        "ja": "インサート"
-    },
-    {
-        "name": "change_to_edi_BOLinsert",
+        "name": "to_insert_BOL",
         "cdef": [],
         "endef": ["I", "gI"],
         "evdef": [],
@@ -1056,7 +1080,7 @@
         "ja": "行頭に挿入 (Vimエミュレーション: I)"
     },
     {
-        "name": "change_to_edi_bkinsert",
+        "name": "to_insert_append",
         "cdef": [],
         "endef": ["a"],
         "evdef": [],
@@ -1068,7 +1092,7 @@
         "ja": "キャレットの後に追加 (Vimエミュレーション: a)"
     },
     {
-        "name": "change_to_edi_EOLinsert",
+        "name": "to_insert_EOL",
         "cdef": [],
         "endef": ["A"],
         "evdef": [],
@@ -1080,7 +1104,7 @@
         "ja": "行末に追加 (Vimエミュレーション: A)"
     },
     {
-        "name": "change_to_edi_nlinsert_below",
+        "name": "to_insert_nlbelow",
         "cdef": [],
         "endef": ["o"],
         "evdef": [],
@@ -1092,7 +1116,7 @@
         "ja": "次の行に新しい行を挿入 (Vimエミュレーション: o)"
     },
     {
-        "name": "change_to_edi_nlinsert_above",
+        "name": "to_insert_nlabove",
         "cdef": [],
         "endef": ["O"],
         "evdef": [],
@@ -1104,31 +1128,7 @@
         "ja": "前の行に新しい行を挿入 (Vimエミュレーション: O)"
     },
     {
-        "name": "change_to_edi_visual",
-        "cdef": [],
-        "endef": ["v", "<C-v>"],
-        "evdef": [],
-        "gndef": [],
-        "gvdef": [],
-        "idef": [],
-        "rdef": [],
-        "en": "Visual Mode (Vim Emulation: v)",
-        "ja": "ヴィジュアルモード (Vimエミュレーション: v)"
-    },
-    {
-        "name": "change_to_edi_line_visual",
-        "cdef": [],
-        "endef": ["V"],
-        "evdef": [],
-        "gndef": [],
-        "gvdef": [],
-        "idef": [],
-        "rdef": [],
-        "en": "Visual-Line Mode (Vim Emulation: V)",
-        "ja": "ヴィジュアルモード(行) (Vimエミュレーション: V)"
-    },
-    {
-        "name": "edi_move_caret_left",
+        "name": "move_caret_left",
         "cdef": [],
         "endef": ["h", "<C-h>", "<BS>", "<Left>"],
         "evdef": ["<endef>"],
@@ -1140,7 +1140,7 @@
         "ja": "左へキャレットを移動 (Vimエミュレーション: h)"
     },
     {
-        "name": "edi_move_caret_right",
+        "name": "move_caret_right",
         "cdef": [],
         "endef": ["l", "<Space>", "<Right>"],
         "evdef": ["<endef>"],
@@ -1152,7 +1152,7 @@
         "ja": "右へキャレットを移動 (Vimエミュレーション: l)"
     },
     {
-        "name": "edi_move_caret_up",
+        "name": "move_caret_up",
         "cdef": ["-<num>"],
         "endef": ["k", "-", "gk", "<C-p>", "<Up>"],
         "evdef": ["<endef>"],
@@ -1164,7 +1164,7 @@
         "ja": "上へキャレットを移動 (Vimエミュレーション: k)"
     },
     {
-        "name": "edi_move_caret_down",
+        "name": "move_caret_down",
         "cdef": ["+<num>"],
         "endef": ["j", "+", "gj", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
         "evdef": ["<endef>"],
@@ -1176,7 +1176,7 @@
         "ja": "下へキャレットを移動 (Vimエミュレーション: j)"
     },
     {
-        "name": "edi_n_move_caret_words_forward",
+        "name": "move_caret_word_forward",
         "cdef": [],
         "endef": ["w"],
         "evdef": ["<endef>"],
@@ -1188,7 +1188,7 @@
         "ja": "次の単語へ進む (Vimエミュレーション: w)"
     },
     {
-        "name": "edi_n_move_caret_words_backward",
+        "name": "move_caret_word_backward",
         "cdef": [],
         "endef": ["b"],
         "evdef": ["<endef>"],
@@ -1200,7 +1200,7 @@
         "ja": "前の単語へ戻る (Vimエミュレーション: b)"
     },
     {
-        "name": "edi_n_move_caret_WORDS_forward",
+        "name": "move_caret_nonblank_word_forward",
         "cdef": [],
         "endef": ["W"],
         "evdef": ["<endef>"],
@@ -1212,7 +1212,7 @@
         "ja": "次の単語へ進む(空白ベース) (Vimエミュレーション: W)"
     },
     {
-        "name": "edi_n_move_caret_WORDS_backward",
+        "name": "move_caret_nonblank_word_backward",
         "cdef": [],
         "endef": ["B"],
         "evdef": ["<endef>"],
@@ -1224,7 +1224,7 @@
         "ja": "前の単語へ戻る(空白ベース) (Vimエミュレーション: B)"
     },
     {
-        "name": "edi_jump_caret_to_BOL",
+        "name": "jump_caret_to_BOL",
         "cdef": [],
         "endef": ["0", "<Home>", "g0"],
         "evdef": ["<endef>"],
@@ -1236,7 +1236,7 @@
         "ja": "行頭へキャレットを移動 (Vimエミュレーション: 0)"
     },
     {
-        "name": "edi_jump_caret_to_EOL",
+        "name": "jump_caret_to_EOL",
         "cdef": [],
         "endef": ["$", "<End>", "g$"],
         "evdef": ["<endef>"],
@@ -1248,7 +1248,7 @@
         "ja": "行末へキャレットを移動 (Vimエミュレーション: $)"
     },
     {
-        "name": "edi_n_jump_caret_to_line_default_BOF",
+        "name": "jump_caret_to_BOF",
         "cdef": ["<num>"],
         "endef": ["gg"],
         "evdef": ["<endef>"],
@@ -1260,7 +1260,7 @@
         "ja": "BOFにキャレットを移動 (Vimエミュレーション: gg)"
     },
     {
-        "name": "edi_n_jump_caret_to_line_default_EOF",
+        "name": "jump_caret_to_EOF",
         "cdef": [],
         "endef": ["G"],
         "evdef": ["<endef>"],
@@ -1272,7 +1272,7 @@
         "ja": "EOFにキャレットを移動 (Vimエミュレーション: G)"
     },
     {
-        "name": "edi_copy_highlight_text",
+        "name": "yank_highlight_text",
         "cdef": [],
         "endef": [],
         "evdef": ["y"],
@@ -1284,7 +1284,7 @@
         "ja": "選択テキストをヤンク (Vimエミュレーション: y)"
     },
     {
-        "name": "edi_n_copy_line",
+        "name": "yank_line",
         "cdef": [],
         "endef": ["yy", "Y"],
         "evdef": [],
@@ -1296,7 +1296,7 @@
         "ja": "行ヤンク (Vimエミュレーション: yy)"
     },
     {
-        "name": "edi_copy_motion",
+        "name": "yank_with_motion",
         "endef": ["y"],
         "gndef": [],
         "gvdef": [],
@@ -1308,7 +1308,7 @@
         "ja": "移動でヤンク (Vimエミュレーション: y{Motion})"
     },
     {
-        "name": "edi_n_paste_after",
+        "name": "put_after",
         "cdef": [],
         "endef": ["p"],
         "evdef": [],
@@ -1320,7 +1320,7 @@
         "ja": "後にプット (Vimエミュレーション: p)"
     },
     {
-        "name": "edi_n_paste_before",
+        "name": "put_before",
         "cdef": [],
         "endef": ["P"],
         "evdef": [],
@@ -1332,7 +1332,7 @@
         "ja": "前にプット (Vimエミュレーション: P)"
     },
     {
-        "name": "edi_delete_highlight_text",
+        "name": "delete_highlight_text",
         "cdef": [],
         "endef": [],
         "evdef": ["d", "x", "X"],
@@ -1344,7 +1344,7 @@
         "ja": "選択テキストを削除 (Vimエミュレーション: d,x)"
     },
     {
-        "name": "edi_n_delete_line",
+        "name": "delete_line",
         "cdef": [],
         "endef": ["dd"],
         "evdef": [],
@@ -1356,7 +1356,7 @@
         "ja": "行削除 (Vimエミュレーション: dd)"
     },
     {
-        "name": "edi_n_delete_line_until_EOL",
+        "name": "delete_line_until_EOL",
         "cdef": [],
         "endef": ["D"],
         "evdef": [],
@@ -1368,7 +1368,7 @@
         "ja": "行末まで削除 (Vimエミュレーション: D)"
     },
     {
-        "name": "edi_n_delete_after",
+        "name": "delete_after",
         "cdef": [],
         "endef": ["x", "<Del>"],
         "evdef": [],
@@ -1380,7 +1380,7 @@
         "ja": "次の文字を削除 (Vimエミュレーション: x)"
     },
     {
-        "name": "edi_n_delete_before",
+        "name": "delete_before",
         "cdef": [],
         "endef": ["X"],
         "evdef": [],
@@ -1392,7 +1392,7 @@
         "ja": "前の文字を削除 (Vimエミュレーション: X)"
     },
     {
-        "name": "edi_n_remove_EOL",
+        "name": "join_next_line",
         "cdef": [],
         "endef": ["J"],
         "evdef": [],
@@ -1404,7 +1404,7 @@
         "ja": "次の行を行末に結合 (Vimエミュレーション: J)"
     },
     {
-        "name": "edi_n_replace_char",
+        "name": "replace_char",
         "cdef": [],
         "endef": ["r"],
         "evdef": [],
@@ -1416,7 +1416,7 @@
         "ja": "文字を置換 (Vimエミュレーション: r)"
     },
     {
-        "name": "edi_n_replace_sequence",
+        "name": "replace_sequence",
         "cdef": [],
         "endef": ["R"],
         "evdef": [],
@@ -1428,7 +1428,7 @@
         "ja": "置換モード (Vimエミュレーション: R)"
     },
     {
-        "name": "edi_switch_char_case",
+        "name": "switch_char_case",
         "cdef": [],
         "endef": ["~"],
         "evdef": [],
@@ -1440,7 +1440,7 @@
         "ja": "大文字と小文字を切替 (Vimエミュレーション: ~)"
     },
     {
-        "name": "edi_delete_motion",
+        "name": "delete_with_motion",
         "endef": ["d"],
         "gndef": [],
         "gvdef": [],
@@ -1452,7 +1452,7 @@
         "ja": "移動でテキストを削除 (Vimエミュレーション: d{Motion})"
     },
     {
-        "name": "edi_change_highlight_text",
+        "name": "change_highlight_text",
         "cdef": [],
         "endef": [],
         "evdef": ["c", "s", "S"],
@@ -1464,7 +1464,7 @@
         "ja": "選択テキストを変更 (Vimエミュレーション: c, s, S)"
     },
     {
-        "name": "edi_change_motion",
+        "name": "change_with_motion",
         "endef": ["c"],
         "gndef": [],
         "gvdef": [],
@@ -1476,7 +1476,7 @@
         "ja": "移動でテキストを変更 (Vim エミュレーション: c{Motion})"
     },
     {
-        "name": "edi_change_lines",
+        "name": "change_line",
         "cdef": [],
         "endef": ["cc", "S"],
         "evdef": [],
@@ -1488,7 +1488,7 @@
         "ja": "行を変更 (Vimエミュレーション: cc, S)"
     },
     {
-        "name": "edi_change_chars",
+        "name": "change_char",
         "cdef": [],
         "endef": ["s"],
         "evdef": [],
@@ -1500,7 +1500,7 @@
         "ja": "文字を変更 (Vimエミュレーション: s)"
     },
     {
-        "name": "edi_change_until_eol",
+        "name": "change_until_EOL",
         "cdef": [],
         "endef": ["C"],
         "evdef": [],
@@ -1514,7 +1514,7 @@
     {
         "name": "easy_click_left",
         "cdef": ["ecl"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["FF", "Fo"],
         "gvdef": [],
@@ -1526,7 +1526,7 @@
     {
         "name": "easy_click_right",
         "cdef": ["ecr"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["Fa"],
         "gvdef": [],
@@ -1538,7 +1538,7 @@
     {
         "name": "easy_click_mid",
         "cdef": ["ecm"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["Fm"],
         "gvdef": [],
@@ -1550,7 +1550,7 @@
     {
         "name": "easy_click_hover",
         "cdef": ["ech"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["Fh"],
         "gvdef": [],

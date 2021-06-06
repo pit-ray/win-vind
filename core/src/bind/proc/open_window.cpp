@@ -12,11 +12,11 @@
 
 namespace vind
 {
-    //OpenNewCurrentWindow
-    OpenNewCurrentWindow::OpenNewCurrentWindow()
-    : BindedFuncCreator("open_new_current_window")
+    //OpenNewWindow
+    OpenNewWindow::OpenNewWindow()
+    : BindedFuncCreator("open_new_window")
     {}
-    void OpenNewCurrentWindow::sprocess() {
+    void OpenNewWindow::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
             throw RUNTIME_EXCEPT("The foreground window is not existed") ;
@@ -47,12 +47,12 @@ namespace vind
         util::create_process(path::HOME_PATH(), util::ws_to_s(path)) ;
         Sleep(100) ;
     }
-    void OpenNewCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+    void OpenNewWindow::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenNewCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenNewWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

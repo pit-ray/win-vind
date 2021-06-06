@@ -5,15 +5,15 @@
 
 namespace vind
 {
-    struct SaveOpenedFile : public BindedFuncCreator<SaveOpenedFile> {
-        explicit SaveOpenedFile() ;
+    struct Save : public BindedFuncCreator<Save> {
+        explicit Save() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct OpenOtherFile : public BindedFuncCreator<OpenOtherFile> {
-        explicit OpenOtherFile() ;
+    struct Open : public BindedFuncCreator<Open> {
+        explicit Open() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

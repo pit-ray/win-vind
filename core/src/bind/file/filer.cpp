@@ -12,11 +12,11 @@
 
 namespace vind
 {
-    //SaveOpenedFile
-    SaveOpenedFile::SaveOpenedFile()
-    : BindedFuncCreator("save_opened_file")
+    //Save
+    Save::Save()
+    : BindedFuncCreator("save")
     {}
-    void SaveOpenedFile::sprocess() {
+    void Save::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             RUNTIME_EXCEPT("The foreground window is not existed.") ;
@@ -26,33 +26,33 @@ namespace vind
 
         Sleep(500) ; //wait by openning the dialog for saving
         if(hwnd != GetForegroundWindow()) { //opened popup
-            Change2Normal::sprocess(true) ;
+            ToGUINormal::sprocess(true) ;
         }
     }
-    void SaveOpenedFile::sprocess(NTypeLogger& parent_lgr) {
+    void Save::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SaveOpenedFile::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void Save::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //OpenOtherFile
-    OpenOtherFile::OpenOtherFile()
-    : BindedFuncCreator("open_other_file")
+    //Open
+    Open::Open()
+    : BindedFuncCreator("open")
     {}
-    void OpenOtherFile::sprocess() {
-        Change2Normal::sprocess(true) ;
+    void Open::sprocess() {
+        ToGUINormal::sprocess(true) ;
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
     }
-    void OpenOtherFile::sprocess(NTypeLogger& parent_lgr) {
+    void Open::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenOtherFile::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void Open::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
 
     }

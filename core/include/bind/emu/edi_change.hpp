@@ -9,29 +9,29 @@ namespace vind
         struct SelRes ;
     }
 
-    struct EdiChangeHighlightText : public BindedFuncCreator<EdiChangeHighlightText> {
-        explicit EdiChangeHighlightText() ;
+    struct ChangeHighlightText : public BindedFuncCreator<ChangeHighlightText> {
+        explicit ChangeHighlightText() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiChangeLines : public BindedFuncCreator<EdiChangeLines> {
-        explicit EdiChangeLines() ;
+    struct ChangeLine : public BindedFuncCreator<ChangeLine> {
+        explicit ChangeLine() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiChangeChars : public BindedFuncCreator<EdiChangeChars> {
-        explicit EdiChangeChars() ;
+    struct ChangeChar : public BindedFuncCreator<ChangeChar> {
+        explicit ChangeChar() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiChangeUntilEOL : public BindedFuncCreator<EdiChangeUntilEOL> {
-        explicit EdiChangeUntilEOL() ;
+    struct ChangeUntilEOL : public BindedFuncCreator<ChangeUntilEOL> {
+        explicit ChangeUntilEOL() ;
         static void sprocess(
                 unsigned int repeat_num=1,
                 const textanalyze::SelRes* const exres=nullptr) ;

@@ -9,30 +9,30 @@
 
 namespace vind
 {
-    //Jump2Left
-    Jump2Left::Jump2Left()
+    //JumpToLeft
+    JumpToLeft::JumpToLeft()
     : BindedFuncCreator("jump_to_left")
     {}
-    void Jump2Left::sprocess() {
+    void JumpToLeft::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
         SetCursorPos(0, pos.y) ;
     }
-    void Jump2Left::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToLeft::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2Left::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //Jump2Right
-    Jump2Right::Jump2Right()
+    //JumpToRight
+    JumpToRight::JumpToRight()
     : BindedFuncCreator("jump_to_right")
     {}
-    void Jump2Right::sprocess() {
+    void JumpToRight::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
 
@@ -41,21 +41,21 @@ namespace vind
 
         SetCursorPos(screenmetrics::width(rect) - gparams::get_i("screen_pos_buf"), pos.y) ;
     }
-    void Jump2Right::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToRight::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2Right::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToRight::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //Jump2Top
-    Jump2Top::Jump2Top()
+    //JumpToTop
+    JumpToTop::JumpToTop()
     : BindedFuncCreator("jump_to_top")
     {}
-    void Jump2Top::sprocess() {
+    void JumpToTop::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
 
@@ -64,21 +64,21 @@ namespace vind
 
         SetCursorPos(pos.x, rect.top) ;
     }
-    void Jump2Top::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToTop::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2Top::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToTop::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //Jump2Bottom
-    Jump2Bottom::Jump2Bottom()
+    //JumpToBottom
+    JumpToBottom::JumpToBottom()
     : BindedFuncCreator("jump_to_bottom")
     {}
-    void Jump2Bottom::sprocess() {
+    void JumpToBottom::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
 
@@ -86,21 +86,21 @@ namespace vind
         screenmetrics::get_conbined_metrics(&rect) ;
         SetCursorPos(pos.x, screenmetrics::height(rect) - gparams::get_i("screen_pos_buf")) ;
     }
-    void Jump2Bottom::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToBottom::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2Bottom::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToBottom::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //Jump2XCenter
-    Jump2XCenter::Jump2XCenter()
-    : BindedFuncCreator("jump_to_xcenter")
+    //JumpToHorizontalCenter
+    JumpToHorizontalCenter::JumpToHorizontalCenter()
+    : BindedFuncCreator("jump_to_hcenter")
     {}
-    void Jump2XCenter::sprocess() {
+    void JumpToHorizontalCenter::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
 
@@ -108,21 +108,21 @@ namespace vind
         screenmetrics::get_conbined_metrics(&rect) ;
         SetCursorPos(screenmetrics::width(rect) / 2, pos.y) ;
     }
-    void Jump2XCenter::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToHorizontalCenter::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2XCenter::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToHorizontalCenter::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //Jump2YCenter
-    Jump2YCenter::Jump2YCenter()
-    : BindedFuncCreator("jump_to_ycenter")
+    //JumpToVerticalCenter
+    JumpToVerticalCenter::JumpToVerticalCenter()
+    : BindedFuncCreator("jump_to_vcenter")
     {}
-    void Jump2YCenter::sprocess() {
+    void JumpToVerticalCenter::sprocess() {
         POINT pos ;
         GetCursorPos(&pos) ;
 
@@ -130,12 +130,12 @@ namespace vind
         screenmetrics::get_conbined_metrics(&rect) ;
         SetCursorPos(pos.x, screenmetrics::height(rect) / 2) ;
     }
-    void Jump2YCenter::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToVerticalCenter::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2YCenter::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToVerticalCenter::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

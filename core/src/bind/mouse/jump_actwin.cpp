@@ -8,11 +8,11 @@
 
 namespace vind
 {
-    //Jump2ActiveWindow
-    Jump2ActiveWindow::Jump2ActiveWindow()
+    //JumpToActiveWindow
+    JumpToActiveWindow::JumpToActiveWindow()
     : BindedFuncCreator("jump_to_active_window")
     {}
-    void Jump2ActiveWindow::sprocess() {
+    void JumpToActiveWindow::sprocess() {
         auto hwnd = GetForegroundWindow() ;
         if(!hwnd) {
             throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
@@ -28,12 +28,12 @@ namespace vind
 
         SetCursorPos(xpos, ypos) ;
     }
-    void Jump2ActiveWindow::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToActiveWindow::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2ActiveWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToActiveWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

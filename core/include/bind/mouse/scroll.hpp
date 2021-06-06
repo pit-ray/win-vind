@@ -44,7 +44,7 @@ namespace vind
     } ;
 
 
-    class ScrollMidUp : public BindedFuncCreator<ScrollMidUp> {
+    class ScrollUpHalfPage : public BindedFuncCreator<ScrollUpHalfPage> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -54,17 +54,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit ScrollMidUp() ;
-        virtual ~ScrollMidUp() noexcept ;
+        explicit ScrollUpHalfPage() ;
+        virtual ~ScrollUpHalfPage() noexcept ;
 
-        ScrollMidUp(ScrollMidUp&&) ;
-        ScrollMidUp& operator=(ScrollMidUp&&) ;
-        ScrollMidUp(const ScrollMidUp&)             = delete ;
-        ScrollMidUp& operator=(const ScrollMidUp&)  = delete ;
+        ScrollUpHalfPage(ScrollUpHalfPage&&) ;
+        ScrollUpHalfPage& operator=(ScrollUpHalfPage&&) ;
+        ScrollUpHalfPage(const ScrollUpHalfPage&)             = delete ;
+        ScrollUpHalfPage& operator=(const ScrollUpHalfPage&)  = delete ;
     } ;
 
 
-    class ScrollMidDown : public BindedFuncCreator<ScrollMidDown> {
+    class ScrollDownHalfPage : public BindedFuncCreator<ScrollDownHalfPage> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -74,17 +74,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit ScrollMidDown() ;
-        virtual ~ScrollMidDown() noexcept ;
+        explicit ScrollDownHalfPage() ;
+        virtual ~ScrollDownHalfPage() noexcept ;
 
-        ScrollMidDown(ScrollMidDown&&) ;
-        ScrollMidDown& operator=(ScrollMidDown&&) ;
-        ScrollMidDown(const ScrollMidDown&)             = delete ;
-        ScrollMidDown& operator=(const ScrollMidDown&)  = delete ;
+        ScrollDownHalfPage(ScrollDownHalfPage&&) ;
+        ScrollDownHalfPage& operator=(ScrollDownHalfPage&&) ;
+        ScrollDownHalfPage(const ScrollDownHalfPage&)             = delete ;
+        ScrollDownHalfPage& operator=(const ScrollDownHalfPage&)  = delete ;
     } ;
 
 
-    class ScrollPageUp : public BindedFuncCreator<ScrollPageUp> {
+    class ScrollUpOnePage : public BindedFuncCreator<ScrollUpOnePage> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -94,17 +94,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit ScrollPageUp() ;
-        virtual ~ScrollPageUp() noexcept ;
+        explicit ScrollUpOnePage() ;
+        virtual ~ScrollUpOnePage() noexcept ;
 
-        ScrollPageUp(ScrollPageUp&&) ;
-        ScrollPageUp& operator=(ScrollPageUp&&) ;
-        ScrollPageUp(const ScrollPageUp&)               = delete ;
-        ScrollPageUp& operator=(const ScrollPageUp&)    = delete ;
+        ScrollUpOnePage(ScrollUpOnePage&&) ;
+        ScrollUpOnePage& operator=(ScrollUpOnePage&&) ;
+        ScrollUpOnePage(const ScrollUpOnePage&)               = delete ;
+        ScrollUpOnePage& operator=(const ScrollUpOnePage&)    = delete ;
     } ;
 
 
-    class ScrollPageDown : public BindedFuncCreator<ScrollPageDown> {
+    class ScrollDownOnePage : public BindedFuncCreator<ScrollDownOnePage> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -115,13 +115,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit ScrollPageDown() ;
-        virtual ~ScrollPageDown() noexcept ;
+        explicit ScrollDownOnePage() ;
+        virtual ~ScrollDownOnePage() noexcept ;
 
-        ScrollPageDown(ScrollPageDown&&) ;
-        ScrollPageDown& operator=(ScrollPageDown&&) ;
-        ScrollPageDown(const ScrollPageDown&)               = delete ;
-        ScrollPageDown& operator=(const ScrollPageDown&)    = delete ;
+        ScrollDownOnePage(ScrollDownOnePage&&) ;
+        ScrollDownOnePage& operator=(ScrollDownOnePage&&) ;
+        ScrollDownOnePage(const ScrollDownOnePage&)               = delete ;
+        ScrollDownOnePage& operator=(const ScrollDownOnePage&)    = delete ;
     } ;
 
 
@@ -165,7 +165,7 @@ namespace vind
     } ;
 
 
-    class ScrollMidLeft : public BindedFuncCreator<ScrollMidLeft> {
+    class ScrollLeftHalfPage : public BindedFuncCreator<ScrollLeftHalfPage> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -175,17 +175,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit ScrollMidLeft() ;
-        virtual ~ScrollMidLeft() noexcept ;
+        explicit ScrollLeftHalfPage() ;
+        virtual ~ScrollLeftHalfPage() noexcept ;
 
-        ScrollMidLeft(ScrollMidLeft&&) ;
-        ScrollMidLeft& operator=(ScrollMidLeft&&) ;
-        ScrollMidLeft(const ScrollMidLeft&)             = delete ;
-        ScrollMidLeft& operator=(const ScrollMidLeft&)  = delete ;
+        ScrollLeftHalfPage(ScrollLeftHalfPage&&) ;
+        ScrollLeftHalfPage& operator=(ScrollLeftHalfPage&&) ;
+        ScrollLeftHalfPage(const ScrollLeftHalfPage&)             = delete ;
+        ScrollLeftHalfPage& operator=(const ScrollLeftHalfPage&)  = delete ;
     } ;
 
 
-    class ScrollMidRight : public BindedFuncCreator<ScrollMidRight> {
+    class ScrollRightHalfPage : public BindedFuncCreator<ScrollRightHalfPage> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -195,13 +195,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit ScrollMidRight() ;
-        virtual ~ScrollMidRight() noexcept ;
+        explicit ScrollRightHalfPage() ;
+        virtual ~ScrollRightHalfPage() noexcept ;
 
-        ScrollMidRight(ScrollMidRight&&) ;
-        ScrollMidRight& operator=(ScrollMidRight&&) ;
-        ScrollMidRight(const ScrollMidRight&)               = delete ;
-        ScrollMidRight& operator=(const ScrollMidRight&)    = delete ;
+        ScrollRightHalfPage(ScrollRightHalfPage&&) ;
+        ScrollRightHalfPage& operator=(ScrollRightHalfPage&&) ;
+        ScrollRightHalfPage(const ScrollRightHalfPage&)               = delete ;
+        ScrollRightHalfPage& operator=(const ScrollRightHalfPage&)    = delete ;
     } ;
 }
 #endif

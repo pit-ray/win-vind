@@ -13,11 +13,11 @@
 
 namespace vind
 {
-    //EdiCopyHighlightText (EdiVisual only)
-    EdiCopyHighlightText::EdiCopyHighlightText()
-    : BindedFuncCreator("edi_copy_highlight_text")
+    //YankHighlightText (EdiVisual only)
+    YankHighlightText::YankHighlightText()
+    : BindedFuncCreator("yank_highlight_text")
     {}
-    void EdiCopyHighlightText::sprocess() {
+    void YankHighlightText::sprocess() {
         using namespace mode ;
         using namespace simpletxreg ;
 
@@ -31,23 +31,23 @@ namespace vind
         }
 
         keybrd::pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
-        Change2EdiNormal::sprocess(true) ;
+        ToEdiNormal::sprocess(true) ;
     }
-    void EdiCopyHighlightText::sprocess(NTypeLogger& parent_lgr) {
+    void YankHighlightText::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void EdiCopyHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void YankHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //EdiNCopyLine (EdiNormal only)
-    EdiNCopyLine::EdiNCopyLine()
-    : BindedFuncCreator("edi_n_copy_line")
+    //YankLine (EdiNormal only)
+    YankLine::YankLine()
+    : BindedFuncCreator("yank_line")
     {}
-    void EdiNCopyLine::sprocess(
+    void YankLine::sprocess(
             unsigned int repeat_num,
             const textanalyze::SelRes* const exres) {
 
@@ -68,12 +68,12 @@ namespace vind
 
         simpletxreg::set_register_type(simpletxreg::RegType::Lines) ;
     }
-    void EdiNCopyLine::sprocess(NTypeLogger& parent_lgr) {
+    void YankLine::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiNCopyLine::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void YankLine::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1, nullptr) ;
     }
 }

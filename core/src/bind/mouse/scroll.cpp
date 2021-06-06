@@ -84,25 +84,25 @@ namespace vind
     }
 
 
-    //ScrollMidUp
-    struct ScrollMidUp::Impl {
+    //ScrollUpHalfPage
+    struct ScrollUpHalfPage::Impl {
         IntervalTimer timer_{DELTA_US} ;
     } ;
 
-    ScrollMidUp::ScrollMidUp()
-    : BindedFuncCreator("scroll_mid_up"),
+    ScrollUpHalfPage::ScrollUpHalfPage()
+    : BindedFuncCreator("scroll_up_halfpage"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    ScrollMidUp::~ScrollMidUp() noexcept               = default ;
-    ScrollMidUp::ScrollMidUp(ScrollMidUp&&)            = default ;
-    ScrollMidUp& ScrollMidUp::operator=(ScrollMidUp&&) = default ;
+    ScrollUpHalfPage::~ScrollUpHalfPage() noexcept               = default ;
+    ScrollUpHalfPage::ScrollUpHalfPage(ScrollUpHalfPage&&)            = default ;
+    ScrollUpHalfPage& ScrollUpHalfPage::operator=(ScrollUpHalfPage&&) = default ;
 
-    void ScrollMidUp::sprocess(unsigned int repeat_num) const {
+    void ScrollUpHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * 0.5f * repeat_num * \
                 gparams::get_f("yscroll_screen_ratio")) ;
     }
-    void ScrollMidUp::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollUpHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -111,30 +111,30 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollMidUp::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollUpHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //ScrollMidDown
-    struct ScrollMidDown::Impl {
+    //ScrollDownHalfPage
+    struct ScrollDownHalfPage::Impl {
         IntervalTimer timer_{DELTA_US} ;
     } ;
 
-    ScrollMidDown::ScrollMidDown()
-    : BindedFuncCreator("scroll_mid_down"),
+    ScrollDownHalfPage::ScrollDownHalfPage()
+    : BindedFuncCreator("scroll_down_halfpage"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    ScrollMidDown::~ScrollMidDown() noexcept                    = default ;
-    ScrollMidDown::ScrollMidDown(ScrollMidDown&&)               = default ;
-    ScrollMidDown& ScrollMidDown::operator=(ScrollMidDown&&)    = default ;
+    ScrollDownHalfPage::~ScrollDownHalfPage() noexcept                    = default ;
+    ScrollDownHalfPage::ScrollDownHalfPage(ScrollDownHalfPage&&)               = default ;
+    ScrollDownHalfPage& ScrollDownHalfPage::operator=(ScrollDownHalfPage&&)    = default ;
 
-    void ScrollMidDown::sprocess(unsigned int repeat_num) const {
+    void ScrollDownHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-0.5f * MAX_Y_POS * repeat_num * \
                 gparams::get_f("yscroll_screen_ratio")) ;
     }
-    void ScrollMidDown::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollDownHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -143,30 +143,30 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollMidDown::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollDownHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //ScrollPageUp
-    struct ScrollPageUp::Impl {
+    //ScrollUpOnePage
+    struct ScrollUpOnePage::Impl {
         IntervalTimer timer_{DELTA_US} ;
     } ;
 
-    ScrollPageUp::ScrollPageUp()
-    : BindedFuncCreator("scroll_page_up"),
+    ScrollUpOnePage::ScrollUpOnePage()
+    : BindedFuncCreator("scroll_up_onepage"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    ScrollPageUp::~ScrollPageUp() noexcept                  = default ;
-    ScrollPageUp::ScrollPageUp(ScrollPageUp&&)              = default ;
-    ScrollPageUp& ScrollPageUp::operator=(ScrollPageUp&&)   = default ;
+    ScrollUpOnePage::~ScrollUpOnePage() noexcept                  = default ;
+    ScrollUpOnePage::ScrollUpOnePage(ScrollUpOnePage&&)              = default ;
+    ScrollUpOnePage& ScrollUpOnePage::operator=(ScrollUpOnePage&&)   = default ;
 
-    void ScrollPageUp::sprocess(unsigned int repeat_num) const {
+    void ScrollUpOnePage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * repeat_num * \
                 gparams::get_f("yscroll_screen_ratio")) ;
     }
-    void ScrollPageUp::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollUpOnePage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -175,30 +175,30 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollPageUp::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollUpOnePage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //ScrollPageDown
-    struct ScrollPageDown::Impl {
+    //ScrollDownOnePage
+    struct ScrollDownOnePage::Impl {
         IntervalTimer timer_{DELTA_US} ;
     } ;
 
-    ScrollPageDown::ScrollPageDown()
-    : BindedFuncCreator("scroll_page_down"),
+    ScrollDownOnePage::ScrollDownOnePage()
+    : BindedFuncCreator("scroll_down_onepage"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    ScrollPageDown::~ScrollPageDown() noexcept                  = default ;
-    ScrollPageDown::ScrollPageDown(ScrollPageDown&&)            = default ;
-    ScrollPageDown& ScrollPageDown::operator=(ScrollPageDown&&) = default ;
+    ScrollDownOnePage::~ScrollDownOnePage() noexcept                  = default ;
+    ScrollDownOnePage::ScrollDownOnePage(ScrollDownOnePage&&)            = default ;
+    ScrollDownOnePage& ScrollDownOnePage::operator=(ScrollDownOnePage&&) = default ;
 
-    void ScrollPageDown::sprocess(unsigned int repeat_num) const {
+    void ScrollDownOnePage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-MAX_Y_POS * repeat_num * \
                 gparams::get_f("yscroll_screen_ratio")) ;
     }
-    void ScrollPageDown::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollDownOnePage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -207,7 +207,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollPageDown::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollDownOnePage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -275,25 +275,25 @@ namespace vind
     }
 
 
-    //ScrollMidLeft
-    struct ScrollMidLeft::Impl {
+    //ScrollLeftHalfPage
+    struct ScrollLeftHalfPage::Impl {
         IntervalTimer timer_{DELTA_US} ;
     } ;
 
-    ScrollMidLeft::ScrollMidLeft()
-    : BindedFuncCreator("scroll_mid_left"),
+    ScrollLeftHalfPage::ScrollLeftHalfPage()
+    : BindedFuncCreator("scroll_left_halfpage"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    ScrollMidLeft::~ScrollMidLeft() noexcept                    = default ;
-    ScrollMidLeft::ScrollMidLeft(ScrollMidLeft&&)               = default ;
-    ScrollMidLeft& ScrollMidLeft::operator=(ScrollMidLeft&&)    = default ;
+    ScrollLeftHalfPage::~ScrollLeftHalfPage() noexcept                    = default ;
+    ScrollLeftHalfPage::ScrollLeftHalfPage(ScrollLeftHalfPage&&)               = default ;
+    ScrollLeftHalfPage& ScrollLeftHalfPage::operator=(ScrollLeftHalfPage&&)    = default ;
 
-    void ScrollMidLeft::sprocess(unsigned int repeat_num) const {
+    void ScrollLeftHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(-0.5f * MAX_X_POS * repeat_num * \
                 gparams::get_f("xscroll_screen_ratio")) ;
     }
-    void ScrollMidLeft::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollLeftHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -302,30 +302,30 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollMidLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollLeftHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //ScrollMidRight
-    struct ScrollMidRight::Impl {
+    //ScrollRightHalfPage
+    struct ScrollRightHalfPage::Impl {
         IntervalTimer timer_{DELTA_US} ;
     } ;
 
-    ScrollMidRight::ScrollMidRight()
-    : BindedFuncCreator("scroll_mid_right"),
+    ScrollRightHalfPage::ScrollRightHalfPage()
+    : BindedFuncCreator("scroll_right_halfpage"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    ScrollMidRight::~ScrollMidRight() noexcept                  = default ;
-    ScrollMidRight::ScrollMidRight(ScrollMidRight&&)            = default ;
-    ScrollMidRight& ScrollMidRight::operator=(ScrollMidRight&&) = default ;
+    ScrollRightHalfPage::~ScrollRightHalfPage() noexcept                  = default ;
+    ScrollRightHalfPage::ScrollRightHalfPage(ScrollRightHalfPage&&)            = default ;
+    ScrollRightHalfPage& ScrollRightHalfPage::operator=(ScrollRightHalfPage&&) = default ;
 
-    void ScrollMidRight::sprocess(unsigned int repeat_num) const {
+    void ScrollRightHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(MAX_X_POS * 0.5f * repeat_num * \
                 gparams::get_f("xscroll_screen_ratio")) ;
     }
-    void ScrollMidRight::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollRightHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -334,7 +334,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollMidRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollRightHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 }

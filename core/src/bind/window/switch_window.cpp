@@ -28,8 +28,8 @@ namespace vind
 
         explicit Impl()
         : funcfinder_(),
-          left_id_(EdiMoveCaretLeft().id()),
-          right_id_(EdiMoveCaretRight().id()),
+          left_id_(MoveCaretLeft().id()),
+          right_id_(MoveCaretRight().id()),
           active_id_(0),
           ksr_()
         {}
@@ -137,7 +137,7 @@ namespace vind
 
         //jump cursor to a selected window after releasing alt and tab.
         Sleep(50) ; //send select-message to OS(wait)
-        Jump2ActiveWindow::sprocess() ;
+        JumpToActiveWindow::sprocess() ;
     }
     void SwitchWindow::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

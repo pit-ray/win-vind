@@ -55,7 +55,6 @@ add_library(emu STATIC
     src/bind/emu/edi_move_caret.cpp
     src/bind/emu/edi_put.cpp
     src/bind/emu/edi_replace.cpp
-    src/bind/emu/edi_search_pattern.cpp
     src/bind/emu/edi_yank.cpp
     src/bind/emu/simple_text_register.cpp
     src/bind/emu/simple_text_selecter.cpp

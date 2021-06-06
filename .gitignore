@@ -13,4 +13,5 @@ release
 release_32
 release_64
 temp
+replace.vim
 win32gui

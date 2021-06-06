@@ -57,10 +57,10 @@ namespace vind
         }
 
         if(target_hwnd == foreground_hwnd) { //other -> target
-            Change2EdiNormal::sprocess(true) ;
+            ToEdiNormal::sprocess(true) ;
         }
         else if(past_hwnd == target_hwnd) { //target -> other
-            Change2Insert::sprocess(true) ;
+            ToInsert::sprocess(true) ;
         }
         past_hwnd = foreground_hwnd ;
     }

@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class EdiMoveCaretLeft : public BindedFuncCreator<EdiMoveCaretLeft> {
+    class MoveCaretLeft : public BindedFuncCreator<MoveCaretLeft> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -17,16 +17,16 @@ namespace vind
 
         bool is_for_moving_caret() const noexcept override ;
 
-        explicit EdiMoveCaretLeft() ;
-        virtual ~EdiMoveCaretLeft() noexcept ;
+        explicit MoveCaretLeft() ;
+        virtual ~MoveCaretLeft() noexcept ;
 
-        EdiMoveCaretLeft(EdiMoveCaretLeft&&) ;
-        EdiMoveCaretLeft& operator=(EdiMoveCaretLeft&&) ;
-        EdiMoveCaretLeft(const EdiMoveCaretLeft&)            = delete ;
-        EdiMoveCaretLeft& operator=(const EdiMoveCaretLeft&) = delete ;
+        MoveCaretLeft(MoveCaretLeft&&) ;
+        MoveCaretLeft& operator=(MoveCaretLeft&&) ;
+        MoveCaretLeft(const MoveCaretLeft&)            = delete ;
+        MoveCaretLeft& operator=(const MoveCaretLeft&) = delete ;
     } ;
 
-    class EdiMoveCaretRight : public BindedFuncCreator<EdiMoveCaretRight> {
+    class MoveCaretRight : public BindedFuncCreator<MoveCaretRight> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -38,16 +38,16 @@ namespace vind
 
         bool is_for_moving_caret() const noexcept override ;
 
-        explicit EdiMoveCaretRight() ;
-        virtual ~EdiMoveCaretRight() noexcept ;
+        explicit MoveCaretRight() ;
+        virtual ~MoveCaretRight() noexcept ;
 
-        EdiMoveCaretRight(EdiMoveCaretRight&&) ;
-        EdiMoveCaretRight& operator=(EdiMoveCaretRight&&) ;
-        EdiMoveCaretRight(const EdiMoveCaretRight&)            = delete ;
-        EdiMoveCaretRight& operator=(const EdiMoveCaretRight&) = delete ;
+        MoveCaretRight(MoveCaretRight&&) ;
+        MoveCaretRight& operator=(MoveCaretRight&&) ;
+        MoveCaretRight(const MoveCaretRight&)            = delete ;
+        MoveCaretRight& operator=(const MoveCaretRight&) = delete ;
     } ;
 
-    class EdiMoveCaretUp : public BindedFuncCreator<EdiMoveCaretUp> {
+    class MoveCaretUp : public BindedFuncCreator<MoveCaretUp> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -59,16 +59,16 @@ namespace vind
 
         bool is_for_moving_caret() const noexcept override ;
 
-        explicit EdiMoveCaretUp() ;
-        virtual ~EdiMoveCaretUp() noexcept ;
+        explicit MoveCaretUp() ;
+        virtual ~MoveCaretUp() noexcept ;
 
-        EdiMoveCaretUp(EdiMoveCaretUp&&) ;
-        EdiMoveCaretUp& operator=(EdiMoveCaretUp&&) ;
-        EdiMoveCaretUp(const EdiMoveCaretUp&)            = delete ;
-        EdiMoveCaretUp& operator=(const EdiMoveCaretUp&) = delete ;
+        MoveCaretUp(MoveCaretUp&&) ;
+        MoveCaretUp& operator=(MoveCaretUp&&) ;
+        MoveCaretUp(const MoveCaretUp&)            = delete ;
+        MoveCaretUp& operator=(const MoveCaretUp&) = delete ;
     } ;
 
-    class EdiMoveCaretDown : public BindedFuncCreator<EdiMoveCaretDown> {
+    class MoveCaretDown : public BindedFuncCreator<MoveCaretDown> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -80,60 +80,17 @@ namespace vind
 
         bool is_for_moving_caret() const noexcept override ;
 
-        explicit EdiMoveCaretDown() ;
-        virtual ~EdiMoveCaretDown() noexcept ;
+        explicit MoveCaretDown() ;
+        virtual ~MoveCaretDown() noexcept ;
 
-        EdiMoveCaretDown(EdiMoveCaretDown&&) ;
-        EdiMoveCaretDown& operator=(EdiMoveCaretDown&&) ;
-        EdiMoveCaretDown(const EdiMoveCaretDown&)            = delete ;
-        EdiMoveCaretDown& operator=(const EdiMoveCaretDown&) = delete ;
-    } ;
-
-
-    class EdiNMoveCaretwordsForward : public BindedFuncCreator<EdiNMoveCaretwordsForward> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
-
-    public:
-        void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
-
-        bool is_for_moving_caret() const noexcept override ;
-
-        explicit EdiNMoveCaretwordsForward() ;
-        virtual ~EdiNMoveCaretwordsForward() noexcept ;
-
-        EdiNMoveCaretwordsForward(EdiNMoveCaretwordsForward&&) ;
-        EdiNMoveCaretwordsForward& operator=(EdiNMoveCaretwordsForward&&) ;
-        EdiNMoveCaretwordsForward(const EdiNMoveCaretwordsForward&)            = delete ;
-        EdiNMoveCaretwordsForward& operator=(const EdiNMoveCaretwordsForward&) = delete ;
-    } ;
-
-    class EdiNMoveCaretwordsBackward : public BindedFuncCreator<EdiNMoveCaretwordsBackward> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
-
-    public:
-        void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
-
-        bool is_for_moving_caret() const noexcept override ;
-
-        explicit EdiNMoveCaretwordsBackward() ;
-        virtual ~EdiNMoveCaretwordsBackward() noexcept ;
-
-        EdiNMoveCaretwordsBackward(EdiNMoveCaretwordsBackward&&) ;
-        EdiNMoveCaretwordsBackward& operator=(EdiNMoveCaretwordsBackward&&) ;
-        EdiNMoveCaretwordsBackward(const EdiNMoveCaretwordsBackward&)            = delete ;
-        EdiNMoveCaretwordsBackward& operator=(const EdiNMoveCaretwordsBackward&) = delete ;
+        MoveCaretDown(MoveCaretDown&&) ;
+        MoveCaretDown& operator=(MoveCaretDown&&) ;
+        MoveCaretDown(const MoveCaretDown&)            = delete ;
+        MoveCaretDown& operator=(const MoveCaretDown&) = delete ;
     } ;
 
 
-    class EdiNMoveCaretWORDSForward : public BindedFuncCreator<EdiNMoveCaretWORDSForward> {
+    class MoveCaretWordForward : public BindedFuncCreator<MoveCaretWordForward> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -145,16 +102,16 @@ namespace vind
 
         bool is_for_moving_caret() const noexcept override ;
 
-        explicit EdiNMoveCaretWORDSForward() ;
-        virtual ~EdiNMoveCaretWORDSForward() noexcept ;
+        explicit MoveCaretWordForward() ;
+        virtual ~MoveCaretWordForward() noexcept ;
 
-        EdiNMoveCaretWORDSForward(EdiNMoveCaretWORDSForward&&) ;
-        EdiNMoveCaretWORDSForward& operator=(EdiNMoveCaretWORDSForward&&) ;
-        EdiNMoveCaretWORDSForward(const EdiNMoveCaretWORDSForward&)            = delete ;
-        EdiMoveCaretDown& operator=(const EdiMoveCaretDown&) = delete ;
+        MoveCaretWordForward(MoveCaretWordForward&&) ;
+        MoveCaretWordForward& operator=(MoveCaretWordForward&&) ;
+        MoveCaretWordForward(const MoveCaretWordForward&)            = delete ;
+        MoveCaretWordForward& operator=(const MoveCaretWordForward&) = delete ;
     } ;
 
-    class EdiNMoveCaretWORDSBackward : public BindedFuncCreator<EdiNMoveCaretWORDSBackward> {
+    class MoveCaretWordBackward : public BindedFuncCreator<MoveCaretWordBackward> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -166,13 +123,56 @@ namespace vind
 
         bool is_for_moving_caret() const noexcept override ;
 
-        explicit EdiNMoveCaretWORDSBackward() ;
-        virtual ~EdiNMoveCaretWORDSBackward() noexcept ;
+        explicit MoveCaretWordBackward() ;
+        virtual ~MoveCaretWordBackward() noexcept ;
 
-        EdiNMoveCaretWORDSBackward(EdiNMoveCaretWORDSBackward&&) ;
-        EdiNMoveCaretWORDSBackward& operator=(EdiNMoveCaretWORDSBackward&&) ;
-        EdiNMoveCaretWORDSBackward(const EdiNMoveCaretWORDSBackward&)            = delete ;
-        EdiNMoveCaretWORDSBackward& operator=(const EdiNMoveCaretWORDSBackward&) = delete ;
+        MoveCaretWordBackward(MoveCaretWordBackward&&) ;
+        MoveCaretWordBackward& operator=(MoveCaretWordBackward&&) ;
+        MoveCaretWordBackward(const MoveCaretWordBackward&)            = delete ;
+        MoveCaretWordBackward& operator=(const MoveCaretWordBackward&) = delete ;
+    } ;
+
+
+    class MoveCaretNonBlankWordForward : public BindedFuncCreator<MoveCaretNonBlankWordForward> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
+
+        bool is_for_moving_caret() const noexcept override ;
+
+        explicit MoveCaretNonBlankWordForward() ;
+        virtual ~MoveCaretNonBlankWordForward() noexcept ;
+
+        MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&) ;
+        MoveCaretNonBlankWordForward& operator=(MoveCaretNonBlankWordForward&&) ;
+        MoveCaretNonBlankWordForward(const MoveCaretNonBlankWordForward&)            = delete ;
+        MoveCaretDown& operator=(const MoveCaretDown&) = delete ;
+    } ;
+
+    class MoveCaretNonBlankWordBackward : public BindedFuncCreator<MoveCaretNonBlankWordBackward> {
+    private:
+        struct Impl ;
+        std::unique_ptr<Impl> pimpl ;
+
+    public:
+        void sprocess(unsigned int repeat_num=1) const ;
+        void sprocess(NTypeLogger& parent_lgr) const ;
+        void sprocess(const CharLogger& parent_lgr) const ;
+
+        bool is_for_moving_caret() const noexcept override ;
+
+        explicit MoveCaretNonBlankWordBackward() ;
+        virtual ~MoveCaretNonBlankWordBackward() noexcept ;
+
+        MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&) ;
+        MoveCaretNonBlankWordBackward& operator=(MoveCaretNonBlankWordBackward&&) ;
+        MoveCaretNonBlankWordBackward(const MoveCaretNonBlankWordBackward&)            = delete ;
+        MoveCaretNonBlankWordBackward& operator=(const MoveCaretNonBlankWordBackward&) = delete ;
     } ;
 }
 

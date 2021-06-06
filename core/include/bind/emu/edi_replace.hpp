@@ -5,22 +5,22 @@
 
 namespace vind
 {
-    struct EdiNReplaceChar : public BindedFuncCreator<EdiNReplaceChar> {
-        explicit EdiNReplaceChar() ;
+    struct ReplaceChar : public BindedFuncCreator<ReplaceChar> {
+        explicit ReplaceChar() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiNReplaceSequence : public BindedFuncCreator<EdiNReplaceSequence> {
-        explicit EdiNReplaceSequence() ;
+    struct ReplaceSequence : public BindedFuncCreator<ReplaceSequence> {
+        explicit ReplaceSequence() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiSwitchCharCase : public BindedFuncCreator<EdiSwitchCharCase> {
-        explicit EdiSwitchCharCase() ;
+    struct SwitchCharCase : public BindedFuncCreator<SwitchCharCase> {
+        explicit SwitchCharCase() ;
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

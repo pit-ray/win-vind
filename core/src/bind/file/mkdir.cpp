@@ -14,7 +14,7 @@
 namespace vind
 {
     MakeDir::MakeDir()
-    : BindedFuncCreator("make_dir")
+    : BindedFuncCreator("makedir")
     {}
     void MakeDir::sprocess(const std::string& path) {
         if(path.find("\\") != std::string::npos ||

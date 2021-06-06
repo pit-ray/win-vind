@@ -7,7 +7,7 @@
 
 namespace vind
 {
-    class SCRedo : public BindedFuncCreator<SCRedo> {
+    class Redo : public BindedFuncCreator<Redo> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -17,17 +17,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit SCRedo() ;
-        virtual ~SCRedo() noexcept ;
+        explicit Redo() ;
+        virtual ~Redo() noexcept ;
 
-        SCRedo(SCRedo&&) ;
-        SCRedo& operator=(SCRedo&&) ;
-        SCRedo(const SCRedo&)               = delete ;
-        SCRedo& operator=(const SCRedo&)    = delete ;
+        Redo(Redo&&) ;
+        Redo& operator=(Redo&&) ;
+        Redo(const Redo&)               = delete ;
+        Redo& operator=(const Redo&)    = delete ;
     } ;
 
 
-    struct SCUndo : public BindedFuncCreator<SCUndo> {
+    struct Undo : public BindedFuncCreator<Undo> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -37,13 +37,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit SCUndo() ;
-        virtual ~SCUndo() noexcept ;
+        explicit Undo() ;
+        virtual ~Undo() noexcept ;
 
-        SCUndo(SCUndo&&) ;
-        SCUndo& operator=(SCUndo&&) ;
-        SCUndo(const SCUndo&)               = delete ;
-        SCUndo& operator=(const SCUndo&)    = delete ;
+        Undo(Undo&&) ;
+        Undo& operator=(Undo&&) ;
+        Undo(const Undo&)               = delete ;
+        Undo& operator=(const Undo&)    = delete ;
     } ;
 }
 #endif

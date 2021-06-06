@@ -28,7 +28,7 @@
 namespace vind
 {
 
-    struct Jump2Any::Impl {
+    struct JumpWithKeybrdLayout::Impl {
         float max_keybrd_xposs = 0 ;
         float max_keybrd_yposs = 0 ;
 
@@ -37,15 +37,15 @@ namespace vind
         KeyPos yposs{} ;
     } ;
 
-    Jump2Any::Jump2Any()
-    : BindedFuncCreator("jump_to_any"),
+    JumpWithKeybrdLayout::JumpWithKeybrdLayout()
+    : BindedFuncCreator("jump_with_keybrd_layout"),
       pimpl(std::make_unique<Impl>())
     {}
-    Jump2Any::~Jump2Any() noexcept            = default ;
-    Jump2Any::Jump2Any(Jump2Any&&)            = default ;
-    Jump2Any& Jump2Any::operator=(Jump2Any&&) = default ;
+    JumpWithKeybrdLayout::~JumpWithKeybrdLayout() noexcept            = default ;
+    JumpWithKeybrdLayout::JumpWithKeybrdLayout(JumpWithKeybrdLayout&&)            = default ;
+    JumpWithKeybrdLayout& JumpWithKeybrdLayout::operator=(JumpWithKeybrdLayout&&) = default ;
 
-    void Jump2Any::sprocess() const {
+    void JumpWithKeybrdLayout::sprocess() const {
         //reset key state (binded key)
         keyabsorber::InstantKeyAbsorber ika ;
 
@@ -93,17 +93,17 @@ namespace vind
             }
         }
     }
-    void Jump2Any::sprocess(NTypeLogger& parent_lgr) const {
+    void JumpWithKeybrdLayout::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Jump2Any::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void JumpWithKeybrdLayout::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 
 
-    void Jump2Any::reconstruct() {
+    void JumpWithKeybrdLayout::reconstruct() {
         auto layoutfile = gparams::get_s("keybrdlayout") ;
         std::string filename ;
         if(!layoutfile.empty()) {

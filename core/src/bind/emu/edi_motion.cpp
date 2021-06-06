@@ -59,7 +59,7 @@ namespace
 
     //The parent logger is stronger than the child logger.
     //For example, the child BindedFunc calling this function is binded with 'c{motion}'
-    //and 'cc' are bindings EdiChangeLines.
+    //and 'cc' are bindings ChangeLine.
     //In this case, if a child process has a message loop, we must consider the parent logger by full scanning.
     //
     // True : called with motion
@@ -137,8 +137,8 @@ namespace
 
 namespace vind
 {
-    //EdiCopyMotion
-    struct EdiCopyMotion::Impl {
+    //YankWithMotion
+    struct YankWithMotion::Impl {
         FuncFinder funcfinder_ ;
         FuncFinder parent_funcfinder_ ;
 
@@ -148,23 +148,23 @@ namespace vind
         {}
 
         void copy() const {
-            EdiCopyHighlightText::sprocess() ;
-            Change2EdiNormal::sprocess(false) ;
+            YankHighlightText::sprocess() ;
+            ToEdiNormal::sprocess(false) ;
         }
     } ;
-    EdiCopyMotion::EdiCopyMotion()
-    : BindedFuncCreator("edi_copy_motion"),
+    YankWithMotion::YankWithMotion()
+    : BindedFuncCreator("yank_with_motion"),
       pimpl(std::make_unique<Impl>())
     {}
-    EdiCopyMotion::~EdiCopyMotion() noexcept                 = default ;
-    EdiCopyMotion::EdiCopyMotion(EdiCopyMotion&&)            = default ;
-    EdiCopyMotion& EdiCopyMotion::operator=(EdiCopyMotion&&) = default ;
-    void EdiCopyMotion::sprocess() const {
+    YankWithMotion::~YankWithMotion() noexcept                 = default ;
+    YankWithMotion::YankWithMotion(YankWithMotion&&)            = default ;
+    YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
+    void YankWithMotion::sprocess() const {
         if(select_by_motion(id(), pimpl->funcfinder_)) {
             pimpl->copy() ;
         }
     }
-    void EdiCopyMotion::sprocess(NTypeLogger& parent_lgr) const {
+    void YankWithMotion::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             if(select_by_motion(id(), pimpl->funcfinder_,
                         pimpl->parent_funcfinder_, parent_lgr)) {
@@ -172,16 +172,16 @@ namespace vind
             }
         }
     }
-    void EdiCopyMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void YankWithMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EdiCopyMotion::reconstruct() {
+    void YankWithMotion::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
         pimpl->parent_funcfinder_.reconstruct_funcset() ;
     }
 
-    //EdiDeleteMotion
-    struct EdiDeleteMotion::Impl {
+    //DeleteWithMotion
+    struct DeleteWithMotion::Impl {
         FuncFinder funcfinder_ ;
         FuncFinder parent_funcfinder_ ;
 
@@ -191,23 +191,23 @@ namespace vind
         {}
 
         void remove() const {
-            EdiDeleteHighlightText::sprocess() ;
+            DeleteHighlightText::sprocess() ;
         }
     } ;
-    EdiDeleteMotion::EdiDeleteMotion()
-    : BindedFuncCreator("edi_delete_motion"),
+    DeleteWithMotion::DeleteWithMotion()
+    : BindedFuncCreator("delete_with_motion"),
       pimpl(std::make_unique<Impl>())
     {}
-    EdiDeleteMotion::~EdiDeleteMotion() noexcept                   = default ;
-    EdiDeleteMotion::EdiDeleteMotion(EdiDeleteMotion&&)            = default ;
-    EdiDeleteMotion& EdiDeleteMotion::operator=(EdiDeleteMotion&&) = default ;
+    DeleteWithMotion::~DeleteWithMotion() noexcept                   = default ;
+    DeleteWithMotion::DeleteWithMotion(DeleteWithMotion&&)            = default ;
+    DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
 
-    void EdiDeleteMotion::sprocess() const {
+    void DeleteWithMotion::sprocess() const {
         if(select_by_motion(id(), pimpl->funcfinder_)) {
             pimpl->remove() ;
         }
     }
-    void EdiDeleteMotion::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteWithMotion::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             if(select_by_motion(id(), pimpl->funcfinder_,
                         pimpl->funcfinder_, parent_lgr)) {
@@ -215,17 +215,17 @@ namespace vind
             }
         }
     }
-    void EdiDeleteMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteWithMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EdiDeleteMotion::reconstruct() {
+    void DeleteWithMotion::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
         pimpl->parent_funcfinder_.reconstruct_funcset() ;
     }
 
 
-    //EdiChangeMotion
-    struct EdiChangeMotion::Impl {
+    //ChangeWithMotion
+    struct ChangeWithMotion::Impl {
         FuncFinder funcfinder_ ;
         FuncFinder parent_funcfinder_ ;
 
@@ -235,23 +235,23 @@ namespace vind
         {}
 
         void remove_and_insert() {
-            EdiDeleteHighlightText::sprocess() ;
-            Change2Insert::sprocess(false) ;
+            DeleteHighlightText::sprocess() ;
+            ToInsert::sprocess(false) ;
         }
     } ;
-    EdiChangeMotion::EdiChangeMotion()
-    : BindedFuncCreator("edi_change_motion"),
+    ChangeWithMotion::ChangeWithMotion()
+    : BindedFuncCreator("change_with_motion"),
       pimpl(std::make_unique<Impl>())
     {}
-    EdiChangeMotion::~EdiChangeMotion() noexcept                                 = default ;
-    EdiChangeMotion::EdiChangeMotion(EdiChangeMotion&&)            = default ;
-    EdiChangeMotion& EdiChangeMotion::operator=(EdiChangeMotion&&) = default ;
-    void EdiChangeMotion::sprocess() const {
+    ChangeWithMotion::~ChangeWithMotion() noexcept                                 = default ;
+    ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&)            = default ;
+    ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
+    void ChangeWithMotion::sprocess() const {
         if(select_by_motion(id(), pimpl->funcfinder_)) {
             pimpl->remove_and_insert() ;
         }
     }
-    void EdiChangeMotion::sprocess(NTypeLogger& parent_lgr) const {
+    void ChangeWithMotion::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             if(select_by_motion(id(), pimpl->funcfinder_,
                         pimpl->parent_funcfinder_, parent_lgr)) {
@@ -259,10 +259,10 @@ namespace vind
             }
         }
     }
-    void EdiChangeMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ChangeWithMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
-    void EdiChangeMotion::reconstruct() {
+    void ChangeWithMotion::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
         pimpl->parent_funcfinder_.reconstruct_funcset() ;
     }

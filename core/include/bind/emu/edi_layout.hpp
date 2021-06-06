@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class EdiNRemoveEOL : public BindedFuncCreator<EdiNRemoveEOL> {
+    class JoinNextLine : public BindedFuncCreator<JoinNextLine> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -15,13 +15,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiNRemoveEOL() ;
-        virtual ~EdiNRemoveEOL() noexcept ;
+        explicit JoinNextLine() ;
+        virtual ~JoinNextLine() noexcept ;
 
-        EdiNRemoveEOL(EdiNRemoveEOL&&) ;
-        EdiNRemoveEOL& operator=(EdiNRemoveEOL&&) ;
-        EdiNRemoveEOL(const EdiNRemoveEOL&)             = delete ;
-        EdiNRemoveEOL& operator=(const EdiNRemoveEOL&)  = delete ;
+        JoinNextLine(JoinNextLine&&) ;
+        JoinNextLine& operator=(JoinNextLine&&) ;
+        JoinNextLine(const JoinNextLine&)             = delete ;
+        JoinNextLine& operator=(const JoinNextLine&)  = delete ;
     } ;
 }
 

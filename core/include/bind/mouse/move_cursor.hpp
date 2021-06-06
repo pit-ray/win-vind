@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class MoveLeft : public BindedFuncCreator<MoveLeft> {
+    class MoveCursorLeft : public BindedFuncCreator<MoveCursorLeft> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -15,17 +15,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit MoveLeft() ;
-        virtual ~MoveLeft() noexcept ;
+        explicit MoveCursorLeft() ;
+        virtual ~MoveCursorLeft() noexcept ;
 
-        MoveLeft(MoveLeft&&) ;
-        MoveLeft& operator=(MoveLeft&&) ;
-        MoveLeft(const MoveLeft&)            = delete ;
-        MoveLeft& operator=(const MoveLeft&) = delete ;
+        MoveCursorLeft(MoveCursorLeft&&) ;
+        MoveCursorLeft& operator=(MoveCursorLeft&&) ;
+        MoveCursorLeft(const MoveCursorLeft&)            = delete ;
+        MoveCursorLeft& operator=(const MoveCursorLeft&) = delete ;
     } ;
 
 
-    class MoveRight : public BindedFuncCreator<MoveRight> {
+    class MoveCursorRight : public BindedFuncCreator<MoveCursorRight> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -35,17 +35,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit MoveRight() ;
-        virtual ~MoveRight() noexcept ;
+        explicit MoveCursorRight() ;
+        virtual ~MoveCursorRight() noexcept ;
 
-        MoveRight(MoveRight&&) ;
-        MoveRight& operator=(MoveRight&&) ;
-        MoveRight(const MoveRight&)            = delete ;
-        MoveRight& operator=(const MoveRight&) = delete ;
+        MoveCursorRight(MoveCursorRight&&) ;
+        MoveCursorRight& operator=(MoveCursorRight&&) ;
+        MoveCursorRight(const MoveCursorRight&)            = delete ;
+        MoveCursorRight& operator=(const MoveCursorRight&) = delete ;
     } ;
 
 
-    class MoveUp : public BindedFuncCreator<MoveUp> {
+    class MoveCursorUp : public BindedFuncCreator<MoveCursorUp> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -55,17 +55,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit MoveUp() ;
-        virtual ~MoveUp() noexcept ;
+        explicit MoveCursorUp() ;
+        virtual ~MoveCursorUp() noexcept ;
 
-        MoveUp(MoveUp&&) ;
-        MoveUp& operator=(MoveUp&&) ;
-        MoveUp(const MoveUp&)            = delete ;
-        MoveUp& operator=(const MoveUp&) = delete ;
+        MoveCursorUp(MoveCursorUp&&) ;
+        MoveCursorUp& operator=(MoveCursorUp&&) ;
+        MoveCursorUp(const MoveCursorUp&)            = delete ;
+        MoveCursorUp& operator=(const MoveCursorUp&) = delete ;
     } ;
 
 
-    class MoveDown : public BindedFuncCreator<MoveDown> {
+    class MoveCursorDown : public BindedFuncCreator<MoveCursorDown> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -75,13 +75,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit MoveDown() ;
-        virtual ~MoveDown() noexcept ;
+        explicit MoveCursorDown() ;
+        virtual ~MoveCursorDown() noexcept ;
 
-        MoveDown(MoveDown&&) ;
-        MoveDown& operator=(MoveDown&&) ;
-        MoveDown(const MoveDown&)            = delete ;
-        MoveDown& operator=(const MoveDown&) = delete ;
+        MoveCursorDown(MoveCursorDown&&) ;
+        MoveCursorDown& operator=(MoveCursorDown&&) ;
+        MoveCursorDown(const MoveCursorDown&)            = delete ;
+        MoveCursorDown& operator=(const MoveCursorDown&) = delete ;
     } ;
 }
 #endif

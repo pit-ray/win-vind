@@ -14,44 +14,44 @@ namespace
 
 namespace vind
 {
-    //ShowConfigWindow
-    ShowConfigWindow::ShowConfigWindow()
-    : BindedFuncCreator("show_config_window")
+    //ShowConfigGUI
+    ShowConfigGUI::ShowConfigGUI()
+    : BindedFuncCreator("show_config_gui")
     {}
-    void ShowConfigWindow::sprocess() {
+    void ShowConfigGUI::sprocess() {
         show_func() ;
         Sleep(50) ; //wait until opened window.
-        Jump2ActiveWindow::sprocess() ;
+        JumpToActiveWindow::sprocess() ;
     }
-    void ShowConfigWindow::sprocess(NTypeLogger& parent_lgr) {
+    void ShowConfigGUI::sprocess(NTypeLogger& parent_lgr) {
         if(parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ShowConfigWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ShowConfigGUI::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
-    void ShowConfigWindow::register_show_func(std::function<void()> func) noexcept {
+    void ShowConfigGUI::register_show_func(std::function<void()> func) noexcept {
         show_func = std::move(func) ;
     }
 
 
-    //ExitConfigWindow
-    ExitConfigWindow::ExitConfigWindow()
-    : BindedFuncCreator("exit_config_window")
+    //ExitConfigGUI
+    ExitConfigGUI::ExitConfigGUI()
+    : BindedFuncCreator("exit_config_gui")
     {}
-    void ExitConfigWindow::sprocess() {
+    void ExitConfigGUI::sprocess() {
         exit_func() ;
     }
-    void ExitConfigWindow::sprocess(NTypeLogger& parent_lgr) {
+    void ExitConfigGUI::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ExitConfigWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ExitConfigGUI::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
-    void ExitConfigWindow::register_exit_func(std::function<void()> func) noexcept {
+    void ExitConfigGUI::register_exit_func(std::function<void()> func) noexcept {
         exit_func = std::move(func) ;
     }
 }

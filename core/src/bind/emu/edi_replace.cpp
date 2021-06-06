@@ -73,10 +73,10 @@ namespace
 namespace vind
 {
     //EdiNRplaceChar
-    EdiNReplaceChar::EdiNReplaceChar()
-    : BindedFuncCreator("edi_n_replace_char")
+    ReplaceChar::ReplaceChar()
+    : BindedFuncCreator("replace_char")
     {}
-    void EdiNReplaceChar::sprocess(unsigned int repeat_num) {
+    void ReplaceChar::sprocess(unsigned int repeat_num) {
         loop_for_keymatching([repeat_num](const auto& keycodes, bool shifted=false) {
 
             repeater::safe_for(repeat_num, [&keycodes, shifted] {
@@ -93,21 +93,21 @@ namespace vind
             return true ; //terminate looping
         }) ;
     }
-    void EdiNReplaceChar::sprocess(NTypeLogger& parent_lgr) {
+    void ReplaceChar::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiNReplaceChar::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ReplaceChar::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
 
-    //EdiNReplaceSequence
-    EdiNReplaceSequence::EdiNReplaceSequence()
-    : BindedFuncCreator("edi_n_replace_sequence")
+    //ReplaceSequence
+    ReplaceSequence::ReplaceSequence()
+    : BindedFuncCreator("replace_sequence")
     {}
-    void EdiNReplaceSequence::sprocess(unsigned int repeat_num) {
+    void ReplaceSequence::sprocess(unsigned int repeat_num) {
         using keybrd::pushup ;
 
         VirtualCmdLine::clear() ;
@@ -143,21 +143,21 @@ namespace vind
         VirtualCmdLine::refresh() ;
         VirtualCmdLine::msgout("-- EDI NORMAL --") ;
     }
-    void EdiNReplaceSequence::sprocess(NTypeLogger& parent_lgr) {
+    void ReplaceSequence::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiNReplaceSequence::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ReplaceSequence::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
 
-    //EdiSwitchCharCase
-    EdiSwitchCharCase::EdiSwitchCharCase()
-    : BindedFuncCreator("edi_switch_char_case")
+    //SwitchCharCase
+    SwitchCharCase::SwitchCharCase()
+    : BindedFuncCreator("switch_char_case")
     {}
-    void EdiSwitchCharCase::sprocess(unsigned int repeat_num) {
+    void SwitchCharCase::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([&repeat_num] {
                 repeater::safe_for(repeat_num, [] {
                     keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
@@ -179,7 +179,7 @@ namespace vind
                     keybrd::pushup(keycode) ;
                     continue ;
                 }
-     
+
                 keycode = keycodecvt::get_shifted_keycode(c) ;
                 if(keycode) {
                     keybrd::pushup(KEYCODE_LSHIFT, keycode) ;
@@ -188,12 +188,12 @@ namespace vind
             }
         }
     }
-    void EdiSwitchCharCase::sprocess(NTypeLogger& parent_lgr) {
+    void SwitchCharCase::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiSwitchCharCase::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SwitchCharCase::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 }

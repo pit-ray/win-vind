@@ -12,8 +12,8 @@ namespace vind
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct StartAnyApp : public BindedFuncCreator<StartAnyApp> {
-        explicit StartAnyApp() ;
+    struct StartExternal : public BindedFuncCreator<StartExternal> {
+        explicit StartExternal() ;
         static void sprocess(std::string cmd="") ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

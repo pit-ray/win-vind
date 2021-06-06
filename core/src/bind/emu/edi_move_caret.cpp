@@ -16,24 +16,24 @@
 
 namespace vind
 {
-    //EdiMoveCaretLeft
-    struct EdiMoveCaretLeft::Impl {
+    //MoveCaretLeft
+    struct MoveCaretLeft::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiMoveCaretLeft::EdiMoveCaretLeft()
-    : BindedFuncCreator("edi_move_caret_left"),
+    MoveCaretLeft::MoveCaretLeft()
+    : BindedFuncCreator("move_caret_left"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiMoveCaretLeft::~EdiMoveCaretLeft() noexcept                    = default ;
-    EdiMoveCaretLeft::EdiMoveCaretLeft(EdiMoveCaretLeft&&)            = default ;
-    EdiMoveCaretLeft& EdiMoveCaretLeft::operator=(EdiMoveCaretLeft&&) = default ;
+    MoveCaretLeft::~MoveCaretLeft() noexcept                    = default ;
+    MoveCaretLeft::MoveCaretLeft(MoveCaretLeft&&)            = default ;
+    MoveCaretLeft& MoveCaretLeft::operator=(MoveCaretLeft&&) = default ;
 
-    bool EdiMoveCaretLeft::is_for_moving_caret() const noexcept {
+    bool MoveCaretLeft::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretLeft::sprocess(unsigned int repeat_num) const {
+    void MoveCaretLeft::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
@@ -45,7 +45,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiMoveCaretLeft::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -54,29 +54,29 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiMoveCaretLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //EdiMoveCaretRight
-    struct EdiMoveCaretRight::Impl {
+    //MoveCaretRight
+    struct MoveCaretRight::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiMoveCaretRight::EdiMoveCaretRight()
-    : BindedFuncCreator("edi_move_caret_right"),
+    MoveCaretRight::MoveCaretRight()
+    : BindedFuncCreator("move_caret_right"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiMoveCaretRight::~EdiMoveCaretRight() noexcept                     = default ;
-    EdiMoveCaretRight::EdiMoveCaretRight(EdiMoveCaretRight&&)            = default ;
-    EdiMoveCaretRight& EdiMoveCaretRight::operator=(EdiMoveCaretRight&&) = default ;
+    MoveCaretRight::~MoveCaretRight() noexcept                     = default ;
+    MoveCaretRight::MoveCaretRight(MoveCaretRight&&)            = default ;
+    MoveCaretRight& MoveCaretRight::operator=(MoveCaretRight&&) = default ;
 
-    bool EdiMoveCaretRight::is_for_moving_caret() const noexcept {
+    bool MoveCaretRight::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretRight::sprocess(unsigned int repeat_num) const {
+    void MoveCaretRight::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
@@ -88,7 +88,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiMoveCaretRight::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -97,29 +97,29 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiMoveCaretRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //EdiMoveCaretUp
-    struct EdiMoveCaretUp::Impl {
+    //MoveCaretUp
+    struct MoveCaretUp::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiMoveCaretUp::EdiMoveCaretUp()
-    : BindedFuncCreator("edi_move_caret_up"),
+    MoveCaretUp::MoveCaretUp()
+    : BindedFuncCreator("move_caret_up"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiMoveCaretUp::~EdiMoveCaretUp() noexcept                  = default ;
-    EdiMoveCaretUp::EdiMoveCaretUp(EdiMoveCaretUp&&)            = default ;
-    EdiMoveCaretUp& EdiMoveCaretUp::operator=(EdiMoveCaretUp&&) = default ;
+    MoveCaretUp::~MoveCaretUp() noexcept                  = default ;
+    MoveCaretUp::MoveCaretUp(MoveCaretUp&&)            = default ;
+    MoveCaretUp& MoveCaretUp::operator=(MoveCaretUp&&) = default ;
 
-    bool EdiMoveCaretUp::is_for_moving_caret() const noexcept {
+    bool MoveCaretUp::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretUp::sprocess(unsigned int repeat_num) const {
+    void MoveCaretUp::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_EOL2BOL() ;
@@ -135,7 +135,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiMoveCaretUp::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -144,7 +144,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiMoveCaretUp::sprocess(const CharLogger& parent_lgr) const {
+    void MoveCaretUp::sprocess(const CharLogger& parent_lgr) const {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
 
@@ -157,24 +157,24 @@ namespace vind
     }
 
 
-    //EdiMoveCaretDown
-    struct EdiMoveCaretDown::Impl {
+    //MoveCaretDown
+    struct MoveCaretDown::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiMoveCaretDown::EdiMoveCaretDown()
-    : BindedFuncCreator("edi_move_caret_down"),
+    MoveCaretDown::MoveCaretDown()
+    : BindedFuncCreator("move_caret_down"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiMoveCaretDown::~EdiMoveCaretDown() noexcept                    = default ;
-    EdiMoveCaretDown::EdiMoveCaretDown(EdiMoveCaretDown&&)            = default ;
-    EdiMoveCaretDown& EdiMoveCaretDown::operator=(EdiMoveCaretDown&&) = default ;
+    MoveCaretDown::~MoveCaretDown() noexcept                    = default ;
+    MoveCaretDown::MoveCaretDown(MoveCaretDown&&)            = default ;
+    MoveCaretDown& MoveCaretDown::operator=(MoveCaretDown&&) = default ;
 
-    bool EdiMoveCaretDown::is_for_moving_caret() const noexcept {
+    bool MoveCaretDown::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiMoveCaretDown::sprocess(unsigned int repeat_num) const {
+    void MoveCaretDown::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_BOL2EOL() ;
@@ -182,7 +182,7 @@ namespace vind
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
-                //If call EdiMoveCaretDown after EdiMoveCaretUp,
+                //If call MoveCaretDown after MoveCaretUp,
                 //inner variables of moving_update() are dedicated to EOL2BOL.
                 //so we cannot move caret down.
                 //textselect::moving_update() ;
@@ -194,7 +194,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiMoveCaretDown::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -203,7 +203,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiMoveCaretDown::sprocess(const CharLogger& parent_lgr) const {
+    void MoveCaretDown::sprocess(const CharLogger& parent_lgr) const {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
 
@@ -217,23 +217,23 @@ namespace vind
 
 
     //EdiMoveCaretNwordsForward
-    struct EdiNMoveCaretwordsForward::Impl {
+    struct MoveCaretWordForward::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNMoveCaretwordsForward::EdiNMoveCaretwordsForward()
-    : BindedFuncCreator("edi_n_move_caret_words_forward"),
+    MoveCaretWordForward::MoveCaretWordForward()
+    : BindedFuncCreator("move_caret_word_forward"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNMoveCaretwordsForward::~EdiNMoveCaretwordsForward() noexcept                             = default ;
-    EdiNMoveCaretwordsForward::EdiNMoveCaretwordsForward(EdiNMoveCaretwordsForward&&)            = default ;
-    EdiNMoveCaretwordsForward& EdiNMoveCaretwordsForward::operator=(EdiNMoveCaretwordsForward&&) = default ;
+    MoveCaretWordForward::~MoveCaretWordForward() noexcept                             = default ;
+    MoveCaretWordForward::MoveCaretWordForward(MoveCaretWordForward&&)            = default ;
+    MoveCaretWordForward& MoveCaretWordForward::operator=(MoveCaretWordForward&&) = default ;
 
-    bool EdiNMoveCaretwordsForward::is_for_moving_caret() const noexcept {
+    bool MoveCaretWordForward::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNMoveCaretwordsForward::sprocess(unsigned int repeat_num) const {
+    void MoveCaretWordForward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
@@ -245,7 +245,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNMoveCaretwordsForward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretWordForward::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -254,29 +254,29 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNMoveCaretwordsForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretWordForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
     //EdiMoveCaretNwordsBackward
-    struct EdiNMoveCaretwordsBackward::Impl {
+    struct MoveCaretWordBackward::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNMoveCaretwordsBackward::EdiNMoveCaretwordsBackward()
-    : BindedFuncCreator("edi_n_move_caret_words_backward"),
+    MoveCaretWordBackward::MoveCaretWordBackward()
+    : BindedFuncCreator("move_caret_word_backward"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNMoveCaretwordsBackward::~EdiNMoveCaretwordsBackward() noexcept                              = default ;
-    EdiNMoveCaretwordsBackward::EdiNMoveCaretwordsBackward(EdiNMoveCaretwordsBackward&&)            = default ;
-    EdiNMoveCaretwordsBackward& EdiNMoveCaretwordsBackward::operator=(EdiNMoveCaretwordsBackward&&) = default ;
+    MoveCaretWordBackward::~MoveCaretWordBackward() noexcept                              = default ;
+    MoveCaretWordBackward::MoveCaretWordBackward(MoveCaretWordBackward&&)            = default ;
+    MoveCaretWordBackward& MoveCaretWordBackward::operator=(MoveCaretWordBackward&&) = default ;
 
-    bool EdiNMoveCaretwordsBackward::is_for_moving_caret() const noexcept {
+    bool MoveCaretWordBackward::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNMoveCaretwordsBackward::sprocess(unsigned int repeat_num) const {
+    void MoveCaretWordBackward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
@@ -288,7 +288,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNMoveCaretwordsBackward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretWordBackward::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -297,30 +297,30 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNMoveCaretwordsBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretWordBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
     //EdiMoveCaretNWORDSForward
-    struct EdiNMoveCaretWORDSForward::Impl {
+    struct MoveCaretNonBlankWordForward::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNMoveCaretWORDSForward::EdiNMoveCaretWORDSForward()
-    : BindedFuncCreator("edi_n_move_caret_WORDS_forward"),
+    MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward()
+    : BindedFuncCreator("move_caret_nonblank_word_forward"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNMoveCaretWORDSForward::~EdiNMoveCaretWORDSForward() noexcept                             = default ;
-    EdiNMoveCaretWORDSForward::EdiNMoveCaretWORDSForward(EdiNMoveCaretWORDSForward&&)            = default ;
-    EdiNMoveCaretWORDSForward& EdiNMoveCaretWORDSForward::operator=(EdiNMoveCaretWORDSForward&&) = default ;
+    MoveCaretNonBlankWordForward::~MoveCaretNonBlankWordForward() noexcept                             = default ;
+    MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&)            = default ;
+    MoveCaretNonBlankWordForward& MoveCaretNonBlankWordForward::operator=(MoveCaretNonBlankWordForward&&) = default ;
 
-    bool EdiNMoveCaretWORDSForward::is_for_moving_caret() const noexcept {
+    bool MoveCaretNonBlankWordForward::is_for_moving_caret() const noexcept {
         return true ;
     }
 
-    void EdiNMoveCaretWORDSForward::sprocess(unsigned int repeat_num) const {
+    void MoveCaretNonBlankWordForward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
@@ -332,7 +332,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNMoveCaretWORDSForward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretNonBlankWordForward::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -341,29 +341,29 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNMoveCaretWORDSForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretNonBlankWordForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
     //EdiMoveCaretNWORDSBackward
-    struct EdiNMoveCaretWORDSBackward::Impl {
+    struct MoveCaretNonBlankWordBackward::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNMoveCaretWORDSBackward::EdiNMoveCaretWORDSBackward()
-    : BindedFuncCreator("edi_n_move_caret_WORDS_backward"),
+    MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward()
+    : BindedFuncCreator("move_caret_nonblank_word_backward"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNMoveCaretWORDSBackward::~EdiNMoveCaretWORDSBackward() noexcept                              = default ;
-    EdiNMoveCaretWORDSBackward::EdiNMoveCaretWORDSBackward(EdiNMoveCaretWORDSBackward&&)            = default ;
-    EdiNMoveCaretWORDSBackward& EdiNMoveCaretWORDSBackward::operator=(EdiNMoveCaretWORDSBackward&&) = default ;
+    MoveCaretNonBlankWordBackward::~MoveCaretNonBlankWordBackward() noexcept                              = default ;
+    MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&)            = default ;
+    MoveCaretNonBlankWordBackward& MoveCaretNonBlankWordBackward::operator=(MoveCaretNonBlankWordBackward&&) = default ;
 
-    bool EdiNMoveCaretWORDSBackward::is_for_moving_caret() const noexcept {
+    bool MoveCaretNonBlankWordBackward::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNMoveCaretWORDSBackward::sprocess(unsigned int repeat_num) const {
+    void MoveCaretNonBlankWordBackward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
@@ -375,7 +375,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNMoveCaretWORDSBackward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretNonBlankWordBackward::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
@@ -383,7 +383,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNMoveCaretWORDSBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretNonBlankWordBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 }

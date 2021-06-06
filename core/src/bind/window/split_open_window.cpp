@@ -8,12 +8,12 @@
 
 namespace vind
 {
-    //OpenNewCurWinWithHorizontalSplit
-    OpenNewCurWinWithHorizontalSplit::OpenNewCurWinWithHorizontalSplit()
-    : BindedFuncCreator("open_new_current_window_with_hsplit")
+    //OpenNewWindowWithHorizontalSplit
+    OpenNewWindowWithHorizontalSplit::OpenNewWindowWithHorizontalSplit()
+    : BindedFuncCreator("open_new_window_with_hsplit")
     {}
 
-    void OpenNewCurWinWithHorizontalSplit::sprocess() {
+    void OpenNewWindowWithHorizontalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
         auto w = screenmetrics::width(fginfo.rect) ;
@@ -24,7 +24,7 @@ namespace vind
                 fginfo.hwnd,
                 fginfo.rect.left, fginfo.rect.top,
                 w, h / 2) ;
-        OpenNewCurrentWindow::sprocess() ;
+        OpenNewWindow::sprocess() ;
 
         auto new_hwnd = GetForegroundWindow() ;
         if(new_hwnd == NULL) {
@@ -41,21 +41,21 @@ namespace vind
                 fginfo.rect.left, fginfo.rect.top + h / 2,
                 w, h / 2) ;
     }
-    void OpenNewCurWinWithHorizontalSplit::sprocess(NTypeLogger& parent_lgr) {
+    void OpenNewWindowWithHorizontalSplit::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenNewCurWinWithHorizontalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenNewWindowWithHorizontalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //OpenNewCurWinWithVerticalSplit
-    OpenNewCurWinWithVerticalSplit::OpenNewCurWinWithVerticalSplit()
-    : BindedFuncCreator("open_new_current_window_with_vsplit")
+    //OpenNewWindowWithVerticalSplit
+    OpenNewWindowWithVerticalSplit::OpenNewWindowWithVerticalSplit()
+    : BindedFuncCreator("open_new_window_with_vsplit")
     {}
-    void OpenNewCurWinWithVerticalSplit::sprocess() {
+    void OpenNewWindowWithVerticalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
         auto w = screenmetrics::width(fginfo.rect) ;
@@ -66,7 +66,7 @@ namespace vind
                 fginfo.hwnd,
                 fginfo.rect.left, fginfo.rect.top,
                 w / 2, h) ;
-        OpenNewCurrentWindow::sprocess() ;
+        OpenNewWindow::sprocess() ;
 
         auto new_hwnd = GetForegroundWindow() ;
         if(new_hwnd == NULL) {
@@ -83,12 +83,12 @@ namespace vind
                 fginfo.rect.left + w / 2, fginfo.rect.top,
                 w / 2, h) ;
     }
-    void OpenNewCurWinWithVerticalSplit::sprocess(NTypeLogger& parent_lgr) {
+    void OpenNewWindowWithVerticalSplit::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenNewCurWinWithVerticalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenNewWindowWithVerticalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

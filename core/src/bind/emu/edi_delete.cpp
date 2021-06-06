@@ -15,21 +15,21 @@
 
 namespace vind
 {
-    //EdiNDeleteLine
-    struct EdiNDeleteLine::Impl {
+    //DeleteLine
+    struct DeleteLine::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNDeleteLine::EdiNDeleteLine()
-    : BindedFuncCreator("edi_n_delete_line"),
+    DeleteLine::DeleteLine()
+    : BindedFuncCreator("delete_line"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNDeleteLine::~EdiNDeleteLine() noexcept                  = default ;
-    EdiNDeleteLine::EdiNDeleteLine(EdiNDeleteLine&&)            = default ;
-    EdiNDeleteLine& EdiNDeleteLine::operator=(EdiNDeleteLine&&) = default ;
+    DeleteLine::~DeleteLine() noexcept                  = default ;
+    DeleteLine::DeleteLine(DeleteLine&&)            = default ;
+    DeleteLine& DeleteLine::operator=(DeleteLine&&) = default ;
 
-    void EdiNDeleteLine::sprocess(unsigned int repeat_num) const {
+    void DeleteLine::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
         pushup(KEYCODE_HOME) ;
 
@@ -46,7 +46,7 @@ namespace vind
             pushup(KEYCODE_DELETE) ;
         }
     }
-    void EdiNDeleteLine::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteLine::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -55,26 +55,26 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNDeleteLine::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteLine::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //EdiNDeleteLineUntilEOL
-    struct EdiNDeleteLineUntilEOL::Impl {
+    //DeleteLineUntilEOL
+    struct DeleteLineUntilEOL::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNDeleteLineUntilEOL::EdiNDeleteLineUntilEOL()
-    : BindedFuncCreator("edi_n_delete_line_until_EOL"),
+    DeleteLineUntilEOL::DeleteLineUntilEOL()
+    : BindedFuncCreator("delete_line_until_EOL"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNDeleteLineUntilEOL::~EdiNDeleteLineUntilEOL() noexcept                          = default ;
-    EdiNDeleteLineUntilEOL::EdiNDeleteLineUntilEOL(EdiNDeleteLineUntilEOL&&)            = default ;
-    EdiNDeleteLineUntilEOL& EdiNDeleteLineUntilEOL::operator=(EdiNDeleteLineUntilEOL&&) = default ;
+    DeleteLineUntilEOL::~DeleteLineUntilEOL() noexcept                          = default ;
+    DeleteLineUntilEOL::DeleteLineUntilEOL(DeleteLineUntilEOL&&)            = default ;
+    DeleteLineUntilEOL& DeleteLineUntilEOL::operator=(DeleteLineUntilEOL&&) = default ;
 
-    void EdiNDeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
+    void DeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
 
         //delete N - 1 lines under the current line
@@ -90,7 +90,7 @@ namespace vind
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }
     }
-    void EdiNDeleteLineUntilEOL::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteLineUntilEOL::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -99,26 +99,26 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNDeleteLineUntilEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteLineUntilEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //EdiNDeleteAfter
-    struct EdiNDeleteAfter::Impl {
+    //DeleteAfter
+    struct DeleteAfter::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNDeleteAfter::EdiNDeleteAfter()
-    : BindedFuncCreator("edi_n_delete_after"),
+    DeleteAfter::DeleteAfter()
+    : BindedFuncCreator("delete_after"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNDeleteAfter::~EdiNDeleteAfter() noexcept                   = default ;
-    EdiNDeleteAfter::EdiNDeleteAfter(EdiNDeleteAfter&&)            = default ;
-    EdiNDeleteAfter& EdiNDeleteAfter::operator=(EdiNDeleteAfter&&) = default ;
+    DeleteAfter::~DeleteAfter() noexcept                   = default ;
+    DeleteAfter::DeleteAfter(DeleteAfter&&)            = default ;
+    DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
 
-    void EdiNDeleteAfter::sprocess(unsigned int repeat_num) const {
+    void DeleteAfter::sprocess(unsigned int repeat_num) const {
         if(gparams::get_b("enable_char_cache")) {
             repeater::safe_for(repeat_num, [] {
                     keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
@@ -132,7 +132,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNDeleteAfter::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteAfter::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -141,26 +141,26 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNDeleteAfter::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteAfter::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //EdiNDeleteBefore
-    struct EdiNDeleteBefore::Impl {
+    //DeleteBefore
+    struct DeleteBefore::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNDeleteBefore::EdiNDeleteBefore()
-    : BindedFuncCreator("edi_n_delete_before"),
+    DeleteBefore::DeleteBefore()
+    : BindedFuncCreator("delete_before"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNDeleteBefore::~EdiNDeleteBefore() noexcept                    = default ;
-    EdiNDeleteBefore::EdiNDeleteBefore(EdiNDeleteBefore&&)            = default ;
-    EdiNDeleteBefore& EdiNDeleteBefore::operator=(EdiNDeleteBefore&&) = default ;
+    DeleteBefore::~DeleteBefore() noexcept                    = default ;
+    DeleteBefore::DeleteBefore(DeleteBefore&&)            = default ;
+    DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
 
-    void EdiNDeleteBefore::sprocess(unsigned int repeat_num) const {
+    void DeleteBefore::sprocess(unsigned int repeat_num) const {
         if(gparams::get_b("enable_char_cache")) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
@@ -174,7 +174,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNDeleteBefore::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteBefore::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -183,16 +183,16 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNDeleteBefore::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteBefore::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //EdiDeleteHighlightText (Visual only)
-    EdiDeleteHighlightText::EdiDeleteHighlightText()
-    : BindedFuncCreator("edi_delete_highlight_text")
+    //DeleteHighlightText (Visual only)
+    DeleteHighlightText::DeleteHighlightText()
+    : BindedFuncCreator("delete_highlight_text")
     {}
-    void EdiDeleteHighlightText::sprocess() {
+    void DeleteHighlightText::sprocess() {
         using namespace mode ;
         using keybrd::pushup ;
         using namespace simpletxreg ;
@@ -204,14 +204,14 @@ namespace vind
         else {
             set_register_type(RegType::Chars) ;
         }
-        Change2EdiNormal::sprocess(false) ;
+        ToEdiNormal::sprocess(false) ;
     }
-    void EdiDeleteHighlightText::sprocess(NTypeLogger& parent_lgr) {
+    void DeleteHighlightText::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void EdiDeleteHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void DeleteHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

@@ -6,14 +6,14 @@
 namespace vind
 {
     //Delete
-    struct EdiDeleteHighlightText : public BindedFuncCreator<EdiDeleteHighlightText> {
-        explicit EdiDeleteHighlightText() ;
+    struct DeleteHighlightText : public BindedFuncCreator<DeleteHighlightText> {
+        explicit DeleteHighlightText() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    class EdiNDeleteLine : public BindedFuncCreator<EdiNDeleteLine> {
+    class DeleteLine : public BindedFuncCreator<DeleteLine> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -23,17 +23,17 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiNDeleteLine() ;
-        virtual ~EdiNDeleteLine() noexcept ;
+        explicit DeleteLine() ;
+        virtual ~DeleteLine() noexcept ;
 
-        EdiNDeleteLine(EdiNDeleteLine&&) ;
-        EdiNDeleteLine& operator=(EdiNDeleteLine&&) ;
-        EdiNDeleteLine(const EdiNDeleteLine&)            = delete ;
-        EdiNDeleteLine& operator=(const EdiNDeleteLine&) = delete ;
+        DeleteLine(DeleteLine&&) ;
+        DeleteLine& operator=(DeleteLine&&) ;
+        DeleteLine(const DeleteLine&)            = delete ;
+        DeleteLine& operator=(const DeleteLine&) = delete ;
     } ;
 
 
-    class EdiNDeleteLineUntilEOL : public BindedFuncCreator<EdiNDeleteLineUntilEOL> {
+    class DeleteLineUntilEOL : public BindedFuncCreator<DeleteLineUntilEOL> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -43,16 +43,16 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiNDeleteLineUntilEOL() ;
-        virtual ~EdiNDeleteLineUntilEOL() noexcept ;
+        explicit DeleteLineUntilEOL() ;
+        virtual ~DeleteLineUntilEOL() noexcept ;
 
-        EdiNDeleteLineUntilEOL(EdiNDeleteLineUntilEOL&&) ;
-        EdiNDeleteLineUntilEOL& operator=(EdiNDeleteLineUntilEOL&&) ;
-        EdiNDeleteLineUntilEOL(const EdiNDeleteLineUntilEOL&)            = delete ;
-        EdiNDeleteLineUntilEOL& operator=(const EdiNDeleteLineUntilEOL&) = delete ;
+        DeleteLineUntilEOL(DeleteLineUntilEOL&&) ;
+        DeleteLineUntilEOL& operator=(DeleteLineUntilEOL&&) ;
+        DeleteLineUntilEOL(const DeleteLineUntilEOL&)            = delete ;
+        DeleteLineUntilEOL& operator=(const DeleteLineUntilEOL&) = delete ;
     } ;
 
-    class EdiNDeleteAfter : public BindedFuncCreator<EdiNDeleteAfter> {
+    class DeleteAfter : public BindedFuncCreator<DeleteAfter> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -62,16 +62,16 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiNDeleteAfter() ;
-        virtual ~EdiNDeleteAfter() noexcept ;
+        explicit DeleteAfter() ;
+        virtual ~DeleteAfter() noexcept ;
 
-        EdiNDeleteAfter(EdiNDeleteAfter&&) ;
-        EdiNDeleteAfter& operator=(EdiNDeleteAfter&&) ;
-        EdiNDeleteAfter(const EdiNDeleteAfter&)            = delete ;
-        EdiNDeleteAfter& operator=(const EdiNDeleteAfter&) = delete ;
+        DeleteAfter(DeleteAfter&&) ;
+        DeleteAfter& operator=(DeleteAfter&&) ;
+        DeleteAfter(const DeleteAfter&)            = delete ;
+        DeleteAfter& operator=(const DeleteAfter&) = delete ;
     } ;
 
-    class EdiNDeleteBefore : public BindedFuncCreator<EdiNDeleteBefore> {
+    class DeleteBefore : public BindedFuncCreator<DeleteBefore> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -81,13 +81,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiNDeleteBefore() ;
-        virtual ~EdiNDeleteBefore() noexcept ;
+        explicit DeleteBefore() ;
+        virtual ~DeleteBefore() noexcept ;
 
-        EdiNDeleteBefore(EdiNDeleteBefore&&) ;
-        EdiNDeleteBefore& operator=(EdiNDeleteBefore&&) ;
-        EdiNDeleteBefore(const EdiNDeleteBefore&)            = delete ;
-        EdiNDeleteBefore& operator=(const EdiNDeleteBefore&) = delete ;
+        DeleteBefore(DeleteBefore&&) ;
+        DeleteBefore& operator=(DeleteBefore&&) ;
+        DeleteBefore(const DeleteBefore&)            = delete ;
+        DeleteBefore& operator=(const DeleteBefore&) = delete ;
     } ;
 }
 

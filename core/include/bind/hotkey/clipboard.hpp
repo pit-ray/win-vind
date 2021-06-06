@@ -5,40 +5,40 @@
 
 namespace vind
 {
-    struct CBCopy : public BindedFuncCreator<CBCopy> {
-        explicit CBCopy() ;
+    struct HotkeyCopy : public BindedFuncCreator<HotkeyCopy> {
+        explicit HotkeyCopy() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
 
-    struct CBPaste : public BindedFuncCreator<CBPaste> {
-        explicit CBPaste() ;
+    struct HotkeyPaste : public BindedFuncCreator<HotkeyPaste> {
+        explicit HotkeyPaste() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
 
-    struct CBCut : public BindedFuncCreator<CBCut> {
-        explicit CBCut() ;
+    struct HotkeyCut : public BindedFuncCreator<HotkeyCut> {
+        explicit HotkeyCut() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
 
-    struct CBDelete : public BindedFuncCreator<CBDelete> {
-        explicit CBDelete() ;
+    struct HotkeyDelete : public BindedFuncCreator<HotkeyDelete> {
+        explicit HotkeyDelete() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
 
-    struct CBBackSpace : public BindedFuncCreator<CBBackSpace> {
-        explicit CBBackSpace() ;
+    struct HotkeyBackspace : public BindedFuncCreator<HotkeyBackspace> {
+        explicit HotkeyBackspace() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

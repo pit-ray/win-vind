@@ -19,11 +19,11 @@
 
 namespace vind
 {
-    //Change2Normal
-    Change2Normal::Change2Normal()
-    : BindedFuncCreator("change_to_normal")
+    //ToGUINormal
+    ToGUINormal::ToGUINormal()
+    : BindedFuncCreator("to_gui_normal")
     {}
-    void Change2Normal::sprocess(bool vclmodeout) {
+    void ToGUINormal::sprocess(bool vclmodeout) {
         using namespace mode ;
 
         auto m = get_global_mode() ;
@@ -49,21 +49,21 @@ namespace vind
             VirtualCmdLine::msgout("-- GUI NORMAL --") ;
         }
     }
-    void Change2Normal::sprocess(NTypeLogger& parent_lgr) {
+    void ToGUINormal::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2Normal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToGUINormal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
-    //Change2Resident
-    Change2Resident::Change2Resident()
-    : BindedFuncCreator("change_to_resident")
+    //ToResident
+    ToResident::ToResident()
+    : BindedFuncCreator("to_resident")
     {}
-    void Change2Resident::sprocess(bool vclmodeout) {
+    void ToResident::sprocess(bool vclmodeout) {
         keyabsorber::close_all_ports() ;
         keyabsorber::unabsorb() ;
         mode::set_global_mode(mode::Mode::RESIDENT) ;
@@ -72,22 +72,22 @@ namespace vind
             VirtualCmdLine::msgout("-- RESIDENT --") ;
         }
     }
-    void Change2Resident::sprocess(NTypeLogger& parent_lgr) {
+    void ToResident::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2Resident::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToResident::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
-    //Change2Visual
-    Change2Visual::Change2Visual()
-    : BindedFuncCreator("change_to_visual")
+    //ToGUIVisual
+    ToGUIVisual::ToGUIVisual()
+    : BindedFuncCreator("to_gui_visual")
     {}
 
-    void Change2Visual::sprocess(bool vclmodeout) {
+    void ToGUIVisual::sprocess(bool vclmodeout) {
         using namespace mode ;
         set_global_mode(Mode::GUI_VISUAL) ;
         if(vclmodeout) {
@@ -96,20 +96,20 @@ namespace vind
         }
         mouse::press(KEYCODE_MOUSE_LEFT) ;
     }
-    void Change2Visual::sprocess(NTypeLogger& parent_lgr) {
+    void ToGUIVisual::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2Visual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToGUIVisual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
-    //Change2EdiNormal
-    Change2EdiNormal::Change2EdiNormal()
-    : BindedFuncCreator("change_to_edi_normal")
+    //ToEdiNormal
+    ToEdiNormal::ToEdiNormal()
+    : BindedFuncCreator("to_edi_normal")
     {}
-    void Change2EdiNormal::sprocess(bool vclmodeout) {
+    void ToEdiNormal::sprocess(bool vclmodeout) {
         using namespace mode ;
         auto mode = get_global_mode() ;
         if(mode == Mode::GUI_NORMAL) {
@@ -131,22 +131,22 @@ namespace vind
             VirtualCmdLine::msgout("-- EDI NORMAL --") ;
         }
     }
-    void Change2EdiNormal::sprocess(NTypeLogger& parent_lgr) {
+    void ToEdiNormal::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiNormal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToEdiNormal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
-    //Change2Insert
-    Change2Insert::Change2Insert()
-    : BindedFuncCreator("change_to_insert")
+    //ToInsert
+    ToInsert::ToInsert()
+    : BindedFuncCreator("to_insert")
     {}
 
-    void Change2Insert::sprocess(bool vclmodeout) {
+    void ToInsert::sprocess(bool vclmodeout) {
         using namespace mode ;
         if(get_global_mode() == Mode::GUI_NORMAL) {
             mouse::click(KEYCODE_MOUSE_LEFT) ;
@@ -161,21 +161,21 @@ namespace vind
             VirtualCmdLine::msgout("-- INSERT --") ;
         }
     }
-    void Change2Insert::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsert::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2Insert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
-    //Change2EdiVisual
-    Change2EdiVisual::Change2EdiVisual()
-    : BindedFuncCreator("change_to_edi_visual")
+    //ToEdiVisual
+    ToEdiVisual::ToEdiVisual()
+    : BindedFuncCreator("to_edi_visual")
     {}
-    void Change2EdiVisual::sprocess(bool vclmodeout) {
+    void ToEdiVisual::sprocess(bool vclmodeout) {
         using namespace mode ;
 
         textselect::select_words() ;
@@ -185,21 +185,21 @@ namespace vind
             VirtualCmdLine::msgout("-- EDI VISUAL --") ;
         }
     }
-    void Change2EdiVisual::sprocess(NTypeLogger& parent_lgr) {
+    void ToEdiVisual::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiVisual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToEdiVisual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
-    //Change2EdiLineVisual
-    Change2EdiLineVisual::Change2EdiLineVisual()
-    : BindedFuncCreator("change_to_edi_line_visual")
+    //ToEdiVisualLine
+    ToEdiVisualLine::ToEdiVisualLine()
+    : BindedFuncCreator("to_edi_visual_line")
     {}
-    void Change2EdiLineVisual::sprocess(bool vclmodeout) {
+    void ToEdiVisualLine::sprocess(bool vclmodeout) {
         using namespace mode ;
 
         textselect::select_line_EOL2BOL() ;
@@ -209,12 +209,12 @@ namespace vind
             VirtualCmdLine::msgout("-- EDI VISUAL LINE--") ;
         }
     }
-    void Change2EdiLineVisual::sprocess(NTypeLogger& parent_lgr) {
+    void ToEdiVisualLine::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiLineVisual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToEdiVisualLine::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 }

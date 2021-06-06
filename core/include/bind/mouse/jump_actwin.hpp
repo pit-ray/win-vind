@@ -5,8 +5,8 @@
 
 namespace vind
 {
-    struct Jump2ActiveWindow : public BindedFuncCreator<Jump2ActiveWindow> {
-        explicit Jump2ActiveWindow() ;
+    struct JumpToActiveWindow : public BindedFuncCreator<JumpToActiveWindow> {
+        explicit JumpToActiveWindow() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

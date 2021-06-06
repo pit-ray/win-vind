@@ -48,11 +48,11 @@ namespace
 
 namespace vind
 {
-    //ExchangeWindowWithNextOne
-    ExchangeWindowWithNextOne::ExchangeWindowWithNextOne()
-    : BindedFuncCreator("exchange_window_with_next_one")
+    //ExchangeWindowWithNearest
+    ExchangeWindowWithNearest::ExchangeWindowWithNearest()
+    : BindedFuncCreator("exchange_window_with_nearest")
     {}
-    void ExchangeWindowWithNextOne::sprocess() {
+    void ExchangeWindowWithNearest::sprocess() {
         g_near_hwnds.clear() ;
 
         windowutil::ForegroundInfo fginfo ;
@@ -84,12 +84,12 @@ namespace vind
                 screenmetrics::width(nearest_rect),
                 screenmetrics::height(nearest_rect)) ;
     }
-    void ExchangeWindowWithNextOne::sprocess(NTypeLogger& parent_lgr) {
+    void ExchangeWindowWithNearest::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ExchangeWindowWithNextOne::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ExchangeWindowWithNearest::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

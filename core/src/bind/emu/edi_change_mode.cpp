@@ -17,31 +17,31 @@
 
 namespace vind
 {
-    //Change2EdiBOLInsert
-    Change2EdiBOLInsert::Change2EdiBOLInsert()
-    : BindedFuncCreator("change_to_edi_BOLinsert")
+    //ToInsertBOL
+    ToInsertBOL::ToInsertBOL()
+    : BindedFuncCreator("to_insert_BOL")
     {}
-    void Change2EdiBOLInsert::sprocess(bool vclmodeout) {
+    void ToInsertBOL::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_HOME) ;
-        Change2Insert::sprocess(vclmodeout) ;
+        ToInsert::sprocess(vclmodeout) ;
     }
-    void Change2EdiBOLInsert::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertBOL::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiBOLInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertBOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
     //Change2EdiBkInsert
     Change2EdiBkInsert::Change2EdiBkInsert()
-    : BindedFuncCreator("change_to_edi_bkinsert")
+    : BindedFuncCreator("to_insert_append")
     {}
     void Change2EdiBkInsert::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_RIGHT) ;
-        Change2Insert::sprocess(vclmodeout) ;
+        ToInsert::sprocess(vclmodeout) ;
     }
     void Change2EdiBkInsert::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -53,59 +53,59 @@ namespace vind
     }
 
 
-    //Change2EdiEOLInsert
-    Change2EdiEOLInsert::Change2EdiEOLInsert()
-    : BindedFuncCreator("change_to_edi_EOLinsert")
+    //ToInsertEOL
+    ToInsertEOL::ToInsertEOL()
+    : BindedFuncCreator("to_insert_EOL")
     {}
-    void Change2EdiEOLInsert::sprocess(bool vclmodeout) {
+    void ToInsertEOL::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_END) ;
-        Change2Insert::sprocess(vclmodeout) ;
+        ToInsert::sprocess(vclmodeout) ;
     }
-    void Change2EdiEOLInsert::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertEOL::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiEOLInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
-    //Change2EdiNlInsertBelow
-    Change2EdiNlInsertBelow::Change2EdiNlInsertBelow()
-    : BindedFuncCreator("change_to_edi_nlinsert_below")
+    //ToInsertNLBelow
+    ToInsertNLBelow::ToInsertNLBelow()
+    : BindedFuncCreator("to_insert_nlbelow")
     {}
-    void Change2EdiNlInsertBelow::sprocess(bool vclmodeout) {
+    void ToInsertNLBelow::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_END) ;
         keybrd::pushup(KEYCODE_ENTER) ;
-        Change2Insert::sprocess(vclmodeout) ;
+        ToInsert::sprocess(vclmodeout) ;
     }
-    void Change2EdiNlInsertBelow::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertNLBelow::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiNlInsertBelow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertNLBelow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
 
-    //Change2EdiNlInsertAbove
-    Change2EdiNlInsertAbove::Change2EdiNlInsertAbove()
-    : BindedFuncCreator("change_to_edi_nlinsert_above")
+    //ToInsertNLAbove
+    ToInsertNLAbove::ToInsertNLAbove()
+    : BindedFuncCreator("to_insert_nlabove")
     {}
-    void Change2EdiNlInsertAbove::sprocess(bool vclmodeout) {
+    void ToInsertNLAbove::sprocess(bool vclmodeout) {
         keybrd::pushup(KEYCODE_HOME) ;
         keybrd::pushup(KEYCODE_ENTER) ;
         keybrd::pushup(KEYCODE_UP) ;
-        Change2Insert::sprocess(vclmodeout) ;
+        ToInsert::sprocess(vclmodeout) ;
     }
-    void Change2EdiNlInsertAbove::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertNLAbove::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiNlInsertAbove::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertNLAbove::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 }

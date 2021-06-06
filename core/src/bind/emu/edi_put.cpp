@@ -11,21 +11,21 @@
 
 namespace vind
 {
-    //EdiNPasteAfter (EdiNormal or EdiVisual)
-    struct EdiNPasteAfter::Impl {
+    //PutAfter (EdiNormal or EdiVisual)
+    struct PutAfter::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNPasteAfter::EdiNPasteAfter()
-    : BindedFuncCreator("edi_n_paste_after"),
+    PutAfter::PutAfter()
+    : BindedFuncCreator("put_after"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNPasteAfter::~EdiNPasteAfter() noexcept                  = default ;
-    EdiNPasteAfter::EdiNPasteAfter(EdiNPasteAfter&&)            = default ;
-    EdiNPasteAfter& EdiNPasteAfter::operator=(EdiNPasteAfter&&) = default ;
+    PutAfter::~PutAfter() noexcept                  = default ;
+    PutAfter::PutAfter(PutAfter&&)            = default ;
+    PutAfter& PutAfter::operator=(PutAfter&&) = default ;
 
-    void EdiNPasteAfter::sprocess(unsigned int repeat_num) const {
+    void PutAfter::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
         using namespace simpletxreg ;
         auto t = get_register_type() ;
@@ -44,7 +44,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNPasteAfter::sprocess(NTypeLogger& parent_lgr) const {
+    void PutAfter::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -53,26 +53,26 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNPasteAfter::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void PutAfter::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
 
-    //EdiNPasteBefore
-    struct EdiNPasteBefore::Impl {
+    //PutBefore
+    struct PutBefore::Impl {
         KeyStrokeRepeater ksr{} ;
     } ;
 
-    EdiNPasteBefore::EdiNPasteBefore()
-    : BindedFuncCreator("edi_n_paste_before"),
+    PutBefore::PutBefore()
+    : BindedFuncCreator("put_before"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    EdiNPasteBefore::~EdiNPasteBefore() noexcept                   = default ;
-    EdiNPasteBefore::EdiNPasteBefore(EdiNPasteBefore&&)            = default ;
-    EdiNPasteBefore& EdiNPasteBefore::operator=(EdiNPasteBefore&&) = default ;
+    PutBefore::~PutBefore() noexcept                   = default ;
+    PutBefore::PutBefore(PutBefore&&)            = default ;
+    PutBefore& PutBefore::operator=(PutBefore&&) = default ;
 
-    void EdiNPasteBefore::sprocess(unsigned int repeat_num) const {
+    void PutBefore::sprocess(unsigned int repeat_num) const {
         using keybrd::pushup ;
         using namespace simpletxreg ;
         auto t = get_register_type() ;
@@ -90,7 +90,7 @@ namespace vind
             }) ;
         }
     }
-    void EdiNPasteBefore::sprocess(NTypeLogger& parent_lgr) const {
+    void PutBefore::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -99,7 +99,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void EdiNPasteBefore::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void PutBefore::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 }

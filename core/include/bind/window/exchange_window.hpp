@@ -5,8 +5,8 @@
 
 namespace vind
 {
-    struct ExchangeWindowWithNextOne : public BindedFuncCreator<ExchangeWindowWithNextOne> {
-        explicit ExchangeWindowWithNextOne() ;
+    struct ExchangeWindowWithNearest : public BindedFuncCreator<ExchangeWindowWithNearest> {
+        explicit ExchangeWindowWithNearest() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

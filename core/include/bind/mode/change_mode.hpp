@@ -5,51 +5,51 @@
 
 namespace vind
 {
-    struct Change2Normal : public BindedFuncCreator<Change2Normal> {
-        explicit Change2Normal() ;
+    struct ToGUINormal : public BindedFuncCreator<ToGUINormal> {
+        explicit ToGUINormal() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Change2Resident : public BindedFuncCreator<Change2Resident> {
-        explicit Change2Resident() ;
+    struct ToResident : public BindedFuncCreator<ToResident> {
+        explicit ToResident() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Change2Visual : public BindedFuncCreator<Change2Visual> {
-        explicit Change2Visual() ;
+    struct ToGUIVisual : public BindedFuncCreator<ToGUIVisual> {
+        explicit ToGUIVisual() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Change2EdiNormal : public BindedFuncCreator<Change2EdiNormal> {
-        explicit Change2EdiNormal() ;
+    struct ToEdiNormal : public BindedFuncCreator<ToEdiNormal> {
+        explicit ToEdiNormal() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
 
-    struct Change2Insert : public BindedFuncCreator<Change2Insert> {
-        explicit Change2Insert() ;
+    struct ToInsert : public BindedFuncCreator<ToInsert> {
+        explicit ToInsert() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Change2EdiVisual : public BindedFuncCreator<Change2EdiVisual> {
-        explicit Change2EdiVisual() ;
+    struct ToEdiVisual : public BindedFuncCreator<ToEdiVisual> {
+        explicit ToEdiVisual() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Change2EdiLineVisual : public BindedFuncCreator<Change2EdiLineVisual> {
-        explicit Change2EdiLineVisual() ;
+    struct ToEdiVisualLine : public BindedFuncCreator<ToEdiVisualLine> {
+        explicit ToEdiVisualLine() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

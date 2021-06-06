@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    class EdiCopyMotion : public BindedFuncCreator<EdiCopyMotion> {
+    class YankWithMotion : public BindedFuncCreator<YankWithMotion> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -15,19 +15,19 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiCopyMotion() ;
-        virtual ~EdiCopyMotion() noexcept ;
+        explicit YankWithMotion() ;
+        virtual ~YankWithMotion() noexcept ;
 
-        EdiCopyMotion(EdiCopyMotion&&) ;
-        EdiCopyMotion& operator=(EdiCopyMotion&&) ;
-        EdiCopyMotion(const EdiCopyMotion&)            = delete ;
-        EdiCopyMotion& operator=(const EdiCopyMotion&) = delete ;
+        YankWithMotion(YankWithMotion&&) ;
+        YankWithMotion& operator=(YankWithMotion&&) ;
+        YankWithMotion(const YankWithMotion&)            = delete ;
+        YankWithMotion& operator=(const YankWithMotion&) = delete ;
 
         void reconstruct() override ;
     } ;
 
 
-    class EdiDeleteMotion : public BindedFuncCreator<EdiDeleteMotion> {
+    class DeleteWithMotion : public BindedFuncCreator<DeleteWithMotion> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -37,18 +37,18 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiDeleteMotion() ;
+        explicit DeleteWithMotion() ;
 
-        virtual ~EdiDeleteMotion() noexcept ;
-        EdiDeleteMotion(EdiDeleteMotion&&) ;
-        EdiDeleteMotion& operator=(EdiDeleteMotion&&) ;
-        EdiDeleteMotion(const EdiDeleteMotion&)            = delete ;
-        EdiDeleteMotion& operator=(const EdiDeleteMotion&) = delete ;
+        virtual ~DeleteWithMotion() noexcept ;
+        DeleteWithMotion(DeleteWithMotion&&) ;
+        DeleteWithMotion& operator=(DeleteWithMotion&&) ;
+        DeleteWithMotion(const DeleteWithMotion&)            = delete ;
+        DeleteWithMotion& operator=(const DeleteWithMotion&) = delete ;
 
         void reconstruct() override ;
     } ;
 
-    class EdiChangeMotion : public BindedFuncCreator<EdiChangeMotion> {
+    class ChangeWithMotion : public BindedFuncCreator<ChangeWithMotion> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -58,13 +58,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiChangeMotion() ;
+        explicit ChangeWithMotion() ;
 
-        virtual ~EdiChangeMotion() noexcept ;
-        EdiChangeMotion(EdiChangeMotion&&) ;
-        EdiChangeMotion& operator=(EdiChangeMotion&&) ;
-        EdiChangeMotion(const EdiChangeMotion&)            = delete ;
-        EdiChangeMotion& operator=(const EdiChangeMotion&) = delete ;
+        virtual ~ChangeWithMotion() noexcept ;
+        ChangeWithMotion(ChangeWithMotion&&) ;
+        ChangeWithMotion& operator=(ChangeWithMotion&&) ;
+        ChangeWithMotion(const ChangeWithMotion&)            = delete ;
+        ChangeWithMotion& operator=(const ChangeWithMotion&) = delete ;
 
         void reconstruct() override ;
     } ;

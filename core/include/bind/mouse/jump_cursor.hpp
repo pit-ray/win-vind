@@ -5,43 +5,43 @@
 
 namespace vind
 {
-    struct Jump2Left : public BindedFuncCreator<Jump2Left> {
-        explicit Jump2Left() ;
+    struct JumpToLeft : public BindedFuncCreator<JumpToLeft> {
+        explicit JumpToLeft() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Jump2Right : public BindedFuncCreator<Jump2Right> {
-        explicit Jump2Right() ;
+    struct JumpToRight : public BindedFuncCreator<JumpToRight> {
+        explicit JumpToRight() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Jump2Top : public BindedFuncCreator<Jump2Top> {
-        explicit Jump2Top() ;
+    struct JumpToTop : public BindedFuncCreator<JumpToTop> {
+        explicit JumpToTop() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Jump2Bottom : public BindedFuncCreator<Jump2Bottom> {
-        explicit Jump2Bottom() ;
+    struct JumpToBottom : public BindedFuncCreator<JumpToBottom> {
+        explicit JumpToBottom() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Jump2XCenter : public BindedFuncCreator<Jump2XCenter> {
-        explicit Jump2XCenter() ;
+    struct JumpToHorizontalCenter : public BindedFuncCreator<JumpToHorizontalCenter> {
+        explicit JumpToHorizontalCenter() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct Jump2YCenter : public BindedFuncCreator<Jump2YCenter> {
-        explicit Jump2YCenter() ;
+    struct JumpToVerticalCenter : public BindedFuncCreator<JumpToVerticalCenter> {
+        explicit JumpToVerticalCenter() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

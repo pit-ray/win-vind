@@ -6,8 +6,8 @@
 
 namespace vind
 {
-    struct ShowConfigWindow : public BindedFuncCreator<ShowConfigWindow> {
-        explicit ShowConfigWindow() ;
+    struct ShowConfigGUI : public BindedFuncCreator<ShowConfigGUI> {
+        explicit ShowConfigGUI() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
@@ -16,8 +16,8 @@ namespace vind
     } ;
 
 
-    struct ExitConfigWindow : public BindedFuncCreator<ExitConfigWindow> {
-        explicit ExitConfigWindow() ;
+    struct ExitConfigGUI : public BindedFuncCreator<ExitConfigGUI> {
+        explicit ExitConfigGUI() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

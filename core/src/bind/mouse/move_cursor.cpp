@@ -63,114 +63,114 @@ namespace
 
 namespace vind
 {
-    //MoveLeft
-    struct MoveLeft::Impl {
+    //MoveCursorLeft
+    struct MoveCursorLeft::Impl {
         MoveDeltaCalculator calcer_{} ;
     } ;
 
-    MoveLeft::MoveLeft()
-    : BindedFuncCreator("move_left"),
+    MoveCursorLeft::MoveCursorLeft()
+    : BindedFuncCreator("move_cursor_left"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    MoveLeft::~MoveLeft()                     = default ;
-    MoveLeft::MoveLeft(MoveLeft&&)            = default ;
-    MoveLeft& MoveLeft::operator=(MoveLeft&&) = default ;
+    MoveCursorLeft::~MoveCursorLeft()                     = default ;
+    MoveCursorLeft::MoveCursorLeft(MoveCursorLeft&&)            = default ;
+    MoveCursorLeft& MoveCursorLeft::operator=(MoveCursorLeft&&) = default ;
 
-    void MoveLeft::sprocess(int delta) const {
+    void MoveCursorLeft::sprocess(int delta) const {
         mouse::move_cursor(-delta, 0) ;
     }
-    void MoveLeft::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->calcer_.reset() ;
         }
         sprocess(pimpl->calcer_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 
 
-    //MoveRight
-    struct MoveRight::Impl {
+    //MoveCursorRight
+    struct MoveCursorRight::Impl {
         MoveDeltaCalculator calcer_{} ;
     } ;
 
-    MoveRight::MoveRight()
-    : BindedFuncCreator("move_right"),
+    MoveCursorRight::MoveCursorRight()
+    : BindedFuncCreator("move_cursor_right"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    MoveRight::~MoveRight()                      = default ;
-    MoveRight::MoveRight(MoveRight&&)            = default ;
-    MoveRight& MoveRight::operator=(MoveRight&&) = default ;
+    MoveCursorRight::~MoveCursorRight()                      = default ;
+    MoveCursorRight::MoveCursorRight(MoveCursorRight&&)            = default ;
+    MoveCursorRight& MoveCursorRight::operator=(MoveCursorRight&&) = default ;
 
-    void MoveRight::sprocess(int delta) const {
+    void MoveCursorRight::sprocess(int delta) const {
         mouse::move_cursor(delta, 0) ;
     }
-    void MoveRight::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->calcer_.reset() ;
         }
         sprocess(pimpl->calcer_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 
 
-    //MoveUp
-    struct MoveUp::Impl {
+    //MoveCursorUp
+    struct MoveCursorUp::Impl {
         MoveDeltaCalculator calcer_{} ;
     } ;
 
-    MoveUp::MoveUp()
-    : BindedFuncCreator("move_up"),
+    MoveCursorUp::MoveCursorUp()
+    : BindedFuncCreator("move_cursor_up"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    MoveUp::~MoveUp()                   = default ;
-    MoveUp::MoveUp(MoveUp&&)            = default ;
-    MoveUp& MoveUp::operator=(MoveUp&&) = default ;
+    MoveCursorUp::~MoveCursorUp()                   = default ;
+    MoveCursorUp::MoveCursorUp(MoveCursorUp&&)            = default ;
+    MoveCursorUp& MoveCursorUp::operator=(MoveCursorUp&&) = default ;
 
-    void MoveUp::sprocess(int delta) const {
+    void MoveCursorUp::sprocess(int delta) const {
         mouse::move_cursor(0, -delta) ;
     }
-    void MoveUp::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->calcer_.reset() ;
         }
         sprocess(pimpl->calcer_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveUp::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorUp::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 
 
-    //MoveDown
-    struct MoveDown::Impl {
+    //MoveCursorDown
+    struct MoveCursorDown::Impl {
         MoveDeltaCalculator calcer_{} ;
     } ;
 
-    MoveDown::MoveDown()
-    : BindedFuncCreator("move_down"),
+    MoveCursorDown::MoveCursorDown()
+    : BindedFuncCreator("move_cursor_down"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    MoveDown::~MoveDown()                     = default ;
-    MoveDown::MoveDown(MoveDown&&)            = default ;
-    MoveDown& MoveDown::operator=(MoveDown&&) = default ;
+    MoveCursorDown::~MoveCursorDown()                     = default ;
+    MoveCursorDown::MoveCursorDown(MoveCursorDown&&)            = default ;
+    MoveCursorDown& MoveCursorDown::operator=(MoveCursorDown&&) = default ;
 
-    void MoveDown::sprocess(int delta) const {
+    void MoveCursorDown::sprocess(int delta) const {
         mouse::move_cursor(0, delta) ;
     }
-    void MoveDown::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->calcer_.reset() ;
         }
         sprocess(pimpl->calcer_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveDown::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorDown::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 }

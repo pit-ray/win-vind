@@ -12,14 +12,14 @@
 
 namespace vind
 {
-    //EdiJumpCaret2BOL
-    EdiJumpCaret2BOL::EdiJumpCaret2BOL()
-    : BindedFuncCreator("edi_jump_caret_to_BOL")
+    //JumpCaretToBOL
+    JumpCaretToBOL::JumpCaretToBOL()
+    : BindedFuncCreator("jump_caret_to_BOL")
     {}
-    bool EdiJumpCaret2BOL::is_for_moving_caret() const noexcept {
+    bool JumpCaretToBOL::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiJumpCaret2BOL::sprocess() {
+    void JumpCaretToBOL::sprocess() {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
         }
@@ -27,24 +27,24 @@ namespace vind
             keybrd::pushup(KEYCODE_HOME) ;
         }
     }
-    void EdiJumpCaret2BOL::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToBOL::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void EdiJumpCaret2BOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpCaretToBOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //EdiJumpCaret2EOL
-    EdiJumpCaret2EOL::EdiJumpCaret2EOL()
-    : BindedFuncCreator("edi_jump_caret_to_EOL")
+    //JumpCaretToEOL
+    JumpCaretToEOL::JumpCaretToEOL()
+    : BindedFuncCreator("jump_caret_to_EOL")
     {}
-    bool EdiJumpCaret2EOL::is_for_moving_caret() const noexcept {
+    bool JumpCaretToEOL::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiJumpCaret2EOL::sprocess(unsigned int repeat_num) {
+    void JumpCaretToEOL::sprocess(unsigned int repeat_num) {
         //down caret N - 1
         repeater::safe_for(repeat_num - 1, [] {
             keybrd::pushup(KEYCODE_DOWN) ;
@@ -58,24 +58,24 @@ namespace vind
             keybrd::pushup(KEYCODE_LEFT) ;
         }
     }
-    void EdiJumpCaret2EOL::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToEOL::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(1) ;
         }
     }
-    void EdiJumpCaret2EOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpCaretToEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
 
     //EdiJumpCaret2NLine_DfBOF
-    EdiNJumpCaret2Line_DfBOF::EdiNJumpCaret2Line_DfBOF()
-    : BindedFuncCreator("edi_n_jump_caret_to_line_default_BOF")
+    JumpCaretToBOF::JumpCaretToBOF()
+    : BindedFuncCreator("jump_caret_to_BOF")
     {}
-    bool EdiNJumpCaret2Line_DfBOF::is_for_moving_caret() const noexcept {
+    bool JumpCaretToBOF::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNJumpCaret2Line_DfBOF::sprocess(unsigned int repeat_num) {
+    void JumpCaretToBOF::sprocess(unsigned int repeat_num) {
         if(textselect::is_first_line_selection())
             textselect::select_line_EOL2BOL() ;
 
@@ -98,12 +98,12 @@ namespace vind
             }) ;
         }
     }
-    void EdiNJumpCaret2Line_DfBOF::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToBOF::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(1) ;
         }
     }
-    void EdiNJumpCaret2Line_DfBOF::sprocess(const CharLogger& parent_lgr) {
+    void JumpCaretToBOF::sprocess(const CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
         if(auto num = keyloggerutil::extract_num(str)) {
@@ -116,13 +116,13 @@ namespace vind
 
 
     //EdiJumpCaret2NLine_DfEOF
-    EdiNJumpCaret2Line_DfEOF::EdiNJumpCaret2Line_DfEOF()
-    : BindedFuncCreator("edi_n_jump_caret_to_line_default_EOF")
+    JumpCaretToEOF::JumpCaretToEOF()
+    : BindedFuncCreator("jump_caret_to_EOF")
     {}
-    bool EdiNJumpCaret2Line_DfEOF::is_for_moving_caret() const noexcept {
+    bool JumpCaretToEOF::is_for_moving_caret() const noexcept {
         return true ;
     }
-    void EdiNJumpCaret2Line_DfEOF::sprocess(unsigned int repeat_num) {
+    void JumpCaretToEOF::sprocess(unsigned int repeat_num) {
         using keybrd::pushup ;
 
         if(repeat_num == 1) {
@@ -141,15 +141,15 @@ namespace vind
             }
         }
         else {
-            EdiNJumpCaret2Line_DfBOF::sprocess(repeat_num) ;
+            JumpCaretToBOF::sprocess(repeat_num) ;
         }
     }
-    void EdiNJumpCaret2Line_DfEOF::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToEOF::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EdiNJumpCaret2Line_DfEOF::sprocess(const CharLogger& parent_lgr) {
-        EdiNJumpCaret2Line_DfBOF::sprocess(parent_lgr) ;
+    void JumpCaretToEOF::sprocess(const CharLogger& parent_lgr) {
+        JumpCaretToBOF::sprocess(parent_lgr) ;
     }
 }

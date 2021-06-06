@@ -110,25 +110,25 @@ namespace
 
 namespace vind
 {
-    struct CommandMode::Impl {
+    struct ToCommand::Impl {
         CmdHist ch_{} ;
         FuncFinder funcfinder_{} ;
     } ;
 
-    CommandMode::CommandMode()
-    : BindedFuncCreator("command_mode"),
+    ToCommand::ToCommand()
+    : BindedFuncCreator("to_command"),
       pimpl(std::make_unique<Impl>())
     {}
 
-    CommandMode::~CommandMode() noexcept               = default ;
-    CommandMode::CommandMode(CommandMode&&)            = default ;
-    CommandMode& CommandMode::operator=(CommandMode&&) = default ;
+    ToCommand::~ToCommand() noexcept               = default ;
+    ToCommand::ToCommand(ToCommand&&)            = default ;
+    ToCommand& ToCommand::operator=(ToCommand&&) = default ;
 
-    void CommandMode::reconstruct() {
+    void ToCommand::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
     }
 
-    void CommandMode::sprocess() const {
+    void ToCommand::sprocess() const {
         auto return_mode = [] (mode::Mode* m) {
             // If the mode is changed, then do nothing.
             if(mode::get_global_mode() == mode::Mode::COMMAND) {
@@ -256,12 +256,12 @@ namespace vind
         }
     }
 
-    void CommandMode::sprocess(NTypeLogger& parent_lgr) const {
+    void ToCommand::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CommandMode::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ToCommand::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 }

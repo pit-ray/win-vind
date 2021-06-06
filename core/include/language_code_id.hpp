@@ -2,7 +2,7 @@
 #define _LANGUAGE_CODE_ID_HPP
 
 //
-// This Language Code Identifier is based on \
+// This Language Code Identifier is based on
 // https://docs.microsoft.com/en_us/openspecs/windows_protocols/ms_lcid
 // Version: 14.1
 //

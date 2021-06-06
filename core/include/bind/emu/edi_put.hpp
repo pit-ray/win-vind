@@ -6,7 +6,7 @@
 namespace vind
 {
     //Paste
-    class EdiNPasteAfter : public BindedFuncCreator<EdiNPasteAfter> {
+    class PutAfter : public BindedFuncCreator<PutAfter> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -16,16 +16,16 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiNPasteAfter() ;
-        virtual ~EdiNPasteAfter() noexcept ;
+        explicit PutAfter() ;
+        virtual ~PutAfter() noexcept ;
 
-        EdiNPasteAfter(EdiNPasteAfter&&) ;
-        EdiNPasteAfter& operator=(EdiNPasteAfter&&) ;
-        EdiNPasteAfter(const EdiNPasteAfter&)            = delete ;
-        EdiNPasteAfter& operator=(const EdiNPasteAfter&) = delete ;
+        PutAfter(PutAfter&&) ;
+        PutAfter& operator=(PutAfter&&) ;
+        PutAfter(const PutAfter&)            = delete ;
+        PutAfter& operator=(const PutAfter&) = delete ;
     } ;
 
-    class EdiNPasteBefore : public BindedFuncCreator<EdiNPasteBefore> {
+    class PutBefore : public BindedFuncCreator<PutBefore> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
@@ -35,13 +35,13 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        explicit EdiNPasteBefore() ;
-        virtual ~EdiNPasteBefore() noexcept ;
+        explicit PutBefore() ;
+        virtual ~PutBefore() noexcept ;
 
-        EdiNPasteBefore(EdiNPasteBefore&&) ;
-        EdiNPasteBefore& operator=(EdiNPasteBefore&&) ;
-        EdiNPasteBefore(const EdiNPasteBefore&)            = delete ;
-        EdiNPasteBefore& operator=(const EdiNPasteBefore&) = delete ;
+        PutBefore(PutBefore&&) ;
+        PutBefore& operator=(PutBefore&&) ;
+        PutBefore(const PutBefore&)            = delete ;
+        PutBefore& operator=(const PutBefore&) = delete ;
     } ;
 }
 

@@ -5,20 +5,20 @@
 
 namespace vind
 {
-    class Jump2Any : public BindedFuncCreator<Jump2Any> {
+    class JumpWithKeybrdLayout : public BindedFuncCreator<JumpWithKeybrdLayout> {
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
     public:
-        explicit Jump2Any() ;
-        virtual ~Jump2Any() noexcept ;
+        explicit JumpWithKeybrdLayout() ;
+        virtual ~JumpWithKeybrdLayout() noexcept ;
 
-        Jump2Any(Jump2Any&&) ;
-        Jump2Any& operator=(Jump2Any&&) ;
+        JumpWithKeybrdLayout(JumpWithKeybrdLayout&&) ;
+        JumpWithKeybrdLayout& operator=(JumpWithKeybrdLayout&&) ;
 
-        Jump2Any(const Jump2Any&)            = delete ;
-        Jump2Any& operator=(const Jump2Any&) = delete ;
+        JumpWithKeybrdLayout(const JumpWithKeybrdLayout&)            = delete ;
+        JumpWithKeybrdLayout& operator=(const JumpWithKeybrdLayout&) = delete ;
 
         void sprocess() const ;
         void sprocess(NTypeLogger& parent_lgr) const ;

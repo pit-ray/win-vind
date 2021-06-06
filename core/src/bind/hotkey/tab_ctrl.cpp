@@ -82,7 +82,7 @@ namespace vind
 
         Sleep(500) ; //wait by openning the dialog for saving
         if(hwnd != GetForegroundWindow()) { //opened popup
-            Change2Normal::sprocess(true) ;
+            ToGUINormal::sprocess(true) ;
         }
     }
     void CloseCurrentTab::sprocess(NTypeLogger& parent_lgr) {

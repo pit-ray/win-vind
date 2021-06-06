@@ -85,7 +85,7 @@ namespace
                 throw RUNTIME_EXCEPT("Could not set a foreground window.") ;
             }
             Sleep(50) ;
-            Jump2ActiveWindow::sprocess() ;
+            JumpToActiveWindow::sprocess() ;
         }
     }
 }

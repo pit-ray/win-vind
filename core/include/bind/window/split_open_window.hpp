@@ -5,15 +5,15 @@
 
 namespace vind
 {
-    struct OpenNewCurWinWithHorizontalSplit : public BindedFuncCreator<OpenNewCurWinWithHorizontalSplit> {
-        explicit OpenNewCurWinWithHorizontalSplit() ;
+    struct OpenNewWindowWithHorizontalSplit : public BindedFuncCreator<OpenNewWindowWithHorizontalSplit> {
+        explicit OpenNewWindowWithHorizontalSplit() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct OpenNewCurWinWithVerticalSplit : public BindedFuncCreator<OpenNewCurWinWithVerticalSplit> {
-        explicit OpenNewCurWinWithVerticalSplit() ;
+    struct OpenNewWindowWithVerticalSplit : public BindedFuncCreator<OpenNewWindowWithVerticalSplit> {
+        explicit OpenNewWindowWithVerticalSplit() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;

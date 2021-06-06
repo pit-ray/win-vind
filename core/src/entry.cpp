@@ -190,10 +190,10 @@ namespace vind
             //initialize system mode
             using namespace vind::mode ;
             std::unordered_map<std::string, BindedFunc::SPtr> cm {
-                {to_prefix(Mode::EDI_NORMAL), Change2EdiNormal::create()},
-                {to_prefix(Mode::GUI_NORMAL), Change2Normal::create()},
-                {to_prefix(Mode::INSERT), Change2Insert::create()},
-                {to_prefix(Mode::RESIDENT), Change2Resident::create()}
+                {to_prefix(Mode::EDI_NORMAL), ToEdiNormal::create()},
+                {to_prefix(Mode::GUI_NORMAL), ToGUINormal::create()},
+                {to_prefix(Mode::INSERT), ToInsert::create()},
+                {to_prefix(Mode::RESIDENT), ToResident::create()}
             } ;
             cm.at(gparams::get_s("initial_mode"))->process() ;
 
@@ -301,7 +301,7 @@ namespace vind
             keyabsorber::refresh_toggle_state() ;
 
             if(keyabsorber::is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
-                ExitConfigWindow::sprocess() ; //exit GUI-window in system tray
+                ExitConfigGUI::sprocess() ; //exit GUI-window in system tray
                 return false ;
             }
             return true ;
@@ -319,7 +319,7 @@ namespace vind
     //Please use it if you want to show a self config window by command.
     void register_show_window_func(std::function<void()> func) noexcept {
         try {
-            ShowConfigWindow::register_show_func(std::move(func)) ;
+            ShowConfigGUI::register_show_func(std::move(func)) ;
         }
         catch(const std::exception& e) {
             PRINT_ERROR(e.what()) ;
@@ -331,7 +331,7 @@ namespace vind
 
     void register_exit_window_func(std::function<void()> func) noexcept {
         try {
-            ExitConfigWindow::register_exit_func(std::move(func)) ;
+            ExitConfigGUI::register_exit_func(std::move(func)) ;
         }
         catch(const std::exception& e) {
             PRINT_ERROR(e.what()) ;

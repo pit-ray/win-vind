@@ -81,7 +81,7 @@ namespace vind
 
     //TaskView
     TaskView::TaskView()
-    : BindedFuncCreator("task_view")
+    : BindedFuncCreator("taskview")
     {}
     void TaskView::sprocess() {
         keybrd::pushup(KEYCODE_LWIN, KEYCODE_TAB) ;

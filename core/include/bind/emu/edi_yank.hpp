@@ -10,15 +10,15 @@ namespace vind
     }
 
     //Copy
-    struct EdiCopyHighlightText : public BindedFuncCreator<EdiCopyHighlightText> {
-        explicit EdiCopyHighlightText() ;
+    struct YankHighlightText : public BindedFuncCreator<YankHighlightText> {
+        explicit YankHighlightText() ;
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct EdiNCopyLine : public BindedFuncCreator<EdiNCopyLine> {
-        explicit EdiNCopyLine() ;
+    struct YankLine : public BindedFuncCreator<YankLine> {
+        explicit YankLine() ;
         static void sprocess(
                 unsigned int repeat_num=1,
                 const textanalyze::SelRes* const exres=nullptr) ;

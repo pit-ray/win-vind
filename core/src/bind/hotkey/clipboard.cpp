@@ -17,70 +17,70 @@
 
 namespace vind
 {
-    //CBCopy
-    CBCopy::CBCopy()
-    : BindedFuncCreator("cb_copy")
+    //HotkeyCopy
+    HotkeyCopy::HotkeyCopy()
+    : BindedFuncCreator("hotkey_copy")
     {}
-    void CBCopy::sprocess() {
+    void HotkeyCopy::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
 
         //there are cases in which not editable.
         //thus, not use Message Copy
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
     }
-    void CBCopy::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyCopy::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CBCopy::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyCopy::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //CBPaste
-    CBPaste::CBPaste()
-    : BindedFuncCreator("cb_paste")
+    //HotkeyPaste
+    HotkeyPaste::HotkeyPaste()
+    : BindedFuncCreator("hotkey_paste")
     {}
-    void CBPaste::sprocess() {
+    void HotkeyPaste::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
 
         //not selecting at paste.
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_V) ;
     }
-    void CBPaste::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyPaste::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CBPaste::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyPaste::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //CBCut
-    CBCut::CBCut()
-    : BindedFuncCreator("cb_cut")
+    //HotkeyCut
+    HotkeyCut::HotkeyCut()
+    : BindedFuncCreator("hotkey_cut")
     {}
-    void CBCut::sprocess() {
+    void HotkeyCut::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
     }
-    void CBCut::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyCut::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CBCut::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyCut::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //CBDelete
-    CBDelete::CBDelete()
-    : BindedFuncCreator("cb_delete")
+    //HotkeyDelete
+    HotkeyDelete::HotkeyDelete()
+    : BindedFuncCreator("hotkey_delete")
     {}
-    void CBDelete::sprocess() {
+    void HotkeyDelete::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
 
         //selecting->cut
@@ -88,22 +88,22 @@ namespace vind
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         keybrd::pushup(KEYCODE_DELETE) ;
     }
-    void CBDelete::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyDelete::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CBDelete::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyDelete::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
 
-    //CBBackSpace
-    CBBackSpace::CBBackSpace()
-    : BindedFuncCreator("cb_back_space")
+    //HotkeyBackspace
+    HotkeyBackspace::HotkeyBackspace()
+    : BindedFuncCreator("hotkey_backspace")
     {}
 
-    void CBBackSpace::sprocess() {
+    void HotkeyBackspace::sprocess() {
         mouse::release(KEYCODE_MOUSE_LEFT) ;
 
         //selecting->cut
@@ -111,12 +111,12 @@ namespace vind
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         keybrd::pushup(KEYCODE_BKSPACE) ;
     }
-    void CBBackSpace::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyBackspace::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CBBackSpace::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyBackspace::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

@@ -56,7 +56,7 @@ namespace vind
                 gparams::get_s("shell")) ;
 
         Sleep(100) ; //wait until the window is selectable
-        Jump2ActiveWindow::sprocess() ;
+        JumpToActiveWindow::sprocess() ;
     }
     void StartShell::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -68,11 +68,11 @@ namespace vind
     }
 
 
-    //StartAnyApp
-    StartAnyApp::StartAnyApp()
-    : BindedFuncCreator("start_any_app")
+    //StartExternal
+    StartExternal::StartExternal()
+    : BindedFuncCreator("start_external")
     {}
-    void StartAnyApp::sprocess(std::string cmd) {
+    void StartExternal::sprocess(std::string cmd) {
         if(!cmd.empty()) {
             auto shell_cmd = gparams::get_s("shell") ;
             std::string shell_cmd_flag {} ;
@@ -112,15 +112,15 @@ namespace vind
             }
 
             Sleep(100) ; //wait until the window is selectable
-            Jump2ActiveWindow::sprocess() ;
+            JumpToActiveWindow::sprocess() ;
         }
     }
-    void StartAnyApp::sprocess(NTypeLogger& parent_lgr) {
+    void StartExternal::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess("shell") ;
         }
     }
-    void StartAnyApp::sprocess(const CharLogger& parent_lgr) {
+    void StartExternal::sprocess(const CharLogger& parent_lgr) {
         auto cmd = parent_lgr.to_str() ;
         sprocess(cmd.substr(1)) ;
     }
@@ -133,7 +133,7 @@ namespace vind
     void StartExplorer::sprocess() {
         keybrd::pushup(KEYCODE_LWIN, KEYCODE_E) ;
         Sleep(100) ; //wait until select window by OS.
-        Jump2ActiveWindow::sprocess() ;
+        JumpToActiveWindow::sprocess() ;
     }
     void StartExplorer::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -146,12 +146,12 @@ namespace vind
 
     //OpenStartMenu
     OpenStartMenu::OpenStartMenu()
-    : BindedFuncCreator("open_start_menu")
+    : BindedFuncCreator("open_startmenu")
     {}
     void OpenStartMenu::sprocess() {
         keybrd::pushup(KEYCODE_LWIN) ;
         Sleep(100) ; //wait until select window by OS.
-        Jump2ActiveWindow::sprocess() ;
+        JumpToActiveWindow::sprocess() ;
     }
     void OpenStartMenu::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

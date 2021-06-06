@@ -19,6 +19,7 @@
 #include "parser/bindings_parser.hpp"
 #include "path.hpp"
 #include "util/def.hpp"
+#include "util/string.hpp"
 
 
 namespace
@@ -42,7 +43,6 @@ namespace
 
     using namespace nlohmann ;
     json g_default_maps{} ;
-
 }
 
 
@@ -178,13 +178,12 @@ namespace vind
                         continue ;
                     }
 
-                    const auto& name = obj.at("name").get<std::string>() ;
+                    auto name = util::A2a(obj.at("name").get<std::string>()) ;
                     if(name.empty()) {
                         throw LOGIC_EXCEPT("Invalid Function Name") ;
                     }
 
                     for(modeidx = 0 ; modeidx < mode::mode_num() ; modeidx ++) {
-
                         auto modekey = mode::to_prefix(modeidx) + MAP_DEFINE_KEYWORD_IN_JSON ;
                         if(modekey.empty()) {
                             continue ;
@@ -209,6 +208,10 @@ namespace vind
                             if(copy_mode != mode::Mode::UNDEFINED) {
                                 cmdlist = obj.at(mode::to_prefix(copy_mode) + MAP_DEFINE_KEYWORD_IN_JSON) ;
                             }
+                        }
+
+                        if(!is_func_name(name)) {
+                            throw std::out_of_range("Unknown name: " + name) ;
                         }
 
                         auto& maps = g_mode_maps[modeidx] ;

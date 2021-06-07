@@ -145,6 +145,9 @@ namespace vind
                 return false ;
             }
             std::memset(data.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
+            if(!func_name.empty()) {
+                std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
+            }
 
             //show mouse cursor
             //When Windows was started up, cursor is hidden until move mouse by default.
@@ -196,11 +199,6 @@ namespace vind
                 {to_prefix(Mode::RESIDENT), ToResident::create()}
             } ;
             cm.at(gparams::get_s("initial_mode"))->process() ;
-
-            if(!func_name.empty()) {
-                auto func = FuncFinder::find_func_byname(func_name) ;
-                func->process() ;
-            }
 
             return true ;
         }

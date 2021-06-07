@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0.0)
 string(REPLACE "." "," FILE_VERSION "${PROJECT_VERSION}")
 configure_file(
     ${PROJECT_SOURCE_DIR}/build_resources/version.hpp.in
-    ${PROJECT_SOURCE_DIR}/coregui/version.hpp
+    ${PROJECT_SOURCE_DIR}/coregui/include/version.hpp
     NEWLINE_STYLE LF
     @ONLY
 )
@@ -16,6 +16,7 @@ configure_file(
 )
 
 include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/core/include
     ${PROJECT_SOURCE_DIR}/libs
     ${wxWidgets_INCLUDE_DIRS}
@@ -23,7 +24,9 @@ include_directories(
 
 
 set(SOURCE_FILES
-    main.cpp
+    src/about.cpp
+    src/main.cpp
+    src/tray.cpp
 )
 
 #build all

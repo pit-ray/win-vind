@@ -33,7 +33,7 @@ namespace vind
         //get current directory
         auto current_path = explorer::get_current_explorer_path() ;
         if(current_path.empty()) {
-            current_path = path::HOME_PATH() + "/Desktop" ;
+            current_path = path::HOME_PATH() + "\\Desktop" ;
         }
 
         auto full_path = current_path + "\\" + path ;

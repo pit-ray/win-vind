@@ -21,7 +21,7 @@ add_library(key STATIC
     src/key/log_map.cpp
     src/key/ntype_logger.cpp
 )
-target_link_libraries(key util)
+target_link_libraries(key util io)
 
 add_library(io STATIC
     src/io/display_text_painter.cpp
@@ -165,10 +165,10 @@ add_library(kernel STATIC
     src/mode.cpp
     src/path.cpp
 )
-target_link_libraries(kernel util)
+target_link_libraries(kernel parser util Userenv)
 
 add_library(vindcore STATIC
     src/entry.cpp
     src/main_loop.cpp
 )
-target_link_libraries(vindcore bind opt parser io time kernel Userenv)
+target_link_libraries(vindcore bind opt parser io time kernel)

@@ -32,15 +32,15 @@
 #include "io_params.hpp"
 #include "wx_prop_dlg.hpp"
 
-namespace wxGUI
+namespace
 {
     using namespace vind ;
 
-    inline static void error_box(const wxString& msg) {
+    inline void error_box(const wxString& msg) {
         wxMessageBox(msg, wxT("Error - win-vind"), wxOK | wxICON_EXCLAMATION) ;
     }
 
-    inline static bool is_pre_initialized() {
+    inline bool is_pre_initialized() {
         std::ifstream ifs(path::to_u8path(path::ROOT_PATH() + "is_initialized")) ;
         if(!ifs.is_open()) {
             return false ;
@@ -50,127 +50,12 @@ namespace wxGUI
         return str.front() == 'y' || str.front() == 'Y' ;
     }
 
-    inline static void finish_pre_initialization() {
+    inline void finish_pre_initialization() {
         std::ofstream ofs(path::to_u8path(path::ROOT_PATH() + "is_initialized"), std::ios::trunc) ;
         ofs << "y" ;
     }
 
-    inline static bool initialize_config_files() ;
-
-    static std::atomic_bool runnable{true} ;
-
-    //core system is wrought at another thread
-    class SystemThread : public wxThread {
-    private:
-        virtual ExitCode Entry() override {
-            while(vind::update() && runnable.load()) ;
-            return static_cast<ExitCode>(0) ;
-        }
-
-    public:
-        SystemThread()
-        : wxThread(wxTHREAD_DETACHED)
-        {}
-    } ;
-
-    static std::string g_function_name{} ;
-
-    void App::OnInitCmdLine(wxCmdLineParser& parser) {
-        parser.AddOption(wxT("f"), wxT("func"),
-                wxT("FunctionName"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL) ;
-    }
-    bool App::OnCmdLineParsed(wxCmdLineParser& parser) {
-        wxString fn ;
-        if(parser.Found(wxT("func"), &fn)) {
-            g_function_name = fn.ToStdString() ;
-        }
-        return true ;
-    }
-
-    bool App::OnInit() {
-        try {
-            if(!wxApp::OnInit()) {
-                return false ;
-            }
-
-            if(!wxTaskBarIcon::IsAvailable()) {
-                wxMessageBox(
-                        wxT("Not supported System Tray"),
-                        wxT("Warning - win-vind"), wxOK | wxICON_EXCLAMATION) ;
-            }
-
-            if(!is_pre_initialized()) {
-                if(!initialize_config_files()) {
-                    return false ;
-                }
-            }
-
-            if(!vind::initialize(g_function_name)) {
-                return false ;
-            }
-            if(!ioParams::initialize()) {
-                PRINT_ERROR("Failed initialize ioParams.") ;
-                return false ;
-            }
-
-            auto ppd = new PropDlg() ;
-            ppd->Show(false) ;
-
-            //enable opening window by command
-            vind::register_show_window_func([ppd] {
-                ppd->Show(true) ;
-            }) ;
-
-            vind::register_exit_window_func([ppd] {
-                ppd->Show(true) ;
-                ppd->Destroy() ;
-            }) ;
-        }
-        catch(const std::exception& e) {
-            error_box(wxString::FromUTF8(e.what()) \
-                    + wxT(" Could not initialize win-vind, so terminate." \
-                    + wxT(" (Windows Error Code: ") + std::to_string(GetLastError()) + ")")) ;
-        }
-        return true ;
-    }
-
-    int App::MainLoop() {
-        //create a new thread for back-ground system
-        auto pst = std::make_unique<SystemThread>() ;
-        pst->Run() ;
-
-        return wxApp::MainLoop() ;
-    }
-
-    App::~App() noexcept {
-        if(runnable.load()) {
-            //Core-win_vind is running
-            runnable.store(false) ; //terminate core system
-        }
-    }
-
-    bool App::OnExceptionInMainLoop() {
-        try {
-            throw ; //Rethrow the current exception.
-        }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-        }
-
-        return false ; //exit program
-    }
-
-    void App::OnUnhandledException() {
-        try {
-            throw ; //Rethrow the current exception.
-        }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-        }
-        //the program is already about to exit.
-    }
-
-    inline static bool initialize_config_files() {
+    bool initialize_config_files() {
         auto overwrite_bindings = [] {
             util::copy_file(path::Default::BINDINGS(), path::BINDINGS(), true) ;
         } ;
@@ -302,5 +187,64 @@ namespace wxGUI
 
         finish_pre_initialization() ;
         return true ;
+    }
+
+}
+
+namespace wxGUI
+{
+    bool App::OnInit() {
+        try {
+            if(!wxApp::OnInit()) {
+                return false ;
+            }
+
+            if(!wxTaskBarIcon::IsAvailable()) {
+                wxMessageBox(
+                        wxT("Not supported System Tray"),
+                        wxT("Warning - win-vind"), wxOK | wxICON_EXCLAMATION) ;
+            }
+
+            if(!is_pre_initialized()) {
+                if(!initialize_config_files()) {
+                    return false ;
+                }
+            }
+
+            if(!ioParams::initialize()) {
+                PRINT_ERROR("Failed initialize ioParams.") ;
+                return false ;
+            }
+
+            auto ppd = new PropDlg() ;
+            ppd->Show(true) ;
+        }
+        catch(const std::exception& e) {
+            error_box(wxString::FromUTF8(e.what()) \
+                    + wxT(" Could not initialize win-vind, so terminate." \
+                    + wxT(" (Windows Error Code: ") + std::to_string(GetLastError()) + ")")) ;
+        }
+        return true ;
+    }
+
+    bool App::OnExceptionInMainLoop() {
+        try {
+            throw ; //Rethrow the current exception.
+        }
+        catch(const std::exception& e) {
+            PRINT_ERROR(e.what()) ;
+        }
+
+        return false ; //exit program
+    }
+
+    void App::OnUnhandledException() {
+        try {
+            throw ; //Rethrow the current exception.
+        }
+        catch(const std::exception& e) {
+            PRINT_ERROR(e.what()) ;
+        }
+        //the program is already about to exit.
     }
 }

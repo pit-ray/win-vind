@@ -107,7 +107,7 @@ namespace vind
         auto layoutfile = gparams::get_s("keybrdlayout") ;
         std::string filename ;
         if(!layoutfile.empty()) {
-            filename = path::CONFIG_PATH() + layoutfile ;
+            filename = path::CONFIG_PATH() + "\\" + layoutfile ;
         }
         else {
             auto locale_id = GetKeyboardLayout(0) ;

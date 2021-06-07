@@ -31,7 +31,6 @@
 #include "io_params.hpp"
 #include "ui_translator.hpp"
 #include "wx_constant.hpp"
-#include "wx_system_tray.hpp"
 
 #include "bind/mode/change_mode.hpp"
 #include "entry.hpp"
@@ -43,7 +42,7 @@ namespace wxGUI
 {
     using namespace UITrans ;
     using namespace vind ;
-    constexpr auto APP_NAME = wxT("win-vind") ;
+    constexpr auto APP_NAME = wxT("win-vind Config") ;
 
     using namespace std::chrono ;
     static constexpr auto COOL_TIME = 1s ;
@@ -59,16 +58,13 @@ namespace wxGUI
 
         wxFont* font ;
 
-        system_clock::time_point hot_point ;
-
         explicit Impl(wxWindow* const parent_ptr)
         : panels(),
           ok_btn(nullptr),
           cl_btn(nullptr),
           ap_btn(nullptr),
           parent(parent_ptr),
-          font(nullptr),
-          hot_point(system_clock::now())
+          font(nullptr)
         {
             font = wxFont::New(9, wxFONTFAMILY_TELETYPE, wxFONTFLAG_DEFAULT) ;
         }
@@ -108,8 +104,7 @@ namespace wxGUI
 
     PropDlg::PropDlg()
     : wxPropertySheetDialog(nullptr, wxID_ANY, trans("notify/preferences")),
-      pimpl(std::make_unique<Impl>(this)),
-      ptbi(std::make_unique<SystemTray>(ioParams::get_vs("icon_style"), APP_NAME, this))
+      pimpl(std::make_unique<Impl>(this))
     {
         SetIcon(wxIcon(ioParams::get_vs("icon_style"), wxBITMAP_TYPE_ICO)) ;
 
@@ -146,58 +141,24 @@ namespace wxGUI
         save_config() ; //to arrage style
 
         Bind(wxEVT_BUTTON, [this](auto&) {
-            if(system_clock::now() - pimpl->hot_point < COOL_TIME) {
-                return ;
-            }
-
-            //To avoid duplicate pushes
-            keyabsorber::close_all_ports_with_refresh() ;
-
             save_config() ;
-            vind::load_config() ;
             load_config() ;
-
-            pimpl->hot_point = system_clock::now() ;
         }, wxID_APPLY) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
-            if(system_clock::now() - pimpl->hot_point < COOL_TIME) {
-                return ;
-            }
-
-            save_config() ;
-            vind::load_config() ;
-            Show(false) ;
+            Destroy() ;
         }, wxID_OK) ;
 
         Bind(wxEVT_BUTTON, [this](auto&) {
-            if(system_clock::now() - pimpl->hot_point < COOL_TIME) {
-                return ;
-            }
-
-            Show(false) ;
+            Destroy() ;
         }, wxID_CANCEL) ;
 
         Bind(wxEVT_CLOSE_WINDOW, [this](auto&) {
-            Show(false) ;
+            Destroy() ;
         }) ;
 
         Bind(wxEVT_SIZE, [this](auto&) {
             SetSize(wxSize(WIDTH(), HEIGHT())) ; //Fix the window size
-        }) ;
-
-        Bind(wxEVT_CHAR_HOOK, [](auto& e) {
-            switch(e.GetKeyCode()) {
-                case WXK_ESCAPE: //disable closing window by ESC
-                    return ;
-
-                case WXK_RETURN: //disable pressing OK by Enter
-                    return ;
-
-                default:
-                    e.Skip() ; //others
-                    break ;
-            }
         }) ;
     }
 
@@ -223,20 +184,5 @@ namespace wxGUI
         for(auto& p : pimpl->panels) {
             p->load_config() ;
         }
-    }
-
-    bool PropDlg::Show(bool show) {
-        auto result = wxPropertySheetDialog::Show(show) ;
-
-        //true is shown. false is hidden.
-        if(show) {
-            load_config() ;
-
-            if(!SetForegroundWindow(GetHandle())) {
-                PRINT_ERROR("Preferences Window was not brought to the foreground") ;
-            } //shown as most top window
-        }
-
-        return result ;
     }
 }

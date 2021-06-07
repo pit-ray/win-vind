@@ -12,6 +12,10 @@
 
 #include "util/winwrap.hpp"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 #define KEEPING_LOG_COUNT (5)
 
 //internal linkage
@@ -33,14 +37,14 @@ namespace
         std::vector<std::wstring> files ;
 
         WIN32_FIND_DATAW wfd = {} ;
-        auto handle = FindFirstFileW(vind::util::s_to_ws(log_dir + pattern_withex).c_str(), &wfd) ;
+        auto handle = FindFirstFileW(vind::util::s_to_ws(log_dir + "\\" + pattern_withex).c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }
-        files.push_back(vind::util::s_to_ws(log_dir) + wfd.cFileName) ;
+        files.push_back(vind::util::s_to_ws(log_dir + "\\") + wfd.cFileName) ;
 
         while(FindNextFileW(handle, &wfd)) {
-            files.push_back(vind::util::s_to_ws(log_dir) + wfd.cFileName) ;
+            files.push_back(vind::util::s_to_ws(log_dir + "\\") + wfd.cFileName) ;
         }
         FindClose(handle) ;
 
@@ -77,7 +81,7 @@ namespace vind
 {
     namespace errlogger {
         void initialize() {
-            std::string log_dir = path::ROOT_PATH() + "log\\" ;
+            std::string log_dir = path::ROOT_PATH() + "\\log" ;
 
             SYSTEMTIME stime ;
             GetLocalTime(&stime) ;
@@ -93,8 +97,8 @@ namespace vind
                 util::create_directory(log_dir) ;
             }
 
-            auto efile = log_dir + "error_" + ss.str() + ".log" ;
-            auto mfile = log_dir + "message_" + ss.str() + ".log" ;
+            auto efile = log_dir + "\\error_" + ss.str() + ".log" ;
+            auto mfile = log_dir + "\\message_" + ss.str() + ".log" ;
 
             g_init_error_stream.open(path::to_u8path(efile), std::ios::trunc) ;
             g_error_stream.open(path::to_u8path(efile), std::ios::app) ;

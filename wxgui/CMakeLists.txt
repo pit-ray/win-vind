@@ -41,7 +41,6 @@ set(SOURCE_FILES
     ${SRCDIR}/wx_prop_dlg.cpp
     ${SRCDIR}/wx_settings.cpp
     ${SRCDIR}/wx_shortcut_apps.cpp
-    ${SRCDIR}/wx_system_tray.cpp
     ${SRCDIR}/wxgui.cpp
 
     ${SRCDIR}/main.cpp
@@ -76,6 +75,6 @@ add_executable(${SUB_PROJECT_NAME} WIN32
     ${winresobj}
     ${SOURCE_FILES}
 )
-target_link_libraries(${SUB_PROJECT_NAME} vindcore)
+target_link_libraries(${SUB_PROJECT_NAME} kernel)
 link_wxWidgets(${SUB_PROJECT_NAME})
 enable_cotire(${SUB_PROJECT_NAME})

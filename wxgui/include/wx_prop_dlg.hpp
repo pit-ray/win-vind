@@ -19,7 +19,6 @@ namespace wxGUI
     private:
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
-        std::unique_ptr<SystemTray> ptbi ;
 
         void save_config() ;
         void load_config() ;
@@ -27,8 +26,6 @@ namespace wxGUI
     public:
         explicit PropDlg() ;
         virtual ~PropDlg() noexcept ;
-
-        bool Show(bool show=true) override ;
 
         PropDlg(PropDlg&& rhs) = delete ;
         PropDlg& operator=(PropDlg&& rhs) = delete ;

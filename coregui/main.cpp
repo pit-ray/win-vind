@@ -22,7 +22,7 @@ copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+FITNESS FOR A PARTICULAR MENURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -52,6 +52,7 @@ SOFTWARE.
 #include "entry.hpp"
 #include "err_logger.hpp"
 #include "g_params.hpp"
+#include "path.hpp"
 #include "util/winwrap.hpp"
 
 #include "version.hpp"
@@ -65,18 +66,22 @@ namespace
 
     namespace Event {
         enum : unsigned int {
-            PU_CONFIG = 10001,
-            PU_UPDATE,
-            PU_ABOUT,
-            PU_EXIT,
+            MENU_CONFIG = 10001,
+            MENU_STARTUP,
+            MENU_OPENROOT,
+            MENU_UPDATE,
+            MENU_ABOUT,
+            MENU_EXIT,
 
-            DL_CLOSE,
+            DIALOG_CLOSE,
         } ;
     }
 
     std::atomic_bool g_runnable(true) ;
 
     std::string g_argument_func{} ;
+
+    bool g_startup = true ;
 }
 
 namespace CoreGUI
@@ -96,31 +101,52 @@ namespace CoreGUI
                     std::forward<T3>(tooltips)) ;
 
             Bind(wxEVT_MENU, [this](auto&) {
-                //ppd->Show(true) ;
-            }, Event::PU_CONFIG) ;
+                g_startup = !g_startup ;
+                if(g_startup) {
+                    std::cout << "on\n" ;
+                }
+                else {
+                    std::cout << "off\n" ;
+                }
+            }, Event::MENU_STARTUP) ;
 
             Bind(wxEVT_MENU, [this](auto&) {
-            }, Event::PU_UPDATE) ;
+                using namespace vind ;
+                util::create_process(
+                        path::ROOT_PATH(),
+                        "explorer.exe",
+                        path::CONFIG_PATH()) ;
+            }, Event::MENU_OPENROOT) ;
+
+            Bind(wxEVT_MENU, [this](auto&) {
+                std::cout << "Check Update\n" ;
+            }, Event::MENU_UPDATE) ;
 
             Bind(wxEVT_MENU, [parent](auto&) {
                 parent->CentreOnScreen() ;
                 parent->Show(true) ;
-            }, Event::PU_ABOUT) ;
+            }, Event::MENU_ABOUT) ;
 
             Bind(wxEVT_MENU, [parent](auto&) {
                 parent->Destroy() ;
-            }, Event::PU_EXIT) ;
+            }, Event::MENU_EXIT) ;
         }
 
         virtual wxMenu* CreatePopupMenu() override {
-            auto menu = new wxMenu ;
-            menu->Append(Event::PU_CONFIG, wxT("Preferences")) ;
+            auto menu = new wxMenu() ;
+            //menu->Append(Event::MENU_CONFIG, wxT("Preferences")) ;
+            //menu->AppendSeparator() ;
+            menu->AppendCheckItem(Event::MENU_STARTUP, wxT("Startup with Windows")) ;
             menu->AppendSeparator() ;
-            menu->Append(Event::PU_UPDATE, wxT("Update")) ;
+            menu->Append(Event::MENU_OPENROOT, wxT("Show Root Directory")) ;
+            menu->Append(Event::MENU_UPDATE, wxT("Check Update")) ;
             menu->AppendSeparator() ;
-            menu->Append(Event::PU_ABOUT, wxT("About")) ;
+            menu->Append(Event::MENU_ABOUT, wxT("About")) ;
             menu->AppendSeparator() ;
-            menu->Append(Event::PU_EXIT, wxT("Exit")) ;
+            menu->Append(Event::MENU_EXIT, wxT("Exit")) ;
+
+            menu->Check(Event::MENU_STARTUP, g_startup) ;
+
             return menu ;
         }
     } ;
@@ -180,7 +206,6 @@ namespace CoreGUI
             SetSizerAndFit(root) ;
         }
     } ;
-
 
     //core system is wrought at another thread
     class SystemThread : public wxThread {
@@ -292,8 +317,8 @@ namespace CoreGUI
     public:
         virtual ~App() noexcept {
             if(g_runnable.load()) {
-                //Core-win_vind is running
-                g_runnable.store(false) ; //terminate core system
+                // Core win_vind is running yet, so terminate core system.
+                g_runnable.store(false) ;
             }
         }
     } ;

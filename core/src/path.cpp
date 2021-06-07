@@ -8,12 +8,17 @@
 #include "util/def.hpp"
 #include "util/string.hpp"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
+
 namespace
 {
     using namespace vind::path ;
     inline auto& is_installer_used() {
         static const auto flag = [] {
-            std::ifstream ifs{to_u8path(MODULE_ROOT_PATH() + "default_config\\is_installer_used")} ;
+            std::ifstream ifs{to_u8path(MODULE_ROOT_PATH() + "\\default_config\\is_installer_used")} ;
             std::string str{} ;
             std::getline(ifs, str) ;
             return str.front() == 'y' || str.front() == 'Y' ;
@@ -40,7 +45,7 @@ namespace vind
                 }
                 CloseHandle(token) ;
 
-                return util::ws_to_s(path) + '\\' ;
+                return util::ws_to_s(path) ;
             } () ;
 
             return obj ;
@@ -48,7 +53,7 @@ namespace vind
 
         const std::string& MODULE_ROOT_PATH() {
 #ifdef DEBUG
-            static const auto path = std::string("") ; //project root
+            static const auto path = std::string(".") ; //project root
 #else
             static const auto path = [] {
                 WCHAR module_path[MAX_PATH] = {0} ;
@@ -61,19 +66,19 @@ namespace vind
                     return std::string() ;
                 }
 
-                return module_path_str.substr(0, root_dir_pos + 1) ;
+                return module_path_str.substr(0, root_dir_pos) ;
             }() ;
 #endif
             return path ;
         }
 
         const std::string& ROOT_PATH() {
-            static const auto path = is_installer_used() ? HOME_PATH() + ".win-vind\\" : MODULE_ROOT_PATH() ;
+            static const auto path = is_installer_used() ? HOME_PATH() + "\\.win-vind" : MODULE_ROOT_PATH() ;
             return path ;
         }
 
         const std::string& CONFIG_PATH() {
-            static const auto path = is_installer_used() ? ROOT_PATH() : ROOT_PATH() + "config\\" ;
+            static const auto path = is_installer_used() ? ROOT_PATH() : ROOT_PATH() + "\\config" ;
             return path ;
         }
     }

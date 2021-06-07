@@ -32,30 +32,30 @@ namespace vind
         const std::string& CONFIG_PATH() ;
 
         inline const auto& RC() {
-            static const auto obj = CONFIG_PATH() + ".vindrc" ;
+            static const auto obj = CONFIG_PATH() + "\\.vindrc" ;
             return obj ;
         }
 
         inline const auto& BINDINGS() {
-            static const auto obj = CONFIG_PATH() + "bindings.json" ;
+            static const auto obj = CONFIG_PATH() + "\\bindings.json" ;
             return obj ;
         }
         inline const auto& SETTINGS() {
-            static const auto obj = CONFIG_PATH() + "settings.json" ;
+            static const auto obj = CONFIG_PATH() + "\\settings.json" ;
             return obj ;
         }
 
         namespace Default {
             inline const auto& BINDINGS() {
-                static const auto& obj = MODULE_ROOT_PATH() + "default_config\\bindings.json" ;
+                static const auto& obj = MODULE_ROOT_PATH() + "\\default_config\\bindings.json" ;
                 return obj ;
             }
             inline const auto& SETTINGS() {
-                static const auto obj = MODULE_ROOT_PATH() + "default_config\\settings.json" ;
+                static const auto obj = MODULE_ROOT_PATH() + "\\default_config\\settings.json" ;
                 return obj ;
             }
             inline const auto& UI() {
-                static const auto& obj = MODULE_ROOT_PATH() + "default_config\\ui.json" ;
+                static const auto& obj = MODULE_ROOT_PATH() + "\\default_config\\ui.json" ;
                 return obj ;
             }
         }

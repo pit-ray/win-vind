@@ -85,14 +85,6 @@ namespace vind
                 shell_cmd_flag = gparams::get_s("shellcmdflag") ;
             }
 
-            auto dir = explorer::get_current_explorer_path() ;
-            if(dir.empty()) {
-                dir = gparams::get_s("shell_startup_dir") ;
-                if(dir.empty()) {
-                    dir = path::HOME_PATH() ;
-                }
-            }
-
             auto last_char_pos = cmd.find_last_not_of(" ") ;
 
             if(cmd[last_char_pos] == ';') { //keep console window

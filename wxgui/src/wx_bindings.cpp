@@ -42,7 +42,6 @@
 #include "bind/mode/change_mode.hpp"
 #include "io/mouse.hpp"
 #include "io_params.hpp"
-#include "key/key_absorber.hpp"
 #include "util/winwrap.hpp"
 
 #include "ui_translator.hpp"
@@ -740,9 +739,6 @@ namespace wxGUI
 
             pimpl->edit_with_vim->Disable() ;
 
-            //release a message to push [Edit with Vim] button.
-            keyabsorber::close_all_ports_with_refresh() ;
-
             try {
                 create(gvim_exe) ;
             }
@@ -758,8 +754,6 @@ namespace wxGUI
 
             CloseHandle(pi.hProcess) ;
             CloseHandle(pi.hThread) ;
-
-            keyabsorber::close_all_ports_with_refresh() ;
 
             nlohmann::json new_json ;
             std::ifstream ifs(path::to_u8path(temp_path)) ;

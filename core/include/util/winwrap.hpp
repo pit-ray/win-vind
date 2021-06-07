@@ -59,11 +59,16 @@ namespace vind
             PROCESS_INFORMATION pi ;
             ZeroMemory(&pi, sizeof(pi)) ;
 
+            LPCWSTR current_dir_ptr = NULL ;
+            if(!current_dir.empty()) {
+                current_dir_ptr = s_to_ws(current_dir).c_str() ;
+            }
+
             if(!CreateProcessW(
                 NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
                 NULL, NULL, FALSE,
                 CREATE_NEW_CONSOLE | CREATE_DEFAULT_ERROR_MODE, NULL,
-                s_to_ws(current_dir).c_str(),
+                current_dir_ptr,
                 &si, &pi)) {
 
                 throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;

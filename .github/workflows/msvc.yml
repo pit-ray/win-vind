@@ -12,11 +12,14 @@ env:
   BUILD_TYPE: Debug
 
 jobs:
-  Windows-MSVC-64bit:
+  MSVC-64bit:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
 
     - name: Setup Library
       run: "scripts/setup_libs.bat -msvc 64"
@@ -29,11 +32,14 @@ jobs:
       run: |
         cmake --build ${{github.workspace}}/build_64_msvc --config ${{env.BUILD_TYPE}}
 
-  Windows-MSVC-32bit:
+  MSVC-32bit:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x86
 
     - name: Setup Library
       run: "scripts/setup_libs.bat -msvc 32"

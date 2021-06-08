@@ -35,7 +35,7 @@
 
     @if %compiler% == -msvc (
         if %3 == 32 (
-            cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A Win32 -DBIT_TYPE=32 .
+            cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A win32 -DBIT_TYPE=32 .
             cmake --build release_32 --config Release
             xcopy /e /Y ".\\release_32\\coregui\\Release\\*.exe" "release"
             xcopy /e /Y ".\\release_32\\wxgui\\Release\\*.exe" "release"

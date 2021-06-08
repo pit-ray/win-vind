@@ -29,10 +29,10 @@
             <a href="https://travis-ci.org/pit-ray/win-vind"><img src="https://travis-ci.org/pit-ray/win-vind.svg?branch=master" /></a>
         </td>
         <td align="center">
-            <a href="https://ci.appveyor.com/project/pit-ray/win-vind"><img src="https://ci.appveyor.com/api/projects/status/qoggl832qqbic5f5?svg=true" /></a>  
+            <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml/badge.svg"></a>
         </td>
         <td align="center">
-            <a href="https://github.com/pit-ray/win-vind/actions/workflows/cmake.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/cmake.yml/badge.svg?branch=master"></a>  
+            <a href="https://github.com/pit-ray/win-vind/actions/workflows/test.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/test.yml/badge.svg"></a>
         </td>
     </tr>
 </table>

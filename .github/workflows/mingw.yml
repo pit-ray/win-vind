@@ -16,10 +16,15 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: egor-tensin/setup-mingw@v2
+    - uses: actions/checkout@ 
+
+    - uses: msys2/setup-msys2@v2
       with:
-        platform: x64
+        msystem: MINGW64
+
+      #- uses: egor-tensin/setup-mingw@v2
+      #with:
+      #  platform: x64
 
     - name: Setup Library
       run: "scripts/setup_libs.bat -mingw 64"

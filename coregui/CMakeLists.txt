@@ -26,6 +26,7 @@ include_directories(
 set(SOURCE_FILES
     src/about.cpp
     src/main.cpp
+    src/startup.cpp
     src/tray.cpp
 )
 

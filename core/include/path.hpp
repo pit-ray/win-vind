@@ -25,6 +25,8 @@ namespace vind
 
         const std::string& HOME_PATH() ;
 
+        const std::string& MODULE_PATH() ;
+
         const std::string& MODULE_ROOT_PATH() ;
 
         const std::string& ROOT_PATH() ;

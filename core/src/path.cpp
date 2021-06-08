@@ -51,23 +51,37 @@ namespace vind
             return obj ;
         }
 
-        const std::string& MODULE_ROOT_PATH() {
-#ifdef DEBUG
-            static const auto path = std::string(".") ; //project root
-#else
-            static const auto path = [] {
+        const std::string& MODULE_PATH() {
+            static auto path = [] {
                 WCHAR module_path[MAX_PATH] = {0} ;
                 if(GetModuleFileNameW(NULL, module_path, MAX_PATH) == 0) {
                     return std::string() ;
                 }
-                auto module_path_str = util::ws_to_s(module_path) ;
+                return util::ws_to_s(module_path) ;
+            } () ;
+            return path ;
+        }
+
+        const std::string& MODULE_ROOT_PATH() {
+#ifdef DEBUG
+            //project root
+            static const auto path = [] {
+                WCHAR root_path[MAX_PATH] = {0} ;
+                if(GetCurrentDirectory(MAX_PATH, root_path) == 0) {
+                    return std::string() ;
+                }
+                return util::ws_to_s(root_path) ;
+            } () ;
+#else
+            static const auto path = [] {
+                auto module_path_str = MODULE_PATH() ;
                 auto root_dir_pos = module_path_str.find_last_of("/\\") ;
                 if(root_dir_pos == std::string::npos) {
                     return std::string() ;
                 }
 
                 return module_path_str.substr(0, root_dir_pos) ;
-            }() ;
+            } () ;
 #endif
             return path ;
         }

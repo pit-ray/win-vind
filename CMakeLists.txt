@@ -202,7 +202,7 @@ add_subdirectory(core)
 
 add_subdirectory(coregui)
 
-add_subdirectory(wxgui)
+# add_subdirectory(wxgui)
 
 #CPack-----------------------------------------------------------------------------
 install(TARGETS win-vind RUNTIME DESTINATION .)

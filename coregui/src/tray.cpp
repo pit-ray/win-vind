@@ -10,7 +10,12 @@
 #include "path.hpp"
 #include "util/winwrap.hpp"
 
+#include "startup.hpp"
 #include "tray.hpp"
+
+#ifdef DEBUG
+#include "err_logger.hpp"
+#endif
 
 
 namespace
@@ -42,10 +47,10 @@ namespace vindgui
         Bind(wxEVT_MENU, [this](auto&) {
             g_startup = !g_startup ;
             if(g_startup) {
-                std::cout << "on\n" ;
+                register_to_startup() ;
             }
             else {
-                std::cout << "off\n" ;
+                remove_from_startup() ;
             }
         }, MENU_STARTUP) ;
 
@@ -84,6 +89,7 @@ namespace vindgui
         menu->AppendSeparator() ;
         menu->Append(MENU_EXIT, wxT("Exit")) ;
 
+        g_startup = check_if_registered() ;
         menu->Check(MENU_STARTUP, g_startup) ;
 
         return menu ;

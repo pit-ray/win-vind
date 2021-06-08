@@ -89,7 +89,7 @@ TEST_CASE("(coreio/errlogger/remove_files_over) Under Fake Windows API: ")  {
         FindFirstFileW_custom_fake_return_val = INVALID_HANDLE_VALUE ;
 
         CHECK_NOTHROW(remove_files_over(log_dir, pattern, 5)) ;
-        CHECK_EQ(std::strcmp(FindFirstFileW_custom_fake_arg0_val.c_str(), "AB"), 0) ;
+        CHECK_EQ(std::strcmp(FindFirstFileW_custom_fake_arg0_val.c_str(), "A\\B"), 0) ;
     }
 
     SUBCASE("Find smaller files than the passed number") {
@@ -116,7 +116,7 @@ TEST_CASE("(coreio/errlogger/remove_files_over) Under Fake Windows API: ")  {
         CHECK_NOTHROW(remove_files_over(log_dir, pattern, 2)) ;
         CHECK_GT(DeleteFileW_fake.call_count, 0) ;
 
-        CHECK_EQ(std::strncmp(DeleteFileW_custom_fake_arg0_val.c_str(), "A\0C", 2), 0) ;
+        CHECK_EQ(std::strncmp(DeleteFileW_custom_fake_arg0_val.c_str(), "A\\\0C", 2), 0) ;
     }
 }
 

@@ -1,0 +1,37 @@
+name: test
+
+on:
+  push:
+    branches: [ master ]
+    tags:
+      - v*.*.*
+  pull_request:
+    branches: [ master ]
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  test-on-Windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Test Framework
+      run: "scripts/setup_test_framework.bat"
+
+    - name: Configure CMake
+      run: |
+        cmake -B ${{github.workspace}}/test/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} test
+
+    - name: Build
+      run: |
+        cmake --build ${{github.workspace}}/test/build --config ${{env.BUILD_TYPE}}
+
+    - name: Test
+      working-directory: ${{github.workspace}}
+      run: |
+        cd test/build
+        ctest -C ${{env.BUILD_TYPE}}
+        cd ../..

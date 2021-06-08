@@ -10,7 +10,6 @@ namespace
     using namespace vind::mode ;
     const auto g_mode_prefix = [] {
         std::array<std::string, mode_num()> tmp ;
-        for(auto& e : tmp) e.clear() ;
         tmp[static_cast<int>(Mode::INSERT)]     = "i" ;
         tmp[static_cast<int>(Mode::GUI_NORMAL)] = "gn" ;
         tmp[static_cast<int>(Mode::GUI_VISUAL)] = "gv" ;

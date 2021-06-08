@@ -1,11 +1,7 @@
 cd libs
-@if not exist nlohmann (
-    mkdir nlohmann
+@if not exist json (
+    git clone https://github.com/nlohmann/json.git -b v3.9.1 --depth=1
+    powershell cp -r json/single_include/nlohmann .
 )
-cd nlohmann
-@if not exist json.hpp (
-    @echo Downloading now from GitHub...
-    powershell Invoke-WebRequest https://github.com/nlohmann/json/releases/download/v3.9.1/json.hpp -OutFile json.hpp -UseBasicParsing
-)
-cd ../..
+cd ..
 @echo Installed nlohmann/json successfully

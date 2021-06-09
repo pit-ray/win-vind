@@ -37,6 +37,11 @@
     </tr>
 </table>
   
+<br>  
+
+## Notice: We will release 4.x with a major update in June.  
+
+<br>  
 
 ## Description
 **win-vind** provides the lightweight hybrid UI system of CUI and GUI. Its core idea is to add a new mode layer to operate GUI when you want to transition from Vim to other windows for a short while.  

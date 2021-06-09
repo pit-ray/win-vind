@@ -107,6 +107,10 @@ namespace vind
 {
     bool initialize(const std::string& func_name) noexcept {
         try {
+            if(!util::is_existed_dir(path::CONFIG_PATH())) {
+                util::create_directory(path::CONFIG_PATH()) ;
+            }
+
             errlogger::initialize() ;
 
             auto created_map = CreateFileMappingA(

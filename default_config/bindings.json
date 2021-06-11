@@ -612,6 +612,18 @@
         "ja": "ウィンドウを切替"
     },
     {
+        "name": "window_resizer",
+        "cdef": ["wr", "resizer"],
+        "endef": [],
+        "evdef": [],
+        "gndef": ["<C-w>e"],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Window Resizer",
+        "ja": "ウィンドウリサイザ"
+    },
+    {
         "name": "select_left_window",
         "cdef": [],
         "endef": [],

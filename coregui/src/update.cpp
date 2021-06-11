@@ -137,7 +137,14 @@ namespace vindgui
                         std::stoull(mmp[2]) ;
                     } ;
 
-                    auto current = to_val_v(vind::util::split(WIN_VIND_VERSION, ".")) ;
+                    auto current = to_val_v(vind::util::split(
+#if defined(DEBUG)
+                                "1.0.0"
+#else
+                                WIN_VIND_VERSION
+#endif
+                                , ".")) ;
+
                     auto latest  = to_val_v(vind::util::split(tag_name.substr(1), ".")) ;
 
                     if(current < latest) {

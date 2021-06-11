@@ -11,7 +11,7 @@ namespace
 {
     using namespace std::chrono ;
 
-    inline auto const_accelerate(float velocity, float ms) noexcept {
+    inline auto uniform_accelerate(float velocity, float ms) noexcept {
         //hardcoded
         constexpr auto MAX_ACCELERATION = 1.0f ;
         constexpr auto MAX_VELOCITY     = 1.0f ;
@@ -124,7 +124,7 @@ namespace vind
         //sampling
         if(!pimpl->timer_.is_passed()) return false ;
 
-        pimpl->v_ = const_accelerate(pimpl->v_, static_cast<float>(dt.count())) ;
+        pimpl->v_ = uniform_accelerate(pimpl->v_, static_cast<float>(dt.count())) ;
         if(pimpl->v_ < generate_uniform()) {
             return false ;
         }

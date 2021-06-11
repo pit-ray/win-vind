@@ -178,7 +178,7 @@ set(wxWidgets_USE_STATIC ON)
 
 set(wxWidgets_INCLUDE_DIRS ${wxWidgets_ROOT_DIR}/include)
 set(_WX_TOOL gcc_x64 FORCE)
-find_package(wxWidgets COMPONENTS adv core base REQUIRED)
+find_package(wxWidgets COMPONENTS html adv core base REQUIRED)
 
 if(NOT wxWidgets_FOUND)
     message(FATAL_ERROR "Could not find wxWidgets")

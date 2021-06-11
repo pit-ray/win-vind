@@ -12,6 +12,7 @@
 
 #include "startup.hpp"
 #include "tray.hpp"
+#include "update.hpp"
 
 #ifdef DEBUG
 #include "err_logger.hpp"
@@ -58,12 +59,18 @@ namespace vindgui
             using namespace vind ;
             util::create_process(
                     path::ROOT_PATH(),
-                    "explorer.exe",
+                    "explorer",
                     path::CONFIG_PATH()) ;
         }, MENU_OPENROOT) ;
 
-        Bind(wxEVT_MENU, [this](auto&) {
-            std::cout << "Check Update\n" ;
+        Bind(wxEVT_MENU, [parent](auto&) {
+            auto dlg = new UpdateDialog(
+                    parent,
+                    vind::gparams::get_s("icon_style"),
+                    vind::gparams::get_i("gui_font_size"),
+                    vind::gparams::get_s("gui_font_name")) ;
+            dlg->CenterOnScreen() ;
+            dlg->Show(true) ;
         }, MENU_UPDATE) ;
 
         Bind(wxEVT_MENU, [parent](auto&) {
@@ -82,7 +89,7 @@ namespace vindgui
         //menu->AppendSeparator() ;
         menu->AppendCheckItem(MENU_STARTUP, wxT("Startup with Windows")) ;
         menu->AppendSeparator() ;
-        menu->Append(MENU_OPENROOT, wxT("Show Root Directory")) ;
+        menu->Append(MENU_OPENROOT, wxT("Open Root Directory")) ;
         menu->Append(MENU_UPDATE, wxT("Check Update")) ;
         menu->AppendSeparator() ;
         menu->Append(MENU_ABOUT, wxT("About")) ;

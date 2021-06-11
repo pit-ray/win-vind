@@ -93,6 +93,7 @@ namespace vindgui
                     return false ;
                 }
 
+                // Root window
                 auto dlg = new vindgui::AboutDialog(
                         vind::gparams::get_s("icon_style"),
                         "win-vind",
@@ -100,13 +101,6 @@ namespace vindgui
                         vind::gparams::get_s("gui_font_name")) ;
 
                 dlg->Show(false) ;
-
-                //enable opening window by command
-                /*
-                vind::register_show_window_func([ppd] {
-                    //ppd->Show(true) ;
-                }) ;
-                */
 
                 vind::register_exit_window_func([dlg] {
                     dlg->Destroy() ;
@@ -128,17 +122,27 @@ namespace vindgui
         }
 
         void OnInitCmdLine(wxCmdLineParser& parser) override {
+            parser.AddSwitch(
+                    wxT("h"),
+                    wxT("help"),
+                    wxT("Print usage and exit"),
+                    wxCMD_LINE_PARAM_OPTIONAL) ;
+
             parser.AddOption(
                     wxT("f"),
                     wxT("func"),
-                    wxT("FunctionName"),
+                    wxT("Identifier of the function to call in one-shot"),
                     wxCMD_LINE_VAL_STRING,
                     wxCMD_LINE_PARAM_OPTIONAL) ;
         }
 
         bool OnCmdLineParsed(wxCmdLineParser& parser) override {
             wxString fn ;
-            if(parser.Found(wxT("func"), &fn)) {
+            if(parser.Found(wxT("help"))) {
+                parser.Usage() ;
+                return false ;
+            }
+            else if(parser.Found(wxT("func"), &fn)) {
                 g_argument_func = fn.ToStdString() ;
             }
             return true ;

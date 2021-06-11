@@ -23,6 +23,8 @@ namespace vind
 #endif
         }
 
+        bool is_installer_used() ;
+
         const std::string& HOME_PATH() ;
 
         const std::string& MODULE_PATH() ;

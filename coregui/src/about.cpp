@@ -13,6 +13,7 @@
 #include "enable_gcc_warning.hpp"
 
 #include "err_logger.hpp"
+#include "font.hpp"
 
 #include "version.hpp"
 
@@ -29,14 +30,7 @@ namespace vindgui
     {
         SetIcon(wxIcon(iconpath, wxBITMAP_TYPE_ICO)) ;
 
-        auto font = wxFont::New(9, wxFONTFAMILY_TELETYPE, wxFONTFLAG_DEFAULT) ;
-        font->SetPointSize(font_size) ;
-        if(wxFontEnumerator().IsValidFacename(font_name)) {
-            font->SetFaceName(font_name) ;
-        }
-        else {
-            PRINT_ERROR("The font name " + font_name + " is not available.") ;
-        }
+        auto font = create_font(font_size, font_name) ;
 
         auto root = new wxBoxSizer(wxVERTICAL) ;
 
@@ -63,7 +57,16 @@ namespace vindgui
             Show(false) ;
         }, wxID_CLOSE) ;
 
+        Bind(wxEVT_CLOSE_WINDOW, [this](auto&) {
+            Show(false) ;
+        }) ;
+
         SetSizerAndFit(root) ;
+
+        SetBackgroundColour(wxColour(*wxWHITE)) ;
+        for(auto node = GetChildren().GetFirst() ; node ; node = node->GetNext()) {
+            node->GetData()->SetBackgroundColour(wxColour(*wxWHITE)) ;
+        }
     }
 
     AboutDialog::~AboutDialog() noexcept = default ;

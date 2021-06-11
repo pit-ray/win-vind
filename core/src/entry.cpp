@@ -101,6 +101,25 @@ namespace
         return std::unique_ptr<void, decltype(unmap_view)>(
                 MapViewOfFile(map, FILE_MAP_WRITE, 0, 0, 0), unmap_view) ;
     }
+
+
+    inline bool show_mouse_cursor() {
+        //Thus, send lowlevel move event in order to show cursor.
+        INPUT in ;
+        in.type           = INPUT_MOUSE ;
+        in.mi.dx          = 1 ;
+        in.mi.dy          = 1 ;
+        in.mi.mouseData   = 0 ;
+        in.mi.dwFlags     = MOUSEEVENTF_MOVE ;
+        in.mi.time        = 0 ;
+        in.mi.dwExtraInfo = GetMessageExtraInfo() ;
+
+        if(!SendInput(1, &in, sizeof(INPUT))) {
+            PRINT_ERROR("SendInput, MOUSEEVENTF_MOVE") ;
+            return false ;
+        }
+        return true ;
+    }
 }
 
 namespace vind
@@ -153,23 +172,6 @@ namespace vind
                 std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
             }
 
-            //show mouse cursor
-            //When Windows was started up, cursor is hidden until move mouse by default.
-            //Thus, send lowlevel move event in order to show cursor.
-            INPUT in ;
-            in.type           = INPUT_MOUSE ;
-            in.mi.dx          = 1 ;
-            in.mi.dy          = 1 ;
-            in.mi.mouseData   = 0 ;
-            in.mi.dwFlags     = MOUSEEVENTF_MOVE ;
-            in.mi.time        = 0 ;
-            in.mi.dwExtraInfo = GetMessageExtraInfo() ;
-
-            if(!SendInput(1, &in, sizeof(INPUT))) {
-                PRINT_ERROR("SendInput, MOUSEEVENTF_MOVE") ;
-                return false ;
-            }
-
             //enable high DPI support
             if(!SetProcessDPIAware()) {
                 PRINT_ERROR("Your system is not supported DPI.") ;
@@ -194,7 +196,11 @@ namespace vind
             //If you use debugger, must be disable this line not to be slow.
             keyabsorber::install_hook() ;
 
-            //initialize system mode
+            // When Windows was started up, cursor is hidden until move mouse by default.
+            if(!show_mouse_cursor()) {
+                return false ;
+            }
+
             using namespace vind::mode ;
             std::unordered_map<std::string, BindedFunc::SPtr> cm {
                 {to_prefix(Mode::EDI_NORMAL), ToEdiNormal::create()},

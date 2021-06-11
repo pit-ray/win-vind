@@ -93,14 +93,14 @@ namespace vind
                 // wrap a command with "pause" to keep console window instead of vimrun.exe.
                 util::create_process(
                         get_shell_startup_directory(),
-                        "cmd", "/c",
+                        "cmd", util::concat_args("/c",
                         shell_cmd, shell_cmd_flag, cmd,
-                        "& pause") ;
+                        "& pause")) ;
             }
             else {
                 util::create_process(
                         get_shell_startup_directory(),
-                        shell_cmd, shell_cmd_flag, cmd) ;
+                        shell_cmd, util::concat_args(shell_cmd_flag, cmd)) ;
             }
 
             Sleep(100) ; //wait until the window is selectable

@@ -25,9 +25,11 @@ include_directories(
 
 set(SOURCE_FILES
     src/about.cpp
+    src/font.cpp
     src/main.cpp
     src/startup.cpp
     src/tray.cpp
+    src/update.cpp
 )
 
 #build all
@@ -71,6 +73,6 @@ else()
     endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} vindcore)
+target_link_libraries(${PROJECT_NAME} vindcore Ws2_32)
 link_wxWidgets(${PROJECT_NAME})
 enable_cotire(${PROJECT_NAME})

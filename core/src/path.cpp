@@ -13,23 +13,22 @@
 #endif
 
 
-namespace
-{
-    using namespace vind::path ;
-    inline auto& is_installer_used() {
-        static const auto flag = [] {
-            std::ifstream ifs{to_u8path(MODULE_ROOT_PATH() + "\\default_config\\is_installer_used")} ;
-            std::string str{} ;
-            std::getline(ifs, str) ;
-            return str.front() == 'y' || str.front() == 'Y' ;
-        }() ;
-        return flag ;
-    }
-}
-
 namespace vind
 {
     namespace path {
+        bool is_installer_used() {
+            static const auto flag = [] {
+                std::ifstream ifs{to_u8path(MODULE_ROOT_PATH() + "\\default_config\\is_installer_used")} ;
+                if(!ifs.is_open()) {
+                    return false ;
+                }
+                std::string str{} ;
+                std::getline(ifs, str) ;
+                return str.front() == 'y' || str.front() == 'Y' ;
+            }() ;
+            return flag ;
+        }
+
         const std::string& HOME_PATH() {
             static const auto obj = [] {
                 HANDLE token ;

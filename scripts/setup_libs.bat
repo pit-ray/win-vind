@@ -33,6 +33,21 @@
 call "scripts/install_nlohmann_json.bat" %1 %2
 :end_of_nlohmann_json
 
+@echo Setup maddy ----------------------------------------------------------------------
+@if exist libs/maddy (
+    @if "%3" == "-update" (
+        @goto start_setup_maddy
+    )
+    @echo.
+    @echo maddy is already installed. If you want to re-install, pass -update as the third argument.
+    @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
+    @echo.
+    @goto end_of_setup_maddy
+)
+:start_setup_maddy
+call "scripts/install_maddy.bat" %1 %2
+:end_of_setup_maddy
+
 @echo.
 @echo Setup wxWidgets --------------------------------------------------------------------------
 @echo.

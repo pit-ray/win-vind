@@ -86,7 +86,7 @@
     cmake --build test/build
 
     cd test/build
-    ctest
+    ctest -C Debug
     cd ../..
     @goto exit
 

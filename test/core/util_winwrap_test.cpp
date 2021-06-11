@@ -5,6 +5,7 @@
 #include "fakes/util_fake_string.hpp"
 
 #include "util/winwrap.cpp"
+#include "util/winwrap.hpp"
 
 #include <processthreadsapi.h>
 
@@ -163,19 +164,19 @@ TEST_CASE("util/winwrap Under Fake Windows API: ") {
 
     SUBCASE("(util::create_process) Argument Test") {
         CreateProcessW_fake.custom_fake = CreateProcessW_custom_fake ;
-        create_process("DIRECTORY", "COMMAND", "A", "B") ;
+        create_process("DIRECTORY", "COMMAND", concat_args("A", "B")) ;
         CHECK_EQ(std::strcmp(from_fake_wstr(CreateProcessW_custom_fake_arg_cmd).c_str(), "COMMAND A B"), 0) ;
         CHECK_EQ(std::strcmp(from_fake_wstr(CreateProcessW_custom_fake_arg_dir).c_str(), "DIRECTORY"), 0) ;
     }
     SUBCASE("(util::create_process) Path Protect Test") {
         CreateProcessW_fake.custom_fake = CreateProcessW_custom_fake ;
-        create_process("DIRECTORY", "Program Files/COMMAND", "A", "B") ;
+        create_process("DIRECTORY", "Program Files/COMMAND", concat_args("A", "B")) ;
         CHECK_EQ(std::strcmp(from_fake_wstr(CreateProcessW_custom_fake_arg_cmd).c_str(), "\"Program Files/COMMAND\" A B"), 0) ;
         CHECK_EQ(std::strcmp(from_fake_wstr(CreateProcessW_custom_fake_arg_dir).c_str(), "DIRECTORY"), 0) ;
     }
     SUBCASE("(util::create_process) Exception Error") {
         CreateProcessW_fake.return_val = FALSE ;
-        CHECK_THROWS_AS(create_process("DIR", "CMD", "A", "B"), std::runtime_error) ;
+        CHECK_THROWS_AS(create_process("DIR", "CMD", concat_args("A", "B")), std::runtime_error) ;
     }
 }
 

@@ -1,3 +1,4 @@
+#include "util/def.hpp"
 #include "util/winwrap.hpp"
 
 #include <iostream>
@@ -40,6 +41,57 @@ namespace vind
                         !b_to_B(allow_overwrite))) {
 
                 throw RUNTIME_EXCEPT("Could not copy a file from " + src + " to " + dst + ".") ;
+            }
+        }
+
+        void create_process(
+                const std::string& current_dir,
+                std::string cmd,
+                const std::string& args,
+                bool show_console_window) {
+
+            //protect path with quotation marks for security.
+            if(cmd.find(" ") != std::string::npos) {
+                if(cmd.front() != '\"' || cmd.back() != '\"') {
+                    cmd = "\"" + cmd + "\"" ;
+                }
+            }
+
+            if(args.front() != ' ') {
+                cmd += " " ;
+            }
+            cmd += args ;
+
+            STARTUPINFOW si ;
+            ZeroMemory(&si, sizeof(si)) ;
+            si.cb = sizeof(si) ;
+
+            PROCESS_INFORMATION pi ;
+            ZeroMemory(&pi, sizeof(pi)) ;
+
+            DWORD flags = CREATE_DEFAULT_ERROR_MODE ;
+            flags |= show_console_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW ;
+
+            if(!CreateProcessW(
+                NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
+                NULL, NULL, FALSE,
+                flags, NULL,
+                current_dir.empty() ? NULL : s_to_ws(current_dir).c_str(),
+                &si, &pi)) {
+
+                throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
+            }
+
+            CloseHandle(pi.hProcess) ;
+            CloseHandle(pi.hThread) ;
+        }
+
+        void shell_execute_open(const std::string& url) {
+            if(reinterpret_cast<HINSTANCE>(32) > ShellExecuteW(
+                            NULL, L"open",
+                            util::s_to_ws(url).c_str(),
+                            NULL, NULL, SW_SHOWNORMAL)) {
+                throw RUNTIME_EXCEPT("Could not open " + url) ;
             }
         }
     }

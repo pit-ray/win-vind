@@ -32,46 +32,24 @@ namespace vind
                 const std::string& dst,
                 bool allow_overwrite=false) ;
 
-        template <typename... Ts>
+        template <typename ...Args>
+        std::string concat_args(Args&&... args) {
+            std::initializer_list<std::string> arglist = {
+                std::forward<Args>(args)...} ;
+            std::string out ;
+            for(auto& arg : arglist) {
+                out += " " + arg ;
+            }
+            return out ;
+        }
+
         void create_process(
                 const std::string& current_dir,
                 std::string cmd,
-                Ts&&... args) {
+                const std::string& args="",
+                bool show_console_window=true) ;
 
-            std::initializer_list<std::string> arglist = {
-                std::forward<Ts>(args)...} ;
-
-            //protect path with quotation marks for security.
-            if(cmd.find(" ") != std::string::npos) {
-                if(cmd.front() != '\"' || cmd.back() != '\"') {
-                    cmd = "\"" + cmd + "\"" ;
-                }
-            }
-
-            for(const auto& arg : arglist) {
-                cmd += " " + arg ;
-            }
-
-            STARTUPINFOW si ;
-            ZeroMemory(&si, sizeof(si)) ;
-            si.cb = sizeof(si) ;
-
-            PROCESS_INFORMATION pi ;
-            ZeroMemory(&pi, sizeof(pi)) ;
-
-            if(!CreateProcessW(
-                NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
-                NULL, NULL, FALSE,
-                CREATE_NEW_CONSOLE | CREATE_DEFAULT_ERROR_MODE, NULL,
-                current_dir.empty() ? NULL : s_to_ws(current_dir).c_str(),
-                &si, &pi)) {
-
-                throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
-            }
-
-            CloseHandle(pi.hProcess) ;
-            CloseHandle(pi.hThread) ;
-        }
+        void shell_execute_open(const std::string& url) ;
     }
 }
 

@@ -612,6 +612,18 @@
         "ja": "ウィンドウを切替"
     },
     {
+        "name": "window_resizer",
+        "cdef": ["wr", "resizer"],
+        "endef": [],
+        "evdef": [],
+        "gndef": ["<C-w>e"],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Window Resizer",
+        "ja": "ウィンドウリサイザ"
+    },
+    {
         "name": "select_left_window",
         "cdef": [],
         "endef": [],
@@ -1654,6 +1666,13 @@
             "im <any>",
             "imap <any>",
 
+            "rm",
+            "rmap",
+            "rm ",
+            "rmap ",
+            "rm <any>",
+            "rmap <any>",
+
             "cm",
             "cmap",
             "cm ",
@@ -1707,6 +1726,13 @@
             "inoremap ",
             "ino <any>",
             "inoremap <any>",
+
+            "rno",
+            "rnoremap",
+            "rno ",
+            "rnoremap ",
+            "rno <any>",
+            "rnoremap <any>",
 
             "cno",
             "cnoremap",
@@ -1762,6 +1788,13 @@
             "iu <any>",
             "iunmap <any>",
 
+            "ru",
+            "runmap",
+            "ru ",
+            "runmap ",
+            "ru <any>",
+            "runmap <any>",
+
             "cu",
             "cunmap",
             "cu ",
@@ -1815,6 +1848,13 @@
             "imapclear ",
             "imapc <any>",
             "imapclear <any>",
+
+            "rmapc",
+            "rmapclear",
+            "rmapc ",
+            "rmapclear ",
+            "rmapc <any>",
+            "rmapclear <any>",
 
             "cmapc",
             "cmapclear",

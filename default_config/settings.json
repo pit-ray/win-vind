@@ -175,7 +175,7 @@
         "ja": "フェードアウト時間 (s)"
     },
     "gui_font_size": {
-        "value": 9,
+        "value": 11,
         "en": "GUI Font Size",
         "ja": "GUIのフォントサイズ"
     },

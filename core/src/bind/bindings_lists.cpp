@@ -53,6 +53,7 @@
 #include "bind/window/snap_window.hpp"
 #include "bind/window/split_open_window.hpp"
 #include "bind/window/switch_window.hpp"
+#include "bind/window/window_resizer.hpp"
 
 #include "bind/syscmd/command.hpp"
 #include "bind/syscmd/map.hpp"
@@ -199,6 +200,7 @@ namespace vind
                 SwitchVDesktop2Right::create(),
                 SwitchWindow::create(),
                 TaskView::create(),
+                WindowResizer::create(),
 
                 SyscmdSet::create(),
                 SyscmdMap::create(),

@@ -23,14 +23,12 @@ namespace vind
         FuncFinder funcfinder_ ;
         std::size_t left_id_ ;
         std::size_t right_id_ ;
-        std::size_t active_id_ ;
         KeyStrokeRepeater ksr_ ;
 
         explicit Impl()
         : funcfinder_(),
           left_id_(MoveCaretLeft().id()),
           right_id_(MoveCaretRight().id()),
-          active_id_(0),
           ksr_()
         {}
 
@@ -77,6 +75,7 @@ namespace vind
         pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 
         NTypeLogger lgr ;
+        std::size_t actid = 0 ;
         while(vind::update_background()) {
             if(!NTYPE_LOGGED(lgr.logging_state())) {
                 continue ;
@@ -84,11 +83,11 @@ namespace vind
 
             if(lgr.is_long_pressing()) {
                 if(pimpl->ksr_.is_pressed()) {
-                    pimpl->call_op(pimpl->active_id_) ;
+                    pimpl->call_op(actid) ;
                 }
                 continue ;
             }
-            pimpl->active_id_ = 0 ;
+            actid = 0 ;
 
             if(lgr.latest().is_containing(KEYCODE_ESC)) {
                 break ;
@@ -104,7 +103,7 @@ namespace vind
 
                 if(parser->is_accepted()) {
                     if(pimpl->is_valid_id(id)) {
-                        pimpl->active_id_ = id ;
+                        actid = id ;
 
                         lgr.accept() ;
                         pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;

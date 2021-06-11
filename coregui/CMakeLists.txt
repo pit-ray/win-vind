@@ -73,6 +73,6 @@ else()
     endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} vindcore Ws2_32)
+target_link_libraries(${PROJECT_NAME} vindcore)
 link_wxWidgets(${PROJECT_NAME})
 enable_cotire(${PROJECT_NAME})

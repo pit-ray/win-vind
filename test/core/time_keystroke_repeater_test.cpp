@@ -10,7 +10,7 @@ using namespace vind ;
 TEST_CASE("(KeyStrokeRepeater::global) Increases an inputted velocity with a constant acceleration base") {
     float v = 0.0001f ;
     for(float tms = 0.0f ; tms < 1000.0f ; tms ++) {
-        auto after = const_accelerate(v, tms) ;
+        auto after = uniform_accelerate(v, tms) ;
         CHECK_GE(after, v) ; // increased from previous velocity (after >= v)
         v = after ; //update
     }
@@ -60,7 +60,7 @@ TEST_CASE("(KeyStrokeRepeater) Method Test: ") {
         auto t = system_clock::now() ;
         int true_num = 0 ;
         while((system_clock::now() - t) < WAIT_TIME_CHRONO / 2) {
-            if(ksr.is_pressed()) true_num ++ ;
+            if(ksr.is_passed()) true_num ++ ;
         }
         CHECK_EQ(true_num, 0) ;
 
@@ -68,7 +68,7 @@ TEST_CASE("(KeyStrokeRepeater) Method Test: ") {
             t = system_clock::now() ;
             true_num = 0 ;
             while((system_clock::now() - t) < WAIT_TIME_CHRONO * 3) {
-                if(ksr.is_pressed()) true_num ++ ; //sometimes true
+                if(ksr.is_passed()) true_num ++ ; //sometimes true
             }
             CHECK_GT(true_num, 2) ; //pushed repeat
 
@@ -77,7 +77,7 @@ TEST_CASE("(KeyStrokeRepeater) Method Test: ") {
                 t = system_clock::now() ;
                 ksr.reset() ;
                 while((system_clock::now() - t) < WAIT_TIME_CHRONO / 2) {
-                    if(ksr.is_pressed()) true_num ++ ;
+                    if(ksr.is_passed()) true_num ++ ;
                 }
                 CHECK_EQ(true_num, 0) ;
             }

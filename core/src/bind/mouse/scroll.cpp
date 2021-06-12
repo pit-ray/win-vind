@@ -44,7 +44,7 @@ namespace vind
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr_.reset() ;
         }
-        else if(pimpl->ksr_.is_pressed()) {
+        else if(pimpl->ksr_.is_passed()) {
             sprocess(1) ;
         }
     }
@@ -75,7 +75,7 @@ namespace vind
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr_.reset() ;
         }
-        else if(pimpl->ksr_.is_pressed()) {
+        else if(pimpl->ksr_.is_passed()) {
             sprocess(1) ;
         }
     }

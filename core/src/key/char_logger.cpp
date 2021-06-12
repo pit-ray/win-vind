@@ -169,7 +169,7 @@ namespace vind
             }
 
             //emulate key stroke
-            if(pimpl->ksr_.is_pressed()) {
+            if(pimpl->ksr_.is_passed()) {
                 logging(std::move(log)) ;
                 return static_cast<int>(latest().size()) ;
             }

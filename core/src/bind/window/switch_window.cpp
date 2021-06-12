@@ -82,7 +82,7 @@ namespace vind
             }
 
             if(lgr.is_long_pressing()) {
-                if(pimpl->ksr_.is_pressed()) {
+                if(pimpl->ksr_.is_passed()) {
                     pimpl->call_op(actid) ;
                 }
                 continue ;

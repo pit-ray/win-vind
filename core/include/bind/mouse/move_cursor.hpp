@@ -22,6 +22,8 @@ namespace vind
         MoveCursorLeft& operator=(MoveCursorLeft&&) ;
         MoveCursorLeft(const MoveCursorLeft&)            = delete ;
         MoveCursorLeft& operator=(const MoveCursorLeft&) = delete ;
+
+        void reconstruct() override ;
     } ;
 
 
@@ -42,6 +44,8 @@ namespace vind
         MoveCursorRight& operator=(MoveCursorRight&&) ;
         MoveCursorRight(const MoveCursorRight&)            = delete ;
         MoveCursorRight& operator=(const MoveCursorRight&) = delete ;
+
+        void reconstruct() override ;
     } ;
 
 
@@ -62,6 +66,8 @@ namespace vind
         MoveCursorUp& operator=(MoveCursorUp&&) ;
         MoveCursorUp(const MoveCursorUp&)            = delete ;
         MoveCursorUp& operator=(const MoveCursorUp&) = delete ;
+
+        void reconstruct() override ;
     } ;
 
 
@@ -82,6 +88,8 @@ namespace vind
         MoveCursorDown& operator=(MoveCursorDown&&) ;
         MoveCursorDown(const MoveCursorDown&)            = delete ;
         MoveCursorDown& operator=(const MoveCursorDown&) = delete ;
+
+        void reconstruct() override ;
     } ;
 }
 #endif

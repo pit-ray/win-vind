@@ -10,7 +10,7 @@
 #include "key/key_logger_base.hpp"
 #include "key/ntype_logger.hpp"
 #include "mode.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
 #include <iostream>

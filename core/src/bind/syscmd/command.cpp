@@ -4,7 +4,7 @@
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "key/char_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "parser/rc_parser.hpp"
 #include "util/def.hpp"
 

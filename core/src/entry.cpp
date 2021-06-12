@@ -208,7 +208,7 @@ namespace vind
                 {to_prefix(Mode::INSERT), ToInsert::create()},
                 {to_prefix(Mode::RESIDENT), ToResident::create()}
             } ;
-            cm.at(gparams::get_s("initial_mode"))->process() ;
+            cm.at(gparams::get_s("initmode"))->process() ;
 
             return true ;
         }

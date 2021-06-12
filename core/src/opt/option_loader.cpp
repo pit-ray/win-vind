@@ -10,7 +10,7 @@
 #include "opt/autotrack_popup.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/suppress_for_vim.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 
 //internal linkage
 namespace

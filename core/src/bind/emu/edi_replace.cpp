@@ -12,7 +12,7 @@
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
 namespace

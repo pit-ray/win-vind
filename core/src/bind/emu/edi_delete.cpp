@@ -119,7 +119,7 @@ namespace vind
     DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
 
     void DeleteAfter::sprocess(unsigned int repeat_num) const {
-        if(gparams::get_b("enable_char_cache")) {
+        if(gparams::get_b("charcache")) {
             repeater::safe_for(repeat_num, [] {
                     keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                     keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -161,7 +161,7 @@ namespace vind
     DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
 
     void DeleteBefore::sprocess(unsigned int repeat_num) const {
-        if(gparams::get_b("enable_char_cache")) {
+        if(gparams::get_b("charcache")) {
             repeater::safe_for(repeat_num, [] {
                 keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;

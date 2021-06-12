@@ -9,7 +9,7 @@
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "time/constant_accelerator.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
@@ -65,16 +65,16 @@ namespace vind
             }
 
             if(id == left_id_) {
-                DecreaseWindowWidth::sprocess(gparams::get_l("window_width_delta")) ;
+                DecreaseWindowWidth::sprocess(gparams::get_l("window_hdelta")) ;
             }
             else if(id == right_id_) {
-                IncreaseWindowWidth::sprocess(gparams::get_l("window_width_delta")) ;
+                IncreaseWindowWidth::sprocess(gparams::get_l("window_hdelta")) ;
             }
             else if(id == up_id_) {
-                DecreaseWindowHeight::sprocess(gparams::get_l("window_height_delta")) ;
+                DecreaseWindowHeight::sprocess(gparams::get_l("window_vdelta")) ;
             }
             else if(id == down_id_) {
-                IncreaseWindowHeight::sprocess(gparams::get_l("window_height_delta")) ;
+                IncreaseWindowHeight::sprocess(gparams::get_l("window_vdelta")) ;
             }
         }
 
@@ -194,6 +194,12 @@ namespace vind
             }
             VirtualCmdLine::refresh() ;
         }
+
+        template <typename T>
+        static InnerMode cvt_modulo(T mode) {
+            return static_cast<InnerMode>(
+                    static_cast<int>(mode) % static_cast<int>(InnerMode::NUM)) ;
+        }
     } ;
 
     WindowResizer::WindowResizer()
@@ -207,9 +213,9 @@ namespace vind
 
     void WindowResizer::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
-        pimpl->ca_.set_acceleration(gparams::get_f("window_acceleration")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("window_max_velocity")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("window_time_weight")) ;
+        pimpl->ca_.set_acceleration(gparams::get_f("window_accel")) ;
+        pimpl->ca_.set_max_velocity(gparams::get_f("window_maxv")) ;
+        pimpl->ca_.set_time_weight(gparams::get_i("window_tweight")) ;
     }
 
     void WindowResizer::sprocess() const {
@@ -223,7 +229,8 @@ namespace vind
 
         NTypeLogger lgr ;
 
-        auto inmode = InnerMode::RESIZE ;
+        auto inmode = Impl::cvt_modulo(gparams::get_i("winresizer_initmode")) ;
+
         pimpl->draw_mode_status(inmode) ;
 
         std::size_t actid = 0 ;
@@ -249,8 +256,7 @@ namespace vind
             if(lgr.latest().is_containing(KEYCODE_E)) { //mode change
                 lgr.accept() ;
                 pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
-                inmode = static_cast<InnerMode>(
-                        (static_cast<int>(inmode) + 1) % static_cast<int>(InnerMode::NUM)) ;
+                inmode = Impl::cvt_modulo(static_cast<int>(inmode) + 1) ;
                 pimpl->draw_mode_status(inmode) ;
                 continue ;
             }

@@ -39,7 +39,7 @@ namespace vind
         RECT rect ;
         screenmetrics::get_conbined_metrics(&rect) ;
 
-        SetCursorPos(screenmetrics::width(rect) - gparams::get_i("screen_pos_buf"), pos.y) ;
+        SetCursorPos(screenmetrics::width(rect) - gparams::get_i("jump_margin"), pos.y) ;
     }
     void JumpToRight::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -84,7 +84,7 @@ namespace vind
 
         RECT rect ;
         screenmetrics::get_conbined_metrics(&rect) ;
-        SetCursorPos(pos.x, screenmetrics::height(rect) - gparams::get_i("screen_pos_buf")) ;
+        SetCursorPos(pos.x, screenmetrics::height(rect) - gparams::get_i("jump_margin")) ;
     }
     void JumpToBottom::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

@@ -21,7 +21,7 @@
 #include "io/keybrd.hpp"
 #include "key/char_logger.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "path.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
@@ -31,10 +31,10 @@ namespace
 {
     using namespace vind ;
 
-    std::string get_shell_startup_directory() {
+    std::string get_shell_startupdirectory() {
         auto dir = explorer::get_current_explorer_path() ;
         if(dir.empty()) {
-            dir = gparams::get_s("shell_startup_dir") ;
+            dir = gparams::get_s("shell_startupdir") ;
             if(dir.empty()) {
                 dir = path::HOME_PATH() ;
             }
@@ -52,7 +52,7 @@ namespace vind
     {}
     void StartShell::sprocess() {
         util::create_process(
-                get_shell_startup_directory(),
+                get_shell_startupdirectory(),
                 gparams::get_s("shell")) ;
 
         Sleep(100) ; //wait until the window is selectable
@@ -92,14 +92,14 @@ namespace vind
 
                 // wrap a command with "pause" to keep console window instead of vimrun.exe.
                 util::create_process(
-                        get_shell_startup_directory(),
+                        get_shell_startupdirectory(),
                         "cmd", util::concat_args("/c",
                         shell_cmd, shell_cmd_flag, cmd,
                         "& pause")) ;
             }
             else {
                 util::create_process(
-                        get_shell_startup_directory(),
+                        get_shell_startupdirectory(),
                         shell_cmd, util::concat_args(shell_cmd_flag, cmd)) ;
             }
 

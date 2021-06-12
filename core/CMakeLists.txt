@@ -148,7 +148,7 @@ add_library(opt STATIC
     src/opt/option.cpp
     src/opt/option_loader.cpp
     src/opt/suppress_for_vim.cpp
-    src/opt/virtual_cmd_line.cpp
+    src/opt/vcmdline.cpp
 )
 target_link_libraries(opt emu mode)
 

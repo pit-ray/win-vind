@@ -44,9 +44,9 @@ namespace vind
         sprocess() ;
     }
     void MoveCursorLeft::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_acceleration")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_max_velocity")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_time_weight")) ;
+        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
     }
 
 
@@ -77,9 +77,9 @@ namespace vind
         sprocess() ;
     }
     void MoveCursorRight::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_acceleration")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_max_velocity")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_time_weight")) ;
+        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
     }
 
 
@@ -110,9 +110,9 @@ namespace vind
         sprocess() ;
     }
     void MoveCursorUp::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_acceleration")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_max_velocity")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_time_weight")) ;
+        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
     }
 
 
@@ -143,8 +143,8 @@ namespace vind
         sprocess() ;
     }
     void MoveCursorDown::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_acceleration")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_max_velocity")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_time_weight")) ;
+        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
     }
 }

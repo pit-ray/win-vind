@@ -9,7 +9,7 @@
 #include "entry.hpp"
 #include "g_params.hpp"
 #include "key/char_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "parser/rc_parser.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"

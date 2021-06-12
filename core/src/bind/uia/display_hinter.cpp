@@ -51,13 +51,13 @@ namespace vind
 
     void DisplayHinter::load_config() {
         //Colors
-        auto [bk_r, bk_g, bk_b] = util::hex2rgb(gparams::get_s("easy_click_font_bkcolor")) ;
+        auto [bk_r, bk_g, bk_b] = util::hex2rgb(gparams::get_s("easyclick_bgcolor")) ;
         auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
 
-        auto [tx_r, tx_g, tx_b] = util::hex2rgb(gparams::get_s("easy_click_font_color")) ;
+        auto [tx_r, tx_g, tx_b] = util::hex2rgb(gparams::get_s("easyclick_fontcolor")) ;
         auto txcolor = RGB(tx_r, tx_g, tx_b) ;
 
-        unsigned char decay = gparams::get_uc("easy_click_matching_color_decay") ;
+        unsigned char decay = gparams::get_uc("easyclick_colordecay") ;
         using util::to_gray ;
         char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
@@ -66,12 +66,12 @@ namespace vind
                 tx_g < decay ? 0 : tx_g + sign*decay,
                 tx_b < decay ? 0 : tx_b + sign*decay) ;
 
-        pimpl->fontsize_ = gparams::get_l("easy_click_font_size") ;
+        pimpl->fontsize_ = gparams::get_l("easyclick_fontsize") ;
 
         pimpl->painter_.set_font(
                 pimpl->fontsize_,
-                gparams::get_l("easy_click_font_weight"),
-                gparams::get_s("easy_click_font_name")) ;
+                gparams::get_l("easyclick_fontweight"),
+                gparams::get_s("easyclick_fontname")) ;
 
         pimpl->painter_.set_back_color(bkcolor) ;
         pimpl->painter_.set_text_color(txcolor) ;

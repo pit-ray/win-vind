@@ -1,4 +1,4 @@
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 
 #include <windows.h>
 
@@ -39,20 +39,20 @@ namespace vind
     VirtualCmdLine& VirtualCmdLine::operator=(VirtualCmdLine&&) = default ;
 
     std::string VirtualCmdLine::sname() noexcept {
-        return "virtual_cmd_line" ;
+        return "vcmdline" ;
     }
 
     void VirtualCmdLine::do_enable() const {
         reset() ;
         pimpl->dtp_.set_font(
-                gparams::get_l("cmd_font_size"),
-                gparams::get_l("cmd_font_weight"),
-                gparams::get_s("cmd_font_name")) ;
+                gparams::get_l("cmd_fontsize"),
+                gparams::get_l("cmd_fontweight"),
+                gparams::get_s("cmd_fontname")) ;
 
-        pimpl->dtp_.set_text_color(gparams::get_s("cmd_font_color")) ;
-        pimpl->dtp_.set_back_color(gparams::get_s("cmd_font_bkcolor")) ;
+        pimpl->dtp_.set_text_color(gparams::get_s("cmd_fontcolor")) ;
+        pimpl->dtp_.set_back_color(gparams::get_s("cmd_bgcolor")) ;
 
-        auto pos = gparams::get_s("cmd_pos") ;
+        auto pos = gparams::get_s("cmd_roughpos") ;
         auto xma = gparams::get_i("cmd_xmargin") ;
         auto yma = gparams::get_i("cmd_ymargin") ;
 
@@ -76,7 +76,7 @@ namespace vind
             {"LowerRight", {width - xma - midxbuf,  height - yma}}
         } ;
         try {
-            const auto& p = pos_list.at(gparams::get_s("cmd_pos")) ;
+            const auto& p = pos_list.at(gparams::get_s("cmd_roughpos")) ;
             pimpl->x_ = p.first ;
             pimpl->y_ = p.second ;
         }
@@ -84,11 +84,11 @@ namespace vind
             const auto& p = pos_list.at("LowerMid") ;
             pimpl->x_ = p.first ;
             pimpl->y_ = p.second ;
-            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + ", " + gparams::get_s("cmd_pos") + "is invalid syntax.") ;
+            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + ", " + gparams::get_s("cmd_roughpos") + "is invalid syntax.") ;
         }
 
-        pimpl->extra_ = gparams::get_i("cmd_font_extra") ;
-        pimpl->fadeout_time_ = std::chrono::seconds(gparams::get_i("cmd_fadeout_time")) ;
+        pimpl->extra_ = gparams::get_i("cmd_fontextra") ;
+        pimpl->fadeout_time_ = std::chrono::seconds(gparams::get_i("cmd_fadeout")) ;
 
         g_refresh_pos.x = pimpl->x_ ;
         g_refresh_pos.y = pimpl->y_ ;

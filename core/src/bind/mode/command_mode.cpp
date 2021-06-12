@@ -18,7 +18,7 @@
 #include "key/keycodecvt.hpp"
 #include "key/ntype_logger.hpp"
 #include "mode.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
 
@@ -83,7 +83,7 @@ namespace
                 //recently logger
 
                 auto over_num =
-                    static_cast<long>(hist.size()) - gparams::get_l("cmd_max_history_num") ;
+                    static_cast<long>(hist.size()) - gparams::get_l("cmd_maxhist") ;
 
                 if(over_num > 0) {
                     util::remove_from_top(hist, over_num) ;

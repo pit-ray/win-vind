@@ -93,6 +93,7 @@ add_library(mouse STATIC
 )
 
 add_library(proc STATIC
+    src/bind/proc/execute.cpp
     src/bind/proc/external_app.cpp
     src/bind/proc/open_window.cpp
 )

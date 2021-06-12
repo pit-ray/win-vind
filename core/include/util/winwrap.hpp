@@ -49,7 +49,7 @@ namespace vind
                 const std::string& args="",
                 bool show_console_window=true) ;
 
-        void shell_execute_open(const std::string& url) ;
+        int shell_execute(const std::string& url) ;
     }
 }
 

@@ -30,6 +30,7 @@
 #include "bind/mouse/scroll.hpp"
 #include "bind/mouse/select.hpp"
 
+#include "bind/proc/execute.hpp"
 #include "bind/proc/external_app.hpp"
 #include "bind/proc/open_window.hpp"
 
@@ -194,6 +195,7 @@ namespace vind
                 StartExternal::create(),
                 StartExplorer::create(),
                 StartShell::create(),
+                Execute::create(),
                 Switch2LeftTab::create(),
                 Switch2RightTab::create(),
                 SwitchVDesktop2Left::create(),

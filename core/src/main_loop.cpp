@@ -61,7 +61,7 @@ namespace vind
             if(parser) {
                 if(parser->is_accepted()) {
                     if(g_ntlgr.has_head_num()) {
-                        VirtualCmdLine::refresh() ;
+                        VirtualCmdLine::reset() ;
                     }
 
                     g_active_func = parser->get_func() ;

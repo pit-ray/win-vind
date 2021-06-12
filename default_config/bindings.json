@@ -12,6 +12,18 @@
         "ja": "GUI ノーマルモード"
     },
     {
+        "name": "to_instant_gui_normal",
+        "cdef": [],
+        "endef": [],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": ["<F8>", "<capslock>"],
+        "rdef": [],
+        "en": "Instant GUI Normal Mode",
+        "ja": "インスタントGUI ノーマルモード"
+    },
+    {
         "name": "to_resident",
         "cdef": ["resident"],
         "endef": ["<rdef>"],
@@ -19,7 +31,7 @@
         "gndef": ["<rdef>"],
         "gvdef": ["<rdef>"],
         "idef": ["<rdef>"],
-        "rdef": ["<c-i>"],
+        "rdef": ["<Esc-i>"],
         "en": "Resident Mode",
         "ja": "常駐モード"
     },
@@ -42,7 +54,7 @@
         "evdef": [":"],
         "gndef": [":"],
         "gvdef": [],
-        "idef": ["<m-:>"],
+        "idef": [],
         "rdef": [],
         "en": "Command Mode",
         "ja": "コマンドモード"
@@ -51,10 +63,10 @@
         "name": "to_edi_normal",
         "cdef": ["edinormal", "en"],
         "endef": [],
-        "evdef": ["<Esc>"],
-        "gndef": ["I"],
+        "evdef": ["<Esc-Right>"],
+        "gndef": ["I", "<Esc-Right>"],
         "gvdef": [],
-        "idef": ["<Esc>"],
+        "idef": ["<Esc-Right>"],
         "rdef": ["<Esc-Right>"],
         "en": "Normal Mode (Vim Emulation: <Esc>)",
         "ja": "ノーマルモード (Vim エミュレーション: <Esc>)"
@@ -67,7 +79,7 @@
         "gndef": ["i"],
         "gvdef": [],
         "idef": [],
-        "rdef": ["<c-i>"],
+        "rdef": ["<Esc-i>"],
         "en": "Insert Mode",
         "ja": "インサートモード"
     },
@@ -234,7 +246,7 @@
         "evdef": [],
         "gndef": ["f"],
         "gvdef": ["<gndef>"],
-        "idef": ["<m-f>"],
+        "idef": [],
         "rdef": [],
         "en": "Jump the mouse cursor by keyboard mapping",
         "ja": "キー配置でマウスカーソルを移動"
@@ -246,7 +258,7 @@
         "evdef": [],
         "gndef": ["t"],
         "gvdef": [],
-        "idef": ["<m-t>"],
+        "idef": [],
         "rdef": [],
         "en": "Jump the mouse cursor to selected window",
         "ja": "選択ウィンドウへマウスカーソルを移動"
@@ -282,7 +294,7 @@
         "evdef": ["<gndef>"],
         "gndef": ["<C-u>"],
         "gvdef": ["<gndef>"],
-        "idef": ["<m-u>"],
+        "idef": [],
         "rdef": [],
         "en": "Scroll a mouse wheel up with a half page",
         "ja": "上へマウスホイールをスクロール(ページ半分)"
@@ -294,7 +306,7 @@
         "evdef": ["<gndef>"],
         "gndef": ["<C-d>"],
         "gvdef": ["<gndef>"],
-        "idef": ["<m-d>"],
+        "idef": [],
         "rdef": [],
         "en": "Scroll a mouse wheel down with a half page",
         "ja": "下へマウスホイールをスクロール(ページ半分)"
@@ -606,7 +618,7 @@
         "evdef": [],
         "gndef": ["<C-w>s"],
         "gvdef": [],
-        "idef": ["<m-s>"],
+        "idef": [],
         "rdef": [],
         "en": "Switch a window",
         "ja": "ウィンドウを切替"
@@ -618,7 +630,7 @@
         "evdef": [],
         "gndef": ["<C-w>e"],
         "gvdef": [],
-        "idef": ["<m-e>"],
+        "idef": [],
         "rdef": [],
         "en": "Window Resizer",
         "ja": "ウィンドウリサイザ"
@@ -630,7 +642,7 @@
         "evdef": [],
         "gndef": ["<C-w>h"],
         "gvdef": [],
-        "idef": ["<m-h>"],
+        "idef": [],
         "rdef": [],
         "en": "Select a left window",
         "ja": "左のウィンドウを選択"
@@ -642,7 +654,7 @@
         "evdef": [],
         "gndef": ["<C-w>l"],
         "gvdef": [],
-        "idef": ["<m-l>"],
+        "idef": [],
         "rdef": [],
         "en": "Select a right window",
         "ja": "右のウィンドウを選択"
@@ -654,7 +666,7 @@
         "evdef": [],
         "gndef": ["<C-w>k"],
         "gvdef": [],
-        "idef": ["<m-k>"],
+        "idef": [],
         "rdef": [],
         "en": "Select an upper window",
         "ja": "上のウィンドウを選択"
@@ -666,7 +678,7 @@
         "evdef": [],
         "gndef": ["<C-w>j"],
         "gvdef": [],
-        "idef": ["<m-j>"],
+        "idef": [],
         "rdef": [],
         "en": "Select a lower window",
         "ja": "下のウィンドウを選択"
@@ -702,7 +714,7 @@
         "evdef": [],
         "gndef": ["<C-w>H", "<C-w><Left>"],
         "gvdef": [],
-        "idef": ["<m-H>"],
+        "idef": [],
         "rdef": [],
         "en": "Snap a current window to left",
         "ja": "ウィンドウを画面の左へ移動"
@@ -714,7 +726,7 @@
         "evdef": [],
         "gndef": ["<C-w>L", "<C-w><Right>"],
         "gvdef": [],
-        "idef": ["<m-L>"],
+        "idef": [],
         "rdef": [],
         "en": "Snap a current window to right",
         "ja": "ウィンドウを画面の右へ移動"
@@ -726,7 +738,7 @@
         "evdef": [],
         "gndef": ["<C-w>K"],
         "gvdef": [],
-        "idef": ["<m-K>"],
+        "idef": [],
         "rdef": [],
         "en": "Snap a current window to top",
         "ja": "ウィンドウを画面の上へ移動"
@@ -738,7 +750,7 @@
         "evdef": [],
         "gndef": ["<C-w>J"],
         "gvdef": [],
-        "idef": ["<m-J>"],
+        "idef": [],
         "rdef": [],
         "en": "Snap a current window to bottom",
         "ja": "ウィンドウを画面の下へ移動"
@@ -750,7 +762,7 @@
         "evdef": [],
         "gndef": ["<C-w>="],
         "gvdef": [],
-        "idef": ["<m-=>"],
+        "idef": [],
         "rdef": [],
         "en": "Arrange windows",
         "ja": "ウィンドウを並べて表示する"
@@ -762,7 +774,7 @@
         "evdef": [],
         "gndef": ["<C-w>r"],
         "gvdef": [],
-        "idef": ["<m-r>"],
+        "idef": [],
         "rdef": [],
         "en": "Rotate windows in a current monitor",
         "ja": "現在のモニタのウィンドウを回転させる"
@@ -774,7 +786,7 @@
         "evdef": [],
         "gndef": ["<C-w>R"],
         "gvdef": [],
-        "idef": ["<m-R>"],
+        "idef": [],
         "rdef": [],
         "en": "Rotate windows in a current monitor in reverse",
         "ja": "現在のモニタのウィンドウを逆回転させる"
@@ -786,7 +798,7 @@
         "evdef": [],
         "gndef": ["<C-w>x"],
         "gvdef": [],
-        "idef": ["<m-x>"],
+        "idef": [],
         "rdef": [],
         "en": "Exchange a window with next one",
         "ja": "隣のウィンドウと交換する"
@@ -906,7 +918,7 @@
         "evdef": [],
         "gndef": ["<gt>"],
         "gvdef": [],
-        "idef": ["<m-right>"],
+        "idef": [],
         "rdef": [],
         "en": "Forward a next page",
         "ja": "次のページへ進む"
@@ -918,7 +930,7 @@
         "evdef": [],
         "gndef": ["<lt>"],
         "gvdef": [],
-        "idef": ["<m-left>"],
+        "idef": [],
         "rdef": [],
         "en": "Backward a previous page",
         "ja": "前のページへ戻る"
@@ -1242,7 +1254,7 @@
         "evdef": ["<endef>"],
         "gndef": [],
         "gvdef": [],
-        "idef": [""],
+        "idef": [],
         "rdef": [],
         "en": "Backward with WORDS (Vim Emulation: B)",
         "ja": "前の単語へ戻る(空白ベース) (Vimエミュレーション: B)"
@@ -1542,7 +1554,7 @@
         "evdef": [],
         "gndef": ["FF", "Fo"],
         "gvdef": [],
-        "idef": ["<c-F>F", "<c-F>o"],
+        "idef": [],
         "rdef": [],
         "en": "EasyClick (Left Click)",
         "ja": "EasyClick (左クリック)"
@@ -1554,7 +1566,7 @@
         "evdef": [],
         "gndef": ["Fa"],
         "gvdef": [],
-        "idef": ["<c-F>a"],
+        "idef": [],
         "rdef": [],
         "en": "EasyClick (Right Click)",
         "ja": "EasyClick (右クリック)"
@@ -1566,7 +1578,7 @@
         "evdef": [],
         "gndef": ["Fm"],
         "gvdef": [],
-        "idef": ["<c-f>m"],
+        "idef": [],
         "rdef": [],
         "en": "EasyClick (Mid Click)",
         "ja": "EasyClick (中央クリック)"
@@ -1578,7 +1590,7 @@
         "evdef": [],
         "gndef": ["Fh"],
         "gvdef": [],
-        "idef": ["<c-F>h"],
+        "idef": [],
         "rdef": [],
         "en": "EasyClick (Hovering)",
         "ja": "EasyClick (クリックなし)"

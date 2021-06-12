@@ -107,7 +107,13 @@ namespace vind
 
     void VirtualCmdLine::msgout(const std::string& str) noexcept {
         if(str.empty()) return ;
-        g_outstr = std::move(str) ;
+        if(!g_outstr.empty()) {
+            g_outstr = str ;
+            refresh() ; // reset pixel
+        }
+        else {
+            g_outstr = str ;
+        }
         g_msg_start = std::chrono::system_clock::now() ;
         g_msg_showing = true ;
     }

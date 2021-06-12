@@ -42,7 +42,7 @@
 // GCC
 #if defined(__GNUC__)
 
-#if __x86_64__
+#if defined(__x86_64__)
 #define INSTALLER_PREFIX "64bit"
 #else
 #define INSTALLER_PREFIX "32bit"
@@ -50,7 +50,7 @@
 
 // MSVC
 #elif defined(_MSC_VER) && _MSC_VER >= 1500
-#if _WIN64
+#if defined(_WIN64)
 #define INSTALLER_PREFIX "64bit"
 #else
 #define INSTALLER_PREFIX "32bit"

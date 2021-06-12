@@ -31,7 +31,7 @@
         "gndef": ["<rdef>"],
         "gvdef": ["<rdef>"],
         "idef": ["<rdef>"],
-        "rdef": ["<Esc-i>"],
+        "rdef": ["<c-i>"],
         "en": "Resident Mode",
         "ja": "常駐モード"
     },

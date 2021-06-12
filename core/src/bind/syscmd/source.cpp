@@ -126,10 +126,11 @@ namespace vind
             }
             auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
             if(args.empty()) {
-                sprocess(true) ;
-                return ;
+                sprocess(path::RC(), true) ;
             }
-            sprocess(args, true) ;
+            else {
+                sprocess(args, true) ;
+            }
         }
         // If received syntax error as std::logic_error,
         // convert to runtime_error not to terminate application.

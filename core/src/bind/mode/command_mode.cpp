@@ -18,7 +18,7 @@
 #include "key/keycodecvt.hpp"
 #include "key/ntype_logger.hpp"
 #include "mode.hpp"
-#include "opt/vcmdline.hpp"
+#include "opt/virtual_cmd_line.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
 

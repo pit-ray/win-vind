@@ -7,7 +7,7 @@
 #include "g_maps.hpp"
 #include "key/char_logger.hpp"
 #include "mode.hpp"
-#include "opt/vcmdline.hpp"
+#include "opt/virtual_cmd_line.hpp"
 #include "parser/rc_parser.hpp"
 #include "util/def.hpp"
 

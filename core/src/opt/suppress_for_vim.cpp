@@ -9,7 +9,7 @@
 #include "err_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "mode.hpp"
-#include "opt/vcmdline.hpp"
+#include "opt/virtual_cmd_line.hpp"
 #include "util/string.hpp"
 
 namespace vind

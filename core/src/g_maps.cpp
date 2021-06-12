@@ -21,6 +21,10 @@
 #include "util/def.hpp"
 #include "util/string.hpp"
 
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace
 {

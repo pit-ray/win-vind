@@ -10,7 +10,7 @@
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
-#include "opt/vcmdline.hpp"
+#include "opt/virtual_cmd_line.hpp"
 
 namespace
 {

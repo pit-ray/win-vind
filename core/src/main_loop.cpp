@@ -5,7 +5,7 @@
 #include "key/key_logger_base.hpp"
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/vcmdline.hpp"
+#include "opt/virtual_cmd_line.hpp"
 
 #include "bind/binded_func.hpp"
 

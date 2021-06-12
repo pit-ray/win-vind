@@ -9,7 +9,7 @@
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/vcmdline.hpp"
+#include "opt/virtual_cmd_line.hpp"
 #include "time/constant_accelerator.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"

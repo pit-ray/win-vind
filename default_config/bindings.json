@@ -19,7 +19,7 @@
         "gndef": ["<rdef>"],
         "gvdef": ["<rdef>"],
         "idef": ["<rdef>"],
-        "rdef": [],
+        "rdef": ["<c-i>"],
         "en": "Resident Mode",
         "ja": "常駐モード"
     },
@@ -67,7 +67,7 @@
         "gndef": ["i"],
         "gvdef": [],
         "idef": [],
-        "rdef": ["<Esc-Up>"],
+        "rdef": ["<c-i>"],
         "en": "Insert Mode",
         "ja": "インサートモード"
     },
@@ -1530,7 +1530,7 @@
         "evdef": [],
         "gndef": ["FF", "Fo"],
         "gvdef": [],
-        "idef": ["<m-F><m-F>", "<m-F><m-o>"],
+        "idef": ["<c-F>F", "<c-F>o"],
         "rdef": [],
         "en": "EasyClick (Left Click)",
         "ja": "EasyClick (左クリック)"
@@ -1542,7 +1542,7 @@
         "evdef": [],
         "gndef": ["Fa"],
         "gvdef": [],
-        "idef": ["<m-F><m-a>"],
+        "idef": ["<c-F>a"],
         "rdef": [],
         "en": "EasyClick (Right Click)",
         "ja": "EasyClick (右クリック)"
@@ -1554,7 +1554,7 @@
         "evdef": [],
         "gndef": ["Fm"],
         "gvdef": [],
-        "idef": ["<m-F><m-m>"],
+        "idef": ["<c-f>m"],
         "rdef": [],
         "en": "EasyClick (Mid Click)",
         "ja": "EasyClick (中央クリック)"
@@ -1566,7 +1566,7 @@
         "evdef": [],
         "gndef": ["Fh"],
         "gvdef": [],
-        "idef": ["<m-F><m-h>"],
+        "idef": ["<c-F>h"],
         "rdef": [],
         "en": "EasyClick (Hovering)",
         "ja": "EasyClick (クリックなし)"

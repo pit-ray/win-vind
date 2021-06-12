@@ -1,6 +1,6 @@
 {
     "initmode": {
-        "value": "gn",
+        "value": "r",
         "en": "Initial Mode",
         "ja": "初期モード",
         "choices": [
@@ -298,7 +298,7 @@
         "ja": "仮想コマンドライン"
     },
     "suppress_for_vim": {
-        "value": false,
+        "value": true,
         "en": "Suppress For Vim",
         "ja": "Vim用に機能を抑制"
     },

@@ -6,7 +6,7 @@
 )
 
 @rem @set wxWidgets_VERSION=3.0.5
-set wxWidgets_VERSION=3.1.4-rc1
+set wxWidgets_VERSION=3.1.5
 
 @if not exist libs (
     @mkdir libs
@@ -89,9 +89,9 @@ cd wxWidgets/build/msw
 cd ../../../
 
 @rem If you use wxWidgets-3.1.x, it solves linker error.
-if "%1" == "-mingw" (
-    cd ..
-    call "scripts/copy_mingw_libs.bat"
-)
+@rem if "%1" == "-mingw" (
+@rem     cd ..
+    @rem call "scripts/copy_mingw_libs.bat"
+@rem)
 
 @echo Installed wxWidgets successfully

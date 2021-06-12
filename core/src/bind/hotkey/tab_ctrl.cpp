@@ -74,16 +74,6 @@ namespace vind
     {}
     void CloseCurrentTab::sprocess() {
         keybrd::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
-
-        auto hwnd = GetForegroundWindow() ;
-        if(hwnd == NULL) {
-            throw RUNTIME_EXCEPT("The foreground window is not existed.") ;
-        }
-
-        Sleep(500) ; //wait by openning the dialog for saving
-        if(hwnd != GetForegroundWindow()) { //opened popup
-            ToGUINormal::sprocess(true) ;
-        }
     }
     void CloseCurrentTab::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

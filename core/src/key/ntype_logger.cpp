@@ -180,7 +180,7 @@ namespace vind
             return -1 ;
         }
         else {
-            if(pimpl->ksr_.is_pressed()) {
+            if(pimpl->ksr_.is_passed()) {
                 pimpl->concatenate_repeating_number(*nums.cbegin()) ;
                 return -1 ;
             }

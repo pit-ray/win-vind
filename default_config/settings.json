@@ -37,7 +37,7 @@
         "en": "Cursor Acceleration",
         "ja": "カーソルの加速度"
     },
-    "cursor_weight": {
+    "cursor_time_weight": {
         "value": 250,
         "en": "Cursor Weight",
         "ja": "カーソルの重さ"
@@ -46,6 +46,21 @@
         "value": 12,
         "en": "Cursor Max Velocity",
         "ja": "カーソルの最大速度"
+    },
+    "window_acceleration": {
+        "value": 95,
+        "en": "Window Move Acceleration",
+        "ja": "ウィンドウ移動の加速度"
+    },
+    "window_time_weight": {
+        "value": 250,
+        "en": "Window Move Weight",
+        "ja": "ウィンドウ移動の重さ"
+    },
+    "window_max_velocity": {
+        "value": 12,
+        "en": "Window Move Max Velocity",
+        "ja": "ウィンドウ移動の最大速度"
     },
     "yscroll_speed": {
         "value": 30,

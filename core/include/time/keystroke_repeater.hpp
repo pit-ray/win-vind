@@ -24,7 +24,7 @@ namespace vind
         int get_wait_time_ms() const noexcept ;
 
         virtual void reset() noexcept ;
-        virtual bool is_pressed() const ;
+        virtual bool is_passed() const ;
     } ;
 }
 

@@ -30,6 +30,7 @@ add_library(io STATIC
 )
 
 add_library(time STATIC
+    src/time/constant_accelerator.cpp
     src/time/interval_timer.cpp
     src/time/keystroke_repeater.cpp
 )

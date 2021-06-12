@@ -51,7 +51,7 @@ namespace vind
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
         }
-        else if(pimpl->ksr.is_pressed()) {
+        else if(pimpl->ksr.is_passed()) {
             sprocess(1) ;
         }
     }
@@ -95,7 +95,7 @@ namespace vind
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
         }
-        else if(pimpl->ksr.is_pressed()) {
+        else if(pimpl->ksr.is_passed()) {
             sprocess(1) ;
         }
     }
@@ -137,7 +137,7 @@ namespace vind
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
         }
-        else if(pimpl->ksr.is_pressed()) {
+        else if(pimpl->ksr.is_passed()) {
             sprocess(1) ;
         }
     }
@@ -179,7 +179,7 @@ namespace vind
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
         }
-        else if(pimpl->ksr.is_pressed()) {
+        else if(pimpl->ksr.is_passed()) {
             sprocess(1) ;
         }
     }

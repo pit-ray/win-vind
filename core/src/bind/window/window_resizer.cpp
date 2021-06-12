@@ -5,14 +5,16 @@
 #include "entry.hpp"
 #include "g_params.hpp"
 
-#include "bind/func_finder.hpp"
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
 #include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
+#include "time/constant_accelerator.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
+
+#include "bind/func_finder.hpp"
 
 #include "bind/window/window_utility.hpp"
 
@@ -30,57 +32,6 @@ namespace
    } ;
 }
 
-#include <chrono>
-#include "util/math.hpp"
-
-namespace
-{
-    using namespace vind ;
-
-    using namespace std::chrono ;
-    //hardcoded (The cursor move 1px necessarilly by one press)
-    constexpr auto INITIAL_VELOCITY = 1.0f ;
-
-    template <typename T>
-    inline auto constant_accelerate(float& velocity, T&& us) {
-        auto acc = gparams::get_f("cursor_acceleration") ;
-        auto mvc = gparams::get_f("cursor_max_velocity") ;
-
-        constexpr auto TIME_COEF = util::pow_f(10, -3) ;
-        auto t = us * TIME_COEF / gparams::get_i("cursor_weight") ; //accuracy
-        auto x = velocity*t + 0.5f*acc*t*t ;
-        auto delta_v = acc * t ;
-        if(velocity + delta_v < mvc) velocity += delta_v ;
-        else velocity = mvc ;
-        return x ;
-    }
-
-    inline auto compute_delta_t(
-            const system_clock::time_point& start_time) {
-
-        return duration_cast<microseconds>(
-                system_clock::now() - start_time).count() ;
-    }
-
-    class MoveDeltaCalculator {
-    private:
-        float v_ = INITIAL_VELOCITY ;
-        system_clock::time_point start_time_ = system_clock::now() ;
-
-    public:
-        void reset() noexcept {
-            v_ = INITIAL_VELOCITY ;
-            start_time_ = system_clock::now() ;
-        }
-
-        template <typename T>
-        auto delta() {
-            return static_cast<T>(
-                    constant_accelerate(v_, compute_delta_t(start_time_))) ;
-        }
-    } ;
-}
-
 namespace vind
 {
     struct WindowResizer::Impl {
@@ -93,7 +44,7 @@ namespace vind
 
         KeyStrokeRepeater ksr_ ;
 
-        MoveDeltaCalculator calcer_ ;
+        ConstAccelerator ca_ ;
 
         explicit Impl()
         : funcfinder_(),
@@ -102,14 +53,14 @@ namespace vind
           up_id_(MoveCaretUp().id()),
           down_id_(MoveCaretDown().id()),
           ksr_(),
-          calcer_()
+          ca_()
         {}
 
         void do_resize(std::size_t id, bool first_call) {
             if(first_call) {
                 ksr_.reset() ;
             }
-            else if(!ksr_.is_pressed()) {
+            else if(!ksr_.is_passed()) {
                 return ;
             }
 
@@ -129,7 +80,7 @@ namespace vind
 
         void do_move(std::size_t id, bool first_call) {
             if(first_call) {
-                calcer_.reset() ;
+                ca_.reset() ;
             }
 
             auto hwnd = GetForegroundWindow() ;
@@ -146,25 +97,25 @@ namespace vind
             auto top = rect.top ;
 
             if(id == left_id_) {
-                left -= calcer_.delta<long>() ;
+                left -= ca_.delta<long>() ;
                 if(left < cb_rect.left) {
                     left = cb_rect.left ;
                 }
             }
             else if(id == right_id_) {
-                left += calcer_.delta<long>() ;
+                left += ca_.delta<long>() ;
                 if(left > cb_rect.right) {
                     left = cb_rect.right ;
                 }
             }
             else if(id == up_id_) {
-                top -= calcer_.delta<long>() ;
+                top -= ca_.delta<long>() ;
                 if(top < cb_rect.top) {
                     top = cb_rect.top ;
                 }
             }
             else if(id == down_id_) {
-                top += calcer_.delta<long>() ;
+                top += ca_.delta<long>() ;
                 if(top > cb_rect.bottom) {
                     top = cb_rect.bottom ;
                 }
@@ -182,7 +133,7 @@ namespace vind
             if(first_call) {
                 ksr_.reset() ;
             }
-            else if(!ksr_.is_pressed()) {
+            else if(!ksr_.is_passed()) {
                 return ;
             }
 
@@ -224,7 +175,7 @@ namespace vind
                        || id == up_id_ || id == down_id_ ;
         }
 
-        void draw_mode_info(InnerMode mode) const {
+        void draw_mode_status(InnerMode mode) const {
             switch(mode) {
                 case InnerMode::RESIZE:
                     VirtualCmdLine::cout("[Resize]... \"Esc\": OK, \"e\": Change mode") ;
@@ -256,6 +207,9 @@ namespace vind
 
     void WindowResizer::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
+        pimpl->ca_.set_acceleration(gparams::get_f("window_acceleration")) ;
+        pimpl->ca_.set_max_velocity(gparams::get_f("window_max_velocity")) ;
+        pimpl->ca_.set_time_weight(gparams::get_i("window_time_weight")) ;
     }
 
     void WindowResizer::sprocess() const {
@@ -268,9 +222,11 @@ namespace vind
         pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 
         NTypeLogger lgr ;
-        std::size_t actid = 0 ;
+
         auto inmode = InnerMode::RESIZE ;
-        pimpl->draw_mode_info(inmode) ;
+        pimpl->draw_mode_status(inmode) ;
+
+        std::size_t actid = 0 ;
         while(vind::update_background()) {
             if(!NTYPE_LOGGED(lgr.logging_state())) {
                 continue ;
@@ -290,13 +246,12 @@ namespace vind
             if(lgr.latest().is_containing(KEYCODE_ENTER)) {
                 break ;
             }
-
             if(lgr.latest().is_containing(KEYCODE_E)) { //mode change
                 lgr.accept() ;
                 pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
                 inmode = static_cast<InnerMode>(
                         (static_cast<int>(inmode) + 1) % static_cast<int>(InnerMode::NUM)) ;
-                pimpl->draw_mode_info(inmode) ;
+                pimpl->draw_mode_status(inmode) ;
                 continue ;
             }
 

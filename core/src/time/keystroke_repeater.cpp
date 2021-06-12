@@ -114,7 +114,7 @@ namespace vind
         pimpl->start_time_ = system_clock::now() ;
     }
 
-    bool KeyStrokeRepeater::is_pressed() const {
+    bool KeyStrokeRepeater::is_passed() const {
         std::lock_guard<std::mutex> scoped_lock(pimpl->mtx_) ;
 
         auto dt = compute_delta_t(pimpl->start_time_) ;

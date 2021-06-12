@@ -126,7 +126,7 @@ namespace vind
             }
             auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
             if(args.empty()) {
-                sprocess() ;
+                sprocess(true) ;
                 return ;
             }
             sprocess(args, true) ;

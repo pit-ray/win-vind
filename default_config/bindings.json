@@ -18,7 +18,7 @@
         "evdef": [],
         "gndef": [],
         "gvdef": [],
-        "idef": ["<F8>", "<capslock>"],
+        "idef": ["<F8>"],
         "rdef": [],
         "en": "Instant GUI Normal Mode",
         "ja": "インスタントGUI ノーマルモード"
@@ -625,7 +625,7 @@
     },
     {
         "name": "window_resizer",
-        "cdef": ["wr", "resizer"],
+        "cdef": ["wr", "resizer", "winresizer"],
         "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>e"],

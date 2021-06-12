@@ -118,7 +118,7 @@
         "ja": "背景の色"
     },
     "cmd_roughpos": {
-        "value": "LowerLeft",
+        "value": "LowerMid",
         "choices": [
             {
                 "value": "UpperLeft",

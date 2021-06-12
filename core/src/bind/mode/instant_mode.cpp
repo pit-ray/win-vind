@@ -30,6 +30,8 @@ namespace vind
 
 
     void ToInstantGUINormal::sprocess() const {
+        keyabsorber::close_all_ports_with_refresh() ;
+
         keyabsorber::InstantKeyAbsorber isa{} ;
 
         VirtualCmdLine::cout("-- Instant GUI Normal --") ;

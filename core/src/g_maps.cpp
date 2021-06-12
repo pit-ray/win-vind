@@ -29,11 +29,10 @@
 namespace
 {
     using namespace vind ;
-
-    const auto& func_list = bindingslists::get() ;
-
     template <typename T>
     bool is_func_name(T&& name) {
+        static const auto& func_list = bindingslists::get() ;
+
         auto id = BindedFunc::name_to_id(std::forward<T>(name)) ;
         for(const auto& f : func_list) {
             if(id == f->id()) return true ;

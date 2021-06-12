@@ -80,6 +80,7 @@ add_library(hotkey STATIC
 add_library(mode STATIC
     src/bind/mode/change_mode.cpp
     src/bind/mode/command_mode.cpp
+    src/bind/mode/instant_mode.cpp
 )
 
 add_library(mouse STATIC
@@ -93,6 +94,7 @@ add_library(mouse STATIC
 )
 
 add_library(proc STATIC
+    src/bind/proc/execute.cpp
     src/bind/proc/external_app.cpp
     src/bind/proc/open_window.cpp
 )

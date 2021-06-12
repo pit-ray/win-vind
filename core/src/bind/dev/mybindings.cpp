@@ -1,3 +1,5 @@
+#if defined(DEBUG)
+
 #include "bind/dev/mybindings.hpp"
 
 #include "bind/binded_func_creator.hpp"
@@ -28,3 +30,5 @@ namespace vind
         sprocess() ;
     }
 }
+
+#endif

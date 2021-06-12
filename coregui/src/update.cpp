@@ -29,6 +29,8 @@
 #include "util/winwrap.hpp"
 #include "version.hpp"
 
+#include "bind/proc/execute.hpp"
+
 #include "disable_gcc_warning.hpp"
 
 #include <maddy/parser.h>
@@ -40,7 +42,7 @@
 // GCC
 #if defined(__GNUC__)
 
-#if __x86_64__
+#if defined(__x86_64__)
 #define INSTALLER_PREFIX "64bit"
 #else
 #define INSTALLER_PREFIX "32bit"
@@ -48,7 +50,7 @@
 
 // MSVC
 #elif defined(_MSC_VER) && _MSC_VER >= 1500
-#if _WIN64
+#if defined(_WIN64)
 #define INSTALLER_PREFIX "64bit"
 #else
 #define INSTALLER_PREFIX "32bit"
@@ -170,7 +172,7 @@ namespace vindgui
 
                         Bind(wxEVT_HTML_LINK_CLICKED, [](wxHtmlLinkEvent& e) {
                             auto url = e.GetLinkInfo().GetHref().ToStdString() ;
-                            util::shell_execute_open(url) ;
+                            Execute::sprocess(url) ;
                         }, UPDATE_NOTES) ;
 
                         root->Add(body, flags) ;
@@ -219,7 +221,7 @@ namespace vindgui
                                                 Sleep(500) ;
                                                 std::ifstream check(dl_filepath) ;
                                                 if(check.is_open()) {
-                                                    util::shell_execute_open(dl_filepath) ;
+                                                    Execute::sprocess(dl_filepath) ;
                                                     break ;
                                                 }
                                                 if(system_clock::now() - dl_start > 60s) { //timeout
@@ -231,7 +233,7 @@ namespace vindgui
                                     }
                                 }
                                 catch(const nlohmann::json::exception&) {
-                                    util::shell_execute_open(
+                                    Execute::sprocess(
                                             "https://github.com/pit-ray/win-vind/releases/latest") ;
                                 }
                             }, wxID_OK) ;

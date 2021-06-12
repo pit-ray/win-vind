@@ -23,7 +23,7 @@
 namespace
 {
     using namespace vind ;
-    const auto& g_all_func_list = bindingslists::get() ;
+    std::vector<BindedFunc::SPtr> g_all_func_list ;
 
     ParsedBindingLists g_parsed_bindlists ;
 }
@@ -188,6 +188,10 @@ namespace vind
     }
 
     void FuncFinder::load_global_bindings() {
+        if(g_all_func_list.empty()) {
+            g_all_func_list = bindingslists::get() ;
+        }
+
         ParsedBindingLists().swap(g_parsed_bindlists) ; //clear by empty swapping
 
         std::vector<gmaps::UniqueMap> maps{} ;

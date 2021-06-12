@@ -86,13 +86,12 @@ namespace vind
             CloseHandle(pi.hThread) ;
         }
 
-        void shell_execute_open(const std::string& url) {
-            if(reinterpret_cast<HINSTANCE>(32) > ShellExecuteW(
-                            NULL, L"open",
+        int shell_execute(const std::string& url) {
+            return static_cast<int>(reinterpret_cast<std::size_t>(
+                        ShellExecuteW(
+                            NULL, NULL,
                             util::s_to_ws(url).c_str(),
-                            NULL, NULL, SW_SHOWNORMAL)) {
-                throw RUNTIME_EXCEPT("Could not open " + url) ;
-            }
+                            NULL, NULL, SW_SHOWNORMAL))) ;
         }
     }
 }

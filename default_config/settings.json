@@ -1,6 +1,6 @@
 {
-    "initial_mode": {
-        "value": "gn",
+    "initmode": {
+        "value": "i",
         "en": "Initial Mode",
         "ja": "初期モード",
         "choices": [
@@ -26,94 +26,99 @@
             }
         ]
     },
-    "screen_pos_buf": {
+    "jump_margin": {
         "value": 10,
         "en": "Screen Position Buffer",
         "ja": "画面端の余白"
 
     },
-    "cursor_acceleration": {
+    "cursor_accel": {
         "value": 95,
         "en": "Cursor Acceleration",
         "ja": "カーソルの加速度"
     },
-    "cursor_time_weight": {
+    "cursor_tweight": {
         "value": 250,
         "en": "Cursor Weight",
         "ja": "カーソルの重さ"
     },
-    "cursor_max_velocity": {
+    "cursor_maxv": {
         "value": 12,
         "en": "Cursor Max Velocity",
         "ja": "カーソルの最大速度"
     },
-    "window_acceleration": {
+    "window_accel": {
         "value": 95,
         "en": "Window Move Acceleration",
         "ja": "ウィンドウ移動の加速度"
     },
-    "window_time_weight": {
+    "window_tweight": {
         "value": 250,
         "en": "Window Move Weight",
         "ja": "ウィンドウ移動の重さ"
     },
-    "window_max_velocity": {
+    "window_maxv": {
         "value": 12,
         "en": "Window Move Max Velocity",
         "ja": "ウィンドウ移動の最大速度"
     },
-    "yscroll_speed": {
+    "winresizer_initmode": {
+        "value": 0,
+        "en": "Initial Mode of Window Resizer ([0]: Resize, [1]: Move, [2]: Focus)",
+        "ja": "ウィンドウリサイザの初期モード ([0]: Resize, [1]: Move, [2]: Focus)"
+    },
+    "vscroll_speed": {
         "value": 30,
         "en": "Vertical Scroll Speed",
         "ja": "縦スクロールの速度"
     },
-    "xscroll_speed": {
+    "hscroll_speed": {
         "value": 10,
         "en": "Horizontal Scroll Speed",
         "ja": "横スクロールの速度"
     },
-    "yscroll_screen_ratio": {
+    "vscroll_pageratio": {
         "value": 0.125,
         "en": "Vertical Page Scroll Ratio",
         "ja": "縦ページスクロール比"
     },
-    "xscroll_screen_ratio": {
+    "hscroll_pageratio": {
         "value": 0.125,
         "en": "Horizontal Page Scroll Ratio",
         "ja": "横ページスクロール比"
     },
-    "cmd_max_char": {
+    "cmd_maxchar": {
         "value": 32,
         "en": "Max Character Num",
         "ja": "最大文字数"
     },
-    "cmd_max_history_num": {
+    "cmd_maxhist": {
         "value": 10,
         "en": "Max Command History Num",
         "ja": "最大コマンド履歴数"
     },
-    "cmd_font_size": {
+    "cmd_fontsize": {
         "value": 23,
         "en": "Font Size",
         "ja": "フォントサイズ"
     },
-    "cmd_font_weight": {
+    "cmd_fontweight": {
         "value": 400,
         "en": "Font Weight",
         "ja": "フォントの太さ"
     },
-    "cmd_font_color": {
+    "cmd_fontcolor": {
         "value": "c8c8c8",
         "en": "Font Color",
         "ja": "フォントの色"
     },
-    "cmd_font_bkcolor": {
+    "cmd_bgcolor": {
         "value": "323232",
         "en": "Font Background Color",
         "ja": "背景の色"
     },
-    "cmd_pos": {
-        "value": "LowerLeft",
+    "cmd_roughpos": {
+        "value": "LowerMid",
         "choices": [
             {
                 "value": "UpperLeft",
@@ -174,27 +179,27 @@
         "en": "Vertical Margin",
         "ja": "縦の余白"
     },
-    "cmd_font_extra": {
+    "cmd_fontextra": {
         "value": 1,
         "en": "Font Extra",
         "ja": "文字同士の間隔"
     },
-    "cmd_font_name": {
+    "cmd_fontname": {
         "value": "Consolas",
         "en": "Font Name",
         "ja": "フォント名"
     },
-    "cmd_fadeout_time": {
+    "cmd_fadeout": {
         "value": 5,
         "en": "Fade Out Time (s)",
         "ja": "フェードアウト時間 (s)"
     },
-    "gui_font_size": {
+    "gui_fontsize": {
         "value": 11,
         "en": "GUI Font Size",
         "ja": "GUIのフォントサイズ"
     },
-    "gui_font_name": {
+    "gui_fontname": {
         "value": "Consolas",
         "en": "GUI Font Name",
         "ja": "GUIのフォント名"
@@ -218,7 +223,7 @@
         "en": "Icon Style",
         "ja": "アイコンのスタイル"
     },
-    "keybrdlayout": {
+    "keybrd_layout": {
         "value": "",
         "choices": [
             {
@@ -243,7 +248,7 @@
         "en": "Keyboard Type",
         "ja": "キーボード配列"
     },
-    "ui_lang": {
+    "gui_lang": {
         "value": "en",
         "choices": [
             {
@@ -262,52 +267,6 @@
         "en": "UI Language",
         "ja": "UIの言語"
     },
-    "exapps": {
-        "choices": [
-            {
-                "name": "shell",
-                "value": "cmd"
-            },
-            {
-                "name": "cmd",
-                "value": "cmd"
-            },
-            {
-                "name": "notepad",
-                "value": "notepad"
-            },
-            {
-                "name": "explorer",
-                "value": "explorer"
-            },
-            {
-                "name": "powershell",
-                "value": "powershell"
-            },
-            {
-                "name": "edge",
-                "value": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
-            },
-            {
-                "name": "gvim",
-                "value": "gvim"
-            },
-            {
-                "name": "mspaint",
-                "value": "mspaint"
-            },
-            {
-                "name": "bash",
-                "value": "bash"
-            },
-            {
-                "name": "calc",
-                "value": "calc"
-            }
-        ],
-        "en": "Shortcut Apps",
-        "ja": "アプリのショートカット"
-    },
     "shell": {
         "value": "powershell",
         "en": "Name of the shell to use for \":!\" commands",
@@ -318,7 +277,7 @@
         "en": "Flag passed to the shell to execute \":!\" commands",
         "ja": "\":!\"等のコマンドを実行するためにシェルに渡されるフラグ"
     },
-    "shell_startup_dir": {
+    "shell_startupdir": {
         "value": "",
         "en": "Current directory after shell startup",
         "ja": "シェル起動後の現在のディレクトリ"
@@ -333,7 +292,7 @@
         "en": "Dedicate to One Window",
         "ja": "ウィンドウ特化"
     },
-    "virtual_cmd_line": {
+    "vcmdline": {
         "value": true,
         "en": "Virtual Command Line",
         "ja": "仮想コマンドライン"
@@ -343,64 +302,49 @@
         "en": "Suppress For Vim",
         "ja": "Vim用に機能を抑制"
     },
-    "easy_click_font_size": {
+    "easyclick_fontsize": {
         "value": 14,
         "en": "EasyClick Font Size",
         "ja": "EasyClickのフォントサイズ"
     },
-    "easy_click_font_weight": {
+    "easyclick_fontweight": {
         "value": 500,
         "en": "EasyClick Font Weight",
         "ja": "EasyClickのフォントの太さ"
     },
-    "easy_click_font_name": {
+    "easyclick_fontname": {
         "value": "Consolas",
         "en": "EasyClick Font Name",
         "ja": "EasyClickのフォント名"
     },
-    "easy_click_font_color": {
+    "easyclick_fontcolor": {
         "value": "c8c8c8",
         "en": "EasyClick Font Color",
         "ja": "EasyClickのフォントの色"
     },
-    "easy_click_font_bkcolor": {
+    "easyclick_bgcolor": {
         "value": "323232",
         "en": "EasyClick Font Background Color",
         "ja": "EasyClickの背景の色"
     },
-    "easy_click_matching_color_decay": {
+    "easyclick_colordecay": {
         "value": 100,
         "en": "EasyClick Matching Color Decay",
         "ja": "EasyClickの一致文字の色減衰"
     },
-    "enable_char_cache": {
+    "charcache": {
         "value": false,
         "en": "Enable Char Cache",
         "ja": "文字キャッシュ有効化"
     },
-    "enable_esyclk_hwnd_cache": {
-        "value": false,
-        "en": "Enable EasyClick HWND Cache",
-        "ja": "HWNDキャッシュを有効化"
-    },
-    "gvim_exe_path": {
-        "value": "gvim",
-        "en": "Path to gvim.exe",
-        "ja": "gvim.exeのパス"
-    },
-    "window_width_delta": {
+    "window_hdelta": {
         "value": 100,
         "en": "Window Width delta for resizing",
         "ja": "ウィンドウの幅のリサイズ量"
     },
-    "window_height_delta": {
+    "window_vdelta": {
         "value": 100,
         "en": "Window height delta for resizing",
         "ja": "ウィンドウの高さのリサイズ量"
-    },
-    "enable_specific_bindings_in_mygui": {
-        "value": false,
-        "en": "Enable specific bindings in Preferences",
-        "ja": "設定ウィンドウで特殊バインディングを有効化"
     }
 }

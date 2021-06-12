@@ -1,3 +1,5 @@
+#if defined(DEBUG)
+
 #ifndef MY_BINDING_HPP
 #define MY_BINDING_HPP
 
@@ -12,5 +14,7 @@ namespace vind
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 }
+
+#endif
 
 #endif

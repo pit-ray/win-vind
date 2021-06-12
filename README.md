@@ -43,6 +43,9 @@
 
 <br>  
 
+## Note: We released 4.0.0 perview. Try it!
+- [new README](README_4xx.md)
+
 ## Description
 **win-vind** provides the lightweight hybrid UI system of CUI and GUI. Its core idea is to add a new mode layer to operate GUI when you want to transition from Vim to other windows for a short while.  
 

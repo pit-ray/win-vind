@@ -37,7 +37,7 @@ namespace vind
     ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
     void ScrollUp::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(gparams::get_i("yscroll_speed") * repeat_num) ;
+        mouse::vscroll(gparams::get_i("vscroll_speed") * repeat_num) ;
     }
     void ScrollUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -68,7 +68,7 @@ namespace vind
     ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
 
     void ScrollDown::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(-gparams::get_i("yscroll_speed") * repeat_num) ;
+        mouse::vscroll(-gparams::get_i("vscroll_speed") * repeat_num) ;
     }
     void ScrollDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -100,7 +100,7 @@ namespace vind
 
     void ScrollUpHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * 0.5f * repeat_num * \
-                gparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollUpHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -132,7 +132,7 @@ namespace vind
 
     void ScrollDownHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-0.5f * MAX_Y_POS * repeat_num * \
-                gparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollDownHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -164,7 +164,7 @@ namespace vind
 
     void ScrollUpOnePage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(MAX_Y_POS * repeat_num * \
-                gparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollUpOnePage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -196,7 +196,7 @@ namespace vind
 
     void ScrollDownOnePage::sprocess(unsigned int repeat_num) const {
         mouse::vscroll(-MAX_Y_POS * repeat_num * \
-                gparams::get_f("yscroll_screen_ratio")) ;
+                gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollDownOnePage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -228,7 +228,7 @@ namespace vind
     ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
 
     void ScrollLeft::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(-gparams::get_i("xscroll_speed") * repeat_num) ;
+        mouse::hscroll(-gparams::get_i("hscroll_speed") * repeat_num) ;
     }
     void ScrollLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -259,7 +259,7 @@ namespace vind
     ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
 
     void ScrollRight::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(gparams::get_f("xscroll_speed") * repeat_num) ;
+        mouse::hscroll(gparams::get_f("hscroll_speed") * repeat_num) ;
     }
     void ScrollRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -291,7 +291,7 @@ namespace vind
 
     void ScrollLeftHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(-0.5f * MAX_X_POS * repeat_num * \
-                gparams::get_f("xscroll_screen_ratio")) ;
+                gparams::get_f("hscroll_pageratio")) ;
     }
     void ScrollLeftHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -323,7 +323,7 @@ namespace vind
 
     void ScrollRightHalfPage::sprocess(unsigned int repeat_num) const {
         mouse::hscroll(MAX_X_POS * 0.5f * repeat_num * \
-                gparams::get_f("xscroll_screen_ratio")) ;
+                gparams::get_f("hscroll_pageratio")) ;
     }
     void ScrollRightHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

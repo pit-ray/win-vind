@@ -83,7 +83,7 @@ namespace
                 //recently logger
 
                 auto over_num =
-                    static_cast<long>(hist.size()) - gparams::get_l("cmd_max_history_num") ;
+                    static_cast<long>(hist.size()) - gparams::get_l("cmd_maxhist") ;
 
                 if(over_num > 0) {
                     util::remove_from_top(hist, over_num) ;

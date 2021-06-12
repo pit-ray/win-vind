@@ -5,7 +5,7 @@
 
 namespace vind
 {
-    namespace keybrdlayout {
+    namespace keybrd_layout {
         std::string get_layout_filepath(LANGID id) {
 
             std::string filename ;

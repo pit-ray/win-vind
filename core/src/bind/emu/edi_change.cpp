@@ -87,7 +87,7 @@ namespace vind
             keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
         }) ;
 
-        if(gparams::get_b("enable_char_cache")) {
+        if(gparams::get_b("charcache")) {
             keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }

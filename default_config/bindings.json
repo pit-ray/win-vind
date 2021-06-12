@@ -1,15 +1,27 @@
 [
     {
         "name": "to_gui_normal",
-        "cdef": ["guinormal"],
+        "cdef": ["guinormal", "gn"],
         "endef": ["<gndef>"],
         "evdef": ["<gndef>"],
-        "gndef": ["<Esc-Left>", "<F9>"],
+        "gndef": ["<Esc-Left>"],
         "gvdef": ["<gndef>"],
         "idef": ["<gndef>"],
         "rdef": ["<gndef>"],
         "en": "GUI Normal Mode",
         "ja": "GUI ノーマルモード"
+    },
+    {
+        "name": "to_instant_gui_normal",
+        "cdef": [],
+        "endef": [],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": ["<F8>"],
+        "rdef": [],
+        "en": "Instant GUI Normal Mode",
+        "ja": "インスタントGUI ノーマルモード"
     },
     {
         "name": "to_resident",
@@ -25,7 +37,7 @@
     },
     {
         "name": "to_gui_visual",
-        "cdef": ["guivisual"],
+        "cdef": ["guivisual", "gv"],
         "endef": [],
         "evdef": [],
         "gndef": ["v"],
@@ -38,8 +50,8 @@
     {
         "name": "to_command",
         "cdef": [],
-        "endef": ["<gndef>"],
-        "evdef": ["<gndef>"],
+        "endef": [":"],
+        "evdef": [":"],
         "gndef": [":"],
         "gvdef": [],
         "idef": [],
@@ -49,32 +61,32 @@
     },
     {
         "name": "to_edi_normal",
-        "cdef": [],
-        "endef": ["<Esc>"],
-        "evdef": ["<endef>"],
-        "gndef": ["I", "gI"],
+        "cdef": ["edinormal", "en"],
+        "endef": [],
+        "evdef": ["<Esc-Right>"],
+        "gndef": ["I", "<Esc-Right>"],
         "gvdef": [],
-        "idef": ["<endef>"],
+        "idef": ["<Esc-Right>"],
         "rdef": ["<Esc-Right>"],
         "en": "Normal Mode (Vim Emulation: <Esc>)",
         "ja": "ノーマルモード (Vim エミュレーション: <Esc>)"
     },
     {
         "name": "to_insert",
-        "cdef": [],
+        "cdef": ["insert", "i"],
         "endef": ["i"],
         "evdef": [],
         "gndef": ["i"],
         "gvdef": [],
         "idef": [],
-        "rdef": [],
-        "en": "Insert",
-        "ja": "インサート"
+        "rdef": ["<Esc-i>"],
+        "en": "Insert Mode",
+        "ja": "インサートモード"
     },
     {
         "name": "to_edi_visual",
-        "cdef": [],
-        "endef": ["v", "<C-v>"],
+        "cdef": ["edivisual", "ev"],
+        "endef": ["v"],
         "evdef": [],
         "gndef": [],
         "gvdef": [],
@@ -85,7 +97,7 @@
     },
     {
         "name": "to_edi_visual_line",
-        "cdef": [],
+        "cdef": ["edivisualline", "evl"],
         "endef": ["V"],
         "evdef": [],
         "gndef": [],
@@ -112,7 +124,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["h", "<C-h>", "<BS>", "<Left>"],
+        "gndef": ["h", "<BS>", "<Left>"],
         "gvdef": ["<gndef>"],
         "idef": [],
         "rdef": [],
@@ -136,7 +148,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["k", "-", "gk", "<C-p>", "<Up>"],
+        "gndef": ["k", "-", "<Up>"],
         "gvdef": ["<gndef>"],
         "idef": [],
         "rdef": [],
@@ -148,7 +160,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["j", "+", "gj", "<C-n>", "<Down>", "<Enter>", "<C-m>"],
+        "gndef": ["j", "+", "<Down>"],
         "gvdef": ["<gndef>"],
         "idef": [],
         "rdef": [],
@@ -160,7 +172,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["0", "^", "<Home>", "g0", "g^"],
+        "gndef": ["0", "^", "<Home>"],
         "gvdef": ["<gndef>"],
         "idef": [],
         "rdef": [],
@@ -172,7 +184,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["$", "<End>", "g$"],
+        "gndef": ["$", "<End>"],
         "gvdef": ["<gndef>"],
         "idef": [],
         "rdef": [],
@@ -208,7 +220,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["gm", "gM"],
+        "gndef": ["gm"],
         "gvdef": ["<gndef>"],
         "idef": [],
         "rdef": [],
@@ -244,7 +256,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["t", "T"],
+        "gndef": ["t"],
         "gvdef": [],
         "idef": [],
         "rdef": [],
@@ -602,7 +614,7 @@
     {
         "name": "switch_window",
         "cdef": ["sw", "switch"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>s"],
         "gvdef": [],
@@ -613,8 +625,8 @@
     },
     {
         "name": "window_resizer",
-        "cdef": ["wr", "resizer"],
-        "endef": [],
+        "cdef": ["wr", "resizer", "winresizer"],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>e"],
         "gvdef": [],
@@ -626,7 +638,7 @@
     {
         "name": "select_left_window",
         "cdef": [],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>h"],
         "gvdef": [],
@@ -638,7 +650,7 @@
     {
         "name": "select_right_window",
         "cdef": [],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>l"],
         "gvdef": [],
@@ -650,7 +662,7 @@
     {
         "name": "select_upper_window",
         "cdef": [],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>k"],
         "gvdef": [],
@@ -662,7 +674,7 @@
     {
         "name": "select_lower_window",
         "cdef": [],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>j"],
         "gvdef": [],
@@ -674,7 +686,7 @@
     {
         "name": "maximize_current_window",
         "cdef": ["max", "on", "only"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>u"],
         "gvdef": [],
@@ -686,7 +698,7 @@
     {
         "name": "minimize_current_window",
         "cdef": ["min", "hi", "hide"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>d"],
         "gvdef": [],
@@ -698,7 +710,7 @@
     {
         "name": "snap_current_window_to_left",
         "cdef": ["lsplit", "lsp", "wl"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>H", "<C-w><Left>"],
         "gvdef": [],
@@ -710,7 +722,7 @@
     {
         "name": "snap_current_window_to_right",
         "cdef": ["rsplit", "rsp", "wh"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>L", "<C-w><Right>"],
         "gvdef": [],
@@ -722,7 +734,7 @@
     {
         "name": "snap_current_window_to_top",
         "cdef": ["tsplit", "tsp", "wt"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>K"],
         "gvdef": [],
@@ -734,7 +746,7 @@
     {
         "name": "snap_current_window_to_bottom",
         "cdef": ["bsplit", "bsp", "wb"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>J"],
         "gvdef": [],
@@ -746,7 +758,7 @@
     {
         "name": "arrange_windows",
         "cdef": ["arrange", "arw"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>="],
         "gvdef": [],
@@ -758,7 +770,7 @@
     {
         "name": "rotate_windows",
         "cdef": ["rotate", "rot"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>r"],
         "gvdef": [],
@@ -770,7 +782,7 @@
     {
         "name": "rotate_windows_in_reverse",
         "cdef": ["rerotate", "rerot"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>R"],
         "gvdef": [],
@@ -782,7 +794,7 @@
     {
         "name": "exchange_window_with_nearest",
         "cdef": ["exchange", "exw"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>x"],
         "gvdef": [],
@@ -806,7 +818,7 @@
     {
         "name": "increase_window_width",
         "cdef": ["vertical resize +<num>", "vert res +<num>"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w><gt>"],
         "gvdef": [],
@@ -818,7 +830,7 @@
     {
         "name": "decrease_window_width",
         "cdef": ["vertical resize -<num>", "vert res -<num>"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w><lt>"],
         "gvdef": [],
@@ -842,7 +854,7 @@
     {
         "name": "increase_window_height",
         "cdef": ["resize +<num>", "res +<num>"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>+"],
         "gvdef": [],
@@ -854,7 +866,7 @@
     {
         "name": "decrease_window_height",
         "cdef": ["resize -<num>", "res -<num>"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>-"],
         "gvdef": [],
@@ -866,7 +878,7 @@
     {
         "name": "open_new_window",
         "cdef": ["new"],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<C-w>n"],
         "gvdef": [],
@@ -902,7 +914,7 @@
     {
         "name": "goto_next_page",
         "cdef": [],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<gt>"],
         "gvdef": [],
@@ -914,7 +926,7 @@
     {
         "name": "goto_prev_page",
         "cdef": [],
-        "endef": [],
+        "endef": ["<gndef>"],
         "evdef": [],
         "gndef": ["<lt>"],
         "gvdef": [],
@@ -925,7 +937,7 @@
     },
     {
         "name": "save",
-        "cdef": ["w", "w_f", "w_a", "w_c", "up", "wall"],
+        "cdef": ["w"],
         "endef": [],
         "evdef": [],
         "gndef": [],
@@ -937,7 +949,7 @@
     },
     {
         "name": "close_current_tab",
-        "cdef": ["q", "qa", "q!", "qa!", "tabclose"],
+        "cdef": ["q", "q!", "tabclose"],
         "endef": [],
         "evdef": [],
         "gndef": [],
@@ -996,6 +1008,18 @@
         "ja": "任意のアプリを実行"
     },
     {
+        "name": "execute",
+        "cdef": ["e<any>", "edit<any>", "execute<any>"],
+        "endef": [],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Open file with default program",
+        "ja": "デフォルトのプログラムでファイルを開く"
+    },
+    {
         "name": "show_config_gui",
         "cdef": ["setgui"],
         "endef": [],
@@ -1021,7 +1045,7 @@
     },
     {
         "name": "open",
-        "cdef": ["find", "open", "e", "e!", "edit", "edit!"],
+        "cdef": ["find", "open"],
         "endef": [],
         "evdef": [],
         "gndef": [],
@@ -1230,7 +1254,7 @@
         "evdef": ["<endef>"],
         "gndef": [],
         "gvdef": [],
-        "idef": [""],
+        "idef": [],
         "rdef": [],
         "en": "Backward with WORDS (Vim Emulation: B)",
         "ja": "前の単語へ戻る(空白ベース) (Vimエミュレーション: B)"

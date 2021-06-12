@@ -97,8 +97,8 @@ namespace vindgui
                 auto dlg = new vindgui::AboutDialog(
                         vind::gparams::get_s("icon_style"),
                         "win-vind",
-                        vind::gparams::get_i("gui_font_size"),
-                        vind::gparams::get_s("gui_font_name")) ;
+                        vind::gparams::get_i("gui_fontsize"),
+                        vind::gparams::get_s("gui_fontname")) ;
 
                 dlg->Show(false) ;
 

@@ -75,10 +75,10 @@ namespace vind
                             pimpl->yposs[keycode] / pimpl->max_keybrd_yposs * height) ;
 
                     if(x_pos == width) 
-                        x_pos -= gparams::get_i("screen_pos_buf") ;
+                        x_pos -= gparams::get_i("jump_margin") ;
 
                     if(y_pos == height) 
-                        y_pos -= gparams::get_i("screen_pos_buf") ;
+                        y_pos -= gparams::get_i("jump_margin") ;
 
                     SetCursorPos(x_pos, y_pos) ;
 
@@ -104,7 +104,7 @@ namespace vind
 
 
     void JumpWithKeybrdLayout::reconstruct() {
-        auto layoutfile = gparams::get_s("keybrdlayout") ;
+        auto layoutfile = gparams::get_s("keybrd_layout") ;
         std::string filename ;
         if(!layoutfile.empty()) {
             filename = path::CONFIG_PATH() + "\\" + layoutfile ;
@@ -112,7 +112,7 @@ namespace vind
         else {
             auto locale_id = GetKeyboardLayout(0) ;
             auto lang_id = static_cast<LANGID>(reinterpret_cast<std::size_t>(locale_id) & 0xffff) ;
-            filename = keybrdlayout::get_layout_filepath(lang_id) ;
+            filename = keybrd_layout::get_layout_filepath(lang_id) ;
         }
 
         if(filename.empty()) {

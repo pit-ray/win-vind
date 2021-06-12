@@ -39,11 +39,12 @@
   
 <br>  
 
-## Notice: We will release 4.x with a major update in June.  
 
 <br>  
 
-## Note: We released 4.0.0 perview. Try it!
+## Notice
+### We will release 4.x with a major update in June.  
+### We released 4.0.0-perview. Try it!
 - [new README](README_4xx.md)
 
 ## Description

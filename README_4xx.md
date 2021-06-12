@@ -57,16 +57,16 @@ If you want to know the details, refer to <a href="https://pit-ray.github.io/win
 ## Demo
 
 ## Download
-### 4.0.0 (Preview Version)  
+### 4.0.0-rc1 (Preview Version)  
 Date: 2021/6/13  
 
 #### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/setup_win-vind_4.0.0_32bit.exe.zip">setup_win-vind_4.0.0_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/win-vind_4.0.0_32bit.zip">win-vind_4.0.0_32bit.zip</a>  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0-rc1/setup_win-vind_4.0.0_32bit.exe.zip">setup_win-vind_4.0.0_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0-rc1/win-vind_4.0.0_32bit.zip">win-vind_4.0.0_32bit.zip</a>  
 
 #### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/setup_win-vind_4.0.0_64bit.exe.zip">setup_win-vind_4.0.0_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/win-vind_4.0.0_64bit.zip">win-vind_4.0.0_64bit.zip</a> 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0-rc1/setup_win-vind_4.0.0_64bit.exe.zip">setup_win-vind_4.0.0_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0-rc1/win-vind_4.0.0_64bit.zip">win-vind_4.0.0_64bit.zip</a> 
   
   
 ## Related Pages

@@ -11,18 +11,17 @@ descripption: "Keyword list"
 
 All keywords in win-vind are not case-sensitive.  
 
-## Mode Keyword  
+## Mode Prefix
 
 |Keyword|Meanings|
 |:---:|:---:|
-|guin|GUI Normal Mode|
-|guii|GUI Insert Mode|
-|guiv|GUI Visual Mode|
-|edin|Editor Normal Mode|
-|edii|Editor Insert Mode|
-|ediv|Editor Visual Mode|
-|edivl|Editor Line Visual Mode|
-|cmd|Command Mode|
+|gn|GUI Normal Mode|
+|gv|GUI Visual Mode|
+|en|Editor Normal Mode|
+|ev|Editor Visual Mode|
+|i|Insert Mode|
+|r|Resident Mode|
+|c|Command Mode|
 
 ## Specific Keyword  
 

@@ -138,7 +138,12 @@ parent: Cheet Sheet
 Write `.vindrc` in the following way. The avaliable commands are `command`, `delcommand`, and `comclear`.
 
 ```vim
+" ~/.win-vind/.vindrc
+
 command foo easy_click_left " Call easy_click_left with :foo
 delcommand close            " Delete :close command
 comclear                    " Remove all commands
 ```
+
+<br>
+<br>

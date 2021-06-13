@@ -137,6 +137,7 @@ parent: Cheet Sheet
 
 Write `.vindrc` in the following way. The avaliable commands are `command`, `delcommand`, and `comclear`.
 
+**Sample**
 ```vim
 " ~/.win-vind/.vindrc
 

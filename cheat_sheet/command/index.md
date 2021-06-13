@@ -28,7 +28,7 @@ parent: Cheet Sheet
 |`:vdnext`|**switch_to_left_vdesktop**|Switch to a left virtual desktop||
 |`:vdprev`|**switch_to_right_vdesktop**|Switch to a right virtual desktop||
 |`:closev`|**close_current_vdesktop**|Close a current virtual desktop||
-|`:taskview`, `:tv`, `:vdesktop list`|**taskview**|Task View||
+|`:taskview`|**taskview**|Task View||
 
 ### Tab
 
@@ -80,7 +80,7 @@ parent: Cheet Sheet
 
 |Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
-|`:mkdir`, `:md`, `:mkdir <any>`, `:md <any>`|**makedir**|Make a directory||
+|`:mkdir<any>`, `:md<any>`|**makedir**|Make a directory||
 
 ### Vim Emulation
 

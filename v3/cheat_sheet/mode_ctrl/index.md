@@ -4,6 +4,7 @@ title: Mode Control
 nav_order: 4
 parent: Cheat Sheet
 descripption: "Mode Control"
+grand_parent: v3
 ---
 
 # Mode Control  

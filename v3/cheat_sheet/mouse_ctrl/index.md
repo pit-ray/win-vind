@@ -4,6 +4,7 @@ title: Mouse Control
 nav_order: 2
 parent: Cheat Sheet
 descripption: "Mouse Control"
+grand_parent: v3
 ---
 
 # Mouse Control  

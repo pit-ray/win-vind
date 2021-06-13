@@ -4,6 +4,7 @@ title: Window Control
 nav_order: 1
 parent: Cheat Sheet
 descripption: "Window Control"
+grand_parent: v3
 ---
 
 # Window Control  

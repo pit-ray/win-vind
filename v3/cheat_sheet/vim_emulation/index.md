@@ -4,6 +4,7 @@ title: Vim Emulation
 nav_order: 8
 parent: Cheat Sheet
 descripption: "Vim Emulation"
+grand_parent: v3
 ---
 
 # Vim Emulation  

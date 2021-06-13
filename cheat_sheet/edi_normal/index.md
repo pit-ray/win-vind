@@ -19,7 +19,7 @@ parent: Cheat Sheet
 ### Mode
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
 |`<c-i>`|**to_resident**|Resident Mode|
 |`:`|**to_command**|Command Mode|
@@ -30,7 +30,7 @@ parent: Cheat Sheet
 ### Mouse
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<C-y>`, `<C-k>`|**scroll_up**|Scroll a mouse wheel up|
 |`<C-e>`, `<C-j>`|**scroll_down**|Scroll a mouse wheel down|
 |`<C-u>`|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
@@ -49,7 +49,7 @@ parent: Cheat Sheet
 ### HotKey
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<C-r>`|**redo**|Redo|
 |`u`, `U`|**undo**|Undo|
 |`/`, `?`|**search_pattern**|Search Pattern|
@@ -59,7 +59,7 @@ parent: Cheat Sheet
 ### Tab
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|:---|
+|:---:|:---:|:---|:---|
 |`gT`|**switch_to_left_tab**|Switch to a left tab|
 |`gt`|**switch_to_right_tab**|Switch to a right tab|
 
@@ -67,7 +67,7 @@ parent: Cheat Sheet
 ### Window
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<C-w>s`|**switch_window**|Switch a window|
 |`<C-w>e`|**window_resizer**|Window Resizer|
 |`<C-w>h`|**select_left_window**|Select a left window|
@@ -93,7 +93,7 @@ parent: Cheat Sheet
 ### Option
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<LAlt><LAlt>`, `<F2>`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
 |`<RAlt><RAlt>`, `<F10>`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
 
@@ -103,7 +103,7 @@ parent: Cheat Sheet
 #### Mode
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`I`, `gI`|**to_insert_BOL**|Insert to begin of line (Vim: I)|
 |`a`|**to_insert_append**|Append after a caret (Vim: a)|
 |`A`|**to_insert_EOL**|Append end of line (Vim: A)|
@@ -113,7 +113,7 @@ parent: Cheat Sheet
 #### Move
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|Move the caret to left (Vim: h)|
 |`l`, `<Space>`, `<Right>`|**move_caret_right**|Move the caret to right (Vim: l)|
 |`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|Move the caret up (Vim: k)|
@@ -126,7 +126,7 @@ parent: Cheat Sheet
 #### Jump
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`0`, `<Home>`, `g0`|**jump_caret_to_BOL**|Jump the caret to begin of line (Vim: 0)|
 |`$`, `<End>`, `g$`|**jump_caret_to_EOL**|Jump the caret to end of line (Vim: $)|
 |`gg`|**jump_caret_to_BOF**|Jump the caret to BOF (Vim: gg)|
@@ -135,7 +135,7 @@ parent: Cheat Sheet
 #### Edit
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`yy`, `Y`|**yank_line**|Yank lines (Vim: yy)|
 |`y`|**yank_with_motion**|Yank lines with motion (Vim: y{Motion})|
 |`p`|**put_after**|Put texts after the caret (Vim: p)|

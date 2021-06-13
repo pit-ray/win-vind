@@ -19,7 +19,7 @@ parent: Cheat Sheet
 ### Mode
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`::guinormal`, `:gn`|**to_gui_normal**|GUI Normal Mode|
 |`:resident`|**to_resident**|Resident Mode|
 |`:guivisual`, `:gv`|**to_gui_visual**|GUI Visual Mode|
@@ -31,7 +31,7 @@ parent: Cheat Sheet
 ### Virtual Desktop
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:vdnext`|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
 |`:vdprev`|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
 |`:closev`|**close_current_vdesktop**|Close a current virtual desktop|
@@ -40,7 +40,7 @@ parent: Cheat Sheet
 ### Tab
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:tabprevious`|**switch_to_left_tab**|Switch to a left tab|
 |`:tabnext`|**switch_to_right_tab**|Switch to a right tab|
 |`:tabnew`|**open_new_tab**|Open a new tab|
@@ -49,7 +49,7 @@ parent: Cheat Sheet
 ### Window
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:cl`, `:close`|**close_current_window**|Close a current window|
 |`:sw`, `:switch`|**switch_window**|Switch a window|
 |`:wr`, `:resizer`, `:winresizer`|**window_resizer**|Window Resizer|
@@ -77,7 +77,7 @@ parent: Cheat Sheet
 ### Mouse
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:ecl`|**easy_click_left**|EasyClick (Left Click)|
 |`:ecr`|**easy_click_right**|EasyClick (Right Click)|
 |`:ecm`|**easy_click_mid**|EasyClick (Mid Click)|
@@ -86,13 +86,13 @@ parent: Cheat Sheet
 ### File
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:mkdir<any>`, `:md<any>`|**makedir**|Make a directory|
 
 ### Vim Emulation
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:-<num>`|**move_caret_up**|Move the caret up (Vim Emulation: k)|
 |`:+<num>`|**move_caret_down**|Move the caret down (Vim Emulation: j)|
 |`:<num>`|**jump_caret_to_BOF**|Jump the caret to BOF (Vim Emulation: gg)|
@@ -100,7 +100,7 @@ parent: Cheat Sheet
 ### Process
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal|
 |`:!<any>`|**start_external**|Start a optional application|
 |`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with default program|
@@ -109,7 +109,7 @@ parent: Cheat Sheet
 ### Hotkey
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:bun`|**backward_ui_navigation**|Backward UI Navigation|
 |`:decide`|**decide_focused_ui_object**|Decide a focused UI object|
 |`:ex`, `:explorer`|**start_explorer**|Start a Explorer|
@@ -120,15 +120,15 @@ parent: Cheat Sheet
 
 ### Option
 
-|Command|ID|Note|Note|
-|:---:|:---:|:---:|
+|Command|ID|Note|
+|:---:|:---:|:---|
 |`:target`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
 |`:untarget`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
 
 ### System Command
 
 |Command|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`:set<any>`|**system_command_set**|System Command set|
 |`:source<any>`|**system_command_source**|System Command source|
 |`:{mode-prefix}map<any>`|**system_command_map**|System Command map|

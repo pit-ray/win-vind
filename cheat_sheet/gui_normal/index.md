@@ -20,7 +20,7 @@ parent: Cheat Sheet
 ### Mode
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
 |`<c-i>`|**to_resident**|Resident Mode|
 |`v`|**to_gui_visual**|GUI Visual Mode|
@@ -32,7 +32,7 @@ parent: Cheat Sheet
 ### Mouse
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`h`, `<BS>`, `<Left>`|**move_cursor_left**|Move the mouse cursor to left|
 |`l`, `<Space>`, `<Right>`|**move_cursor_right**|Move the mouse cursor to right|
 |`k`, `-`, `<Up>`|**move_cursor_up**|Move the mouse cursor up|
@@ -65,7 +65,7 @@ parent: Cheat Sheet
 ### Hotkey
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`V`|**select_all**|Select all|
 |`y`, `yy`, `Y`|**hotkey_copy**|Standard Copy|
 |`p`, `P`|**hotkey_paste**|Standard Paste|
@@ -82,7 +82,7 @@ parent: Cheat Sheet
 ### Virtual Desktop
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<C-v>h`|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
 |`<C-v>l`|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
 |`<C-v>n`, `<C-v>c`|**create_new_vdesktop**|Create a new virtual desktop|
@@ -92,7 +92,7 @@ parent: Cheat Sheet
 ### Tab
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`gT`|**switch_to_left_tab**|Switch to a left tab|
 |`gt`|**switch_to_right_tab**|Switch to a right tab|
 
@@ -100,7 +100,7 @@ parent: Cheat Sheet
 ### Window
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<C-w>q`, `<C-w>c`|**close_current_window**|Close a current window|
 |`<C-w>s`|**switch_window**|Switch a window|
 |`<C-w>e`|**window_resizer**|Window Resizer|
@@ -128,7 +128,7 @@ parent: Cheat Sheet
 ### Option
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<LAlt><LAlt>`, `<F2>`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
 |`<RAlt><RAlt>`, `<F10>`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
 

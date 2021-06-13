@@ -11,7 +11,7 @@ parent: Cheat Sheet
 ## Default
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
 |`<Esc-Right>`|**to_edi_normal**|Editor Normal Mode|
 |`<Esc-i>`|**to_insert**|Insert Mode|

@@ -45,7 +45,7 @@ descripption: "Option lists"
 |`cmd_fadeout`|num|5|Fade Out Time (s)|
 |`gui_fontsize`|num|11|GUI Font Size|
 |`gui_fontname`|num|Consolas|GUI Font Name|
-|`icon_style`|str|resources/icon32_dark.ico|Dark style or Light style are avaliable in `resources`. You can also use any icon you like.|
+|`icon_style`|str|resources/icon32_dark.ico|Dark style or Light style are avaliable in **resources** directory. You can also use any icon you like.|
 |`keybrd_layout`|str||If it is empty, choose automatically layout in US type or JP type. You can set unique kmp file.|
 |`shell`|str|powershell|Name of the shell to use for \":!\" commands|
 |`shellcmdflag`|str|-c|Flag passed to the shell to execute \":!\" commands|

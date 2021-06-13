@@ -19,14 +19,14 @@ parent: Cheat Sheet
 ### Mode
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
 |`<c-i>`|**to_resident**|Resident Mode|
 
 ### Mouse
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`h`, `<BS>`, `<Left>`|**move_cursor_left**|Move the mouse cursor to left|
 |`l`, `<Space>`, `<Right>`|**move_cursor_right**|Move the mouse cursor to right|
 |`k`, `-`, `<Up>`|**move_cursor_up**|Move the mouse cursor up|
@@ -52,7 +52,7 @@ parent: Cheat Sheet
 ### Hotkey
 
 |Bindings|ID|Note|
-|:---:|:---:|:---:|
+|:---:|:---:|:---|
 |`y`, `yy`, `Y`|**hotkey_copy**|Standard Copy|
 |`p`, `P`|**hotkey_paste**|Standard Paste|
 |`dd`, `D`|**hotkey_cut**|Standard Cut|

@@ -74,6 +74,12 @@ namespace vind
     {}
     void StartExternal::sprocess(std::string cmd) {
         if(!cmd.empty()) {
+            auto last_char_pos = cmd.find_last_not_of(" ") ;
+            if(last_char_pos == std::string::npos) {
+                StartShell::sprocess() ;
+                return ;
+            }
+
             auto shell_cmd = gparams::get_s("shell") ;
             std::string shell_cmd_flag {} ;
 
@@ -84,8 +90,6 @@ namespace vind
             else { // shell style
                 shell_cmd_flag = gparams::get_s("shellcmdflag") ;
             }
-
-            auto last_char_pos = cmd.find_last_not_of(" ") ;
 
             if(cmd[last_char_pos] == ';') { //keep console window
                 cmd.erase(last_char_pos) ;

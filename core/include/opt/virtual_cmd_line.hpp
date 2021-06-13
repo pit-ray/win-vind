@@ -22,7 +22,7 @@ namespace vind
 
         static void cout(std::string&& str) ;
         static void cout(const std::string& str) ;
-        static void msgout(const std::string& str) noexcept ;
+        static void msgout(const std::string& str) ;
 
         static void refresh() ;
         static void clear() ;

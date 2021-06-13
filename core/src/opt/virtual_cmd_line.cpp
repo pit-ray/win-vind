@@ -105,7 +105,7 @@ namespace vind
         g_outstr = str ;
     }
 
-    void VirtualCmdLine::msgout(const std::string& str) noexcept {
+    void VirtualCmdLine::msgout(const std::string& str) {
         if(str.empty()) return ;
         if(!g_outstr.empty()) {
             g_outstr = str ;

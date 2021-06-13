@@ -65,8 +65,8 @@ namespace
         UPDATE_NOTES = 12000,
     } ;
 
-   constexpr auto g_release_json_name = "check_update_log.json" ;
-   const auto g_release_json_path = vind::path::CONFIG_PATH() + "\\" + g_release_json_name ;
+   constexpr auto g_release_cache_name = "check_update_log.json" ;
+   const auto g_release_cache_path = vind::path::CONFIG_PATH() + "\\" + g_release_cache_name ;
 }
 
 
@@ -89,14 +89,14 @@ namespace vindgui
                 util::concat_args(
                 "-H", "@{\"Accept\"=\"application/vnd.github.v3+json\"}",
                 "\"https://api.github.com/repos/pit-ray/win-vind/releases/latest\"",
-                "-o", g_release_json_name), false) ;
+                "-o", g_release_cache_name), false) ;
 
         using namespace std::chrono ;
         auto start = system_clock::now() ;
 
         std::ifstream ifs ;
         while(true) {
-            std::ifstream check_ifs(path::to_u8path(g_release_json_path)) ;
+            std::ifstream check_ifs(path::to_u8path(g_release_cache_path)) ;
             if(check_ifs.is_open()) {
                 ifs = std::move(check_ifs) ;
                 break ;
@@ -260,12 +260,12 @@ namespace vindgui
         }
 
         Bind(wxEVT_BUTTON, [this] (auto&) {
-            DeleteFileW(vind::util::s_to_ws(g_release_json_path).c_str()) ;
+            DeleteFileW(vind::util::s_to_ws(g_release_cache_path).c_str()) ;
             Destroy() ;
         }, wxID_CLOSE) ;
 
         Bind(wxEVT_CLOSE_WINDOW, [this](auto&) {
-            DeleteFileW(vind::util::s_to_ws(g_release_json_path).c_str()) ;
+            DeleteFileW(vind::util::s_to_ws(g_release_cache_path).c_str()) ;
             Destroy() ;
         }) ;
     }

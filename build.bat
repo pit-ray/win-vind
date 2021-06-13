@@ -81,7 +81,7 @@
     @goto exit
 
 :coverity
-    cov-configure --config ./covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
+    cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
     cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
     cd debug
     cov-build --config ./covtest/cov.xml --dir cov-int cmake --build .
@@ -99,7 +99,7 @@
     @goto exit
 
 :coveralls
-    coveralls --include core --exclude core/bind --exclude core/opt --repo_token "%2" --verbose --gcov-options '\-lp'
+    coveralls --include core --repo_token "%2"
     @goto exit
 
 :exit

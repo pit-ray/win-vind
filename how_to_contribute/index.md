@@ -54,7 +54,7 @@ I recommend to install follow softwares or libraries.
 |:---:|:---:|:---:|
 |MinGW-w64|GCC-8.1.0-x86_64-posix-seh|<a href="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/">MinGW-w64 SourceForge.net</a>|
 |CMake|3.14.4|<a href="https://cmake.org/download/">Download - CMake</a>|
-|wxWidgets|3.1.4-rc1|<a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a>|
+|wxWidgets|3.1.5|<a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a>|
 |NSIS|3.06.1|<a href="https://nsis.sourceforge.io/Download">Download - NSIS</a>|
 |Windows10 SDK|10.0.19041.0|<a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/">Microsoft Windows10 SDK - Windows app development</a>|
 
@@ -85,11 +85,8 @@ $ ./build.bat -debug -msvc 64
 
 - Manually
 ```bash
-$ mkdir debug
-$ cd debug
-$ cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 ..
-$ cmake --build . --config Debug
-$ cd ..
+$ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 ..
+$ cmake --build debug --config Debug
 ```
 <br>
 
@@ -99,11 +96,11 @@ $ cd ..
 
 **Please read its architecture at <a href="https://github.com/pit-ray/win-vind/blob/master/devdocs/README.md">devdocs</a>.**  
 
-All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/base/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/common/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
+All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
 
 ### New KeyBinding Example  
-- Make a source file and a header file into **core/include/bind/dev/** and **core/src/bind/dev/**.
-- Add a path of source file into **core/CMakeLists.txt**.   
+- Make a source file and a header file into [core/include/bind/dev/](https://github.com/pit-ray/win-vind/blob/master/core/include/bind/dev) and [core/src/bind/dev/](https://github.com/pit-ray/win-vind/blob/master/core/src/bind/dev).
+- Add a path of source file into [core/CMakeLists.txt](https://github.com/pit-ray/win-vind/blob/master/core/include/bind/dev).
 - Define a new derived class (e.g. **MyBinding**).  
 
 **mybinding.hpp**
@@ -162,26 +159,25 @@ namespace vind
 }
 ```
 
-- Please register the class into <a href="https://github.com/pit-ray/win-vind/blob/master/core/src/bind/bindings_lists.cpp">**core/src/bindings_lists.cpp**</a>.  
+- Please register the class into [core/src/bindings_lists.cpp](https://github.com/pit-ray/win-vind/blob/master/core/src/bind/bindings_lists.cpp).
 
 ```cpp
     MyBinding::create(),
 ```
   
-- Assign commands to **MyBinding** in <a href="https://github.com/pit-ray/win-vind/blob/master/default_config/bindings.json">**config/bindings.json**</a>.  
+- Assign commands to **MyBinding** in [default_config/bindings.json](https://github.com/pit-ray/win-vind/blob/master/default_config/bindings.json).
 
 ```json
     {
         "name": "my_binding",
-        "guin": ["Q"],
-        "guii": ["<guin>"],
-        "guiv": ["<guin>"],
-        "edin": ["<guin>"],
-        "edii": ["<guin>"],
-        "ediv": ["<guin>"],
-        "edivl": ["<guin>"],
-        "cmd": ["mybinding"],
-        "en": "My Binding",
+        "cdef": ["sample"],
+        "endef": [],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Sample",
         "ja": "Sample"
     },
 ```

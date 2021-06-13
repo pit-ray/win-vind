@@ -101,13 +101,13 @@ parent: Cheat Sheet
 
 |Command|ID|Note|
 |:---:|:---:|:---|
-|`:bun`|**backward_ui_navigation**|Backward UI Navigation|
-|`:decide`|**decide_focused_ui_object**|Decide a focused UI object|
+|`:win`, `:start`|**open_startmenu**|Open a start menu|
 |`:ex`, `:explorer`|**start_explorer**|Start a Explorer|
 |`:find`, `:open`|**open**|Open a other file|
-|`:fun`|**forward_ui_navigation**|Forward UI Navigation|
 |`:w`|**save**|Save a current file|
-|`:win`, `:start`|**open_startmenu**|Open a start menu|
+|`:fun`|**forward_ui_navigation**|Forward UI Navigation|
+|`:bun`|**backward_ui_navigation**|Backward UI Navigation|
+|`:decide`|**decide_focused_ui_object**|Decide a focused UI object|
 
 ### Option
 

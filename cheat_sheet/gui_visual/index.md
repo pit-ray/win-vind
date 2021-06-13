@@ -31,12 +31,12 @@ parent: Cheat Sheet
 |`l`, `<Space>`, `<Right>`|**move_cursor_right**|Move the mouse cursor to right|
 |`k`, `-`, `<Up>`|**move_cursor_up**|Move the mouse cursor up|
 |`j`, `+`, `<Down>`|**move_cursor_down**|Move the Mouse Cursor Down|
-|`0`, `^`, `<Home>`|**jump_to_left**|Jump the Mouse cursor to left|
-|`$`, `<End>`|**jump_to_right**|Jump the mouse cursor to right|
-|`gg`|**jump_to_top**|Jump the mouse cursor to top|
-|`G`|**jump_to_bottom**|Jump the mouse cursor to bottom|
-|`gm`|**jump_to_hcenter**|Jump the mouse cursor to horizontal center|
-|`M`|**jump_to_vcenter**|Jump the mouse cursor to vertical center|
+|`0`, `^`, `<Home>`|**jump_cursor_to_left**|Jump the Mouse cursor to left|
+|`$`, `<End>`|**jump_cursor_to_right**|Jump the mouse cursor to right|
+|`gg`|**jump_cursor_to_top**|Jump the mouse cursor to top|
+|`G`|**jump_cursor_to_bottom**|Jump the mouse cursor to bottom|
+|`gm`|**jump_cursor_to_hcenter**|Jump the mouse cursor to horizontal center|
+|`M`|**jump_cursor_to_vcenter**|Jump the mouse cursor to vertical center|
 |`<C-y>`, `<C-k>`|**scroll_up**|Scroll a mouse wheel up|
 |`<C-e>`, `<C-j>`|**scroll_down**|Scroll a mouse wheel down|
 |`<C-u>`|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|

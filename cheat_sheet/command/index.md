@@ -116,7 +116,7 @@ parent: Cheat Sheet
 |`:target`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
 |`:untarget`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
 
-If **Dedicate to One window** enables, you can select one window with Enable Targeting function. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with Disable Targeting function. In other words, this feature transforms some normal editors compared with Vim to fake Vim. The computing cost is so small.
+If **Dedicate to One window** enables, you can select one window with Enable Targeting function. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with Disable Targeting function. In other words, this feature transforms some normal editors to fake Vim. The computing cost is so small.
 
 ### System Command
 

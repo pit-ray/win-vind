@@ -16,50 +16,77 @@ descripption: "Option lists"
 
 <hr>
 
+## Default
+
 |ID|Type|Default|Note|
 |:---:|:---:|:---:|:---|
-|`initmode`|str|i|Initial mode of win-vind. The value is mode prefix.|
-|`jump_margin`|num|10|Screen position buffer|
-|`cursor_accel`|num|95|Cursor acceleration|
-|`cursor_tweight`|num|250|Cursor time weight|
-|`cursor_maxv`|num|12|Cursor max velocity|
-|`window_accel`|num|95|Window move acceleration|
-|`window_tweight`|num|250|Window move time weight|
-|`window_maxv`|num|12|Window move max velocity|
-|`winresizer_initmode`|num|0|Initial Mode of Window Resizer ([0]: Resize, [1]: Move, [2]: Focus)|
-|`vscroll_speed`|num|30|Vertical Scroll Speed|
-|`hscroll_speed`|num|10|Horizontal Scroll Speed|
-|`vscroll_pageratio`|num|0.125|Vertical Page Scroll Ratio|
-|`hscroll_pageratio`|num|0.125|Horizontal Page Scroll Ratio|
-|`cmd_maxchar`|num|32|Max Character Num|
-|`cmd_maxhist`|num|10|Max Command History Num|
-|`cmd_fontsize`|num|23|Font Size|
-|`cmd_fontweight`|num|400|Font Weight|
-|`cmd_fontcolor`|str|c8c8c8|Font Color|
-|`cmd_bgcolor`|str|323232|Font Background Color|
-|`cmd_roughpos`|str|LowerMid|Position of Virtual Command Line. {UpperLeft, UpperMid, UpperRight, MidLeft, Center, MidRight, LowerLeft, LowerMid, LowerRight}|
-|`cmd_xmargin`|num|32|Horizontal Margin|
-|`cmd_ymargin`|num|64|Vertical Margin|
-|`cmd_fontextra`|num|1|Font Extra|
-|`cmd_fontname`|str|Consolas|Font Name|
-|`cmd_fadeout`|num|5|Fade Out Time (s)|
-|`gui_fontsize`|num|11|GUI Font Size|
-|`gui_fontname`|num|Consolas|GUI Font Name|
-|`icon_style`|str|resources/icon32_dark.ico|Dark style or Light style are avaliable in **resources** directory. You can also use any icon you like.|
-|`keybrd_layout`|str||If it is empty, choose automatically layout in US type or JP type. You can set unique kmp file.|
+|`initmode`|str|i|Initial mode of win-vind. The value is the mode prefix.|
+|`jump_margin`|num|10|A margin in pixels to prevent jumping off the screen when jumping to the edge of the screen using `jump_cursor_to_left`, etc.|
+|`cursor_accel`|num|95|Pixel-level acceleration in the constatnt acceleration motion of the mouse cursor.|
+|`cursor_tweight`|num|250|A weight for scaling the time of constant acceleration motion of the mouse cursor.|
+|`cursor_maxv`|num|12|Maximum velocity of the mouse cursor|
+|`window_hdelta`|num|100|Window Width delta for resizing|
+|`window_vdelta`|num|100|Window height delta for resizing|
+|`window_accel`|num|95|Pixel-level acceleration in the constatnt acceleration motion of the window in winresizer.|
+|`window_tweight`|num|250|A weight for scaling the time of constant acceleration motion of the window in winresizer.|
+|`window_maxv`|num|12|Maximum velocity of the window in winresizer.|
+|`winresizer_initmode`|num|0|Initial mode of window resizer ([0]: Resize, [1]: Move, [2]: Focus)|
+|`vscroll_speed`|num|30|Vertical scrolling speed of the mouse wheel.|
+|`hscroll_speed`|num|10|Horizontal scrolling speed of the mouse wheel.|
+|`vscroll_pageratio`|num|0.125|The ratio of one page to the screen height to determine the amount of scrolling movement as a page.
+|`hscroll_pageratio`|num|0.125|The ratio of one page to the screen width to determine the amount of scrolling movement as a page.
+|`cmd_maxchar`|num|32|Maximum number of characters per line in the virtual command line.|
+|`cmd_maxhist`|num|10|Maximum number of histories in the virtual command line.|
+|`cmd_fontsize`|num|23|Font size in virtual command line|
+|`cmd_fontweight`|num|400|Font weight in virtual command line. Its maximum value is 1000.|
+|`cmd_fontcolor`|str|c8c8c8|Font color (# is optional)|
+|`cmd_bgcolor`|str|323232|Font Background Color (# is optional)|
+|`cmd_roughpos`|str|LowerMid|Rough position of virtual command line. The choices are `UpperLeft`, `UpperMid`, `UpperRight`, `MidLeft`, `Center`, `MidRight`, `LowerLeft`, `LowerMid`, or `LowerRight`.|
+|`cmd_xmargin`|num|32|Use `cmd_roughpos` to determine the rough position, and `cmd_xmargin` to determine the detailed horizontal position. The units are in pixels.|
+|`cmd_ymargin`|num|64|Use `cmd_roughpos` to determine the rough position, and `cmd_ymargin` to determine the detailed vertical position. The units are in pixels.|
+|`cmd_fontextra`|num|1|Horizontal character spacing in virtual command line.|
+|`cmd_fontname`|str|Consolas|Font name for virtual command line. If an empty string is passed, the system font will be used.|
+|`cmd_fadeout`|num|5|Fade-out time in seconds for the virtual command line.|
+|`gui_fontsize`|num|11|Font size of GUI|
+|`gui_fontname`|num|Consolas|Font name of GUI. If an empty string is passed, the system font will be used.|
+|`icon_style`|str|`resources/icon32_dark.ico`|Style of the icon to be displayed on the taskbar. By default, **Dark** and **Light** styles are available. The former is `resources/icon32_dark.ico` and the latter is `resouces/icon32_light.ico`. By the way, you can use any tasktray icon you like as long as it is in `.ico` format and **32x32**.|
+|`keybrd_layout`|str||Keyboard layout kmp file referenced by `jump_cursor_with_keybrd_layout`. By default, only **US (101/102)** or **JP (106/109)** layouts are supported. If your keyboard is not the right one, please create your own kmp file and use its path as the value. If you leave the value empty, the KMP file will be selected automatically. Also, if you like, you can share the keyboard you created with a pull request to the `default_config` directory.|
 |`shell`|str|powershell|Name of the shell to use for \":!\" commands|
 |`shellcmdflag`|str|-c|Flag passed to the shell to execute \":!\" commands|
 |`shell_startupdir`|str||Current directory after shell startup|
-|`autotrack_popup`|bool|false|Autotrack Popup|
-|`dedicate_to_window`|bool|false|Dedicate to One Window|
-|`vcmdline`|bool|true|Virtual Command Line|
-|`suppress_for_vim`|bool|false|Suppress For Vim|
-|`easyclick_fontsize`|num|14|EasyClick Font Size|
-|`easyclick_fontweight`|num|500|EasyClick Font Weight|
-|`easyclick_fontname`|str|Consolas|EasyClick Font Name|
-|`easyclick_fontcolor`|str|c8c8c8|EasyClick Font Color|
-|`easyclick_bgcolor`|str|323232|EasyClick Font Background Color|
-|`easyclick_colordecay`|num|100|EasyClick Matching Color Decay|
-|`charcache`|bool|false|Enable Char Cache|
-|`window_hdelta`|num|100|Window Width delta for resizing|
-|`window_vdelta`|num|100|Window height delta for resizing|
+|`easyclick_fontsize`|num|14|Font size of hints in EasyClick|
+|`easyclick_fontweight`|num|500|Font weight of hits in EasyClick. Its maximum value is 1000.|
+|`easyclick_fontname`|str|Consolas|Font name of hints in EasyClick|
+|`easyclick_fontcolor`|str|c8c8c8|Font color of hints in EasyClick|
+|`easyclick_bgcolor`|str|323232|Font background color of hints in EasyClick|
+|`easyclick_colordecay`|num|100|Matching color decay of hints in EasyClick|
+|`autotrack_popup`|bool|false|It is one of standard options on Windows. For example, if shown **Are you sure you want to move this file to the Recycle Bin?**, it automatically moves the cursor to the popup window.|
+|`dedicate_to_window`|bool|false|If **Dedicate to One window** enables, you can select one window with Enable Targeting function. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with Disable Targeting function. In other words, this feature transforms some normal editors to fake Vim. The computing cost is so small.|
+|`vcmdline`|bool|true|show virtual command line|
+|`suppress_for_vim`|bool|false|It makes the mode of win-vind automatically switch to **Resident Mode** on the applications included the strings called **VIM** in an executable file name. Thus, it allows us to smoothly move from win-vind having the same key-bindings as Vim to Vim applications.|
+|`charcache`|bool|false|It is a very small cache for one character used by `x` or `X` commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.|
+
+## Customization
+
+Write `.vindrc` with `set` in the following way.
+
+**Example**
+```vim
+" str
+set initmode=gn
+set shell = cmd
+set gui_fontname = Times New Roman  "Without quotation
+
+" bool
+set suppress_for_vim  " true
+set nocharcache       " false
+
+" num (int, float)
+set cmd_fadeout = 60
+set vscroll_pageratio = 0.25
+```
+
+<br>
+<br>
+<br>
+<br>

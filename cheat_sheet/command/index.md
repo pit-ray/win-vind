@@ -11,7 +11,7 @@ parent: Cheet Sheet
 
 ### Mode
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`::guinormal`, `:gn`|**to_gui_normal**|GUI Normal Mode||
 |`:resident`|**to_resident**|Resident Mode||
@@ -23,7 +23,7 @@ parent: Cheet Sheet
 
 ### Virtual Desktop
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:vdnext`|**switch_to_left_vdesktop**|Switch to a left virtual desktop||
 |`:vdprev`|**switch_to_right_vdesktop**|Switch to a right virtual desktop||
@@ -32,7 +32,7 @@ parent: Cheet Sheet
 
 ### Tab
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:tabprevious`|**switch_to_left_tab**|Switch to a left tab||
 |`:tabnext`|**switch_to_right_tab**|Switch to a right tab||
@@ -41,7 +41,7 @@ parent: Cheet Sheet
 
 ### Window
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:cl`, `:close`|**close_current_window**|Close a current window||
 |`:sw`, `:switch`|**switch_window**|Switch a window||
@@ -69,7 +69,7 @@ parent: Cheet Sheet
 
 ### Mouse
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:ecl`|**easy_click_left**|EasyClick (Left Click)||
 |`:ecr`|**easy_click_right**|EasyClick (Right Click)||
@@ -78,13 +78,13 @@ parent: Cheet Sheet
 
 ### File
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:mkdir`, `:md`, `:mkdir <any>`, `:md <any>`|**makedir**|Make a directory||
 
 ### Vim Emulation
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:-<num>`|**move_caret_up**|Move the caret up (Vim Emulation: k)||
 |`:+<num>`|**move_caret_down**|Move the caret down (Vim Emulation: j)||
@@ -92,7 +92,7 @@ parent: Cheet Sheet
 
 ### Process
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal||
 |`:!<any>`|**start_external**|Start a optional application||
@@ -101,7 +101,7 @@ parent: Cheet Sheet
 
 ### Hotkey
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:w`|**save**|Save a current file||
 |`:ex`, `:explorer`|**start_explorer**|Start a Explorer||
@@ -113,14 +113,14 @@ parent: Cheet Sheet
 
 ### Options
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:target`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)||
 |`:untarget`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)||
 
 ### System Command
 
-|Command after `:`|ID|Feature|Note|
+|Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:set<any>`|**system_command_set**|System Command set||
 |`:{mode-prefix}map<any>`|**system_command_map**|System Command map||

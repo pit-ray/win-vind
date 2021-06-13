@@ -52,14 +52,14 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`:cl`, `:close`|**close_current_window**|Close a current window|
 |`:sw`, `:switch`|**switch_window**|Switch a window|
-|`:wr`, `:resizer`, `:winresizer`|**window_resizer**|Window Resizer|
+|`:resizer`, `:winresizer`|**window_resizer**|Start window resizer. It respects Vim plugin (<a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
 |`:max`, `:on`, `:only`|**maximize_current_window**|Maximize a current window|
 |`:min`, `:hi`, `:hide`|**minimize_current_window**|Minimize a current window|
 |`:lsplit`, `:lsp`, `:wl`|**snap_current_window_to_left**|Snap a current window to left|
 |`:rsplit`, `:rsp`, `:wh`|**snap_current_window_to_right**|Snap a current window to right|
 |`:tsplit`, `:tsp`, `:wt`|**snap_current_window_to_top**|Snap a current window to top|
 |`:bsplit`, `:bsp`, `:wb`|**snap_current_window_to_bottom**|Snap a current window to bottom|
-|`:arrange`, `:arw`|**arrange_windows**|Arrange windows|
+|`:arrange`|**arrange_windows**|Arrange windows with tile style|
 |`:rotate`, `:rot`|**rotate_windows**|Rotate windows in a current monitor|
 |`:rerotate`, `:rerot`|**rotate_windows_in_reverse**|Rotate windows in a current monitor in reverse|
 |`:exchange`, `:exw`|**exchange_window_with_nearest**|Exchange a window with next one|
@@ -74,15 +74,6 @@ parent: Cheat Sheet
 |`:vs`, `:vsplit`|**open_new_window_with_vsplit**|Open a new window with vertical split|
 |`:reload`|**reload_current_window**|Reload a current window|
 
-### Mouse
-
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:ecl`|**easy_click_left**|EasyClick (Left Click)|
-|`:ecr`|**easy_click_right**|EasyClick (Right Click)|
-|`:ecm`|**easy_click_mid**|EasyClick (Mid Click)|
-|`:ech`|**easy_click_hover**|EasyClick (Hovering)|
-
 ### File
 
 |Command|ID|Note|
@@ -93,17 +84,17 @@ parent: Cheat Sheet
 
 |Command|ID|Note|
 |:---:|:---:|:---|
-|`:-<num>`|**move_caret_up**|Move the caret up (Vim Emulation: k)|
-|`:+<num>`|**move_caret_down**|Move the caret down (Vim Emulation: j)|
-|`:<num>`|**jump_caret_to_BOF**|Jump the caret to BOF (Vim Emulation: gg)|
+|`:-<num>`|**move_caret_up**|Move the caret on the number of lines specified by `<num>`.|
+|`:+<num>`|**move_caret_down**|Move the caret down on the number of lines specified by `<num`>.|
+|`:<num>`|**jump_caret_to_BOF**|Jump the caret to the specified line by `<num>`.|
 
 ### Process
 
 |Command|ID|Note|
 |:---:|:---:|:---|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal|
-|`:!<any>`|**start_external**|Start a optional application|
-|`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with default program|
+|`:!<any>`|**start_external**|Start a external application.  This environment variable is dependent on the application specified in the shell option.|
+|`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with default program. It is wrapper of ShellExecute.|
 |`:exit`|**exit_config_gui**|Exit win-vind|
 
 ### Hotkey
@@ -124,6 +115,8 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`:target`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
 |`:untarget`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
+
+If **Dedicate to One window** enables, you can select one window with Enable Targeting function. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with Disable Targeting function. In other words, this feature transforms some normal editors compared with Vim to fake Vim. The computing cost is so small.
 
 ### System Command
 

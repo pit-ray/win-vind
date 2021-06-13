@@ -23,7 +23,7 @@ parent: Cheat Sheet
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
 |`<c-i>`|**to_resident**|Resident Mode|
 |`:`|**to_command**|Command Mode|
-|`<Esc-Right>`|**to_edi_normal**|Normal Mode (Vim: <Esc>)|
+|`<Esc-Right>`|**to_edi_normal**|Normal Mode|
 
 ### Mouse
 
@@ -45,31 +45,31 @@ parent: Cheat Sheet
 
 |Bindings|ID|Note|
 |:---:|:---:|:---|
-|`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|Move the caret to left (Vim: h)|
-|`l`, `<Space>`, `<Right>`|**move_caret_right**|Move the caret to right (Vim: l)|
-|`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|Move the caret up (Vim: k)|
-|`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|Move the caret down (Vim: j)|
-|`w`|**move_caret_word_forward**|Forward with words (Vim: w)|
-|`b`|**move_caret_word_backward**|Backward with words (Vim: b)|
-|`W`|**move_caret_nonblank_word_forward**|Forward with WORDS (Vim: W)|
-|`B`|**move_caret_nonblank_word_backward**|Backward with WORDS (Vim: B)|
+|`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|Move the caret to left|
+|`l`, `<Space>`, `<Right>`|**move_caret_right**|Move the caret to right|
+|`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|Move the caret up|
+|`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|Move the caret down|
+|`w`|**move_caret_word_forward**|Forward with words|
+|`b`|**move_caret_word_backward**|Backward with words|
+|`W`|**move_caret_nonblank_word_forward**|Forward with WORDS|
+|`B`|**move_caret_nonblank_word_backward**|Backward with WORDS|
 
 #### Jump
 
 |Bindings|ID|Note|
 |:---:|:---:|:---|
-|`0`, `<Home>`, `g0`|**jump_caret_to_BOL**|Jump the caret to begin of line (Vim: 0)|
-|`$`, `<End>`, `g$`|**jump_caret_to_EOL**|Jump the caret to end of line (Vim: $)|
-|`gg`|**jump_caret_to_BOF**|Jump the caret to BOF (Vim: gg)|
+|`0`, `<Home>`, `g0`|**jump_caret_to_BOL**|Jump the caret to begin of line|
+|`$`, `<End>`, `g$`|**jump_caret_to_EOL**|Jump the caret to end of line|
+|`gg`|**jump_caret_to_BOF**|Jump the caret to BOF|
 
 
 #### Edit
 
 |Bindings|ID|Note|
 |:---:|:---:|:---|
-|`y`|**yank_highlight_text**|Yank highlighted texts (Vim: y)|
-|`d`, `x`, `X`|**delete_highlight_text**|Delete highlighted texts (Vim: d,x)|
-|`c`, `s`, `S`|**change_highlight_text**|Change highlighted texts (Vim: c, s, S)
+|`y`|**yank_highlight_text**|Yank highlighted texts|
+|`d`, `x`, `X`|**delete_highlight_text**|Delete highlighted texts|
+|`c`, `s`, `S`|**change_highlight_text**|Change highlighted texts|
 
 <hr>
 

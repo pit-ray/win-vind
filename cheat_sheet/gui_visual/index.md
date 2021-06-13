@@ -37,7 +37,6 @@ parent: Cheat Sheet
 |`G`|**jump_to_bottom**|Jump the mouse cursor to bottom|
 |`gm`|**jump_to_hcenter**|Jump the mouse cursor to horizontal center|
 |`M`|**jump_to_vcenter**|Jump the mouse cursor to vertical center|
-|`f`|**jump_with_keybrd_layout**|Jump the mouse cursor by keyboard mapping|
 |`<C-y>`, `<C-k>`|**scroll_up**|Scroll a mouse wheel up|
 |`<C-e>`, `<C-j>`|**scroll_down**|Scroll a mouse wheel down|
 |`<C-u>`|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
@@ -53,11 +52,11 @@ parent: Cheat Sheet
 
 |Bindings|ID|Note|
 |:---:|:---:|:---|
-|`y`, `yy`, `Y`|**hotkey_copy**|Standard Copy|
-|`p`, `P`|**hotkey_paste**|Standard Paste|
-|`dd`, `D`|**hotkey_cut**|Standard Cut|
-|`x`, `<Del>`|**hotkey_delete**|Standard Delete|
-|`X`|**hotkey_backspace**|Standard BackSpace|
+|`y`, `yy`, `Y`|**hotkey_copy**|Copy|
+|`p`, `P`|**hotkey_paste**|Paste|
+|`dd`, `D`|**hotkey_cut**|Cut|
+|`x`, `<Del>`|**hotkey_delete**|Delete|
+|`X`|**hotkey_backspace**|BackSpace|
 
 <hr>
 

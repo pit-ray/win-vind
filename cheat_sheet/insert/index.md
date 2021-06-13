@@ -14,7 +14,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
 |`<Esc-Right>`|**to_edi_normal**|Editor Normal Mode|
-|`<F8>`|**to_instant_gui_normal**|Instant GUI Normal Mode|
+|`<F8>`|**to_instant_gui_normal**|Temporarily switches to GUI mode and performs matching, which can be used as a map-leader.|
 |`<c-i>`|**to_resident**|Resident Mode|
 
 <hr>

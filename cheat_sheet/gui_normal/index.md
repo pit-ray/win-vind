@@ -21,12 +21,11 @@ parent: Cheat Sheet
 
 |Bindings|ID|Note|
 |:---:|:---:|:---|
-|`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
-|`<c-i>`|**to_resident**|Resident Mode|
 |`v`|**to_gui_visual**|GUI Visual Mode|
-|`:`|**to_command**|Command Mode|
-|`I`, `<Esc-Right>`|**to_edi_normal**|Normal Mode (Vim Emulation: <Esc>)|
+|`I`, `<Esc-Right>`|**to_edi_normal**|Editor Normal Mode|
 |`i`|**to_insert**|Insert Mode|
+|`<c-i>`|**to_resident**|Resident Mode|
+|`:`|**to_command**|Command Mode|
 
 
 ### Mouse
@@ -44,7 +43,7 @@ parent: Cheat Sheet
 |`gm`|**jump_to_hcenter**|Jump the mouse cursor to horizontal center|
 |`M`|**jump_to_vcenter**|Jump the mouse cursor to vertical center|
 |`f`|**jump_with_keybrd_layout**|Jump the mouse cursor by keyboard mapping|
-|`t`|**jump_to_active_window**|Jump the mouse cursor to selected window|
+|`t`|**jump_to_active_window**|Jump the mouse cursor to the foreground window|
 |`<C-y>`, `<C-k>`|**scroll_up**|Scroll a mouse wheel up|
 |`<C-e>`, `<C-j>`|**scroll_down**|Scroll a mouse wheel down|
 |`<C-u>`|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
@@ -67,17 +66,17 @@ parent: Cheat Sheet
 |Bindings|ID|Note|
 |:---:|:---:|:---|
 |`V`|**select_all**|Select all|
-|`y`, `yy`, `Y`|**hotkey_copy**|Standard Copy|
-|`p`, `P`|**hotkey_paste**|Standard Paste|
-|`dd`, `D`|**hotkey_cut**|Standard Cut|
-|`x`, `<Del>`|**hotkey_delete**|Standard Delete|
-|`X`|**hotkey_backspace**|Standard BackSpace|
+|`y`, `yy`, `Y`|**hotkey_copy**|Copy|
+|`p`, `P`|**hotkey_paste**|Paste|
+|`dd`, `D`|**hotkey_cut**|Cut|
+|`x`, `<Del>`|**hotkey_delete**|Delete|
+|`X`|**hotkey_backspace**|BackSpace|
 |`<C-r>`|**redo**|Redo|
 |`u`, `U`|**undo**|Undo|
 |`/`, `?`|**search_pattern**|Search Pattern|
 |`<gt>`|**goto_next_page**|Forward a next page|
 |`<lt>`|**goto_prev_page**|Backward a previous page|
-|`<win>`|**open_startmenu**|Open a start menu|
+|`<win>`|**open_startmenu**|Open a StartMenu|
 
 ### Virtual Desktop
 
@@ -103,7 +102,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`<C-w>q`, `<C-w>c`|**close_current_window**|Close a current window|
 |`<C-w>s`|**switch_window**|Switch a window|
-|`<C-w>e`|**window_resizer**|Window Resizer|
+|`<C-w>e`|**window_resizer**|Start window resizer. It respects Vim plugin (<a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
 |`<C-w>h`|**select_left_window**|Select a left window|
 |`<C-w>l`|**select_right_window**|Select a right window|
 |`<C-w>k`|**select_upper_window**|Select an upper window|
@@ -114,23 +113,15 @@ parent: Cheat Sheet
 |`<C-w>L`, `<C-w><Right>`|**snap_current_window_to_right**|Snap a current window to right|
 |`<C-w>K`|**snap_current_window_to_top**|Snap a current window to top|
 |`<C-w>J`|**snap_current_window_to_bottom**|Snap a current window to bottom|
-|`<C-w>=`|**arrange_windows**|Arrange windows|
+|`<C-w>=`|**arrange_windows**|Arrange windows with tile style|
 |`<C-w>r`|**rotate_windows**|Rotate windows in a current monitor|
 |`<C-w>R`|**rotate_windows_in_reverse**|Rotate windows in a current monitor in reverse|
-|`<C-w>x`|**exchange_window_with_nearest**|Exchange a window with next one|
+|`<C-w>x`|**exchange_window_with_nearest**|Exchange a window with the nearest window|
 |`<C-w><gt>`|**increase_window_width**|Increase the width of a window|
 |`<C-w><lt>`|**decrease_window_width**|Decrease the width of a window|
 |`<C-w>+`|**increase_window_height**|Increase the height of a window|
 |`<C-w>-`|**decrease_window_height**|Decrease the height of a window|
 |`<C-w>n`|**open_new_window**|Open a new window|
-
-
-### Option
-
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`<LAlt><LAlt>`, `<F2>`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
-|`<RAlt><RAlt>`, `<F10>`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
 
 <hr>
 

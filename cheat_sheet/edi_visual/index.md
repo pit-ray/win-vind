@@ -83,7 +83,7 @@ Write `.vindrc` in the following way. The avaliable commands are `evnoremap`, `e
 
 evnoremap <Esc> to_edi_normal " Transition to Editor Normal Mode with <Esc>
 evmap <Capslock> <Esc>        " Map <Capslock> to <Esc> with low-level
-evumap <Home>                 " Delete Home command
+evumap <Home>                 " Delete <Home> command
 evmapclear                    " Remove all bindings of Editor Visual Mode
 ```
 

@@ -93,7 +93,7 @@ parent: Cheat Sheet
 |Command|ID|Note|
 |:---:|:---:|:---|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal|
-|`:!<any>`|**start_external**|Start a external application.  This environment variable is dependent on the application specified in the shell option.|
+|`:!<any>`|**start_external**|Start a external application. This environment variable is dependent on the application specified in the shell option. By appending `;` at the end, it keep the console window without closing immediately.|
 |`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with default program. It is wrapper of ShellExecute.|
 |`:exit`|**exit_config_gui**|Exit win-vind|
 

@@ -43,8 +43,8 @@ All keywords in win-vind are not case-sensitive.
 |:---:|:---|
 |`<space>`|Space Key|
 |`<hbar>`|Ascii code '-'|
-|`<gt>`|Ascii code '>`'|
-|`<lt>`|Ascii code '`<'|
+|`<gt>`|Ascii code '&gt;'|
+|`<lt>`|Ascii code '&lt;'|
 
  
 ## System Key Code  

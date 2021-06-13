@@ -51,8 +51,8 @@ descripption: "Option lists"
 |`gui_fontname`|num|Consolas|Font name of GUI. If an empty string is passed, the system font will be used.|
 |`icon_style`|str|resources/icon32_dark.ico|Style of the icon to be displayed on the taskbar. By default, **Dark** and **Light** styles are available. The former is `resources/icon32_dark.ico` and the latter is `resouces/icon32_light.ico`. By the way, you can use any tasktray icon you like as long as it is in `.ico` format and **32x32**.|
 |`keybrd_layout`|str||Keyboard layout kmp file referenced by `jump_cursor_with_keybrd_layout`. By default, only **US (101/102)** or **JP (106/109)** layouts are supported. If your keyboard is not the right one, please create your own kmp file and use its path as the value. If you leave the value empty, the KMP file will be selected automatically. Also, if you like, you can share the keyboard you created with a pull request to the `default_config` directory.|
-|`shell`|str|powershell|Name of the shell to use for \":!\" commands|
-|`shellcmdflag`|str|-c|Flag passed to the shell to execute \":!\" commands|
+|`shell`|str|powershell|Name of the shell to use for `:!` commands|
+|`shellcmdflag`|str|-c|Flag passed to the shell to execute `:!` commands|
 |`shell_startupdir`|str||Current directory after shell startup|
 |`easyclick_fontsize`|num|14|Font size of hints in EasyClick|
 |`easyclick_fontweight`|num|500|Font weight of hits in EasyClick. Its maximum value is 1000.|

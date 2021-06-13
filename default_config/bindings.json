@@ -168,7 +168,7 @@
         "ja": "下へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_left",
+        "name": "jump_cursor_to_left",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -180,7 +180,7 @@
         "ja": "左端へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_right",
+        "name": "jump_cursor_to_right",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -192,7 +192,7 @@
         "ja": "右端へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_top",
+        "name": "jump_cursor_to_top",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -204,7 +204,7 @@
         "ja": "上端へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_bottom",
+        "name": "jump_cursor_to_bottom",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -216,7 +216,7 @@
         "ja": "下端へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_hcenter",
+        "name": "jump_cursor_to_hcenter",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -228,7 +228,7 @@
         "ja": "横中央へマウスカーソルを移動"
     },
     {
-        "name": "jump_to_vcenter",
+        "name": "jump_cursor_to_vcenter",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -240,19 +240,19 @@
         "ja": "縦中央へマウスカーソルを移動"
     },
     {
-        "name": "jump_with_keybrd_layout",
+        "name": "jump_cursor_with_keybrd_layout",
         "cdef": [],
         "endef": [],
         "evdef": [],
         "gndef": ["f"],
-        "gvdef": ["<gndef>"],
+        "gvdef": [],
         "idef": [],
         "rdef": [],
         "en": "Jump the mouse cursor by keyboard mapping",
         "ja": "キー配置でマウスカーソルを移動"
     },
     {
-        "name": "jump_to_active_window",
+        "name": "jump_cursor_to_active_window",
         "cdef": [],
         "endef": [],
         "evdef": [],
@@ -614,7 +614,7 @@
     {
         "name": "switch_window",
         "cdef": ["sw", "switch"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>s"],
         "gvdef": [],
@@ -625,8 +625,8 @@
     },
     {
         "name": "window_resizer",
-        "cdef": ["wr", "resizer", "winresizer"],
-        "endef": ["<gndef>"],
+        "cdef": ["resizer", "winresizer"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>e"],
         "gvdef": [],
@@ -638,7 +638,7 @@
     {
         "name": "select_left_window",
         "cdef": [],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>h"],
         "gvdef": [],
@@ -650,7 +650,7 @@
     {
         "name": "select_right_window",
         "cdef": [],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>l"],
         "gvdef": [],
@@ -662,7 +662,7 @@
     {
         "name": "select_upper_window",
         "cdef": [],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>k"],
         "gvdef": [],
@@ -674,7 +674,7 @@
     {
         "name": "select_lower_window",
         "cdef": [],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>j"],
         "gvdef": [],
@@ -686,7 +686,7 @@
     {
         "name": "maximize_current_window",
         "cdef": ["max", "on", "only"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>u"],
         "gvdef": [],
@@ -698,7 +698,7 @@
     {
         "name": "minimize_current_window",
         "cdef": ["min", "hi", "hide"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>d"],
         "gvdef": [],
@@ -710,7 +710,7 @@
     {
         "name": "snap_current_window_to_left",
         "cdef": ["lsplit", "lsp", "wl"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>H", "<C-w><Left>"],
         "gvdef": [],
@@ -722,7 +722,7 @@
     {
         "name": "snap_current_window_to_right",
         "cdef": ["rsplit", "rsp", "wh"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>L", "<C-w><Right>"],
         "gvdef": [],
@@ -734,7 +734,7 @@
     {
         "name": "snap_current_window_to_top",
         "cdef": ["tsplit", "tsp", "wt"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>K"],
         "gvdef": [],
@@ -746,7 +746,7 @@
     {
         "name": "snap_current_window_to_bottom",
         "cdef": ["bsplit", "bsp", "wb"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>J"],
         "gvdef": [],
@@ -757,8 +757,8 @@
     },
     {
         "name": "arrange_windows",
-        "cdef": ["arrange", "arw"],
-        "endef": ["<gndef>"],
+        "cdef": ["arrange"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>="],
         "gvdef": [],
@@ -770,7 +770,7 @@
     {
         "name": "rotate_windows",
         "cdef": ["rotate", "rot"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>r"],
         "gvdef": [],
@@ -782,7 +782,7 @@
     {
         "name": "rotate_windows_in_reverse",
         "cdef": ["rerotate", "rerot"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>R"],
         "gvdef": [],
@@ -794,7 +794,7 @@
     {
         "name": "exchange_window_with_nearest",
         "cdef": ["exchange", "exw"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>x"],
         "gvdef": [],
@@ -818,7 +818,7 @@
     {
         "name": "increase_window_width",
         "cdef": ["vertical resize +<num>", "vert res +<num>"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w><gt>"],
         "gvdef": [],
@@ -830,7 +830,7 @@
     {
         "name": "decrease_window_width",
         "cdef": ["vertical resize -<num>", "vert res -<num>"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w><lt>"],
         "gvdef": [],
@@ -854,7 +854,7 @@
     {
         "name": "increase_window_height",
         "cdef": ["resize +<num>", "res +<num>"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>+"],
         "gvdef": [],
@@ -866,7 +866,7 @@
     {
         "name": "decrease_window_height",
         "cdef": ["resize -<num>", "res -<num>"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>-"],
         "gvdef": [],
@@ -878,7 +878,7 @@
     {
         "name": "open_new_window",
         "cdef": ["new"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<C-w>n"],
         "gvdef": [],
@@ -914,7 +914,7 @@
     {
         "name": "goto_next_page",
         "cdef": [],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<gt>"],
         "gvdef": [],
@@ -926,7 +926,7 @@
     {
         "name": "goto_prev_page",
         "cdef": [],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
         "gndef": ["<lt>"],
         "gvdef": [],
@@ -1082,9 +1082,9 @@
     {
         "name": "enable_targeting_of_dedicate_to_window",
         "cdef": ["target"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
-        "gndef": ["<LAlt><LAlt>", "<F2>"],
+        "gndef": [],
         "gvdef": [],
         "idef": [],
         "rdef": [],
@@ -1094,9 +1094,9 @@
     {
         "name": "disable_targeting_of_dedicate_to_window",
         "cdef": ["untarget"],
-        "endef": ["<gndef>"],
+        "endef": [],
         "evdef": [],
-        "gndef": ["<RAlt><RAlt>", "<F10>"],
+        "gndef": [],
         "gvdef": [],
         "idef": [],
         "rdef": [],
@@ -1549,8 +1549,8 @@
     },
     {
         "name": "easy_click_left",
-        "cdef": ["ecl"],
-        "endef": ["<gndef>"],
+        "cdef": [],
+        "endef": [],
         "evdef": [],
         "gndef": ["FF", "Fo"],
         "gvdef": [],
@@ -1561,8 +1561,8 @@
     },
     {
         "name": "easy_click_right",
-        "cdef": ["ecr"],
-        "endef": ["<gndef>"],
+        "cdef": [],
+        "endef": [],
         "evdef": [],
         "gndef": ["Fa"],
         "gvdef": [],
@@ -1573,8 +1573,8 @@
     },
     {
         "name": "easy_click_mid",
-        "cdef": ["ecm"],
-        "endef": ["<gndef>"],
+        "cdef": [],
+        "endef": [],
         "evdef": [],
         "gndef": ["Fm"],
         "gvdef": [],
@@ -1585,8 +1585,8 @@
     },
     {
         "name": "easy_click_hover",
-        "cdef": ["ech"],
-        "endef": ["<gndef>"],
+        "cdef": [],
+        "endef": [],
         "evdef": [],
         "gndef": ["Fh"],
         "gvdef": [],

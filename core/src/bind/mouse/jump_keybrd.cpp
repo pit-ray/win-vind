@@ -38,7 +38,7 @@ namespace vind
     } ;
 
     JumpWithKeybrdLayout::JumpWithKeybrdLayout()
-    : BindedFuncCreator("jump_with_keybrd_layout"),
+    : BindedFuncCreator("jump_cursor_with_keybrd_layout"),
       pimpl(std::make_unique<Impl>())
     {}
     JumpWithKeybrdLayout::~JumpWithKeybrdLayout() noexcept            = default ;

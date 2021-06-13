@@ -16,40 +16,50 @@ descripption: "Option lists"
 
 <hr>
 
-## Autotrack Popup
-**ID: autotorack_popup**  
-It is one of standard options on Windows. For example, if shown **Are you sure you want to move this file to the Recycle Bin?**, it automatically moves the cursor to the popup window.
-
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/autotrack_demo.gif?raw=true" >
-
-<hr>
-
-## Virtual Command Line
-**ID: virtual_cmd_line**  
-It makes inputted commands to display and the current mode on the screen. Even if this option disable, the command mode are available. The computing costs by its features are not so big. I recommend to use it.  
-
-<hr>
-
-## Dedicate To One Window
-**ID: dedicate_to_window**  
-If it enables, you can select one window with <a href="https://pit-ray.github.io/win-vind/cheat_sheet/others/#enable-targeting">Enable Targeting</a> function. In this case, it makes the mode automatically switch to **Editor Normal Mode** on the targeting window. When the foreground window change to another, it makes the mode switch to **GUI Insert Mode**. The targeting becomes disable with <a href="https://pit-ray.github.io/win-vind/cheat_sheet/others/#disable-targeting">Disable Targeting</a> function. In other words, this feature transforms some normal editors compared with **Vim** to **fake Vim**. The computing cost is so small.  
-
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/dedicate-demo.gif?raw=true" >
-    
-<hr>
-
-## Suppress For Vim
-**ID: suppress_for_vim**  
-It makes the mode of **win-vind** automatically switch to **GUI Insert Mode** on the applications included the strings called **VIM** in an executable file name. Thus, it allows us to smoothly move from win-vind having the same key-bindings as Vim to **Vim** applications.  
-
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/for_vim.gif?raw=true" >
-
-<hr>
-
-## Enable Char Cache  
-**ID: enable_char_cache**  
-**Char Cache** is a very small cache for one character used by **x** or **X** commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.  
-
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/cache_char.gif?raw=true" >
-
-<hr>
+|ID|Type|Default|Note|
+|:---:|:---:|:---:|:---|
+|`initmode`|str|i|Initial mode of win-vind. The value is mode prefix.|
+|`jump_margin`|num|10|Screen position buffer|
+|`cursor_accel`|num|95|Cursor acceleration|
+|`cursor_tweight`|num|250|Cursor time weight|
+|`cursor_maxv`|num|12|Cursor max velocity|
+|`window_accel`|num|95|Window move acceleration|
+|`window_tweight`|num|250|Window move time weight|
+|`window_maxv`|num|12|Window move max velocity|
+|`winresizer_initmode`|num|0|Initial Mode of Window Resizer ([0]: Resize, [1]: Move, [2]: Focus)|
+|`vscroll_speed`|num|30|Vertical Scroll Speed|
+|`hscroll_speed`|num|10|Horizontal Scroll Speed|
+|`vscroll_pageratio`|num|0.125|Vertical Page Scroll Ratio|
+|`hscroll_pageratio`|num|0.125|Horizontal Page Scroll Ratio|
+|`cmd_maxchar`|num|32|Max Character Num|
+|`cmd_maxhist`|num|10|Max Command History Num|
+|`cmd_fontsize`|num|23|Font Size|
+|`cmd_fontweight`|num|400|Font Weight|
+|`cmd_fontcolor`|str|c8c8c8|Font Color|
+|`cmd_bgcolor`|str|323232|Font Background Color|
+|`cmd_roughpos`|str|LowerMid|Position of Virtual Command Line. {UpperLeft, UpperMid, UpperRight, MidLeft, Center, MidRight, LowerLeft, LowerMid, LowerRight}|
+|`cmd_xmargin`|num|32|Horizontal Margin|
+|`cmd_ymargin`|num|64|Vertical Margin|
+|`cmd_fontextra`|num|1|Font Extra|
+|`cmd_fontname`|str|Consolas|Font Name|
+|`cmd_fadeout`|num|5|Fade Out Time (s)|
+|`gui_fontsize`|num|11|GUI Font Size|
+|`gui_fontname`|num|Consolas|GUI Font Name|
+|`icon_style`|str|resources/icon32_dark.ico|Dark style or Light style are avaliable in `resources`. You can also use any icon you like.|
+|`keybrd_layout`|str||If it is empty, choose automatically layout in US type or JP type. You can set unique kmp file.|
+|`shell`|str|powershell|Name of the shell to use for \":!\" commands|
+|`shellcmdflag`|str|-c|Flag passed to the shell to execute \":!\" commands|
+|`shell_startupdir`|str||Current directory after shell startup|
+|`autotrack_popup`|bool|false|Autotrack Popup|
+|`dedicate_to_window`|bool|false|Dedicate to One Window|
+|`vcmdline`|bool|true|Virtual Command Line|
+|`suppress_for_vim`|bool|false|Suppress For Vim|
+|`easyclick_fontsize`|num|14|EasyClick Font Size|
+|`easyclick_fontweight`|num|500|EasyClick Font Weight|
+|`easyclick_fontname`|str|Consolas|EasyClick Font Name|
+|`easyclick_fontcolor`|str|c8c8c8|EasyClick Font Color|
+|`easyclick_bgcolor`|str|323232|EasyClick Font Background Color|
+|`easyclick_colordecay`|num|100|EasyClick Matching Color Decay|
+|`charcache`|bool|false|Enable Char Cache|
+|`window_hdelta`|num|100|Window Width delta for resizing|
+|`window_vdelta`|num|100|Window height delta for resizing|

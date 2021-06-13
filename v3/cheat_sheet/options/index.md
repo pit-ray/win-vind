@@ -2,9 +2,9 @@
 layout: default
 title: Options
 nav_order: 20
-parent: Cheat Sheet
+parent: Old Cheet Sheet
 descripption: "Option lists"
-grand_parent: v3
+grand_parent: v3 Docs
 ---
 
 # Options

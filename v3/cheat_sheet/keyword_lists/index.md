@@ -2,9 +2,9 @@
 layout: default
 title: Keyword List
 nav_order: 30
-parent: Cheat Sheet
+parent: Old Cheet Sheet
 descripption: "Keyword list"
-grand_parent: v3
+grand_parent: v3 Docs
 ---
 # Keyword List  
 

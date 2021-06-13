@@ -2,9 +2,9 @@
 layout: default
 title: Others
 nav_order: 9
-parent: Cheat Sheet
+parent: Old Cheet Sheet
 descripption: "Others"
-grand_parent: v3
+grand_parent: v3 Docs
 ---
 
 # Others  

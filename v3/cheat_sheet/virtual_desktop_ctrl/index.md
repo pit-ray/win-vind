@@ -2,9 +2,9 @@
 layout: default
 title: Virtual Desktop Control
 nav_order: 3
-parent: Cheat Sheet
+parent: Old Cheet Sheet
 descripption: "Virtual Desktop Control"
-grand_parent: v3
+grand_parent: v3 Docs
 ---
 
 # Virtual Desktop Control  

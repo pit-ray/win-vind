@@ -2,9 +2,9 @@
 layout: default
 title: Mouse Control
 nav_order: 2
-parent: Cheat Sheet
+parent: Old Cheet Sheet
 descripption: "Mouse Control"
-grand_parent: v3
+grand_parent: v3 Docs
 ---
 
 # Mouse Control  

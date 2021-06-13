@@ -1,11 +1,11 @@
 ---
 layout: default
-title: FAQ
+title: Old FAQ
 nav_order: 12
-parent: v3
+parent: v3 Docs
 descripption: "frequently asked questions and these answers."
 ---
-# FAQ
+# Old FAQ
 {: .no_toc }  
 If you have some questions, please send me.
 
@@ -42,7 +42,7 @@ link: <a href="https://github.com/pit-ray/win-vind/issues/14">GitHub Issues #14<
 <br>
 <hr> 
 
-## How to use hinting like Vimium?  
+## Old Usage hinting like Vimium?  
 In default, you can call the hinting feature with `FF`, which you can try after the first launch of win-vind. If you **only** want to use the hinting function, you can easily do it by following the steps.  
 
 1. Open the key-config file, which locates **~/.win-vind/bindings.json** by installer or **config/bindings.json** by zip.  
@@ -77,7 +77,7 @@ Yes.
 
 This model describes just the default, so you can customize the layer.
 
-All mode state transitions exist as functions and each function has bindings in each mode. <a href="https://pit-ray.github.io/win-vind/cheat_sheet/mode_ctrl/">Cheat Sheet/Mode Control</a>
+All mode state transitions exist as functions and each function has bindings in each mode. <a href="https://pit-ray.github.io/win-vind/cheat_sheet/mode_ctrl/">Old Cheet Sheet/Mode Control</a>
 
 **Method**
 - Use GUI
@@ -129,7 +129,7 @@ Thus, if you want to call `change_to_edi_insert` in **GUI Insert** with `<alt-i>
     },
 ```
 
-And, you can refer to the keywords in <a href="https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/">Cheat Sheet/Keyword List</a>
+And, you can refer to the keywords in <a href="https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/">Old Cheet Sheet/Keyword List</a>
 
 link: <a href="https://github.com/pit-ray/win-vind/issues/15">GitHub Issues #15</a>  
 

@@ -2,9 +2,9 @@
 layout: default
 title: Window Control
 nav_order: 1
-parent: Cheat Sheet
+parent: Old Cheet Sheet
 descripption: "Window Control"
-grand_parent: v3
+grand_parent: v3 Docs
 ---
 
 # Window Control  

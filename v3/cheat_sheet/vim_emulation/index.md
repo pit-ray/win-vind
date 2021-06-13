@@ -2,9 +2,9 @@
 layout: default
 title: Vim Emulation
 nav_order: 8
-parent: Cheat Sheet
+parent: Old Cheet Sheet
 descripption: "Vim Emulation"
-grand_parent: v3
+grand_parent: v3 Docs
 ---
 
 # Vim Emulation  

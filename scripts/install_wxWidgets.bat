@@ -72,7 +72,6 @@ cd wxWidgets/build/msw
     mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc setup_h BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00"
     mingw32-make -j %NUMBER_OF_PROCESSORS% -f makefile.gcc BUILD=release SHARED=0 UNICODE=1 CPPFLAGS="-m64 -w -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00"
     @rem powershell mv "..\\..\\lib\\gcc_lib" "..\\..\\lib\\gcc_x64_lib"
-    @rem
     @if exist gcc_mswu (
         powershell rm -r gcc_mswu
     )
@@ -91,7 +90,7 @@ cd ../../../
 @rem If you use wxWidgets-3.1.x, it solves linker error.
 @rem if "%1" == "-mingw" (
 @rem     cd ..
-    @rem call "scripts/copy_mingw_libs.bat"
-@rem)
+@rem call "scripts/copy_mingw_libs.bat"
+@rem )
 
 @echo Installed wxWidgets successfully

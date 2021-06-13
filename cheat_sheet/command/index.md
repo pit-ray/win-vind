@@ -6,8 +6,15 @@ descripption: "Command Mode Cheat Sheet of win-vind."
 parent: Cheat Sheet
 ---
 
+# Command Mode
+{: .no_toc}  
 
-## Default Commands
+<hr>
+
+1. TOC1  
+{:toc}
+
+## Default
 
 ### Mode
 

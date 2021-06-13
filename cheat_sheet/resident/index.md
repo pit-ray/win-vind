@@ -15,7 +15,7 @@ parent: Cheat Sheet
 {:toc}
 
 
-## Default Bindings
+## Default
 
 |Bindings|ID|Feature|Note|
 |:---:|:---:|:---:|:---|

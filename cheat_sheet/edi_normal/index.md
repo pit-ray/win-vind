@@ -14,7 +14,7 @@ parent: Cheat Sheet
 1. TOC1  
 {:toc}
 
-## Default Bindins
+## Default
 
 ### Mode
 

@@ -157,3 +157,20 @@ parent: Cheat Sheet
 <hr>
 
 ## Customization
+
+Write `.vindrc` in the following way. The avaliable commands are `ennoremap`, `enunmap`, and `enmapclear`.
+
+**Sample**
+```vim
+" ~/.win-vind/.vindrc
+
+ennoremap ; to_command " Transition to Command Mode with ;
+enmap <Capslock> <Esc> " Map <Capslock> to <Esc>
+enumap <Left>          " Delete <Left> command
+enmapclear             " Remove all bindings of Edi Normal
+```
+
+<br>
+<br>
+<br>
+<br>

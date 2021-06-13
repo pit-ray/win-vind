@@ -16,3 +16,25 @@ parent: Cheat Sheet
 |`<Esc-Right>`|**to_edi_normal**|Editor Normal Mode||
 |`<F8>`|**to_instant_gui_normal**|Instant GUI Normal Mode||
 |`<c-i>`|**to_resident**|Resident Mode||
+
+<hr>
+
+# Customization
+
+Write `.vindrc` in the following way. The avaliable commands are `inoremap`, `iunmap`, and `imapclear`.
+
+**Sample**
+```vim
+" ~/.win-vind/.vindrc
+
+" Transition to Instant GUI Normal Mode with capslock
+inoremap <Capslock> to_instant_gui_normal
+imap <IME> <Esc> " Map <IME> to <Esc>
+iumap <Esc-Left> " Delete <Esc-Left> command
+imapclear        " Remove all bindings of Insert Mode
+```
+
+<br>
+<br>
+<br>
+<br>

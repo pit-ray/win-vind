@@ -62,3 +62,20 @@ parent: Cheat Sheet
 <hr>
 
 # Customization
+
+Write `.vindrc` in the following way. The avaliable commands are `gvnoremap`, `gvunmap`, and `gvmapclear`.
+
+**Sample**
+```vim
+" ~/.win-vind/.vindrc
+
+gvnoremap <Esc> to_gui_normal " Transition to GUI Normal Mode with <Esc>
+gvmap <Capslock> <Esc>        " Map <Capslock> to <Esc>
+gvumap gg                     " Delete gg command
+gvmapclear                    " Remove all bindings of GUI Visual
+```
+
+<br>
+<br>
+<br>
+<br>

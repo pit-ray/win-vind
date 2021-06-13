@@ -131,3 +131,25 @@ parent: Cheat Sheet
 |:---:|:---:|:---:|:---|
 |`<LAlt><LAlt>`, `<F2>`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)||
 |`<RAlt><RAlt>`, `<F10>`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)||
+
+<hr>
+
+## Customization
+
+Write `.vindrc` in the following way. The avaliable commands are `gnnoremap`, `gnunmap`, and `gnmapclear`.
+
+**Sample**
+```vim
+" ~/.win-vind/.vindrc
+
+gnnoremap <c-f> easy_click_left     " Call easy_click_left with Ctrl + f
+gnnoremap <c-h> select_left_window  " Call select_left_window with Ctrl + h
+gnmap <Capslock> <ctrl>             " Map <c-f> to F
+gnumap FF                           " Delete FF command
+gnmapclear                          " Remove all bindings of GUI Normal
+```
+
+<br>
+<br>
+<br>
+<br>

@@ -129,7 +129,5 @@ parent: Cheat Sheet
 
 |Bindings|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
-|`<LAlt><LAlt>`, `<F2>`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Win|
-dow)||
-|`<RAlt><RAlt>`, `<F10>`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One|
-Window)||
+|`<LAlt><LAlt>`, `<F2>`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)||
+|`<RAlt><RAlt>`, `<F10>`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)||

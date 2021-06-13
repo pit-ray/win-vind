@@ -16,10 +16,10 @@ parent: Cheat Sheet
 |`::guinormal`, `:gn`|**to_gui_normal**|GUI Normal Mode||
 |`:resident`|**to_resident**|Resident Mode||
 |`:guivisual`, `:gv`|**to_gui_visual**|GUI Visual Mode||
-|`:edinormal`, `:en`|**to_edi_normal**|Normal Mode (Vim Emulation: <Esc>)||
+|`:edinormal`, `:en`|**to_edi_normal**|Editor Normal Mode||
 |`:insert`, `:i`|**to_insert**|Insert Mode||
-|`:edivisual`, `:ev`|**to_edi_visual**|Visual Mode (Vim Emulation: v)||
-|`:edivisualline`, `:evl`|**to_edi_visual_line**|Visual-Line Mode (Vim Emulation: V)||
+|`:edivisual`, `:ev`|**to_edi_visual**|Editor Visual Mode||
+|`:edivisualline`, `:evl`|**to_edi_visual_line**|Editor Visual Line Mode||
 
 ### Virtual Desktop
 
@@ -103,15 +103,15 @@ parent: Cheat Sheet
 
 |Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
-|`:w`|**save**|Save a current file||
-|`:ex`, `:explorer`|**start_explorer**|Start a Explorer||
-|`:win`, `:start`|**open_startmenu**|Open a start menu||
-|`:find`, `:open`|**open**|Open a other file||
-|`:fun`|**forward_ui_navigation**|Forward UI Navigation||
 |`:bun`|**backward_ui_navigation**|Backward UI Navigation||
 |`:decide`|**decide_focused_ui_object**|Decide a focused UI object||
+|`:ex`, `:explorer`|**start_explorer**|Start a Explorer||
+|`:find`, `:open`|**open**|Open a other file||
+|`:fun`|**forward_ui_navigation**|Forward UI Navigation||
+|`:w`|**save**|Save a current file||
+|`:win`, `:start`|**open_startmenu**|Open a start menu||
 
-### Options
+### Option
 
 |Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
@@ -123,15 +123,16 @@ parent: Cheat Sheet
 |Command|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`:set<any>`|**system_command_set**|System Command set||
+|`:source<any>`|**system_command_source**|System Command source||
 |`:{mode-prefix}map<any>`|**system_command_map**|System Command map||
+|`:{mode-prefix}mapclear<any>`|**system_command_mapclear**|System Command mapclear||
 |`:{mode-prefix}noremap<any>`|**system_command_noremap**|System Command noremap||
 |`:{mode-prefix}unmap<any>`|**system_command_unmap**|System Command unmap||
-|`:{mode-prefix}mapclear<any>`|**system_command_mapclear**|System Command mapclear||
+|`:comclear<any>`|**system_command_comclear**|System Command comclear||
 |`:command<any>`|**system_command_command**|System Command command||
 |`:delcommand<any>`|**system_command_delcommand**|System Command delcommand||
-|`:comclear<any>`|**system_command_comclear**|System Command comclear||
-|`:source<any>`|**system_command_source**|System Command source||
 
+<hr>
 
 ## Customization
 

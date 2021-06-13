@@ -2,7 +2,7 @@
 layout: default
 title: Window Control
 nav_order: 1
-parent: Cheat Sheet
+parent: Cheat Sheet for v3
 descripption: "Window Control"
 ---
 

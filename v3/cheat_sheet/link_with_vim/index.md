@@ -2,7 +2,7 @@
 layout: default
 title: Link with Vim
 nav_order: 10
-parent: Cheat Sheet
+parent: Cheat Sheet for v3
 descripption: "Link With Vim"
 ---
 

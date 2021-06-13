@@ -2,6 +2,7 @@
 layout: default
 title: How to use
 nav_order: 3
+parent: v3
 descripption: "Usage of win-vind"
 ---
 # How to use  

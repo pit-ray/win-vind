@@ -19,7 +19,7 @@ parent: Cheat Sheet
 
 <hr>
 
-# Customization
+## Customization
 
 Write `.vindrc` in the following way. The avaliable commands are `inoremap`, `iunmap`, and `imapclear`.
 

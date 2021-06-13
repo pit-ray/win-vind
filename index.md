@@ -8,6 +8,8 @@ permalink: /
 # Vim Key Binder for Windows
 <hr>
 
+# GETTING READY !!!!!
+
 ## Description
 You can operate Windows by key-bindings like Vim.  
 

@@ -13,12 +13,11 @@ Only the common code test have been completed. However, each binding is not suff
 ## Status
 
 - core
-  - time (✔)
-  - util (✔)
-  - bind
-  - coreio
-  - io
-  - key
-  - opt
-
-- wxgui
+    - bind
+    - io
+    - key
+    - opt
+    - parser (40%)
+    - time (60%)
+    - util (90%)
+    - kernel (10%)

@@ -50,11 +50,13 @@
 - Vim-like Mode Manegement
 - Low-level key mapping (e.g. `imap <Capslock> <ctrl>`)
 - Running in User Permission
-- Oneshot use for Vim or AHK
+- Oneshot Use for Vim or AHK
 
 If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 
 ## Demo
+
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/window_ctrl_demo_min.gif?raw=true" title="WindowControl-demo" width=600 >
 
 ## Download
 ### 4.0.0 (Preview Version)  
@@ -92,6 +94,8 @@ If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you n
 **3.** Finish!  
 
 You can refer to ToDo in <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a>  
+
+Pull requests are welcome!
 
 ## License  
 

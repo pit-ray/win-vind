@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Resident Mode
-nav_order: 5
+nav_order: 6
 descripption: "Command lists of win-vind."
 parent: Cheat Sheet
 ---

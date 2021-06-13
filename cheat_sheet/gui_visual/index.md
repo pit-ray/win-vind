@@ -1,7 +1,7 @@
 ---
 layout: default
 title: GUI Visual Mode
-nav_order: 5
+nav_order: 2
 descripption: "Command lists of win-vind."
 parent: Cheat Sheet
 ---

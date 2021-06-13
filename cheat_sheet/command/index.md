@@ -3,7 +3,7 @@ layout: default
 title: Command Mode
 nav_order: 5
 descripption: "Command Mode Cheat Sheet of win-vind."
-parent: Cheet Sheet
+parent: Cheat Sheet
 ---
 
 

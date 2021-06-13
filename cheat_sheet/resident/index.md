@@ -7,13 +7,6 @@ parent: Cheat Sheet
 ---
 
 # Resident Mode
-{: .no_toc}  
-
-<hr>
-
-1. TOC1  
-{:toc}
-
 
 ## Default
 

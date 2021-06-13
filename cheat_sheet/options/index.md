@@ -18,7 +18,7 @@ descripption: "Option lists"
 
 ## Default
 
-|ID|Type|Default|Note|
+|ID|Type|Default|Note&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 |:---:|:---:|:---:|:---|
 |`initmode`|str|i|Initial mode of win-vind. The value is the mode prefix.|
 |`jump_margin`|num|10|A margin in pixels to prevent jumping off the screen when jumping to the edge of the screen using `jump_cursor_to_left`, etc.|

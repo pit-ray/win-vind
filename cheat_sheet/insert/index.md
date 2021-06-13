@@ -29,7 +29,7 @@ Write `.vindrc` in the following way. The avaliable commands are `inoremap`, `iu
 
 " Transition to Instant GUI Normal Mode with capslock
 inoremap <Capslock> to_instant_gui_normal
-imap <IME> <Esc> " Map <IME> to <Esc>
+imap <IME> <Esc> " Map <IME> to <Esc> with low-level
 iumap <Esc-Left> " Delete <Esc-Left> command
 imapclear        " Remove all bindings of Insert Mode
 ```

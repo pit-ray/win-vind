@@ -165,7 +165,7 @@ Write `.vindrc` in the following way. The avaliable commands are `ennoremap`, `e
 " ~/.win-vind/.vindrc
 
 ennoremap ; to_command " Transition to Command Mode with ;
-enmap <Capslock> <Esc> " Map <Capslock> to <Esc>
+enmap <Capslock> <Esc> " Map <Capslock> to <Esc> with low-level
 enumap <Left>          " Delete <Left> command
 enmapclear             " Remove all bindings of Edi Normal
 ```

@@ -70,7 +70,7 @@ Write `.vindrc` in the following way. The avaliable commands are `gvnoremap`, `g
 " ~/.win-vind/.vindrc
 
 gvnoremap <Esc> to_gui_normal " Transition to GUI Normal Mode with <Esc>
-gvmap <Capslock> <Esc>        " Map <Capslock> to <Esc>
+gvmap <Capslock> <Esc>        " Map <Capslock> to <Esc> with low-level
 gvumap gg                     " Delete gg command
 gvmapclear                    " Remove all bindings of GUI Visual
 ```

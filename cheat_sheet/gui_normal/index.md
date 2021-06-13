@@ -144,7 +144,7 @@ Write `.vindrc` in the following way. The avaliable commands are `gnnoremap`, `g
 
 gnnoremap <c-f> easy_click_left     " Call easy_click_left with Ctrl + f
 gnnoremap <c-h> select_left_window  " Call select_left_window with Ctrl + h
-gnmap <Capslock> <ctrl>             " Map <c-f> to F
+gnmap <Capslock> <ctrl>             " Map <c-f> to F with low-level
 gnumap FF                           " Delete FF command
 gnmapclear                          " Remove all bindings of GUI Normal
 ```

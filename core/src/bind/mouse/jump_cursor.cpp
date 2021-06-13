@@ -11,7 +11,7 @@ namespace vind
 {
     //JumpToLeft
     JumpToLeft::JumpToLeft()
-    : BindedFuncCreator("jump_to_left")
+    : BindedFuncCreator("jump_cursor_to_left")
     {}
     void JumpToLeft::sprocess() {
         POINT pos ;
@@ -30,7 +30,7 @@ namespace vind
 
     //JumpToRight
     JumpToRight::JumpToRight()
-    : BindedFuncCreator("jump_to_right")
+    : BindedFuncCreator("jump_cursor_to_right")
     {}
     void JumpToRight::sprocess() {
         POINT pos ;
@@ -53,7 +53,7 @@ namespace vind
 
     //JumpToTop
     JumpToTop::JumpToTop()
-    : BindedFuncCreator("jump_to_top")
+    : BindedFuncCreator("jump_cursor_to_top")
     {}
     void JumpToTop::sprocess() {
         POINT pos ;
@@ -76,7 +76,7 @@ namespace vind
 
     //JumpToBottom
     JumpToBottom::JumpToBottom()
-    : BindedFuncCreator("jump_to_bottom")
+    : BindedFuncCreator("jump_cursor_to_bottom")
     {}
     void JumpToBottom::sprocess() {
         POINT pos ;
@@ -98,7 +98,7 @@ namespace vind
 
     //JumpToHorizontalCenter
     JumpToHorizontalCenter::JumpToHorizontalCenter()
-    : BindedFuncCreator("jump_to_hcenter")
+    : BindedFuncCreator("jump_cursor_to_hcenter")
     {}
     void JumpToHorizontalCenter::sprocess() {
         POINT pos ;
@@ -120,7 +120,7 @@ namespace vind
 
     //JumpToVerticalCenter
     JumpToVerticalCenter::JumpToVerticalCenter()
-    : BindedFuncCreator("jump_to_vcenter")
+    : BindedFuncCreator("jump_cursor_to_vcenter")
     {}
     void JumpToVerticalCenter::sprocess() {
         POINT pos ;

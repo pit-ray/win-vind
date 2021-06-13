@@ -33,95 +33,95 @@ All keywords in win-vind are not case-sensitive.
 
 |Keyword|Meanings|
 |:---:|:---|
-|&lt;num&gt;|It is a number of any digits. However, you **must not** multiple uses of this keyword per a command.|
-|&lt;any&gt;|It is an optional string. If you include it into a command, all keywords after that are considered to be matching.|
+|`<num>`|It is a number of any digits. However, you **must not** multiple uses of this keyword per a command.|
+|`<any>`|It is an optional string. If you include it into a command, all keywords after that are considered to be matching.|
 
 
 ## Specific Ascii Key Code  
 
 |Key Code|Meanings|
 |:---:|:---|
-|&lt;space&gt;|Space Key|
-|&lt;hbar&gt;|Ascii code '-'|
-|&lt;gt&gt;|Ascii code '&gt;'|
-|&lt;lt&gt;|Ascii code '&lt;'|
+|`<space>`|Space Key|
+|`<hbar>`|Ascii code '-'|
+|`<gt>`|Ascii code '>`'|
+|`<lt>`|Ascii code '`<'|
 
  
 ## System Key Code  
 
 |Key Code|Meanings|
 |:---:|:---|
-|&lt;bs&gt;|BackSpace Key|
-|&lt;capslock&gt;|CapsLock Key|
-|&lt;cr&gt;|Enter Key, Return Key|
-|&lt;enter&gt;|Enter Key, Return Key|
-|&lt;return&gt;|Enter Key, Return Key|
-|&lt;ime&gt;|Key for switching IME|
-|&lt;tab&gt;|Tab Key|
-|&lt;left&gt;|Left Key|
-|&lt;right&gt;|Right Key|
-|&lt;up&gt;|Up Key|
-|&lt;down&gt;|Down Key|
-|&lt;shift&gt;|Left Shift, Right Shift|
-|&lt;s&gt;|Left Shift, Right Shift|
-|&lt;lshift&gt;|Left Shift|
-|&lt;ls&gt;|Left Shift|
-|&lt;rshift&gt;|Right Shift|
-|&lt;rs&gt;|Right Shift|
-|&lt;ctrl&gt;|Left Control, Right Control|
-|&lt;c&gt;|Left Control, Right Control|
-|&lt;lctrl&gt;|Left Control|
-|&lt;lc&gt;|Left Control|
-|&lt;rctrl&gt;|Right Control|
-|&lt;rc&gt;|Right Control|
-|&lt;win&gt;|Left Windows Key, Right Windows Key|
-|&lt;lwin&gt;|Left Windows Key|
-|&lt;rwin&gt;|Right Windows Key|
-|&lt;alt&gt;|Left Alt, Right Alt|
-|&lt;a&gt;|Left Alt, Right Alt|
-|&lt;lalt&gt;|Left Alt|
-|&lt;la&gt;|Left Alt|
-|&lt;ralt&gt;|Right Alt|
-|&lt;ra&gt;|Right Alt|
-|&lt;m&gt;|Left Alt, Right Alt|
-|&lt;lm&gt;|Left Alt|
-|&lt;rm&gt;|Right Alt|
-|&lt;app&gt;|Application Key to right-click|
-|&lt;cvt&gt;|Convert Key to convert|
-|&lt;esc&gt;|Eescape Key|
-|&lt;kana&gt;|Kana Key to switch IME mode on Japanese keyboard.|
-|&lt;nocvt&gt;|No Convert Key to cancel conversion|
-|&lt;f1&gt;|F1|
-|&lt;f2&gt;|F2|
-|&lt;f3&gt;|F3|
-|&lt;f4&gt;|F4|
-|&lt;f5&gt;|F5|
-|&lt;f6&gt;|F6|
-|&lt;f7&gt;|F7|
-|&lt;f8&gt;|F8|
-|&lt;f9&gt;|F9|
-|&lt;f10&gt;|F10|
-|&lt;f11&gt;|F11|
-|&lt;f12&gt;|F12|
-|&lt;f13&gt;|F13|
-|&lt;f14&gt;|F14|
-|&lt;f15&gt;|F15|
-|&lt;f16&gt;|F16|
-|&lt;f17&gt;|F17|
-|&lt;f18&gt;|F18|
-|&lt;f19&gt;|F19|
-|&lt;f20&gt;|F20|
-|&lt;f21&gt;|F21|
-|&lt;f22&gt;|F22|
-|&lt;f23&gt;|F23|
-|&lt;f24&gt;|F24|
-|&lt;del&gt;|Delete Key|
-|&lt;end&gt;|End Key|
-|&lt;home&gt;|Home Key|
-|&lt;insert&gt;|Insert Key|
-|&lt;numlock&gt;|NumLock Key|
-|&lt;pagedown&gt;|Page Down Key|
-|&lt;pageup&gt;|Page Up Key|
-|&lt;pause&gt;|Pause Key, Break Key|
-|&lt;scroll&gt;|Scroll Key, Scroll Lock Key|
-|&lt;snapshot&gt;|Snapshot Key, Print Screen Key, Sys Rq Key|
+|`<bs>`|BackSpace Key|
+|`<capslock>`|CapsLock Key|
+|`<cr>`|Enter Key, Return Key|
+|`<enter>`|Enter Key, Return Key|
+|`<return>`|Enter Key, Return Key|
+|`<ime>`|Key for switching IME|
+|`<tab>`|Tab Key|
+|`<left>`|Left Key|
+|`<right>`|Right Key|
+|`<up>`|Up Key|
+|`<down>`|Down Key|
+|`<shift>`|Left Shift, Right Shift|
+|`<s>`|Left Shift, Right Shift|
+|`<lshift>`|Left Shift|
+|`<ls>`|Left Shift|
+|`<rshift>`|Right Shift|
+|`<rs>`|Right Shift|
+|`<ctrl>`|Left Control, Right Control|
+|`<c>`|Left Control, Right Control|
+|`<lctrl>`|Left Control|
+|`<lc>`|Left Control|
+|`<rctrl>`|Right Control|
+|`<rc>`|Right Control|
+|`<win>`|Left Windows Key, Right Windows Key|
+|`<lwin>`|Left Windows Key|
+|`<rwin>`|Right Windows Key|
+|`<alt>`|Left Alt, Right Alt|
+|`<a>`|Left Alt, Right Alt|
+|`<lalt>`|Left Alt|
+|`<la>`|Left Alt|
+|`<ralt>`|Right Alt|
+|`<ra>`|Right Alt|
+|`<m>`|Left Alt, Right Alt|
+|`<lm>`|Left Alt|
+|`<rm>`|Right Alt|
+|`<app>`|Application Key to right-click|
+|`<cvt>`|Convert Key to convert|
+|`<esc>`|Eescape Key|
+|`<kana>`|Kana Key to switch IME mode on Japanese keyboard.|
+|`<nocvt>`|No Convert Key to cancel conversion|
+|`<f1>`|F1|
+|`<f2>`|F2|
+|`<f3>`|F3|
+|`<f4>`|F4|
+|`<f5>`|F5|
+|`<f6>`|F6|
+|`<f7>`|F7|
+|`<f8>`|F8|
+|`<f9>`|F9|
+|`<f10>`|F10|
+|`<f11>`|F11|
+|`<f12>`|F12|
+|`<f13>`|F13|
+|`<f14>`|F14|
+|`<f15>`|F15|
+|`<f16>`|F16|
+|`<f17>`|F17|
+|`<f18>`|F18|
+|`<f19>`|F19|
+|`<f20>`|F20|
+|`<f21>`|F21|
+|`<f22>`|F22|
+|`<f23>`|F23|
+|`<f24>`|F24|
+|`<del>`|Delete Key|
+|`<end>`|End Key|
+|`<home>`|Home Key|
+|`<insert>`|Insert Key|
+|`<numlock>`|NumLock Key|
+|`<pagedown>`|Page Down Key|
+|`<pageup>`|Page Up Key|
+|`<pause>`|Pause Key, Break Key|
+|`<scroll>`|Scroll Key, Scroll Lock Key|
+|`<snapshot>`|Snapshot Key, Print Screen Key, Sys Rq Key|

@@ -130,7 +130,7 @@ parent: Cheat Sheet
 |`:command<any>`|**system_command_command**|System Command command||
 |`:delcommand<any>`|**system_command_delcommand**|System Command delcommand||
 |`:comclear<any>`|**system_command_comclear**|System Command comclear||
-|`:source <any>`|**system_command_source**|System Command source||
+|`:source<any>`|**system_command_source**|System Command source||
 
 
 ## Customization

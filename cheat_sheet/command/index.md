@@ -72,10 +72,10 @@ has_children: true
 |`bun`|**backward_ui_navigation**|Backward UI Navigation|
 |`decide`|**decide_focused_ui_object**|Decide a focused UI object|
 |`set<any>`|**system_command_set**|System Command set|
-|`{mode-prefix}map<any>|**system_command_map**|System Command map|
-|`{mode-prefix}noremap<any>|**system_command_noremap**|System Command noremap|
-|`{mode-prefix}unmap<any>|**system_command_unmap**|System Command unmap|
-|`{mode-prefix}mapclear<any>|**system_command_mapclear**|System Command mapclear|
+|`{mode-prefix}map<any>`|**system_command_map**|System Command map|
+|`{mode-prefix}noremap<any>`|**system_command_noremap**|System Command noremap|
+|`{mode-prefix}unmap<any>`|**system_command_unmap**|System Command unmap|
+|`{mode-prefix}mapclear<any>`|**system_command_mapclear**|System Command mapclear|
 |`command<any>`|**system_command_command**|System Command command|
 |`delcommand<any>`|**system_command_delcommand**|System Command delcommand|
 |`comclear<any>`|**system_command_comclear**|System Command comclear|

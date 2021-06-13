@@ -10,6 +10,7 @@ parent: Cheet Sheet
 ## Default Commands
 
 ### Mode
+
 |Command after `:`|ID|Feature|Note|
 |:---:|:---:|:---:|:---|
 |`::guinormal`, `:gn`|**to_gui_normal**|GUI Normal Mode||
@@ -21,18 +22,27 @@ parent: Cheet Sheet
 |`:edivisualline`, `:evl`|**to_edi_visual_line**|Visual-Line Mode (Vim Emulation: V)||
 
 ### Virtual Desktop
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:vdnext`|**switch_to_left_vdesktop**|Switch to a left virtual desktop||
 |`:vdprev`|**switch_to_right_vdesktop**|Switch to a right virtual desktop||
 |`:closev`|**close_current_vdesktop**|Close a current virtual desktop||
 |`:taskview`, `:tv`, `:vdesktop list`|**taskview**|Task View||
 
 ### Tab
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:tabprevious`|**switch_to_left_tab**|Switch to a left tab||
 |`:tabnext`|**switch_to_right_tab**|Switch to a right tab||
 |`:tabnew`|**open_new_tab**|Open a new tab||
 |`:q`, `:q!`, `:tabclose`|**close_current_tab**|Close a current tab||
 
 ### Window
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:cl`, `:close`|**close_current_window**|Close a current window||
 |`:sw`, `:switch`|**switch_window**|Switch a window||
 |`:wr`, `:resizer`, `:winresizer`|**window_resizer**|Window Resizer||
@@ -58,26 +68,41 @@ parent: Cheet Sheet
 |`:reload`|**reload_current_window**|Reload a current window||
 
 ### Mouse
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:ecl`|**easy_click_left**|EasyClick (Left Click)||
 |`:ecr`|**easy_click_right**|EasyClick (Right Click)||
 |`:ecm`|**easy_click_mid**|EasyClick (Mid Click)||
 |`:ech`|**easy_click_hover**|EasyClick (Hovering)||
 
 ### File
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:mkdir`, `:md`, `:mkdir <any>`, `:md <any>`|**makedir**|Make a directory||
 
 ### Vim Emulation
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:-<num>`|**move_caret_up**|Move the caret up (Vim Emulation: k)||
 |`:+<num>`|**move_caret_down**|Move the caret down (Vim Emulation: j)||
 |`:<num>`|**jump_caret_to_BOF**|Jump the caret to BOF (Vim Emulation: gg)||
 
 ### Process
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal||
 |`:!<any>`|**start_external**|Start a optional application||
 |`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with default program||
 |`:exit`|**exit_config_gui**|Exit win-vind||
 
 ### Hotkey
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:w`|**save**|Save a current file||
 |`:ex`, `:explorer`|**start_explorer**|Start a Explorer||
 |`:win`, `:start`|**open_startmenu**|Open a start menu||
@@ -87,10 +112,16 @@ parent: Cheet Sheet
 |`:decide`|**decide_focused_ui_object**|Decide a focused UI object||
 
 ### Options
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:target`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)||
 |`:untarget`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)||
 
 ### System Command
+
+|Command after `:`|ID|Feature|Note|
+|:---:|:---:|:---:|:---|
 |`:set<any>`|**system_command_set**|System Command set||
 |`:{mode-prefix}map<any>`|**system_command_map**|System Command map||
 |`:{mode-prefix}noremap<any>`|**system_command_noremap**|System Command noremap||

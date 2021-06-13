@@ -18,7 +18,7 @@ descripption: "Option lists"
 
 ## Default
 
-|ID|Type|Default|Note&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
+|ID|Type|Default|Note|
 |:---:|:---:|:---:|:---|
 |`initmode`|str|i|Initial mode of win-vind. The value is the mode prefix.|
 |`jump_margin`|num|10|A margin in pixels to prevent jumping off the screen when jumping to the edge of the screen using `jump_cursor_to_left`, etc.|
@@ -49,7 +49,7 @@ descripption: "Option lists"
 |`cmd_fadeout`|num|5|Fade-out time in seconds for the virtual command line.|
 |`gui_fontsize`|num|11|Font size of GUI|
 |`gui_fontname`|num|Consolas|Font name of GUI. If an empty string is passed, the system font will be used.|
-|`icon_style`|str|`resources/icon32_dark.ico`|Style of the icon to be displayed on the taskbar. By default, **Dark** and **Light** styles are available. The former is `resources/icon32_dark.ico` and the latter is `resouces/icon32_light.ico`. By the way, you can use any tasktray icon you like as long as it is in `.ico` format and **32x32**.|
+|`icon_style`|str|resources/icon32_dark.ico|Style of the icon to be displayed on the taskbar. By default, **Dark** and **Light** styles are available. The former is `resources/icon32_dark.ico` and the latter is `resouces/icon32_light.ico`. By the way, you can use any tasktray icon you like as long as it is in `.ico` format and **32x32**.|
 |`keybrd_layout`|str||Keyboard layout kmp file referenced by `jump_cursor_with_keybrd_layout`. By default, only **US (101/102)** or **JP (106/109)** layouts are supported. If your keyboard is not the right one, please create your own kmp file and use its path as the value. If you leave the value empty, the KMP file will be selected automatically. Also, if you like, you can share the keyboard you created with a pull request to the `default_config` directory.|
 |`shell`|str|powershell|Name of the shell to use for \":!\" commands|
 |`shellcmdflag`|str|-c|Flag passed to the shell to execute \":!\" commands|

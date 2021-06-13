@@ -6,13 +6,14 @@ descripption: "Command lists of win-vind."
 has_children: true
 ---
 
-## All Bindings List
+
+## Default Key Config  
 
 ### Window Control  
 
 #### Select Window
 
-|Id|Feature|
+|Binding|Command|Feature|
 |:---:|:---:|:---|
 |`<C-w>s`|`:switch`|Switch windows|
 |`<C-w>h`|-|Select a left window|

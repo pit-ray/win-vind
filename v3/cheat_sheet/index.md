@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Cheat Sheet for v3
+title: Cheat Sheet
 nav_order: 5
 parent: v3
 descripption: "Command lists of win-vind."

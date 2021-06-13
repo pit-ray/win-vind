@@ -2,7 +2,7 @@
 layout: default
 title: Others
 nav_order: 9
-parent: Cheat Sheet for v3
+parent: Cheat Sheet
 descripption: "Others"
 ---
 

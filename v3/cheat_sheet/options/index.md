@@ -2,7 +2,7 @@
 layout: default
 title: Options
 nav_order: 20
-parent: Cheat Sheet for v3
+parent: Cheat Sheet
 descripption: "Option lists"
 ---
 

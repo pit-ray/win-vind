@@ -2,7 +2,7 @@
 layout: default
 title: Mode Control
 nav_order: 4
-parent: Cheat Sheet for v3
+parent: Cheat Sheet
 descripption: "Mode Control"
 ---
 

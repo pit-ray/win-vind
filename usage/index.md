@@ -45,9 +45,6 @@ If you have any problems or requests, please post them on GitHub Issues.
 
 ## Quick Tutorial
 
-1. TOC  
-{:toc}
-
 ### 1. Mode Transition
 
 The basic concept is the same as Vim, but there are two **Normal Mode** and two **Visual Mode**, and **Resident Mode**.   
@@ -74,40 +71,36 @@ Resident Mode is an evacuation mode to prevent bindings from being collisions wi
 <p align="center">Visual Concepts of Mode</p>
 </p>
 
-After the boot, win-vind will be in Insert Mode. Let's make transitions of mode!  
+After the boot, win-vind will be in **Insert Mode**. Let's make transitions of mode!  
 
 <hr>  
 
 ### 2. GUI Operation and Window Operation  
 
 1. Switch to GUI Normal Mode with `<Esc-Left>`.
-1. Please inputs `:!mspaint` to launch **Microsoft Paint**.
+1. Please inputs `:!mspaint` to launch Microsoft Paint.
 1. You can call **EasyClick** with `FF`.
    <p align="center">
    <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif?raw=true">
    <p align="center">EasyClick Demo</p>
    </p>
 1. Let's select windows with `<C-w>h` or `<C-w>l`.
-1. Please select **Microsoft Paint** and close it with `:close`.
+1. Please select Microsoft Paint and close it with `:close`.
 
 
 <hr>  
 
 ### 3. Customize Options and Maps
-win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind.  
-
-The following commands are supported.
+win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind. The following commands are supported.
 
 |**Command**|**Syntax**|Note|
 |:---|:---|:---|
-|/3. `set`|`set {bool-option}`||
-|`set no{bool-option}`||
-|`set {key} = {val}`||
-
+|`set`|`set {bool-option}`||
+|`set`|`set no{bool-option}`||
+|`set`|`set {key} = {val}`||
 |`map`|`{mode-prefix}map {input-key} {target-key}`||
 |`noremap`|`{mode-prefix}noremap {input-command} {function-id}`||
-|`{mode-prefix}noremap {input-keyset} {target-keyset}`||
-
+|`noremap`|`{mode-prefix}noremap {input-keyset} {target-keyset}`||
 |`unmap`|`{mode-prefix}unmap {input-command}`|
 |`mapclear`|`{mode-prefix}mapclear`||
 |`command`|`command {input-command} {function-id}`||

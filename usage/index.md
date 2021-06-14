@@ -61,7 +61,7 @@ The two groups are GUI mode and Editor mode. The former group is for the operati
 <p align="center">Concepts of GUI Mode and Editor Mode</p>
 </p>
 
-Resident Mode is an evacuation mode to prevent bindings from being collisions with shortcut keys while gaming on Stream or using Vim. For example, if you have added `<Esc>` into the keymap of Insert Mode for faithful Vim emulation, you can use Resident Mode to prevent a feature from being called by Vim's `<Esc>`.  
+Resident Mode is an evacuation mode to prevent bindings from being collisions with shortcut keys while gaming on Steam or using Vim. For example, if you have added `<Esc>` into the keymap of Insert Mode for faithful Vim emulation, you can use Resident Mode to prevent a feature from being called by Vim's `<Esc>`.  
 
 
 **Insert Mode** and **Resident Mode** pass all key messages to Windows, while **GUI Normal Mode**, **GUI Visual Mode**, **Edi Normal Mode**, **Edi Visual Mode**, and **Command Mode** block them.  
@@ -92,6 +92,72 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 
 ### 3. Customize Options and Maps
 win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind. The following commands are supported.
+
+<table>
+<tr>
+<th>Command</th>
+<th>Syntax</th>
+<th>Note</th>
+</tr>
+
+<tr>
+<td rawspan="3">`set`</td>
+<td>`set {bool-option}`</td>
+<td></td>
+</tr>
+
+<tr>
+<td>`set no{bool-option}`</td>
+<td></td>
+</tr>
+
+<tr>
+<td>`set {key} = {val}`</td>
+<td></td>
+</tr>
+
+<tr>
+<td>`map`</td>
+<td>`{mode-prefix}map {input-key} {target-key}`</td>
+<td></td>
+</tr>
+
+<tr>
+<td rawspan="2">`noremap`</td>
+<td>`{mode-prefix}noremap {input-command} {function-id}`</td>
+<td></td>
+</tr>
+
+<tr>
+<td>`{mode-prefix}noremap {input-keyset} {target-keyset}`</td>
+<td></td>
+</tr>
+<tr>
+<td>`unmap`</td>
+<td>`{mode-prefix}unmap {input-command}`</td>
+<td></td>
+</tr>
+<tr>
+<td>`mapclear`</td>
+<td>`{mode-prefix}mapclear`</td>
+<td></td>
+</tr>
+<tr>
+<td>`command`</td>
+<td>`command {input-command} {function-id}`</td>
+<td></td>
+</tr>
+<tr>
+<td>`delcommand`</td>
+<td>`delcommand {input-command}`</td>
+<td></td>
+</tr>
+<tr>
+<td>`comclear`</td>
+<td>`comclear`</td>
+<td></td>
+</tr>
+</table>
 
 |**Command**|**Syntax**|Note|
 |:---|:---|:---|

@@ -22,10 +22,10 @@ If you have any problems or requests, please post them on GitHub Issues.
 ## Installation
 - Download either the zip version or the installer version that suits your preference. The installer version creates dependencies to the installed directory and the user directory, while the zip version does not create any files outside the unzipped root.  
 
-   **32 bit**
+   **32 bit**  
    [Download .exe (32bit)](https://github.com/pit-ray/win-vind/releases/download/v4.0.0/setup_win-vind_4.0.0_32bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download .zip (32bit)](https://github.com/pit-ray/win-vind/releases/download/v4.0.0/win-vind_4.0.0_32bit.zip){: .btn}  
 
-   **64 bit**
+   **64 bit**  
    [Download .exe (64bit)](https://github.com/pit-ray/win-vind/releases/download/v4.0.0/setup_win-vind_4.0.0_64bit.exe.zip){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download .zip (64bit)](https://github.com/pit-ray/win-vind/releases/download/v4.0.0/win-vind_4.0.0_64bit.zip){: .btn}  
 
 - When you run win-vind.exe for the first time, it will start in Insert mode, so you may not know if it is working, but if you see the icon in the task tray, it is working properly.  
@@ -44,6 +44,9 @@ If you have any problems or requests, please post them on GitHub Issues.
 <hr>
 
 ## Quick Tutorial
+
+1. TOC  
+{:toc}
 
 ### 1. Mode Transition
 
@@ -74,7 +77,6 @@ Resident Mode is an evacuation mode to prevent bindings from being collisions wi
 After the boot, win-vind will be in Insert Mode. Let's make transitions of mode!  
 
 <hr>  
-<br>  
 
 ### 2. GUI Operation and Window Operation  
 
@@ -90,7 +92,6 @@ After the boot, win-vind will be in Insert Mode. Let's make transitions of mode!
 
 
 <hr>  
-<br>  
 
 ### 3. Customize Options and Maps
 win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind.  

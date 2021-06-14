@@ -37,13 +37,23 @@ This software supports only on Windows 10. Some features may be not working well
 
 ## Overview  
 
-<img src="/imgs/mode_overview_3D.png" width=600 >  
+<p align="center">
+<img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/mode_overview_3D.png?raw=true" width=500 >  
+</p>
+
+Insert Mode and Resident Mode pass all key messages to Windows, while GUI Normal, GUI Visual, Edi Normal, Edi Visual, and Command do not.  
 
 
-<img src="/imgs/mode_overview.png" width=600>  
+<p align="center">
+<img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/mode_overview.png?raw=true" width=600>  
+</p>
+
 win-vind has plenty of hotkeys and commands, but they are almost based on the original Vim or some famous plugins. The little differences are that its mode has two layers and its unique functions for GUI. Concretely, two layer modes are **GUI Mode** and **Editor Mode**.  
 
-![gui-and-editor-pic](https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/GUIandEditor.jpg?raw=true)
+<p align="center">
+<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/GUIandEditor.jpg?raw=true" width=700>
+</p>
+
 
 ### GUI Mode
 You can do an operation of GUI objects, moving the mouse cursor, process execution, operating all windows by key-bindings like Vim. By the way, this mode is applied at the first start after installation. My favorite functions are **EasyClick**. It allows us to select GUI objects by operations like <a href="https://github.com/easymotion/vim-easymotion">**EasyMotion**</a> or <a href="https://github.com/philc/vimium">**Vimium**</a>.

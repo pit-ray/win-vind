@@ -195,12 +195,12 @@
         "ja": "フェードアウト時間 (s)"
     },
     "gui_fontsize": {
-        "value": 11,
+        "value": 12,
         "en": "GUI Font Size",
         "ja": "GUIのフォントサイズ"
     },
     "gui_fontname": {
-        "value": "Consolas",
+        "value": "Dubai",
         "en": "GUI Font Name",
         "ja": "GUIのフォント名"
     },
@@ -313,7 +313,7 @@
         "ja": "EasyClickのフォントの太さ"
     },
     "easyclick_fontname": {
-        "value": "Consolas",
+        "value": "Arial",
         "en": "EasyClick Font Name",
         "ja": "EasyClickのフォント名"
     },

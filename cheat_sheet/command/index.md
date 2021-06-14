@@ -52,7 +52,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`:cl`, `:close`|**close_current_window**|Close a current window|
 |`:sw`, `:switch`|**switch_window**|Switch a window|
-|`:resizer`, `:winresizer`|**window_resizer**|Start window resizer. It respects Vim plugin (<a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
+|`:resizer`, `:winresizer`|**window_resizer**|Start window resizer. It respects Vim plugin <a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
 |`:max`, `:on`, `:only`|**maximize_current_window**|Maximize a current window|
 |`:min`, `:hi`, `:hide`|**minimize_current_window**|Minimize a current window|
 |`:lsplit`, `:lsp`, `:wl`|**snap_current_window_to_left**|Snap a current window to left|

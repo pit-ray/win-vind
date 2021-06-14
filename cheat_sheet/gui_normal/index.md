@@ -125,7 +125,7 @@ parent: Cheat Sheet
 
 <hr>
 
-## Customization
+## Customize
 
 Write `.vindrc` in the following way. The avaliable commands are `gnnoremap`, `gnunmap`, and `gnmapclear`.
 

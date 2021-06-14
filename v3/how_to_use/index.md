@@ -58,7 +58,7 @@ It enables to emulate Vim when using general text editors, for instance, notepad
 
 <hr>
 
-## Customization
+## Customize
 ### Parameters
 You are able to change all parameters of UI-language, the speed of the mouse, options, etc in **Preferences** window.  
 

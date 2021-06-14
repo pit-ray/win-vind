@@ -63,7 +63,7 @@ In default, you can call the hinting feature with `FF`, which you can try after 
         "jp": "EasyClick"
     },
    ```
-   Please refer to <a href="https://pit-ray.github.io/win-vind/how_to_use/#key-config">How to Use/Customization/Key Config</a>.  
+   Please refer to <a href="https://pit-ray.github.io/win-vind/how_to_use/#key-config">How to Use/Customize/Key Config</a>.  
 1. Input `:set` command, or right-click on the tray and select **Preference**.  
 1. **Settings/Common/Initial Mode** -> **GUI Insert** and [   OK   ].
 

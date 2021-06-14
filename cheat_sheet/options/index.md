@@ -66,7 +66,7 @@ descripption: "Option lists"
 |`suppress_for_vim`|bool|false|It makes the mode of win-vind automatically switch to **Resident Mode** on the applications included the strings called **VIM** in an executable file name. Thus, it allows us to smoothly move from win-vind having the same key-bindings as Vim to Vim applications.|
 |`charcache`|bool|false|It is a very small cache for one character used by `x` or `X` commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.|
 
-## Customization
+## Customize
 
 Write `.vindrc` with `set` in the following way.
 

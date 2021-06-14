@@ -125,16 +125,16 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |`:set<any>`|**system_command_set**|System Command set|
 |`:source<any>`|**system_command_source**|System Command source|
 |`:{mode-prefix}map<any>`|**system_command_map**|System Command map|
-|`:{mode-prefix}mapclear<any>`|**system_command_mapclear**|System Command mapclear|
+|`:{mode-prefix}mapclear`|**system_command_mapclear**|System Command mapclear|
 |`:{mode-prefix}noremap<any>`|**system_command_noremap**|System Command noremap|
 |`:{mode-prefix}unmap<any>`|**system_command_unmap**|System Command unmap|
-|`:comclear<any>`|**system_command_comclear**|System Command comclear|
+|`:comclear`|**system_command_comclear**|System Command comclear|
 |`:command<any>`|**system_command_command**|System Command command|
 |`:delcommand<any>`|**system_command_delcommand**|System Command delcommand|
 
 <hr>
 
-## Customization
+## Customize
 
 Write `.vindrc` in the following way. The avaliable commands are `command`, `delcommand`, and `comclear`.
 

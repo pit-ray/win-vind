@@ -73,7 +73,7 @@ parent: Cheat Sheet
 
 <hr>
 
-## Customization
+## Customize
 
 Write `.vindrc` in the following way. The avaliable commands are `evnoremap`, `evunmap`, and `evmapclear`.
 

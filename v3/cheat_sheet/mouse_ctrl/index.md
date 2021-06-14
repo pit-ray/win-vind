@@ -300,7 +300,7 @@ However, the keyboard map is defferent according to languages, so you are able t
     
 Additionaly, positions of key are very hardware-dependent, so if you don't like default keyboard mapping, you can make optimized <b>custom.kmp</b> as follow ways.
 
-1. Choice **Custom** in **Preferences/Settings/Common/Keyboard Type**.  
+1. Choice **Customize** in **Preferences/Settings/Common/Keyboard Type**.  
 1. Please open the **custom.kmp**. If you use the installer version, the file exists **~/.win-vind/custom.kmp**. If you use zip, it does **win-vind/config/custom.kmp**  
 1. Rewrite the kmp file.   
    **Syntax**

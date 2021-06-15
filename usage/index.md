@@ -94,87 +94,76 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind. The following commands are supported.
 
 <table>
-<tr>
-<th>Command</th>
-<th>Syntax</th>
-<th>Note</th>
-</tr>
+  <tr>
+  <th>Command</th>
+  <th>Syntax</th>
+  <th>Note</th>
+  </tr>
 
-<tr>
-<td rawspan="3">`set`</td>
-<td>`set {bool-option}`</td>
-<td></td>
-</tr>
+  <tr>
+  <td rowspan="3"><code>set</code></td>
+  <td><code>set {bool-option}</code></td>
+  <td></td>
+  </tr>
 
-<tr>
-<td>`set no{bool-option}`</td>
-<td></td>
-</tr>
+  <tr>
+  <td><code>set no{bool-option}</code></td>
+  <td></td>
+  </tr>
 
-<tr>
-<td>`set {key} = {val}`</td>
-<td></td>
-</tr>
+  <tr>
+  <td><code>set {key} = {val}</code></td>
+  <td></td>
+  </tr>
 
-<tr>
-<td>`map`</td>
-<td>`{mode-prefix}map {input-key} {target-key}`</td>
-<td></td>
-</tr>
+  <tr>
+  <td><code>map</code></td>
+  <td><code>{mode-prefix}map {input-key} {target-key}</code></td>
+  <td></td>
+  </tr>
 
-<tr>
-<td rawspan="2">`noremap`</td>
-<td>`{mode-prefix}noremap {input-command} {function-id}`</td>
-<td></td>
-</tr>
+  <tr>
+  <td rowspan="2"><code>noremap</code></td>
+  <td><code>{mode-prefix}noremap {input-command} {function-id}</code></td>
+  <td></td>
+  </tr>
 
-<tr>
-<td>`{mode-prefix}noremap {input-keyset} {target-keyset}`</td>
-<td></td>
-</tr>
-<tr>
-<td>`unmap`</td>
-<td>`{mode-prefix}unmap {input-command}`</td>
-<td></td>
-</tr>
-<tr>
-<td>`mapclear`</td>
-<td>`{mode-prefix}mapclear`</td>
-<td></td>
-</tr>
-<tr>
-<td>`command`</td>
-<td>`command {input-command} {function-id}`</td>
-<td></td>
-</tr>
-<tr>
-<td>`delcommand`</td>
-<td>`delcommand {input-command}`</td>
-<td></td>
-</tr>
-<tr>
-<td>`comclear`</td>
-<td>`comclear`</td>
-<td></td>
-</tr>
+  <tr>
+  <td><code>{mode-prefix}noremap {input-keyset} {target-keyset}</code></td>
+  <td></td>
+  </tr>
+
+  <tr>
+  <td><code>unmap</code></td>
+  <td><code>{mode-prefix}unmap {input-command}</code></td>
+  <td></td>
+  </tr>
+
+  <tr>
+  <td><code>mapclear</code></td>
+  <td><code>{mode-prefix}mapclear</code></td>
+  <td></td>
+  </tr>
+
+  <tr>
+  <td><code>command</code></td>
+  <td><code>command {input-command} {function-id}</code></td>
+  <td></td>
+  </tr>
+
+  <tr>
+  <td><code>delcommand</code></td>
+  <td><code>delcommand {input-command}</code></td>
+  <td></td>
+  </tr>
+
+  <tr>
+  <td><code>comclear</code></td>
+  <td><code>comclear</code></td>
+  <td></td>
+  </tr>
 </table>
 
-|**Command**|**Syntax**|Note|
-|:---|:---|:---|
-|`set`|`set {bool-option}`||
-|`set`|`set no{bool-option}`||
-|`set`|`set {key} = {val}`||
-|`map`|`{mode-prefix}map {input-key} {target-key}`||
-|`noremap`|`{mode-prefix}noremap {input-command} {function-id}`||
-|`noremap`|`{mode-prefix}noremap {input-keyset} {target-keyset}`||
-|`unmap`|`{mode-prefix}unmap {input-command}`|
-|`mapclear`|`{mode-prefix}mapclear`||
-|`command`|`command {input-command} {function-id}`||
-|`delcommand`|`delcommand {input-command}`||
-|`comclear`|`comclear`||
-
-
-Write `.vindrc` in the following way. The avaliable commands are `gnnoremap`, `gnunmap`, and `gnmapclear`.
 
 **Sample**
 ```vim
@@ -186,8 +175,6 @@ gnmap <Capslock> <ctrl>             " Map <Capslock> to <Ctrl> with low-level
 gnumap FF                           " Delete FF command
 gnmapclear                          " Remove all bindings of GUI Normal
 ```
-
-Write `.vindrc` with `set` in the following way.
 
 **Example**
 ```vim

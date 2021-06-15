@@ -196,7 +196,7 @@ Let's do the last tutorial!
    <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/source_demo.jpg?raw=true" width=450 >  
    <p align="center">Reload Demo</p>
    </p>
-1. In **Insert Mode**, you can use `<Capslock> instead of `<Ctrl>` and operate GUI with hinting by `<Alt-f> like **EasyMotion** or **Vimium**.
+1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and operate GUI with hinting by `<Alt-f>` like **EasyMotion** or **Vimium**.
 
 <br>
 <br>

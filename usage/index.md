@@ -107,7 +107,7 @@ win-vind uses a **Run Commands** style configuration method. If you've ever writ
   </tr>
 
   <tr>
-  <td bordercolor="#e6e1e8" style="border-left: 0.5px solid;"><code>set no{bool-option}</code></td>
+  <td bordercolor="#e6e1e8" style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>set no{bool-option}</code></td>
   <td></td>
   </tr>
 

@@ -105,8 +105,8 @@ The following commands are supported. By the way, `{` and `}` themselves are not
   </tr>
 
   <tr>
-  <td rowspan="3"><code>set</code></td>
-  <td><code>set {option}</code></td>
+  <td align="center" rowspan="3"><code>set</code></td>
+  <td width=400><code>set {option}</code></td>
   <td>Set the value of the option to <strong>true</strong>.</td>
   </tr>
 
@@ -121,48 +121,48 @@ The following commands are supported. By the way, `{` and `}` themselves are not
   </tr>
 
   <tr>
-  <td><code>map</code></td>
+  <td align="center"><code>map</code></td>
   <td><code>{mode-prefix}map {in-key} {out-key}</code></td>
   <td>It performs <strong>key2key</strong> mapping with low-level. The keymap influences Windows as a whole, not just the win-vind scope. Therefore, use it with caution.</td>
   </tr>
 
   <tr>
-  <td rowspan="2"><code>noremap</code></td>
+  <td align="center" rowspan="2"><code>noremap</code></td>
   <td><code>{mode-prefix}noremap {in-cmd} {func-id}</code></td>
   <td>It defines the map to call the function.</td>
   </tr>
 
   <tr>
-  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>{mode-prefix}noremap {input-keyset} {target-keyset}</code></td>
+  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>{mode-prefix}noremap {in-keyset} {out-keyset}</code></td>
   <td>It performs <strong>keyset2keyset</strong> mapping in win-vind scope. However, since the <code>{func-id}</code> definition has higher priority than its syntax, it may result in exactly one remap. For example <code>inoremap h move_cursor_left</code> and <code>inoremap f k</code> then <code>f</code> will be mapped to <code>move_cursor_left</code> instead of <code>move_cursor_up</code>.</td>
   </tr>
 
   <tr>
-  <td><code>unmap</code></td>
+  <td align="center"><code>unmap</code></td>
   <td><code>{mode-prefix}unmap {in-cmd}</code></td>
   <td>Remove the map corresponding to the <code>{in-cmd}</code>.</td>
   </tr>
 
   <tr>
-  <td><code>mapclear</code></td>
+  <td align="center"><code>mapclear</code></td>
   <td><code>{mode-prefix}mapclear</code></td>
   <td>Delete all maps.</td>
   </tr>
 
   <tr>
-  <td><code>command</code></td>
+  <td align="center"><code>command</code></td>
   <td><code>command {in-cmd} {func-id}</code></td>
   <td>It defines the command to call the function.</td>
   </tr>
 
   <tr>
-  <td><code>delcommand</code></td>
+  <td align="center"><code>delcommand</code></td>
   <td><code>delcommand {in-cmd}</code></td>
   <td>Remove the command corresponding to the <code>{in-cmd}</code>.</td>
   </tr>
 
   <tr>
-  <td><code>comclear</code></td>
+  <td align="center"><code>comclear</code></td>
   <td><code>comclear</code></td>
   <td>Delete all commands.</td>
   </tr>

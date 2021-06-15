@@ -94,7 +94,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal|
 |`:!<any>`|**start_external**|Start an external application. This environment variable is dependent on the application specified in the shell option. By appending `;` at the end, it keeps the console window without closing immediately.|
-|`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with the associated application. It is wrapper of **ShellExecute**.|
+|`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with the associated application. It is wrapper of **ShellExecute**. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`.|
 |`:exit`|**exit_config_gui**|Exit win-vind|
 
 ### Hotkey

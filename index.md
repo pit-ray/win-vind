@@ -18,7 +18,7 @@ You can operate Windows by key-bindings like Vim.
 - Vim Emulation Everywhere
 - Process Control like `:!gvim ~/.vimrc` or `:e ~/.vimrc`
 - Vim-like Configuration Syntax with `.vindrc`
-- Low-level key mapping (e.g. `imap <Capslock> <ctrl>`)
+- Low-level key mapping (e.g. `imap <Capslock> <Ctrl>`)
 - Running in User Permission
 - Oneshot Use for Vim or AHK
 

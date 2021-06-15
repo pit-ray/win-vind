@@ -191,7 +191,7 @@ Let's do the last tutorial!
    imap <Capslock> <ctrl>
    inoremap <Alt-f> easy_click_left
    ```
-1. If you done, try reloading `.vindrc` with `:so` of win-vind. (No arguments are needed.)
+1. If you done, try reloading `.vindrc` with `:source` of win-vind. (No arguments are needed.)
    <p align="center">
    <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/source_demo.jpg?raw=true" width=450 >  
    <p align="center">Reload Demo</p>

@@ -177,15 +177,15 @@ Let's do the last tutorial!
 1. This time, we will try **Instant GUi Normal Mode** with `<F8>`. It allows us to temporarily switch to the **GUI Normal Mode**.  
 
    <p align="center">
-   <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/instant_gui_normal_mode.jpg?raw=true" width=500 >  
-   <p align="center">Like this</p>
+   <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/instant_gui_normal_mode.jpg?raw=true" width=450 >  
+   <p align="center">Instant GUI Normal Demo</p>
    </p>
 1. Open your `.vindrc` with `:e ~/.win-vind/.vindrc`.  
    <p align="center">
-   <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/edit_vindrc_demo.jpg?raw=true" width=500 >  
-   <p align="center">Like this</p>
+   <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/edit_vindrc_demo.jpg?raw=true" width=450 >  
+   <p align="center">Edit .vindrc Demo</p>
    </p>
-1. Write following commands.
+1. Write following commands into `.vindrc`.
    ```vim
    set cmd_fontname = Times New Roman
    imap <Capslock> <ctrl>
@@ -193,8 +193,8 @@ Let's do the last tutorial!
    ```
 1. If you done, try reloading `.vindrc` with `:so` of win-vind. (No arguments are needed.)
    <p align="center">
-   <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/source_demo.jpg?raw=true" width=500 >  
-   <p align="center">Like this</p>
+   <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/source_demo.jpg?raw=true" width=450 >  
+   <p align="center">Reload Demo</p>
    </p>
 1. In **Insert Mode**, you can use `<Capslock> instead of `<Ctrl>` and operate GUI with hinting by `<Alt-f> like **EasyMotion** or **Vimium**.
 

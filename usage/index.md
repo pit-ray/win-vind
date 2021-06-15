@@ -93,7 +93,7 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 ### 3. Customize Options and Maps
 win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind. The following commands are supported.
 
-<table>
+<table bordercolor=$border-color>
   <tr>
   <th>Command</th>
   <th>Syntax</th>
@@ -101,18 +101,18 @@ win-vind uses a **Run Commands** style configuration method. If you've ever writ
   </tr>
 
   <tr>
-  <td rowspan="3" style="border: solid;"><code>set</code></td>
+  <td rowspan="3"><code>set</code></td>
   <td><code>set {bool-option}</code></td>
   <td></td>
   </tr>
 
   <tr>
-  <td style="border: 0.1px solid;"><code>set no{bool-option}</code></td>
+  <td style="border-left: 0.5px solid;"><code>set no{bool-option}</code></td>
   <td></td>
   </tr>
 
   <tr>
-  <td style="border: 0.1px solid;"><code>set {key} = {val}</code></td>
+  <td style="border-left: 0.5px solid;"><code>set {key} = {val}</code></td>
   <td></td>
   </tr>
 
@@ -129,7 +129,7 @@ win-vind uses a **Run Commands** style configuration method. If you've ever writ
   </tr>
 
   <tr>
-  <td style="border: 0.1px solid;"><code>{mode-prefix}noremap {input-keyset} {target-keyset}</code></td>
+  <td style="border-left: 0.5px solid;"><code>{mode-prefix}noremap {input-keyset} {target-keyset}</code></td>
   <td></td>
   </tr>
 

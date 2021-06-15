@@ -91,7 +91,11 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 <hr>  
 
 ### 3. Customize Options and Maps
-win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind. The following commands are supported.
+win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind.  Generally, there are three levels of key mapping: **key2key**, **keyset2keyset**, and **cmd2cmd**. **key2key** maps one key to one key. **keyset2keyset** maps a keyset (e.g. `<c-s>`) to a keyset(e.g. `<m-h>`). **cmd2cmd** performs sequential mapping (e.g. `qq` to `<c-w>e`).  
+
+The keyset syntax uses the same expression as in Vim, where keys are connected by `-` in `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
+
+The following commands are supported. By the way, `{` and `}` themselves are not part of the syntax.  
 
 <table>
   <tr>
@@ -102,67 +106,69 @@ win-vind uses a **Run Commands** style configuration method. If you've ever writ
 
   <tr>
   <td rowspan="3"><code>set</code></td>
-  <td><code>set {bool-option}</code></td>
-  <td></td>
+  <td><code>set {option}</code></td>
+  <td>Set the value of the option to <strong>true</strong>.</td>
   </tr>
 
   <tr>
-  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>set no{bool-option}</code></td>
-  <td></td>
+  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>set no{option}</code></td>
+  <td>Set the value of the option to <strong>false</strong>.</td>
   </tr>
 
   <tr>
-  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>set {key} = {val}</code></td>
-  <td></td>
+  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>set {option} = {val}</code></td>
+  <td>Set a value of the option. The value can be a string or a number that allows floating points. The string does not need quotation marks, and any character after the non-white character will be handled as the value. Spaces at both ends of the equals sign are ignored.</td>
   </tr>
 
   <tr>
   <td><code>map</code></td>
-  <td><code>{mode-prefix}map {input-key} {target-key}</code></td>
-  <td></td>
+  <td><code>{mode-prefix}map {in-key} {out-key}</code></td>
+  <td>It performs <strong>key2key</strong> mapping with low-level. The keymap influences Windows as a whole, not just the win-vind scope. Therefore, use it with caution.</td>
   </tr>
 
   <tr>
   <td rowspan="2"><code>noremap</code></td>
-  <td><code>{mode-prefix}noremap {input-command} {function-id}</code></td>
-  <td></td>
+  <td><code>{mode-prefix}noremap {in-cmd} {func-id}</code></td>
+  <td>It defines the map to call the function.</td>
   </tr>
 
   <tr>
   <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>{mode-prefix}noremap {input-keyset} {target-keyset}</code></td>
-  <td></td>
+  <td>It performs <strong>keyset2keyset</strong> mapping in win-vind scope. However, since the <code>{func-id}</code> definition has higher priority than its syntax, it may result in exactly one remap. For example <code>inoremap h move_cursor_left</code> and <code>inoremap f k</code> then <code>f</code> will be mapped to <code>move_cursor_left</code> instead of <code>move_cursor_up</code>.</td>
   </tr>
 
   <tr>
   <td><code>unmap</code></td>
-  <td><code>{mode-prefix}unmap {input-command}</code></td>
-  <td></td>
+  <td><code>{mode-prefix}unmap {in-cmd}</code></td>
+  <td>Remove the map corresponding to the <code>{in-cmd}</code>.</td>
   </tr>
 
   <tr>
   <td><code>mapclear</code></td>
   <td><code>{mode-prefix}mapclear</code></td>
-  <td></td>
+  <td>Delete all maps.</td>
   </tr>
 
   <tr>
   <td><code>command</code></td>
-  <td><code>command {input-command} {function-id}</code></td>
-  <td></td>
+  <td><code>command {in-cmd} {func-id}</code></td>
+  <td>It defines the command to call the function.</td>
   </tr>
 
   <tr>
   <td><code>delcommand</code></td>
-  <td><code>delcommand {input-command}</code></td>
-  <td></td>
+  <td><code>delcommand {in-cmd}</code></td>
+  <td>Remove the command corresponding to the <code>{in-cmd}</code>.</td>
   </tr>
 
   <tr>
   <td><code>comclear</code></td>
   <td><code>comclear</code></td>
-  <td></td>
+  <td>Delete all commands.</td>
   </tr>
 </table>
+
+Only **UTF-8** format is supported for `.vindrc`.  
 
 
 **Sample**

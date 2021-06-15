@@ -8,10 +8,19 @@ permalink: /
 # Vim Key Binder for Windows
 <hr>
 
-# GETTING READY !!!!!
-
 ## Description
 You can operate Windows by key-bindings like Vim.  
+
+## Features
+- Fast Binding System
+- Vim-like Mode Manegement
+- GUI Operation without Mouse
+- Vim Emulation Everywhere
+- Process Control like `:!gvim ~/.vimrc` or `:e ~/.vimrc`
+- Vim-like Configuration Syntax with `.vindrc`
+- Low-level key mapping (e.g. `imap <Capslock> <ctrl>`)
+- Running in User Permission
+- Oneshot Use for Vim or AHK
 
 ## GitHub
 [![pit-ray/win-vind - GitHub](https://gh-card.dev/repos/pit-ray/win-vind.svg)](https://github.com/pit-ray/win-vind)

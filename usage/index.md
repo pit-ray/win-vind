@@ -106,7 +106,7 @@ The following commands are supported. By the way, `{` and `}` themselves are not
 
   <tr>
   <td align="center" rowspan="3"><code>set</code></td>
-  <td width=400><code>set {option}</code></td>
+  <td width=350><code>set {option}</code></td>
   <td>Set the value of the option to <strong>true</strong>.</td>
   </tr>
 

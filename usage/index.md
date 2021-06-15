@@ -101,18 +101,18 @@ win-vind uses a **Run Commands** style configuration method. If you've ever writ
   </tr>
 
   <tr>
-  <td rowspan="3" border=1><code>set</code></td>
+  <td rowspan="3" style="border: solid;"><code>set</code></td>
   <td><code>set {bool-option}</code></td>
   <td></td>
   </tr>
 
   <tr>
-  <td style="border: 1px solid;"><code>set no{bool-option}</code></td>
+  <td><code>set no{bool-option}</code></td>
   <td></td>
   </tr>
 
   <tr>
-  <td style="border: 1px solid;"><code>set {key} = {val}</code></td>
+  <td><code>set {key} = {val}</code></td>
   <td></td>
   </tr>
 
@@ -123,13 +123,13 @@ win-vind uses a **Run Commands** style configuration method. If you've ever writ
   </tr>
 
   <tr>
-  <td rowspan="2" style="border: 1px solid;"><code>noremap</code></td>
+  <td rowspan="2" style="border: solid;"><code>noremap</code></td>
   <td><code>{mode-prefix}noremap {input-command} {function-id}</code></td>
   <td></td>
   </tr>
 
   <tr>
-  <td style="border: 1px solid;"><code>{mode-prefix}noremap {input-keyset} {target-keyset}</code></td>
+  <td><code>{mode-prefix}noremap {input-keyset} {target-keyset}</code></td>
   <td></td>
   </tr>
 

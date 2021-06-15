@@ -93,7 +93,7 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 ### 3. Customize Options and Maps
 win-vind uses a **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind. The following commands are supported.
 
-<table bordercolor=$border-color>
+<table>
   <tr>
   <th>Command</th>
   <th>Syntax</th>
@@ -107,7 +107,7 @@ win-vind uses a **Run Commands** style configuration method. If you've ever writ
   </tr>
 
   <tr>
-  <td style="border-left: 0.5px solid;"><code>set no{bool-option}</code></td>
+  <td bordercolor="e6e1e8" style="border-left: 0.5px solid;"><code>set no{bool-option}</code></td>
   <td></td>
   </tr>
 

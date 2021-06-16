@@ -146,11 +146,12 @@ namespace vind
 
         keyabsorber::InstantKeyAbsorber ika ;
 
+        constexpr auto cmdline_prefix = ":" ;
+        VirtualCmdLine::cout(cmdline_prefix) ;
+
         while(vind::update_background()) {
             auto& p_cmdp = pimpl->ch_.get_hist_point() ;
             auto& lgr    = p_cmdp->logger ;
-
-            VirtualCmdLine::cout(":" + lgr.to_str()) ;
 
             if(CHAR_EMPTY(lgr.logging_state())) {
                 continue ;
@@ -200,6 +201,7 @@ namespace vind
                 }
 
                 lgr.remove_from_back(2) ;
+                VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
                 VirtualCmdLine::refresh() ;
 
                 pimpl->funcfinder_.backward_parser_states(1) ;
@@ -217,6 +219,7 @@ namespace vind
             if(lgr.latest().is_containing(KEYCODE_UP)) {
                 lgr.remove_from_back(1) ; //to remove a log including KEYCODE_UP
                 if(pimpl->ch_.backward()) {
+                    VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
                     VirtualCmdLine::refresh() ;
 
                     auto& b_lgr = pimpl->ch_.get_hist_point()->logger ;
@@ -231,6 +234,7 @@ namespace vind
             if(lgr.latest().is_containing(KEYCODE_DOWN)) {
                 lgr.remove_from_back(1) ; //to remove a log including KEYCODE_DOWN
                 if(pimpl->ch_.forward()) {
+                    VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
                     VirtualCmdLine::refresh() ;
 
                     auto& f_lgr = pimpl->ch_.get_hist_point()->logger ;
@@ -242,6 +246,7 @@ namespace vind
                 continue ;
             }
 
+            VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
             if(auto parser = pimpl->funcfinder_.find_parser_with_transition(lgr.latest(), id())) {
                 if(parser->is_accepted()) {
                     p_cmdp->func = parser->get_func() ;

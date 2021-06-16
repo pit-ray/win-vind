@@ -41,11 +41,11 @@ namespace vind
 
         virtual void clear() noexcept ;
 
-        void logging(const KeyLog& log) ;
-        void logging(KeyLog&& log) ;
+        virtual void logging(const KeyLog& log) ;
+        virtual void logging(KeyLog&& log) ;
 
-        void logging(const KeyLog::Data& lograw) ;
-        void logging(KeyLog::Data&& lograw) ;
+        virtual void logging(const KeyLog::Data& lograw) ;
+        virtual void logging(KeyLog::Data&& lograw) ;
 
         void remove_from_back(std::size_t num_from_back) ;
 

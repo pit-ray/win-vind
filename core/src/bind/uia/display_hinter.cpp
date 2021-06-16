@@ -1,6 +1,5 @@
 #include "bind/uia/display_hinter.hpp"
 
-#include <iostream>
 #include <mutex>
 #include <string>
 
@@ -10,6 +9,10 @@
 #include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "util/color.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace
 {

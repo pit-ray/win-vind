@@ -1,6 +1,5 @@
 #include "bind/hotkey/clipboard.hpp"
 
-#include <iostream>
 #include <windows.h>
 
 #include "key/char_logger.hpp"
@@ -14,6 +13,10 @@
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace vind
 {

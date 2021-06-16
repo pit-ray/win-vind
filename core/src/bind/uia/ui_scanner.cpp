@@ -1,6 +1,5 @@
 #include "bind/uia/ui_scanner.hpp"
 
-#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -11,6 +10,10 @@
 #include "io/screen_metrics.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 
 namespace

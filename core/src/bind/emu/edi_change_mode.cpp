@@ -1,6 +1,5 @@
 #include "bind/emu/edi_change_mode.hpp"
 
-#include <iostream>
 #include <windows.h>
 
 #include "bind/emu/simple_text_selecter.hpp"
@@ -13,6 +12,10 @@
 #include "util/def.hpp"
 
 #include "key/ntype_logger.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 
 namespace vind

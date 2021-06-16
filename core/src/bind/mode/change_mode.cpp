@@ -1,7 +1,5 @@
 #include "bind/mode/change_mode.hpp"
 
-#include <iostream>
-
 #include <windows.h>
 
 #include "bind/emu/simple_text_selecter.hpp"
@@ -15,6 +13,10 @@
 #include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 
 namespace vind

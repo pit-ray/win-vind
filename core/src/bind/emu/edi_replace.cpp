@@ -1,6 +1,5 @@
 #include "bind/emu/edi_replace.hpp"
 
-#include <iostream>
 #include <windows.h>
 
 #include "bind/emu/text_analyzer.hpp"
@@ -14,6 +13,10 @@
 #include "key/ntype_logger.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace
 {

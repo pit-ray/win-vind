@@ -1,6 +1,5 @@
 #include "bind/mouse/scroll.hpp"
 
-#include <iostream>
 #include <windows.h>
 
 #include "g_params.hpp"
@@ -9,6 +8,11 @@
 #include "time/interval_timer.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace
 {

@@ -2,11 +2,14 @@
 
 #include "key/key_absorber.hpp"
 #include "key/key_logger_base.hpp"
+#include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 #include "key/log_map.hpp"
 #include "time/keystroke_repeater.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
 
 namespace 
 {
@@ -112,6 +115,50 @@ namespace vind
     CharLogger::CharLogger(CharLogger&&)            = default ;
     CharLogger& CharLogger::operator=(CharLogger&&) = default ;
 
+    //
+    // This function splits and logs as different logs
+    // when multiple ASCII characters are included in one log.
+    //
+    void CharLogger::logging_without_multi_ascii(const KeyLog& log) {
+        KeyLog::Data not_ascii{} ;
+
+        const auto num_log = size() ;
+        if(log.is_containing(KEYCODE_SHIFT)) {
+            not_ascii.insert(KEYCODE_SHIFT) ;
+
+            for(const auto& key : log) {
+                if(keycodecvt::get_shifted_ascii(key)) {
+                    logging(KeyLog{KEYCODE_SHIFT,key}) ;
+                }
+                else {
+                    not_ascii.insert(key) ;
+                }
+            }
+        }
+        else {
+            for(const auto& key : log) {
+                if(keycodecvt::get_ascii(key)) {
+                    logging(KeyLog{key}) ;
+                }
+                else {
+                    not_ascii.insert(key) ;
+                }
+            }
+        }
+
+        if(size() > num_log) { // log contains at least one ASCII
+            if(!latest().empty()) {
+                for(const auto& key : latest()) {
+                    not_ascii.insert(key) ;
+                }
+            }
+            latest() = std::move(not_ascii) ;
+        }
+        else { // First logging
+            logging(std::move(not_ascii)) ;
+        }
+    }
+
     void CharLogger::enable_non_character(KeyCode keycode) {
         pimpl->non_chars_.insert(keycode) ;
     }
@@ -149,10 +196,10 @@ namespace vind
                 data.insert(KEYCODE_SHIFT) ;
 
                 //construct KeyLog inside logs directly from std::vector
-                logging(std::move(data)) ;
+                logging_without_multi_ascii(KeyLog(std::move(data))) ;
             }
             else {
-                logging(std::move(diff)) ;
+                logging_without_multi_ascii(std::move(diff)) ;
             }
 
             pimpl->ksr_.reset() ;
@@ -170,7 +217,7 @@ namespace vind
 
             //emulate key stroke
             if(pimpl->ksr_.is_passed()) {
-                logging(std::move(log)) ;
+                logging_without_multi_ascii(std::move(log)) ;
                 return static_cast<int>(latest().size()) ;
             }
             return 0 ;

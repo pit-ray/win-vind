@@ -26,8 +26,11 @@ namespace vind
 
         KeyLog(KeyLog&&) ;
         KeyLog& operator=(KeyLog&&) ;
+        KeyLog& operator=(KeyLog::Data&&) ;
+
         KeyLog(const KeyLog&) ;
         KeyLog& operator=(const KeyLog&) ;
+        KeyLog& operator=(const KeyLog::Data&) ;
 
         const Data& get() const & noexcept ;
         Data&& get() && noexcept ;

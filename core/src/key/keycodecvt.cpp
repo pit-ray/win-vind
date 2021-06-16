@@ -4,10 +4,14 @@
 #include "key/keycode_def.hpp"
 
 #include <array>
-#include <iostream>
 #include <unordered_map>
 #include <utility>
 #include <windows.h>
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace
 {

@@ -1,6 +1,5 @@
 #include "bind/syscmd/set.hpp"
 
-#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -13,6 +12,10 @@
 #include "parser/rc_parser.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace vind
 {

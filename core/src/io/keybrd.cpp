@@ -1,11 +1,14 @@
 #include "io/keybrd.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 #include <windows.h>
 

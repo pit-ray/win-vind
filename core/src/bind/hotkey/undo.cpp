@@ -2,14 +2,16 @@
 
 #include <windows.h>
 
-#include <iostream>
-
 #include "bind/safe_repeater.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/ntype_logger.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace vind
 {

@@ -32,6 +32,8 @@ namespace vind
         CharLogger(CharLogger&&) ;
         CharLogger& operator=(CharLogger&&) ;
 
+        virtual void logging_without_multi_ascii(const KeyLog& log) ;
+
         void enable_non_character(KeyCode keycode) ;
         void disable_non_character(KeyCode keycode) ;
 

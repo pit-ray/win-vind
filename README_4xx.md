@@ -42,13 +42,13 @@
 **win-vind** provides the lightweight hybrid UI system of CUI and GUI for Windows. 
 
 ### Features
-- Vim-like Configuration Syntax with `.vindrc`
 - Fast Binding System
+- Vim-like Mode Manegement
 - GUI Operation without Mouse
 - Vim Emulation Everywhere
 - Process Control like `:!gvim ~/.vimrc` or `:e ~/.vimrc`
-- Vim-like Mode Manegement
-- Low-level key mapping (e.g. `imap <Capslock> <ctrl>`)
+- Vim-like Configuration Syntax with `.vindrc`
+- Low-level key mapping (e.g. `imap <Capslock> <Ctrl>`)
 - Running in User Permission
 - Oneshot Use for Vim or AHK
 
@@ -56,7 +56,9 @@ If you want to know the details, refer to <a href="https://pit-ray.github.io/win
 
 ## Demo
 
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/window_ctrl_demo_min.gif?raw=true" title="WindowControl-demo" width=600 >
+<img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/4xxdemo.gif?raw=true" title="Demo" >
+
+<br>  
 
 ## Download
 ### 4.0.0-rc2 (Preview Version)  
@@ -70,11 +72,14 @@ Date: 2021/6/13
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0-rc2/setup_win-vind_4.0.0_64bit.exe.zip">setup_win-vind_4.0.0_64bit.exe</a>
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0-rc2/win-vind_4.0.0_64bit.zip">win-vind_4.0.0_64bit.zip</a> 
   
+## Usage
+You can refer to the installation and quick tutorial in [Usage - win-vind](https://pit-ray.github.io/win-vind/usage/).  
+
+<br>  
   
 ## Related Pages
 - <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
 - <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
-
 
 ## To Contribute
 

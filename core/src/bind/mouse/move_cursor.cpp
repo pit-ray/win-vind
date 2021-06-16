@@ -4,7 +4,6 @@
 
 #include <chrono>
 #include <cmath>
-#include <iostream>
 
 #include "err_logger.hpp"
 #include "g_params.hpp"
@@ -13,6 +12,10 @@
 #include "time/constant_accelerator.hpp"
 #include "util/def.hpp"
 #include "util/math.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 
 namespace vind

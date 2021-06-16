@@ -2,8 +2,12 @@
 #define _ERR_LOGGER_HPP
 
 #include <fstream>
-#include <iostream>
 #include <string>
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace vind
 {

@@ -17,7 +17,6 @@
 #include "enable_gcc_warning.hpp"
 
 #include <chrono>
-#include <iostream>
 #include <string>
 
 #include "err_logger.hpp"
@@ -37,6 +36,10 @@
 #include <nlohmann/json.hpp>
 
 #include "enable_gcc_warning.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 
 // GCC

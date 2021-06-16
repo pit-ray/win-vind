@@ -4,7 +4,9 @@
 #include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
 
 namespace vind
 {

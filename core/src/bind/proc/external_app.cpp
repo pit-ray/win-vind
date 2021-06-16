@@ -1,7 +1,6 @@
 #include "bind/proc/external_app.hpp"
 
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <unordered_map>
 
@@ -26,6 +25,9 @@
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
 
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace
 {

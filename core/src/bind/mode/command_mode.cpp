@@ -28,15 +28,30 @@ namespace
 
     struct CmdPoint
     {
-        CharLogger logger{
+        CharLogger logger {
             KEYCODE_ESC,
             KEYCODE_ENTER,
             KEYCODE_BKSPACE,
             KEYCODE_UP,
-            KEYCODE_DOWN} ;
+            KEYCODE_DOWN
+        } ;
+
+        std::size_t lastlgr_size = 0 ;
+
         BindedFunc::SPtr func = nullptr ;
 
         using SPtr = std::shared_ptr<CmdPoint> ;
+
+        void reset() {
+            logger.clear() ;
+            lastlgr_size = 0 ;
+            func = nullptr ;
+        }
+
+        void backward(std::size_t i) {
+            logger.remove_from_back(i) ;
+            lastlgr_size = logger.size() ;
+        }
     } ;
 
     using CmdHistory = std::vector<CmdPoint::SPtr> ;
@@ -97,8 +112,7 @@ namespace
                 forward_to_latest() ;
 
                 auto p = hist.at(idx) ;
-                p->logger.clear() ;
-                p->func = nullptr ;
+                p->reset() ;
             }
         }
 
@@ -160,11 +174,10 @@ namespace vind
             //canceling operation
             if(lgr.latest().is_containing(KEYCODE_ESC)){
                 if(pimpl->ch_.is_pointing_latest()) {
-                    lgr.clear() ;
-                    p_cmdp->func = nullptr ;
+                    p_cmdp->reset() ;
                 }
                 else {
-                    lgr.remove_from_back(1) ;
+                    p_cmdp->backward(1) ; // remove <ESC>'s log
                     pimpl->ch_.forward_to_latest() ;
                 }
 
@@ -174,7 +187,7 @@ namespace vind
 
             //decision of input
             if(lgr.latest().is_containing(KEYCODE_ENTER)) {
-                lgr.remove_from_back(1) ; //remove log including KEYCODE_ENTER
+                p_cmdp->backward(1) ; //remove log including KEYCODE_ENTER
                 VirtualCmdLine::reset() ;
 
                 if(p_cmdp->func) {
@@ -194,13 +207,12 @@ namespace vind
             //edit command
             if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
                 if(lgr.size() == 1) {
-                    lgr.clear() ;
-                    p_cmdp->func = nullptr ;
+                    p_cmdp->reset() ;
                     VirtualCmdLine::reset() ;
                     break ;
                 }
 
-                lgr.remove_from_back(2) ;
+                p_cmdp->backward(2) ;
                 VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
                 VirtualCmdLine::refresh() ;
 
@@ -217,7 +229,7 @@ namespace vind
 
             //command history operation
             if(lgr.latest().is_containing(KEYCODE_UP)) {
-                lgr.remove_from_back(1) ; //to remove a log including KEYCODE_UP
+                p_cmdp->backward(1) ; //to remove a log including KEYCODE_UP
                 if(pimpl->ch_.backward()) {
                     VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
                     VirtualCmdLine::refresh() ;
@@ -232,7 +244,7 @@ namespace vind
             }
 
             if(lgr.latest().is_containing(KEYCODE_DOWN)) {
-                lgr.remove_from_back(1) ; //to remove a log including KEYCODE_DOWN
+                p_cmdp->backward(1) ; //to remove a log including KEYCODE_DOWN
                 if(pimpl->ch_.forward()) {
                     VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
                     VirtualCmdLine::refresh() ;
@@ -247,14 +259,26 @@ namespace vind
             }
 
             VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
-            if(auto parser = pimpl->funcfinder_.find_parser_with_transition(lgr.latest(), id())) {
+
+            // 
+            // Since there may be multiple logging in one iteration,
+            // transition the state by the increase from the previous iteration.
+            //
+            LoggerParser::SPtr parser ;
+            auto appended_num = lgr.size() - p_cmdp->lastlgr_size ;
+            for(auto itr = lgr.end() - appended_num ; itr != lgr.end() ; itr ++) {
+                parser = pimpl->funcfinder_.find_parser_with_transition(*itr, id()) ;
+            }
+            p_cmdp->lastlgr_size = lgr.size() ;
+
+            if(parser) {
                 if(parser->is_accepted()) {
                     p_cmdp->func = parser->get_func() ;
                     continue ;
                 }
                 else if(parser->is_rejected_with_ready()) {
                     pimpl->funcfinder_.backward_parser_states(1) ;
-                    lgr.remove_from_back(1) ;
+                    p_cmdp->backward(1) ;
                 }
             }
             p_cmdp->func = nullptr ;

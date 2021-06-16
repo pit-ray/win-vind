@@ -1,7 +1,10 @@
 #include "err_logger.hpp"
 #include "opt/option.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
+
 #include <mutex>
 #include <stdexcept>
 

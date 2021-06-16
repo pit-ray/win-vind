@@ -13,7 +13,10 @@
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
+
 
 namespace
 {

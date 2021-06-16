@@ -18,10 +18,13 @@
 #include "bind/syscmd/set.hpp"
 
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 
 namespace vind

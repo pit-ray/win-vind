@@ -9,7 +9,6 @@
 
 #include <algorithm>
 #include <array>
-#include <iostream>
 #include <memory>
 #include <unordered_map>
 
@@ -20,6 +19,10 @@
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 
 #define KEYUP_MASK 0x0001

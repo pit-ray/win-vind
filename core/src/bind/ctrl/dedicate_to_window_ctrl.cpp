@@ -1,12 +1,15 @@
 #include "bind/ctrl/dedicate_to_window_ctrl.hpp"
 
-#include <iostream>
-
 #include "key/char_logger.hpp"
 #include "key/ntype_logger.hpp"
 
 #include "opt/dedicate_to_window.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace vind
 {

@@ -13,11 +13,13 @@
 #include "util/def.hpp"
 
 #include <array>
-#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <unordered_map>
 
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 //inner linkage
 namespace

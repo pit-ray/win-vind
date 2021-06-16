@@ -3,9 +3,13 @@
 #include <windows.h>
 
 #include <algorithm>
-#include <iostream>
 
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace vind
 {

@@ -1,7 +1,9 @@
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
 
 namespace vind
 {

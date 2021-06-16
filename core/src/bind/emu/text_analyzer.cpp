@@ -2,7 +2,6 @@
 
 #include <windows.h>
 
-#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -11,6 +10,10 @@
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace vind
 {

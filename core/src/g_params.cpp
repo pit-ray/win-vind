@@ -1,9 +1,11 @@
 #include "g_params.hpp"
 
 #include <fstream>
-#include <iostream>
 #include <unordered_map>
 
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 #include "disable_gcc_warning.hpp"
 

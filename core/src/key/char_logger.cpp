@@ -7,7 +7,9 @@
 #include "key/log_map.hpp"
 #include "time/keystroke_repeater.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
 
 namespace 
 {

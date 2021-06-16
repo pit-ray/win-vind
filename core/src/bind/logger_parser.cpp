@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <iostream>
 #include <memory>
 #include <stack>
 #include <utility>
@@ -16,6 +15,11 @@
 #include "parser/bindings_parser.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace
 {

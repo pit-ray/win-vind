@@ -1,6 +1,9 @@
 #include "opt/dedicate_to_window.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
+
 #include <windows.h>
 
 #include "bind/emu/edi_change_mode.hpp"

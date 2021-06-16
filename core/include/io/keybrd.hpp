@@ -1,13 +1,16 @@
 #ifndef _KEYBRD_HPP
 #define _KEYBRD_HPP
 
-#include <iostream>
 #include <memory>
 #include <stack>
 #include <type_traits>
 
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 namespace vind
 {

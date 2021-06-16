@@ -1,6 +1,8 @@
 #include "main_loop.hpp"
 
+#if defined(DEBUG)
 #include <iostream>
+#endif
 
 #include "key/key_logger_base.hpp"
 #include "key/keycode_def.hpp"

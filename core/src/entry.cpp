@@ -58,8 +58,11 @@ SOFTWARE.
 #endif
 
 #include <cstring>
-#include <iostream>
 #include <memory>
+
+#if defined(DEBUG)
+#include <iostream>
+#endif
 
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"

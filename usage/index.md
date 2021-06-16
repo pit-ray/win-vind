@@ -38,6 +38,7 @@ If you have any problems or requests, please post them on GitHub Issues.
 <hr>
 
 ## Note 
+- `:exit` is the recommended termination.
 - `<F8> + <F9>` is safe forced termination.
 - win-vind could **not** operate some windows given high-rank authorization than itself. For example, if you start **Task Manager** having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**).
 

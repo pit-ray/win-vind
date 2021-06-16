@@ -56,7 +56,7 @@ If you want to know the details, refer to <a href="https://pit-ray.github.io/win
 
 ## Demo
 
-<img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/4xxdemo.gif?raw=true" title="Demo" width=600 >
+<img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/4xxdemo.gif?raw=true" title="Demo" >
 
 <br>  
 

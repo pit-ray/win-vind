@@ -15,7 +15,7 @@ rmdir /s /q bin
 mkdir bin
 
 @echo Create Installer Version -------------------------------------------------------
-echo y> ".\\default_config\\is_installer_used"
+echo 1> ".\\default_config\\instype"
 
 call build.bat -release %2 64
 cd release_64
@@ -30,7 +30,7 @@ cd ..
 copy /Y ".\\release_32\\setup*" ".\\bin\\*_%1_32bit.exe"
 
 @echo Create Zip Version ----------------------------------------------------------
-echo n> ".\\default_config\\is_installer_used"
+echo 0> ".\\default_config\\instype"
 
 mkdir ".\\bin\\win-vind"
 mkdir ".\\bin\\win-vind\\default_config"

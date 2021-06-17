@@ -268,7 +268,7 @@
         "ja": "UIの言語"
     },
     "shell": {
-        "value": "powershell",
+        "value": "cmd",
         "en": "Name of the shell to use for \":!\" commands",
         "ja": "\":!\"等のコマンドで使うシェルの名前"
     },

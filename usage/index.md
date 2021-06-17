@@ -135,7 +135,7 @@ The following commands are supported. By the way, `{` and `}` themselves are not
 
   <tr>
   <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>{mode}noremap {in-keyset} {out-keyset}</code></td>
-  <td>It performs <strong>keyset2keyset</strong> mapping in win-vind scope. However, since the <code>{func-id}</code> definition has higher priority than its syntax, it may result in exactly one remap. For example <code>inoremap h move_cursor_left</code> and <code>inoremap f k</code> then <code>f</code> will be mapped to <code>move_cursor_left</code> instead of <code>move_cursor_up</code>.</td>
+  <td>It performs <strong>keyset2keyset</strong> mapping in win-vind scope. However, since the <code>{func-id}</code> definition has higher priority than its syntax, it may result in exactly one remap. For example <code>inoremap k move_cursor_left</code> and <code>inoremap f k</code> then <code>f</code> will be mapped to <code>move_cursor_left</code> instead of <code>move_cursor_up</code>.</td>
   </tr>
 
   <tr>
@@ -190,14 +190,14 @@ Let's do the last tutorial!
    ```vim
    set cmd_fontname = Times New Roman
    imap <Capslock> <ctrl>
-   inoremap <Alt-f> easy_click_left
+   inoremap <Alt> easy_click_left
    ```
 1. If you done, try reloading `.vindrc` with `:source` of win-vind. (No arguments are needed.)
    <p align="center">
    <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/source_demo.jpg?raw=true" width=450 >  
    <p align="center">Reload Demo</p>
    </p>
-1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and operate GUI with hinting by `<Alt-f>` like **EasyMotion** or **Vimium**.
+1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and operate GUI with hinting by `<Alt>` like **EasyMotion** or **Vimium**.
 
 <br>
 <br>

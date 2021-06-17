@@ -84,7 +84,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`<C-v>h`|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
 |`<C-v>l`|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
-|`<C-v>n`, `<C-v>c`|**create_new_vdesktop**|Create a new virtual desktop|
+|`<C-v>n`|**create_new_vdesktop**|Create a new virtual desktop|
 |`<C-v>q`|**close_current_vdesktop**|Close a current virtual desktop|
 |`<C-v>s`|**taskview**|Task View|
 

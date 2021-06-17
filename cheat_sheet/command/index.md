@@ -55,14 +55,14 @@ parent: Cheat Sheet
 |`:resizer`, `:winresizer`|**window_resizer**|Start window resizer. It respects Vim plugin <a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
 |`:max`, `:on`, `:only`|**maximize_current_window**|Maximize a current window|
 |`:min`, `:hi`, `:hide`|**minimize_current_window**|Minimize a current window|
-|`:lsplit`, `:lsp`, `:wl`|**snap_current_window_to_left**|Snap a current window to left|
-|`:rsplit`, `:rsp`, `:wh`|**snap_current_window_to_right**|Snap a current window to right|
-|`:tsplit`, `:tsp`, `:wt`|**snap_current_window_to_top**|Snap a current window to top|
-|`:bsplit`, `:bsp`, `:wb`|**snap_current_window_to_bottom**|Snap a current window to bottom|
+|`:lsplit`, `:lsp`|**snap_current_window_to_left**|Snap a current window to left|
+|`:rsplit`, `:rsp`|**snap_current_window_to_right**|Snap a current window to right|
+|`:tsplit`, `:tsp`|**snap_current_window_to_top**|Snap a current window to top|
+|`:bsplit`, `:bsp`|**snap_current_window_to_bottom**|Snap a current window to bottom|
 |`:arrange`|**arrange_windows**|Arrange windows with tile style|
 |`:rotate`, `:rot`|**rotate_windows**|Rotate windows in a current monitor|
 |`:rerotate`, `:rerot`|**rotate_windows_in_reverse**|Rotate windows in a current monitor in reverse|
-|`:exchange`, `:exw`|**exchange_window_with_nearest**|Exchange a window with next one|
+|`:exchange`|**exchange_window_with_nearest**|Exchange a window with next one|
 |`:vertical resize <num>`, `:vert res <num>`|**resize_window_width**|Resize the width of a window|
 |`:vertical resize +<num>`, `:vert res +<num>`|**increase_window_width**|Increase the width of a window|
 |`:vertical resize -<num>`, `:vert res -<num>`|**decrease_window_width**|Decrease the width of a window|
@@ -94,7 +94,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal|
 |`:!<any>`|**start_external**|Start an external application. This environment variable is dependent on the application specified in the shell option. By appending `;` at the end, it keeps the console window without closing immediately.|
-|`:e<any>`, `:edit<any>`, `:execute<any>`|**execute**|Open file with the associated application. It is wrapper of **ShellExecute**. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`.|
+|`:e <any>`, `:edit <any>`, `:execute <any>`|**execute**|Open file with the associated application. It is wrapper of **ShellExecute**. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`.|
 |`:exit`|**exit_config_gui**|Exit win-vind|
 
 ### Hotkey
@@ -105,8 +105,8 @@ parent: Cheat Sheet
 |`:ex`, `:explorer`|**start_explorer**|Start a Explorer|
 |`:find`, `:open`|**open**|Open another file|
 |`:w`|**save**|Save a current file|
-|`:fun`|**forward_ui_navigation**|Forward UI Navigation|
-|`:bun`|**backward_ui_navigation**|Backward UI Navigation|
+|`:forward`|**forward_ui_navigation**|Forward UI Navigation|
+|`:backward`|**backward_ui_navigation**|Backward UI Navigation|
 |`:decide`|**decide_focused_ui_object**|Decide a focused UI object|
 
 ### Option

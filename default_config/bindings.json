@@ -493,7 +493,7 @@
     },
     {
         "name": "switch_to_left_vdesktop",
-        "cdef": ["vdnext"],
+        "cdef": ["vdprev"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-v>h"],
@@ -505,7 +505,7 @@
     },
     {
         "name": "switch_to_right_vdesktop",
-        "cdef": ["vdprev"],
+        "cdef": ["vdnext"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-v>l"],
@@ -520,7 +520,7 @@
         "cdef": [],
         "endef": [],
         "evdef": [],
-        "gndef": ["<C-v>n", "<C-v>c"],
+        "gndef": ["<C-v>n"],
         "gvdef": [],
         "idef": [],
         "rdef": [],
@@ -709,7 +709,7 @@
     },
     {
         "name": "snap_current_window_to_left",
-        "cdef": ["lsplit", "lsp", "wl"],
+        "cdef": ["lsplit", "lsp"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-w>H", "<C-w><Left>"],
@@ -721,7 +721,7 @@
     },
     {
         "name": "snap_current_window_to_right",
-        "cdef": ["rsplit", "rsp", "wh"],
+        "cdef": ["rsplit", "rsp"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-w>L", "<C-w><Right>"],
@@ -733,7 +733,7 @@
     },
     {
         "name": "snap_current_window_to_top",
-        "cdef": ["tsplit", "tsp", "wt"],
+        "cdef": ["tsplit", "tsp"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-w>K"],
@@ -745,7 +745,7 @@
     },
     {
         "name": "snap_current_window_to_bottom",
-        "cdef": ["bsplit", "bsp", "wb"],
+        "cdef": ["bsplit", "bsp"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-w>J"],
@@ -793,7 +793,7 @@
     },
     {
         "name": "exchange_window_with_nearest",
-        "cdef": ["exchange", "exw"],
+        "cdef": ["exchange"],
         "endef": [],
         "evdef": [],
         "gndef": ["<C-w>x"],
@@ -1009,7 +1009,14 @@
     },
     {
         "name": "execute",
-        "cdef": ["e<any>", "edit<any>", "execute<any>"],
+        "cdef": [
+            "e",
+            "e <any>",
+            "edit",
+            "edit <any>",
+            "execute",
+            "execute <any>"
+        ],
         "endef": [],
         "evdef": [],
         "gndef": [],
@@ -1597,7 +1604,7 @@
     },
     {
         "name": "forward_ui_navigation",
-        "cdef": ["fun"],
+        "cdef": ["forward"],
         "endef": [],
         "evdef": [],
         "gndef": [],
@@ -1609,7 +1616,7 @@
     },
     {
         "name": "backward_ui_navigation",
-        "cdef": ["bun"],
+        "cdef": ["backward"],
         "endef": [],
         "evdef": [],
         "gndef": [],

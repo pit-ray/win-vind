@@ -22,6 +22,11 @@
 #include "util/container.hpp"
 #include "util/def.hpp"
 
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
+
 namespace
 {
     using namespace vind ;
@@ -59,65 +64,69 @@ namespace
     class CmdHist
     {
     private:
-        CmdHistory hist ;
-        std::size_t idx ;
+        CmdHistory hist_ ;
+        std::size_t idx_ ;
 
     public:
         explicit CmdHist()
-        : hist{std::make_shared<CmdPoint>()},
-          idx(0)
+        : hist_{std::make_shared<CmdPoint>()},
+          idx_(0)
         {}
 
         const CmdPoint::SPtr& get_hist_point() {
-            return hist.at(idx) ;
+            return hist_.at(idx_) ;
+        }
+
+        std::size_t index() const noexcept {
+            return idx_ ;
         }
 
         bool forward() noexcept {
-            if(idx == hist.size() - 1) {
+            if(idx_ == hist_.size() - 1) {
                 return false ; //Could not forward
             }
 
-            idx ++ ;
+            idx_ ++ ;
             return true ;
         }
 
         bool backward() noexcept {
-            if(idx == 0) {
+            if(idx_ == 0) {
                 return false ; //Could not backward
             }
-            idx -- ;
+            idx_ -- ;
             return true ;
         }
 
         void forward_to_latest() noexcept {
-            idx = hist.size() - 1 ;
+            idx_ = hist_.size() - 1 ;
         }
 
         void generate_new_hist() {
-            if(idx == hist.size() - 1) {
+            if(idx_ == hist_.size() - 1) {
                 //recently logger
 
                 auto over_num =
-                    static_cast<long>(hist.size()) - gparams::get_l("cmd_maxhist") ;
+                    static_cast<long>(hist_.size()) - gparams::get_l("cmd_maxhist") ;
 
                 if(over_num > 0) {
-                    util::remove_from_top(hist, over_num) ;
+                    util::remove_from_top(hist_, over_num) ;
                 }
 
-                idx = hist.size() ; //update to index of recently history
-                hist.push_back(std::make_shared<CmdPoint>()) ;
+                idx_ = hist_.size() ; //update to index of recently history
+                hist_.push_back(std::make_shared<CmdPoint>()) ;
             }
             else {
                 //the current point is past one, so move to latest one.
                 forward_to_latest() ;
 
-                auto p = hist.at(idx) ;
+                auto p = hist_.at(idx_) ;
                 p->reset() ;
             }
         }
 
         bool is_pointing_latest() noexcept {
-            return idx == hist.size() - 1 ;
+            return idx_ == hist_.size() - 1 ;
         }
     } ;
 }
@@ -231,11 +240,11 @@ namespace vind
             if(lgr.latest().is_containing(KEYCODE_UP)) {
                 p_cmdp->backward(1) ; //to remove a log including KEYCODE_UP
                 if(pimpl->ch_.backward()) {
-                    VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
-                    VirtualCmdLine::refresh() ;
-
                     auto& b_lgr = pimpl->ch_.get_hist_point()->logger ;
                     b_lgr.sync_state_with(lgr) ;
+
+                    VirtualCmdLine::cout(cmdline_prefix + b_lgr.to_str()) ;
+                    VirtualCmdLine::refresh() ;
 
                     pimpl->funcfinder_.reset_parser_states() ;
                     pimpl->funcfinder_.transition_parser_states_in_batch(b_lgr) ;
@@ -246,11 +255,11 @@ namespace vind
             if(lgr.latest().is_containing(KEYCODE_DOWN)) {
                 p_cmdp->backward(1) ; //to remove a log including KEYCODE_DOWN
                 if(pimpl->ch_.forward()) {
-                    VirtualCmdLine::cout(cmdline_prefix + lgr.to_str()) ;
-                    VirtualCmdLine::refresh() ;
-
                     auto& f_lgr = pimpl->ch_.get_hist_point()->logger ;
                     f_lgr.sync_state_with(lgr) ;
+
+                    VirtualCmdLine::cout(cmdline_prefix + f_lgr.to_str()) ;
+                    VirtualCmdLine::refresh() ;
 
                     pimpl->funcfinder_.reset_parser_states() ;
                     pimpl->funcfinder_.transition_parser_states_in_batch(f_lgr) ;

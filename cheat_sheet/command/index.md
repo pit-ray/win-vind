@@ -32,8 +32,8 @@ parent: Cheat Sheet
 
 |Command|ID|Note|
 |:---:|:---:|:---|
-|`:vdnext`|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
-|`:vdprev`|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
+|`:vdprev`|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
+|`:vdnext`|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
 |`:closev`|**close_current_vdesktop**|Close a current virtual desktop|
 |`:taskview`|**taskview**|Task View|
 

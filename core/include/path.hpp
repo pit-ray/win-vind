@@ -23,6 +23,8 @@ namespace vind
 #endif
         }
 
+        void replace_magic(std::string& path) ;
+
         bool is_installer_used() ;
 
         const std::string& HOME_PATH() ;

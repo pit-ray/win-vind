@@ -24,7 +24,7 @@ namespace vind
             return ;
         }
 
-        util::replace_all(filepath, "~", path::HOME_PATH()) ;
+        path::replace_magic(filepath) ;
 
         switch(util::shell_execute(filepath)) {
             case 0:

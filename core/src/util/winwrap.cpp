@@ -1,5 +1,10 @@
-#include "util/def.hpp"
 #include "util/winwrap.hpp"
+
+#include "err_logger.hpp"
+#include "util/def.hpp"
+
+#include <sstream>
+#include <unordered_set>
 
 #if defined(DEBUG)
 #include <iostream>
@@ -59,6 +64,27 @@ namespace vind
                 }
             }
 
+            DWORD flags = CREATE_DEFAULT_ERROR_MODE ;
+            if(show_console_window) {
+                flags |= CREATE_NEW_CONSOLE ;
+            }
+            else {
+                static const std::unordered_set<std::string> hardcoded_undetachable {
+                    "powershell"
+                } ;
+
+                if(hardcoded_undetachable.find(util::A2a(cmd)) != hardcoded_undetachable.end()) {
+                    // Currently, we can't figure out how to hide PowerShell window completely
+                    // when executes other command with -c option.
+                    // If set CREATE_NEW_CONSOLE, PowerShell shows for a moment,
+                    // but we can execute -c option.
+                    flags |= CREATE_NEW_CONSOLE ;
+                }
+                else {
+                    flags |= DETACHED_PROCESS ;
+                }
+            }
+
             if(args.front() != ' ') {
                 cmd += " " ;
             }
@@ -71,9 +97,6 @@ namespace vind
             PROCESS_INFORMATION pi ;
             ZeroMemory(&pi, sizeof(pi)) ;
 
-            DWORD flags = CREATE_DEFAULT_ERROR_MODE ;
-            flags |= show_console_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW ;
-
             if(!CreateProcessW(
                 NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
                 NULL, NULL, FALSE,
@@ -84,8 +107,8 @@ namespace vind
                 throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
             }
 
-            CloseHandle(pi.hProcess) ;
             CloseHandle(pi.hThread) ;
+            CloseHandle(pi.hProcess) ;
         }
 
         int shell_execute(const std::string& url) {

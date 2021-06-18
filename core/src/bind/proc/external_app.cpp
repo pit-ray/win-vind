@@ -93,6 +93,8 @@ namespace vind
                 shell_cmd_flag = gparams::get_s("shellcmdflag") ;
             }
 
+            path::replace_magic(cmd) ;
+
             if(cmd[last_char_pos] == ';') { //keep console window
                 cmd.erase(last_char_pos) ;
 
@@ -106,7 +108,7 @@ namespace vind
             else {
                 util::create_process(
                         get_shell_startupdirectory(),
-                        shell_cmd, util::concat_args(shell_cmd_flag, cmd)) ;
+                        shell_cmd, util::concat_args(shell_cmd_flag, cmd), false) ;
             }
 
             Sleep(100) ; //wait until the window is selectable

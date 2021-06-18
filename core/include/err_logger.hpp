@@ -27,7 +27,7 @@ namespace vind
 //-----------------
 #if defined(__GNUC__)
 #define PRINT_ERROR(MSG) vind::errlogger::error((MSG), __PRETTY_FUNCTION__)
-#define PINT_MSG(MSG) vind::errlogger::message((MSG), __PRETTY_FUNCTION__)
+#define PRINT_MSG(MSG) vind::errlogger::message((MSG), __PRETTY_FUNCTION__)
 
 #elif defined(_MSC_VER) && _MSC_VER >= 1500
 #define PRINT_ERROR(MSG) vind::errlogger::error((MSG), __FUNCSIG__)

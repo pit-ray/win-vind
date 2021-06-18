@@ -16,6 +16,12 @@
 namespace vind
 {
     namespace path {
+
+        void replace_magic(std::string& path) {
+            util::replace_all(path, "~", path::HOME_PATH()) ;
+            util::replace_all(path, "/", "\\") ;
+        }
+
         bool is_installer_used() {
             static const auto flag = [] {
                 std::ifstream ifs{to_u8path(MODULE_ROOT_PATH() + "\\default_config\\instype")} ;

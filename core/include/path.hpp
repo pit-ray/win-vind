@@ -60,10 +60,6 @@ namespace vind
                 static const auto obj = MODULE_ROOT_PATH() + "\\default_config\\settings.json" ;
                 return obj ;
             }
-            inline const auto& UI() {
-                static const auto& obj = MODULE_ROOT_PATH() + "\\default_config\\ui.json" ;
-                return obj ;
-            }
         }
     }
 }

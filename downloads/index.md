@@ -9,7 +9,7 @@ descripption: "the lists of links to download win-vind"
 <hr>  
 
 ### 4.0.0 (Latest Version), <a href="https://github.com/pit-ray/win-vind/releases/tag/v4.0.0">GitHub</a>
-Date: 2021/6/16  
+Date: 2021/6/18  
 
 #### 32bit  
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/setup_win-vind_4.0.0_32bit.exe.zip">setup_win-vind_4.0.0_32bit.exe.zip</a>

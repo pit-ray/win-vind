@@ -16,3 +16,4 @@ temp
 replace.vim
 win32gui
 venv
+compile_flags.txt

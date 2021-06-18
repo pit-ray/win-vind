@@ -195,12 +195,12 @@
         "ja": "フェードアウト時間 (s)"
     },
     "gui_fontsize": {
-        "value": 12,
+        "value": 10,
         "en": "GUI Font Size",
         "ja": "GUIのフォントサイズ"
     },
     "gui_fontname": {
-        "value": "Dubai",
+        "value": "Segoe UI",
         "en": "GUI Font Name",
         "ja": "GUIのフォント名"
     },

@@ -88,19 +88,55 @@ Please read its architecture at <a href="devdocs/README.md">devdocs</a>.
 ### Quick Start for Build  
 If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you need is the next steps.  
 
-**1.** Install needed libraries into a root directory of win-vind.  
+#### 1. Install dependent libraries in the root
   ```bash  
   $ ./scripts/setup_libs.bat [-mingw/-msvc] [32/64]
   ```  
-**2.** Build its project.  
+
+#### 2. Build this project with cmake and execute it
+
+##### Automatically (Recommended)
   ```bash
-  $ ./build.bat [-debug/-release] [-mingw/-msvc] [32/64]  
+  $ ./build.bat [-debug/-release] [-mingw/-msvc] [32/64] [-update (optional)]
+  $ ./debug/win-vind.exe
   ```
-**3.** Finish!  
 
-You can refer to ToDo in <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a>  
+##### Manually (Visual Studio 2019)
+  ```bash
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 DBIT_TYPE=64 .
+  $ cmake --build build --config Debug
+  $ ./debug/Debug/win-vind.exe
+  ```
 
-Pull requests are welcome!
+##### Manually (MinGW-w64)
+  ```bash
+  $ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" DBIT_TYPE=64 .
+  $ cmake --build debug --config Debug
+  $ ./debug/win-vind.exe
+  ```
+
+### Run Test 
+
+##### Automatically (Recommended)
+  ```bash
+  $ ./build.bat -test
+  ```
+
+##### Manually (Visual Studio 2019)
+  ```bash
+  $ cmake -B test/build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" test
+  $ cmake --build test/build
+  $ cd test/build ; ctest -C Debug ; cd ../..
+  ```
+
+##### Manually (MinGW-w64)
+  ```bash
+  $ cmake -B test/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" test
+  $ cmake --build test/build
+  $ cd test/build ; ctest -C Debug ; cd ../..
+  ```
+
+You can refer to ToDo in <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a>. Your pull requests are welcome!
 
 ## License  
 

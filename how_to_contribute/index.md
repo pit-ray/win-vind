@@ -85,7 +85,7 @@ $ ./build.bat -debug -msvc 64
 
 - Manually
 ```bash
-$ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 ..
+$ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
 $ cmake --build debug --config Debug
 ```
 <br>

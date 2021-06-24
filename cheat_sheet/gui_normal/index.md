@@ -102,7 +102,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`<C-w>q`, `<C-w>c`|**close_current_window**|Close a current window|
 |`<C-w>s`|**switch_window**|Switch a window|
-|`<C-w>e`|**window_resizer**|Start window resizer. It respects Vim plugin (<a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
+|`<C-w>e`|**window_resizer**|Start window resizer. It respects Vim plugin <a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
 |`<C-w>h`|**select_left_window**|Select a left window|
 |`<C-w>l`|**select_right_window**|Select a right window|
 |`<C-w>k`|**select_upper_window**|Select an upper window|

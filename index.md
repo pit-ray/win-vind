@@ -20,7 +20,7 @@ You can operate Windows by key-bindings like Vim.
 - Vim-like Configuration Syntax with `.vindrc`
 - Low-level key mapping (e.g. `imap <Capslock> <Ctrl>`)
 - Running in User Permission
-- Oneshot Use for Vim or AHK
+- Oneshot Use for Vim or AHK (e.g. `win-vind --func easy_click_left`)
 
 ## GitHub
 [![pit-ray/win-vind - GitHub](https://gh-card.dev/repos/pit-ray/win-vind.svg)](https://github.com/pit-ray/win-vind)

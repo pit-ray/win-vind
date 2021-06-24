@@ -50,7 +50,7 @@
 - Vim-like Configuration Syntax with `.vindrc`
 - Low-level key mapping (e.g. `imap <Capslock> <Ctrl>`)
 - Running in User Permission
-- Oneshot Use for Vim or AHK
+- Oneshot Use for Vim or AHK (e.g. `win-vind -f easy_click_left`)
 
 If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 

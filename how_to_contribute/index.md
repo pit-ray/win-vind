@@ -128,19 +128,19 @@ namespace vind
 ```cpp  
 #include "bind/dev/mybindings.hpp"
 
-#include "bind/base/binded_func_creator.hpp"
+#include "bind/base/ntype_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 
-#include "bind/base/ntype_logger.hpp"
 
 namespace vind
 {
     MyBinding::MyBinding()
     : BindedFuncCreator("my_binding") //Give the unique identifier.
     {}
+    // A one-shot function to call inside win-vind
     void MyBinding::sprocess() {
         mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
 
@@ -148,11 +148,13 @@ namespace vind
 
         VirtualCmdLine::msgout("Hello World !") ;
     }
+    // A function called by sequence commands such as `23gg`
     void MyBinding::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
+    // A function called by the command line style commands like `:sample`
     void MyBinding::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }

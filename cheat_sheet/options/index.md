@@ -53,7 +53,7 @@ descripption: "Option lists"
 |`keybrd_layout`|str||Keyboard layout kmp file referenced by `jump_cursor_with_keybrd_layout`. By default, only **US (101/102)** or **JP (106/109)** layouts are supported. If your keyboard is not the right one, please create your own kmp file and use its path as the value. If you leave the value empty, the KMP file will be selected automatically. Also, if you like, you can share the keyboard you created with a pull request to the `default_config` directory.|
 |`shell`|str|powershell|Name of the shell to use for `:!` commands|
 |`shellcmdflag`|str|-c|Flag passed to the shell to execute `:!` commands|
-|`shell_startupdir`|str||Current directory after shell startup|
+|`shell_startupdir`|str||The current directory where commands (e.g. `:shell`, `:terminal`, `:!`) will be executed. For these commands, the current directory is the directory if there is Exeplorer, or the user directory otherwise. If this option is not empty, then the current directory is fixed to a value directory.|
 |`easyclick_fontsize`|num|14|Font size of hints in EasyClick|
 |`easyclick_fontweight`|num|500|Font weight of hits in EasyClick. Its maximum value is 1000.|
 |`easyclick_fontname`|str|Consolas|Font name of hints in EasyClick|
@@ -76,6 +76,7 @@ Write `.vindrc` with `set` in the following way.
 set initmode=gn
 set shell = cmd
 set gui_fontname = Times New Roman  "Without quotation
+set shell_startupdir = C:/Users/Me/Desktop
 
 " bool
 set suppress_for_vim  " true

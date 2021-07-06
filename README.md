@@ -65,12 +65,12 @@ If you want to know the details, refer to <a href="https://pit-ray.github.io/win
 Date: 2021/7/6  
 
 #### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/setup_win-vind_4.0.1_32bit.exe.zip">setup_win-vind_4.0.1_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/win-vind_4.0.1_32bit.zip">win-vind_4.0.1_32bit.zip</a>  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.1/setup_win-vind_4.0.1_32bit.exe.zip">setup_win-vind_4.0.1_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.1/win-vind_4.0.1_32bit.zip">win-vind_4.0.1_32bit.zip</a>  
 
 #### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/setup_win-vind_4.0.1_64bit.exe.zip">setup_win-vind_4.0.1_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.0/win-vind_4.0.1_64bit.zip">win-vind_4.0.1_64bit.zip</a> 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.1/setup_win-vind_4.0.1_64bit.exe.zip">setup_win-vind_4.0.1_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.0.1/win-vind_4.0.1_64bit.zip">win-vind_4.0.1_64bit.zip</a> 
   
 ## Usage
 You can refer to the installation and quick tutorial in [Usage - win-vind](https://pit-ray.github.io/win-vind/usage/).  

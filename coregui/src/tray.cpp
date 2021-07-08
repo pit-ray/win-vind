@@ -14,9 +14,7 @@
 #include "tray.hpp"
 #include "update.hpp"
 
-#ifdef DEBUG
 #include "err_logger.hpp"
-#endif
 
 
 namespace
@@ -84,20 +82,35 @@ namespace vindgui
     }
 
     wxMenu* SystemTray::CreatePopupMenu() {
+        PRINT_ERROR("Report: -----------------------------------------------------") ;
+        PRINT_MSG("Called SystemTray::CreatePopupMenu()") ;
         auto menu = new wxMenu() ;
+        PRINT_ERROR("Report: Created wxMenu Instance") ;
         //menu->Append(MENU_CONFIG, wxT("Preferences")) ;
         //menu->AppendSeparator() ;
         menu->AppendCheckItem(MENU_STARTUP, wxT("Startup with Windows")) ;
+        PRINT_ERROR("Report: Appended MENU_STARTUP") ;
         menu->AppendSeparator() ;
+        PRINT_ERROR("Report: Appended Separator") ;
         menu->Append(MENU_OPENROOT, wxT("Open Root Directory")) ;
+        PRINT_ERROR("Report: Appended MENU_OPENROOT") ;
         menu->Append(MENU_UPDATE, wxT("Check Update")) ;
+        PRINT_ERROR("Report: Appended MENU_UPDATE") ;
         menu->AppendSeparator() ;
+        PRINT_ERROR("Report: Appended Separator") ;
         menu->Append(MENU_ABOUT, wxT("About")) ;
+        PRINT_ERROR("Report: Appended MENU_ABOUT") ;
         menu->AppendSeparator() ;
+        PRINT_ERROR("Report: Appended Separator") ;
         menu->Append(MENU_EXIT, wxT("Exit")) ;
+        PRINT_ERROR("Report: Append MENU_EXIT") ;
 
         g_startup = check_if_registered() ;
+        PRINT_ERROR("Report: Finished check_if_registered()") ;
         menu->Check(MENU_STARTUP, g_startup) ;
+        PRINT_ERROR("Report: Checked MENU_STARTUP") ;
+
+        PRINT_ERROR("Report: -----------------------------------------------------") ;
 
         return menu ;
     }

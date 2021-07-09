@@ -88,7 +88,7 @@ Please read its architecture at <a href="devdocs/README.md">devdocs</a>.
 ### Quick Start for Build  
 If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you need is the next steps.  
 
-#### 1. Install dependent libraries in the root
+#### 1. Install dependent libraries in the project root
   ```bash  
   $ ./scripts/setup_libs.bat [-mingw/-msvc] [32/64]
   ```  
@@ -103,14 +103,14 @@ If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you n
 
 ##### Manually (Visual Studio 2019)
   ```bash
-  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 DBIT_TYPE=64 .
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
   $ cmake --build build --config Debug
   $ ./debug/Debug/win-vind.exe
   ```
 
 ##### Manually (MinGW-w64)
   ```bash
-  $ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" DBIT_TYPE=64 .
+  $ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 .
   $ cmake --build debug --config Debug
   $ ./debug/win-vind.exe
   ```

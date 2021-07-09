@@ -17,7 +17,7 @@ descripption: "How to contibute win-vind."
 ## Contibute Procedure
 1. Make a discussion at <a href="https://github.com/pit-ray/win-vind/discussions">github.com/discussions</a> in order to prevent conflicts. In addition, post the what you will do, just in a few words. (**Optional**)  
 
-1. Fork the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>. I recommend to clone it as depth=1 like below.  
+1. Fork the repository from <a href="https://github.com/pit-ray/win-vind">pit-ray/win-vind</a>.
 ```bash
 $ git clone https://github.com/pit-ray/win-vind.git
 ```
@@ -28,7 +28,7 @@ $ git checkout -b UNIQUE_BRANCH_NAME
 1. You can do something for this project.  
 1. Build the project for verification.  
 ``` bash
-$ ./create_bin.bat 0.0.0 -msvc
+$ ./create_bin.bat pullrequest25 -msvc
 ```
 1. Please add, commit and push.
 ```bash

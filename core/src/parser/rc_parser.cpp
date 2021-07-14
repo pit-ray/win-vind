@@ -194,7 +194,7 @@ namespace vind
                     tmp[mode_prefix + "nor"]     = noremap_rc_index ;
                     tmp[mode_prefix + "no"]      = noremap_rc_index ;
                     if(mode_prefix.size() > 1) {
-                        tmp[mode_prefix + "n"]       = noremap_rc_index ;
+                        tmp[mode_prefix + "n"]   = noremap_rc_index ;
                     }
 
                     // unmap

@@ -135,8 +135,8 @@ namespace vind
     ScrollDownHalfPage& ScrollDownHalfPage::operator=(ScrollDownHalfPage&&)    = default ;
 
     void ScrollDownHalfPage::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(-0.5f * MAX_Y_POS * repeat_num * \
-                gparams::get_f("vscroll_pageratio")) ;
+        mouse::vscroll(0.5f * MAX_Y_POS * repeat_num * \
+                -gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollDownHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -199,8 +199,8 @@ namespace vind
     ScrollDownOnePage& ScrollDownOnePage::operator=(ScrollDownOnePage&&) = default ;
 
     void ScrollDownOnePage::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(-MAX_Y_POS * repeat_num * \
-                gparams::get_f("vscroll_pageratio")) ;
+        mouse::vscroll(MAX_Y_POS * repeat_num * \
+                -gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollDownOnePage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -294,8 +294,8 @@ namespace vind
     ScrollLeftHalfPage& ScrollLeftHalfPage::operator=(ScrollLeftHalfPage&&)    = default ;
 
     void ScrollLeftHalfPage::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(-0.5f * MAX_X_POS * repeat_num * \
-                gparams::get_f("hscroll_pageratio")) ;
+        mouse::hscroll(0.5f * MAX_X_POS * repeat_num * \
+                -gparams::get_f("hscroll_pageratio")) ;
     }
     void ScrollLeftHalfPage::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

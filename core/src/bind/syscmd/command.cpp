@@ -32,7 +32,7 @@ namespace vind
             return ;
         }
 
-        gmaps::map(arg1, arg2, mode::Mode::COMMAND) ;
+        gmaps::noremap(arg1, arg2, mode::Mode::COMMAND) ;
 
         if(reload_config) {
             vind::reconstruct_all_components() ;

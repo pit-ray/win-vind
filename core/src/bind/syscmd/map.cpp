@@ -104,7 +104,7 @@ namespace vind
         }
         // If received syntax error as std::logic_error,
         // convert to runtime_error not to terminate application.
-        catch(const std::exception& e) {
+        catch(const std::logic_error& e) {
             throw std::runtime_error(e.what()) ;
         }
     }
@@ -140,7 +140,7 @@ namespace vind
         }
         // If received syntax error as std::logic_error,
         // convert to runtime_error not to terminate application.
-        catch(const std::exception& e) {
+        catch(const std::logic_error& e) {
             throw std::runtime_error(e.what()) ;
         }
     }

@@ -80,6 +80,10 @@ namespace vind
             UNDEFINED       = 0,
 
             SET             = 0b0000'00001,
+            COMMAND,
+            DELCOMMAND,
+            COMCLEAR,
+
 
             MASK_MODE       = 0b0000'1111,
 
@@ -90,6 +94,7 @@ namespace vind
             MAP_EN          = MASK_MAP | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
             MAP_EV          = MASK_MAP | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
             MAP_RS          = MASK_MAP | static_cast<unsigned char>(mode::Mode::RESIDENT),
+            MAP_CM          = MASK_MAP | static_cast<unsigned char>(mode::Mode::COMMAND),
 
             MASK_NOREMAP    = 0b0010'0000,
             NOREMAP_IN      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::INSERT),
@@ -98,6 +103,7 @@ namespace vind
             NOREMAP_EN      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
             NOREMAP_EV      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
             NOREMAP_RS      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::RESIDENT),
+            NOREMAP_CM      = MASK_NOREMAP | static_cast<unsigned char>(mode::Mode::COMMAND),
 
             MASK_UNMAP     = 0b0100'0000,
             UNMAP_IN       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::INSERT),
@@ -106,6 +112,7 @@ namespace vind
             UNMAP_EN       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
             UNMAP_EV       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
             UNMAP_RS       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::RESIDENT),
+            UNMAP_CM       = MASK_UNMAP | static_cast<unsigned char>(mode::Mode::COMMAND),
 
             MASK_MAPCLEAR  = 0b1000'0000,
             MAPCLEAR_IN    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::INSERT),
@@ -114,10 +121,7 @@ namespace vind
             MAPCLEAR_EN    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::EDI_NORMAL),
             MAPCLEAR_EV    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::EDI_VISUAL),
             MAPCLEAR_RS    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::RESIDENT),
-
-            COMMAND        = MASK_MAP      | static_cast<unsigned char>(mode::Mode::COMMAND),
-            DELCOMMAND     = MASK_UNMAP    | static_cast<unsigned char>(mode::Mode::COMMAND),
-            COMCLEAR       = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::COMMAND),
+            MAPCLEAR_CM    = MASK_MAPCLEAR | static_cast<unsigned char>(mode::Mode::COMMAND),
         } ;
 
         RunCommandsIndex parse_run_command(const std::string& strcmd) ;

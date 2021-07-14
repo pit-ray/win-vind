@@ -48,6 +48,9 @@ namespace vind
                 return ;
             }
 
+            // visualize log sequence of Logger for debug
+            // std::cout << keyloggerutil::debug::print_log(g_ntlgr) ;
+
             if(g_ntlgr.is_long_pressing()) {
                 if(g_active_func) {
                     g_active_func->process(g_ntlgr) ;

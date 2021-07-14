@@ -27,6 +27,62 @@
 #endif
 
 
+namespace
+{
+    template <typename Str>
+    void do_runcommand(vind::rcparser::RunCommandsIndex rcindex, Str&& args) {
+        using namespace vind ;
+        using vind::rcparser::RunCommandsIndex ;
+
+        switch(rcindex) {
+            case RunCommandsIndex::SET:
+                SyscmdSet::sprocess(std::forward<Str>(args), false) ;
+                return ;
+
+            case RunCommandsIndex::COMMAND:
+                SyscmdCommand::sprocess(std::forward<Str>(args), false) ;
+                return ;
+
+            case RunCommandsIndex::DELCOMMAND:
+                SyscmdDelcommand::sprocess(std::forward<Str>(args), false) ;
+                return ;
+
+            case RunCommandsIndex::COMCLEAR:
+                if(!args.empty()) {
+                    throw std::invalid_argument("Comclear") ;
+                }
+                SyscmdComclear::sprocess(false) ;
+                return ;
+
+            default:
+                break ;
+        }
+
+        using mode::Mode ;
+        auto mode = static_cast<Mode>(rcindex & RunCommandsIndex::MASK_MODE) ;
+
+        if(rcindex & RunCommandsIndex::MASK_MAP) {
+            SyscmdMap::sprocess(mode, std::forward<Str>(args), false) ;
+        }
+        else if(rcindex & RunCommandsIndex::MASK_NOREMAP) {
+            SyscmdNoremap::sprocess(mode, std::forward<Str>(args), false) ;
+        }
+        else if(rcindex & RunCommandsIndex::MASK_UNMAP) {
+            SyscmdUnmap::sprocess(mode, std::forward<Str>(args), false) ;
+        }
+        else if(rcindex & RunCommandsIndex::MASK_MAPCLEAR) {
+            if(!args.empty()) {
+                throw std::invalid_argument("Mapclear") ;
+            }
+            SyscmdMapclear::sprocess(mode, false) ;
+        }
+        else {
+            throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
+        }
+    }
+}
+
+
 namespace vind
 {
     SyscmdSource::SyscmdSource()
@@ -56,12 +112,6 @@ namespace vind
         while(getline(ifs, aline)) {
             lnum ++ ;
 
-            auto error_invalid_syntax = [lnum, &path] (auto&& e) {
-                auto ltag = "L:" + std::to_string(lnum) ;
-                VirtualCmdLine::msgout("E: Invalid Syntax (" + ltag + ")") ;
-                return std::string(e.what()) + " (" + path + ", " + ltag + ")" ;
-            } ;
-
             try {
                 rcparser::remove_dbquote_comment(aline) ;
 
@@ -72,46 +122,43 @@ namespace vind
 
                 auto rcindex = rcparser::parse_run_command(cmd) ;
 
-                auto error_invalid_argument = [lnum, &aline, &path] {
-                    auto ltag = "L:" + std::to_string(lnum) ;
-                    VirtualCmdLine::msgout("E: Invalid Argument (" + ltag + ")") ;
+                do_runcommand(rcindex, args) ;
+            }
+            catch(const std::domain_error& e) {
+                auto ltag = "L:" + std::to_string(lnum) ;
+                VirtualCmdLine::msgout("E: Not command (" + ltag + ")") ;
 
-                    throw RUNTIME_EXCEPT("(" + path + ", " + ltag + ") Invalid Argument.") ;
-                } ;
+                std::stringstream ss ;
+                ss << "RunCommandsIndex: " << e.what() << " is not supported." ;
+                ss << " (" << path << ", " << ltag << ") " ;
+                throw RUNTIME_EXCEPT(ss.str()) ;
+            }
+            catch(const std::invalid_argument& e) {
+                auto ltag = "L:" + std::to_string(lnum) ;
+                VirtualCmdLine::msgout("E: Invalid Argument (" + ltag + ")") ;
 
-                using rcparser::RunCommandsIndex ;
-                using mode::Mode ;
-                auto mode = static_cast<Mode>(rcindex & RunCommandsIndex::MASK_MODE) ;
-
-                if(rcindex == RunCommandsIndex::SET) {
-                    SyscmdSet::sprocess(args, false) ;
-                }
-                else if(rcindex & RunCommandsIndex::MASK_MAP) {
-                    SyscmdMap::sprocess(mode, args, false) ;
-                }
-                else if(rcindex & RunCommandsIndex::MASK_NOREMAP) {
-                    SyscmdNoremap::sprocess(mode, args, false) ;
-                }
-                else if(rcindex & RunCommandsIndex::MASK_UNMAP) {
-                    SyscmdUnmap::sprocess(mode, args, false) ;
-                }
-                else if(rcindex & RunCommandsIndex::MASK_MAPCLEAR) {
-                    if(!args.empty()) {
-                        error_invalid_argument() ;
-                    }
-                    SyscmdMapclear::sprocess(mode, false) ;
-                }
-                else {
-                    auto msg = "E: Invalid Syntax (L:" + std::to_string(lnum) + ")" ;
-                    VirtualCmdLine::msgout(msg) ;
-                    throw RUNTIME_EXCEPT(msg) ;
-                }
+                std::stringstream ss ;
+                ss << e.what() << " is recieved invalid arguments." ;
+                ss << " (" << path << ", " << ltag << ") " ;
+                throw RUNTIME_EXCEPT(ss.str()) ;
             }
             catch(const std::logic_error& e) {
-                throw std::logic_error(error_invalid_syntax(e)) ;
+                auto ltag = "L:" + std::to_string(lnum) ;
+                VirtualCmdLine::msgout("E: Invalid Syntax (" + ltag + ")") ;
+
+                std::stringstream ss ;
+                ss << e.what() ;
+                ss << " (" + path + ", " + ltag + ")" ;
+                throw LOGIC_EXCEPT(ss.str()) ;
             }
             catch(const std::runtime_error& e) {
-                throw std::runtime_error(error_invalid_syntax(e)) ;
+                auto ltag = "L:" + std::to_string(lnum) ;
+                VirtualCmdLine::msgout("E: Invalid Syntax (" + ltag + ")") ;
+
+                std::stringstream ss ;
+                ss << e.what() ;
+                ss << " (" + path + ", " + ltag + ")" ;
+                throw RUNTIME_EXCEPT(ss.str()) ;
             }
         } // while(getline())
 

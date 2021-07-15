@@ -21,6 +21,8 @@ namespace
 
     constexpr auto DELTA_US = 30 ;
     constexpr auto WAIT_MS  = 30 ;
+
+    constexpr auto SCROLL_FACTOR_FROM_COMMAND = 10 ;
 }
 
 
@@ -116,7 +118,7 @@ namespace vind
         }
     }
     void ScrollUpHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
 
@@ -148,7 +150,7 @@ namespace vind
         }
     }
     void ScrollDownHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
 
@@ -180,7 +182,7 @@ namespace vind
         }
     }
     void ScrollUpOnePage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
 
@@ -212,7 +214,7 @@ namespace vind
         }
     }
     void ScrollDownOnePage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
 
@@ -244,7 +246,7 @@ namespace vind
         }
     }
     void ScrollLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
 
@@ -275,7 +277,7 @@ namespace vind
         }
     }
     void ScrollRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
 
@@ -307,7 +309,7 @@ namespace vind
         }
     }
     void ScrollLeftHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
 
@@ -339,6 +341,6 @@ namespace vind
         }
     }
     void ScrollRightHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
+        sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 }

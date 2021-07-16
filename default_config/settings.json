@@ -302,6 +302,11 @@
         "en": "Suppress For Vim",
         "ja": "Vim用に機能を抑制"
     },
+    "autofocus_textarea": {
+        "en": "Autofocus Text Area",
+        "ja": "テキスト領域を自動選択",
+        "value": false
+    },
     "easyclick_fontsize": {
         "value": 14,
         "en": "EasyClick Font Size",

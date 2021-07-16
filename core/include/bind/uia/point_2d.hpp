@@ -24,6 +24,14 @@ namespace vind
         : Point2D(static_cast<LONG>(x), static_cast<LONG>(y))
         {}
 
+        explicit Point2D(const POINT& pos)
+        : Point2D(pos.x, pos.y)
+        {}
+
+        explicit Point2D(POINT&& pos)
+        : Point2D(pos.x, pos.y)
+        {}
+
         LONG x() const noexcept {
             return mx_ ;
         }

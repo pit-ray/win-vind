@@ -4,6 +4,7 @@
 
 #include "bind/emu/simple_text_selecter.hpp"
 #include "err_logger.hpp"
+#include "g_params.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
 #include "key/char_logger.hpp"
@@ -114,14 +115,18 @@ namespace vind
     void ToEdiNormal::sprocess(bool vclmodeout) {
         using namespace mode ;
         auto mode = get_global_mode() ;
-        if(mode == Mode::GUI_NORMAL) {
-            mouse::click(KEYCODE_MOUSE_LEFT) ;
-        }
         if(mode == Mode::EDI_NORMAL) {
             return ;
         }
-        if(mode == Mode::EDI_VISUAL) {
+        if(mode == Mode::GUI_NORMAL) {
+            mouse::click(KEYCODE_MOUSE_LEFT) ;
+        }
+        else if(mode == Mode::EDI_VISUAL) {
             textselect::unselect() ;
+        }
+
+        if(gparams::get_b("autofocus_textarea")) {
+            std::cout << "AutoFocus\n" ;
         }
 
         keyabsorber::close_all_ports_with_refresh() ;

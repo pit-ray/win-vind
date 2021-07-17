@@ -1,4 +1,4 @@
-#include "bind/uia/ec_hints.hpp"
+#include "bind/easyclick/ec_hints.hpp"
 
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"

@@ -1,20 +1,19 @@
-#include "bind/uia/easy_click.hpp"
+#include "bind/easyclick/easy_click.hpp"
 
 #include <future>
 #include <memory>
 
-#include "bind/uia/display_hinter.hpp"
-#include "bind/uia/ec_hints.hpp"
-#include "bind/uia/input_hinter.hpp"
-#include "bind/uia/point_2d.hpp"
-#include "bind/uia/ui_scanner.hpp"
+#include "bind/easyclick/display_hinter.hpp"
+#include "bind/easyclick/ec_hints.hpp"
+#include "bind/easyclick/input_hinter.hpp"
+#include "bind/easyclick/ui_scanner.hpp"
 #include "io/mouse.hpp"
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 
-#include "bind/uia/easy_click_core.hpp"
+#include "bind/easyclick/easy_click_core.hpp"
 
 namespace vind
 {

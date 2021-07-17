@@ -55,11 +55,10 @@ namespace vind
         //ignore toggle keys (for example, CapsLock, NumLock, IME....)
         auto toggle_keys = keyabsorber::get_pressed_list() ;
 
-        RECT rect ;
-        screenmetrics::get_conbined_metrics(&rect) ;
+        auto box = screenmetrics::get_conbined_metrics() ;
 
-        auto width  = screenmetrics::width(rect) ;
-        auto height = screenmetrics::height(rect) ;
+        auto width  = box.width() ;
+        auto height = box.height() ;
 
         while(vind::update_background()) {
             if(keyabsorber::is_pressed(KEYCODE_ESC)) return ;

@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.0.0)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/libs
+
+    ${WINDOWS_SDK_INCLUDE_DIR}
 )
 
 add_library(util STATIC
@@ -10,6 +12,7 @@ add_library(util STATIC
     src/util/debug.cpp
     src/util/string.cpp
     src/util/winwrap.cpp
+    src/util/box_2d.cpp
 )
 
 add_library(key STATIC
@@ -33,6 +36,11 @@ add_library(time STATIC
     src/time/constant_accelerator.cpp
     src/time/interval_timer.cpp
     src/time/keystroke_repeater.cpp
+)
+
+add_library(uia STATIC
+    src/uia/uia.cpp
+    src/uia/ui_walker.cpp
 )
 
 add_library(ctrl STATIC
@@ -100,16 +108,14 @@ add_library(proc STATIC
 )
 target_link_libraries(proc psapi)
 
-add_library(uia STATIC
-    src/bind/uia/display_hinter.cpp
-    src/bind/uia/easy_click.cpp
-    src/bind/uia/easy_click_core.cpp
-    src/bind/uia/ec_hints.cpp
-    src/bind/uia/input_hinter.cpp
-    src/bind/uia/ui_scanner.cpp
-    src/bind/uia/uia.cpp
+add_library(easyclick STATIC
+    src/bind/easyclick/display_hinter.cpp
+    src/bind/easyclick/easy_click.cpp
+    src/bind/easyclick/easy_click_core.cpp
+    src/bind/easyclick/ec_hints.cpp
+    src/bind/easyclick/input_hinter.cpp
+    src/bind/easyclick/ui_scanner.cpp
 )
-target_include_directories(uia PRIVATE ${WINDOWS_SDK_INCLUDE_DIR})
 
 add_library(window STATIC
     src/bind/window/arrange_window.cpp
@@ -141,7 +147,7 @@ add_library(bind STATIC
     src/bind/func_finder.cpp
     src/bind/logger_parser.cpp
 )
-target_link_libraries(bind ctrl emu file hotkey mode mouse proc uia window syscmd)
+target_link_libraries(bind ctrl emu file hotkey mode mouse proc easyclick window syscmd)
 #target_link_libraries(bind dev)
 
 add_library(opt STATIC
@@ -167,10 +173,10 @@ add_library(kernel STATIC
     src/mode.cpp
     src/path.cpp
 )
-target_link_libraries(kernel parser util Userenv io key time)
+target_link_libraries(kernel parser uia key time io util Userenv)
 
 add_library(vindcore STATIC
     src/entry.cpp
     src/main_loop.cpp
 )
-target_link_libraries(vindcore bind opt parser kernel)
+target_link_libraries(vindcore bind opt kernel)

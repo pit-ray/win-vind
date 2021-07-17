@@ -3,6 +3,8 @@
 #include "io/screen_metrics.hpp"
 #include "util/color.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
+#include "util/rect.hpp"
 
 #include <cstring>
 #include <memory>
@@ -66,10 +68,10 @@ namespace vind
         pimpl->display_dc = create_display_dc() ;
 
         if(enable_double_buffering) {
-            RECT conbinded_rect ;
-            screenmetrics::get_conbined_metrics(&conbinded_rect) ;
-            auto width  = screenmetrics::width(conbinded_rect) ;
-            auto height = screenmetrics::height(conbinded_rect) ;
+            auto box = screenmetrics::get_conbined_metrics() ;
+
+            auto width  = box.width() ;
+            auto height = box.height() ;
 
             auto raw_bitmap = CreateCompatibleBitmap(pimpl->display_dc.get(), width, height) ;
             if(!raw_bitmap) {
@@ -208,11 +210,10 @@ namespace vind
 
     void DisplayTextPainter::refresh() {
         if(pimpl->compatible_dc) {
-            RECT conbinded_rect ;
-            screenmetrics::get_conbined_metrics(&conbinded_rect) ;
+            auto box = screenmetrics::get_conbined_metrics() ;
             if(!BitBlt(pimpl->display_dc.get(), 0, 0,
-                       screenmetrics::width(conbinded_rect),
-                       screenmetrics::height(conbinded_rect),
+                       box.width(),
+                       box.height(),
                        pimpl->compatible_dc.get(), 0, 0, SRCCOPY)) {
                 throw RUNTIME_EXCEPT("Could not copy color data of a compatible device context to a display device context.") ;
             }

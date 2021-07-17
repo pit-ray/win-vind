@@ -56,24 +56,23 @@ namespace vind
         auto xma = gparams::get_i("cmd_xmargin") ;
         auto yma = gparams::get_i("cmd_ymargin") ;
 
-        RECT rect ;
-        screenmetrics::get_primary_metrics(&rect) ;
+        auto rect = screenmetrics::get_primary_metrics() ;
 
-        auto width  = screenmetrics::width(rect) ;
-        auto height = screenmetrics::height(rect) ;
+        auto w = rect.width() ;
+        auto h = rect.height() ;
 
         constexpr auto midxbuf = 256 ;
 
         std::unordered_map<std::string, std::pair<int, int>> pos_list {
-            {"UpperLeft",  {xma,                    yma}},
-            {"UpperMid",   {width / 2 - midxbuf,    yma}},
-            {"UpperRight", {width - xma - midxbuf,  yma}},
-            {"MidLeft",    {xma,                    height / 2}},
-            {"Center",     {width / 2 - midxbuf,    height / 2}},
-            {"MidRight",   {width - xma - midxbuf,  height / 2}},
-            {"LowerLeft",  {xma,                    height - yma}},
-            {"LowerMid",   {width / 2 - midxbuf,    height - yma}},
-            {"LowerRight", {width - xma - midxbuf,  height - yma}}
+            {"UpperLeft",  {xma,                yma}},
+            {"UpperMid",   {w / 2 - midxbuf,    yma}},
+            {"UpperRight", {w - xma - midxbuf,  yma}},
+            {"MidLeft",    {xma,                h / 2}},
+            {"Center",     {w / 2 - midxbuf,    h / 2}},
+            {"MidRight",   {w - xma - midxbuf,  h / 2}},
+            {"LowerLeft",  {xma,                h - yma}},
+            {"LowerMid",   {w / 2 - midxbuf,    h - yma}},
+            {"LowerRight", {w - xma - midxbuf,  h - yma}}
         } ;
         try {
             const auto& p = pos_list.at(gparams::get_s("cmd_roughpos")) ;

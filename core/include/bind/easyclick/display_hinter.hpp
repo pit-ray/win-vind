@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "ec_hints.hpp"
-#include "point_2d.hpp"
+#include "util/point_2d.hpp"
 
 namespace vind
 {

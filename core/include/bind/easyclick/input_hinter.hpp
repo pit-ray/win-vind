@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "ec_hints.hpp"
-#include "point_2d.hpp"
+#include "util/point_2d.hpp"
 
 namespace vind
 {
@@ -26,11 +26,11 @@ namespace vind
 
         void load_config() ;
 
-        Point2D::SPtr launch_loop(
+        std::shared_ptr<Point2D> launch_loop(
                 const std::vector<Point2D>& positions,
                 const std::vector<Hint>& hints) ;
 
-        std::shared_future<Point2D::SPtr> launch_async_loop(
+        std::shared_future<std::shared_ptr<Point2D>> launch_async_loop(
                 const std::vector<Point2D>& positions,
                 const std::vector<Hint>& hints) ;
 

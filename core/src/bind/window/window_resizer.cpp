@@ -85,46 +85,42 @@ namespace vind
 
             auto hwnd = GetForegroundWindow() ;
 
-            RECT rect ;
-            if(!GetWindowRect(hwnd, &rect)) {
+            Box2D rect ;
+            if(!GetWindowRect(hwnd, &(rect.data()))) {
                 throw RUNTIME_EXCEPT("Could not get a rectangle of foreground window.") ;
             }
 
-            RECT cb_rect ;
-            screenmetrics::get_conbined_metrics(&cb_rect) ;
+            auto cb_rect = screenmetrics::get_conbined_metrics() ;
 
-            auto left = rect.left ;
-            auto top = rect.top ;
+            auto left = rect.left() ;
+            auto top = rect.top() ;
 
             if(id == left_id_) {
                 left -= ca_.delta<long>() ;
-                if(left < cb_rect.left) {
-                    left = cb_rect.left ;
+                if(left < cb_rect.left()) {
+                    left = cb_rect.left() ;
                 }
             }
             else if(id == right_id_) {
                 left += ca_.delta<long>() ;
-                if(left > cb_rect.right) {
-                    left = cb_rect.right ;
+                if(left > cb_rect.right()) {
+                    left = cb_rect.right() ;
                 }
             }
             else if(id == up_id_) {
                 top -= ca_.delta<long>() ;
-                if(top < cb_rect.top) {
-                    top = cb_rect.top ;
+                if(top < cb_rect.top()) {
+                    top = cb_rect.top() ;
                 }
             }
             else if(id == down_id_) {
                 top += ca_.delta<long>() ;
-                if(top > cb_rect.bottom) {
-                    top = cb_rect.bottom ;
+                if(top > cb_rect.bottom()) {
+                    top = cb_rect.bottom() ;
                 }
             }
 
-            if(!MoveWindow(
-                        hwnd, left, top,
-                        screenmetrics::width(rect),
-                        screenmetrics::height(rect), TRUE)) {
+            if(!MoveWindow(hwnd, left, top, rect.width(), rect.height(), TRUE)) {
                 throw RUNTIME_EXCEPT("Could not move the foreground window.") ;
             }
         }

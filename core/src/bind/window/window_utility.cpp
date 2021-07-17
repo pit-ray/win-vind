@@ -6,6 +6,7 @@
 #include "io/keybrd.hpp"
 #include "io/screen_metrics.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
 
 namespace vind
 {
@@ -45,7 +46,7 @@ namespace vind
             return true ;
         }
 
-        bool is_window_mode(HWND hwnd, RECT& rect) {
+        bool is_window_mode(HWND hwnd, const RECT& rect) {
             if(hwnd == NULL) {
                 throw RUNTIME_EXCEPT("There is not a foreground window.") ;
             }
@@ -55,11 +56,7 @@ namespace vind
                 return false ;
             }
 
-            if(screenmetrics::width(rect) == 0) {
-                return false ;
-            }
-
-            if(screenmetrics::height(rect) == 0) {
+            if(util::width(rect) == 0 || util::height(rect) == 0) {
                 return false ;
             }
 
@@ -68,7 +65,7 @@ namespace vind
             if(!GetClientRect(hwnd, &client_rect)) {
                 return false ;
             }
-            if(screenmetrics::is_equel(rect, client_rect)) {
+            if(util::is_equel(rect, client_rect)) {
                 return false ;
             }
 
@@ -90,12 +87,12 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not change window size") ;
             }
 
-            RECT rect ;
-            if(!GetWindowRect(hwnd, &rect)) {
+            Box2D rect ;
+            if(!GetWindowRect(hwnd, &(rect.data()))) {
                 throw RUNTIME_EXCEPT("Could not get a rectangle of a window.") ;
             }
 
-            if(screenmetrics::width(rect) != width || screenmetrics::height(rect) != height) {
+            if(rect.width() != width || rect.height() != height) {
                 //If a window is Chromium browser (e.g. GoogleChrome or Microsoft Edge) and when it is full screen,
                 //could not resize its size, so cancel full screen.
 
@@ -103,7 +100,7 @@ namespace vind
                 screenmetrics::get_monitor_metrics(hwnd, minfo) ;
 
                 //Whether it is a full screen ?
-                if(!screenmetrics::is_bigger_than(rect, minfo.work_rect)) {
+                if(!rect.is_over(minfo.work_rect)) {
                     return ;
                 }
 
@@ -123,11 +120,24 @@ namespace vind
             JumpToActiveWindow::sprocess() ;
         }
 
+        void resize(HWND hwnd, const RECT& rect) {
+            resize(hwnd, rect.left, rect.top, util::width(rect), util::height(rect)) ;
+        }
+
+        void resize(HWND hwnd, const Box2D& rect) {
+            resize(hwnd, rect.left(), rect.top(), rect.width(), rect.height()) ;
+        }
+
+        void batch_resize(const std::unordered_map<HWND, Box2D>& rects) {
+            //Resize each windows
+            for(const auto& [hwnd, rect] : rects) {
+                resize(hwnd, rect) ;
+            }
+        }
         void batch_resize(const std::unordered_map<HWND, RECT>& rects) {
             //Resize each windows
             for(const auto& [hwnd, rect] : rects) {
-                resize(hwnd, rect.left, rect.top,
-                        screenmetrics::width(rect), screenmetrics::height(rect)) ;
+                resize(hwnd, rect) ;
             }
         }
     }

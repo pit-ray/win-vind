@@ -1,9 +1,8 @@
-#include "bind/uia/display_hinter.hpp"
+#include "bind/easyclick/display_hinter.hpp"
 
 #include <mutex>
 #include <string>
 
-#include "bind/uia/point_2d.hpp"
 #include "g_params.hpp"
 #include "io/display_text_painter.hpp"
 #include "key/char_logger.hpp"

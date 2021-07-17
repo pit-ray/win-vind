@@ -25,29 +25,29 @@ namespace
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        auto window_height = screenmetrics::height(fginfo.rect) ;
-        auto monitor_width = screenmetrics::width(minfo.work_rect) ;
+        auto window_height = fginfo.rect.height() ;
+        auto monitor_width = minfo.work_rect.width() ;
 
         if(desired_width >= monitor_width) {
             //a maximum width is a width of a foreground monitor.
             windowutil::resize(
                     fginfo.hwnd,
-                    minfo.work_rect.left, fginfo.rect.top,
+                    minfo.work_rect.left(), fginfo.rect.top(),
                     monitor_width, window_height) ;
         }
         else {
             //If cannot move a lower-right point anymore, it move a upper-left point.
-            auto right_max_width = minfo.work_rect.right - fginfo.rect.left ;
+            auto right_max_width = minfo.work_rect.right() - fginfo.rect.left() ;
 
             if(desired_width <= right_max_width) {
                 windowutil::resize(
-                        fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
+                        fginfo.hwnd, fginfo.rect.left(), fginfo.rect.top(),
                         desired_width, window_height) ;
             }
             else {
                 auto left_shift_delta = desired_width - right_max_width ;
                 windowutil::resize(
-                        fginfo.hwnd, fginfo.rect.left - left_shift_delta, fginfo.rect.top,
+                        fginfo.hwnd, fginfo.rect.left() - left_shift_delta, fginfo.rect.top(),
                         desired_width, window_height) ;
             }
         }
@@ -64,29 +64,29 @@ namespace
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
-        auto window_width = screenmetrics::width(fginfo.rect) ;
-        auto monitor_height = screenmetrics::height(minfo.work_rect) ;
+        auto window_width = fginfo.rect.width() ;
+        auto monitor_height = minfo.work_rect.height() ;
 
         if(desired_height >= monitor_height) {
             //a maximum height is a height of a foreground monitor.
             windowutil::resize(
                     fginfo.hwnd,
-                    fginfo.rect.left, minfo.work_rect.top,
+                    fginfo.rect.left(), minfo.work_rect.top(),
                     window_width, monitor_height) ;
         }
         else {
             //If cannot move a lower-right point anymore, it move a upper-left point.
-            auto lower_max_height = minfo.work_rect.bottom - fginfo.rect.top ;
+            auto lower_max_height = minfo.work_rect.bottom() - fginfo.rect.top() ;
 
             if(desired_height <= lower_max_height) {
                 windowutil::resize(
-                        fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
+                        fginfo.hwnd, fginfo.rect.left(), fginfo.rect.top(),
                         window_width, desired_height) ;
             }
             else {
                 auto left_shift_delta = desired_height - lower_max_height ;
                 windowutil::resize(
-                        fginfo.hwnd, fginfo.rect.left, fginfo.rect.top - left_shift_delta,
+                        fginfo.hwnd, fginfo.rect.left(), fginfo.rect.top() - left_shift_delta,
                         window_width, desired_height) ;
             }
         }
@@ -124,7 +124,7 @@ namespace vind
         if(delta <= 0) return ;
 
         windowutil::ForegroundInfo fginfo ;
-        auto width = screenmetrics::width(fginfo.rect) + delta ;
+        auto width = fginfo.rect.width() + delta ;
         resize_in_monitor_width(width, fginfo) ;
     }
     void IncreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
@@ -145,15 +145,16 @@ namespace vind
         if(delta <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
 
-        auto width = screenmetrics::width(fginfo.rect) - delta ;
+        auto width = fginfo.rect.width() - delta ;
         if(width <= 0) { 
             VirtualCmdLine::msgout("E: Width below zero") ;
             return ;
         }
 
         windowutil::resize(
-                fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-                width, screenmetrics::height(fginfo.rect)) ;
+                fginfo.hwnd,
+                fginfo.rect.left(), fginfo.rect.top(),
+                width, fginfo.rect.height()) ;
     }
     void DecreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -194,7 +195,7 @@ namespace vind
         if(delta <= 0) return ;
         windowutil::ForegroundInfo fginfo ;
 
-        auto height = screenmetrics::height(fginfo.rect) + delta ;
+        auto height = fginfo.rect.height() + delta ;
         resize_in_monitor_height(height, fginfo) ;
     }
     void IncreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
@@ -216,15 +217,16 @@ namespace vind
 
         windowutil::ForegroundInfo fginfo ;
 
-        auto height = screenmetrics::height(fginfo.rect) - delta ;
+        auto height = fginfo.rect.height() - delta ;
         if(height <= 0) { 
             VirtualCmdLine::msgout("E: Height below zero") ;
             return ;
         }
 
         windowutil::resize(
-                fginfo.hwnd, fginfo.rect.left, fginfo.rect.top,
-                screenmetrics::width(fginfo.rect), height) ;
+                fginfo.hwnd,
+                fginfo.rect.left(), fginfo.rect.top(),
+                fginfo.rect.width(), height) ;
     }
     void DecreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

@@ -6,12 +6,14 @@
 #include "bind/window/window_utility.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/ntype_logger.hpp"
+#include "util/box_2d.hpp"
+#include "util/rect.hpp"
 
 namespace
 {
     using namespace vind ;
 
-    std::unordered_map<HWND, RECT> g_rects ;
+    std::unordered_map<HWND, Box2D> g_rects ;
     BOOL CALLBACK EnumWindowsProcForNearest(HWND hwnd, LPARAM lparam) {
         auto self_hwnd = reinterpret_cast<HWND>(lparam) ;
         if(self_hwnd == hwnd) {
@@ -22,19 +24,19 @@ namespace
             return TRUE ;
         }
 
-        RECT rect ;
-        if(!GetWindowRect(hwnd, &rect)) {
+        Box2D rect ;
+        if(!GetWindowRect(hwnd, &(rect.data()))) {
             return TRUE ;
         }
 
-        if(!windowutil::is_window_mode(hwnd, rect)) {
+        if(!windowutil::is_window_mode(hwnd, rect.data())) {
             return TRUE ;
         }
 
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(hwnd, minfo) ;
 
-        if(screenmetrics::is_out_of_range(rect, minfo.work_rect)) {
+        if(rect.is_out_of(minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -58,23 +60,15 @@ namespace
             throw RUNTIME_EXCEPT("Could not enumerate all top-level windows.") ;
         }
 
-        RECT fg_rect ;
-        if(!GetWindowRect(fg_hwnd, &fg_rect)) {
+        Box2D fg_rect ;
+        if(!GetWindowRect(fg_hwnd, &(fg_rect.data()))) {
             throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
         }
 
         std::map<LONG, HWND> distance_order_hwnd ;
-        for(const auto& enumed_rect : g_rects) {
-            auto& enu_hwnd = enumed_rect.first ;
-            auto& enu_rect = enumed_rect.second ;
-
-            auto cx  = screenmetrics::center_x(fg_rect) ;
-            auto cy  = screenmetrics::center_y(fg_rect) ;
-            auto ecx = screenmetrics::center_x(enu_rect) ;
-            auto ecy = screenmetrics::center_y(enu_rect) ;
-
-            if(is_if_target(fg_rect, enu_rect, cx, cy, ecx, ecy)) {
-                auto distance = calc_distance(fg_rect, enu_rect, cx, cy, ecx, ecy) ;
+        for(const auto& [enu_hwnd, enu_rect] : g_rects) {
+            if(is_if_target(fg_rect, enu_rect)) {
+                auto distance = calc_distance(fg_rect, enu_rect) ;
                 distance_order_hwnd[distance] = enu_hwnd ;
             }
         }
@@ -98,21 +92,14 @@ namespace vind
     : BindedFuncCreator("select_left_window")
     {}
     void SelectLeftWindow::sprocess() {
-        auto is_if_target = [] (
-                const auto& UNUSED(rect),
-                const auto& UNUSED(erect),
-                auto cx, auto UNUSED(cy),
-                auto ecx, auto UNUSED(ecy)) {
-            return cx >= ecx ;
+        auto is_if_target = [] (const auto& rect, const auto& erect) {
+            return rect.center_x() >= erect.center_x() ;
         } ;
 
-        auto calc_distance = [] (
-                const auto& rect,
-                const auto& UNUSED(erect),
-                auto UNUSED(cx), auto cy,
-                auto ecx, auto ecy) {
-
-            return screenmetrics::l2_distance_nosq(ecx, ecy, rect.left, cy) / 100 ;
+        auto calc_distance = [] (const auto& rect, const auto& erect) {
+            return util::l2_distance_nosq(
+                    erect.center_x(), erect.center_y(),
+                    rect.left(), rect.center_y()) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -132,21 +119,14 @@ namespace vind
     : BindedFuncCreator("select_right_window")
     {}
     void SelectRightWindow::sprocess() {
-        auto is_if_target = [] (
-                const auto& UNUSED(rect),
-                const auto& UNUSED(erect),
-                auto cx, auto UNUSED(cy),
-                auto ecx, auto UNUSED(ecy)) {
-            return cx <= ecx ;
+        auto is_if_target = [] (const auto& rect, const auto& erect) {
+            return rect.center_x() <= erect.center_x() ;
         } ;
 
-        auto calc_distance = [] (
-                const auto& rect,
-                const auto& UNUSED(erect),
-                auto UNUSED(cx), auto cy,
-                auto ecx, auto ecy) {
-
-            return screenmetrics::l2_distance_nosq(ecx, ecy, rect.right, cy) / 100 ;
+        auto calc_distance = [] (const auto& rect, const auto& erect) {
+            return util::l2_distance_nosq(
+                    erect.center_x(), erect.center_y(),
+                    rect.right(), rect.center_y()) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -166,21 +146,14 @@ namespace vind
     : BindedFuncCreator("select_upper_window")
     {}
     void SelectUpperWindow::sprocess() {
-        auto is_if_target = [] (
-                const auto& UNUSED(rect),
-                const auto& UNUSED(erect),
-                auto UNUSED(cx), auto cy,
-                auto UNUSED(ecx), auto ecy) {
-            return cy >= ecy ;
+        auto is_if_target = [] (const auto& rect, const auto& erect) {
+            return rect.center_y() >= erect.center_y() ;
         } ;
 
-        auto calc_distance = [] (
-                const auto& rect,
-                const auto& UNUSED(erect),
-                auto cx, auto UNUSED(cy),
-                auto ecx, auto ecy) {
-
-            return screenmetrics::l2_distance_nosq(ecx, ecy, cx, rect.top) / 100 ;
+        auto calc_distance = [] (const auto& rect, const auto& erect) {
+            return util::l2_distance_nosq(
+                    erect.center_x(), erect.center_y(),
+                    rect.center_x(), rect.top()) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;
@@ -200,21 +173,14 @@ namespace vind
     : BindedFuncCreator("select_lower_window")
     {}
     void SelectLowerWindow::sprocess() {
-        auto is_if_target = [] (
-                const auto& UNUSED(rect),
-                const auto& UNUSED(erect),
-                auto UNUSED(cx), auto cy,
-                auto UNUSED(ecx), auto ecy) {
-            return cy <= ecy ;
+        auto is_if_target = [] (const auto& rect, const auto& erect) {
+            return rect.center_y() <= erect.center_y() ;
         } ;
 
-        auto calc_distance = [] (
-                const auto& rect,
-                const auto& UNUSED(erect),
-                auto cx, auto UNUSED(cy),
-                auto ecx, auto ecy) {
-
-            return screenmetrics::l2_distance_nosq(ecx, ecy, cx, rect.bottom) / 100 ;
+        auto calc_distance = [] (const auto& rect, const auto& erect) {
+            return util::l2_distance_nosq(
+                    erect.center_x(), erect.center_y(),
+                    rect.center_x(), rect.bottom()) / 100 ;
         } ;
 
         select_nearest_window(is_if_target, calc_distance) ;

@@ -6,28 +6,29 @@
 #include <string>
 
 #include "util/def.hpp"
+#include "util/rect.hpp"
 
 namespace vind
 {
     namespace screenmetrics
     {
-        void get_conbined_metrics(RECT* const rect) {
+        Box2D get_conbined_metrics() {
             WINDOWINFO winfo ;
             winfo.cbSize = sizeof(WINDOWINFO) ;
             if(!GetWindowInfo(GetDesktopWindow(), &winfo)) {
                 throw RUNTIME_EXCEPT("Could not get window infomation.") ;
             }
-            copy(*rect, winfo.rcWindow) ;
+            return Box2D(winfo.rcWindow) ;
         }
 
-        void get_primary_metrics(RECT* const rect) {
+        Box2D get_primary_metrics() {
             MONITORINFO minfo ;
             minfo.cbSize = sizeof(MONITORINFO) ;
             auto hmonitor = MonitorFromWindow(GetDesktopWindow(), MONITOR_DEFAULTTOPRIMARY) ;
             if(!GetMonitorInfo(hmonitor, &minfo)) {
                 throw RUNTIME_EXCEPT("Could not get primary monitor infomation.") ;
             }
-            copy(*rect, minfo.rcMonitor) ;
+            return Box2D(minfo.rcMonitor) ;
         }
 
         void get_monitor_metrics(HMONITOR hmonitor, MonitorInfo& minfo) {
@@ -40,8 +41,8 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not get monitor infomation.") ;
             }
 
-            copy(minfo.rect, native_minfo.rcMonitor) ;
-            copy(minfo.work_rect, native_minfo.rcWork) ;
+            minfo.rect = native_minfo.rcMonitor ;
+            minfo.work_rect = native_minfo.rcWork ;
         }
 
         void get_monitor_metrics(HWND hwnd, MonitorInfo& minfo) {
@@ -58,14 +59,14 @@ namespace vind
         }
 
         namespace debug {
-            std::string info(const RECT& rect) {
+            std::string info(const Box2D& rect) {
                 std::stringstream ss ;
-                ss << "("    << std::setw(4) << rect.left ;
-                ss << ", "   << std::setw(4) << rect.top << ")\t" ;
-                ss << "("    << std::setw(4) << rect.right ;
-                ss << ", "   << std::setw(4) << rect.bottom << ")\t" ;
-                ss << "w: "  << std::setw(4) << width(rect) ;
-                ss << ", h:" << std::setw(4) << height(rect) ;
+                ss << "("    << std::setw(4) << rect.left() ;
+                ss << ", "   << std::setw(4) << rect.top() << ")\t" ;
+                ss << "("    << std::setw(4) << rect.right() ;
+                ss << ", "   << std::setw(4) << rect.bottom() << ")\t" ;
+                ss << "w: "  << std::setw(4) << rect.width() ;
+                ss << ", h:" << std::setw(4) << rect.height() ;
                 return ss.str() ;
             }
         }

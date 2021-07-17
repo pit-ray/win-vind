@@ -7,6 +7,7 @@
 #include "key/char_logger.hpp"
 #include "key/ntype_logger.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
 
 namespace
 {
@@ -37,11 +38,11 @@ namespace
         //Is in range of work area
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(hwnd, minfo) ;
-        if(screenmetrics::is_out_of_range(rect, minfo.work_rect)) {
+        if(util::is_out_of_range(rect, minfo.work_rect.data())) {
             return TRUE ;
         }
 
-        g_near_hwnds[screenmetrics::l2_distance_nosq(rect, fginfo->rect) / 100] = hwnd ;
+        g_near_hwnds[util::l2_distance_nosq(rect, fginfo->rect) / 100] = hwnd ;
         return TRUE ;
     }
 }
@@ -70,19 +71,9 @@ namespace vind
             throw RUNTIME_EXCEPT("Could not get a rectangle of the nearest window.") ;
         }
 
-        windowutil::resize(
-                nearest_hwnd,
-                fginfo.rect.left,
-                fginfo.rect.top,
-                screenmetrics::width(fginfo.rect),
-                screenmetrics::height(fginfo.rect)) ;
+        windowutil::resize(nearest_hwnd, fginfo.rect) ;
 
-        windowutil::resize(
-                fginfo.hwnd,
-                nearest_rect.left,
-                nearest_rect.top,
-                screenmetrics::width(nearest_rect),
-                screenmetrics::height(nearest_rect)) ;
+        windowutil::resize(fginfo.hwnd, nearest_rect) ;
     }
     void ExchangeWindowWithNearest::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

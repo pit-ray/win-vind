@@ -2,10 +2,10 @@
 
 #include "bind/safe_repeater.hpp"
 #include "io/keybrd.hpp"
-#include "io/screen_metrics.hpp"
 #include "key/char_logger.hpp"
 #include "key/ntype_logger.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
 
 namespace vind
 {
@@ -53,7 +53,7 @@ namespace vind
             }
 
             //If not changed, regard it as a full screen and deal with it.
-            if(screenmetrics::is_equel(before_rect, after_rect)) {
+            if(util::is_equel(before_rect, after_rect)) {
                 keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
                 keybrd::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
             }

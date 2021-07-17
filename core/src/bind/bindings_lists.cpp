@@ -35,7 +35,7 @@
 #include "bind/proc/external_app.hpp"
 #include "bind/proc/open_window.hpp"
 
-#include "bind/uia/easy_click.hpp"
+#include "bind/easyclick/easy_click.hpp"
 
 #include "bind/hotkey/clipboard.hpp"
 #include "bind/hotkey/pager.hpp"

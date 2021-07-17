@@ -14,6 +14,7 @@
 #include "io/screen_metrics.hpp"
 #include "key/ntype_logger.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
 
 namespace
 {
@@ -41,7 +42,7 @@ namespace
         //Is existed in work area?
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(hwnd, minfo) ;
-        if(screenmetrics::is_out_of_range(rect, minfo.work_rect)) {
+        if(util::is_out_of_range(rect, minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -93,8 +94,8 @@ namespace
                 auto& pre_rect = rects[pre_hwnd] ;
                 auto rect = pre_rect ;
 
-                auto pre_w = screenmetrics::width(pre_rect) ;
-                auto pre_h = screenmetrics::height(pre_rect) ;
+                auto pre_w = util::width(pre_rect) ;
+                auto pre_h = util::height(pre_rect) ;
                 if(pre_w > pre_h) {
                     pre_rect.right -= pre_w / 2 ;
                     rect.left      += pre_w / 2 ;

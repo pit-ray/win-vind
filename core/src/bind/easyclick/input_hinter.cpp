@@ -1,10 +1,9 @@
-#include "bind/uia/input_hinter.hpp"
+#include "bind/easyclick/input_hinter.hpp"
 
 #include <future>
 #include <memory>
 #include <mutex>
 
-#include "bind/uia/point_2d.hpp"
 #include "entry.hpp"
 #include "key/char_logger.hpp"
 #include "key/key_absorber.hpp"
@@ -74,7 +73,7 @@ namespace vind
     InputHinter& InputHinter::operator=(InputHinter&&) = default ;
 
 
-    Point2D::SPtr InputHinter::launch_loop(
+    std::shared_ptr<Point2D> InputHinter::launch_loop(
             const std::vector<Point2D>& positions,
             const std::vector<Hint>& hints) {
 
@@ -129,7 +128,7 @@ namespace vind
         return nullptr ;
     }
 
-    std::shared_future<Point2D::SPtr> InputHinter::launch_async_loop(
+    std::shared_future<std::shared_ptr<Point2D>> InputHinter::launch_async_loop(
             const std::vector<Point2D>& positions,
             const std::vector<Hint>& hints) {
 

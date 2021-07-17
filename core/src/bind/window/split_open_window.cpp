@@ -16,13 +16,13 @@ namespace vind
     void OpenNewWindowWithHorizontalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
-        auto w = screenmetrics::width(fginfo.rect) ;
-        auto h = screenmetrics::height(fginfo.rect) ;
+        auto w = fginfo.rect.width() ;
+        auto h = fginfo.rect.height() ;
 
         //snap a original window to top
         windowutil::resize(
                 fginfo.hwnd,
-                fginfo.rect.left, fginfo.rect.top,
+                fginfo.rect.left(), fginfo.rect.top(),
                 w, h / 2) ;
         OpenNewWindow::sprocess() ;
 
@@ -38,7 +38,7 @@ namespace vind
         //snap a new window to bottom
         windowutil::resize(
                 new_hwnd,
-                fginfo.rect.left, fginfo.rect.top + h / 2,
+                fginfo.rect.left(), fginfo.rect.top() + h / 2,
                 w, h / 2) ;
     }
     void OpenNewWindowWithHorizontalSplit::sprocess(NTypeLogger& parent_lgr) {
@@ -58,13 +58,13 @@ namespace vind
     void OpenNewWindowWithVerticalSplit::sprocess() {
         windowutil::ForegroundInfo fginfo ;
 
-        auto w = screenmetrics::width(fginfo.rect) ;
-        auto h = screenmetrics::height(fginfo.rect) ;
+        auto w = fginfo.rect.width() ;
+        auto h = fginfo.rect.height() ;
 
         //snap a original window to left
         windowutil::resize(
                 fginfo.hwnd,
-                fginfo.rect.left, fginfo.rect.top,
+                fginfo.rect.left(), fginfo.rect.top(),
                 w / 2, h) ;
         OpenNewWindow::sprocess() ;
 
@@ -80,7 +80,7 @@ namespace vind
         //snap a new window to right
         windowutil::resize(
                 new_hwnd,
-                fginfo.rect.left + w / 2, fginfo.rect.top,
+                fginfo.rect.left() + w / 2, fginfo.rect.top(),
                 w / 2, h) ;
     }
     void OpenNewWindowWithVerticalSplit::sprocess(NTypeLogger& parent_lgr) {

@@ -20,7 +20,7 @@ namespace {
     using namespace vind ;
 
     using AngleOrderedHWND = std::map<float, HWND> ;
-    using AngleOrderedRect = std::map<float, std::unique_ptr<RECT>> ;
+    using AngleOrderedRect = std::map<float, Box2D> ;
 
     struct RotEnumArgs {
         AngleOrderedHWND angle_hwnds{} ;
@@ -33,12 +33,12 @@ namespace {
             return TRUE ;
         }
 
-        auto prect = std::make_unique<RECT>() ;
-        if(!GetWindowRect(hwnd, prect.get())) {
+        Box2D rect{} ;
+        if(!GetWindowRect(hwnd, &(rect.data()))) {
             return TRUE ; //continue
         }
 
-        if(!windowutil::is_window_mode(hwnd, *prect)) {
+        if(!windowutil::is_window_mode(hwnd, rect.data())) {
             return TRUE ; //continue
         }
 
@@ -53,21 +53,21 @@ namespace {
         }
 
         //Is existed in work area?
-        if(screenmetrics::is_out_of_range(*prect, minfo.work_rect)) {
+        if(rect.is_out_of(minfo.work_rect)) {
             return TRUE ;
         }
 
-        auto x = screenmetrics::center_x(*prect) - screenmetrics::center_x(minfo.work_rect) ;
-        auto y = screenmetrics::center_y(minfo.work_rect) - screenmetrics::center_y(*prect) ;
+        auto x = rect.center_x() - minfo.work_rect.center_x() ;
+        auto y = minfo.work_rect.center_y() - rect.center_y() ;
 
         if(x == 0 && y == 0) {
             p_args->angle_hwnds[0.0f] = hwnd ;
-            p_args->angle_rects[0.0f] = std::move(prect) ;
+            p_args->angle_rects[0.0f] = std::move(rect) ;
         }
         else {
             auto angle = static_cast<float>(std::atan2(y, x)) ;
             p_args->angle_hwnds[angle] = hwnd ;
-            p_args->angle_rects[angle] = std::move(prect) ;
+            p_args->angle_rects[angle] = std::move(rect) ;
         }
 
         return TRUE ;
@@ -91,13 +91,7 @@ namespace {
         sort_func(args.angle_hwnds) ;
 
         for(auto& [angle, hwnd] : args.angle_hwnds) {
-            auto& prect = args.angle_rects[angle] ;
-
-            windowutil::resize(
-                    hwnd,
-                    prect->left, prect->top,
-                    screenmetrics::width(*prect),
-                    screenmetrics::height(*prect)) ;
+            windowutil::resize(hwnd, args.angle_rects[angle]) ;
         }
 
         if(!SetForegroundWindow(fginfo.hwnd)) {

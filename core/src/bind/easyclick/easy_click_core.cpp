@@ -1,13 +1,12 @@
-#include "bind/uia/easy_click_core.hpp"
+#include "bind/easyclick/easy_click_core.hpp"
 
 #include <future>
 #include <memory>
 
-#include "bind/uia/display_hinter.hpp"
-#include "bind/uia/ec_hints.hpp"
-#include "bind/uia/input_hinter.hpp"
-#include "bind/uia/point_2d.hpp"
-#include "bind/uia/ui_scanner.hpp"
+#include "bind/easyclick/display_hinter.hpp"
+#include "bind/easyclick/ec_hints.hpp"
+#include "bind/easyclick/input_hinter.hpp"
+#include "bind/easyclick/ui_scanner.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
@@ -19,6 +18,7 @@ namespace vind
 {
     struct EasyClickCore::Impl {
         UIScanner scanner_{} ;
+        std::vector<Box2D> rects_{} ;
         std::vector<Point2D> positions_{} ;
         std::vector<Hint> hints_{} ;
         std::vector<std::string> strhints_{} ;
@@ -30,6 +30,7 @@ namespace vind
     : pimpl(std::make_unique<Impl>())
     {
         pimpl->positions_.reserve(2048) ;
+        pimpl->rects_.reserve(2048) ;
         pimpl->hints_.reserve(2048) ;
         pimpl->strhints_.reserve(2048) ;
     }
@@ -41,10 +42,16 @@ namespace vind
 
     void EasyClickCore::scan_ui_objects(HWND hwnd) const {
         pimpl->hints_.clear() ;
+        pimpl->rects_.clear() ;
         pimpl->positions_.clear() ;
         pimpl->strhints_.clear() ;
 
-        pimpl->scanner_.scan(hwnd, pimpl->positions_, true) ;
+        pimpl->scanner_.scan(pimpl->rects_, hwnd) ;
+
+        for(auto& r : pimpl->rects_) {
+            pimpl->positions_.emplace_back(r.center()) ;
+        }
+
         assign_identifier_hints(pimpl->positions_.size(), pimpl->hints_) ;
         convert_hints_to_strings(pimpl->hints_, pimpl->strhints_) ;
     }

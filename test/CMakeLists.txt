@@ -38,6 +38,9 @@ add_executable(core-test
     core/util_container_test.cpp
     core/util_debug_test.cpp
     core/util_math_test.cpp
+    core/util_rect_test.cpp
+    core/util_point2d_test.cpp
+    core/util_box2d_test.cpp
 
     core/time_interval_timer_test.cpp
     core/time_keystroke_repeater_test.cpp

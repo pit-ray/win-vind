@@ -13,7 +13,7 @@ You can operate Windows by key-bindings like Vim.
 
 ## Features
 - Fast Binding System
-- Vim-like Mode Manegement
+- Vim-like Mode Management
 - GUI Operation without Mouse
 - Vim Emulation Everywhere
 - Process Control like `:!gvim ~/.vimrc` or `:e ~/.vimrc`

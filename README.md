@@ -43,7 +43,7 @@
 
 ### Features
 - Fast Binding System
-- Vim-like Mode Mangement
+- Vim-like Mode Management
 - GUI Operation without Mouse
 - Vim Emulation Everywhere
 - Process Control like `:!gvim ~/.vimrc` or `:e ~/.vimrc` (Resident command line)

@@ -24,13 +24,13 @@ namespace vind
                 return PathType{} ;
             }
 
-            if(FAILED(CoInitialize(NULL))) {
+            if(util::is_failed(CoInitialize(NULL))) {
                 throw RUNTIME_EXCEPT("initialization failed") ;
             }
 
             //we can get explorer handle from IShellWindows.
             IShellWindows* raw_psw = nullptr ;
-            if(FAILED(CoCreateInstance(
+            if(util::is_failed(CoCreateInstance(
                 CLSID_ShellWindows,
                 NULL,
                 CLSCTX_ALL,
@@ -43,7 +43,7 @@ namespace vind
             std::unique_ptr<IShellWindows, decltype(sw_deleter)> psw(raw_psw, sw_deleter) ;
 
             long win_num = 0 ;
-            if(FAILED(psw->get_Count(&win_num))) {
+            if(util::is_failed(psw->get_Count(&win_num))) {
                 throw RUNTIME_EXCEPT("No explorer is opened.") ;
             }
 
@@ -54,7 +54,7 @@ namespace vind
 
                 //IDispatch is an interface to object, method or property
                 IDispatch* raw_pdisp = nullptr ;
-                if(FAILED(psw->Item(v, &raw_pdisp))) {
+                if(util::is_failed(psw->Item(v, &raw_pdisp))) {
                     continue ;
                 }
                 auto disp_deleter = [](IDispatch* ptr) {ptr->Release() ;} ;
@@ -62,13 +62,13 @@ namespace vind
 
                 //Is this shell foreground window??
                 IWebBrowserApp* raw_pwba = nullptr ;
-                if(FAILED(pdisp->QueryInterface(IID_IWebBrowserApp, reinterpret_cast<void**>(&raw_pwba)))) {
+                if(util::is_failed(pdisp->QueryInterface(IID_IWebBrowserApp, reinterpret_cast<void**>(&raw_pwba)))) {
                     continue ;
                 }
                 auto wba_deleter = [](IWebBrowserApp* ptr) {ptr->Release() ;} ;
                 std::unique_ptr<IWebBrowserApp, decltype(wba_deleter)> pwba(raw_pwba, wba_deleter) ;
                 HWND shell_hwnd = NULL ;
-                if(FAILED(pwba->get_HWND(reinterpret_cast<LONG_PTR*>(&shell_hwnd)))) {
+                if(util::is_failed(pwba->get_HWND(reinterpret_cast<LONG_PTR*>(&shell_hwnd)))) {
                     continue ;
                 }
                 if(shell_hwnd != hwnd) {
@@ -77,7 +77,7 @@ namespace vind
 
                 //access to shell window
                 IServiceProvider* raw_psp = nullptr ;
-                if(FAILED(pwba->QueryInterface(IID_IServiceProvider, reinterpret_cast<void**>(&raw_psp)))) {
+                if(util::is_failed(pwba->QueryInterface(IID_IServiceProvider, reinterpret_cast<void**>(&raw_psp)))) {
                     throw RUNTIME_EXCEPT("cannot access a top service provider.") ;
                 }
                 auto sp_deleter = [](IServiceProvider* ptr) {ptr->Release() ;} ;
@@ -85,7 +85,7 @@ namespace vind
 
                 //access to shell browser
                 IShellBrowser* raw_psb = nullptr ;
-                if(FAILED(psp->QueryService(SID_STopLevelBrowser, IID_IShellBrowser, reinterpret_cast<void**>(&raw_psb)))) {
+                if(util::is_failed(psp->QueryService(SID_STopLevelBrowser, IID_IShellBrowser, reinterpret_cast<void**>(&raw_psb)))) {
                     throw RUNTIME_EXCEPT("cannot access a shell browser.") ;
                 }
                 auto sb_deleter = [](IShellBrowser* ptr) {ptr->Release() ;} ;
@@ -93,7 +93,7 @@ namespace vind
 
                 //access to shell view
                 IShellView* raw_psv = nullptr ;
-                if(FAILED(psb->QueryActiveShellView(&raw_psv))) {
+                if(util::is_failed(psb->QueryActiveShellView(&raw_psv))) {
                     throw RUNTIME_EXCEPT("cannot access a shell view.") ;
                 }
                 auto sv_deleter = [](IShellView* ptr) {ptr->Release() ;} ;
@@ -101,7 +101,7 @@ namespace vind
 
                 //get IFolerView Interface
                 IFolderView* raw_pfv = nullptr ;
-                if(FAILED(psv->QueryInterface(IID_IFolderView, reinterpret_cast<void**>(&raw_pfv)))) {
+                if(util::is_failed(psv->QueryInterface(IID_IFolderView, reinterpret_cast<void**>(&raw_pfv)))) {
                     throw RUNTIME_EXCEPT("cannot access a foler view.") ;
                 }
                 auto fv_deleter = [](IFolderView* ptr) {ptr->Release() ;} ;
@@ -109,14 +109,14 @@ namespace vind
 
                 //get IPersistantFolder2 in order to use GetCurFolder method
                 IPersistFolder2* raw_ppf2 = nullptr ;
-                if(FAILED(pfv->GetFolder(IID_IPersistFolder2, reinterpret_cast<void**>(&raw_ppf2)))) {
+                if(util::is_failed(pfv->GetFolder(IID_IPersistFolder2, reinterpret_cast<void**>(&raw_ppf2)))) {
                     throw RUNTIME_EXCEPT("cannot access a persist folder 2.") ;
                 }
                 auto pf2_deleter = [](IPersistFolder2* ptr) {ptr->Release() ;} ;
                 std::unique_ptr<IPersistFolder2, decltype(pf2_deleter)> ppf2(raw_ppf2, pf2_deleter) ;
 
                 ITEMIDLIST* raw_pidl = nullptr ;
-                if(FAILED(ppf2->GetCurFolder(&raw_pidl))) {
+                if(util::is_failed(ppf2->GetCurFolder(&raw_pidl))) {
                     throw RUNTIME_EXCEPT("cannot get current folder.") ;
                 }
                 auto idl_deleter = [](ITEMIDLIST* ptr) {CoTaskMemFree(ptr) ;} ;

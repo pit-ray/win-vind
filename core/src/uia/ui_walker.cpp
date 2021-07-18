@@ -4,6 +4,7 @@
 #include "util/container.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
+#include "util/winwrap.hpp"
 
 #include <initializer_list>
 #include <vector>
@@ -21,11 +22,14 @@ namespace vind
 
         explicit Impl()
         : cuia_(uiauto::get_global_cuia()),
-          cache_request_(nullptr, uiauto::delete_com)
+          cache_request_()
         {
             IUIAutomationCacheRequest* cr_raw ;
-            if(FAILED(cuia_->CreateCacheRequest(&cr_raw))) {
-                throw LOGIC_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
+            if(util::is_failed(cuia_->CreateCacheRequest(&cr_raw))) {
+                throw RUNTIME_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
+            }
+            if(!cr_raw) {
+                throw RUNTIME_EXCEPT("Could not get IUIAutomationCacheRequest properly.") ;
             }
             cache_request_.reset(cr_raw) ;
         }
@@ -39,20 +43,26 @@ namespace vind
     UIWalker::UIWalker(PROPERTYID id)
     : UIWalker()
     {
-        pimpl->cache_request_->AddProperty(id) ;
+        if(util::is_failed(pimpl->cache_request_->AddProperty(id))) {
+            throw RUNTIME_EXCEPT("Could not add property " + std::to_string(id)) ;
+        }
     }
     UIWalker::UIWalker(const std::initializer_list<PROPERTYID>& ids)
     : UIWalker()
     {
         for(const auto& id : ids) {
-            pimpl->cache_request_->AddProperty(id) ;
+            if(util::is_failed(pimpl->cache_request_->AddProperty(id))) {
+                throw RUNTIME_EXCEPT("Could not add property " + std::to_string(id)) ;
+            }
         }
     }
     UIWalker::UIWalker(std::initializer_list<PROPERTYID>&& ids)
     : UIWalker()
     {
         for(auto&& id : ids) {
-            pimpl->cache_request_->AddProperty(id) ;
+            if(util::is_failed(pimpl->cache_request_->AddProperty(id))) {
+                throw RUNTIME_EXCEPT("Could not add property " + std::to_string(id)) ;
+            }
         }
     }
 
@@ -62,16 +72,26 @@ namespace vind
     UIWalker& UIWalker::operator=(UIWalker&&) = default ;
 
     void UIWalker::setup_cache_request(uiauto::SmartCacheReq req) {
-        req->AddProperty(UIA_IsEnabledPropertyId) ;
-        req->AddProperty(UIA_IsOffscreenPropertyId) ;
-        req->AddProperty(UIA_BoundingRectanglePropertyId) ;
+        if(util::is_failed(req->AddProperty(UIA_IsEnabledPropertyId))) {
+            throw RUNTIME_EXCEPT("Could not add property: IsEnabled") ;
+        }
+        if(util::is_failed(req->AddProperty(UIA_IsOffscreenPropertyId))) {
+            throw RUNTIME_EXCEPT("Could not add property: IsOffscreen") ;
+        }
+        if(util::is_failed(req->AddProperty(UIA_BoundingRectanglePropertyId))) {
+            throw RUNTIME_EXCEPT("Could not add property: BoundingRectangle") ;
+        }
 
-        if(FAILED(req->put_AutomationElementMode(
+        // If you use SetFocus() or Current*() methods,
+        // Could not call with AutomationElementMode::AutomationElementMode_None.
+        /*
+        if(util::is_failed(req->put_AutomationElementMode(
                         AutomationElementMode::AutomationElementMode_None))) {
             throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
         }
+        */
 
-        if(FAILED(req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
+        if(util::is_failed(req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
             throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
         }
     }
@@ -93,25 +113,18 @@ namespace vind
             return true ; // continue
         }
 
-        // IUIAutomationElement* elem_raw ;
-        // auto elem = uiauto::make_SmartElement(nullptr) ;
-        //
-        // IUIAutomationElementArray* children_raw ;
-        // auto children = uiauto::make_SmartElementArray(nullptr) ;
-
         BOOL flag ;
         for(int i = 0 ; i < length ; i ++) {
             IUIAutomationElement* elem_raw ;
-            if(FAILED(parents->GetElement(i, &elem_raw))) {
+            if(util::is_failed(parents->GetElement(i, &elem_raw))) {
                 continue ;
             }
             if(!elem_raw) {
                 continue ;
             }
-            auto elem = uiauto::make_SmartElement(elem_raw) ;
-            // elem.reset(elem_raw) ;
+            uiauto::SmartElement elem(elem_raw) ;
 
-            if(FAILED(elem->get_CachedIsEnabled(&flag))) {
+            if(util::is_failed(elem->get_CachedIsEnabled(&flag))) {
                 continue ;
             }
             if(!flag) {
@@ -119,12 +132,11 @@ namespace vind
             }
 
             IUIAutomationElementArray* children_raw ;
-            if(FAILED(elem->GetCachedChildren(&children_raw))) {
+            if(util::is_failed(elem->GetCachedChildren(&children_raw))) {
                 continue ;
             }
             if(children_raw) {
-                auto children = uiauto::make_SmartElementArray(children_raw) ;
-                // children.reset(children_raw) ;
+                uiauto::SmartElementArray children(children_raw) ;
 
                 auto before_size = elements.size() ;
 
@@ -155,32 +167,31 @@ namespace vind
 
     void UIWalker::scan(std::vector<uiauto::SmartElement>& elements, HWND hwnd) {
         IUIAutomationElement* elem_raw ;
-        if(FAILED(pimpl->cuia_->ElementFromHandle(hwnd, &elem_raw))) {
+        if(util::is_failed(pimpl->cuia_->ElementFromHandle(hwnd, &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
         }
         if(!elem_raw) {
             throw RUNTIME_EXCEPT("Could not get UIAutomationElement from HWND.") ;
         }
-        auto elem = uiauto::make_SmartElement(elem_raw) ;
+        uiauto::SmartElement elem(elem_raw) ;
 
         elem_raw = nullptr ;
-        if(FAILED(elem->BuildUpdatedCache(pimpl->cache_request_.get(), &elem_raw))) {
+        if(util::is_failed(elem->BuildUpdatedCache(pimpl->cache_request_.get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
         }
         if(elem_raw != nullptr) {
-            std::cout << "Updated\n" ;
             elem.reset(elem_raw) ; //successfully updated
         }
 
         BOOL flag ;
-        if(FAILED(elem->get_CachedIsEnabled(&flag)))  {
+        if(util::is_failed(elem->get_CachedIsEnabled(&flag)))  {
             throw RUNTIME_EXCEPT("Could not get a cached IsEnabled flag.") ;
         }
         if(!flag) {
             return ;
         }
 
-        if(FAILED(elem->get_CachedIsOffscreen(&flag))) {
+        if(util::is_failed(elem->get_CachedIsOffscreen(&flag))) {
             throw RUNTIME_EXCEPT("Could not get a cached IsOffscreen flag.") ;
         }
         if(flag) {
@@ -188,25 +199,19 @@ namespace vind
         }
 
         IUIAutomationElementArray* children_raw ;
-        if(SUCCEEDED(elem->GetCachedChildren(&children_raw))) {
-            if(children_raw) {
-                std::cout << "Start\n" ;
-                auto children = uiauto::make_SmartElementArray(children_raw) ;
-                scan_childrens(children, elements) ;
-                std::cout << "End\n" ;
-            }
-            else {
-                //If the parent element is a leaf in tree.
-                if(filter_element(elem) || pinpoint_element(elem)) {
-                    elements.push_back(elem) ;
-                }
-            }
-        }
-        else {
+        if(util::is_failed(elem->GetCachedChildren(&children_raw))) {
             throw RUNTIME_EXCEPT("Could not get a cached children as IUIAutomationElementArray.") ;
         }
 
-        elem.reset() ;
-        std::cout<< "finished\n" ;
+        if(children_raw) {
+            uiauto::SmartElementArray children(children_raw) ;
+            scan_childrens(children, elements) ;
+        }
+        else {
+            //If the parent element is a leaf in tree.
+            if(filter_element(elem) || pinpoint_element(elem)) {
+                elements.push_back(elem) ;
+            }
+        }
     }
 }

@@ -118,5 +118,50 @@ namespace vind
                             util::s_to_ws(url).c_str(),
                             NULL, NULL, SW_SHOWNORMAL))) ;
         }
+
+        bool is_failed(HRESULT result) noexcept {
+            if(SUCCEEDED(result)) {
+                return false ;
+            }
+
+            auto res = FAILED(result) ;
+            if(res & E_ABORT) {
+                PRINT_ERROR("The operation was aborted because of an unspecified error.") ;
+            }
+            else if(res & E_ACCESSDENIED) {
+                PRINT_ERROR("A general access-denied error.") ;
+            }
+            else if(res & E_FAIL) {
+                PRINT_ERROR("An unspecified failure has occurred.") ;
+            }
+            else if(res & E_HANDLE) {
+                PRINT_ERROR("An invalid handle was used.") ;
+            }
+            else if(res & E_INVALIDARG) {
+                PRINT_ERROR("One or more arguments are invalid.") ;
+            }
+            else if(res & E_NOINTERFACE) {
+                PRINT_ERROR("The QueryInterface method did not recognize the requested interface. The interface is not supported.") ;
+            }
+            else if(res & E_NOTIMPL) {
+                PRINT_ERROR("The method is not implemented.") ;
+            }
+            else if(res & E_OUTOFMEMORY) {
+                PRINT_ERROR("The method failed to allocate necessary memory.") ;
+            }
+            else if(res & E_PENDING) {
+                PRINT_ERROR("The data necessary to complete the operation is not yet available.") ;
+            }
+            else if(res & E_POINTER) {
+                PRINT_ERROR("An invalid pointer was used.") ;
+            }
+            else if(res & E_UNEXPECTED) {
+                PRINT_ERROR("A catastrophic failure has occurred") ;
+            }
+            else {
+                PRINT_ERROR("Unknown error was occurred") ;
+            }
+            return res ;
+        }
     }
 }

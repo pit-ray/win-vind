@@ -11,6 +11,10 @@
 
 namespace vind
 {
+    //
+    // IUIAutomationElement interface:
+    // https://docs.microsoft.com/en-us/windows/win32/api/uiautomationclient/nn-uiautomationclient-iuiautomationelement
+    //
     class UIWalker {
     private:
         struct Impl ;

@@ -16,6 +16,7 @@
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
+#include "util/winwrap.hpp"
 
 #if defined(DEBUG)
 #include <iostream>
@@ -128,7 +129,6 @@ namespace vind
         }
 
         if(gparams::get_b("autofocus_textarea")) {
-            std::cout << "AutoFocus\n" ;
             TextAreaScanner scanner ;
 
             if(auto hwnd = GetForegroundWindow()) {
@@ -138,17 +138,20 @@ namespace vind
                 for(auto& elem : editables) {
                     // scan GUI objects only at leaves in tree.
                     RECT rect ;
-                    if(FAILED(elem->get_CachedBoundingRectangle(&rect))) {
+                    if(util::is_failed(elem->get_CachedBoundingRectangle(&rect))) {
                         throw RUNTIME_EXCEPT("Could not get the a rectangle of a element.") ;
                     }
 
                     std::cout << util::width(rect) << ", " << util::height(rect) << std::endl ;
+
+                    if(util::is_failed(elem->SetFocus())) {
+                        std::cout << "Focusing failed\n" ;
+                        continue ;
+                    }
+                    std::cout << "Focused\n" ;
+                    break ;
                 }
             }
-            else {
-                std::cout << "NULL hwnd\n" ;
-            }
-            std::cout << "finished\n" ;
         }
 
         keyabsorber::close_all_ports_with_refresh() ;

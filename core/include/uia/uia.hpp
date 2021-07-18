@@ -13,6 +13,8 @@
 
 #include "enable_gcc_warning.hpp"
 
+#include "uia/smartcom.hpp"
+
 #include <memory>
 
 
@@ -25,19 +27,9 @@ namespace vind
             }
         }
 
-        using SmartElement      = std::shared_ptr<IUIAutomationElement> ;
-        using SmartElementArray = std::shared_ptr<IUIAutomationElementArray> ;
-        using SmartCacheReq     = std::shared_ptr<IUIAutomationCacheRequest> ;
-
-        inline SmartElement make_SmartElement(IUIAutomationElement* ptr) {
-            return SmartElement(ptr, delete_com) ;
-        }
-        inline SmartElementArray make_SmartElementArray(IUIAutomationElementArray* ptr) {
-            return SmartElementArray(ptr, delete_com) ;
-        }
-        inline SmartCacheReq make_SmartCacheReq(IUIAutomationCacheRequest* ptr) {
-            return SmartCacheReq(ptr, delete_com) ;
-        }
+        using SmartElement      = SmartCom<IUIAutomationElement> ;
+        using SmartElementArray = SmartCom<IUIAutomationElementArray> ;
+        using SmartCacheReq     = SmartCom<IUIAutomationCacheRequest> ;
 
         HRESULT create_UIAutomation(IUIAutomation** ptr) ;
 

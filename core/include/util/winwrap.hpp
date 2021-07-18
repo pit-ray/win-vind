@@ -50,6 +50,8 @@ namespace vind
                 bool show_console_window=true) ;
 
         int shell_execute(const std::string& url) ;
+
+        bool is_failed(HRESULT result) noexcept ;
     }
 }
 

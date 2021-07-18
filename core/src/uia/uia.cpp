@@ -1,6 +1,7 @@
 #include "uia/uia.hpp"
 
 #include "util/def.hpp"
+#include "util/winwrap.hpp"
 
 #include "disable_gcc_warning.hpp"
 
@@ -17,12 +18,11 @@
 namespace vind
 {
     namespace uiauto {
-
         CUIA::CUIA()
         : cuia(nullptr)
         {
             CoInitialize(NULL) ;
-            if(FAILED(create_UIAutomation(&cuia))) {
+            if(util::is_failed(create_UIAutomation(&cuia))) {
                 throw LOGIC_EXCEPT("Could not create UIAutomation.") ;
             }
             if(!cuia) {

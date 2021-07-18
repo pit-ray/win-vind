@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include "bind/emu/simple_text_selecter.hpp"
+#include "bind/mode/text_area_scanner.hpp"
 #include "err_logger.hpp"
 #include "g_params.hpp"
 #include "io/keybrd.hpp"
@@ -14,6 +15,7 @@
 #include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
 
 #if defined(DEBUG)
 #include <iostream>
@@ -127,6 +129,26 @@ namespace vind
 
         if(gparams::get_b("autofocus_textarea")) {
             std::cout << "AutoFocus\n" ;
+            TextAreaScanner scanner ;
+
+            if(auto hwnd = GetForegroundWindow()) {
+                std::vector<uiauto::SmartElement> editables{} ;
+                scanner.scan(editables, hwnd) ;
+
+                for(auto& elem : editables) {
+                    // scan GUI objects only at leaves in tree.
+                    RECT rect ;
+                    if(FAILED(elem->get_CachedBoundingRectangle(&rect))) {
+                        throw RUNTIME_EXCEPT("Could not get the a rectangle of a element.") ;
+                    }
+
+                    std::cout << util::width(rect) << ", " << util::height(rect) << std::endl ;
+                }
+            }
+            else {
+                std::cout << "NULL hwnd\n" ;
+            }
+            std::cout << "finished\n" ;
         }
 
         keyabsorber::close_all_ports_with_refresh() ;

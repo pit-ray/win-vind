@@ -35,7 +35,7 @@ namespace vind
     Box2D::~Box2D() noexcept = default ;
 
     Box2D::Box2D(const Box2D& rhs)
-    : pimpl(rhs.pimpl ? std::make_unique<Impl>(*pimpl) : std::make_unique<Impl>())
+    : pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
     {}
     Box2D& Box2D::operator=(const Box2D& rhs)
     {

@@ -11,14 +11,73 @@
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
+#include "util/container.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
 #include "util/winwrap.hpp"
+
+
+namespace
+{
+    using namespace vind ;
+
+    struct ProcessScanInfo {
+        DWORD pid ;
+        std::vector<Point2D>& points ;
+    } ;
+
+    BOOL CALLBACK ScanCenterPoint(HWND hwnd, LPARAM lparam) {
+        auto obj_list = reinterpret_cast<std::vector<Point2D>*>(lparam) ;
+
+        if(!IsWindowVisible(hwnd)) {
+            return TRUE ;
+        }
+        if(!IsWindowEnabled(hwnd)) {
+            return TRUE ;
+        }
+
+        //also register the position of the other thread window's title bar.
+        RECT rect ;
+        if(!GetWindowRect(hwnd, &rect)) {
+            return TRUE ;
+        }
+
+        if(util::width(rect) == 0 || util::height(rect) == 0) {
+            return TRUE ;
+        }
+        if(rect.left < 0 || rect.top < 0 || rect.right < 0 || rect.bottom < 0) {
+            return TRUE ;
+        }
+
+        obj_list->emplace_back(
+                util::center_x(rect),
+                util::center_y(rect)) ;
+        return TRUE ;
+    }
+
+    BOOL CALLBACK EnumerateAllThread(HWND hwnd, LPARAM lparam) {
+        auto psinfo = reinterpret_cast<ProcessScanInfo*>(lparam) ;
+
+        DWORD procid ;
+        auto thid = GetWindowThreadProcessId(hwnd, &procid) ;
+
+        if(procid == psinfo->pid) {
+            //enumerate all threads owned by the parent process.
+            EnumThreadWindows(
+                    thid, ScanCenterPoint,
+                    reinterpret_cast<LPARAM>(&(psinfo->points))) ;
+        }
+
+        return TRUE ;
+    }
+}
+
 
 namespace vind
 {
     struct EasyClickCore::Impl {
         UIScanner scanner_{} ;
-        std::vector<Box2D> rects_{} ;
+        std::vector<uiauto::SmartElement> elements_{} ;
         std::vector<Point2D> positions_{} ;
         std::vector<Hint> hints_{} ;
         std::vector<std::string> strhints_{} ;
@@ -30,7 +89,7 @@ namespace vind
     : pimpl(std::make_unique<Impl>())
     {
         pimpl->positions_.reserve(2048) ;
-        pimpl->rects_.reserve(2048) ;
+        pimpl->elements_.reserve(2048) ;
         pimpl->hints_.reserve(2048) ;
         pimpl->strhints_.reserve(2048) ;
     }
@@ -42,15 +101,48 @@ namespace vind
 
     void EasyClickCore::scan_ui_objects(HWND hwnd) const {
         pimpl->hints_.clear() ;
-        pimpl->rects_.clear() ;
+        pimpl->elements_.clear() ;
         pimpl->positions_.clear() ;
         pimpl->strhints_.clear() ;
 
-        pimpl->scanner_.scan(pimpl->rects_, hwnd) ;
-
-        for(auto& r : pimpl->rects_) {
-            pimpl->positions_.emplace_back(r.center()) ;
+        RECT root_rect ;
+        if(!GetWindowRect(hwnd, &root_rect)) {
+            throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
         }
+
+        std::cout << "@1\n" ;
+        pimpl->scanner_.scan(pimpl->elements_, hwnd) ;
+        std::cout << "@2\n" ;
+
+        std::cout << "Detected: " << pimpl->elements_.size() << std::endl ;
+
+        for(auto& elem : pimpl->elements_) {
+            // scan GUI objects only at leaves in tree.
+            RECT rect ;
+            if(FAILED(elem->get_CachedBoundingRectangle(&rect))) {
+                throw RUNTIME_EXCEPT("Could not get a rectangle of a element.") ;
+            }
+
+            if(util::is_fully_in_range(rect, root_rect)) {
+                pimpl->positions_.emplace_back(
+                        util::center_x(rect),
+                        util::center_y(rect)) ;
+            }
+        }
+
+        std::cout << "POST_PROCESS\n" ;
+
+        //enumerate all window owned by the foreground window process.
+        DWORD procid ;
+        if(GetWindowThreadProcessId(hwnd, &procid)) {
+            ProcessScanInfo psinfo{procid, pimpl->positions_} ;
+            if(!EnumWindows(EnumerateAllThread, reinterpret_cast<LPARAM>(&psinfo))) {
+                throw RUNTIME_EXCEPT("Failed to scan for threads in the same process.") ;
+            }
+        }
+        std::cout << "REMOVE\n" ;
+
+        util::remove_deplication(pimpl->positions_) ;
 
         assign_identifier_hints(pimpl->positions_.size(), pimpl->hints_) ;
         convert_hints_to_strings(pimpl->hints_, pimpl->strhints_) ;

@@ -16,15 +16,14 @@ namespace vind
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        virtual void setup_cache_request(uiauto::SmartCacheReq& req) ;
+        virtual void setup_cache_request(uiauto::SmartCacheReq req) ;
 
-        virtual bool is_target(uiauto::SmartElement& elem) ;
+        virtual bool pinpoint_element(uiauto::SmartElement elem) ;
+        virtual bool filter_element(uiauto::SmartElement elem) ;
 
-        void scan_childrens(
-                uiauto::SmartElementArray& parents,
-                std::vector<Box2D>& obj_list,
-                const RECT& root_rect) ;
-
+        bool scan_childrens(
+                uiauto::SmartElementArray parents,
+                std::vector<uiauto::SmartElement>& elements) ;
 
     public:
         explicit UIWalker() ;
@@ -39,7 +38,7 @@ namespace vind
         UIWalker(const UIWalker&)            = delete ;
         UIWalker& operator=(const UIWalker&) = delete ;
 
-        virtual void scan(std::vector<Box2D>& obj_list, HWND hwnd) ;
+        virtual void scan(std::vector<uiauto::SmartElement>& elements, HWND hwnd) ;
     } ;
 }
 

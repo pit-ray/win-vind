@@ -10,11 +10,10 @@ namespace vind
 {
     class UIScanner : public UIWalker {
     private:
-        virtual bool is_target(uiauto::SmartElement& elem) override ;
+        virtual bool filter_element(uiauto::SmartElement elem) override ;
 
     public:
         explicit UIScanner() ;
-        void scan(std::vector<Box2D>& obj_list, HWND hwnd) override ;
     } ;
 }
 

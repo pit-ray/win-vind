@@ -89,6 +89,7 @@ add_library(mode STATIC
     src/bind/mode/change_mode.cpp
     src/bind/mode/command_mode.cpp
     src/bind/mode/instant_mode.cpp
+    src/bind/mode/text_area_scanner.cpp
 )
 
 add_library(mouse STATIC

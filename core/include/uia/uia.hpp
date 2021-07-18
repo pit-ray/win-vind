@@ -25,9 +25,9 @@ namespace vind
             }
         }
 
-        using SmartElement      = std::unique_ptr<IUIAutomationElement, decltype(&delete_com)> ;
-        using SmartElementArray = std::unique_ptr<IUIAutomationElementArray, decltype(&delete_com)> ;
-        using SmartCacheReq     = std::unique_ptr<IUIAutomationCacheRequest, decltype(&delete_com)> ;
+        using SmartElement      = std::shared_ptr<IUIAutomationElement> ;
+        using SmartElementArray = std::shared_ptr<IUIAutomationElementArray> ;
+        using SmartCacheReq     = std::shared_ptr<IUIAutomationCacheRequest> ;
 
         inline SmartElement make_SmartElement(IUIAutomationElement* ptr) {
             return SmartElement(ptr, delete_com) ;

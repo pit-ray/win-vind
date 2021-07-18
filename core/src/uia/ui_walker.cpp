@@ -8,6 +8,10 @@
 #include <initializer_list>
 #include <vector>
 
+#if defined(DEBUG)
+#include <iostream>
+#endif
+
 
 namespace vind
 {
@@ -57,7 +61,7 @@ namespace vind
     UIWalker::UIWalker(UIWalker&&)            = default ;
     UIWalker& UIWalker::operator=(UIWalker&&) = default ;
 
-    void UIWalker::setup_cache_request(uiauto::SmartCacheReq& req) {
+    void UIWalker::setup_cache_request(uiauto::SmartCacheReq req) {
         req->AddProperty(UIA_IsEnabledPropertyId) ;
         req->AddProperty(UIA_IsOffscreenPropertyId) ;
         req->AddProperty(UIA_BoundingRectanglePropertyId) ;
@@ -66,41 +70,46 @@ namespace vind
                         AutomationElementMode::AutomationElementMode_None))) {
             throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
         }
+
         if(FAILED(req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
             throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
         }
     }
 
-    bool UIWalker::is_target(uiauto::SmartElement&) {
+    bool UIWalker::filter_element(uiauto::SmartElement) {
         return true ;
     }
+    bool UIWalker::pinpoint_element(uiauto::SmartElement) {
+        return false ;
+    }
 
-    void UIWalker::scan_childrens(
-            uiauto::SmartElementArray& parents,
-            std::vector<Box2D>& obj_list,
-            const RECT& root_rect) {
+    bool UIWalker::scan_childrens(
+            uiauto::SmartElementArray parents,
+            std::vector<uiauto::SmartElement>& elements) {
 
         int length ;
         parents->get_Length(&length) ;
         if(length == 0) {
-            return ;
+            return true ; // continue
         }
 
-        IUIAutomationElement* elem_raw ;
-        auto elem = uiauto::make_SmartElement(nullptr) ;
-
-        IUIAutomationElementArray* children_raw ;
-        auto children = uiauto::make_SmartElementArray(nullptr) ;
+        // IUIAutomationElement* elem_raw ;
+        // auto elem = uiauto::make_SmartElement(nullptr) ;
+        //
+        // IUIAutomationElementArray* children_raw ;
+        // auto children = uiauto::make_SmartElementArray(nullptr) ;
 
         BOOL flag ;
         for(int i = 0 ; i < length ; i ++) {
+            IUIAutomationElement* elem_raw ;
             if(FAILED(parents->GetElement(i, &elem_raw))) {
                 continue ;
             }
             if(!elem_raw) {
                 continue ;
             }
-            elem.reset(elem_raw) ;
+            auto elem = uiauto::make_SmartElement(elem_raw) ;
+            // elem.reset(elem_raw) ;
 
             if(FAILED(elem->get_CachedIsEnabled(&flag))) {
                 continue ;
@@ -109,39 +118,42 @@ namespace vind
                 continue ;
             }
 
+            IUIAutomationElementArray* children_raw ;
             if(FAILED(elem->GetCachedChildren(&children_raw))) {
                 continue ;
             }
-            if(children_raw != nullptr) {
-                children.reset(children_raw) ;
+            if(children_raw) {
+                auto children = uiauto::make_SmartElementArray(children_raw) ;
+                // children.reset(children_raw) ;
+
+                auto before_size = elements.size() ;
 
                 //recursive calling
-                scan_childrens(children, obj_list, root_rect) ;
-
-                continue ;
-            }
-
-            //scan GUI objects only at leaves in tree.
-            try {
-                RECT rect ;
-                if(FAILED(elem->get_CachedBoundingRectangle(&rect))) {
-                    throw std::runtime_error("Could not get the a rectangle of element.") ;
+                if(!scan_childrens(children, elements)) {
+                    return false ;
                 }
 
-                // ignore windows that are larger than the root rectangle.
-                if(!util::is_fully_in_range(rect, root_rect)) {
-                    throw std::runtime_error("The rectangle of element exists in a invalid range.") ;
+                // Detected children as target
+                if(elements.size() > before_size) {
+                    continue ;
                 }
-
-                obj_list.emplace_back(rect) ;
             }
-            catch(const std::runtime_error&) {
+
+            if(pinpoint_element(elem)) {
+                elements.clear() ;
+                elements.push_back(std::move(elem)) ;
+                return false ; // break
+            }
+            if(filter_element(elem)) {
+                elements.push_back(std::move(elem)) ;
                 continue ;
             }
         }
+
+        return true ; // continue
     }
 
-    void UIWalker::scan(std::vector<Box2D>& obj_list, HWND hwnd) {
+    void UIWalker::scan(std::vector<uiauto::SmartElement>& elements, HWND hwnd) {
         IUIAutomationElement* elem_raw ;
         if(FAILED(pimpl->cuia_->ElementFromHandle(hwnd, &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
@@ -151,10 +163,12 @@ namespace vind
         }
         auto elem = uiauto::make_SmartElement(elem_raw) ;
 
+        elem_raw = nullptr ;
         if(FAILED(elem->BuildUpdatedCache(pimpl->cache_request_.get(), &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
         }
         if(elem_raw != nullptr) {
+            std::cout << "Updated\n" ;
             elem.reset(elem_raw) ; //successfully updated
         }
 
@@ -173,21 +187,18 @@ namespace vind
             return ;
         }
 
-        RECT rect ;
-        if(!GetWindowRect(hwnd, &rect)) {
-            throw RUNTIME_EXCEPT("Could not get the rectangle of window.") ;
-        }
-
         IUIAutomationElementArray* children_raw ;
         if(SUCCEEDED(elem->GetCachedChildren(&children_raw))) {
             if(children_raw) {
+                std::cout << "Start\n" ;
                 auto children = uiauto::make_SmartElementArray(children_raw) ;
-                scan_childrens(children, obj_list, rect) ;
+                scan_childrens(children, elements) ;
+                std::cout << "End\n" ;
             }
             else {
                 //If the parent element is a leaf in tree.
-                if(is_target(elem)) {
-                    obj_list.emplace_back(std::move(rect)) ;
+                if(filter_element(elem) || pinpoint_element(elem)) {
+                    elements.push_back(elem) ;
                 }
             }
         }
@@ -195,6 +206,7 @@ namespace vind
             throw RUNTIME_EXCEPT("Could not get a cached children as IUIAutomationElementArray.") ;
         }
 
-        util::remove_deplication(obj_list) ;
+        elem.reset() ;
+        std::cout<< "finished\n" ;
     }
 }

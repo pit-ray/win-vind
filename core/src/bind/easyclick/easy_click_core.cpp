@@ -110,10 +110,8 @@ namespace vind
             throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
         }
 
-        pimpl->scanner_.scan(pimpl->elements_, hwnd) ;
-
+        pimpl->scanner_.scan(hwnd, pimpl->elements_) ;
         for(auto& elem : pimpl->elements_) {
-            // scan GUI objects only at leaves in tree.
             RECT rect ;
             if(util::is_failed(elem->get_CachedBoundingRectangle(&rect))) {
                 throw RUNTIME_EXCEPT("Could not get a rectangle of a element.") ;
@@ -126,7 +124,7 @@ namespace vind
             }
         }
 
-        //enumerate all window owned by the foreground window process.
+        // enumerate all window owned by the foreground window process.
         DWORD procid ;
         if(GetWindowThreadProcessId(hwnd, &procid)) {
             ProcessScanInfo psinfo{procid, pimpl->positions_} ;

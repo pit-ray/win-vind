@@ -42,7 +42,14 @@ namespace vind
         UIWalker(const UIWalker&)            = delete ;
         UIWalker& operator=(const UIWalker&) = delete ;
 
-        virtual void scan(std::vector<uiauto::SmartElement>& elements, HWND hwnd) ;
+        //
+        // If you want to use SetFocus or GetCurrentPropertyValue,
+        // you must call this function to enable full references.
+        // However, there are some overheads.
+        //
+        void enable_fullcontrol() ;
+
+        virtual void scan(HWND hwnd, std::vector<uiauto::SmartElement>& elements) ;
     } ;
 }
 

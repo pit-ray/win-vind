@@ -63,6 +63,7 @@ namespace vind
 
         LONG width() const noexcept ;
         LONG height() const noexcept ;
+        LONG area() const noexcept ;
 
         const RECT& data() const noexcept ;
         RECT& data() noexcept ;
@@ -144,7 +145,7 @@ namespace vind
         bool is_over(const Box2D& rhs) const noexcept ;
 
         static LONG l1_distance(const Box2D& lhs, const Box2D& rhs) noexcept ;
-        static LONG l2_distance(const Box2D& lhs, const Box2D& rhs) noexcept ;
+        static double l2_distance(const Box2D& lhs, const Box2D& rhs) noexcept ;
         static LONG l2_distance_nosq(const Box2D& lhs, const Box2D& rhs) noexcept ;
     } ;
 }

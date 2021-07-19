@@ -124,44 +124,44 @@ namespace vind
                 return false ;
             }
 
-            auto res = FAILED(result) ;
-            if(res & E_ABORT) {
+            auto bool_result = FAILED(result) ;
+            if(result == E_ABORT) {
                 PRINT_ERROR("The operation was aborted because of an unspecified error.") ;
             }
-            else if(res & E_ACCESSDENIED) {
+            else if(result == E_ACCESSDENIED) {
                 PRINT_ERROR("A general access-denied error.") ;
             }
-            else if(res & E_FAIL) {
+            else if(result == E_FAIL) {
                 PRINT_ERROR("An unspecified failure has occurred.") ;
             }
-            else if(res & E_HANDLE) {
+            else if(result == E_HANDLE) {
                 PRINT_ERROR("An invalid handle was used.") ;
             }
-            else if(res & E_INVALIDARG) {
+            else if(result == E_INVALIDARG) {
                 PRINT_ERROR("One or more arguments are invalid.") ;
             }
-            else if(res & E_NOINTERFACE) {
+            else if(result == E_NOINTERFACE) {
                 PRINT_ERROR("The QueryInterface method did not recognize the requested interface. The interface is not supported.") ;
             }
-            else if(res & E_NOTIMPL) {
+            else if(result == E_NOTIMPL) {
                 PRINT_ERROR("The method is not implemented.") ;
             }
-            else if(res & E_OUTOFMEMORY) {
+            else if(result == E_OUTOFMEMORY) {
                 PRINT_ERROR("The method failed to allocate necessary memory.") ;
             }
-            else if(res & E_PENDING) {
+            else if(result == E_PENDING) {
                 PRINT_ERROR("The data necessary to complete the operation is not yet available.") ;
             }
-            else if(res & E_POINTER) {
+            else if(result == E_POINTER) {
                 PRINT_ERROR("An invalid pointer was used.") ;
             }
-            else if(res & E_UNEXPECTED) {
+            else if(result == E_UNEXPECTED) {
                 PRINT_ERROR("A catastrophic failure has occurred") ;
             }
             else {
                 PRINT_ERROR("Unknown error was occurred") ;
             }
-            return res ;
+            return bool_result ;
         }
     }
 }

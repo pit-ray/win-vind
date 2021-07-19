@@ -82,14 +82,10 @@ namespace vind
             throw RUNTIME_EXCEPT("Could not add property: BoundingRectangle") ;
         }
 
-        // If you use SetFocus() or Current*() methods,
-        // Could not call with AutomationElementMode::AutomationElementMode_None.
-        /*
         if(util::is_failed(req->put_AutomationElementMode(
                         AutomationElementMode::AutomationElementMode_None))) {
-            throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode.") ;
+            throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode to read-only mode.") ;
         }
-        */
 
         if(util::is_failed(req->put_TreeScope(TreeScope::TreeScope_Subtree))) {
             throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
@@ -101,6 +97,13 @@ namespace vind
     }
     bool UIWalker::pinpoint_element(uiauto::SmartElement) {
         return false ;
+    }
+
+    void UIWalker::enable_fullcontrol() {
+        if(util::is_failed(pimpl->cache_request_->put_AutomationElementMode(
+                        AutomationElementMode::AutomationElementMode_Full))) {
+            throw LOGIC_EXCEPT("Could not set UI Automation Element Mode to full-reference mode.") ;
+        }
     }
 
     bool UIWalker::scan_childrens(
@@ -151,12 +154,13 @@ namespace vind
                 }
             }
 
-            if(pinpoint_element(elem)) {
-                elements.clear() ;
-                elements.push_back(std::move(elem)) ;
-                return false ; // break
-            }
             if(filter_element(elem)) {
+                if(pinpoint_element(elem)) {
+                    elements.clear() ;
+                    elements.push_back(std::move(elem)) ;
+                    return false ; // break
+                }
+
                 elements.push_back(std::move(elem)) ;
                 continue ;
             }
@@ -165,7 +169,7 @@ namespace vind
         return true ; // continue
     }
 
-    void UIWalker::scan(std::vector<uiauto::SmartElement>& elements, HWND hwnd) {
+    void UIWalker::scan(HWND hwnd, std::vector<uiauto::SmartElement>& elements) {
         IUIAutomationElement* elem_raw ;
         if(util::is_failed(pimpl->cuia_->ElementFromHandle(hwnd, &elem_raw))) {
             throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;

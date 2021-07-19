@@ -12,7 +12,7 @@ namespace vind
         POINT pos_ ;
 
     public:
-        explicit Point2D(LONG x, LONG y)
+        explicit Point2D(LONG x=0, LONG y=0)
         : pos_{x, y}
         {}
 

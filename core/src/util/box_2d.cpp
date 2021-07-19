@@ -40,7 +40,7 @@ namespace vind
     Box2D& Box2D::operator=(const Box2D& rhs)
     {
         if(rhs.pimpl) {
-            *(rhs.pimpl) = *(rhs.pimpl) ;
+            *pimpl = *(rhs.pimpl) ;
         }
         return *this ;
     }
@@ -50,7 +50,7 @@ namespace vind
         return *this ;
     }
 
-    Box2D::Box2D(Box2D&&) = default ;
+    Box2D::Box2D(Box2D&&)            = default ;
     Box2D& Box2D::operator=(Box2D&&) = default ;
 
     LONG Box2D::left() const noexcept {
@@ -84,6 +84,10 @@ namespace vind
 
     LONG Box2D::height() const noexcept {
         return util::height(pimpl->rect_) ;
+    }
+
+    LONG Box2D::area() const noexcept {
+        return util::width(pimpl->rect_) * util::height(pimpl->rect_) ;
     }
 
     const RECT& Box2D::data() const noexcept {
@@ -195,7 +199,7 @@ namespace vind
     LONG Box2D::l1_distance(const Box2D& lhs, const Box2D& rhs) noexcept {
         return util::l1_distance(lhs.data(), rhs.data()) ;
     }
-    LONG Box2D::l2_distance(const Box2D& lhs, const Box2D& rhs) noexcept {
+    double Box2D::l2_distance(const Box2D& lhs, const Box2D& rhs) noexcept {
         return util::l2_distance(lhs.data(), rhs.data()) ;
     }
     LONG Box2D::l2_distance_nosq(const Box2D& lhs, const Box2D& rhs) noexcept {

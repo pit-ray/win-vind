@@ -3,7 +3,7 @@
 #include <windows.h>
 
 #include "bind/emu/simple_text_selecter.hpp"
-#include "bind/mode/text_area_scanner.hpp"
+#include "bind/mode/options.hpp"
 #include "err_logger.hpp"
 #include "g_params.hpp"
 #include "io/keybrd.hpp"
@@ -128,32 +128,6 @@ namespace vind
             textselect::unselect() ;
         }
 
-        if(gparams::get_b("autofocus_textarea")) {
-            TextAreaScanner scanner ;
-
-            if(auto hwnd = GetForegroundWindow()) {
-                std::vector<uiauto::SmartElement> editables{} ;
-                scanner.scan(editables, hwnd) ;
-
-                for(auto& elem : editables) {
-                    // scan GUI objects only at leaves in tree.
-                    RECT rect ;
-                    if(util::is_failed(elem->get_CachedBoundingRectangle(&rect))) {
-                        throw RUNTIME_EXCEPT("Could not get the a rectangle of a element.") ;
-                    }
-
-                    std::cout << util::width(rect) << ", " << util::height(rect) << std::endl ;
-
-                    if(util::is_failed(elem->SetFocus())) {
-                        std::cout << "Focusing failed\n" ;
-                        continue ;
-                    }
-                    std::cout << "Focused\n" ;
-                    break ;
-                }
-            }
-        }
-
         keyabsorber::close_all_ports_with_refresh() ;
         keyabsorber::absorb() ;
 
@@ -161,6 +135,22 @@ namespace vind
         if(vclmodeout) {
             VirtualCmdLine::reset() ;
             VirtualCmdLine::msgout("-- EDI NORMAL --") ;
+        }
+
+        if(gparams::get_b("autofocus_textarea")) {
+            auto hwnd = GetForegroundWindow() ;
+            if(!hwnd) {
+                throw RUNTIME_EXCEPT("There is no foreground window.") ;
+            }
+
+            Point2D pos ;
+            if(!GetCursorPos(&(pos.data()))) {
+                throw RUNTIME_EXCEPT("Could not get the cursor position.") ;
+            }
+
+            // All instances share TextAreaScanner to keep staticity of sprocess.
+            static TextAreaScanner scanner ;
+            options::focus_nearest_textarea(hwnd, pos, scanner) ;
         }
     }
     void ToEdiNormal::sprocess(NTypeLogger& parent_lgr) {

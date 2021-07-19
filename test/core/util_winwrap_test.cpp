@@ -12,6 +12,15 @@
 #include <stdexcept>
 #include <utility>
 
+namespace vind
+{
+    namespace errlogger {
+        void error(const char*, const char*) {
+            return ;
+        }
+    }
+}
+
 
 // define stub ------------------------------------------
 #include <fff.h>

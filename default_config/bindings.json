@@ -31,7 +31,7 @@
         "gndef": ["<rdef>"],
         "gvdef": ["<rdef>"],
         "idef": ["<rdef>"],
-        "rdef": ["<c-i>"],
+        "rdef": ["<Esc-Down>"],
         "en": "Resident Mode",
         "ja": "常駐モード"
     },
@@ -79,7 +79,7 @@
         "gndef": ["i"],
         "gvdef": [],
         "idef": [],
-        "rdef": ["<Esc-i>"],
+        "rdef": ["<Esc-up>"],
         "en": "Insert Mode",
         "ja": "インサートモード"
     },

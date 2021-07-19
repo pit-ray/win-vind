@@ -21,7 +21,7 @@ parent: Cheat Sheet
 |Bindings|ID|Note|
 |:---:|:---:|:---|
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
-|`<c-i>`|**to_resident**|Resident Mode|
+|`<Esc-Down>`|**to_resident**|Resident Mode|
 |`i`|**to_insert**|Insert Mode|
 |`v`|**to_edi_visual**|Visual Mode|
 |`V`|**to_edi_visual_line**|Visual-Line Mode|

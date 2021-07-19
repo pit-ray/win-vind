@@ -24,7 +24,7 @@ parent: Cheat Sheet
 |`v`|**to_gui_visual**|GUI Visual Mode|
 |`I`, `<Esc-Right>`|**to_edi_normal**|Editor Normal Mode|
 |`i`|**to_insert**|Insert Mode|
-|`<c-i>`|**to_resident**|Resident Mode|
+|`<Esc-Down>`|**to_resident**|Resident Mode|
 |`:`|**to_command**|Command Mode|
 
 

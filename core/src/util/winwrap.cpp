@@ -6,6 +6,8 @@
 #include <sstream>
 #include <unordered_set>
 
+#include <psapi.h>
+
 #if defined(DEBUG)
 #include <iostream>
 #endif
@@ -117,6 +119,21 @@ namespace vind
                             NULL, NULL,
                             util::s_to_ws(url).c_str(),
                             NULL, NULL, SW_SHOWNORMAL))) ;
+        }
+
+        std::string get_module_filename(HWND hwnd) {
+            DWORD procid ;
+            GetWindowThreadProcessId(hwnd, &procid) ;
+
+            auto handle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, procid) ;
+
+            WCHAR fullpath[MAX_PATH] ;
+            if(!GetModuleFileNameExW(handle, NULL, fullpath, MAX_PATH)) {
+                CloseHandle(handle) ;
+                throw RUNTIME_EXCEPT("Could not get module filename.") ;
+            }
+            CloseHandle(handle) ;
+            return util::ws_to_s(fullpath) ;
         }
 
         bool is_failed(HRESULT result) noexcept {

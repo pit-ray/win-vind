@@ -57,6 +57,11 @@ namespace vind
         LONG top() const noexcept ;
         LONG bottom() const noexcept ;
 
+        LONG& left() noexcept ;
+        LONG& right() noexcept ;
+        LONG& top() noexcept ;
+        LONG& bottom() noexcept ;
+
         Point2D center() const noexcept ;
         LONG center_x() const noexcept ;
         LONG center_y() const noexcept ;

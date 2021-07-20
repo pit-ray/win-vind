@@ -351,5 +351,10 @@
         "value": 100,
         "en": "Window height delta for resizing",
         "ja": "ウィンドウの高さのリサイズ量"
+    },
+    "arrangewin_ignore": {
+        "value": "",
+        "en": "List to ignore in ArrangeWindows",
+        "ja": "ウィンドウの整列の例外リスト"
     }
 }

@@ -51,6 +51,8 @@ namespace vind
 
         int shell_execute(const std::string& url) ;
 
+        std::string get_module_filename(HWND hwnd) ;
+
         bool is_failed(HRESULT result) noexcept ;
     }
 }

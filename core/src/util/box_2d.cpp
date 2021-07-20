@@ -66,6 +66,19 @@ namespace vind
         return pimpl->rect_.bottom ;
     }
 
+    LONG& Box2D::left() noexcept {
+        return pimpl->rect_.left ;
+    }
+    LONG& Box2D::top() noexcept {
+        return pimpl->rect_.top ;
+    }
+    LONG& Box2D::right() noexcept {
+        return pimpl->rect_.right ;
+    }
+    LONG& Box2D::bottom() noexcept {
+        return pimpl->rect_.bottom ;
+    }
+
     Point2D Box2D::center() const noexcept {
         return Point2D(center_x(), center_y()) ;
     }

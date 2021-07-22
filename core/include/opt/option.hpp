@@ -22,6 +22,8 @@ namespace vind
 
     public:
         explicit Option() ;
+        explicit Option(const std::string& name) ;
+        explicit Option(std::string&& name) ;
         virtual ~Option() noexcept ;
 
         Option(Option&&) noexcept ;
@@ -30,7 +32,7 @@ namespace vind
         Option(const Option&) = delete ;
         Option& operator=(const Option&) = delete ;
 
-        virtual std::string name() const noexcept =  0 ;
+        const std::string& name() const noexcept ;
 
         void enable() ;
         void disable() ;

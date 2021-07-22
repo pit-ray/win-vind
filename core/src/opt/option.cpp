@@ -17,16 +17,30 @@ namespace vind
     */
 
     struct Option::Impl {
-        bool flag ;
+        bool flag_ ;
+        std::string name_ ;
 
-        explicit Impl() : flag(false) {}
-        virtual ~Impl() noexcept = default ;
+        explicit Impl()
+        : Impl("undefined_option")
+        {}
 
-        Impl(Impl&&) noexcept = default ;
+        explicit Impl(const std::string& name)
+        : flag_(false),
+          name_(name)
+        {}
+
+        explicit Impl(std::string&& name)
+        : flag_(false),
+          name_(std::move(name))
+        {}
+
+        virtual ~Impl() noexcept         = default ;
+
+        Impl(Impl&&) noexcept            = default ;
         Impl& operator=(Impl&&) noexcept = default ;
 
-        Impl(const Impl&) = default ;
-        Impl& operator=(const Impl&) = default ;
+        Impl(const Impl&)                = default ;
+        Impl& operator=(const Impl&)     = default ;
     } ;
 
 
@@ -34,9 +48,21 @@ namespace vind
     : pimpl(std::make_unique<Impl>())
     {}
 
-    Option::~Option() noexcept                            = default ;
+    Option::Option(const std::string& name)
+    : pimpl(std::make_unique<Impl>(name))
+    {}
+
+    Option::Option(std::string&& name)
+    : pimpl(std::make_unique<Impl>(std::move(name)))
+    {}
+
+    Option::~Option() noexcept                     = default ;
     Option::Option(Option&&) noexcept              = default ;
     Option& Option::operator=(Option&&) noexcept   = default ;
+
+    const std::string& Option::name() const noexcept {
+        return pimpl->name_ ;
+    }
 
     void Option::enable() {
         try {
@@ -47,7 +73,7 @@ namespace vind
             return ;
         }
 
-        pimpl->flag = true ;
+        pimpl->flag_ = true ;
     }
 
     void Option::disable() {
@@ -58,15 +84,15 @@ namespace vind
             PRINT_ERROR(name() + " did not disable. " + e.what()) ;
             return ;
         }
-        pimpl->flag = false ;
+        pimpl->flag_ = false ;
     }
 
     bool Option::is_enabled() const noexcept {
-        return pimpl->flag ;
+        return pimpl->flag_ ;
     }
 
     void Option::process() const {
-        if(!pimpl->flag) {
+        if(!pimpl->flag_) {
             return ;
         }
 

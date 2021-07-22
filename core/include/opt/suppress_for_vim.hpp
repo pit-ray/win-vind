@@ -13,7 +13,7 @@ namespace vind
         void do_process() const override ;
 
     public:
-        static std::string sname() noexcept ;
+        explicit SuppressForVim() ;
     } ;
 }
 

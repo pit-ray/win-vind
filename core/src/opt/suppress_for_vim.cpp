@@ -15,9 +15,9 @@
 
 namespace vind
 {
-    std::string SuppressForVim::sname() noexcept {
-        return "suppress_for_vim" ;
-    }
+    SuppressForVim::SuppressForVim()
+    : OptionCreator("suppress_for_vim")
+    {}
 
     void SuppressForVim::do_enable() const {
     }

@@ -307,6 +307,11 @@
         "ja": "テキスト領域を自動選択",
         "value": false
     },
+    "uia_cachebuild": {
+        "en": "Async UI Automation Cache Build",
+        "ja": "非同期UI Automationキャッシュ生成",
+        "value": false
+    },
     "easyclick_fontsize": {
         "value": 14,
         "en": "EasyClick Font Size",

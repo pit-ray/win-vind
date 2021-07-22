@@ -154,6 +154,7 @@ target_link_libraries(bind ctrl emu file hotkey mode mouse proc easyclick window
 #target_link_libraries(bind dev)
 
 add_library(opt STATIC
+    src/opt/async_uia_cache_builder.cpp
     src/opt/autotrack_popup.cpp
     src/opt/dedicate_to_window.cpp
     src/opt/option.cpp

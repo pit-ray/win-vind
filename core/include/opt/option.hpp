@@ -6,12 +6,6 @@
 
 namespace vind
 {
-    class Option ;
-
-    namespace op {
-        using SPtr = std::shared_ptr<Option> ;
-    }
-
     class Option {
     private:
         struct Impl ;
@@ -21,6 +15,8 @@ namespace vind
         virtual void do_process() const = 0 ;
 
     public:
+        using SPtr = std::shared_ptr<Option> ;
+
         explicit Option() ;
         explicit Option(const std::string& name) ;
         explicit Option(std::string&& name) ;

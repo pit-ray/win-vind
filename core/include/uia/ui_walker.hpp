@@ -20,15 +20,6 @@ namespace vind
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        virtual void setup_cache_request(uiauto::SmartCacheReq req) ;
-
-        virtual bool pinpoint_element(uiauto::SmartElement elem) ;
-        virtual bool filter_element(uiauto::SmartElement elem) ;
-
-        bool scan_childrens(
-                uiauto::SmartElementArray parents,
-                std::vector<uiauto::SmartElement>& elements) ;
-
     public:
         explicit UIWalker() ;
         explicit UIWalker(PROPERTYID id) ;
@@ -49,7 +40,47 @@ namespace vind
         //
         void enable_fullcontrol() ;
 
-        virtual void scan(HWND hwnd, std::vector<uiauto::SmartElement>& elements) ;
+        // Initialize cache request
+        virtual void setup_cache_request(SmartCacheReq request) ;
+        SmartCacheReq clone_cache_request() const ;
+
+        // Filter functions
+        virtual bool pinpoint_element(const SmartElement& elem) ;
+        virtual bool filter_element(const SmartElement& elem) ;
+        virtual bool filter_root_element(const SmartElement& elem) ;
+
+        // True: otherwise
+        // False: Found pinpoint element
+        bool append_candidate(
+                SmartElement elem,
+                std::vector<SmartElement>& elements) ;
+
+        // True: otherwise
+        // False: Found pinpoint element
+        bool scan_childrens(
+                const std::vector<SmartElement>& parents,
+                std::vector<SmartElement>& elements) ;
+
+        // True: otherwise
+        // False: Found pinpoint element
+        bool scan_element_subtree(
+                const SmartElement& elem,
+                std::vector<SmartElement>& elements) ;
+
+
+        SmartElement update_element(const SmartElement& elem) ;
+
+        // with building cache
+        void scan(
+                HWND hwnd,
+                std::vector<SmartElement>& elements) ;
+
+        // without building cache
+        void scan(
+                const SmartElement& root,
+                std::vector<SmartElement>& elements) ;
+
+        SmartElement get_root_element(HWND hwnd) ;
     } ;
 }
 

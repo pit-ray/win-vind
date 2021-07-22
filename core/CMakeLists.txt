@@ -40,6 +40,7 @@ add_library(time STATIC
 
 add_library(uia STATIC
     src/uia/uia.cpp
+    src/uia/cuia.cpp
     src/uia/ui_walker.cpp
 )
 

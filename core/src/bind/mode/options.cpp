@@ -10,6 +10,7 @@
 
 #if defined(DEBUG)
 #include <iostream>
+#include "util/debug.hpp"
 #endif
 
 #undef max
@@ -23,7 +24,7 @@ namespace vind
                 const Point2D& point,
                 TextAreaScanner& instance) {
 
-            std::vector<uiauto::SmartElement> editables{} ;
+            std::vector<SmartElement> editables{} ;
             instance.scan(hwnd, editables) ;
 
             if(editables.empty()) {
@@ -37,7 +38,7 @@ namespace vind
                 return ;
             }
 
-            uiauto::SmartElement nearest ;
+            SmartElement nearest ;
             auto min_distance = std::numeric_limits<double>::max() ;
 
             for(auto& elem : editables) {

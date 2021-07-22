@@ -77,7 +77,7 @@ namespace vind
 {
     struct EasyClickCore::Impl {
         UIScanner scanner_{} ;
-        std::vector<uiauto::SmartElement> elements_{} ;
+        std::vector<SmartElement> elements_{} ;
         std::vector<Point2D> positions_{} ;
         std::vector<Hint> hints_{} ;
         std::vector<std::string> strhints_{} ;
@@ -133,6 +133,10 @@ namespace vind
             }
         }
 
+        if(pimpl->positions_.empty()) {
+            return ;
+        }
+
         util::remove_deplication(pimpl->positions_) ;
 
         assign_identifier_hints(pimpl->positions_.size(), pimpl->hints_) ;
@@ -140,6 +144,10 @@ namespace vind
     }
 
     void EasyClickCore::create_matching_loop(KeyCode sendkey) const {
+        if(pimpl->positions_.empty() || pimpl->hints_.empty()) {
+            return ;
+        }
+
         auto ft = pimpl->input_hinter_.launch_async_loop(
                 pimpl->positions_,
                 pimpl->hints_) ;

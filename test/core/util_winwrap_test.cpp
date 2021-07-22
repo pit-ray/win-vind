@@ -5,7 +5,6 @@
 #include "fakes/util_fake_string.hpp"
 
 #include "util/winwrap.cpp"
-#include "util/winwrap.hpp"
 
 #include <processthreadsapi.h>
 
@@ -39,6 +38,9 @@ FAKE_VALUE_FUNC(BOOL, CreateProcessW, \
         LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, \
         BOOL, DWORD, LPVOID, const wchar_t*, \
         STARTUPINFOW*, PROCESS_INFORMATION*) ;
+FAKE_VALUE_FUNC(DWORD, GetWindowThreadProcessId, HWND, LPDWORD) ;
+FAKE_VALUE_FUNC(DWORD, GetModuleFileNameExW, HANDLE, HMODULE, LPWSTR, DWORD) ;
+FAKE_VALUE_FUNC(HANDLE, OpenProcess, DWORD, BOOL, DWORD) ;
 
 namespace
 {

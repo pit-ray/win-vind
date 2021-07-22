@@ -23,7 +23,7 @@ namespace vind
         UIWalker::enable_fullcontrol() ;
     }
 
-    bool TextAreaScanner::pinpoint_element(uiauto::SmartElement elem) {
+    bool TextAreaScanner::pinpoint_element(const SmartElement& elem) {
         BOOL flag ;
         if(util::is_failed(elem->get_CachedHasKeyboardFocus(&flag))) {
             throw RUNTIME_EXCEPT("Could not get a cached property value: HasKeyboardFocus.") ;
@@ -31,7 +31,7 @@ namespace vind
         return flag == TRUE ;
     }
 
-    bool TextAreaScanner::filter_element(uiauto::SmartElement elem) {
+    bool TextAreaScanner::filter_element(const SmartElement& elem) {
         VARIANT val ;
 
         if(util::is_failed(elem->GetCachedPropertyValue(

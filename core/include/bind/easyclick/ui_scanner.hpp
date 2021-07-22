@@ -8,12 +8,9 @@
 
 namespace vind
 {
-    class UIScanner : public UIWalker {
-    private:
-        virtual bool filter_element(uiauto::SmartElement elem) override ;
-
-    public:
+    struct UIScanner : public UIWalker {
         explicit UIScanner() ;
+        virtual bool filter_element(const SmartElement& elem) override ;
     } ;
 }
 

@@ -313,7 +313,7 @@
         "ja": "非同期UI Automationキャッシュ生成"
     },
     "uiacachebuild_validms": {
-        "value": 1000,
+        "value": 2000,
         "en": "Valid period of UI Automation cache(ms)",
         "ja": "非同期UI Automationキャッシュの有効期間(ms)"
     },

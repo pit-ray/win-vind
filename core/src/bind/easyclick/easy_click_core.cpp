@@ -14,6 +14,7 @@
 #include "key/ntype_logger.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "util/container.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/winwrap.hpp"

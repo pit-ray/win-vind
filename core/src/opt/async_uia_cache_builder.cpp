@@ -2,7 +2,9 @@
 
 #include "g_params.hpp"
 #include "key/key_absorber.hpp"
+#include "mode.hpp"
 #include "uia/uia.hpp"
+#include "util/debug.hpp"
 #include "util/winwrap.hpp"
 
 #include <chrono>
@@ -18,24 +20,46 @@ namespace
 {
     using namespace vind ;
 
-    struct WindowUICache {
-        SmartElement root_{nullptr} ;
-        std::chrono::system_clock::time_point time_{} ;
-        std::future<SmartElement> ft_{} ;
+    class TimeStamp {
+    private:
+        std::chrono::system_clock::time_point begin_{} ;
+        std::chrono::system_clock::time_point end_{} ;
+        std::chrono::milliseconds mean_{0} ;
 
-        bool is_valid() {
-            using namespace std::chrono ;
-            auto now = system_clock::now() ;
-            return duration_cast<milliseconds>(
-                    now - time_).count() < gparams::get_i("uiacachebuild_validms") ;
+    public:
+        void stamp_begin() noexcept {
+            begin_ = std::chrono::system_clock::now() ;
+        }
+        void stamp_end() noexcept {
+            end_ = std::chrono::system_clock::now() ;
         }
 
-        void stamp_time() {
-            time_ = std::chrono::system_clock::now() ;
+        auto elapsed() noexcept {
+            using namespace std::chrono ;
+            return duration_cast<milliseconds>(system_clock::now() - begin_) ;
+        }
+
+        auto is_elapsed_expect() noexcept {
+            using namespace std::chrono ;
+            return (elapsed() - mean_) >= 0ms ;
+        }
+
+        void update_average() noexcept {
+            using namespace std::chrono ;
+            auto d = duration_cast<milliseconds>(end_ - begin_) ;
+            std::cout << "+ Mean: " << mean_.count() << "ms" ;
+            std::cout << "\tDelta: " << d.count() << "ms" ;
+            if(mean_ == 0ms) {
+                mean_ = d ;
+            }
+            else {
+                mean_ = (mean_ + d) / 2 ;
+            }
+            std::cout << "\tUpdated Mean: " << mean_.count() << "ms\n" ;
         }
     } ;
 
-    SmartCacheReq g_cache_request = [] {
+    auto g_cache_request = [] {
         auto req = uiauto::create_cache_request() ;
 
         uiauto::add_property(req, UIA_IsEnabledPropertyId) ;
@@ -48,75 +72,113 @@ namespace
         return req ;
     }() ;
 
-    std::unordered_map<HWND, WindowUICache> g_caches{} ;
+    class WindowUICache {
+    private:
+        SmartElement root_{nullptr} ;
+        std::future<SmartElement> ft_{} ;
+        TimeStamp time_{} ;
 
-    void update_cache(HWND hwnd) {
-        auto& cache = g_caches[hwnd] ;
-
-        if(cache.ft_.valid()) {
-            using namespace std::chrono ;
-            if(cache.ft_.wait_for(1ms) != std::future_status::timeout) {
-                // build is finished
-                cache.root_ = cache.ft_.get() ;
-            }
-
-            // If you stack threads in the array even though
-            // the process to build a cache does not finish in the valid period,
-            // it may have an infinite number of threads.
-            return ;
+    public:
+        void initialize(HWND hwnd) {
+            root_ = uiauto::get_root_element(hwnd) ;
         }
 
-        if(!cache.is_valid()) {
-            std::cout << "- expired\n" ;
-            auto elem = uiauto::get_root_element(hwnd) ;
+        bool is_valid() {
+            return time_.elapsed().count() \
+                < gparams::get_i("uiacachebuild_validms") ;
+        }
 
-            cache.ft_ = std::async(std::launch::async, [elem, &cache] {
-                auto updated = uiauto::update_element(elem, g_cache_request) ;
-                cache.stamp_time() ;
-                std::cout << "+ updated\n" ;
+        void update() {
+            if(is_valid() || !root_) {
+                return ;
+            }
+
+            if(!time_.is_elapsed_expect()) {
+                return ;
+            }
+
+            if(ft_.valid()) {
+                util::debug::bench_start() ;
+                using namespace std::chrono ;
+
+                // This checks the shared state,
+                // but it takes several tens of milliseconds to see the shared state.
+                if(ft_.wait_for(1ms) != std::future_status::timeout) {
+                    // build is finished
+                    root_ = ft_.get() ;
+                }
+                std::cout << " Valid Future: " << util::debug::bench_stop() << " ms\n" ;
+
+                // If you stack threads in the array even though
+                // the process to build a cache does not finish in the valid period,
+                // it may have an infinite number of threads.
+                return ;
+            }
+
+            ft_ = std::async(std::launch::async, [this] {
+                /*
+                    auto start_time =  ;
+
+                    auto elapsed_time: do average ;
+                    -> this time use to update cache interval
+                    -> in order not to do frequent accept
+
+                    if(!get_pressed_list().empty()) {
+                        return ;
+                    }
+               */
+                time_.stamp_begin() ;
+                auto updated = uiauto::update_element(root_, g_cache_request) ;
+                time_.stamp_end() ;
+                time_.update_average() ;
                 return updated ;
             }) ;
         }
-    }
 
-    const SmartElement& get_latest_cache(HWND hwnd) {
-        auto& cache = g_caches[hwnd] ;
-
-        if(!cache.root_) {
-            update_cache(hwnd) ;
-            cache.ft_.wait() ;
-            cache.root_ = cache.ft_.get() ;
-            return cache.root_ ;
-        }
-
-
-        if(cache.ft_.valid()) {
-            using namespace std::chrono ;
-            if(cache.ft_.wait_for(1ms) != std::future_status::timeout) {
-                // finished build
-                cache.root_ = cache.ft_.get() ;
-                return cache.root_ ;
+        const SmartElement& latest() {
+            if(!root_) {
+                update() ;
+                if(ft_.valid()) {
+                    ft_.wait() ;
+                    root_ = ft_.get() ;
+                }
+                return root_ ;
             }
 
-            // the process does not finish to build cache
-            if(!cache.is_valid()) {
-                cache.ft_.wait() ;
-                cache.root_ = cache.ft_.get() ;
-                return cache.root_ ;
+            if(is_valid()) {
+                return root_ ;
             }
 
-            return cache.root_ ;
-        }
+            if(ft_.valid()) {
+                using namespace std::chrono ;
+                if(ft_.wait_for(1us) != std::future_status::timeout) {
+                    // finished build
+                    root_ = ft_.get() ;
+                    return root_ ;
+                }
+            }
+            else {
+                update() ;
+            }
 
-        if(!cache.is_valid()) {
-            update_cache(hwnd) ;
-            cache.ft_.wait() ;
-            cache.root_ = cache.ft_.get() ;
-            return cache.root_ ;
-        }
+            ft_.wait() ;
+            root_ = ft_.get() ;
+            return root_ ;
 
-        return cache.root_ ;
-    }
+            // If the process to build is not finished,
+            // compromise for speed and return a timestamp agnostic cache.
+            // return cache.root_ ;
+
+            // Minimal shared state checking (optimization by measurement)
+            // Minimal scanning (cursor, input?)
+            // box2D, Point2D testing -> public
+            // util-related tests
+            // gmap, gparams
+        }
+    } ;
+
+    std::unordered_map<HWND, WindowUICache> g_caches{} ;
+
 }
 
 
@@ -127,7 +189,6 @@ namespace vind
     {}
 
     void AsyncUIACacheBuilder::do_enable() const {
-        std::cout << "enabled\n" ;
     }
 
     void AsyncUIACacheBuilder::do_disable() const {
@@ -135,7 +196,12 @@ namespace vind
     }
 
     void AsyncUIACacheBuilder::do_process() const {
-        if(!keyabsorber::is_absorbed()) {
+        // Ignore in Inser Mode and Resident Mode.
+        if(mode::get_global_mode() == mode::Mode::RESIDENT) {
+            return ;
+        }
+
+        if(!keyabsorber::get_pressed_list().empty()) {
             return ;
         }
 
@@ -147,7 +213,13 @@ namespace vind
             return ;
         }
 
-        update_cache(hwnd) ;
+        if(g_caches.find(hwnd) == g_caches.end()) {
+            g_caches[hwnd].initialize(hwnd) ;
+        }
+
+        auto& cache = g_caches[hwnd] ;
+
+        cache.update() ;
     }
 
     void AsyncUIACacheBuilder::register_property(PROPERTYID id) {
@@ -155,6 +227,6 @@ namespace vind
     }
 
     SmartElement AsyncUIACacheBuilder::get_root_element(HWND hwnd) {
-        return get_latest_cache(hwnd) ;
+        return g_caches.at(hwnd).latest() ;
     }
 }

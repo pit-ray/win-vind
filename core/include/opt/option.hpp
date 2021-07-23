@@ -19,7 +19,7 @@ namespace vind
 
         explicit Option() ;
         explicit Option(const std::string& name) ;
-        explicit Option(std::string&& name) ;
+        explicit Option(std::string&& name="undefined option") ;
         virtual ~Option() noexcept ;
 
         Option(Option&&) noexcept ;

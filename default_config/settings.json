@@ -303,14 +303,19 @@
         "ja": "Vim用に機能を抑制"
     },
     "autofocus_textarea": {
+        "value": false,
         "en": "Autofocus Text Area",
-        "ja": "テキスト領域を自動選択",
-        "value": false
+        "ja": "テキスト領域を自動選択"
     },
-    "uia_cachebuild": {
-        "en": "Async UI Automation Cache Build",
-        "ja": "非同期UI Automationキャッシュ生成",
-        "value": false
+    "uiacachebuild": {
+        "value": false,
+        "en": "Build UI Automation cache asynchronously",
+        "ja": "非同期UI Automationキャッシュ生成"
+    },
+    "uiacachebuild_validms": {
+        "value": 1000,
+        "en": "Valid period of UI Automation cache(ms)",
+        "ja": "非同期UI Automationキャッシュの有効期間(ms)"
     },
     "easyclick_fontsize": {
         "value": 14,

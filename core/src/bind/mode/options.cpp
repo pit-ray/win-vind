@@ -1,5 +1,7 @@
 #include "bind/mode/options.hpp"
 
+#include "g_params.hpp"
+#include "opt/async_uia_cache_builder.hpp"
 #include "uia/uia.hpp"
 #include "util/box_2d.hpp"
 #include "util/def.hpp"
@@ -25,7 +27,14 @@ namespace vind
                 TextAreaScanner& instance) {
 
             std::vector<SmartElement> editables{} ;
-            instance.scan(hwnd, editables) ;
+
+            if(gparams::get_b("uiacachebuild")) {
+                auto root_elem = AsyncUIACacheBuilder::get_root_element(hwnd) ;
+                instance.scan(root_elem, editables) ;
+            }
+            else {
+                instance.scan(hwnd, editables) ;
+            }
 
             if(editables.empty()) {
                 return ;

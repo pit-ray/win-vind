@@ -7,9 +7,9 @@
 #include "util/rect.hpp"
 #include "util/winwrap.hpp"
 
-#include <future>
 #include <initializer_list>
 #include <stdexcept>
+#include <unordered_set>
 #include <vector>
 
 #if defined(DEBUG)
@@ -21,22 +21,8 @@
 namespace vind
 {
     struct UIWalker::Impl {
-        const CUIA& cuia_ ;
-        SmartCacheReq cache_request_ ;
-
-        explicit Impl()
-        : cuia_(uiauto::get_global_cuia()),
-          cache_request_()
-        {
-            IUIAutomationCacheRequest* cr_raw ;
-            if(util::is_failed(cuia_->CreateCacheRequest(&cr_raw))) {
-                throw RUNTIME_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
-            }
-            if(!cr_raw) {
-                throw RUNTIME_EXCEPT("Could not get IUIAutomationCacheRequest properly.") ;
-            }
-            cache_request_.reset(cr_raw) ;
-        }
+        SmartCacheReq cache_request_ = uiauto::create_cache_request() ;
+        std::unordered_set<PROPERTYID> properties_{} ;
     } ;
 
     UIWalker::UIWalker()
@@ -47,26 +33,23 @@ namespace vind
     UIWalker::UIWalker(PROPERTYID id)
     : UIWalker()
     {
-        if(util::is_failed(pimpl->cache_request_->AddProperty(id))) {
-            throw RUNTIME_EXCEPT("Could not add property " + std::to_string(id)) ;
-        }
+        uiauto::add_property(pimpl->cache_request_, id) ;
+        pimpl->properties_.insert(id) ;
     }
     UIWalker::UIWalker(const std::initializer_list<PROPERTYID>& ids)
     : UIWalker()
     {
         for(const auto& id : ids) {
-            if(util::is_failed(pimpl->cache_request_->AddProperty(id))) {
-                throw RUNTIME_EXCEPT("Could not add property " + std::to_string(id)) ;
-            }
+            uiauto::add_property(pimpl->cache_request_, id) ;
+            pimpl->properties_.insert(id) ;
         }
     }
     UIWalker::UIWalker(std::initializer_list<PROPERTYID>&& ids)
     : UIWalker()
     {
         for(auto&& id : ids) {
-            if(util::is_failed(pimpl->cache_request_->AddProperty(id))) {
-                throw RUNTIME_EXCEPT("Could not add property " + std::to_string(id)) ;
-            }
+            uiauto::add_property(pimpl->cache_request_, id) ;
+            pimpl->properties_.insert(id) ;
         }
     }
 
@@ -77,44 +60,22 @@ namespace vind
 
 
     void UIWalker::enable_fullcontrol() {
-        if(util::is_failed(pimpl->cache_request_->put_AutomationElementMode(
-                        AutomationElementMode::AutomationElementMode_Full))) {
-            throw LOGIC_EXCEPT("Could not set UI Automation Element Mode to full-reference mode.") ;
-        }
+        uiauto::switch_mode(pimpl->cache_request_, true) ;
     }
 
     void UIWalker::setup_cache_request(SmartCacheReq req) {
-        if(util::is_failed(req->AddProperty(UIA_IsEnabledPropertyId))) {
-            throw RUNTIME_EXCEPT("Could not add property: IsEnabled") ;
-        }
-        if(util::is_failed(req->AddProperty(UIA_IsOffscreenPropertyId))) {
-            throw RUNTIME_EXCEPT("Could not add property: IsOffscreen") ;
-        }
-        if(util::is_failed(req->AddProperty(UIA_BoundingRectanglePropertyId))) {
-            throw RUNTIME_EXCEPT("Could not add property: BoundingRectangle") ;
-        }
+        uiauto::add_property(req, UIA_IsEnabledPropertyId) ;
+        uiauto::add_property(req, UIA_IsOffscreenPropertyId) ;
+        uiauto::add_property(req, UIA_BoundingRectanglePropertyId) ;
 
         // All property getters is only available for cache.
-        if(util::is_failed(req->put_AutomationElementMode(
-                        AutomationElementMode::AutomationElementMode_None))) {
-            throw LOGIC_EXCEPT("Could not initialize UI Automation Element Mode to read-only mode.") ;
-        }
+        uiauto::switch_mode(req, false) ;
 
-        if(util::is_failed(pimpl->cache_request_->put_TreeScope(
-                        TreeScope::TreeScope_Subtree))) {
-            throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
-        }
+        uiauto::change_scope(req, TreeScope::TreeScope_Subtree) ;
     }
 
-    SmartCacheReq UIWalker::clone_cache_request() const {
-        IUIAutomationCacheRequest* req ;
-        if(util::is_failed(pimpl->cache_request_->Clone(&req))) {
-            throw RUNTIME_EXCEPT("IUIAutomationCacheRequest::Clone failed.") ;
-        }
-        if(!req) {
-            throw RUNTIME_EXCEPT("Invalid CacheRequest clone") ;
-        }
-        return SmartCacheReq(req) ;
+    const std::unordered_set<PROPERTYID>& UIWalker::get_properties() const noexcept {
+        return pimpl->properties_ ;
     }
 
     bool UIWalker::filter_element(const SmartElement&) {
@@ -206,26 +167,12 @@ namespace vind
         return true ;
     }
 
-    SmartElement UIWalker::update_element(const SmartElement& elem) {
-        IUIAutomationElement* elem_raw ;
-        if(util::is_failed(elem->BuildUpdatedCache(pimpl->cache_request_.get(), &elem_raw))) {
-            throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
-        }
-
-        if(!elem_raw) {
-            throw RUNTIME_EXCEPT("Could not build the caches of all elements.") ;
-        }
-
-        return SmartElement(elem_raw) ;
-    }
-
-
     void UIWalker::scan(
             HWND hwnd,
             std::vector<SmartElement>& elements) {
 
-        auto root = get_root_element(hwnd) ;
-        root = update_element(root) ;
+        auto root = uiauto::get_root_element(hwnd) ;
+        root = uiauto::update_element(root, pimpl->cache_request_) ;
         scan_element_subtree(root, elements) ;
     }
 
@@ -234,16 +181,5 @@ namespace vind
             std::vector<SmartElement>& elements) {
 
         scan_element_subtree(root, elements) ;
-    }
-
-    SmartElement UIWalker::get_root_element(HWND hwnd) {
-        IUIAutomationElement* elem_raw ;
-        if(util::is_failed(pimpl->cuia_->ElementFromHandle(hwnd, &elem_raw))) {
-            throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
-        }
-        if(!elem_raw) {
-            throw RUNTIME_EXCEPT("Could not get UIAutomationElement from HWND.") ;
-        }
-        return SmartElement(elem_raw) ;
     }
 }

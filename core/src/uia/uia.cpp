@@ -13,6 +13,70 @@ namespace vind
             return g_cuia ;
         }
 
+        SmartCacheReq create_cache_request() {
+            IUIAutomationCacheRequest* cr_raw ;
+            if(util::is_failed(get_global_cuia()->CreateCacheRequest(&cr_raw))) {
+                throw RUNTIME_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
+            }
+            if(!cr_raw) {
+                throw RUNTIME_EXCEPT("Could not get IUIAutomationCacheRequest properly.") ;
+            }
+            return SmartCacheReq(cr_raw) ;
+        }
+
+        SmartElement get_root_element(HWND hwnd) {
+            IUIAutomationElement* elem_raw ;
+            if(util::is_failed(get_global_cuia()->ElementFromHandle(hwnd, &elem_raw))) {
+                throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
+            }
+            if(!elem_raw) {
+                throw RUNTIME_EXCEPT("Could not get UIAutomationElement from HWND.") ;
+            }
+            return SmartElement(elem_raw) ;
+        }
+
+        void add_property(
+                const SmartCacheReq& request,
+                PROPERTYID id) {
+
+            if(util::is_failed(request->AddProperty(id))) {
+                throw RUNTIME_EXCEPT("Could not add an uia property: " + std::to_string(id)) ;
+            }
+        }
+
+        void change_scope(
+                const SmartCacheReq& request,
+                TreeScope scope) {
+
+            if(util::is_failed(request->put_TreeScope(scope))) {
+                throw LOGIC_EXCEPT("Could not initialzie TreeScope.") ;
+            }
+        }
+
+        void switch_mode(
+                const SmartCacheReq& request,
+                bool fullcontrol) {
+
+            auto mode = fullcontrol ?
+                            AutomationElementMode::AutomationElementMode_Full :
+                            AutomationElementMode::AutomationElementMode_None ;
+
+            if(util::is_failed(request->put_AutomationElementMode(mode))) {
+                throw LOGIC_EXCEPT("Could not set UI Automation Element mode to " + std::to_string(mode)) ;
+            }
+        }
+
+        SmartCacheReq clone(const SmartCacheReq& request) {
+            IUIAutomationCacheRequest* req ;
+            if(util::is_failed(request->Clone(&req))) {
+                throw RUNTIME_EXCEPT("IUIAutomationCacheRequest::Clone failed.") ;
+            }
+            if(!req) {
+                throw RUNTIME_EXCEPT("Invalid CacheRequest clone") ;
+            }
+            return SmartCacheReq(req) ;
+        }
+
         void get_children(
                 const SmartElement& elem,
                 std::vector<SmartElement>& children) {
@@ -43,6 +107,19 @@ namespace vind
                 }
                 children.emplace_back(elem_raw) ;
             }
+        }
+
+        SmartElement update_element(const SmartElement& elem, const SmartCacheReq& request) {
+            IUIAutomationElement* elem_raw ;
+            if(util::is_failed(elem->BuildUpdatedCache(request.get(), &elem_raw))) {
+                throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;
+            }
+
+            if(!elem_raw) {
+                throw RUNTIME_EXCEPT("Could not build the caches of all elements.") ;
+            }
+
+            return SmartElement(elem_raw) ;
         }
 
         bool is_enabled(const SmartElement& elem) {

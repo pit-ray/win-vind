@@ -5,6 +5,7 @@
 #include "uia/uia.hpp"
 
 #include <initializer_list>
+#include <unordered_set>
 
 
 namespace vind
@@ -20,6 +21,13 @@ namespace vind
         explicit AsyncUIACacheBuilder() ;
 
         static void register_property(PROPERTYID id) ;
+
+        template <typename T>
+        static inline auto register_properties(T&& ids) {
+            for(auto& id : ids) {
+                register_property(static_cast<PROPERTYID>(id)) ;
+            }
+        }
 
         template <typename T>
         static inline auto register_properties(std::initializer_list<T>&& ids) {

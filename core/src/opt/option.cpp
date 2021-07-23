@@ -20,10 +20,6 @@ namespace vind
         bool flag_ ;
         std::string name_ ;
 
-        explicit Impl()
-        : Impl("undefined_option")
-        {}
-
         explicit Impl(const std::string& name)
         : flag_(false),
           name_(name)
@@ -42,11 +38,6 @@ namespace vind
         Impl(const Impl&)                = default ;
         Impl& operator=(const Impl&)     = default ;
     } ;
-
-
-    Option::Option()
-    : pimpl(std::make_unique<Impl>())
-    {}
 
     Option::Option(const std::string& name)
     : pimpl(std::make_unique<Impl>(name))

@@ -13,6 +13,7 @@
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
 #include "mode.hpp"
+#include "opt/async_uia_cache_builder.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
@@ -149,7 +150,11 @@ namespace vind
             }
 
             // All instances share TextAreaScanner to keep staticity of sprocess.
-            static TextAreaScanner scanner ;
+            static auto scanner = [] {
+                TextAreaScanner walker ;
+                AsyncUIACacheBuilder::register_properties(walker.get_properties()) ;
+                return walker ;
+            }() ;
             options::focus_nearest_textarea(hwnd, pos, scanner) ;
         }
     }

@@ -7,10 +7,12 @@
 #include "bind/easyclick/ec_hints.hpp"
 #include "bind/easyclick/input_hinter.hpp"
 #include "bind/easyclick/ui_scanner.hpp"
+#include "g_params.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
+#include "opt/async_uia_cache_builder.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
@@ -92,6 +94,9 @@ namespace vind
         pimpl->elements_.reserve(2048) ;
         pimpl->hints_.reserve(2048) ;
         pimpl->strhints_.reserve(2048) ;
+
+        AsyncUIACacheBuilder::register_properties(
+                pimpl->scanner_.get_properties()) ;
     }
 
     EasyClickCore::~EasyClickCore() noexcept = default ;
@@ -110,7 +115,14 @@ namespace vind
             throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
         }
 
-        pimpl->scanner_.scan(hwnd, pimpl->elements_) ;
+        if(gparams::get_b("uiacachebuild")) {
+            auto root_elem = AsyncUIACacheBuilder::get_root_element(hwnd) ;
+            pimpl->scanner_.scan(root_elem, pimpl->elements_) ;
+        }
+        else {
+            pimpl->scanner_.scan(hwnd, pimpl->elements_) ;
+        }
+
         for(auto& elem : pimpl->elements_) {
             RECT rect ;
             if(util::is_failed(elem->get_CachedBoundingRectangle(&rect))) {
@@ -158,11 +170,14 @@ namespace vind
                 if(pimpl->input_hinter_.drawable_hints_num() == pimpl->hints_.size()) {
                     // Hints were not matched yet, so must draw all hints.
                     pimpl->display_hinter_.paint_all_hints(
-                            pimpl->positions_, pimpl->strhints_) ;
+                            pimpl->positions_,
+                            pimpl->strhints_) ;
                 }
                 else {
                     pimpl->display_hinter_.paint_matching_hints(
-                            pimpl->positions_, pimpl->strhints_, pimpl->input_hinter_.matched_counts()) ;
+                            pimpl->positions_,
+                            pimpl->strhints_,
+                            pimpl->input_hinter_.matched_counts()) ;
                 }
             }
             catch(const std::exception& e) {

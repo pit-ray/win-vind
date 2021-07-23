@@ -3,6 +3,7 @@
 
 #include <initializer_list>
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include "uia/uia.hpp"
@@ -42,7 +43,7 @@ namespace vind
 
         // Initialize cache request
         virtual void setup_cache_request(SmartCacheReq request) ;
-        SmartCacheReq clone_cache_request() const ;
+        const std::unordered_set<PROPERTYID>& get_properties() const noexcept ;
 
         // Filter functions
         virtual bool pinpoint_element(const SmartElement& elem) ;

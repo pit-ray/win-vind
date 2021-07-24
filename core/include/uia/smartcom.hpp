@@ -79,6 +79,10 @@ namespace vind
             return p_ ;
         }
 
+        T** operator&() noexcept {
+            return &p_ ;
+        }
+
         bool operator!() const noexcept {
             return p_ == nullptr ;
         }

@@ -2,6 +2,8 @@
 #define _OPTION_WITH_CREATOR_HPP
 
 #include "option.hpp"
+#include "util/string.hpp"
+
 #include <memory>
 
 namespace vind
@@ -13,6 +15,13 @@ namespace vind
     template <typename Derived>
     class OptionCreator : public Option {
     public:
+        explicit OptionCreator(const std::string& name)
+        : Option(util::A2a(name))
+        {}
+        explicit OptionCreator(std::string&& name)
+        : Option(util::A2a(std::move(name)))
+        {}
+
         static std::unique_ptr<Option> create() {
             return std::make_unique<Derived>() ;
         }
@@ -28,10 +37,6 @@ namespace vind
             }
 
             return pobj ;
-        }
-
-        std::string name() const noexcept override {
-            return Derived::sname() ;
         }
     } ;
 }

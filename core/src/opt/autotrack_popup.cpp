@@ -42,16 +42,13 @@ namespace vind
     } ;
 
     AutotrackPopup::AutotrackPopup()
-    : pimpl(std::make_unique<Impl>())
+    : OptionCreator("autotrack_popup"),
+      pimpl(std::make_unique<Impl>())
     {}
 
     AutotrackPopup::~AutotrackPopup() noexcept                  = default ;
     AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
     AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
-
-    std::string AutotrackPopup::sname() noexcept {
-        return "autotrack_popup" ;
-    }
 
     void AutotrackPopup::do_enable() const {
         set_windows_mtrack_flag(true) ;

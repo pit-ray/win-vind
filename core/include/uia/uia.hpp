@@ -1,57 +1,59 @@
 #ifndef _UIA_HPP
 #define _UIA_HPP
 
-#include <windows.h>
-
-#include "disable_gcc_warning.hpp"
-
-#if defined(_MSC_VER) && _MSC_VER >= 1500
-#include <uiautomationclient.h>
-#else
-#include <um/uiautomationclient.h>
-#endif
-
-#include "enable_gcc_warning.hpp"
+#include "uia/cuia.hpp"
+#include "uia/uiafwd.hpp"
 
 #include "uia/smartcom.hpp"
 
-#include <memory>
+#include <vector>
 
 
 namespace vind
 {
+    using SmartElement      = SmartCom<IUIAutomationElement> ;
+    using SmartElementArray = SmartCom<IUIAutomationElementArray> ;
+    using SmartCacheReq     = SmartCom<IUIAutomationCacheRequest> ;
+
     namespace uiauto {
-        inline void delete_com (IUnknown* com) noexcept {
-            if(com != nullptr) {
-                com->Release() ;
-            }
+        const CUIA& get_global_cuia() ;
+
+        SmartCacheReq create_cache_request() ;
+        SmartElement get_root_element(HWND hwnd) ;
+
+        SmartElement update_element(
+                const SmartElement& elem,
+                const SmartCacheReq& request) ;
+
+        void add_property(
+                const SmartCacheReq& request,
+                PROPERTYID id) ;
+
+        void change_scope(
+                const SmartCacheReq& request,
+                TreeScope scope) ;
+
+        SmartCacheReq clone(const SmartCacheReq& request) ;
+
+        template <typename T>
+        inline auto change_scope(
+                const SmartCacheReq& request,
+                T scope) {
+            return change_scope(
+                    request,
+                    static_cast<TreeScope>(scope)) ;
         }
 
-        using SmartElement      = SmartCom<IUIAutomationElement> ;
-        using SmartElementArray = SmartCom<IUIAutomationElementArray> ;
-        using SmartCacheReq     = SmartCom<IUIAutomationCacheRequest> ;
+        void switch_mode(
+                const SmartCacheReq& request,
+                bool fullcontrol) ;
 
-        HRESULT create_UIAutomation(IUIAutomation** ptr) ;
+        void get_children(
+                const SmartElement& elem,
+                std::vector<SmartElement>& children) ;
 
-        class CUIA {
-        private:
-            IUIAutomation* cuia ;
-
-        public:
-            explicit CUIA() ;
-            virtual ~CUIA() noexcept ;
-
-            CUIA(CUIA&&)                 = delete ;
-            CUIA& operator=(CUIA&&)      = delete ;
-            CUIA(const CUIA&)            = delete ;
-            CUIA& operator=(const CUIA&) = delete ;
-
-            IUIAutomation* get() const noexcept ;
-            operator IUIAutomation*() const noexcept ;
-            IUIAutomation* operator->() const noexcept ;
-        } ;
-
-        const CUIA& get_global_cuia() ;
+        bool is_enabled(const SmartElement& elem) ;
+        bool is_offscreen(const SmartElement& elem) ;
     }
 }
 

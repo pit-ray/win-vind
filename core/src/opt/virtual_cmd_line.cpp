@@ -32,15 +32,13 @@ namespace vind
     } ;
 
     VirtualCmdLine::VirtualCmdLine()
-    : pimpl(std::make_unique<Impl>())
+    : OptionCreator("vcmdline"),
+      pimpl(std::make_unique<Impl>())
     {}
     VirtualCmdLine::~VirtualCmdLine() noexcept                  = default ;
     VirtualCmdLine::VirtualCmdLine(VirtualCmdLine&&)            = default ;
     VirtualCmdLine& VirtualCmdLine::operator=(VirtualCmdLine&&) = default ;
 
-    std::string VirtualCmdLine::sname() noexcept {
-        return "vcmdline" ;
-    }
 
     void VirtualCmdLine::do_enable() const {
         reset() ;

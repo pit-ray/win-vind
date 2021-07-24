@@ -34,6 +34,8 @@ namespace vind
 
         std::wstring s_to_ws(const std::string& str) ;
         std::string ws_to_s(const std::wstring& wstr) ;
+
+        std::string trim(const std::string& str) ;
     }
 }
 

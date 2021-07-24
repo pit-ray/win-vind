@@ -23,9 +23,9 @@ namespace
 
 namespace vind
 {
-    std::string Dedicate2Window::sname() noexcept {
-        return "dedicate_to_window" ;
-    }
+    Dedicate2Window::Dedicate2Window()
+    : OptionCreator("dedicate_to_window")
+    {}
 
     void Dedicate2Window::do_enable() const {
     }
@@ -34,7 +34,7 @@ namespace vind
     }
 
     void Dedicate2Window::enable_targeting() {
-        if(gparams::get_b(sname())) {
+        if(gparams::get_b("dedicate_to_window")) {
             target_hwnd = GetForegroundWindow() ;
             past_hwnd   = NULL ;
             VirtualCmdLine::msgout("-- TARGET ON --") ;
@@ -42,7 +42,7 @@ namespace vind
     }
 
     void Dedicate2Window::disable_targeting() {
-        if(gparams::get_b(sname())) {
+        if(gparams::get_b("dedicate_to_window")) {
             target_hwnd = NULL ;
             past_hwnd   = NULL ;
             VirtualCmdLine::msgout("-- TARGET OFF --") ;

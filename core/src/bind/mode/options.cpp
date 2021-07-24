@@ -1,5 +1,7 @@
 #include "bind/mode/options.hpp"
 
+#include "g_params.hpp"
+#include "opt/async_uia_cache_builder.hpp"
 #include "uia/uia.hpp"
 #include "util/box_2d.hpp"
 #include "util/def.hpp"
@@ -10,6 +12,7 @@
 
 #if defined(DEBUG)
 #include <iostream>
+#include "util/debug.hpp"
 #endif
 
 #undef max
@@ -23,8 +26,15 @@ namespace vind
                 const Point2D& point,
                 TextAreaScanner& instance) {
 
-            std::vector<uiauto::SmartElement> editables{} ;
-            instance.scan(hwnd, editables) ;
+            std::vector<SmartElement> editables{} ;
+
+            if(gparams::get_b("uiacachebuild")) {
+                auto root_elem = AsyncUIACacheBuilder::get_root_element(hwnd) ;
+                instance.scan(root_elem, editables) ;
+            }
+            else {
+                instance.scan(hwnd, editables) ;
+            }
 
             if(editables.empty()) {
                 return ;
@@ -37,7 +47,7 @@ namespace vind
                 return ;
             }
 
-            uiauto::SmartElement nearest ;
+            SmartElement nearest ;
             auto min_distance = std::numeric_limits<double>::max() ;
 
             for(auto& elem : editables) {

@@ -11,38 +11,45 @@
 
 #include "bind/window/window_utility.hpp"
 #include "err_logger.hpp"
+#include "g_params.hpp"
 #include "io/screen_metrics.hpp"
 #include "key/ntype_logger.hpp"
+#include "util/box_2d.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
+#include "util/string.hpp"
+#include "util/winwrap.hpp"
+
 
 namespace
 {
     using namespace vind ;
 
-    std::unordered_map<HMONITOR, RECT> g_mrects ;
+    std::unordered_map<HMONITOR, Box2D> g_mrects ;
 
     using OrderedHWNDs = std::map<SIZE_T, HWND> ;
     std::unordered_map<HMONITOR, OrderedHWNDs> g_m_ordered_hwnd ;
+
+    std::unordered_set<std::string> g_ignores ;
 
     BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
         if(!windowutil::is_visible_hwnd(hwnd)) {
             return TRUE ; //continue
         }
 
-        RECT rect ;
-        if(!GetWindowRect(hwnd, &rect)) {
+        Box2D box ;
+        if(!GetWindowRect(hwnd, &box.data())) {
             return TRUE ; //continue
         }
 
-        if(!windowutil::is_window_mode(hwnd, rect)) {
+        if(!windowutil::is_window_mode(hwnd, box.data())) {
             return TRUE ; //continue
         }
 
         //Is existed in work area?
         screenmetrics::MonitorInfo minfo ;
         screenmetrics::get_monitor_metrics(hwnd, minfo) ;
-        if(util::is_out_of_range(rect, minfo.work_rect)) {
+        if(box.is_out_of(minfo.work_rect)) {
             return TRUE ;
         }
 
@@ -76,7 +83,7 @@ namespace
         return TRUE ;
     }
 
-    inline void assign_local_area_in_monitors(std::unordered_map<HWND, RECT>& rects) {
+    inline void assign_local_area_in_monitors(std::unordered_map<HWND, Box2D>& rects) {
         for(auto& [hmonitor, mrect] : g_mrects) {
             const auto& ordered_hwnd = g_m_ordered_hwnd[hmonitor] ;
 
@@ -94,15 +101,15 @@ namespace
                 auto& pre_rect = rects[pre_hwnd] ;
                 auto rect = pre_rect ;
 
-                auto pre_w = util::width(pre_rect) ;
-                auto pre_h = util::height(pre_rect) ;
+                auto pre_w = pre_rect.width() ;
+                auto pre_h = pre_rect.height() ;
                 if(pre_w > pre_h) {
-                    pre_rect.right -= pre_w / 2 ;
-                    rect.left      += pre_w / 2 ;
+                    pre_rect.right() -= pre_rect.center_y() ;
+                    rect.left()      += pre_rect.center_x() ;
                 }
                 else {
-                    pre_rect.bottom -= pre_h / 2 ;
-                    rect.top        += pre_h / 2 ;
+                    pre_rect.bottom() -= pre_h / 2 ;
+                    rect.top()        += pre_h / 2 ;
                 }
                 rects[hwnd] = std::move(rect) ;
 
@@ -137,7 +144,31 @@ namespace vind
             return ;
         }
 
-        std::unordered_map<HWND, RECT> rects ;
+        if(!g_ignores.empty()) {
+            for(const auto& monitor : g_mrects) {
+                auto& hwnds = g_m_ordered_hwnd[monitor.first] ;
+
+                auto itr = hwnds.begin() ;
+                while(itr != hwnds.end()) {
+                    auto filename = util::get_module_filename(itr->second) ;
+                    auto modulename = util::A2a(filename.substr(
+                                filename.find_last_of("\\") + 1)) ;
+
+                    auto dot = modulename.find_last_of(".") ;
+                    if(dot != std::string::npos) {
+                        modulename = modulename.substr(0, dot) ;
+                    }
+
+                    if(g_ignores.find(modulename) != g_ignores.end()) {
+                        hwnds.erase(itr) ;
+                    }
+
+                    itr ++ ;
+                }
+            }
+        }
+
+        std::unordered_map<HWND, Box2D> rects ;
         assign_local_area_in_monitors(rects) ;
         windowutil::batch_resize(rects) ;
 
@@ -152,5 +183,14 @@ namespace vind
     }
     void ArrangeWindows::sprocess(const CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
+    }
+    void ArrangeWindows::reconstruct() {
+        g_ignores.clear() ;
+        auto str = gparams::get_s("arrangewin_ignore") ;
+
+        auto modules = util::split(str, ",") ;
+        for(auto& m : modules) {
+            g_ignores.insert(util::A2a(util::trim(m))) ;
+        }
     }
 }

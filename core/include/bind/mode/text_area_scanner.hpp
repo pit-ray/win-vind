@@ -6,13 +6,10 @@
 
 namespace vind
 {
-    class TextAreaScanner : public UIWalker {
-    private:
-        virtual bool pinpoint_element(uiauto::SmartElement elem) override ;
-        virtual bool filter_element(uiauto::SmartElement elem) override ;
-
-    public:
+    struct TextAreaScanner : public UIWalker {
         explicit TextAreaScanner() ;
+        virtual bool pinpoint_element(const SmartElement& elem) override ;
+        virtual bool filter_element(const SmartElement& elem) override ;
     } ;
 }
 

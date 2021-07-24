@@ -6,12 +6,6 @@
 
 namespace vind
 {
-    class Option ;
-
-    namespace op {
-        using SPtr = std::shared_ptr<Option> ;
-    }
-
     class Option {
     private:
         struct Impl ;
@@ -21,7 +15,11 @@ namespace vind
         virtual void do_process() const = 0 ;
 
     public:
+        using SPtr = std::shared_ptr<Option> ;
+
         explicit Option() ;
+        explicit Option(const std::string& name) ;
+        explicit Option(std::string&& name="undefined option") ;
         virtual ~Option() noexcept ;
 
         Option(Option&&) noexcept ;
@@ -30,7 +28,7 @@ namespace vind
         Option(const Option&) = delete ;
         Option& operator=(const Option&) = delete ;
 
-        virtual std::string name() const noexcept =  0 ;
+        const std::string& name() const noexcept ;
 
         void enable() ;
         void disable() ;

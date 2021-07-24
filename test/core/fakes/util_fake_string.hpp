@@ -19,6 +19,12 @@ namespace vind {
             std::memcpy(fakestr.data(), str.data(), sizeof(char) * str.size()) ;
             return fakestr ;
         }
+
+        std::string ws_to_s(const std::wstring& wstr) {
+            std::string out ;
+            out.resize(wstr.length()) ;
+            return out ;
+        }
     }
 }
 

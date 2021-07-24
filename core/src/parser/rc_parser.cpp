@@ -2,6 +2,7 @@
 
 #include "mode.hpp"
 #include "util/def.hpp"
+#include "util/string.hpp"
 
 #include <stdexcept>
 #include <string>
@@ -39,6 +40,7 @@ namespace vind
             if(line.empty()) {
                 return std::make_pair("", "") ;
             }
+
             auto cmd_first = line.find_first_not_of(" ") ;
             if(cmd_first == std::string::npos) {
                 return std::make_pair("", "") ;

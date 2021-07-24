@@ -7,21 +7,24 @@
 #include "err_logger.hpp"
 #include "g_params.hpp"
 
+#include "opt/async_uia_cache_builder.hpp"
 #include "opt/autotrack_popup.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/suppress_for_vim.hpp"
 #include "opt/virtual_cmd_line.hpp"
+
 
 //internal linkage
 namespace
 {
     using namespace vind ;
 
-    std::vector<op::SPtr> g_vpop {
+    std::vector<Option::SPtr> g_vpop {
+        AsyncUIACacheBuilder::create(),
         AutotrackPopup::create(),
-        VirtualCmdLine::create(),
         Dedicate2Window::create(),
-        SuppressForVim::create()
+        SuppressForVim::create(),
+        VirtualCmdLine::create(),
     } ;
 }
 

@@ -2,7 +2,6 @@
 
 #include <windows.h>
 
-#include <psapi.h>
 #include <string>
 
 #include "bind/mode/change_mode.hpp"
@@ -11,12 +10,14 @@
 #include "mode.hpp"
 #include "opt/virtual_cmd_line.hpp"
 #include "util/string.hpp"
+#include "util/winwrap.hpp"
+
 
 namespace vind
 {
-    std::string SuppressForVim::sname() noexcept {
-        return "suppress_for_vim" ;
-    }
+    SuppressForVim::SuppressForVim()
+    : OptionCreator("suppress_for_vim")
+    {}
 
     void SuppressForVim::do_enable() const {
     }
@@ -37,19 +38,7 @@ namespace vind
 
         pre_hwnd = hwnd ;
 
-        DWORD procid ;
-        GetWindowThreadProcessId(hwnd, &procid) ;
-
-        auto close_proc = [] (HANDLE h) {CloseHandle(h) ;} ;
-        std::unique_ptr<void, decltype(close_proc)> hproc(
-                OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, procid), close_proc) ;
-
-        WCHAR fullpath[MAX_PATH] ;
-        if(!GetModuleFileNameExW(hproc.get(), NULL, fullpath, 1024)) {
-            return ;
-        }
-
-        auto exename = util::ws_to_s(fullpath) ;
+        auto exename = util::get_module_filename(hwnd) ;
         auto lpos = exename.find_last_of("\\") + 1 ;
         exename = util::A2a(exename.substr(lpos)) ;
 

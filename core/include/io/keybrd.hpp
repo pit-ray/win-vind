@@ -55,8 +55,7 @@ namespace vind
         //perfect forwarding
         template <typename... Ts>
         inline void pushup(Ts&&... keys) {
-            auto initl = {std::forward<Ts>(keys)...} ;
-            return pushup_core(std::move(initl)) ;
+            return pushup_core({static_cast<KeyCode>(keys)...}) ;
         }
     }
 }

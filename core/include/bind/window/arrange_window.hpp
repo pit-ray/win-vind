@@ -10,6 +10,8 @@ namespace vind
         static void sprocess() ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        void reconstruct() override ;
     } ;
 }
 #endif

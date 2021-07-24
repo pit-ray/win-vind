@@ -303,9 +303,29 @@
         "ja": "Vim用に機能を抑制"
     },
     "autofocus_textarea": {
+        "value": false,
         "en": "Autofocus Text Area",
-        "ja": "テキスト領域を自動選択",
-        "value": false
+        "ja": "テキスト領域を自動選択"
+    },
+    "uiacachebuild": {
+        "value": false,
+        "en": "Build UI Automation cache asynchronously",
+        "ja": "非同期UI Automationキャッシュ生成"
+    },
+    "uiacachebuild_validperiod": {
+        "value": 1500,
+        "en": "Valid period of UI Automation cache(ms)",
+        "ja": "非同期UI Automationキャッシュの有効期間(ms)"
+    },
+    "uiacachebuild_staybegin": {
+        "value": 500,
+        "en": "begin of valid range from cursor keep(ms)",
+        "ja": "カーソルが停止してからの有効範囲の開始時間(ms)"
+    },
+    "uiacachebuild_stayend": {
+        "value": 2000,
+        "en": "end of valid range from cursor keep(ms)",
+        "ja": "カーソルが停止してからの有効範囲の終了時間(ms)"
     },
     "easyclick_fontsize": {
         "value": 14,
@@ -351,5 +371,10 @@
         "value": 100,
         "en": "Window height delta for resizing",
         "ja": "ウィンドウの高さのリサイズ量"
+    },
+    "arrangewin_ignore": {
+        "value": "",
+        "en": "List to ignore in ArrangeWindows",
+        "ja": "ウィンドウの整列の例外リスト"
     }
 }

@@ -66,6 +66,10 @@ descripption: "Option lists"
 |`suppress_for_vim`|bool|false|It makes the mode of win-vind automatically switch to **Resident Mode** on the applications included the strings called **VIM** in an executable file name. Thus, it allows us to smoothly move from win-vind having the same key-bindings as Vim to Vim applications.|
 |`charcache`|bool|false|It is a very small cache for one character used by `x` or `X` commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.|
 |`autofocus_textarea`|bool|false|Automatically focus on the nearest text area when switching to **Editor Normal Mode**|
+|`uiacachebuild`|bool|false|EasyClick and `autofocus_textarea` are slow because they scan the UI object after being called. If this option is enabled, scanning is done asynchronously and cache is used as a result. Using the cache is 30 times faster than scanning linearly, but the location information, etc. may not always be correct.|
+|`uiacachebuild_lifetime`|num|1500|Cache lifetime (ms). A high value reduces the computational cost, but decreases the reliability of the cache. A low value increases the computational cost due to frequent cache creation, but guarantees reliability.|
+|`uiacachebuild_staybegin`|num|500|The time between when the mouse cursor stops moving and when it starts to build a cache. In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. Therefore, it should be updated only immediately after the mouse stops. The value of this option is the time(ms) that the mouse cursor is considered to be stopped.|
+|`uiacachebuild_stayend`|num|2000|In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. The value of this option is the time(ms) between the time the cursor stops moving and the time it stops creating a cache.|
 
 ## Customize
 

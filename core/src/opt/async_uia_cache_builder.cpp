@@ -5,6 +5,7 @@
 #include "mode.hpp"
 #include "uia/uia.hpp"
 #include "util/debug.hpp"
+#include "util/point_2d.hpp"
 #include "util/winwrap.hpp"
 
 #include <chrono>
@@ -47,15 +48,13 @@ namespace
         void update_average() noexcept {
             using namespace std::chrono ;
             auto d = duration_cast<milliseconds>(end_ - begin_) ;
-            std::cout << "+ Mean: " << mean_.count() << "ms" ;
-            std::cout << "\tDelta: " << d.count() << "ms" ;
             if(mean_ == 0ms) {
                 mean_ = d ;
             }
             else {
+                // Dynamically calculate the average elapsed time (approximation)
                 mean_ = (mean_ + d) / 2 ;
             }
-            std::cout << "\tUpdated Mean: " << mean_.count() << "ms\n" ;
         }
     } ;
 
@@ -85,7 +84,7 @@ namespace
 
         bool is_valid() {
             return time_.elapsed().count() \
-                < gparams::get_i("uiacachebuild_validms") ;
+                < gparams::get_i("uiacachebuild_validperiod") ;
         }
 
         void update() {
@@ -93,6 +92,8 @@ namespace
                 return ;
             }
 
+            // Since checking the shared state is time consuming,
+            // optimize intervals during running to minimize checking.
             if(!time_.is_elapsed_expect()) {
                 return ;
             }
@@ -103,11 +104,9 @@ namespace
 
                 // This checks the shared state,
                 // but it takes several tens of milliseconds to see the shared state.
-                if(ft_.wait_for(1ms) != std::future_status::timeout) {
-                    // build is finished
+                if(ft_.wait_for(1us) != std::future_status::timeout) {
                     root_ = ft_.get() ;
                 }
-                std::cout << " Valid Future: " << util::debug::bench_stop() << " ms\n" ;
 
                 // If you stack threads in the array even though
                 // the process to build a cache does not finish in the valid period,
@@ -116,19 +115,10 @@ namespace
             }
 
             ft_ = std::async(std::launch::async, [this] {
-                /*
-                    auto start_time =  ;
-
-                    auto elapsed_time: do average ;
-                    -> this time use to update cache interval
-                    -> in order not to do frequent accept
-
-                    if(!get_pressed_list().empty()) {
-                        return ;
-                    }
-               */
                 time_.stamp_begin() ;
+
                 auto updated = uiauto::update_element(root_, g_cache_request) ;
+
                 time_.stamp_end() ;
                 time_.update_average() ;
                 return updated ;
@@ -152,7 +142,6 @@ namespace
             if(ft_.valid()) {
                 using namespace std::chrono ;
                 if(ft_.wait_for(1us) != std::future_status::timeout) {
-                    // finished build
                     root_ = ft_.get() ;
                     return root_ ;
                 }
@@ -164,21 +153,10 @@ namespace
             ft_.wait() ;
             root_ = ft_.get() ;
             return root_ ;
-
-            // If the process to build is not finished,
-            // compromise for speed and return a timestamp agnostic cache.
-            // return cache.root_ ;
-
-            // Minimal shared state checking (optimization by measurement)
-            // Minimal scanning (cursor, input?)
-            // box2D, Point2D testing -> public
-            // util-related tests
-            // gmap, gparams
         }
     } ;
 
     std::unordered_map<HWND, WindowUICache> g_caches{} ;
-
 }
 
 
@@ -201,13 +179,40 @@ namespace vind
             return ;
         }
 
+        // Use some factors for minimal scanning
+
+        // Factor1: keybaord input
         if(!keyabsorber::get_pressed_list().empty()) {
             return ;
         }
 
-        // detect window if move cursor or select new hwnd
-        // Scan use std::async
-        //
+        // Factor2: cursor position
+        using namespace std::chrono ;
+        static Point2D prepos ;
+        static auto keeptime = system_clock::now() ;
+
+        Point2D pos ;
+        if(!GetCursorPos(&pos.data())) {
+            throw RUNTIME_EXCEPT("Could not get the mouse cursor position.") ;
+        }
+        if(pos != prepos) {
+            prepos = pos ;
+            keeptime = system_clock::now() ;
+            return ;
+        }
+
+        // When the mouse is staying, scan only for the initial time range.
+        // When the mouse is moving, the cache is less reliable,
+        // and when the computer is neglected for a long time, there is no need to scan it.
+        auto keep_delta = duration_cast<milliseconds>(
+                system_clock::now() - keeptime).count() ;
+        if(keep_delta < gparams::get_i("uiacachebuild_staybegin")) {
+            return ;
+        }
+        if(keep_delta > gparams::get_i("uiacachebuild_stayend")) {
+            return ;
+        }
+
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) { // don't scan for desktop root
             return ;
@@ -216,10 +221,7 @@ namespace vind
         if(g_caches.find(hwnd) == g_caches.end()) {
             g_caches[hwnd].initialize(hwnd) ;
         }
-
-        auto& cache = g_caches[hwnd] ;
-
-        cache.update() ;
+        g_caches[hwnd].update() ;
     }
 
     void AsyncUIACacheBuilder::register_property(PROPERTYID id) {
@@ -227,6 +229,9 @@ namespace vind
     }
 
     SmartElement AsyncUIACacheBuilder::get_root_element(HWND hwnd) {
-        return g_caches.at(hwnd).latest() ;
+        if(g_caches.find(hwnd) == g_caches.end()) {
+            g_caches[hwnd].initialize(hwnd) ;
+        }
+        return g_caches[hwnd].latest() ;
     }
 }

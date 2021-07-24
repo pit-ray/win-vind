@@ -84,8 +84,8 @@ set gui_fontname = Times New Roman  "Without quotation
 set shell_startupdir = C:/Users/Me/Desktop
 
 " bool
-set suppress_for_vim  " true
-set nocharcache       " false
+set uiacachebuild " true
+set nocharcache   " false
 
 " num (int, float)
 set cmd_fadeout = 60

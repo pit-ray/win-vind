@@ -90,14 +90,14 @@ If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you n
 
 #### 1. Install dependent libraries in the project root
   ```bash  
-  $ ./scripts/setup_libs.bat [-mingw/-msvc] [32/64]
+  $ ./scripts/setup_libs.bat [-mingw/-msvc] [32/64] [-update (optional)]
   ```  
 
 #### 2. Build this project with cmake and execute it
 
 ##### Automatically (Recommended)
   ```bash
-  $ ./build.bat [-debug/-release] [-mingw/-msvc] [32/64] [-update (optional)]
+  $ ./build.bat [-debug/-release] [-mingw/-msvc] [32/64]
   $ ./debug/win-vind.exe
   ```
 

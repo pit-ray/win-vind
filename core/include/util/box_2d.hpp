@@ -31,10 +31,6 @@ namespace vind
         {}
 
         explicit Box2D(
-                const POINT& center,
-                LONG width,
-                LONG height) ;
-        explicit Box2D(
                 const Point2D& center,
                 LONG width,
                 LONG height) ;
@@ -47,10 +43,10 @@ namespace vind
         Box2D(const Box2D&) ;
         Box2D& operator=(const Box2D&) ;
 
-        Box2D& operator=(const RECT&) ;
-
         Box2D(Box2D&&) ;
         Box2D& operator=(Box2D&&) ;
+
+        Box2D& operator=(const RECT&) ;
 
         LONG left() const noexcept ;
         LONG right() const noexcept ;

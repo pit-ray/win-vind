@@ -1,6 +1,10 @@
 @chcp 65001
 @echo Usage: build.bat [-debug/-release] [-msvc/-mingw] [32/64]
 
+@if %1 == -help (
+    exit
+)
+
 @if "%1" == "" (
     @set build_type=-debug
 ) else (

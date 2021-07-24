@@ -48,6 +48,8 @@ add_executable(core-test
     core/parser_rcparser_test.cpp
 
     core/mode_test.cpp
+    core/g_maps_test.cpp
+    core/g_params_test.cpp
 )
 target_link_libraries(core-test doctest)
 add_test(

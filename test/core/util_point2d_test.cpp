@@ -6,7 +6,7 @@
 
 using namespace vind ;
 
-TEST_CASE("(util::Point2D) constructor and equel test") {
+TEST_CASE("(Point2D) constructor and equel test") {
     Point2D p1(static_cast<LONG>(20), static_cast<LONG>(50)) ;
 
     Point2D p2(static_cast<int>(20), static_cast<int>(50)) ;
@@ -23,7 +23,7 @@ TEST_CASE("(util::Point2D) constructor and equel test") {
     CHECK(p3 == p4) ;
 }
 
-TEST_CASE("(util::Point2D) not equel") {
+TEST_CASE("(Point2D) not equel") {
     Point2D p1(40, 50) ;
     Point2D p2(40, 52) ;
 
@@ -31,7 +31,7 @@ TEST_CASE("(util::Point2D) not equel") {
     CHECK_FALSE(p1 == p2) ;
 }
 
-TEST_CASE("(util::Point2D) getter test") {
+TEST_CASE("(Point2D) getter test") {
     Point2D p(40, 50) ;
     POINT tp{40, 50} ;
 
@@ -51,7 +51,7 @@ TEST_CASE("(util::Point2D) getter test") {
     CHECK_EQ(pp.y, tp.y) ;
 }
 
-TEST_CASE("(util::Point2D) compare test") {
+TEST_CASE("(Point2D) compare test") {
     Point2D p1(40, 50) ;
     Point2D p2(30, 60) ;
     Point2D p3(20, 50) ;

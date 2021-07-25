@@ -312,7 +312,7 @@
         "en": "Build UI Automation cache asynchronously",
         "ja": "非同期UI Automationキャッシュ生成"
     },
-    "uiacachebuild_validperiod": {
+    "uiacachebuild_lifetime": {
         "value": 1500,
         "en": "Valid period of UI Automation cache(ms)",
         "ja": "非同期UI Automationキャッシュの有効期間(ms)"

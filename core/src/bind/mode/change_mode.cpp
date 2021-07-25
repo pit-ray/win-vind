@@ -112,10 +112,16 @@ namespace vind
         sprocess(true) ;
     }
 
+
+    // All instances share TextAreaScanner to keep staticity of sprocess.
+    TextAreaScanner ToEdiNormal::scanner_ ;
+
     //ToEdiNormal
     ToEdiNormal::ToEdiNormal()
     : BindedFuncCreator("to_edi_normal")
-    {}
+    {
+        AsyncUIACacheBuilder::register_properties(scanner_.get_properties()) ;
+    }
     void ToEdiNormal::sprocess(bool vclmodeout) {
         using namespace mode ;
         auto mode = get_global_mode() ;
@@ -149,13 +155,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not get the cursor position.") ;
             }
 
-            // All instances share TextAreaScanner to keep staticity of sprocess.
-            static auto scanner = [] {
-                TextAreaScanner walker ;
-                AsyncUIACacheBuilder::register_properties(walker.get_properties()) ;
-                return walker ;
-            }() ;
-            options::focus_nearest_textarea(hwnd, pos, scanner) ;
+            options::focus_nearest_textarea(hwnd, pos, scanner_) ;
         }
     }
     void ToEdiNormal::sprocess(NTypeLogger& parent_lgr) {

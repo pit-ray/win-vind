@@ -1,10 +1,6 @@
 @chcp 65001
 @echo Usage: setup_libs.bat [-msvc/-mingw] [32/64] [-update (optional)]
 
-@if %1 == -help (
-    @exit
-)
-
 @if not defined NUMBER_OF_PROCESSORS (
     @echo Error: This script will not work with powershell.
     @exit
@@ -14,6 +10,8 @@
     @echo.
     @echo Error: Please pass your compiler type -mingw or -msvc as the first argument.
     @echo.
+    @exit
+) else if "%1" == "-help" (
     @exit
 )
 

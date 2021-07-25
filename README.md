@@ -62,7 +62,7 @@ If you want to know the details, refer to <a href="https://pit-ray.github.io/win
 
 ## Download
 ### 4.1.0 (Latest Version)  
-Date: 2021/7/6  
+Date: 2021/7/25  
 
 #### 32bit  
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.0/setup_win-vind_4.1.0_32bit.exe.zip">setup_win-vind_4.1.0_32bit.exe</a>

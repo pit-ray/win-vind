@@ -48,7 +48,7 @@ descripption: "Option lists"
 |`cmd_fontname`|str|Consolas|Font name for virtual command line. If an empty string is passed, the system font will be used.|
 |`cmd_fadeout`|num|5|Fade-out time in seconds for the virtual command line.|
 |`gui_fontsize`|num|11|Font size of GUI|
-|`gui_fontname`|num|Consolas|Font name of GUI. If an empty string is passed, the system font will be used.|
+|`gui_fontname`|str|Segoe UI|Font name of GUI. If an empty string is passed, the system font will be used.|
 |`icon_style`|str|resources/icon32_dark.ico|Style of the icon to be displayed on the taskbar. By default, **Dark** and **Light** styles are available. The former is `resources/icon32_dark.ico` and the latter is `resouces/icon32_light.ico`. By the way, you can use any tasktray icon you like as long as it is in `.ico` format and **32x32**.|
 |`keybrd_layout`|str||Keyboard layout kmp file referenced by `jump_cursor_with_keybrd_layout`. By default, only **US (101/102)** or **JP (106/109)** layouts are supported. If your keyboard is not the right one, please create your own kmp file and use its path as the value. If you leave the value empty, the KMP file will be selected automatically. Also, if you like, you can share the keyboard you created with a pull request to the `default_config` directory.|
 |`shell`|str|powershell|Name of the shell to use for `:!` commands|
@@ -56,7 +56,7 @@ descripption: "Option lists"
 |`shell_startupdir`|str||The current directory where commands (e.g. `:shell`, `:terminal`, `:!`) will be executed. For these commands, the current directory is the directory if there is Exeplorer, or the user directory otherwise. If this option is not empty, then the current directory is fixed to a value directory.|
 |`easyclick_fontsize`|num|14|Font size of hints in EasyClick|
 |`easyclick_fontweight`|num|500|Font weight of hits in EasyClick. Its maximum value is 1000.|
-|`easyclick_fontname`|str|Consolas|Font name of hints in EasyClick|
+|`easyclick_fontname`|str|Arial|Font name of hints in EasyClick|
 |`easyclick_fontcolor`|str|c8c8c8|Font color of hints in EasyClick|
 |`easyclick_bgcolor`|str|323232|Font background color of hints in EasyClick|
 |`easyclick_colordecay`|num|100|Matching color decay of hints in EasyClick|

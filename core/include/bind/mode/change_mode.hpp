@@ -2,6 +2,7 @@
 #define _CHANGE_MODE_HPP
 
 #include "bind/binded_func_creator.hpp"
+#include "bind/mode/text_area_scanner.hpp"
 
 namespace vind
 {
@@ -26,7 +27,11 @@ namespace vind
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-    struct ToEdiNormal : public BindedFuncCreator<ToEdiNormal> {
+    class ToEdiNormal : public BindedFuncCreator<ToEdiNormal> {
+    private:
+        static TextAreaScanner scanner_ ;
+
+    public:
         explicit ToEdiNormal() ;
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;

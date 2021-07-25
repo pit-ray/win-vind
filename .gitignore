@@ -1,5 +1,6 @@
 .clangd
 .vscode
+.VSCodeCounter
 bin
 build
 cmake_modules

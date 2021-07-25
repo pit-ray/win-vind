@@ -52,12 +52,10 @@ namespace vind
 
             for(auto& elem : editables) {
                 // scan GUI objects only at leaves in tree.
-                RECT rect ;
-                if(util::is_failed(elem->get_CachedBoundingRectangle(&rect))) {
+                Box2D box ;
+                if(util::is_failed(elem->get_CachedBoundingRectangle(&box.data()))) {
                     throw RUNTIME_EXCEPT("Could not get the a rectangle of a element.") ;
                 }
-
-                Box2D box(std::move(rect)) ;
 
                 auto distance = util::l2_distance_nosq(
                         point.x(), point.y(),

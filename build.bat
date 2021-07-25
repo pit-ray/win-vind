@@ -1,12 +1,10 @@
 @chcp 65001
 @echo Usage: build.bat [-debug/-release] [-msvc/-mingw] [32/64]
 
-@if %1 == -help (
-    exit
-)
-
 @if "%1" == "" (
     @set build_type=-debug
+) else if "%1" == "-help" (
+    @ exit
 ) else (
     @set build_type=%1
 )
@@ -42,12 +40,12 @@
             cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A win32 -DBIT_TYPE=32 .
             cmake --build release_32 --config Release
             xcopy /e /Y ".\\release_32\\coregui\\Release\\*.exe" "release_32"
-            @rem xcopy /e /Y ".\\release_32\\wxgui\\Release\\*.exe" "release"
+            @rem xcopy /e /Y ".\\release_32\\wxgui\\Release\\*.exe" "release_32"
         ) else (
             cmake -B release_64 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
             cmake --build release_64 --config Release
             xcopy /e /Y ".\\release_64\\coregui\\Release\\*.exe" "release_64"
-            @rem xcopy /e /Y ".\\release_64\\wxgui\\Release\\*.exe" "release"
+            @rem xcopy /e /Y ".\\release_64\\wxgui\\Release\\*.exe" "release_64"
         )
     ) else (
         if %3 == 32 (

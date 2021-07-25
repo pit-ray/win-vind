@@ -35,6 +35,10 @@ namespace
             end_ = std::chrono::system_clock::now() ;
         }
 
+        bool has_stamp() const noexcept {
+            return end_.time_since_epoch().count() != 0 ;
+        }
+
         auto elapsed() noexcept {
             using namespace std::chrono ;
             return duration_cast<milliseconds>(system_clock::now() - begin_) ;
@@ -83,8 +87,26 @@ namespace
         }
 
         bool is_valid() {
+            if(!time_.has_stamp()) return false ;
             return time_.elapsed().count() \
-                < gparams::get_i("uiacachebuild_validperiod") ;
+                < gparams::get_i("uiacachebuild_lifetime") ;
+        }
+
+        void create_thread() {
+            ft_ = std::async(std::launch::async, [this] {
+                time_.stamp_begin() ;
+
+                auto updated = uiauto::update_element(root_, g_cache_request) ;
+
+                time_.stamp_end() ;
+                time_.update_average() ;
+                return updated ;
+            }) ;
+        }
+
+        bool check_if_finished() {
+            using namespace std::chrono ;
+            return ft_.wait_for(1us) != std::future_status::timeout ;
         }
 
         void update() {
@@ -99,12 +121,9 @@ namespace
             }
 
             if(ft_.valid()) {
-                util::debug::bench_start() ;
-                using namespace std::chrono ;
-
                 // This checks the shared state,
                 // but it takes several tens of milliseconds to see the shared state.
-                if(ft_.wait_for(1us) != std::future_status::timeout) {
+                if(check_if_finished()) {
                     root_ = ft_.get() ;
                 }
 
@@ -114,40 +133,22 @@ namespace
                 return ;
             }
 
-            ft_ = std::async(std::launch::async, [this] {
-                time_.stamp_begin() ;
-
-                auto updated = uiauto::update_element(root_, g_cache_request) ;
-
-                time_.stamp_end() ;
-                time_.update_average() ;
-                return updated ;
-            }) ;
+            create_thread() ;
         }
 
         const SmartElement& latest() {
-            if(!root_) {
-                update() ;
-                if(ft_.valid()) {
-                    ft_.wait() ;
-                    root_ = ft_.get() ;
-                }
-                return root_ ;
-            }
-
             if(is_valid()) {
                 return root_ ;
             }
 
             if(ft_.valid()) {
-                using namespace std::chrono ;
-                if(ft_.wait_for(1us) != std::future_status::timeout) {
+                if(check_if_finished()) {
                     root_ = ft_.get() ;
                     return root_ ;
                 }
             }
             else {
-                update() ;
+                create_thread() ;
             }
 
             ft_.wait() ;
@@ -157,6 +158,9 @@ namespace
     } ;
 
     std::unordered_map<HWND, WindowUICache> g_caches{} ;
+    inline auto has_cache(HWND hwnd) noexcept {
+        return g_caches.find(hwnd) != g_caches.end() ;
+    }
 }
 
 
@@ -218,7 +222,7 @@ namespace vind
             return ;
         }
 
-        if(g_caches.find(hwnd) == g_caches.end()) {
+        if(!has_cache(hwnd)) {
             g_caches[hwnd].initialize(hwnd) ;
         }
         g_caches[hwnd].update() ;
@@ -229,7 +233,7 @@ namespace vind
     }
 
     SmartElement AsyncUIACacheBuilder::get_root_element(HWND hwnd) {
-        if(g_caches.find(hwnd) == g_caches.end()) {
+        if(!has_cache(hwnd)) {
             g_caches[hwnd].initialize(hwnd) ;
         }
         return g_caches[hwnd].latest() ;

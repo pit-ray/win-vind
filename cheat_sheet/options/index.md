@@ -70,6 +70,7 @@ descripption: "Option lists"
 |`uiacachebuild_lifetime`|num|1500|Cache lifetime (ms). A high value reduces the computational cost, but decreases the reliability of the cache. A low value increases the computational cost due to frequent cache creation, but guarantees reliability.|
 |`uiacachebuild_staybegin`|num|500|The time between when the mouse cursor stops moving and when it starts to build a cache. In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. Therefore, it should be updated only immediately after the mouse stops. The value of this option is the time(ms) that the mouse cursor is considered to be stopped.|
 |`uiacachebuild_stayend`|num|2000|In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. The value of this option is the time(ms) between the time the cursor stops moving and the time it stops creating a cache.|
+|`arrangewin_ignore`|str||A list of executable filenames to ignore in ArrangeWindows. For example, if you want to remove rainmeter and gvim from the alignment, write `set arrangewin_ignore = rainmeter, gvim`. The name is the name of the executable file without extension.|
 
 ## Customize
 
@@ -82,6 +83,7 @@ set initmode=gn
 set shell = cmd
 set gui_fontname = Times New Roman  "Without quotation
 set shell_startupdir = C:/Users/Me/Desktop
+set arrangewin_ignore = rainmeter, gvim, cmd
 
 " bool
 set uiacachebuild " true
@@ -90,6 +92,7 @@ set nocharcache   " false
 " num (int, float)
 set cmd_fadeout = 60
 set vscroll_pageratio = 0.25
+
 ```
 
 <br>

@@ -14,7 +14,7 @@ parent: Cheat Sheet
 |:---:|:---:|:---|
 |`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
 |`<Esc-Right>`|**to_edi_normal**|Editor Normal Mode|
-|`<Esc-Down>`|**to_insert**|Insert Mode|
+|`<Esc-Up>`|**to_insert**|Insert Mode|
 
 <hr>
 

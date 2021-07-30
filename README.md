@@ -7,13 +7,14 @@
 
 <table align="center">
     <tr>
-        <th colspan="2">Code status</th>
+        <th colspan="3">Code status</th>
         <th colspan="2">Build status</th>
         <th colspan="2">Test status</th>
     </tr>
     <tr align="center">
         <td>Coverity</td>
         <td>Codacy</td>
+        <td>CodeQL</td>
         <td>MinGW-w64</td>
         <td>Visual Studio 2019</td>
         <td>Windows</td>
@@ -24,6 +25,9 @@
         </td>
         <td align="center">
             <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml/badge.svg?branch=master"></a>
         </td>
         <td align="center">
             <a href="https://travis-ci.org/pit-ray/win-vind"><img src="https://travis-ci.org/pit-ray/win-vind.svg?branch=master" /></a>

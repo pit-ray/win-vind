@@ -8,6 +8,7 @@ on:
     paths:
       - core
       - coregui
+      - .github/workflows/msvc.yml
   pull_request:
     branches: [ master ]
     paths:

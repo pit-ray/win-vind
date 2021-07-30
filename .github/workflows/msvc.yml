@@ -5,8 +5,14 @@ on:
     branches: [ master ]
     tags:
       - v*.*.*
+    paths:
+      - core
+      - coregui
   pull_request:
     branches: [ master ]
+    paths:
+      - core
+      - coregui
 
 env:
   BUILD_TYPE: Debug

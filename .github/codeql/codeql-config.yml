@@ -1,3 +1,6 @@
+name: 'GitHub CodeQL config'
 paths:
-  - core
-  - coregui
+  - 'core/src/**/*.cpp'
+  - 'core/include/**/*.hpp'
+  - 'coregui/src/**/*.cpp'
+  - 'coregui/include/**/*.hpp'

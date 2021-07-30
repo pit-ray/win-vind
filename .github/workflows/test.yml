@@ -12,10 +12,6 @@ on:
       - .github/workflows/test.yml
   pull_request:
     branches: [ master ]
-    paths:
-      - core
-      - coregui
-      - test
 
 env:
   BUILD_TYPE: Debug

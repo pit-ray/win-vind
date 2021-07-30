@@ -11,9 +11,6 @@ on:
       - .github/workflows/msvc.yml
   pull_request:
     branches: [ master ]
-    paths:
-      - core
-      - coregui
 
 env:
   BUILD_TYPE: Debug

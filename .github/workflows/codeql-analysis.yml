@@ -14,16 +14,11 @@ name: "CodeQL"
 on:
   push:
     branches: [ master ]
-    paths:
-      - core
-      - coregui
-      - .github/workflows/codeql-analysis.yml
+    tags:
+      - v*.*.*
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ master ]
-    paths:
-      - core
-      - coregui
 
 jobs:
   analyze:

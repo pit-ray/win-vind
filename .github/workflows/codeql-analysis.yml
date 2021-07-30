@@ -14,9 +14,15 @@ name: "CodeQL"
 on:
   push:
     branches: [ master ]
+    paths:
+      - core
+      - coregui
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ master ]
+    paths:
+      - core
+      - coregui
 
 jobs:
   analyze:
@@ -44,6 +50,8 @@ jobs:
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
+        config-file: ./.github/codeql/codeql-config.yml
+
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
@@ -76,10 +84,10 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -B ${{github.workspace}}/build_msvc_x64 -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
-    - name: Build
+        cmake -B ${{github.workspace}}/codeql -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+    - name: Build Project
       run: |
-        cmake --build ${{github.workspace}}/build_msvc_x64 --config Debug
+        cmake --build ${{github.workspace}}/codeql --config Debug
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1

@@ -30,7 +30,7 @@
             <a href="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml/badge.svg?branch=master"></a>
         </td>
         <td align="center">
-            <a href="https://travis-ci.org/pit-ray/win-vind"><img src="https://travis-ci.org/pit-ray/win-vind.svg?branch=master" /></a>
+            <a href="https://travis-ci.com/pit-ray/win-vind"><img src="https://travis-ci.com/pit-ray/win-vind.svg?branch=master" /></a>
         </td>
         <td align="center">
             <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml/badge.svg"></a>

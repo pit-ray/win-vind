@@ -5,10 +5,9 @@ on:
     branches: [ master ]
     tags:
       - v*.*.*
-    paths:
-      - core
-      - coregui
-      - .github/workflows/msvc.yml
+    paths-ignore:
+      - README.md
+      - CONTRIBUTING.md
   pull_request:
     branches: [ master ]
 

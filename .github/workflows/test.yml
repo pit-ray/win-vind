@@ -5,11 +5,9 @@ on:
     branches: [ master ]
     tags:
       - v*.*.*
-    paths:
-      - core
-      - coregui
-      - test
-      - .github/workflows/test.yml
+    paths-ignore:
+      - README.md
+      - CONTRIBUTING.md
   pull_request:
     branches: [ master ]
 

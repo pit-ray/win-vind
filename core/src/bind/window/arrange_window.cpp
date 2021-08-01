@@ -160,13 +160,23 @@ namespace vind
                     }
 
                     if(g_ignores.find(modulename) != g_ignores.end()) {
-                        hwnds.erase(itr) ;
+                        itr = hwnds.erase(itr) ;
                     }
-
-                    itr ++ ;
+                    else {
+                        itr ++ ;
+                    }
                 }
+
+                // all detected window are ignored in this monitor.
+                //if(hwnds.empty()) {
+                //    g_m_ordered_hwnd.erase(monitor.first) ;
+                //}
             }
         }
+
+        //if(g_m_ordered_hwnd.empty()) {
+        //    return ;
+        //}
 
         std::unordered_map<HWND, Box2D> rects ;
         assign_local_area_in_monitors(rects) ;

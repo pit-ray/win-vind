@@ -28,6 +28,7 @@
 #include "util/winwrap.hpp"
 #include "version.hpp"
 
+#include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/proc/execute.hpp"
 
 #include "disable_gcc_warning.hpp"
@@ -225,6 +226,7 @@ namespace vindgui
                                                 std::ifstream check(dl_filepath) ;
                                                 if(check.is_open()) {
                                                     Execute::sprocess(dl_filepath) ;
+                                                    ExitConfigGUI::sprocess() ; // exit win-vind for update
                                                     break ;
                                                 }
                                                 if(system_clock::now() - dl_start > 60s) { //timeout

@@ -8,7 +8,21 @@ descripption: "the lists of links to download win-vind"
 
 <hr>  
 
-### 4.1.0 (Latest Version), <a href="https://github.com/pit-ray/win-vind/releases/tag/v4.1.0">GitHub</a>
+### 4.1.1 (Latest Version), <a href="https://github.com/pit-ray/win-vind/releases/tag/v4.1.1">GitHub</a>
+Date: 2021/8/1  
+
+#### 32bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_32bit.exe.zip">setup_win-vind_4.1.1_32bit.exe.zip</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/win-vind_4.1.1_32bit.zip">win-vind_4.1.1_32bit.zip</a>  
+
+#### 64bit  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_64bit.exe.zip">setup_win-vind_4.1.1_64bit.exe.zip</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/win-vind_4.1.1_64bit.zip">win-vind_4.1.1_64bit.zip</a> 
+
+<br>
+<hr>
+
+### 4.1.0, <a href="https://github.com/pit-ray/win-vind/releases/tag/v4.1.0">GitHub</a>
 Date: 2021/7/25  
 
 #### 32bit  

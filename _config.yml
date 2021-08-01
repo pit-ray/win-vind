@@ -8,10 +8,10 @@ search_enabled: true
 
 aux_links:
     "Download 32bit":
-        - "https://github.com/pit-ray/win-vind/releases/download/v4.1.0/setup_win-vind_4.1.0_32bit.exe.zip"
+        - "https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_32bit.exe.zip"
     
     "Download 64bit":
-        - "https://github.com/pit-ray/win-vind/releases/download/v4.1.0/setup_win-vind_4.1.0_64bit.exe.zip"
+        - "https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_64bit.exe.zip"
         
     "GitHub":
         - "//github.com/pit-ray/win-vind"

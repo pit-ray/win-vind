@@ -168,15 +168,15 @@ namespace vind
                 }
 
                 // all detected window are ignored in this monitor.
-                //if(hwnds.empty()) {
-                //    g_m_ordered_hwnd.erase(monitor.first) ;
-                //}
+                if(hwnds.empty()) {
+                    g_m_ordered_hwnd.erase(monitor.first) ;
+                }
             }
         }
 
-        //if(g_m_ordered_hwnd.empty()) {
-        //    return ;
-        //}
+        if(g_m_ordered_hwnd.empty()) {
+            return ;
+        }
 
         std::unordered_map<HWND, Box2D> rects ;
         assign_local_area_in_monitors(rects) ;

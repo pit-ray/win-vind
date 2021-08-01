@@ -33,7 +33,7 @@
     @goto end_of_nlohmann_json
 )
 :start_setup_nlohmann_json
-call "scripts/install_nlohmann_json.bat" %1 %2
+call "tools/install_nlohmann_json.bat" %1 %2
 :end_of_nlohmann_json
 
 @echo Setup maddy ----------------------------------------------------------------------
@@ -48,7 +48,7 @@ call "scripts/install_nlohmann_json.bat" %1 %2
     @goto end_of_setup_maddy
 )
 :start_setup_maddy
-call "scripts/install_maddy.bat" %1 %2
+call "tools/install_maddy.bat" %1 %2
 :end_of_setup_maddy
 
 @echo.
@@ -66,5 +66,5 @@ call "scripts/install_maddy.bat" %1 %2
     @goto end_of_wxWidgets
 )
 :start_setup_wxWidgets
-call "scripts/install_wxWidgets.bat" %1 %2
+call "tools/install_wxWidgets.bat" %1 %2
 :end_of_wxWidgets

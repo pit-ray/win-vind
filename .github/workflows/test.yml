@@ -24,7 +24,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup Test Framework
-      run: "scripts/setup_test_framework.bat"
+      run: "tools/setup_test_framework.bat"
 
     - name: Configure CMake
       run: |

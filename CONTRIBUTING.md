@@ -14,7 +14,7 @@ If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you n
 
 ##### 1. Install dependent libraries in the project root
   ```bash  
-  $ ./scripts/setup_libs.bat [-mingw/-msvc] [32/64] [-update (optional)]
+  $ ./tools/setup_libs.bat [-mingw/-msvc] [32/64] [-update (optional)]
   ```  
 
 ##### 2. Build this project with cmake and execute it
@@ -62,6 +62,20 @@ If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you n
 
 You can refer to ToDo at <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a> and its architecture at <a href="devdocs/README.md">devdocs</a>.  
 
+
+#### Development Environment Versions
+I recommend to install follow softwares or libraries.  
+
+|Name|Recommended Version|Download Link|
+|:---:|:---:|:---:|
+|MinGW-w64|GCC-8.1.0-x86_64-posix-seh|<a href="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/">MinGW-w64 SourceForge.net</a>|
+|CMake|3.14.4|<a href="https://cmake.org/download/">Download - CMake</a>|
+|wxWidgets|3.1.5|<a href="https://www.wxwidgets.org/downloads/">Downloads - wxWidgets</a>|
+|NSIS|3.06.1|<a href="https://nsis.sourceforge.io/Download">Download - NSIS</a>|
+|Windows10 SDK|10.0.19041.0|<a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/">Microsoft Windows10 SDK - Windows app development</a>|
+
+This project use **&lt;mutex&gt;**, so some MinGW without it will fail a build. In this case, you will need to install other MinGW with <mutex>. (select posix at item called Thread in MinGW-Installer.)
+
 ## Dependencies
 |**Name**|**What is**|**Purpose**|**License**|
 |:---:|:---:|:---:|:---:|
@@ -70,3 +84,96 @@ You can refer to ToDo at <a href="https://github.com/pit-ray/win-vind/projects/2
 |[maddy](https://github.com/progsource/maddy)|Markdown to HTML parser|Display the release note via **Check Update**|[MIT License](https://github.com/progsource/maddy/blob/master/LICENSE)|
 |[doctest](https://github.com/onqtam/doctest)|Unit test framework|For basic unit test|[MIT License](https://github.com/onqtam/doctest/blob/master/LICENSE.txt)|
 |[fff](https://github.com/meekrosoft/fff)|Macro-based fake function framework|To mock Windows API|[MIT License](https://github.com/meekrosoft/fff/blob/master/LICENSE)|
+
+
+## Example for making original feature
+
+**Please read its architecture at <a href="https://github.com/pit-ray/win-vind/blob/master/devdocs/README.md">devdocs</a>.**  
+
+All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
+
+### New KeyBinding Example  
+- Make a source file and a header file into [core/include/bind/dev/](https://github.com/pit-ray/win-vind/blob/master/core/include/bind/dev) and [core/src/bind/dev/](https://github.com/pit-ray/win-vind/blob/master/core/src/bind/dev).
+- Add a path of source file into [core/CMakeLists.txt](https://github.com/pit-ray/win-vind/blob/master/core/include/bind/dev).
+- Define a new derived class (e.g. **MyBinding**).  
+
+**mybinding.hpp**
+
+```cpp  
+#ifndef MY_BINDING_HPP
+#define MY_BINDING_HPP
+
+#include "bind/base/binded_func_creator.hpp"
+
+namespace vind
+{
+    struct MyBinding : public BindedFuncCreator<MyBinding> {
+        explicit MyBinding() ;
+        static void sprocess() ;
+        static void sprocess(NTypeLogger& parent_lgr) ;
+        static void sprocess(const CharLogger& parent_lgr) ;
+    } ;
+}
+
+#endif
+```  
+**mybinding.cpp**
+
+```cpp  
+#include "bind/dev/mybindings.hpp"
+
+#include "bind/base/ntype_logger.hpp"
+#include "io/keybrd.hpp"
+#include "io/mouse.hpp"
+#include "opt/virtual_cmd_line.hpp"
+#include "util/def.hpp"
+
+
+namespace vind
+{
+    MyBinding::MyBinding()
+    : BindedFuncCreator("my_binding") //Give the unique identifier.
+    {}
+    // A one-shot function to call inside win-vind
+    void MyBinding::sprocess() {
+        mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
+
+        keybrd::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
+
+        VirtualCmdLine::msgout("Hello World !") ;
+    }
+    // A function called by sequence commands such as `23gg`
+    void MyBinding::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess() ;
+        }
+    }
+    // A function called by the command line style commands like `:sample`
+    void MyBinding::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+        sprocess() ;
+    }
+}
+```
+
+- Please register the class into [core/src/bindings_lists.cpp](https://github.com/pit-ray/win-vind/blob/master/core/src/bind/bindings_lists.cpp).
+
+```cpp
+    MyBinding::create(),
+```
+  
+- Assign commands to **MyBinding** in [default_config/bindings.json](https://github.com/pit-ray/win-vind/blob/master/default_config/bindings.json).
+
+```json
+    {
+        "name": "my_binding",
+        "cdef": ["sample"],
+        "endef": [],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Sample",
+        "ja": "Sample"
+    },
+```

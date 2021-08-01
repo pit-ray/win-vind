@@ -15,7 +15,7 @@ rmdir /s /q bin
 mkdir bin
 
 @echo Create Installer Version -------------------------------------------------------
-echo 1 > ".\\default_config\\instype"
+echo 1 > ".\\res\\default_config\\instype"
 
 call build.bat -release %2 64
 cd release_64
@@ -30,15 +30,15 @@ cd ..
 copy /Y ".\\release_32\\setup*" ".\\bin\\*_%1_32bit.exe"
 
 @echo Create Zip Version ----------------------------------------------------------
-echo 0 > ".\\default_config\\instype"
+echo 0 > ".\\res\\default_config\\instype"
 
 mkdir ".\\bin\\win-vind"
 mkdir ".\\bin\\win-vind\\default_config"
 mkdir ".\\bin\\win-vind\\resources"
 
 copy /Y ".\\release_64\\win-vind.exe" ".\\bin\\win-vind\\win-vind.exe"
-xcopy /e /Y ".\\default_config" ".\\bin\\win-vind\\default_config"
-xcopy /e /Y ".\\resources" ".\\bin\\win-vind\\resources"
+xcopy /e /Y ".\\res\\default_config" ".\\bin\\win-vind\\default_config"
+xcopy /e /Y ".\\res\\resources" ".\\bin\\win-vind\\resources"
 powershell Compress-Archive -Path ".\\bin\\win-vind" -DestinationPath ".\\bin\\win-vind_%1_64bit".zip"
 
 copy /Y ".\\release_32\\win-vind.exe" ".\\bin\\win-vind\\win-vind.exe"

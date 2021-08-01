@@ -90,7 +90,7 @@ cd ../../../
 @rem If you use wxWidgets-3.1.x, it solves linker error.
 @rem if "%1" == "-mingw" (
 @rem     cd ..
-@rem call "scripts/copy_mingw_libs.bat"
+@rem call "tools/copy_mingw_libs.bat"
 @rem )
 
 @echo Installed wxWidgets successfully

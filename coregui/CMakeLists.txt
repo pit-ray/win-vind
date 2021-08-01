@@ -2,15 +2,15 @@ cmake_minimum_required(VERSION 3.0.0)
 
 string(REPLACE "." "," FILE_VERSION "${PROJECT_VERSION}")
 configure_file(
-    ${PROJECT_SOURCE_DIR}/build_resources/version.hpp.in
+    ${PROJECT_SOURCE_DIR}/res/build/version.hpp.in
     ${PROJECT_SOURCE_DIR}/coregui/include/version.hpp
     NEWLINE_STYLE LF
     @ONLY
 )
 
 configure_file(
-    ${PROJECT_SOURCE_DIR}/build_resources/resource.rc.in
-    ${PROJECT_SOURCE_DIR}/build_resources/resource.rc
+    ${PROJECT_SOURCE_DIR}/res/build/resource.rc.in
+    ${PROJECT_SOURCE_DIR}/res/build/resource.rc
     NEWLINE_STYLE LF
     @ONLY
 )
@@ -34,7 +34,7 @@ set(SOURCE_FILES
 
 #build all
 if(${MSVC})
-    set(winresobj ${PROJECT_SOURCE_DIR}/build_resources/resource.rc)
+    set(winresobj ${PROJECT_SOURCE_DIR}/res/build/resource.rc)
 
     add_executable(${PROJECT_NAME} WIN32
         ${winresobj}
@@ -47,7 +47,7 @@ else()
     endif()
 
     #build the file properties
-    set(winres "${PROJECT_SOURCE_DIR}/build_resources/resource.rc")
+    set(winres "${PROJECT_SOURCE_DIR}/res/build/resource.rc")
 
     set(winresobj "${CMAKE_CURRENT_BINARY_DIR}/resource.rc.obj")
     add_custom_command(OUTPUT "${winresobj}"

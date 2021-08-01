@@ -26,7 +26,7 @@ namespace vind
                     break ;
             }
 
-            return path::MODULE_ROOT_PATH() + "\\default_config\\" + filename ;
+            return path::DEFAULT_CONFIG_PATH() + "\\" + filename ;
         }
     }
 }

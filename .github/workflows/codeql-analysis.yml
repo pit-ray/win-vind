@@ -76,7 +76,7 @@ jobs:
         key: x64-libs-cache
 
     - name: Setup Library
-      run: "scripts/setup_libs.bat -msvc 64"
+      run: "tools/setup_libs.bat -msvc 64"
 
     - name: Configure CMake
       run: |

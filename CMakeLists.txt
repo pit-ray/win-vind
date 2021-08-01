@@ -207,8 +207,8 @@ add_subdirectory(coregui)
 #CPack-----------------------------------------------------------------------------
 install(TARGETS win-vind RUNTIME DESTINATION .)
 install(DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/resources
-    ${CMAKE_CURRENT_SOURCE_DIR}/default_config
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/resources
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/default_config
     DESTINATION .
 )
 
@@ -226,8 +226,8 @@ set(CPACK_PACKAGE_HOMEPAGE_URL "https://pit-ray.github.io/win-vind/")
 set(CPACK_PACKAGE_FILE_NAME "setup_${CPACK_PROJECT_NAME}_${CPACK_PROJECT_VERSION}")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "win-vind")
-set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/installer512.ico")
-set(CPACK_NSIS_MUI_UNIICON "${CMAKE_CURRENT_SOURCE_DIR}/build_resources/uninstaller512.ico")
+set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/installer/installer512.ico")
+set(CPACK_NSIS_MUI_UNIICON "${CMAKE_CURRENT_SOURCE_DIR}/res/installer/uninstaller512.ico")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PROJECT_NAME})
 set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "applications (${CPACK_PROJECT_NAME})")
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL TRUE)

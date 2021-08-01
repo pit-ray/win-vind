@@ -24,7 +24,7 @@ namespace vind
 
         bool is_installer_used() {
             static const auto flag = [] {
-                std::ifstream ifs{to_u8path(MODULE_ROOT_PATH() + "\\default_config\\instype")} ;
+                std::ifstream ifs{to_u8path(DEFAULT_CONFIG_PATH() + "\\instype")} ;
                 if(!ifs.is_open()) {
                     return false ;
                 }
@@ -98,6 +98,15 @@ namespace vind
 
         const std::string& CONFIG_PATH() {
             static const auto path = is_installer_used() ? ROOT_PATH() : ROOT_PATH() + "\\config" ;
+            return path ;
+        }
+
+        const std::string& DEFAULT_CONFIG_PATH() {
+#if defined(DEBUG)
+            static const auto path = MODULE_ROOT_PATH() + "\\res\\default_config" ;
+#else
+            static const auto path = MODULE_ROOT_PATH() + "\\default_config" ;
+#endif
             return path ;
         }
     }

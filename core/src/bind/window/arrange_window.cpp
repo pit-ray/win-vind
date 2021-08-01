@@ -83,7 +83,7 @@ namespace
         return TRUE ;
     }
 
-    inline void assign_local_area_in_monitors(std::unordered_map<HWND, Box2D>& rects) {
+    void assign_local_area_in_monitors(std::unordered_map<HWND, Box2D>& rects) {
         for(auto& [hmonitor, mrect] : g_mrects) {
             const auto& ordered_hwnd = g_m_ordered_hwnd[hmonitor] ;
 
@@ -104,8 +104,8 @@ namespace
                 auto pre_w = pre_rect.width() ;
                 auto pre_h = pre_rect.height() ;
                 if(pre_w > pre_h) {
-                    pre_rect.right() -= pre_rect.center_y() ;
-                    rect.left()      += pre_rect.center_x() ;
+                    pre_rect.right() -= pre_w / 2 ;
+                    rect.left()      += pre_w / 2 ;
                 }
                 else {
                     pre_rect.bottom() -= pre_h / 2 ;

@@ -55,7 +55,7 @@ The basic concept is the same as Vim, but there are two **Normal Mode** and two 
 <p align="center">Default mode layer overview</p>
 </p>
 
-The two groups are GUI mode and Editor mode. The former group is for the operation of windows and mouse cursor without the mouse, and the latter group is for Vim emulation on input forms in web pages or Microsoft Office Word.  
+The two groups are GUI mode and Editor mode. The former group is for the operation of windows and mouse cursor, and the latter group is for Vim emulation on input forms in web pages or Microsoft Office Word.  
 
 <p align="center">
 <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/GUIandEditor.jpg?raw=true" width=700>
@@ -94,7 +94,7 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 ### 3. Customize Options and Maps
 win-vind uses **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind.  Generally, there are three levels of key mapping: **key2key**, **keyset2keyset**, and **cmd2cmd**. **key2key** maps one key to one key. **keyset2keyset** maps a keyset to a keyset(e.g. `c-s` to `<m-h>`). **cmd2cmd** performs sequential mapping (e.g. `qq` to `<c-w>e`).  
 
-The keyset syntax uses the same expression as in Vim, where keys are connected by `-` in `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
+The keyset syntax uses the same expression as in Vim, where keys are connected by `-` between `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
 
 The following commands are supported. By the way, `{` and `}` themselves are not part of the syntax.  
 
@@ -175,7 +175,7 @@ The following commands are supported. By the way, `{` and `}` themselves are not
 Let's do the last tutorial!  
 
 1. Go to **Insert Mode**.
-1. This time, we will try **Instant GUi Normal Mode** with `<F8>`. It allows us to temporarily switch to the **GUI Normal Mode**.  
+1. This time, we will try **Instant GUI Normal Mode** with `<F8>`. It allows us to temporarily switch to the **GUI Normal Mode**.  
 
    <p align="center">
    <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/instant_gui_normal_mode.jpg?raw=true" width=450 >  
@@ -197,7 +197,7 @@ Let's do the last tutorial!
    <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/source_demo.jpg?raw=true" width=450 >  
    <p align="center">Reload Demo</p>
    </p>
-1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and operate GUI with hinting by `<Alt>` like **EasyMotion** or **Vimium**.
+1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and operate GUI with hinting like **EasyMotion** or **Vimium** by `<Alt>`.
 
 <br>
 <br>

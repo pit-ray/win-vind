@@ -34,14 +34,22 @@ namespace
     using namespace vind ;
 
     std::string get_shell_startupdirectory() {
-        auto dir = explorer::get_current_explorer_path() ;
-        if(dir.empty()) {
-            dir = gparams::get_s("shell_startupdir") ;
-            if(dir.empty()) {
-                dir = path::HOME_PATH() ;
+        auto dir = gparams::get_s("shell_startupdir") ;
+        if(!dir.empty()) {
+            return dir ;
+        }
+
+        try {
+            dir = explorer::get_current_explorer_path() ;
+            if(!dir.empty()) {
+                return dir ;
             }
         }
-        return dir ;
+        catch(const std::exception&) {
+            // If you open QuickAccess Page, the path getter will occur exception.
+            return path::HOME_PATH() ;
+        }
+        return path::HOME_PATH() ;
     }
 }
 

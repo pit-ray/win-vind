@@ -46,15 +46,15 @@
 **win-vind** provides the lightweight hybrid UI system of CUI and GUI for Windows. 
 
 ### Features
-- Fast Binding System
-- Vim-like Mode Management
-- GUI Operation without Mouse
-- Vim Emulation Everywhere
-- Process Control like `:!gvim ~/.vimrc` or `:e ~/.vimrc` (Resident command line)
-- Vim-like Configuration Syntax with `.vindrc`
+- Fast binding system
+- Vim-like mode management
+- GUI operation Without mouse
+- Vim emulation everywhere
+- Process control like `:!gvim ~/.vimrc` or `:e ~/.vimrc` (Resident command line)
+- Vim-like configuration syntax with `.vindrc`
 - Low-level key mapping (e.g. `imap <Capslock> <Ctrl>`)
-- Running in User Permission
-- Oneshot Use for Vim or AHK (e.g. `win-vind -f easy_click_left`)
+- Running in user permission
+- Oneshot use for Vim or AHK (e.g. `win-vind -f easy_click_left`)
 
 If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
 

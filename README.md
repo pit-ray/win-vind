@@ -21,7 +21,7 @@
 ### Features
 - Fast binding system
 - Vim-like mode management
-- GUI operation Without mouse
+- GUI operation without mouse
 - Vim emulation everywhere
 - Process control like `:!gvim ~/.vimrc` or `:e ~/.vimrc` (Resident command line)
 - Vim-like configuration syntax with `.vindrc`

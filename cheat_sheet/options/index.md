@@ -46,7 +46,7 @@ descripption: "Option lists"
 |`cmd_ymargin`|num|64|Use `cmd_roughpos` to determine the rough position, and `cmd_ymargin` to determine the detailed vertical position. The units are in pixels.|
 |`cmd_fontextra`|num|1|Horizontal character spacing in virtual command line.|
 |`cmd_fontname`|str|Consolas|Font name for virtual command line. If an empty string is passed, the system font will be used.|
-|`cmd_fadeout`|num|5|Fade-out time in seconds for the virtual command line.|
+|`cmd_fadeout`|num|5|Fade-out time in seconds for the virtual command line. If you want the command line to always be visible, make this value large enough.|
 |`gui_fontsize`|num|11|Font size of GUI|
 |`gui_fontname`|str|Segoe UI|Font name of GUI. If an empty string is passed, the system font will be used.|
 |`icon_style`|str|resources/icon32_dark.ico|Style of the icon to be displayed on the taskbar. By default, **Dark** and **Light** styles are available. The former is `resources/icon32_dark.ico` and the latter is `resouces/icon32_light.ico`. By the way, you can use any tasktray icon you like as long as it is in `.ico` format and **32x32**.|

@@ -9,6 +9,7 @@
 
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/autotrack_popup.hpp"
+#include "opt/blockstyle_caret.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/suppress_for_vim.hpp"
 #include "opt/virtual_cmd_line.hpp"
@@ -22,6 +23,7 @@ namespace
     std::vector<Option::SPtr> g_vpop {
         AsyncUIACacheBuilder::create(),
         AutotrackPopup::create(),
+        BlockStyleCaret::create(),
         Dedicate2Window::create(),
         SuppressForVim::create(),
         VirtualCmdLine::create(),

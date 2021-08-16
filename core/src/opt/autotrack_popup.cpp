@@ -8,54 +8,64 @@
 
 #include "err_logger.hpp"
 #include "util/def.hpp"
+#include "util/winwrap.hpp"
 
-//internal linkage
+
 namespace
 {
-    inline void set_windows_mtrack_flag(bool new_flag) {
-        if(!SystemParametersInfo(SPI_SETSNAPTODEFBUTTON, new_flag, 0, SPIF_SENDCHANGE)) {
-            throw RUNTIME_EXCEPT("cannot set system flag") ;
-        }
+    inline auto get_property() {
+        BOOL val ;
+        vind::util::system_parameters_info(
+                SPI_GETSNAPTODEFBUTTON,
+                0, &val, 0) ;
+        return val ;
+    }
+
+    inline auto set_property(BOOL val) {
+        vind::util::system_parameters_info(
+                SPI_SETSNAPTODEFBUTTON,
+                val, 0,
+                SPIF_SENDCHANGE) ;
     }
 }
+
 
 namespace vind
 {
     struct AutotrackPopup::Impl {
-        bool default_flag = false ;
-
-        explicit Impl() {
-            if(!SystemParametersInfo(SPI_GETSNAPTODEFBUTTON, 0,
-                        reinterpret_cast<PVOID>(&default_flag), 0)) {
-                throw RUNTIME_EXCEPT("cannot get system flag") ;
-            }
-        }
-
-        virtual ~Impl() noexcept {
-            try {
-                set_windows_mtrack_flag(default_flag) ;
-            }
-            catch(const std::runtime_error&) {
-                return ;
-            }
-        }
+        BOOL sysflag_ = FALSE ;
     } ;
 
     AutotrackPopup::AutotrackPopup()
     : OptionCreator("autotrack_popup"),
       pimpl(std::make_unique<Impl>())
-    {}
+    {
+        pimpl->sysflag_ = get_property() ;
+    }
 
-    AutotrackPopup::~AutotrackPopup() noexcept                  = default ;
+    AutotrackPopup::~AutotrackPopup() noexcept {
+        try {
+            if(get_property() != pimpl->sysflag_) {
+                set_property(pimpl->sysflag_) ;
+            }
+        }
+        catch(const std::runtime_error& e) {
+            PRINT_ERROR(e.what()) ;
+        }
+    }
     AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
     AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
 
     void AutotrackPopup::do_enable() const {
-        set_windows_mtrack_flag(true) ;
+        if(get_property() != TRUE) {
+            set_property(TRUE) ;
+        }
     }
 
     void AutotrackPopup::do_disable() const {
-        set_windows_mtrack_flag(false) ;
+        if(get_property() != FALSE) {
+            set_property(FALSE) ;
+        }
     }
 
     void AutotrackPopup::do_process() const {

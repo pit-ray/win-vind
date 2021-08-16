@@ -302,6 +302,11 @@
         "en": "Suppress For Vim",
         "ja": "Vim用に機能を抑制"
     },
+    "blockstylecaret": {
+        "value": false,
+        "en": "Block Style Caret",
+        "ja": "ブロックスタイルのテキストカーソル"
+    },
     "autofocus_textarea": {
         "value": false,
         "en": "Autofocus Text Area",

@@ -53,6 +53,22 @@ namespace vind
 
         std::string get_module_filename(HWND hwnd) ;
 
+        // Wrapper SystemParametersInfo
+        template <typename Ptr>
+        inline void system_parameters_info(
+                UINT param,
+                UINT uiparam,
+                Ptr pvparam,
+                UINT fwinini) {
+            if(!SystemParametersInfoW(
+                    param,
+                    uiparam,
+                    reinterpret_cast<PVOID>(pvparam),
+                    fwinini)) {
+                throw RUNTIME_EXCEPT("Count not set a system parameter with SystemParametersInfo.") ;
+            }
+        }
+
         bool is_failed(HRESULT result) noexcept ;
     }
 }

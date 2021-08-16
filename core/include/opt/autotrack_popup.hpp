@@ -21,6 +21,7 @@ namespace vind
 
         AutotrackPopup(AutotrackPopup&&) ;
         AutotrackPopup& operator=(AutotrackPopup&&)  ;
+
         AutotrackPopup(const AutotrackPopup&)            = delete ;
         AutotrackPopup& operator=(const AutotrackPopup&) = delete ;
     } ;

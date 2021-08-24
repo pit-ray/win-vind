@@ -116,10 +116,10 @@ namespace vind
 
     // Location-based comparison
     bool Box2D::operator==(const Box2D& rhs) const noexcept {
-        return util::is_equel(pimpl->rect_, rhs.data()) ;
+        return util::is_equal(pimpl->rect_, rhs.data()) ;
     }
     bool Box2D::operator!=(const Box2D& rhs) const noexcept {
-        return !util::is_equel(pimpl->rect_, rhs.data()) ;
+        return !util::is_equal(pimpl->rect_, rhs.data()) ;
     }
 
     bool Box2D::operator>(const Box2D& rhs) const noexcept {
@@ -183,14 +183,14 @@ namespace vind
     bool Box2D::is_bigger_than(const Box2D& rhs) const noexcept {
         return width() > rhs.width() || height() > rhs.height() ;
     }
-    bool Box2D::is_bigger_equel(const Box2D& rhs) const noexcept {
+    bool Box2D::is_bigger_equal(const Box2D& rhs) const noexcept {
         return width() >= rhs.width() || height() >= rhs.height() ;
     }
 
     bool Box2D::is_smaller_than(const Box2D& rhs) const noexcept {
         return width() < rhs.width() && height() < rhs.height() ;
     }
-    bool Box2D::is_smaller_equel(const Box2D& rhs) const noexcept {
+    bool Box2D::is_smaller_equal(const Box2D& rhs) const noexcept {
         return width() <= rhs.width() && height() <= rhs.height() ;
     }
 

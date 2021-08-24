@@ -307,6 +307,16 @@
         "en": "Block Style Caret",
         "ja": "ブロックスタイルのテキストカーソル"
     },
+    "blockstylecaret_width": {
+        "value": 15,
+        "en": "Width of block style caret on solid mode",
+        "ja": "solidモード時のブロックスタイルのカーソル幅"
+    },
+    "blockstylecaret_mode": {
+        "value": "solid",
+        "en": "Mode of block style caret [solid | flex]",
+        "ja": "ブロックスタイルのカーソルの動作モード [solid | flex]"
+    },
     "autofocus_textarea": {
         "value": false,
         "en": "Autofocus Text Area",

@@ -89,9 +89,9 @@ TEST_CASE("(util::util::is_intersect) check intersect") {
     CHECK(util::is_intersect(r1, r2)) ;
 }
 
-TEST_CASE("(util::util::is_equel) check equel") {
+TEST_CASE("(util::util::is_equal) check equel") {
     RECT r{20, 60, 200, 130} ;
-    CHECK(util::is_equel(r, r)) ;
+    CHECK(util::is_equal(r, r)) ;
 }
 
 TEST_CASE("(util::util::is_intersect) check intersect") {

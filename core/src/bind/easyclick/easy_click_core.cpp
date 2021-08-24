@@ -190,8 +190,9 @@ namespace vind
         util::refresh_display(NULL) ;
 
         if(auto pos = ft.get()) {
-            SetCursorPos(pos->x(), pos->y()) ;
-            mouse::click(sendkey) ;
+            if(SetCursorPos(pos->x(), pos->y())) {
+                mouse::click(sendkey) ;
+            }
         }
 
         //Release all keys in order to avoid the next matching right after.

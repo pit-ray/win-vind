@@ -74,7 +74,7 @@ namespace vind
                    (target.bottom <= range.bottom && target.bottom >= range.top) ;
         }
 
-        inline auto is_equel(const RECT& lhs, const RECT& rhs) noexcept {
+        inline auto is_equal(const RECT& lhs, const RECT& rhs) noexcept {
             return lhs.left   == rhs.left && \
                    lhs.top    == rhs.top && \
                    lhs.right  == rhs.right && \

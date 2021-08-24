@@ -65,7 +65,7 @@ namespace vind
             if(!GetClientRect(hwnd, &client_rect)) {
                 return false ;
             }
-            if(util::is_equel(rect, client_rect)) {
+            if(util::is_equal(rect, client_rect)) {
                 return false ;
             }
 

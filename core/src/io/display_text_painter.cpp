@@ -5,6 +5,7 @@
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/rect.hpp"
+#include "util/winwrap.hpp"
 
 #include <cstring>
 #include <memory>
@@ -12,28 +13,28 @@
 namespace vind
 {
     struct DisplayTextPainter::Impl {
-        HDCSPtr hdc ; //device context for actual use
+        util::HDCSPtr hdc ; //device context for actual use
 
-        HDCSPtr display_dc ;
-        HDCSPtr compatible_dc ;
+        util::HDCSPtr display_dc ;
+        util::HDCSPtr compatible_dc ;
 
-        HBitmapUPtr compatible_bitmap ;
+        util::HBitmapUPtr compatible_bitmap ;
 
         COLORREF fg_color ;
         COLORREF bg_color ;
 
         LOGFONTA logfont ; //infomation struct for creation of font
-        HFontUPtr hfont ; //font handle
+        util::HFontUPtr hfont ; //font handle
 
         explicit Impl()
-        : hdc(nullptr, delete_hdc),
-          display_dc(nullptr, delete_hdc),
-          compatible_dc(nullptr, delete_hdc),
-          compatible_bitmap(nullptr, delete_obj),
+        : hdc(nullptr, util::delete_hdc),
+          display_dc(nullptr, util::delete_hdc),
+          compatible_dc(nullptr, util::delete_hdc),
+          compatible_bitmap(nullptr, util::delete_obj),
           fg_color(RGB(0, 0, 0)),
           bg_color(RGB(0, 0, 0)),
           logfont(),
-          hfont(nullptr, delete_obj)
+          hfont(nullptr, util::delete_obj)
         {
             logfont.lfHeight         = 0 ;
             logfont.lfWidth          = 0 ;
@@ -65,7 +66,7 @@ namespace vind
     } ;
 
     void DisplayTextPainter::initialize_dc(bool enable_double_buffering) {
-        pimpl->display_dc = create_display_dc() ;
+        pimpl->display_dc = util::create_display_dc() ;
 
         if(enable_double_buffering) {
             auto box = screenmetrics::get_conbined_metrics() ;
@@ -85,7 +86,7 @@ namespace vind
             }
             pimpl->compatible_dc.reset(raw_compatible_dc) ;
 
-            select_obj(pimpl->compatible_dc, pimpl->compatible_bitmap) ;
+            util::select_obj(pimpl->compatible_dc, pimpl->compatible_bitmap) ;
 
             if(!BitBlt(pimpl->compatible_dc.get(), 0, 0,
                        width, height,
@@ -118,11 +119,11 @@ namespace vind
 
         initialize_dc(rhs.pimpl->compatible_dc != nullptr) ;
 
-        pimpl->hfont = create_font(rhs.pimpl->logfont) ;
-        select_obj(pimpl->hdc, pimpl->hfont) ;
+        pimpl->hfont = util::create_font(rhs.pimpl->logfont) ;
+        util::select_obj(pimpl->hdc, pimpl->hfont) ;
 
-        set_dc_text_color(pimpl->hdc, rhs.pimpl->fg_color) ;
-        set_dc_back_color(pimpl->hdc, rhs.pimpl->bg_color) ;
+        util::set_dc_text_color(pimpl->hdc, rhs.pimpl->fg_color) ;
+        util::set_dc_back_color(pimpl->hdc, rhs.pimpl->bg_color) ;
     }
 
     DisplayTextPainter::~DisplayTextPainter() noexcept                      = default ;
@@ -164,14 +165,14 @@ namespace vind
             }
         }
 
-        pimpl->hfont = create_font(pimpl->logfont) ;
-        select_obj(pimpl->hdc, pimpl->hfont) ;
+        pimpl->hfont = util::create_font(pimpl->logfont) ;
+        util::select_obj(pimpl->hdc, pimpl->hfont) ;
     }
 
     //foreground color
     void DisplayTextPainter::set_text_color(COLORREF color) {
         pimpl->fg_color = std::move(color) ;
-        set_dc_text_color(pimpl->hdc, pimpl->fg_color) ;
+        util::set_dc_text_color(pimpl->hdc, pimpl->fg_color) ;
     }
     void DisplayTextPainter::set_text_color(
             unsigned char r,
@@ -186,7 +187,7 @@ namespace vind
     //background color
     void DisplayTextPainter::set_back_color(COLORREF color) {
         pimpl->bg_color = std::move(color) ;
-        set_dc_back_color(pimpl->hdc, pimpl->bg_color) ;
+        util::set_dc_back_color(pimpl->hdc, pimpl->bg_color) ;
     }
     void DisplayTextPainter::set_back_color(
             unsigned char r,
@@ -220,51 +221,6 @@ namespace vind
         }
         else {
             draw("", 0, 0, 0) ;
-        }
-    }
-
-    //static utility functions
-    DisplayTextPainter::HDCUPtr DisplayTextPainter::create_display_dc() {
-        auto raw_hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
-        if(!raw_hdc) {
-            throw RUNTIME_EXCEPT("Could not create HDC of DISPLAY.") ;
-        }
-        return HDCUPtr(raw_hdc, delete_hdc) ;
-    }
-
-    void DisplayTextPainter::set_dc_text_color(
-            std::shared_ptr<HDC__>& hdc,
-            const COLORREF& color) {
-        if(SetTextColor(hdc.get(), color) == CLR_INVALID) {
-            throw RUNTIME_EXCEPT("Could not set a text color.") ;
-        }
-    }
-
-    void DisplayTextPainter::set_dc_back_color(
-            std::shared_ptr<HDC__>& hdc,
-            const COLORREF& color) {
-        if(SetBkColor(hdc.get(), color) == CLR_INVALID) {
-            throw RUNTIME_EXCEPT("Could not set a background color.") ;
-        }
-    }
-
-    DisplayTextPainter::HFontUPtr DisplayTextPainter::create_font(const LOGFONTA& logfont) {
-        auto raw_font = CreateFontIndirectA(&logfont) ;
-        if(!raw_font) {
-            throw RUNTIME_EXCEPT("Could not create a font.") ;
-        }
-        return HFontUPtr(raw_font, delete_obj) ;
-    }
-
-    void DisplayTextPainter::select_obj(HDCSPtr& hdc, const HBitmapUPtr& bitmap) {
-        if(!SelectObject(hdc.get(), bitmap.get())) {
-            throw RUNTIME_EXCEPT("The device context could not select a bitmap object.") ;
-        }
-    }
-
-    void DisplayTextPainter::select_obj(HDCSPtr& hdc, const HFontUPtr& font) {
-        if(!SelectObject(hdc.get(), font.get())) {
-            throw RUNTIME_EXCEPT("The device context could not select a font object.") ;
         }
     }
 }

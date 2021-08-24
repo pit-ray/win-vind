@@ -25,7 +25,7 @@ namespace
         vind::util::system_parameters_info(
                 SPI_SETSNAPTODEFBUTTON,
                 val, 0,
-                SPIF_SENDCHANGE) ;
+                SPIF_UPDATEINIFILE | SPIF_SENDCHANGE) ;
     }
 }
 

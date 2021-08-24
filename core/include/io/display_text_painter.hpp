@@ -13,30 +13,8 @@ namespace vind
         struct Impl ;
         std::unique_ptr<Impl> pimpl ;
 
-        static void delete_hdc(HDC h) noexcept {
-            if(h != nullptr) DeleteDC(h) ;
-        }
-        static void delete_obj(HGDIOBJ f) noexcept {
-            if(f != nullptr) DeleteObject(f) ;
-        }
-
-        using HDCSPtr        = std::shared_ptr<HDC__> ;
-        using HDCUPtr = std::unique_ptr<HDC__, decltype(&delete_hdc)> ;
-        using HBitmapUPtr     = std::unique_ptr<HBITMAP__, decltype(&delete_obj)> ;
-        using HFontUPtr       = std::unique_ptr<HFONT__, decltype(&delete_obj)> ;
-
-        static HDCUPtr create_display_dc() ;
-
-        static void set_dc_text_color(HDCSPtr& hdc, const COLORREF& color) ;
-        static void set_dc_back_color(HDCSPtr& hdc, const COLORREF& color) ;
-
         void initialize_dc(bool enable_double_buffering) ;
         void copy(const DisplayTextPainter& rhs) ;
-
-        static HFontUPtr create_font(const LOGFONTA& logfont) ;
-
-        static void select_obj(HDCSPtr& hdc, const HBitmapUPtr& bitmap) ;
-        static void select_obj(HDCSPtr& hdc, const HFontUPtr& font) ;
 
     public:
         explicit DisplayTextPainter(

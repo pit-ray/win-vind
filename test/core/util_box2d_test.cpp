@@ -26,7 +26,7 @@ TEST_CASE("(Box2D) Constructor test") {
 
     const Box2D b6(left, top, right, bottom) ;
 
-    SUBCASE("Equel") {
+    SUBCASE("Equal") {
         CHECK(b0 == b1) ;
         CHECK(b0 != b5) ;
     }
@@ -77,8 +77,8 @@ TEST_CASE("(Box2D) Constructor test") {
         CHECK_EQ(b2.height(), height) ;
         CHECK_EQ(b2.area(), width * height) ;
 
-        CHECK(util::is_equel(b3, rect)) ;
-        CHECK(util::is_equel(b3.data(), rect)) ;
+        CHECK(util::is_equal(b3, rect)) ;
+        CHECK(util::is_equal(b3.data(), rect)) ;
     }
 }
 
@@ -163,11 +163,11 @@ TEST_CASE("(Box2D) size-based comparison") {
     CHECK(b1.is_smaller_than(b2)) ;
     CHECK_FALSE(b3.is_smaller_than(b1)) ;
 
-    CHECK(b2.is_bigger_equel(b1)) ;
-    CHECK(b3.is_bigger_equel(b4)) ;
-    CHECK(b3.is_bigger_equel(b1)) ;
+    CHECK(b2.is_bigger_equal(b1)) ;
+    CHECK(b3.is_bigger_equal(b4)) ;
+    CHECK(b3.is_bigger_equal(b1)) ;
 
-    CHECK(b1.is_smaller_equel(b2)) ;
-    CHECK(b4.is_smaller_equel(b3)) ;
-    CHECK_FALSE(b3.is_smaller_equel(b1)) ;
+    CHECK(b1.is_smaller_equal(b2)) ;
+    CHECK(b4.is_smaller_equal(b3)) ;
+    CHECK_FALSE(b3.is_smaller_equal(b1)) ;
 }

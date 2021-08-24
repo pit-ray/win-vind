@@ -86,10 +86,10 @@ namespace vind
         bool is_not_same(const Box2D& rhs) const noexcept ;
 
         bool is_bigger_than(const Box2D& rhs) const noexcept ;
-        bool is_bigger_equel(const Box2D& rhs) const noexcept ;
+        bool is_bigger_equal(const Box2D& rhs) const noexcept ;
 
         bool is_smaller_than(const Box2D& rhs) const noexcept ;
-        bool is_smaller_equel(const Box2D& rhs) const noexcept ;
+        bool is_smaller_equal(const Box2D& rhs) const noexcept ;
 
         // Area-based comparison
         //

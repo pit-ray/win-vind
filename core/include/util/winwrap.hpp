@@ -3,9 +3,11 @@
 
 #include <windows.h>
 
+#include <memory>
 #include <string>
 
 #include "def.hpp"
+#include "point_2d.hpp"
 #include "string.hpp"
 
 #if defined(DEBUG)
@@ -70,6 +72,42 @@ namespace vind
         }
 
         bool is_failed(HRESULT result) noexcept ;
+
+
+        inline void delete_hdc(HDC h) noexcept {
+            if(h != nullptr) {
+                DeleteDC(h) ;
+            }
+        }
+        inline void delete_obj(HGDIOBJ f) noexcept {
+            if(f != nullptr) {
+                DeleteObject(f) ;
+            }
+        }
+
+        using HDCSPtr     = std::shared_ptr<HDC__> ;
+        using HDCUPtr     = std::unique_ptr<HDC__, decltype(&delete_hdc)> ;
+        using HBitmapUPtr = std::unique_ptr<HBITMAP__, decltype(&delete_obj)> ;
+        using HFontUPtr   = std::unique_ptr<HFONT__, decltype(&delete_obj)> ;
+
+        HDCUPtr create_display_dc() ;
+
+        void set_dc_text_color(HDCSPtr& hdc, const COLORREF& color) ;
+        void set_dc_back_color(HDCSPtr& hdc, const COLORREF& color) ;
+
+        HFontUPtr create_font(const LOGFONTA& logfont) ;
+
+        template <typename SmartPtr>
+        inline void select_obj(HDCSPtr& hdc, const SmartPtr& obj) {
+            if(!SelectObject(hdc.get(), obj.get())) {
+                throw RUNTIME_EXCEPT("The device context could not select an object.") ;
+            }
+        }
+
+        void attach_thread_input(HWND hwnd) ;
+        void detach_thread_input(HWND hwnd) ;
+
+        Point2D get_caret_pos(HWND hwnd) ;
     }
 }
 

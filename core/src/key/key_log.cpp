@@ -113,7 +113,7 @@ namespace vind
         return pimpl->log_.find(key) != pimpl->log_.end() ;
     }
 
-    //equel
+    //equal
     bool KeyLog::operator==(const KeyLog& rhs) const {
         if(!(rhs.pimpl)) return false ;
         return pimpl->log_ == rhs.pimpl->log_ ;
@@ -129,7 +129,7 @@ namespace vind
         return pimpl->log_ == rhs ;
     }
 
-    //not equel
+    //not equal
     bool KeyLog::operator!=(const KeyLog& rhs) const {
         if(!(rhs.pimpl)) return false ; //moved
         return pimpl->log_ != rhs.pimpl->log_ ;

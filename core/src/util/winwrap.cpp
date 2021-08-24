@@ -2,6 +2,7 @@
 
 #include "err_logger.hpp"
 #include "util/def.hpp"
+#include "util/point_2d.hpp"
 
 #include <sstream>
 #include <unordered_set>
@@ -179,6 +180,77 @@ namespace vind
                 PRINT_ERROR("Unknown error was occurred") ;
             }
             return bool_result ;
+        }
+
+        HDCUPtr create_display_dc() {
+            auto raw_hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
+            if(!raw_hdc) {
+                throw RUNTIME_EXCEPT("Could not create HDC of DISPLAY.") ;
+            }
+            return HDCUPtr(raw_hdc, delete_hdc) ;
+        }
+
+        void set_dc_text_color(
+                std::shared_ptr<HDC__>& hdc,
+                const COLORREF& color) {
+            if(SetTextColor(hdc.get(), color) == CLR_INVALID) {
+                throw RUNTIME_EXCEPT("Could not set a text color.") ;
+            }
+        }
+
+        void set_dc_back_color(
+                std::shared_ptr<HDC__>& hdc,
+                const COLORREF& color) {
+            if(SetBkColor(hdc.get(), color) == CLR_INVALID) {
+                throw RUNTIME_EXCEPT("Could not set a background color.") ;
+            }
+        }
+
+        HFontUPtr create_font(const LOGFONTA& logfont) {
+            auto raw_font = CreateFontIndirectA(&logfont) ;
+            if(!raw_font) {
+                throw RUNTIME_EXCEPT("Could not create a font.") ;
+            }
+            return HFontUPtr(raw_font, delete_obj) ;
+        }
+
+        void attach_thread_input(HWND hwnd) {
+            auto self_thid = GetCurrentThreadId() ;
+            auto target_thid = GetWindowThreadProcessId(hwnd, NULL) ;
+            if(!AttachThreadInput(self_thid, target_thid, TRUE)) {
+                std::stringstream ss ;
+                ss << "Could not attach input states with the another window (" << hwnd << ")" ;
+                throw RUNTIME_EXCEPT(ss.str()) ;
+            }
+        }
+
+        void detach_thread_input(HWND hwnd) {
+            auto self_thid = GetCurrentThreadId() ;
+            auto target_thid = GetWindowThreadProcessId(hwnd, NULL) ;
+            if(!AttachThreadInput(self_thid, target_thid, FALSE)) {
+                std::stringstream ss ;
+                ss << "Could not detach input states with the another window (" << hwnd << ")" ;
+                throw RUNTIME_EXCEPT(ss.str()) ;
+            }
+        }
+
+        Point2D get_caret_pos(HWND hwnd) {
+            attach_thread_input(hwnd) ;
+
+            Point2D pos ;
+            if(!GetCaretPos(&pos.data())) {
+                throw RUNTIME_EXCEPT("Could not get the caret position.") ;
+            }
+
+            hwnd = GetFocus() ;
+
+            detach_thread_input(hwnd) ;
+
+            if(!ClientToScreen(hwnd, &pos.data())) {
+                throw RUNTIME_EXCEPT("Could not convert a client position to screen one.") ;
+            }
+
+            return pos ;
         }
     }
 }

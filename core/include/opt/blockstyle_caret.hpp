@@ -3,6 +3,7 @@
 
 #include "option_creator.hpp"
 
+
 namespace vind
 {
     class BlockStyleCaret : public OptionCreator<BlockStyleCaret>
@@ -25,6 +26,10 @@ namespace vind
 
         BlockStyleCaret(const BlockStyleCaret&)            = delete ;
         BlockStyleCaret& operator=(const BlockStyleCaret&) = delete ;
+
+        void restore_caret_style(const std::string& mode) const ;
+
+        void make_caret_block_style(const std::string& mode) const ;
     } ;
 }
 

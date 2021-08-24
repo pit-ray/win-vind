@@ -6,7 +6,7 @@
 
 using namespace vind ;
 
-TEST_CASE("(Point2D) constructor and equel test") {
+TEST_CASE("(Point2D) constructor and equal test") {
     Point2D p1(static_cast<LONG>(20), static_cast<LONG>(50)) ;
 
     Point2D p2(static_cast<int>(20), static_cast<int>(50)) ;
@@ -23,7 +23,7 @@ TEST_CASE("(Point2D) constructor and equel test") {
     CHECK(p3 == p4) ;
 }
 
-TEST_CASE("(Point2D) not equel") {
+TEST_CASE("(Point2D) not equal") {
     Point2D p1(40, 50) ;
     Point2D p2(40, 52) ;
 

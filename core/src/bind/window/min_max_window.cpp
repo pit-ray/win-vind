@@ -53,7 +53,7 @@ namespace vind
             }
 
             //If not changed, regard it as a full screen and deal with it.
-            if(util::is_equel(before_rect, after_rect)) {
+            if(util::is_equal(before_rect, after_rect)) {
                 keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
                 keybrd::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
             }

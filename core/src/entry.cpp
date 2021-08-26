@@ -61,6 +61,7 @@ SOFTWARE.
 #include <memory>
 
 #if defined(DEBUG)
+#include "util/debug.hpp"
 #include <iostream>
 #endif
 
@@ -287,7 +288,6 @@ namespace vind
             }
 
             mainloop::update() ;
-            optloader::call_active_funcs() ;
 
             return true ;
         }

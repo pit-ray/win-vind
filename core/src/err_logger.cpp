@@ -37,7 +37,8 @@ namespace
         std::vector<std::wstring> files ;
 
         WIN32_FIND_DATAW wfd = {} ;
-        auto handle = FindFirstFileW(vind::util::s_to_ws(log_dir + "\\" + pattern_withex).c_str(), &wfd) ;
+        auto handle = FindFirstFileW(
+                vind::util::s_to_ws(log_dir + "\\" + pattern_withex).c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }

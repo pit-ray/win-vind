@@ -32,7 +32,12 @@ namespace vind
       pimpl(std::make_unique<Impl>())
     {}
     VCmdLine::~VCmdLine() noexcept {
-        reset() ;
+        try {
+            reset() ;
+        }
+        catch(const std::exception& e) {
+            PRINT_ERROR("Failed to reset the drawing pixels of the virtual command line.") ;
+        }
     }
     VCmdLine::VCmdLine(VCmdLine&&)            = default ;
     VCmdLine& VCmdLine::operator=(VCmdLine&&) = default ;

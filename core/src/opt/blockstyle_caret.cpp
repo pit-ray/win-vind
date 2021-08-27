@@ -199,6 +199,7 @@ namespace vind
         if(mode == "solid") {
             if(pimpl->ft_.valid()) {
                 pimpl->ft_.wait() ;
+                pimpl->ft_.get() ;
             }
             pimpl->ft_ = std::async(std::launch::async, set_property, pimpl->sysval_) ;
 
@@ -219,6 +220,7 @@ namespace vind
             auto width = gparams::get_i("blockstylecaret_width") ;
             if(pimpl->ft_.valid()) {
                 pimpl->ft_.wait() ;
+                pimpl->ft_.get() ;
             }
             pimpl->ft_ = std::async(std::launch::async, set_property, width) ;
 

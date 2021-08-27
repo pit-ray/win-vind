@@ -57,6 +57,7 @@ add_library(emu STATIC
     src/bind/emu/edi_change.cpp
     src/bind/emu/edi_change_mode.cpp
     src/bind/emu/edi_delete.cpp
+    src/bind/emu/edi_dot.cpp
     src/bind/emu/edi_jump_caret.cpp
     src/bind/emu/edi_layout.cpp
     src/bind/emu/edi_motion.cpp

@@ -232,6 +232,10 @@ namespace vind
         return pimpl->head_num_ == 0 ? 1 : pimpl->head_num_ ;
     }
 
+    void NTypeLogger::set_head_num(unsigned int num) noexcept {
+        pimpl->head_num_ = num ;
+    }
+
     bool NTypeLogger::has_head_num() const noexcept {
         return pimpl->head_num_ != 0 ;
     }

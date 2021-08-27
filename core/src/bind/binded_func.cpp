@@ -3,6 +3,7 @@
 #include <array>
 #include <functional>
 
+#include "bind/emu/edi_dot.hpp"
 #include "err_logger.hpp"
 #include "io/keybrd.hpp"
 #include "key/key_absorber.hpp"
@@ -108,6 +109,11 @@ namespace vind
         try {
             do_process(parent_lgr) ;
             pimpl->release_fake_press() ;
+
+            if(is_for_changing_text()) {
+                RepeatLastChange::store_change(
+                        this, parent_lgr.get_head_num()) ;
+            }
         }
         catch(const std::runtime_error& e) {
             error_process(e) ;
@@ -118,6 +124,10 @@ namespace vind
         try {
             do_process(parent_lgr) ;
             pimpl->release_fake_press() ;
+
+            if(is_for_changing_text()) {
+                RepeatLastChange::store_change(this) ;
+            }
         }
         catch(const std::runtime_error& e) {
             error_process(e) ;
@@ -125,6 +135,10 @@ namespace vind
     }
 
     bool BindedFunc::is_for_moving_caret() const noexcept {
+        return false ;
+    }
+
+    bool BindedFunc::is_for_changing_text() const noexcept {
         return false ;
     }
 

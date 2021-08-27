@@ -30,6 +30,10 @@ namespace vind
         DeleteLine& operator=(DeleteLine&&) ;
         DeleteLine(const DeleteLine&)            = delete ;
         DeleteLine& operator=(const DeleteLine&) = delete ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
 
@@ -50,6 +54,10 @@ namespace vind
         DeleteLineUntilEOL& operator=(DeleteLineUntilEOL&&) ;
         DeleteLineUntilEOL(const DeleteLineUntilEOL&)            = delete ;
         DeleteLineUntilEOL& operator=(const DeleteLineUntilEOL&) = delete ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     class DeleteAfter : public BindedFuncCreator<DeleteAfter> {
@@ -69,6 +77,10 @@ namespace vind
         DeleteAfter& operator=(DeleteAfter&&) ;
         DeleteAfter(const DeleteAfter&)            = delete ;
         DeleteAfter& operator=(const DeleteAfter&) = delete ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     class DeleteBefore : public BindedFuncCreator<DeleteBefore> {
@@ -88,6 +100,10 @@ namespace vind
         DeleteBefore& operator=(DeleteBefore&&) ;
         DeleteBefore(const DeleteBefore&)            = delete ;
         DeleteBefore& operator=(const DeleteBefore&) = delete ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 }
 

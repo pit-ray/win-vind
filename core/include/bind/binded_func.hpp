@@ -50,6 +50,7 @@ namespace vind
         void process(const CharLogger& parent_lgr) const ;
 
         virtual bool is_for_moving_caret() const noexcept ;
+        virtual bool is_for_changing_text() const noexcept ;
         virtual void reconstruct() ;
 
         bool operator==(const BindedFunc& rhs) const noexcept ;

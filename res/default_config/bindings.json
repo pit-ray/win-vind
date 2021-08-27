@@ -1555,6 +1555,18 @@
         "ja": "行末までを編集 (Vimエミュレーション: C)"
     },
     {
+        "name": "repeat_last_change",
+        "cdef": [],
+        "endef": ["."],
+        "evdef": [],
+        "gndef": [],
+        "gvdef": [],
+        "idef": [],
+        "rdef": [],
+        "en": "Repeat last simple change (Vim Emulation: .)",
+        "ja": "最後の単純な変更を繰り返す (Vimエミュレーション: .)"
+    },
+    {
         "name": "easy_click_left",
         "cdef": [],
         "endef": [],

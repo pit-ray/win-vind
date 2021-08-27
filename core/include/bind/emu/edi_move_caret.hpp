@@ -15,7 +15,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretLeft() ;
         virtual ~MoveCaretLeft() noexcept ;
@@ -36,7 +38,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretRight() ;
         virtual ~MoveCaretRight() noexcept ;
@@ -57,7 +61,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretUp() ;
         virtual ~MoveCaretUp() noexcept ;
@@ -78,7 +84,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretDown() ;
         virtual ~MoveCaretDown() noexcept ;
@@ -100,7 +108,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretWordForward() ;
         virtual ~MoveCaretWordForward() noexcept ;
@@ -121,7 +131,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretWordBackward() ;
         virtual ~MoveCaretWordBackward() noexcept ;
@@ -143,7 +155,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretNonBlankWordForward() ;
         virtual ~MoveCaretNonBlankWordForward() noexcept ;
@@ -164,7 +178,9 @@ namespace vind
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
-        bool is_for_moving_caret() const noexcept override ;
+        bool is_for_moving_caret() const noexcept override {
+            return true ;
+        }
 
         explicit MoveCaretNonBlankWordBackward() ;
         virtual ~MoveCaretNonBlankWordBackward() noexcept ;

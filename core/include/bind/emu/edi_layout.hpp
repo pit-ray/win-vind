@@ -22,6 +22,10 @@ namespace vind
         JoinNextLine& operator=(JoinNextLine&&) ;
         JoinNextLine(const JoinNextLine&)             = delete ;
         JoinNextLine& operator=(const JoinNextLine&)  = delete ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 }
 

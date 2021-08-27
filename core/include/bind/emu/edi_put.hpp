@@ -23,6 +23,10 @@ namespace vind
         PutAfter& operator=(PutAfter&&) ;
         PutAfter(const PutAfter&)            = delete ;
         PutAfter& operator=(const PutAfter&) = delete ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     class PutBefore : public BindedFuncCreator<PutBefore> {
@@ -42,6 +46,10 @@ namespace vind
         PutBefore& operator=(PutBefore&&) ;
         PutBefore(const PutBefore&)            = delete ;
         PutBefore& operator=(const PutBefore&) = delete ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 }
 

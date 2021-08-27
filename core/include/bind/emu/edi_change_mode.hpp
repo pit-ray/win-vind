@@ -10,6 +10,10 @@ namespace vind
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     struct Change2EdiBkInsert : public BindedFuncCreator<Change2EdiBkInsert> {
@@ -17,6 +21,10 @@ namespace vind
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     struct ToInsertEOL : public BindedFuncCreator<ToInsertEOL> {
@@ -24,6 +32,10 @@ namespace vind
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     struct ToInsertNLBelow : public BindedFuncCreator<ToInsertNLBelow> {
@@ -31,6 +43,10 @@ namespace vind
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     struct ToInsertNLAbove : public BindedFuncCreator<ToInsertNLAbove> {
@@ -38,6 +54,10 @@ namespace vind
         static void sprocess(bool vclmodeout=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 }
 

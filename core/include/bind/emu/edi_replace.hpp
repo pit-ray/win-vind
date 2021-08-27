@@ -10,6 +10,10 @@ namespace vind
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     struct ReplaceSequence : public BindedFuncCreator<ReplaceSequence> {
@@ -17,6 +21,10 @@ namespace vind
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 
     struct SwitchCharCase : public BindedFuncCreator<SwitchCharCase> {
@@ -24,6 +32,10 @@ namespace vind
         static void sprocess(unsigned int repeat_num=1) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
+
+        bool is_for_changing_text() const noexcept override {
+            return true ;
+        }
     } ;
 }
 

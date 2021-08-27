@@ -9,6 +9,7 @@
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
 
+
 namespace vind
 {
     //PutAfter (EdiNormal or EdiVisual)
@@ -21,7 +22,7 @@ namespace vind
       pimpl(std::make_unique<Impl>())
     {}
 
-    PutAfter::~PutAfter() noexcept                  = default ;
+    PutAfter::~PutAfter() noexcept            = default ;
     PutAfter::PutAfter(PutAfter&&)            = default ;
     PutAfter& PutAfter::operator=(PutAfter&&) = default ;
 

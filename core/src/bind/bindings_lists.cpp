@@ -8,6 +8,7 @@
 #include "bind/emu/edi_change.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/emu/edi_delete.hpp"
+#include "bind/emu/edi_dot.hpp"
 #include "bind/emu/edi_jump_caret.hpp"
 #include "bind/emu/edi_layout.hpp"
 #include "bind/emu/edi_motion.hpp"
@@ -149,6 +150,7 @@ namespace vind
                 PutBefore::create(),
                 Redo::create(),
                 ReloadCurrentWindow::create(),
+                RepeatLastChange::create(),
                 ReplaceChar::create(),
                 ReplaceSequence::create(),
                 ResizeWindowHeight::create(),

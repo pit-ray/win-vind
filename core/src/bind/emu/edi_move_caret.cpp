@@ -30,9 +30,6 @@ namespace vind
     MoveCaretLeft::MoveCaretLeft(MoveCaretLeft&&)            = default ;
     MoveCaretLeft& MoveCaretLeft::operator=(MoveCaretLeft&&) = default ;
 
-    bool MoveCaretLeft::is_for_moving_caret() const noexcept {
-        return true ;
-    }
     void MoveCaretLeft::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
@@ -73,9 +70,6 @@ namespace vind
     MoveCaretRight::MoveCaretRight(MoveCaretRight&&)            = default ;
     MoveCaretRight& MoveCaretRight::operator=(MoveCaretRight&&) = default ;
 
-    bool MoveCaretRight::is_for_moving_caret() const noexcept {
-        return true ;
-    }
     void MoveCaretRight::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
@@ -116,9 +110,6 @@ namespace vind
     MoveCaretUp::MoveCaretUp(MoveCaretUp&&)            = default ;
     MoveCaretUp& MoveCaretUp::operator=(MoveCaretUp&&) = default ;
 
-    bool MoveCaretUp::is_for_moving_caret() const noexcept {
-        return true ;
-    }
     void MoveCaretUp::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
@@ -171,9 +162,6 @@ namespace vind
     MoveCaretDown::MoveCaretDown(MoveCaretDown&&)            = default ;
     MoveCaretDown& MoveCaretDown::operator=(MoveCaretDown&&) = default ;
 
-    bool MoveCaretDown::is_for_moving_caret() const noexcept {
-        return true ;
-    }
     void MoveCaretDown::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
@@ -230,9 +218,6 @@ namespace vind
     MoveCaretWordForward::MoveCaretWordForward(MoveCaretWordForward&&)            = default ;
     MoveCaretWordForward& MoveCaretWordForward::operator=(MoveCaretWordForward&&) = default ;
 
-    bool MoveCaretWordForward::is_for_moving_caret() const noexcept {
-        return true ;
-    }
     void MoveCaretWordForward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
@@ -273,9 +258,6 @@ namespace vind
     MoveCaretWordBackward::MoveCaretWordBackward(MoveCaretWordBackward&&)            = default ;
     MoveCaretWordBackward& MoveCaretWordBackward::operator=(MoveCaretWordBackward&&) = default ;
 
-    bool MoveCaretWordBackward::is_for_moving_caret() const noexcept {
-        return true ;
-    }
     void MoveCaretWordBackward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
@@ -315,10 +297,6 @@ namespace vind
     MoveCaretNonBlankWordForward::~MoveCaretNonBlankWordForward() noexcept                             = default ;
     MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&)            = default ;
     MoveCaretNonBlankWordForward& MoveCaretNonBlankWordForward::operator=(MoveCaretNonBlankWordForward&&) = default ;
-
-    bool MoveCaretNonBlankWordForward::is_for_moving_caret() const noexcept {
-        return true ;
-    }
 
     void MoveCaretNonBlankWordForward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
@@ -360,9 +338,6 @@ namespace vind
     MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&)            = default ;
     MoveCaretNonBlankWordBackward& MoveCaretNonBlankWordBackward::operator=(MoveCaretNonBlankWordBackward&&) = default ;
 
-    bool MoveCaretNonBlankWordBackward::is_for_moving_caret() const noexcept {
-        return true ;
-    }
     void MoveCaretNonBlankWordBackward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {

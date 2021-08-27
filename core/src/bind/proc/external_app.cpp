@@ -20,7 +20,7 @@
 #include "io/keybrd.hpp"
 #include "key/char_logger.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "path.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"

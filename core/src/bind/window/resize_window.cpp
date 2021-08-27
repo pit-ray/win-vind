@@ -6,7 +6,7 @@
 #include "key/char_logger.hpp"
 #include "key/key_logger_base.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
 namespace
@@ -147,7 +147,7 @@ namespace vind
 
         auto width = fginfo.rect.width() - delta ;
         if(width <= 0) { 
-            VirtualCmdLine::msgout("E: Width below zero") ;
+            VCmdLine::print(ErrorMessage("E: Width below zero")) ;
             return ;
         }
 
@@ -219,7 +219,7 @@ namespace vind
 
         auto height = fginfo.rect.height() - delta ;
         if(height <= 0) { 
-            VirtualCmdLine::msgout("E: Height below zero") ;
+            VCmdLine::print(ErrorMessage("E: Height below zero")) ;
             return ;
         }
 

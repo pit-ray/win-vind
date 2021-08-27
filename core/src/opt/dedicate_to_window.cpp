@@ -13,7 +13,7 @@
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
 #include "key/keycode_def.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 
 namespace
 {
@@ -37,7 +37,7 @@ namespace vind
         if(gparams::get_b("dedicate_to_window")) {
             target_hwnd = GetForegroundWindow() ;
             past_hwnd   = NULL ;
-            VirtualCmdLine::msgout("-- TARGET ON --") ;
+            VCmdLine::print(GeneralMessage("-- TARGET ON --")) ;
         }
     }
 
@@ -45,7 +45,7 @@ namespace vind
         if(gparams::get_b("dedicate_to_window")) {
             target_hwnd = NULL ;
             past_hwnd   = NULL ;
-            VirtualCmdLine::msgout("-- TARGET OFF --") ;
+            VCmdLine::print(GeneralMessage("-- TARGET OFF --")) ;
         }
     }
 

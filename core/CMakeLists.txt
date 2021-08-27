@@ -158,10 +158,11 @@ add_library(opt STATIC
     src/opt/autotrack_popup.cpp
     src/opt/blockstyle_caret.cpp
     src/opt/dedicate_to_window.cpp
+    src/opt/message.cpp
     src/opt/option.cpp
     src/opt/option_loader.cpp
     src/opt/suppress_for_vim.cpp
-    src/opt/virtual_cmd_line.cpp
+    src/opt/vcmdline.cpp
 )
 target_link_libraries(opt emu mode)
 

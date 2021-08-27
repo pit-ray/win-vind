@@ -7,7 +7,7 @@
 #include "g_params.hpp"
 #include "key/char_logger.hpp"
 #include "mode.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "parser/bindings_parser.hpp"
 #include "parser/rc_parser.hpp"
 #include "path.hpp"
@@ -76,9 +76,8 @@ namespace
             }
             SyscmdMapclear::sprocess(mode, false) ;
         }
-        else {
-            throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
-        }
+
+        throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
     }
 }
 
@@ -98,12 +97,17 @@ namespace vind
     void SyscmdSource::sprocess(
             const std::string& path,
             bool reload_config) {
-        gparams::reset() ;
-        gmaps::reset() ;
+
+        auto return_to_default = [] {
+            gparams::reset() ;
+            gmaps::reset() ;
+        } ;
+
+        return_to_default() ;
 
         std::ifstream ifs(path::to_u8path(path), std::ios::in) ;
         if(!ifs.is_open()) {
-            VirtualCmdLine::msgout("Could not open \"" + path + "\".\n") ;
+            VCmdLine::print(ErrorMessage("Could not open \"" + path + "\".\n")) ;
             return ;
         }
 
@@ -126,39 +130,51 @@ namespace vind
             }
             catch(const std::domain_error& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VirtualCmdLine::msgout("E: Not command (" + ltag + ")") ;
+                VCmdLine::print(ErrorMessage("E: Not command (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << "RunCommandsIndex: " << e.what() << " is not supported." ;
                 ss << " (" << path << ", " << ltag << ") " ;
-                throw RUNTIME_EXCEPT(ss.str()) ;
+                PRINT_ERROR(ss.str()) ;
+
+                return_to_default() ;
+                break ;
             }
             catch(const std::invalid_argument& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VirtualCmdLine::msgout("E: Invalid Argument (" + ltag + ")") ;
+                VCmdLine::print(ErrorMessage("E: Invalid Argument (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << e.what() << " is recieved invalid arguments." ;
                 ss << " (" << path << ", " << ltag << ") " ;
-                throw RUNTIME_EXCEPT(ss.str()) ;
+                PRINT_ERROR(ss.str()) ;
+
+                return_to_default() ;
+                break ;
             }
             catch(const std::logic_error& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VirtualCmdLine::msgout("E: Invalid Syntax (" + ltag + ")") ;
+                VCmdLine::print(ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << e.what() ;
                 ss << " (" + path + ", " + ltag + ")" ;
-                throw LOGIC_EXCEPT(ss.str()) ;
+                PRINT_ERROR(ss.str()) ;
+
+                return_to_default() ;
+                break ;
             }
             catch(const std::runtime_error& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VirtualCmdLine::msgout("E: Invalid Syntax (" + ltag + ")") ;
+                VCmdLine::print(ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << e.what() ;
                 ss << " (" + path + ", " + ltag + ")" ;
-                throw RUNTIME_EXCEPT(ss.str()) ;
+                PRINT_ERROR(ss.str()) ;
+
+                return_to_default() ;
+                break ;
             }
         } // while(getline())
 

@@ -1,8 +1,9 @@
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 
 #include <windows.h>
 
 #include <chrono>
+#include <memory>
 #include <unordered_map>
 
 #include "err_logger.hpp"
@@ -13,17 +14,10 @@
 #include "path.hpp"
 #include "util/winwrap.hpp"
 
-namespace
-{
-    POINT g_refresh_pos{0, 0} ;
-    std::string g_outstr{} ;
-    std::chrono::system_clock::time_point g_msg_start{} ;
-    bool g_msg_showing = false ;
-}
 
 namespace vind
 {
-    struct VirtualCmdLine::Impl {
+    struct VCmdLine::Impl {
         DisplayTextPainter  dtp_{25, FW_MEDIUM, "Consolas"} ;
         int x_ = 0 ;
         int y_ = 0 ;
@@ -31,17 +25,20 @@ namespace vind
         std::chrono::seconds fadeout_time_{} ;
     } ;
 
-    VirtualCmdLine::VirtualCmdLine()
+    Message VCmdLine::msg_ ;
+
+    VCmdLine::VCmdLine()
     : OptionCreator("vcmdline"),
       pimpl(std::make_unique<Impl>())
     {}
-    VirtualCmdLine::~VirtualCmdLine() noexcept                  = default ;
-    VirtualCmdLine::VirtualCmdLine(VirtualCmdLine&&)            = default ;
-    VirtualCmdLine& VirtualCmdLine::operator=(VirtualCmdLine&&) = default ;
-
-
-    void VirtualCmdLine::do_enable() const {
+    VCmdLine::~VCmdLine() noexcept {
         reset() ;
+    }
+    VCmdLine::VCmdLine(VCmdLine&&)            = default ;
+    VCmdLine& VCmdLine::operator=(VCmdLine&&) = default ;
+
+
+    void VCmdLine::do_enable() const {
         pimpl->dtp_.set_font(
                 gparams::get_l("cmd_fontsize"),
                 gparams::get_l("cmd_fontweight"),
@@ -81,65 +78,44 @@ namespace vind
             const auto& p = pos_list.at("LowerMid") ;
             pimpl->x_ = p.first ;
             pimpl->y_ = p.second ;
-            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + ", " + gparams::get_s("cmd_roughpos") + "is invalid syntax.") ;
+            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + \
+                    ", " + gparams::get_s("cmd_roughpos") + "is invalid syntax.") ;
         }
 
         pimpl->extra_ = gparams::get_i("cmd_fontextra") ;
         pimpl->fadeout_time_ = std::chrono::seconds(gparams::get_i("cmd_fadeout")) ;
-
-        g_refresh_pos.x = pimpl->x_ ;
-        g_refresh_pos.y = pimpl->y_ ;
     }
 
-    void VirtualCmdLine::do_disable() const {
+    void VCmdLine::do_disable() const {
+        reset() ;
     }
 
-    void VirtualCmdLine::cout(std::string&& str) {
-        if(g_msg_showing) reset() ;
-        g_outstr = std::move(str) ;
-    }
-    void VirtualCmdLine::cout(const std::string& str) {
-        g_outstr = str ;
+    void VCmdLine::refresh() {
+        util::refresh_display(NULL) ;
     }
 
-    void VirtualCmdLine::msgout(const std::string& str) {
-        if(str.empty()) return ;
-        if(!g_outstr.empty()) {
-            g_outstr = str ;
-            refresh() ; // reset pixel
-        }
-        else {
-            g_outstr = str ;
-        }
-        g_msg_start = std::chrono::system_clock::now() ;
-        g_msg_showing = true ;
+    void VCmdLine::clear() {
+        msg_.clear() ;
     }
 
-    void VirtualCmdLine::refresh() {
-        util::refresh_display(WindowFromPoint(g_refresh_pos)) ;
-    }
-
-    void VirtualCmdLine::clear() {
-        g_outstr.clear() ;
-    }
-
-    void VirtualCmdLine::reset() {
-        g_msg_showing = false ;
-        if(!g_outstr.empty()) {
+    void VCmdLine::reset() {
+        if(!msg_.empty()) {
             clear() ;
             refresh() ;
         }
     }
 
-    void VirtualCmdLine::do_process() const {
-        if(g_outstr.empty()) return ;
-        if(g_msg_showing) {
-            if(std::chrono::system_clock::now() - g_msg_start > pimpl->fadeout_time_) {
+    void VCmdLine::do_process() const {
+        if(msg_.empty()) {
+            return ;
+        }
+        if(msg_.fadeoutable()) {
+            if(msg_.lifetime() > pimpl->fadeout_time_) {
                 reset() ;
                 return ;
             }
         }
 
-        pimpl->dtp_.draw(g_outstr, pimpl->x_, pimpl->y_, pimpl->extra_) ;
+        pimpl->dtp_.draw(msg_, pimpl->x_, pimpl->y_, pimpl->extra_) ;
     }
 }

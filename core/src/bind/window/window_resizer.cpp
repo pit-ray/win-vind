@@ -1,5 +1,7 @@
 #include "bind/window/window_resizer.hpp"
 
+#include <stdexcept>
+#include <unordered_map>
 #include <windows.h>
 
 #include "entry.hpp"
@@ -9,7 +11,7 @@
 #include "io/screen_metrics.hpp"
 #include "key/key_absorber.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "time/constant_accelerator.hpp"
 #include "time/keystroke_repeater.hpp"
 #include "util/def.hpp"
@@ -172,23 +174,13 @@ namespace vind
         }
 
         void draw_mode_status(InnerMode mode) const {
-            switch(mode) {
-                case InnerMode::RESIZE:
-                    VirtualCmdLine::cout("[Resize]... \"Esc\": OK, \"e\": Change mode") ;
-                    break ;
+            static const std::unordered_map<InnerMode, StaticMessage> lc_msgs = {
+                {InnerMode::RESIZE, "[Resize]... \"Esc\": OK, \"e\": Change mode"},
+                {InnerMode::MOVE,   "[Move]... \"Esc\": OK, \"e\": Change mode"},
+                {InnerMode::FOCUS,  "[Focus]... \"Esc\": OK, \"e\": Change mode"}
+            } ;
 
-                case InnerMode::MOVE:
-                    VirtualCmdLine::cout("[Move]... \"Esc\": OK, \"e\": Change mode") ;
-                    break ;
-
-                case InnerMode::FOCUS:
-                    VirtualCmdLine::cout("[Focus]... \"Esc\": OK, \"e\": Change mode") ;
-                    break ;
-
-                default:
-                    break ;
-            }
-            VirtualCmdLine::refresh() ;
+            VCmdLine::print(lc_msgs.at(mode)) ;
         }
 
         template <typename T>
@@ -290,7 +282,7 @@ namespace vind
 
         keyabsorber::release_virtually(KEYCODE_ESC) ;
         keyabsorber::release_virtually(KEYCODE_ENTER) ;
-        VirtualCmdLine::reset() ;
+        VCmdLine::reset() ;
     }
     void WindowResizer::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

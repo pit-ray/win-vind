@@ -12,7 +12,7 @@
 #include "opt/blockstyle_caret.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/suppress_for_vim.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 
 
 //internal linkage
@@ -26,7 +26,7 @@ namespace
         BlockStyleCaret::create(),
         Dedicate2Window::create(),
         SuppressForVim::create(),
-        VirtualCmdLine::create(),
+        VCmdLine::create(),
     } ;
 }
 
@@ -35,10 +35,13 @@ namespace vind
     namespace optloader {
         void reconstruct()
         {
-            std::for_each(g_vpop.cbegin(), g_vpop.cend(), [](auto& op){op->disable() ;}) ;
-
             for(const auto& op : g_vpop) {
-                if(gparams::get_b(op->name())) op->enable() ;
+                if(gparams::get_b(op->name())) {
+                    op->enable() ;
+                }
+                else {
+                    op->disable() ;
+                }
             }
         }
 

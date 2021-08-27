@@ -10,7 +10,7 @@
 #include "key/key_logger_base.hpp"
 #include "key/ntype_logger.hpp"
 #include "mode.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
 #if defined(DEBUG)
@@ -31,7 +31,7 @@ namespace
                 continue ;
             }
             if(NTYPE_HEAD_NUM(result)) {
-                VirtualCmdLine::cout(std::to_string(lgr.get_head_num())) ;
+                VCmdLine::print(StaticMessage(std::to_string(lgr.get_head_num()))) ;
                 continue ;
             }
 
@@ -91,7 +91,7 @@ namespace
                 continue ;
             }
             if(NTYPE_HEAD_NUM(result)) {
-                VirtualCmdLine::cout(std::to_string(lgr.get_head_num())) ;
+                VCmdLine::print(StaticMessage(std::to_string(lgr.get_head_num()))) ;
                 parent_lgr.remove_from_back(1) ;
                 continue ;
             }
@@ -102,7 +102,7 @@ namespace
                     parser_1 = nullptr ;
                 }
                 else if(parser_1->is_accepted()) {
-                    VirtualCmdLine::reset() ;
+                    VCmdLine::reset() ;
                     parser_1->get_func()->process(parent_lgr) ;
                     return false ;
                 }

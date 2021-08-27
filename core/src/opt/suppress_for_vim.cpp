@@ -8,7 +8,7 @@
 #include "err_logger.hpp"
 #include "key/key_absorber.hpp"
 #include "mode.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
 
@@ -49,7 +49,7 @@ namespace vind
             keyabsorber::close_all_ports() ;
             keyabsorber::unabsorb() ;
             set_global_mode(Mode::RESIDENT) ;
-            VirtualCmdLine::msgout("-- RESIDENT --") ;
+            VCmdLine::print(GeneralMessage("-- RESIDENT --")) ;
         }
         else {
             if(get_global_mode() == Mode::RESIDENT)

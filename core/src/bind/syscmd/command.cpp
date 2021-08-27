@@ -4,7 +4,7 @@
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "key/char_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "parser/rc_parser.hpp"
 #include "util/def.hpp"
 
@@ -18,17 +18,17 @@ namespace vind
             const std::string& args,
             bool reload_config) {
         if(args.empty()) {
-            VirtualCmdLine::msgout("E: Not support list of command yet") ;
+            VCmdLine::print(ErrorMessage("E: Not support list of command yet")) ;
             return ;
         }
 
         auto [arg1, arg2] = rcparser::extract_double_args(args) ;
         if(arg1.empty()) {
-            VirtualCmdLine::msgout("E: Not support list of command yet") ;
+            VCmdLine::print(ErrorMessage("E: Not support list of command yet")) ;
             return ;
         }
         if(arg2.empty()) {
-            VirtualCmdLine::msgout("E: Not support reference of command yet") ;
+            VCmdLine::print(ErrorMessage("E: Not support reference of command yet")) ;
             return ;
         }
 
@@ -60,13 +60,13 @@ namespace vind
             bool reload_config) {
         if(args.empty()) {
             // does not have argument is empty
-            VirtualCmdLine::msgout("E: Invalid argument") ;
+            VCmdLine::print(ErrorMessage("E: Invalid argument")) ;
             return ;
         }
 
         auto arg = rcparser::extract_single_arg(args) ;
         if(arg.empty()) {
-            VirtualCmdLine::msgout("E: Invalid argument") ;
+            VCmdLine::print(ErrorMessage("E: Invalid argument")) ;
             return ;
         }
 
@@ -108,7 +108,7 @@ namespace vind
 
         auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
         if(!args.empty()) {
-            VirtualCmdLine::msgout("E: Invalid argument") ;
+            VCmdLine::print(ErrorMessage("E: Invalid argument")) ;
             return ;
         }
         sprocess(true) ;

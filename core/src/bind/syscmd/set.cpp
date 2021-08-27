@@ -8,7 +8,7 @@
 #include "entry.hpp"
 #include "g_params.hpp"
 #include "key/char_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "parser/rc_parser.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
@@ -32,10 +32,10 @@ namespace vind
 
             if(key.empty()) {
                 if(val.empty()) {
-                    VirtualCmdLine::msgout("E: Not support list of option yet") ;
+                    VCmdLine::print(ErrorMessage("E: Not support list of option yet")) ;
                 }
                 else {
-                    VirtualCmdLine::msgout("E: Invalid syntax") ;
+                    VCmdLine::print(ErrorMessage("E: Invalid syntax")) ;
                 }
                 return ;
             }
@@ -64,7 +64,7 @@ namespace vind
                 key.erase(name_last_pos + 1) ;
 
                 if(key.find(" ") != std::string::npos) {
-                    VirtualCmdLine::msgout("E: Unknown option: " + key) ;
+                    VCmdLine::print(ErrorMessage("E: Unknown option: " + key)) ;
                     return ;
                 }
 
@@ -103,12 +103,12 @@ namespace vind
                         break ;
                 }
 
-                VirtualCmdLine::msgout(ss.str()) ;
+                VCmdLine::print(ErrorMessage(ss.str())) ;
                 return ;
             }
 
             if(key.find(" ") != std::string::npos) {
-                VirtualCmdLine::msgout("E: Unknown option: " + key) ;
+                VCmdLine::print(ErrorMessage("E: Unknown option: " + key)) ;
                 return ;
             }
             gparams::set(key, flag_value) ;

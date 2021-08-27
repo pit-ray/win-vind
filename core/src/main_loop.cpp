@@ -7,7 +7,7 @@
 #include "key/key_logger_base.hpp"
 #include "key/keycode_def.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 
 #include "bind/binded_func.hpp"
 
@@ -43,8 +43,7 @@ namespace vind
                 return ;
             }
             if(NTYPE_HEAD_NUM(result)) {
-                VirtualCmdLine::cout(
-                        std::to_string(g_ntlgr.get_head_num())) ;
+                VCmdLine::print(StaticMessage(std::to_string(g_ntlgr.get_head_num()))) ;
                 return ;
             }
 
@@ -66,7 +65,7 @@ namespace vind
             if(parser) {
                 if(parser->is_accepted()) {
                     if(g_ntlgr.has_head_num()) {
-                        VirtualCmdLine::reset() ;
+                        VCmdLine::reset() ;
                     }
 
                     g_active_func = parser->get_func() ;
@@ -84,7 +83,7 @@ namespace vind
             }
             else {
                 if(g_ntlgr.has_head_num()) {
-                    VirtualCmdLine::refresh() ;
+                    VCmdLine::refresh() ;
                 }
                 g_ntlgr.reject() ;
                 g_funcfinder.reset_parser_states() ;

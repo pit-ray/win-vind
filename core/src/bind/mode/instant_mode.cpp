@@ -7,7 +7,7 @@
 #include "key/key_absorber.hpp"
 #include "key/key_logger_base.hpp"
 #include "mode.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
 #if defined(DEBUG)
@@ -34,7 +34,7 @@ namespace vind
 
         keyabsorber::InstantKeyAbsorber isa{} ;
 
-        VirtualCmdLine::cout("-- Instant GUI Normal --") ;
+        VCmdLine::print(GeneralMessage("-- Instant GUI Normal --")) ;
 
         constexpr auto lcx_vmode = mode::Mode::GUI_NORMAL ;
 
@@ -69,7 +69,7 @@ namespace vind
                 break ;
             }
         }
-        VirtualCmdLine::reset() ;
+        VCmdLine::reset() ;
     }
 
     void ToInstantGUINormal::sprocess(NTypeLogger& parent) const {

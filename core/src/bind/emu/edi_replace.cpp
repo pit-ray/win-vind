@@ -11,7 +11,7 @@
 #include "key/keycode_def.hpp"
 #include "key/keycodecvt.hpp"
 #include "key/ntype_logger.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
 #if defined(DEBUG)
@@ -113,8 +113,8 @@ namespace vind
     void ReplaceSequence::sprocess(unsigned int repeat_num) {
         using keybrd::pushup ;
 
-        VirtualCmdLine::clear() ;
-        VirtualCmdLine::msgout("-- EDI REPLACE --") ;
+        VCmdLine::clear() ;
+        VCmdLine::print(GeneralMessage("-- EDI REPLACE --")) ;
 
         std::vector<KeyCode> strs{} ;
         std::vector<bool> shifts{} ;
@@ -142,9 +142,8 @@ namespace vind
             }
         }) ;
 
-        VirtualCmdLine::clear() ;
-        VirtualCmdLine::refresh() ;
-        VirtualCmdLine::msgout("-- EDI NORMAL --") ;
+        VCmdLine::reset() ;
+        VCmdLine::print(GeneralMessage("-- EDI NORMAL --")) ;
     }
     void ReplaceSequence::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

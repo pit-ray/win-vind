@@ -35,6 +35,9 @@ jobs:
         path: ${{github.workspace}}/libs
         key: x64-libs-cache-210828
 
+    - name: Install Libraries
+      run: "tools/setup_libs.bat -mingw 64"
+
     - name: Configure CMake
       run: |
         cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .

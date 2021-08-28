@@ -53,15 +53,25 @@ jobs:
     - name: Install libraries
       run: "tools/setup_libs.bat -mingw 64"
 
+    - name: Cache Coverity scan tools package
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{github.workspace}}/cov_tools.zip
+        key: x64-coverity-zip-cache-210829
+
+    - name: Downloads Coveirty scan tools
+      run: "tools/download_coverity_tools.bat $TOKEN"
+
     - name: Cache Coverity scan tools
       uses: actions/cache@v2
       with:
         path: |
-          ${{github.workspace}}/cov_tools
-        key: x64-coverity-cache-2108293
+          ${{github.workspace}}/cov_tools.zip
+        key: x64-coverity-zip-cache-210829
 
-    - name: Install Coveirty scan tools
-      run: "tools/install_coverity_tools.sh $TOKEN"
+    - name: Unzip Coverity scan tools
+      run: "tools/install_coverity_tools.bat"
 
     - name: Configure CMake
       run: |

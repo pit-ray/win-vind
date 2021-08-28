@@ -46,7 +46,6 @@ jobs:
 
     - name: Install Libraries
       run: "tools/setup_libs.bat -mingw 64"
-      shell: cmd
 
     - name: Configure CMake
       run: |

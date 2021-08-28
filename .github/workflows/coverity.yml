@@ -63,8 +63,8 @@ jobs:
     - name: Install Coveirty Scan Tools
       run: |
         mkdir bin
-        wget https://scan.coverity.com/download/cxx/win64 --post-data "token=$TOKEN&project=pit-ray%2Fwin-vind" -O bin/coverity_tool.tgz
-        unzip bin/coverity_tool.tgz
+        wget https://scan.coverity.com/download/cxx/win64 --post-data "token=$TOKEN&project=pit-ray%2Fwin-vind" -O bin/coverity_tool.zip
+        unzip bin/coverity_tool.zip
         export PATH=$PATH:${{github.workspace}}/bin/coveirty_tool/bin
 
     - name: Configure CMake

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - ghact
     tags:
       - v*.*.*
     paths-ignore:

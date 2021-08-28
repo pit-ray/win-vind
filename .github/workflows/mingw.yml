@@ -21,13 +21,22 @@ jobs:
   x64:
     runs-on: windows-latest
 
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up MinGW
-      uses: egor-tensin/setup-mingw@v2
+      #- name: Set up MinGW
+      #uses: egor-tensin/setup-mingw@v2
+      #with:
+      #  platform: x64
+
+    - name: Install gcc and make
+      uses: msys2/setup-msys2@v2
       with:
-        platform: x64
+        install: mingw-w64-x86_64-cmake
 
     - name: Cache Libraries
       uses: actions/cache@v2

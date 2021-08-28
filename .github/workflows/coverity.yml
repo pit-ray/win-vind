@@ -57,23 +57,20 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          ${{github.workspace}}/bin
-        key: x64-coverity-cache-210829-2
+          ${{github.workspace}}/cov_tools
+        key: x64-coverity-cache-2108293
 
     - name: Install Coveirty scan tools
       run: "tools/install_coverity_tools.bat $TOKEN"
 
-    - name: Export path of Coverity scan tools
-      run: export PATH=$PATH:${{github.workspace}}/bin/cov_tools/bin
-
     - name: Configure CMake
       run: |
-        cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
+        cov_tools/bin/cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
         cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
 
     - name: Build with Coverity
       run: |
-        cov-build --config ./covtest/cov.xml --dir cov-int cmake --build debug
+        cov_tools/bin/cov-build --config ./covtest/cov.xml --dir cov-int cmake --build debug
         tar -czvf debug/cov-int.tgz debug/cov-int
 
     - name: Submit tarball to Coverity

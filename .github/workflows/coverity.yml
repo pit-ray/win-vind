@@ -1,0 +1,81 @@
+name: Coverity
+
+on:
+  schedule:
+    - cron: '0 18 * * 4'
+
+  push:
+    branches: [ghact]
+    tags:
+      - v*.*.*
+    paths-ignore:
+      - README.md
+      - CONTRIBUTING.md
+
+  pull_request:
+    branches:
+      - master
+
+env:
+  TOKEN: ${{secrets.COVERITY_TOKEN}}
+  EMAIL: ${{secrets.COVERITY_EMAIL}}
+
+jobs:
+  x64:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup MinGW
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        install: >-
+          git
+          unzip
+          base-devel
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-make
+          mingw-w64-x86_64-cmake
+
+    - name: Cache Libraries
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{github.workspace}}/libs
+          ${{github.workspace}}/bin
+        key: x64-coverity-cache-210828
+
+    - name: Install Libraries
+      run: "tools/setup_libs.bat -mingw 64"
+
+    - name: Install Coveirty Scan Build Tool
+      run: |
+        mkdir bin
+        wget https://scan.coverity.com/download/cxx/win64 --post-data "token=$TOKEN&project=pit-ray%2Fwin-vind" -O bin/coverity_tool.tgz
+        unzip bin/coverity_tool.tgz
+        export PATH=$PATH:${{github.workspace}}/bin/coveirty_tool/bin
+
+    - name: Configure CMake
+      run: |
+        cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
+        cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+
+    - name: Build
+      run: |
+        cov-build --config ./covtest/cov.xml --dir cov-int cmake --build debug
+        tar -czvf debug/cov-int.tgz debug/cov-int
+
+    - name: Submit tarball to Coverity Scan
+      run: |
+        curl --form token=$TOKEN \
+          --form email=$EMAIL \
+          --form file=@debug/cov-int.tgz \
+          --form version="v4" \
+          --form description="Automatic submission with GitHub Actions" \
+          https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind

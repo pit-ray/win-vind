@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - master
-      - ghact
     tags:
       - v*.*.*
-
     paths-ignore:
       - README.md
       - CONTRIBUTING.md
@@ -28,12 +26,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-      #- name: Set up MinGW
-      #uses: egor-tensin/setup-mingw@v2
-      #with:
-      #  platform: x64
-
-    - name: Install gcc and make
+    - name: Setup MinGW
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64

@@ -33,6 +33,7 @@ SOFTWARE.
 */
 
 #include <functional>
+#include <string>
 
 namespace vind
 {

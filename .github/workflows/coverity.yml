@@ -48,13 +48,19 @@ jobs:
       with:
         path: |
           ${{github.workspace}}/libs
-          ${{github.workspace}}/bin
-        key: x64-coverity-cache-210828
+        key: x64-libs-cache-210828
 
     - name: Install Libraries
       run: "tools/setup_libs.bat -mingw 64"
 
-    - name: Install Coveirty Scan Build Tool
+    - name: Cache Coverity Scan Tools
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{github.workspace}}/bin
+        key: x64-coverity-cache-210828
+
+    - name: Install Coveirty Scan Tools
       run: |
         mkdir bin
         wget https://scan.coverity.com/download/cxx/win64 --post-data "token=$TOKEN&project=pit-ray%2Fwin-vind" -O bin/coverity_tool.tgz

@@ -19,3 +19,5 @@ win32gui
 venv
 compile_flags.txt
 .vimspector.json
+cov_tools.zip
+cov_tools

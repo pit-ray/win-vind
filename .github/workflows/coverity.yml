@@ -58,13 +58,13 @@ jobs:
       with:
         path: |
           ${{github.workspace}}/bin
-        key: x64-coverity-cache-210829
+        key: x64-coverity-cache-210829-2
 
     - name: Install Coveirty scan tools
       run: "tools/install_coverity_tools.bat $TOKEN"
 
     - name: Export path of Coverity scan tools
-      run: export PATH=$PATH:${{github.workspace}}/bin/coveirty_tool/bin
+      run: export PATH=$PATH:${{github.workspace}}/bin/cov_tools/bin
 
     - name: Configure CMake
       run: |

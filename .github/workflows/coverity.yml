@@ -61,7 +61,7 @@ jobs:
         key: x64-coverity-cache-210829
 
     - name: Install Coveirty scan tools
-      run: "tools/install_coverity_tools.bat"
+      run: "tools/install_coverity_tools.bat $TOKEN"
 
     - name: Export path of Coverity scan tools
       run: export PATH=$PATH:${{github.workspace}}/bin/coveirty_tool/bin

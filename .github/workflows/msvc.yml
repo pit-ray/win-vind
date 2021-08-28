@@ -24,7 +24,7 @@ jobs:
       with:
         arch: x64
 
-    - name: Cache Library
+    - name: Cache Libraries
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/libs

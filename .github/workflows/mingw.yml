@@ -1,0 +1,44 @@
+name: MinGW build
+
+on:
+  push:
+    branches:
+      - master
+      - ghact
+    tags:
+      - v*.*.*
+
+    paths-ignore:
+      - README.md
+      - CONTRIBUTING.md
+
+  pull_request:
+    branches:
+      - master
+
+
+jobs:
+  x64:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up MinGW
+      uses: egor-tensin/setup-mingw@v2
+      with:
+        platform: x64
+
+    - name: Cache Libraries
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/libs
+        key: x64-libs-cache-210828
+
+    - name: Configure CMake
+      run: |
+        cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+
+    - name: Build
+      run: |
+        cmake --build debug --config Debug

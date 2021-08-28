@@ -61,7 +61,7 @@ jobs:
         key: x64-coverity-cache-2108293
 
     - name: Install Coveirty scan tools
-      run: "tools/install_coverity_tools.bat $TOKEN"
+      run: "tools/install_coverity_tools.sh $TOKEN"
 
     - name: Configure CMake
       run: |

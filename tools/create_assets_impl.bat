@@ -9,7 +9,7 @@
     @exit
 )
 @if "%3" == "" (
-    @echo Error: Please pass bit type [64 | 32]
+    @echo Error: Please pass bit type
     @exit
 )
 

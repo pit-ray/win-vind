@@ -1,3 +1,4 @@
 if not exist cov_tools (
-    unzip -j cov_tools.zip -d cov_tools
+    unzip cov_tools.zip
+    mv cov-analysis-win64-*.* cov_tools
 )

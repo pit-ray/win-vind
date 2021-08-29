@@ -22,9 +22,11 @@ jobs:
         scoop bucket add extras
         scoop install nsis
 
-
     - name: Get the version
-      run: $TAG=$(echo ${{github.ref}}).Replace('/refs/tag/', '')
+      id: version
+      run: |
+        $TAG=$(echo ${{github.ref}}).Replace('/refs/tag/', '')
+        echo ::set-output name=tag::$TAG
 
     - name: Setup x64 MSVC
       uses: ilammy/msvc-dev-cmd@v1
@@ -41,7 +43,7 @@ jobs:
       run: ./tools/setup_libs.bat -msvc 64
  
     - name: Create assets
-      run: ./tools/create_assets.bat $TAG -msvc 64
+      run: ./tools/create_assets.bat ${{steps.version.outputs.tag}} -msvc 64
 
 
     - name: Setup x86 MSVC
@@ -59,7 +61,7 @@ jobs:
       run: tools/setup_libs.bat -msvc 32"
 
     - name: Create assets
-      run: ./tools/create_assets.bat $TAG -msvc 32
+      run: ./tools/create_assets.bat ${{steps.version.outputs.tag}} -msvc 32
 
 
     - name: Create release and submit assets

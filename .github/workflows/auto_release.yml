@@ -24,11 +24,7 @@ jobs:
 
 
     - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-      env:
-        TAG: ${{steps.get_version.outputs.VERSION}}
-
+      run: $TAG=$(echo ${{github.ref}}).Replace('/refs/tag/', '')
 
     - name: Setup x64 MSVC
       uses: ilammy/msvc-dev-cmd@v1

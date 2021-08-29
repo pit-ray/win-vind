@@ -1,4 +1,4 @@
-name: release assets
+name: auto release
 
 on:
   push:

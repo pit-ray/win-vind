@@ -15,9 +15,9 @@ on:
   schedule:
     - cron: '0 18 * * 4'
 
-  push:
-    tags:
-      - v*.*.*
+  #push:
+  #  tags:
+  #    - v*.*.*
 
   pull_request:
     # The branches below must be a subset of the branches above

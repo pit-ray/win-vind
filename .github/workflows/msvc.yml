@@ -3,8 +3,8 @@ name: MSVC build
 on:
   push:
     branches: [ master ]
-    tags:
-      - v*.*.*
+    #tags:
+    #  - v*.*.*
     paths-ignore:
       - README.md
       - CONTRIBUTING.md

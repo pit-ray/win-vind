@@ -9,12 +9,16 @@ jobs:
   x64-and-x86:
     runs-on: windows-latest
 
+    defaults:
+      run:
+        shell: powershell
+
     steps:
     - uses: actions/checkout@v2
 
     - name: Install NSIS
       run: |
-        powershell -c "Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')"
+        Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
         scoop bucket add extras
         scoop install nsis
 

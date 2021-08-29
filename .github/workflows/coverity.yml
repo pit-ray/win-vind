@@ -1,4 +1,4 @@
-name: Coverity
+name: cov-build
 
 on:
   schedule:

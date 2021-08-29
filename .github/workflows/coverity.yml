@@ -58,7 +58,7 @@ jobs:
       with:
         path: |
           ${{github.workspace}}/cov_tools.zip
-        key: x64-coverity-zip-cache-210829
+        key: x64-coverity-zip-cache-210829-4
 
     - name: Downloads Coveirty scan tools
       run: "tools/download_coverity_tools.bat $TOKEN"
@@ -67,8 +67,8 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          ${{github.workspace}}/cov_tools.zip
-        key: x64-coverity-zip-cache-210829
+          ${{github.workspace}}/cov_tools
+        key: x64-coverity-cache-210829-4
 
     - name: Unzip Coverity scan tools
       run: "tools/install_coverity_tools.bat"

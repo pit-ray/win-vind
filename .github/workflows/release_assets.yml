@@ -1,0 +1,62 @@
+# name: MSVC build
+
+# on:
+#   push:
+#     tags:
+#       - v*.*.*
+
+# env:
+#   BUILD_TYPE: Debug
+
+# jobs:
+#   x64:
+#     runs-on: windows-latest
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - uses: ilammy/msvc-dev-cmd@v1
+#       with:
+#         arch: x64
+
+#     - name: Cache Libraries
+#       uses: actions/cache@v2
+#       with:
+#         path: ${{github.workspace}}/libs
+#         key: x64-libs-cache-210801
+
+#     - name: Setup Libraries
+#       run: "tools/setup_libs.bat -msvc 64"
+#  
+#     - name: Configure CMake
+#       run: |
+#         cmake -B ${{github.workspace}}/build_msvc_x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+
+#     - name: Build
+#       run: |
+#         cmake --build ${{github.workspace}}/build_msvc_x64 --config ${{env.BUILD_TYPE}}
+
+#   x86:
+#     runs-on: windows-latest
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - uses: ilammy/msvc-dev-cmd@v1
+#       with:
+#         arch: x86
+
+#     - name: Cache Library
+#       uses: actions/cache@v2
+#       with:
+#         path: ${{github.workspace}}/libs
+#         key: x86-libs-cache-210801
+
+#     - name: Setup Library
+#       run: "tools/setup_libs.bat -msvc 32"
+
+#     - name: Configure CMake
+#       run: |
+#         cmake -B ${{github.workspace}}/build_msvc_x86 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G "Visual Studio 16 2019" -A Win32 -DBIT_TYPE=32 .
+
+#     - name: Build
+#       run: |
+#         cmake --build ${{github.workspace}}/build_msvc_x86 --config ${{env.BUILD_TYPE}}

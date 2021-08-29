@@ -71,6 +71,7 @@ jobs:
     - name: Build with Coverity
       run: |
         cov_tools/bin/cov-build --config build/covtest/cov.xml --dir build/cov-int cmake --build build
+        tail build/cov-int/build-log.txt
         tar -czvf build/cov-int.tgz build/cov-int
 
     - name: Submit tarball to Coverity

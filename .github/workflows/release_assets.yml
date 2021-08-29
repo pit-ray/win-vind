@@ -1,12 +1,9 @@
-name: Release
+name: release assets
 
 on:
   push:
     tags:
       - v*.*.*
-
-env:
-  TAG: ${GITHUB_REF##*/}
 
 jobs:
   x64-and-x86:
@@ -20,6 +17,13 @@ jobs:
         powershell Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
         scoop bucket add extras
         scoop install nsis
+
+
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      env:
+        TAG: ${{steps.get_version.outputs.VERSION}}
 
 
     - name: Setup x64 MSVC

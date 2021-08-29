@@ -10,6 +10,7 @@
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml/badge.svg?branch=master" /></a>
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml/badge.svg"></a>
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/test.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/test.yml/badge.svg"></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/auto_release.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/auto_release.yml/badge.svg" /></a>
   </p>
 </p>  
 
@@ -51,7 +52,43 @@ Date: 2021/8/1
   
 ## Usage
 You can refer to the installation and quick tutorial in [Usage - win-vind](https://pit-ray.github.io/win-vind/usage/).  
-  
+
+
+### .vindrc Samples  
+
+```vim
+" Virtual command line options
+set shell = cmd
+set cmd_fontsize = 14
+set cmd_roughpos = LowerLeft
+set cmd_maxchar = 100
+
+" Enable block style caret
+set blockstylecaret
+set blockstylecaret_mode = solid
+
+" Low-level key mapping in resident mode
+rmap <capslock> <ctrl>
+
+" Define bindings in GUI Normal mode
+gnnoremap <c-h> select_left_window
+gnnoremap <c-l> select_right_window
+gnnoremap <c-k> select_upper_window
+gnnoremap <c-j> select_lower_window
+
+" Define bindings in insert mode
+imap <capslock> <f16>
+inoremap <f16> to_edi_normal
+
+imap <ralt> <f17>
+inoremap <f17> easy_click_left
+
+imap <app> <f18>
+inoremap <f18> window_resizer
+
+```
+
+
 ## Related Pages
 - <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
 - <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  

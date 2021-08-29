@@ -65,19 +65,19 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cov_tools/bin/cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template
-        cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+        cov_tools/bin/cov-configure --config build/covtest/cov.xml --comptype g++ --compiler g++ --template
+        cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
 
     - name: Build with Coverity
       run: |
-        cov_tools/bin/cov-build --config ./covtest/cov.xml --dir cov-int cmake --build debug
-        tar -czvf debug/cov-int.tgz debug/cov-int
+        cov_tools/bin/cov-build --config build/covtest/cov.xml --dir build/cov-int cmake --build build
+        tar -czvf build/cov-int.tgz build/cov-int
 
     - name: Submit tarball to Coverity
       run: |
         curl --form token=$TOKEN \
           --form email=$EMAIL \
-          --form file=@debug/cov-int.tgz \
+          --form file=@build/cov-int.tgz \
           --form version="latest" \
           --form description="Automatic submission with GitHub Actions" \
           https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind

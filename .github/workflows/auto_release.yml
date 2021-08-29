@@ -45,7 +45,7 @@ jobs:
 
 
     - name: Setup x86 MSVC
-    - uses: ilammy/msvc-dev-cmd@v1
+      uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x86
 

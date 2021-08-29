@@ -76,8 +76,9 @@ namespace
             }
             SyscmdMapclear::sprocess(mode, false) ;
         }
-
-        throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
+        else {
+            throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
+        }
     }
 }
 

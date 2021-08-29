@@ -53,16 +53,6 @@ jobs:
     - name: Install libraries
       run: "tools/setup_libs.bat -mingw 64"
 
-    - name: Cache Coverity scan tools package
-      uses: actions/cache@v2
-      with:
-        path: |
-          ${{github.workspace}}/cov_tools.zip
-        key: x64-coverity-zip-cache-210829-4
-
-    - name: Downloads Coveirty scan tools
-      run: "tools/download_coverity_tools.bat $TOKEN"
-
     - name: Cache Coverity scan tools
       uses: actions/cache@v2
       with:
@@ -75,7 +65,7 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cov_tools/bin/cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
+        cov_tools/bin/cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template
         cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
 
     - name: Build with Coverity

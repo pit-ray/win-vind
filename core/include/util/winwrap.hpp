@@ -62,6 +62,9 @@ namespace vind
                 UINT uiparam,
                 Ptr pvparam,
                 UINT fwinini) {
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+#pragma warning(disable : 4312)
+#endif
             if(!SystemParametersInfoW(
                     param,
                     uiparam,
@@ -69,6 +72,10 @@ namespace vind
                     fwinini)) {
                 throw RUNTIME_EXCEPT("Count not set a system parameter with SystemParametersInfo.") ;
             }
+
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+#pragma warning(default : 4312)
+#endif
         }
 
         bool is_failed(HRESULT result) noexcept ;

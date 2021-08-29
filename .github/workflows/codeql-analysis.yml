@@ -18,9 +18,6 @@ on:
   push:
     tags:
       - v*.*.*
-    paths-ignore:
-      - README.md
-      - CONTRIBUTING.md
 
   pull_request:
     # The branches below must be a subset of the branches above

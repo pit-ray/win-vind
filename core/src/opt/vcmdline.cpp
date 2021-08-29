@@ -35,7 +35,7 @@ namespace vind
         try {
             reset() ;
         }
-        catch(const std::exception& e) {
+        catch(const std::exception& UNUSED(e)) {
             PRINT_ERROR("Failed to reset the drawing pixels of the virtual command line.") ;
         }
     }

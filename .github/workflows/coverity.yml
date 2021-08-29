@@ -5,12 +5,8 @@ on:
     - cron: '0 18 * * 4'
 
   push:
-    branches: [ghact]
     tags:
       - v*.*.*
-    paths-ignore:
-      - README.md
-      - CONTRIBUTING.md
 
   pull_request:
     branches:

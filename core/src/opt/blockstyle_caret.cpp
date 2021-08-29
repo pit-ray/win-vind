@@ -36,8 +36,8 @@ namespace
 
         hwnd = GetFocus() ;
 
-        if(!util::is_failed(SendMessage(hwnd, WM_KILLFOCUS, 0, 0))) {
-            if(util::is_failed(SendMessage(hwnd, WM_SETFOCUS, 0, 0))) {
+        if(SendMessage(hwnd, WM_KILLFOCUS, 0, 0) == 0) {
+            if(SendMessage(hwnd, WM_SETFOCUS, 0, 0) != 0) {
                 PRINT_ERROR("Could not update the caret of the foreground window.") ;
             }
         }

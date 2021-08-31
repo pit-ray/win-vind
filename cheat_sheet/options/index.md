@@ -21,7 +21,7 @@ descripption: "Option lists"
 |`arrangewin_ignore`|str||A list of executable filenames to ignore in ArrangeWindows. For example, if you want to remove rainmeter and gvim from the alignment, write `set arrangewin_ignore = rainmeter, gvim`. The name is the name of the executable file without extension.|
 |`autofocus_textarea`|bool|false|Automatically focus on the nearest text area when switching to **Editor Normal Mode**|
 |`autotrack_popup`|bool|false|It is one of standard options on Windows. For example, if shown **Are you sure you want to move this file to the Recycle Bin?**, it automatically moves the cursor to the popup window.|
-|`blockstylecaret_mode`|str|solid|Mode of block style caret [solid | flex]|
+|`blockstylecaret_mode`|str|solid|Mode of block style caret.  There is a `solid` mode with fixed size and a `flex` mode with pseudo blocks by selection.|
 |`blockstylecaret_width`|num|15|Width of block style caret on solid mode|
 |`blockstylecaret`|bool|false|Block Style Caret|
 |`charcache`|bool|false|It is a very small cache for one character used by `x` or `X` commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.|

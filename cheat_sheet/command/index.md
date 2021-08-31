@@ -18,119 +18,117 @@ parent: Cheat Sheet
 
 ### Mode
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`::guinormal`, `:gn`|**to_gui_normal**|GUI Normal Mode|
-|`:resident`|**to_resident**|Resident Mode|
-|`:guivisual`, `:gv`|**to_gui_visual**|GUI Visual Mode|
-|`:edinormal`, `:en`|**to_edi_normal**|Editor Normal Mode|
-|`:insert`, `:i`|**to_insert**|Insert Mode|
-|`:edivisual`, `:ev`|**to_edi_visual**|Editor Visual Mode|
-|`:edivisualline`, `:evl`|**to_edi_visual_line**|Editor Visual Line Mode|
+|Command|ID|
+|:---:|:---:|
+|`::guinormal`, `:gn`|**to_gui_normal**|
+|`:resident`|**to_resident**|
+|`:guivisual`, `:gv`|**to_gui_visual**|
+|`:edinormal`, `:en`|**to_edi_normal**|
+|`:insert`, `:i`|**to_insert**|
+|`:edivisual`, `:ev`|**to_edi_visual**|
+|`:edivisualline`, `:evl`|**to_edi_visual_line**|
 
 ### Virtual Desktop
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:vdprev`|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
-|`:vdnext`|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
-|`:closev`|**close_current_vdesktop**|Close a current virtual desktop|
-|`:taskview`|**taskview**|Task View|
+|Command|ID|
+|:---:|:---:|
+|`:vdprev`|**switch_to_left_vdesktop**|
+|`:vdnext`|**switch_to_right_vdesktop**|
+|`:closev`|**close_current_vdesktop**|
+|`:taskview`|**taskview**|
 
 ### Tab
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:tabprevious`|**switch_to_left_tab**|Switch to a left tab|
-|`:tabnext`|**switch_to_right_tab**|Switch to a right tab|
-|`:tabnew`|**open_new_tab**|Open a new tab|
-|`:q`, `:q!`, `:tabclose`|**close_current_tab**|Close a current tab|
+|Command|ID|
+|:---:|:---:|
+|`:tabprevious`|**switch_to_left_tab**|
+|`:tabnext`|**switch_to_right_tab**|
+|`:tabnew`|**open_new_tab**|
+|`:q`, `:q!`, `:tabclose`|**close_current_tab**|
 
 ### Window
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:cl`, `:close`|**close_current_window**|Close a current window|
-|`:sw`, `:switch`|**switch_window**|Switch a window|
-|`:resizer`, `:winresizer`|**window_resizer**|Start window resizer. It respects Vim plugin <a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
-|`:max`, `:on`, `:only`|**maximize_current_window**|Maximize a current window|
-|`:min`, `:hi`, `:hide`|**minimize_current_window**|Minimize a current window|
-|`:lsplit`, `:lsp`|**snap_current_window_to_left**|Snap a current window to left|
-|`:rsplit`, `:rsp`|**snap_current_window_to_right**|Snap a current window to right|
-|`:tsplit`, `:tsp`|**snap_current_window_to_top**|Snap a current window to top|
-|`:bsplit`, `:bsp`|**snap_current_window_to_bottom**|Snap a current window to bottom|
-|`:arrange`|**arrange_windows**|Arrange windows with tile style|
-|`:rotate`, `:rot`|**rotate_windows**|Rotate windows in a current monitor|
-|`:rerotate`, `:rerot`|**rotate_windows_in_reverse**|Rotate windows in a current monitor in reverse|
-|`:exchange`|**exchange_window_with_nearest**|Exchange a window with next one|
-|`:vertical resize <num>`, `:vert res <num>`|**resize_window_width**|Resize the width of a window|
-|`:vertical resize +<num>`, `:vert res +<num>`|**increase_window_width**|Increase the width of a window|
-|`:vertical resize -<num>`, `:vert res -<num>`|**decrease_window_width**|Decrease the width of a window|
-|`:resize <num>`, `:res <num>`|**resize_window_height**|Resize the height of a window|
-|`:resize +<num>`, `:res +<num>`|**increase_window_height**|Increase the height of a window|
-|`:resize -<num>`, `:res -<num>`|**decrease_window_height**|Decrease the height of a window|
-|`:new`|**open_new_window**|Open a new window|
-|`:sp`, `:split`|**open_new_window_with_hsplit**|Open a new window with horizontal split|
-|`:vs`, `:vsplit`|**open_new_window_with_vsplit**|Open a new window with vertical split|
-|`:reload`|**reload_current_window**|Reload a current window|
+|Command|ID|
+|:---:|:---:|
+|`:cl`, `:close`|**close_current_window**|
+|`:sw`, `:switch`|**switch_window**|
+|`:resizer`, `:winresizer`|**window_resizer**|
+|`:max`, `:on`, `:only`|**maximize_current_window**|
+|`:min`, `:hi`, `:hide`|**minimize_current_window**|
+|`:lsplit`, `:lsp`|**snap_current_window_to_left**|
+|`:rsplit`, `:rsp`|**snap_current_window_to_right**|
+|`:tsplit`, `:tsp`|**snap_current_window_to_top**|
+|`:bsplit`, `:bsp`|**snap_current_window_to_bottom**|
+|`:arrange`|**arrange_windows**|
+|`:rotate`, `:rot`|**rotate_windows**|
+|`:rerotate`, `:rerot`|**rotate_windows_in_reverse**|
+|`:exchange`|**exchange_window_with_nearest**|
+|`:vertical resize <num>`, `:vert res <num>`|**resize_window_width**|
+|`:vertical resize +<num>`, `:vert res +<num>`|**increase_window_width**|
+|`:vertical resize -<num>`, `:vert res -<num>`|**decrease_window_width**|
+|`:resize <num>`, `:res <num>`|**resize_window_height**|
+|`:resize +<num>`, `:res +<num>`|**increase_window_height**|
+|`:resize -<num>`, `:res -<num>`|**decrease_window_height**|
+|`:new`|**open_new_window**|
+|`:sp`, `:split`|**open_new_window_with_hsplit**|
+|`:vs`, `:vsplit`|**open_new_window_with_vsplit**|
+|`:reload`|**reload_current_window**|
 
 ### File
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:mkdir<any>`, `:md<any>`|**makedir**|Create a directory. If you call it with a relative path such as `:mkdir foo`, it creates it in the explorer directory. If no explorer is found, it creates it in `~/Desktop/foo`. If you call it with an absolute path like `:mkdir C:/Users/You/Desktop/bar`, it will create a directory along the path, but not recursively.|
+|Command|ID|
+|:---:|:---:|
+|`:mkdir<any>`, `:md<any>`|**makedir**|
 
 ### Vim Emulation
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:-<num>`|**move_caret_up**|Move the caret on the number of lines specified by `<num>`.|
-|`:+<num>`|**move_caret_down**|Move the caret down on the number of lines specified by `<num`>.|
-|`:<num>`|**jump_caret_to_BOF**|Jump the caret to the specified line by `<num>`.|
+|Command|ID|
+|:---:|:---:|
+|`:-<num>`|**move_caret_up**|
+|`:+<num>`|**move_caret_down**|
+|`:<num>`|**jump_caret_to_BOF**|
 
 ### Process
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|Start a terminal. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
-|`:!<any>`|**start_external**|Start an external application. This environment variable is dependent on the application specified in the shell option. By appending `;` at the end, it keeps the console window without closing immediately. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
-|`:e <any>`, `:edit <any>`, `:execute <any>`|**execute**|Open file with the associated application. It is wrapper of **ShellExecute**. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`.|
-|`:exit`|**exit_config_gui**|Exit win-vind|
+|Command|ID|
+|:---:|:---:|
+|`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|
+|`:!<any>`|**start_external**|
+|`:e <any>`, `:edit <any>`, `:execute <any>`|**execute**|
+|`:exit`|**exit_config_gui**|
 
 ### Hotkey
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:win`, `:start`|**open_startmenu**|Open a start menu|
-|`:ex`, `:explorer`|**start_explorer**|Start a Explorer|
-|`:find`, `:open`|**open**|Open another file|
-|`:w`|**save**|Save a current file|
-|`:forward`|**forward_ui_navigation**|Forward UI Navigation|
-|`:backward`|**backward_ui_navigation**|Backward UI Navigation|
-|`:decide`|**decide_focused_ui_object**|Decide a focused UI object|
+|Command|ID|
+|:---:|:---:|
+|`:win`, `:start`|**open_startmenu**|
+|`:ex`, `:explorer`|**start_explorer**|
+|`:find`, `:open`|**open**|
+|`:w`|**save**|
+|`:forward`|**forward_ui_navigation**|
+|`:backward`|**backward_ui_navigation**|
+|`:decide`|**decide_focused_ui_object**|
 
 ### Option
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:target`|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
-|`:untarget`|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
-
-If **Dedicate to One window** enables, you can select one window with Enable Targeting function. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with Disable Targeting function. In other words, this feature transforms some normal editors to fake Vim. The computing cost is so small.
+|Command|ID|
+|:---:|:---:|
+|`:target`|**enable_targeting_of_dedicate_to_window**|
+|`:untarget`|**disable_targeting_of_dedicate_to_window**|
 
 ### System Command
 
-|Command|ID|Note|
-|:---:|:---:|:---|
-|`:set<any>`|**system_command_set**|System Command set|
-|`:source<any>`|**system_command_source**|System Command source|
-|`:{mode-prefix}map<any>`|**system_command_map**|System Command map|
-|`:{mode-prefix}mapclear`|**system_command_mapclear**|System Command mapclear|
-|`:{mode-prefix}noremap<any>`|**system_command_noremap**|System Command noremap|
-|`:{mode-prefix}unmap<any>`|**system_command_unmap**|System Command unmap|
-|`:comclear`|**system_command_comclear**|System Command comclear|
-|`:command<any>`|**system_command_command**|System Command command|
-|`:delcommand<any>`|**system_command_delcommand**|System Command delcommand|
+|Command|ID|
+|:---:|:---:|
+|`:set<any>`|**system_command_set**|
+|`:source<any>`|**system_command_source**|
+|`:{mode-prefix}map<any>`|**system_command_map**|
+|`:{mode-prefix}mapclear`|**system_command_mapclear**|
+|`:{mode-prefix}noremap<any>`|**system_command_noremap**|
+|`:{mode-prefix}unmap<any>`|**system_command_unmap**|
+|`:comclear`|**system_command_comclear**|
+|`:command<any>`|**system_command_command**|
+|`:delcommand<any>`|**system_command_delcommand**|
 
 <hr>
 

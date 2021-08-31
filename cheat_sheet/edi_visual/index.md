@@ -18,58 +18,59 @@ parent: Cheat Sheet
 
 ### Mode
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
-|`<Esc-Down>`|**to_resident**|Resident Mode|
-|`:`|**to_command**|Command Mode|
-|`<Esc-Right>`|**to_edi_normal**|Normal Mode|
+|Bindings|ID|
+|:---:|:---:|
+|`<Esc-Left>`|**to_gui_normal**|
+|`<Esc-Down>`|**to_resident**|
+|`:`|**to_command**|
+|`<Esc-Right>`|**to_edi_normal**|
 
 ### Mouse
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`<C-y>`, `<C-k>`|**scroll_up**|Scroll a mouse wheel up|
-|`<C-e>`, `<C-j>`|**scroll_down**|Scroll a mouse wheel down|
-|`<C-u>`|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
-|`<C-d>`|**scroll_down_halfpage**|Scroll a mouse wheel down with a half page|
-|`<C-b>`|**scroll_up_onepage**|Scroll a mouse wheel up with a page|
-|`<C-f>`|**scroll_down_onepage**|Scroll a mouse wheel down With a page|
-|`zh`, `<C-h>`|**scroll_left**|Scroll a mouse wheel left|
-|`zl`, `<C-l>`|**scroll_right**|Scroll a mouse wheel right|
-|`zH`|**scroll_left_halfpage**|Scroll a mouse wheel left With a half page|
-|`zL`|**scroll_right_halfpage**|Scroll a mouse wheel right with a half page|
+|Bindings|ID|
+|:---:|:---:|
+|`<C-y>`, `<C-k>`|**scroll_up**|
+|`<C-e>`, `<C-j>`|**scroll_down**|
+|`<C-u>`|**scroll_up_halfpage**|
+|`<C-d>`|**scroll_down_halfpage**|
+|`<C-b>`|**scroll_up_onepage**|
+|`<C-f>`|**scroll_down_onepage**|
+|`zh`, `<C-h>`|**scroll_left**|
+|`zl`, `<C-l>`|**scroll_right**|
+|`zH`|**scroll_left_halfpage**|
+|`zL`|**scroll_right_halfpage**|
 
 ### Vim Emulation
 #### Move
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|Move the caret to left|
-|`l`, `<Space>`, `<Right>`|**move_caret_right**|Move the caret to right|
-|`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|Move the caret up|
-|`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|Move the caret down|
-|`w`|**move_caret_word_forward**|Forward with words|
-|`b`|**move_caret_word_backward**|Backward with words|
-|`W`|**move_caret_nonblank_word_forward**|Forward with WORDS|
-|`B`|**move_caret_nonblank_word_backward**|Backward with WORDS|
+|Bindings|ID|
+|:---:|:---:|
+|`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|
+|`l`, `<Space>`, `<Right>`|**move_caret_right**|
+|`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|
+|`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|
+|`w`|**move_caret_word_forward**|
+|`b`|**move_caret_word_backward**|
+|`W`|**move_caret_nonblank_word_forward**|
+|`B`|**move_caret_nonblank_word_backward**|
 
 #### Jump
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`0`, `<Home>`, `g0`|**jump_caret_to_BOL**|Jump the caret to begin of line|
-|`$`, `<End>`, `g$`|**jump_caret_to_EOL**|Jump the caret to end of line|
-|`gg`|**jump_caret_to_BOF**|Jump the caret to BOF|
+|Bindings|ID|
+|:---:|:---:|
+|`0`, `<Home>`, `g0`|**jump_caret_to_BOL**|
+|`$`, `<End>`, `g$`|**jump_caret_to_EOL**|
+|`gg`|**jump_caret_to_BOF**|
+|`G`|**jump_caret_to_EOF**|
 
 
 #### Edit
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`y`|**yank_highlight_text**|Yank highlighted texts|
-|`d`, `x`, `X`|**delete_highlight_text**|Delete highlighted texts|
-|`c`, `s`, `S`|**change_highlight_text**|Change highlighted texts|
+|Bindings|ID|
+|:---:|:---:|
+|`y`|**yank_highlight_text**|
+|`d`, `x`, `X`|**delete_highlight_text**|
+|`c`, `s`, `S`|**change_highlight_text**|
 
 <hr>
 

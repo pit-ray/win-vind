@@ -18,45 +18,45 @@ parent: Cheat Sheet
 
 ### Mode
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
-|`<Esc-Down>`|**to_resident**|Resident Mode|
+|Bindings|ID|
+|:---:|:---:|
+|`<Esc-Left>`|**to_gui_normal**|
+|`<Esc-Down>`|**to_resident**|
 
 ### Mouse
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`h`, `<BS>`, `<Left>`|**move_cursor_left**|Move the mouse cursor to left|
-|`l`, `<Space>`, `<Right>`|**move_cursor_right**|Move the mouse cursor to right|
-|`k`, `-`, `<Up>`|**move_cursor_up**|Move the mouse cursor up|
-|`j`, `+`, `<Down>`|**move_cursor_down**|Move the Mouse Cursor Down|
-|`0`, `^`, `<Home>`|**jump_cursor_to_left**|Jump the Mouse cursor to left|
-|`$`, `<End>`|**jump_cursor_to_right**|Jump the mouse cursor to right|
-|`gg`|**jump_cursor_to_top**|Jump the mouse cursor to top|
-|`G`|**jump_cursor_to_bottom**|Jump the mouse cursor to bottom|
-|`gm`|**jump_cursor_to_hcenter**|Jump the mouse cursor to horizontal center|
-|`M`|**jump_cursor_to_vcenter**|Jump the mouse cursor to vertical center|
-|`<C-y>`, `<C-k>`|**scroll_up**|Scroll a mouse wheel up|
-|`<C-e>`, `<C-j>`|**scroll_down**|Scroll a mouse wheel down|
-|`<C-u>`|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
-|`<C-d>`|**scroll_down_halfpage**|Scroll a mouse wheel down with a half page|
-|`<C-b>`|**scroll_up_onepage**|Scroll a mouse wheel up with a page|
-|`<C-f>`|**scroll_down_onepage**|Scroll a mouse wheel down With a page|
-|`zh`, `<C-h>`|**scroll_left**|Scroll a mouse wheel left|
-|`zl`, `<C-l>`|**scroll_right**|Scroll a mouse wheel right|
-|`zH`|**scroll_left_halfpage**|Scroll a mouse wheel left With a half page|
-|`zL`|**scroll_right_halfpage**|Scroll a mouse wheel right with a half page|
+|Bindings|ID|
+|:---:|:---:|
+|`h`, `<BS>`, `<Left>`|**move_cursor_left**|
+|`l`, `<Space>`, `<Right>`|**move_cursor_right**|
+|`k`, `-`, `<Up>`|**move_cursor_up**|
+|`j`, `+`, `<Down>`|**move_cursor_down**|
+|`0`, `^`, `<Home>`|**jump_cursor_to_left**|
+|`$`, `<End>`|**jump_cursor_to_right**|
+|`gg`|**jump_cursor_to_top**|
+|`G`|**jump_cursor_to_bottom**|
+|`gm`|**jump_cursor_to_hcenter**|
+|`M`|**jump_cursor_to_vcenter**|
+|`<C-y>`, `<C-k>`|**scroll_up**|
+|`<C-e>`, `<C-j>`|**scroll_down**|
+|`<C-u>`|**scroll_up_halfpage**|
+|`<C-d>`|**scroll_down_halfpage**|
+|`<C-b>`|**scroll_up_onepage**|
+|`<C-f>`|**scroll_down_onepage**|
+|`zh`, `<C-h>`|**scroll_left**|
+|`zl`, `<C-l>`|**scroll_right**|
+|`zH`|**scroll_left_halfpage**|
+|`zL`|**scroll_right_halfpage**|
 
 ### Hotkey
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`y`, `yy`, `Y`|**hotkey_copy**|Copy|
-|`p`, `P`|**hotkey_paste**|Paste|
-|`dd`, `D`|**hotkey_cut**|Cut|
-|`x`, `<Del>`|**hotkey_delete**|Delete|
-|`X`|**hotkey_backspace**|BackSpace|
+|Bindings|ID|
+|:---:|:---:|
+|`y`, `yy`, `Y`|**hotkey_copy**|
+|`p`, `P`|**hotkey_paste**|
+|`dd`, `D`|**hotkey_cut**|
+|`x`, `<Del>`|**hotkey_delete**|
+|`X`|**hotkey_backspace**|
 
 <hr>
 

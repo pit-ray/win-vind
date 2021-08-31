@@ -10,11 +10,11 @@ parent: Cheat Sheet
 
 ## Default
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`<Esc-Left>`|**to_gui_normal**|GUI Normal Mode|
-|`<Esc-Right>`|**to_edi_normal**|Editor Normal Mode|
-|`<Esc-Up>`|**to_insert**|Insert Mode|
+|Bindings|ID|
+|:---:|:---:|
+|`<Esc-Left>`|**to_gui_normal**|
+|`<Esc-Right>`|**to_edi_normal**|
+|`<Esc-Up>`|**to_insert**|
 
 <hr>
 

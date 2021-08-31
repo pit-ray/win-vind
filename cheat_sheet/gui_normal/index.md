@@ -19,109 +19,109 @@ parent: Cheat Sheet
 
 ### Mode
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`v`|**to_gui_visual**|GUI Visual Mode|
-|`I`, `<Esc-Right>`|**to_edi_normal**|Editor Normal Mode|
-|`i`|**to_insert**|Insert Mode|
-|`<Esc-Down>`|**to_resident**|Resident Mode|
-|`:`|**to_command**|Command Mode|
+|Bindings|ID|
+|:---:|:---:|
+|`v`|**to_gui_visual**|
+|`I`, `<Esc-Right>`|**to_edi_normal**|
+|`i`|**to_insert**|
+|`<Esc-Down>`|**to_resident**|
+|`:`|**to_command**|
 
 
 ### Mouse
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`h`, `<BS>`, `<Left>`|**move_cursor_left**|Move the mouse cursor to left|
-|`l`, `<Space>`, `<Right>`|**move_cursor_right**|Move the mouse cursor to right|
-|`k`, `-`, `<Up>`|**move_cursor_up**|Move the mouse cursor up|
-|`j`, `+`, `<Down>`|**move_cursor_down**|Move the Mouse Cursor Down|
-|`0`, `^`, `<Home>`|**jump_cursor_to_left**|Jump the Mouse cursor to left|
-|`$`, `<End>`|**jump_cursor_to_right**|Jump the mouse cursor to right|
-|`gg`|**jump_cursor_to_top**|Jump the mouse cursor to top|
-|`G`|**jump_cursor_to_bottom**|Jump the mouse cursor to bottom|
-|`gm`|**jump_cursor_to_hcenter**|Jump the mouse cursor to horizontal center|
-|`M`|**jump_cursor_to_vcenter**|Jump the mouse cursor to vertical center|
-|`f`|**jump_cursor_with_keybrd_layout**|Jump the mouse cursor by keyboard mapping|
-|`t`|**jump_cursor_to_active_window**|Jump the mouse cursor to the foreground window|
-|`<C-y>`, `<C-k>`|**scroll_up**|Scroll a mouse wheel up|
-|`<C-e>`, `<C-j>`|**scroll_down**|Scroll a mouse wheel down|
-|`<C-u>`|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
-|`<C-d>`|**scroll_down_halfpage**|Scroll a mouse wheel down with a half page|
-|`<C-b>`|**scroll_up_onepage**|Scroll a mouse wheel up with a page|
-|`<C-f>`|**scroll_down_onepage**|Scroll a mouse wheel down With a page|
-|`zh`, `<C-h>`|**scroll_left**|Scroll a mouse wheel left|
-|`zl`, `<C-l>`|**scroll_right**|Scroll a mouse wheel right|
-|`zH`|**scroll_left_halfpage**|Scroll a mouse wheel left With a half page|
-|`zL`|**scroll_right_halfpage**|Scroll a mouse wheel right with a half page|
-|`o`, `O`|**click_left**|Left button of a mouse click|
-|`a`, `A`|**click_right**|Right button of a mouse click|
-|`FF`, `Fo`|**easy_click_left**|EasyClick (Left Click)|
-|`Fa`|**easy_click_right**|EasyClick (Right Click)|
-|`Fm`|**easy_click_mid**|EasyClick (Mid Click)|
-|`Fh`|**easy_click_hover**|EasyClick (Hovering)|
+|Bindings|ID|
+|:---:|:---:|
+|`h`, `<BS>`, `<Left>`|**move_cursor_left**|
+|`l`, `<Space>`, `<Right>`|**move_cursor_right**|
+|`k`, `-`, `<Up>`|**move_cursor_up**|
+|`j`, `+`, `<Down>`|**move_cursor_down**|
+|`0`, `^`, `<Home>`|**jump_cursor_to_left**|
+|`$`, `<End>`|**jump_cursor_to_right**|
+|`gg`|**jump_cursor_to_top**|
+|`G`|**jump_cursor_to_bottom**|
+|`gm`|**jump_cursor_to_hcenter**|
+|`M`|**jump_cursor_to_vcenter**|
+|`f`|**jump_cursor_with_keybrd_layout**|
+|`t`|**jump_cursor_to_active_window**|
+|`<C-y>`, `<C-k>`|**scroll_up**|
+|`<C-e>`, `<C-j>`|**scroll_down**|
+|`<C-u>`|**scroll_up_halfpage**|
+|`<C-d>`|**scroll_down_halfpage**|
+|`<C-b>`|**scroll_up_onepage**|
+|`<C-f>`|**scroll_down_onepage**|
+|`zh`, `<C-h>`|**scroll_left**|
+|`zl`, `<C-l>`|**scroll_right**|
+|`zH`|**scroll_left_halfpage**|
+|`zL`|**scroll_right_halfpage**|
+|`o`, `O`|**click_left**|
+|`a`, `A`|**click_right**|
+|`FF`, `Fo`|**easy_click_left**|
+|`Fa`|**easy_click_right**|
+|`Fm`|**easy_click_mid**|
+|`Fh`|**easy_click_hover**|
 
 ### Hotkey
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`V`|**select_all**|Select all|
-|`y`, `yy`, `Y`|**hotkey_copy**|Copy|
-|`p`, `P`|**hotkey_paste**|Paste|
-|`dd`, `D`|**hotkey_cut**|Cut|
-|`x`, `<Del>`|**hotkey_delete**|Delete|
-|`X`|**hotkey_backspace**|BackSpace|
-|`<C-r>`|**redo**|Redo|
-|`u`, `U`|**undo**|Undo|
-|`/`, `?`|**search_pattern**|Search Pattern|
-|`<gt>`|**goto_next_page**|Forward a next page|
-|`<lt>`|**goto_prev_page**|Backward a previous page|
-|`<win>`|**open_startmenu**|Open a StartMenu|
+|Bindings|ID|
+|:---:|:---:|
+|`V`|**select_all**|
+|`y`, `yy`, `Y`|**hotkey_copy**|
+|`p`, `P`|**hotkey_paste**|
+|`dd`, `D`|**hotkey_cut**|
+|`x`, `<Del>`|**hotkey_delete**|
+|`X`|**hotkey_backspace**|
+|`<C-r>`|**redo**|
+|`u`, `U`|**undo**|
+|`/`, `?`|**search_pattern**|
+|`<gt>`|**goto_next_page**|
+|`<lt>`|**goto_prev_page**|
+|`<win>`|**open_startmenu**|
 
 ### Virtual Desktop
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`<C-v>h`|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
-|`<C-v>l`|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
-|`<C-v>n`|**create_new_vdesktop**|Create a new virtual desktop|
-|`<C-v>q`|**close_current_vdesktop**|Close a current virtual desktop|
-|`<C-v>s`|**taskview**|Task View|
+|Bindings|ID|
+|:---:|:---:|
+|`<C-v>h`|**switch_to_left_vdesktop**|
+|`<C-v>l`|**switch_to_right_vdesktop**|
+|`<C-v>n`|**create_new_vdesktop**|
+|`<C-v>q`|**close_current_vdesktop**|
+|`<C-v>s`|**taskview**|
 
 ### Tab
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`gT`|**switch_to_left_tab**|Switch to a left tab|
-|`gt`|**switch_to_right_tab**|Switch to a right tab|
+|Bindings|ID|
+|:---:|:---:|
+|`gT`|**switch_to_left_tab**|
+|`gt`|**switch_to_right_tab**|
 
 
 ### Window
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
-|`<C-w>q`, `<C-w>c`|**close_current_window**|Close a current window|
-|`<C-w>s`|**switch_window**|Switch a window|
-|`<C-w>e`|**window_resizer**|Start window resizer. It respects Vim plugin <a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
-|`<C-w>h`|**select_left_window**|Select a left window|
-|`<C-w>l`|**select_right_window**|Select a right window|
-|`<C-w>k`|**select_upper_window**|Select an upper window|
-|`<C-w>j`|**select_lower_window**|Select a lower window|
-|`<C-w>u`|**maximize_current_window**|Maximize a current window|
-|`<C-w>d`|**minimize_current_window**|Minimize a current window|
-|`<C-w>H`, `<C-w><Left>`|**snap_current_window_to_left**|Snap a current window to left|
-|`<C-w>L`, `<C-w><Right>`|**snap_current_window_to_right**|Snap a current window to right|
-|`<C-w>K`|**snap_current_window_to_top**|Snap a current window to top|
-|`<C-w>J`|**snap_current_window_to_bottom**|Snap a current window to bottom|
-|`<C-w>=`|**arrange_windows**|Arrange windows with tile style|
-|`<C-w>r`|**rotate_windows**|Rotate windows in a current monitor|
-|`<C-w>R`|**rotate_windows_in_reverse**|Rotate windows in a current monitor in reverse|
-|`<C-w>x`|**exchange_window_with_nearest**|Exchange a window with the nearest window|
-|`<C-w><gt>`|**increase_window_width**|Increase the width of a window|
-|`<C-w><lt>`|**decrease_window_width**|Decrease the width of a window|
-|`<C-w>+`|**increase_window_height**|Increase the height of a window|
-|`<C-w>-`|**decrease_window_height**|Decrease the height of a window|
-|`<C-w>n`|**open_new_window**|Open a new window|
+|Bindings|ID|
+|:---:|:---:|
+|`<C-w>q`, `<C-w>c`|**close_current_window**|
+|`<C-w>s`|**switch_window**|
+|`<C-w>e`|**window_resizer**|
+|`<C-w>h`|**select_left_window**|
+|`<C-w>l`|**select_right_window**|
+|`<C-w>k`|**select_upper_window**|
+|`<C-w>j`|**select_lower_window**|
+|`<C-w>u`|**maximize_current_window**|
+|`<C-w>d`|**minimize_current_window**|
+|`<C-w>H`, `<C-w><Left>`|**snap_current_window_to_left**|
+|`<C-w>L`, `<C-w><Right>`|**snap_current_window_to_right**|
+|`<C-w>K`|**snap_current_window_to_top**|
+|`<C-w>J`|**snap_current_window_to_bottom**|
+|`<C-w>=`|**arrange_windows**|
+|`<C-w>r`|**rotate_windows**|
+|`<C-w>R`|**rotate_windows_in_reverse**|
+|`<C-w>x`|**exchange_window_with_nearest**|
+|`<C-w><gt>`|**increase_window_width**|
+|`<C-w><lt>`|**decrease_window_width**|
+|`<C-w>+`|**increase_window_height**|
+|`<C-w>-`|**decrease_window_height**|
+|`<C-w>n`|**open_new_window**|
 
 <hr>
 

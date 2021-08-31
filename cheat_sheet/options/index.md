@@ -16,8 +16,6 @@ descripption: "Option lists"
 
 <hr>
 
-## Default
-
 |ID|Type|Default|Note|
 |:---:|:---:|:---:|:---|
 |`arrangewin_ignore`|str||A list of executable filenames to ignore in ArrangeWindows. For example, if you want to remove rainmeter and gvim from the alignment, write `set arrangewin_ignore = rainmeter, gvim`. The name is the name of the executable file without extension.|

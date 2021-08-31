@@ -15,7 +15,7 @@ descripption: "Function lists"
 1. TOC1  
 {:toc}
 
-### Mode
+## Mode
 
 |ID|Feature|
 |:---:|:---|
@@ -29,7 +29,7 @@ descripption: "Function lists"
 |**to_resident**|Resident Mode|
 
 
-### Mouse
+## Mouse
 
 |ID|Feature|
 |:---:|:---|
@@ -62,7 +62,7 @@ descripption: "Function lists"
 |**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
 |**scroll_up_onepage**|Scroll a mouse wheel up with a page|
 
-### Hotkey
+## Hotkey
 
 |ID|Feature|
 |:---:|:---|
@@ -86,7 +86,7 @@ descripption: "Function lists"
 |**start_explorer**|Start a Explorer|
 |**undo**|Undo|
 
-### Virtual Desktop
+## Virtual Desktop
 
 |ID|Feature|
 |:---:|:---|
@@ -96,7 +96,7 @@ descripption: "Function lists"
 |**switch_to_right_vdesktop**|Switch to a right virtual desktop|
 |**taskview**|Task View|
 
-### Tab
+## Tab
 
 |ID|Feature|
 |:---:|:---|
@@ -106,7 +106,7 @@ descripption: "Function lists"
 |**switch_to_right_tab**|Switch to a right tab|
 
 
-### Window
+## Window
 
 |ID|Feature|
 |:---:|:---|
@@ -138,13 +138,13 @@ descripption: "Function lists"
 |**switch_window**|Switch a window|
 |**window_resizer**|Start window resizer. It respects Vim plugin <a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
 
-### File
+## File
 
 |ID|Note|
 |:---:|:---|
 |**makedir**|Create a directory. If you call it with a relative path such as `:mkdir foo`, it creates it in the explorer directory. If no explorer is found, it creates it in `~/Desktop/foo`. If you call it with an absolute path like `:mkdir C:/Users/You/Desktop/bar`, it will create a directory along the path, but not recursively.|
 
-### Process
+## Process
 
 |ID|Note|
 |:---:|:---|
@@ -153,7 +153,7 @@ descripption: "Function lists"
 |**start_external**|Start an external application. This environment variable is dependent on the application specified in the shell option. By appending `;` at the end, it keeps the console window without closing immediately. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
 |**start_shell**|Start a terminal. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
 
-### Option
+## Option
 
 |ID|Note|
 |:---:|:---|
@@ -162,9 +162,9 @@ descripption: "Function lists"
 
 If **Dedicate to One window** enables, you can select one window with Enable Targeting function. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with Disable Targeting function. In other words, this feature transforms some normal editors to fake Vim. The computing cost is so small.
 
-### Vim Emulation
+## Vim Emulation
 
-#### Mode
+### Mode
 
 |ID|Feature|
 |:---:|:---|
@@ -174,7 +174,7 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**to_insert_nlabove**|Begin new line above a caret|
 |**to_insert_nlbelow**|Begin new line below a caret|
 
-#### Move
+### Move
 
 |ID|Feature|
 |:---:|:---|
@@ -187,7 +187,7 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**move_caret_word_backward**|Backward with words|
 |**move_caret_word_forward**|Forward with words|
 
-#### Jump
+### Jump
 
 |ID|Feature|
 |:---:|:---|
@@ -196,7 +196,7 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**jump_caret_to_EOF**|Jump the caret to EOF|
 |**jump_caret_to_EOL**|Jump the caret to end of line|
 
-#### Edit
+### Edit
 
 |ID|Feature|
 |:---:|:---|
@@ -223,7 +223,7 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**yank_with_motion**|Yank lines with motion|
 
 
-### System Command
+## System Command
 
 |ID|Note|
 |:---:|:---|

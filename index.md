@@ -40,3 +40,5 @@ Refer to Permissions and Limitations.
 
 
 site.foo
+
+{{site.foo}}

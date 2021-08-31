@@ -37,8 +37,3 @@ Refer to Permissions and Limitations.
 |Private use|<font color="#00c070">✓</font>|
 |Liability|<font color="red">✘</font>|
 |Warranty|<font color="red">✘</font>|
-
-
-site.foo
-
-{{site.foo}}

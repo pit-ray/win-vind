@@ -7,12 +7,6 @@ logo: /imgs/win-vind-icon_wt.png
 search_enabled: true
 
 aux_links:
-    "Download 32bit":
-        - "https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_32bit.exe.zip"
-    
-    "Download 64bit":
-        - "https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_64bit.exe.zip"
-        
     "GitHub":
         - "//github.com/pit-ray/win-vind"
 
@@ -23,3 +17,5 @@ heading_anchors: true
 go_tracking: UA-121829043-2
 
 color_scheme: mono
+
+foo: bar

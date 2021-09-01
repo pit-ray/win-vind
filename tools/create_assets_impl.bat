@@ -14,7 +14,7 @@
 )
 
 if exist release_%3 (
-    @rem rmdir /s /q release_%3
+    rmdir /s /q release_%3
 )
 
 if exist bin_%3 (

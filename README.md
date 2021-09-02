@@ -19,20 +19,24 @@
 
 
 ## Description
-**win-vind** provides the lightweight hybrid UI system of CUI and GUI for Windows. 
+**win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.
 
 ### Features
 - Fast binding system
 - Vim-like mode management
 - GUI operation without mouse
 - Vim emulation everywhere
-- Process control like `:!vim ~/.vimrc` or `:e ~/.vimrc` (Resident command line)
+- Process control like `:!vim ~/.vimrc` on resident command line
 - .vimrc style configuration
 - Low-level key mapping (e.g. Capslock -> Ctrl)
 - Running in user permission
-- Oneshot use for Vim or AHK (e.g. `win-vind -f easy_click_left`)
+- Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
+- Tiling window manager
+- Hinting feature like Vimium or EasyMotion for GUI.
 
-If you want to know the details, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>.  
+
+The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>. 
+
 
 ## Demo
 
@@ -68,9 +72,9 @@ Date: 2021/8/29
 You can refer to the installation and quick tutorial in [Usage - win-vind](https://pit-ray.github.io/win-vind/usage/).  
 
 
-### .vindrc Samples  
+### .vindrc samples  
 
-It can be configured in .vimrc style.  
+You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
 
 ```vim
 " Virtual command line options
@@ -104,14 +108,19 @@ inoremap <f18> window_resizer
 
 ```
 
+## Contribute
+If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).
+
+<br>
 
 ## Related Pages
 - <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
 - <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
 
-## Contribute
-If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).
-
+## Related Projects
+- [rcmdnk/vim_ahk](https://github.com/rcmdnk/vim_ahk)
+- [microsoft/PowerToys](https://github.com/microsoft/PowerToys)
+- [zsims/hunt-and-peck](https://github.com/zsims/hunt-and-peck)
 
 ## License  
 

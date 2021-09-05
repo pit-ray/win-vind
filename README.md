@@ -43,7 +43,7 @@
 
 ## Download
 ### v4.2.0 (Latest Version)  
-Date: 2021/8/1  
+Date: 2021/9/6    
 
 #### 32bit  
 - <a href="https://github.com/pit-ray/win-vind/releases/download/vv4.2.0/setup_win-vind_v4.2.0_32bit.exe.zip">setup_win-vind_v4.2.0_32bit.exe</a>

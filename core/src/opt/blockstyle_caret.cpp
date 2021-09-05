@@ -135,7 +135,7 @@ namespace
 
         hwnd = GetFocus() ;
 
-        // 
+        //
         //
         // Not implemented yet
         //

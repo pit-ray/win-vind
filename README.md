@@ -35,39 +35,25 @@
 - Hinting feature like Vimium or EasyMotion for GUI.
 
 
-The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>. 
-
-
-## Demo
+#### Demo
 
 <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/4xxdemo.gif?raw=true" title="Demo" >
 
 <br>  
 
 ## Download
-### 4.1.1 (Latest Version)  
+### v4.2.0 (Latest Version)  
 Date: 2021/8/1  
 
 #### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_32bit.exe.zip">setup_win-vind_4.1.1_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/win-vind_4.1.1_32bit.zip">win-vind_4.1.1_32bit.zip</a>  
+- <a href="https://github.com/pit-ray/win-vind/releases/download/vv4.2.0/setup_win-vind_v4.2.0_32bit.exe.zip">setup_win-vind_v4.2.0_32bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/vv4.2.0/win-vind_v4.2.0_32bit.zip">win-vind_v4.2.0_32bit.zip</a>  
 
 #### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/setup_win-vind_4.1.1_64bit.exe.zip">setup_win-vind_4.1.1_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.1.1/win-vind_4.1.1_64bit.zip">win-vind_4.1.1_64bit.zip</a> 
+- <a href="https://github.com/pit-ray/win-vind/releases/download/vv4.2.0/setup_win-vind_v4.2.0_64bit.exe.zip">setup_win-vind_v4.2.0_64bit.exe</a>
+- <a href="https://github.com/pit-ray/win-vind/releases/download/vv4.2.0/win-vind_v4.2.0_64bit.zip">win-vind_v4.2.0_64bit.zip</a> 
 
 
-### 4.2.0-rc1 (Preview Version)  
-Date: 2021/8/29  
-
-#### 32bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0-rc1/setup_win-vind_v4.2.0-rc1_32bit.exe.zip">setup_win-vind_v4.2.0-rc1_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0-rc1/win-vind_v4.2.0-rc1_32bit.zip">win-vind_v4.2.0-rc1_32bit.zip</a>  
-
-#### 64bit  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0-rc1/setup_win-vind_v4.2.0-rc1_64bit.exe.zip">setup_win-vind_v4.2.0-rc1_64bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0-rc1/win-vind_v4.2.0-rc1_64bit.zip">win-vind_v4.2.0-rc1_64bit.zip</a> 
-  
 ## Usage
 You can refer to the installation and quick tutorial in [Usage - win-vind](https://pit-ray.github.io/win-vind/usage/).  
 
@@ -77,6 +63,7 @@ You can refer to the installation and quick tutorial in [Usage - win-vind](https
 You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
 
 ```vim
+" ------------ Example ------------
 " Virtual command line options
 set shell = cmd
 set cmd_fontsize = 14
@@ -108,6 +95,9 @@ inoremap <f18> window_resizer
 
 ```
 
+The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/">Cheat Sheet - win-vind</a>. 
+
+
 ## Contribute
 If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).
 
@@ -117,7 +107,7 @@ If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://githu
 - <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
 - <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
 
-## Related Projects
+## Similar Projects
 - [rcmdnk/vim_ahk](https://github.com/rcmdnk/vim_ahk)
 - [microsoft/PowerToys](https://github.com/microsoft/PowerToys)
 - [zsims/hunt-and-peck](https://github.com/zsims/hunt-and-peck)

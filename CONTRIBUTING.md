@@ -124,7 +124,7 @@ namespace vind
 #include "bind/base/ntype_logger.hpp"
 #include "io/keybrd.hpp"
 #include "io/mouse.hpp"
-#include "opt/virtual_cmd_line.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
 
@@ -139,7 +139,7 @@ namespace vind
 
         keybrd::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
 
-        VirtualCmdLine::msgout("Hello World !") ;
+        VCmdLine::print(GeneralMessage("Hello World !")) ;
     }
     // A function called by sequence commands such as `23gg`
     void MyBinding::sprocess(NTypeLogger& parent_lgr) {

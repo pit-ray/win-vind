@@ -37,6 +37,8 @@ namespace vind
 
         const std::string& CONFIG_PATH() ;
 
+        const std::string& RESOUECE_ROOT_PATH() ;
+
         const std::string& DEFAULT_CONFIG_PATH() ;
 
         inline const auto& RC() {

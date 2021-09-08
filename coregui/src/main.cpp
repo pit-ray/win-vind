@@ -42,6 +42,7 @@ SOFTWARE.
 #include "entry.hpp"
 #include "err_logger.hpp"
 #include "g_params.hpp"
+#include "path.hpp"
 
 #include "about.hpp"
 
@@ -95,6 +96,9 @@ namespace vindgui
 
                 // Root window
                 auto dlg = new vindgui::AboutDialog(
+#ifdef DEBUG
+                        vind::path::RESOUECE_ROOT_PATH() + "\\" +
+#endif
                         vind::gparams::get_s("icon_style"),
                         "win-vind",
                         vind::gparams::get_i("gui_fontsize"),

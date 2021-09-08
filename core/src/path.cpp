@@ -101,6 +101,15 @@ namespace vind
             return path ;
         }
 
+        const std::string& RESOUECE_ROOT_PATH() {
+#if defined(DEBUG)
+            static const auto path = MODULE_ROOT_PATH() + "\\res" ;
+#else
+            static const auto path = MODULE_ROOT_PATH() ;
+#endif
+            return path ;
+        }
+
         const std::string& DEFAULT_CONFIG_PATH() {
 #if defined(DEBUG)
             static const auto path = MODULE_ROOT_PATH() + "\\res\\default_config" ;

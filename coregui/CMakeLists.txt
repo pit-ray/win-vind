@@ -42,9 +42,9 @@ if(${MSVC})
     )
 
 else()
-    if(NOT CMAKE_RC_COMPILER)
-       set(CMAKE_RC_COMPILER windres.exe)
-    endif()
+    # If you have installed it in Program Files,
+    # it will not be escaped properly, so use the environment path.
+    set(CMAKE_RC_COMPILER windres)
 
     #build the file properties
     set(winres "${PROJECT_SOURCE_DIR}/res/build_assets/resource.rc")

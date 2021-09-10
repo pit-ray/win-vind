@@ -1,8 +1,7 @@
 ---
-layout: default
+layout: page
 title: Usage
-nav_order: 3
-descripption: "Usage of win-vind"
+descripption: Usage of win-vind
 ---
 # Usage
 {: .no_toc }

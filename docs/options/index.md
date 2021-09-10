@@ -1,9 +1,7 @@
 ---
-layout: default
+layout: page
 title: Options
-nav_order: 20
-parent: Cheat Sheet
-descripption: "Option lists"
+descripption: Option lists
 ---
 
 # List of all options

@@ -8,7 +8,7 @@ on:
     paths-ignore:
       - README.md
       - CONTRIBUTING.md
-      - docs
+      - docs/*
   pull_request:
     branches: [ master ]
 

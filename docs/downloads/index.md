@@ -1,8 +1,7 @@
 ---
-layout: default
+layout: page
 title: Downloads
-nav_order: 2
-descripption: "the lists of links to download win-vind"
+descripption: the lists of links to download win-vind
 ---
 # Downloads
 

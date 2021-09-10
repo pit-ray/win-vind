@@ -1,9 +1,8 @@
 ---
-layout: default
+layout: page
 title: Functions
-nav_order: 15
 parent: Cheat Sheet
-descripption: "Function lists"
+descripption: Function lists
 ---
 
 # List of all functions

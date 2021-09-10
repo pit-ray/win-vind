@@ -1,9 +1,7 @@
 ---
-layout: default
+layout: page
 title: Keyword List
-nav_order: 30
-parent: Cheat Sheet
-descripption: "Keyword list"
+descripption: Keyword list
 ---
 # Keyword List  
 {: .no_toc}  

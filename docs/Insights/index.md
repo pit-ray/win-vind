@@ -1,8 +1,7 @@
 ---
-layout: default
+layout: page
 title: Insights  
-nav_order: 6  
-descripption: "Insights of win-vind."  
+descripption: Insights of win-vind
 ---  
 
 # Insights  

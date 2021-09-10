@@ -1,3 +1,9 @@
+---
+layout: page
+title: Defaults
+description: Default bindings of win-vind
+---
+
 # Default Bindings
 
 <p align="center">

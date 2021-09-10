@@ -1,8 +1,7 @@
 ---
-layout: default
+layout: page
 title: FAQ
-nav_order: 12
-descripption: "frequently asked questions and these answers."
+descripption: frequently asked questions and these answers
 ---
 # FAQ
 {: .no_toc }  

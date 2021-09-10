@@ -1,10 +1,10 @@
 ---
-layout: default
-title: Home
-nav_order: 1
+layout: full
+homepage: true
+disable_anchors: true
 descripption: "Document for win-vind"
-permalink: /
 ---
+
 # Vim Key Binder for Windows
 <hr>
 
@@ -29,13 +29,3 @@ permalink: /
 
 ## License
 This software is provided by **MIT License**.  
-Refer to Permissions and Limitations.
-
-||Support|
-|:---:|:---:|
-|Commercial use|<font color="#00c070">✓</font>|
-|Modification|<font color="#00c070">✓</font>|
-|Distribution|<font color="#00c070">✓</font>|
-|Private use|<font color="#00c070">✓</font>|
-|Liability|<font color="red">✘</font>|
-|Warranty|<font color="red">✘</font>|

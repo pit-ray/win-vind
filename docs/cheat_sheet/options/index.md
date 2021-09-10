@@ -6,16 +6,6 @@ show_in_menu: false
 descripption: Option lists
 ---
 
-# List of all options
-{: .no_toc}
-
-<hr>
-
-1. TOC  
-{:toc}  
-
-<hr>
-
 |ID|Type|Default|Note|
 |:---:|:---:|:---:|:---|
 |`arrangewin_ignore`|str||A list of executable filenames to ignore in ArrangeWindows. For example, if you want to remove rainmeter and gvim from the alignment, write `set arrangewin_ignore = rainmeter, gvim`. The name is the name of the executable file without extension.|
@@ -73,28 +63,6 @@ descripption: Option lists
 |`window_vdelta`|num|100|Window height delta for resizing|
 |`winresizer_initmode`|num|0|Initial mode of window resizer ([0]: Resize, [1]: Move, [2]: Focus)|
 
-## Customize
-
-Write `.vindrc` with `set` in the following way.
-
-**Example**
-```vim
-" str
-set initmode=gn
-set shell = cmd
-set gui_fontname = Times New Roman  "Without quotation
-set shell_startupdir = C:/Users/Me/Desktop
-set arrangewin_ignore = rainmeter, gvim, cmd
-
-" bool
-set uiacachebuild " true
-set nocharcache   " false
-
-" num (int, float)
-set cmd_fadeout = 60
-set vscroll_pageratio = 0.25
-
-```
 
 ## Appendix
 

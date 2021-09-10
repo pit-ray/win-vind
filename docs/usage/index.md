@@ -3,20 +3,10 @@ layout: page
 title: Usage
 descripption: Usage of win-vind
 ---
-# Usage
-{: .no_toc }
-
 This software only supports Windows 10 on real machines. Therefore, it may not work on older Windows or virtual environments such as Wine or Virtual Box.  
 
 If you have any problems or requests, please post them on GitHub Issues.  
 
-
-<hr>  
-
-1. TOC  
-{:toc}
-
-<hr>
 
 ## Installation
 - Download either the zip version or the installer version that suits your preference. The installer version creates dependencies to the installed directory and the user directory, while the zip version does not create any files outside the unzipped root.  

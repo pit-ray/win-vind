@@ -2,18 +2,9 @@
 layout: page
 title: Keywords
 show_in_menu: false
+disable_anchors: true
 descripption: Keyword list
 ---
-# Keyword List  
-{: .no_toc}  
-
-<hr>
-
-1. TOC1  
-{:toc}
-
-<hr>  
-
 All keywords in win-vind are not case-sensitive.  
 
 ## Mode Prefix

@@ -1,18 +1,17 @@
 ---
 layout: page
 show_in_menu: false
+disable_anchors: true
 title: Defaults
 description: Default bindings of win-vind
 ---
-
-# Default Bindings
 
 <p align="center">
 <img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/mode_overview.png?raw=true" width=600>  
 <p align="center">Default mode layer overview</p>
 </p>
 
-## Insert
+# Insert Mode
 |Bindings|ID|
 |:---:|:---:|
 |`<Esc-Left>`|**to_gui_normal**|
@@ -20,7 +19,7 @@ description: Default bindings of win-vind
 |`<F8>`|**to_instant_gui_normal**|
 |`<Esc-Down>`|**to_resident**|
 
-## Resident
+# Resident Mode
 |Bindings|ID|
 |:---:|:---:|
 |`<Esc-Left>`|**to_gui_normal**|
@@ -28,7 +27,7 @@ description: Default bindings of win-vind
 |`<Esc-Up>`|**to_insert**|
 
 
-## GUI Normal
+# GUI Normal Mode
 
 ### Mode
 
@@ -136,9 +135,8 @@ description: Default bindings of win-vind
 |`<C-w>-`|**decrease_window_height**|
 |`<C-w>n`|**open_new_window**|
 
-<hr>
 
-## GUI Visual
+# GUI Visual Mode
 ### Mode
 
 |Bindings|ID|
@@ -181,9 +179,8 @@ description: Default bindings of win-vind
 |`x`, `<Del>`|**hotkey_delete**|
 |`X`|**hotkey_backspace**|
 
-<hr>
 
-## Editor Normal
+# Editor Normal Mode
 
 ### Mode
 
@@ -283,9 +280,8 @@ description: Default bindings of win-vind
 |`s`|**change_char**|
 |`C`|**change_until_EOL**|
 
-<hr>
 
-## Editor Visual
+# Editor Visual Mode
 
 ### Mode
 
@@ -343,9 +339,8 @@ description: Default bindings of win-vind
 |`d`, `x`, `X`|**delete_highlight_text**|
 |`c`, `s`, `S`|**change_highlight_text**|
 
-<hr>
 
-## Command
+# Command Mode
 
 ### Mode
 

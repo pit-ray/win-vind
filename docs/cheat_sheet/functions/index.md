@@ -2,18 +2,10 @@
 layout: page
 title: Functions
 show_in_menu: false
+disable_anchors: true
 parent: Cheat Sheet
 descripption: Function lists
 ---
-
-# List of all functions
-
-{: .no_toc}  
-
-<hr>
-
-1. TOC1  
-{:toc}
 
 ## Mode
 

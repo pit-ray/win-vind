@@ -101,12 +101,12 @@ The following commands are supported. By the way, `{` and `}` themselves are not
   </tr>
 
   <tr>
-  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>set no{option}</code></td>
+  <td><code>set no{option}</code></td>
   <td>Set the value of the option to <strong>false</strong>.</td>
   </tr>
 
   <tr>
-  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>set {option} = {val}</code></td>
+  <td><code>set {option} = {val}</code></td>
   <td>Set a value of the option. The value can be a string or a number that allows floating points. The string does not need quotation marks, and any character after the non-white character will be handled as the value. White spaces at both ends of the equals sign are ignored.</td>
   </tr>
 
@@ -123,7 +123,7 @@ The following commands are supported. By the way, `{` and `}` themselves are not
   </tr>
 
   <tr>
-  <td style="border-left: 0.5px solid; border-left-color: #e6e1e8;"><code>{mode}noremap {in-keyset} {out-keyset}</code></td>
+  <td><code>{mode}noremap {in-keyset} {out-keyset}</code></td>
   <td>It performs <strong>keyset2keyset</strong> mapping in win-vind scope. However, since the <code>{func-id}</code> definition has higher priority than its syntax, it may result in exactly one remap. For example <code>inoremap k move_cursor_left</code> and <code>inoremap f k</code> then <code>f</code> will be mapped to <code>move_cursor_left</code> instead of <code>move_cursor_up</code>.</td>
   </tr>
 

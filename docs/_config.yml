@@ -45,23 +45,23 @@ dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind
 ui:
   mode: 'light' # 'auto', 'dark', 'light'
   brand:
-    dark: "#00ceff"
-    light: "#006eff"
+    dark: '#00ceff'
+    light: '#006eff'
   border_color:
-    dark: "#5f5f5f"
-    light: "#c8c8c8"
+    dark: '#5f5f5f'
+    light: '#c8c8c8'
   header:
     trianglify: true
     dark:
-      color1: "#062a48"
-      color2: "#304e67"
+      color1: '#062a48'
+      color2: '#304e67'
     light:
-      color1: "#06121c"
-      color2: "#15451a"
+      color1: '#06121c'
+      color2: '#15451a'
   masthead:
     color:
-      dark: "#fff"
-      light: "#e3e3e3"
+      dark: '#fff'
+      light: '#e3e3e3'
     align:
       homepage: 'center'
       page: 'left'

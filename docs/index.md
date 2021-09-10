@@ -23,8 +23,10 @@ descripption: "Document for win-vind"
 - Tiling window manager
 - Hinting feature like Vimium or EasyMotion for GUI.
 
+![Demo](imgs/4xxdemo.gif?raw=true)  
+
 ## GitHub
-[![pit-ray/win-vind - GitHub](https://gh-card.dev/repos/pit-ray/win-vind.svg)](https://github.com/pit-ray/win-vind)
+[![pit-ray/win-vind - GitHub](https://gh-card.dev/repos/pit-ray/win-vind.svg)](https://github.com/pit-ray/win-vind)  
 
 ## License
-This software is provided by **MIT License**.  
+This software is provided by [MIT License](https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt).  

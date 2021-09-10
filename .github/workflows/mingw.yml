@@ -6,10 +6,10 @@ on:
       - master
     tags:
       - v*.*.*
-    paths-ignore:
-      - README.md
-      - CONTRIBUTING.md
-      - docs/*
+    paths:
+      - '!README.md'
+      - '!CONTRIBUTING.md'
+      - '!docs/**'
 
   pull_request:
     branches:

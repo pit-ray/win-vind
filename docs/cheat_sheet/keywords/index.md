@@ -1,6 +1,7 @@
 ---
 layout: page
-title: Keyword List
+title: Keywords
+show_in_menu: false
 descripption: Keyword list
 ---
 # Keyword List  

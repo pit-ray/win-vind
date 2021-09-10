@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Options
+disable_anchors: true
+show_in_menu: false
 descripption: Option lists
 ---
 

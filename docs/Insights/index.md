@@ -1,6 +1,8 @@
 ---
 layout: page
-title: Insights  
+title: Insights
+show_in_menu: false
+disable_anchors: true
 descripption: Insights of win-vind
 ---  
 

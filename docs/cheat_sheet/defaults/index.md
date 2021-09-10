@@ -1,5 +1,6 @@
 ---
 layout: page
+show_in_menu: false
 title: Defaults
 description: Default bindings of win-vind
 ---

@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Functions
+show_in_menu: false
 parent: Cheat Sheet
 descripption: Function lists
 ---

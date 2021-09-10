@@ -1,0 +1,12 @@
+.scope-markdown {
+    code {
+        @include themer(color, (
+            'dark': #fdce93,
+            'light': #333,
+        ));
+        @include themer(background-color, (
+            'dark': #3f3f3f,
+            'light': #f7f7f9,
+        ));
+    }
+}

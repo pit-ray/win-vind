@@ -51,20 +51,20 @@ ui:
     dark: "#5f5f5f"
     light: "#7a7a7a"
   header:
-    trianglify: true
+    trianglify: false
     dark:
       color1: "#062a48"
       color2: "#304e67"
     light:
       color1: "#06121c"
-      color2: "#32a840"
+      color2: "#15451a"
   masthead:
     color:
       dark: "#fff"
       light: "#e3e3e3"
     align:
       homepage: 'center'
-      page: 'left'
+      page: 'right'
 
 social:
   github:

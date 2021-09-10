@@ -2,7 +2,6 @@
 layout: page
 title: Downloads
 disable_anchors: true
-descripption: the lists of links to download win-vind
 ---
 
 ### Latest Version

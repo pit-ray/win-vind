@@ -3,7 +3,6 @@ layout: page
 title: Insights
 show_in_menu: false
 disable_anchors: true
-descripption: Insights of win-vind
 ---  
 
 # Insights  

@@ -2,7 +2,6 @@
 layout: page
 title: Usage
 disable_anchors: true
-descripption: Usage of win-vind
 ---
 This software only supports Windows 10 on real machines. Therefore, it may not work on older Windows or virtual environments such as Wine or Virtual Box.  
 
@@ -12,11 +11,10 @@ If you have any problems or requests, please post them on GitHub Issues.
 ## Installation
 - Download either the zip version or the installer version that suits your preference. The installer version creates dependencies to the installed directory and the user directory, while the zip version does not create any files outside the unzipped root.  
 
-   **32 bit**  
-   [Download Installer (32bit)]({{site.dl_ins_32}}){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip Package (32bit)]({{site.dl_zip_32}}){: .btn}  
-
-   **64 bit**  
-   [Download Installer (64bit)]({{site.dl_ins_64}}){: .btn }&nbsp;&nbsp;&nbsp;&nbsp;[Download Zip Package (64bit)]({{site.dl_zip_64}}){: .btn}  
+   - [32bit installer (.exe)]({{site.dl_ins_32}})
+   - [32bit potable (.zip)]({{site.dl_zip_32}})
+   - [64bit installer (.exe)]({{site.dl_ins_64}})
+   - [64bit potable (.zip)]({{site.dl_zip_64}})
 
 - When you run win-vind.exe for the first time, it will start in Insert mode, so you may not know if it is working, but if you see the icon in the task tray, it is working properly.  
 
@@ -25,14 +23,12 @@ If you have any problems or requests, please post them on GitHub Issues.
    <p align="center">Like this</p>
    </p>
 
-<hr>
 
 ## Note 
 - `:exit` is the recommended termination.
 - `<F8> + <F9>` is safe forced termination.
 - win-vind could **not** operate some windows given high-rank authorization than itself. For example, if you start **Task Manager** having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**).
 
-<hr>
 
 ## Quick Tutorial
 
@@ -64,7 +60,6 @@ Resident Mode is an evacuation mode to prevent bindings from being collisions wi
 
 After the boot, win-vind will be in **Insert Mode**. Let's make transitions of mode!  
 
-<hr>  
 
 ### 2. GUI Operation and Window Operation  
 
@@ -79,7 +74,6 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 1. Please select Microsoft Paint and close it with `:close`.
 
 
-<hr>  
 
 ### 3. Customize Options and Maps
 win-vind uses **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind.  Generally, there are three levels of key mapping: **key2key**, **keyset2keyset**, and **cmd2cmd**. **key2key** maps one key to one key. **keyset2keyset** maps a keyset to a keyset(e.g. `c-s` to `<m-h>`). **cmd2cmd** performs sequential mapping (e.g. `qq` to `<c-w>e`).  
@@ -158,6 +152,8 @@ The following commands are supported. By the way, `{` and `}` themselves are not
   <td>Delete all commands.</td>
   </tr>
 </table>
+
+<hr>  
 
 `{mode}` is the [Mode Prefix](https://pit-ray.github.io/win-vind/cheat_sheet/keyword_lists/#mode-prefix). And only **UTF-8** format is supported for `.vindrc`.  
 

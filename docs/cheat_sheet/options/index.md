@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Options
+title: Options and Parameters
 disable_anchors: true
 show_in_menu: false
-descripption: Option lists
+description: parameters and useful extensions
 ---
 
 |ID|Type|Default|Note|

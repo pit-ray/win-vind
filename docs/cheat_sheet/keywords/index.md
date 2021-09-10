@@ -3,7 +3,7 @@ layout: page
 title: Keywords
 show_in_menu: false
 disable_anchors: true
-descripption: Keyword list
+description: Keywords for writing .vindrc
 ---
 All keywords in win-vind are not case-sensitive.  
 

@@ -4,7 +4,7 @@ title: Functions
 show_in_menu: false
 disable_anchors: true
 parent: Cheat Sheet
-descripption: Function lists
+description: All supported functions list
 ---
 
 ## Mode

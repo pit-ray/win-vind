@@ -3,7 +3,7 @@ layout: page
 show_in_menu: false
 disable_anchors: true
 title: Defaults
-description: Default bindings of win-vind
+description: Default bindings lists
 ---
 
 <p align="center">

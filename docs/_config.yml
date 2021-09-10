@@ -1,0 +1,86 @@
+remote_theme: 
+
+name: win-vind
+
+project:
+  version: 4.2.0
+  download_url: https://github.com/pit-ray/win-vind/releases/latest
+  download_text: Download
+
+license:
+  software: MIT License
+  software_url: https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt
+
+links:
+  header:
+    - title: GitHub
+      icon: github
+      brand: true
+      url: https://github.com/pit-ray/win-vind
+
+  homepage:
+    - title: View on GitHub
+      icon: github
+      brand: true
+      url: https://github.com/pit-ray/win-vind
+
+  footer:
+    - title: Issues
+      icon: bug
+      url: https://github.com/pit-ray/win-vind/issues
+    - title: Pull requests
+      icon: github
+      brand: true
+      url: https://github.com/pit-ray/win-vind/pulls
+    - title: Community
+      icon: github
+      brand: true
+      url: https://github.com/pit-ray/win-vind/discussions
+
+dl_ins_32: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_32bit.exe.zip
+dl_zip_32: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_32bit.zip
+dl_ins_64: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_64bit.exe.zip
+dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_64bit.zip
+
+ui:
+  mode: 'auto' # 'auto', 'dark', 'light'
+  brand:
+    dark: "#00ceff"
+    light: "#a20000"
+  border_color:
+    dark: "#5f5f5f"
+    light: "#dee2e6"
+  header:
+    trianglify: true
+    dark:
+      color1: "#062a48"
+      color2: "#304e67"
+    light:
+      color1: "#080331"
+      color2: "#673051"
+  masthead:
+    color:
+      dark: "#fff"
+      light: "#fff"
+    align:
+      homepage: 'center'
+      page: 'left'
+
+social:
+  github:
+    user: pit-ray
+    repo: win-vind
+  twitter:
+    enabled: true
+    via:
+    hash:
+    account: pitxray
+  facebook:
+    enabled: false
+    profileUrl:
+
+analytics:
+  google: UA-121829043-2
+
+# Build settings
+markdown: kramdown

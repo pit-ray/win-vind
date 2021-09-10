@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - README.md
       - CONTRIBUTING.md
+      - docs
 
   pull_request:
     branches:

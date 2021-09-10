@@ -11,10 +11,10 @@ If you have any problems or requests, please post them on GitHub Issues.
 ## Installation
 - Download either the zip version or the installer version that suits your preference. The installer version creates dependencies to the installed directory and the user directory, while the zip version does not create any files outside the unzipped root.  
 
-   - [32bit installer (.exe)]({{site.dl_ins_32}})
-   - [32bit potable (.zip)]({{site.dl_zip_32}})
-   - [64bit installer (.exe)]({{site.dl_ins_64}})
-   - [64bit potable (.zip)]({{site.dl_zip_64}})
+   - [Download 32bit installer (.exe)]({{site.dl_ins_32}})
+   - [Download 32bit potable (.zip)]({{site.dl_zip_32}})
+   - [Download 64bit installer (.exe)]({{site.dl_ins_64}})
+   - [Download 64bit potable (.zip)]({{site.dl_zip_64}})
 
 - When you run win-vind.exe for the first time, it will start in Insert mode, so you may not know if it is working, but if you see the icon in the task tray, it is working properly.  
 

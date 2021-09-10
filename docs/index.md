@@ -6,7 +6,6 @@ descripption: "Document for win-vind"
 ---
 
 # Vim Key Binder for Windows
-<hr>
 
 ## Description
 **win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.

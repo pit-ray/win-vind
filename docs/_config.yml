@@ -63,8 +63,8 @@ ui:
       dark: "#fff"
       light: "#e3e3e3"
     align:
-      homepage: 'center'
-      page: 'right'
+      homepage: 'right'
+      page: 'left'
 
 social:
   github:

@@ -71,10 +71,10 @@ social:
     user: pit-ray
     repo: win-vind
   twitter:
-    enabled: true
+    enabled: false
     via:
     hash:
-    account: pitxray
+    account:
   facebook:
     enabled: false
     profileUrl:

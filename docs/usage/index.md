@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Usage
+disable_anchors: true
 descripption: Usage of win-vind
 ---
 This software only supports Windows 10 on real machines. Therefore, it may not work on older Windows or virtual environments such as Wine or Virtual Box.  

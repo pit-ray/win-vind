@@ -1,5 +1,6 @@
 ---
 layout: page
+disable_anchors: true
 title: FAQ
 descripption: frequently asked questions and these answers
 ---

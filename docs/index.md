@@ -23,7 +23,7 @@ descripption: "Document for win-vind"
 - Tiling window manager
 - Hinting feature like Vimium or EasyMotion for GUI.
 
-<img src="imgs/4xxdemo.gif?raw=true" title="Demo" width="512">
+<img src="imgs/4xxdemo.gif?raw=true" title="Demo" width="624">
 
 ## GitHub
 [![pit-ray/win-vind - GitHub](https://gh-card.dev/repos/pit-ray/win-vind.svg)](https://github.com/pit-ray/win-vind)

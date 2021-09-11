@@ -1,0 +1,31 @@
+.navbar-custom {
+    a {
+        border-bottom: 0;
+    }
+    .navbar-brand {
+    }
+
+    .icon-bar {
+        @include themer(background, (
+            'dark': $site-ui-brand-dark,
+            'light': $site-ui-brand-light,
+        ));
+
+        border-radius: 1px;
+        display: block;
+        height: 2px;
+        margin: 4px 0;
+        width: 22px;
+    }
+}
+
+.nav-logo {
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.nav-logo-text span {
+  display: inline-block;
+}

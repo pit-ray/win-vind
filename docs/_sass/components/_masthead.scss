@@ -1,0 +1,77 @@
+.site-masthead {
+    @include themer(background, (
+        'dark': $site-ui-header-dark-color1,
+        'light': $site-ui-header-light-color1,
+    ));
+    @include themer(background, (
+        'dark': linear-gradient(135deg, $site-ui-header-dark-color1, $site-ui-header-dark-color2),
+        'light': linear-gradient(135deg, $site-ui-header-light-color1, $site-ui-header-light-color2),
+    ));
+
+    @include themer(color, (
+      'dark': white,
+      'light': black,
+    ));
+    position: relative;
+
+    &::after {
+        /*
+        @include themer(background, (
+            'dark': linear-gradient(135deg, transparent 50px, $background-color-dark 50px),
+            'light': linear-gradient(135deg, transparent 50px, $background-color-light 50px),
+        ));
+        */
+
+        bottom: 0;
+        content: "";
+        height: 50px;
+        position: absolute;
+        right: 0;
+        width: 30%;
+    }
+}
+
+.site-masthead__title {
+    opacity: 0.9;
+}
+
+.site-masthead__button {
+    @include themer(border-color, (
+        'dark': $site-ui-masthead-color-dark,
+        'light': $site-ui-masthead-color-light,
+    ));
+    @include themer(color, (
+        'dark': $site-ui-masthead-color-dark,
+        'light': $site-ui-masthead-color-light,
+    ));
+
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    display: inline-block;
+    font-size: 1.25rem;
+    padding: 0.75rem 2rem;
+    margin: 0.5rem;
+
+    &:hover {
+        @include themer(border-color, (
+            'dark': $site-ui-header-dark-color1,
+            'light': $site-ui-header-light-color1,
+        ));
+        @include themer(background-color, (
+            'dark': $site-ui-border_color-dark,
+            'light': $site-ui-border_color-light,
+        ));
+
+        @include themer(color, (
+            'dark': $site-ui-brand-dark,
+            'light': $site-ui-brand-light,
+        ));
+
+        text-decoration: none;
+    }
+}
+
+.site-masthead__version {
+    font-size: 0.8rem;
+}

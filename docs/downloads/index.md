@@ -1,6 +1,7 @@
 ---
-layout: page
-title: Downloads
+layout: notoc
+title: Downloads - win-vind
+nav: Downloads
 disable_anchors: true
 ---
 
@@ -16,9 +17,6 @@ Date: 2021/9/6
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_64bit.exe.zip">setup_win-vind_v4.2.0_64bit.exe.zip</a>
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_64bit.zip">win-vind_v4.2.0_64bit.zip</a> 
 
-<br>
-<br>
-<br>
 <hr>
 
 

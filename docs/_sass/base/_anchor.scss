@@ -1,0 +1,19 @@
+a {
+    @include themer(color, (
+        'dark': $site-ui-brand-dark,
+        'light': $site-ui-brand-light,
+    ));
+
+    text-decoration: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+        @include themer(color, (
+            'dark': darken($site-ui-brand-dark, 10%),
+            'light': darken($site-ui-brand-light, 10%),
+        ));
+
+        text-decoration: none;
+    }
+}

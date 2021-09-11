@@ -1,0 +1,13 @@
+{% capture alignment_class -%}
+    {%- if page.homepage -%}
+        text-{{ site.ui.masthead.align.homepage | default: 'center' }}
+    {%- else -%}
+        text-{{ site.ui.masthead.align.page | default: 'left' }}
+    {%- endif -%}
+{%- endcapture %}
+<div class="site-masthead mb-4 py-4 {{ alignment_class }}">
+    <div class="container">
+        {% include masthead/title.html %}
+        {% include masthead/buttons.html %}
+    </div>
+</div>

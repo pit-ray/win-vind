@@ -8,4 +8,155 @@
         padding-bottom: 2px;
         border-radius: 5px;
     }
+
+    h1, h2, h3,
+    h4, h5, h6 {
+        .heading-anchor {
+            border-bottom: 0;
+            font-size: 0.8em;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        &:hover {
+            .heading-anchor {
+                opacity: 0.9;
+
+                &:active,
+                &:focus,
+                &:hover {
+                    @include themer(color, (
+                        'dark': $site-ui-brand-dark,
+                        'light': $site-ui-brand-light,
+                    ));
+
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    h1 {
+        font-size: 2.25rem;
+        opacity: 0.9;
+    }
+
+    h2 {
+        @include themer(border-bottom-color, (
+            'dark': $site-ui-border-color-dark,
+            'light': $site-ui-border-color-light,
+        ));
+
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        font-size: 2rem;
+        margin-bottom: 1.25rem;
+        margin-top: 2rem;
+        padding-bottom: 0.5rem;
+        opacity: 0.9;
+    }
+
+    h3, h4, h5, h6 {
+        font-size: 1.4rem;
+        font-weight: normal;
+        margin-bottom: 0.75rem;
+        margin-top: 1.75rem;
+        opacity: 1.0;
+    }
+
+    h4 {
+        font-size: 1.25rem;
+    }
+
+    h5 {
+        font-size: 1.15rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+    }
+
+    strong {
+        opacity: 0.9;
+    }
+
+    table {
+        width: 100%;
+
+        table-layout: fixed;
+        padding: 0;
+
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+
+        tr {
+            border-top: 1px solid #cccccc;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+        tr th {
+            border: 1px solid #cccccc;
+            text-align: left;
+            margin: 0;
+            padding: 6px 13px;
+        }
+        tr td {
+            border: 1px solid #cccccc;
+            text-align: left;
+            margin: 0;
+            padding: 6px 13px;
+        }
+        tr th :first-child, tr td :first-child {
+            margin-top: 0;
+        }
+        tr th :last-child, tr td :last-child {
+            margin-bottom: 0;
+        }
+
+        tr:nth-child(2n) {
+            background-color: #f8f8f8;
+        }
+    }
+
+    .grid-link-item {
+        text-align: center;
+        position: relative;
+    }
+
+    .flex-max {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .flex-fa {
+        font-size: 8vw ;
+    }
+
+    #cs-container {
+        display: grid;
+        grid-template-rows: 50% 50%;
+        grid-template-columns: 50% 50%;
+        grid-template-areas:
+            "cs-func  cs-opt"
+            "cs-keywd cs-def";
+    }
+
+    #cs-func {
+        grid-area: cs-func;
+    }
+    #cs-opt {
+        grid-area: cs-opt;
+    }
+    #cs-keywd {
+        grid-area: cs-keywd;
+    }
+    #cs-def {
+        grid-area: cs-def;
+    }
 }

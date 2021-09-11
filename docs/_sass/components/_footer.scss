@@ -1,0 +1,35 @@
+.site-footer {
+}
+
+.site-footer__social-links {
+    .github-btn {
+        border: 0;
+        overflow: hidden
+    }
+
+    .twitter-follow-button {
+        width: 225px!important
+    }
+
+    .twitter-share-button {
+        width: 98px!important
+    }
+
+}
+
+.site-footer__links {
+    .list-inline-item {
+        &:not(:last-child)::after {
+            content: '\00b7';
+            padding-left: 0.5rem;
+        }
+    }
+}
+
+.site-footer__link {
+    border-bottom: 0;
+}
+
+.site-footer__summary {
+    font-size: 0.8rem;
+}

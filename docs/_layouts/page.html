@@ -1,0 +1,28 @@
+---
+layout: default
+---
+
+<div class="container">
+    <div class="row">
+        <aside class="col-md-3 layout-page__sidebar d-none d-md-block hidden-print">
+            {% include sidebar/content-pre.html %}
+            {% include sidebar/content.html %}
+            {% include sidebar/content-pre.html %}
+        </aside>
+
+        <main class="col-md-9 layout-page__main">
+            <section class="mobile-toc border mb-3 p-3 d-md-none">
+                {% include jekyll-docs-theme/toc.html
+                     class="js-toc.mb-0.mt-2"
+                     id="mobileTOC"
+                %}
+            </section>
+
+            <section class="scope-markdown">
+                {% include jekyll-docs-theme/anchor_headings.html %}
+            </section>
+        </main>
+    </div>
+
+    {% include disqus.html %}
+</div>

@@ -1,0 +1,12 @@
+{% if page.homepage %}
+    <h2 class="site-masthead__title mb-1">{{ page.description }}</h2>
+
+{% else %}
+    <h2 class="site-masthead__title mb-1">{{ page.nav | default: site.name }}</h2>
+    {% if page.description %}
+        <p class="site-masthead__description mb-0">
+            {{ page.description }}
+        </p>
+    {% endif %}
+{% endif %}
+

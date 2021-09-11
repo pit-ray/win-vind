@@ -2,7 +2,8 @@
 layout: page
 show_in_menu: false
 disable_anchors: true
-title: Defaults
+title: Defaults - win-vind
+nav: Defaults
 description: Default bindings lists
 ---
 
@@ -11,7 +12,8 @@ description: Default bindings lists
 <p align="center">Default mode layer overview</p>
 </p>
 
-# Insert Mode
+## Insert Mode  
+
 |Bindings|ID|
 |:---:|:---:|
 |`<Esc-Left>`|**to_gui_normal**|
@@ -19,7 +21,8 @@ description: Default bindings lists
 |`<F8>`|**to_instant_gui_normal**|
 |`<Esc-Down>`|**to_resident**|
 
-# Resident Mode
+## Resident Mode
+
 |Bindings|ID|
 |:---:|:---:|
 |`<Esc-Left>`|**to_gui_normal**|
@@ -27,7 +30,7 @@ description: Default bindings lists
 |`<Esc-Up>`|**to_insert**|
 
 
-# GUI Normal Mode
+## GUI Normal Mode
 
 ### Mode
 
@@ -136,7 +139,7 @@ description: Default bindings lists
 |`<C-w>n`|**open_new_window**|
 
 
-# GUI Visual Mode
+## GUI Visual Mode
 ### Mode
 
 |Bindings|ID|
@@ -180,7 +183,7 @@ description: Default bindings lists
 |`X`|**hotkey_backspace**|
 
 
-# Editor Normal Mode
+## Editor Normal Mode
 
 ### Mode
 
@@ -210,8 +213,8 @@ description: Default bindings lists
 
 ### HotKey
 
-|Bindings|ID|Note|
-|:---:|:---:|:---|
+|Bindings|ID|
+|:---:|:---:|
 |`<C-r>`|**redo**|
 |`u`, `U`|**undo**|
 |`/`, `?`|**search_pattern**|
@@ -226,7 +229,7 @@ description: Default bindings lists
 
 ### Vim Emulation
 
-#### Mode
+**Mode**  
 
 |Bindings|ID|
 |:---:|:---:|
@@ -236,7 +239,9 @@ description: Default bindings lists
 |`o`|**to_insert_nlbelow**|
 |`O`|**to_insert_nlabove**|
 
-#### Move
+<br>
+
+**Move**  
 
 |Bindings|ID|
 |:---:|:---:|
@@ -249,7 +254,9 @@ description: Default bindings lists
 |`W`|**move_caret_nonblank_word_forward**|
 |`B`|**move_caret_nonblank_word_backward**|
 
-#### Jump
+<br>
+
+**Jump**  
 
 |Bindings|ID|
 |:---:|:---:|
@@ -258,7 +265,10 @@ description: Default bindings lists
 |`gg`|**jump_caret_to_BOF**|
 |`G`|**jump_caret_to_EOF**|
 
-#### Edit
+
+<br>
+
+**Edit**  
 
 |Bindings|ID|
 |:---:|:---:|
@@ -281,7 +291,7 @@ description: Default bindings lists
 |`C`|**change_until_EOL**|
 
 
-# Editor Visual Mode
+## Editor Visual Mode
 
 ### Mode
 
@@ -308,7 +318,8 @@ description: Default bindings lists
 |`zL`|**scroll_right_halfpage**|
 
 ### Vim Emulation
-#### Move
+
+**Move**  
 
 |Bindings|ID|
 |:---:|:---:|
@@ -321,7 +332,9 @@ description: Default bindings lists
 |`W`|**move_caret_nonblank_word_forward**|
 |`B`|**move_caret_nonblank_word_backward**|
 
-#### Jump
+<br>
+
+**Jump**  
 
 |Bindings|ID|
 |:---:|:---:|
@@ -330,8 +343,9 @@ description: Default bindings lists
 |`gg`|**jump_caret_to_BOF**|
 |`G`|**jump_caret_to_EOF**|
 
+<br>
 
-#### Edit
+**Edit**  
 
 |Bindings|ID|
 |:---:|:---:|
@@ -340,7 +354,7 @@ description: Default bindings lists
 |`c`, `s`, `S`|**change_highlight_text**|
 
 
-# Command Mode
+## Command Mode
 
 ### Mode
 
@@ -456,3 +470,8 @@ description: Default bindings lists
 |`:command<any>`|**system_command_command**|
 |`:delcommand<any>`|**system_command_delcommand**|
 
+
+<br>
+<br>
+<br>
+<br>

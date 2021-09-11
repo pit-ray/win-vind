@@ -1,7 +1,8 @@
 ---
 layout: page
 disable_anchors: true
-title: FAQ
+title: FAQ - win-vind
+nav: FAQ
 description: frequently asked questions and these answers
 ---
 If you have some questions, please send me.

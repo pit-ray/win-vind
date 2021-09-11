@@ -1,0 +1,59 @@
+@if $site-ui-mode == 'auto' {
+    @media (prefers-color-scheme: dark) {
+        @include highlight-dark-theme();
+    }
+
+    @media (prefers-color-scheme: light) {
+        @include highlight-light-theme();
+    }
+}
+@else if $site-ui-mode == 'dark' {
+    @include highlight-dark-theme();
+}
+@else if $site-ui-mode == 'light' {
+    @include highlight-light-theme();
+}
+
+.highlight {
+    @include themer(background-color, (
+        'dark': #3f3f3f,
+        'light': #eaedef,
+    ));
+    @include themer(border-color, (
+        'dark': #222222,
+        'light': #e1e1e8,
+    ));
+
+    //border-style: solid;
+    //border-width: 1px;
+    border-radius: 4px;
+    padding: 9px 14px;
+    margin-bottom: 14px;
+}
+
+.highlight pre {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.highlight pre code {
+    @include themer(color, (
+        'dark': #fdce93,
+        'light': #333,
+    ));
+
+    font-size: inherit;
+    white-space: pre;
+}
+
+.highlight pre .lineno {
+    display: inline-block;
+    color: #bebec5;
+    margin-right: 10px;
+    padding-right: 5px;
+    text-align: right;
+    width: 22px;
+}

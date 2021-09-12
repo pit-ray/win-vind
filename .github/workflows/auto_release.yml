@@ -25,7 +25,7 @@ jobs:
     - name: Get the version
       id: version
       run: |
-        $TAG=$($(echo ${{github.ref}}).Replace('refs/tags/', ''))
+        $TAG=$($(echo ${{github.ref}}).Replace('refs/tags/v', ''))
         echo "::set-output name=tag::$TAG"
 
     - name: Setup x64 MSVC

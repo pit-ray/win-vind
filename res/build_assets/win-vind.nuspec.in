@@ -15,7 +15,7 @@
     <!-- projectUrl is required for the community feed -->
     <projectUrl>https://github.com/pit-ray/win-vind</projectUrl>
     <!-- Here is an example using Githack -->
-    <iconUrl>https://github.com/pit-ray/win-vind/blob/master/res/icon.png?raw=true</iconUrl>
+    <iconUrl>https://rawcdn.githack.com/pit-ray/win-vind/v@PROJECT_VERSION@/res/icon.png</iconUrl>
     <copyright>Copyright (c) 2020-2021 pit-ray</copyright>
     <!-- If there is a license Url available, it is required for the community feed -->
     <licenseUrl>https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt</licenseUrl>

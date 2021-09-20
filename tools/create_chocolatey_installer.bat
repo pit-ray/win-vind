@@ -5,9 +5,10 @@
     @exit
 )
 
-@if not exist choco (
-    mkdir choco
+if exist choco (
+    powershell Remove-Item -Recurse -Force choco/* -Exclude *.nuspec
 )
+mkdir choco
 
 @if not exist choco\tools (
     mkdir choco\tools

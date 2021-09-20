@@ -66,14 +66,6 @@ jobs:
     - name: Build x86 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32
 
-    - name: Create release and submit assets
-      uses: softprops/action-gh-release@v1
-      with:
-        draft: true
-        files: |
-          bin_64/*.zip
-          bin_32/*.zip
-
     - name: Install checksum
       run: choco install -y checksum
 
@@ -81,11 +73,16 @@ jobs:
       run: choco apikey --key $CHOCO_APIKEY --source https://push.chocolatey.org/
 
     - name: Create Chocolatey installer
-      run: ./tools/create_chocolatey_installer.bat 
+      run: ./tools/create_chocolatey_installer.bat ${{step.version.outputs.VERSION}}
 
     - name: Package the installer as nupkg and push the package into chocolatey.org
-      run: |
-        cd choco
-        choco pack
-        choco push win-vind.${{step.version.outputs.VERSION}}.nupkg --source https://push.chocolatey.org/
-        cd ..
+      run: ./tools/push_chocolatey_package.bat ${{step.version.outputs.VERSION}}
+
+    - name: Create release and submit assets
+      uses: softprops/action-gh-release@v1
+      with:
+        draft: true
+        files: |
+          bin_64/*.zip
+          bin_32/*.zip
+          choco/*.zip

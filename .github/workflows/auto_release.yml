@@ -125,9 +125,6 @@ jobs:
           bin_64/*.zip
           bin_32/*.zip
 
-    - name: Setup Chocolatey
-      uses: crazy-max/ghaction-chocolatey@v1
-
     - name: Install checksum
       run: choco install -y checksum
 

@@ -49,7 +49,7 @@ There are two groups: GUI mode and Editor mode.
 The former allows us to control windows and mouse cursor, etc. The latter allows us to emulate Vim in input forms of web pages, Microsoft Office Word, etc.  
 
 <p align="center">
-<img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/GUIandEditor.jpg" width=700>
+<img src="{{ site.url }}/imgs/GUIandEditor.jpg" width=700>
 <p align="center">Concepts of GUI Mode and Editor Mode</p>
 </p>
 
@@ -72,7 +72,7 @@ After the boot, win-vind will be in **Insert Mode**. Let's make transitions of m
 1. Please inputs `:!mspaint` to launch Microsoft Paint.
 1. You can call **EasyClick** with `FF`.
    <p align="center">
-   <img src="https://github.com/pit-ray/pit-ray.github.io/blob/master/win-vind/imgs/EasyClickDemo.gif">
+   <img src="{{ site.url }}/imgs/EasyClickDemo.gif">
    <p align="center">EasyClick Demo</p>
    </p>
 1. Let's select windows with `<C-w>h` or `<C-w>l`.

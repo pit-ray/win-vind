@@ -23,7 +23,7 @@ if exist bin_%3 (
 
 mkdir bin_%3
 
-@echo Create Installer Version -------------------------------------------------------
+@echo Creating installer version
 echo 1 > res\default_config\instype
 
 call build.bat -release %2 %3
@@ -32,14 +32,21 @@ cpack . -C Release
 cd ..
 copy /Y release_%3\setup* bin_%3\*_%1_%3bit.exe
 
-@echo Create Zip Version ----------------------------------------------------------
-echo 0 > res\default_config\instype
-
+@echo Creating Chocolatey version
 mkdir bin_%3\win-vind
 copy /Y release_%3\win-vind.exe bin_%3\win-vind\
 
 xcopy /I /E /Y res\default_config bin_%3\win-vind\default_config
 xcopy /I /E /Y res\resources bin_%3\win-vind\resources
 
-powershell Compress-Archive -Path "bin_%3\win-vind" -DestinationPath "bin_%3\win-vind_%1_%3bit.zip"
-powershell Compress-Archive -Path "bin_%3\setup_win-vind_%1_%3bit.exe" -DestinationPath "bin_%3\setup_win-vind_%1_%3bit.exe.zip"
+powershell Compress-Archive -Path "bin_%3\win-vind" -DestinationPath "bin_%3\win-vind_%1_%3bit_chocolatey.zip"
+
+@echo Creating zip version
+echo 0 > bin_%3\win-vind\default_config\instype
+
+powershell Compress-Archive -Path "bin_%3\win-vind" -DestinationPath "bin_%3\win-vind_%1_%3bit_portable.zip"
+
+@echo Packaging installer
+powershell Compress-Archive -Path "bin_%3\setup_win-vind_%1_%3bit.exe" -DestinationPath "bin_%3\win-vind_%1_%3bit_installer.zip"
+
+@echo finished

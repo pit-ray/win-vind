@@ -5,6 +5,9 @@ on:
     tags:
       - v*.*.*
 
+env:
+  CHOCO_APIKEY: ${{secrets.CHOCOLATEY_API_KEY}}
+
 jobs:
   x64-and-x86:
     runs-on: windows-latest
@@ -26,7 +29,7 @@ jobs:
       id: version
       run: |
         $TAG=$($(echo ${{github.ref}}).Replace('refs/tags/v', ''))
-        echo "::set-output name=tag::$TAG"
+        echo "::set-output name=VERSION::$TAG"
 
     - name: Setup x64 MSVC
       uses: ilammy/msvc-dev-cmd@v1
@@ -43,7 +46,7 @@ jobs:
       run: ./tools/setup_libs.bat -msvc 64
  
     - name: Build x64 assets
-      run: ./tools/create_assets.bat ${{steps.version.outputs.tag}} -msvc 64
+      run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 64
 
 
     - name: Setup x86 MSVC
@@ -61,7 +64,7 @@ jobs:
       run: ./tools/setup_libs.bat -msvc 32
 
     - name: Build x86 assets
-      run: ./tools/create_assets.bat ${{steps.version.outputs.tag}} -msvc 32
+      run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32
 
 
     - name: Create release and submit assets
@@ -69,7 +72,68 @@ jobs:
       with:
         draft: true
         files: |
-          bin_64/*64bit.exe.zip
-          bin_64/*64bit.zip
-          bin_32/*32bit.exe.zip
-          bin_32/*32bit.zip
+          bin_64/*.zip
+          bin_32/*.zip
+
+    - name: Create Chocolatey installer
+      run: ./tools/create_chocolatey_installer.bat ${{steps.version.outputs.VERSION}}
+
+    - name: Submit the package to chocolatey.org
+
+
+    - name: Setup x64 MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Cache x64 libraries
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/libs
+        key: x64-libs-cache-210801
+
+    - name: Setup x64 libraries
+      run: ./tools/setup_libs.bat -msvc 64
+ 
+    - name: Build x64 assets
+      run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 64
+
+
+    - name: Setup x86 MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x86
+
+    - name: Cache x86 libraries
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/libs
+        key: x86-libs-cache-210801
+
+    - name: Setup x86 libraries
+      run: ./tools/setup_libs.bat -msvc 32
+
+    - name: Build x86 assets
+      run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32
+
+
+    - name: Create release and submit assets
+      uses: softprops/action-gh-release@v1
+      with:
+        draft: true
+        files: |
+          bin_64/*.zip
+          bin_32/*.zip
+
+    - name: Setup Chocolatey API
+      run: choco apikey --key $CHOCO_APIKEY --source https://push.chocolatey.org/
+
+    - name: Create Chocolatey installer
+      run: ./tools/create_chocolatey_installer.bat 
+
+    - name: Package the installer as nupkg and push the package into chocolatey.org
+      run: |
+        cd choco
+        choco pack
+        choco push win-vind.${{step.version.outputs.VERSION}}.nupkg --source https://push.chocolatey.org/
+        cd ..

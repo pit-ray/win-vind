@@ -15,6 +15,13 @@ configure_file(
     @ONLY
 )
 
+configure_file(
+    ${PROJECT_SOURCE_DIR}/res/build_assets/win-vind.nuspec.in
+    ${PROJECT_SOURCE_DIR}/choco/win-vind.nuspec
+    NEWLINE_STYLE LF
+    @ONLY
+)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/core/include

@@ -6,6 +6,7 @@ bin
 bin_32
 bin_64
 build
+choco
 cmake_modules
 compile_flags.txt
 config

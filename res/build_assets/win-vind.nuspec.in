@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- == PACKAGE SPECIFIC SECTION == -->
+    <id>win-vind</id>
+    <version>@PROJECT_VERSION@</version>
+    <packageSourceUrl>https://github.com/pit-ray/win-vind/releases/tag/v@PROJECT_VERSION@</packageSourceUrl>
+    <owners>pit-ray</owners>
+
+    <!-- == SOFTWARE SPECIFIC SECTION == -->
+    <!-- This section is about the software itself -->
+    <title>win-vind (Install)</title>
+    <authors>pit-ray</authors>
+    <!-- projectUrl is required for the community feed -->
+    <projectUrl>https://github.com/pit-ray/win-vind</projectUrl>
+    <!-- Here is an example using Githack -->
+    <iconUrl>https://github.com/pit-ray/win-vind/blob/master/res/icon.png?raw=true</iconUrl>
+    <copyright>Copyright (c) 2020-2021 pit-ray</copyright>
+    <!-- If there is a license Url available, it is required for the community feed -->
+    <licenseUrl>https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/pit-ray/win-vind</projectSourceUrl>
+    <docsUrl>https://pit-ray.github.io/win-vind/</docsUrl>
+    <!--<mailingListUrl></mailingListUrl>-->
+    <!--<bugTrackerUrl></bugTrackerUrl>-->
+    <tags>win-vind vim windows hotkeys mouse window-manager keybindings vim-emulation vim-key-binder gui-operation</tags>
+    <summary>You can operate Windows with key bindings like Vim.</summary>
+    <description>
+## Description
+**win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.
+
+### Features
+- Fast binding system
+- Vim-like mode management
+- GUI operation without mouse
+- Vim emulation everywhere
+- Process control like `:!vim ~/.vimrc` on resident command line
+- .vimrc style configuration
+- Low-level key mapping (e.g. Capslock -> Ctrl)
+- Running in user permission
+- Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
+- Tiling window manager
+- Hinting feature like Vimium or EasyMotion for GUI.
+    </description>
+    <releaseNotes>
+The release notes can be found on [GitHub Releases](https://github.com/pit-ray/win-vind/releases/tag/v@PROJECT_VERSION@).
+    </releaseNotes>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

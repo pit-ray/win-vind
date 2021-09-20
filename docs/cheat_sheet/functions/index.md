@@ -4,8 +4,6 @@ title: Functions - win-vind
 nav: Functions
 show_in_menu: false
 disable_anchors: true
-parent: Cheat Sheet
-description: All supported functions list
 ---
 
 ### Mode
@@ -14,11 +12,11 @@ description: All supported functions list
 |:---:|:---|
 |**to_command**|Command Mode|
 |**to_edi_normal**|Editor Normal Mode|
-|**to_edi_visual**|Visual Mode|
-|**to_edi_visual_line**|Visual-Line Mode|
+|**to_edi_visual**|Editor Visual Mode|
+|**to_edi_visual_line**|Editor Visual-Line Mode|
 |**to_gui_visual**|GUI Visual Mode|
 |**to_insert**|Insert Mode|
-|**to_instant_gui_normal**|Temporarily switches to GUI mode and performs matching, which can be used as a map-leader.|
+|**to_instant_gui_normal**|Temporarily switches to GUI Normal Mode and performs matching, which can be used as a map-leader.|
 |**to_resident**|Resident Mode|
 
 
@@ -71,7 +69,6 @@ description: All supported functions list
 |**hotkey_paste**|Paste|
 |**open**|Open another file|
 |**open_startmenu**|Open a StartMenu|
-|**open_startmenu**|Open a start menu|
 |**redo**|Redo|
 |**save**|Save a current file|
 |**search_pattern**|Search Pattern|
@@ -116,8 +113,8 @@ description: All supported functions list
 |**open_new_window_with_hsplit**|Open a new window with horizontal split|
 |**open_new_window_with_vsplit**|Open a new window with vertical split|
 |**reload_current_window**|Reload a current window|
-|**resize_window_height**|Resize the height of a window|
-|**resize_window_width**|Resize the width of a window|
+|**resize_window_height**|Set the height of a window. You have to pass the pixel value as an argument using the command line.|
+|**resize_window_width**|Set the width of a window. You have to pass the pixel value as an argument using the command line.|
 |**rotate_windows**|Rotate windows in a current monitor|
 |**rotate_windows_in_reverse**|Rotate windows in a current monitor in reverse|
 |**select_left_window**|Select a left window|
@@ -133,13 +130,13 @@ description: All supported functions list
 
 ### File
 
-|ID|Note|
+|ID|Feature|
 |:---:|:---|
 |**makedir**|Create a directory. If you call it with a relative path such as `:mkdir foo`, it creates it in the explorer directory. If no explorer is found, it creates it in `~/Desktop/foo`. If you call it with an absolute path like `:mkdir C:/Users/You/Desktop/bar`, it will create a directory along the path, but not recursively.|
 
 ### Process
 
-|ID|Note|
+|ID|Feature|
 |:---:|:---|
 |**execute**|Open file with the associated application. It is wrapper of **ShellExecute**. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`.|
 |**exit_config_gui**|Exit win-vind|
@@ -148,14 +145,29 @@ description: All supported functions list
 
 ### Option
 
-|ID|Note|
+|ID|Feature|
 |:---:|:---|
 |**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
 |**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
 
-If **Dedicate to One window** enables, you can select one window with Enable Targeting function. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with Disable Targeting function. In other words, this feature transforms some normal editors to fake Vim. The computing cost is so small.
+### System Command
+
+|ID|Feature|
+|:---:|:---|
+|**system_command_comclear**|System Command comclear|
+|**system_command_command**|System Command command|
+|**system_command_delcommand**|System Command delcommand|
+|**system_command_map**|System Command map|
+|**system_command_mapclear**|System Command mapclear|
+|**system_command_noremap**|System Command noremap|
+|**system_command_set**|System Command set|
+|**system_command_source**|System Command source|
+|**system_command_unmap**|System Command unmap|
+
 
 ### Vim Emulation
+
+<br>
 
 **Mode**  
 
@@ -166,6 +178,8 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**to_insert_append**|Append after a caret|
 |**to_insert_nlabove**|Begin new line above a caret|
 |**to_insert_nlbelow**|Begin new line below a caret|
+
+<br>
 
 **Move**  
 
@@ -180,6 +194,8 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**move_caret_word_backward**|Backward with words|
 |**move_caret_word_forward**|Forward with words|
 
+<br>
+
 **Jump**  
 
 |ID|Feature|
@@ -188,6 +204,8 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**jump_caret_to_BOL**|Jump the caret to begin of line|
 |**jump_caret_to_EOF**|Jump the caret to EOF|
 |**jump_caret_to_EOL**|Jump the caret to end of line|
+
+<br>
 
 **Edit**  
 
@@ -215,20 +233,6 @@ If **Dedicate to One window** enables, you can select one window with Enable Tar
 |**yank_line**|Yank lines|
 |**yank_with_motion**|Yank lines with motion|
 
-
-### System Command
-
-|ID|Note|
-|:---:|:---|
-|**system_command_comclear**|System Command comclear|
-|**system_command_command**|System Command command|
-|**system_command_delcommand**|System Command delcommand|
-|**system_command_map**|System Command map|
-|**system_command_mapclear**|System Command mapclear|
-|**system_command_noremap**|System Command noremap|
-|**system_command_set**|System Command set|
-|**system_command_source**|System Command source|
-|**system_command_unmap**|System Command unmap|
 
 <br>
 <br>

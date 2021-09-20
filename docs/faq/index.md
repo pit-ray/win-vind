@@ -3,10 +3,9 @@ layout: page
 disable_anchors: true
 title: FAQ - win-vind
 nav: FAQ
-description: frequently asked questions and these answers
+order: 3
+icon: question
 ---
-If you have some questions, please send me.
-
 
 ### Why is the name win-vind?  
 win-vind means <u>vi</u>m key b<u>ind</u>er for <u>win</u>dows.  

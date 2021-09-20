@@ -88,7 +88,7 @@
     table {
         width: 100%;
 
-        table-layout: fixed;
+        table-layout: auto;
         padding: 0;
 
         word-wrap: break-word;
@@ -135,7 +135,7 @@
     }
 
     .flex-fa {
-        font-size: 8vw ;
+        font-size: 7vw ;
     }
 
     #cs-container {

@@ -4,7 +4,6 @@ title: Keywords - win-vind
 nav: Keywords
 show_in_menu: false
 disable_anchors: true
-description: Keywords for writing .vindrc
 ---
 All keywords in win-vind are not case-sensitive.  
 
@@ -25,12 +24,12 @@ All keywords in win-vind are not case-sensitive.
 |Keyword|Meanings|
 |:---:|:---|
 |`<num>`|It is a number of any digits. However, you **must not** multiple uses of this keyword per a command.|
-|`<any>`|It is an optional string. If you include it into a command, all keywords after that are considered to be matching.|
+|`<any>`|It is an optional string. After this keyword, all characters will be matched.|
 
 
-### Specific Ascii Key Code  
+### Specific Ascii Keyword  
 
-|Key Code|Meanings|
+|Keyword|Meanings|
 |:---:|:---|
 |`<space>`|Space Key|
 |`<hbar>`|Ascii code '-'|
@@ -38,9 +37,9 @@ All keywords in win-vind are not case-sensitive.
 |`<lt>`|Ascii code '&lt;'|
 
  
-### System Key Code  
+### System Keyword  
 
-|Key Code|Meanings|
+|Keyword|Meanings|
 |:---:|:---|
 |`<bs>`|BackSpace Key|
 |`<capslock>`|CapsLock Key|
@@ -77,11 +76,11 @@ All keywords in win-vind are not case-sensitive.
 |`<m>`|Left Alt, Right Alt|
 |`<lm>`|Left Alt|
 |`<rm>`|Right Alt|
-|`<app>`|Application Key to right-click|
-|`<cvt>`|Convert Key to convert|
+|`<app>`|Application Key|
+|`<cvt>`|Convert Key|
 |`<esc>`|Eescape Key|
 |`<kana>`|Kana Key to switch IME mode on Japanese keyboard.|
-|`<nocvt>`|No Convert Key to cancel conversion|
+|`<nocvt>`|No Convert Key|
 |`<f1>`|F1|
 |`<f2>`|F2|
 |`<f3>`|F3|

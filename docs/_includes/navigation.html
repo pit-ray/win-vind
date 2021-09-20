@@ -1,8 +1,29 @@
 <header class="navbar navbar-expand-md navbar-custom" id="top">
+    {% capture root_url %}
+        {% if page.translation %}
+            {{ '/' | relative_url }}{{ page.translation }}/
+        {% else %}
+            {{ '/' | relative_url }}
+        {% endif %}
+    {% endcapture %}
+
     <div class="container">
-      <a class="navbar-brand" href="{{ '/' | relative_url }}">
-        <img class="nav-logo" src="{{ site.logo | relative_url }}" />
-        <span class="nav-logo-text">{{ site.name }}</span>
+      <a class="navbar-brand" href="{{ root_url }}">
+          {% for p in site.pages %}
+              {% if page.translation == p.translation and p.homepage == true %}
+                  {% if p.icon %}
+                      {% include fa-icon.html
+                           icon=p.icon
+                      %}
+                      <span class="nav-logo-text">{{ p.nav }}</span>
+                  {% else %}
+                      <img class="nav-logo" src="{{ site.logo | relative_url }}" />
+                      <span class="nav-logo-text">{{ site.name }}</span>
+                  {% endif %}
+
+                  {% break %}
+              {% endif %}
+          {% endfor %}
       </a>
 
         <button
@@ -21,8 +42,12 @@
 
         <nav class="navbar-collapse collapse" role="navigation" id="navbarSupportedContent">
             <ul class="navbar-nav">
-                {% assign sorted_pages = site.pages | sort: "nav" %}
+                {% assign sorted_pages = site.pages | sort: "order" %}
                 {% for p in sorted_pages %}
+                    {% if page.translation != p.translation %}
+                        {% continue %}
+                    {% endif %}
+
                     {% assign is_homepage = false %}
                     {% if p.homepage == true or p.isHome == true %}
                         {% assign is_homepage = true %}
@@ -41,6 +66,12 @@
                                 class="nav-link"
                                 href="{{ p.url | relative_url }}"
                             >
+                                {% if p.icon %}
+                                    {% include fa-icon.html
+                                         icon=p.icon
+                                    %}
+                                {% endif %}
+
                                 {{ p.nav }}
                             </a>
                         </li>
@@ -48,6 +79,15 @@
                 {% endfor %}
             </ul>
             <ul class="navbar-nav ml-auto">
+                <select onchange="window.location.href='{{ '/' | relative_url }}' + this.value">
+                    {% for lang in site.translations %}
+                        <option value="{{ lang.id }}"
+                            {% if lang.id == page.translation %}
+                                selected
+                            {% endif %}
+                        >{{ lang.label }}</option>
+                    {% endfor %}
+                </select>
                 {% for p in site.links.header %}
                     <li class="nav-item {% if page.title == p.title %}active{% endif %}">
                         <a

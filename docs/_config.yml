@@ -1,8 +1,16 @@
 remote_theme: allejo/jekyll-docs-theme@v1.0.0
 
 name: win-vind
-
 logo: imgs/win-vind-icon.png
+
+url: https://pit-ray.github.io/win-vind
+
+translations:
+  - id:
+    label: English
+
+  - id: ja
+    label: 日本語
 
 project:
   version: 4.2.0
@@ -54,8 +62,10 @@ ui:
       color1: '#062a48'
       color2: '#304e67'
     light:
-      color1: '#f6f8fa'
-      color2: '#d2d4d6'
+      #color1: '#f6f8fa'
+      #color2: '#f6f8fa'
+      color1: '#fff'
+      color2: '#fff'
 
   masthead:
     color:

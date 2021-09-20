@@ -2,38 +2,41 @@
 layout: page
 show_in_menu: false
 disable_anchors: true
-title: Default Mappings - win-vind
-nav: Default Mappings
+title: デフォルトのマッピング - win-vind
+translation: ja
+translators: pit-ray
+version: 4.2.0
+nav: デフォルトのマッピング
 ---
 
 <p align="center">
 <img src="{{ site.url }}/imgs/mode_overview.png" width=600>  
-<p align="center">Default mode layer overview</p>
+<p align="center">デフォルトのモード概略図</p>
 </p>
 
-## Insert Mode  
+## Insertモード  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`<Esc-Down>`|**to_resident**|
 |`<Esc-Left>`|**to_gui_normal**|
 |`<Esc-Right>`|**to_edi_normal**|
 |`<F8>`|**to_instant_gui_normal**|
 
-## Resident Mode
+## Residentモード
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`<Esc-Left>`|**to_gui_normal**|
 |`<Esc-Right>`|**to_edi_normal**|
 |`<Esc-Up>`|**to_insert**|
 
 
-## GUI Normal Mode
+## GUI Normalモード
 
-### Mode
+###モード
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`:`|**to_command**|
 |`<Esc-Down>`|**to_resident**|
@@ -42,9 +45,9 @@ nav: Default Mappings
 |`v`|**to_gui_visual**|
 
 
-### Mouse
+### マウス
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`$`, `<End>`|**jump_cursor_to_right**|
 |`0`, `^`, `<Home>`|**jump_cursor_to_left**|
@@ -75,9 +78,9 @@ nav: Default Mappings
 |`zh`, `<C-h>`|**scroll_left**|
 |`zl`, `<C-l>`|**scroll_right**|
 
-### Hotkey
+### ホットキー
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`/`, `?`|**search_pattern**|
 |`<C-r>`|**redo**|
@@ -92,9 +95,9 @@ nav: Default Mappings
 |`x`, `<Del>`|**hotkey_delete**|
 |`y`, `yy`, `Y`|**hotkey_copy**|
 
-### Virtual Desktop
+### 仮想デスクトップ
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`<C-v>h`|**switch_to_left_vdesktop**|
 |`<C-v>l`|**switch_to_right_vdesktop**|
@@ -102,17 +105,17 @@ nav: Default Mappings
 |`<C-v>q`|**close_current_vdesktop**|
 |`<C-v>s`|**taskview**|
 
-### Tab
+### タブ
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`gT`|**switch_to_left_tab**|
 |`gt`|**switch_to_right_tab**|
 
 
-### Window
+### ウィンドウ
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`<C-w>+`|**increase_window_height**|
 |`<C-w>-`|**decrease_window_height**|
@@ -138,17 +141,18 @@ nav: Default Mappings
 |`<C-w>x`|**exchange_window_with_nearest**|
 
 
-## GUI Visual Mode
-### Mode
+## GUI Visualモード
 
-|Bindings|ID|
+### モード
+
+|バインディング|ID|
 |:---:|:---:|
 |`<Esc-Down>`|**to_resident**|
 |`<Esc-Left>`|**to_gui_normal**|
 
-### Mouse
+### マウス
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`$`, `<End>`|**jump_cursor_to_right**|
 |`0`, `^`, `<Home>`|**jump_cursor_to_left**|
@@ -171,9 +175,9 @@ nav: Default Mappings
 |`zh`, `<C-h>`|**scroll_left**|
 |`zl`, `<C-l>`|**scroll_right**|
 
-### Hotkey
+### ホットキー
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`X`|**hotkey_backspace**|
 |`dd`, `D`|**hotkey_cut**|
@@ -182,11 +186,11 @@ nav: Default Mappings
 |`y`, `yy`, `Y`|**hotkey_copy**|
 
 
-## Editor Normal Mode
+## Editor Normalモード
 
-### Mode
+### モード
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`:`|**to_command**|
 |`<Esc-Down>`|**to_resident**|
@@ -195,9 +199,9 @@ nav: Default Mappings
 |`i`|**to_insert**|
 |`v`|**to_edi_visual**|
 
-### Mouse
+### マウス
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`<C-b>`|**scroll_up_onepage**|
 |`<C-d>`|**scroll_down_halfpage**|
@@ -210,27 +214,27 @@ nav: Default Mappings
 |`zh`, `<C-h>`|**scroll_left**|
 |`zl`, `<C-l>`|**scroll_right**|
 
-### Hotkey
+### ホットキー
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`/`, `?`|**search_pattern**|
 |`<C-r>`|**redo**|
 |`u`, `U`|**undo**|
 
-### Tab
+### タブ
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`gT`|**switch_to_left_tab**|
 |`gt`|**switch_to_right_tab**|
 
 
-### Vim Emulation
+### Vimエミュレーション
 
-**Mode**  
+**モード**  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`A`|**to_insert_EOL**|
 |`I`, `gI`|**to_insert_BOL**|
@@ -240,9 +244,9 @@ nav: Default Mappings
 
 <br>
 
-**Move**  
+**移動**  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`B`|**move_caret_nonblank_word_backward**|
 |`W`|**move_caret_nonblank_word_forward**|
@@ -255,9 +259,9 @@ nav: Default Mappings
 
 <br>
 
-**Jump**  
+**ジャンプ**  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`$`, `<End>`, `g$`|**jump_caret_to_EOL**|
 |`0`, `<Home>`, `g0`|**jump_caret_to_BOL**|
@@ -267,9 +271,9 @@ nav: Default Mappings
 
 <br>
 
-**Edit**  
+**編集**  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`C`|**change_until_EOL**|
 |`D`|**delete_line_until_EOL**|
@@ -290,20 +294,20 @@ nav: Default Mappings
 |`~`|**switch_char_case**|
 
 
-## Editor Visual Mode
+## Editor Visualモード
 
-### Mode
+### モード
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`:`|**to_command**|
 |`<Esc-Down>`|**to_resident**|
 |`<Esc-Left>`|**to_gui_normal**|
 |`<Esc-Right>`|**to_edi_normal**|
 
-### Mouse
+### マウス
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`<C-b>`|**scroll_up_onepage**|
 |`<C-d>`|**scroll_down_halfpage**|
@@ -316,11 +320,11 @@ nav: Default Mappings
 |`zh`, `<C-h>`|**scroll_left**|
 |`zl`, `<C-l>`|**scroll_right**|
 
-### Vim Emulation
+### Vimエミュレーション
 
-**Move**  
+**移動**  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`B`|**move_caret_nonblank_word_backward**|
 |`W`|**move_caret_nonblank_word_forward**|
@@ -333,9 +337,9 @@ nav: Default Mappings
 
 <br>
 
-**Jump**  
+**ジャンプ**  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`$`, `<End>`, `g$`|**jump_caret_to_EOL**|
 |`0`, `<Home>`, `g0`|**jump_caret_to_BOL**|
@@ -344,20 +348,20 @@ nav: Default Mappings
 
 <br>
 
-**Edit**  
+**編集**  
 
-|Bindings|ID|
+|バインディング|ID|
 |:---:|:---:|
 |`c`, `s`, `S`|**change_highlight_text**|
 |`d`, `x`, `X`|**delete_highlight_text**|
 |`y`|**yank_highlight_text**|
 
 
-## Command Mode
+## Commandモード
 
-### Mode
+### モード
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`::guinormal`, `:gn`|**to_gui_normal**|
 |`:edinormal`, `:en`|**to_edi_normal**|
@@ -367,27 +371,27 @@ nav: Default Mappings
 |`:insert`, `:i`|**to_insert**|
 |`:resident`|**to_resident**|
 
-### Virtual Desktop
+### 仮想デスクトップ
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:closev`|**close_current_vdesktop**|
 |`:taskview`|**taskview**|
 |`:vdnext`|**switch_to_right_vdesktop**|
 |`:vdprev`|**switch_to_left_vdesktop**|
 
-### Tab
+### タブ
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:q`, `:q!`, `:tabclose`|**close_current_tab**|
 |`:tabnew`|**open_new_tab**|
 |`:tabnext`|**switch_to_right_tab**|
 |`:tabprevious`|**switch_to_left_tab**|
 
-### Window
+### ウィンドウ
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:arrange`|**arrange_windows**|
 |`:bsplit`, `:bsp`|**snap_current_window_to_bottom**|
@@ -413,24 +417,24 @@ nav: Default Mappings
 |`:vertical resize <num>`, `:vert res <num>`|**resize_window_width**|
 |`:vs`, `:vsplit`|**open_new_window_with_vsplit**|
 
-### File
+### ファイル
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:mkdir<any>`, `:md<any>`|**makedir**|
 
-### Process
+### プロセス
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:!<any>`|**start_external**|
 |`:e <any>`, `:edit <any>`, `:execute <any>`|**execute**|
 |`:exit`|**exit_config_gui**|
 |`:sh`, `:shell`, `:terminal`, `:term`|**start_shell**|
 
-### Hotkey
+### ホットキー
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:backward`|**backward_ui_navigation**|
 |`:decide`|**decide_focused_ui_object**|
@@ -440,16 +444,16 @@ nav: Default Mappings
 |`:w`|**save**|
 |`:win`, `:start`|**open_startmenu**|
 
-### Option
+### オプション
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:target`|**enable_targeting_of_dedicate_to_window**|
 |`:untarget`|**disable_targeting_of_dedicate_to_window**|
 
-### System Command
+### システムコマンド
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:comclear`|**system_command_comclear**|
 |`:command<any>`|**system_command_command**|
@@ -461,9 +465,9 @@ nav: Default Mappings
 |`:{mode-prefix}noremap<any>`|**system_command_noremap**|
 |`:{mode-prefix}unmap<any>`|**system_command_unmap**|
 
-### Vim Emulation
+### Vimエミュレーション
 
-|Command|ID|
+|コマンド|ID|
 |:---:|:---:|
 |`:+<num>`|**move_caret_down**|
 |`:-<num>`|**move_caret_up**|

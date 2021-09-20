@@ -1,7 +1,36 @@
 .navbar-custom {
     a {
         border-bottom: 0;
+
+        @include themer(color, (
+            'dark': $site-ui-masthead-color-dark,
+            'light': $site-ui-masthead-color-light,
+        ));
+
+        &:hover {
+            @include themer(color, (
+                'dark': $site-ui-brand-dark,
+                'light': $site-ui-brand-light,
+            ));
+        }
     }
+
+    li,select,option {
+        border-bottom:1px solid ;
+
+        @include themer(border-color, (
+            'dark': black,
+            'light': white,
+        ));
+
+        &:hover {
+            @include themer(border-color, (
+                'dark': $site-ui-border_color-dark,
+                'light': $site-ui-border_color-light,
+            ));
+        }
+    }
+
     .navbar-brand {
     }
 
@@ -20,8 +49,8 @@
 }
 
 .nav-logo {
-  height: 32px;
-  width: 32px;
+  height: 24px;
+  width: 24px;
   vertical-align: middle;
   display: inline-block;
 }

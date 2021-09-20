@@ -1,0 +1,55 @@
+{% assign fm_anchorClass = layout.anchor_headings.anchorClass | default: page.anchor_headings.anchorClass | default: "" %}
+
+{% capture anchorClass -%}
+    {{- include.anchorClass -}}
+    {%- if fm_anchorClass -%}
+        .{{- fm_anchorClass -}}
+    {%- endif -%}
+{%- endcapture %}
+
+{% assign beforeHeading = page.anchor_headings.beforeHeading | default: layout.anchor_headings.beforeHeading | default: false %}
+{% assign anchorAttrs   = page.anchor_headings.anchorAttrs   | default: layout.anchor_headings.anchorAttrs   | default: '' %}
+{% assign anchorBody    = page.anchor_headings.anchorBody    | default: layout.anchor_headings.anchorBody    | default: "#" %}
+{% assign anchorTitle   = page.anchor_headings.anchorTitle   | default: layout.anchor_headings.anchorTitle   | default: '' %}
+{% assign h_min         = page.anchor_headings.h_min         | default: layout.anchor_headings.h_min         | default: 1 %}
+{% assign h_max         = page.anchor_headings.h_max         | default: layout.anchor_headings.h_max         | default: 6 %}
+{% assign bodyPrefix    = page.anchor_headings.bodyPrefix    | default: layout.anchor_headings.bodyPrefix    | default: '' %}
+{% assign bodySuffix    = page.anchor_headings.bodySuffix    | default: layout.anchor_headings.bodySuffix    | default: '' %}
+
+{% if page.version %}
+    {% if site.project.version > page.version %}
+        <p style="color: red;">This page is a translation for version {{ page.version }}.</p>
+        {% capture latest_url %}
+            {% assign dirs = page.url | split: "/" %}
+            {{ site.url }}{% for d in dirs %}{% if d != empty and d != page.translation %}/{{ d }}{% endif %}{% endfor %}
+        {% endcapture %}
+        <p style="color: red;">For the latest version {{ site.project.version }}, please refer to <a href="{{ latest_url }}">the original document.</a></p>
+    {% endif %}
+{% endif %}
+
+{% unless page.disable_anchors %}
+    {% include jekyll-docs-theme/vendor/anchor_headings.html
+         html=content
+         beforeHeading=beforeHeading
+         anchorAttrs=anchorAttrs
+         anchorBody=anchorBody
+         anchorClass=anchorClass
+         anchorTitle=anchorTitle
+         h_min=h_min
+         h_max=h_max
+         bodyPrefix=bodyPrefix
+         bodySuffix=bodySuffix
+    %}
+{% else %}
+    {{ content }}
+{% endunless %}
+
+{% if page.translators %}
+    <br>
+
+    <div>This document has been translated by
+    {% for name in page.translators %}
+        <a href="https://github.com/{{ name }}">{{ name }}</a>
+    {% endfor %}
+    .</div>
+{% endif %}

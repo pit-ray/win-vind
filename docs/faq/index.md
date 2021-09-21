@@ -19,7 +19,8 @@ It is the same as holding the mouse left pressing.
 ESC is just the default, and you can change everything as you like. There are several ways to solve this problem, but here is a simple solution to use key mapping in the internal scope by `noremap`. For example, make win-vind recognize `<CapsLock>` as `<ESC>`.
 
 ```vim
-" In insert mode, it is recommended to do a low-level mapping to another key once to prevent the message from being passed to Windows.
+" In insert mode, it is recommended to do a low-level mapping
+" to another key once to prevent the message from being passed to Windows.
 imap <capslock> <f20>
 inoremap <f20> <esc>
 

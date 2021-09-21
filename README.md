@@ -13,6 +13,10 @@
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml/badge.svg" /></a>
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/test.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/test.yml/badge.svg" /></a>
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/auto_release.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/auto_release.yml/badge.svg" /></a>
+    <br>
+    <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/chocolatey/v/win-vind" /></a>
+    <img src="https://img.shields.io/badge/Windows%2011-supported-blue" />
+    <a href="https://github.com/pit-ray/win-vind/releases/latest"><img src="https://img.shields.io/github/release-date/pit-ray/win-vind?color=blue" /></a>
   </p>
 </p>  
 
@@ -42,15 +46,20 @@
 <br>  
 
 ## Download
-### v4.2.0 (Latest Version)  
-Date: 2021/9/6    
+### Chocolatey Version
+win-vind supports installation using [Chocolatey](https://chocolatey.org/). To install win-vind with Chocolatey, run the following command from the command line or from PowerShell.
 
-#### 32bit  
+```sh
+$ choco install win-vind
+```
+
+
+### Installer Version
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_32bit.exe.zip">setup_win-vind_v4.2.0_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_32bit.zip">win-vind_v4.2.0_32bit.zip</a>  
-
-#### 64bit  
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_64bit.exe.zip">setup_win-vind_v4.2.0_64bit.exe</a>
+
+### Portable Version
+- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_32bit.zip">win-vind_v4.2.0_32bit.zip</a>  
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_64bit.zip">win-vind_v4.2.0_64bit.zip</a> 
 
 

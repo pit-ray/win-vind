@@ -41,7 +41,7 @@
 
 #### Demo
 
-<img src="https://github.com/pit-ray/win-vind/blob/gh-pages/imgs/4xxdemo.gif?raw=true" title="Demo" >
+<img src="docs/imgs/4xxdemo.gif" title="Demo" >
 
 <br>  
 

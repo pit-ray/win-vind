@@ -19,6 +19,13 @@ This software only supports Windows 10 or Windows 11 on real machines. Therefore
    $ choco install win-vind
    ```
 
+   **winget Version**  
+   [winget](https://github.com/microsoft/winget-cli) is also supported. To install the package, run the following command from your command line.
+
+   ```sh
+   $ winget install win-vind
+   ```
+
    **Installer Version**  
    [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>32bit Installer</span></span>]({{ site.dl_ins_32 }})
    [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>64bit Installer</span></span>]({{site.dl_ins_64 }})

@@ -24,6 +24,12 @@ disable_anchors: true
    $ choco install win-vind
    ```
 
+   **winget Version**  
+   [winget](https://github.com/microsoft/winget-cli)もサポートされています。インストールするにはお好きなコマンドラインから次のコマンドを実行します。
+   ```sh
+   $ winget install win-vind
+   ```
+
    **Installer Version**  
    [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>32bit Installer</span></span>]({{ site.dl_ins_32 }})
    [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>64bit Installer</span></span>]({{site.dl_ins_64 }})

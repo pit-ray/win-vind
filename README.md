@@ -52,6 +52,12 @@ win-vind supports installation using [Chocolatey](https://chocolatey.org/). To i
 $ choco install win-vind
 ```
 
+### winget Version
+[winget](https://github.com/microsoft/winget-cli) is also supported. To install the package, run the following command from your command line.
+
+```sh
+$ winget install win-vind
+```
 
 ### Installer Version
 - <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_32bit.exe.zip">setup_win-vind_v4.2.0_32bit.exe</a>

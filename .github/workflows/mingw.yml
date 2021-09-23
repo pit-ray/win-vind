@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-    tags:
-      - v*.*.*
+#   tags:
+#     - v*.*.*
     paths:
       - '!README.md'
       - '!CONTRIBUTING.md'

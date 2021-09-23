@@ -76,7 +76,8 @@ jobs:
       run: ./tools/create_chocolatey_installer.bat ${{steps.version.outputs.VERSION}}
 
     - name: (Chocolatey) Package the installer as nupkg and push the package into chocolatey.org
-      run: ./tools/push_chocolatey_package.bat ${{steps.version.outputs.VERSION}}
+      run: echo "${{steps.version.outputs.VERSION}}"
+      # run: ./tools/push_chocolatey_package.bat ${{steps.version.outputs.VERSION}}
 
     - name: (winget) Get winget-create
       run: iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
@@ -86,12 +87,13 @@ jobs:
         $VERSION="${{steps.version.outputs.VERSION}}"
         $WINGET_PACK_32="https://github.com/pit-ray/win-vind/releases/download/v$VERSION/setup_win-vind_$VERSION_32bit.exe"
         $WINGET_PACK_64="https://github.com/pit-ray/win-vind/releases/download/v$VERSION/setup_win-vind_$VERSION_64bit.exe"
-        ./wingetcreate.exe update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind
+        echo "update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind"
+        # ./wingetcreate.exe update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind
 
     - name: (GitHub) Create release and submit assets
       uses: softprops/action-gh-release@v1
       with:
-        draft: true
+        prerelease: true
         files: |
           bin_64/*.zip
           bin_64/*.exe

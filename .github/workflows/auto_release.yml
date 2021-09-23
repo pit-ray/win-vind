@@ -40,10 +40,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/libs
-        key: x64-libs-cache-210801
-
-    - name: Setup x64 libraries
-      run: ./tools/setup_libs.bat -msvc 64
+        key: x64-libs-cache-210923
 
     - name: Build x64 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 64
@@ -59,9 +56,6 @@ jobs:
       with:
         path: ${{github.workspace}}/libs
         key: x86-libs-cache-210923
-
-    - name: Setup x86 libraries
-      run: ./tools/setup_libs.bat -msvc 32
 
     - name: Build x86 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32

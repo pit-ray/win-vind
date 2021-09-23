@@ -1,0 +1,50 @@
+name: Libraries build
+
+on:
+  push:
+    branches: [ master ]
+#   tags:
+#     - v*.*.*
+    paths:
+      - '!README.md'
+      - '!CONTRIBUTING.md'
+      - '!docs/**'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  x64:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Cache Libraries
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/libs
+        key: x64-libs-cache-210923
+
+    - name: Setup Libraries
+      run: "tools/setup_libs.bat -msvc 64"
+ 
+  x86:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x86
+
+    - name: Cache Library
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/libs
+        key: x86-libs-cache-210923
+
+    - name: Setup Library
+      run: "tools/setup_libs.bat -msvc 32"

@@ -15,32 +15,8 @@ disable_anchors: true
 
 
 ## インストール方法
-- インストーラ版かポータブル版をダウンロードします。インストーラ版はインストールするディレクトリとユーザディレクトリに依存関係を作りますが、ポータブル版はスタートアップファイルを除き、解凍後のルートディレクトリ以外に一切のファイルを生成しません。  
-
-   **Chocolatey Version**  
-   win-vindは[Chocolatey](https://chocolatey.org/)によるインストールをサポートしています。Chocolateyでwin-vindをインストールするには、次のコマンドをコマンドラインまたはPowerShellから実行してください。
-
-   ```sh
-   $ choco install win-vind
-   ```
-
-   **winget Version**  
-   [winget](https://github.com/microsoft/winget-cli)もサポートされています。インストールするにはお好きなコマンドラインから次のコマンドを実行します。
-   ```sh
-   $ winget install win-vind
-   ```
-
-   **Installer Version**  
-   [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>32bit Installer</span></span>]({{ site.dl_ins_32 }})
-   [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>64bit Installer</span></span>]({{site.dl_ins_64 }})
-
-   **Portable Version**  
-   [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>32bit Portable</span></span>]({{ site.dl_zip_32 }})
-   [<span class="site-masthead__button"><i class="fas fa-download"></i>&nbsp;<span>64bit Portable</span></span>]({{ site.dl_zip_64 }})
-   <br>
-
+- お好みに合ったタイプの最新版を[Downlodsページ]({{ site.url }}/ja/downloads)からダウンロードし、インストールしてください。
 - インストールし、win-vind.exeを実行します。
-
 - タスクトレイにアイコンが表示されていれば適切に動作しています。
    <p align="center">
    <img src="{{ site.url }}/imgs/taskbar.jpg" width=500 >  

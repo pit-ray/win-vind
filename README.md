@@ -12,7 +12,6 @@
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml/badge.svg" /> </a>
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml/badge.svg?branch=master" /></a>
     <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml/badge.svg" /></a>
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/auto_release.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/auto_release.yml/badge.svg" /></a>
     <br>
     <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/badge/chocolatey-supported-blue" /></a>
     <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/pit-ray/win-vind"><img src="https://img.shields.io/badge/winget-supported-blue" /></a>
@@ -61,12 +60,12 @@ $ winget install win-vind
 ```
 
 ### Installer Version
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_32bit.exe.zip">setup_win-vind_v4.2.0_32bit.exe</a>
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_64bit.exe.zip">setup_win-vind_v4.2.0_64bit.exe</a>
+- [win-vind_4.2.1_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_32bit_installer.zip)
+- [win-vind_4.2.1_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_64bit_installer.zip)
 
 ### Portable Version
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_32bit.zip">win-vind_v4.2.0_32bit.zip</a>  
-- <a href="https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_64bit.zip">win-vind_v4.2.0_64bit.zip</a> 
+- [win-vind_4.2.1_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_32bit_portable.zip)
+- [win-vind_4.2.1_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_64bit_portable.zip)
 
 
 ## Usage

@@ -43,10 +43,10 @@ links:
       icon: comments
       url: https://github.com/pit-ray/win-vind/discussions
 
-dl_ins_32: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_32bit.exe.zip
-dl_zip_32: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_32bit.zip
-dl_ins_64: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/setup_win-vind_v4.2.0_64bit.exe.zip
-dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v4.2.0/win-vind_v4.2.0_64bit.zip
+dl_ins_32: https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_32bit_installer.zip
+dl_zip_32: https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_32bit_portable.zip
+dl_ins_64: https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_64bit_installer.zip
+dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v4.2.1/win-vind_4.2.1_64bit_portable.zip
 
 ui:
   mode: 'light' # 'auto', 'dark', 'light'

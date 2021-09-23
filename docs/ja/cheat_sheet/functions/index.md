@@ -135,16 +135,16 @@ version: 4.2.0
 
 |ID|機能|
 |:---:|:---|
-|**makedir**|Create a directory. If you call it with a relative path such as `:mkdir foo`, it creates it in the explorer directory. If no explorer is found, it creates it in `~/Desktop/foo`. If you call it with an absolute path like `:mkdir C:/Users/You/Desktop/bar`, it will create a directory along the path, but not recursively.|
+|**makedir**|`:mkdir foo`のように相対パスで呼び出すと、選択しているエクスプローラのディレクトリに`foo`ディレクトリを作成します。エクスプローラが見つからない場合には、`~/Desktop/foo`に作成されます。また、`:mkdir C:/Users/You/Desktop/bar`のように絶対パスで呼び出すと、パスに沿ってディレクトリが作成されますが、再帰的には生成されません。|
 
 ### プロセス
 
 |ID|機能|
 |:---:|:---|
-|**execute**|Open file with the associated application. It is wrapper of **ShellExecute**. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`.|
-|**exit_config_gui**|Exit win-vind|
-|**start_external**|Start an external application. This environment variable is dependent on the application specified in the shell option. By appending `;` at the end, it keeps the console window without closing immediately. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
-|**start_shell**|Start a terminal. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
+|**execute**|関連付けられたアプリケーションでファイルを開きます。これは、有名なWindows APIである**ShellExecute**のラッパで、エクスプローラでダブルクリックしたのと同じふるまいをします。そのため、任意の形式ののファイルやURLを開くことができます。例えば、`:e ~/.vimrc`や`:e https://www.google.com`などのように使います。|
+|**exit_config_gui**|win-vindを終了する|
+|**start_external**|外部アプリケーションを起動します。環境変数は、`shell`オプションで指定したアプリケーションに依存します。最後に`;`をつけることで、コンソールウィンドウをすぐに閉じないようにします。エクスプローラのウィンドウを選択している場合には、そのディレクトリが現在ディレクトリになります。|
+|**start_shell**|ターミナルを起動します。エクスプローラのウィンドウを選択している場合には、そのディレクトリが現在ディレクトリになります。|
 
 ### オプション
 
@@ -214,27 +214,27 @@ version: 4.2.0
 
 |ID|機能|
 |:---:|:---|
-|**change_char**|Change Characters|
-|**change_highlight_text**|Change highlighted texts|
-|**change_line**|Change Lines|
-|**change_until_EOL**|Change until EOL|
-|**change_with_motion**|Change texts with motion|
-|**delete_after**|Delete chars after the caret|
-|**delete_before**|Delete chars before the caret|
-|**delete_highlight_text**|Delete highlighted texts|
-|**delete_line**|Delete lines|
-|**delete_line_until_EOL**|Delete texts until end of line|
-|**delete_with_motion**|Delete texts with motion|
-|**join_next_line**|Join a next line|
-|**put_after**|Put texts after the caret|
-|**put_before**|Put texts before the caret|
-|**repeat_last_change**|Repeat last simple change (Dot command)|
-|**replace_char**|Replace a char|
-|**replace_sequence**|Replace モード|
-|**switch_char_case**|Switch char case|
-|**yank_highlight_text**|Yank highlighted texts|
-|**yank_line**|Yank lines|
-|**yank_with_motion**|Yank lines with motion|
+|**change_char**|文字を削除し、Insertモードへ移行|
+|**change_highlight_text**|選択されたテキストを削除し、Insertモードへ移行|
+|**change_line**|行を削除し、Insertモードへ移行|
+|**change_until_EOL**|行末まで削除し、Insertモードへ移行|
+|**change_with_motion**|現在位置からこのコマンド直後に移動した位置までを削除し、Insertモードへ移行|
+|**delete_after**|キャレットの次の文字を削除|
+|**delete_before**|キャレットの前の文字を削除|
+|**delete_highlight_text**|選択されたテキストを削除|
+|**delete_line**|行を削除|
+|**delete_line_until_EOL**|行末まで削除|
+|**delete_with_motion**|現在位置からこのコマンド直後に移動した位置までを削除|
+|**join_next_line**|次の行を現在の行の行末に移動|
+|**put_after**|キャレットの次の位置にテキストを貼り付け|
+|**put_before**|キャレットの前の位置にテキストを貼り付け|
+|**repeat_last_change**|最後の変更を繰り返す(ドットコマンド)|
+|**replace_char**|文字を置換|
+|**replace_sequence**|置換モード|
+|**switch_char_case**|大文字と小文字を入れ替える|
+|**yank_highlight_text**|選択されたテキストをコピー|
+|**yank_line**|行をコピー|
+|**yank_with_motion**|現在位置からこのコマンド直後に移動した位置までをコピー|
 
 
 <br>

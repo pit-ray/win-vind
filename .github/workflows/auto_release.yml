@@ -78,7 +78,7 @@ jobs:
         $WINGET_PACK_32="https://github.com/pit-ray/win-vind/releases/download/v${VERSION}/setup_win-vind_${VERSION}_32bit.exe"
         $WINGET_PACK_64="https://github.com/pit-ray/win-vind/releases/download/v${VERSION}/setup_win-vind_${VERSION}_64bit.exe"
         echo "update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind"
-        # ./wingetcreate.exe update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind
+        ./wingetcreate.exe update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind
 
     - name: (GitHub) Create release and submit assets
       uses: softprops/action-gh-release@v1

@@ -6,6 +6,6 @@
 
 cd choco
 choco pack
-@rem choco push win-vind.%1.nupkg --source https://push.chocolatey.org/
+choco push win-vind.%1.nupkg --source https://push.chocolatey.org/
 cd ..
 powershell Compress-Archive -Path "choco/*" -DestinationPath "choco/win-vind_%1_chocolatey_package_source.zip"

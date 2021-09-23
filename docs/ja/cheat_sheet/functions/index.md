@@ -150,22 +150,22 @@ version: 4.2.0
 
 |ID|機能|
 |:---:|:---|
-|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
-|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
+|**disable_targeting_of_dedicate_to_window**|ターゲットを無効(Dedicate to One Window)|
+|**enable_targeting_of_dedicate_to_window**|ターゲットを有効(Dedicate to One Window)|
 
 ### システムコマンド
 
 |ID|機能|
 |:---:|:---|
-|**system_command_comclear**|System Command comclear|
-|**system_command_command**|System Command command|
-|**system_command_delcommand**|System Command delcommand|
-|**system_command_map**|System Command map|
-|**system_command_mapclear**|System Command mapclear|
-|**system_command_noremap**|System Command noremap|
-|**system_command_set**|System Command set|
-|**system_command_source**|System Command source|
-|**system_command_unmap**|System Command unmap|
+|**system_command_comclear**|システムコマンド comclear|
+|**system_command_command**|システムコマンド command|
+|**system_command_delcommand**|システムコマンド delcommand|
+|**system_command_map**|システムコマンド map|
+|**system_command_mapclear**|システムコマンド mapclear|
+|**system_command_noremap**|システムコマンド noremap|
+|**system_command_set**|システムコマンド set|
+|**system_command_source**|システムコマンド source|
+|**system_command_unmap**|システムコマンド unmap|
 
 
 ### Vimエミュレーション
@@ -176,11 +176,11 @@ version: 4.2.0
 
 |ID|機能|
 |:---:|:---|
-|**to_insert_BOL**|Insert to begin of line|
-|**to_insert_EOL**|Append end of line|
-|**to_insert_append**|Append after a caret|
-|**to_insert_nlabove**|Begin new line above a caret|
-|**to_insert_nlbelow**|Begin new line below a caret|
+|**to_insert_BOL**|行頭に挿入|
+|**to_insert_EOL**|行末に追加|
+|**to_insert_append**|キャレットの後ろに追加|
+|**to_insert_nlabove**|キャレットの上に行を挿入|
+|**to_insert_nlbelow**|キャレットの下に行を追加|
 
 <br>
 
@@ -188,14 +188,14 @@ version: 4.2.0
 
 |ID|機能|
 |:---:|:---|
-|**move_caret_down**|Move the caret down|
-|**move_caret_left**|Move the caret to left|
-|**move_caret_nonblank_word_backward**|Backward with WORDS|
-|**move_caret_nonblank_word_forward**|Forward with WORDS|
-|**move_caret_right**|Move the caret to right|
-|**move_caret_up**|Move the caret up|
-|**move_caret_word_backward**|Backward with words|
-|**move_caret_word_forward**|Forward with words|
+|**move_caret_down**|キャレットを下へ移動|
+|**move_caret_left**|キャレットを左へ移動|
+|**move_caret_nonblank_word_backward**|キャレットをN-WORDだけ戻す|
+|**move_caret_nonblank_word_forward**|キャレットをN-WORD先へ進める|
+|**move_caret_right**|キャレットを右へ移動|
+|**move_caret_up**|キャレットを上へ移動|
+|**move_caret_word_backward**|キャレットをN-wordだけ戻す|
+|**move_caret_word_forward**|キャレットをN-word先へ進める|
 
 <br>
 
@@ -203,10 +203,10 @@ version: 4.2.0
 
 |ID|機能|
 |:---:|:---|
-|**jump_caret_to_BOF**|Jump the caret to BOF|
-|**jump_caret_to_BOL**|Jump the caret to begin of line|
-|**jump_caret_to_EOF**|Jump the caret to EOF|
-|**jump_caret_to_EOL**|Jump the caret to end of line|
+|**jump_caret_to_BOF**|ファイルの先頭にキャレットを移動|
+|**jump_caret_to_BOL**|行頭にキャレットを移動|
+|**jump_caret_to_EOF**|ファイルの末尾にキャレットを移動|
+|**jump_caret_to_EOL**|行末にキャレットを移動|
 
 <br>
 

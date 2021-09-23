@@ -68,7 +68,7 @@ jobs:
 
     - name: (Chocolatey) Package the installer as nupkg and push the package into chocolatey.org
       run: echo "${{steps.version.outputs.VERSION}}"
-      # run: ./tools/push_chocolatey_package.bat ${{steps.version.outputs.VERSION}}
+      run: ./tools/push_chocolatey_package.bat ${{steps.version.outputs.VERSION}}
 
     - name: (winget) Get winget-create
       run: iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe

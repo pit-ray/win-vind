@@ -23,5 +23,4 @@ release_64
 replace.vim
 temp
 venv
-win32gui
 winget

@@ -42,7 +42,10 @@ namespace vind
 
             key = util::A2a(key) ;
 
-            if(val.find_first_not_of("0123456789.") == std::string::npos) {
+            if(val.empty()) {
+                gparams::set(key, val) ;
+            }
+            else if(val.find_first_not_of("0123456789.") == std::string::npos) {
                 gparams::set(key, std::stod(val)) ;
             }
             else {

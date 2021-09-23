@@ -6,7 +6,7 @@ order: 0
 icon: map-signs
 translation: ja
 translators: pit-ray
-version: 4.2.0
+version: 4.2.1
 disable_anchors: true
 ---
 

@@ -5,7 +5,7 @@ nav: オプションとパラメータ
 disable_anchors: true
 translation: ja
 translators: pit-ray
-version: 4.2.0
+version: 4.2.1
 show_in_menu: false
 ---
 

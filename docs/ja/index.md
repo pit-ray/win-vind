@@ -8,7 +8,7 @@ show_in_menu: false
 icon: home
 translation: ja
 translators: pit-ray
-version: 4.2.0
+version: 4.2.1
 description: Vim Key Binder for Windows
 ---
 

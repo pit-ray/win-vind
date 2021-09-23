@@ -13,8 +13,8 @@ translations:
     label: 日本語
 
 project:
-  version: 4.2.0
-  download_url: https://github.com/pit-ray/win-vind/releases/latest
+  version: 4.2.1
+  download_url: downloads
   download_text: Download
 
 license:

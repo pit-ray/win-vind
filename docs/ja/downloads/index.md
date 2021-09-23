@@ -6,7 +6,7 @@ order: 1
 icon: download
 translation: ja
 translator: pit-ray
-version: 4.2.0
+version: 4.2.1
 disable_anchors: true
 ---
 

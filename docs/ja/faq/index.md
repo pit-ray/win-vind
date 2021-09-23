@@ -6,7 +6,7 @@ nav: よくある質問
 order: 3
 translation: ja
 translator: pit-ray
-version: 4.2.0
+version: 4.2.1
 icon: question
 ---
 

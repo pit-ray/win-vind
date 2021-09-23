@@ -76,8 +76,8 @@ jobs:
     - name: (winget) Update the manifest and submit
       run: |
         $VERSION="${{steps.version.outputs.VERSION}}"
-        $WINGET_PACK_32="https://github.com/pit-ray/win-vind/releases/download/v$VERSION/setup_win-vind_$VERSION_32bit.exe"
-        $WINGET_PACK_64="https://github.com/pit-ray/win-vind/releases/download/v$VERSION/setup_win-vind_$VERSION_64bit.exe"
+        $WINGET_PACK_32="https://github.com/pit-ray/win-vind/releases/download/v${VERSION}/setup_win-vind_${VERSION}_32bit.exe"
+        $WINGET_PACK_64="https://github.com/pit-ray/win-vind/releases/download/v${VERSION}/setup_win-vind_${VERSION}_64bit.exe"
         echo "update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind"
         # ./wingetcreate.exe update -u $WINGET_PACK_32 $WINGET_PACK_64 -v $VERSION -t ${{secrets.GITHUB_TOKEN}} -s pit-ray.win-vind
 

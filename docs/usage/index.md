@@ -99,7 +99,7 @@ The following commands are supported. By the way, `{` and `}` themselves are not
 |`delcommand {in-cmd}`|Remove the command corresponding to the `{in-cmd}`.|
 |`comclear`|delete all commands.|
 
-`{mode}` is the [Mode Prefix]({{ site.url }}/cheet_sheet/keywords/#mode-prefix). And only **UTF-8** format is supported for `.vindrc`.  
+`{mode}` is the [Mode Prefix]({{ site.url }}/cheet_sheat/keywords/#mode-prefix). And only **UTF-8** format is supported for `.vindrc`.  
 
 
 Let's do the last tutorial!  

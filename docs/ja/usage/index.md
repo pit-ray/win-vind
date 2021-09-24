@@ -99,7 +99,7 @@ disable_anchors: true
 |`comclear`|すべてのコマンドを削除します。|
 
   
-`{mode}`は、[モード接頭辞]({{ site.url }}/ja/cheat_sheat/keywords/#モード接頭辞)です。また、`.vindrc`は**UTF-8**フォーマットのみがサポートされています。
+`{mode}`は、[モード接頭辞]({{ site.url }}/ja/cheat_sheet/keywords/#モード接頭辞)です。また、`.vindrc`は**UTF-8**フォーマットのみがサポートされています。
 
 
 それでは最後のチュートリアルを行いましょう。

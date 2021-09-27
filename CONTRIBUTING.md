@@ -3,7 +3,45 @@
 Patches are welcome in whatever form. However, you must agree that your code will be provided by MIT License.
 
 ### To Documentation
-You can contribute to the [homepage](https://pit-ray.github.io/win-vind/) by sending pull-request to the `docs` directory if there is an error or a better way to describe the content. [Jekyll](https://jekyllrb.com/) is used as the framework, and can be written in markdown format. We also use [jekyll-docs-theme](https://github.com/allejo/jekyll-docs-theme) as a theme, which allows extended expressions.
+You can contribute to the [homepage](https://pit-ray.github.io/win-vind/) by sending pull-request to the `docs` directory if there is an error, a better way to describe the content, or writing a translation. [Jekyll](https://jekyllrb.com/) is used as the framework, and can be written in markdown format. We also use [jekyll-docs-theme](https://github.com/allejo/jekyll-docs-theme) as a theme, which allows extended expressions.  
+
+#### Add translation of document.
+The win-vind documentation has the potential to easily add manual translation and manage continuously. A Japanese translation is available as a sample in [here](docs/ja). Please use it as a reference when translating. The following are the steps for translation.  
+
+1. Change the current directory to `docs`.
+
+1. Create a translation directory (e.g. `fr`). 
+   ```sh
+   $ mkdir fr
+   ```
+
+1. Copy the original page in the root into it.
+   ```sh
+   $ cp index.md fr ; cp -r cheat_sheet fr ; cp -r downloads fr ; cp -r faq fr ; cp -r usage fr ;
+   ```
+
+1. Add the following to the headers.
+   |key|Notes|
+   |:---:|:---|
+   |translation|Specify the name of the directory you just created. This will be used for language selection.|
+   |translators|Write your GitHub id. It will appear at the bottom of the page. If more than one person translates the document due to revisions, give them in list form.|
+   |version|Write the version that corresponds to the document. If a newer version than this is released, it will indicate that the content may not be up to date.|
+
+   Like this.
+
+   ```md
+   ---
+   translation: fr
+   translators:
+     - foo
+     - bar
+   version: 4.2.2
+   ---
+
+   ```
+
+1. All that is left to do is to translate it, and use DeepL to check the content during the pull-request.  
+
 
 ### To Development
 You can contribute to development by sending pull requests to the `master` branch to fix or add features, add test cases, modify typos and expressions, improve [security](https://github.com/pit-ray/win-vind/security/code-scanning). When adding new code, please consider adding test cases in the test directory to satisfy branch coverage. [Codacy](https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&utm_medium=referral&utm_content=pit-ray/win-vind&utm_campaign=Badge_Grade) and [Travis](https://travis-ci.com/pit-ray/win-vind) and [Actions](https://github.com/pit-ray/win-vind/actions) run by pushing, and [Coverity](https://scan.coverity.com/projects/pit-ray-win-vind) checks programmatic resources at releasing as Continuous Integration. If you want to discuss development, please create a thread in [Discussion](https://github.com/pit-ray/win-vind/discussions) with **#Development** category.

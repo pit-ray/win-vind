@@ -47,9 +47,20 @@
 {% if page.translators %}
     <br>
 
-    <div>This document has been translated by
+    <div><span>This document has been translated by</span>
     {% for name in page.translators %}
-        <a href="https://github.com/{{ name }}">{{ name }}</a>
+            {% if name != page.translators.first %}
+            {% if page.translators.size == 2 %}
+            <span> and </span>
+            {% else %}
+                <span>, </span>
+                {% if name == page.translators.last %}
+                    <span>and </span>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        <span><a href="https://github.com/{{ name }}">{{name}}</a></span>
     {% endfor %}
-    .</div>
+    <span>.</span></div>
 {% endif %}

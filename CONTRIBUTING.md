@@ -40,6 +40,13 @@ The win-vind documentation has the potential to easily add manual translation an
 
    ```
 
+1. Add a label to [_config.yml](docs/_config.yml) to be displayed in the language selection.
+   ```yml
+   - translations:
+     - id: fr
+       label: Français
+   ```
+
 1. All that is left to do is to translate it, and use DeepL to check the content during the pull-request.  
 
 

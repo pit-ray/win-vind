@@ -35,7 +35,7 @@ The win-vind documentation has the potential to easily add manual translation an
    translators:
      - foo
      - bar
-   version: 4.2.2
+   version: 4.2.
    ---
 
    ```

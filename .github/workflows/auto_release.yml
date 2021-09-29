@@ -16,11 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install NSIS
+    - name: Install dpendencies
       run: |
-        Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-        scoop bucket add extras
-        scoop install nsis
+        choco install -y nsis
+        choco install -y checksum
 
     - name: Get the version
       id: version
@@ -42,7 +41,6 @@ jobs:
     - name: Build x64 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 64
 
-
     - name: Setup x86 MSVC
       uses: ilammy/msvc-dev-cmd@v1
       with:
@@ -56,9 +54,6 @@ jobs:
 
     - name: Build x86 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32
-
-    - name: Install checksum
-      run: choco install -y checksum
 
     - name: (Chocolatey) Setup API
       run: choco apikey --key ${{secrets.CHOCOLATEY_API_KEY}} --source https://push.chocolatey.org/

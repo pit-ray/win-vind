@@ -1,7 +1,7 @@
 ---
 name: Ask question
 about: Ask any questions you have.
-title: "[Question]"
+title: "[Question] _REPLACE_WITH_TITLE_"
 labels: ''
 assignees: ''
 

@@ -39,7 +39,6 @@ The basic concept is the same as Vim, but there are two **Normal Mode** and two 
 <p align="center">Default mode layer overview</p>
 </p>
 
-The two groups are GUI mode and Editor mode. 
 There are two groups: GUI mode and Editor mode.
 The former allows us to control windows and mouse cursor, etc. The latter allows us to emulate Vim in input forms of web pages, Microsoft Office Word, etc.  
 

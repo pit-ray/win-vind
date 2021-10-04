@@ -5,7 +5,8 @@ nav: ダウンロード
 order: 1
 icon: download
 translation: ja
-translator: pit-ray
+translators:
+  - pit-ray
 version: 4.2.1
 disable_anchors: true
 ---

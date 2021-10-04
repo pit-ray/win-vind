@@ -5,7 +5,8 @@ nav: 使い方
 order: 0
 icon: map-signs
 translation: ja
-translators: pit-ray
+translators:
+  - pit-ray
 version: 4.2.1
 disable_anchors: true
 ---

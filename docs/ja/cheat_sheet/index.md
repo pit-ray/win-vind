@@ -5,7 +5,8 @@ nav: チートシート
 order: 2
 icon: scroll
 translation: ja
-translators: pit-ray
+translators:
+  - pit-ray
 version: 4.2.1
 disable_anchors: true
 ---

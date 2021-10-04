@@ -5,7 +5,8 @@ nav: すべての機能
 show_in_menu: false
 disable_anchors: true
 translation: ja
-translators: pit-ray
+translators:
+  - pit-ray
 version: 4.2.1
 ---
 

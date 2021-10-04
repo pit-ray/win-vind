@@ -7,7 +7,8 @@ nav: ホーム
 show_in_menu: false
 icon: home
 translation: ja
-translators: pit-ray
+translators:
+  - pit-ray
 version: 4.2.1
 description: Vim Key Binder for Windows
 ---

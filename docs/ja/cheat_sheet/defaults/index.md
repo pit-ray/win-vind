@@ -4,7 +4,8 @@ show_in_menu: false
 disable_anchors: true
 title: デフォルトのマッピング - win-vind
 translation: ja
-translators: pit-ray
+translators:
+  - pit-ray
 version: 4.2.1
 nav: デフォルトのマッピング
 ---

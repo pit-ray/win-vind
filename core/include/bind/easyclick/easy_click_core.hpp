@@ -25,7 +25,9 @@ namespace vind
         EasyClickCore& operator=(EasyClickCore&&) ;
 
         void scan_ui_objects(HWND hwnd) const ;
-        void create_matching_loop(KeyCode sendkey=KEYCODE_UNDEFINED) const ;
+        void create_matching_loop(
+                KeyCode sendkey=KEYCODE_UNDEFINED,
+                unsigned int repeat_num=1) const ;
 
         void reconstruct() ;
     } ;

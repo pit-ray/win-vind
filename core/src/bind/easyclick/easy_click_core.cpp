@@ -7,6 +7,7 @@
 #include "bind/easyclick/ec_hints.hpp"
 #include "bind/easyclick/input_hinter.hpp"
 #include "bind/easyclick/ui_scanner.hpp"
+#include "bind/safe_repeater.hpp"
 #include "g_params.hpp"
 #include "io/mouse.hpp"
 #include "key/key_absorber.hpp"
@@ -156,7 +157,9 @@ namespace vind
         convert_hints_to_strings(pimpl->hints_, pimpl->strhints_) ;
     }
 
-    void EasyClickCore::create_matching_loop(KeyCode sendkey) const {
+    void EasyClickCore::create_matching_loop(
+            KeyCode sendkey,
+            unsigned int repeat_num) const {
         if(pimpl->positions_.empty() || pimpl->hints_.empty()) {
             return ;
         }
@@ -191,7 +194,9 @@ namespace vind
 
         if(auto pos = ft.get()) {
             if(SetCursorPos(pos->x(), pos->y())) {
-                mouse::click(sendkey) ;
+                repeater::safe_for(repeat_num, [sendkey] {
+                    mouse::click(sendkey) ;
+                }) ;
             }
         }
 

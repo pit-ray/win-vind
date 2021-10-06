@@ -29,17 +29,17 @@ namespace vind
     EasyClickLeft::EasyClickLeft(EasyClickLeft&&)            = default ;
     EasyClickLeft& EasyClickLeft::operator=(EasyClickLeft&&) = default ;
 
-    void EasyClickLeft::sprocess() const {
+    void EasyClickLeft::sprocess(unsigned int repeat_num) const {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
         }
         pimpl->core_.scan_ui_objects(hwnd) ;
-        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT) ;
+        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, repeat_num) ;
     }
     void EasyClickLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
+            sprocess(parent_lgr.get_head_num()) ;
         }
     }
     void EasyClickLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
@@ -62,17 +62,17 @@ namespace vind
     EasyClickRight::EasyClickRight(EasyClickRight&&)            = default ;
     EasyClickRight& EasyClickRight::operator=(EasyClickRight&&) = default ;
 
-    void EasyClickRight::sprocess() const {
+    void EasyClickRight::sprocess(unsigned int repeat_num) const {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
         }
         pimpl->core_.scan_ui_objects(hwnd) ;
-        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT) ;
+        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, repeat_num) ;
     }
     void EasyClickRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
+            sprocess(parent_lgr.get_head_num()) ;
         }
     }
     void EasyClickRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
@@ -95,17 +95,17 @@ namespace vind
     EasyClickMid::EasyClickMid(EasyClickMid&&)            = default ;
     EasyClickMid& EasyClickMid::operator=(EasyClickMid&&) = default ;
 
-    void EasyClickMid::sprocess() const {
+    void EasyClickMid::sprocess(unsigned int repeat_num) const {
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
         }
         pimpl->core_.scan_ui_objects(hwnd) ;
-        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID) ;
+        pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, repeat_num) ;
     }
     void EasyClickMid::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
+            sprocess(parent_lgr.get_head_num()) ;
         }
     }
     void EasyClickMid::sprocess(const CharLogger& UNUSED(parent_lgr)) const {

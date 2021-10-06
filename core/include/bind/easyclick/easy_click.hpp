@@ -27,7 +27,7 @@ namespace vind
         EasyClickLeft(EasyClickLeft&&) ;
         EasyClickLeft& operator=(EasyClickLeft&&) ;
 
-        void sprocess() const ;
+        void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
@@ -49,7 +49,7 @@ namespace vind
         EasyClickRight(EasyClickRight&&) ;
         EasyClickRight& operator=(EasyClickRight&&) ;
 
-        void sprocess() const ;
+        void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 
@@ -71,7 +71,7 @@ namespace vind
         EasyClickMid(EasyClickMid&&) ;
         EasyClickMid& operator=(EasyClickMid&&) ;
 
-        void sprocess() const ;
+        void sprocess(unsigned int repeat_num=1) const ;
         void sprocess(NTypeLogger& parent_lgr) const ;
         void sprocess(const CharLogger& parent_lgr) const ;
 

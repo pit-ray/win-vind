@@ -9,9 +9,9 @@ on:
       - '!README.md'
       - '!CONTRIBUTING.md'
       - '!docs/**'
-      - 'core'
-      - 'coregui'
-      - '.github'
+      - 'core/**'
+      - 'coregui/**'
+      - '.github/**'
 
   pull_request:
     branches: [ master ]

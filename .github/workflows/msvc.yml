@@ -9,6 +9,10 @@ on:
       - '!README.md'
       - '!CONTRIBUTING.md'
       - '!docs/**'
+      - 'core'
+      - 'coregui'
+      - '.github'
+
   pull_request:
     branches: [ master ]
 

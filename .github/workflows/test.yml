@@ -11,6 +11,7 @@ on:
       - '!docs/**'
       - 'core'
       - 'coregui'
+      - 'test'
       - '.github'
 
   pull_request:

@@ -7,6 +7,7 @@
 #include "util/winwrap.hpp"
 
 #include "key/char_logger.hpp"
+#include "key/ntype_logger.hpp"
 #include "opt/vcmdline.hpp"
 #include "parser/rc_parser.hpp"
 
@@ -75,7 +76,10 @@ namespace vind
         }
     }
 
-    void Execute::sprocess(NTypeLogger& UNUSED(parent_lgr)) {
+    void Execute::sprocess(NTypeLogger& parent_lgr) {
+        if(!parent_lgr.is_long_pressing()) {
+            sprocess(path::RC()) ;
+        }
     }
 
     void Execute::sprocess(const CharLogger& parent_lgr) {
@@ -83,7 +87,7 @@ namespace vind
 
         auto [cmd, arg] = rcparser::divide_cmd_and_args(str) ;
         if(arg.empty()) {
-            OpenNewWindow::sprocess() ;
+            sprocess(path::RC()) ;
             return ;
         }
 

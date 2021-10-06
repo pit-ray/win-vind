@@ -11,7 +11,7 @@ on:
       - '!docs/**'
       - 'core/**'
       - 'coregui/**'
-      - '.github/**
+      - '.github/**'
 
   pull_request:
     branches: [ master ]

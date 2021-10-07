@@ -115,8 +115,6 @@ The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page 
 ## Contribute
 If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).
 
-<br>
-
 ## Related Pages
 - <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
 - <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  

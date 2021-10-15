@@ -112,7 +112,7 @@ inoremap <f18> window_resizer
 The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keywords/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/defaults">Default Mappings</a>. 
 
 ## Known Issues
-- EasyClick does not seem to work properly for some applications on older Windows 10 before 1803. The cause is not known. (#11)
+- EasyClick does not seem to work properly for some applications on older Windows 10 before 1803. The cause is not known. ([#11](https://github.com/pit-ray/win-vind/issues/11))
 
 ## Contribute
 If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).

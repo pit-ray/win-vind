@@ -6,10 +6,12 @@
 
 #include <iostream>
 #include <string>
+#include <tuple>
 
 #include "fakes/util_fake_string.hpp"
 
 #include "fakes/coreio_fake_path.hpp"
+
 
 namespace vind
 {
@@ -19,6 +21,22 @@ namespace vind
         }
 
         void create_directory(const std::string&) {
+        }
+
+        std::tuple<DWORD, DWORD, DWORD> get_Windows_versions() {
+            return {10, 0, 22000} ;
+        }
+
+        std::string get_Windows_edition(DWORD, DWORD) {
+            return "Windows 10" ;
+        }
+
+        std::string get_Windows_architecture() noexcept {
+            return "x64" ;
+        }
+
+        std::string get_Windows_display_version() {
+            return "1903" ;
         }
     }
 }

@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.0.0)
 
 string(REPLACE "." "," FILE_VERSION "${PROJECT_VERSION}")
 configure_file(
-    ${PROJECT_SOURCE_DIR}/res/build_assets/version.hpp.in
-    ${PROJECT_SOURCE_DIR}/coregui/include/version.hpp
-    NEWLINE_STYLE LF
-    @ONLY
-)
-
-configure_file(
     ${PROJECT_SOURCE_DIR}/res/build_assets/resource.rc.in
     ${PROJECT_SOURCE_DIR}/res/build_assets/resource.rc
     NEWLINE_STYLE LF

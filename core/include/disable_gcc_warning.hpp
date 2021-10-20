@@ -4,6 +4,7 @@
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4702)
 #pragma warning(disable : 4273)
+#pragma warning(disable : 4005)
 
 #else
 #pragma warning(disable : 4068)

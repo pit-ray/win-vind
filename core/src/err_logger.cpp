@@ -1,5 +1,6 @@
 #include "err_logger.hpp"
 #include "path.hpp"
+#include "version.hpp"
 
 #include <unordered_map>
 #include <windows.h>
@@ -30,7 +31,7 @@ namespace
     std::ofstream g_init_msg_stream ;
     std::ofstream g_msg_stream ;
 
-    inline void remove_files_over(
+    void remove_files_over(
             const std::string& log_dir,
             std::string pattern_withex,
             std::size_t num) {
@@ -110,6 +111,35 @@ namespace vind
              //If the log files exists over five, remove old files.
             remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;
             remove_files_over(log_dir, "message_*.log", KEEPING_LOG_COUNT) ;
+
+            // Export system infomation for handling issues.
+            constexpr auto align_width_of_header = 15 ;
+
+            g_error_stream << "========== System Infomation ==========\n" ;
+            g_error_stream << "[Windows]\n" ;
+
+            auto [major, minor, build] = util::get_Windows_versions() ;
+
+            g_error_stream << std::right << std::setw(align_width_of_header) << "Edition: " ;
+            g_error_stream << std::left << std::setw(0) << util::get_Windows_edition(major, minor) << std::endl ;
+
+            g_error_stream << std::right << std::setw(align_width_of_header) << "Version: " ;
+            g_error_stream << std::left << std::setw(0) << util::get_Windows_display_version() << std::endl ;
+
+            g_error_stream << std::right << std::setw(align_width_of_header) << "Build Numbers: " ;
+            g_error_stream << std::left << std::setw(0) << major << "." << minor << "." << build << std::endl ;
+
+            g_error_stream << std::right << std::setw(align_width_of_header) << "Architecture: " ;
+            g_error_stream << std::left << std::setw(0) << util::get_Windows_architecture() << std::endl ;
+
+            g_error_stream << std::endl ;
+
+            g_error_stream << "[win-vind]\n" ;
+            g_error_stream << std::right << std::setw(align_width_of_header) << "Version: " ;
+            g_error_stream << std::left << std::setw(0) << WIN_VIND_VERSION << std::endl ;
+            g_error_stream << std::endl ;
+
+            g_error_stream << "=======================================\n" ;
         }
 
         void error(const char* msg, const char* scope) {

@@ -7,6 +7,10 @@
 #include <sstream>
 #include <unordered_set>
 
+#include "disable_gcc_warning.hpp"
+#include <ntstatus.h>
+#include "enable_gcc_warning.hpp"
+
 #include <psapi.h>
 
 #if defined(DEBUG)
@@ -251,6 +255,368 @@ namespace vind
             }
 
             return pos ;
+        }
+
+
+        std::string get_Windows_edition(
+                DWORD major_version,
+                DWORD minor_version) {
+            DWORD product_type ;
+            if(!GetProductInfo(
+                        major_version, minor_version,
+                        0, 0, &product_type)) {
+                throw RUNTIME_EXCEPT("Could not get the product infomation of Windows.") ;
+            }
+
+            switch(product_type) {
+                case PRODUCT_BUSINESS:
+                    return "Business" ;
+
+                case PRODUCT_BUSINESS_N:
+                    return "Business N" ;
+
+                case PRODUCT_CLUSTER_SERVER:
+                    return "HPC Edition" ;
+
+                case PRODUCT_CLUSTER_SERVER_V:
+                    return "Server Hyper Core V" ;
+
+                case PRODUCT_CORE:
+                    return "Windows 10 Home" ;
+
+                case PRODUCT_CORE_COUNTRYSPECIFIC:
+                    return "Windows 10 Home China" ;
+
+                case PRODUCT_CORE_N:
+                    return "Windows 10 Home N" ;
+
+                case PRODUCT_CORE_SINGLELANGUAGE:
+                    return "Windows 10 Home Single Language" ;
+
+                case PRODUCT_DATACENTER_EVALUATION_SERVER:
+                    return "Server Datacenter (evaluation installation)" ;
+
+                case PRODUCT_DATACENTER_SERVER:
+                    return "Server Datacenter (full installation)" ;
+
+                case PRODUCT_DATACENTER_SERVER_CORE:
+                    return "Server Datacenter (core installation)" ;
+
+                case PRODUCT_DATACENTER_SERVER_CORE_V:
+                    return "Server Datacenter without Hyper-V (core installation)" ;
+
+                case PRODUCT_DATACENTER_SERVER_V:
+                    return "Server Datacenter without Hyper-V (full installation)" ;
+
+                case PRODUCT_EDUCATION:
+                    return "Windows 10 Education" ;
+
+                case PRODUCT_EDUCATION_N:
+                    return "Windows 10 Education N" ;
+
+                case PRODUCT_ENTERPRISE:
+                    return "Windows 10 Enterprise" ;
+
+                case PRODUCT_ENTERPRISE_E:
+                    return "Windows 10 Enterprise E" ;
+
+                case PRODUCT_ENTERPRISE_EVALUATION:
+                    return "Windows 10 Enterprise Evaluation" ;
+
+                case PRODUCT_ENTERPRISE_N:
+                    return "Windows 10 Enterprise N" ;
+
+                case PRODUCT_ENTERPRISE_N_EVALUATION:
+                    return "Windows 10 Enterprise N Evaluation" ;
+
+                case PRODUCT_ENTERPRISE_S:
+                    return "Windows 10 Enterprise 2015 LTSB" ;
+
+                case PRODUCT_ENTERPRISE_S_EVALUATION:
+                    return "Windows 10 Enterprise 2015 LTSB Evaluation" ;
+
+                case PRODUCT_ENTERPRISE_S_N:
+                    return "Windows 10 Enterprise 2015 LTSB N" ;
+
+                case PRODUCT_ENTERPRISE_S_N_EVALUATION:
+                    return "Windows 10 Enterprise 2015 LTSB N Evaluation" ;
+
+                case PRODUCT_ENTERPRISE_SERVER:
+                    return "Server Enterprise (full installation)" ;
+
+                case PRODUCT_ENTERPRISE_SERVER_CORE:
+                    return "Server Enterprise (core installation)" ;
+
+                case PRODUCT_ENTERPRISE_SERVER_CORE_V:
+                    return "Server Enterprise without Hyper-V (core installation)" ;
+
+                case PRODUCT_ENTERPRISE_SERVER_IA64:
+                    return "Server Enterprise for Itanium-based Systems" ;
+
+                case PRODUCT_ENTERPRISE_SERVER_V:
+                    return "Server Enterprise without Hyper-V (full installation)" ;
+
+                case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL:
+                    return "Windows Essential Server Solution Additional" ;
+
+                case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC:
+                    return "Windows Essential Server Solution Additional SVC" ;
+
+                case PRODUCT_ESSENTIALBUSINESS_SERVER_MGMT:
+                    return "Windows Essential Server Solution Management" ;
+
+                case PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC:
+                    return "Windows Essential Server Solution Management SVC" ;
+
+                case PRODUCT_HOME_BASIC:
+                    return "Home Basic" ;
+
+                case PRODUCT_HOME_BASIC_N:
+                    return "Home Basic N" ;
+
+                case PRODUCT_HOME_PREMIUM:
+                    return "Home Premium" ;
+
+                case PRODUCT_HOME_PREMIUM_N:
+                    return "Home Premium N" ;
+
+                case PRODUCT_HOME_PREMIUM_SERVER:
+                    return "Windows Home Server 2011" ;
+
+                case PRODUCT_HOME_SERVER:
+                    return "Windows Storage Server 2008 R2 Essentials" ;
+
+                case PRODUCT_HYPERV:
+                    return "Microsoft Hyper-V Server" ;
+
+                case PRODUCT_IOTUAP:
+                    return "Windows 10 IoT Core" ;
+
+                case PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT:
+                    return "Windows Essential Business Server Management Server" ;
+
+                case PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING:
+                    return "Windows Essential Business Server Messaging Server" ;
+
+                case PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY:
+                    return "Windows Essential Business Server Security Server" ;
+
+#if defined(PRODUCT_MOBILE_CORE)
+                case PRODUCT_MOBILE_CORE:
+                    return "Windows 10 Mobile" ;
+#endif
+
+#if defined(PRODUCT_MOBILE_ENTERPRISE)
+                case PRODUCT_MOBILE_ENTERPRISE:
+                    return "Windows 10 Mobile Enterprise" ;
+#endif
+
+                case PRODUCT_MULTIPOINT_PREMIUM_SERVER:
+                    return "Windows MultiPoint Server Premium (full installation)" ;
+
+                case PRODUCT_MULTIPOINT_STANDARD_SERVER:
+                    return "Windows MultiPoint Server Standard (full installation)" ;
+
+                case PRODUCT_PROFESSIONAL:
+                    return "Windows 10 Pro" ;
+
+                case PRODUCT_PROFESSIONAL_N:
+                    return "Windows 10 Pro N" ;
+
+                case PRODUCT_PROFESSIONAL_WMC:
+                    return "Professional with Media Center" ;
+
+                case PRODUCT_SB_SOLUTION_SERVER:
+                    return "Windows Small Business Server 2011 Essentials" ;
+
+                case PRODUCT_SB_SOLUTION_SERVER_EM:
+                    return "Server For SB Solutions EM" ;
+
+                case PRODUCT_SERVER_FOR_SB_SOLUTIONS:
+                    return "Server For SB Solutions" ;
+
+                case PRODUCT_SERVER_FOR_SB_SOLUTIONS_EM:
+                    return "Server For SB Solutions EM" ;
+
+                case PRODUCT_SERVER_FOR_SMALLBUSINESS:
+                    return "Windows Server 2008 for Windows Essential Server Solutions" ;
+
+                case PRODUCT_SERVER_FOR_SMALLBUSINESS_V:
+                    return "Windows Server 2008 without Hyper-V for Windows Essential Server Solutions" ;
+
+                case PRODUCT_SERVER_FOUNDATION:
+                    return "Server Foundation" ;
+
+                case PRODUCT_SMALLBUSINESS_SERVER:
+                    return "Windows Small Business Server" ;
+
+                case PRODUCT_SMALLBUSINESS_SERVER_PREMIUM:
+                    return "Small Business Server Premium" ;
+
+                case PRODUCT_SMALLBUSINESS_SERVER_PREMIUM_CORE:
+                    return "Small Business Server Premium (core installation)" ;
+
+                case PRODUCT_SOLUTION_EMBEDDEDSERVER:
+                    return "Windows MultiPoint Server" ;
+
+                case PRODUCT_STANDARD_EVALUATION_SERVER:
+                    return "Server Standard (evaluation installation)" ;
+
+                case PRODUCT_STANDARD_SERVER:
+                    return "Server Standard (full installation)" ;
+
+                case PRODUCT_STANDARD_SERVER_CORE:
+                    return "Server Standard (core installation)" ;
+
+                case PRODUCT_STANDARD_SERVER_CORE_V:
+                    return "Server Standard without Hyper-V (core installation)" ;
+
+                case PRODUCT_STANDARD_SERVER_V:
+                    return "Server Standard without Hyper-V" ;
+
+                case PRODUCT_STANDARD_SERVER_SOLUTIONS:
+                    return "Server Solutions Premium" ;
+
+                case PRODUCT_STANDARD_SERVER_SOLUTIONS_CORE:
+                    return "Server Solutions Premium (core installation)" ;
+
+                case PRODUCT_STARTER:
+                    return "Starter" ;
+
+                case PRODUCT_STARTER_N:
+                    return "Starter N" ;
+
+                case PRODUCT_STORAGE_ENTERPRISE_SERVER:
+                    return "Storage Server Enterprise" ;
+
+                case PRODUCT_STORAGE_ENTERPRISE_SERVER_CORE:
+                    return "Storage Server Enterprise (core installation)" ;
+
+                case PRODUCT_STORAGE_EXPRESS_SERVER:
+                    return "Storage Server Express" ;
+
+                case PRODUCT_STORAGE_EXPRESS_SERVER_CORE:
+                    return "Storage Server Express (core installation)" ;
+
+                case PRODUCT_STORAGE_STANDARD_EVALUATION_SERVER:
+                    return "Storage Server Standard (evaluation installation)" ;
+
+                case PRODUCT_STORAGE_STANDARD_SERVER:
+                    return "Storage Server Standard" ;
+
+                case PRODUCT_STORAGE_STANDARD_SERVER_CORE:
+                    return "Storage Server Standard (core installation)" ;
+
+                case PRODUCT_STORAGE_WORKGROUP_EVALUATION_SERVER:
+                    return "Storage Server Workgroup (evaluation installation)" ;
+
+                case PRODUCT_STORAGE_WORKGROUP_SERVER:
+                    return "Storage Server Workgroup" ;
+
+                case PRODUCT_STORAGE_WORKGROUP_SERVER_CORE:
+                    return "Storage Server Workgroup (core installation)" ;
+
+                case PRODUCT_ULTIMATE:
+                    return "Ultimate" ;
+
+                case PRODUCT_ULTIMATE_N:
+                    return "Ultimate N" ;
+
+                case PRODUCT_UNDEFINED:
+
+                case PRODUCT_WEB_SERVER:
+                    return "Web Server (full installation)" ;
+
+                case PRODUCT_WEB_SERVER_CORE:
+                    return "Web Server (core installation)" ;
+            }
+
+            return "Unknown" ;
+        }
+
+
+        std::string get_Windows_architecture() noexcept {
+            SYSTEM_INFO sysinfo ;
+            GetNativeSystemInfo(&sysinfo) ;
+
+            switch(sysinfo.wProcessorArchitecture) {
+                case PROCESSOR_ARCHITECTURE_AMD64:
+                    return "x64" ;
+
+#if defined(PROCESSOR_ARCHITECTURE_ARM)
+                case PROCESSOR_ARCHITECTURE_ARM:
+                    return "ARM" ;
+#endif
+
+
+#if defined(PROCESSOR_ARCHITECTURE_ARM64)
+                case PROCESSOR_ARCHITECTURE_ARM64:
+                    return "ARM64" ;
+#endif
+
+
+#if defined(PROCESSOR_ARCHITECTURE_IA64)
+                case PROCESSOR_ARCHITECTURE_IA64:
+                    return "Intel Itanium-based" ;
+#endif
+
+                case PROCESSOR_ARCHITECTURE_INTEL:
+                    return "x86" ;
+            }
+            return "Unknown" ;
+        }
+
+        using RtlGetVersionType = NTSTATUS (WINAPI*)(PRTL_OSVERSIONINFOW) ;
+        std::tuple<DWORD, DWORD, DWORD> get_Windows_versions() {
+            const auto hmodule = LoadLibraryW(L"ntdll.dll") ;
+            if(!hmodule) {
+                throw RUNTIME_EXCEPT("Could not load ntdll.dll to get versions of Windows.") ;
+            }
+
+            // cast to void* once to avoid warnings about type conversion.
+            const auto RtlGetVersion = reinterpret_cast<RtlGetVersionType>(
+                    reinterpret_cast<void*>(GetProcAddress(hmodule, "RtlGetVersion"))) ;
+            if(!RtlGetVersion) {
+                FreeLibrary(hmodule) ;
+                throw RUNTIME_EXCEPT("Could not get GetProcAddress function from ntdll.dll.") ;
+            }
+
+            OSVERSIONINFOW vinfo ;
+            vinfo.dwOSVersionInfoSize = sizeof(decltype(vinfo)) ;
+            auto result = RtlGetVersion(&vinfo) ;
+            FreeLibrary(hmodule) ;
+
+            if(result != STATUS_SUCCESS) {
+                throw RUNTIME_EXCEPT("RtlGetVersion is failed, so could not get the version of Windows.") ;
+            }
+
+            return {
+                vinfo.dwMajorVersion,
+                vinfo.dwMinorVersion,
+                vinfo.dwBuildNumber
+            } ;
+        }
+
+        std::string get_Windows_display_version() {
+            std::wstring str ;
+            str.resize(10) ;
+
+            // include the null terminator
+            auto size = static_cast<DWORD>(str.size() * sizeof(wchar_t) + 1) ;
+
+            auto result = RegGetValueW(
+                    HKEY_LOCAL_MACHINE,
+                    L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
+                    L"DisplayVersion",
+                    RRF_RT_REG_SZ,
+                    nullptr, &str[0], &size) ;
+
+            if(result != ERROR_SUCCESS) {
+                throw RUNTIME_EXCEPT(
+                        "Could not read the registory value at " \
+                        "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion .") ;
+            }
+            return util::ws_to_s(str) ;
         }
     }
 }

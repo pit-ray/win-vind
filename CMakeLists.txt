@@ -198,6 +198,13 @@ function(link_wxWidgets target)
     endif()
 endfunction()
 
+configure_file(
+    ${PROJECT_SOURCE_DIR}/res/build_assets/version.hpp.in
+    ${PROJECT_SOURCE_DIR}/core/include/version.hpp
+    NEWLINE_STYLE LF
+    @ONLY
+)
+
 add_subdirectory(core)
 
 add_subdirectory(coregui)

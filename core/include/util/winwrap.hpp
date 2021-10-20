@@ -115,6 +115,18 @@ namespace vind
         void detach_thread_input(HWND hwnd) ;
 
         Point2D get_caret_pos(HWND hwnd) ;
+
+        // To get Windows system informations
+        std::string get_Windows_edition(
+                DWORD major_version,
+                DWORD minor_version) ;
+
+        std::string get_Windows_architecture() noexcept ;
+
+        // It returns {Major, Minor, Build}.
+        std::tuple<DWORD, DWORD, DWORD> get_Windows_versions() ;
+
+        std::string get_Windows_display_version() ;
     }
 }
 

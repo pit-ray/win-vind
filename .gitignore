@@ -2,6 +2,7 @@
 .clangd
 .vimspector.json
 .vscode
+.vs
 bin
 bin_32
 bin_64

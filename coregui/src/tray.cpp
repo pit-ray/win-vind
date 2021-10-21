@@ -63,10 +63,10 @@ namespace vindgui
                     path::CONFIG_PATH()) ;
         }, MENU_OPENROOT) ;
 
-        Bind(wxEVT_MENU, [parent](auto&) {
+        Bind(wxEVT_MENU, [parent, iconpath](auto&) {
             auto dlg = new UpdateDialog(
                     parent,
-                    vind::gparams::get_s("icon_style"),
+                    iconpath,
                     vind::gparams::get_i("gui_fontsize"),
                     vind::gparams::get_s("gui_fontname")) ;
             dlg->CenterOnScreen() ;

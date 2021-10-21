@@ -17,22 +17,35 @@ namespace vind
 {
     namespace path {
 
-        void replace_magic(std::string& path) {
-            util::replace_all(path, "~", path::HOME_PATH()) ;
-            util::replace_all(path, "/", "\\") ;
+        std::string replace_magic(std::string path) {
+            path = util::replace_all(path, "~", path::HOME_PATH()) ;
+            path = util::replace_all(path, "/", "\\") ;
+            return path ;
         }
 
-        bool is_installer_used() {
-            static const auto flag = [] {
+        InstallType get_install_type() {
+            static const auto type = [] {
                 std::ifstream ifs{to_u8path(DEFAULT_CONFIG_PATH() + "\\instype")} ;
                 if(!ifs.is_open()) {
-                    return false ;
+                    return InstallType::PORTABLE ;
                 }
                 std::string str{} ;
                 std::getline(ifs, str) ;
-                return str.front() != '0' ;
+
+                if(str.front() == '1') {
+                    return InstallType::INSTALLER ;
+                }
+                else if(str.front() == '2') {
+                    return InstallType::CHOCOLATEY ;
+                }
+
+                return InstallType::PORTABLE ;
             }() ;
-            return flag ;
+            return type ;
+        }
+
+        bool is_installer_used() {
+            return get_install_type() != InstallType::PORTABLE ;
         }
 
         const std::string& HOME_PATH() {

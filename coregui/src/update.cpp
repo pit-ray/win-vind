@@ -17,6 +17,7 @@
 #include "enable_gcc_warning.hpp"
 
 #include <chrono>
+#include <sstream>
 #include <string>
 
 #include "err_logger.hpp"
@@ -47,17 +48,17 @@
 #if defined(__GNUC__)
 
 #if defined(__x86_64__)
-#define INSTALLER_PREFIX "64bit"
+#define ARCHITECTURE_PREFIX "64bit"
 #else
-#define INSTALLER_PREFIX "32bit"
+#define ARCHITECTURE_PREFIX "32bit"
 #endif
 
 // MSVC
 #elif defined(_MSC_VER) && _MSC_VER >= 1500
 #if defined(_WIN64)
-#define INSTALLER_PREFIX "64bit"
+#define ARCHITECTURE_PREFIX "64bit"
 #else
-#define INSTALLER_PREFIX "32bit"
+#define ARCHITECTURE_PREFIX "32bit"
 #endif
 
 #endif
@@ -65,12 +66,40 @@
 
 namespace
 {
+    using namespace vind ;
+
     enum : unsigned int {
         UPDATE_NOTES = 12000,
     } ;
 
-   constexpr auto g_release_cache_name = "check_update_log.json" ;
-   const auto g_release_cache_path = vind::path::CONFIG_PATH() + "\\" + g_release_cache_name ;
+    constexpr auto g_release_cache_name = "win_vind_update_checking_log.json" ;
+
+    std::string get_asset_name_for_same_install(std::string version) {
+        std::stringstream ss ;
+        ss << "win-vind_" << version << "_" << ARCHITECTURE_PREFIX ;
+
+        using path::InstallType ;
+
+        auto install_type = path::get_install_type() ;
+        switch(install_type) {
+            case InstallType::INSTALLER:
+                return "setup_" + ss.str() + ".exe" ;
+
+            case InstallType::PORTABLE:
+                return ss.str() + "_portable.zip" ;
+
+            case InstallType::CHOCOLATEY:
+                return ss.str() + "_chocolatey.zip" ;
+        }
+        throw RUNTIME_EXCEPT("Not supported install type.") ;
+    }
+
+    std::string parse_markdown_to_html(const std::string& str) {
+        maddy::Parser mdparser{} ;
+        std::stringstream ss ;
+        ss << util::replace_all(str, "\r\n", "\n") ;
+        return mdparser.Parse(ss) ;
+    }
 }
 
 
@@ -87,20 +116,24 @@ namespace vindgui
         auto root = new wxBoxSizer(wxVERTICAL) ;
 
         using namespace vind ;
+
+        const auto tempdir = path::replace_magic(gparams::get_s("tempdir")) ;
+
         util::create_process(
-                path::CONFIG_PATH(),
+                tempdir,
                 "curl",
                 util::concat_args(
                 "-H", "@{\"Accept\"=\"application/vnd.github.v3+json\"}",
                 "\"https://api.github.com/repos/pit-ray/win-vind/releases/latest\"",
                 "-o", g_release_cache_name), false) ;
+        const auto json_path = tempdir + "\\" + g_release_cache_name ;
 
         using namespace std::chrono ;
         auto start = system_clock::now() ;
 
         std::ifstream ifs ;
         while(true) {
-            std::ifstream check_ifs(path::to_u8path(g_release_cache_path)) ;
+            std::ifstream check_ifs(path::to_u8path(json_path)) ;
             if(check_ifs.is_open()) {
                 ifs = std::move(check_ifs) ;
                 break ;
@@ -129,7 +162,10 @@ namespace vindgui
             root->Add(btn, flags) ;
         } ;
 
-        if(ifs.is_open()) {
+        if(!ifs.is_open()) {
+            insert_message(wxT("Could not connect to github.com")) ;
+        }
+        else {
             nlohmann::json js ;
             ifs >> js ;
             try {
@@ -151,26 +187,55 @@ namespace vindgui
 #endif
                                 , ".")) ;
 
-                    auto latest  = to_val_v(vind::util::split(tag_name.substr(1), ".")) ;
+                    auto latest_version = tag_name.substr(1) ;
+                    auto latest  = to_val_v(vind::util::split(latest_version, ".")) ;
 
-                    if(current < latest) {
+                    if(current >= latest) {
+                        insert_message(wxT("It is already the latest version.")) ;
+                    }
+                    else {
                         wxSizerFlags flags ;
                         flags.Border(wxALL, 10) ;
                         flags.Align(wxALIGN_CENTER_HORIZONTAL) ;
+
+                        using path::InstallType ;
+                        auto install_type = path::get_install_type() ;
 
                         auto body = new wxHtmlWindow(
                                 this, UPDATE_NOTES, wxDefaultPosition,
                                 get_golden_size(4), wxHW_SCROLLBAR_AUTO) ;
                         body->SetFont(*font) ;
 
-                        auto body_text = "# " + tag_name + " is available now!\n" + js.at("body").get<std::string>() ;
-                        util::replace_all(body_text, "\r\n", "\n") ;
+                        std::stringstream pagess ;
+                        pagess << "<html>" ;
 
-                        maddy::Parser mdparser{} ;
-                        std::stringstream ss ;
-                        ss << body_text ;
+                        // Header ==========================================
+                        pagess << "<head>" ;
+                        pagess << "<meta charset=\"UTF-8\">" ;
+                        pagess << "</head>" ;
 
-                        body->SetPage("<html><body><div>" + mdparser.Parse(ss) + "</div></body></html>") ;
+                        // Body =============================================
+                        pagess << "<body>" ;
+                        pagess << "<h1>" << tag_name << " is available now!\n</h1>" ;
+
+                        auto release_notes = parse_markdown_to_html(js.at("body").get<std::string>()) ;
+                        pagess << "<div>" << release_notes + "</div>" ;
+
+                        if(install_type == InstallType::CHOCOLATEY) {
+                            pagess <<
+                                "<br>" \
+                                "<h3>" \
+                                "The running win-vind is the Chocolatey version, " \
+                                "so use the <code>choco upgrade win-vind</code> command instead." \
+                                "<br>" \
+                                "</h3>" ;
+                        }
+
+                        // Footer ===========================================
+                        pagess << "</body>" ;
+                        pagess << "</html>" ;
+
+                        body->SetPage(pagess.str()) ;
                         body->SetBorders(30) ;
                         body->SetStandardFonts(font_size, font_name) ;
 
@@ -192,31 +257,28 @@ namespace vindgui
                             dl_btn->SetFont(*font) ;
                             btn_sizer->Add(dl_btn, btn_flags) ;
 
+                            if(install_type == InstallType::CHOCOLATEY) {
+                                dl_btn->Enable(false) ;
+                            }
+
                             auto cl_btn = new wxButton(this, wxID_CLOSE, wxT("Cancel")) ;
                             cl_btn->SetFont(*font) ;
                             btn_sizer->Add(cl_btn, btn_flags) ;
 
                             root->Add(btn_sizer, flags) ;
 
-                            Bind(wxEVT_BUTTON, [js] (auto&) {
+                            Bind(wxEVT_BUTTON, [js, latest_version, tempdir] (auto&) {
                                 try {
-                                    std::string target_keyword = INSTALLER_PREFIX ;
-                                    if(path::is_installer_used()) {
-                                        target_keyword += ".exe.zip" ;
-                                    }
-                                    else {
-                                        target_keyword += ".zip" ;
-                                    }
+                                    auto asset_name = get_asset_name_for_same_install(latest_version) ;
 
                                     for(auto& assets : js.at("assets")) {
                                         auto url = assets.at("browser_download_url").get<std::string>() ;
-                                        if(url.find(target_keyword) != std::string::npos) {
-
+                                        if(url.find(asset_name) != std::string::npos) {
                                             util::create_process(
-                                                    path::CONFIG_PATH(), "curl",
+                                                    tempdir,
+                                                    "curl",
                                                     util::concat_args("-OL", url), false) ;
-
-                                            auto dl_filepath = path::CONFIG_PATH() + "\\" + \
+                                            auto dl_filepath = tempdir + "\\" + \
                                                                assets.at("name").get<std::string>() ;
 
                                             using namespace std::chrono ;
@@ -244,17 +306,11 @@ namespace vindgui
                             }, wxID_OK) ;
                         }
                     }
-                    else {
-                        insert_message(wxT("It is already the latest version.")) ;
-                    }
                 }
             }
             catch(const nlohmann::json::exception& e) {
                 insert_message(wxString::FromUTF8(e.what())) ;
             }
-        }
-        else {
-            insert_message(wxT("Could not connect to github.com")) ;
         }
 
         SetSizerAndFit(root) ;
@@ -264,13 +320,13 @@ namespace vindgui
             node->GetData()->SetBackgroundColour(wxColour(*wxWHITE)) ;
         }
 
-        Bind(wxEVT_BUTTON, [this] (auto&) {
-            DeleteFileW(vind::util::s_to_ws(g_release_cache_path).c_str()) ;
+        Bind(wxEVT_BUTTON, [this, json_path] (auto&) {
+            DeleteFileW(vind::util::s_to_ws(json_path).c_str()) ;
             Destroy() ;
         }, wxID_CLOSE) ;
 
-        Bind(wxEVT_CLOSE_WINDOW, [this](auto&) {
-            DeleteFileW(vind::util::s_to_ws(g_release_cache_path).c_str()) ;
+        Bind(wxEVT_CLOSE_WINDOW, [this, json_path](auto&) {
+            DeleteFileW(vind::util::s_to_ws(json_path).c_str()) ;
             Destroy() ;
         }) ;
     }

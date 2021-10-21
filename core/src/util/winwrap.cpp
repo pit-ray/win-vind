@@ -111,7 +111,9 @@ namespace vind
                 current_dir.empty() ? NULL : s_to_ws(current_dir).c_str(),
                 &si, &pi)) {
 
-                throw RUNTIME_EXCEPT("Cannot start \"" + cmd  + "\"") ;
+                throw RUNTIME_EXCEPT(
+                        "Cannot start \"" + cmd + "\" " \
+                        + "in the current directory \"" + current_dir + "\".") ;
             }
 
             CloseHandle(pi.hThread) ;

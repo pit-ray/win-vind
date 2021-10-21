@@ -48,8 +48,8 @@ namespace vind
             return str ;
         }
 
-        void replace_all(
-                std::string& s,
+        std::string replace_all(
+                std::string s,
                 const std::string& from,
                 const std::string& to) {
             size_t spos = 0 ;
@@ -57,6 +57,7 @@ namespace vind
                 s.replace(spos, from.length(), to) ;
                 spos += to.length() ;
             }
+            return s ;
         }
 
         std::wstring s_to_ws(const std::string& str) {

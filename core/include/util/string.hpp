@@ -13,8 +13,8 @@ namespace vind
 
         std::string remove_str(std::string str, char target) ;
 
-        void replace_all(
-                std::string& s,
+        std::string replace_all(
+                std::string s,
                 const std::string& from,
                 const std::string& to) ;
 

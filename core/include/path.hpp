@@ -23,7 +23,15 @@ namespace vind
 #endif
         }
 
-        void replace_magic(std::string& path) ;
+        std::string replace_magic(std::string path) ;
+
+        enum class InstallType {
+            PORTABLE,
+            INSTALLER,
+            CHOCOLATEY,
+        } ;
+
+        InstallType get_install_type() ;
 
         bool is_installer_used() ;
 

@@ -101,7 +101,7 @@ namespace vind
                 shell_cmd_flag = gparams::get_s("shellcmdflag") ;
             }
 
-            path::replace_magic(cmd) ;
+            cmd = path::replace_magic(cmd) ;
 
             if(cmd[last_char_pos] == ';') { //keep console window
                 cmd.erase(last_char_pos) ;

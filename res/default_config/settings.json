@@ -248,6 +248,11 @@
         "en": "Keyboard Type",
         "ja": "キーボード配列"
     },
+    "tempdir": {
+      "value": "~/Downloads",
+      "en": "Directory where temporary files are stored",
+      "ja": "一時ファイルが保存されるディレクトリ"
+    },
     "gui_lang": {
         "value": "en",
         "choices": [

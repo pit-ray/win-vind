@@ -80,14 +80,12 @@ TEST_CASE("util/string Under Fake Windows API: ") {
     // util::replace_all
     SUBCASE("(util::replace_all) There is no-target") {
         std::string str("AAA BBB CCC") ;
-        replace_all(str, "X", "Z") ;
-        CHECK_EQ(str, "AAA BBB CCC") ;
+        CHECK_EQ(replace_all(str, "X", "Z"), "AAA BBB CCC") ;
     }
 
     SUBCASE("(util::replace_all) normal") {
         std::string str("AAA BBB CCC BBB") ;
-        replace_all(str, "BBB", "XXX") ;
-        CHECK_EQ(str, "AAA XXX CCC XXX") ;
+        CHECK_EQ(replace_all(str, "BBB", "XXX"), "AAA XXX CCC XXX") ;
     }
 
 

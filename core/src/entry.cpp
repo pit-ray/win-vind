@@ -130,8 +130,8 @@ namespace vind
 {
     bool initialize(const std::string& func_name) noexcept {
         try {
-            if(!util::is_existed_dir(path::CONFIG_PATH())) {
-                util::create_directory(path::CONFIG_PATH()) ;
+            if(!std::filesystem::exists(path::CONFIG_PATH())) {
+                std::filesystem::create_directories(path::CONFIG_PATH()) ;
             }
 
             errlogger::initialize() ;

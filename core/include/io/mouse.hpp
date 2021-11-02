@@ -22,7 +22,7 @@ namespace vind
 
         template <typename T>
         inline void _scroll_core(DWORD event, T&& scr_delta) {
-            static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}};
+            static INPUT in = {INPUT_MOUSE} ;
             in.mi.mouseData = static_cast<int>(scr_delta) ;
             in.mi.dwFlags = event ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;

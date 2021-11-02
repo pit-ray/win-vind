@@ -150,9 +150,7 @@ namespace vind
 
                 auto itr = hwnds.begin() ;
                 while(itr != hwnds.end()) {
-                    auto filename = util::get_module_filename(itr->second) ;
-                    auto modulename = util::A2a(filename.substr(
-                                filename.find_last_of("\\") + 1)) ;
+                    auto modulename = util::A2a(util::get_module_filename(itr->second)) ;
 
                     auto dot = modulename.find_last_of(".") ;
                     if(dot != std::string::npos) {

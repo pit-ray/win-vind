@@ -60,7 +60,7 @@ namespace
                     throw std::invalid_argument("source") ;
                 }
                 if(std::filesystem::equivalent(
-                            path::to_u8path(path::RC()), path::to_u8path(args))) {
+                            path::RC(), std::filesystem::u8path(args))) {
                     throw std::invalid_argument(
                             "Recursive references to the same .vindrc are not allowed") ;
                 }
@@ -101,15 +101,14 @@ namespace vind
     SyscmdSource::SyscmdSource()
     : BindedFuncCreator("system_command_source")
     {
-        auto f = path::to_u8path(path::RC()) ;
-        std::ifstream ifs(f) ;
+        std::ifstream ifs(path::RC()) ;
         if(!ifs.is_open()) {
-            std::ofstream ofs(f, std::ios::trunc) ;
+            std::ofstream ofs(path::RC(), std::ios::trunc) ;
         }
     }
 
     void SyscmdSource::sprocess(
-            const std::string& path,
+            const std::filesystem::path& path,
             bool reload_config) {
 
         auto return_to_default = [] {
@@ -119,9 +118,9 @@ namespace vind
 
         return_to_default() ;
 
-        std::ifstream ifs(path::to_u8path(path), std::ios::in) ;
+        std::ifstream ifs(path, std::ios::in) ;
         if(!ifs.is_open()) {
-            VCmdLine::print(ErrorMessage("Could not open \"" + path + "\".\n")) ;
+            VCmdLine::print(ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
             return ;
         }
 
@@ -148,7 +147,7 @@ namespace vind
 
                 std::stringstream ss ;
                 ss << "RunCommandsIndex: " << e.what() << " is not supported." ;
-                ss << " (" << path << ", " << ltag << ") " ;
+                ss << " (" << path.u8string() << ", " << ltag << ") " ;
                 PRINT_ERROR(ss.str()) ;
 
                 return_to_default() ;
@@ -160,7 +159,7 @@ namespace vind
 
                 std::stringstream ss ;
                 ss << e.what() << " is recieved invalid arguments." ;
-                ss << " (" << path << ", " << ltag << ") " ;
+                ss << " (" << path.u8string() << ", " << ltag << ") " ;
                 PRINT_ERROR(ss.str()) ;
 
                 return_to_default() ;
@@ -172,7 +171,7 @@ namespace vind
 
                 std::stringstream ss ;
                 ss << e.what() ;
-                ss << " (" + path + ", " + ltag + ")" ;
+                ss << " (" + path.u8string() + ", " + ltag + ")" ;
                 PRINT_ERROR(ss.str()) ;
 
                 return_to_default() ;
@@ -184,7 +183,7 @@ namespace vind
 
                 std::stringstream ss ;
                 ss << e.what() ;
-                ss << " (" + path + ", " + ltag + ")" ;
+                ss << " (" + path.u8string() + ", " + ltag + ")" ;
                 PRINT_ERROR(ss.str()) ;
 
                 return_to_default() ;
@@ -209,7 +208,7 @@ namespace vind
                 sprocess(path::RC(), true) ;
             }
             else {
-                sprocess(args, true) ;
+                sprocess(std::filesystem::path(args), true) ;
             }
         }
         // If received syntax error as std::logic_error,

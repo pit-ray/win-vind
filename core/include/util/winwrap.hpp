@@ -3,6 +3,7 @@
 
 #include <windows.h>
 
+#include <filesystem>
 #include <memory>
 #include <string>
 
@@ -26,14 +27,6 @@ namespace vind
             return b ? TRUE : FALSE ;
         }
 
-        bool is_existed_dir(const std::string& path) ;
-
-        void create_directory(const std::string& path) ;
-        void copy_file(
-                const std::string& src,
-                const std::string& dst,
-                bool allow_overwrite=false) ;
-
         template <typename ...Args>
         std::string concat_args(Args&&... args) {
             std::initializer_list<std::string> arglist = {
@@ -46,12 +39,12 @@ namespace vind
         }
 
         void create_process(
-                const std::string& current_dir,
+                const std::filesystem::path& current_dir,
                 std::string cmd,
                 const std::string& args="",
                 bool show_console_window=true) ;
 
-        int shell_execute(const std::string& url) ;
+        int shell_execute(const std::filesystem::path& url) ;
 
         std::string get_module_filename(HWND hwnd) ;
 

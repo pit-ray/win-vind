@@ -157,7 +157,7 @@ namespace vind
 
         void initialize() {
             g_default_maps.clear() ;
-            std::ifstream ifs(path::to_u8path(path::Default::BINDINGS())) ;
+            std::ifstream ifs(path::Default::BINDINGS()) ;
             ifs >> g_default_maps ;
         }
 

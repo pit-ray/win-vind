@@ -117,7 +117,8 @@ namespace vindgui
 
         using namespace vind ;
 
-        const auto tempdir = path::replace_magic(gparams::get_s("tempdir")) ;
+        std::filesystem::path tempdir(gparams::get_s("tempdir")) ;
+        tempdir = path::replace_magic(tempdir) ;
 
         util::create_process(
                 tempdir,
@@ -126,14 +127,14 @@ namespace vindgui
                 "-H", "@{\"Accept\"=\"application/vnd.github.v3+json\"}",
                 "\"https://api.github.com/repos/pit-ray/win-vind/releases/latest\"",
                 "-o", g_release_cache_name), false) ;
-        const auto json_path = tempdir + "\\" + g_release_cache_name ;
+        const auto json_path = tempdir / g_release_cache_name ;
 
         using namespace std::chrono ;
         auto start = system_clock::now() ;
 
         std::ifstream ifs ;
         while(true) {
-            std::ifstream check_ifs(path::to_u8path(json_path)) ;
+            std::ifstream check_ifs(json_path) ;
             if(check_ifs.is_open()) {
                 ifs = std::move(check_ifs) ;
                 break ;
@@ -278,8 +279,7 @@ namespace vindgui
                                                     tempdir,
                                                     "curl",
                                                     util::concat_args("-OL", url), false) ;
-                                            auto dl_filepath = tempdir + "\\" + \
-                                                               assets.at("name").get<std::string>() ;
+                                            auto dl_filepath = tempdir / assets.at("name").get<std::string>() ;
 
                                             using namespace std::chrono ;
                                             auto dl_start = system_clock::now() ;
@@ -321,12 +321,12 @@ namespace vindgui
         }
 
         Bind(wxEVT_BUTTON, [this, json_path] (auto&) {
-            DeleteFileW(vind::util::s_to_ws(json_path).c_str()) ;
+            DeleteFileW(json_path.wstring().c_str()) ;
             Destroy() ;
         }, wxID_CLOSE) ;
 
         Bind(wxEVT_CLOSE_WINDOW, [this, json_path](auto&) {
-            DeleteFileW(vind::util::s_to_ws(json_path).c_str()) ;
+            DeleteFileW(json_path.wstring().c_str()) ;
             Destroy() ;
         }) ;
     }

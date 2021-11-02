@@ -3,6 +3,9 @@
 
 #include "bind/binded_func_creator.hpp"
 
+#include <filesystem>
+
+
 namespace vind
 {
     struct StartShell : public BindedFuncCreator<StartShell> {

@@ -37,29 +37,36 @@ namespace vind
             }
         }
 
-        bool is_existed_dir(const std::string& path)
-        {
-          auto flag = GetFileAttributesW(s_to_ws(path).c_str());
-          return (flag != INVALID_FILE_ATTRIBUTES && (flag & FILE_ATTRIBUTE_DIRECTORY));
-        }
+        template <typename StdString, typename Path>
+        inline void create_process_core(
+                StdString&& cmd,
+                Path&& current_dir,
+                DWORD flags) {
+            STARTUPINFOW si ;
+            ZeroMemory(&si, sizeof(si)) ;
+            si.cb = sizeof(si) ;
 
-        void create_directory(const std::string& path) {
-            if(!CreateDirectoryW(s_to_ws(path).c_str(), NULL)) {
-                throw RUNTIME_EXCEPT("Cannot create a directory " + path + ".") ;
-            }
-        }
-        void copy_file(const std::string& src, const std::string& dst, bool allow_overwrite) {
-            if(!CopyFileW(
-                        s_to_ws(src).c_str(),
-                        s_to_ws(dst).c_str(),
-                        !b_to_B(allow_overwrite))) {
+            PROCESS_INFORMATION pi ;
+            ZeroMemory(&pi, sizeof(pi)) ;
 
-                throw RUNTIME_EXCEPT("Could not copy a file from " + src + " to " + dst + ".") ;
+            if(!CreateProcessW(
+                NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
+                NULL, NULL, FALSE,
+                flags, NULL,
+                current_dir.empty() ? NULL : current_dir.wstring().c_str(),
+                &si, &pi)) {
+
+                throw RUNTIME_EXCEPT(
+                        "Cannot start \"" + cmd + "\" " \
+                        + "in the current directory \"" + current_dir.u8string() + "\".") ;
             }
+
+            CloseHandle(pi.hThread) ;
+            CloseHandle(pi.hProcess) ;
         }
 
         void create_process(
-                const std::string& current_dir,
+                const std::filesystem::path& current_dir,
                 std::string cmd,
                 const std::string& args,
                 bool show_console_window) {
@@ -97,34 +104,14 @@ namespace vind
             }
             cmd += args ;
 
-            STARTUPINFOW si ;
-            ZeroMemory(&si, sizeof(si)) ;
-            si.cb = sizeof(si) ;
-
-            PROCESS_INFORMATION pi ;
-            ZeroMemory(&pi, sizeof(pi)) ;
-
-            if(!CreateProcessW(
-                NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
-                NULL, NULL, FALSE,
-                flags, NULL,
-                current_dir.empty() ? NULL : s_to_ws(current_dir).c_str(),
-                &si, &pi)) {
-
-                throw RUNTIME_EXCEPT(
-                        "Cannot start \"" + cmd + "\" " \
-                        + "in the current directory \"" + current_dir + "\".") ;
-            }
-
-            CloseHandle(pi.hThread) ;
-            CloseHandle(pi.hProcess) ;
+            create_process_core(cmd, current_dir, flags) ;
         }
 
-        int shell_execute(const std::string& url) {
+        int shell_execute(const std::filesystem::path& url) {
             return static_cast<int>(reinterpret_cast<std::size_t>(
                         ShellExecuteW(
                             NULL, NULL,
-                            util::s_to_ws(url).c_str(),
+                            url.wstring().c_str(),
                             NULL, NULL, SW_SHOWNORMAL))) ;
         }
 
@@ -140,7 +127,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not get module filename.") ;
             }
             CloseHandle(handle) ;
-            return util::ws_to_s(fullpath) ;
+            return std::filesystem::path(fullpath).filename().u8string() ;
         }
 
         bool is_failed(HRESULT result) noexcept {

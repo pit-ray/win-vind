@@ -38,9 +38,7 @@ namespace vind
 
         pre_hwnd = hwnd ;
 
-        auto exename = util::get_module_filename(hwnd) ;
-        auto lpos = exename.find_last_of("\\") + 1 ;
-        exename = util::A2a(exename.substr(lpos)) ;
+        auto exename = util::A2a(util::get_module_filename(hwnd)) ;
 
         if(exename == "win-vind.exe") return ;
 

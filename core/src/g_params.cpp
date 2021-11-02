@@ -31,7 +31,7 @@ namespace vind
     namespace gparams {
         void initialize() {
             g_default_params.clear() ;
-            std::ifstream ifs(path::to_u8path(path::Default::SETTINGS())) ;
+            std::ifstream ifs(path::Default::SETTINGS()) ;
             ifs >> g_default_params ;
         }
 

@@ -11,21 +11,17 @@
 
 #include "bind/file/explorer_util.hpp"
 
+
 namespace vind
 {
     MakeDir::MakeDir()
     : BindedFuncCreator("makedir")
     {}
-    void MakeDir::sprocess(const std::string& path) {
-        if(path.find("\\") != std::string::npos ||
-                path.find("/") != std::string::npos) {
-            //pathument is directory path
-            if(path.length() > 248) {
-                //over max path num
-                util::create_directory(path.substr(0, 248)) ;
-            }
-            else {
-                util::create_directory(path) ;
+    void MakeDir::sprocess(const std::filesystem::path& path) {
+
+        if(path.is_absolute()) {
+            if(!std::filesystem::create_directories(path)) {
+                throw RUNTIME_EXCEPT("Could not create directories.") ;
             }
         }
 
@@ -33,11 +29,12 @@ namespace vind
         //get current directory
         auto current_path = explorer::get_current_explorer_path() ;
         if(current_path.empty()) {
-            current_path = path::HOME_PATH() + "\\Desktop" ;
+            current_path = path::HOME_PATH() / "Desktop" ;
         }
 
-        auto full_path = current_path + "\\" + path ;
-        util::create_directory(full_path) ;
+        auto full_path = current_path / path ;
+
+        std::filesystem::create_directories(full_path) ;
     }
     void MakeDir::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

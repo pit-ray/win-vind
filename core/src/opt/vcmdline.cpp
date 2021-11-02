@@ -83,7 +83,7 @@ namespace vind
             const auto& p = pos_list.at("LowerMid") ;
             pimpl->x_ = p.first ;
             pimpl->y_ = p.second ;
-            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS() + \
+            PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS().u8string() + \
                     ", " + gparams::get_s("cmd_roughpos") + "is invalid syntax.") ;
         }
 

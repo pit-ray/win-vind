@@ -97,9 +97,10 @@ namespace vindgui
                 // Root window
                 auto dlg = new vindgui::AboutDialog(
 #ifdef DEBUG
-                        vind::path::RESOUECE_ROOT_PATH() + "\\" +
-#endif
+                        (vind::path::RESOUECE_ROOT_PATH() / vind::gparams::get_s("icon_style")).u8string(),
+#else
                         vind::gparams::get_s("icon_style"),
+#endif
                         "win-vind",
                         vind::gparams::get_i("gui_fontsize"),
                         vind::gparams::get_s("gui_fontname")) ;

@@ -6,9 +6,9 @@
 namespace vind
 {
     namespace path {
-        const std::string& ROOT_PATH() {
-            static std::string s{} ;
-            return s ;
+        const std::filesystem::path& ROOT_PATH() {
+            static std::filesystem::path p{} ;
+            return p ;
         }
     }
 }

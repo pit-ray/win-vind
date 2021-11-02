@@ -60,7 +60,7 @@ namespace vindgui
             util::create_process(
                     path::ROOT_PATH(),
                     "explorer",
-                    path::CONFIG_PATH()) ;
+                    path::CONFIG_PATH().u8string()) ;
         }, MENU_OPENROOT) ;
 
         Bind(wxEVT_MENU, [parent, iconpath](auto&) {

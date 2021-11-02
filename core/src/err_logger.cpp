@@ -32,22 +32,23 @@ namespace
     std::ofstream g_msg_stream ;
 
     void remove_files_over(
-            const std::string& log_dir,
+            const std::filesystem::path& log_dir,
             std::string pattern_withex,
             std::size_t num) {
-        std::vector<std::wstring> files ;
+        std::vector<std::filesystem::path> files ;
 
         WIN32_FIND_DATAW wfd = {} ;
-        auto handle = FindFirstFileW(
-                vind::util::s_to_ws(log_dir + "\\" + pattern_withex).c_str(), &wfd) ;
+
+        auto query = log_dir / pattern_withex ;
+        auto handle = FindFirstFileW(query.wstring().c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }
-        files.push_back(vind::util::s_to_ws(log_dir + "\\") + wfd.cFileName) ;
 
-        while(FindNextFileW(handle, &wfd)) {
-            files.push_back(vind::util::s_to_ws(log_dir + "\\") + wfd.cFileName) ;
-        }
+        do {
+            files.push_back(log_dir / wfd.cFileName) ;
+        } while(FindNextFileW(handle, &wfd)) ;
+
         FindClose(handle) ;
 
         if(files.size() <= num) {
@@ -56,7 +57,7 @@ namespace
 
         std::sort(files.begin(), files.end(), std::greater<std::wstring>{}) ;
         for(std::size_t i = num ; i < files.size() ; i ++) {
-            DeleteFileW(files[i].c_str()) ;
+            std::filesystem::remove(files[i]) ;
         }
     }
 
@@ -83,7 +84,7 @@ namespace vind
 {
     namespace errlogger {
         void initialize() {
-            std::string log_dir = path::ROOT_PATH() + "\\log" ;
+            auto log_dir = path::ROOT_PATH() / "log" ;
 
             SYSTEMTIME stime ;
             GetLocalTime(&stime) ;
@@ -95,18 +96,18 @@ namespace vind
                 << std::setw(2) << std::setfill('0') << stime.wHour \
                 << std::setw(2) << std::setfill('0') << stime.wMinute ;
 
-            if(!util::is_existed_dir(log_dir)) {
-                util::create_directory(log_dir) ;
+            if(!std::filesystem::exists(log_dir)) {
+                std::filesystem::create_directories(log_dir) ;
             }
 
-            auto efile = log_dir + "\\error_" + ss.str() + ".log" ;
-            auto mfile = log_dir + "\\message_" + ss.str() + ".log" ;
+            auto efile = log_dir / ("error_" + ss.str() + ".log") ;
+            auto mfile = log_dir / ("message_" + ss.str() + ".log") ;
 
-            g_init_error_stream.open(path::to_u8path(efile), std::ios::trunc) ;
-            g_error_stream.open(path::to_u8path(efile), std::ios::app) ;
+            g_init_error_stream.open(efile, std::ios::trunc) ;
+            g_error_stream.open(efile, std::ios::app) ;
 
-            g_init_msg_stream.open(path::to_u8path(mfile), std::ios::trunc) ;
-            g_msg_stream.open(path::to_u8path(mfile), std::ios::app) ;
+            g_init_msg_stream.open(mfile, std::ios::trunc) ;
+            g_msg_stream.open(mfile, std::ios::app) ;
 
              //If the log files exists over five, remove old files.
             remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;

@@ -1,5 +1,6 @@
 #include "bind/file/explorer_util.hpp"
 
+#include <filesystem>
 #include <memory>
 
 #include <exdisp.h>
@@ -15,13 +16,11 @@ namespace vind
 {
     namespace explorer {
         //This is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
-        std::string get_current_explorer_path() {
-            using PathType = std::string ;
-
+        std::filesystem::path get_current_explorer_path() {
             const auto hwnd = GetForegroundWindow() ;
 
             if(hwnd == NULL) {
-                return PathType{} ;
+                return std::filesystem::path() ;
             }
 
             if(util::is_failed(CoInitialize(NULL))) {
@@ -128,10 +127,10 @@ namespace vind
                     throw RUNTIME_EXCEPT("cannot convert an item ID to a file system path.") ;
                 }
 
-                return vind::util::ws_to_s(path) ;
+                return std::filesystem::path(path) ;
             }
 
-            return PathType() ;
+            return std::filesystem::path() ;
         }
     }
 }

@@ -116,8 +116,7 @@ namespace vindgui
         auto psl = create_shell_link() ;
 
         using namespace vind ;
-        static auto module_path = util::s_to_ws(path::MODULE_PATH()) ;
-        psl->SetPath(module_path.c_str()) ;
+        psl->SetPath(path::MODULE_PATH().wstring().c_str()) ;
 
         auto ppf = create_persist_file(psl.get()) ;
 

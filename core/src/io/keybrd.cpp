@@ -107,12 +107,10 @@ namespace vind
 
         //change key state without input
         void release_keystate(KeyCode key, bool enable_vhook) {
-            static INPUT in ;
-            in.type           = INPUT_KEYBOARD ;
+            static INPUT in = {INPUT_KEYBOARD} ;
             in.ki.wVk         = static_cast<WORD>(key) ;
             in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
             in.ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(key) ;
-            in.ki.time        = 0 ;
             in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
             if(!SendInput(1, &in, sizeof(INPUT))) {
@@ -126,12 +124,10 @@ namespace vind
 
         //change key state without input
         void press_keystate(KeyCode key, bool enable_vhook) {
-            static INPUT in ;
-            in.type           = INPUT_KEYBOARD ;
+            static INPUT in = {INPUT_KEYBOARD} ;
             in.ki.wVk         = static_cast<WORD>(key) ;
             in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
             in.ki.dwFlags     = extended_key_flag(key) ;
-            in.ki.time        = 0 ;
             in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
             if(!SendInput(1, &in, sizeof(INPUT))) {
@@ -149,12 +145,12 @@ namespace vind
             using keyabsorber::open_some_ports ;
 
             static INPUT ins[6] = {
-                {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
-                {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
-                {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
-                {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
-                {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}},
-                {INPUT_KEYBOARD, {.ki = {0, 0, 0, 0, 0}}}
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
             } ;
 
             const auto pre_state = keyabsorber::get_pressed_list() ;

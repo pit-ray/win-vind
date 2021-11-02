@@ -107,17 +107,17 @@ namespace vind
 
     void JumpWithKeybrdLayout::reconstruct() {
         auto layoutfile = gparams::get_s("keybrd_layout") ;
-        std::string filename ;
+        std::filesystem::path filepath ;
         if(!layoutfile.empty()) {
-            filename = path::CONFIG_PATH() + "\\" + layoutfile ;
+            filepath = path::CONFIG_PATH() / layoutfile ;
         }
         else {
             auto locale_id = GetKeyboardLayout(0) ;
             auto lang_id = static_cast<LANGID>(reinterpret_cast<std::size_t>(locale_id) & 0xffff) ;
-            filename = keybrd_layout::get_layout_filepath(lang_id) ;
+            filepath = keybrd_layout::get_layout_filepath(lang_id) ;
         }
 
-        if(filename.empty()) {
+        if(filepath.empty()) {
             throw RUNTIME_EXCEPT("The file path of keyboard layout is empty.") ;
         }
 
@@ -127,15 +127,15 @@ namespace vind
         pimpl->xposs.fill(0) ;
         pimpl->yposs.fill(0) ;
 
-        std::ifstream ifs(path::to_u8path(filename), std::ios::in) ;
+        std::ifstream ifs(filepath, std::ios::in) ;
         if(!ifs.is_open()) {
-            throw RUNTIME_EXCEPT("Could not open \"" + filename + "\"") ;
+            throw RUNTIME_EXCEPT("Could not open \"" + filepath.u8string() + "\"") ;
         }
         std::string buf ;
         int lnum = 0 ;
 
-        auto ep = [&lnum, &buf, &filename](auto msg) {
-            PRINT_ERROR(buf + msg + "\"" + filename + "\", L" + std::to_string(lnum) + ".") ;
+        auto ep = [&lnum, &buf, &filepath](auto msg) {
+            PRINT_ERROR(buf + msg + "\"" + filepath.u8string() + "\", L" + std::to_string(lnum) + ".") ;
         } ;
 
         while(getline(ifs, buf)) {

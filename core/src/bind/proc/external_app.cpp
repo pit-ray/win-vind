@@ -33,16 +33,18 @@ namespace
 {
     using namespace vind ;
 
-    std::string get_shell_startupdirectory() {
+    std::filesystem::path get_shell_startupdirectory() {
         auto dir = gparams::get_s("shell_startupdir") ;
         if(!dir.empty()) {
-            return dir ;
+            std::filesystem::path dir_path(dir) ;
+            dir_path.make_preferred() ;
+            return dir_path ;
         }
 
         try {
-            dir = explorer::get_current_explorer_path() ;
-            if(!dir.empty()) {
-                return dir ;
+            auto dir_path = explorer::get_current_explorer_path() ;
+            if(!dir_path.empty()) {
+                return dir_path ;
             }
         }
         catch(const std::exception&) {

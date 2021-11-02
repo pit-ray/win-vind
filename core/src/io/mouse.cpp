@@ -40,7 +40,7 @@ namespace vind
 {
     namespace mouse {
         void click(KeyCode btcode) {
-            static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
+            static INPUT in = {INPUT_MOUSE} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
@@ -56,7 +56,7 @@ namespace vind
         }
 
         void press(KeyCode btcode) {
-            static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
+            static INPUT in = {INPUT_MOUSE} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
@@ -66,7 +66,7 @@ namespace vind
         }
 
         void release(KeyCode btcode) {
-            static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, 0, 0, 0}}} ;
+            static INPUT in = {INPUT_MOUSE} ;
             in.mi.dwFlags = btcode_to_upevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
@@ -89,7 +89,11 @@ namespace vind
         }
 
         void move_cursor(int dx, int dy) {
-            static INPUT in = {INPUT_MOUSE, {.mi = {0, 0, 0, MOUSEEVENTF_MOVE, 0, 0}}} ;
+            static INPUT in = [] {
+                INPUT tmp = {INPUT_MOUSE} ;
+                tmp.mi.dwFlags = MOUSEEVENTF_MOVE ;
+                return tmp ;
+            } () ;
 
             in.mi.dx = dx ;
             in.mi.dy = dy ;

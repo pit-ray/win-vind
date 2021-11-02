@@ -20,7 +20,7 @@ namespace vind
     : BindedFuncCreator("execute")
     {}
 
-    void Execute::sprocess(std::string filepath) {
+    void Execute::sprocess(std::filesystem::path filepath) {
         if(filepath.empty()) {
             return ;
         }
@@ -91,6 +91,6 @@ namespace vind
             return ;
         }
 
-        sprocess(arg) ;
+        sprocess(std::filesystem::u8path(arg)) ;
     }
 }

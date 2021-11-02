@@ -11,7 +11,7 @@ option(CCACHE_ENABLE ON)
 enable_language(CXX)
 
 if(${MSVC})
-    add_compile_options(/W4 /std:c++latest /MT /D_UNICODE /DUNICODE /utf-8)
+    add_compile_options(/W4 /std:c++17 /MT /D_UNICODE /DUNICODE /utf-8)
 
     if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
         add_compile_options(/DEBUG)

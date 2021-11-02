@@ -57,8 +57,6 @@ namespace vind
             : in(),
               key(keycode)
             {
-                ZeroMemory(&in, sizeof(INPUT)) ;
-
                 in.type     = INPUT_KEYBOARD ;
                 in.ki.wVk   = static_cast<WORD>(key) ;
                 in.ki.wScan = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;

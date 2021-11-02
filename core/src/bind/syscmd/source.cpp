@@ -47,32 +47,19 @@ namespace
             throw RUNTIME_EXCEPT("Specify in the form user/repo") ;
         }
 
-        const auto repo_dir = args.substr(0, slash) + "_" + args.substr(slash + 1) ;
-        const auto target_repo_path = repo_store_path / repo_dir ;
+        auto target_repo_path = repo_store_path / args ;
+        target_repo_path.make_preferred() ;
 
         if(!std::filesystem::exists(target_repo_path)) {
             const auto remote_url = "https://github.com/" + args + ".git" ;
 
             util::create_process(
-                repo_store_path, "git",
-                util::concat_args("clone", "--depth=1", remote_url, repo_dir),
-                false) ;
-
-            using namespace std::chrono ;
-            auto start = system_clock::now() ;
-            while(true) {
-                Sleep(500) ;
-                if(std::filesystem::exists(target_repo_path)) {
-                    break ;
-                }
-                if(system_clock::now() - start > 30s) {
-                    break ;
-                }
-            }
+                path::HOME_PATH(), "git",
+                util::concat_args("clone", "--depth=1", remote_url, target_repo_path.u8string()),
+                false, true) ;
         }
         else {
-            util::create_process(target_repo_path, "git", "pull", false) ;
-            Sleep(100) ;
+            util::create_process(target_repo_path, "git", "pull", false, true) ;
         }
 
         return target_repo_path / ".vindrc" ;

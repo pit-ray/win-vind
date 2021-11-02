@@ -42,7 +42,8 @@ namespace vind
                 const std::filesystem::path& current_dir,
                 std::string cmd,
                 const std::string& args="",
-                bool show_console_window=true) ;
+                bool show_console_window=true,
+                bool wait_until_finish=false) ;
 
         int shell_execute(const std::filesystem::path& url) ;
 

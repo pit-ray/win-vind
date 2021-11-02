@@ -40,13 +40,17 @@ namespace
         WIN32_FIND_DATAW wfd = {} ;
 
         auto query = log_dir / pattern_withex ;
+        query.make_preferred() ;
+
         auto handle = FindFirstFileW(query.wstring().c_str(), &wfd) ;
         if(handle == INVALID_HANDLE_VALUE) {
             return ;
         }
 
         do {
-            files.push_back(log_dir / wfd.cFileName) ;
+            auto log_path = log_dir / wfd.cFileName ;
+            log_path.make_preferred() ;
+            files.push_back(std::move(log_path)) ;
         } while(FindNextFileW(handle, &wfd)) ;
 
         FindClose(handle) ;
@@ -57,7 +61,10 @@ namespace
 
         std::sort(files.begin(), files.end(), std::greater<std::wstring>{}) ;
         for(std::size_t i = num ; i < files.size() ; i ++) {
-            std::filesystem::remove(files[i]) ;
+            std::error_code ec ;
+            if(!std::filesystem::remove(files[i], ec)) {
+                PRINT_ERROR(ec.message()) ;
+            }
         }
     }
 
@@ -109,10 +116,6 @@ namespace vind
             g_init_msg_stream.open(mfile, std::ios::trunc) ;
             g_msg_stream.open(mfile, std::ios::app) ;
 
-             //If the log files exists over five, remove old files.
-            remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;
-            remove_files_over(log_dir, "message_*.log", KEEPING_LOG_COUNT) ;
-
             // Export system infomation for handling issues.
             constexpr auto align_width_of_header = 15 ;
 
@@ -141,6 +144,10 @@ namespace vind
             g_error_stream << std::endl ;
 
             g_error_stream << "=======================================\n" ;
+
+             //If the log files exists over five, remove old files.
+            remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;
+            remove_files_over(log_dir, "message_*.log", KEEPING_LOG_COUNT) ;
         }
 
         void error(const char* msg, const char* scope) {

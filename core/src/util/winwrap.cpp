@@ -41,13 +41,12 @@ namespace vind
         inline void create_process_core(
                 StdString&& cmd,
                 Path&& current_dir,
-                DWORD flags) {
-            STARTUPINFOW si ;
-            ZeroMemory(&si, sizeof(si)) ;
+                DWORD flags,
+                bool wait_until_finish=false) {
+            STARTUPINFOW si = {} ;
             si.cb = sizeof(si) ;
 
-            PROCESS_INFORMATION pi ;
-            ZeroMemory(&pi, sizeof(pi)) ;
+            PROCESS_INFORMATION pi = {} ;
 
             if(!CreateProcessW(
                 NULL, const_cast<LPWSTR>(s_to_ws(cmd).c_str()),
@@ -61,6 +60,11 @@ namespace vind
                         + "in the current directory \"" + current_dir.u8string() + "\".") ;
             }
 
+            if(wait_until_finish) {
+                if(WaitForSingleObject(pi.hProcess, INFINITE) == WAIT_FAILED) {
+                    PRINT_ERROR("Failed to wait until process end.") ;
+                }
+            }
             CloseHandle(pi.hThread) ;
             CloseHandle(pi.hProcess) ;
         }
@@ -69,7 +73,8 @@ namespace vind
                 const std::filesystem::path& current_dir,
                 std::string cmd,
                 const std::string& args,
-                bool show_console_window) {
+                bool show_console_window,
+                bool wait_until_finish) {
 
             //protect path with quotation marks for security.
             if(cmd.find(" ") != std::string::npos) {
@@ -104,7 +109,7 @@ namespace vind
             }
             cmd += args ;
 
-            create_process_core(cmd, current_dir, flags) ;
+            create_process_core(cmd, current_dir, flags, wait_until_finish) ;
         }
 
         int shell_execute(const std::filesystem::path& url) {

@@ -113,9 +113,7 @@ namespace
         in.type           = INPUT_MOUSE ;
         in.mi.dx          = 1 ;
         in.mi.dy          = 1 ;
-        in.mi.mouseData   = 0 ;
         in.mi.dwFlags     = MOUSEEVENTF_MOVE ;
-        in.mi.time        = 0 ;
         in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
         if(!SendInput(1, &in, sizeof(INPUT))) {

@@ -62,9 +62,10 @@ namespace
                 if(std::filesystem::equivalent(
                             path::RC(), std::filesystem::u8path(args))) {
                     throw std::invalid_argument(
-                            "Recursive references to the same .vindrc are not allowed") ;
+                            "Recursive references to the same .vindrc are not allowed.") ;
                 }
-                SyscmdSource::sprocess(std::forward<Str>(args), false) ;
+                SyscmdSource::sprocess(
+                        path::replace_magic(std::forward<Str>(args)), false) ;
                 return ;
 
             default:
@@ -208,7 +209,7 @@ namespace vind
                 sprocess(path::RC(), true) ;
             }
             else {
-                sprocess(std::filesystem::path(args), true) ;
+                sprocess(path::replace_magic(args), true) ;
             }
         }
         // If received syntax error as std::logic_error,

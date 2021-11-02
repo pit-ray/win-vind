@@ -133,6 +133,7 @@ add_library(window STATIC
     src/bind/window/snap_window.cpp
     src/bind/window/split_open_window.cpp
     src/bind/window/switch_window.cpp
+    src/bind/window/teleport_vdesktop.cpp
     src/bind/window/window_resizer.cpp
     src/bind/window/window_utility.cpp
 )

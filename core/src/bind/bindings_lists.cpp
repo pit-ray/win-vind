@@ -56,6 +56,7 @@
 #include "bind/window/snap_window.hpp"
 #include "bind/window/split_open_window.hpp"
 #include "bind/window/switch_window.hpp"
+#include "bind/window/teleport_vdesktop.hpp"
 #include "bind/window/window_resizer.hpp"
 
 #include "bind/syscmd/command.hpp"
@@ -189,6 +190,7 @@ namespace vind
                 SwitchVDesktop2Right::create(),
                 SwitchWindow::create(),
                 TaskView::create(),
+                TeleportOverVDesktop::create(),
                 ToCommand::create(),
                 ToEdiNormal::create(),
                 ToEdiVisual::create(),

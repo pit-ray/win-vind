@@ -224,6 +224,7 @@ namespace vind
         }
     }
 
+
     bool load_config() noexcept {
         try {
             SyscmdSource::sprocess(path::RC(), false) ;

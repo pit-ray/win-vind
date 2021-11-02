@@ -21,7 +21,6 @@ namespace vind
     : cuia(nullptr)
     {
         CoInitialize(NULL) ;
-
         if(util::is_failed(CoCreateInstance(
                         CLSID_CUIAutomation, NULL,
                         CLSCTX_INPROC_SERVER, IID_IUIAutomation,

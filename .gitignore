@@ -1,8 +1,8 @@
 .VSCodeCounter
 .clangd
 .vimspector.json
-.vscode
 .vs
+.vscode
 bin
 bin_32
 bin_64
@@ -22,6 +22,7 @@ release
 release_32
 release_64
 replace.vim
+repo
 temp
 venv
 winget

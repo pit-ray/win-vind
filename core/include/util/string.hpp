@@ -18,6 +18,13 @@ namespace vind
                 const std::string& from,
                 const std::string& to) ;
 
+        inline std::string tail(const std::string& str, std::size_t length) {
+            if(length >= str.length()) {
+                return str ;
+            }
+            return str.substr(str.length() - length) ;
+        }
+
         inline std::string a2A(std::string s) {
             for(char& c : s) {
                 if(c >= 'a' && c <= 'z') c = c - ('a' - 'A') ;

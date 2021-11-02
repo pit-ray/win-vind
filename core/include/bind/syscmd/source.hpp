@@ -10,7 +10,8 @@ namespace vind
         explicit SyscmdSource() ;
         static void sprocess(
                 const std::filesystem::path& path=path::RC(),
-                bool reload_config=false) ;
+                bool reload_config=false,
+                bool start_from_default=true) ;
         static void sprocess(NTypeLogger& parent_lgr) ;
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;

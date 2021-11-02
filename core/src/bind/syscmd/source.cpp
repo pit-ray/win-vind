@@ -12,11 +12,13 @@
 #include "parser/rc_parser.hpp"
 #include "path.hpp"
 #include "util/def.hpp"
+#include "util/winwrap.hpp"
 
 #include "bind/syscmd/command.hpp"
 #include "bind/syscmd/map.hpp"
 #include "bind/syscmd/set.hpp"
 
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
@@ -31,45 +33,100 @@
 namespace
 {
     template <typename Str>
+    auto load_remote_vindrc(Str&& args) {
+        using namespace vind ;
+
+        static const auto repo_store_path = path::ROOT_PATH() / "repo" ;
+
+        if(!std::filesystem::exists(repo_store_path)) {
+            std::filesystem::create_directories(repo_store_path) ;
+        }
+
+        auto slash = args.find_first_of("/") ;
+        if(slash == std::string::npos) {
+            throw RUNTIME_EXCEPT("Specify in the form user/repo") ;
+        }
+
+        const auto repo_dir = args.substr(0, slash) + "_" + args.substr(slash + 1) ;
+        const auto target_repo_path = repo_store_path / repo_dir ;
+
+        if(!std::filesystem::exists(target_repo_path)) {
+            const auto remote_url = "https://github.com/" + args + ".git" ;
+
+            util::create_process(
+                repo_store_path, "git",
+                util::concat_args("clone", "--depth=1", remote_url, repo_dir),
+                false) ;
+
+            using namespace std::chrono ;
+            auto start = system_clock::now() ;
+            while(true) {
+                Sleep(500) ;
+                if(std::filesystem::exists(target_repo_path)) {
+                    break ;
+                }
+                if(system_clock::now() - start > 30s) {
+                    break ;
+                }
+            }
+        }
+        else {
+            util::create_process(target_repo_path, "git", "pull", false) ;
+            Sleep(100) ;
+        }
+
+        return target_repo_path / ".vindrc" ;
+    }
+
+
+    template <typename Str>
     void do_runcommand(vind::rcparser::RunCommandsIndex rcindex, Str&& args) {
         using namespace vind ;
         using vind::rcparser::RunCommandsIndex ;
 
         switch(rcindex) {
-            case RunCommandsIndex::SET:
+            case RunCommandsIndex::SET: {
                 SyscmdSet::sprocess(std::forward<Str>(args), false) ;
                 return ;
-
-            case RunCommandsIndex::COMMAND:
+            }
+            case RunCommandsIndex::COMMAND: {
                 SyscmdCommand::sprocess(std::forward<Str>(args), false) ;
                 return ;
 
-            case RunCommandsIndex::DELCOMMAND:
+            }
+            case RunCommandsIndex::DELCOMMAND: {
                 SyscmdDelcommand::sprocess(std::forward<Str>(args), false) ;
                 return ;
-
-            case RunCommandsIndex::COMCLEAR:
+            }
+            case RunCommandsIndex::COMCLEAR: {
                 if(!args.empty()) {
                     throw std::invalid_argument("comclear") ;
                 }
                 SyscmdComclear::sprocess(false) ;
                 return ;
-
-            case RunCommandsIndex::SOURCE:
+            }
+            case RunCommandsIndex::SOURCE: {
                 if(args.empty()) {
                     throw std::invalid_argument("source") ;
                 }
-                if(std::filesystem::equivalent(
-                            path::RC(), std::filesystem::u8path(args))) {
+
+                auto args_path = std::filesystem::u8path(path::replace_magic(args)) ;
+
+                if(std::filesystem::equivalent(path::RC(), args_path)) {
                     throw std::invalid_argument(
                             "Recursive references to the same .vindrc are not allowed.") ;
                 }
-                SyscmdSource::sprocess(
-                        path::replace_magic(std::forward<Str>(args)), false) ;
-                return ;
 
-            default:
+                if(args_path.filename().u8string() != ".vindrc") {
+                    args_path = load_remote_vindrc(std::forward<Str>(args)) ;
+                }
+                SyscmdSource::sprocess(args_path, false, false) ; //overload .vindrc
+                return ;
+            }
+
+            default: {
                 break ;
+            }
         }
 
         using mode::Mode ;
@@ -110,14 +167,17 @@ namespace vind
 
     void SyscmdSource::sprocess(
             const std::filesystem::path& path,
-            bool reload_config) {
+            bool reload_config,
+            bool start_from_default) {
 
         auto return_to_default = [] {
             gparams::reset() ;
             gmaps::reset() ;
         } ;
 
-        return_to_default() ;
+        if(start_from_default) {
+            return_to_default() ;
+        }
 
         std::ifstream ifs(path, std::ios::in) ;
         if(!ifs.is_open()) {

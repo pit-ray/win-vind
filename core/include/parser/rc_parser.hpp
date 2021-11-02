@@ -84,6 +84,8 @@ namespace vind
             DELCOMMAND,
             COMCLEAR,
 
+            SOURCE,
+
 
             MASK_MODE       = 0b0000'1111,
 

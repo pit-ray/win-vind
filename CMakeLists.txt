@@ -42,6 +42,7 @@ else()
     set(CMAKE_CXX_FLAGS 
         -static
         -lstdc++
+        -lstdc++fs
         -lgcc
         -Wall
         -Wextra

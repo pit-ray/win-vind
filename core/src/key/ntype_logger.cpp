@@ -10,6 +10,7 @@
 #include "mode.hpp"
 #include "time/keystroke_repeater.hpp"
 
+#include <limits>
 #include <stack>
 
 

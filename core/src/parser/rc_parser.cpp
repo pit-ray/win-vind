@@ -175,7 +175,13 @@ namespace vind
                     {"comclea",     RunCommandsIndex::COMCLEAR},
                     {"comcle",      RunCommandsIndex::COMCLEAR},
                     {"comcl",       RunCommandsIndex::COMCLEAR},
-                    {"comc",        RunCommandsIndex::COMCLEAR}
+                    {"comc",        RunCommandsIndex::COMCLEAR},
+
+                    {"source",      RunCommandsIndex::SOURCE},
+                    {"sourc",       RunCommandsIndex::SOURCE},
+                    {"sour",        RunCommandsIndex::SOURCE},
+                    {"sou",         RunCommandsIndex::SOURCE},
+                    {"so",          RunCommandsIndex::SOURCE},
                 } ;
 
                 for(std::size_t i = 0 ; i < mode_num() ; i ++) {

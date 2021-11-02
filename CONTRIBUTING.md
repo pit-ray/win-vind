@@ -80,7 +80,7 @@ Since it builds all libraries with the best options for your system environment,
   $ ./debug/Debug/win-vind.exe
   ```
 
-###### Manually (MinGW-w64)
+###### Manually (MinGW-w64 >= 8.2.0)
   ```bash
   $ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 .
   $ cmake --build debug --config Debug
@@ -101,7 +101,7 @@ Since it builds all libraries with the best options for your system environment,
   $ cd test/build ; ctest -C Debug ; cd ../..
   ```
 
-###### Manually (MinGW-w64)
+###### Manually (MinGW-w64 >= GCC 8.2.0)
   ```bash
   $ cmake -B test/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" test
   $ cmake --build test/build

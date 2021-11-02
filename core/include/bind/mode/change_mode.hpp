@@ -38,7 +38,6 @@ namespace vind
         static void sprocess(const CharLogger& parent_lgr) ;
     } ;
 
-
     struct ToInsert : public BindedFuncCreator<ToInsert> {
         explicit ToInsert() ;
         static void sprocess(bool vclmodeout=true) ;

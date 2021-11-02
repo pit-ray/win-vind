@@ -17,6 +17,7 @@
 #include "bind/syscmd/map.hpp"
 #include "bind/syscmd/set.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -49,9 +50,21 @@ namespace
 
             case RunCommandsIndex::COMCLEAR:
                 if(!args.empty()) {
-                    throw std::invalid_argument("Comclear") ;
+                    throw std::invalid_argument("comclear") ;
                 }
                 SyscmdComclear::sprocess(false) ;
+                return ;
+
+            case RunCommandsIndex::SOURCE:
+                if(args.empty()) {
+                    throw std::invalid_argument("source") ;
+                }
+                if(std::filesystem::equivalent(
+                            path::to_u8path(path::RC()), path::to_u8path(args))) {
+                    throw std::invalid_argument(
+                            "Recursive references to the same .vindrc are not allowed") ;
+                }
+                SyscmdSource::sprocess(std::forward<Str>(args), false) ;
                 return ;
 
             default:
@@ -72,7 +85,7 @@ namespace
         }
         else if(rcindex & RunCommandsIndex::MASK_MAPCLEAR) {
             if(!args.empty()) {
-                throw std::invalid_argument("Mapclear") ;
+                throw std::invalid_argument("mapclear") ;
             }
             SyscmdMapclear::sprocess(mode, false) ;
         }
@@ -177,7 +190,7 @@ namespace vind
                 return_to_default() ;
                 break ;
             }
-        } // while(getline())
+        }
 
         if(reload_config) {
             vind::reconstruct_all_components() ; // Apply settings

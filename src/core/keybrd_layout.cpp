@@ -1,0 +1,32 @@
+#include "keybrd_layout.hpp"
+
+#include "language_code_id.hpp"
+#include "path.hpp"
+
+namespace vind
+{
+    namespace keybrd_layout {
+        std::filesystem::path get_layout_filepath(LANGID id) {
+
+            std::string filename ;
+            switch(id) {
+                case LANGID_EN:
+                case LANGID_EN_US:
+                    filename = "US.kmp" ;
+                    break ;
+
+                case LANGID_JA:
+                case LANGID_JA_JP:
+                case LANGID_JA_PLOC_JP:
+                    filename = "JP.kmp" ;
+                    break ;
+
+                default:
+                    filename = "US.kmp" ;
+                    break ;
+            }
+
+            return path::DEFAULT_CONFIG_PATH() / filename ;
+        }
+    }
+}

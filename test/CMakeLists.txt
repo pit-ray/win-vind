@@ -9,10 +9,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(${MSVC})
-    add_compile_options(/W4 /std:c++latest /MT /D_UNICODE /DUNICODE /DEBUG /DDEBUG)
+    add_compile_options(/W4 /std:c++17 /MT /D_UNICODE /DUNICODE /DEBUG /DDEBUG)
     add_link_options(/FORCE:MULTIPLE)
 else()
-    set(CMAKE_CXX_FLAGS "-static -lstdc++ -lgcc -fdiagnostics-color -DUNICODE -D_UNICODE -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00 --coverage -m64 -O0 -g3 -DDEBUG -Wl,--allow-multiple-definition")
+    set(CMAKE_CXX_FLAGS "-static -lstdc++ -lstdc++fs -lgcc -fdiagnostics-color -DUNICODE -D_UNICODE -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00 --coverage -m64 -O0 -g3 -DDEBUG -Wl,--allow-multiple-definition")
 endif()
 
 include(ProcessorCount)
@@ -23,9 +23,8 @@ set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
 set(ROOT_DIR ..)
 
 include_directories(
-    ${ROOT_DIR}/core/include
-    ${ROOT_DIR}/core/src
-    ${ROOT_DIR}
+    ${ROOT_DIR}/src
+    ${ROOT_DIR}/libs
     ${CMAKE_CURRENT_SOURCE_DIR}/doctest/doctest
     ${CMAKE_CURRENT_SOURCE_DIR}/fff
 )
@@ -33,58 +32,42 @@ add_library(doctest STATIC
     main.cpp
 )
 
-add_executable(core-test
-    core/util_color_test.cpp
-    core/util_container_test.cpp
-    core/util_debug_test.cpp
-    core/util_math_test.cpp
-    core/util_rect_test.cpp
-    core/util_point2d_test.cpp
-    core/util_box2d_test.cpp
-
-    core/time_interval_timer_test.cpp
-    core/time_keystroke_repeater_test.cpp
-
-    core/parser_rcparser_test.cpp
-
-    core/mode_test.cpp
-    core/g_maps_test.cpp
-    core/g_params_test.cpp
-)
-target_link_libraries(core-test doctest)
+file(GLOB NORMAL_TEST_CODES LIST_DIRECTORIES false normal*.cpp)
+add_executable(normal-test ${NORMAL_TEST_CODES})
+target_link_libraries(normal-test doctest)
 add_test(
-    NAME core-test
-    COMMAND $<TARGET_FILE:core-test>
+    NAME normal-test
+    COMMAND $<TARGET_FILE:normal-test>
     WORKING_DIRECTORY ${ROOT_DIR}
 )
 
-add_executable(core-util-string-mock-test
-    core/util_string_test.cpp
+add_executable(mock-string-test
+    mock_string_test.cpp
 )
-target_link_libraries(core-util-string-mock-test doctest)
+target_link_libraries(mock-string-test doctest)
 add_test(
-    NAME core-util-string-mock-test
-    COMMAND $<TARGET_FILE:core-util-string-mock-test>
+    NAME mock-string-test
+    COMMAND $<TARGET_FILE:mock-string-test>
     WORKING_DIRECTORY ${ROOT_DIR}
 )
 
-add_executable(core-util-winwrap-mock-test
-    core/util_winwrap_test.cpp
+add_executable(mock-winwrap-test
+    mock_winwrap_test.cpp
 )
-target_link_libraries(core-util-winwrap-mock-test doctest)
+target_link_libraries(mock-winwrap-test doctest)
 add_test(
-    NAME core-util-winwrap-mock-test
-    COMMAND $<TARGET_FILE:core-util-winwrap-mock-test>
+    NAME mock-winwrap-test
+    COMMAND $<TARGET_FILE:mock-winwrap-test>
     WORKING_DIRECTORY ${ROOT_DIR}
 )
 
-add_executable(core-coreio-err-mock-test
-    core/coreio_err_logger_test.cpp
+add_executable(mock-err-logger-test
+    mock_err_logger_test.cpp
 )
-target_link_libraries(core-coreio-err-mock-test doctest)
+target_link_libraries(mock-err-logger-test doctest)
 add_test(
-    NAME core-coreio-err-mock-test
-    COMMAND $<TARGET_FILE:core-coreio-err-mock-test>
+    NAME mock-err-logger-test
+    COMMAND $<TARGET_FILE:mock-err-logger-test>
     WORKING_DIRECTORY ${ROOT_DIR}
 )
 

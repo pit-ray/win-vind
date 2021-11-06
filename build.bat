@@ -39,11 +39,11 @@
         if %3 == 32 (
             cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A win32 -DBIT_TYPE=32 .
             cmake --build release_32 --config Release
-            xcopy /E /Y release_32\coregui\Release\*.exe release_32
+            xcopy /E /Y release_32\Release\*.exe release_32
         ) else (
             cmake -B release_64 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
             cmake --build release_64 --config Release
-            xcopy /E /Y release_64\coregui\Release\*.exe release_64
+            xcopy /E /Y release_64\Release\*.exe release_64
         )
     ) else (
         if %3 == 32 (
@@ -52,7 +52,6 @@
         )
         cmake -B release -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -DBIT_TYPE=%3 .
         cmake --build release --config Release
-        xcopy /e /Y release\coregui\*.exe release
     )
     @goto exit
 
@@ -68,12 +67,10 @@
             cmake --build debug --config Debug
         )
 
-        xcopy /e /Y debug\coregui\Debug\*.exe debug
-
+        xcopy /e /Y debug\Debug\*.exe debug
     ) else (
         cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
         cmake --build debug --config Debug
-        xcopy /e /Y debug\coregui\*.exe debug
     )
     @goto exit
 

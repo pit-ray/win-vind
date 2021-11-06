@@ -63,8 +63,7 @@ namespace
     // and change the caret size dynamically. As you can imagine, changing it every time the caret
     // is moved is not realistic, but we could at least change it every time the focus is given.
     //
-    // I tried some ways, but could not work. I tried several ways to do this, but did not work.
-    // So I leave with what I tried and some feature works.
+    // I tried some ways, but could not work. So I leave with what I tried and some feature works.
     //
     // 1. Get width from device context
     //

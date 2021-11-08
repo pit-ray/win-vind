@@ -1,4 +1,4 @@
-cd test
+cd tests
 @if not exist fff (
     mkdir fff
     cd fff

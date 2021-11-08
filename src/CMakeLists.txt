@@ -72,7 +72,7 @@ endfunction()
 
 configure_file(
     ${PROJECT_SOURCE_DIR}/res/build_assets/version.hpp.in
-    ${PROJECT_SOURCE_DIR}/core/version.hpp
+    ${PROJECT_SOURCE_DIR}/src/core/version.hpp
     NEWLINE_STYLE LF
     @ONLY
 )

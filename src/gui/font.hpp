@@ -9,9 +9,12 @@
 
 #include <string>
 
-namespace vindgui
+namespace vind
 {
-    wxFont* create_font(int font_size, const std::string& font_name) ;
+    namespace gui
+    {
+        wxFont* create_font(int font_size, const std::string& font_name) ;
+    }
 }
 
 #endif

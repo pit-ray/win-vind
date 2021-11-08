@@ -8,17 +8,20 @@
 
 #include "util/enable_gcc_warning.hpp"
 
-namespace vindgui
+namespace vind
 {
-    class SystemTray : public wxTaskBarIcon
+    namespace gui
     {
-    public:
-        explicit SystemTray(
-                wxTopLevelWindow* const parent,
-                const std::string& iconpath,
-                const std::string& tooltips) ;
-        virtual wxMenu* CreatePopupMenu() override ;
-    } ;
+        class SystemTray : public wxTaskBarIcon
+        {
+        public:
+            explicit SystemTray(
+                    wxTopLevelWindow* const parent,
+                    const std::string& iconpath,
+                    const std::string& tooltips) ;
+            virtual wxMenu* CreatePopupMenu() override ;
+        } ;
+    }
 }
 
 #endif

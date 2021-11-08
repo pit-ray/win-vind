@@ -12,27 +12,30 @@
 #include "tray.hpp"
 
 
-namespace vindgui
+namespace vind
 {
-    class AboutDialog : public wxDialog
+    namespace gui
     {
-    private:
-        std::unique_ptr<SystemTray> systray_ ;
+        class AboutDialog : public wxDialog
+        {
+        private:
+            std::unique_ptr<SystemTray> systray_ ;
 
-    public:
-        explicit AboutDialog(
-                const std::string& iconpath,
-                const std::string& tooltips,
-                int font_size,
-                const std::string& font_name) ;
+        public:
+            explicit AboutDialog(
+                    const std::string& iconpath,
+                    const std::string& tooltips,
+                    int font_size,
+                    const std::string& font_name) ;
 
-        virtual ~AboutDialog() noexcept ;
+            virtual ~AboutDialog() noexcept ;
 
-        AboutDialog(const AboutDialog&)            = delete ;
-        AboutDialog& operator=(const AboutDialog&) = delete ;
-        AboutDialog(AboutDialog&&)                 = delete ;
-        AboutDialog& operator=(AboutDialog&&)      = delete ;
-    } ;
+            AboutDialog(const AboutDialog&)            = delete ;
+            AboutDialog& operator=(const AboutDialog&) = delete ;
+            AboutDialog(AboutDialog&&)                 = delete ;
+            AboutDialog& operator=(AboutDialog&&)      = delete ;
+        } ;
+    }
 }
 
 #endif

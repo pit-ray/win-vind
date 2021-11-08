@@ -11,17 +11,20 @@
 #include <string>
 
 
-namespace vindgui
+namespace vind
 {
-    class UpdateDialog : public wxDialog
+    namespace gui
     {
-    public:
-        explicit UpdateDialog(
-            wxWindow* parent, 
-            const std::string& iconpath,
-            int font_size,
-            const std::string& font_name) ;
-    } ;
+        class UpdateDialog : public wxDialog
+        {
+        public:
+            explicit UpdateDialog(
+                wxWindow* parent, 
+                const std::string& iconpath,
+                int font_size,
+                const std::string& font_name) ;
+        } ;
+    }
 }
 
 #endif

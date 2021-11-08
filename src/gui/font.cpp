@@ -9,17 +9,20 @@
 
 #include "core/err_logger.hpp"
 
-namespace vindgui
+namespace vind
 {
-    wxFont* create_font(int font_size, const std::string& font_name) {
-        auto font = wxFont::New(9, wxFONTFAMILY_TELETYPE, wxFONTFLAG_DEFAULT) ;
-        font->SetPointSize(font_size) ;
-        if(wxFontEnumerator().IsValidFacename(font_name)) {
-            font->SetFaceName(font_name) ;
+    namespace gui
+    {
+        wxFont* create_font(int font_size, const std::string& font_name) {
+            auto font = wxFont::New(9, wxFONTFAMILY_TELETYPE, wxFONTFLAG_DEFAULT) ;
+            font->SetPointSize(font_size) ;
+            if(wxFontEnumerator().IsValidFacename(font_name)) {
+                font->SetFaceName(font_name) ;
+            }
+            else {
+                PRINT_ERROR("The font name " + font_name + " is not available.") ;
+            }
+            return font ;
         }
-        else {
-            PRINT_ERROR("The font name " + font_name + " is not available.") ;
-        }
-        return font ;
     }
 }

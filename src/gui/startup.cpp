@@ -110,43 +110,46 @@ namespace
 }
 
 
-namespace vindgui
+namespace vind
 {
-    void register_to_startup() {
-        auto psl = create_shell_link() ;
+    namespace gui
+    {
+        void register_to_startup() {
+            auto psl = create_shell_link() ;
 
-        using namespace vind ;
-        psl->SetPath(path::MODULE_PATH().wstring().c_str()) ;
+            using namespace vind ;
+            psl->SetPath(path::MODULE_PATH().wstring().c_str()) ;
 
-        auto ppf = create_persist_file(psl.get()) ;
+            auto ppf = create_persist_file(psl.get()) ;
 
-        if(FAILED(ppf->Save(get_shell_link_path().c_str(), TRUE))) {
-            throw RUNTIME_EXCEPT("Could not create startup link.") ;
+            if(FAILED(ppf->Save(get_shell_link_path().c_str(), TRUE))) {
+                throw RUNTIME_EXCEPT("Could not create startup link.") ;
+            }
         }
-    }
 
-    void remove_from_startup() {
-        enumerate_startup_files([] (auto&& link, auto&& target) {
-            using namespace vind ;
-            auto lower = util::A2a(util::ws_to_s(target)) ;
-            if(lower.find("win-vind") != std::string::npos) {
-                DeleteFileW(link.c_str()) ;
-            }
-            return true ;
-        }) ;
-    }
+        void remove_from_startup() {
+            enumerate_startup_files([] (auto&& link, auto&& target) {
+                using namespace vind ;
+                auto lower = util::A2a(util::ws_to_s(target)) ;
+                if(lower.find("win-vind") != std::string::npos) {
+                    DeleteFileW(link.c_str()) ;
+                }
+                return true ;
+            }) ;
+        }
 
-    bool check_if_registered() {
-        bool exist_shortcut = false ;
-        enumerate_startup_files([&exist_shortcut] (auto&& UNUSED(link), auto&& target) {
-            using namespace vind ;
-            auto lower = util::A2a(util::ws_to_s(target)) ;
-            if(lower.find("win-vind") != std::string::npos) {
-                exist_shortcut = true ;
-                return false ;
-            }
-            return true ;
-        }) ;
-        return exist_shortcut ;
+        bool check_if_registered() {
+            bool exist_shortcut = false ;
+            enumerate_startup_files([&exist_shortcut] (auto&& UNUSED(link), auto&& target) {
+                using namespace vind ;
+                auto lower = util::A2a(util::ws_to_s(target)) ;
+                if(lower.find("win-vind") != std::string::npos) {
+                    exist_shortcut = true ;
+                    return false ;
+                }
+                return true ;
+            }) ;
+            return exist_shortcut ;
+        }
     }
 }

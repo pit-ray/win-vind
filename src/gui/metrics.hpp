@@ -9,13 +9,16 @@
 
 #define GOLDEN_WIDTH_RATIO  (1.618)
 
-namespace vindgui
+namespace vind
 {
-    wxSize get_golden_size(int factor) {
-        return wxSize(
-            static_cast<int>(wxGetDisplayPPI().GetWidth() * GOLDEN_WIDTH_RATIO * factor),
-            wxGetDisplayPPI().GetHeight() * factor) ;
+    namespace gui
+    {
+        wxSize get_golden_size(int factor) {
+            return wxSize(
+                static_cast<int>(wxGetDisplayPPI().GetWidth() * GOLDEN_WIDTH_RATIO * factor),
+                wxGetDisplayPPI().GetHeight() * factor) ;
 
+        }
     }
 }
 

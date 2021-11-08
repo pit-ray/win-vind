@@ -103,231 +103,234 @@ namespace
 }
 
 
-namespace vindgui
+namespace vind
 {
-    UpdateDialog::UpdateDialog(
-            wxWindow* parent, 
-            const std::string& iconpath,
-            int font_size,
-            const std::string& font_name)
-    : wxDialog(parent, wxID_ANY, wxT("Update win-vind"))
+    namespace gui
     {
-        SetIcon(wxIcon(iconpath, wxBITMAP_TYPE_ICO)) ;
-        auto root = new wxBoxSizer(wxVERTICAL) ;
+        UpdateDialog::UpdateDialog(
+                wxWindow* parent, 
+                const std::string& iconpath,
+                int font_size,
+                const std::string& font_name)
+        : wxDialog(parent, wxID_ANY, wxT("Update win-vind"))
+        {
+            SetIcon(wxIcon(iconpath, wxBITMAP_TYPE_ICO)) ;
+            auto root = new wxBoxSizer(wxVERTICAL) ;
 
-        using namespace vind ;
+            using namespace vind ;
 
-        std::filesystem::path tempdir(gparams::get_s("tempdir")) ;
-        tempdir = path::replace_magic(tempdir) ;
+            std::filesystem::path tempdir(gparams::get_s("tempdir")) ;
+            tempdir = path::replace_magic(tempdir) ;
 
-        util::create_process(
-                tempdir,
-                "curl",
-                util::concat_args(
-                "-H", "@{\"Accept\"=\"application/vnd.github.v3+json\"}",
-                "\"https://api.github.com/repos/pit-ray/win-vind/releases/latest\"",
-                "-o", g_release_cache_name), false) ;
-        const auto json_path = tempdir / g_release_cache_name ;
+            util::create_process(
+                    tempdir,
+                    "curl",
+                    util::concat_args(
+                    "-H", "@{\"Accept\"=\"application/vnd.github.v3+json\"}",
+                    "\"https://api.github.com/repos/pit-ray/win-vind/releases/latest\"",
+                    "-o", g_release_cache_name), false) ;
+            const auto json_path = tempdir / g_release_cache_name ;
 
-        using namespace std::chrono ;
-        auto start = system_clock::now() ;
+            using namespace std::chrono ;
+            auto start = system_clock::now() ;
 
-        std::ifstream ifs ;
-        while(true) {
-            std::ifstream check_ifs(json_path) ;
-            if(check_ifs.is_open()) {
-                ifs = std::move(check_ifs) ;
-                break ;
+            std::ifstream ifs ;
+            while(true) {
+                std::ifstream check_ifs(json_path) ;
+                if(check_ifs.is_open()) {
+                    ifs = std::move(check_ifs) ;
+                    break ;
+                }
+
+                Sleep(500) ;
+
+                if(system_clock::now() - start > 30s) { //timeout
+                    break ;
+                }
             }
 
-            Sleep(500) ;
+            auto font = create_font(font_size, font_name) ;
+            auto insert_message = [this, root, font] (auto&& msgstr) {
+                wxSizerFlags flags ;
+                flags.Border(wxALL, 30) ;
+                flags.Align(wxALIGN_CENTER_HORIZONTAL) ;
 
-            if(system_clock::now() - start > 30s) { //timeout
-                break ;
+                auto msg = new wxStaticText(this, wxID_ANY, std::forward<decltype(msgstr)>(msgstr)) ;
+                msg->SetFont(*font) ;
+                root->Add(msg, flags) ;
+
+                flags.Border(wxALL, 10) ;
+                auto btn = new wxButton(this, wxID_CLOSE, wxT("Close")) ;
+                btn->SetFont(*font) ;
+                root->Add(btn, flags) ;
+            } ;
+
+            if(!ifs.is_open()) {
+                insert_message(wxT("Could not connect to github.com")) ;
             }
-        }
+            else {
+                nlohmann::json js ;
+                ifs >> js ;
+                try {
+                    auto tag_name = js.at("tag_name").get<std::string>() ;
 
-        auto font = create_font(font_size, font_name) ;
-        auto insert_message = [this, root, font] (auto&& msgstr) {
-            wxSizerFlags flags ;
-            flags.Border(wxALL, 30) ;
-            flags.Align(wxALIGN_CENTER_HORIZONTAL) ;
+                    if(!tag_name.empty()) {
+                        auto to_val_v = [] (auto&& mmp) {
+                            return 
+                            std::stoull(mmp[0]) * 1000'000 + 
+                            std::stoull(mmp[1]) * 1000 +
+                            std::stoull(mmp[2]) ;
+                        } ;
 
-            auto msg = new wxStaticText(this, wxID_ANY, std::forward<decltype(msgstr)>(msgstr)) ;
-            msg->SetFont(*font) ;
-            root->Add(msg, flags) ;
-
-            flags.Border(wxALL, 10) ;
-            auto btn = new wxButton(this, wxID_CLOSE, wxT("Close")) ;
-            btn->SetFont(*font) ;
-            root->Add(btn, flags) ;
-        } ;
-
-        if(!ifs.is_open()) {
-            insert_message(wxT("Could not connect to github.com")) ;
-        }
-        else {
-            nlohmann::json js ;
-            ifs >> js ;
-            try {
-                auto tag_name = js.at("tag_name").get<std::string>() ;
-
-                if(!tag_name.empty()) {
-                    auto to_val_v = [] (auto&& mmp) {
-                        return 
-                        std::stoull(mmp[0]) * 1000'000 + 
-                        std::stoull(mmp[1]) * 1000 +
-                        std::stoull(mmp[2]) ;
-                    } ;
-
-                    auto current = to_val_v(vind::util::split(
+                        auto current = to_val_v(vind::util::split(
 #if defined(DEBUG)
-                                "1.0.0"
+                                    "1.0.0"
 #else
-                                WIN_VIND_VERSION
+                                    WIN_VIND_VERSION
 #endif
-                                , ".")) ;
+                                    , ".")) ;
 
-                    auto latest_version = tag_name.substr(1) ;
-                    auto latest  = to_val_v(vind::util::split(latest_version, ".")) ;
+                        auto latest_version = tag_name.substr(1) ;
+                        auto latest  = to_val_v(vind::util::split(latest_version, ".")) ;
 
-                    if(current >= latest) {
-                        insert_message(wxT("It is already the latest version.")) ;
-                    }
-                    else {
-                        wxSizerFlags flags ;
-                        flags.Border(wxALL, 10) ;
-                        flags.Align(wxALIGN_CENTER_HORIZONTAL) ;
-
-                        using path::InstallType ;
-                        auto install_type = path::get_install_type() ;
-
-                        auto body = new wxHtmlWindow(
-                                this, UPDATE_NOTES, wxDefaultPosition,
-                                get_golden_size(4), wxHW_SCROLLBAR_AUTO) ;
-                        body->SetFont(*font) ;
-
-                        std::stringstream pagess ;
-                        pagess << "<html>" ;
-
-                        // Header ==========================================
-                        pagess << "<head>" ;
-                        pagess << "<meta charset=\"UTF-8\">" ;
-                        pagess << "</head>" ;
-
-                        // Body =============================================
-                        pagess << "<body>" ;
-                        pagess << "<h1>" << tag_name << " is available now!\n</h1>" ;
-
-                        auto release_notes = parse_markdown_to_html(js.at("body").get<std::string>()) ;
-                        pagess << "<div>" << release_notes + "</div>" ;
-
-                        if(install_type == InstallType::CHOCOLATEY) {
-                            pagess <<
-                                "<br>" \
-                                "<h3>" \
-                                "The running win-vind is the Chocolatey version, " \
-                                "so use the <code>choco upgrade win-vind</code> command instead." \
-                                "<br>" \
-                                "</h3>" ;
+                        if(current >= latest) {
+                            insert_message(wxT("It is already the latest version.")) ;
                         }
+                        else {
+                            wxSizerFlags flags ;
+                            flags.Border(wxALL, 10) ;
+                            flags.Align(wxALIGN_CENTER_HORIZONTAL) ;
 
-                        // Footer ===========================================
-                        pagess << "</body>" ;
-                        pagess << "</html>" ;
+                            using path::InstallType ;
+                            auto install_type = path::get_install_type() ;
 
-                        body->SetPage(pagess.str()) ;
-                        body->SetBorders(30) ;
-                        body->SetStandardFonts(font_size, font_name) ;
+                            auto body = new wxHtmlWindow(
+                                    this, UPDATE_NOTES, wxDefaultPosition,
+                                    get_golden_size(4), wxHW_SCROLLBAR_AUTO) ;
+                            body->SetFont(*font) ;
 
-                        Bind(wxEVT_HTML_LINK_CLICKED, [](wxHtmlLinkEvent& e) {
-                            auto url = e.GetLinkInfo().GetHref().ToStdString() ;
-                            Execute::sprocess(url) ;
-                        }, UPDATE_NOTES) ;
+                            std::stringstream pagess ;
+                            pagess << "<html>" ;
 
-                        root->Add(body, flags) ;
-                        {
-                            wxSizerFlags btn_flags ;
-                            btn_flags.Border(wxALL, 5) ;
-                            btn_flags.Border(wxLEFT, 25) ;
-                            btn_flags.Border(wxRIGHT, 25) ;
-                            btn_flags.Align(wxALIGN_CENTER_VERTICAL) ;
+                            // Header ==========================================
+                            pagess << "<head>" ;
+                            pagess << "<meta charset=\"UTF-8\">" ;
+                            pagess << "</head>" ;
 
-                            auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;
-                            auto dl_btn = new wxButton(this, wxID_OK, wxT("Download")) ;
-                            dl_btn->SetFont(*font) ;
-                            btn_sizer->Add(dl_btn, btn_flags) ;
+                            // Body =============================================
+                            pagess << "<body>" ;
+                            pagess << "<h1>" << tag_name << " is available now!\n</h1>" ;
+
+                            auto release_notes = parse_markdown_to_html(js.at("body").get<std::string>()) ;
+                            pagess << "<div>" << release_notes + "</div>" ;
 
                             if(install_type == InstallType::CHOCOLATEY) {
-                                dl_btn->Enable(false) ;
+                                pagess <<
+                                    "<br>" \
+                                    "<h3>" \
+                                    "The running win-vind is the Chocolatey version, " \
+                                    "so use the <code>choco upgrade win-vind</code> command instead." \
+                                    "<br>" \
+                                    "</h3>" ;
                             }
 
-                            auto cl_btn = new wxButton(this, wxID_CLOSE, wxT("Cancel")) ;
-                            cl_btn->SetFont(*font) ;
-                            btn_sizer->Add(cl_btn, btn_flags) ;
+                            // Footer ===========================================
+                            pagess << "</body>" ;
+                            pagess << "</html>" ;
 
-                            root->Add(btn_sizer, flags) ;
+                            body->SetPage(pagess.str()) ;
+                            body->SetBorders(30) ;
+                            body->SetStandardFonts(font_size, font_name) ;
 
-                            Bind(wxEVT_BUTTON, [js, latest_version, tempdir] (auto&) {
-                                try {
-                                    auto asset_name = get_asset_name_for_same_install(latest_version) ;
+                            Bind(wxEVT_HTML_LINK_CLICKED, [](wxHtmlLinkEvent& e) {
+                                auto url = e.GetLinkInfo().GetHref().ToStdString() ;
+                                Execute::sprocess(url) ;
+                            }, UPDATE_NOTES) ;
 
-                                    for(auto& assets : js.at("assets")) {
-                                        auto url = assets.at("browser_download_url").get<std::string>() ;
-                                        if(url.find(asset_name) != std::string::npos) {
-                                            util::create_process(
-                                                    tempdir,
-                                                    "curl",
-                                                    util::concat_args("-OL", url), false) ;
-                                            auto dl_filepath = tempdir / assets.at("name").get<std::string>() ;
+                            root->Add(body, flags) ;
+                            {
+                                wxSizerFlags btn_flags ;
+                                btn_flags.Border(wxALL, 5) ;
+                                btn_flags.Border(wxLEFT, 25) ;
+                                btn_flags.Border(wxRIGHT, 25) ;
+                                btn_flags.Align(wxALIGN_CENTER_VERTICAL) ;
 
-                                            using namespace std::chrono ;
-                                            auto dl_start = system_clock::now() ;
-                                            while(true) {
-                                                Sleep(500) ;
-                                                std::ifstream check(dl_filepath) ;
-                                                if(check.is_open()) {
-                                                    Execute::sprocess(dl_filepath) ;
-                                                    ExitConfigGUI::sprocess() ; // exit win-vind for update
-                                                    break ;
+                                auto btn_sizer = new wxBoxSizer(wxHORIZONTAL) ;
+                                auto dl_btn = new wxButton(this, wxID_OK, wxT("Download")) ;
+                                dl_btn->SetFont(*font) ;
+                                btn_sizer->Add(dl_btn, btn_flags) ;
+
+                                if(install_type == InstallType::CHOCOLATEY) {
+                                    dl_btn->Enable(false) ;
+                                }
+
+                                auto cl_btn = new wxButton(this, wxID_CLOSE, wxT("Cancel")) ;
+                                cl_btn->SetFont(*font) ;
+                                btn_sizer->Add(cl_btn, btn_flags) ;
+
+                                root->Add(btn_sizer, flags) ;
+
+                                Bind(wxEVT_BUTTON, [js, latest_version, tempdir] (auto&) {
+                                    try {
+                                        auto asset_name = get_asset_name_for_same_install(latest_version) ;
+
+                                        for(auto& assets : js.at("assets")) {
+                                            auto url = assets.at("browser_download_url").get<std::string>() ;
+                                            if(url.find(asset_name) != std::string::npos) {
+                                                util::create_process(
+                                                        tempdir,
+                                                        "curl",
+                                                        util::concat_args("-OL", url), false) ;
+                                                auto dl_filepath = tempdir / assets.at("name").get<std::string>() ;
+
+                                                using namespace std::chrono ;
+                                                auto dl_start = system_clock::now() ;
+                                                while(true) {
+                                                    Sleep(500) ;
+                                                    std::ifstream check(dl_filepath) ;
+                                                    if(check.is_open()) {
+                                                        Execute::sprocess(dl_filepath) ;
+                                                        ExitConfigGUI::sprocess() ; // exit win-vind for update
+                                                        break ;
+                                                    }
+                                                    if(system_clock::now() - dl_start > 60s) { //timeout
+                                                        break ;
+                                                    }
                                                 }
-                                                if(system_clock::now() - dl_start > 60s) { //timeout
-                                                    break ;
-                                                }
+                                                break ;
                                             }
-                                            break ;
                                         }
                                     }
-                                }
-                                catch(const nlohmann::json::exception&) {
-                                    Execute::sprocess(
-                                            "https://github.com/pit-ray/win-vind/releases/latest") ;
-                                }
-                            }, wxID_OK) ;
+                                    catch(const nlohmann::json::exception&) {
+                                        Execute::sprocess(
+                                                "https://github.com/pit-ray/win-vind/releases/latest") ;
+                                    }
+                                }, wxID_OK) ;
+                            }
                         }
                     }
                 }
+                catch(const nlohmann::json::exception& e) {
+                    insert_message(wxString::FromUTF8(e.what())) ;
+                }
             }
-            catch(const nlohmann::json::exception& e) {
-                insert_message(wxString::FromUTF8(e.what())) ;
+
+            SetSizerAndFit(root) ;
+
+            SetBackgroundColour(wxColour(*wxWHITE)) ;
+            for(auto node = GetChildren().GetFirst() ; node ; node = node->GetNext()) {
+                node->GetData()->SetBackgroundColour(wxColour(*wxWHITE)) ;
             }
+
+            Bind(wxEVT_BUTTON, [this, json_path] (auto&) {
+                DeleteFileW(json_path.wstring().c_str()) ;
+                Destroy() ;
+            }, wxID_CLOSE) ;
+
+            Bind(wxEVT_CLOSE_WINDOW, [this, json_path](auto&) {
+                DeleteFileW(json_path.wstring().c_str()) ;
+                Destroy() ;
+            }) ;
         }
-
-        SetSizerAndFit(root) ;
-
-        SetBackgroundColour(wxColour(*wxWHITE)) ;
-        for(auto node = GetChildren().GetFirst() ; node ; node = node->GetNext()) {
-            node->GetData()->SetBackgroundColour(wxColour(*wxWHITE)) ;
-        }
-
-        Bind(wxEVT_BUTTON, [this, json_path] (auto&) {
-            DeleteFileW(json_path.wstring().c_str()) ;
-            Destroy() ;
-        }, wxID_CLOSE) ;
-
-        Bind(wxEVT_CLOSE_WINDOW, [this, json_path](auto&) {
-            DeleteFileW(json_path.wstring().c_str()) ;
-            Destroy() ;
-        }) ;
     }
 }

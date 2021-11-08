@@ -13,7 +13,7 @@ namespace vind
     {}
     void GotoNextPage::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LALT, KEYCODE_RIGHT) ;
+            util::pushup(KEYCODE_LALT, KEYCODE_RIGHT) ;
         }) ;
     }
     void GotoNextPage::sprocess(NTypeLogger& parent_lgr) {
@@ -32,7 +32,7 @@ namespace vind
     {}
     void GotoPrevPage::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LALT, KEYCODE_LEFT) ;
+            util::pushup(KEYCODE_LALT, KEYCODE_LEFT) ;
         }) ;
     }
     void GotoPrevPage::sprocess(NTypeLogger& parent_lgr) {

@@ -141,7 +141,7 @@ namespace vind
     : BindedFuncCreator("start_explorer")
     {}
     void StartExplorer::sprocess() {
-        keybrd::pushup(KEYCODE_LWIN, KEYCODE_E) ;
+        util::pushup(KEYCODE_LWIN, KEYCODE_E) ;
         Sleep(100) ; //wait until select window by OS.
         JumpToActiveWindow::sprocess() ;
     }
@@ -159,7 +159,7 @@ namespace vind
     : BindedFuncCreator("open_startmenu")
     {}
     void OpenStartMenu::sprocess() {
-        keybrd::pushup(KEYCODE_LWIN) ;
+        util::pushup(KEYCODE_LWIN) ;
         Sleep(100) ; //wait until select window by OS.
         JumpToActiveWindow::sprocess() ;
     }

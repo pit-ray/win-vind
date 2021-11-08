@@ -17,39 +17,42 @@
 
 namespace vind
 {
-    CUIA::CUIA()
-    : cuia(nullptr)
+    namespace util
     {
-        CoInitialize(NULL) ;
-        if(util::is_failed(CoCreateInstance(
-                        CLSID_CUIAutomation, NULL,
-                        CLSCTX_INPROC_SERVER, IID_IUIAutomation,
-                        reinterpret_cast<void**>(&cuia)))) {
-            throw LOGIC_EXCEPT("Could not create UIAutomation.") ;
+        CUIA::CUIA()
+        : cuia(nullptr)
+        {
+            CoInitialize(NULL) ;
+            if(util::is_failed(CoCreateInstance(
+                            CLSID_CUIAutomation, NULL,
+                            CLSCTX_INPROC_SERVER, IID_IUIAutomation,
+                            reinterpret_cast<void**>(&cuia)))) {
+                throw LOGIC_EXCEPT("Could not create UIAutomation.") ;
+            }
+            if(!cuia) {
+                throw LOGIC_EXCEPT("Could not initialize UIAutomation.") ;
+            }
         }
-        if(!cuia) {
-            throw LOGIC_EXCEPT("Could not initialize UIAutomation.") ;
-        }
-    }
 
-    CUIA::~CUIA() noexcept {
-        if(cuia) {
-            cuia->Release() ;
-            cuia = nullptr ;
+        CUIA::~CUIA() noexcept {
+            if(cuia) {
+                cuia->Release() ;
+                cuia = nullptr ;
+            }
+            CoUninitialize() ;
         }
-        CoUninitialize() ;
-    }
 
-    IUIAutomation* CUIA::get() const noexcept {
-        return cuia ;
-    }
-    CUIA::operator IUIAutomation*() const noexcept {
-        return cuia ;
-    }
-    CUIA::operator bool() const noexcept {
-        return cuia != nullptr ;
-    }
-    IUIAutomation* CUIA::operator->() const noexcept {
-        return cuia ;
+        IUIAutomation* CUIA::get() const noexcept {
+            return cuia ;
+        }
+        CUIA::operator IUIAutomation*() const noexcept {
+            return cuia ;
+        }
+        CUIA::operator bool() const noexcept {
+            return cuia != nullptr ;
+        }
+        IUIAutomation* CUIA::operator->() const noexcept {
+            return cuia ;
+        }
     }
 }

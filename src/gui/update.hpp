@@ -15,8 +15,7 @@ namespace vind
 {
     namespace gui
     {
-        class UpdateDialog : public wxDialog
-        {
+        class UpdateDialog : public wxDialog {
         public:
             explicit UpdateDialog(
                 wxWindow* parent, 

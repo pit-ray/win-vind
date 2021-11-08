@@ -13,10 +13,10 @@
 
 namespace vind
 {
-    namespace mouse {
+    namespace util {
         void click(KeyCode btcode) ;
-        void press(KeyCode btcode) ;
-        void release(KeyCode btcode) ;
+        void press_mousestate(KeyCode btcode) ;
+        void release_mousestate(KeyCode btcode) ;
 
         bool is_releasing_occured(KeyCode btcode) ; //(since the last call)
 

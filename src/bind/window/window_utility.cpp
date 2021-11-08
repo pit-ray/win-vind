@@ -87,7 +87,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not change window size") ;
             }
 
-            Box2D rect ;
+            util::Box2D rect ;
             if(!GetWindowRect(hwnd, &(rect.data()))) {
                 throw RUNTIME_EXCEPT("Could not get a rectangle of a window.") ;
             }
@@ -96,8 +96,8 @@ namespace vind
                 //If a window is Chromium browser (e.g. GoogleChrome or Microsoft Edge) and when it is full screen,
                 //could not resize its size, so cancel full screen.
 
-                screenmetrics::MonitorInfo minfo ;
-                screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+                util::MonitorInfo minfo ;
+                util::get_monitor_metrics(hwnd, minfo) ;
 
                 //Whether it is a full screen ?
                 if(!rect.is_over(minfo.work_rect)) {
@@ -109,7 +109,7 @@ namespace vind
                 }
 
                 //minimize it once
-                keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
+                util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
                 Sleep(50) ; //50ms
 
                 if(!MoveWindow(hwnd, left, top, width, height, TRUE)) {
@@ -124,11 +124,11 @@ namespace vind
             resize(hwnd, rect.left, rect.top, util::width(rect), util::height(rect)) ;
         }
 
-        void resize(HWND hwnd, const Box2D& rect) {
+        void resize(HWND hwnd, const util::Box2D& rect) {
             resize(hwnd, rect.left(), rect.top(), rect.width(), rect.height()) ;
         }
 
-        void batch_resize(const std::unordered_map<HWND, Box2D>& rects) {
+        void batch_resize(const std::unordered_map<HWND, util::Box2D>& rects) {
             //Resize each windows
             for(const auto& [hwnd, rect] : rects) {
                 resize(hwnd, rect) ;

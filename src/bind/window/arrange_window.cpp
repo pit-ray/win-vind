@@ -26,7 +26,7 @@ namespace
 {
     using namespace vind ;
 
-    std::unordered_map<HMONITOR, Box2D> g_mrects ;
+    std::unordered_map<HMONITOR, util::Box2D> g_mrects ;
 
     using OrderedHWNDs = std::map<SIZE_T, HWND> ;
     std::unordered_map<HMONITOR, OrderedHWNDs> g_m_ordered_hwnd ;
@@ -38,7 +38,7 @@ namespace
             return TRUE ; //continue
         }
 
-        Box2D box ;
+        util::Box2D box ;
         if(!GetWindowRect(hwnd, &box.data())) {
             return TRUE ; //continue
         }
@@ -48,8 +48,8 @@ namespace
         }
 
         //Is existed in work area?
-        screenmetrics::MonitorInfo minfo ;
-        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+        util::MonitorInfo minfo ;
+        util::get_monitor_metrics(hwnd, minfo) ;
         if(box.is_out_of(minfo.work_rect)) {
             return TRUE ;
         }
@@ -84,7 +84,7 @@ namespace
         return TRUE ;
     }
 
-    void assign_local_area_in_monitors(std::unordered_map<HWND, Box2D>& rects) {
+    void assign_local_area_in_monitors(std::unordered_map<HWND, util::Box2D>& rects) {
         for(auto& [hmonitor, mrect] : g_mrects) {
             const auto& ordered_hwnd = g_m_ordered_hwnd[hmonitor] ;
 
@@ -177,7 +177,7 @@ namespace vind
             return ;
         }
 
-        std::unordered_map<HWND, Box2D> rects ;
+        std::unordered_map<HWND, util::Box2D> rects ;
         assign_local_area_in_monitors(rects) ;
         windowutil::batch_resize(rects) ;
 

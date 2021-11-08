@@ -20,15 +20,15 @@ namespace vind
                 LONG left, LONG top,
                 LONG width, LONG height) ;
         void resize(HWND hwnd, const RECT& rect) ;
-        void resize(HWND hwnd, const Box2D& rect) ;
+        void resize(HWND hwnd, const util::Box2D& rect) ;
 
-        void batch_resize(const std::unordered_map<HWND, Box2D>& rects) ;
+        void batch_resize(const std::unordered_map<HWND, util::Box2D>& rects) ;
         void batch_resize(const std::unordered_map<HWND, RECT>& rects) ;
 
         struct ForegroundInfo {
             HWND hwnd ;
             HMONITOR hmonitor ;
-            Box2D rect ;
+            util::Box2D rect ;
 
             explicit ForegroundInfo()
             : hwnd(NULL),

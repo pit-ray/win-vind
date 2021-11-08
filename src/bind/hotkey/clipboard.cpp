@@ -23,11 +23,11 @@ namespace vind
     : BindedFuncCreator("hotkey_copy")
     {}
     void HotkeyCopy::sprocess() {
-        mouse::release(KEYCODE_MOUSE_LEFT) ;
+        util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
         //there are cases in which not editable.
         //thus, not use Message Copy
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
     }
     void HotkeyCopy::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -44,10 +44,10 @@ namespace vind
     : BindedFuncCreator("hotkey_paste")
     {}
     void HotkeyPaste::sprocess() {
-        mouse::release(KEYCODE_MOUSE_LEFT) ;
+        util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
         //not selecting at paste.
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_V) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_V) ;
     }
     void HotkeyPaste::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -64,8 +64,8 @@ namespace vind
     : BindedFuncCreator("hotkey_cut")
     {}
     void HotkeyCut::sprocess() {
-        mouse::release(KEYCODE_MOUSE_LEFT) ;
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+        util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
     }
     void HotkeyCut::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -82,12 +82,12 @@ namespace vind
     : BindedFuncCreator("hotkey_delete")
     {}
     void HotkeyDelete::sprocess() {
-        mouse::release(KEYCODE_MOUSE_LEFT) ;
+        util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
         //selecting->cut
         //unselecting->delete
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
-        keybrd::pushup(KEYCODE_DELETE) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+        util::pushup(KEYCODE_DELETE) ;
     }
     void HotkeyDelete::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -105,12 +105,12 @@ namespace vind
     {}
 
     void HotkeyBackspace::sprocess() {
-        mouse::release(KEYCODE_MOUSE_LEFT) ;
+        util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
         //selecting->cut
         //unselecting->delete
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
-        keybrd::pushup(KEYCODE_BKSPACE) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+        util::pushup(KEYCODE_BKSPACE) ;
     }
     void HotkeyBackspace::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

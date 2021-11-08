@@ -43,8 +43,7 @@ namespace
 
 namespace vind
 {
-    namespace keybrd {
-
+    namespace util {
         bool is_pressed_actually(KeyCode key) noexcept {
             return GetAsyncKeyState(key) & 0x8000 ;
         }

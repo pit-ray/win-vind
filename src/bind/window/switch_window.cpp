@@ -21,7 +21,7 @@ namespace vind
         FuncFinder funcfinder_ ;
         std::size_t left_id_ ;
         std::size_t right_id_ ;
-        KeyStrokeRepeater ksr_ ;
+        util::KeyStrokeRepeater ksr_ ;
 
         explicit Impl()
         : funcfinder_(),
@@ -36,10 +36,10 @@ namespace vind
 
         void call_op(std::size_t id) const {
             if(id == left_id_) {
-                keybrd::pushup(KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LEFT) ;
             }
             else if(id == right_id_) {
-                keybrd::pushup(KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_RIGHT) ;
             }
         }
     } ;
@@ -58,15 +58,13 @@ namespace vind
     }
 
     void SwitchWindow::sprocess() const {
-        using namespace keybrd ;
-
         keyabsorber::InstantKeyAbsorber ika ;
 
-        ScopedKey alt(KEYCODE_LALT) ;
+        util::ScopedKey alt(KEYCODE_LALT) ;
         alt.press() ;
         keyabsorber::release_virtually(KEYCODE_LALT) ;
 
-        pushup(KEYCODE_TAB) ;
+        util::pushup(KEYCODE_TAB) ;
 
         constexpr auto lcx_vmode = mode::Mode::EDI_NORMAL ;
 

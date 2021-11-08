@@ -23,8 +23,8 @@ namespace
             LONG desired_width,
             const windowutil::ForegroundInfo& fginfo) {
 
-        screenmetrics::MonitorInfo minfo ;
-        screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
+        util::MonitorInfo minfo ;
+        util::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
         auto window_height = fginfo.rect.height() ;
         auto monitor_width = minfo.work_rect.width() ;
@@ -62,8 +62,8 @@ namespace
             LONG desired_height,
             const windowutil::ForegroundInfo& fginfo) {
 
-        screenmetrics::MonitorInfo minfo ;
-        screenmetrics::get_monitor_metrics(fginfo.hwnd, minfo) ;
+        util::MonitorInfo minfo ;
+        util::get_monitor_metrics(fginfo.hwnd, minfo) ;
 
         auto window_width = fginfo.rect.width() ;
         auto monitor_height = minfo.work_rect.height() ;

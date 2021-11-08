@@ -31,7 +31,7 @@ namespace
         //reset keys downed in order to call this function.
         for(auto& key : keyabsorber::get_pressed_list()) {
             if(is_shift(key)) continue ;
-            keybrd::release_keystate(key) ;
+            util::release_keystate(key) ;
         }
 
         while(vind::update_background()) {
@@ -45,7 +45,7 @@ namespace
                 for(auto& key : log) {
                     //For example, if replace by 'i' and 'i' key is downed,
                     //immediately will call "insert-mode", so release 'i'.
-                    keybrd::release_keystate(key) ;
+                    util::release_keystate(key) ;
 
                     if(!keycodecvt::get_ascii(key)) {
                         continue ;
@@ -59,7 +59,7 @@ namespace
                 //shifted
                 for(auto& key : log) {
                     if(is_shift(key)) continue ;
-                    keybrd::release_keystate(key) ;
+                    util::release_keystate(key) ;
                     if(!keycodecvt::get_shifted_ascii(key)) {
                         continue ;
                     }
@@ -83,14 +83,14 @@ namespace vind
         loop_for_keymatching([repeat_num](const auto& keycodes, bool shifted=false) {
 
             repeater::safe_for(repeat_num, [&keycodes, shifted] {
-                keybrd::pushup(KEYCODE_DELETE) ;
+                util::pushup(KEYCODE_DELETE) ;
 
-                if(shifted) keybrd::pushup(KEYCODE_LSHIFT, keycodes) ;
-                else keybrd::pushup(keycodes) ;
+                if(shifted) util::pushup(KEYCODE_LSHIFT, keycodes) ;
+                else util::pushup(keycodes) ;
             }) ;
 
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LEFT) ;
             }) ;
 
             return true ; //terminate looping
@@ -111,7 +111,7 @@ namespace vind
     : BindedFuncCreator("replace_sequence")
     {}
     void ReplaceSequence::sprocess(unsigned int repeat_num) {
-        using keybrd::pushup ;
+        using util::pushup ;
 
         VCmdLine::clear() ;
         VCmdLine::print(GeneralMessage("-- EDI REPLACE --")) ;
@@ -162,29 +162,29 @@ namespace vind
     void SwitchCharCase::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([&repeat_num] {
                 repeater::safe_for(repeat_num, [] {
-                    keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+                    util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                 }) ;
-                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             }) ;
 
         for(char c : res.str) {
             if(c >= 'a' && c <= 'z') {
-                keybrd::pushup(KEYCODE_LSHIFT, keycodecvt::get_keycode(c)) ;
+                util::pushup(KEYCODE_LSHIFT, keycodecvt::get_keycode(c)) ;
             }
             else if(c >= 'A' && c <= 'Z') {
                 constexpr char delta = 'a' - 'A' ;
-                keybrd::pushup(keycodecvt::get_keycode(c + delta)) ;
+                util::pushup(keycodecvt::get_keycode(c + delta)) ;
             }
             else {
                 auto keycode = keycodecvt::get_keycode(c) ;
                 if(keycode) {
-                    keybrd::pushup(keycode) ;
+                    util::pushup(keycode) ;
                     continue ;
                 }
 
                 keycode = keycodecvt::get_shifted_keycode(c) ;
                 if(keycode) {
-                    keybrd::pushup(KEYCODE_LSHIFT, keycode) ;
+                    util::pushup(KEYCODE_LSHIFT, keycode) ;
                     continue ;
                 }
             }

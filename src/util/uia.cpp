@@ -7,7 +7,8 @@
 
 namespace vind
 {
-    namespace uiauto {
+    namespace util
+    {
         const CUIA& get_global_cuia() {
             static CUIA g_cuia{} ;
             return g_cuia ;
@@ -109,7 +110,9 @@ namespace vind
             }
         }
 
-        SmartElement update_element(const SmartElement& elem, const SmartCacheReq& request) {
+        SmartElement update_element(
+                const SmartElement& elem,
+                const SmartCacheReq& request) {
             IUIAutomationElement* elem_raw ;
             if(util::is_failed(elem->BuildUpdatedCache(request.get(), &elem_raw))) {
                 throw RUNTIME_EXCEPT("Could not update caches of UIAutomationElement.") ;

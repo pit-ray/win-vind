@@ -22,7 +22,7 @@ namespace vind
 {
     //MoveCursorLeft
     struct MoveCursorLeft::Impl {
-        ConstAccelerator ca_{} ;
+        util::ConstAccelerator ca_{} ;
     } ;
 
     MoveCursorLeft::MoveCursorLeft()
@@ -35,7 +35,7 @@ namespace vind
     MoveCursorLeft& MoveCursorLeft::operator=(MoveCursorLeft&&) = default ;
 
     void MoveCursorLeft::sprocess(int delta) const {
-        mouse::move_cursor(-delta, 0) ;
+        util::move_cursor(-delta, 0) ;
     }
     void MoveCursorLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -55,7 +55,7 @@ namespace vind
 
     //MoveCursorRight
     struct MoveCursorRight::Impl {
-        ConstAccelerator ca_{} ;
+        util::ConstAccelerator ca_{} ;
     } ;
 
     MoveCursorRight::MoveCursorRight()
@@ -68,7 +68,7 @@ namespace vind
     MoveCursorRight& MoveCursorRight::operator=(MoveCursorRight&&) = default ;
 
     void MoveCursorRight::sprocess(int delta) const {
-        mouse::move_cursor(delta, 0) ;
+        util::move_cursor(delta, 0) ;
     }
     void MoveCursorRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -88,7 +88,7 @@ namespace vind
 
     //MoveCursorUp
     struct MoveCursorUp::Impl {
-        ConstAccelerator ca_{} ;
+        util::ConstAccelerator ca_{} ;
     } ;
 
     MoveCursorUp::MoveCursorUp()
@@ -101,7 +101,7 @@ namespace vind
     MoveCursorUp& MoveCursorUp::operator=(MoveCursorUp&&) = default ;
 
     void MoveCursorUp::sprocess(int delta) const {
-        mouse::move_cursor(0, -delta) ;
+        util::move_cursor(0, -delta) ;
     }
     void MoveCursorUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -121,7 +121,7 @@ namespace vind
 
     //MoveCursorDown
     struct MoveCursorDown::Impl {
-        ConstAccelerator ca_{} ;
+        util::ConstAccelerator ca_{} ;
     } ;
 
     MoveCursorDown::MoveCursorDown()
@@ -134,7 +134,7 @@ namespace vind
     MoveCursorDown& MoveCursorDown::operator=(MoveCursorDown&&) = default ;
 
     void MoveCursorDown::sprocess(int delta) const {
-        mouse::move_cursor(0, delta) ;
+        util::move_cursor(0, delta) ;
     }
     void MoveCursorDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

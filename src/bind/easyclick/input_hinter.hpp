@@ -26,12 +26,12 @@ namespace vind
 
         void load_config() ;
 
-        std::shared_ptr<Point2D> launch_loop(
-                const std::vector<Point2D>& positions,
+        std::shared_ptr<util::Point2D> launch_loop(
+                const std::vector<util::Point2D>& positions,
                 const std::vector<Hint>& hints) ;
 
-        std::shared_future<std::shared_ptr<Point2D>> launch_async_loop(
-                const std::vector<Point2D>& positions,
+        std::shared_future<std::shared_ptr<util::Point2D>> launch_async_loop(
+                const std::vector<util::Point2D>& positions,
                 const std::vector<Hint>& hints) ;
 
         void cancel() noexcept ;

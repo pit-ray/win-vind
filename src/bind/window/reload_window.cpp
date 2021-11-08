@@ -11,7 +11,7 @@ namespace vind
     : BindedFuncCreator("reload_current_window")
     {}
     void ReloadCurrentWindow::sprocess() {
-        keybrd::pushup(KEYCODE_F5) ;
+        util::pushup(KEYCODE_F5) ;
     }
     void ReloadCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

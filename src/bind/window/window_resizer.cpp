@@ -41,9 +41,9 @@ namespace vind
         std::size_t up_id_ ;
         std::size_t down_id_ ;
 
-        KeyStrokeRepeater ksr_ ;
+        util::KeyStrokeRepeater ksr_ ;
 
-        ConstAccelerator ca_ ;
+        util::ConstAccelerator ca_ ;
 
         explicit Impl()
         : funcfinder_(),
@@ -84,12 +84,12 @@ namespace vind
 
             auto hwnd = GetForegroundWindow() ;
 
-            Box2D rect ;
+            util::Box2D rect ;
             if(!GetWindowRect(hwnd, &(rect.data()))) {
                 throw RUNTIME_EXCEPT("Could not get a rectangle of foreground window.") ;
             }
 
-            auto cb_rect = screenmetrics::get_conbined_metrics() ;
+            auto cb_rect = util::get_conbined_metrics() ;
 
             auto left = rect.left() ;
             auto top = rect.top() ;
@@ -204,8 +204,6 @@ namespace vind
     }
 
     void WindowResizer::sprocess() const {
-        using namespace keybrd ;
-
         constexpr auto lcx_vmode = mode::Mode::EDI_NORMAL ;
 
         keyabsorber::InstantKeyAbsorber ika ;

@@ -35,7 +35,7 @@ namespace vind
         POINT pos ;
         GetCursorPos(&pos) ;
 
-        auto box = screenmetrics::get_conbined_metrics() ;
+        auto box = util::get_conbined_metrics() ;
 
         SetCursorPos(box.width() - gparams::get_i("jump_margin"), pos.y) ;
     }
@@ -57,7 +57,7 @@ namespace vind
         POINT pos ;
         GetCursorPos(&pos) ;
 
-        auto box = screenmetrics::get_conbined_metrics() ;
+        auto box = util::get_conbined_metrics() ;
 
         SetCursorPos(pos.x, box.top()) ;
     }
@@ -79,7 +79,7 @@ namespace vind
         POINT pos ;
         GetCursorPos(&pos) ;
 
-        auto box = screenmetrics::get_conbined_metrics() ;
+        auto box = util::get_conbined_metrics() ;
         SetCursorPos(pos.x, box.height() - gparams::get_i("jump_margin")) ;
     }
     void JumpToBottom::sprocess(NTypeLogger& parent_lgr) {
@@ -100,7 +100,7 @@ namespace vind
         POINT pos ;
         GetCursorPos(&pos) ;
 
-        auto box = screenmetrics::get_conbined_metrics() ;
+        auto box = util::get_conbined_metrics() ;
         SetCursorPos(box.center_x(), pos.y) ;
     }
     void JumpToHorizontalCenter::sprocess(NTypeLogger& parent_lgr) {
@@ -121,7 +121,7 @@ namespace vind
         POINT pos ;
         GetCursorPos(&pos) ;
 
-        auto box = screenmetrics::get_conbined_metrics() ;
+        auto box = util::get_conbined_metrics() ;
         SetCursorPos(pos.x, box.center_y()) ;
     }
     void JumpToVerticalCenter::sprocess(NTypeLogger& parent_lgr) {

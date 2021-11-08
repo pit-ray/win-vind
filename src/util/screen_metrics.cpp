@@ -10,7 +10,7 @@
 
 namespace vind
 {
-    namespace screenmetrics
+    namespace util
     {
         Box2D get_conbined_metrics() {
             WINDOWINFO winfo ;

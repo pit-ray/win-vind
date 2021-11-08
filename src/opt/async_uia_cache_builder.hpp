@@ -41,7 +41,7 @@ namespace vind
             return register_properties({ids...}) ;
         }
 
-        static SmartElement get_root_element(HWND hwnd) ;
+        static util::SmartElement get_root_element(HWND hwnd) ;
     } ;
 }
 

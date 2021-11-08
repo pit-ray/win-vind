@@ -54,7 +54,7 @@ namespace vind
         //ignore toggle keys (for example, CapsLock, NumLock, IME....)
         auto toggle_keys = keyabsorber::get_pressed_list() ;
 
-        auto box = screenmetrics::get_conbined_metrics() ;
+        auto box = util::get_conbined_metrics() ;
 
         auto width  = box.width() ;
         auto height = box.height() ;
@@ -84,7 +84,7 @@ namespace vind
                     SetCursorPos(x_pos, y_pos) ;
 
                     for(auto& key : log) {
-                        keybrd::release_keystate(key) ;
+                        util::release_keystate(key) ;
                     }
                     return ;
                 }

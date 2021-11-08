@@ -13,7 +13,7 @@ namespace vind
     {}
     void SwitchVDesktop2Left::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
         }) ;
     }
     void SwitchVDesktop2Left::sprocess(NTypeLogger& parent_lgr) {
@@ -32,7 +32,7 @@ namespace vind
     {}
     void SwitchVDesktop2Right::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
         }) ;
     }
     void SwitchVDesktop2Right::sprocess(NTypeLogger& parent_lgr) {
@@ -50,7 +50,7 @@ namespace vind
     : BindedFuncCreator("create_new_vdesktop")
     {}
     void CreateNewVDesktop::sprocess() {
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_D) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_D) ;
     }
     void CreateNewVDesktop::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -67,7 +67,7 @@ namespace vind
     : BindedFuncCreator("close_current_vdesktop")
     {}
     void CloseCurrentVDesktop::sprocess() {
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_F4) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_F4) ;
     }
     void CloseCurrentVDesktop::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -84,7 +84,7 @@ namespace vind
     : BindedFuncCreator("taskview")
     {}
     void TaskView::sprocess() {
-        keybrd::pushup(KEYCODE_LWIN, KEYCODE_TAB) ;
+        util::pushup(KEYCODE_LWIN, KEYCODE_TAB) ;
     }
     void TaskView::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

@@ -13,26 +13,26 @@ namespace
 {
     using namespace vind ;
     inline void snap_foreground_window(
-            const std::function<Box2D(const Box2D&)>& calc_half_size,
-            const std::function<POINT(const Box2D&)>& next_monitor_pos) {
+            const std::function<util::Box2D(const util::Box2D&)>& calc_half_size,
+            const std::function<POINT(const util::Box2D&)>& next_monitor_pos) {
 
         auto hwnd = GetForegroundWindow() ;
         if(hwnd == NULL) {
             throw RUNTIME_EXCEPT("There is not the foreground window.") ;
         }
 
-        screenmetrics::MonitorInfo minfo ;
-        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+        util::MonitorInfo minfo ;
+        util::get_monitor_metrics(hwnd, minfo) ;
 
         auto half_rect = calc_half_size(minfo.work_rect) ;
 
-        Box2D cur_rect ;
+        util::Box2D cur_rect ;
         if(!GetWindowRect(hwnd, &(cur_rect.data()))) {
             throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
         }
 
         if(cur_rect == half_rect) {
-            screenmetrics::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
+            util::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
 
             half_rect = calc_half_size(minfo.work_rect) ;
         }
@@ -49,8 +49,8 @@ namespace vind
     {}
 
     void SnapCurrentWindow2Left::sprocess() {
-        auto calc_half_size = [] (const Box2D& mrect) {
-            return Box2D{
+        auto calc_half_size = [] (const util::Box2D& mrect) {
+            return util::Box2D{
                 mrect.left(),
                 mrect.top(),
                 mrect.center_x(),
@@ -58,7 +58,7 @@ namespace vind
             } ;
         } ;
 
-        auto next_monitor_pos = [] (const Box2D& rect) {
+        auto next_monitor_pos = [] (const util::Box2D& rect) {
             return POINT{rect.left() - 100, rect.center_y()} ;
         } ;
 
@@ -79,8 +79,8 @@ namespace vind
     : BindedFuncCreator("snap_current_window_to_right")
     {}
     void SnapCurrentWindow2Right::sprocess() {
-        auto calc_half_size = [] (const Box2D& mrect) {
-            return Box2D {
+        auto calc_half_size = [] (const util::Box2D& mrect) {
+            return util::Box2D {
                 mrect.center_x(),
                 mrect.top(),
                 mrect.right(),
@@ -88,7 +88,7 @@ namespace vind
             } ;
         } ;
 
-        auto next_monitor_pos = [] (const Box2D& rect) {
+        auto next_monitor_pos = [] (const util::Box2D& rect) {
             return POINT{rect.right() + 100, rect.center_y()} ;
         } ;
 
@@ -109,8 +109,8 @@ namespace vind
     : BindedFuncCreator("snap_current_window_to_top")
     {}
     void SnapCurrentWindow2Top::sprocess() {
-        auto calc_half_size = [] (const Box2D& mrect) {
-            return Box2D {
+        auto calc_half_size = [] (const util::Box2D& mrect) {
+            return util::Box2D {
                 mrect.left(),
                 mrect.top(),
                 mrect.right(),
@@ -118,7 +118,7 @@ namespace vind
             } ;
         } ;
 
-        auto next_monitor_pos = [] (const Box2D& rect) {
+        auto next_monitor_pos = [] (const util::Box2D& rect) {
             return POINT{rect.center_x(), rect.top() - 100} ;
         } ;
 
@@ -139,8 +139,8 @@ namespace vind
     : BindedFuncCreator("snap_current_window_to_bottom")
     {}
     void SnapCurrentWindow2Bottom::sprocess() {
-        auto calc_half_size = [] (const Box2D& mrect) {
-            return Box2D {
+        auto calc_half_size = [] (const util::Box2D& mrect) {
+            return util::Box2D {
                 mrect.left(),
                 mrect.center_y(),
                 mrect.right(),
@@ -148,7 +148,7 @@ namespace vind
             } ;
         } ;
 
-        auto next_monitor_pos = [] (const Box2D& rect) {
+        auto next_monitor_pos = [] (const util::Box2D& rect) {
             return POINT{rect.center_x(), rect.bottom() + 100} ;
         } ;
 

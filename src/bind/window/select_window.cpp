@@ -14,7 +14,7 @@ namespace
 {
     using namespace vind ;
 
-    std::unordered_map<HWND, Box2D> g_rects ;
+    std::unordered_map<HWND, util::Box2D> g_rects ;
     BOOL CALLBACK EnumWindowsProcForNearest(HWND hwnd, LPARAM lparam) {
         auto self_hwnd = reinterpret_cast<HWND>(lparam) ;
         if(self_hwnd == hwnd) {
@@ -25,7 +25,7 @@ namespace
             return TRUE ;
         }
 
-        Box2D rect ;
+        util::Box2D rect ;
         if(!GetWindowRect(hwnd, &(rect.data()))) {
             return TRUE ;
         }
@@ -34,8 +34,8 @@ namespace
             return TRUE ;
         }
 
-        screenmetrics::MonitorInfo minfo ;
-        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+        util::MonitorInfo minfo ;
+        util::get_monitor_metrics(hwnd, minfo) ;
 
         if(rect.is_out_of(minfo.work_rect)) {
             return TRUE ;
@@ -61,7 +61,7 @@ namespace
             throw RUNTIME_EXCEPT("Could not enumerate all top-level windows.") ;
         }
 
-        Box2D fg_rect ;
+        util::Box2D fg_rect ;
         if(!GetWindowRect(fg_hwnd, &(fg_rect.data()))) {
             throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
         }

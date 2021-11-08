@@ -21,7 +21,7 @@ namespace {
     using namespace vind ;
 
     using AngleOrderedHWND = std::map<float, HWND> ;
-    using AngleOrderedRect = std::map<float, Box2D> ;
+    using AngleOrderedRect = std::map<float, util::Box2D> ;
 
     struct RotEnumArgs {
         AngleOrderedHWND angle_hwnds{} ;
@@ -34,7 +34,7 @@ namespace {
             return TRUE ;
         }
 
-        Box2D rect{} ;
+        util::Box2D rect{} ;
         if(!GetWindowRect(hwnd, &(rect.data()))) {
             return TRUE ; //continue
         }
@@ -45,8 +45,8 @@ namespace {
 
         auto p_args = reinterpret_cast<RotEnumArgs*>(lparam) ;
 
-        screenmetrics::MonitorInfo minfo ;
-        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+        util::MonitorInfo minfo ;
+        util::get_monitor_metrics(hwnd, minfo) ;
 
         //search only in the same monitor as a foreground window.
         if(minfo.hmonitor != p_args->hmonitor) {

@@ -63,27 +63,27 @@ namespace
     } ;
 
     auto g_cache_request = [] {
-        auto req = uiauto::create_cache_request() ;
+        auto req = util::create_cache_request() ;
 
-        uiauto::add_property(req, UIA_IsEnabledPropertyId) ;
-        uiauto::add_property(req, UIA_IsOffscreenPropertyId) ;
-        uiauto::add_property(req, UIA_BoundingRectanglePropertyId) ;
+        util::add_property(req, UIA_IsEnabledPropertyId) ;
+        util::add_property(req, UIA_IsOffscreenPropertyId) ;
+        util::add_property(req, UIA_BoundingRectanglePropertyId) ;
 
-        uiauto::switch_mode(req, true) ; // enable full control
-        uiauto::change_scope(req, TreeScope::TreeScope_Subtree) ;
+        util::switch_mode(req, true) ; // enable full control
+        util::change_scope(req, TreeScope::TreeScope_Subtree) ;
 
         return req ;
     }() ;
 
     class WindowUICache {
     private:
-        SmartElement root_{nullptr} ;
-        std::future<SmartElement> ft_{} ;
+        util::SmartElement root_{nullptr} ;
+        std::future<util::SmartElement> ft_{} ;
         TimeStamp time_{} ;
 
     public:
         void initialize(HWND hwnd) {
-            root_ = uiauto::get_root_element(hwnd) ;
+            root_ = util::get_root_element(hwnd) ;
         }
 
         bool is_valid() {
@@ -96,7 +96,7 @@ namespace
             ft_ = std::async(std::launch::async, [this] {
                 time_.stamp_begin() ;
 
-                auto updated = uiauto::update_element(root_, g_cache_request) ;
+                auto updated = util::update_element(root_, g_cache_request) ;
 
                 time_.stamp_end() ;
                 time_.update_average() ;
@@ -136,7 +136,7 @@ namespace
             create_thread() ;
         }
 
-        const SmartElement& latest() {
+        const util::SmartElement& latest() {
             if(is_valid()) {
                 return root_ ;
             }
@@ -192,10 +192,10 @@ namespace vind
 
         // Factor2: cursor position
         using namespace std::chrono ;
-        static Point2D prepos ;
+        static util::Point2D prepos ;
         static auto keeptime = system_clock::now() ;
 
-        Point2D pos ;
+        util::Point2D pos ;
         if(!GetCursorPos(&pos.data())) {
             throw RUNTIME_EXCEPT("Could not get the mouse cursor position.") ;
         }
@@ -229,10 +229,10 @@ namespace vind
     }
 
     void AsyncUIACacheBuilder::register_property(PROPERTYID id) {
-        uiauto::add_property(g_cache_request, id) ;
+        util::add_property(g_cache_request, id) ;
     }
 
-    SmartElement AsyncUIACacheBuilder::get_root_element(HWND hwnd) {
+    util::SmartElement AsyncUIACacheBuilder::get_root_element(HWND hwnd) {
         if(!has_cache(hwnd)) {
             g_caches[hwnd].initialize(hwnd) ;
         }

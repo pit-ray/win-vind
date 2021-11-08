@@ -16,8 +16,7 @@ namespace vind
 {
     namespace gui
     {
-        class AboutDialog : public wxDialog
-        {
+        class AboutDialog : public wxDialog {
         private:
             std::unique_ptr<SystemTray> systray_ ;
 

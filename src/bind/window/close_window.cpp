@@ -11,7 +11,7 @@ namespace vind
     : BindedFuncCreator("close_current_window")
     {}
     void CloseCurrentWindow::sprocess() {
-        keybrd::pushup(KEYCODE_LALT, KEYCODE_F4) ;
+        util::pushup(KEYCODE_LALT, KEYCODE_F4) ;
     }
     void CloseCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

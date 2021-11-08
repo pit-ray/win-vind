@@ -19,7 +19,7 @@ namespace vind
     {}
     void ChangeHighlightText::sprocess() {
         using namespace mode ;
-        using keybrd::pushup ;
+        using util::pushup ;
         using namespace simpletxreg ;
 
         pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -47,9 +47,9 @@ namespace vind
     {}
     void ChangeLine::sprocess(unsigned int repeat_num) {
         auto res = textanalyze::get_selected_text([] {
-            keybrd::pushup(KEYCODE_HOME) ;
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            util::pushup(KEYCODE_HOME) ;
+            util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;
         if(res.str.empty()) {
             ToInsert::sprocess(false) ;
@@ -61,10 +61,10 @@ namespace vind
             ToInsertEOL::sprocess(false) ;
             return ;
         }
-        keybrd::pushup(KEYCODE_HOME) ;
+        util::pushup(KEYCODE_HOME) ;
 
         repeater::safe_for(pos, [] {
-            keybrd::pushup(KEYCODE_RIGHT) ;
+            util::pushup(KEYCODE_RIGHT) ;
         }) ;
         ChangeUntilEOL::sprocess(repeat_num, &res) ;
     }
@@ -84,15 +84,15 @@ namespace vind
     {}
     void ChangeChar::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+            util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
         }) ;
 
         if(gparams::get_b("charcache")) {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }
         else {
-            keybrd::pushup(KEYCODE_DELETE) ;
+            util::pushup(KEYCODE_DELETE) ;
         }
 
         ToInsert::sprocess(false) ;
@@ -142,14 +142,14 @@ namespace vind
             const textanalyze::SelRes* const exres) {
 
         repeater::safe_for(repeat_num - 1, [] {
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+            util::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
         }) ;
 
         if(!txutil::select_line_until_EOL(exres)) {
             txutil::clear_clipboard_with_null() ;
         }
         else {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }
         ToInsert::sprocess(false) ;

@@ -2,7 +2,8 @@
 
 namespace vind
 {
-    namespace util {
+    namespace util
+    {
         RGBTuple hex2rgb(std::string hex) {
             if(hex.front() == '#') {
                 hex.erase(0, 1) ;

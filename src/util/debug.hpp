@@ -5,10 +5,8 @@ namespace vind
 {
     namespace util {
 #ifdef DEBUG
-        namespace debug {
-            void bench_start() ;
-            int bench_stop() ;
-        }
+        void bench_start() ;
+        int bench_stop() ;
 #endif
     }
 }

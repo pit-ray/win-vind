@@ -17,7 +17,7 @@ namespace vind
 {
     //Redo
     struct Redo::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     Redo::Redo()
@@ -31,7 +31,7 @@ namespace vind
 
     void Redo::sprocess(unsigned int repeat_num) const {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;
         }) ;
     }
     void Redo::sprocess(NTypeLogger& parent_lgr) const {
@@ -50,7 +50,7 @@ namespace vind
 
     //Undo
     struct Undo::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     Undo::Undo()
@@ -64,7 +64,7 @@ namespace vind
 
     void Undo::sprocess(unsigned int repeat_num) const {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;
         }) ;
     }
     void Undo::sprocess(NTypeLogger& parent_lgr) const {

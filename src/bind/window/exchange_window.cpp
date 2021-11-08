@@ -37,8 +37,8 @@ namespace
         }
 
         //Is in range of work area
-        screenmetrics::MonitorInfo minfo ;
-        screenmetrics::get_monitor_metrics(hwnd, minfo) ;
+        util::MonitorInfo minfo ;
+        util::get_monitor_metrics(hwnd, minfo) ;
         if(util::is_out_of_range(rect, minfo.work_rect.data())) {
             return TRUE ;
         }

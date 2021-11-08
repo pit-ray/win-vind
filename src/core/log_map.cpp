@@ -153,12 +153,12 @@ namespace vind
             }
 
             if(press_sync_state) {
-                keybrd::press_keystate(target, true) ;
+                util::press_keystate(target, true) ;
             }
             else {
                 if(keyabsorber::is_really_pressed(target) \
                         || keyabsorber::is_pressed(target)) {
-                    keybrd::release_keystate(target, true) ;
+                    util::release_keystate(target, true) ;
                 }
             }
             return true ;

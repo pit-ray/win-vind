@@ -15,8 +15,8 @@ namespace vind
     {}
 
     void SelectAll::sprocess() {
-        mouse::click(KEYCODE_MOUSE_LEFT) ;
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_A) ;
+        util::click(KEYCODE_MOUSE_LEFT) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_A) ;
     }
     void SelectAll::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -34,7 +34,7 @@ namespace vind
     {}
     void ForwardUINavigation::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_TAB) ;
+            util::pushup(KEYCODE_TAB) ;
         }) ;
     }
     void ForwardUINavigation::sprocess(NTypeLogger& parent_lgr) {
@@ -53,7 +53,7 @@ namespace vind
     {}
     void BackwardUINavigation::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
+            util::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
         }) ;
     }
     void BackwardUINavigation::sprocess(NTypeLogger& parent_lgr) {
@@ -71,7 +71,7 @@ namespace vind
     : BindedFuncCreator("decide_focused_ui_object")
     {}
     void DecideFocusedUIObject::sprocess() {
-        keybrd::pushup(KEYCODE_SPACE) ;
+        util::pushup(KEYCODE_SPACE) ;
     }
     void DecideFocusedUIObject::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

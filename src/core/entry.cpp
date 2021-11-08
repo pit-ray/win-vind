@@ -264,7 +264,7 @@ namespace vind
                 return false ;
             }
 
-            static IntervalTimer timer{1000'000} ; //1 s
+            static util::IntervalTimer timer{1000'000} ; //1 s
 
             if(timer.is_passed()) {
                 //check if received messages from another win-vind.

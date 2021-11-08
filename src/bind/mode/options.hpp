@@ -10,7 +10,7 @@ namespace vind
     namespace options {
         void focus_nearest_textarea(
                 HWND hwnd,
-                const Point2D& point,
+                const util::Point2D& point,
                 TextAreaScanner& instance) ;
 
     }

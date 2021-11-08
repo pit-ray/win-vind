@@ -4,7 +4,7 @@
 
 #include <chrono>
 
-using namespace vind ;
+using namespace vind::util ;
 
 TEST_CASE("(IntervalTimer) Method Test: ") {
     IntervalTimer timer(500) ;

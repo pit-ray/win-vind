@@ -5,7 +5,7 @@
 
 #include "util/keystroke_repeater.cpp"
 
-using namespace vind ;
+using namespace vind::util ;
 
 TEST_CASE("(KeyStrokeRepeater::global) Increases an inputted velocity with a constant acceleration base") {
     float v = 0.0001f ;

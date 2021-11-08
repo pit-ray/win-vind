@@ -30,7 +30,7 @@ namespace vind
 {
     //ScrollUp
     struct ScrollUp::Impl {
-        KeyStrokeRepeater ksr_{WAIT_MS} ;
+        util::KeyStrokeRepeater ksr_{WAIT_MS} ;
     } ;
 
     ScrollUp::ScrollUp()
@@ -43,7 +43,7 @@ namespace vind
     ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
     void ScrollUp::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(gparams::get_i("vscroll_speed") * repeat_num) ;
+        util::vscroll(gparams::get_i("vscroll_speed") * repeat_num) ;
     }
     void ScrollUp::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -61,7 +61,7 @@ namespace vind
 
     //ScrollDown
     struct ScrollDown::Impl {
-        KeyStrokeRepeater ksr_{WAIT_MS} ;
+        util::KeyStrokeRepeater ksr_{WAIT_MS} ;
     } ;
 
     ScrollDown::ScrollDown()
@@ -74,7 +74,7 @@ namespace vind
     ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
 
     void ScrollDown::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(-gparams::get_i("vscroll_speed") * repeat_num) ;
+        util::vscroll(-gparams::get_i("vscroll_speed") * repeat_num) ;
     }
     void ScrollDown::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -92,7 +92,7 @@ namespace vind
 
     //ScrollUpHalfPage
     struct ScrollUpHalfPage::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollUpHalfPage::ScrollUpHalfPage()
@@ -105,7 +105,7 @@ namespace vind
     ScrollUpHalfPage& ScrollUpHalfPage::operator=(ScrollUpHalfPage&&) = default ;
 
     void ScrollUpHalfPage::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
+        util::vscroll(0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
                 gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollUpHalfPage::sprocess(NTypeLogger& parent_lgr) const {
@@ -124,7 +124,7 @@ namespace vind
 
     //ScrollDownHalfPage
     struct ScrollDownHalfPage::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollDownHalfPage::ScrollDownHalfPage()
@@ -137,7 +137,7 @@ namespace vind
     ScrollDownHalfPage& ScrollDownHalfPage::operator=(ScrollDownHalfPage&&)    = default ;
 
     void ScrollDownHalfPage::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(-0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
+        util::vscroll(-0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
                 gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollDownHalfPage::sprocess(NTypeLogger& parent_lgr) const {
@@ -156,7 +156,7 @@ namespace vind
 
     //ScrollUpOnePage
     struct ScrollUpOnePage::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollUpOnePage::ScrollUpOnePage()
@@ -169,7 +169,7 @@ namespace vind
     ScrollUpOnePage& ScrollUpOnePage::operator=(ScrollUpOnePage&&)   = default ;
 
     void ScrollUpOnePage::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
+        util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
                 gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollUpOnePage::sprocess(NTypeLogger& parent_lgr) const {
@@ -188,7 +188,7 @@ namespace vind
 
     //ScrollDownOnePage
     struct ScrollDownOnePage::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollDownOnePage::ScrollDownOnePage()
@@ -201,7 +201,7 @@ namespace vind
     ScrollDownOnePage& ScrollDownOnePage::operator=(ScrollDownOnePage&&) = default ;
 
     void ScrollDownOnePage::sprocess(unsigned int repeat_num) const {
-        mouse::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
+        util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
                 -gparams::get_f("vscroll_pageratio")) ;
     }
     void ScrollDownOnePage::sprocess(NTypeLogger& parent_lgr) const {
@@ -221,7 +221,7 @@ namespace vind
     //Horizontal
     //ScrollLeft
     struct ScrollLeft::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollLeft::ScrollLeft()
@@ -234,7 +234,7 @@ namespace vind
     ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
 
     void ScrollLeft::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(-gparams::get_i("hscroll_speed") * repeat_num) ;
+        util::hscroll(-gparams::get_i("hscroll_speed") * repeat_num) ;
     }
     void ScrollLeft::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -252,7 +252,7 @@ namespace vind
 
     //ScrollRight
     struct ScrollRight::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollRight::ScrollRight()
@@ -265,7 +265,7 @@ namespace vind
     ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
 
     void ScrollRight::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(gparams::get_f("hscroll_speed") * repeat_num) ;
+        util::hscroll(gparams::get_f("hscroll_speed") * repeat_num) ;
     }
     void ScrollRight::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
@@ -283,7 +283,7 @@ namespace vind
 
     //ScrollLeftHalfPage
     struct ScrollLeftHalfPage::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollLeftHalfPage::ScrollLeftHalfPage()
@@ -296,7 +296,7 @@ namespace vind
     ScrollLeftHalfPage& ScrollLeftHalfPage::operator=(ScrollLeftHalfPage&&)    = default ;
 
     void ScrollLeftHalfPage::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(-0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
+        util::hscroll(-0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
                 gparams::get_f("hscroll_pageratio")) ;
     }
     void ScrollLeftHalfPage::sprocess(NTypeLogger& parent_lgr) const {
@@ -315,7 +315,7 @@ namespace vind
 
     //ScrollRightHalfPage
     struct ScrollRightHalfPage::Impl {
-        IntervalTimer timer_{DELTA_US} ;
+        util::IntervalTimer timer_{DELTA_US} ;
     } ;
 
     ScrollRightHalfPage::ScrollRightHalfPage()
@@ -328,7 +328,7 @@ namespace vind
     ScrollRightHalfPage& ScrollRightHalfPage::operator=(ScrollRightHalfPage&&) = default ;
 
     void ScrollRightHalfPage::sprocess(unsigned int repeat_num) const {
-        mouse::hscroll(0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
+        util::hscroll(0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
                 gparams::get_f("hscroll_pageratio")) ;
     }
     void ScrollRightHalfPage::sprocess(NTypeLogger& parent_lgr) const {

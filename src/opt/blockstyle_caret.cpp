@@ -201,7 +201,7 @@ namespace vind
 
         }
         else if(mode == "flex") {
-            keybrd::pushup(KEYCODE_LEFT) ;
+            util::pushup(KEYCODE_LEFT) ;
         }
 
         pimpl->is_enabled_ = false ;
@@ -222,8 +222,8 @@ namespace vind
 
         }
         else if(mode == "flex") {
-            keybrd::pushup(KEYCODE_RIGHT) ;
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+            util::pushup(KEYCODE_RIGHT) ;
+            util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
         }
 
         pimpl->is_enabled_ = true ;

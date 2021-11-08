@@ -19,7 +19,7 @@ namespace vind
     {}
     void Switch2LeftTab::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
         }) ;
     }
     void Switch2LeftTab::sprocess(NTypeLogger& parent_lgr) {
@@ -38,7 +38,7 @@ namespace vind
     {}
     void Switch2RightTab::sprocess(unsigned repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
         }) ;
     }
     void Switch2RightTab::sprocess(NTypeLogger& parent_lgr) {
@@ -55,7 +55,7 @@ namespace vind
     : BindedFuncCreator("open_new_tab")
     {}
     void OpenNewTab::sprocess() {
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
     }
     void OpenNewTab::sprocess(NTypeLogger& parent_lgr) {
         if(parent_lgr.is_long_pressing()) {
@@ -72,7 +72,7 @@ namespace vind
     : BindedFuncCreator("close_current_tab")
     {}
     void CloseCurrentTab::sprocess() {
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
     }
     void CloseCurrentTab::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

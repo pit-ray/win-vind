@@ -13,7 +13,8 @@
 
 namespace vind
 {
-    namespace util {
+    namespace util
+    {
         using RGBTuple = std::tuple<unsigned char, unsigned char, unsigned char> ;
 
         RGBTuple hex2rgb(std::string hex) ;

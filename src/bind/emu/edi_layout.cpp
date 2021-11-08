@@ -11,7 +11,7 @@
 namespace vind
 {
     struct JoinNextLine::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     JoinNextLine::JoinNextLine()
@@ -25,8 +25,8 @@ namespace vind
 
     void JoinNextLine::sprocess(unsigned int repeat_num) const {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_END) ;
-            keybrd::pushup(KEYCODE_DELETE) ;
+            util::pushup(KEYCODE_END) ;
+            util::pushup(KEYCODE_DELETE) ;
         }) ;
     }
     void JoinNextLine::sprocess(NTypeLogger& parent_lgr) const {

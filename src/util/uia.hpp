@@ -11,11 +11,12 @@
 
 namespace vind
 {
-    using SmartElement      = SmartCom<IUIAutomationElement> ;
-    using SmartElementArray = SmartCom<IUIAutomationElementArray> ;
-    using SmartCacheReq     = SmartCom<IUIAutomationCacheRequest> ;
+    namespace util
+    {
+        using SmartElement      = SmartCom<IUIAutomationElement> ;
+        using SmartElementArray = SmartCom<IUIAutomationElementArray> ;
+        using SmartCacheReq     = SmartCom<IUIAutomationCacheRequest> ;
 
-    namespace uiauto {
         const CUIA& get_global_cuia() ;
 
         SmartCacheReq create_cache_request() ;

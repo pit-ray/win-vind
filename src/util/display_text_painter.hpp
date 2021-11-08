@@ -8,55 +8,58 @@
 
 namespace vind
 {
-    class DisplayTextPainter {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+    namespace util
+    {
+        class DisplayTextPainter {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-        void initialize_dc(bool enable_double_buffering) ;
-        void copy(const DisplayTextPainter& rhs) ;
+            void initialize_dc(bool enable_double_buffering) ;
+            void copy(const DisplayTextPainter& rhs) ;
 
-    public:
-        explicit DisplayTextPainter(
-                LONG font_size,
-                LONG font_weight,
-                const std::string& face_name,
-                bool enable_double_buffering=false) ;
-        virtual ~DisplayTextPainter() noexcept ;
+        public:
+            explicit DisplayTextPainter(
+                    LONG font_size,
+                    LONG font_weight,
+                    const std::string& face_name,
+                    bool enable_double_buffering=false) ;
+            virtual ~DisplayTextPainter() noexcept ;
 
-        void set_font(
-                LONG font_size,
-                LONG font_weight,
-                const std::string& face_name) ;
+            void set_font(
+                    LONG font_size,
+                    LONG font_weight,
+                    const std::string& face_name) ;
 
-        void set_text_color(COLORREF color) ;
-        void set_text_color(
-                unsigned char r,
-                unsigned char g,
-                unsigned char b) ;
-        void set_text_color(const std::string& hex) ;
+            void set_text_color(COLORREF color) ;
+            void set_text_color(
+                    unsigned char r,
+                    unsigned char g,
+                    unsigned char b) ;
+            void set_text_color(const std::string& hex) ;
 
-        void set_back_color(COLORREF color) ;
-        void set_back_color(
-                unsigned char r,
-                unsigned char g,
-                unsigned char b) ;
-        void set_back_color(const std::string& hex) ;
+            void set_back_color(COLORREF color) ;
+            void set_back_color(
+                    unsigned char r,
+                    unsigned char g,
+                    unsigned char b) ;
+            void set_back_color(const std::string& hex) ;
 
-        void draw(
-                const std::string& str,
-                int x,
-                int y,
-                int extra=0) ;
+            void draw(
+                    const std::string& str,
+                    int x,
+                    int y,
+                    int extra=0) ;
 
-        void refresh() ; //call it per a one drawing cycle.
+            void refresh() ; //call it per a one drawing cycle.
 
-        DisplayTextPainter(const DisplayTextPainter&) ;
-        DisplayTextPainter& operator=(const DisplayTextPainter&) ;
+            DisplayTextPainter(const DisplayTextPainter&) ;
+            DisplayTextPainter& operator=(const DisplayTextPainter&) ;
 
-        DisplayTextPainter(DisplayTextPainter&&) ;
-        DisplayTextPainter& operator=(DisplayTextPainter&&) ;
-    } ;
+            DisplayTextPainter(DisplayTextPainter&&) ;
+            DisplayTextPainter& operator=(DisplayTextPainter&&) ;
+        } ;
+    }
 }
 
 #endif

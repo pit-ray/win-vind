@@ -15,11 +15,10 @@ namespace vind
         //  <EOL mark exists> [select] NONE    [clipboard] null characters with EOL.    (neighborhoods of LSB are 0x00)
         //  <plain text>      [select] NONE    [clipboard] null characters without EOL. (neighborhoods of LSB are 0x?0)
         bool select_line_until_EOL(const textanalyze::SelRes* const exres) {
-            using namespace keybrd ;
             if(exres != nullptr) {
-                pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
                 if(exres->having_EOL) {
-                    pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                     if(exres->str.empty()) {
                         return false ; //not selected (true text is only null text)
                     }
@@ -28,11 +27,11 @@ namespace vind
             }
 
             auto res = textanalyze::get_selected_text([] {
-                    pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
-                    pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+                    util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                    util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             }) ;
             if(res.having_EOL) {
-                pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 if(res.str.empty()) {
                     return false ;
                 }

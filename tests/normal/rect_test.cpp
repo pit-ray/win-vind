@@ -3,6 +3,7 @@
 #include "util/rect.hpp"
 
 using namespace vind ;
+using namespace vind::util ;
 
 
 TEST_CASE("(util::util::copy) I/O") {

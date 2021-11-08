@@ -23,10 +23,10 @@ namespace vind
     namespace options {
         void focus_nearest_textarea(
                 HWND hwnd,
-                const Point2D& point,
+                const util::Point2D& point,
                 TextAreaScanner& instance) {
 
-            std::vector<SmartElement> editables{} ;
+            std::vector<util::SmartElement> editables{} ;
 
             if(gparams::get_b("uiacachebuild")) {
                 auto root_elem = AsyncUIACacheBuilder::get_root_element(hwnd) ;
@@ -47,12 +47,12 @@ namespace vind
                 return ;
             }
 
-            SmartElement nearest ;
+            util::SmartElement nearest ;
             auto min_distance = std::numeric_limits<double>::max() ;
 
             for(auto& elem : editables) {
                 // scan GUI objects only at leaves in tree.
-                Box2D box ;
+                util::Box2D box ;
                 if(util::is_failed(elem->get_CachedBoundingRectangle(&box.data()))) {
                     throw RUNTIME_EXCEPT("Could not get the a rectangle of a element.") ;
                 }

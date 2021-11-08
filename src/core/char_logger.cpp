@@ -37,7 +37,7 @@ namespace vind
 {
     struct CharLogger::Impl {
         KeyLog prelog_{} ;
-        KeyStrokeRepeater ksr_{} ; 
+        util::KeyStrokeRepeater ksr_{} ; 
         std::set<KeyCode> non_chars_{} ;
 
         explicit Impl()

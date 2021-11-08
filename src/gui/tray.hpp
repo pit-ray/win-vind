@@ -12,8 +12,7 @@ namespace vind
 {
     namespace gui
     {
-        class SystemTray : public wxTaskBarIcon
-        {
+        class SystemTray : public wxTaskBarIcon {
         public:
             explicit SystemTray(
                     wxTopLevelWindow* const parent,

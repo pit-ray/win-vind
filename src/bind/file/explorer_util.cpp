@@ -38,7 +38,7 @@ namespace vind
             std::unique_ptr<char, decltype(co_uninit)> smart_uninit{new char(), co_uninit} ;
 
             //we can get explorer handle from IShellWindows.
-            SmartCom<IShellWindows> psw{} ;
+            util::SmartCom<IShellWindows> psw{} ;
             if(util::is_failed(CoCreateInstance(
                 CLSID_ShellWindows,
                 NULL,
@@ -60,13 +60,13 @@ namespace vind
                 V_I4(&v) = i ;
 
                 //IDispatch is an interface to object, method or property
-                SmartCom<IDispatch> pdisp{} ;
+                util::SmartCom<IDispatch> pdisp{} ;
                 if(util::is_failed(psw->Item(v, &pdisp))) {
                     continue ;
                 }
 
                 //Is this shell foreground window??
-                SmartCom<IWebBrowserApp> pwba{} ;
+                util::SmartCom<IWebBrowserApp> pwba{} ;
                 if(util::is_failed(pdisp->QueryInterface(IID_IWebBrowserApp, reinterpret_cast<void**>(&pwba)))) {
                     continue ;
                 }
@@ -80,31 +80,31 @@ namespace vind
                 }
 
                 //access to shell window
-                SmartCom<IServiceProvider> psp{} ;
+                util::SmartCom<IServiceProvider> psp{} ;
                 if(util::is_failed(pwba->QueryInterface(IID_IServiceProvider, reinterpret_cast<void**>(&psp)))) {
                     throw RUNTIME_EXCEPT("cannot access a top service provider.") ;
                 }
 
                 //access to shell browser
-                SmartCom<IShellBrowser> psb{} ;
+                util::SmartCom<IShellBrowser> psb{} ;
                 if(util::is_failed(psp->QueryService(SID_STopLevelBrowser, IID_IShellBrowser, reinterpret_cast<void**>(&psb)))) {
                     throw RUNTIME_EXCEPT("cannot access a shell browser.") ;
                 }
 
                 //access to shell view
-                SmartCom<IShellView> psv{} ;
+                util::SmartCom<IShellView> psv{} ;
                 if(util::is_failed(psb->QueryActiveShellView(&psv))) {
                     throw RUNTIME_EXCEPT("cannot access a shell view.") ;
                 }
 
                 //get IFolerView Interface
-                SmartCom<IFolderView> pfv{} ;
+                util::SmartCom<IFolderView> pfv{} ;
                 if(util::is_failed(psv->QueryInterface(IID_IFolderView, reinterpret_cast<void**>(&pfv)))) {
                     throw RUNTIME_EXCEPT("cannot access a foler view.") ;
                 }
 
                 //get IPersistantFolder2 in order to use GetCurFolder method
-                SmartCom<IPersistFolder2> ppf2{} ;
+                util::SmartCom<IPersistFolder2> ppf2{} ;
                 if(util::is_failed(pfv->GetFolder(IID_IPersistFolder2, reinterpret_cast<void**>(&ppf2)))) {
                     throw RUNTIME_EXCEPT("cannot access a persist folder 2.") ;
                 }

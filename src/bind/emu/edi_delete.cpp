@@ -17,7 +17,7 @@ namespace vind
 {
     //DeleteLine
     struct DeleteLine::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     DeleteLine::DeleteLine()
@@ -30,7 +30,7 @@ namespace vind
     DeleteLine& DeleteLine::operator=(DeleteLine&&) = default ;
 
     void DeleteLine::sprocess(unsigned int repeat_num) const {
-        using keybrd::pushup ;
+        using util::pushup ;
         pushup(KEYCODE_HOME) ;
 
         repeater::safe_for(repeat_num - 1, [] {
@@ -41,7 +41,7 @@ namespace vind
             txutil::clear_clipboard_with_null() ;
         }
         else {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             simpletxreg::set_register_type(simpletxreg::RegType::Lines) ;
             pushup(KEYCODE_DELETE) ;
         }
@@ -62,7 +62,7 @@ namespace vind
 
     //DeleteLineUntilEOL
     struct DeleteLineUntilEOL::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     DeleteLineUntilEOL::DeleteLineUntilEOL()
@@ -75,7 +75,7 @@ namespace vind
     DeleteLineUntilEOL& DeleteLineUntilEOL::operator=(DeleteLineUntilEOL&&) = default ;
 
     void DeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
-        using keybrd::pushup ;
+        using util::pushup ;
 
         //delete N - 1 lines under the current line
         repeater::safe_for(repeat_num - 1, [] {
@@ -86,7 +86,7 @@ namespace vind
             txutil::clear_clipboard_with_null() ;
         }
         else {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }
     }
@@ -106,7 +106,7 @@ namespace vind
 
     //DeleteAfter
     struct DeleteAfter::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     DeleteAfter::DeleteAfter()
@@ -121,14 +121,14 @@ namespace vind
     void DeleteAfter::sprocess(unsigned int repeat_num) const {
         if(gparams::get_b("charcache")) {
             repeater::safe_for(repeat_num, [] {
-                    keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
-                    keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                    util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+                    util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                     simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_DELETE) ;
+                util::pushup(KEYCODE_DELETE) ;
             }) ;
         }
     }
@@ -148,7 +148,7 @@ namespace vind
 
     //DeleteBefore
     struct DeleteBefore::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     DeleteBefore::DeleteBefore()
@@ -163,14 +163,14 @@ namespace vind
     void DeleteBefore::sprocess(unsigned int repeat_num) const {
         if(gparams::get_b("charcache")) {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
-                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_BKSPACE) ;
+                util::pushup(KEYCODE_BKSPACE) ;
             }) ;
         }
     }
@@ -194,7 +194,7 @@ namespace vind
     {}
     void DeleteHighlightText::sprocess() {
         using namespace mode ;
-        using keybrd::pushup ;
+        using util::pushup ;
         using namespace simpletxreg ;
 
         pushup(KEYCODE_LCTRL, KEYCODE_X) ;

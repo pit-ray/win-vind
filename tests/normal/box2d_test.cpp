@@ -3,6 +3,7 @@
 #include "util/box_2d.cpp"
 
 using namespace vind ;
+using namespace vind::util ;
 
 
 TEST_CASE("(Box2D) Constructor test") {

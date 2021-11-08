@@ -18,7 +18,7 @@
 namespace vind
 {
     struct VCmdLine::Impl {
-        DisplayTextPainter  dtp_{25, FW_MEDIUM, "Consolas"} ;
+        util::DisplayTextPainter  dtp_{25, FW_MEDIUM, "Consolas"} ;
         int x_ = 0 ;
         int y_ = 0 ;
         int extra_ = 0 ;
@@ -56,7 +56,7 @@ namespace vind
         auto xma = gparams::get_i("cmd_xmargin") ;
         auto yma = gparams::get_i("cmd_ymargin") ;
 
-        auto rect = screenmetrics::get_primary_metrics() ;
+        auto rect = util::get_primary_metrics() ;
 
         auto w = rect.width() ;
         auto h = rect.height() ;

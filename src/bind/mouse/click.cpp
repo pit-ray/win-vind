@@ -24,7 +24,7 @@ namespace vind
         }
 
         repeater::safe_for(repeat_num, [] {
-            mouse::click(KEYCODE_MOUSE_LEFT) ;
+            util::click(KEYCODE_MOUSE_LEFT) ;
         }) ;
     }
     void ClickLeft::sprocess(NTypeLogger& parent_lgr) {
@@ -48,7 +48,7 @@ namespace vind
         }
 
         repeater::safe_for(repeat_num, [] {
-            mouse::click(KEYCODE_MOUSE_RIGHT) ;
+            util::click(KEYCODE_MOUSE_RIGHT) ;
         }) ;
     }
     void ClickRight::sprocess(NTypeLogger& parent_lgr) {

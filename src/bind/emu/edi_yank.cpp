@@ -21,7 +21,7 @@ namespace vind
         using namespace mode ;
         using namespace simpletxreg ;
 
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
 
         if(get_global_flags() == ModeFlags::VISUAL_LINE) {
             set_register_type(RegType::Lines) ;
@@ -30,7 +30,7 @@ namespace vind
             set_register_type(RegType::Chars) ;
         }
 
-        keybrd::pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
+        util::pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
         ToEdiNormal::sprocess(true) ;
     }
     void YankHighlightText::sprocess(NTypeLogger& parent_lgr) {
@@ -51,7 +51,7 @@ namespace vind
             unsigned int repeat_num,
             const textanalyze::SelRes* const exres) {
 
-        using keybrd::pushup ;
+        using util::pushup ;
         pushup(KEYCODE_HOME) ;
 
         //copy N - 1 lines

@@ -15,9 +15,9 @@ namespace vind
     : BindedFuncCreator("my_binding") //Give the unique identifier.
     {}
     void MyBinding::sprocess() {
-        mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
+        util::click(KEYCODE_MOUSE_LEFT) ; //left click
 
-        keybrd::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
+        util::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
 
         VCmdLine::print(GeneralMessage("Hello World !")) ;
     }

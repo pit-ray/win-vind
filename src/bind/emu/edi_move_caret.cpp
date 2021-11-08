@@ -18,7 +18,7 @@ namespace vind
 {
     //MoveCaretLeft
     struct MoveCaretLeft::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretLeft::MoveCaretLeft()
@@ -33,12 +33,12 @@ namespace vind
     void MoveCaretLeft::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LEFT) ;
             }) ;
         }
     }
@@ -58,7 +58,7 @@ namespace vind
 
     //MoveCaretRight
     struct MoveCaretRight::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretRight::MoveCaretRight()
@@ -73,12 +73,12 @@ namespace vind
     void MoveCaretRight::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, []{
-                keybrd::pushup(KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_RIGHT) ;
             }) ;
         }
     }
@@ -98,7 +98,7 @@ namespace vind
 
     //MoveCaretUp
     struct MoveCaretUp::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretUp::MoveCaretUp()
@@ -116,13 +116,13 @@ namespace vind
                 textselect::select_line_EOL2BOL() ;
             }
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
                 //textselect::moving_update() ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_UP) ;
+                util::pushup(KEYCODE_UP) ;
             }) ;
         }
     }
@@ -150,7 +150,7 @@ namespace vind
 
     //MoveCaretDown
     struct MoveCaretDown::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretDown::MoveCaretDown()
@@ -168,7 +168,7 @@ namespace vind
                 textselect::select_line_BOL2EOL() ;
             }
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
                 //If call MoveCaretDown after MoveCaretUp,
                 //inner variables of moving_update() are dedicated to EOL2BOL.
@@ -178,7 +178,7 @@ namespace vind
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_DOWN) ;
+                util::pushup(KEYCODE_DOWN) ;
             }) ;
         }
     }
@@ -206,7 +206,7 @@ namespace vind
 
     //EdiMoveCaretNwordsForward
     struct MoveCaretWordForward::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretWordForward::MoveCaretWordForward()
@@ -221,12 +221,12 @@ namespace vind
     void MoveCaretWordForward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
         }
     }
@@ -246,7 +246,7 @@ namespace vind
 
     //EdiMoveCaretNwordsBackward
     struct MoveCaretWordBackward::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretWordBackward::MoveCaretWordBackward()
@@ -261,12 +261,12 @@ namespace vind
     void MoveCaretWordBackward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;
         }
     }
@@ -286,7 +286,7 @@ namespace vind
 
     //EdiMoveCaretNWORDSForward
     struct MoveCaretNonBlankWordForward::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward()
@@ -301,12 +301,12 @@ namespace vind
     void MoveCaretNonBlankWordForward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
         }
     }
@@ -326,7 +326,7 @@ namespace vind
 
     //EdiMoveCaretNWORDSBackward
     struct MoveCaretNonBlankWordBackward::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward()
@@ -341,12 +341,12 @@ namespace vind
     void MoveCaretNonBlankWordBackward::sprocess(unsigned int repeat_num) const {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                util::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;
         }
     }

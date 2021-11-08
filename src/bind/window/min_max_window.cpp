@@ -15,7 +15,7 @@ namespace vind
     {}
     void MinimizeCurrentWindow::sprocess(unsigned int repeat_num) {
         repeater::safe_for(repeat_num, [] {
-            keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
+            util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
         }) ;
     }
     void MinimizeCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
@@ -44,7 +44,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
             }
 
-            keybrd::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
+            util::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
             Sleep(50) ;
 
             RECT after_rect ;
@@ -54,13 +54,13 @@ namespace vind
 
             //If not changed, regard it as a full screen and deal with it.
             if(util::is_equal(before_rect, after_rect)) {
-                keybrd::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
-                keybrd::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
+                util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
+                util::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
             }
         }
         else {
             repeater::safe_for(repeat_num, [] {
-                keybrd::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
+                util::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
             }) ;
         }
     }

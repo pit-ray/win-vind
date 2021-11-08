@@ -16,7 +16,7 @@ namespace vind
     : BindedFuncCreator("search_pattern")
     {}
     void SearchPattern::sprocess() {
-        keybrd::pushup(KEYCODE_F3) ;
+        util::pushup(KEYCODE_F3) ;
     }
     void SearchPattern::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

@@ -14,7 +14,7 @@ namespace vind
 {
     //PutAfter (EdiNormal or EdiVisual)
     struct PutAfter::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     PutAfter::PutAfter()
@@ -27,7 +27,7 @@ namespace vind
     PutAfter& PutAfter::operator=(PutAfter&&) = default ;
 
     void PutAfter::sprocess(unsigned int repeat_num) const {
-        using keybrd::pushup ;
+        using util::pushup ;
         using namespace simpletxreg ;
         auto t = get_register_type() ;
         if(t == RegType::Chars) {
@@ -61,7 +61,7 @@ namespace vind
 
     //PutBefore
     struct PutBefore::Impl {
-        KeyStrokeRepeater ksr{} ;
+        util::KeyStrokeRepeater ksr{} ;
     } ;
 
     PutBefore::PutBefore()
@@ -74,7 +74,7 @@ namespace vind
     PutBefore& PutBefore::operator=(PutBefore&&) = default ;
 
     void PutBefore::sprocess(unsigned int repeat_num) const {
-        using keybrd::pushup ;
+        using util::pushup ;
         using namespace simpletxreg ;
         auto t = get_register_type() ;
         if(t == RegType::Chars) {

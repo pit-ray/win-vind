@@ -47,7 +47,7 @@ namespace vind
                     keyabsorber::open_some_ports(buf.get()) ;
                 }
                 for(auto& key : buf) {
-                    keybrd::release_keystate(key) ;
+                    util::release_keystate(key) ;
                 }
                 if(keyabsorber::is_absorbed()) {
                     keyabsorber::close_all_ports() ;

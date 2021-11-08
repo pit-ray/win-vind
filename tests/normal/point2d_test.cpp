@@ -4,7 +4,7 @@
 
 #include "util/rect.hpp"
 
-using namespace vind ;
+using namespace vind::util ;
 
 TEST_CASE("(Point2D) constructor and equal test") {
     Point2D p1(static_cast<LONG>(20), static_cast<LONG>(50)) ;

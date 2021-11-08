@@ -8,9 +8,9 @@
 
 namespace vind
 {
-    struct UIScanner : public UIWalker {
+    struct UIScanner : public util::UIWalker {
         explicit UIScanner() ;
-        virtual bool filter_element(const SmartElement& elem) override ;
+        virtual bool filter_element(const util::SmartElement& elem) override ;
     } ;
 }
 

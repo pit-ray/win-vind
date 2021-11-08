@@ -24,7 +24,7 @@ namespace vind
     : BindedFuncCreator("to_insert_BOL")
     {}
     void ToInsertBOL::sprocess(bool vclmodeout) {
-        keybrd::pushup(KEYCODE_HOME) ;
+        util::pushup(KEYCODE_HOME) ;
         ToInsert::sprocess(vclmodeout) ;
     }
     void ToInsertBOL::sprocess(NTypeLogger& parent_lgr) {
@@ -42,7 +42,7 @@ namespace vind
     : BindedFuncCreator("to_insert_append")
     {}
     void Change2EdiBkInsert::sprocess(bool vclmodeout) {
-        keybrd::pushup(KEYCODE_RIGHT) ;
+        util::pushup(KEYCODE_RIGHT) ;
         ToInsert::sprocess(vclmodeout) ;
     }
     void Change2EdiBkInsert::sprocess(NTypeLogger& parent_lgr) {
@@ -60,7 +60,7 @@ namespace vind
     : BindedFuncCreator("to_insert_EOL")
     {}
     void ToInsertEOL::sprocess(bool vclmodeout) {
-        keybrd::pushup(KEYCODE_END) ;
+        util::pushup(KEYCODE_END) ;
         ToInsert::sprocess(vclmodeout) ;
     }
     void ToInsertEOL::sprocess(NTypeLogger& parent_lgr) {
@@ -78,8 +78,8 @@ namespace vind
     : BindedFuncCreator("to_insert_nlbelow")
     {}
     void ToInsertNLBelow::sprocess(bool vclmodeout) {
-        keybrd::pushup(KEYCODE_END) ;
-        keybrd::pushup(KEYCODE_ENTER) ;
+        util::pushup(KEYCODE_END) ;
+        util::pushup(KEYCODE_ENTER) ;
         ToInsert::sprocess(vclmodeout) ;
     }
     void ToInsertNLBelow::sprocess(NTypeLogger& parent_lgr) {
@@ -97,9 +97,9 @@ namespace vind
     : BindedFuncCreator("to_insert_nlabove")
     {}
     void ToInsertNLAbove::sprocess(bool vclmodeout) {
-        keybrd::pushup(KEYCODE_HOME) ;
-        keybrd::pushup(KEYCODE_ENTER) ;
-        keybrd::pushup(KEYCODE_UP) ;
+        util::pushup(KEYCODE_HOME) ;
+        util::pushup(KEYCODE_ENTER) ;
+        util::pushup(KEYCODE_UP) ;
         ToInsert::sprocess(vclmodeout) ;
     }
     void ToInsertNLAbove::sprocess(NTypeLogger& parent_lgr) {

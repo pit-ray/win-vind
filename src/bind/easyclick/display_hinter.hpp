@@ -27,11 +27,11 @@ namespace vind
         void load_config() ;
 
         void paint_all_hints(
-                const std::vector<Point2D>& positions,
+                const std::vector<util::Point2D>& positions,
                 const std::vector<std::string>& strhints) ;
 
         void paint_matching_hints(
-                const std::vector<Point2D>& positions,
+                const std::vector<util::Point2D>& positions,
                 const std::vector<std::string>& strhints,
                 const std::vector<unsigned char>& matched_counts) ;
     } ;

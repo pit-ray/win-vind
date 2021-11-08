@@ -74,7 +74,7 @@ namespace
         // prohibit to keep pressing after termination.
         for(int i = 0 ; i < 256 ; i ++) {
             if(g_real_state[i]) {
-                vind::keybrd::release_keystate(static_cast<vind::KeyCode>(i)) ;
+                vind::util::release_keystate(static_cast<vind::KeyCode>(i)) ;
             }
         }
     } ;
@@ -195,7 +195,7 @@ namespace vind
         // Therefore, this is a challenging task.  If you have any ideas, we welcome pull requests.
         //
         void refresh_toggle_state() {
-            static IntervalTimer timer(5'000) ;
+            static util::IntervalTimer timer(5'000) ;
             if(!timer.is_passed()) {
                 return ;
             }
@@ -208,7 +208,7 @@ namespace vind
                 using namespace std::chrono ;
                 if((system_clock::now() - g_time_stamps[k]) > 515ms) {
                     logmap::do_keycode_map(k, false) ;
-                    keybrd::release_keystate(k) ;
+                    util::release_keystate(k) ;
 
                     g_real_state[k] = false ;
                     g_state[k]      = false ;
@@ -263,7 +263,7 @@ namespace vind
             KeyCode keycode = 0 ;
             for(const auto& s : g_state) {
                 if(s) {
-                    keybrd::release_keystate(keycode) ;
+                    util::release_keystate(keycode) ;
                 }
                 keycode ++ ;
             }

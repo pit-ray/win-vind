@@ -17,7 +17,7 @@ namespace vind
     : BindedFuncCreator("save")
     {}
     void Save::sprocess() {
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
     }
     void Save::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -34,7 +34,7 @@ namespace vind
     : BindedFuncCreator("open")
     {}
     void Open::sprocess() {
-        keybrd::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
+        util::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
     }
     void Open::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

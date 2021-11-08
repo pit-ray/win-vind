@@ -16,7 +16,7 @@ namespace vind
 {
     class KeyLog ;
 
-    namespace keybrd {
+    namespace util {
         bool is_pressed_actually(KeyCode key) noexcept ;
 
         class ScopedKey {

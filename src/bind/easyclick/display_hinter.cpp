@@ -25,8 +25,8 @@ namespace
 namespace vind
 {
     struct DisplayHinter::Impl {
-        DisplayTextPainter painter_ ;
-        DisplayTextPainter weak_painter_ ;
+        util::DisplayTextPainter painter_ ;
+        util::DisplayTextPainter weak_painter_ ;
         long fontsize_ ;
 
         Impl()
@@ -84,7 +84,7 @@ namespace vind
 
 
     void DisplayHinter::paint_all_hints(
-            const std::vector<Point2D>& positions,
+            const std::vector<util::Point2D>& positions,
             const std::vector<std::string>& strhints) {
 
         if(positions.size() != strhints.size()) {
@@ -102,7 +102,7 @@ namespace vind
 
 
     void DisplayHinter::paint_matching_hints(
-            const std::vector<Point2D>& positions,
+            const std::vector<util::Point2D>& positions,
             const std::vector<std::string>& strhints,
             const std::vector<unsigned char>& matched_counts) {
 

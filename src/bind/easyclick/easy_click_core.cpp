@@ -27,11 +27,11 @@ namespace
 
     struct ProcessScanInfo {
         DWORD pid ;
-        std::vector<Point2D>& points ;
+        std::vector<util::Point2D>& points ;
     } ;
 
     BOOL CALLBACK ScanCenterPoint(HWND hwnd, LPARAM lparam) {
-        auto obj_list = reinterpret_cast<std::vector<Point2D>*>(lparam) ;
+        auto obj_list = reinterpret_cast<std::vector<util::Point2D>*>(lparam) ;
 
         if(!IsWindowVisible(hwnd)) {
             return TRUE ;
@@ -81,8 +81,8 @@ namespace vind
 {
     struct EasyClickCore::Impl {
         UIScanner scanner_{} ;
-        std::vector<SmartElement> elements_{} ;
-        std::vector<Point2D> positions_{} ;
+        std::vector<util::SmartElement> elements_{} ;
+        std::vector<util::Point2D> positions_{} ;
         std::vector<Hint> hints_{} ;
         std::vector<std::string> strhints_{} ;
         InputHinter input_hinter_{} ;
@@ -195,7 +195,7 @@ namespace vind
         if(auto pos = ft.get()) {
             if(SetCursorPos(pos->x(), pos->y())) {
                 repeater::safe_for(repeat_num, [sendkey] {
-                    mouse::click(sendkey) ;
+                    util::click(sendkey) ;
                 }) ;
             }
         }

@@ -38,7 +38,7 @@ namespace
 }
 namespace vind
 {
-    namespace mouse {
+    namespace util {
         void click(KeyCode btcode) {
             static INPUT in = {INPUT_MOUSE} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
@@ -55,7 +55,7 @@ namespace vind
             }
         }
 
-        void press(KeyCode btcode) {
+        void press_mousestate(KeyCode btcode) {
             static INPUT in = {INPUT_MOUSE} ;
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
@@ -65,7 +65,7 @@ namespace vind
             }
         }
 
-        void release(KeyCode btcode) {
+        void release_mousestate(KeyCode btcode) {
             static INPUT in = {INPUT_MOUSE} ;
             in.mi.dwFlags = btcode_to_upevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;

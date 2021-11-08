@@ -5,24 +5,27 @@
 
 namespace vind
 {
-    class CUIA {
-    private:
-        IUIAutomation* cuia ;
+    namespace util
+    {
+        class CUIA {
+        private:
+            IUIAutomation* cuia ;
 
-    public:
-        explicit CUIA() ;
-        virtual ~CUIA() noexcept ;
+        public:
+            explicit CUIA() ;
+            virtual ~CUIA() noexcept ;
 
-        CUIA(CUIA&&)                 = delete ;
-        CUIA& operator=(CUIA&&)      = delete ;
-        CUIA(const CUIA&)            = delete ;
-        CUIA& operator=(const CUIA&) = delete ;
+            CUIA(CUIA&&)                 = delete ;
+            CUIA& operator=(CUIA&&)      = delete ;
+            CUIA(const CUIA&)            = delete ;
+            CUIA& operator=(const CUIA&) = delete ;
 
-        IUIAutomation* get() const noexcept ;
-        operator IUIAutomation*() const noexcept ;
-        operator bool() const noexcept ;
-        IUIAutomation* operator->() const noexcept ;
-    } ;
+            IUIAutomation* get() const noexcept ;
+            operator IUIAutomation*() const noexcept ;
+            operator bool() const noexcept ;
+            IUIAutomation* operator->() const noexcept ;
+        } ;
+    }
 }
 
 #endif

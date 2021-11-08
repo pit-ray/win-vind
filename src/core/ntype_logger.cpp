@@ -62,7 +62,7 @@ namespace vind
         KeyLog prelog_{} ;
         KeyLog prelog_without_headnum_{} ;
 
-        KeyStrokeRepeater ksr_{} ;
+        util::KeyStrokeRepeater ksr_{} ;
         unsigned int head_num_ = 0 ;
         LoggerStateRawType state_ = LoggerState::INITIAL ;
 

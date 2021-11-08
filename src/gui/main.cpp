@@ -63,8 +63,7 @@ namespace vind
     namespace gui
     {
         //core system is wrought at another thread
-        class SystemThread : public wxThread
-        {
+        class SystemThread : public wxThread {
         private:
             virtual ExitCode Entry() override {
                 while(vind::update() && g_runnable.load()) ;
@@ -77,8 +76,7 @@ namespace vind
             {}
         } ;
 
-        class App : public wxApp
-        {
+        class App : public wxApp {
         private:
             bool OnInit() override {
                 try {

@@ -73,8 +73,8 @@ namespace vind
     InputHinter& InputHinter::operator=(InputHinter&&) = default ;
 
 
-    std::shared_ptr<Point2D> InputHinter::launch_loop(
-            const std::vector<Point2D>& positions,
+    std::shared_ptr<util::Point2D> InputHinter::launch_loop(
+            const std::vector<util::Point2D>& positions,
             const std::vector<Hint>& hints) {
 
         pimpl->matched_counts_.clear() ;
@@ -113,7 +113,7 @@ namespace vind
 
             auto full_match_idx = pimpl->validate_if_match_with_hints(lgr, hints) ;
             if(full_match_idx >= 0) {
-                return std::make_shared<Point2D>(
+                return std::make_shared<util::Point2D>(
                         positions[full_match_idx].x(),
                         positions[full_match_idx].y()) ;
             }
@@ -128,8 +128,8 @@ namespace vind
         return nullptr ;
     }
 
-    std::shared_future<std::shared_ptr<Point2D>> InputHinter::launch_async_loop(
-            const std::vector<Point2D>& positions,
+    std::shared_future<std::shared_ptr<util::Point2D>> InputHinter::launch_async_loop(
+            const std::vector<util::Point2D>& positions,
             const std::vector<Hint>& hints) {
 
         auto ft = std::async(

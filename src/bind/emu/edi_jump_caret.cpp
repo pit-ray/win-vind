@@ -20,10 +20,10 @@ namespace vind
     }
     void JumpCaretToBOL::sprocess() {
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
+            util::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
         }
         else {
-            keybrd::pushup(KEYCODE_HOME) ;
+            util::pushup(KEYCODE_HOME) ;
         }
     }
     void JumpCaretToBOL::sprocess(NTypeLogger& parent_lgr) {
@@ -46,15 +46,15 @@ namespace vind
     void JumpCaretToEOL::sprocess(unsigned int repeat_num) {
         //down caret N - 1
         repeater::safe_for(repeat_num - 1, [] {
-            keybrd::pushup(KEYCODE_DOWN) ;
+            util::pushup(KEYCODE_DOWN) ;
         }) ; 
 
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
-            keybrd::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+            util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
         }
         else {
-            keybrd::pushup(KEYCODE_END) ;
-            keybrd::pushup(KEYCODE_LEFT) ;
+            util::pushup(KEYCODE_END) ;
+            util::pushup(KEYCODE_LEFT) ;
         }
     }
     void JumpCaretToEOL::sprocess(NTypeLogger& parent_lgr) {
@@ -78,7 +78,7 @@ namespace vind
         if(textselect::is_first_line_selection())
             textselect::select_line_EOL2BOL() ;
 
-        using keybrd::pushup ;
+        using util::pushup ;
 
         if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
             pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
@@ -89,7 +89,7 @@ namespace vind
             }) ;
         }
         else {
-            keybrd::pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
             repeater::safe_for(repeat_num - 1, [] {
@@ -122,7 +122,7 @@ namespace vind
         return true ;
     }
     void JumpCaretToEOF::sprocess(unsigned int repeat_num) {
-        using keybrd::pushup ;
+        using util::pushup ;
 
         if(repeat_num == 1) {
             if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
@@ -136,7 +136,7 @@ namespace vind
                 }
             }
             else {
-                keybrd::pushup(KEYCODE_LCTRL, KEYCODE_END) ;
+                util::pushup(KEYCODE_LCTRL, KEYCODE_END) ;
             }
         }
         else {

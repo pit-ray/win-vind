@@ -3,7 +3,7 @@
 
 namespace vind
 {
-    namespace TypeTraits {
+    namespace util {
         template <bool... Bs>
         using bool_sequence = std::integer_sequence<bool, Bs...> ;
 

@@ -39,7 +39,7 @@ namespace vind
         }
 
         if(m == Mode::GUI_VISUAL) {
-            mouse::click(KEYCODE_MOUSE_LEFT) ; //release holding mouse
+            util::click(KEYCODE_MOUSE_LEFT) ; //release holding mouse
         }
         else if(m == Mode::EDI_VISUAL) {
             textselect::unselect() ; //release shifting
@@ -98,7 +98,7 @@ namespace vind
         if(vclmodeout) {
             VCmdLine::print(GeneralMessage("-- GUI VISUAL --")) ;
         }
-        mouse::press(KEYCODE_MOUSE_LEFT) ;
+        util::press_mousestate(KEYCODE_MOUSE_LEFT) ;
     }
     void ToGUIVisual::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -126,7 +126,7 @@ namespace vind
             return ;
         }
         if(mode == Mode::GUI_NORMAL) {
-            mouse::click(KEYCODE_MOUSE_LEFT) ;
+            util::click(KEYCODE_MOUSE_LEFT) ;
         }
         else if(mode == Mode::EDI_VISUAL) {
             textselect::unselect() ;
@@ -146,7 +146,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("There is no foreground window.") ;
             }
 
-            Point2D pos ;
+            util::Point2D pos ;
             if(!GetCursorPos(&(pos.data()))) {
                 throw RUNTIME_EXCEPT("Could not get the cursor position.") ;
             }
@@ -172,7 +172,7 @@ namespace vind
     void ToInsert::sprocess(bool vclmodeout) {
         using namespace mode ;
         if(get_global_mode() == Mode::GUI_NORMAL) {
-            mouse::click(KEYCODE_MOUSE_LEFT) ;
+            util::click(KEYCODE_MOUSE_LEFT) ;
         }
 
         keyabsorber::close_all_ports() ;

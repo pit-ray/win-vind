@@ -10,7 +10,8 @@
 
 namespace vind
 {
-    namespace screenmetrics {
+    namespace util
+    {
         Box2D get_conbined_metrics() ;
         Box2D get_primary_metrics() ;
 

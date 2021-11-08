@@ -96,16 +96,16 @@ Since it builds all libraries with the best options for your system environment,
 
 ###### Manually (Visual Studio 2019)
   ```bash
-  $ cmake -B test/build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" test
-  $ cmake --build test/build
-  $ cd test/build ; ctest -C Debug ; cd ../..
+  $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" tests
+  $ cmake --build tests/build
+  $ cd tests/build ; ctest -C Debug ; cd ../..
   ```
 
 ###### Manually (MinGW-w64 >= GCC 8.2.0)
   ```bash
-  $ cmake -B test/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" test
-  $ cmake --build test/build
-  $ cd test/build ; ctest -C Debug ; cd ../..
+  $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
+  $ cmake --build tests/build
+  $ cd tests/build ; ctest -C Debug ; cd ../..
   ```
 
 You can refer to ToDo at <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a> and its architecture at <a href="src/README.md">devdocs</a>.  

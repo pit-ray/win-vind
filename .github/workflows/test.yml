@@ -9,9 +9,8 @@ on:
       - '!README.md'
       - '!CONTRIBUTING.md'
       - '!docs/**'
-      - 'core/**'
-      - 'coregui/**'
-      - 'test/**'
+      - 'src/**'
+      - 'tests/**'
       - '.github/**'
 
   pull_request:
@@ -32,15 +31,15 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -B ${{github.workspace}}/test/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} test
+        cmake -B ${{github.workspace}}/tests/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} tests
 
     - name: Build
       run: |
-        cmake --build ${{github.workspace}}/test/build --config ${{env.BUILD_TYPE}}
+        cmake --build ${{github.workspace}}/tests/build --config ${{env.BUILD_TYPE}}
 
     - name: Test
       working-directory: ${{github.workspace}}
       run: |
-        cd test/build
+        cd tests/build
         ctest -C ${{env.BUILD_TYPE}}
         cd ../..

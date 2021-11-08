@@ -9,8 +9,7 @@ on:
       - '!README.md'
       - '!CONTRIBUTING.md'
       - '!docs/**'
-      - 'core/**'
-      - 'coregui/**'
+      - 'src/**'
       - '.github/**'
 
   pull_request:

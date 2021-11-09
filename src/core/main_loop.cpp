@@ -43,7 +43,8 @@ namespace vind
                 return ;
             }
             if(NTYPE_HEAD_NUM(result)) {
-                VCmdLine::print(StaticMessage(std::to_string(g_ntlgr.get_head_num()))) ;
+                opt::VCmdLine::print(opt::StaticMessage(
+                            std::to_string(g_ntlgr.get_head_num()))) ;
                 return ;
             }
 
@@ -65,7 +66,7 @@ namespace vind
             if(parser) {
                 if(parser->is_accepted()) {
                     if(g_ntlgr.has_head_num()) {
-                        VCmdLine::reset() ;
+                        opt::VCmdLine::reset() ;
                     }
 
                     g_active_func = parser->get_func() ;
@@ -83,7 +84,7 @@ namespace vind
             }
             else {
                 if(g_ntlgr.has_head_num()) {
-                    VCmdLine::refresh() ;
+                    opt::VCmdLine::refresh() ;
                 }
                 g_ntlgr.reject() ;
                 g_funcfinder.reset_parser_states() ;

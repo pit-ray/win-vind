@@ -165,12 +165,12 @@ namespace vind
 
         pimpl->funcfinder_.reset_parser_states() ;
 
-        VCmdLine::reset() ;
+        opt::VCmdLine::reset() ;
 
         keyabsorber::InstantKeyAbsorber ika ;
 
         constexpr auto cmdline_prefix = ":" ;
-        VCmdLine::print(StaticMessage(cmdline_prefix)) ;
+        opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix)) ;
 
         while(vind::update_background()) {
             auto& p_cmdp = pimpl->ch_.get_hist_point() ;
@@ -190,20 +190,20 @@ namespace vind
                     pimpl->ch_.forward_to_latest() ;
                 }
 
-                VCmdLine::reset() ;
+                opt::VCmdLine::reset() ;
                 break ;
             }
 
             //decision of input
             if(lgr.latest().is_containing(KEYCODE_ENTER)) {
                 p_cmdp->backward(1) ; //remove log including KEYCODE_ENTER
-                VCmdLine::reset() ;
+                opt::VCmdLine::reset() ;
 
                 if(p_cmdp->func) {
                     p_cmdp->func->process(lgr) ;
                 }
                 else {
-                    VCmdLine::print(ErrorMessage("E: Not a command")) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
                 }
 
                 pimpl->ch_.generate_new_hist() ;
@@ -217,13 +217,13 @@ namespace vind
             if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
                 if(lgr.size() == 1) {
                     p_cmdp->reset() ;
-                    VCmdLine::reset() ;
+                    opt::VCmdLine::reset() ;
                     break ;
                 }
 
                 p_cmdp->backward(2) ;
-                VCmdLine::print(StaticMessage(cmdline_prefix + lgr.to_str())) ;
-                VCmdLine::refresh() ;
+                opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
+                opt::VCmdLine::refresh() ;
 
                 pimpl->funcfinder_.backward_parser_states(1) ;
 
@@ -243,8 +243,8 @@ namespace vind
                     auto& b_lgr = pimpl->ch_.get_hist_point()->logger ;
                     b_lgr.sync_state_with(lgr) ;
 
-                    VCmdLine::print(StaticMessage(cmdline_prefix + b_lgr.to_str())) ;
-                    VCmdLine::refresh() ;
+                    opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + b_lgr.to_str())) ;
+                    opt::VCmdLine::refresh() ;
 
                     pimpl->funcfinder_.reset_parser_states() ;
                     pimpl->funcfinder_.transition_parser_states_in_batch(b_lgr) ;
@@ -258,8 +258,8 @@ namespace vind
                     auto& f_lgr = pimpl->ch_.get_hist_point()->logger ;
                     f_lgr.sync_state_with(lgr) ;
 
-                    VCmdLine::print(StaticMessage(cmdline_prefix + f_lgr.to_str())) ;
-                    VCmdLine::refresh() ;
+                    opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + f_lgr.to_str())) ;
+                    opt::VCmdLine::refresh() ;
 
                     pimpl->funcfinder_.reset_parser_states() ;
                     pimpl->funcfinder_.transition_parser_states_in_batch(f_lgr) ;
@@ -267,7 +267,7 @@ namespace vind
                 continue ;
             }
 
-            VCmdLine::print(StaticMessage(cmdline_prefix + lgr.to_str())) ;
+            opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
 
             // 
             // Since there may be multiple logging in one iteration,

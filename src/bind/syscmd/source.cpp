@@ -168,7 +168,7 @@ namespace vind
 
         std::ifstream ifs(path, std::ios::in) ;
         if(!ifs.is_open()) {
-            VCmdLine::print(ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
             return ;
         }
 
@@ -191,7 +191,7 @@ namespace vind
             }
             catch(const std::domain_error& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VCmdLine::print(ErrorMessage("E: Not command (" + ltag + ")")) ;
+                opt::VCmdLine::print(opt::ErrorMessage("E: Not command (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << "RunCommandsIndex: " << e.what() << " is not supported." ;
@@ -203,7 +203,7 @@ namespace vind
             }
             catch(const std::invalid_argument& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VCmdLine::print(ErrorMessage("E: Invalid Argument (" + ltag + ")")) ;
+                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Argument (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << e.what() << " is recieved invalid arguments." ;
@@ -215,7 +215,7 @@ namespace vind
             }
             catch(const std::logic_error& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VCmdLine::print(ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
+                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << e.what() ;
@@ -227,7 +227,7 @@ namespace vind
             }
             catch(const std::runtime_error& e) {
                 auto ltag = "L:" + std::to_string(lnum) ;
-                VCmdLine::print(ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
+                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
 
                 std::stringstream ss ;
                 ss << e.what() ;

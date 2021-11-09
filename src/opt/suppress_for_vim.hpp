@@ -5,16 +5,18 @@
 
 namespace vind
 {
-    class SuppressForVim : public OptionCreator<SuppressForVim>
+    namespace opt
     {
-    private:
-        void do_enable() const override ;
-        void do_disable() const override ;
-        void do_process() const override ;
+        class SuppressForVim : public OptionCreator<SuppressForVim> {
+        private:
+            void do_enable() const override ;
+            void do_disable() const override ;
+            void do_process() const override ;
 
-    public:
-        explicit SuppressForVim() ;
-    } ;
+        public:
+            explicit SuppressForVim() ;
+        } ;
+    }
 }
 
 #endif

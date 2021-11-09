@@ -113,8 +113,8 @@ namespace vind
     void ReplaceSequence::sprocess(unsigned int repeat_num) {
         using util::pushup ;
 
-        VCmdLine::clear() ;
-        VCmdLine::print(GeneralMessage("-- EDI REPLACE --")) ;
+        opt::VCmdLine::clear() ;
+        opt::VCmdLine::print(opt::GeneralMessage("-- EDI REPLACE --")) ;
 
         std::vector<KeyCode> strs{} ;
         std::vector<bool> shifts{} ;
@@ -142,8 +142,8 @@ namespace vind
             }
         }) ;
 
-        VCmdLine::reset() ;
-        VCmdLine::print(GeneralMessage("-- EDI NORMAL --")) ;
+        opt::VCmdLine::reset() ;
+        opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
     }
     void ReplaceSequence::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

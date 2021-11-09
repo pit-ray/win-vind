@@ -18,7 +18,7 @@ namespace vind
     : BindedFuncCreator("enable_targeting_of_dedicate_to_window")
     {}
     void EnableTargetingOfDedicate2Window::sprocess() {
-        Dedicate2Window::enable_targeting() ;
+        opt::Dedicate2Window::enable_targeting() ;
     }
     void EnableTargetingOfDedicate2Window::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
@@ -34,7 +34,7 @@ namespace vind
     : BindedFuncCreator("disable_targeting_of_dedicate_to_window")
     {}
     void DisableTargetingOfDedicate2Window::sprocess() {
-        Dedicate2Window::disable_targeting() ;
+        opt::Dedicate2Window::disable_targeting() ;
     }
     void DisableTargetingOfDedicate2Window::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

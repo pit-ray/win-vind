@@ -52,7 +52,7 @@ namespace vind
 
         set_global_mode(Mode::GUI_NORMAL) ;
         if(vclmodeout) {
-            VCmdLine::print(GeneralMessage("-- GUI NORMAL --")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- GUI NORMAL --")) ;
         }
     }
     void ToGUINormal::sprocess(NTypeLogger& parent_lgr) {
@@ -74,7 +74,7 @@ namespace vind
         keyabsorber::unabsorb() ;
         mode::set_global_mode(mode::Mode::RESIDENT) ;
         if(vclmodeout) {
-            VCmdLine::print(GeneralMessage("-- RESIDENT --")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- RESIDENT --")) ;
         }
     }
     void ToResident::sprocess(NTypeLogger& parent_lgr) {
@@ -96,7 +96,7 @@ namespace vind
         using namespace mode ;
         set_global_mode(Mode::GUI_VISUAL) ;
         if(vclmodeout) {
-            VCmdLine::print(GeneralMessage("-- GUI VISUAL --")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- GUI VISUAL --")) ;
         }
         util::press_mousestate(KEYCODE_MOUSE_LEFT) ;
     }
@@ -117,7 +117,8 @@ namespace vind
     ToEdiNormal::ToEdiNormal()
     : BindedFuncCreator("to_edi_normal")
     {
-        AsyncUIACacheBuilder::register_properties(scanner_.get_properties()) ;
+        opt::AsyncUIACacheBuilder::register_properties(
+                scanner_.get_properties()) ;
     }
     void ToEdiNormal::sprocess(bool vclmodeout) {
         using namespace mode ;
@@ -137,7 +138,7 @@ namespace vind
 
         set_global_mode(Mode::EDI_NORMAL) ;
         if(vclmodeout) {
-            VCmdLine::print(GeneralMessage("-- EDI NORMAL --")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
         }
 
         if(gparams::get_b("autofocus_textarea")) {
@@ -180,7 +181,7 @@ namespace vind
         set_global_mode(Mode::INSERT) ;
 
         if(vclmodeout) {
-            VCmdLine::print(GeneralMessage("-- INSERT --")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- INSERT --")) ;
         }
     }
     void ToInsert::sprocess(NTypeLogger& parent_lgr) {
@@ -203,7 +204,7 @@ namespace vind
         textselect::select_words() ;
         set_global_mode(Mode::EDI_VISUAL) ;
         if(vclmodeout) {
-            VCmdLine::print(GeneralMessage("-- EDI VISUAL --")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL --")) ;
         }
     }
     void ToEdiVisual::sprocess(NTypeLogger& parent_lgr) {
@@ -226,7 +227,7 @@ namespace vind
         textselect::select_line_EOL2BOL() ;
         set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
         if(vclmodeout) {
-            VCmdLine::print(GeneralMessage("-- EDI VISUAL LINE--")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL LINE--")) ;
         }
     }
     void ToEdiVisualLine::sprocess(NTypeLogger& parent_lgr) {

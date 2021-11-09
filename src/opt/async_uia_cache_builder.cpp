@@ -166,76 +166,79 @@ namespace
 
 namespace vind
 {
-    AsyncUIACacheBuilder::AsyncUIACacheBuilder()
-    : OptionCreator("uiacachebuild")
-    {}
+    namespace opt
+    {
+        AsyncUIACacheBuilder::AsyncUIACacheBuilder()
+        : OptionCreator("uiacachebuild")
+        {}
 
-    void AsyncUIACacheBuilder::do_enable() const {
-    }
-
-    void AsyncUIACacheBuilder::do_disable() const {
-        g_caches.clear() ;
-    }
-
-    void AsyncUIACacheBuilder::do_process() const {
-        // Ignore in Inser Mode and Resident Mode.
-        if(mode::get_global_mode() == mode::Mode::RESIDENT) {
-            return ;
+        void AsyncUIACacheBuilder::do_enable() const {
         }
 
-        // Use some factors for minimal scanning
-
-        // Factor1: keybaord input
-        if(!keyabsorber::get_pressed_list().empty()) {
-            return ;
+        void AsyncUIACacheBuilder::do_disable() const {
+            g_caches.clear() ;
         }
 
-        // Factor2: cursor position
-        using namespace std::chrono ;
-        static util::Point2D prepos ;
-        static auto keeptime = system_clock::now() ;
+        void AsyncUIACacheBuilder::do_process() const {
+            // Ignore in Inser Mode and Resident Mode.
+            if(mode::get_global_mode() == mode::Mode::RESIDENT) {
+                return ;
+            }
 
-        util::Point2D pos ;
-        if(!GetCursorPos(&pos.data())) {
-            throw RUNTIME_EXCEPT("Could not get the mouse cursor position.") ;
-        }
-        if(pos != prepos) {
-            prepos = pos ;
-            keeptime = system_clock::now() ;
-            return ;
+            // Use some factors for minimal scanning
+
+            // Factor1: keybaord input
+            if(!keyabsorber::get_pressed_list().empty()) {
+                return ;
+            }
+
+            // Factor2: cursor position
+            using namespace std::chrono ;
+            static util::Point2D prepos ;
+            static auto keeptime = system_clock::now() ;
+
+            util::Point2D pos ;
+            if(!GetCursorPos(&pos.data())) {
+                throw RUNTIME_EXCEPT("Could not get the mouse cursor position.") ;
+            }
+            if(pos != prepos) {
+                prepos = pos ;
+                keeptime = system_clock::now() ;
+                return ;
+            }
+
+            // When the mouse is staying, scan only for the initial time range.
+            // When the mouse is moving, the cache is less reliable,
+            // and when the computer is neglected for a long time, there is no need to scan it.
+            auto keep_delta = duration_cast<milliseconds>(
+                    system_clock::now() - keeptime).count() ;
+            if(keep_delta < gparams::get_i("uiacachebuild_staybegin")) {
+                return ;
+            }
+            if(keep_delta > gparams::get_i("uiacachebuild_stayend")) {
+                return ;
+            }
+
+            auto hwnd = GetForegroundWindow() ;
+            if(hwnd == NULL) { // don't scan for desktop root
+                return ;
+            }
+
+            if(!has_cache(hwnd)) {
+                g_caches[hwnd].initialize(hwnd) ;
+            }
+            g_caches[hwnd].update() ;
         }
 
-        // When the mouse is staying, scan only for the initial time range.
-        // When the mouse is moving, the cache is less reliable,
-        // and when the computer is neglected for a long time, there is no need to scan it.
-        auto keep_delta = duration_cast<milliseconds>(
-                system_clock::now() - keeptime).count() ;
-        if(keep_delta < gparams::get_i("uiacachebuild_staybegin")) {
-            return ;
-        }
-        if(keep_delta > gparams::get_i("uiacachebuild_stayend")) {
-            return ;
+        void AsyncUIACacheBuilder::register_property(PROPERTYID id) {
+            util::add_property(g_cache_request, id) ;
         }
 
-        auto hwnd = GetForegroundWindow() ;
-        if(hwnd == NULL) { // don't scan for desktop root
-            return ;
+        util::SmartElement AsyncUIACacheBuilder::get_root_element(HWND hwnd) {
+            if(!has_cache(hwnd)) {
+                g_caches[hwnd].initialize(hwnd) ;
+            }
+            return g_caches[hwnd].latest() ;
         }
-
-        if(!has_cache(hwnd)) {
-            g_caches[hwnd].initialize(hwnd) ;
-        }
-        g_caches[hwnd].update() ;
-    }
-
-    void AsyncUIACacheBuilder::register_property(PROPERTYID id) {
-        util::add_property(g_cache_request, id) ;
-    }
-
-    util::SmartElement AsyncUIACacheBuilder::get_root_element(HWND hwnd) {
-        if(!has_cache(hwnd)) {
-            g_caches[hwnd].initialize(hwnd) ;
-        }
-        return g_caches[hwnd].latest() ;
     }
 }

@@ -152,100 +152,103 @@ namespace
 
 namespace vind
 {
-    struct BlockStyleCaret::Impl {
-        DWORD sysval_ = 1 ;
-        bool is_enabled_ = false ;
-        std::future<void> ft_{} ;
-    } ;
-
-    BlockStyleCaret::BlockStyleCaret()
-    : OptionCreator("blockstylecaret"),
-      pimpl(std::make_unique<Impl>())
+    namespace opt
     {
-        pimpl->sysval_ = get_property() ;
-    }
+        struct BlockStyleCaret::Impl {
+            DWORD sysval_ = 1 ;
+            bool is_enabled_ = false ;
+            std::future<void> ft_{} ;
+        } ;
 
-    BlockStyleCaret::~BlockStyleCaret() noexcept {
-        try {
-            if(get_property() != pimpl->sysval_) {
-                set_property(pimpl->sysval_) ;
+        BlockStyleCaret::BlockStyleCaret()
+        : OptionCreator("blockstylecaret"),
+          pimpl(std::make_unique<Impl>())
+        {
+            pimpl->sysval_ = get_property() ;
+        }
+
+        BlockStyleCaret::~BlockStyleCaret() noexcept {
+            try {
+                if(get_property() != pimpl->sysval_) {
+                    set_property(pimpl->sysval_) ;
+                }
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
             }
         }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-        }
-    }
 
-    BlockStyleCaret::BlockStyleCaret(BlockStyleCaret&&)            = default ;
-    BlockStyleCaret& BlockStyleCaret::operator=(BlockStyleCaret&&) = default ;
+        BlockStyleCaret::BlockStyleCaret(BlockStyleCaret&&)            = default ;
+        BlockStyleCaret& BlockStyleCaret::operator=(BlockStyleCaret&&) = default ;
 
-    void BlockStyleCaret::do_enable() const {
-    }
-
-    void BlockStyleCaret::do_disable() const {
-        auto mode = util::A2a(gparams::get_s("blockstylecaret_mode")) ;
-        restore_caret_style(mode) ;
-    }
-
-    void BlockStyleCaret::restore_caret_style(const std::string& mode) const {
-        if(!pimpl->is_enabled_) {
-            return ;
+        void BlockStyleCaret::do_enable() const {
         }
 
-        if(mode == "solid") {
-            if(pimpl->ft_.valid()) {
-                pimpl->ft_.wait() ;
-                pimpl->ft_.get() ;
-            }
-            pimpl->ft_ = std::async(std::launch::async, set_property, pimpl->sysval_) ;
-
-        }
-        else if(mode == "flex") {
-            util::pushup(KEYCODE_LEFT) ;
-        }
-
-        pimpl->is_enabled_ = false ;
-    }
-
-    void BlockStyleCaret::make_caret_block_style(const std::string& mode) const {
-        if(pimpl->is_enabled_) {
-            return ;
-        }
-
-        if(mode == "solid") {
-            auto width = gparams::get_i("blockstylecaret_width") ;
-            if(pimpl->ft_.valid()) {
-                pimpl->ft_.wait() ;
-                pimpl->ft_.get() ;
-            }
-            pimpl->ft_ = std::async(std::launch::async, set_property, width) ;
-
-        }
-        else if(mode == "flex") {
-            util::pushup(KEYCODE_RIGHT) ;
-            util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
-        }
-
-        pimpl->is_enabled_ = true ;
-    }
-
-    void BlockStyleCaret::do_process() const {
-        auto mode = util::A2a(gparams::get_s("blockstylecaret_mode")) ;
-
-        if(mode::get_global_mode() != mode::Mode::EDI_NORMAL) {
+        void BlockStyleCaret::do_disable() const {
+            auto mode = util::A2a(gparams::get_s("blockstylecaret_mode")) ;
             restore_caret_style(mode) ;
-            return ;
         }
 
-        if(mode == "solid") {
-            make_caret_block_style(mode) ;
-        }
-        else if(mode == "flex") {
-            if(!keyabsorber::get_pressed_list().empty()) {
-                restore_caret_style(mode) ;
+        void BlockStyleCaret::restore_caret_style(const std::string& mode) const {
+            if(!pimpl->is_enabled_) {
+                return ;
             }
-            else {
+
+            if(mode == "solid") {
+                if(pimpl->ft_.valid()) {
+                    pimpl->ft_.wait() ;
+                    pimpl->ft_.get() ;
+                }
+                pimpl->ft_ = std::async(std::launch::async, set_property, pimpl->sysval_) ;
+
+            }
+            else if(mode == "flex") {
+                util::pushup(KEYCODE_LEFT) ;
+            }
+
+            pimpl->is_enabled_ = false ;
+        }
+
+        void BlockStyleCaret::make_caret_block_style(const std::string& mode) const {
+            if(pimpl->is_enabled_) {
+                return ;
+            }
+
+            if(mode == "solid") {
+                auto width = gparams::get_i("blockstylecaret_width") ;
+                if(pimpl->ft_.valid()) {
+                    pimpl->ft_.wait() ;
+                    pimpl->ft_.get() ;
+                }
+                pimpl->ft_ = std::async(std::launch::async, set_property, width) ;
+
+            }
+            else if(mode == "flex") {
+                util::pushup(KEYCODE_RIGHT) ;
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+            }
+
+            pimpl->is_enabled_ = true ;
+        }
+
+        void BlockStyleCaret::do_process() const {
+            auto mode = util::A2a(gparams::get_s("blockstylecaret_mode")) ;
+
+            if(mode::get_global_mode() != mode::Mode::EDI_NORMAL) {
+                restore_caret_style(mode) ;
+                return ;
+            }
+
+            if(mode == "solid") {
                 make_caret_block_style(mode) ;
+            }
+            else if(mode == "flex") {
+                if(!keyabsorber::get_pressed_list().empty()) {
+                    restore_caret_style(mode) ;
+                }
+                else {
+                    make_caret_block_style(mode) ;
+                }
             }
         }
     }

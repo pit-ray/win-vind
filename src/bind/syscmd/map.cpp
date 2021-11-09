@@ -24,17 +24,17 @@ namespace
             std::string& return_arg1,
             std::string& return_arg2) {
         if(args.empty()) {
-            VCmdLine::print(ErrorMessage("E: Not support list of map yet")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of map yet")) ;
             return false ;
         }
 
         auto [a1, a2] = rcparser::extract_double_args(std::forward<T>(args)) ;
         if(a1.empty()) {
-            VCmdLine::print(ErrorMessage("E: Not support list of map yet")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of map yet")) ;
             return false ;
         }
         if(a2.empty()) {
-            VCmdLine::print(ErrorMessage("E: Not support reference of map yet")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Not support reference of map yet")) ;
             return false ;
         }
 
@@ -61,7 +61,7 @@ namespace
         auto mode = mode::parse_prefix(prefix) ;
         if(mode == mode::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
-            VCmdLine::print(ErrorMessage("E: Unsupported mode prefix")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
             return false ;
         }
 
@@ -157,13 +157,13 @@ namespace vind
             bool reload_config) {
         if(args.empty()) {
             // does not have argument is empty
-            VCmdLine::print(ErrorMessage("E: Invalid argument")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             return ;
         }
 
         auto arg = rcparser::extract_single_arg(args) ;
         if(arg.empty()) {
-            VCmdLine::print(ErrorMessage("E: Invalid argument")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             return ;
         }
         gmaps::unmap(arg, mode) ;
@@ -186,7 +186,7 @@ namespace vind
         auto mode = mode::parse_prefix(prefix) ;
         if(mode == mode::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
-            VCmdLine::print(ErrorMessage("E: Unsupported mode prefix")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
             return ;
         }
         sprocess(mode, args, true) ;
@@ -216,7 +216,7 @@ namespace vind
 
         auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
         if(!args.empty()) {
-            VCmdLine::print(ErrorMessage("E: Invalid argument")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             return ;
         }
 
@@ -224,7 +224,7 @@ namespace vind
         auto mode = mode::parse_prefix(prefix) ;
         if(mode == mode::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
-            VCmdLine::print(ErrorMessage("E: Unsupported mode prefix")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
             return ;
         }
         sprocess(mode, true) ;

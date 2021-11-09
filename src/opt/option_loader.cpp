@@ -18,7 +18,7 @@
 //internal linkage
 namespace
 {
-    using namespace vind ;
+    using namespace vind::opt ;
 
     std::vector<Option::SPtr> g_vpop {
         AsyncUIACacheBuilder::create(),
@@ -32,7 +32,8 @@ namespace
 
 namespace vind
 {
-    namespace optloader {
+    namespace opt
+    {
         void reconstruct()
         {
             for(const auto& op : g_vpop) {

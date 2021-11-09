@@ -148,7 +148,7 @@ namespace vind
 
         auto width = fginfo.rect.width() - delta ;
         if(width <= 0) { 
-            VCmdLine::print(ErrorMessage("E: Width below zero")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Width below zero")) ;
             return ;
         }
 
@@ -220,7 +220,7 @@ namespace vind
 
         auto height = fginfo.rect.height() - delta ;
         if(height <= 0) { 
-            VCmdLine::print(ErrorMessage("E: Height below zero")) ;
+            opt::VCmdLine::print(opt::ErrorMessage("E: Height below zero")) ;
             return ;
         }
 

@@ -19,7 +19,7 @@ namespace vind
 
         util::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
 
-        VCmdLine::print(GeneralMessage("Hello World !")) ;
+        opt::VCmdLine::print(opt::GeneralMessage("Hello World !")) ;
     }
     void MyBinding::sprocess(NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {

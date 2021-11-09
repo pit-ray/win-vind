@@ -5,17 +5,19 @@
 
 namespace vind
 {
-    class Dedicate2Window : public OptionCreator<Dedicate2Window>
+    namespace opt
     {
-    private:
-        void do_enable() const override ;
-        void do_disable() const override ;
-        void do_process() const override ;
+        class Dedicate2Window : public OptionCreator<Dedicate2Window> {
+        private:
+            void do_enable() const override ;
+            void do_disable() const override ;
+            void do_process() const override ;
 
-    public:
-        explicit Dedicate2Window() ;
-        static void enable_targeting() ;
-        static void disable_targeting() ;
-    } ;
+        public:
+            explicit Dedicate2Window() ;
+            static void enable_targeting() ;
+            static void disable_targeting() ;
+        } ;
+    }
 }
 #endif

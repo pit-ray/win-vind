@@ -5,26 +5,28 @@
 
 namespace vind
 {
-    class AutotrackPopup : public OptionCreator<AutotrackPopup>
+    namespace opt
     {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+        class AutotrackPopup : public OptionCreator<AutotrackPopup> {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-        void do_enable() const override ;
-        void do_disable() const override ;
-        void do_process() const override ;
+            void do_enable() const override ;
+            void do_disable() const override ;
+            void do_process() const override ;
 
-    public:
-        explicit AutotrackPopup() ;
-        virtual ~AutotrackPopup() noexcept ;
+        public:
+            explicit AutotrackPopup() ;
+            virtual ~AutotrackPopup() noexcept ;
 
-        AutotrackPopup(AutotrackPopup&&) ;
-        AutotrackPopup& operator=(AutotrackPopup&&)  ;
+            AutotrackPopup(AutotrackPopup&&) ;
+            AutotrackPopup& operator=(AutotrackPopup&&)  ;
 
-        AutotrackPopup(const AutotrackPopup&)            = delete ;
-        AutotrackPopup& operator=(const AutotrackPopup&) = delete ;
-    } ;
+            AutotrackPopup(const AutotrackPopup&)            = delete ;
+            AutotrackPopup& operator=(const AutotrackPopup&) = delete ;
+        } ;
+    }
 }
 
 #endif

@@ -34,7 +34,7 @@ namespace vind
 
         keyabsorber::InstantKeyAbsorber isa{} ;
 
-        VCmdLine::print(GeneralMessage("-- Instant GUI Normal --")) ;
+        opt::VCmdLine::print(opt::GeneralMessage("-- Instant GUI Normal --")) ;
 
         constexpr auto lcx_vmode = mode::Mode::GUI_NORMAL ;
 
@@ -69,7 +69,7 @@ namespace vind
                 break ;
             }
         }
-        VCmdLine::reset() ;
+        opt::VCmdLine::reset() ;
     }
 
     void ToInstantGUINormal::sprocess(NTypeLogger& parent) const {

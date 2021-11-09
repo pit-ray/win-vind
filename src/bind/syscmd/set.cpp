@@ -32,10 +32,10 @@ namespace vind
 
             if(key.empty()) {
                 if(val.empty()) {
-                    VCmdLine::print(ErrorMessage("E: Not support list of option yet")) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of option yet")) ;
                 }
                 else {
-                    VCmdLine::print(ErrorMessage("E: Invalid syntax")) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid syntax")) ;
                 }
                 return ;
             }
@@ -67,7 +67,7 @@ namespace vind
                 key.erase(name_last_pos + 1) ;
 
                 if(key.find(" ") != std::string::npos) {
-                    VCmdLine::print(ErrorMessage("E: Unknown option: " + key)) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
                     return ;
                 }
 
@@ -106,12 +106,12 @@ namespace vind
                         break ;
                 }
 
-                VCmdLine::print(ErrorMessage(ss.str())) ;
+                opt::VCmdLine::print(opt::ErrorMessage(ss.str())) ;
                 return ;
             }
 
             if(key.find(" ") != std::string::npos) {
-                VCmdLine::print(ErrorMessage("E: Unknown option: " + key)) ;
+                opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
                 return ;
             }
             gparams::set(key, flag_value) ;

@@ -244,7 +244,7 @@ namespace vind
     bool reconstruct_all_components() noexcept {
         try {
             logmap::load_config() ;
-            optloader::reconstruct() ;
+            opt::reconstruct() ;
             mainloop::reconstruct() ;
             return true ;
         }
@@ -305,7 +305,7 @@ namespace vind
 
             Sleep(5) ;
 
-            optloader::call_active_funcs() ;
+            opt::call_active_funcs() ;
 
             keyabsorber::refresh_toggle_state() ;
 

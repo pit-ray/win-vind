@@ -30,7 +30,8 @@ namespace
                 continue ;
             }
             if(NTYPE_HEAD_NUM(result)) {
-                VCmdLine::print(StaticMessage(std::to_string(lgr.get_head_num()))) ;
+                opt::VCmdLine::print(
+                        opt::StaticMessage(std::to_string(lgr.get_head_num()))) ;
                 continue ;
             }
 
@@ -90,7 +91,8 @@ namespace
                 continue ;
             }
             if(NTYPE_HEAD_NUM(result)) {
-                VCmdLine::print(StaticMessage(std::to_string(lgr.get_head_num()))) ;
+                opt::VCmdLine::print(
+                        opt::StaticMessage(std::to_string(lgr.get_head_num()))) ;
                 parent_lgr.remove_from_back(1) ;
                 continue ;
             }
@@ -101,7 +103,7 @@ namespace
                     parser_1 = nullptr ;
                 }
                 else if(parser_1->is_accepted()) {
-                    VCmdLine::reset() ;
+                    opt::VCmdLine::reset() ;
                     parser_1->get_func()->process(parent_lgr) ;
                     return false ;
                 }

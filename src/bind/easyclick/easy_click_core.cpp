@@ -97,7 +97,7 @@ namespace vind
         pimpl->hints_.reserve(2048) ;
         pimpl->strhints_.reserve(2048) ;
 
-        AsyncUIACacheBuilder::register_properties(
+        opt::AsyncUIACacheBuilder::register_properties(
                 pimpl->scanner_.get_properties()) ;
     }
 
@@ -118,7 +118,7 @@ namespace vind
         }
 
         if(gparams::get_b("uiacachebuild")) {
-            auto root_elem = AsyncUIACacheBuilder::get_root_element(hwnd) ;
+            auto root_elem = opt::AsyncUIACacheBuilder::get_root_element(hwnd) ;
             pimpl->scanner_.scan(root_elem, pimpl->elements_) ;
         }
         else {

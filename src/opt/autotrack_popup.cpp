@@ -32,42 +32,45 @@ namespace
 
 namespace vind
 {
-    struct AutotrackPopup::Impl {
-        BOOL sysflag_ = FALSE ;
-    } ;
-
-    AutotrackPopup::AutotrackPopup()
-    : OptionCreator("autotrack_popup"),
-      pimpl(std::make_unique<Impl>())
+    namespace opt
     {
-        pimpl->sysflag_ = get_property() ;
-    }
+        struct AutotrackPopup::Impl {
+            BOOL sysflag_ = FALSE ;
+        } ;
 
-    AutotrackPopup::~AutotrackPopup() noexcept {
-        try {
-            if(get_property() != pimpl->sysflag_) {
-                set_property(pimpl->sysflag_) ;
+        AutotrackPopup::AutotrackPopup()
+        : OptionCreator("autotrack_popup"),
+          pimpl(std::make_unique<Impl>())
+        {
+            pimpl->sysflag_ = get_property() ;
+        }
+
+        AutotrackPopup::~AutotrackPopup() noexcept {
+            try {
+                if(get_property() != pimpl->sysflag_) {
+                    set_property(pimpl->sysflag_) ;
+                }
+            }
+            catch(const std::runtime_error& e) {
+                PRINT_ERROR(e.what()) ;
             }
         }
-        catch(const std::runtime_error& e) {
-            PRINT_ERROR(e.what()) ;
-        }
-    }
-    AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
-    AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
+        AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
+        AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
 
-    void AutotrackPopup::do_enable() const {
-        if(get_property() != TRUE) {
-            set_property(TRUE) ;
+        void AutotrackPopup::do_enable() const {
+            if(get_property() != TRUE) {
+                set_property(TRUE) ;
+            }
         }
-    }
 
-    void AutotrackPopup::do_disable() const {
-        if(get_property() != FALSE) {
-            set_property(FALSE) ;
+        void AutotrackPopup::do_disable() const {
+            if(get_property() != FALSE) {
+                set_property(FALSE) ;
+            }
         }
-    }
 
-    void AutotrackPopup::do_process() const {
+        void AutotrackPopup::do_process() const {
+        }
     }
 }

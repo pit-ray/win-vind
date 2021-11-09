@@ -10,39 +10,41 @@
 
 namespace vind
 {
-    class AsyncUIACacheBuilder : public OptionCreator<AsyncUIACacheBuilder>
+    namespace opt
     {
-    private:
-        void do_enable() const override ;
-        void do_disable() const override ;
-        void do_process() const override ;
+        class AsyncUIACacheBuilder : public OptionCreator<AsyncUIACacheBuilder> {
+        private:
+            void do_enable() const override ;
+            void do_disable() const override ;
+            void do_process() const override ;
 
-    public:
-        explicit AsyncUIACacheBuilder() ;
+        public:
+            explicit AsyncUIACacheBuilder() ;
 
-        static void register_property(PROPERTYID id) ;
+            static void register_property(PROPERTYID id) ;
 
-        template <typename T>
-        static inline auto register_properties(T&& ids) {
-            for(auto& id : ids) {
-                register_property(static_cast<PROPERTYID>(id)) ;
+            template <typename T>
+            static inline auto register_properties(T&& ids) {
+                for(auto& id : ids) {
+                    register_property(static_cast<PROPERTYID>(id)) ;
+                }
             }
-        }
 
-        template <typename T>
-        static inline auto register_properties(std::initializer_list<T>&& ids) {
-            for(auto& id : ids) {
-                register_property(static_cast<PROPERTYID>(id)) ;
+            template <typename T>
+            static inline auto register_properties(std::initializer_list<T>&& ids) {
+                for(auto& id : ids) {
+                    register_property(static_cast<PROPERTYID>(id)) ;
+                }
             }
-        }
 
-        template <typename ...Args>
-        static inline auto register_properties(Args&&... ids) {
-            return register_properties({ids...}) ;
-        }
+            template <typename ...Args>
+            static inline auto register_properties(Args&&... ids) {
+                return register_properties({ids...}) ;
+            }
 
-        static util::SmartElement get_root_element(HWND hwnd) ;
-    } ;
+            static util::SmartElement get_root_element(HWND hwnd) ;
+        } ;
+    }
 }
 
 #endif

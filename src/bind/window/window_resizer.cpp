@@ -171,13 +171,13 @@ namespace vind
         }
 
         void draw_mode_status(InnerMode mode) const {
-            static const std::unordered_map<InnerMode, StaticMessage> lc_msgs = {
+            static const std::unordered_map<InnerMode, opt::StaticMessage> lc_msgs = {
                 {InnerMode::RESIZE, "[Resize]... \"Esc\": OK, \"e\": Change mode"},
                 {InnerMode::MOVE,   "[Move]... \"Esc\": OK, \"e\": Change mode"},
                 {InnerMode::FOCUS,  "[Focus]... \"Esc\": OK, \"e\": Change mode"}
             } ;
 
-            VCmdLine::print(lc_msgs.at(mode)) ;
+            opt::VCmdLine::print(lc_msgs.at(mode)) ;
         }
 
         template <typename T>
@@ -277,7 +277,7 @@ namespace vind
 
         keyabsorber::release_virtually(KEYCODE_ESC) ;
         keyabsorber::release_virtually(KEYCODE_ENTER) ;
-        VCmdLine::reset() ;
+        opt::VCmdLine::reset() ;
     }
     void WindowResizer::sprocess(NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {

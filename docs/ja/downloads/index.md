@@ -20,7 +20,7 @@ $ choco install win-vind
 ```
 
 ### winget
-[winget](https://github.com/microsoft/winget-cli)もサポートされています。インストールするにはお好きなコマンドラインから次のコマンドを実行します。
+また、[winget](https://github.com/microsoft/winget-cli)を利用してインストールすることも可能です。インストールするにはお好きなコマンドラインから次のコマンドを実行します。
 ```sh
 $ winget install win-vind
 ```

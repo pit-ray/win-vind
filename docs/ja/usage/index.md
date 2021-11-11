@@ -17,7 +17,7 @@ disable_anchors: true
 
 ## インストール方法
 - お好みに合ったタイプの最新版を[Downlodsページ]({{ site.url }}/ja/downloads)からダウンロードし、インストールしてください。
-- インストールし、win-vind.exeを実行します。
+- その後、win-vind.exeを実行します。
 - タスクトレイにアイコンが表示されていれば適切に動作しています。
    <p align="center">
    <img src="{{ site.url }}/imgs/taskbar.jpg" width=500 >  

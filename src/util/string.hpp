@@ -18,6 +18,15 @@ namespace vind
                 const std::string& from,
                 const std::string& to) ;
 
+        // Extracts a number from a string.
+        // Its range is from the appearance of the number to a non-numeric character.
+        // Example:
+        //      std::string: hBah0784hlk503
+        //      -> std::stoi(0784)
+        //      uint: 784
+        //
+        unsigned int extract_num(const std::string& str) ;
+
         inline std::string tail(const std::string& str, std::size_t length) {
             if(length >= str.length()) {
                 return str ;

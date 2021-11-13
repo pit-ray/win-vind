@@ -19,7 +19,7 @@ namespace vind
 
         // return : matched index
         long validate_if_match_with_hints(
-                const KeyLoggerBase& lgr,
+                const core::KeyLoggerBase& lgr,
                 const std::vector<Hint>& hints) {
 
             std::lock_guard<std::mutex> socoped_lock{mtx_} ;
@@ -82,24 +82,24 @@ namespace vind
         pimpl->drawable_hints_num_ = positions.size() ;
         pimpl->cancel_running_ = false ;
 
-        keyabsorber::InstantKeyAbsorber ika ;
-        CharLogger lgr{
+        core::InstantKeyAbsorber ika ;
+        core::CharLogger lgr{
             KEYCODE_ESC,
             KEYCODE_BKSPACE
         };
 
-        while(vind::update_background() && !(pimpl->cancel_running_)) {
+        while(core::update_background() && !(pimpl->cancel_running_)) {
             if(!CHAR_LOGGED(lgr.logging_state())) {
                 continue ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_ESC)) {
-                keyabsorber::release_virtually(KEYCODE_ESC) ;
+                core::release_virtually(KEYCODE_ESC) ;
                 return nullptr ;
             }
 
             if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
-                keyabsorber::release_virtually(KEYCODE_BKSPACE) ;
+                core::release_virtually(KEYCODE_BKSPACE) ;
                 if(lgr.size() == 1) {
                     return nullptr ;
                 }

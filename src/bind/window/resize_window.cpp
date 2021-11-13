@@ -9,6 +9,7 @@
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/string.hpp"
 
 namespace
 {
@@ -105,15 +106,15 @@ namespace vind
         windowutil::ForegroundInfo fginfo ;
         resize_in_monitor_width(width, fginfo) ;
     }
-    void ResizeWindowWidth::sprocess(NTypeLogger& parent_lgr) {
+    void ResizeWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ResizeWindowWidth::sprocess(const CharLogger& parent_lgr) {
+    void ResizeWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
-        sprocess(keyloggerutil::extract_num(str)) ;
+        sprocess(util::extract_num(str)) ;
     }
 
 
@@ -128,13 +129,13 @@ namespace vind
         auto width = fginfo.rect.width() + delta ;
         resize_in_monitor_width(width, fginfo) ;
     }
-    void IncreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
+    void IncreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(gparams::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+            sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
         }
     }
-    void IncreaseWindowWidth::sprocess(const CharLogger& parent_lgr) {
-        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
+    void IncreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
+        sprocess(util::extract_num(parent_lgr.to_str())) ;
     }
 
 
@@ -157,13 +158,13 @@ namespace vind
                 fginfo.rect.left(), fginfo.rect.top(),
                 width, fginfo.rect.height()) ;
     }
-    void DecreaseWindowWidth::sprocess(NTypeLogger& parent_lgr) {
+    void DecreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(gparams::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+            sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
         }
     }
-    void DecreaseWindowWidth::sprocess(const CharLogger& parent_lgr) {
-        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
+    void DecreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
+        sprocess(util::extract_num(parent_lgr.to_str())) ;
     }
 
 
@@ -176,15 +177,15 @@ namespace vind
         windowutil::ForegroundInfo fginfo ;
         resize_in_monitor_height(height, fginfo) ;
     }
-    void ResizeWindowHeight::sprocess(NTypeLogger& parent_lgr) {
+    void ResizeWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ResizeWindowHeight::sprocess(const CharLogger& parent_lgr) {
+    void ResizeWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
-        sprocess(keyloggerutil::extract_num(str)) ;
+        sprocess(util::extract_num(str)) ;
     }
 
 
@@ -199,13 +200,13 @@ namespace vind
         auto height = fginfo.rect.height() + delta ;
         resize_in_monitor_height(height, fginfo) ;
     }
-    void IncreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
+    void IncreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(gparams::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
+            sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
         }
     }
-    void IncreaseWindowHeight::sprocess(const CharLogger& parent_lgr) {
-        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
+    void IncreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
+        sprocess(util::extract_num(parent_lgr.to_str())) ;
     }
 
 
@@ -229,12 +230,12 @@ namespace vind
                 fginfo.rect.left(), fginfo.rect.top(),
                 fginfo.rect.width(), height) ;
     }
-    void DecreaseWindowHeight::sprocess(NTypeLogger& parent_lgr) {
+    void DecreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
-            sprocess(gparams::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
+            sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
         }
     }
-    void DecreaseWindowHeight::sprocess(const CharLogger& parent_lgr) {
-        sprocess(keyloggerutil::extract_num(parent_lgr.to_str())) ;
+    void DecreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
+        sprocess(util::extract_num(parent_lgr.to_str())) ;
     }
 }

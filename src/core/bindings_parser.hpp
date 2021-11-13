@@ -9,7 +9,7 @@
 
 namespace vind
 {
-    namespace bindparser
+    namespace core
     {
         //
         // It parses a ascii, which consist of a character, as keyset class.
@@ -64,7 +64,7 @@ namespace vind
         //
         // If Failed, return Mode::None.
         //
-        mode::Mode parse_string_modecode(
+        Mode parse_string_modecode(
                 const std::string& modestr,
                 std::string root=MAP_DEFINE_KEYWORD_IN_JSON) ;
 

@@ -47,16 +47,16 @@ namespace vind
 
         void VCmdLine::do_enable() const {
             pimpl->dtp_.set_font(
-                    gparams::get_l("cmd_fontsize"),
-                    gparams::get_l("cmd_fontweight"),
-                    gparams::get_s("cmd_fontname")) ;
+                    core::get_l("cmd_fontsize"),
+                    core::get_l("cmd_fontweight"),
+                    core::get_s("cmd_fontname")) ;
 
-            pimpl->dtp_.set_text_color(gparams::get_s("cmd_fontcolor")) ;
-            pimpl->dtp_.set_back_color(gparams::get_s("cmd_bgcolor")) ;
+            pimpl->dtp_.set_text_color(core::get_s("cmd_fontcolor")) ;
+            pimpl->dtp_.set_back_color(core::get_s("cmd_bgcolor")) ;
 
-            auto pos = gparams::get_s("cmd_roughpos") ;
-            auto xma = gparams::get_i("cmd_xmargin") ;
-            auto yma = gparams::get_i("cmd_ymargin") ;
+            auto pos = core::get_s("cmd_roughpos") ;
+            auto xma = core::get_i("cmd_xmargin") ;
+            auto yma = core::get_i("cmd_ymargin") ;
 
             auto rect = util::get_primary_metrics() ;
 
@@ -77,7 +77,7 @@ namespace vind
                 {"LowerRight", {w - xma - midxbuf,  h - yma}}
             } ;
             try {
-                const auto& p = pos_list.at(gparams::get_s("cmd_roughpos")) ;
+                const auto& p = pos_list.at(core::get_s("cmd_roughpos")) ;
                 pimpl->x_ = p.first ;
                 pimpl->y_ = p.second ;
             }
@@ -85,12 +85,12 @@ namespace vind
                 const auto& p = pos_list.at("LowerMid") ;
                 pimpl->x_ = p.first ;
                 pimpl->y_ = p.second ;
-                PRINT_ERROR(std::string(e.what()) + "in " + path::SETTINGS().u8string() + \
-                        ", " + gparams::get_s("cmd_roughpos") + "is invalid syntax.") ;
+                PRINT_ERROR(std::string(e.what()) + "in " + core::SETTINGS().u8string() + \
+                        ", " + core::get_s("cmd_roughpos") + "is invalid syntax.") ;
             }
 
-            pimpl->extra_ = gparams::get_i("cmd_fontextra") ;
-            pimpl->fadeout_time_ = std::chrono::seconds(gparams::get_i("cmd_fadeout")) ;
+            pimpl->extra_ = core::get_i("cmd_fontextra") ;
+            pimpl->fadeout_time_ = std::chrono::seconds(core::get_i("cmd_fadeout")) ;
         }
 
         void VCmdLine::do_disable() const {

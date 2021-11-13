@@ -37,36 +37,39 @@ SOFTWARE.
 
 namespace vind
 {
-    //
-    // This file defines packaged functions.
-    //
-    // Example:
-    // int main() {
-    //     vind::initialize() ;
-    //
-    //     while(vind::update()) ;
-    //
-    //     return 0 ;
-    // }
-    //
+    namespace core
+    {
+        //
+        // This file defines packaged functions.
+        //
+        // Example:
+        // int main() {
+        //     vind::core::initialize() ;
+        //
+        //     while(vind::core::update()) ;
+        //
+        //     return 0 ;
+        // }
+        //
 
-    bool initialize(const std::string& func_name="") noexcept ;
+        bool initialize(const std::string& func_name="") noexcept ;
 
-    // It load all config and reload them.
-    bool load_config() noexcept ;
+        // It load all config and reload them.
+        bool load_config() noexcept ;
 
-    // It apply settings of all components from kernel configs. 
-    bool reconstruct_all_components() noexcept ;
+        // It apply settings of all components from kernel configs. 
+        bool reconstruct_all_components() noexcept ;
 
-    // It updates a main loop once with update_background().
-    bool update() noexcept ;
+        // It updates a main loop once with update_background().
+        bool update() noexcept ;
 
-    // If you make some loop functions, the function is needed to call.
-    // It includes Sleep().
-    bool update_background() noexcept ;
+        // If you make some loop functions, the function is needed to call.
+        // It includes Sleep().
+        bool update_background() noexcept ;
 
-    void register_show_window_func(std::function<void()> func) noexcept ;
-    void register_exit_window_func(std::function<void()> func) noexcept ;
+        void register_show_window_func(std::function<void()> func) noexcept ;
+        void register_exit_window_func(std::function<void()> func) noexcept ;
+    }
 }
 
 #endif

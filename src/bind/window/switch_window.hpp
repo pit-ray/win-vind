@@ -14,8 +14,8 @@ namespace vind
         explicit SwitchWindow() ;
 
         void sprocess() const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         virtual ~SwitchWindow() noexcept ;
         SwitchWindow(SwitchWindow&&) ;

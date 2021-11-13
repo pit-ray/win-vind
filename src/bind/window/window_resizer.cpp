@@ -9,8 +9,8 @@
 #include "window_utility.hpp"
 
 #include "bind/emu/edi_move_caret.hpp"
-#include "bind/func_finder.hpp"
 #include "core/entry.hpp"
+#include "core/func_finder.hpp"
 #include "core/g_params.hpp"
 #include "core/key_absorber.hpp"
 #include "core/ntype_logger.hpp"
@@ -34,7 +34,7 @@ namespace
 namespace vind
 {
     struct WindowResizer::Impl {
-        FuncFinder funcfinder_ ;
+        core::FuncFinder funcfinder_ ;
 
         std::size_t left_id_ ;
         std::size_t right_id_ ;
@@ -64,16 +64,16 @@ namespace vind
             }
 
             if(id == left_id_) {
-                DecreaseWindowWidth::sprocess(gparams::get_l("window_hdelta")) ;
+                DecreaseWindowWidth::sprocess(core::get_l("window_hdelta")) ;
             }
             else if(id == right_id_) {
-                IncreaseWindowWidth::sprocess(gparams::get_l("window_hdelta")) ;
+                IncreaseWindowWidth::sprocess(core::get_l("window_hdelta")) ;
             }
             else if(id == up_id_) {
-                DecreaseWindowHeight::sprocess(gparams::get_l("window_vdelta")) ;
+                DecreaseWindowHeight::sprocess(core::get_l("window_vdelta")) ;
             }
             else if(id == down_id_) {
-                IncreaseWindowHeight::sprocess(gparams::get_l("window_vdelta")) ;
+                IncreaseWindowHeight::sprocess(core::get_l("window_vdelta")) ;
             }
         }
 
@@ -198,26 +198,26 @@ namespace vind
 
     void WindowResizer::reconstruct() {
         pimpl->funcfinder_.reconstruct_funcset() ;
-        pimpl->ca_.set_acceleration(gparams::get_f("window_accel")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("window_maxv")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("window_tweight")) ;
+        pimpl->ca_.set_acceleration(core::get_f("window_accel")) ;
+        pimpl->ca_.set_max_velocity(core::get_f("window_maxv")) ;
+        pimpl->ca_.set_time_weight(core::get_i("window_tweight")) ;
     }
 
     void WindowResizer::sprocess() const {
-        constexpr auto lcx_vmode = mode::Mode::EDI_NORMAL ;
+        constexpr auto lcx_vmode = core::Mode::EDI_NORMAL ;
 
-        keyabsorber::InstantKeyAbsorber ika ;
+        core::InstantKeyAbsorber ika ;
 
         pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 
-        NTypeLogger lgr ;
+        core::NTypeLogger lgr ;
 
-        auto inmode = Impl::cvt_modulo(gparams::get_i("winresizer_initmode")) ;
+        auto inmode = Impl::cvt_modulo(core::get_i("winresizer_initmode")) ;
 
         pimpl->draw_mode_status(inmode) ;
 
         std::size_t actid = 0 ;
-        while(vind::update_background()) {
+        while(core::update_background()) {
             if(!NTYPE_LOGGED(lgr.logging_state())) {
                 continue ;
             }
@@ -275,16 +275,16 @@ namespace vind
             }
         }
 
-        keyabsorber::release_virtually(KEYCODE_ESC) ;
-        keyabsorber::release_virtually(KEYCODE_ENTER) ;
+        core::release_virtually(KEYCODE_ESC) ;
+        core::release_virtually(KEYCODE_ENTER) ;
         opt::VCmdLine::reset() ;
     }
-    void WindowResizer::sprocess(NTypeLogger& parent_lgr) const {
+    void WindowResizer::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void WindowResizer::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void WindowResizer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 }

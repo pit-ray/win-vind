@@ -89,9 +89,9 @@ namespace
 
 namespace vind
 {
-    namespace errlogger {
-        void initialize() {
-            auto log_dir = path::ROOT_PATH() / "log" ;
+    namespace core {
+        void initialize_logger() {
+            auto log_dir = core::ROOT_PATH() / "log" ;
 
             SYSTEMTIME stime ;
             GetLocalTime(&stime) ;

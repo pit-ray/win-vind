@@ -9,8 +9,8 @@ namespace vind
     struct DeleteHighlightText : public BindedFuncCreator<DeleteHighlightText> {
         explicit DeleteHighlightText() ;
         static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     class DeleteLine : public BindedFuncCreator<DeleteLine> {
@@ -20,8 +20,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit DeleteLine() ;
         virtual ~DeleteLine() noexcept ;
@@ -44,8 +44,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit DeleteLineUntilEOL() ;
         virtual ~DeleteLineUntilEOL() noexcept ;
@@ -67,8 +67,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit DeleteAfter() ;
         virtual ~DeleteAfter() noexcept ;
@@ -90,8 +90,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit DeleteBefore() ;
         virtual ~DeleteBefore() noexcept ;

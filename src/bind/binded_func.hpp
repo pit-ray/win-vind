@@ -8,8 +8,11 @@
 
 namespace vind
 {
-    class NTypeLogger ;
-    class CharLogger ;
+    namespace core
+    {
+        class NTypeLogger ;
+        class CharLogger ;
+    }
 
     class BindedFunc {
     private:
@@ -19,8 +22,8 @@ namespace vind
         virtual void error_process(const std::exception& e) const ;
 
         virtual void do_process() const = 0 ;
-        virtual void do_process(NTypeLogger& parent_lgr) const = 0 ;
-        virtual void do_process(const CharLogger& parent_lgr) const = 0 ;
+        virtual void do_process(core::NTypeLogger& parent_lgr) const = 0 ;
+        virtual void do_process(const core::CharLogger& parent_lgr) const = 0 ;
 
     public:
         using SPtr = std::shared_ptr<BindedFunc> ;
@@ -46,8 +49,8 @@ namespace vind
         }
 
         void process() const ;
-        void process(NTypeLogger& parent_lgr) const ;
-        void process(const CharLogger& parent_lgr) const ;
+        void process(core::NTypeLogger& parent_lgr) const ;
+        void process(const core::CharLogger& parent_lgr) const ;
 
         virtual bool is_for_moving_caret() const noexcept ;
         virtual bool is_for_changing_text() const noexcept ;

@@ -18,7 +18,7 @@ namespace vind
     using ParsedStringCmd = std::vector<std::string> ;
 
     template <typename T>
-    using ModeArray = std::array<T, mode::mode_num()> ;
+    using ModeArray = std::array<T, core::mode_num()> ;
 
     template <typename T>
     using FuncMap = std::unordered_map<std::string, T> ;

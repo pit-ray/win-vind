@@ -7,8 +7,8 @@
 
 namespace vind
 {
-    namespace gmaps {
-
+    namespace core 
+    {
         enum class MapType : unsigned char {
             UNDEFINED           = 0b0000'0000,
             MAP                 = 0b0001'0000,
@@ -47,31 +47,31 @@ namespace vind
         } ;
 
 
-        void initialize() ;
-        void reset() ;
+        void initialize_maps() ;
+        void reset_all_maps() ;
 
-        void map(
+        void do_map(
                 const std::string& incmd,
                 const std::string& outcmd,
-                mode::Mode mode) ;
+                Mode mode) ;
 
-        void noremap(
+        void do_noremap(
                 const std::string& incmd,
                 const std::string& outcmd,
-                mode::Mode mode) ;
+                Mode mode) ;
 
-        void unmap(
+        void do_unmap(
                 const std::string& incmd,
-                mode::Mode mode) ;
+                Mode mode) ;
 
-        void mapclear(mode::Mode mode) ;
+        void do_mapclear(Mode mode) ;
 
         UniqueMap get_map(
                 const std::string& cmd,
-                mode::Mode mode) ;
+                Mode mode) ;
 
         void get_maps(
-                mode::Mode mode,
+                Mode mode,
                 std::vector<UniqueMap>& returns) ;
     }
 }

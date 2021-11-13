@@ -18,12 +18,12 @@ namespace vind
         util::click(KEYCODE_MOUSE_LEFT) ;
         util::pushup(KEYCODE_LCTRL, KEYCODE_A) ;
     }
-    void SelectAll::sprocess(NTypeLogger& parent_lgr) {
+    void SelectAll::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SelectAll::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SelectAll::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -37,12 +37,12 @@ namespace vind
             util::pushup(KEYCODE_TAB) ;
         }) ;
     }
-    void ForwardUINavigation::sprocess(NTypeLogger& parent_lgr) {
+    void ForwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void ForwardUINavigation::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ForwardUINavigation::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -56,12 +56,12 @@ namespace vind
             util::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
         }) ;
     }
-    void BackwardUINavigation::sprocess(NTypeLogger& parent_lgr) {
+    void BackwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void BackwardUINavigation::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void BackwardUINavigation::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -73,12 +73,12 @@ namespace vind
     void DecideFocusedUIObject::sprocess() {
         util::pushup(KEYCODE_SPACE) ;
     }
-    void DecideFocusedUIObject::sprocess(NTypeLogger& parent_lgr) {
+    void DecideFocusedUIObject::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void DecideFocusedUIObject::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void DecideFocusedUIObject::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

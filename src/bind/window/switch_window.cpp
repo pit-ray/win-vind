@@ -4,9 +4,9 @@
 #include <windows.h>
 
 #include "bind/emu/edi_move_caret.hpp"
-#include "bind/func_finder.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "core/entry.hpp"
+#include "core/func_finder.hpp"
 #include "core/key_absorber.hpp"
 #include "core/key_logger_base.hpp"
 #include "core/mode.hpp"
@@ -18,7 +18,7 @@
 namespace vind
 {
     struct SwitchWindow::Impl {
-        FuncFinder funcfinder_ ;
+        core::FuncFinder funcfinder_ ;
         std::size_t left_id_ ;
         std::size_t right_id_ ;
         util::KeyStrokeRepeater ksr_ ;
@@ -58,21 +58,21 @@ namespace vind
     }
 
     void SwitchWindow::sprocess() const {
-        keyabsorber::InstantKeyAbsorber ika ;
+        core::InstantKeyAbsorber ika ;
 
         util::ScopedKey alt(KEYCODE_LALT) ;
         alt.press() ;
-        keyabsorber::release_virtually(KEYCODE_LALT) ;
+        core::release_virtually(KEYCODE_LALT) ;
 
         util::pushup(KEYCODE_TAB) ;
 
-        constexpr auto lcx_vmode = mode::Mode::EDI_NORMAL ;
+        constexpr auto lcx_vmode = core::Mode::EDI_NORMAL ;
 
         pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 
-        NTypeLogger lgr ;
+        core::NTypeLogger lgr ;
         std::size_t actid = 0 ;
-        while(vind::update_background()) {
+        while(core::update_background()) {
             if(!NTYPE_LOGGED(lgr.logging_state())) {
                 continue ;
             }
@@ -125,8 +125,8 @@ namespace vind
             }
         }
 
-        keyabsorber::release_virtually(KEYCODE_ESC) ;
-        keyabsorber::release_virtually(KEYCODE_ENTER) ;
+        core::release_virtually(KEYCODE_ESC) ;
+        core::release_virtually(KEYCODE_ENTER) ;
 
         alt.release() ;
 
@@ -134,12 +134,12 @@ namespace vind
         Sleep(50) ; //send select-message to OS(wait)
         JumpToActiveWindow::sprocess() ;
     }
-    void SwitchWindow::sprocess(NTypeLogger& parent_lgr) const {
+    void SwitchWindow::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SwitchWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void SwitchWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 }

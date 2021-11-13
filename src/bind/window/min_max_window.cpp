@@ -18,12 +18,12 @@ namespace vind
             util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
         }) ;
     }
-    void MinimizeCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+    void MinimizeCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void MinimizeCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void MinimizeCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -64,12 +64,12 @@ namespace vind
             }) ;
         }
     }
-    void MaximizeCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+    void MaximizeCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void MaximizeCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void MaximizeCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

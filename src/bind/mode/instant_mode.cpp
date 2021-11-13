@@ -1,8 +1,8 @@
 #include "instant_mode.hpp"
 
 #include "bind/binded_func.hpp"
-#include "bind/func_finder.hpp"
 #include "core/entry.hpp"
+#include "core/func_finder.hpp"
 #include "core/key_absorber.hpp"
 #include "core/key_logger_base.hpp"
 #include "core/mode.hpp"
@@ -17,7 +17,7 @@
 namespace vind
 {
     struct ToInstantGUINormal::Impl {
-        FuncFinder finder_{} ;
+        core::FuncFinder finder_{} ;
     } ;
 
     ToInstantGUINormal::ToInstantGUINormal()
@@ -30,17 +30,17 @@ namespace vind
 
 
     void ToInstantGUINormal::sprocess() const {
-        keyabsorber::close_all_ports_with_refresh() ;
+        core::close_all_ports_with_refresh() ;
 
-        keyabsorber::InstantKeyAbsorber isa{} ;
+        core::InstantKeyAbsorber isa{} ;
 
         opt::VCmdLine::print(opt::GeneralMessage("-- Instant GUI Normal --")) ;
 
-        constexpr auto lcx_vmode = mode::Mode::GUI_NORMAL ;
+        constexpr auto lcx_vmode = core::Mode::GUI_NORMAL ;
 
         pimpl->finder_.reset_parser_states(lcx_vmode) ;
-        NTypeLogger lgr ;
-        while(vind::update_background()) {
+        core::NTypeLogger lgr ;
+        while(core::update_background()) {
             auto result = lgr.logging_state() ;
             if(NTYPE_EMPTY(result)) {
                 continue ;
@@ -72,13 +72,13 @@ namespace vind
         opt::VCmdLine::reset() ;
     }
 
-    void ToInstantGUINormal::sprocess(NTypeLogger& parent) const {
+    void ToInstantGUINormal::sprocess(core::NTypeLogger& parent) const {
         if(!parent.is_long_pressing()) {
             sprocess() ;
         }
     }
 
-    void ToInstantGUINormal::sprocess(const CharLogger& UNUSED(parent)) const {
+    void ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) const {
         sprocess() ;
     }
 

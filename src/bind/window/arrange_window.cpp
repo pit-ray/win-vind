@@ -185,17 +185,17 @@ namespace vind
             throw RUNTIME_EXCEPT("Could not set the foreground window.") ;
         }
     }
-    void ArrangeWindows::sprocess(NTypeLogger& parent_lgr) {
+    void ArrangeWindows::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ArrangeWindows::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ArrangeWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
     void ArrangeWindows::reconstruct() {
         g_ignores.clear() ;
-        auto str = gparams::get_s("arrangewin_ignore") ;
+        auto str = core::get_s("arrangewin_ignore") ;
 
         auto modules = util::split(str, ",") ;
         for(auto& m : modules) {

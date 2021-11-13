@@ -126,12 +126,12 @@ namespace vind
             }) ;
         }) ;
     }
-    void RotateWindows::sprocess(NTypeLogger& parent_lgr) {
+    void RotateWindows::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void RotateWindows::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void RotateWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -157,12 +157,12 @@ namespace vind
             }) ;
         }) ;
     }
-    void RotateWindowsInReverse::sprocess(NTypeLogger& parent_lgr) {
+    void RotateWindowsInReverse::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void RotateWindowsInReverse::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void RotateWindowsInReverse::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 }

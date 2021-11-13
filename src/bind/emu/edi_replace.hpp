@@ -8,8 +8,8 @@ namespace vind
     struct ReplaceChar : public BindedFuncCreator<ReplaceChar> {
         explicit ReplaceChar() ;
         static void sprocess(unsigned int repeat_num=1) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
 
         bool is_for_changing_text() const noexcept override {
             return true ;
@@ -19,8 +19,8 @@ namespace vind
     struct ReplaceSequence : public BindedFuncCreator<ReplaceSequence> {
         explicit ReplaceSequence() ;
         static void sprocess(unsigned int repeat_num=1) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
 
         bool is_for_changing_text() const noexcept override {
             return true ;
@@ -30,8 +30,8 @@ namespace vind
     struct SwitchCharCase : public BindedFuncCreator<SwitchCharCase> {
         explicit SwitchCharCase() ;
         static void sprocess(unsigned int repeat_num=1) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
 
         bool is_for_changing_text() const noexcept override {
             return true ;

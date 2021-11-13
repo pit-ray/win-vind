@@ -11,8 +11,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollUp() ;
         virtual ~ScrollUp() noexcept ;
@@ -31,8 +31,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollDown() ;
         virtual ~ScrollDown() noexcept ;
@@ -51,8 +51,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollUpHalfPage() ;
         virtual ~ScrollUpHalfPage() noexcept ;
@@ -71,8 +71,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollDownHalfPage() ;
         virtual ~ScrollDownHalfPage() noexcept ;
@@ -91,8 +91,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollUpOnePage() ;
         virtual ~ScrollUpOnePage() noexcept ;
@@ -112,8 +112,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollDownOnePage() ;
         virtual ~ScrollDownOnePage() noexcept ;
@@ -132,8 +132,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollLeft() ;
         virtual ~ScrollLeft() noexcept ;
@@ -152,8 +152,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollRight() ;
         virtual ~ScrollRight() noexcept ;
@@ -172,8 +172,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollLeftHalfPage() ;
         virtual ~ScrollLeftHalfPage() noexcept ;
@@ -192,8 +192,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit ScrollRightHalfPage() ;
         virtual ~ScrollRightHalfPage() noexcept ;

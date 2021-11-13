@@ -42,12 +42,12 @@ namespace vind
                 fginfo.rect.left(), fginfo.rect.top() + h / 2,
                 w, h / 2) ;
     }
-    void OpenNewWindowWithHorizontalSplit::sprocess(NTypeLogger& parent_lgr) {
+    void OpenNewWindowWithHorizontalSplit::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenNewWindowWithHorizontalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenNewWindowWithHorizontalSplit::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -84,12 +84,12 @@ namespace vind
                 fginfo.rect.left() + w / 2, fginfo.rect.top(),
                 w / 2, h) ;
     }
-    void OpenNewWindowWithVerticalSplit::sprocess(NTypeLogger& parent_lgr) {
+    void OpenNewWindowWithVerticalSplit::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenNewWindowWithVerticalSplit::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenNewWindowWithVerticalSplit::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

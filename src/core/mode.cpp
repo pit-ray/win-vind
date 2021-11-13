@@ -7,7 +7,7 @@
 
 namespace
 {
-    using namespace vind::mode ;
+    using namespace vind::core ;
     const auto g_mode_prefix = [] {
         std::array<std::string, mode_num()> tmp ;
         tmp[static_cast<int>(Mode::INSERT)]     = "i" ;
@@ -27,7 +27,7 @@ namespace
 
 namespace vind
 {
-    namespace mode
+    namespace core
     {
         void set_global_mode(Mode mode, ModeFlags flags) noexcept {
             g_mode = mode ;
@@ -37,15 +37,15 @@ namespace vind
         Mode get_global_mode() noexcept {
             return g_mode ;
         }
-        ModeFlags get_global_flags() noexcept {
+        ModeFlags get_global_mode_flags() noexcept {
             return g_flags ;
         }
 
-        std::string to_prefix(Mode mode) noexcept {
+        std::string mode_to_prefix(Mode mode) noexcept {
             return g_mode_prefix[static_cast<int>(mode)] ;
         }
 
-        Mode parse_prefix(const std::string& prefix) noexcept {
+        Mode parse_mode_prefix(const std::string& prefix) noexcept {
             static auto obj = [] {
                 std::unordered_map<std::string, Mode> um ;
                 for(std::size_t i = 0 ; i < mode_num() ; i ++) {
@@ -62,7 +62,7 @@ namespace vind
             }
         }
 
-        const std::string& to_name(Mode mode) noexcept {
+        const std::string& mode_to_name(Mode mode) noexcept {
             static const std::unordered_map<Mode, std::string> obj {
                 {Mode::INSERT,       "Insert"},
                 {Mode::GUI_NORMAL,   "GUI Normal"},

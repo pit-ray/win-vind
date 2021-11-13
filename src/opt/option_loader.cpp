@@ -37,7 +37,7 @@ namespace vind
         void reconstruct()
         {
             for(const auto& op : g_vpop) {
-                if(gparams::get_b(op->name())) {
+                if(core::get_b(op->name())) {
                     op->enable() ;
                 }
                 else {

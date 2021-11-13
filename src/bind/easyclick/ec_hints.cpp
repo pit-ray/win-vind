@@ -97,7 +97,7 @@ namespace vind
         for(std::size_t i = 0 ; i < hints.size() ; i ++) {
             std::string str ;
             for(auto& key : hints[i]) {
-                str.push_back(keycodecvt::get_shifted_ascii(key)) ;
+                str.push_back(core::get_shifted_ascii(key)) ;
             }
             hint_strings[i] = std::move(str) ;
         }

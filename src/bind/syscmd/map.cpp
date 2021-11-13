@@ -28,7 +28,7 @@ namespace
             return false ;
         }
 
-        auto [a1, a2] = rcparser::extract_double_args(std::forward<T>(args)) ;
+        auto [a1, a2] = core::extract_double_args(std::forward<T>(args)) ;
         if(a1.empty()) {
             opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of map yet")) ;
             return false ;
@@ -46,20 +46,20 @@ namespace
 
     template <typename T>
     inline bool parse_arguments_from_logger(
-            const CharLogger& lgr,
+            const core::CharLogger& lgr,
             T&& after_prefix,
-            mode::Mode& return_mode,
+            core::Mode& return_mode,
             std::string& return_args) {
         auto str = lgr.to_str() ;
         if(str.empty()) {
             throw RUNTIME_EXCEPT("Empty command") ;
         }
 
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
-        auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, after_prefix) ;
+        auto [cmd, args] = core::divide_cmd_and_args(str) ;
+        auto [prefix, _] = core::divide_prefix_and_cmd(cmd, after_prefix) ;
 
-        auto mode = mode::parse_prefix(prefix) ;
-        if(mode == mode::Mode::UNDEFINED) {
+        auto mode = core::parse_mode_prefix(prefix) ;
+        if(mode == core::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
             opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
             return false ;
@@ -79,24 +79,24 @@ namespace vind
     : BindedFuncCreator("system_command_map")
     {}
     void SyscmdMap::sprocess(
-            const mode::Mode mode,
+            const core::Mode mode,
             const std::string& args,
             bool reload_config) {
 
         std::string arg1, arg2 ;
         if(parse_argument_as_map(args, arg1, arg2)) {
-            gmaps::map(arg1, arg2, mode) ;
+            core::do_map(arg1, arg2, mode) ;
             if(reload_config) {
-                vind::reconstruct_all_components() ;
+                core::reconstruct_all_components() ;
             }
         }
     }
-    void SyscmdMap::sprocess(NTypeLogger&) {
+    void SyscmdMap::sprocess(core::NTypeLogger&) {
         return ;
     }
-    void SyscmdMap::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdMap::sprocess(const core::CharLogger& parent_lgr) {
         try {
-            mode::Mode mode ;
+            core::Mode mode ;
             std::string args ;
             if(parse_arguments_from_logger(parent_lgr, "m", mode, args)) {
                 sprocess(mode, args, true) ;
@@ -115,24 +115,24 @@ namespace vind
     : BindedFuncCreator("system_command_noremap")
     {}
     void SyscmdNoremap::sprocess(
-            const mode::Mode mode,
+            const core::Mode mode,
             const std::string& args,
             bool reload_config) {
 
         std::string arg1, arg2 ;
         if(parse_argument_as_map(args, arg1, arg2)) {
-            gmaps::noremap(arg1, arg2, mode) ;
+            core::do_noremap(arg1, arg2, mode) ;
             if(reload_config) {
-                vind::reconstruct_all_components() ;
+                core::reconstruct_all_components() ;
             }
         }
     }
-    void SyscmdNoremap::sprocess(NTypeLogger&) {
+    void SyscmdNoremap::sprocess(core::NTypeLogger&) {
         return ;
     }
-    void SyscmdNoremap::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdNoremap::sprocess(const core::CharLogger& parent_lgr) {
         try {
-            mode::Mode mode ;
+            core::Mode mode ;
             std::string args ;
             if(parse_arguments_from_logger(parent_lgr, "n", mode, args)) {
                 sprocess(mode, args, true) ;
@@ -152,7 +152,7 @@ namespace vind
     {}
 
     void SyscmdUnmap::sprocess(
-            mode::Mode mode,
+            core::Mode mode,
             const std::string& args,
             bool reload_config) {
         if(args.empty()) {
@@ -161,30 +161,30 @@ namespace vind
             return ;
         }
 
-        auto arg = rcparser::extract_single_arg(args) ;
+        auto arg = core::extract_single_arg(args) ;
         if(arg.empty()) {
             opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             return ;
         }
-        gmaps::unmap(arg, mode) ;
+        core::do_unmap(arg, mode) ;
 
         if(reload_config) {
-            vind::reconstruct_all_components() ;
+            core::reconstruct_all_components() ;
         }
     }
-    void SyscmdUnmap::sprocess(NTypeLogger&) {
+    void SyscmdUnmap::sprocess(core::NTypeLogger&) {
     }
-    void SyscmdUnmap::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdUnmap::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) {
             throw RUNTIME_EXCEPT("Empty command") ;
         }
 
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
-        auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, "u") ;
+        auto [cmd, args] = core::divide_cmd_and_args(str) ;
+        auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "u") ;
 
-        auto mode = mode::parse_prefix(prefix) ;
-        if(mode == mode::Mode::UNDEFINED) {
+        auto mode = core::parse_mode_prefix(prefix) ;
+        if(mode == core::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
             opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
             return ;
@@ -198,31 +198,31 @@ namespace vind
     {}
 
     void SyscmdMapclear::sprocess(
-            mode::Mode mode,
+            core::Mode mode,
             bool reload_config) {
 
-        gmaps::mapclear(mode) ;
+        core::do_mapclear(mode) ;
         if(reload_config) {
-            vind::reconstruct_all_components() ;
+            core::reconstruct_all_components() ;
         }
     }
-    void SyscmdMapclear::sprocess(NTypeLogger&) {
+    void SyscmdMapclear::sprocess(core::NTypeLogger&) {
     }
-    void SyscmdMapclear::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdMapclear::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) {
             throw RUNTIME_EXCEPT("Empty command") ;
         }
 
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+        auto [cmd, args] = core::divide_cmd_and_args(str) ;
         if(!args.empty()) {
             opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             return ;
         }
 
-        auto [prefix, _] = rcparser::divide_prefix_and_cmd(cmd, "m") ;
-        auto mode = mode::parse_prefix(prefix) ;
-        if(mode == mode::Mode::UNDEFINED) {
+        auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
+        auto mode = core::parse_mode_prefix(prefix) ;
+        if(mode == core::Mode::UNDEFINED) {
             PRINT_ERROR(str + " is Invalid mode prefix.") ;
             opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
             return ;

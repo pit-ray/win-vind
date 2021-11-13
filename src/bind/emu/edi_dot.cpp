@@ -25,7 +25,7 @@ namespace vind
         }
     }
 
-    void RepeatLastChange::sprocess(NTypeLogger& parent_lgr) {
+    void RepeatLastChange::sprocess(core::NTypeLogger& parent_lgr) {
         if(lastchange_) {
             if(repeat_count_ > 1 && parent_lgr.get_head_num() == 1) {
                 parent_lgr.set_head_num(repeat_count_) ;
@@ -34,7 +34,7 @@ namespace vind
         }
     }
 
-    void RepeatLastChange::sprocess(const CharLogger& parent_lgr) {
+    void RepeatLastChange::sprocess(const core::CharLogger& parent_lgr) {
         if(lastchange_) {
             lastchange_->process(parent_lgr) ;
         }

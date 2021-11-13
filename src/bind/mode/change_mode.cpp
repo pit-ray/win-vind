@@ -31,9 +31,9 @@ namespace vind
     : BindedFuncCreator("to_gui_normal")
     {}
     void ToGUINormal::sprocess(bool vclmodeout) {
-        using namespace mode ;
+        using core::Mode ;
 
-        auto m = get_global_mode() ;
+        auto m = core::get_global_mode() ;
         if(m == Mode::GUI_NORMAL) {
             return ;
         }
@@ -47,20 +47,20 @@ namespace vind
 
         //When this function is called, binded key is down.
         //Thus, its key is needed to be up before absorbing key.
-        keyabsorber::close_all_ports_with_refresh() ;
-        keyabsorber::absorb() ;
+        core::close_all_ports_with_refresh() ;
+        core::absorb() ;
 
-        set_global_mode(Mode::GUI_NORMAL) ;
+        core::set_global_mode(Mode::GUI_NORMAL) ;
         if(vclmodeout) {
             opt::VCmdLine::print(opt::GeneralMessage("-- GUI NORMAL --")) ;
         }
     }
-    void ToGUINormal::sprocess(NTypeLogger& parent_lgr) {
+    void ToGUINormal::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToGUINormal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToGUINormal::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -70,19 +70,19 @@ namespace vind
     : BindedFuncCreator("to_resident")
     {}
     void ToResident::sprocess(bool vclmodeout) {
-        keyabsorber::close_all_ports() ;
-        keyabsorber::unabsorb() ;
-        mode::set_global_mode(mode::Mode::RESIDENT) ;
+        core::close_all_ports() ;
+        core::unabsorb() ;
+        core::set_global_mode(core::Mode::RESIDENT) ;
         if(vclmodeout) {
             opt::VCmdLine::print(opt::GeneralMessage("-- RESIDENT --")) ;
         }
     }
-    void ToResident::sprocess(NTypeLogger& parent_lgr) {
+    void ToResident::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToResident::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToResident::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -93,19 +93,18 @@ namespace vind
     {}
 
     void ToGUIVisual::sprocess(bool vclmodeout) {
-        using namespace mode ;
-        set_global_mode(Mode::GUI_VISUAL) ;
+        core::set_global_mode(core::Mode::GUI_VISUAL) ;
         if(vclmodeout) {
             opt::VCmdLine::print(opt::GeneralMessage("-- GUI VISUAL --")) ;
         }
         util::press_mousestate(KEYCODE_MOUSE_LEFT) ;
     }
-    void ToGUIVisual::sprocess(NTypeLogger& parent_lgr) {
+    void ToGUIVisual::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToGUIVisual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToGUIVisual::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -121,8 +120,8 @@ namespace vind
                 scanner_.get_properties()) ;
     }
     void ToEdiNormal::sprocess(bool vclmodeout) {
-        using namespace mode ;
-        auto mode = get_global_mode() ;
+        using core::Mode ;
+        auto mode = core::get_global_mode() ;
         if(mode == Mode::EDI_NORMAL) {
             return ;
         }
@@ -133,15 +132,15 @@ namespace vind
             textselect::unselect() ;
         }
 
-        keyabsorber::close_all_ports_with_refresh() ;
-        keyabsorber::absorb() ;
+        core::close_all_ports_with_refresh() ;
+        core::absorb() ;
 
-        set_global_mode(Mode::EDI_NORMAL) ;
+        core::set_global_mode(Mode::EDI_NORMAL) ;
         if(vclmodeout) {
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
         }
 
-        if(gparams::get_b("autofocus_textarea")) {
+        if(core::get_b("autofocus_textarea")) {
             auto hwnd = GetForegroundWindow() ;
             if(!hwnd) {
                 throw RUNTIME_EXCEPT("There is no foreground window.") ;
@@ -155,12 +154,12 @@ namespace vind
             options::focus_nearest_textarea(hwnd, pos, scanner_) ;
         }
     }
-    void ToEdiNormal::sprocess(NTypeLogger& parent_lgr) {
+    void ToEdiNormal::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToEdiNormal::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToEdiNormal::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -171,25 +170,25 @@ namespace vind
     {}
 
     void ToInsert::sprocess(bool vclmodeout) {
-        using namespace mode ;
-        if(get_global_mode() == Mode::GUI_NORMAL) {
+        using core::Mode ;
+        if(core::get_global_mode() == Mode::GUI_NORMAL) {
             util::click(KEYCODE_MOUSE_LEFT) ;
         }
 
-        keyabsorber::close_all_ports() ;
-        keyabsorber::unabsorb() ;
-        set_global_mode(Mode::INSERT) ;
+        core::close_all_ports() ;
+        core::unabsorb() ;
+        core::set_global_mode(Mode::INSERT) ;
 
         if(vclmodeout) {
             opt::VCmdLine::print(opt::GeneralMessage("-- INSERT --")) ;
         }
     }
-    void ToInsert::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsert::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsert::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -199,20 +198,18 @@ namespace vind
     : BindedFuncCreator("to_edi_visual")
     {}
     void ToEdiVisual::sprocess(bool vclmodeout) {
-        using namespace mode ;
-
         textselect::select_words() ;
-        set_global_mode(Mode::EDI_VISUAL) ;
+        core::set_global_mode(core::Mode::EDI_VISUAL) ;
         if(vclmodeout) {
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL --")) ;
         }
     }
-    void ToEdiVisual::sprocess(NTypeLogger& parent_lgr) {
+    void ToEdiVisual::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToEdiVisual::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToEdiVisual::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -222,20 +219,19 @@ namespace vind
     : BindedFuncCreator("to_edi_visual_line")
     {}
     void ToEdiVisualLine::sprocess(bool vclmodeout) {
-        using namespace mode ;
-
         textselect::select_line_EOL2BOL() ;
-        set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
+        core::set_global_mode(
+                core::Mode::EDI_VISUAL, core::ModeFlags::VISUAL_LINE) ;
         if(vclmodeout) {
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL LINE--")) ;
         }
     }
-    void ToEdiVisualLine::sprocess(NTypeLogger& parent_lgr) {
+    void ToEdiVisualLine::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToEdiVisualLine::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToEdiVisualLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 }

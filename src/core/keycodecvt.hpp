@@ -9,7 +9,7 @@
 
 namespace vind
 {
-    namespace keycodecvt {
+    namespace core {
         void load_input_combination() ;
 
         KeyCode get_keycode(char ascii) noexcept ;

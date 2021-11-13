@@ -5,10 +5,10 @@
 
 namespace vind
 {
-    namespace gparams {
-        void initialize() ;
+    namespace core {
+        void initialize_params() ;
 
-        void reset() ;
+        void reset_all_params() ;
 
         std::string get_s(const std::string& name) ;
 
@@ -26,21 +26,21 @@ namespace vind
 
         unsigned char get_uc(const std::string& name) ;
 
-        void set(const std::string& name, const std::string& val) ;
-        void set(const std::string& name, std::string&& val) ;
+        void do_set(const std::string& name, const std::string& val) ;
+        void do_set(const std::string& name, std::string&& val) ;
 
-        void set(const std::string& name, int val) ;
-        void set(const std::string& name, double val) ;
-        void set(const std::string& name, bool val) ;
+        void do_set(const std::string& name, int val) ;
+        void do_set(const std::string& name, double val) ;
+        void do_set(const std::string& name, bool val) ;
 
-        enum ValueType : unsigned char {
+        enum ParamType : unsigned char {
             STRING,
             NUMBER,
             BOOL,
             UNDEFINED
         } ;
 
-        ValueType get_type(const std::string& name) ;
+        ParamType validate_param_type(const std::string& name) ;
     }
 }
 #endif

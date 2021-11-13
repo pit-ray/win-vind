@@ -37,19 +37,19 @@ namespace vind
     void MoveCursorLeft::sprocess(int delta) const {
         util::move_cursor(-delta, 0) ;
     }
-    void MoveCursorLeft::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorLeft::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->ca_.reset() ;
         }
         sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveCursorLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void MoveCursorLeft::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
+        pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
     }
 
 
@@ -70,19 +70,19 @@ namespace vind
     void MoveCursorRight::sprocess(int delta) const {
         util::move_cursor(delta, 0) ;
     }
-    void MoveCursorRight::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorRight::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->ca_.reset() ;
         }
         sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveCursorRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void MoveCursorRight::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
+        pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
     }
 
 
@@ -103,19 +103,19 @@ namespace vind
     void MoveCursorUp::sprocess(int delta) const {
         util::move_cursor(0, -delta) ;
     }
-    void MoveCursorUp::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorUp::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->ca_.reset() ;
         }
         sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveCursorUp::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorUp::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void MoveCursorUp::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
+        pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
     }
 
 
@@ -136,18 +136,18 @@ namespace vind
     void MoveCursorDown::sprocess(int delta) const {
         util::move_cursor(0, delta) ;
     }
-    void MoveCursorDown::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCursorDown::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             pimpl->ca_.reset() ;
         }
         sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
     }
-    void MoveCursorDown::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCursorDown::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void MoveCursorDown::reconstruct() {
-        pimpl->ca_.set_acceleration(gparams::get_f("cursor_accel")) ;
-        pimpl->ca_.set_max_velocity(gparams::get_f("cursor_maxv")) ;
-        pimpl->ca_.set_time_weight(gparams::get_i("cursor_tweight")) ;
+        pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
+        pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
+        pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
     }
 }

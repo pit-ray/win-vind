@@ -37,12 +37,12 @@ namespace vind
         pimpl->core_.scan_ui_objects(hwnd) ;
         pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, repeat_num) ;
     }
-    void EasyClickLeft::sprocess(NTypeLogger& parent_lgr) const {
+    void EasyClickLeft::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EasyClickLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void EasyClickLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void EasyClickLeft::reconstruct() {
@@ -70,12 +70,12 @@ namespace vind
         pimpl->core_.scan_ui_objects(hwnd) ;
         pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, repeat_num) ;
     }
-    void EasyClickRight::sprocess(NTypeLogger& parent_lgr) const {
+    void EasyClickRight::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EasyClickRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void EasyClickRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void EasyClickRight::reconstruct() {
@@ -103,12 +103,12 @@ namespace vind
         pimpl->core_.scan_ui_objects(hwnd) ;
         pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, repeat_num) ;
     }
-    void EasyClickMid::sprocess(NTypeLogger& parent_lgr) const {
+    void EasyClickMid::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void EasyClickMid::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void EasyClickMid::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void EasyClickMid::reconstruct() {
@@ -136,12 +136,12 @@ namespace vind
         pimpl->core_.scan_ui_objects(hwnd) ;
         pimpl->core_.create_matching_loop() ;
     }
-    void EasyClickHover::sprocess(NTypeLogger& parent_lgr) const {
+    void EasyClickHover::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void EasyClickHover::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void EasyClickHover::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void EasyClickHover::reconstruct() {

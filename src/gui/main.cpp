@@ -66,7 +66,7 @@ namespace vind
         class SystemThread : public wxThread {
         private:
             virtual ExitCode Entry() override {
-                while(vind::update() && g_runnable.load()) ;
+                while(core::update() && g_runnable.load()) ;
                 return static_cast<ExitCode>(0) ;
             }
 
@@ -91,24 +91,24 @@ namespace vind
                                 wxOK | wxICON_EXCLAMATION) ;
                     }
 
-                    if(!vind::initialize(g_argument_func)) {
+                    if(!core::initialize(g_argument_func)) {
                         return false ;
                     }
 
                     // Root window
                     auto dlg = new AboutDialog(
 #ifdef DEBUG
-                            (vind::path::RESOUECE_ROOT_PATH() / vind::gparams::get_s("icon_style")).u8string(),
+                            (vind::core::RESOUECE_ROOT_PATH() / vind::core::get_s("icon_style")).u8string(),
 #else
-                            vind::gparams::get_s("icon_style"),
+                            vind::core::get_s("icon_style"),
 #endif
                             "win-vind",
-                            vind::gparams::get_i("gui_fontsize"),
-                            vind::gparams::get_s("gui_fontname")) ;
+                            vind::core::get_i("gui_fontsize"),
+                            vind::core::get_s("gui_fontname")) ;
 
                     dlg->Show(false) ;
 
-                    vind::register_exit_window_func([dlg] {
+                    core::register_exit_window_func([dlg] {
                         dlg->Destroy() ;
                     }) ;
                 }

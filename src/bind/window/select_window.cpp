@@ -105,12 +105,12 @@ namespace vind
 
         select_nearest_window(is_if_target, calc_distance) ;
     }
-    void SelectLeftWindow::sprocess(NTypeLogger& parent_lgr) {
+    void SelectLeftWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SelectLeftWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SelectLeftWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -132,12 +132,12 @@ namespace vind
 
         select_nearest_window(is_if_target, calc_distance) ;
     }
-    void SelectRightWindow::sprocess(NTypeLogger& parent_lgr) {
+    void SelectRightWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SelectRightWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SelectRightWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -159,12 +159,12 @@ namespace vind
 
         select_nearest_window(is_if_target, calc_distance) ;
     }
-    void SelectUpperWindow::sprocess(NTypeLogger& parent_lgr) {
+    void SelectUpperWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SelectUpperWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SelectUpperWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -186,12 +186,12 @@ namespace vind
 
         select_nearest_window(is_if_target, calc_distance) ;
     }
-    void SelectLowerWindow::sprocess(NTypeLogger& parent_lgr) {
+    void SelectLowerWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SelectLowerWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SelectLowerWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

@@ -4,39 +4,40 @@
 #include <iostream>
 #endif
 
+#include "func_finder.hpp"
 #include "key_logger_base.hpp"
 #include "keycode_def.hpp"
+#include "logger_parser.hpp"
 #include "ntype_logger.hpp"
+
 #include "opt/vcmdline.hpp"
 
 #include "bind/binded_func.hpp"
-
-#include "bind/func_finder.hpp"
-#include "bind/logger_parser.hpp"
 #include "bind/mode/change_mode.hpp"
 
 //internal linkage
 namespace
 {
-    vind::NTypeLogger g_ntlgr{} ;
-    vind::FuncFinder g_funcfinder{} ;
-    vind::BindedFunc::SPtr g_active_func = nullptr ;
+    using namespace vind ;
+    core::NTypeLogger g_ntlgr{} ;
+    core::FuncFinder g_funcfinder{} ;
+    BindedFunc::SPtr g_active_func = nullptr ;
 }
 
 namespace vind
 {
-    namespace mainloop {
-        void initialize() {
+    namespace core {
+        void initialize_mainloop() {
             g_ntlgr.clear() ;
             g_active_func = nullptr ;
         }
 
-        void reconstruct() {
+        void reconstruct_mainloop() {
             FuncFinder::load_global_bindings() ;
             g_funcfinder.reconstruct_funcset() ;
         }
 
-        void update() {
+        void update_mainloop() {
             auto result = g_ntlgr.logging_state() ;
 
             if(NTYPE_EMPTY(result)) {

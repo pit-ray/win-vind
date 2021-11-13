@@ -44,15 +44,15 @@ namespace vind
         }
         CloseHandle(hproc) ;
 
-        util::create_process(path::HOME_PATH(), util::ws_to_s(path)) ;
+        util::create_process(core::HOME_PATH(), util::ws_to_s(path)) ;
         Sleep(100) ;
     }
-    void OpenNewWindow::sprocess(NTypeLogger& parent_lgr) {
+    void OpenNewWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenNewWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenNewWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

@@ -28,7 +28,7 @@ namespace vind
             bool reload_config) {
 
         if(args.find("=") != std::string::npos) { // set option_name = value
-            auto [key, val] = rcparser::divide_key_and_value(args, "=") ;
+            auto [key, val] = core::divide_key_and_value(args, "=") ;
 
             if(key.empty()) {
                 if(val.empty()) {
@@ -43,17 +43,17 @@ namespace vind
             key = util::A2a(key) ;
 
             if(val.empty()) {
-                gparams::set(key, val) ;
+                core::do_set(key, val) ;
             }
             else if(val.find_first_not_of("0123456789.") == std::string::npos) {
-                gparams::set(key, std::stod(val)) ;
+                core::do_set(key, std::stod(val)) ;
             }
             else {
-                gparams::set(key, val) ;
+                core::do_set(key, val) ;
             }
         }
         else { // set option_name
-            auto key = rcparser::extract_single_arg(util::A2a(args)) ;
+            auto key = core::extract_single_arg(util::A2a(args)) ;
 
             bool flag_value = true ;
             if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {
@@ -72,11 +72,10 @@ namespace vind
                 }
 
                 std::stringstream ss ;
-                switch(gparams::get_type(key)) {
-                    using namespace gparams ;
-
-                    case ValueType::BOOL:
-                        if(gparams::get_b(key)) {
+                switch(core::validate_param_type(key)) {
+                    using core::ParamType ;
+                    case ParamType::BOOL:
+                        if(core::get_b(key)) {
                             ss << key ;
                         }
                         else {
@@ -84,10 +83,10 @@ namespace vind
                         }
                         break ;
 
-                    case ValueType::NUMBER: {
+                    case ParamType::NUMBER: {
                         ss << key << "=" ;
-                        auto v_d = gparams::get_d(key) ;
-                        auto v_z = gparams::get_z(key) ;
+                        auto v_d = core::get_d(key) ;
+                        auto v_z = core::get_z(key) ;
                         if(v_d == v_z) {
                             ss << std::to_string(v_z) ;
                         }
@@ -97,8 +96,8 @@ namespace vind
                         break ;
                     }
 
-                    case ValueType::STRING:
-                        ss << key << "=" << gparams::get_s(key) ;
+                    case ParamType::STRING:
+                        ss << key << "=" << core::get_s(key) ;
                         break ;
 
                     default:
@@ -114,25 +113,25 @@ namespace vind
                 opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
                 return ;
             }
-            gparams::set(key, flag_value) ;
+            core::do_set(key, flag_value) ;
         }
 
         if(reload_config) {
-            vind::reconstruct_all_components() ;
+            core::reconstruct_all_components() ;
         }
     }
 
-    void SyscmdSet::sprocess(NTypeLogger&) {
+    void SyscmdSet::sprocess(core::NTypeLogger&) {
         return ;
     }
 
-    void SyscmdSet::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdSet::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) {
             return ;
         }
 
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+        auto [cmd, args] = core::divide_cmd_and_args(str) ;
         sprocess(args, true) ;
     }
 }

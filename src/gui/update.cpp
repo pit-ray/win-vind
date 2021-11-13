@@ -78,9 +78,9 @@ namespace
         std::stringstream ss ;
         ss << "win-vind_" << version << "_" << ARCHITECTURE_PREFIX ;
 
-        using path::InstallType ;
+        using core::InstallType ;
 
-        auto install_type = path::get_install_type() ;
+        auto install_type = core::get_install_type() ;
         switch(install_type) {
             case InstallType::INSTALLER:
                 return "setup_" + ss.str() + ".exe" ;
@@ -119,8 +119,8 @@ namespace vind
 
             using namespace vind ;
 
-            std::filesystem::path tempdir(gparams::get_s("tempdir")) ;
-            tempdir = path::replace_magic(tempdir) ;
+            std::filesystem::path tempdir(core::get_s("tempdir")) ;
+            tempdir = core::replace_path_magic(tempdir) ;
 
             util::create_process(
                     tempdir,
@@ -201,8 +201,8 @@ namespace vind
                             flags.Border(wxALL, 10) ;
                             flags.Align(wxALIGN_CENTER_HORIZONTAL) ;
 
-                            using path::InstallType ;
-                            auto install_type = path::get_install_type() ;
+                            using core::InstallType ;
+                            auto install_type = core::get_install_type() ;
 
                             auto body = new wxHtmlWindow(
                                     this, UPDATE_NOTES, wxDefaultPosition,

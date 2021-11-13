@@ -5,8 +5,7 @@
 
 namespace vind
 {
-    namespace mode {
-
+    namespace core {
         enum ModeFlags : unsigned char {
             NONE        = 0x00,
             VISUAL_LINE = 0x01,
@@ -39,20 +38,20 @@ namespace vind
         }
 
         Mode get_global_mode() noexcept ;
-        ModeFlags get_global_flags() noexcept ;
+        ModeFlags get_global_mode_flags() noexcept ;
 
-        std::string to_prefix(Mode mode) noexcept ;
+        std::string mode_to_prefix(Mode mode) noexcept ;
         template <typename T>
-        inline std::string to_prefix(T mode) noexcept {
-            return to_prefix(static_cast<Mode>(mode)) ;
+        inline std::string mode_to_prefix(T mode) noexcept {
+            return mode_to_prefix(static_cast<Mode>(mode)) ;
         }
 
-        Mode parse_prefix(const std::string& prefix) noexcept ;
+        Mode parse_mode_prefix(const std::string& prefix) noexcept ;
 
-        const std::string& to_name(Mode mode) noexcept ;
+        const std::string& mode_to_name(Mode mode) noexcept ;
         template <typename T>
-        inline const std::string& to_name(T mode) noexcept {
-            return to_name(static_cast<Mode>(mode)) ;
+        inline const std::string& mode_to_name(T mode) noexcept {
+            return mode_to_name(static_cast<Mode>(mode)) ;
         }
     }
 }

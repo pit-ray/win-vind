@@ -67,11 +67,12 @@ SOFTWARE.
 
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"
-#include "bind/func_finder.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/syscmd/source.hpp"
+#include "opt/option_loader.hpp"
 
 #include "err_logger.hpp"
+#include "func_finder.hpp"
 #include "g_maps.hpp"
 #include "g_params.hpp"
 #include "key_absorber.hpp"
@@ -79,8 +80,8 @@ SOFTWARE.
 #include "log_map.hpp"
 #include "main_loop.hpp"
 #include "mode.hpp"
-#include "opt/option_loader.hpp"
 #include "path.hpp"
+
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
 #include "util/winwrap.hpp"
@@ -125,228 +126,230 @@ namespace
 
 namespace vind
 {
-    bool initialize(const std::string& func_name) noexcept {
-        try {
-            if(!std::filesystem::exists(path::CONFIG_PATH())) {
-                std::filesystem::create_directories(path::CONFIG_PATH()) ;
-            }
+    namespace core
+    {
+        bool initialize(const std::string& func_name) noexcept {
+            try {
+                if(!std::filesystem::exists(core::CONFIG_PATH())) {
+                    std::filesystem::create_directories(core::CONFIG_PATH()) ;
+                }
 
-            errlogger::initialize() ;
+                initialize_logger() ;
 
-            auto created_map = CreateFileMappingA(
-                    INVALID_HANDLE_VALUE, NULL,
-                    PAGE_READWRITE, 0,
-                    MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
+                auto created_map = CreateFileMappingA(
+                        INVALID_HANDLE_VALUE, NULL,
+                        PAGE_READWRITE, 0,
+                        MEMORY_MAPPED_FILE_SIZE, MEMORY_MAPPED_FILE_NAME) ;
 
-            if(created_map == NULL) {
-                PRINT_ERROR("Could not create memory-mapped file.") ;
-                return false ;
-            }
-            g_map.reset(created_map) ;
+                if(created_map == NULL) {
+                    PRINT_ERROR("Could not create memory-mapped file.") ;
+                    return false ;
+                }
+                g_map.reset(created_map) ;
 
-            if(GetLastError() == ERROR_ALREADY_EXISTS) {
-                // Sub win-vind
+                if(GetLastError() == ERROR_ALREADY_EXISTS) {
+                    // Sub win-vind
+                    if(!func_name.empty()) {
+                        auto hmap = OpenFileMappingA(FILE_MAP_WRITE, FALSE, MEMORY_MAPPED_FILE_NAME) ;
+                        if(hmap == NULL) {
+                            return false ;
+                        }
+
+                        std::unique_ptr<void, decltype(delete_handle)> safe_hmap(hmap, delete_handle) ;
+
+                        auto data = get_memmapped_file(safe_hmap.get()) ;
+                        if(data != NULL) {
+                            std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
+                        }
+                    }
+                    return false ;
+                }
+
+                // Main win-vind
+                auto data = get_memmapped_file(g_map.get()) ;
+                if(data.get() == NULL) {
+                    PRINT_ERROR("Could not open memory-mapped file.") ;
+                    return false ;
+                }
+                std::memset(data.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
                 if(!func_name.empty()) {
-                    auto hmap = OpenFileMappingA(FILE_MAP_WRITE, FALSE, MEMORY_MAPPED_FILE_NAME) ;
-                    if(hmap == NULL) {
-                        return false ;
-                    }
+                    std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
+                }
 
-                    std::unique_ptr<void, decltype(delete_handle)> safe_hmap(hmap, delete_handle) ;
+                //enable high DPI support
+                if(!SetProcessDPIAware()) {
+                    PRINT_ERROR("Your system is not supported DPI.") ;
+                    return false ;
+                }
 
-                    auto data = get_memmapped_file(safe_hmap.get()) ;
-                    if(data != NULL) {
-                        std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
+                // Load default config
+                initialize_params() ;
+                initialize_maps() ;
+
+                //load keyboard mapping of ascii code
+                //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
+                core::load_input_combination() ;
+
+                initialize_mainloop() ;
+
+                if(!load_config()) {
+                    return false ;
+                }
+
+                //lower keyboard hook
+                //If you use debugger, must be disable this line not to be slow.
+                install_absorber_hook() ;
+
+                // When Windows was started up, cursor is hidden until move mouse by default.
+                if(!show_mouse_cursor()) {
+                    return false ;
+                }
+
+                std::unordered_map<std::string, BindedFunc::SPtr> cm {
+                    {mode_to_prefix(Mode::EDI_NORMAL), ToEdiNormal::create()},
+                    {mode_to_prefix(Mode::GUI_NORMAL), ToGUINormal::create()},
+                    {mode_to_prefix(Mode::INSERT), ToInsert::create()},
+                    {mode_to_prefix(Mode::RESIDENT), ToResident::create()}
+                } ;
+                cm.at(core::get_s("initmode"))->process() ;
+
+                return true ;
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(std::string(e.what()) + ", so system was terminated.") ;
+                return false ;
+            }
+            catch(...) {
+                PRINT_ERROR("Fatal error occured.") ;
+                return false ;
+            }
+        }
+
+
+        bool load_config() noexcept {
+            try {
+                SyscmdSource::sprocess(core::RC(), false) ;
+                reconstruct_all_components() ;
+                return true ;
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
+                return false ;
+            }
+            catch(...) {
+                PRINT_ERROR("Fatal error occured.") ;
+                return false ;
+            }
+        }
+
+
+        bool reconstruct_all_components() noexcept {
+            try {
+                load_keycodemap_config() ;
+                opt::reconstruct() ;
+                reconstruct_mainloop() ;
+                return true ;
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
+                return false ;
+            }
+            catch(...) {
+                PRINT_ERROR("Fatal error occured.") ;
+                return false ;
+            }
+        }
+
+        bool update() noexcept {
+            try {
+                if(!update_background()) {
+                    return false ;
+                }
+
+                static util::IntervalTimer timer{1000'000} ; //1 s
+
+                if(timer.is_passed()) {
+                    //check if received messages from another win-vind.
+                    auto mmf = get_memmapped_file(g_map.get()) ;
+                    if(mmf.get() != NULL) {
+                        std::string name(reinterpret_cast<const char*>(mmf.get())) ;
+                        if(!name.empty()) {
+                            if(auto func = FuncFinder::find_func_byname(name)) {
+                                func->process() ;
+                            }
+                            else {
+                                PRINT_ERROR(name + " is invalid function name.") ;
+                            }
+
+                            std::memset(mmf.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
+                        }
+                        return true ;
                     }
                 }
+
+                update_mainloop() ;
+
+                return true ;
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
                 return false ;
             }
-
-            // Main win-vind
-            auto data = get_memmapped_file(g_map.get()) ;
-            if(data.get() == NULL) {
-                PRINT_ERROR("Could not open memory-mapped file.") ;
+            catch(...) {
+                PRINT_ERROR("Fatal error occured.") ;
                 return false ;
             }
-            std::memset(data.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
-            if(!func_name.empty()) {
-                std::memmove(data.get(), func_name.c_str(), func_name.length()) ;
-            }
-
-            //enable high DPI support
-            if(!SetProcessDPIAware()) {
-                PRINT_ERROR("Your system is not supported DPI.") ;
-                return false ;
-            }
-
-            // Load default config
-            gparams::initialize() ;
-            gmaps::initialize() ;
-
-            //load keyboard mapping of ascii code
-            //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
-            keycodecvt::load_input_combination() ;
-
-            mainloop::initialize() ;
-
-            if(!load_config()) {
-                return false ;
-            }
-
-            //lower keyboard hook
-            //If you use debugger, must be disable this line not to be slow.
-            keyabsorber::install_hook() ;
-
-            // When Windows was started up, cursor is hidden until move mouse by default.
-            if(!show_mouse_cursor()) {
-                return false ;
-            }
-
-            using namespace vind::mode ;
-            std::unordered_map<std::string, BindedFunc::SPtr> cm {
-                {to_prefix(Mode::EDI_NORMAL), ToEdiNormal::create()},
-                {to_prefix(Mode::GUI_NORMAL), ToGUINormal::create()},
-                {to_prefix(Mode::INSERT), ToInsert::create()},
-                {to_prefix(Mode::RESIDENT), ToResident::create()}
-            } ;
-            cm.at(gparams::get_s("initmode"))->process() ;
-
-            return true ;
         }
-        catch(const std::exception& e) {
-            PRINT_ERROR(std::string(e.what()) + ", so system was terminated.") ;
-            return false ;
-        }
-        catch(...) {
-            PRINT_ERROR("Fatal error occured.") ;
-            return false ;
-        }
-    }
 
+        bool update_background() noexcept {
+            try {
+                util::get_win_message() ;
 
-    bool load_config() noexcept {
-        try {
-            SyscmdSource::sprocess(path::RC(), false) ;
-            reconstruct_all_components() ;
-            return true ;
-        }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-            return false ;
-        }
-        catch(...) {
-            PRINT_ERROR("Fatal error occured.") ;
-            return false ;
-        }
-    }
+                Sleep(5) ;
 
+                opt::call_active_funcs() ;
 
-    bool reconstruct_all_components() noexcept {
-        try {
-            logmap::load_config() ;
-            opt::reconstruct() ;
-            mainloop::reconstruct() ;
-            return true ;
-        }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-            return false ;
-        }
-        catch(...) {
-            PRINT_ERROR("Fatal error occured.") ;
-            return false ;
-        }
-    }
+                core::refresh_toggle_state() ;
 
-    bool update() noexcept {
-        try {
-            if(!update_background()) {
-                return false ;
-            }
-
-            static util::IntervalTimer timer{1000'000} ; //1 s
-
-            if(timer.is_passed()) {
-                //check if received messages from another win-vind.
-                auto mmf = get_memmapped_file(g_map.get()) ;
-                if(mmf.get() != NULL) {
-                    std::string name(reinterpret_cast<const char*>(mmf.get())) ;
-                    if(!name.empty()) {
-                        if(auto func = FuncFinder::find_func_byname(name)) {
-                            func->process() ;
-                        }
-                        else {
-                            PRINT_ERROR(name + " is invalid function name.") ;
-                        }
-
-                        std::memset(mmf.get(), 0, MEMORY_MAPPED_FILE_SIZE) ;
-                    }
-                    return true ;
+                if(core::is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
+                    ExitConfigGUI::sprocess() ; //exit GUI-window in system tray
+                    return false ;
                 }
+                return true ;
             }
-
-            mainloop::update() ;
-
-            return true ;
-        }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-            return false ;
-        }
-        catch(...) {
-            PRINT_ERROR("Fatal error occured.") ;
-            return false ;
-        }
-    }
-
-    bool update_background() noexcept {
-        try {
-            util::get_win_message() ;
-
-            Sleep(5) ;
-
-            opt::call_active_funcs() ;
-
-            keyabsorber::refresh_toggle_state() ;
-
-            if(keyabsorber::is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
-                ExitConfigGUI::sprocess() ; //exit GUI-window in system tray
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
                 return false ;
             }
-            return true ;
+            catch(...) {
+                PRINT_ERROR("Fatal error occured.") ;
+                return false ;
+            }
         }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-            return false ;
-        }
-        catch(...) {
-            PRINT_ERROR("Fatal error occured.") ;
-            return false ;
-        }
-    }
 
-    //Please use it if you want to show a self config window by command.
-    void register_show_window_func(std::function<void()> func) noexcept {
-        try {
-            ShowConfigGUI::register_show_func(std::move(func)) ;
+        //Please use it if you want to show a self config window by command.
+        void register_show_window_func(std::function<void()> func) noexcept {
+            try {
+                ShowConfigGUI::register_show_func(std::move(func)) ;
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
+            }
+            catch(...) {
+                PRINT_ERROR("Fatal error occured.") ;
+            }
         }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-        }
-        catch(...) {
-            PRINT_ERROR("Fatal error occured.") ;
-        }
-    }
 
-    void register_exit_window_func(std::function<void()> func) noexcept {
-        try {
-            ExitConfigGUI::register_exit_func(std::move(func)) ;
-        }
-        catch(const std::exception& e) {
-            PRINT_ERROR(e.what()) ;
-        }
-        catch(...) {
-            PRINT_ERROR("Fatal error occured.") ;
+        void register_exit_window_func(std::function<void()> func) noexcept {
+            try {
+                ExitConfigGUI::register_exit_func(std::move(func)) ;
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
+            }
+            catch(...) {
+                PRINT_ERROR("Fatal error occured.") ;
+            }
         }
     }
 }

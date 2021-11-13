@@ -41,7 +41,7 @@ namespace
 
 namespace vind
 {
-    namespace keycodecvt {
+    namespace core {
 
         void load_input_combination() {
             char2keycode.fill(0) ;
@@ -217,7 +217,7 @@ namespace
 
 namespace vind
 {
-    namespace keycodecvt {
+    namespace core {
         KeyCode get_sys_keycode(const std::string& strkey) noexcept {
             try {return g_sys_keycode.at(strkey) ;}
             catch(const std::out_of_range&) {return KEYCODE_UNDEFINED ;}

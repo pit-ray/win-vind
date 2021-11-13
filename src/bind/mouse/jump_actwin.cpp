@@ -28,12 +28,12 @@ namespace vind
 
         SetCursorPos(xpos, ypos) ;
     }
-    void JumpToActiveWindow::sprocess(NTypeLogger& parent_lgr) {
+    void JumpToActiveWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void JumpToActiveWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpToActiveWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

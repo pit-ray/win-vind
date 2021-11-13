@@ -3,6 +3,7 @@
 #include "mode.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
+#include "util/type_traits.hpp"
 
 #include <stdexcept>
 #include <string>
@@ -15,7 +16,7 @@
 
 namespace vind
 {
-    namespace rcparser {
+    namespace core {
         void remove_dbquote_comment(std::string& line) {
             std::size_t start_pos = 0 ;
             while(true) {
@@ -150,7 +151,6 @@ namespace vind
 
 
         RunCommandsIndex parse_run_command(const std::string& strcmd) {
-            using namespace vind::mode ;
             static auto parser = [] {
                 std::unordered_map<std::string, RunCommandsIndex> tmp {
                     {"se",          RunCommandsIndex::SET},
@@ -185,16 +185,16 @@ namespace vind
                 } ;
 
                 for(std::size_t i = 0 ; i < mode_num() ; i ++) {
-                    auto mode_prefix = mode::to_prefix(i) ;
+                    auto mode_prefix = mode_to_prefix(i) ;
 
                     // map
-                    auto map_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_MAP) ;
+                    auto map_rc_index = util::enum_or(i, RunCommandsIndex::MASK_MAP) ;
                     tmp[mode_prefix + "map"] = map_rc_index ;
                     tmp[mode_prefix + "ma"]  = map_rc_index ;
                     tmp[mode_prefix + "m"]   = map_rc_index ;
 
                     // noremap
-                    auto noremap_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_NOREMAP) ;
+                    auto noremap_rc_index = util::enum_or(i, RunCommandsIndex::MASK_NOREMAP) ;
                     tmp[mode_prefix + "noremap"] = noremap_rc_index ;
                     tmp[mode_prefix + "norema"]  = noremap_rc_index ;
                     tmp[mode_prefix + "norem"]   = noremap_rc_index ;
@@ -206,7 +206,7 @@ namespace vind
                     }
 
                     // unmap
-                    auto unmap_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_UNMAP) ;
+                    auto unmap_rc_index = util::enum_or(i, RunCommandsIndex::MASK_UNMAP) ;
                     tmp[mode_prefix + "unmap"] = unmap_rc_index ;
                     tmp[mode_prefix + "unma"]  = unmap_rc_index ;
                     tmp[mode_prefix + "unm"]   = unmap_rc_index ;
@@ -216,7 +216,7 @@ namespace vind
                     }
 
                     // mapclear
-                    auto mapclear_rc_index = static_cast<RunCommandsIndex>(i | RunCommandsIndex::MASK_MAPCLEAR) ;
+                    auto mapclear_rc_index = util::enum_or(i, RunCommandsIndex::MASK_MAPCLEAR) ;
                     tmp[mode_prefix + "mapclear"] = mapclear_rc_index ;
                     tmp[mode_prefix + "mapclea"]  = mapclear_rc_index ;
                     tmp[mode_prefix + "mapcle"]   = mapclear_rc_index ;

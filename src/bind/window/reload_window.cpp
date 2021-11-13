@@ -13,12 +13,12 @@ namespace vind
     void ReloadCurrentWindow::sprocess() {
         util::pushup(KEYCODE_F5) ;
     }
-    void ReloadCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+    void ReloadCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ReloadCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ReloadCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

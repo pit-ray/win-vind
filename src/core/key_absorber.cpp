@@ -51,12 +51,12 @@ namespace
     std::array<bool, 256> g_real_state{false} ;
     std::array<bool, 256> g_state{false} ;  //Keyboard state win-vind understands.
     bool g_absorbed_flag{true} ;
-    vind::KeyLog::Data g_ignored_keys{} ;
+    vind::core::KeyLog::Data g_ignored_keys{} ;
 
     std::array<std::chrono::system_clock::time_point, 256>
         g_time_stamps{std::chrono::system_clock::now()} ;
 
-    const auto toggles = vind::keycodecvt::get_toggle_keys() ;
+    const auto toggles = vind::core::get_toggle_keys() ;
 
     auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook != nullptr) {
@@ -96,16 +96,16 @@ namespace
 
             g_time_stamps[code]   = std::chrono::system_clock::now() ;
 
-            if(auto repcode = vind::keycodecvt::get_representative_key(code)) {
-                if(vind::logmap::do_keycode_map(repcode, state) ||
-                        vind::logmap::do_keycode_map(code, state)) {
+            if(auto repcode = vind::core::get_representative_key(code)) {
+                if(vind::core::do_keycode_map(repcode, state) ||
+                        vind::core::do_keycode_map(code, state)) {
                     return 1 ;
                 }
 
                 g_real_state[repcode] = state ;
                 g_state[repcode]      = state ;
             }
-            else if(vind::logmap::do_keycode_map(code, state)) {
+            else if(vind::core::do_keycode_map(code, state)) {
                 return 1 ;
             }
 
@@ -129,9 +129,9 @@ namespace
 
 namespace vind
 {
-    namespace keyabsorber
+    namespace core
     {
-        void install_hook() {
+        void install_absorber_hook() {
             g_real_state.fill(false) ;
             g_state.fill(false) ;
 
@@ -207,7 +207,7 @@ namespace vind
 
                 using namespace std::chrono ;
                 if((system_clock::now() - g_time_stamps[k]) > 515ms) {
-                    logmap::do_keycode_map(k, false) ;
+                    do_keycode_map(k, false) ;
                     util::release_keystate(k) ;
 
                     g_real_state[k] = false ;

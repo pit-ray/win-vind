@@ -89,7 +89,7 @@ namespace
         bool is_valid() {
             if(!time_.has_stamp()) return false ;
             return time_.elapsed().count() \
-                < gparams::get_i("uiacachebuild_lifetime") ;
+                < core::get_i("uiacachebuild_lifetime") ;
         }
 
         void create_thread() {
@@ -181,14 +181,14 @@ namespace vind
 
         void AsyncUIACacheBuilder::do_process() const {
             // Ignore in Inser Mode and Resident Mode.
-            if(mode::get_global_mode() == mode::Mode::RESIDENT) {
+            if(core::get_global_mode() == core::Mode::RESIDENT) {
                 return ;
             }
 
             // Use some factors for minimal scanning
 
             // Factor1: keybaord input
-            if(!keyabsorber::get_pressed_list().empty()) {
+            if(!core::get_pressed_list().empty()) {
                 return ;
             }
 
@@ -212,10 +212,10 @@ namespace vind
             // and when the computer is neglected for a long time, there is no need to scan it.
             auto keep_delta = duration_cast<milliseconds>(
                     system_clock::now() - keeptime).count() ;
-            if(keep_delta < gparams::get_i("uiacachebuild_staybegin")) {
+            if(keep_delta < core::get_i("uiacachebuild_staybegin")) {
                 return ;
             }
-            if(keep_delta > gparams::get_i("uiacachebuild_stayend")) {
+            if(keep_delta > core::get_i("uiacachebuild_stayend")) {
                 return ;
             }
 

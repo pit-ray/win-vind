@@ -11,7 +11,7 @@ namespace vind
         template <typename T, typename FuncType, typename ...Args>
         inline void safe_for(T repeat_num, FuncType&& func, Args... args) {
             for(T i = 0 ; i < repeat_num ; i ++) {
-                if(keyabsorber::is_pressed(KEYCODE_ESC)) {
+                if(core::is_pressed(KEYCODE_ESC)) {
                     break ;
                 }
                 func(std::forward<Args>(args)...) ;

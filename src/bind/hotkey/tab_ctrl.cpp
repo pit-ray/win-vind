@@ -22,12 +22,12 @@ namespace vind
             util::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
         }) ;
     }
-    void Switch2LeftTab::sprocess(NTypeLogger& parent_lgr) {
+    void Switch2LeftTab::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Switch2LeftTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void Switch2LeftTab::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -41,12 +41,12 @@ namespace vind
             util::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
         }) ;
     }
-    void Switch2RightTab::sprocess(NTypeLogger& parent_lgr) {
+    void Switch2RightTab::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Switch2RightTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void Switch2RightTab::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -57,12 +57,12 @@ namespace vind
     void OpenNewTab::sprocess() {
         util::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
     }
-    void OpenNewTab::sprocess(NTypeLogger& parent_lgr) {
+    void OpenNewTab::sprocess(core::NTypeLogger& parent_lgr) {
         if(parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenNewTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenNewTab::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -74,12 +74,12 @@ namespace vind
     void CloseCurrentTab::sprocess() {
         util::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
     }
-    void CloseCurrentTab::sprocess(NTypeLogger& parent_lgr) {
+    void CloseCurrentTab::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CloseCurrentTab::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void CloseCurrentTab::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

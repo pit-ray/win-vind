@@ -13,8 +13,8 @@ namespace vind
     struct YankHighlightText : public BindedFuncCreator<YankHighlightText> {
         explicit YankHighlightText() ;
         static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     struct YankLine : public BindedFuncCreator<YankLine> {
@@ -22,8 +22,8 @@ namespace vind
         static void sprocess(
                 unsigned int repeat_num=1,
                 const textanalyze::SelRes* const exres=nullptr) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 }
 

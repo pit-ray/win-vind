@@ -36,7 +36,7 @@ namespace vind
         }
 
         void Dedicate2Window::enable_targeting() {
-            if(gparams::get_b("dedicate_to_window")) {
+            if(core::get_b("dedicate_to_window")) {
                 target_hwnd = GetForegroundWindow() ;
                 past_hwnd   = NULL ;
                 opt::VCmdLine::print(GeneralMessage("-- TARGET ON --")) ;
@@ -44,7 +44,7 @@ namespace vind
         }
 
         void Dedicate2Window::disable_targeting() {
-            if(gparams::get_b("dedicate_to_window")) {
+            if(core::get_b("dedicate_to_window")) {
                 target_hwnd = NULL ;
                 past_hwnd   = NULL ;
                 opt::VCmdLine::print(GeneralMessage("-- TARGET OFF --")) ;

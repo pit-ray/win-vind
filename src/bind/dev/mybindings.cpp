@@ -21,12 +21,12 @@ namespace vind
 
         opt::VCmdLine::print(opt::GeneralMessage("Hello World !")) ;
     }
-    void MyBinding::sprocess(NTypeLogger& parent_lgr) {
+    void MyBinding::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void MyBinding::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void MyBinding::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

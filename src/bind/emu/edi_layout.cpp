@@ -29,7 +29,7 @@ namespace vind
             util::pushup(KEYCODE_DELETE) ;
         }) ;
     }
-    void JoinNextLine::sprocess(NTypeLogger& parent_lgr) const {
+    void JoinNextLine::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -38,7 +38,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void JoinNextLine::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void JoinNextLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 }

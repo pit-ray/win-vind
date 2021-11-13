@@ -46,7 +46,7 @@ namespace vind
             pushup(KEYCODE_DELETE) ;
         }
     }
-    void DeleteLine::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteLine::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -55,7 +55,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void DeleteLine::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -90,7 +90,7 @@ namespace vind
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }
     }
-    void DeleteLineUntilEOL::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteLineUntilEOL::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -99,7 +99,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void DeleteLineUntilEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteLineUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -119,7 +119,7 @@ namespace vind
     DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
 
     void DeleteAfter::sprocess(unsigned int repeat_num) const {
-        if(gparams::get_b("charcache")) {
+        if(core::get_b("charcache")) {
             repeater::safe_for(repeat_num, [] {
                     util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                     util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -132,7 +132,7 @@ namespace vind
             }) ;
         }
     }
-    void DeleteAfter::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteAfter::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -141,7 +141,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void DeleteAfter::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteAfter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -161,7 +161,7 @@ namespace vind
     DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
 
     void DeleteBefore::sprocess(unsigned int repeat_num) const {
-        if(gparams::get_b("charcache")) {
+        if(core::get_b("charcache")) {
             repeater::safe_for(repeat_num, [] {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -174,7 +174,7 @@ namespace vind
             }) ;
         }
     }
-    void DeleteBefore::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteBefore::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -183,7 +183,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void DeleteBefore::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -193,12 +193,11 @@ namespace vind
     : BindedFuncCreator("delete_highlight_text")
     {}
     void DeleteHighlightText::sprocess() {
-        using namespace mode ;
         using util::pushup ;
         using namespace simpletxreg ;
 
         pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-        if(get_global_flags() & ModeFlags::VISUAL_LINE) {
+        if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
             set_register_type(RegType::Lines) ;
         }
         else {
@@ -206,12 +205,12 @@ namespace vind
         }
         ToEdiNormal::sprocess(false) ;
     }
-    void DeleteHighlightText::sprocess(NTypeLogger& parent_lgr) {
+    void DeleteHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void DeleteHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void DeleteHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

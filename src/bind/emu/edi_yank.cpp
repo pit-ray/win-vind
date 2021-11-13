@@ -18,12 +18,11 @@ namespace vind
     : BindedFuncCreator("yank_highlight_text")
     {}
     void YankHighlightText::sprocess() {
-        using namespace mode ;
         using namespace simpletxreg ;
 
         util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
 
-        if(get_global_flags() == ModeFlags::VISUAL_LINE) {
+        if(core::get_global_mode_flags() == core::ModeFlags::VISUAL_LINE) {
             set_register_type(RegType::Lines) ;
         }
         else {
@@ -33,12 +32,12 @@ namespace vind
         util::pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
         ToEdiNormal::sprocess(true) ;
     }
-    void YankHighlightText::sprocess(NTypeLogger& parent_lgr) {
+    void YankHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void YankHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void YankHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -68,12 +67,12 @@ namespace vind
 
         simpletxreg::set_register_type(simpletxreg::RegType::Lines) ;
     }
-    void YankLine::sprocess(NTypeLogger& parent_lgr) {
+    void YankLine::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void YankLine::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void YankLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1, nullptr) ;
     }
 }

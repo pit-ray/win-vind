@@ -140,7 +140,7 @@ namespace
         //
         //
 
-        auto width = static_cast<DWORD>(gparams::get_i("blockstylecaret_width")) ;
+        auto width = static_cast<DWORD>(core::get_i("blockstylecaret_width")) ;
 
         util::detach_thread_input(hwnd) ;
 
@@ -185,7 +185,7 @@ namespace vind
         }
 
         void BlockStyleCaret::do_disable() const {
-            auto mode = util::A2a(gparams::get_s("blockstylecaret_mode")) ;
+            auto mode = util::A2a(core::get_s("blockstylecaret_mode")) ;
             restore_caret_style(mode) ;
         }
 
@@ -215,7 +215,7 @@ namespace vind
             }
 
             if(mode == "solid") {
-                auto width = gparams::get_i("blockstylecaret_width") ;
+                auto width = core::get_i("blockstylecaret_width") ;
                 if(pimpl->ft_.valid()) {
                     pimpl->ft_.wait() ;
                     pimpl->ft_.get() ;
@@ -232,9 +232,9 @@ namespace vind
         }
 
         void BlockStyleCaret::do_process() const {
-            auto mode = util::A2a(gparams::get_s("blockstylecaret_mode")) ;
+            auto mode = util::A2a(core::get_s("blockstylecaret_mode")) ;
 
-            if(mode::get_global_mode() != mode::Mode::EDI_NORMAL) {
+            if(core::get_global_mode() != core::Mode::EDI_NORMAL) {
                 restore_caret_style(mode) ;
                 return ;
             }
@@ -243,7 +243,7 @@ namespace vind
                 make_caret_block_style(mode) ;
             }
             else if(mode == "flex") {
-                if(!keyabsorber::get_pressed_list().empty()) {
+                if(!core::get_pressed_list().empty()) {
                     restore_caret_style(mode) ;
                 }
                 else {

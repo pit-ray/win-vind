@@ -9,22 +9,22 @@ namespace vind
     struct ToGUINormal : public BindedFuncCreator<ToGUINormal> {
         explicit ToGUINormal() ;
         static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     struct ToResident : public BindedFuncCreator<ToResident> {
         explicit ToResident() ;
         static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     struct ToGUIVisual : public BindedFuncCreator<ToGUIVisual> {
         explicit ToGUIVisual() ;
         static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     class ToEdiNormal : public BindedFuncCreator<ToEdiNormal> {
@@ -34,29 +34,29 @@ namespace vind
     public:
         explicit ToEdiNormal() ;
         static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     struct ToInsert : public BindedFuncCreator<ToInsert> {
         explicit ToInsert() ;
         static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     struct ToEdiVisual : public BindedFuncCreator<ToEdiVisual> {
         explicit ToEdiVisual() ;
         static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     struct ToEdiVisualLine : public BindedFuncCreator<ToEdiVisualLine> {
         explicit ToEdiVisualLine() ;
         static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 }
 

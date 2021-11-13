@@ -15,9 +15,8 @@
 
 namespace vind
 {
-    namespace path {
-
-        std::filesystem::path replace_magic(std::filesystem::path path) {
+    namespace core {
+        std::filesystem::path replace_path_magic(std::filesystem::path path) {
             auto strpath = path.u8string() ;
             auto rel_root = strpath.substr(0, 2) ;
             if(rel_root == "~/" || rel_root == "~\\") {
@@ -27,8 +26,8 @@ namespace vind
             return path ;
         }
 
-        std::string replace_magic(std::string path) {
-            path = util::replace_all(path, "~", path::HOME_PATH().u8string()) ;
+        std::string replace_path_magic(std::string path) {
+            path = util::replace_all(path, "~", core::HOME_PATH().u8string()) ;
             path = util::replace_all(path, "/", "\\") ;
             return path ;
         }

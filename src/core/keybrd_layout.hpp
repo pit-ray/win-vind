@@ -8,8 +8,8 @@
 
 namespace vind
 {
-    namespace keybrd_layout {
-        std::filesystem::path get_layout_filepath(LANGID id) ;
+    namespace core {
+        std::filesystem::path get_keylayout_filepath(LANGID id) ;
     }
 }
 

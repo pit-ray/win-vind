@@ -60,17 +60,17 @@ namespace vind
             Bind(wxEVT_MENU, [this](auto&) {
                 using namespace vind ;
                 util::create_process(
-                        path::ROOT_PATH(),
+                        core::ROOT_PATH(),
                         "explorer",
-                        path::CONFIG_PATH().u8string()) ;
+                        core::CONFIG_PATH().u8string()) ;
             }, MENU_OPENROOT) ;
 
             Bind(wxEVT_MENU, [parent, iconpath](auto&) {
                 auto dlg = new UpdateDialog(
                         parent,
                         iconpath,
-                        vind::gparams::get_i("gui_fontsize"),
-                        vind::gparams::get_s("gui_fontname")) ;
+                        vind::core::get_i("gui_fontsize"),
+                        vind::core::get_s("gui_fontname")) ;
                 dlg->CenterOnScreen() ;
                 dlg->Show(true) ;
             }, MENU_UPDATE) ;

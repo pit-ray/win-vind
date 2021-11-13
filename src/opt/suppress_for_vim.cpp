@@ -28,8 +28,7 @@ namespace vind
         }
 
         void SuppressForVim::do_process() const {
-            using namespace mode ;
-            if(get_global_mode() == Mode::RESIDENT) {
+            if(core::get_global_mode() == core::Mode::RESIDENT) {
                 return ;
             }
 
@@ -46,16 +45,15 @@ namespace vind
 
             //Whether it is vim
             if(exename.find("vim") != std::string::npos) {
-                keyabsorber::close_all_ports() ;
-                keyabsorber::unabsorb() ;
-                set_global_mode(Mode::RESIDENT) ;
+                core::close_all_ports() ;
+                core::unabsorb() ;
+                core::set_global_mode(core::Mode::RESIDENT) ;
                 opt::VCmdLine::print(GeneralMessage("-- RESIDENT --")) ;
             }
             else {
-                if(get_global_mode() == Mode::RESIDENT)
+                if(core::get_global_mode() == core::Mode::RESIDENT)
                     ToInsert::sprocess(true) ;
             }
-
         }
     }
 }

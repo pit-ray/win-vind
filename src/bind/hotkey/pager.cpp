@@ -16,12 +16,12 @@ namespace vind
             util::pushup(KEYCODE_LALT, KEYCODE_RIGHT) ;
         }) ;
     }
-    void GotoNextPage::sprocess(NTypeLogger& parent_lgr) {
+    void GotoNextPage::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void GotoNextPage::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void GotoNextPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -35,12 +35,12 @@ namespace vind
             util::pushup(KEYCODE_LALT, KEYCODE_LEFT) ;
         }) ;
     }
-    void GotoPrevPage::sprocess(NTypeLogger& parent_lgr) {
+    void GotoPrevPage::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void GotoPrevPage::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void GotoPrevPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 }

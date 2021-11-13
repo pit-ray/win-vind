@@ -7,8 +7,11 @@
 
 namespace vind
 {
-    class NTypeLogger ;
-    class CharLogger ;
+    namespace core
+    {
+        class NTypeLogger ;
+        class CharLogger ;
+    }
 
     //use Curiously Recurring Template Pattern (CRTP)
     //derived class must implement sprocess() and sname().
@@ -20,10 +23,10 @@ namespace vind
         void do_process() const override {
             static_cast<const Derived*>(this)->sprocess() ;
         }
-        void do_process(NTypeLogger& parent_lgr) const override {
+        void do_process(core::NTypeLogger& parent_lgr) const override {
             static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
         }
-        void do_process(const CharLogger& parent_lgr) const override {
+        void do_process(const core::CharLogger& parent_lgr) const override {
             static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
         }
 

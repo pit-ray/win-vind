@@ -60,6 +60,17 @@ namespace vind
             return s ;
         }
 
+        unsigned int extract_num(const std::string& str) {
+            constexpr auto c_nums = "0123456789" ;
+
+            auto bpos = str.find_first_of(c_nums) ;
+            if(bpos == std::string::npos) return 0 ;
+
+            auto epos = str.find_first_not_of(c_nums, bpos) ;
+
+            return std::stoi(str.substr(bpos, epos)) ;
+        }
+
         std::wstring s_to_ws(const std::string& str) {
             std::wstring wstr ;
 

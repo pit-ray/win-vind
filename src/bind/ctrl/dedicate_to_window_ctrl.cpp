@@ -20,12 +20,12 @@ namespace vind
     void EnableTargetingOfDedicate2Window::sprocess() {
         opt::Dedicate2Window::enable_targeting() ;
     }
-    void EnableTargetingOfDedicate2Window::sprocess(NTypeLogger& parent_lgr) {
+    void EnableTargetingOfDedicate2Window::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void EnableTargetingOfDedicate2Window::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void EnableTargetingOfDedicate2Window::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -36,12 +36,12 @@ namespace vind
     void DisableTargetingOfDedicate2Window::sprocess() {
         opt::Dedicate2Window::disable_targeting() ;
     }
-    void DisableTargetingOfDedicate2Window::sprocess(NTypeLogger& parent_lgr) {
+    void DisableTargetingOfDedicate2Window::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void DisableTargetingOfDedicate2Window::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void DisableTargetingOfDedicate2Window::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

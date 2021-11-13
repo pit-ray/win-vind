@@ -9,8 +9,8 @@ namespace vind
     struct ShowConfigGUI : public BindedFuncCreator<ShowConfigGUI> {
         explicit ShowConfigGUI() ;
         static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
 
         static void register_show_func(std::function<void()> func) noexcept ;
     } ;
@@ -19,8 +19,8 @@ namespace vind
     struct ExitConfigGUI : public BindedFuncCreator<ExitConfigGUI> {
         explicit ExitConfigGUI() ;
         static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
 
         static void register_exit_func(std::function<void()> func) noexcept ;
     } ;

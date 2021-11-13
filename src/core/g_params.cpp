@@ -28,14 +28,14 @@ namespace
 
 namespace vind
 {
-    namespace gparams {
-        void initialize() {
+    namespace core {
+        void initialize_params() {
             g_default_params.clear() ;
-            std::ifstream ifs(path::Default::SETTINGS()) ;
+            std::ifstream ifs(core::SETTINGS_DEFAULT()) ;
             ifs >> g_default_params ;
         }
 
-        void reset() {
+        void reset_all_params() {
             g_str_params.clear() ;
             g_num_params.clear() ;
 
@@ -90,37 +90,37 @@ namespace vind
             return static_cast<unsigned char>(g_num_params.at(name)) ;
         }
 
-        void set(const std::string& name, const std::string& val) {
+        void do_set(const std::string& name, const std::string& val) {
             g_str_params[name] = val ;
         }
-        void set(const std::string& name, std::string&& val) {
+        void do_set(const std::string& name, std::string&& val) {
             g_str_params[name] = std::move(val) ;
         }
 
-        void set(const std::string& name, int val) {
+        void do_set(const std::string& name, int val) {
             g_num_params[name] = val ;
         }
-        void set(const std::string& name, double val) {
+        void do_set(const std::string& name, double val) {
             g_num_params[name] = val ;
         }
 
-        void set(const std::string& name, bool val) {
+        void do_set(const std::string& name, bool val) {
             g_bool_params[name] = val ;
         }
 
 
-        ValueType get_type(const std::string& name) {
+        ParamType validate_param_type(const std::string& name) {
             if(g_bool_params.find(name) != g_bool_params.end()) {
-                return ValueType::BOOL ;
+                return ParamType::BOOL ;
             }
             if(g_num_params.find(name) != g_num_params.end()) {
-                return ValueType::NUMBER ;
+                return ParamType::NUMBER ;
             }
             if(g_str_params.find(name) != g_str_params.end()) {
-                return ValueType::STRING ;
+                return ParamType::STRING ;
             }
 
-            return ValueType::UNDEFINED ;
+            return ParamType::UNDEFINED ;
         }
     }
 }

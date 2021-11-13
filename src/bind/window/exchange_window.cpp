@@ -76,12 +76,12 @@ namespace vind
 
         windowutil::resize(fginfo.hwnd, nearest_rect) ;
     }
-    void ExchangeWindowWithNearest::sprocess(NTypeLogger& parent_lgr) {
+    void ExchangeWindowWithNearest::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ExchangeWindowWithNearest::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ExchangeWindowWithNearest::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

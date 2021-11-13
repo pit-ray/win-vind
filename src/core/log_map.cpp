@@ -30,8 +30,8 @@ namespace
             return static_cast<KeyCode>(src_code) ;
         }
         if(dst == first_src_code) {
-            PRINT_ERROR("{" + keycodecvt::get_name(static_cast<KeyCode>(first_src_code)) \
-                    + "} recursively remaps itself in " + mode::to_name(mode) + ".") ;
+            PRINT_ERROR("{" + core::get_name(static_cast<KeyCode>(first_src_code)) \
+                    + "} recursively remaps itself in " + core::mode_to_name(mode) + ".") ;
             return static_cast<KeyCode>(first_src_code) ;
         }
         return remap_recursively(dst, first_src_code, mode) ;
@@ -41,18 +41,17 @@ namespace
 
 namespace vind
 {
-    namespace logmap {
-
-        void load_config() {
+    namespace core {
+        void load_keycodemap_config() {
             ModeKeySetMaps().swap(g_modemaps) ;
             ModeKeyCodeMap().swap(g_keycodemap) ;
 
-            std::vector<gmaps::UniqueMap> maps ;
+            std::vector<core::UniqueMap> maps ;
 
-            for(std::size_t i = 0 ; i < mode::mode_num() ; i ++) {
+            for(std::size_t i = 0 ; i < mode_num() ; i ++) {
                 maps.clear() ;
 
-                gmaps::get_maps(static_cast<mode::Mode>(i), maps) ;
+                core::get_maps(static_cast<Mode>(i), maps) ;
 
                 for(int j = 0 ; j < 256 ; j ++) {
                     g_keycodemap[i][j] = static_cast<KeyCode>(j) ;
@@ -103,7 +102,7 @@ namespace vind
             }
 
             // solve recursive remap
-            for(std::size_t i = 0 ; i < mode::mode_num() ; i ++) {
+            for(std::size_t i = 0 ; i < mode_num() ; i ++) {
                 auto& ar = g_keycodemap[i] ;
                 std::array<KeyCode, 256> resolved_ar{} ;
                 for(int j = 0 ; j < 256 ; j ++) {
@@ -113,10 +112,7 @@ namespace vind
             }
         }
 
-        KeyLog do_noremap(
-                const KeyLog& log,
-                mode::Mode mode) {
-
+        KeyLog do_keycode_noremap(const KeyLog& log, Mode mode) {
             KeyLog::Data mapped{} ;
             KeyLog::Data converted{} ;
 
@@ -143,10 +139,7 @@ namespace vind
             return KeyLog(std::move(converted)) ;
         }
 
-        bool do_keycode_map(
-                KeyCode key,
-                bool press_sync_state,
-                mode::Mode mode) {
+        bool do_keycode_map(KeyCode key, bool press_sync_state, Mode mode) {
             auto target = g_keycodemap[static_cast<int>(mode)][key] ;
             if(target == key) {
                 return false ;
@@ -156,8 +149,8 @@ namespace vind
                 util::press_keystate(target, true) ;
             }
             else {
-                if(keyabsorber::is_really_pressed(target) \
-                        || keyabsorber::is_pressed(target)) {
+                if(core::is_really_pressed(target) \
+                        || core::is_pressed(target)) {
                     util::release_keystate(target, true) ;
                 }
             }

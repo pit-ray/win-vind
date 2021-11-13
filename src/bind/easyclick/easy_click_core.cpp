@@ -117,7 +117,7 @@ namespace vind
             throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
         }
 
-        if(gparams::get_b("uiacachebuild")) {
+        if(core::get_b("uiacachebuild")) {
             auto root_elem = opt::AsyncUIACacheBuilder::get_root_element(hwnd) ;
             pimpl->scanner_.scan(root_elem, pimpl->elements_) ;
         }
@@ -201,8 +201,8 @@ namespace vind
         }
 
         //Release all keys in order to avoid the next matching right after.
-        for(KeyCode key : keyabsorber::get_pressed_list()) {
-            keyabsorber::release_virtually(key) ;
+        for(KeyCode key : core::get_pressed_list()) {
+            core::release_virtually(key) ;
         }
     }
 

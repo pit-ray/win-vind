@@ -64,12 +64,12 @@ namespace vind
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
     }
-    void SnapCurrentWindow2Left::sprocess(NTypeLogger& parent_lgr) {
+    void SnapCurrentWindow2Left::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SnapCurrentWindow2Left::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SnapCurrentWindow2Left::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -94,12 +94,12 @@ namespace vind
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
     }
-    void SnapCurrentWindow2Right::sprocess(NTypeLogger& parent_lgr) {
+    void SnapCurrentWindow2Right::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SnapCurrentWindow2Right::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SnapCurrentWindow2Right::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -124,12 +124,12 @@ namespace vind
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
     }
-    void SnapCurrentWindow2Top::sprocess(NTypeLogger& parent_lgr) {
+    void SnapCurrentWindow2Top::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SnapCurrentWindow2Top::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SnapCurrentWindow2Top::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -154,12 +154,12 @@ namespace vind
 
         snap_foreground_window(calc_half_size, next_monitor_pos) ;
     }
-    void SnapCurrentWindow2Bottom::sprocess(NTypeLogger& parent_lgr) {
+    void SnapCurrentWindow2Bottom::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void SnapCurrentWindow2Bottom::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SnapCurrentWindow2Bottom::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

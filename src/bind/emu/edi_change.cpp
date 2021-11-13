@@ -18,12 +18,11 @@ namespace vind
     : BindedFuncCreator("change_highlight_text")
     {}
     void ChangeHighlightText::sprocess() {
-        using namespace mode ;
         using util::pushup ;
         using namespace simpletxreg ;
 
         pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-        if(get_global_flags() & ModeFlags::VISUAL_LINE) {
+        if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
             set_register_type(RegType::Lines) ;
         }
         else {
@@ -31,12 +30,12 @@ namespace vind
         }
         ToInsert::sprocess(false) ;
     }
-    void ChangeHighlightText::sprocess(NTypeLogger& parent_lgr) {
+    void ChangeHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ChangeHighlightText::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ChangeHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -68,12 +67,12 @@ namespace vind
         }) ;
         ChangeUntilEOL::sprocess(repeat_num, &res) ;
     }
-    void ChangeLine::sprocess(NTypeLogger& parent_lgr) {
+    void ChangeLine::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void ChangeLine::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ChangeLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -87,7 +86,7 @@ namespace vind
             util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
         }) ;
 
-        if(gparams::get_b("charcache")) {
+        if(core::get_b("charcache")) {
             util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
         }
@@ -97,12 +96,12 @@ namespace vind
 
         ToInsert::sprocess(false) ;
     }
-    void ChangeChar::sprocess(NTypeLogger& parent_lgr) {
+    void ChangeChar::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void ChangeChar::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ChangeChar::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -154,12 +153,12 @@ namespace vind
         }
         ToInsert::sprocess(false) ;
     }
-    void ChangeUntilEOL::sprocess(NTypeLogger& parent_lgr) {
+    void ChangeUntilEOL::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void ChangeUntilEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ChangeUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 }

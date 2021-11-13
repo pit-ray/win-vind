@@ -29,16 +29,16 @@ namespace
     template <typename FuncT>
     inline void loop_for_keymatching(FuncT&& func) {
         //reset keys downed in order to call this function.
-        for(auto& key : keyabsorber::get_pressed_list()) {
+        for(auto& key : core::get_pressed_list()) {
             if(is_shift(key)) continue ;
             util::release_keystate(key) ;
         }
 
-        while(vind::update_background()) {
-            if(keyabsorber::is_pressed(KEYCODE_ESC)) {
+        while(core::update_background()) {
+            if(core::is_pressed(KEYCODE_ESC)) {
                 return ;
             }
-            auto log = keyabsorber::get_pressed_list() ;
+            auto log = core::get_pressed_list() ;
 
             if(!log.is_containing(KEYCODE_SHIFT)) {
                 //not shifted
@@ -47,7 +47,7 @@ namespace
                     //immediately will call "insert-mode", so release 'i'.
                     util::release_keystate(key) ;
 
-                    if(!keycodecvt::get_ascii(key)) {
+                    if(!core::get_ascii(key)) {
                         continue ;
                     }
                     if(func(key)) {
@@ -60,7 +60,7 @@ namespace
                 for(auto& key : log) {
                     if(is_shift(key)) continue ;
                     util::release_keystate(key) ;
-                    if(!keycodecvt::get_shifted_ascii(key)) {
+                    if(!core::get_shifted_ascii(key)) {
                         continue ;
                     }
                     if(func(key, true)) {
@@ -96,12 +96,12 @@ namespace vind
             return true ; //terminate looping
         }) ;
     }
-    void ReplaceChar::sprocess(NTypeLogger& parent_lgr) {
+    void ReplaceChar::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void ReplaceChar::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ReplaceChar::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -145,12 +145,12 @@ namespace vind
         opt::VCmdLine::reset() ;
         opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
     }
-    void ReplaceSequence::sprocess(NTypeLogger& parent_lgr) {
+    void ReplaceSequence::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void ReplaceSequence::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ReplaceSequence::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -169,20 +169,20 @@ namespace vind
 
         for(char c : res.str) {
             if(c >= 'a' && c <= 'z') {
-                util::pushup(KEYCODE_LSHIFT, keycodecvt::get_keycode(c)) ;
+                util::pushup(KEYCODE_LSHIFT, core::get_keycode(c)) ;
             }
             else if(c >= 'A' && c <= 'Z') {
                 constexpr char delta = 'a' - 'A' ;
-                util::pushup(keycodecvt::get_keycode(c + delta)) ;
+                util::pushup(core::get_keycode(c + delta)) ;
             }
             else {
-                auto keycode = keycodecvt::get_keycode(c) ;
+                auto keycode = core::get_keycode(c) ;
                 if(keycode) {
                     util::pushup(keycode) ;
                     continue ;
                 }
 
-                keycode = keycodecvt::get_shifted_keycode(c) ;
+                keycode = core::get_shifted_keycode(c) ;
                 if(keycode) {
                     util::pushup(KEYCODE_LSHIFT, keycode) ;
                     continue ;
@@ -190,12 +190,12 @@ namespace vind
             }
         }
     }
-    void SwitchCharCase::sprocess(NTypeLogger& parent_lgr) {
+    void SwitchCharCase::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void SwitchCharCase::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SwitchCharCase::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 }

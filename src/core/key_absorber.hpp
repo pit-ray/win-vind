@@ -7,8 +7,8 @@
 
 namespace vind
 {
-    namespace keyabsorber {
-        void install_hook() ;
+    namespace core {
+        void install_absorber_hook() ;
 
         void refresh_toggle_state() ;
 

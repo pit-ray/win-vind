@@ -9,11 +9,11 @@ namespace vind
     struct SyscmdSource : BindedFuncCreator<SyscmdSource> {
         explicit SyscmdSource() ;
         static void sprocess(
-                const std::filesystem::path& path=path::RC(),
+                const std::filesystem::path& path=core::RC(),
                 bool reload_config=false,
                 bool start_from_default=true) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 }
 

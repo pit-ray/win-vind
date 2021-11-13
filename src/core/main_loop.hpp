@@ -3,10 +3,10 @@
 
 namespace vind
 {
-    namespace mainloop {
-        void initialize() ;
-        void reconstruct() ;
-        void update() ;
+    namespace core {
+        void initialize_mainloop() ;
+        void reconstruct_mainloop() ;
+        void update_mainloop() ;
     }
 }
 

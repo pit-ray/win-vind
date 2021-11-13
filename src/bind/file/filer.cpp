@@ -19,12 +19,12 @@ namespace vind
     void Save::sprocess() {
         util::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
     }
-    void Save::sprocess(NTypeLogger& parent_lgr) {
+    void Save::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Save::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void Save::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -36,12 +36,12 @@ namespace vind
     void Open::sprocess() {
         util::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
     }
-    void Open::sprocess(NTypeLogger& parent_lgr) {
+    void Open::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void Open::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void Open::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
 
     }

@@ -118,7 +118,7 @@ namespace vind
             auto psl = create_shell_link() ;
 
             using namespace vind ;
-            psl->SetPath(path::MODULE_PATH().wstring().c_str()) ;
+            psl->SetPath(core::MODULE_PATH().wstring().c_str()) ;
 
             auto ppf = create_persist_file(psl.get()) ;
 

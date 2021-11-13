@@ -34,7 +34,7 @@ namespace
     using namespace vind ;
 
     std::filesystem::path get_shell_startupdirectory() {
-        auto dir = gparams::get_s("shell_startupdir") ;
+        auto dir = core::get_s("shell_startupdir") ;
         if(!dir.empty()) {
             std::filesystem::path dir_path(dir) ;
             dir_path.make_preferred() ;
@@ -49,9 +49,9 @@ namespace
         }
         catch(const std::exception&) {
             // If you open QuickAccess Page, the path getter will occur exception.
-            return path::HOME_PATH() ;
+            return core::HOME_PATH() ;
         }
-        return path::HOME_PATH() ;
+        return core::HOME_PATH() ;
     }
 }
 
@@ -65,17 +65,17 @@ namespace vind
     void StartShell::sprocess() {
         util::create_process(
                 get_shell_startupdirectory(),
-                gparams::get_s("shell")) ;
+                core::get_s("shell")) ;
 
         Sleep(100) ; //wait until the window is selectable
         JumpToActiveWindow::sprocess() ;
     }
-    void StartShell::sprocess(NTypeLogger& parent_lgr) {
+    void StartShell::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void StartShell::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void StartShell::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -92,7 +92,7 @@ namespace vind
                 return ;
             }
 
-            auto shell_cmd = gparams::get_s("shell") ;
+            auto shell_cmd = core::get_s("shell") ;
             std::string shell_cmd_flag {} ;
 
             auto lower_shell_cmd = util::A2a(shell_cmd) ;
@@ -100,10 +100,10 @@ namespace vind
                 shell_cmd_flag = "/c" ;
             }
             else { // shell style
-                shell_cmd_flag = gparams::get_s("shellcmdflag") ;
+                shell_cmd_flag = core::get_s("shellcmdflag") ;
             }
 
-            cmd = path::replace_magic(cmd) ;
+            cmd = core::replace_path_magic(cmd) ;
 
             if(cmd[last_char_pos] == ';') { //keep console window
                 cmd.erase(last_char_pos) ;
@@ -125,12 +125,12 @@ namespace vind
             JumpToActiveWindow::sprocess() ;
         }
     }
-    void StartExternal::sprocess(NTypeLogger& parent_lgr) {
+    void StartExternal::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess("shell") ;
         }
     }
-    void StartExternal::sprocess(const CharLogger& parent_lgr) {
+    void StartExternal::sprocess(const core::CharLogger& parent_lgr) {
         auto cmd = parent_lgr.to_str() ;
         sprocess(cmd.substr(1)) ;
     }
@@ -145,12 +145,12 @@ namespace vind
         Sleep(100) ; //wait until select window by OS.
         JumpToActiveWindow::sprocess() ;
     }
-    void StartExplorer::sprocess(NTypeLogger& parent_lgr) {
+    void StartExplorer::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void StartExplorer::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void StartExplorer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -163,12 +163,12 @@ namespace vind
         Sleep(100) ; //wait until select window by OS.
         JumpToActiveWindow::sprocess() ;
     }
-    void OpenStartMenu::sprocess(NTypeLogger& parent_lgr) {
+    void OpenStartMenu::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void OpenStartMenu::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void OpenStartMenu::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

@@ -29,12 +29,12 @@ namespace vind
         //thus, not use Message Copy
         util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
     }
-    void HotkeyCopy::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyCopy::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void HotkeyCopy::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyCopy::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -49,12 +49,12 @@ namespace vind
         //not selecting at paste.
         util::pushup(KEYCODE_LCTRL, KEYCODE_V) ;
     }
-    void HotkeyPaste::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyPaste::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void HotkeyPaste::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyPaste::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -67,12 +67,12 @@ namespace vind
         util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
         util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
     }
-    void HotkeyCut::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyCut::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void HotkeyCut::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyCut::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -89,12 +89,12 @@ namespace vind
         util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         util::pushup(KEYCODE_DELETE) ;
     }
-    void HotkeyDelete::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyDelete::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void HotkeyDelete::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyDelete::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -112,12 +112,12 @@ namespace vind
         util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         util::pushup(KEYCODE_BKSPACE) ;
     }
-    void HotkeyBackspace::sprocess(NTypeLogger& parent_lgr) {
+    void HotkeyBackspace::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void HotkeyBackspace::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void HotkeyBackspace::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

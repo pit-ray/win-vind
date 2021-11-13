@@ -13,12 +13,12 @@ namespace vind
     void CloseCurrentWindow::sprocess() {
         util::pushup(KEYCODE_LALT, KEYCODE_F4) ;
     }
-    void CloseCurrentWindow::sprocess(NTypeLogger& parent_lgr) {
+    void CloseCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CloseCurrentWindow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void CloseCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

@@ -1,9 +1,9 @@
 #include "edi_motion.hpp"
 
-#include "bind/func_finder.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
 #include "core/entry.hpp"
+#include "core/func_finder.hpp"
 #include "core/key_absorber.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
@@ -20,11 +20,11 @@
 namespace
 {
     using namespace vind ;
-    bool select_by_motion(std::size_t caller_self_id, FuncFinder& ff) {
-        NTypeLogger lgr ;
-        keyabsorber::InstantKeyAbsorber ika ;
+    bool select_by_motion(std::size_t caller_self_id, core::FuncFinder& ff) {
+        core::NTypeLogger lgr ;
+        core::InstantKeyAbsorber ika ;
 
-        while(vind::update_background()) {
+        while(core::update_background()) {
             auto result = lgr.logging_state() ;
             if(NTYPE_EMPTY(result)) {
                 continue ;
@@ -35,15 +35,15 @@ namespace
                 continue ;
             }
 
-            using mode::Mode ;
-            using mode::ModeFlags ;
+            using core::Mode ;
+            using core::ModeFlags ;
             auto parser = ff.find_parser_with_transition(
                     lgr.latest(),
                     caller_self_id,
                     Mode::EDI_VISUAL) ;
             if(parser && parser->get_func()->is_for_moving_caret()) {
                 if(parser->is_accepted()) {
-                    mode::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
+                    core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
                     parser->get_func()->process(lgr) ;
                     return true ;
                 }
@@ -70,21 +70,21 @@ namespace
     //
     bool select_by_motion(
             std::size_t caller_self_id,
-            FuncFinder& ff,
-            FuncFinder&parent_ff,
-            NTypeLogger& parent_lgr) {
+            core::FuncFinder& ff,
+            core::FuncFinder&parent_ff,
+            core::NTypeLogger& parent_lgr) {
 
-        using mode::Mode ;
-        using mode::ModeFlags ;
+        using core::Mode ;
+        using core::ModeFlags ;
         ff.reset_parser_states(Mode::EDI_VISUAL) ;
         parent_ff.reset_parser_states() ;
         parent_ff.transition_parser_states_in_batch(parent_lgr) ;
 
-        NTypeLogger lgr ;
+        core::NTypeLogger lgr ;
 
-        keyabsorber::InstantKeyAbsorber ika ;
+        core::InstantKeyAbsorber ika ;
 
-        while(vind::update_background()) {
+        while(core::update_background()) {
             auto result = lgr.logging_state() ;
             auto parent_result = parent_lgr.logging_state() ;
             if(NTYPE_EMPTY(result) && NTYPE_EMPTY(parent_result)) {
@@ -115,7 +115,7 @@ namespace
                     Mode::EDI_VISUAL) ;
             if(parser_2) {
                 if(parser_2->is_accepted() && parser_2->get_func()->is_for_moving_caret()) {
-                    mode::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
+                    core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
                     repeater::safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
                         f->process(lgr) ;
                     }) ;
@@ -143,8 +143,8 @@ namespace vind
 {
     //YankWithMotion
     struct YankWithMotion::Impl {
-        FuncFinder funcfinder_ ;
-        FuncFinder parent_funcfinder_ ;
+        core::FuncFinder funcfinder_ ;
+        core::FuncFinder parent_funcfinder_ ;
 
         explicit Impl()
         : funcfinder_(),
@@ -168,7 +168,7 @@ namespace vind
             pimpl->copy() ;
         }
     }
-    void YankWithMotion::sprocess(NTypeLogger& parent_lgr) const {
+    void YankWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             if(select_by_motion(id(), pimpl->funcfinder_,
                         pimpl->parent_funcfinder_, parent_lgr)) {
@@ -176,7 +176,7 @@ namespace vind
             }
         }
     }
-    void YankWithMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void YankWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void YankWithMotion::reconstruct() {
@@ -186,8 +186,8 @@ namespace vind
 
     //DeleteWithMotion
     struct DeleteWithMotion::Impl {
-        FuncFinder funcfinder_ ;
-        FuncFinder parent_funcfinder_ ;
+        core::FuncFinder funcfinder_ ;
+        core::FuncFinder parent_funcfinder_ ;
 
         explicit Impl()
         : funcfinder_(),
@@ -211,7 +211,7 @@ namespace vind
             pimpl->remove() ;
         }
     }
-    void DeleteWithMotion::sprocess(NTypeLogger& parent_lgr) const {
+    void DeleteWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             if(select_by_motion(id(), pimpl->funcfinder_,
                         pimpl->funcfinder_, parent_lgr)) {
@@ -219,7 +219,7 @@ namespace vind
             }
         }
     }
-    void DeleteWithMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void DeleteWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void DeleteWithMotion::reconstruct() {
@@ -230,8 +230,8 @@ namespace vind
 
     //ChangeWithMotion
     struct ChangeWithMotion::Impl {
-        FuncFinder funcfinder_ ;
-        FuncFinder parent_funcfinder_ ;
+        core::FuncFinder funcfinder_ ;
+        core::FuncFinder parent_funcfinder_ ;
 
         explicit Impl()
         : funcfinder_(),
@@ -255,7 +255,7 @@ namespace vind
             pimpl->remove_and_insert() ;
         }
     }
-    void ChangeWithMotion::sprocess(NTypeLogger& parent_lgr) const {
+    void ChangeWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             if(select_by_motion(id(), pimpl->funcfinder_,
                         pimpl->parent_funcfinder_, parent_lgr)) {
@@ -263,7 +263,7 @@ namespace vind
             }
         }
     }
-    void ChangeWithMotion::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ChangeWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
     void ChangeWithMotion::reconstruct() {

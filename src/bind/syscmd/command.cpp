@@ -22,7 +22,7 @@ namespace vind
             return ;
         }
 
-        auto [arg1, arg2] = rcparser::extract_double_args(args) ;
+        auto [arg1, arg2] = core::extract_double_args(args) ;
         if(arg1.empty()) {
             opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
             return ;
@@ -32,21 +32,21 @@ namespace vind
             return ;
         }
 
-        gmaps::noremap(arg1, arg2, mode::Mode::COMMAND) ;
+        core::do_noremap(arg1, arg2, core::Mode::COMMAND) ;
 
         if(reload_config) {
-            vind::reconstruct_all_components() ;
+            core::reconstruct_all_components() ;
         }
     }
-    void SyscmdCommand::sprocess(NTypeLogger&) {
+    void SyscmdCommand::sprocess(core::NTypeLogger&) {
         return ;
     }
-    void SyscmdCommand::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdCommand::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) {
             throw RUNTIME_EXCEPT("Empty command") ;
         }
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+        auto [cmd, args] = core::divide_cmd_and_args(str) ;
         sprocess(args, true) ;
     }
 
@@ -64,27 +64,27 @@ namespace vind
             return ;
         }
 
-        auto arg = rcparser::extract_single_arg(args) ;
+        auto arg = core::extract_single_arg(args) ;
         if(arg.empty()) {
             opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             return ;
         }
 
-        gmaps::unmap(arg, mode::Mode::COMMAND) ;
+        core::do_unmap(arg, core::Mode::COMMAND) ;
 
         if(reload_config) {
-            vind::reconstruct_all_components() ;
+            core::reconstruct_all_components() ;
         }
     }
-    void SyscmdDelcommand::sprocess(NTypeLogger&) {
+    void SyscmdDelcommand::sprocess(core::NTypeLogger&) {
     }
-    void SyscmdDelcommand::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdDelcommand::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) {
             throw RUNTIME_EXCEPT("Empty command") ;
         }
 
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+        auto [cmd, args] = core::divide_cmd_and_args(str) ;
         sprocess(args, true) ;
     }
 
@@ -93,20 +93,20 @@ namespace vind
     : BindedFuncCreator("system_command_comclear")
     {}
     void SyscmdComclear::sprocess(bool reload_config) {
-        gmaps::mapclear(mode::Mode::COMMAND) ;
+        core::do_mapclear(core::Mode::COMMAND) ;
         if(reload_config) {
-            vind::reconstruct_all_components() ;
+            core::reconstruct_all_components() ;
         }
     }
-    void SyscmdComclear::sprocess(NTypeLogger&) {
+    void SyscmdComclear::sprocess(core::NTypeLogger&) {
     }
-    void SyscmdComclear::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdComclear::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) {
             throw RUNTIME_EXCEPT("Empty command") ;
         }
 
-        auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+        auto [cmd, args] = core::divide_cmd_and_args(str) ;
         if(!args.empty()) {
             opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             return ;

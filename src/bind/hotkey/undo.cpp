@@ -34,7 +34,7 @@ namespace vind
             util::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;
         }) ;
     }
-    void Redo::sprocess(NTypeLogger& parent_lgr) const {
+    void Redo::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -43,7 +43,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void Redo::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void Redo::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 
@@ -67,7 +67,7 @@ namespace vind
             util::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;
         }) ;
     }
-    void Undo::sprocess(NTypeLogger& parent_lgr) const {
+    void Undo::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -76,7 +76,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void Undo::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void Undo::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 }

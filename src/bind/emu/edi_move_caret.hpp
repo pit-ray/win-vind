@@ -12,8 +12,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;
@@ -35,8 +35,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;
@@ -58,8 +58,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;
@@ -81,8 +81,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;
@@ -105,8 +105,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;
@@ -128,8 +128,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;
@@ -152,8 +152,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;
@@ -175,8 +175,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         bool is_for_moving_caret() const noexcept override {
             return true ;

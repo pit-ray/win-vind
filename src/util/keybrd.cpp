@@ -84,18 +84,18 @@ namespace vind
         }
 
         void ScopedKey::press() {
-            keyabsorber::open_port(pimpl->key) ;
+            core::open_port(pimpl->key) ;
             send_event(true) ;
-            keyabsorber::close_all_ports() ;
+            core::close_all_ports() ;
             if(!is_pressed_actually(pimpl->key)) {
                 throw RUNTIME_EXCEPT("You sent a key pressing event successfully, but the state of its key was not changed.") ;
             }
         }
 
         void ScopedKey::release() {
-            keyabsorber::open_port(pimpl->key) ;
+            core::open_port(pimpl->key) ;
             send_event(false) ;
-            keyabsorber::close_all_ports() ;
+            core::close_all_ports() ;
             if(is_pressed_actually(pimpl->key)) {
                 throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
             }
@@ -115,7 +115,7 @@ namespace vind
             }
 
             if(enable_vhook) {
-                keyabsorber::release_virtually(key) ;
+                core::release_virtually(key) ;
             }
         }
 
@@ -132,14 +132,14 @@ namespace vind
             }
 
             if(enable_vhook) {
-                keyabsorber::press_virtually(key) ;
+                core::press_virtually(key) ;
             }
         }
 
         void pushup_core(std::initializer_list<KeyCode>&& initl) {
-            using keyabsorber::close_all_ports ;
-            using keyabsorber::open_port ;
-            using keyabsorber::open_some_ports ;
+            using core::close_all_ports ;
+            using core::open_port ;
+            using core::open_some_ports ;
 
             static INPUT ins[6] = {
                 {INPUT_KEYBOARD},
@@ -150,7 +150,7 @@ namespace vind
                 {INPUT_KEYBOARD}
             } ;
 
-            const auto pre_state = keyabsorber::get_pressed_list() ;
+            const auto pre_state = core::get_pressed_list() ;
 
             //optimizing for 1
             switch(initl.size()) {
@@ -240,7 +240,7 @@ namespace vind
 
             close_all_ports() ;
 
-            for(auto key : (pre_state - keyabsorber::get_pressed_list())) {
+            for(auto key : (pre_state - core::get_pressed_list())) {
                 press_keystate(key) ;
             }
         }

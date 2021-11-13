@@ -43,9 +43,9 @@ namespace vind
     ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
     void ScrollUp::sprocess(unsigned int repeat_num) const {
-        util::vscroll(gparams::get_i("vscroll_speed") * repeat_num) ;
+        util::vscroll(core::get_i("vscroll_speed") * repeat_num) ;
     }
-    void ScrollUp::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollUp::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr_.reset() ;
@@ -54,7 +54,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollUp::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollUp::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -74,9 +74,9 @@ namespace vind
     ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
 
     void ScrollDown::sprocess(unsigned int repeat_num) const {
-        util::vscroll(-gparams::get_i("vscroll_speed") * repeat_num) ;
+        util::vscroll(-core::get_i("vscroll_speed") * repeat_num) ;
     }
-    void ScrollDown::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollDown::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr_.reset() ;
@@ -85,7 +85,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollDown::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollDown::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -106,9 +106,9 @@ namespace vind
 
     void ScrollUpHalfPage::sprocess(unsigned int repeat_num) const {
         util::vscroll(0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
-                gparams::get_f("vscroll_pageratio")) ;
+                core::get_f("vscroll_pageratio")) ;
     }
-    void ScrollUpHalfPage::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollUpHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -117,7 +117,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollUpHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollUpHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
@@ -138,9 +138,9 @@ namespace vind
 
     void ScrollDownHalfPage::sprocess(unsigned int repeat_num) const {
         util::vscroll(-0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
-                gparams::get_f("vscroll_pageratio")) ;
+                core::get_f("vscroll_pageratio")) ;
     }
-    void ScrollDownHalfPage::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollDownHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -149,7 +149,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollDownHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollDownHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
@@ -170,9 +170,9 @@ namespace vind
 
     void ScrollUpOnePage::sprocess(unsigned int repeat_num) const {
         util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
-                gparams::get_f("vscroll_pageratio")) ;
+                core::get_f("vscroll_pageratio")) ;
     }
-    void ScrollUpOnePage::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollUpOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -181,7 +181,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollUpOnePage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollUpOnePage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
@@ -202,9 +202,9 @@ namespace vind
 
     void ScrollDownOnePage::sprocess(unsigned int repeat_num) const {
         util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
-                -gparams::get_f("vscroll_pageratio")) ;
+                -core::get_f("vscroll_pageratio")) ;
     }
-    void ScrollDownOnePage::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollDownOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -213,7 +213,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollDownOnePage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollDownOnePage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
@@ -234,9 +234,9 @@ namespace vind
     ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
 
     void ScrollLeft::sprocess(unsigned int repeat_num) const {
-        util::hscroll(-gparams::get_i("hscroll_speed") * repeat_num) ;
+        util::hscroll(-core::get_i("hscroll_speed") * repeat_num) ;
     }
-    void ScrollLeft::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollLeft::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -245,7 +245,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
@@ -265,9 +265,9 @@ namespace vind
     ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
 
     void ScrollRight::sprocess(unsigned int repeat_num) const {
-        util::hscroll(gparams::get_f("hscroll_speed") * repeat_num) ;
+        util::hscroll(core::get_f("hscroll_speed") * repeat_num) ;
     }
-    void ScrollRight::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollRight::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -276,7 +276,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
@@ -297,9 +297,9 @@ namespace vind
 
     void ScrollLeftHalfPage::sprocess(unsigned int repeat_num) const {
         util::hscroll(-0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
-                gparams::get_f("hscroll_pageratio")) ;
+                core::get_f("hscroll_pageratio")) ;
     }
-    void ScrollLeftHalfPage::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollLeftHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -308,7 +308,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollLeftHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollLeftHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 
@@ -329,9 +329,9 @@ namespace vind
 
     void ScrollRightHalfPage::sprocess(unsigned int repeat_num) const {
         util::hscroll(0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
-                gparams::get_f("hscroll_pageratio")) ;
+                core::get_f("hscroll_pageratio")) ;
     }
-    void ScrollRightHalfPage::sprocess(NTypeLogger& parent_lgr) const {
+    void ScrollRightHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->timer_.reset() ;
@@ -340,7 +340,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void ScrollRightHalfPage::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ScrollRightHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
     }
 }

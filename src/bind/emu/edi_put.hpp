@@ -13,8 +13,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit PutAfter() ;
         virtual ~PutAfter() noexcept ;
@@ -36,8 +36,8 @@ namespace vind
 
     public:
         void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit PutBefore() ;
         virtual ~PutBefore() noexcept ;

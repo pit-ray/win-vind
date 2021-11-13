@@ -50,14 +50,14 @@ namespace vind
         */
 #endif
     }
-    void TeleportOverVDesktop::sprocess(NTypeLogger& parent_lgr) {
+    void TeleportOverVDesktop::sprocess(core::NTypeLogger& parent_lgr) {
 #ifdef DEBUG
         if(!parent_lgr.is_long_pressing()) {
             sprocess(1) ;
         }
 #endif
     }
-    void TeleportOverVDesktop::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void TeleportOverVDesktop::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
 #ifdef DEBUG
         sprocess(1) ;
 #endif

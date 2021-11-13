@@ -10,8 +10,8 @@ namespace vind
     struct MyBinding : public BindedFuncCreator<MyBinding> {
         explicit MyBinding() ;
         static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 }
 

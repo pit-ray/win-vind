@@ -45,7 +45,7 @@ namespace vind
             }) ;
         }
     }
-    void PutAfter::sprocess(NTypeLogger& parent_lgr) const {
+    void PutAfter::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -54,7 +54,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void PutAfter::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void PutAfter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -91,7 +91,7 @@ namespace vind
             }) ;
         }
     }
-    void PutBefore::sprocess(NTypeLogger& parent_lgr) const {
+    void PutBefore::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -100,7 +100,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void PutBefore::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void PutBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 }

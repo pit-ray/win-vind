@@ -27,12 +27,12 @@ namespace vind
         util::pushup(KEYCODE_HOME) ;
         ToInsert::sprocess(vclmodeout) ;
     }
-    void ToInsertBOL::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertBOL::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToInsertBOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertBOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -45,12 +45,12 @@ namespace vind
         util::pushup(KEYCODE_RIGHT) ;
         ToInsert::sprocess(vclmodeout) ;
     }
-    void Change2EdiBkInsert::sprocess(NTypeLogger& parent_lgr) {
+    void Change2EdiBkInsert::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void Change2EdiBkInsert::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void Change2EdiBkInsert::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -63,12 +63,12 @@ namespace vind
         util::pushup(KEYCODE_END) ;
         ToInsert::sprocess(vclmodeout) ;
     }
-    void ToInsertEOL::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertEOL::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToInsertEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -82,12 +82,12 @@ namespace vind
         util::pushup(KEYCODE_ENTER) ;
         ToInsert::sprocess(vclmodeout) ;
     }
-    void ToInsertNLBelow::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertNLBelow::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToInsertNLBelow::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertNLBelow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 
@@ -102,12 +102,12 @@ namespace vind
         util::pushup(KEYCODE_UP) ;
         ToInsert::sprocess(vclmodeout) ;
     }
-    void ToInsertNLAbove::sprocess(NTypeLogger& parent_lgr) {
+    void ToInsertNLAbove::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(true) ;
         }
     }
-    void ToInsertNLAbove::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void ToInsertNLAbove::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(true) ;
     }
 }

@@ -16,12 +16,12 @@ namespace vind
             util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
         }) ;
     }
-    void SwitchVDesktop2Left::sprocess(NTypeLogger& parent_lgr) {
+    void SwitchVDesktop2Left::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void SwitchVDesktop2Left::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SwitchVDesktop2Left::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -35,12 +35,12 @@ namespace vind
             util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
         }) ;
     }
-    void SwitchVDesktop2Right::sprocess(NTypeLogger& parent_lgr) {
+    void SwitchVDesktop2Right::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void SwitchVDesktop2Right::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void SwitchVDesktop2Right::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -52,12 +52,12 @@ namespace vind
     void CreateNewVDesktop::sprocess() {
         util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_D) ;
     }
-    void CreateNewVDesktop::sprocess(NTypeLogger& parent_lgr) {
+    void CreateNewVDesktop::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CreateNewVDesktop::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void CreateNewVDesktop::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -69,12 +69,12 @@ namespace vind
     void CloseCurrentVDesktop::sprocess() {
         util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_F4) ;
     }
-    void CloseCurrentVDesktop::sprocess(NTypeLogger& parent_lgr) {
+    void CloseCurrentVDesktop::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void CloseCurrentVDesktop::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void CloseCurrentVDesktop::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -86,12 +86,12 @@ namespace vind
     void TaskView::sprocess() {
         util::pushup(KEYCODE_LWIN, KEYCODE_TAB) ;
     }
-    void TaskView::sprocess(NTypeLogger& parent_lgr) {
+    void TaskView::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void TaskView::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void TaskView::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 }

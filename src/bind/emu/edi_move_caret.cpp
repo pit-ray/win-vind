@@ -12,6 +12,7 @@
 #include "util/interval_timer.hpp"
 #include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
+#include "util/string.hpp"
 
 
 namespace vind
@@ -31,7 +32,7 @@ namespace vind
     MoveCaretLeft& MoveCaretLeft::operator=(MoveCaretLeft&&) = default ;
 
     void MoveCaretLeft::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
             }) ;
@@ -42,7 +43,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretLeft::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretLeft::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -51,7 +52,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretLeft::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -71,7 +72,7 @@ namespace vind
     MoveCaretRight& MoveCaretRight::operator=(MoveCaretRight&&) = default ;
 
     void MoveCaretRight::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
             }) ;
@@ -82,7 +83,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretRight::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretRight::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -91,7 +92,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretRight::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -111,7 +112,7 @@ namespace vind
     MoveCaretUp& MoveCaretUp::operator=(MoveCaretUp&&) = default ;
 
     void MoveCaretUp::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_EOL2BOL() ;
             }
@@ -126,7 +127,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretUp::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretUp::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -135,11 +136,11 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretUp::sprocess(const CharLogger& parent_lgr) const {
+    void MoveCaretUp::sprocess(const core::CharLogger& parent_lgr) const {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
 
-        if(auto num = keyloggerutil::extract_num(str)) {
+        if(auto num = util::extract_num(str)) {
             sprocess(num) ;
         }
         else {
@@ -163,7 +164,7 @@ namespace vind
     MoveCaretDown& MoveCaretDown::operator=(MoveCaretDown&&) = default ;
 
     void MoveCaretDown::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             if(textselect::is_first_line_selection()) {
                 textselect::select_line_BOL2EOL() ;
             }
@@ -182,7 +183,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretDown::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretDown::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -191,11 +192,11 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretDown::sprocess(const CharLogger& parent_lgr) const {
+    void MoveCaretDown::sprocess(const core::CharLogger& parent_lgr) const {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
 
-        if(auto num = keyloggerutil::extract_num(str)) {
+        if(auto num = util::extract_num(str)) {
             sprocess(num) ;
         }
         else {
@@ -219,7 +220,7 @@ namespace vind
     MoveCaretWordForward& MoveCaretWordForward::operator=(MoveCaretWordForward&&) = default ;
 
     void MoveCaretWordForward::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
@@ -230,7 +231,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretWordForward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretWordForward::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -239,7 +240,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretWordForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -259,7 +260,7 @@ namespace vind
     MoveCaretWordBackward& MoveCaretWordBackward::operator=(MoveCaretWordBackward&&) = default ;
 
     void MoveCaretWordBackward::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;
@@ -270,7 +271,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretWordBackward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretWordBackward::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -279,7 +280,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretWordBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -299,7 +300,7 @@ namespace vind
     MoveCaretNonBlankWordForward& MoveCaretNonBlankWordForward::operator=(MoveCaretNonBlankWordForward&&) = default ;
 
     void MoveCaretNonBlankWordForward::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
             }) ;
@@ -310,7 +311,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretNonBlankWordForward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretNonBlankWordForward::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
             pimpl->ksr.reset() ;
@@ -319,7 +320,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretNonBlankWordForward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretNonBlankWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 
@@ -339,7 +340,7 @@ namespace vind
     MoveCaretNonBlankWordBackward& MoveCaretNonBlankWordBackward::operator=(MoveCaretNonBlankWordBackward&&) = default ;
 
     void MoveCaretNonBlankWordBackward::sprocess(unsigned int repeat_num) const {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             repeater::safe_for(repeat_num, [] {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
             }) ;
@@ -350,7 +351,7 @@ namespace vind
             }) ;
         }
     }
-    void MoveCaretNonBlankWordBackward::sprocess(NTypeLogger& parent_lgr) const {
+    void MoveCaretNonBlankWordBackward::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
@@ -358,7 +359,7 @@ namespace vind
             sprocess(1) ;
         }
     }
-    void MoveCaretNonBlankWordBackward::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void MoveCaretNonBlankWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess(1) ;
     }
 }

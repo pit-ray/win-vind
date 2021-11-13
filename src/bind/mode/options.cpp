@@ -28,7 +28,7 @@ namespace vind
 
             std::vector<util::SmartElement> editables{} ;
 
-            if(gparams::get_b("uiacachebuild")) {
+            if(core::get_b("uiacachebuild")) {
                 auto root_elem = opt::AsyncUIACacheBuilder::get_root_element(hwnd) ;
                 instance.scan(root_elem, editables) ;
             }

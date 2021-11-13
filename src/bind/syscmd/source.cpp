@@ -12,6 +12,7 @@
 #include "core/rc_parser.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
+#include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
 
 #include "command.hpp"
@@ -36,7 +37,7 @@ namespace
     auto load_remote_vindrc(Str&& args) {
         using namespace vind ;
 
-        static const auto repo_store_path = path::ROOT_PATH() / "repo" ;
+        static const auto repo_store_path = core::ROOT_PATH() / "repo" ;
 
         if(!std::filesystem::exists(repo_store_path)) {
             std::filesystem::create_directories(repo_store_path) ;
@@ -54,7 +55,7 @@ namespace
             const auto remote_url = "https://github.com/" + args + ".git" ;
 
             util::create_process(
-                path::HOME_PATH(), "git",
+                core::HOME_PATH(), "git",
                 util::concat_args("clone", "--depth=1", remote_url, target_repo_path.u8string()),
                 false, true) ;
         }
@@ -67,9 +68,11 @@ namespace
 
 
     template <typename Str>
-    void do_runcommand(vind::rcparser::RunCommandsIndex rcindex, Str&& args) {
+    void do_runcommand(
+            vind::core::RunCommandsIndex rcindex,
+            Str&& args) {
         using namespace vind ;
-        using vind::rcparser::RunCommandsIndex ;
+        using core::RunCommandsIndex ;
 
         switch(rcindex) {
             case RunCommandsIndex::SET: {
@@ -97,9 +100,10 @@ namespace
                     throw std::invalid_argument("source") ;
                 }
 
-                auto args_path = std::filesystem::u8path(path::replace_magic(args)) ;
+                auto args_path = std::filesystem::u8path(
+                        core::replace_path_magic(args)) ;
 
-                if(std::filesystem::equivalent(path::RC(), args_path)) {
+                if(std::filesystem::equivalent(core::RC(), args_path)) {
                     throw std::invalid_argument(
                             "Recursive references to the same .vindrc are not allowed.") ;
                 }
@@ -116,19 +120,20 @@ namespace
             }
         }
 
-        using mode::Mode ;
-        auto mode = static_cast<Mode>(rcindex & RunCommandsIndex::MASK_MODE) ;
+        using core::Mode ;
+        auto mode = static_cast<Mode>(
+                util::enum_and(rcindex, RunCommandsIndex::MASK_MODE)) ;
 
-        if(rcindex & RunCommandsIndex::MASK_MAP) {
+        if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAP)) {
             SyscmdMap::sprocess(mode, std::forward<Str>(args), false) ;
         }
-        else if(rcindex & RunCommandsIndex::MASK_NOREMAP) {
+        else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_NOREMAP)) {
             SyscmdNoremap::sprocess(mode, std::forward<Str>(args), false) ;
         }
-        else if(rcindex & RunCommandsIndex::MASK_UNMAP) {
+        else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_UNMAP)) {
             SyscmdUnmap::sprocess(mode, std::forward<Str>(args), false) ;
         }
-        else if(rcindex & RunCommandsIndex::MASK_MAPCLEAR) {
+        else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {
                 throw std::invalid_argument("mapclear") ;
             }
@@ -146,9 +151,9 @@ namespace vind
     SyscmdSource::SyscmdSource()
     : BindedFuncCreator("system_command_source")
     {
-        std::ifstream ifs(path::RC()) ;
+        std::ifstream ifs(core::RC()) ;
         if(!ifs.is_open()) {
-            std::ofstream ofs(path::RC(), std::ios::trunc) ;
+            std::ofstream ofs(core::RC(), std::ios::trunc) ;
         }
     }
 
@@ -158,8 +163,8 @@ namespace vind
             bool start_from_default) {
 
         auto return_to_default = [] {
-            gparams::reset() ;
-            gmaps::reset() ;
+            core::reset_all_params() ;
+            core::reset_all_maps() ;
         } ;
 
         if(start_from_default) {
@@ -178,14 +183,14 @@ namespace vind
             lnum ++ ;
 
             try {
-                rcparser::remove_dbquote_comment(aline) ;
+                core::remove_dbquote_comment(aline) ;
 
-                auto [cmd, args] = rcparser::divide_cmd_and_args(aline) ;
+                auto [cmd, args] = core::divide_cmd_and_args(aline) ;
                 if(cmd.empty()) {
                     continue ;
                 }
 
-                auto rcindex = rcparser::parse_run_command(cmd) ;
+                auto rcindex = core::parse_run_command(cmd) ;
 
                 do_runcommand(rcindex, args) ;
             }
@@ -240,23 +245,23 @@ namespace vind
         }
 
         if(reload_config) {
-            vind::reconstruct_all_components() ; // Apply settings
+            core::reconstruct_all_components() ; // Apply settings
         }
     }
-    void SyscmdSource::sprocess(NTypeLogger&) {
+    void SyscmdSource::sprocess(core::NTypeLogger&) {
     }
-    void SyscmdSource::sprocess(const CharLogger& parent_lgr) {
+    void SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
         try {
             auto str = parent_lgr.to_str() ;
             if(str.empty()) {
                 throw RUNTIME_EXCEPT("Empty command") ;
             }
-            auto [cmd, args] = rcparser::divide_cmd_and_args(str) ;
+            auto [cmd, args] = core::divide_cmd_and_args(str) ;
             if(args.empty()) {
-                sprocess(path::RC(), true) ;
+                sprocess(core::RC(), true) ;
             }
             else {
-                sprocess(path::replace_magic(args), true) ;
+                sprocess(core::replace_path_magic(args), true) ;
             }
         }
         // If received syntax error as std::logic_error,

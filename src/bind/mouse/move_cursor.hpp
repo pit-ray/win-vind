@@ -12,8 +12,8 @@ namespace vind
 
     public:
         void sprocess(int delta=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit MoveCursorLeft() ;
         virtual ~MoveCursorLeft() noexcept ;
@@ -34,8 +34,8 @@ namespace vind
 
     public:
         void sprocess(int delta=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit MoveCursorRight() ;
         virtual ~MoveCursorRight() noexcept ;
@@ -56,8 +56,8 @@ namespace vind
 
     public:
         void sprocess(int delta=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit MoveCursorUp() ;
         virtual ~MoveCursorUp() noexcept ;
@@ -78,8 +78,8 @@ namespace vind
 
     public:
         void sprocess(int delta=1) const ;
-        void sprocess(NTypeLogger& parent_lgr) const ;
-        void sprocess(const CharLogger& parent_lgr) const ;
+        void sprocess(core::NTypeLogger& parent_lgr) const ;
+        void sprocess(const core::CharLogger& parent_lgr) const ;
 
         explicit MoveCursorDown() ;
         virtual ~MoveCursorDown() noexcept ;

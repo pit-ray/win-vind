@@ -5,8 +5,8 @@
 
 namespace vind
 {
-    namespace keybrd_layout {
-        std::filesystem::path get_layout_filepath(LANGID id) {
+    namespace core {
+        std::filesystem::path get_keylayout_filepath(LANGID id) {
 
             std::string filename ;
             switch(id) {
@@ -26,7 +26,7 @@ namespace vind
                     break ;
             }
 
-            return path::DEFAULT_CONFIG_PATH() / filename ;
+            return core::DEFAULT_CONFIG_PATH() / filename ;
         }
     }
 }

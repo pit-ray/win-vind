@@ -8,15 +8,15 @@ namespace vind
     struct RotateWindows : public BindedFuncCreator<RotateWindows> {
         explicit RotateWindows() ;
         static void sprocess(unsigned int repeat_num=1) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 
     struct RotateWindowsInReverse: public BindedFuncCreator<RotateWindowsInReverse> {
         explicit RotateWindowsInReverse() ;
         static void sprocess(unsigned int repeat_num=1) ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 }
 

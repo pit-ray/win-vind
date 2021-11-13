@@ -33,29 +33,29 @@ namespace vind
         void release_fake_press() {
             //correct the state to avoid cases that a virtual key is judged to be pressed,
             //though a real key is released.
-            for(auto& key : keyabsorber::get_pressed_list()) {
-                if(!keyabsorber::is_really_pressed(key)) {
-                    keyabsorber::release_virtually(key) ;
+            for(auto& key : core::get_pressed_list()) {
+                if(!core::is_really_pressed(key)) {
+                    core::release_virtually(key) ;
                 }
             }
         }
 
         void calibrate_absorber_state() {
-            auto buf = keyabsorber::get_pressed_list() ;
+            auto buf = core::get_pressed_list() ;
             if(!buf.empty()) {
-                if(keyabsorber::is_absorbed()) {
-                    keyabsorber::open_some_ports(buf.get()) ;
+                if(core::is_absorbed()) {
+                    core::open_some_ports(buf.get()) ;
                 }
                 for(auto& key : buf) {
                     util::release_keystate(key) ;
                 }
-                if(keyabsorber::is_absorbed()) {
-                    keyabsorber::close_all_ports() ;
-                    keyabsorber::absorb() ;
+                if(core::is_absorbed()) {
+                    core::close_all_ports() ;
+                    core::absorb() ;
                 }
                 else {
-                    keyabsorber::close_all_ports() ;
-                    keyabsorber::unabsorb() ;
+                    core::close_all_ports() ;
+                    core::unabsorb() ;
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace vind
         }
     }
 
-    void BindedFunc::process(NTypeLogger& parent_lgr) const {
+    void BindedFunc::process(core::NTypeLogger& parent_lgr) const {
         try {
             do_process(parent_lgr) ;
             pimpl->release_fake_press() ;
@@ -119,7 +119,7 @@ namespace vind
         }
     }
 
-    void BindedFunc::process(const CharLogger& parent_lgr) const {
+    void BindedFunc::process(const core::CharLogger& parent_lgr) const {
         try {
             do_process(parent_lgr) ;
             pimpl->release_fake_press() ;

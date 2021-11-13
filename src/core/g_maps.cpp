@@ -41,7 +41,7 @@ namespace
     }
 
 
-    using MapModeList = ModeArray<std::unordered_map<std::size_t, gmaps::UniqueMap>> ;
+    using MapModeList = ModeArray<std::unordered_map<std::size_t, core::UniqueMap>> ;
     MapModeList g_mode_maps{} ;
 
     using namespace nlohmann ;
@@ -51,7 +51,8 @@ namespace
 
 namespace vind
 {
-    namespace gmaps {
+    namespace core
+    {
         struct UniqueMap::Impl {
             Command in_ ;
             std::string outstr_ ;
@@ -63,7 +64,7 @@ namespace vind
                     T1&& in,
                     T2&& out,
                     MapType expect_type)
-            : in_(bindparser::parse_string_binding(std::forward<T1>(in))),
+            : in_(parse_string_binding(std::forward<T1>(in))),
               outstr_(std::forward<T2>(out)),
               out_(),
               type_(expect_type)
@@ -101,7 +102,7 @@ namespace vind
             }
 
             if(pimpl->type_ == MapType::MAP || pimpl->type_ == MapType::NOREMAP) {
-                pimpl->out_ = bindparser::parse_string_binding(pimpl->outstr_) ;
+                pimpl->out_ = parse_string_binding(pimpl->outstr_) ;
                 if(pimpl->in_ == pimpl->out_) {
                     throw LOGIC_EXCEPT("Mapping between the same command is not allowed.") ;
                 }
@@ -141,7 +142,7 @@ namespace vind
         }
 
         std::size_t UniqueMap::compute_hash(const std::string& strcmd) {
-            return compute_hash(bindparser::parse_string_binding(strcmd)) ;
+            return compute_hash(parse_string_binding(strcmd)) ;
         }
 
         std::size_t UniqueMap::compute_hash(const Command& cmd) {
@@ -155,13 +156,13 @@ namespace vind
         }
 
 
-        void initialize() {
+        void initialize_maps() {
             g_default_maps.clear() ;
-            std::ifstream ifs(path::Default::BINDINGS()) ;
+            std::ifstream ifs(core::BINDINGS_DEFAULT()) ;
             ifs >> g_default_maps ;
         }
 
-        void reset() {
+        void reset_all_maps() {
             MapModeList().swap(g_mode_maps) ;
 
             for(const auto& obj : g_default_maps) {
@@ -169,7 +170,7 @@ namespace vind
 
                 auto pretty_error = [&modeidx, &obj] (auto& e) {
                     std::stringstream ss ;
-                    ss << e.what() << " (" << mode::to_prefix(modeidx) \
+                    ss << e.what() << " (" << mode_to_prefix(modeidx) \
                         << MAP_DEFINE_KEYWORD_IN_JSON \
                         << " in" << obj.dump() << ")" ;
                     return ss.str() ;
@@ -186,8 +187,8 @@ namespace vind
                         throw LOGIC_EXCEPT("Invalid Function Name") ;
                     }
 
-                    for(modeidx = 0 ; modeidx < mode::mode_num() ; modeidx ++) {
-                        auto modekey = mode::to_prefix(modeidx) + MAP_DEFINE_KEYWORD_IN_JSON ;
+                    for(modeidx = 0 ; modeidx < mode_num() ; modeidx ++) {
+                        auto modekey = mode_to_prefix(modeidx) + MAP_DEFINE_KEYWORD_IN_JSON ;
                         if(modekey.empty()) {
                             continue ;
                         }
@@ -206,10 +207,10 @@ namespace vind
                         //Ex) "guin": ["<Esc>", "happy"]
                         //    "edin": ["<guin>", "<guii>"]    -> same as "guin"'s key-bindings(<Esc>, "happy")
                         if(cmdlist.size() == 1) {
-                            auto copy_mode = bindparser::parse_string_modecode(
+                            auto copy_mode = parse_string_modecode(
                                     cmdlist.front(), MAP_DEFINE_KEYWORD_IN_JSON) ;
-                            if(copy_mode != mode::Mode::UNDEFINED) {
-                                cmdlist = obj.at(mode::to_prefix(copy_mode) + MAP_DEFINE_KEYWORD_IN_JSON) ;
+                            if(copy_mode != Mode::UNDEFINED) {
+                                cmdlist = obj.at(mode_to_prefix(copy_mode) + MAP_DEFINE_KEYWORD_IN_JSON) ;
                             }
                         }
 
@@ -244,10 +245,10 @@ namespace vind
             }
         }
 
-        void map(
+        void do_map(
                 const std::string& incmd,
                 const std::string& outcmd,
-                mode::Mode mode) {
+                Mode mode) {
             if(incmd.empty() || outcmd.empty()) {
                 throw RUNTIME_EXCEPT("Empty maps") ;
             }
@@ -257,10 +258,10 @@ namespace vind
             g_mode_maps[static_cast<int>(mode)][map.compute_hash()] = std::move(map) ;
         }
 
-        void noremap(
+        void do_noremap(
                 const std::string& incmd,
                 const std::string& outcmd,
-                mode::Mode mode) {
+                Mode mode) {
             if(incmd.empty() || outcmd.empty()) {
                 throw RUNTIME_EXCEPT("Empty maps") ;
             }
@@ -288,9 +289,9 @@ namespace vind
             }
         }
 
-        void unmap(
+        void do_unmap(
                 const std::string& incmd,
-                mode::Mode mode) {
+                Mode mode) {
             if(incmd.empty()) {
                 throw RUNTIME_EXCEPT("Empty map") ;
             }
@@ -299,19 +300,19 @@ namespace vind
             g_mode_maps[static_cast<int>(mode)].erase(hash) ;
         }
 
-        void mapclear(mode::Mode mode) {
+        void do_mapclear(Mode mode) {
             g_mode_maps[static_cast<int>(mode)].clear() ;
         }
 
         UniqueMap get_map(
                 const std::string& cmd,
-                mode::Mode mode) {
+                Mode mode) {
             auto hash = UniqueMap::compute_hash(cmd) ;
             return g_mode_maps[static_cast<int>(mode)].at(hash) ;
         }
 
         void get_maps(
-                mode::Mode mode,
+                Mode mode,
                 std::vector<UniqueMap>& returns) {
             if(!returns.empty()) {
                 returns.clear() ;

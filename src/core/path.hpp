@@ -8,9 +8,9 @@
 
 namespace vind
 {
-    namespace path {
-        std::filesystem::path replace_magic(std::filesystem::path path) ;
-        std::string replace_magic(std::string path) ;
+    namespace core {
+        std::filesystem::path replace_path_magic(std::filesystem::path path) ;
+        std::string replace_path_magic(std::string path) ;
 
         enum class InstallType {
             PORTABLE,
@@ -50,15 +50,13 @@ namespace vind
             return obj ;
         }
 
-        namespace Default {
-            inline const auto& BINDINGS() {
-                static const auto& obj = DEFAULT_CONFIG_PATH() / "bindings.json" ;
-                return obj ;
-            }
-            inline const auto& SETTINGS() {
-                static const auto obj = DEFAULT_CONFIG_PATH() / "settings.json" ;
-                return obj ;
-            }
+        inline const auto& BINDINGS_DEFAULT() {
+            static const auto& obj = DEFAULT_CONFIG_PATH() / "bindings.json" ;
+            return obj ;
+        }
+        inline const auto& SETTINGS_DEFAULT() {
+            static const auto obj = DEFAULT_CONFIG_PATH() / "settings.json" ;
+            return obj ;
         }
     }
 }

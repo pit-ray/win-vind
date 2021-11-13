@@ -7,6 +7,7 @@
 #include "simple_text_selecter.hpp"
 #include "util/def.hpp"
 #include "util/keybrd.hpp"
+#include "util/string.hpp"
 
 
 namespace vind
@@ -19,19 +20,19 @@ namespace vind
         return true ;
     }
     void JumpCaretToBOL::sprocess() {
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             util::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
         }
         else {
             util::pushup(KEYCODE_HOME) ;
         }
     }
-    void JumpCaretToBOL::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToBOL::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void JumpCaretToBOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpCaretToBOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess() ;
     }
 
@@ -49,7 +50,7 @@ namespace vind
             util::pushup(KEYCODE_DOWN) ;
         }) ; 
 
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
         }
         else {
@@ -57,12 +58,12 @@ namespace vind
             util::pushup(KEYCODE_LEFT) ;
         }
     }
-    void JumpCaretToEOL::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToEOL::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(1) ;
         }
     }
-    void JumpCaretToEOL::sprocess(const CharLogger& UNUSED(parent_lgr)) {
+    void JumpCaretToEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
         sprocess(1) ;
     }
 
@@ -80,7 +81,7 @@ namespace vind
 
         using util::pushup ;
 
-        if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+        if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
             pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
 
             //down caret N - 1
@@ -97,15 +98,15 @@ namespace vind
             }) ;
         }
     }
-    void JumpCaretToBOF::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToBOF::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(1) ;
         }
     }
-    void JumpCaretToBOF::sprocess(const CharLogger& parent_lgr) {
+    void JumpCaretToBOF::sprocess(const core::CharLogger& parent_lgr) {
         auto str = parent_lgr.to_str() ;
         if(str.empty()) return ;
-        if(auto num = keyloggerutil::extract_num(str)) {
+        if(auto num = util::extract_num(str)) {
             sprocess(num) ;
         }
         else {
@@ -125,13 +126,13 @@ namespace vind
         using util::pushup ;
 
         if(repeat_num == 1) {
-            if(mode::get_global_mode() == mode::Mode::EDI_VISUAL) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 if(textselect::is_first_line_selection())
                     textselect::select_line_BOL2EOL() ;
 
                 pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_END) ;
 
-                if(!(mode::get_global_flags() & mode::ModeFlags::VISUAL_LINE)) {
+                if(!(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE)) {
                     pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
                 }
             }
@@ -143,12 +144,12 @@ namespace vind
             JumpCaretToBOF::sprocess(repeat_num) ;
         }
     }
-    void JumpCaretToEOF::sprocess(NTypeLogger& parent_lgr) {
+    void JumpCaretToEOF::sprocess(core::NTypeLogger& parent_lgr) {
         if(!parent_lgr.is_long_pressing()) {
             sprocess(parent_lgr.get_head_num()) ;
         }
     }
-    void JumpCaretToEOF::sprocess(const CharLogger& parent_lgr) {
+    void JumpCaretToEOF::sprocess(const core::CharLogger& parent_lgr) {
         JumpCaretToBOF::sprocess(parent_lgr) ;
     }
 }

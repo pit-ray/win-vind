@@ -11,8 +11,8 @@ namespace vind
     struct Execute : public BindedFuncCreator<Execute> {
         explicit Execute() ;
         static void sprocess(std::filesystem::path filepath="") ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
+        static void sprocess(core::NTypeLogger& parent_lgr) ;
+        static void sprocess(const core::CharLogger& parent_lgr) ;
     } ;
 }
 

@@ -6,10 +6,10 @@
 #include <vector>
 
 #include "bind/binded_func.hpp"
-#include "bind/func_finder.hpp"
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
+#include "core/func_finder.hpp"
 #include "core/g_params.hpp"
 #include "core/key_absorber.hpp"
 #include "core/key_logger_base.hpp"
@@ -33,7 +33,7 @@ namespace
 
     struct CmdPoint
     {
-        CharLogger logger {
+        core::CharLogger logger {
             KEYCODE_ESC,
             KEYCODE_ENTER,
             KEYCODE_BKSPACE,
@@ -107,7 +107,7 @@ namespace
                 //recently logger
 
                 auto over_num =
-                    static_cast<long>(hist_.size()) - gparams::get_l("cmd_maxhist") ;
+                    static_cast<long>(hist_.size()) - core::get_l("cmd_maxhist") ;
 
                 if(over_num > 0) {
                     util::remove_from_top(hist_, over_num) ;
@@ -135,7 +135,7 @@ namespace vind
 {
     struct ToCommand::Impl {
         CmdHist ch_{} ;
-        FuncFinder funcfinder_{} ;
+        core::FuncFinder funcfinder_{} ;
     } ;
 
     ToCommand::ToCommand()
@@ -152,27 +152,27 @@ namespace vind
     }
 
     void ToCommand::sprocess() const {
-        auto return_mode = [] (mode::Mode* m) {
+        auto return_mode = [] (core::Mode* m) {
             // If the mode is changed, then do nothing.
-            if(mode::get_global_mode() == mode::Mode::COMMAND) {
-                mode::set_global_mode(*m) ;
+            if(core::get_global_mode() == core::Mode::COMMAND) {
+                core::set_global_mode(*m) ;
             }
         } ;
-        std::unique_ptr<mode::Mode, decltype(return_mode)>
-            mode_preserver(new mode::Mode(mode::get_global_mode()), return_mode) ;
+        std::unique_ptr<core::Mode, decltype(return_mode)>
+            mode_preserver(new core::Mode(core::get_global_mode()), return_mode) ;
 
-        mode::set_global_mode(mode::Mode::COMMAND) ;
+        core::set_global_mode(core::Mode::COMMAND) ;
 
         pimpl->funcfinder_.reset_parser_states() ;
 
         opt::VCmdLine::reset() ;
 
-        keyabsorber::InstantKeyAbsorber ika ;
+        core::InstantKeyAbsorber ika ;
 
         constexpr auto cmdline_prefix = ":" ;
         opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix)) ;
 
-        while(vind::update_background()) {
+        while(core::update_background()) {
             auto& p_cmdp = pimpl->ch_.get_hist_point() ;
             auto& lgr    = p_cmdp->logger ;
 
@@ -273,7 +273,7 @@ namespace vind
             // Since there may be multiple logging in one iteration,
             // transition the state by the increase from the previous iteration.
             //
-            LoggerParser::SPtr parser ;
+            core::LoggerParser::SPtr parser ;
             auto appended_num = lgr.size() - p_cmdp->lastlgr_size ;
             for(auto itr = lgr.end() - appended_num ; itr != lgr.end() ; itr ++) {
                 parser = pimpl->funcfinder_.find_parser_with_transition(*itr, id()) ;
@@ -294,12 +294,12 @@ namespace vind
         }
     }
 
-    void ToCommand::sprocess(NTypeLogger& parent_lgr) const {
+    void ToCommand::sprocess(core::NTypeLogger& parent_lgr) const {
         if(!parent_lgr.is_long_pressing()) {
             sprocess() ;
         }
     }
-    void ToCommand::sprocess(const CharLogger& UNUSED(parent_lgr)) const {
+    void ToCommand::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
         sprocess() ;
     }
 }

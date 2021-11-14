@@ -8,32 +8,35 @@
 
 namespace vind
 {
-    //JumpToActiveWindow
-    JumpToActiveWindow::JumpToActiveWindow()
-    : BindedFuncCreator("jump_cursor_to_active_window")
-    {}
-    void JumpToActiveWindow::sprocess() {
-        auto hwnd = GetForegroundWindow() ;
-        if(!hwnd) {
-            throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
+    namespace bind
+    {
+        //JumpToActiveWindow
+        JumpToActiveWindow::JumpToActiveWindow()
+        : BindedFuncCreator("jump_cursor_to_active_window")
+        {}
+        void JumpToActiveWindow::sprocess() {
+            auto hwnd = GetForegroundWindow() ;
+            if(!hwnd) {
+                throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
+            }
+
+            RECT rect ;
+            if(!GetWindowRect(hwnd, &rect)) {
+                throw RUNTIME_EXCEPT("cannot get window rect") ;
+            }
+
+            auto&& xpos = static_cast<int>(rect.left + (rect.right - rect.left) / 2) ;
+            auto&& ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
+
+            SetCursorPos(xpos, ypos) ;
         }
-
-        RECT rect ;
-        if(!GetWindowRect(hwnd, &rect)) {
-            throw RUNTIME_EXCEPT("cannot get window rect") ;
+        void JumpToActiveWindow::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
         }
-
-        auto&& xpos = static_cast<int>(rect.left + (rect.right - rect.left) / 2) ;
-        auto&& ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
-
-        SetCursorPos(xpos, ypos) ;
-    }
-    void JumpToActiveWindow::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        void JumpToActiveWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void JumpToActiveWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }

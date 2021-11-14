@@ -8,10 +8,13 @@
 
 namespace vind
 {
-    struct UIScanner : public util::UIWalker {
-        explicit UIScanner() ;
-        virtual bool filter_element(const util::SmartElement& elem) override ;
-    } ;
+    namespace bind
+    {
+        struct UIScanner : public util::UIWalker {
+            explicit UIScanner() ;
+            virtual bool filter_element(const util::SmartElement& elem) override ;
+        } ;
+    }
 }
 
 #endif

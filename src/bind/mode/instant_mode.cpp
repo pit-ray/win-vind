@@ -16,73 +16,76 @@
 
 namespace vind
 {
-    struct ToInstantGUINormal::Impl {
-        core::FuncFinder finder_{} ;
-    } ;
+    namespace bind
+    {
+        struct ToInstantGUINormal::Impl {
+            core::FuncFinder finder_{} ;
+        } ;
 
-    ToInstantGUINormal::ToInstantGUINormal()
-    : BindedFuncCreator("to_instant_gui_normal"),
-      pimpl(std::make_unique<Impl>())
-    {} 
-    ToInstantGUINormal::~ToInstantGUINormal() noexcept                      = default ;
-    ToInstantGUINormal::ToInstantGUINormal(ToInstantGUINormal&&)            = default ;
-    ToInstantGUINormal& ToInstantGUINormal::operator=(ToInstantGUINormal&&) = default ;
+        ToInstantGUINormal::ToInstantGUINormal()
+        : BindedFuncCreator("to_instant_gui_normal"),
+          pimpl(std::make_unique<Impl>())
+        {} 
+        ToInstantGUINormal::~ToInstantGUINormal() noexcept                      = default ;
+        ToInstantGUINormal::ToInstantGUINormal(ToInstantGUINormal&&)            = default ;
+        ToInstantGUINormal& ToInstantGUINormal::operator=(ToInstantGUINormal&&) = default ;
 
 
-    void ToInstantGUINormal::sprocess() const {
-        core::close_all_ports_with_refresh() ;
+        void ToInstantGUINormal::sprocess() const {
+            core::close_all_ports_with_refresh() ;
 
-        core::InstantKeyAbsorber isa{} ;
+            core::InstantKeyAbsorber isa{} ;
 
-        opt::VCmdLine::print(opt::GeneralMessage("-- Instant GUI Normal --")) ;
+            opt::VCmdLine::print(opt::GeneralMessage("-- Instant GUI Normal --")) ;
 
-        constexpr auto lcx_vmode = core::Mode::GUI_NORMAL ;
+            constexpr auto lcx_vmode = core::Mode::GUI_NORMAL ;
 
-        pimpl->finder_.reset_parser_states(lcx_vmode) ;
-        core::NTypeLogger lgr ;
-        while(core::update_background()) {
-            auto result = lgr.logging_state() ;
-            if(NTYPE_EMPTY(result)) {
-                continue ;
-            }
-            if(NTYPE_HEAD_NUM(result)) {
-                lgr.reject() ;
-                continue ;
-            }
+            pimpl->finder_.reset_parser_states(lcx_vmode) ;
+            core::NTypeLogger lgr ;
+            while(core::update_background()) {
+                auto result = lgr.logging_state() ;
+                if(NTYPE_EMPTY(result)) {
+                    continue ;
+                }
+                if(NTYPE_HEAD_NUM(result)) {
+                    lgr.reject() ;
+                    continue ;
+                }
 
-            if(auto parser = pimpl->finder_.find_parser_with_transition(
-                        lgr.latest(), 0, lcx_vmode)) {
+                if(auto parser = pimpl->finder_.find_parser_with_transition(
+                            lgr.latest(), 0, lcx_vmode)) {
 
-                if(parser->is_accepted()) {
-                    pimpl->finder_.reset_parser_states(lcx_vmode) ;
-                    parser->get_func()->process(lgr) ;
+                    if(parser->is_accepted()) {
+                        pimpl->finder_.reset_parser_states(lcx_vmode) ;
+                        parser->get_func()->process(lgr) ;
+                        break ;
+                    }
+                    else if(parser->is_rejected_with_ready()) {
+                        // It did not accepted, but only matched subsets.
+                        // For example, bindings <ctrl> in <ctrl-f>
+                        pimpl->finder_.backward_parser_states(1, lcx_vmode) ;
+                        lgr.remove_from_back(1) ;
+                    }
+                }
+                else {
                     break ;
                 }
-                else if(parser->is_rejected_with_ready()) {
-                    // It did not accepted, but only matched subsets.
-                    // For example, bindings <ctrl> in <ctrl-f>
-                    pimpl->finder_.backward_parser_states(1, lcx_vmode) ;
-                    lgr.remove_from_back(1) ;
-                }
             }
-            else {
-                break ;
+            opt::VCmdLine::reset() ;
+        }
+
+        void ToInstantGUINormal::sprocess(core::NTypeLogger& parent) const {
+            if(!parent.is_long_pressing()) {
+                sprocess() ;
             }
         }
-        opt::VCmdLine::reset() ;
-    }
 
-    void ToInstantGUINormal::sprocess(core::NTypeLogger& parent) const {
-        if(!parent.is_long_pressing()) {
+        void ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) const {
             sprocess() ;
         }
-    }
 
-    void ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) const {
-        sprocess() ;
-    }
-
-    void ToInstantGUINormal::reconstruct() {
-        pimpl->finder_.reconstruct_funcset() ;
+        void ToInstantGUINormal::reconstruct() {
+            pimpl->finder_.reconstruct_funcset() ;
+        }
     }
 }

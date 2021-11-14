@@ -42,7 +42,7 @@ namespace
         }
 
         try {
-            auto dir_path = explorer::get_current_explorer_path() ;
+            auto dir_path = bind::get_current_explorer_path() ;
             if(!dir_path.empty()) {
                 return dir_path ;
             }
@@ -58,117 +58,120 @@ namespace
 
 namespace vind
 {
-    //StartShell
-    StartShell::StartShell()
-    : BindedFuncCreator("start_shell")
-    {}
-    void StartShell::sprocess() {
-        util::create_process(
-                get_shell_startupdirectory(),
-                core::get_s("shell")) ;
-
-        Sleep(100) ; //wait until the window is selectable
-        JumpToActiveWindow::sprocess() ;
-    }
-    void StartShell::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
-        }
-    }
-    void StartShell::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-
-
-    //StartExternal
-    StartExternal::StartExternal()
-    : BindedFuncCreator("start_external")
-    {}
-    void StartExternal::sprocess(std::string cmd) {
-        if(!cmd.empty()) {
-            auto last_char_pos = cmd.find_last_not_of(" ") ;
-            if(last_char_pos == std::string::npos) {
-                StartShell::sprocess() ;
-                return ;
-            }
-
-            auto shell_cmd = core::get_s("shell") ;
-            std::string shell_cmd_flag {} ;
-
-            auto lower_shell_cmd = util::A2a(shell_cmd) ;
-            if(lower_shell_cmd == "cmd" || lower_shell_cmd== "cmd.exe") { // DOS style
-                shell_cmd_flag = "/c" ;
-            }
-            else { // shell style
-                shell_cmd_flag = core::get_s("shellcmdflag") ;
-            }
-
-            cmd = core::replace_path_magic(cmd) ;
-
-            if(cmd[last_char_pos] == ';') { //keep console window
-                cmd.erase(last_char_pos) ;
-
-                // wrap a command with "pause" to keep console window instead of vimrun.exe.
-                util::create_process(
-                        get_shell_startupdirectory(),
-                        "cmd", util::concat_args("/c",
-                        shell_cmd, shell_cmd_flag, cmd,
-                        "& pause")) ;
-            }
-            else {
-                util::create_process(
-                        get_shell_startupdirectory(),
-                        shell_cmd, util::concat_args(shell_cmd_flag, cmd), false) ;
-            }
+    namespace bind
+    {
+        //StartShell
+        StartShell::StartShell()
+        : BindedFuncCreator("start_shell")
+        {}
+        void StartShell::sprocess() {
+            util::create_process(
+                    get_shell_startupdirectory(),
+                    core::get_s("shell")) ;
 
             Sleep(100) ; //wait until the window is selectable
             JumpToActiveWindow::sprocess() ;
         }
-    }
-    void StartExternal::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess("shell") ;
+        void StartShell::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
         }
-    }
-    void StartExternal::sprocess(const core::CharLogger& parent_lgr) {
-        auto cmd = parent_lgr.to_str() ;
-        sprocess(cmd.substr(1)) ;
-    }
-
-
-    //StartExplorer
-    StartExplorer::StartExplorer()
-    : BindedFuncCreator("start_explorer")
-    {}
-    void StartExplorer::sprocess() {
-        util::pushup(KEYCODE_LWIN, KEYCODE_E) ;
-        Sleep(100) ; //wait until select window by OS.
-        JumpToActiveWindow::sprocess() ;
-    }
-    void StartExplorer::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        void StartShell::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void StartExplorer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 
-    //OpenStartMenu
-    OpenStartMenu::OpenStartMenu()
-    : BindedFuncCreator("open_startmenu")
-    {}
-    void OpenStartMenu::sprocess() {
-        util::pushup(KEYCODE_LWIN) ;
-        Sleep(100) ; //wait until select window by OS.
-        JumpToActiveWindow::sprocess() ;
-    }
-    void OpenStartMenu::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+
+        //StartExternal
+        StartExternal::StartExternal()
+        : BindedFuncCreator("start_external")
+        {}
+        void StartExternal::sprocess(std::string cmd) {
+            if(!cmd.empty()) {
+                auto last_char_pos = cmd.find_last_not_of(" ") ;
+                if(last_char_pos == std::string::npos) {
+                    StartShell::sprocess() ;
+                    return ;
+                }
+
+                auto shell_cmd = core::get_s("shell") ;
+                std::string shell_cmd_flag {} ;
+
+                auto lower_shell_cmd = util::A2a(shell_cmd) ;
+                if(lower_shell_cmd == "cmd" || lower_shell_cmd== "cmd.exe") { // DOS style
+                    shell_cmd_flag = "/c" ;
+                }
+                else { // shell style
+                    shell_cmd_flag = core::get_s("shellcmdflag") ;
+                }
+
+                cmd = core::replace_path_magic(cmd) ;
+
+                if(cmd[last_char_pos] == ';') { //keep console window
+                    cmd.erase(last_char_pos) ;
+
+                    // wrap a command with "pause" to keep console window instead of vimrun.exe.
+                    util::create_process(
+                            get_shell_startupdirectory(),
+                            "cmd", util::concat_args("/c",
+                            shell_cmd, shell_cmd_flag, cmd,
+                            "& pause")) ;
+                }
+                else {
+                    util::create_process(
+                            get_shell_startupdirectory(),
+                            shell_cmd, util::concat_args(shell_cmd_flag, cmd), false) ;
+                }
+
+                Sleep(100) ; //wait until the window is selectable
+                JumpToActiveWindow::sprocess() ;
+            }
+        }
+        void StartExternal::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess("shell") ;
+            }
+        }
+        void StartExternal::sprocess(const core::CharLogger& parent_lgr) {
+            auto cmd = parent_lgr.to_str() ;
+            sprocess(cmd.substr(1)) ;
+        }
+
+
+        //StartExplorer
+        StartExplorer::StartExplorer()
+        : BindedFuncCreator("start_explorer")
+        {}
+        void StartExplorer::sprocess() {
+            util::pushup(KEYCODE_LWIN, KEYCODE_E) ;
+            Sleep(100) ; //wait until select window by OS.
+            JumpToActiveWindow::sprocess() ;
+        }
+        void StartExplorer::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void StartExplorer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void OpenStartMenu::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
+
+        //OpenStartMenu
+        OpenStartMenu::OpenStartMenu()
+        : BindedFuncCreator("open_startmenu")
+        {}
+        void OpenStartMenu::sprocess() {
+            util::pushup(KEYCODE_LWIN) ;
+            Sleep(100) ; //wait until select window by OS.
+            JumpToActiveWindow::sprocess() ;
+        }
+        void OpenStartMenu::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void OpenStartMenu::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess() ;
+        }
     }
 }

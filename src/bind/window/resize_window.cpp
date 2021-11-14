@@ -22,7 +22,7 @@ namespace
     //
     inline void resize_in_monitor_width(
             LONG desired_width,
-            const windowutil::ForegroundInfo& fginfo) {
+            const bind::ForegroundInfo& fginfo) {
 
         util::MonitorInfo minfo ;
         util::get_monitor_metrics(fginfo.hwnd, minfo) ;
@@ -32,7 +32,7 @@ namespace
 
         if(desired_width >= monitor_width) {
             //a maximum width is a width of a foreground monitor.
-            windowutil::resize(
+            bind::resize_window(
                     fginfo.hwnd,
                     minfo.work_rect.left(), fginfo.rect.top(),
                     monitor_width, window_height) ;
@@ -42,13 +42,13 @@ namespace
             auto right_max_width = minfo.work_rect.right() - fginfo.rect.left() ;
 
             if(desired_width <= right_max_width) {
-                windowutil::resize(
+                bind::resize_window(
                         fginfo.hwnd, fginfo.rect.left(), fginfo.rect.top(),
                         desired_width, window_height) ;
             }
             else {
                 auto left_shift_delta = desired_width - right_max_width ;
-                windowutil::resize(
+                bind::resize_window(
                         fginfo.hwnd, fginfo.rect.left() - left_shift_delta, fginfo.rect.top(),
                         desired_width, window_height) ;
             }
@@ -61,7 +61,7 @@ namespace
     //
     inline void resize_in_monitor_height(
             LONG desired_height,
-            const windowutil::ForegroundInfo& fginfo) {
+            const bind::ForegroundInfo& fginfo) {
 
         util::MonitorInfo minfo ;
         util::get_monitor_metrics(fginfo.hwnd, minfo) ;
@@ -71,7 +71,7 @@ namespace
 
         if(desired_height >= monitor_height) {
             //a maximum height is a height of a foreground monitor.
-            windowutil::resize(
+            bind::resize_window(
                     fginfo.hwnd,
                     fginfo.rect.left(), minfo.work_rect.top(),
                     window_width, monitor_height) ;
@@ -81,13 +81,13 @@ namespace
             auto lower_max_height = minfo.work_rect.bottom() - fginfo.rect.top() ;
 
             if(desired_height <= lower_max_height) {
-                windowutil::resize(
+                bind::resize_window(
                         fginfo.hwnd, fginfo.rect.left(), fginfo.rect.top(),
                         window_width, desired_height) ;
             }
             else {
                 auto left_shift_delta = desired_height - lower_max_height ;
-                windowutil::resize(
+                bind::resize_window(
                         fginfo.hwnd, fginfo.rect.left(), fginfo.rect.top() - left_shift_delta,
                         window_width, desired_height) ;
             }
@@ -97,145 +97,148 @@ namespace
 
 namespace vind
 {
-    //ResizeWindowWidth
-    ResizeWindowWidth::ResizeWindowWidth()
-    : BindedFuncCreator("resize_window_width")
-    {}
-    void ResizeWindowWidth::sprocess(long width) {
-        if(width <= 0) return ;
-        windowutil::ForegroundInfo fginfo ;
-        resize_in_monitor_width(width, fginfo) ;
-    }
-    void ResizeWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
+    namespace bind
+    {
+        //ResizeWindowWidth
+        ResizeWindowWidth::ResizeWindowWidth()
+        : BindedFuncCreator("resize_window_width")
+        {}
+        void ResizeWindowWidth::sprocess(long width) {
+            if(width <= 0) return ;
+            ForegroundInfo fginfo ;
+            resize_in_monitor_width(width, fginfo) ;
         }
-    }
-    void ResizeWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
-        auto str = parent_lgr.to_str() ;
-        if(str.empty()) return ;
-        sprocess(util::extract_num(str)) ;
-    }
-
-
-    //IncreaseWindowWidth
-    IncreaseWindowWidth::IncreaseWindowWidth()
-    : BindedFuncCreator("increase_window_width")
-    {}
-    void IncreaseWindowWidth::sprocess(long delta) {
-        if(delta <= 0) return ;
-
-        windowutil::ForegroundInfo fginfo ;
-        auto width = fginfo.rect.width() + delta ;
-        resize_in_monitor_width(width, fginfo) ;
-    }
-    void IncreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+        void ResizeWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
         }
-    }
-    void IncreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
-        sprocess(util::extract_num(parent_lgr.to_str())) ;
-    }
-
-
-    //DecreaseWindowWidth
-    DecreaseWindowWidth::DecreaseWindowWidth()
-    : BindedFuncCreator("decrease_window_width")
-    {}
-    void DecreaseWindowWidth::sprocess(long delta)  {
-        if(delta <= 0) return ;
-        windowutil::ForegroundInfo fginfo ;
-
-        auto width = fginfo.rect.width() - delta ;
-        if(width <= 0) { 
-            opt::VCmdLine::print(opt::ErrorMessage("E: Width below zero")) ;
-            return ;
+        void ResizeWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
+            auto str = parent_lgr.to_str() ;
+            if(str.empty()) return ;
+            sprocess(util::extract_num(str)) ;
         }
 
-        windowutil::resize(
-                fginfo.hwnd,
-                fginfo.rect.left(), fginfo.rect.top(),
-                width, fginfo.rect.height()) ;
-    }
-    void DecreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+
+        //IncreaseWindowWidth
+        IncreaseWindowWidth::IncreaseWindowWidth()
+        : BindedFuncCreator("increase_window_width")
+        {}
+        void IncreaseWindowWidth::sprocess(long delta) {
+            if(delta <= 0) return ;
+
+            ForegroundInfo fginfo ;
+            auto width = fginfo.rect.width() + delta ;
+            resize_in_monitor_width(width, fginfo) ;
         }
-    }
-    void DecreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
-        sprocess(util::extract_num(parent_lgr.to_str())) ;
-    }
-
-
-    //ResizeWindowHeight
-    ResizeWindowHeight::ResizeWindowHeight()
-    : BindedFuncCreator("resize_window_height")
-    {}
-    void ResizeWindowHeight::sprocess(long height) {
-        if(height == 0) return ;
-        windowutil::ForegroundInfo fginfo ;
-        resize_in_monitor_height(height, fginfo) ;
-    }
-    void ResizeWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
+        void IncreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+            }
         }
-    }
-    void ResizeWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
-        auto str = parent_lgr.to_str() ;
-        if(str.empty()) return ;
-        sprocess(util::extract_num(str)) ;
-    }
-
-
-    //IncreaseWindowHeight
-    IncreaseWindowHeight::IncreaseWindowHeight()
-    : BindedFuncCreator("increase_window_height")
-    {}
-    void IncreaseWindowHeight::sprocess(long delta) {
-        if(delta <= 0) return ;
-        windowutil::ForegroundInfo fginfo ;
-
-        auto height = fginfo.rect.height() + delta ;
-        resize_in_monitor_height(height, fginfo) ;
-    }
-    void IncreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
-        }
-    }
-    void IncreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
-        sprocess(util::extract_num(parent_lgr.to_str())) ;
-    }
-
-
-    //DecreaseWindowHeight
-    DecreaseWindowHeight::DecreaseWindowHeight()
-    : BindedFuncCreator("decrease_window_height")
-    {}
-    void DecreaseWindowHeight::sprocess(long delta) {
-        if(delta <= 0) return ;
-
-        windowutil::ForegroundInfo fginfo ;
-
-        auto height = fginfo.rect.height() - delta ;
-        if(height <= 0) { 
-            opt::VCmdLine::print(opt::ErrorMessage("E: Height below zero")) ;
-            return ;
+        void IncreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
+            sprocess(util::extract_num(parent_lgr.to_str())) ;
         }
 
-        windowutil::resize(
-                fginfo.hwnd,
-                fginfo.rect.left(), fginfo.rect.top(),
-                fginfo.rect.width(), height) ;
-    }
-    void DecreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
+
+        //DecreaseWindowWidth
+        DecreaseWindowWidth::DecreaseWindowWidth()
+        : BindedFuncCreator("decrease_window_width")
+        {}
+        void DecreaseWindowWidth::sprocess(long delta)  {
+            if(delta <= 0) return ;
+            ForegroundInfo fginfo ;
+
+            auto width = fginfo.rect.width() - delta ;
+            if(width <= 0) { 
+                opt::VCmdLine::print(opt::ErrorMessage("E: Width below zero")) ;
+                return ;
+            }
+
+            resize_window(
+                    fginfo.hwnd,
+                    fginfo.rect.left(), fginfo.rect.top(),
+                    width, fginfo.rect.height()) ;
         }
-    }
-    void DecreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
-        sprocess(util::extract_num(parent_lgr.to_str())) ;
+        void DecreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+            }
+        }
+        void DecreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
+            sprocess(util::extract_num(parent_lgr.to_str())) ;
+        }
+
+
+        //ResizeWindowHeight
+        ResizeWindowHeight::ResizeWindowHeight()
+        : BindedFuncCreator("resize_window_height")
+        {}
+        void ResizeWindowHeight::sprocess(long height) {
+            if(height == 0) return ;
+            ForegroundInfo fginfo ;
+            resize_in_monitor_height(height, fginfo) ;
+        }
+        void ResizeWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void ResizeWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
+            auto str = parent_lgr.to_str() ;
+            if(str.empty()) return ;
+            sprocess(util::extract_num(str)) ;
+        }
+
+
+        //IncreaseWindowHeight
+        IncreaseWindowHeight::IncreaseWindowHeight()
+        : BindedFuncCreator("increase_window_height")
+        {}
+        void IncreaseWindowHeight::sprocess(long delta) {
+            if(delta <= 0) return ;
+            ForegroundInfo fginfo ;
+
+            auto height = fginfo.rect.height() + delta ;
+            resize_in_monitor_height(height, fginfo) ;
+        }
+        void IncreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
+            }
+        }
+        void IncreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
+            sprocess(util::extract_num(parent_lgr.to_str())) ;
+        }
+
+
+        //DecreaseWindowHeight
+        DecreaseWindowHeight::DecreaseWindowHeight()
+        : BindedFuncCreator("decrease_window_height")
+        {}
+        void DecreaseWindowHeight::sprocess(long delta) {
+            if(delta <= 0) return ;
+
+            ForegroundInfo fginfo ;
+
+            auto height = fginfo.rect.height() - delta ;
+            if(height <= 0) { 
+                opt::VCmdLine::print(opt::ErrorMessage("E: Height below zero")) ;
+                return ;
+            }
+
+            resize_window(
+                    fginfo.hwnd,
+                    fginfo.rect.left(), fginfo.rect.top(),
+                    fginfo.rect.width(), height) ;
+        }
+        void DecreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
+            }
+        }
+        void DecreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
+            sprocess(util::extract_num(parent_lgr.to_str())) ;
+        }
     }
 }

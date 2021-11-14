@@ -230,7 +230,7 @@ namespace vind
         }
 
         //for debug
-        std::string get_name(const KeyCode keycode) noexcept {
+        std::string get_keycode_name(const KeyCode keycode) noexcept {
             for(const auto& m : g_magic_words) {
                 if(keycode == m.second) {
                     return m.first ;

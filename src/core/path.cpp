@@ -27,7 +27,7 @@ namespace vind
         }
 
         std::string replace_path_magic(std::string path) {
-            path = util::replace_all(path, "~", core::HOME_PATH().u8string()) ;
+            path = util::replace_all(path, "~", HOME_PATH().u8string()) ;
             path = util::replace_all(path, "/", "\\") ;
             return path ;
         }

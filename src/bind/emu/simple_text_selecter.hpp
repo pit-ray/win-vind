@@ -3,8 +3,9 @@
 
 namespace vind
 {
-    namespace textselect {
-        enum class Mode : unsigned char {
+    namespace bind
+    {
+        enum class SelectMode : unsigned char {
             Word,
             EOL2BOL,
             BOL2EOL,
@@ -17,7 +18,7 @@ namespace vind
         void select_line_BOL2EOL() ;
         void unselect() ;
 
-        Mode get_global_mode() noexcept ;
+        SelectMode get_global_select_mode() noexcept ;
         void moving_update() ;
 
         bool is_first_line_selection() noexcept ;

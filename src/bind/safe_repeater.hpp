@@ -7,7 +7,8 @@
 
 namespace vind
 {
-    namespace repeater {
+    namespace bind
+    {
         template <typename T, typename FuncType, typename ...Args>
         inline void safe_for(T repeat_num, FuncType&& func, Args... args) {
             for(T i = 0 ; i < repeat_num ; i ++) {

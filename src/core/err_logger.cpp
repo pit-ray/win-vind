@@ -91,7 +91,7 @@ namespace vind
 {
     namespace core {
         void initialize_logger() {
-            auto log_dir = core::ROOT_PATH() / "log" ;
+            auto log_dir = ROOT_PATH() / "log" ;
 
             SYSTEMTIME stime ;
             GetLocalTime(&stime) ;

@@ -31,9 +31,9 @@ namespace
     using namespace vind ;
     template <typename T>
     bool is_func_name(T&& name) {
-        static const auto& func_list = bindingslists::get() ;
+        static const auto& func_list = bind::all_global_binded_funcs() ;
 
-        auto id = BindedFunc::name_to_id(std::forward<T>(name)) ;
+        auto id = bind::BindedFunc::name_to_id(std::forward<T>(name)) ;
         for(const auto& f : func_list) {
             if(id == f->id()) return true ;
         }
@@ -130,7 +130,7 @@ namespace vind
         }
 
         std::size_t UniqueMap::func_id() const noexcept {
-            return BindedFunc::name_to_id(pimpl->outstr_) ;
+            return bind::BindedFunc::name_to_id(pimpl->outstr_) ;
         }
 
         const Command& UniqueMap::target_command() const {
@@ -158,7 +158,7 @@ namespace vind
 
         void initialize_maps() {
             g_default_maps.clear() ;
-            std::ifstream ifs(core::BINDINGS_DEFAULT()) ;
+            std::ifstream ifs(BINDINGS_DEFAULT()) ;
             ifs >> g_default_maps ;
         }
 

@@ -116,7 +116,7 @@ namespace
             if(parser_2) {
                 if(parser_2->is_accepted() && parser_2->get_func()->is_for_moving_caret()) {
                     core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                    repeater::safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
+                    bind::safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
                         f->process(lgr) ;
                     }) ;
                     return true ;
@@ -141,133 +141,136 @@ namespace
 
 namespace vind
 {
-    //YankWithMotion
-    struct YankWithMotion::Impl {
-        core::FuncFinder funcfinder_ ;
-        core::FuncFinder parent_funcfinder_ ;
+    namespace bind
+    {
+        //YankWithMotion
+        struct YankWithMotion::Impl {
+            core::FuncFinder funcfinder_ ;
+            core::FuncFinder parent_funcfinder_ ;
 
-        explicit Impl()
-        : funcfinder_(),
-          parent_funcfinder_()
+            explicit Impl()
+            : funcfinder_(),
+              parent_funcfinder_()
+            {}
+
+            void copy() const {
+                YankHighlightText::sprocess() ;
+                ToEdiNormal::sprocess(false) ;
+            }
+        } ;
+        YankWithMotion::YankWithMotion()
+        : BindedFuncCreator("yank_with_motion"),
+          pimpl(std::make_unique<Impl>())
         {}
-
-        void copy() const {
-            YankHighlightText::sprocess() ;
-            ToEdiNormal::sprocess(false) ;
-        }
-    } ;
-    YankWithMotion::YankWithMotion()
-    : BindedFuncCreator("yank_with_motion"),
-      pimpl(std::make_unique<Impl>())
-    {}
-    YankWithMotion::~YankWithMotion() noexcept                 = default ;
-    YankWithMotion::YankWithMotion(YankWithMotion&&)            = default ;
-    YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
-    void YankWithMotion::sprocess() const {
-        if(select_by_motion(id(), pimpl->funcfinder_)) {
-            pimpl->copy() ;
-        }
-    }
-    void YankWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
-        if(!parent_lgr.is_long_pressing()) {
-            if(select_by_motion(id(), pimpl->funcfinder_,
-                        pimpl->parent_funcfinder_, parent_lgr)) {
+        YankWithMotion::~YankWithMotion() noexcept                 = default ;
+        YankWithMotion::YankWithMotion(YankWithMotion&&)            = default ;
+        YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
+        void YankWithMotion::sprocess() const {
+            if(select_by_motion(id(), pimpl->funcfinder_)) {
                 pimpl->copy() ;
             }
         }
-    }
-    void YankWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-        sprocess() ;
-    }
-    void YankWithMotion::reconstruct() {
-        pimpl->funcfinder_.reconstruct_funcset() ;
-        pimpl->parent_funcfinder_.reconstruct_funcset() ;
-    }
+        void YankWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                if(select_by_motion(id(), pimpl->funcfinder_,
+                            pimpl->parent_funcfinder_, parent_lgr)) {
+                    pimpl->copy() ;
+                }
+            }
+        }
+        void YankWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess() ;
+        }
+        void YankWithMotion::reconstruct() {
+            pimpl->funcfinder_.reconstruct_funcset() ;
+            pimpl->parent_funcfinder_.reconstruct_funcset() ;
+        }
 
-    //DeleteWithMotion
-    struct DeleteWithMotion::Impl {
-        core::FuncFinder funcfinder_ ;
-        core::FuncFinder parent_funcfinder_ ;
+        //DeleteWithMotion
+        struct DeleteWithMotion::Impl {
+            core::FuncFinder funcfinder_ ;
+            core::FuncFinder parent_funcfinder_ ;
 
-        explicit Impl()
-        : funcfinder_(),
-          parent_funcfinder_()
+            explicit Impl()
+            : funcfinder_(),
+              parent_funcfinder_()
+            {}
+
+            void remove() const {
+                DeleteHighlightText::sprocess() ;
+            }
+        } ;
+        DeleteWithMotion::DeleteWithMotion()
+        : BindedFuncCreator("delete_with_motion"),
+          pimpl(std::make_unique<Impl>())
         {}
+        DeleteWithMotion::~DeleteWithMotion() noexcept                   = default ;
+        DeleteWithMotion::DeleteWithMotion(DeleteWithMotion&&)            = default ;
+        DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
 
-        void remove() const {
-            DeleteHighlightText::sprocess() ;
-        }
-    } ;
-    DeleteWithMotion::DeleteWithMotion()
-    : BindedFuncCreator("delete_with_motion"),
-      pimpl(std::make_unique<Impl>())
-    {}
-    DeleteWithMotion::~DeleteWithMotion() noexcept                   = default ;
-    DeleteWithMotion::DeleteWithMotion(DeleteWithMotion&&)            = default ;
-    DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
-
-    void DeleteWithMotion::sprocess() const {
-        if(select_by_motion(id(), pimpl->funcfinder_)) {
-            pimpl->remove() ;
-        }
-    }
-    void DeleteWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
-        if(!parent_lgr.is_long_pressing()) {
-            if(select_by_motion(id(), pimpl->funcfinder_,
-                        pimpl->funcfinder_, parent_lgr)) {
+        void DeleteWithMotion::sprocess() const {
+            if(select_by_motion(id(), pimpl->funcfinder_)) {
                 pimpl->remove() ;
             }
         }
-    }
-    void DeleteWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-        sprocess() ;
-    }
-    void DeleteWithMotion::reconstruct() {
-        pimpl->funcfinder_.reconstruct_funcset() ;
-        pimpl->parent_funcfinder_.reconstruct_funcset() ;
-    }
+        void DeleteWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                if(select_by_motion(id(), pimpl->funcfinder_,
+                            pimpl->funcfinder_, parent_lgr)) {
+                    pimpl->remove() ;
+                }
+            }
+        }
+        void DeleteWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess() ;
+        }
+        void DeleteWithMotion::reconstruct() {
+            pimpl->funcfinder_.reconstruct_funcset() ;
+            pimpl->parent_funcfinder_.reconstruct_funcset() ;
+        }
 
 
-    //ChangeWithMotion
-    struct ChangeWithMotion::Impl {
-        core::FuncFinder funcfinder_ ;
-        core::FuncFinder parent_funcfinder_ ;
+        //ChangeWithMotion
+        struct ChangeWithMotion::Impl {
+            core::FuncFinder funcfinder_ ;
+            core::FuncFinder parent_funcfinder_ ;
 
-        explicit Impl()
-        : funcfinder_(),
-          parent_funcfinder_()
+            explicit Impl()
+            : funcfinder_(),
+              parent_funcfinder_()
+            {}
+
+            void remove_and_insert() {
+                DeleteHighlightText::sprocess() ;
+                ToInsert::sprocess(false) ;
+            }
+        } ;
+        ChangeWithMotion::ChangeWithMotion()
+        : BindedFuncCreator("change_with_motion"),
+          pimpl(std::make_unique<Impl>())
         {}
-
-        void remove_and_insert() {
-            DeleteHighlightText::sprocess() ;
-            ToInsert::sprocess(false) ;
-        }
-    } ;
-    ChangeWithMotion::ChangeWithMotion()
-    : BindedFuncCreator("change_with_motion"),
-      pimpl(std::make_unique<Impl>())
-    {}
-    ChangeWithMotion::~ChangeWithMotion() noexcept                                 = default ;
-    ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&)            = default ;
-    ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
-    void ChangeWithMotion::sprocess() const {
-        if(select_by_motion(id(), pimpl->funcfinder_)) {
-            pimpl->remove_and_insert() ;
-        }
-    }
-    void ChangeWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
-        if(!parent_lgr.is_long_pressing()) {
-            if(select_by_motion(id(), pimpl->funcfinder_,
-                        pimpl->parent_funcfinder_, parent_lgr)) {
+        ChangeWithMotion::~ChangeWithMotion() noexcept                                 = default ;
+        ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&)            = default ;
+        ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
+        void ChangeWithMotion::sprocess() const {
+            if(select_by_motion(id(), pimpl->funcfinder_)) {
                 pimpl->remove_and_insert() ;
             }
         }
-    }
-    void ChangeWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-        sprocess() ;
-    }
-    void ChangeWithMotion::reconstruct() {
-        pimpl->funcfinder_.reconstruct_funcset() ;
-        pimpl->parent_funcfinder_.reconstruct_funcset() ;
+        void ChangeWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                if(select_by_motion(id(), pimpl->funcfinder_,
+                            pimpl->parent_funcfinder_, parent_lgr)) {
+                    pimpl->remove_and_insert() ;
+                }
+            }
+        }
+        void ChangeWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess() ;
+        }
+        void ChangeWithMotion::reconstruct() {
+            pimpl->funcfinder_.reconstruct_funcset() ;
+            pimpl->parent_funcfinder_.reconstruct_funcset() ;
+        }
     }
 }

@@ -13,35 +13,38 @@
 
 namespace vind
 {
-    //Enable
-    EnableTargetingOfDedicate2Window::EnableTargetingOfDedicate2Window()
-    : BindedFuncCreator("enable_targeting_of_dedicate_to_window")
-    {}
-    void EnableTargetingOfDedicate2Window::sprocess() {
-        opt::Dedicate2Window::enable_targeting() ;
-    }
-    void EnableTargetingOfDedicate2Window::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+    namespace bind
+    {
+        //Enable
+        EnableTargetingOfDedicate2Window::EnableTargetingOfDedicate2Window()
+        : BindedFuncCreator("enable_targeting_of_dedicate_to_window")
+        {}
+        void EnableTargetingOfDedicate2Window::sprocess() {
+            opt::Dedicate2Window::enable_targeting() ;
+        }
+        void EnableTargetingOfDedicate2Window::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void EnableTargetingOfDedicate2Window::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void EnableTargetingOfDedicate2Window::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 
-    //Disable
-    DisableTargetingOfDedicate2Window::DisableTargetingOfDedicate2Window()
-    : BindedFuncCreator("disable_targeting_of_dedicate_to_window")
-    {}
-    void DisableTargetingOfDedicate2Window::sprocess() {
-        opt::Dedicate2Window::disable_targeting() ;
-    }
-    void DisableTargetingOfDedicate2Window::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        //Disable
+        DisableTargetingOfDedicate2Window::DisableTargetingOfDedicate2Window()
+        : BindedFuncCreator("disable_targeting_of_dedicate_to_window")
+        {}
+        void DisableTargetingOfDedicate2Window::sprocess() {
+            opt::Dedicate2Window::disable_targeting() ;
+        }
+        void DisableTargetingOfDedicate2Window::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void DisableTargetingOfDedicate2Window::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void DisableTargetingOfDedicate2Window::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }

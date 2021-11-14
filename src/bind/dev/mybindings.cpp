@@ -11,23 +11,26 @@
 
 namespace vind
 {
-    MyBinding::MyBinding()
-    : BindedFuncCreator("my_binding") //Give the unique identifier.
-    {}
-    void MyBinding::sprocess() {
-        util::click(KEYCODE_MOUSE_LEFT) ; //left click
+    namespace bind
+    {
+        MyBinding::MyBinding()
+        : BindedFuncCreator("my_binding") //Give the unique identifier.
+        {}
+        void MyBinding::sprocess() {
+            util::click(KEYCODE_MOUSE_LEFT) ; //left click
 
-        util::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
+            util::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
 
-        opt::VCmdLine::print(opt::GeneralMessage("Hello World !")) ;
-    }
-    void MyBinding::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+            opt::VCmdLine::print(opt::GeneralMessage("Hello World !")) ;
+        }
+        void MyBinding::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void MyBinding::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void MyBinding::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }
 

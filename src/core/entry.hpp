@@ -44,9 +44,9 @@ namespace vind
         //
         // Example:
         // int main() {
-        //     vind::core::initialize() ;
+        //     vind::initialize() ;
         //
-        //     while(vind::core::update()) ;
+        //     while(vind::update()) ;
         //
         //     return 0 ;
         // }

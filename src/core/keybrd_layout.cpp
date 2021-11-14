@@ -26,7 +26,7 @@ namespace vind
                     break ;
             }
 
-            return core::DEFAULT_CONFIG_PATH() / filename ;
+            return DEFAULT_CONFIG_PATH() / filename ;
         }
     }
 }

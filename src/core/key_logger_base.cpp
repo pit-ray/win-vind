@@ -104,7 +104,7 @@ namespace vind
         }
 
         int KeyLoggerBase::logging_state() {
-            logging(core::get_pressed_list()) ;
+            logging(get_pressed_list()) ;
             return static_cast<int>(latest().size()) ;
         }
 
@@ -121,15 +121,15 @@ namespace vind
                         continue ;
                     }
 
-                    if(auto a = core::get_ascii(key)) {
+                    if(auto a = get_ascii(key)) {
                         ss << a << " " ;
                         continue ;
                     }
-                    if(auto a = core::get_shifted_ascii(key)) {
+                    if(auto a = get_shifted_ascii(key)) {
                         ss << a << " " ;
                         continue ;
                     }
-                    auto name = core::get_name(key) ;
+                    auto name = get_keycode_name(key) ;
                     ss << "<" << name << "> " ;
                 }
                 ss << "| " ;

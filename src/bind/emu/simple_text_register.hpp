@@ -3,7 +3,8 @@
 
 namespace vind
 {
-    namespace simpletxreg {
+    namespace bind
+    {
         enum class RegType : unsigned char {
             None,
             Chars,

@@ -5,12 +5,12 @@
 #include "bind/mouse/jump_actwin.hpp"
 #include "util/def.hpp"
 #include "util/keybrd.hpp"
-#include "util/rect.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 namespace vind
 {
-    namespace windowutil
+    namespace bind
     {
         bool is_visible_hwnd(HWND hwnd) {
             if(hwnd == NULL) {
@@ -72,7 +72,7 @@ namespace vind
             return true ;
         }
 
-        void resize(
+        void resize_window(
                 HWND hwnd,
                 LONG left,
                 LONG top,
@@ -104,9 +104,7 @@ namespace vind
                     return ;
                 }
 
-                if(!SetForegroundWindow(hwnd)) {
-                    throw RUNTIME_EXCEPT("Could not set a foreground window.") ;
-                }
+                util::set_foreground_window(hwnd) ;
 
                 //minimize it once
                 util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
@@ -120,24 +118,16 @@ namespace vind
             JumpToActiveWindow::sprocess() ;
         }
 
-        void resize(HWND hwnd, const RECT& rect) {
-            resize(hwnd, rect.left, rect.top, util::width(rect), util::height(rect)) ;
-        }
-
-        void resize(HWND hwnd, const util::Box2D& rect) {
-            resize(hwnd, rect.left(), rect.top(), rect.width(), rect.height()) ;
-        }
-
         void batch_resize(const std::unordered_map<HWND, util::Box2D>& rects) {
             //Resize each windows
             for(const auto& [hwnd, rect] : rects) {
-                resize(hwnd, rect) ;
+                resize_window(hwnd, rect) ;
             }
         }
         void batch_resize(const std::unordered_map<HWND, RECT>& rects) {
             //Resize each windows
             for(const auto& [hwnd, rect] : rects) {
-                resize(hwnd, rect) ;
+                resize_window(hwnd, rect) ;
             }
         }
     }

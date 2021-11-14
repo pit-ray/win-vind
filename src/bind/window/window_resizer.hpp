@@ -5,26 +5,29 @@
 
 namespace vind
 {
-    class WindowResizer : public BindedFuncCreator<WindowResizer> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+    namespace bind
+    {
+        class WindowResizer : public BindedFuncCreator<WindowResizer> {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        explicit WindowResizer() ;
+        public:
+            explicit WindowResizer() ;
 
-        void sprocess() const ;
-        void sprocess(core::NTypeLogger& parent_lgr) const ;
-        void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess() const ;
+            void sprocess(core::NTypeLogger& parent_lgr) const ;
+            void sprocess(const core::CharLogger& parent_lgr) const ;
 
-        virtual ~WindowResizer() noexcept ;
-        WindowResizer(WindowResizer&&) ;
-        WindowResizer& operator=(WindowResizer&&) ;
-        WindowResizer(const WindowResizer&)            = delete ;
-        WindowResizer& operator=(const WindowResizer&) = delete ;
+            virtual ~WindowResizer() noexcept ;
+            WindowResizer(WindowResizer&&) ;
+            WindowResizer& operator=(WindowResizer&&) ;
+            WindowResizer(const WindowResizer&)            = delete ;
+            WindowResizer& operator=(const WindowResizer&) = delete ;
 
-        void reconstruct() override ;
-    } ;
+            void reconstruct() override ;
+        } ;
+    }
 }
 
 #endif

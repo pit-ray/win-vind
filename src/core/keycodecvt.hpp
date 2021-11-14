@@ -13,19 +13,43 @@ namespace vind
         void load_input_combination() ;
 
         KeyCode get_keycode(char ascii) noexcept ;
+
         char get_ascii(KeyCode keycode) noexcept ;
+        template <typename T>
+        inline auto get_ascii(T keycode) noexcept {
+            return get_ascii(static_cast<KeyCode>(keycode)) ;
+        }
 
         KeyCode get_shifted_keycode(char ascii) noexcept ;
+
         char get_shifted_ascii(KeyCode keycode) noexcept ;
+        template <typename T>
+        inline auto get_shifted_ascii(T keycode) noexcept {
+            return get_shifted_ascii(static_cast<KeyCode>(keycode)) ;
+        }
 
         KeyCode get_sys_keycode(const std::string& strkey) noexcept ;
         std::unordered_set<KeyCode> get_all_sys_keycode() ;
-        std::string get_name(KeyCode keycode) noexcept ; //for debug
+
+        std::string get_keycode_name(KeyCode keycode) noexcept ; //for debug
+        template <typename T>
+        inline auto get_keycode_name(T keycode) noexcept {
+            return get_keycode_name(static_cast<KeyCode>(keycode)) ;
+        }
 
         KeyCode get_keycode_of_magic(const std::string& str) ;
 
         KeyCode get_representative_key(KeyCode key) ;
+        template <typename T>
+        inline auto get_representative_key(T key) {
+            return get_representative_key(static_cast<KeyCode>(key)) ;
+        }
+
         bool is_unreal_key(KeyCode key) noexcept ;
+        template <typename T>
+        inline auto is_unreal_key(T key) noexcept {
+            return is_unreal_key(static_cast<KeyCode>(key)) ;
+        }
 
         inline bool is_number(KeyCode keycode) noexcept {
             return KEYCODE_0 <= keycode && keycode <= KEYCODE_9 ;

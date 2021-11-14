@@ -5,60 +5,63 @@
 
 namespace vind
 {
-    struct ToInsertBOL : public BindedFuncCreator<ToInsertBOL> {
-        explicit ToInsertBOL() ;
-        static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+    namespace bind
+    {
+        struct ToInsertBOL : public BindedFuncCreator<ToInsertBOL> {
+            explicit ToInsertBOL() ;
+            static void sprocess(bool vclmodeout=true) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
 
-    struct Change2EdiBkInsert : public BindedFuncCreator<Change2EdiBkInsert> {
-        explicit Change2EdiBkInsert() ;
-        static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+        struct Change2EdiBkInsert : public BindedFuncCreator<Change2EdiBkInsert> {
+            explicit Change2EdiBkInsert() ;
+            static void sprocess(bool vclmodeout=true) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
 
-    struct ToInsertEOL : public BindedFuncCreator<ToInsertEOL> {
-        explicit ToInsertEOL() ;
-        static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+        struct ToInsertEOL : public BindedFuncCreator<ToInsertEOL> {
+            explicit ToInsertEOL() ;
+            static void sprocess(bool vclmodeout=true) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
 
-    struct ToInsertNLBelow : public BindedFuncCreator<ToInsertNLBelow> {
-        explicit ToInsertNLBelow() ;
-        static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+        struct ToInsertNLBelow : public BindedFuncCreator<ToInsertNLBelow> {
+            explicit ToInsertNLBelow() ;
+            static void sprocess(bool vclmodeout=true) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
 
-    struct ToInsertNLAbove : public BindedFuncCreator<ToInsertNLAbove> {
-        explicit ToInsertNLAbove() ;
-        static void sprocess(bool vclmodeout=true) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+        struct ToInsertNLAbove : public BindedFuncCreator<ToInsertNLAbove> {
+            explicit ToInsertNLAbove() ;
+            static void sprocess(bool vclmodeout=true) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
+    }
 }
 
 #endif

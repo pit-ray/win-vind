@@ -5,19 +5,22 @@
 
 namespace vind
 {
-    struct MinimizeCurrentWindow : public BindedFuncCreator<MinimizeCurrentWindow> {
-        explicit MinimizeCurrentWindow() ;
-        static void sprocess(unsigned int repeat_num=1) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+    namespace bind
+    {
+        struct MinimizeCurrentWindow : public BindedFuncCreator<MinimizeCurrentWindow> {
+            explicit MinimizeCurrentWindow() ;
+            static void sprocess(unsigned int repeat_num=1) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
-    struct MaximizeCurrentWindow : public BindedFuncCreator<MaximizeCurrentWindow> {
-        explicit MaximizeCurrentWindow() ;
-        static void sprocess(unsigned int repeat_num=1) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct MaximizeCurrentWindow : public BindedFuncCreator<MaximizeCurrentWindow> {
+            explicit MaximizeCurrentWindow() ;
+            static void sprocess(unsigned int repeat_num=1) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
+    }
 }
 
 #endif

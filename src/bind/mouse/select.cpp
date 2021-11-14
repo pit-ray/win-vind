@@ -9,76 +9,79 @@
 
 namespace vind
 {
-    //SelectAll
-    SelectAll::SelectAll()
-    : BindedFuncCreator("select_all")
-    {}
+    namespace bind
+    {
+        //SelectAll
+        SelectAll::SelectAll()
+        : BindedFuncCreator("select_all")
+        {}
 
-    void SelectAll::sprocess() {
-        util::click(KEYCODE_MOUSE_LEFT) ;
-        util::pushup(KEYCODE_LCTRL, KEYCODE_A) ;
-    }
-    void SelectAll::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        void SelectAll::sprocess() {
+            util::click(KEYCODE_MOUSE_LEFT) ;
+            util::pushup(KEYCODE_LCTRL, KEYCODE_A) ;
+        }
+        void SelectAll::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void SelectAll::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void SelectAll::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 
 
-    //ForwardUINavigation
-    ForwardUINavigation::ForwardUINavigation()
-    : BindedFuncCreator("forward_ui_navigation")
-    {}
-    void ForwardUINavigation::sprocess(unsigned int repeat_num) {
-        repeater::safe_for(repeat_num, [] {
-            util::pushup(KEYCODE_TAB) ;
-        }) ;
-    }
-    void ForwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
+        //ForwardUINavigation
+        ForwardUINavigation::ForwardUINavigation()
+        : BindedFuncCreator("forward_ui_navigation")
+        {}
+        void ForwardUINavigation::sprocess(unsigned int repeat_num) {
+            safe_for(repeat_num, [] {
+                util::pushup(KEYCODE_TAB) ;
+            }) ;
         }
-    }
-    void ForwardUINavigation::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-
-
-    //BackwardUINavigation
-    BackwardUINavigation::BackwardUINavigation()
-    : BindedFuncCreator("backward_ui_navigation")
-    {}
-    void BackwardUINavigation::sprocess(unsigned int repeat_num) {
-        repeater::safe_for(repeat_num, [] {
-            util::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
-        }) ;
-    }
-    void BackwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
+        void ForwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+            }
         }
-    }
-    void BackwardUINavigation::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-
-
-    //DecideFocusedUIObject
-    DecideFocusedUIObject::DecideFocusedUIObject()
-    : BindedFuncCreator("decide_focused_ui_object")
-    {}
-    void DecideFocusedUIObject::sprocess() {
-        util::pushup(KEYCODE_SPACE) ;
-    }
-    void DecideFocusedUIObject::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        void ForwardUINavigation::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void DecideFocusedUIObject::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
+
+
+        //BackwardUINavigation
+        BackwardUINavigation::BackwardUINavigation()
+        : BindedFuncCreator("backward_ui_navigation")
+        {}
+        void BackwardUINavigation::sprocess(unsigned int repeat_num) {
+            safe_for(repeat_num, [] {
+                util::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
+            }) ;
+        }
+        void BackwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+            }
+        }
+        void BackwardUINavigation::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess() ;
+        }
+
+
+        //DecideFocusedUIObject
+        DecideFocusedUIObject::DecideFocusedUIObject()
+        : BindedFuncCreator("decide_focused_ui_object")
+        {}
+        void DecideFocusedUIObject::sprocess() {
+            util::pushup(KEYCODE_SPACE) ;
+        }
+        void DecideFocusedUIObject::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void DecideFocusedUIObject::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess() ;
+        }
     }
 }

@@ -6,11 +6,14 @@
 
 namespace vind
 {
-    struct TextAreaScanner : public util::UIWalker {
-        explicit TextAreaScanner() ;
-        virtual bool pinpoint_element(const util::SmartElement& elem) override ;
-        virtual bool filter_element(const util::SmartElement& elem) override ;
-    } ;
+    namespace bind
+    {
+        struct TextAreaScanner : public util::UIWalker {
+            explicit TextAreaScanner() ;
+            virtual bool pinpoint_element(const util::SmartElement& elem) override ;
+            virtual bool filter_element(const util::SmartElement& elem) override ;
+        } ;
+    }
 }
 
 #endif

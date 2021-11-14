@@ -97,7 +97,7 @@ namespace vind
         using StateHistory = std::stack<ParserStateRawType, std::vector<ParserStateRawType>> ;
 
         struct LoggerParser::Impl {
-            std::shared_ptr<BindedFunc> func_ ;
+            std::shared_ptr<bind::BindedFunc> func_ ;
             std::shared_ptr<CommandList> cmdlist_ptr_ ;
             StateHistory state_hist_ ;
             std::size_t cmdidx_ ;
@@ -109,14 +109,14 @@ namespace vind
               cmdidx_(0)
             {}
 
-            explicit Impl(const std::shared_ptr<BindedFunc>& func)
+            explicit Impl(const std::shared_ptr<bind::BindedFunc>& func)
             : func_(func),
               cmdlist_ptr_(nullptr),
               state_hist_(),
               cmdidx_(0)
             {}
 
-            explicit Impl(std::shared_ptr<BindedFunc>&& func)
+            explicit Impl(std::shared_ptr<bind::BindedFunc>&& func)
             : func_(std::move(func)),
               cmdlist_ptr_(nullptr),
               state_hist_(),
@@ -313,10 +313,10 @@ namespace vind
         : pimpl(std::make_unique<Impl>())
         {}
 
-        LoggerParser::LoggerParser(const std::shared_ptr<BindedFunc>& func)
+        LoggerParser::LoggerParser(const std::shared_ptr<bind::BindedFunc>& func)
         : pimpl(std::make_unique<Impl>(func))
         {}
-        LoggerParser::LoggerParser(std::shared_ptr<BindedFunc>&& func)
+        LoggerParser::LoggerParser(std::shared_ptr<bind::BindedFunc>&& func)
         : pimpl(std::make_unique<Impl>(std::move(func)))
         {}
 
@@ -394,10 +394,10 @@ namespace vind
         void LoggerParser::unbind_function() noexcept {
             pimpl->func_ = nullptr ;
         }
-        void LoggerParser::bind_function(const std::shared_ptr<BindedFunc>& func) {
+        void LoggerParser::bind_function(const std::shared_ptr<bind::BindedFunc>& func) {
             if(func) pimpl->func_ = func ;
         }
-        void LoggerParser::bind_function(std::shared_ptr<BindedFunc>&& func) {
+        void LoggerParser::bind_function(std::shared_ptr<bind::BindedFunc>&& func) {
             if(func) pimpl->func_ = std::move(func) ;
         }
 
@@ -410,7 +410,7 @@ namespace vind
             return !pimpl->cmdlist_ptr_->empty() ;
         }
 
-        const std::shared_ptr<BindedFunc>& LoggerParser::get_func() const noexcept {
+        const std::shared_ptr<bind::BindedFunc>& LoggerParser::get_func() const noexcept {
             return pimpl->func_ ;
         }
 

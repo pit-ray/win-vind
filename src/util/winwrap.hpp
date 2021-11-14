@@ -23,6 +23,8 @@ namespace vind
 
         void refresh_display(HWND hwnd) ;
 
+        void set_foreground_window(HWND hwnd) ;
+
         inline BOOL b_to_B(bool b) noexcept {
             return b ? TRUE : FALSE ;
         }

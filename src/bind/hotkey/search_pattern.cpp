@@ -11,19 +11,22 @@
 
 namespace vind
 {
-    //SearchPattern
-    SearchPattern::SearchPattern()
-    : BindedFuncCreator("search_pattern")
-    {}
-    void SearchPattern::sprocess() {
-        util::pushup(KEYCODE_F3) ;
-    }
-    void SearchPattern::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+    namespace bind
+    {
+        //SearchPattern
+        SearchPattern::SearchPattern()
+        : BindedFuncCreator("search_pattern")
+        {}
+        void SearchPattern::sprocess() {
+            util::pushup(KEYCODE_F3) ;
+        }
+        void SearchPattern::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void SearchPattern::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void SearchPattern::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }

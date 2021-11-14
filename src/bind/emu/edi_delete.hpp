@@ -5,106 +5,109 @@
 
 namespace vind
 {
-    //Delete
-    struct DeleteHighlightText : public BindedFuncCreator<DeleteHighlightText> {
-        explicit DeleteHighlightText() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+    namespace bind
+    {
+        //Delete
+        struct DeleteHighlightText : public BindedFuncCreator<DeleteHighlightText> {
+            explicit DeleteHighlightText() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
-    class DeleteLine : public BindedFuncCreator<DeleteLine> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+        class DeleteLine : public BindedFuncCreator<DeleteLine> {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(core::NTypeLogger& parent_lgr) const ;
-        void sprocess(const core::CharLogger& parent_lgr) const ;
+        public:
+            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(core::NTypeLogger& parent_lgr) const ;
+            void sprocess(const core::CharLogger& parent_lgr) const ;
 
-        explicit DeleteLine() ;
-        virtual ~DeleteLine() noexcept ;
+            explicit DeleteLine() ;
+            virtual ~DeleteLine() noexcept ;
 
-        DeleteLine(DeleteLine&&) ;
-        DeleteLine& operator=(DeleteLine&&) ;
-        DeleteLine(const DeleteLine&)            = delete ;
-        DeleteLine& operator=(const DeleteLine&) = delete ;
+            DeleteLine(DeleteLine&&) ;
+            DeleteLine& operator=(DeleteLine&&) ;
+            DeleteLine(const DeleteLine&)            = delete ;
+            DeleteLine& operator=(const DeleteLine&) = delete ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
 
 
-    class DeleteLineUntilEOL : public BindedFuncCreator<DeleteLineUntilEOL> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+        class DeleteLineUntilEOL : public BindedFuncCreator<DeleteLineUntilEOL> {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(core::NTypeLogger& parent_lgr) const ;
-        void sprocess(const core::CharLogger& parent_lgr) const ;
+        public:
+            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(core::NTypeLogger& parent_lgr) const ;
+            void sprocess(const core::CharLogger& parent_lgr) const ;
 
-        explicit DeleteLineUntilEOL() ;
-        virtual ~DeleteLineUntilEOL() noexcept ;
+            explicit DeleteLineUntilEOL() ;
+            virtual ~DeleteLineUntilEOL() noexcept ;
 
-        DeleteLineUntilEOL(DeleteLineUntilEOL&&) ;
-        DeleteLineUntilEOL& operator=(DeleteLineUntilEOL&&) ;
-        DeleteLineUntilEOL(const DeleteLineUntilEOL&)            = delete ;
-        DeleteLineUntilEOL& operator=(const DeleteLineUntilEOL&) = delete ;
+            DeleteLineUntilEOL(DeleteLineUntilEOL&&) ;
+            DeleteLineUntilEOL& operator=(DeleteLineUntilEOL&&) ;
+            DeleteLineUntilEOL(const DeleteLineUntilEOL&)            = delete ;
+            DeleteLineUntilEOL& operator=(const DeleteLineUntilEOL&) = delete ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
 
-    class DeleteAfter : public BindedFuncCreator<DeleteAfter> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+        class DeleteAfter : public BindedFuncCreator<DeleteAfter> {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(core::NTypeLogger& parent_lgr) const ;
-        void sprocess(const core::CharLogger& parent_lgr) const ;
+        public:
+            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(core::NTypeLogger& parent_lgr) const ;
+            void sprocess(const core::CharLogger& parent_lgr) const ;
 
-        explicit DeleteAfter() ;
-        virtual ~DeleteAfter() noexcept ;
+            explicit DeleteAfter() ;
+            virtual ~DeleteAfter() noexcept ;
 
-        DeleteAfter(DeleteAfter&&) ;
-        DeleteAfter& operator=(DeleteAfter&&) ;
-        DeleteAfter(const DeleteAfter&)            = delete ;
-        DeleteAfter& operator=(const DeleteAfter&) = delete ;
+            DeleteAfter(DeleteAfter&&) ;
+            DeleteAfter& operator=(DeleteAfter&&) ;
+            DeleteAfter(const DeleteAfter&)            = delete ;
+            DeleteAfter& operator=(const DeleteAfter&) = delete ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
 
-    class DeleteBefore : public BindedFuncCreator<DeleteBefore> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+        class DeleteBefore : public BindedFuncCreator<DeleteBefore> {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        void sprocess(unsigned int repeat_num=1) const ;
-        void sprocess(core::NTypeLogger& parent_lgr) const ;
-        void sprocess(const core::CharLogger& parent_lgr) const ;
+        public:
+            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(core::NTypeLogger& parent_lgr) const ;
+            void sprocess(const core::CharLogger& parent_lgr) const ;
 
-        explicit DeleteBefore() ;
-        virtual ~DeleteBefore() noexcept ;
+            explicit DeleteBefore() ;
+            virtual ~DeleteBefore() noexcept ;
 
-        DeleteBefore(DeleteBefore&&) ;
-        DeleteBefore& operator=(DeleteBefore&&) ;
-        DeleteBefore(const DeleteBefore&)            = delete ;
-        DeleteBefore& operator=(const DeleteBefore&) = delete ;
+            DeleteBefore(DeleteBefore&&) ;
+            DeleteBefore& operator=(DeleteBefore&&) ;
+            DeleteBefore(const DeleteBefore&)            = delete ;
+            DeleteBefore& operator=(const DeleteBefore&) = delete ;
 
-        bool is_for_changing_text() const noexcept override {
-            return true ;
-        }
-    } ;
+            bool is_for_changing_text() const noexcept override {
+                return true ;
+            }
+        } ;
+    }
 }
 
 #endif

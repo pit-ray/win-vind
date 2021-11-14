@@ -31,7 +31,7 @@ namespace vind
     namespace core {
         void initialize_params() {
             g_default_params.clear() ;
-            std::ifstream ifs(core::SETTINGS_DEFAULT()) ;
+            std::ifstream ifs(SETTINGS_DEFAULT()) ;
             ifs >> g_default_params ;
         }
 

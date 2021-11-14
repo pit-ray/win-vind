@@ -5,13 +5,16 @@
 
 namespace vind
 {
-    struct ArrangeWindows : public BindedFuncCreator<ArrangeWindows> {
-        explicit ArrangeWindows() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+    namespace bind
+    {
+        struct ArrangeWindows : public BindedFuncCreator<ArrangeWindows> {
+            explicit ArrangeWindows() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        void reconstruct() override ;
-    } ;
+            void reconstruct() override ;
+        } ;
+    }
 }
 #endif

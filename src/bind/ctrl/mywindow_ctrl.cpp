@@ -14,44 +14,47 @@ namespace
 
 namespace vind
 {
-    //ShowConfigGUI
-    ShowConfigGUI::ShowConfigGUI()
-    : BindedFuncCreator("show_config_gui")
-    {}
-    void ShowConfigGUI::sprocess() {
-        show_func() ;
-        Sleep(50) ; //wait until opened window.
-        JumpToActiveWindow::sprocess() ;
-    }
-    void ShowConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
-        if(parent_lgr.is_long_pressing()) {
+    namespace bind
+    {
+        //ShowConfigGUI
+        ShowConfigGUI::ShowConfigGUI()
+        : BindedFuncCreator("show_config_gui")
+        {}
+        void ShowConfigGUI::sprocess() {
+            show_func() ;
+            Sleep(50) ; //wait until opened window.
+            JumpToActiveWindow::sprocess() ;
+        }
+        void ShowConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
+            if(parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void ShowConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void ShowConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-    void ShowConfigGUI::register_show_func(std::function<void()> func) noexcept {
-        show_func = std::move(func) ;
-    }
+        void ShowConfigGUI::register_show_func(std::function<void()> func) noexcept {
+            show_func = std::move(func) ;
+        }
 
 
-    //ExitConfigGUI
-    ExitConfigGUI::ExitConfigGUI()
-    : BindedFuncCreator("exit_config_gui")
-    {}
-    void ExitConfigGUI::sprocess() {
-        exit_func() ;
-    }
-    void ExitConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        //ExitConfigGUI
+        ExitConfigGUI::ExitConfigGUI()
+        : BindedFuncCreator("exit_config_gui")
+        {}
+        void ExitConfigGUI::sprocess() {
+            exit_func() ;
+        }
+        void ExitConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void ExitConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void ExitConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-    void ExitConfigGUI::register_exit_func(std::function<void()> func) noexcept {
-        exit_func = std::move(func) ;
+        void ExitConfigGUI::register_exit_func(std::function<void()> func) noexcept {
+            exit_func = std::move(func) ;
+        }
     }
 }

@@ -9,7 +9,10 @@
 
 namespace vind
 {
-    class BindedFunc ;
+    namespace bind
+    {
+        class BindedFunc ;
+    }
     namespace core {
         class KeyLog ;
     }
@@ -25,8 +28,8 @@ namespace vind
             using SPtr = std::shared_ptr<LoggerParser> ;
 
             explicit LoggerParser() ;
-            explicit LoggerParser(const std::shared_ptr<BindedFunc>& func) ;
-            explicit LoggerParser(std::shared_ptr<BindedFunc>&& func) ;
+            explicit LoggerParser(const std::shared_ptr<bind::BindedFunc>& func) ;
+            explicit LoggerParser(std::shared_ptr<bind::BindedFunc>&& func) ;
 
             virtual ~LoggerParser() noexcept ;
 
@@ -57,13 +60,13 @@ namespace vind
 
             void unbind_function() noexcept ;
 
-            void bind_function(const std::shared_ptr<BindedFunc>& func) ;
-            void bind_function(std::shared_ptr<BindedFunc>&& func) ;
+            void bind_function(const std::shared_ptr<bind::BindedFunc>& func) ;
+            void bind_function(std::shared_ptr<bind::BindedFunc>&& func) ;
 
             bool has_function() const noexcept ;
             bool has_bindings() const noexcept ;
 
-            const std::shared_ptr<BindedFunc>& get_func() const noexcept ;
+            const std::shared_ptr<bind::BindedFunc>& get_func() const noexcept ;
 
             // Transitions the automation state and returns the number of matched keycodes.
             // For example, if inputs are {KEYCODE_F, KEYCODE_LCTRL} under bindings {KEYCODE_F},

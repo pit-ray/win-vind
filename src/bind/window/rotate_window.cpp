@@ -16,8 +16,11 @@
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
-namespace {
+
+namespace
+{
     using namespace vind ;
 
     using AngleOrderedHWND = std::map<float, HWND> ;
@@ -30,7 +33,7 @@ namespace {
     } ;
 
     BOOL CALLBACK EnumWindowsProcForRotation(HWND hwnd, LPARAM lparam) {
-        if(!windowutil::is_visible_hwnd(hwnd)) {
+        if(!bind::is_visible_hwnd(hwnd)) {
             return TRUE ;
         }
 
@@ -39,7 +42,7 @@ namespace {
             return TRUE ; //continue
         }
 
-        if(!windowutil::is_window_mode(hwnd, rect.data())) {
+        if(!bind::is_window_mode(hwnd, rect.data())) {
             return TRUE ; //continue
         }
 
@@ -76,8 +79,7 @@ namespace {
 
     template <typename FuncType>
     inline void rotate_windows_core(FuncType&& sort_func) {
-
-        windowutil::ForegroundInfo fginfo ;
+        bind::ForegroundInfo fginfo ;
 
         RotEnumArgs args ;
         args.hmonitor = fginfo.hmonitor ;
@@ -92,77 +94,76 @@ namespace {
         sort_func(args.angle_hwnds) ;
 
         for(auto& [angle, hwnd] : args.angle_hwnds) {
-            windowutil::resize(hwnd, args.angle_rects[angle]) ;
+            bind::resize_window(hwnd, args.angle_rects[angle]) ;
         }
 
-        if(!SetForegroundWindow(fginfo.hwnd)) {
-            std::stringstream ss ;
-            ss << "Could not set " << fginfo.hwnd << " as a foreground window." ;
-            throw RUNTIME_EXCEPT(ss.str()) ;
-        }
+        util::set_foreground_window(fginfo.hwnd) ;
     }
 }
 
 namespace vind
 {
-    //RotateWindow
-    RotateWindows::RotateWindows()
-    : BindedFuncCreator("rotate_windows")
-    {}
-    void RotateWindows::sprocess(unsigned int repeat_num) {
-        rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
-            repeater::safe_for(repeat_num, [&angle_hwnds] {
-                auto itr     = angle_hwnds.rbegin() ;
-                auto pre_itr = itr ;
-                auto last_hwnd = itr->second ;
-                itr ++ ;
-
-                while(itr != angle_hwnds.rend()) {
-                    pre_itr->second = itr->second ; //rotate-shift hwnd (counter-clockwise)
-                    pre_itr = itr ;
+    namespace bind
+    {
+        //RotateWindow
+        RotateWindows::RotateWindows()
+        : BindedFuncCreator("rotate_windows")
+        {}
+        void RotateWindows::sprocess(unsigned int repeat_num) {
+            rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
+                safe_for(repeat_num, [&angle_hwnds] {
+                    auto itr     = angle_hwnds.rbegin() ;
+                    auto pre_itr = itr ;
+                    auto last_hwnd = itr->second ;
                     itr ++ ;
-                }
-                pre_itr->second = last_hwnd ;
+
+                    while(itr != angle_hwnds.rend()) {
+                        pre_itr->second = itr->second ; //rotate-shift hwnd (counter-clockwise)
+                        pre_itr = itr ;
+                        itr ++ ;
+                    }
+                    pre_itr->second = last_hwnd ;
+                }) ;
             }) ;
-        }) ;
-    }
-    void RotateWindows::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
         }
-    }
-    void RotateWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess(1) ;
-    }
+        void RotateWindows::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+            }
+        }
+        void RotateWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess(1) ;
+        }
 
 
-    //RotateWindowsInReverse
-    RotateWindowsInReverse::RotateWindowsInReverse()
-    : BindedFuncCreator("rotate_windows_in_reverse")
-    {}
-    void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
-        rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
-            repeater::safe_for(repeat_num, [&angle_hwnds] {
-                auto itr     = angle_hwnds.begin() ;
-                auto pre_itr = itr ;
-                auto last_hwnd = itr->second ;
-                itr ++ ;
-
-                while(itr != angle_hwnds.end()) {
-                    pre_itr->second = itr->second ; //rotate-shift hwnd (clockwise)
-                    pre_itr = itr ;
+        //RotateWindowsInReverse
+        RotateWindowsInReverse::RotateWindowsInReverse()
+        : BindedFuncCreator("rotate_windows_in_reverse")
+        {}
+        void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
+            rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
+                safe_for(repeat_num, [&angle_hwnds] {
+                    auto itr     = angle_hwnds.begin() ;
+                    auto pre_itr = itr ;
+                    auto last_hwnd = itr->second ;
                     itr ++ ;
-                }
-                pre_itr->second = last_hwnd ;
+
+                    while(itr != angle_hwnds.end()) {
+                        pre_itr->second = itr->second ; //rotate-shift hwnd (clockwise)
+                        pre_itr = itr ;
+                        itr ++ ;
+                    }
+                    pre_itr->second = last_hwnd ;
+                }) ;
             }) ;
-        }) ;
-    }
-    void RotateWindowsInReverse::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
         }
-    }
-    void RotateWindowsInReverse::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess(1) ;
+        void RotateWindowsInReverse::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+            }
+        }
+        void RotateWindowsInReverse::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess(1) ;
+        }
     }
 }

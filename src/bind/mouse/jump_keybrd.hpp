@@ -5,27 +5,30 @@
 
 namespace vind
 {
-    class JumpWithKeybrdLayout : public BindedFuncCreator<JumpWithKeybrdLayout> {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+    namespace bind
+    {
+        class JumpWithKeybrdLayout : public BindedFuncCreator<JumpWithKeybrdLayout> {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        explicit JumpWithKeybrdLayout() ;
-        virtual ~JumpWithKeybrdLayout() noexcept ;
+        public:
+            explicit JumpWithKeybrdLayout() ;
+            virtual ~JumpWithKeybrdLayout() noexcept ;
 
-        JumpWithKeybrdLayout(JumpWithKeybrdLayout&&) ;
-        JumpWithKeybrdLayout& operator=(JumpWithKeybrdLayout&&) ;
+            JumpWithKeybrdLayout(JumpWithKeybrdLayout&&) ;
+            JumpWithKeybrdLayout& operator=(JumpWithKeybrdLayout&&) ;
 
-        JumpWithKeybrdLayout(const JumpWithKeybrdLayout&)            = delete ;
-        JumpWithKeybrdLayout& operator=(const JumpWithKeybrdLayout&) = delete ;
+            JumpWithKeybrdLayout(const JumpWithKeybrdLayout&)            = delete ;
+            JumpWithKeybrdLayout& operator=(const JumpWithKeybrdLayout&) = delete ;
 
-        void sprocess() const ;
-        void sprocess(core::NTypeLogger& parent_lgr) const ;
-        void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess() const ;
+            void sprocess(core::NTypeLogger& parent_lgr) const ;
+            void sprocess(const core::CharLogger& parent_lgr) const ;
 
-        void reconstruct() override ;
-    } ;
+            void reconstruct() override ;
+        } ;
+    }
 }
 
 #endif

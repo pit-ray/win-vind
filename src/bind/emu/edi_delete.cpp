@@ -15,202 +15,204 @@
 
 namespace vind
 {
-    //DeleteLine
-    struct DeleteLine::Impl {
-        util::KeyStrokeRepeater ksr{} ;
-    } ;
+    namespace bind
+    {
+        //DeleteLine
+        struct DeleteLine::Impl {
+            util::KeyStrokeRepeater ksr{} ;
+        } ;
 
-    DeleteLine::DeleteLine()
-    : BindedFuncCreator("delete_line"),
-      pimpl(std::make_unique<Impl>())
-    {}
+        DeleteLine::DeleteLine()
+        : BindedFuncCreator("delete_line"),
+          pimpl(std::make_unique<Impl>())
+        {}
 
-    DeleteLine::~DeleteLine() noexcept                  = default ;
-    DeleteLine::DeleteLine(DeleteLine&&)            = default ;
-    DeleteLine& DeleteLine::operator=(DeleteLine&&) = default ;
+        DeleteLine::~DeleteLine() noexcept                  = default ;
+        DeleteLine::DeleteLine(DeleteLine&&)            = default ;
+        DeleteLine& DeleteLine::operator=(DeleteLine&&) = default ;
 
-    void DeleteLine::sprocess(unsigned int repeat_num) const {
-        using util::pushup ;
-        pushup(KEYCODE_HOME) ;
+        void DeleteLine::sprocess(unsigned int repeat_num) const {
+            using util::pushup ;
+            pushup(KEYCODE_HOME) ;
 
-        repeater::safe_for(repeat_num - 1, [] {
-            pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
-        }) ;
-
-        if(!txutil::select_line_until_EOL(nullptr)) {
-            txutil::clear_clipboard_with_null() ;
-        }
-        else {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-            simpletxreg::set_register_type(simpletxreg::RegType::Lines) ;
-            pushup(KEYCODE_DELETE) ;
-        }
-    }
-    void DeleteLine::sprocess(core::NTypeLogger& parent_lgr) const {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
-            pimpl->ksr.reset() ;
-        }
-        else if(pimpl->ksr.is_passed()) {
-            sprocess(1) ;
-        }
-    }
-    void DeleteLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
-    }
-
-
-    //DeleteLineUntilEOL
-    struct DeleteLineUntilEOL::Impl {
-        util::KeyStrokeRepeater ksr{} ;
-    } ;
-
-    DeleteLineUntilEOL::DeleteLineUntilEOL()
-    : BindedFuncCreator("delete_line_until_EOL"),
-      pimpl(std::make_unique<Impl>())
-    {}
-
-    DeleteLineUntilEOL::~DeleteLineUntilEOL() noexcept                          = default ;
-    DeleteLineUntilEOL::DeleteLineUntilEOL(DeleteLineUntilEOL&&)            = default ;
-    DeleteLineUntilEOL& DeleteLineUntilEOL::operator=(DeleteLineUntilEOL&&) = default ;
-
-    void DeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
-        using util::pushup ;
-
-        //delete N - 1 lines under the current line
-        repeater::safe_for(repeat_num - 1, [] {
-            pushup(KEYCODE_DOWN) ;
-        }) ;
-
-        if(!txutil::select_line_until_EOL(nullptr)) {
-            txutil::clear_clipboard_with_null() ;
-        }
-        else {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-            simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
-        }
-    }
-    void DeleteLineUntilEOL::sprocess(core::NTypeLogger& parent_lgr) const {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
-            pimpl->ksr.reset() ;
-        }
-        else if(pimpl->ksr.is_passed()) {
-            sprocess(1) ;
-        }
-    }
-    void DeleteLineUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
-    }
-
-
-    //DeleteAfter
-    struct DeleteAfter::Impl {
-        util::KeyStrokeRepeater ksr{} ;
-    } ;
-
-    DeleteAfter::DeleteAfter()
-    : BindedFuncCreator("delete_after"),
-      pimpl(std::make_unique<Impl>())
-    {}
-
-    DeleteAfter::~DeleteAfter() noexcept                   = default ;
-    DeleteAfter::DeleteAfter(DeleteAfter&&)            = default ;
-    DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
-
-    void DeleteAfter::sprocess(unsigned int repeat_num) const {
-        if(core::get_b("charcache")) {
-            repeater::safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-                    simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
+            safe_for(repeat_num - 1, [] {
+                pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
-        }
-        else {
-            repeater::safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_DELETE) ;
-            }) ;
-        }
-    }
-    void DeleteAfter::sprocess(core::NTypeLogger& parent_lgr) const {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
-            pimpl->ksr.reset() ;
-        }
-        else if(pimpl->ksr.is_passed()) {
-            sprocess(1) ;
-        }
-    }
-    void DeleteAfter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
-    }
 
-
-    //DeleteBefore
-    struct DeleteBefore::Impl {
-        util::KeyStrokeRepeater ksr{} ;
-    } ;
-
-    DeleteBefore::DeleteBefore()
-    : BindedFuncCreator("delete_before"),
-      pimpl(std::make_unique<Impl>())
-    {}
-
-    DeleteBefore::~DeleteBefore() noexcept                    = default ;
-    DeleteBefore::DeleteBefore(DeleteBefore&&)            = default ;
-    DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
-
-    void DeleteBefore::sprocess(unsigned int repeat_num) const {
-        if(core::get_b("charcache")) {
-            repeater::safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+            if(!select_line_until_EOL(nullptr)) {
+                clear_clipboard_with_null() ;
+            }
+            else {
                 util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-                simpletxreg::set_register_type(simpletxreg::RegType::Chars) ;
-            }) ;
+                set_register_type(RegType::Lines) ;
+                pushup(KEYCODE_DELETE) ;
+            }
         }
-        else {
-            repeater::safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_BKSPACE) ;
-            }) ;
+        void DeleteLine::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+                pimpl->ksr.reset() ;
+            }
+            else if(pimpl->ksr.is_passed()) {
+                sprocess(1) ;
+            }
         }
-    }
-    void DeleteBefore::sprocess(core::NTypeLogger& parent_lgr) const {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess(parent_lgr.get_head_num()) ;
-            pimpl->ksr.reset() ;
-        }
-        else if(pimpl->ksr.is_passed()) {
+        void DeleteLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
             sprocess(1) ;
         }
-    }
-    void DeleteBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-        sprocess(1) ;
-    }
 
 
-    //DeleteHighlightText (Visual only)
-    DeleteHighlightText::DeleteHighlightText()
-    : BindedFuncCreator("delete_highlight_text")
-    {}
-    void DeleteHighlightText::sprocess() {
-        using util::pushup ;
-        using namespace simpletxreg ;
+        //DeleteLineUntilEOL
+        struct DeleteLineUntilEOL::Impl {
+            util::KeyStrokeRepeater ksr{} ;
+        } ;
 
-        pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-        if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
-            set_register_type(RegType::Lines) ;
+        DeleteLineUntilEOL::DeleteLineUntilEOL()
+        : BindedFuncCreator("delete_line_until_EOL"),
+          pimpl(std::make_unique<Impl>())
+        {}
+
+        DeleteLineUntilEOL::~DeleteLineUntilEOL() noexcept                          = default ;
+        DeleteLineUntilEOL::DeleteLineUntilEOL(DeleteLineUntilEOL&&)            = default ;
+        DeleteLineUntilEOL& DeleteLineUntilEOL::operator=(DeleteLineUntilEOL&&) = default ;
+
+        void DeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
+            using util::pushup ;
+
+            //delete N - 1 lines under the current line
+            safe_for(repeat_num - 1, [] {
+                pushup(KEYCODE_DOWN) ;
+            }) ;
+
+            if(!select_line_until_EOL(nullptr)) {
+                clear_clipboard_with_null() ;
+            }
+            else {
+                util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                set_register_type(RegType::Chars) ;
+            }
         }
-        else {
-            set_register_type(RegType::Chars) ;
+        void DeleteLineUntilEOL::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+                pimpl->ksr.reset() ;
+            }
+            else if(pimpl->ksr.is_passed()) {
+                sprocess(1) ;
+            }
         }
-        ToEdiNormal::sprocess(false) ;
-    }
-    void DeleteHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        void DeleteLineUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess(1) ;
+        }
+
+
+        //DeleteAfter
+        struct DeleteAfter::Impl {
+            util::KeyStrokeRepeater ksr{} ;
+        } ;
+
+        DeleteAfter::DeleteAfter()
+        : BindedFuncCreator("delete_after"),
+          pimpl(std::make_unique<Impl>())
+        {}
+
+        DeleteAfter::~DeleteAfter() noexcept                   = default ;
+        DeleteAfter::DeleteAfter(DeleteAfter&&)            = default ;
+        DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
+
+        void DeleteAfter::sprocess(unsigned int repeat_num) const {
+            if(core::get_b("charcache")) {
+                safe_for(repeat_num, [] {
+                        util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+                        util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                        set_register_type(RegType::Chars) ;
+                }) ;
+            }
+            else {
+                safe_for(repeat_num, [] {
+                    util::pushup(KEYCODE_DELETE) ;
+                }) ;
+            }
+        }
+        void DeleteAfter::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+                pimpl->ksr.reset() ;
+            }
+            else if(pimpl->ksr.is_passed()) {
+                sprocess(1) ;
+            }
+        }
+        void DeleteAfter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess(1) ;
+        }
+
+
+        //DeleteBefore
+        struct DeleteBefore::Impl {
+            util::KeyStrokeRepeater ksr{} ;
+        } ;
+
+        DeleteBefore::DeleteBefore()
+        : BindedFuncCreator("delete_before"),
+          pimpl(std::make_unique<Impl>())
+        {}
+
+        DeleteBefore::~DeleteBefore() noexcept                    = default ;
+        DeleteBefore::DeleteBefore(DeleteBefore&&)            = default ;
+        DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
+
+        void DeleteBefore::sprocess(unsigned int repeat_num) const {
+            if(core::get_b("charcache")) {
+                safe_for(repeat_num, [] {
+                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                    util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                    set_register_type(RegType::Chars) ;
+                }) ;
+            }
+            else {
+                safe_for(repeat_num, [] {
+                    util::pushup(KEYCODE_BKSPACE) ;
+                }) ;
+            }
+        }
+        void DeleteBefore::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+                pimpl->ksr.reset() ;
+            }
+            else if(pimpl->ksr.is_passed()) {
+                sprocess(1) ;
+            }
+        }
+        void DeleteBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess(1) ;
+        }
+
+
+        //DeleteHighlightText (Visual only)
+        DeleteHighlightText::DeleteHighlightText()
+        : BindedFuncCreator("delete_highlight_text")
+        {}
+        void DeleteHighlightText::sprocess() {
+            using util::pushup ;
+
+            pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
+                set_register_type(RegType::Lines) ;
+            }
+            else {
+                set_register_type(RegType::Chars) ;
+            }
+            ToEdiNormal::sprocess(false) ;
+        }
+        void DeleteHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void DeleteHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void DeleteHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }

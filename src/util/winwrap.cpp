@@ -38,6 +38,12 @@ namespace vind
             }
         }
 
+        void set_foreground_window(HWND hwnd) {
+            if(!SetForegroundWindow(hwnd)) {
+                throw RUNTIME_EXCEPT("Could not set a window as foreground.") ;
+            }
+        }
+
         template <typename StdString, typename Path>
         inline void create_process_core(
                 StdString&& cmd,

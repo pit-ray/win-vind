@@ -5,43 +5,46 @@
 
 namespace vind
 {
-    struct HotkeyCopy : public BindedFuncCreator<HotkeyCopy> {
-        explicit HotkeyCopy() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+    namespace bind
+    {
+        struct HotkeyCopy : public BindedFuncCreator<HotkeyCopy> {
+            explicit HotkeyCopy() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
 
-    struct HotkeyPaste : public BindedFuncCreator<HotkeyPaste> {
-        explicit HotkeyPaste() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct HotkeyPaste : public BindedFuncCreator<HotkeyPaste> {
+            explicit HotkeyPaste() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
 
-    struct HotkeyCut : public BindedFuncCreator<HotkeyCut> {
-        explicit HotkeyCut() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct HotkeyCut : public BindedFuncCreator<HotkeyCut> {
+            explicit HotkeyCut() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
 
-    struct HotkeyDelete : public BindedFuncCreator<HotkeyDelete> {
-        explicit HotkeyDelete() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct HotkeyDelete : public BindedFuncCreator<HotkeyDelete> {
+            explicit HotkeyDelete() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
 
-    struct HotkeyBackspace : public BindedFuncCreator<HotkeyBackspace> {
-        explicit HotkeyBackspace() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct HotkeyBackspace : public BindedFuncCreator<HotkeyBackspace> {
+            explicit HotkeyBackspace() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
+    }
 }
 #endif

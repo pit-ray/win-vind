@@ -33,8 +33,12 @@ namespace
 
     template <typename KeyLogType>
     core::KeyLog extract_numbers(const core::KeyLog& log, KeyLogType&& ignore_keys) {
-        auto to_ascii_func = log.is_containing(KEYCODE_SHIFT) ?
-            core::get_shifted_ascii : core::get_ascii ;
+        auto to_ascii_func = [&log] (auto&& keycode) {
+            if(log.is_containing(KEYCODE_SHIFT))
+                return core::get_shifted_ascii(keycode) ;
+            else
+                return core::get_ascii(keycode) ;
+        } ;
 
         core::KeyLog::Data nums{} ;
         for(const KeyCode& keycode : log) {
@@ -69,7 +73,7 @@ namespace vind
             LoggerStateRawType state_ = LoggerState::INITIAL ;
 
             void concatenate_repeating_number(KeyCode keycode) {
-                auto num = core::to_number<unsigned int>(keycode) ;
+                auto num = to_number<unsigned int>(keycode) ;
                 constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
                 if(head_num_ < max) {
                     head_num_ = head_num_ * 10 + num ;
@@ -102,7 +106,7 @@ namespace vind
 
         int NTypeLogger::transition_to_parsing_num_state(const KeyLog& num_only_log) {
             pimpl->ksr_.reset() ;
-            pimpl->head_num_ = core::to_number<decltype(pimpl->head_num_)>(*num_only_log.cbegin()) ;
+            pimpl->head_num_ = to_number<decltype(pimpl->head_num_)>(*num_only_log.cbegin()) ;
             pimpl->state_ = LoggerState::PARSING_NUM ;
             return -1 ;
         }
@@ -112,7 +116,7 @@ namespace vind
                 return 0 ;
             }
 
-            if(core::is_absorbed()) {
+            if(is_absorbed()) {
                 auto nums = extract_numbers(log, KeyLog{KEYCODE_0}) ;
                 if(!nums.empty()) {
                     return transition_to_parsing_num_state(nums) ;
@@ -192,7 +196,7 @@ namespace vind
         }
 
         int NTypeLogger::logging_state() {
-            auto log = core::get_pressed_list() ;
+            auto log = get_pressed_list() ;
 
             log = do_keycode_noremap(log) ;
 

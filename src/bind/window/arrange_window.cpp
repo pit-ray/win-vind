@@ -34,7 +34,7 @@ namespace
     std::unordered_set<std::string> g_ignores ;
 
     BOOL CALLBACK EnumWindowsProcForArrangement(HWND hwnd, LPARAM UNUSED(lparam)) {
-        if(!windowutil::is_visible_hwnd(hwnd)) {
+        if(!bind::is_visible_hwnd(hwnd)) {
             return TRUE ; //continue
         }
 
@@ -43,7 +43,7 @@ namespace
             return TRUE ; //continue
         }
 
-        if(!windowutil::is_window_mode(hwnd, box.data())) {
+        if(!bind::is_window_mode(hwnd, box.data())) {
             return TRUE ; //continue
         }
 
@@ -123,83 +123,84 @@ namespace
 
 namespace vind
 {
-    //ArrangeWindows
-    ArrangeWindows::ArrangeWindows()
-    : BindedFuncCreator("arrange_windows")
-    {}
-    void ArrangeWindows::sprocess() {
-        auto hwnd = GetForegroundWindow() ;
-        if(hwnd == NULL) {
-            throw RUNTIME_EXCEPT("There is not a foreground window.") ;
-        }
+    namespace bind
+    {
+        //ArrangeWindows
+        ArrangeWindows::ArrangeWindows()
+        : BindedFuncCreator("arrange_windows")
+        {}
+        void ArrangeWindows::sprocess() {
+            auto hwnd = GetForegroundWindow() ;
+            if(hwnd == NULL) {
+                throw RUNTIME_EXCEPT("There is not a foreground window.") ;
+            }
 
-        //Search visible windows
-        g_m_ordered_hwnd.clear() ;
-        g_mrects.clear() ;
+            //Search visible windows
+            g_m_ordered_hwnd.clear() ;
+            g_mrects.clear() ;
 
-        if(!EnumWindows(EnumWindowsProcForArrangement, 0)) {
-            throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
-        }
+            if(!EnumWindows(EnumWindowsProcForArrangement, 0)) {
+                throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+            }
 
-        if(g_m_ordered_hwnd.empty() || g_mrects.empty()) {
-            return ;
-        }
+            if(g_m_ordered_hwnd.empty() || g_mrects.empty()) {
+                return ;
+            }
 
-        if(!g_ignores.empty()) {
-            for(const auto& monitor : g_mrects) {
-                auto& hwnds = g_m_ordered_hwnd[monitor.first] ;
+            if(!g_ignores.empty()) {
+                for(const auto& monitor : g_mrects) {
+                    auto& hwnds = g_m_ordered_hwnd[monitor.first] ;
 
-                auto itr = hwnds.begin() ;
-                while(itr != hwnds.end()) {
-                    auto modulename = util::A2a(util::get_module_filename(itr->second)) ;
+                    auto itr = hwnds.begin() ;
+                    while(itr != hwnds.end()) {
+                        auto modulename = util::A2a(util::get_module_filename(itr->second)) ;
 
-                    auto dot = modulename.find_last_of(".") ;
-                    if(dot != std::string::npos) {
-                        modulename = modulename.substr(0, dot) ;
+                        auto dot = modulename.find_last_of(".") ;
+                        if(dot != std::string::npos) {
+                            modulename = modulename.substr(0, dot) ;
+                        }
+
+                        if(g_ignores.find(modulename) != g_ignores.end()) {
+                            itr = hwnds.erase(itr) ;
+                        }
+                        else {
+                            itr ++ ;
+                        }
                     }
 
-                    if(g_ignores.find(modulename) != g_ignores.end()) {
-                        itr = hwnds.erase(itr) ;
+                    // all detected window are ignored in this monitor.
+                    if(hwnds.empty()) {
+                        g_m_ordered_hwnd.erase(monitor.first) ;
                     }
-                    else {
-                        itr ++ ;
-                    }
-                }
-
-                // all detected window are ignored in this monitor.
-                if(hwnds.empty()) {
-                    g_m_ordered_hwnd.erase(monitor.first) ;
                 }
             }
-        }
 
-        if(g_m_ordered_hwnd.empty()) {
-            return ;
-        }
+            if(g_m_ordered_hwnd.empty()) {
+                return ;
+            }
 
-        std::unordered_map<HWND, util::Box2D> rects ;
-        assign_local_area_in_monitors(rects) ;
-        windowutil::batch_resize(rects) ;
+            std::unordered_map<HWND, util::Box2D> rects ;
+            assign_local_area_in_monitors(rects) ;
+            batch_resize(rects) ;
 
-        if(!SetForegroundWindow(hwnd)) {
-            throw RUNTIME_EXCEPT("Could not set the foreground window.") ;
+            util::set_foreground_window(hwnd) ;
         }
-    }
-    void ArrangeWindows::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        void ArrangeWindows::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void ArrangeWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void ArrangeWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-    void ArrangeWindows::reconstruct() {
-        g_ignores.clear() ;
-        auto str = core::get_s("arrangewin_ignore") ;
+        void ArrangeWindows::reconstruct() {
+            g_ignores.clear() ;
+            auto str = core::get_s("arrangewin_ignore") ;
 
-        auto modules = util::split(str, ",") ;
-        for(auto& m : modules) {
-            g_ignores.insert(util::A2a(util::trim(m))) ;
+            auto modules = util::split(str, ",") ;
+            for(auto& m : modules) {
+                g_ignores.insert(util::A2a(util::trim(m))) ;
+            }
         }
     }
 }

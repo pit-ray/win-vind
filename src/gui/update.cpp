@@ -244,7 +244,7 @@ namespace vind
 
                             Bind(wxEVT_HTML_LINK_CLICKED, [](wxHtmlLinkEvent& e) {
                                 auto url = e.GetLinkInfo().GetHref().ToStdString() ;
-                                Execute::sprocess(url) ;
+                                bind::Execute::sprocess(url) ;
                             }, UPDATE_NOTES) ;
 
                             root->Add(body, flags) ;
@@ -289,8 +289,8 @@ namespace vind
                                                     Sleep(500) ;
                                                     std::ifstream check(dl_filepath) ;
                                                     if(check.is_open()) {
-                                                        Execute::sprocess(dl_filepath) ;
-                                                        ExitConfigGUI::sprocess() ; // exit win-vind for update
+                                                    bind::Execute::sprocess(dl_filepath) ;
+                                                        bind::ExitConfigGUI::sprocess() ; // exit win-vind for update
                                                         break ;
                                                     }
                                                     if(system_clock::now() - dl_start > 60s) { //timeout
@@ -302,7 +302,7 @@ namespace vind
                                         }
                                     }
                                     catch(const nlohmann::json::exception&) {
-                                        Execute::sprocess(
+                                        bind::Execute::sprocess(
                                                 "https://github.com/pit-ray/win-vind/releases/latest") ;
                                     }
                                 }, wxID_OK) ;

@@ -5,14 +5,17 @@
 
 namespace vind
 {
-    struct SyscmdSet : BindedFuncCreator<SyscmdSet> {
-        explicit SyscmdSet() ;
-        static void sprocess(
-                const std::string& args="",
-                bool reload_config=false) ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+    namespace bind
+    {
+        struct SyscmdSet : BindedFuncCreator<SyscmdSet> {
+            explicit SyscmdSet() ;
+            static void sprocess(
+                    const std::string& args="",
+                    bool reload_config=false) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
+    }
 }
 
 #endif

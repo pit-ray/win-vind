@@ -9,6 +9,7 @@
 #include "util/box_2d.hpp"
 #include "util/rect.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 namespace
 {
@@ -21,7 +22,7 @@ namespace
             return TRUE ;
         }
 
-        if(!windowutil::is_visible_hwnd(hwnd)) {
+        if(!bind::is_visible_hwnd(hwnd)) {
             return TRUE ;
         }
 
@@ -30,7 +31,7 @@ namespace
             return TRUE ;
         }
 
-        if(!windowutil::is_window_mode(hwnd, rect.data())) {
+        if(!bind::is_window_mode(hwnd, rect.data())) {
             return TRUE ;
         }
 
@@ -76,11 +77,9 @@ namespace
 
         if(!distance_order_hwnd.empty()) {
             auto nearest_hwnd = distance_order_hwnd.begin()->second ;
-            if(!SetForegroundWindow(nearest_hwnd)) {
-                throw RUNTIME_EXCEPT("Could not set a foreground window.") ;
-            }
+            util::set_foreground_window(nearest_hwnd) ;
             Sleep(50) ;
-            JumpToActiveWindow::sprocess() ;
+            bind::JumpToActiveWindow::sprocess() ;
         }
     }
 }
@@ -88,110 +87,113 @@ namespace
 
 namespace vind
 {
-    //SelectLeftWindow
-    SelectLeftWindow::SelectLeftWindow()
-    : BindedFuncCreator("select_left_window")
-    {}
-    void SelectLeftWindow::sprocess() {
-        auto is_if_target = [] (const auto& rect, const auto& erect) {
-            return rect.center_x() >= erect.center_x() ;
-        } ;
+    namespace bind
+    {
+        //SelectLeftWindow
+        SelectLeftWindow::SelectLeftWindow()
+        : BindedFuncCreator("select_left_window")
+        {}
+        void SelectLeftWindow::sprocess() {
+            auto is_if_target = [] (const auto& rect, const auto& erect) {
+                return rect.center_x() >= erect.center_x() ;
+            } ;
 
-        auto calc_distance = [] (const auto& rect, const auto& erect) {
-            return util::l2_distance_nosq(
-                    erect.center_x(), erect.center_y(),
-                    rect.left(), rect.center_y()) / 100 ;
-        } ;
+            auto calc_distance = [] (const auto& rect, const auto& erect) {
+                return util::l2_distance_nosq(
+                        erect.center_x(), erect.center_y(),
+                        rect.left(), rect.center_y()) / 100 ;
+            } ;
 
-        select_nearest_window(is_if_target, calc_distance) ;
-    }
-    void SelectLeftWindow::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+            select_nearest_window(is_if_target, calc_distance) ;
+        }
+        void SelectLeftWindow::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void SelectLeftWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void SelectLeftWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 
 
-    //SelectRightWindow
-    SelectRightWindow::SelectRightWindow()
-    : BindedFuncCreator("select_right_window")
-    {}
-    void SelectRightWindow::sprocess() {
-        auto is_if_target = [] (const auto& rect, const auto& erect) {
-            return rect.center_x() <= erect.center_x() ;
-        } ;
+        //SelectRightWindow
+        SelectRightWindow::SelectRightWindow()
+        : BindedFuncCreator("select_right_window")
+        {}
+        void SelectRightWindow::sprocess() {
+            auto is_if_target = [] (const auto& rect, const auto& erect) {
+                return rect.center_x() <= erect.center_x() ;
+            } ;
 
-        auto calc_distance = [] (const auto& rect, const auto& erect) {
-            return util::l2_distance_nosq(
-                    erect.center_x(), erect.center_y(),
-                    rect.right(), rect.center_y()) / 100 ;
-        } ;
+            auto calc_distance = [] (const auto& rect, const auto& erect) {
+                return util::l2_distance_nosq(
+                        erect.center_x(), erect.center_y(),
+                        rect.right(), rect.center_y()) / 100 ;
+            } ;
 
-        select_nearest_window(is_if_target, calc_distance) ;
-    }
-    void SelectRightWindow::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+            select_nearest_window(is_if_target, calc_distance) ;
+        }
+        void SelectRightWindow::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void SelectRightWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void SelectRightWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 
 
-    //SelectUpperWindow
-    SelectUpperWindow::SelectUpperWindow()
-    : BindedFuncCreator("select_upper_window")
-    {}
-    void SelectUpperWindow::sprocess() {
-        auto is_if_target = [] (const auto& rect, const auto& erect) {
-            return rect.center_y() >= erect.center_y() ;
-        } ;
+        //SelectUpperWindow
+        SelectUpperWindow::SelectUpperWindow()
+        : BindedFuncCreator("select_upper_window")
+        {}
+        void SelectUpperWindow::sprocess() {
+            auto is_if_target = [] (const auto& rect, const auto& erect) {
+                return rect.center_y() >= erect.center_y() ;
+            } ;
 
-        auto calc_distance = [] (const auto& rect, const auto& erect) {
-            return util::l2_distance_nosq(
-                    erect.center_x(), erect.center_y(),
-                    rect.center_x(), rect.top()) / 100 ;
-        } ;
+            auto calc_distance = [] (const auto& rect, const auto& erect) {
+                return util::l2_distance_nosq(
+                        erect.center_x(), erect.center_y(),
+                        rect.center_x(), rect.top()) / 100 ;
+            } ;
 
-        select_nearest_window(is_if_target, calc_distance) ;
-    }
-    void SelectUpperWindow::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+            select_nearest_window(is_if_target, calc_distance) ;
+        }
+        void SelectUpperWindow::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void SelectUpperWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void SelectUpperWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 
 
-    //SelectLowerWindow
-    SelectLowerWindow::SelectLowerWindow()
-    : BindedFuncCreator("select_lower_window")
-    {}
-    void SelectLowerWindow::sprocess() {
-        auto is_if_target = [] (const auto& rect, const auto& erect) {
-            return rect.center_y() <= erect.center_y() ;
-        } ;
+        //SelectLowerWindow
+        SelectLowerWindow::SelectLowerWindow()
+        : BindedFuncCreator("select_lower_window")
+        {}
+        void SelectLowerWindow::sprocess() {
+            auto is_if_target = [] (const auto& rect, const auto& erect) {
+                return rect.center_y() <= erect.center_y() ;
+            } ;
 
-        auto calc_distance = [] (const auto& rect, const auto& erect) {
-            return util::l2_distance_nosq(
-                    erect.center_x(), erect.center_y(),
-                    rect.center_x(), rect.bottom()) / 100 ;
-        } ;
+            auto calc_distance = [] (const auto& rect, const auto& erect) {
+                return util::l2_distance_nosq(
+                        erect.center_x(), erect.center_y(),
+                        rect.center_x(), rect.bottom()) / 100 ;
+            } ;
 
-        select_nearest_window(is_if_target, calc_distance) ;
-    }
-    void SelectLowerWindow::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+            select_nearest_window(is_if_target, calc_distance) ;
+        }
+        void SelectLowerWindow::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void SelectLowerWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void SelectLowerWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }

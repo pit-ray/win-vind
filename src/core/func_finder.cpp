@@ -26,7 +26,7 @@
 namespace
 {
     using namespace vind ;
-    std::vector<BindedFunc::SPtr> g_all_func_list ;
+    std::vector<bind::BindedFunc::SPtr> g_all_func_list ;
 
     ParsedBindingLists g_parsed_bindlists ;
 }
@@ -61,7 +61,7 @@ namespace vind
             //clear logger parser list by swapping
             ModeArray<LoggerParserList>().swap(pimpl->parser_ar_) ;
 
-            for(std::size_t i = 0 ; i < core::mode_num() ; i ++) {
+            for(std::size_t i = 0 ; i < mode_num() ; i ++) {
                 for(const auto& func : g_all_func_list) {
                     try {
                         const auto& list = g_parsed_bindlists[i].at(func->name()) ;
@@ -78,8 +78,8 @@ namespace vind
         }
 
         LoggerParser::SPtr FuncFinder::transition_parser_states_in_batch(
-                const core::KeyLoggerBase& lgr,
-                core::Mode mode) {
+                const KeyLoggerBase& lgr,
+                Mode mode) {
             LoggerParser::SPtr ptr = nullptr ;
             for(const auto& log : lgr) {
                 ptr = find_parser_with_transition(log, 0, mode) ;
@@ -89,7 +89,7 @@ namespace vind
 
         void FuncFinder::search_unrejected_parser(
                 std::vector<LoggerParser::SPtr>& results,
-                core::Mode mode) {
+                Mode mode) {
 
             if(!results.empty()) {
                 results.clear() ;
@@ -102,7 +102,7 @@ namespace vind
             }
         }
 
-        LoggerParser::SPtr FuncFinder::find_rejected_with_ready_parser(core::Mode mode) {
+        LoggerParser::SPtr FuncFinder::find_rejected_with_ready_parser(Mode mode) {
             for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
                 if(parser->is_rejected_with_ready()) {
                     return parser ;
@@ -111,7 +111,7 @@ namespace vind
             return nullptr ;
         }
 
-        LoggerParser::SPtr FuncFinder::find_waiting_parser(core::Mode mode) {
+        LoggerParser::SPtr FuncFinder::find_waiting_parser(Mode mode) {
             for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
                 if(parser->is_waiting()) {
                     return parser ;
@@ -120,7 +120,7 @@ namespace vind
             return nullptr ;
         }
 
-        LoggerParser::SPtr FuncFinder::find_accepted_parser(core::Mode mode) {
+        LoggerParser::SPtr FuncFinder::find_accepted_parser(Mode mode) {
             for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
                 if(parser->is_accepted()) {
                     return parser ;
@@ -130,9 +130,9 @@ namespace vind
         }
 
         LoggerParser::SPtr FuncFinder::find_parser_with_transition(
-                const core::KeyLog& log,
+                const KeyLog& log,
                 std::size_t low_priority_func_id,
-                core::Mode mode) {
+                Mode mode) {
             LoggerParser::SPtr ptr = nullptr ;
             LoggerParser::SPtr low_priority_parser = nullptr ;
             unsigned char mostnum = 0 ;
@@ -172,20 +172,20 @@ namespace vind
             return nullptr ;
         }
 
-        void FuncFinder::backward_parser_states(std::size_t n, core::Mode mode) {
+        void FuncFinder::backward_parser_states(std::size_t n, Mode mode) {
             for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
                 parser->backward_state(n) ;
             }
         }
 
-        void FuncFinder::reset_parser_states(core::Mode mode) {
+        void FuncFinder::reset_parser_states(Mode mode) {
             for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
                 parser->reset_state() ;
             }
         }
 
-        BindedFunc::SPtr FuncFinder::find_func_byname(const std::string& name) {
-            auto id = BindedFunc::name_to_id(name) ;
+        bind::BindedFunc::SPtr FuncFinder::find_func_byname(const std::string& name) {
+            auto id = bind::BindedFunc::name_to_id(name) ;
             for(const auto& func : g_all_func_list) {
                 if(func->id() == id) return func ;
             }
@@ -194,18 +194,18 @@ namespace vind
 
         void FuncFinder::load_global_bindings() {
             if(g_all_func_list.empty()) {
-                g_all_func_list = bindingslists::get() ;
+                g_all_func_list = bind::all_global_binded_funcs() ;
             }
 
             ParsedBindingLists().swap(g_parsed_bindlists) ; //clear by empty swapping
 
-            std::vector<core::UniqueMap> maps{} ;
+            std::vector<UniqueMap> maps{} ;
 
-            for(size_t i = 0 ; i < core::mode_num() ; i ++) {
+            for(size_t i = 0 ; i < mode_num() ; i ++) {
                 auto& funcmap = g_parsed_bindlists[i] ;
 
                 maps.clear() ;
-                core::get_maps(static_cast<core::Mode>(i), maps) ;
+                get_maps(static_cast<Mode>(i), maps) ;
                 for(const auto& map : maps) {
                     if(!map.is_noremap_function()) {
                         continue ;

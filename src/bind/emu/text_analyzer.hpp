@@ -10,26 +10,26 @@
 
 namespace vind
 {
-    namespace textanalyze {
-        struct SelRes {
+    namespace bind {
+        struct SelectedTextResult {
             std::string str ;
 
             //Some editors, for example Microsoft Office Word, has a visible end of line (EOL) mark.
             //In the case, if pushup LShift + End, the line is selected including CR-LF.
             bool having_EOL ;
 
-            explicit SelRes(const std::string& outstr, bool havEOL)
+            explicit SelectedTextResult(const std::string& outstr, bool havEOL)
             : str(outstr),
               having_EOL(havEOL)
             {}
 
-            explicit SelRes()
+            explicit SelectedTextResult()
             : str(),
               having_EOL(false)
             {}
         } ;
 
-        SelRes get_selected_text(
+        SelectedTextResult get_selected_text(
                 std::function<void()> clip_func,
                 bool backup=false) ;
     }

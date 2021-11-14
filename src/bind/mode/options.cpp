@@ -20,7 +20,8 @@
 
 namespace vind
 {
-    namespace options {
+    namespace bind
+    {
         void focus_nearest_textarea(
                 HWND hwnd,
                 const util::Point2D& point,

@@ -79,134 +79,137 @@ namespace
 
 namespace vind
 {
-    struct EasyClickCore::Impl {
-        UIScanner scanner_{} ;
-        std::vector<util::SmartElement> elements_{} ;
-        std::vector<util::Point2D> positions_{} ;
-        std::vector<Hint> hints_{} ;
-        std::vector<std::string> strhints_{} ;
-        InputHinter input_hinter_{} ;
-        DisplayHinter display_hinter_{} ;
-    } ;
-
-    EasyClickCore::EasyClickCore()
-    : pimpl(std::make_unique<Impl>())
+    namespace bind
     {
-        pimpl->positions_.reserve(2048) ;
-        pimpl->elements_.reserve(2048) ;
-        pimpl->hints_.reserve(2048) ;
-        pimpl->strhints_.reserve(2048) ;
+        struct EasyClickCore::Impl {
+            UIScanner scanner_{} ;
+            std::vector<util::SmartElement> elements_{} ;
+            std::vector<util::Point2D> positions_{} ;
+            std::vector<Hint> hints_{} ;
+            std::vector<std::string> strhints_{} ;
+            InputHinter input_hinter_{} ;
+            DisplayHinter display_hinter_{} ;
+        } ;
 
-        opt::AsyncUIACacheBuilder::register_properties(
-                pimpl->scanner_.get_properties()) ;
-    }
+        EasyClickCore::EasyClickCore()
+        : pimpl(std::make_unique<Impl>())
+        {
+            pimpl->positions_.reserve(2048) ;
+            pimpl->elements_.reserve(2048) ;
+            pimpl->hints_.reserve(2048) ;
+            pimpl->strhints_.reserve(2048) ;
 
-    EasyClickCore::~EasyClickCore() noexcept = default ;
-
-    EasyClickCore::EasyClickCore(EasyClickCore&&)            = default ;
-    EasyClickCore& EasyClickCore::operator=(EasyClickCore&&) = default ;
-
-    void EasyClickCore::scan_ui_objects(HWND hwnd) const {
-        pimpl->hints_.clear() ;
-        pimpl->elements_.clear() ;
-        pimpl->positions_.clear() ;
-        pimpl->strhints_.clear() ;
-
-        RECT root_rect ;
-        if(!GetWindowRect(hwnd, &root_rect)) {
-            throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
+            opt::AsyncUIACacheBuilder::register_properties(
+                    pimpl->scanner_.get_properties()) ;
         }
 
-        if(core::get_b("uiacachebuild")) {
-            auto root_elem = opt::AsyncUIACacheBuilder::get_root_element(hwnd) ;
-            pimpl->scanner_.scan(root_elem, pimpl->elements_) ;
-        }
-        else {
-            pimpl->scanner_.scan(hwnd, pimpl->elements_) ;
-        }
+        EasyClickCore::~EasyClickCore() noexcept = default ;
 
-        for(auto& elem : pimpl->elements_) {
-            RECT rect ;
-            if(util::is_failed(elem->get_CachedBoundingRectangle(&rect))) {
-                throw RUNTIME_EXCEPT("Could not get a rectangle of a element.") ;
+        EasyClickCore::EasyClickCore(EasyClickCore&&)            = default ;
+        EasyClickCore& EasyClickCore::operator=(EasyClickCore&&) = default ;
+
+        void EasyClickCore::scan_ui_objects(HWND hwnd) const {
+            pimpl->hints_.clear() ;
+            pimpl->elements_.clear() ;
+            pimpl->positions_.clear() ;
+            pimpl->strhints_.clear() ;
+
+            RECT root_rect ;
+            if(!GetWindowRect(hwnd, &root_rect)) {
+                throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
             }
 
-            if(util::is_fully_in_range(rect, root_rect)) {
-                pimpl->positions_.emplace_back(
-                        util::center_x(rect),
-                        util::center_y(rect)) ;
+            if(core::get_b("uiacachebuild")) {
+                auto root_elem = opt::AsyncUIACacheBuilder::get_root_element(hwnd) ;
+                pimpl->scanner_.scan(root_elem, pimpl->elements_) ;
             }
-        }
-
-        // enumerate all window owned by the foreground window process.
-        DWORD procid ;
-        if(GetWindowThreadProcessId(hwnd, &procid)) {
-            ProcessScanInfo psinfo{procid, pimpl->positions_} ;
-            if(!EnumWindows(EnumerateAllThread, reinterpret_cast<LPARAM>(&psinfo))) {
-                throw RUNTIME_EXCEPT("Failed to scan for threads in the same process.") ;
+            else {
+                pimpl->scanner_.scan(hwnd, pimpl->elements_) ;
             }
-        }
 
-        if(pimpl->positions_.empty()) {
-            return ;
-        }
-
-        util::remove_deplication(pimpl->positions_) ;
-
-        assign_identifier_hints(pimpl->positions_.size(), pimpl->hints_) ;
-        convert_hints_to_strings(pimpl->hints_, pimpl->strhints_) ;
-    }
-
-    void EasyClickCore::create_matching_loop(
-            KeyCode sendkey,
-            unsigned int repeat_num) const {
-        if(pimpl->positions_.empty() || pimpl->hints_.empty()) {
-            return ;
-        }
-
-        auto ft = pimpl->input_hinter_.launch_async_loop(
-                pimpl->positions_,
-                pimpl->hints_) ;
-
-        using namespace std::chrono ;
-        while(ft.wait_for(50ms) == std::future_status::timeout) {
-            try {
-                if(pimpl->input_hinter_.drawable_hints_num() == pimpl->hints_.size()) {
-                    // Hints were not matched yet, so must draw all hints.
-                    pimpl->display_hinter_.paint_all_hints(
-                            pimpl->positions_,
-                            pimpl->strhints_) ;
+            for(auto& elem : pimpl->elements_) {
+                RECT rect ;
+                if(util::is_failed(elem->get_CachedBoundingRectangle(&rect))) {
+                    throw RUNTIME_EXCEPT("Could not get a rectangle of a element.") ;
                 }
-                else {
-                    pimpl->display_hinter_.paint_matching_hints(
-                            pimpl->positions_,
-                            pimpl->strhints_,
-                            pimpl->input_hinter_.matched_counts()) ;
+
+                if(util::is_fully_in_range(rect, root_rect)) {
+                    pimpl->positions_.emplace_back(
+                            util::center_x(rect),
+                            util::center_y(rect)) ;
                 }
             }
-            catch(const std::exception& e) {
-                pimpl->input_hinter_.cancel() ;
-                throw e ;
+
+            // enumerate all window owned by the foreground window process.
+            DWORD procid ;
+            if(GetWindowThreadProcessId(hwnd, &procid)) {
+                ProcessScanInfo psinfo{procid, pimpl->positions_} ;
+                if(!EnumWindows(EnumerateAllThread, reinterpret_cast<LPARAM>(&psinfo))) {
+                    throw RUNTIME_EXCEPT("Failed to scan for threads in the same process.") ;
+                }
+            }
+
+            if(pimpl->positions_.empty()) {
+                return ;
+            }
+
+            util::remove_deplication(pimpl->positions_) ;
+
+            assign_identifier_hints(pimpl->positions_.size(), pimpl->hints_) ;
+            convert_hints_to_strings(pimpl->hints_, pimpl->strhints_) ;
+        }
+
+        void EasyClickCore::create_matching_loop(
+                KeyCode sendkey,
+                unsigned int repeat_num) const {
+            if(pimpl->positions_.empty() || pimpl->hints_.empty()) {
+                return ;
+            }
+
+            auto ft = pimpl->input_hinter_.launch_async_loop(
+                    pimpl->positions_,
+                    pimpl->hints_) ;
+
+            using namespace std::chrono ;
+            while(ft.wait_for(50ms) == std::future_status::timeout) {
+                try {
+                    if(pimpl->input_hinter_.drawable_hints_num() == pimpl->hints_.size()) {
+                        // Hints were not matched yet, so must draw all hints.
+                        pimpl->display_hinter_.paint_all_hints(
+                                pimpl->positions_,
+                                pimpl->strhints_) ;
+                    }
+                    else {
+                        pimpl->display_hinter_.paint_matching_hints(
+                                pimpl->positions_,
+                                pimpl->strhints_,
+                                pimpl->input_hinter_.matched_counts()) ;
+                    }
+                }
+                catch(const std::exception& e) {
+                    pimpl->input_hinter_.cancel() ;
+                    throw e ;
+                }
+            }
+
+            util::refresh_display(NULL) ;
+
+            if(auto pos = ft.get()) {
+                if(SetCursorPos(pos->x(), pos->y())) {
+                    safe_for(repeat_num, [sendkey] {
+                        util::click(sendkey) ;
+                    }) ;
+                }
+            }
+
+            //Release all keys in order to avoid the next matching right after.
+            for(KeyCode key : core::get_pressed_list()) {
+                core::release_virtually(key) ;
             }
         }
 
-        util::refresh_display(NULL) ;
-
-        if(auto pos = ft.get()) {
-            if(SetCursorPos(pos->x(), pos->y())) {
-                repeater::safe_for(repeat_num, [sendkey] {
-                    util::click(sendkey) ;
-                }) ;
-            }
+        void EasyClickCore::reconstruct() {
+            pimpl->display_hinter_.load_config() ;
         }
-
-        //Release all keys in order to avoid the next matching right after.
-        for(KeyCode key : core::get_pressed_list()) {
-            core::release_virtually(key) ;
-        }
-    }
-
-    void EasyClickCore::reconstruct() {
-        pimpl->display_hinter_.load_config() ;
     }
 }

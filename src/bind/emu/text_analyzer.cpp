@@ -17,8 +17,9 @@
 
 namespace vind
 {
-    namespace textanalyze{
-        SelRes get_selected_text(
+    namespace bind
+    {
+        SelectedTextResult get_selected_text(
                 std::function<void()> clip_func,
                 bool backup) {
             auto hwnd = GetForegroundWindow() ;
@@ -47,7 +48,7 @@ namespace vind
 
             scb.open() ; //<open>-------------------------
 
-            SelRes out{} ;
+            SelectedTextResult out{} ;
             scb.get_as_str(out.str, out.having_EOL) ;
 
             if(backup) scb.restore_backup() ;

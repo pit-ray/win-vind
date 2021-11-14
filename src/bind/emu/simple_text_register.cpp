@@ -2,12 +2,13 @@
 
 namespace
 {
-    auto g_rgtype = vind::simpletxreg::RegType::None ;
+    auto g_rgtype = vind::bind::RegType::None ;
 }
 
 namespace vind
 {
-    namespace simpletxreg {
+    namespace bind
+    {
         RegType get_register_type() noexcept {
             return g_rgtype ;
         }

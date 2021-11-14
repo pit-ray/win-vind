@@ -19,119 +19,122 @@
 
 namespace vind
 {
-    SyscmdSet::SyscmdSet()
-    : BindedFuncCreator("system_command_set")
-    {}
+    namespace bind
+    {
+        SyscmdSet::SyscmdSet()
+        : BindedFuncCreator("system_command_set")
+        {}
 
-    void SyscmdSet::sprocess(
-            const std::string& args,
-            bool reload_config) {
+        void SyscmdSet::sprocess(
+                const std::string& args,
+                bool reload_config) {
 
-        if(args.find("=") != std::string::npos) { // set option_name = value
-            auto [key, val] = core::divide_key_and_value(args, "=") ;
+            if(args.find("=") != std::string::npos) { // set option_name = value
+                auto [key, val] = core::divide_key_and_value(args, "=") ;
 
-            if(key.empty()) {
+                if(key.empty()) {
+                    if(val.empty()) {
+                        opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of option yet")) ;
+                    }
+                    else {
+                        opt::VCmdLine::print(opt::ErrorMessage("E: Invalid syntax")) ;
+                    }
+                    return ;
+                }
+
+                key = util::A2a(key) ;
+
                 if(val.empty()) {
-                    opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of option yet")) ;
+                    core::do_set(key, val) ;
+                }
+                else if(val.find_first_not_of("0123456789.") == std::string::npos) {
+                    core::do_set(key, std::stod(val)) ;
                 }
                 else {
-                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid syntax")) ;
+                    core::do_set(key, val) ;
                 }
-                return ;
             }
+            else { // set option_name
+                auto key = core::extract_single_arg(util::A2a(args)) ;
 
-            key = util::A2a(key) ;
+                bool flag_value = true ;
+                if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {
+                    key.erase(0, 2) ;
+                    flag_value = false ;
+                }
 
-            if(val.empty()) {
-                core::do_set(key, val) ;
-            }
-            else if(val.find_first_not_of("0123456789.") == std::string::npos) {
-                core::do_set(key, std::stod(val)) ;
-            }
-            else {
-                core::do_set(key, val) ;
-            }
-        }
-        else { // set option_name
-            auto key = core::extract_single_arg(util::A2a(args)) ;
+                // reference of value
+                if(key.back() == '?') {
+                    auto name_last_pos = key.find_last_not_of(" ", key.size() - 2) ;
+                    key.erase(name_last_pos + 1) ;
 
-            bool flag_value = true ;
-            if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {
-                key.erase(0, 2) ;
-                flag_value = false ;
-            }
+                    if(key.find(" ") != std::string::npos) {
+                        opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
+                        return ;
+                    }
 
-            // reference of value
-            if(key.back() == '?') {
-                auto name_last_pos = key.find_last_not_of(" ", key.size() - 2) ;
-                key.erase(name_last_pos + 1) ;
+                    std::stringstream ss ;
+                    switch(core::validate_param_type(key)) {
+                        using core::ParamType ;
+                        case ParamType::BOOL:
+                            if(core::get_b(key)) {
+                                ss << key ;
+                            }
+                            else {
+                                ss << "no" << key ;
+                            }
+                            break ;
+
+                        case ParamType::NUMBER: {
+                            ss << key << "=" ;
+                            auto v_d = core::get_d(key) ;
+                            auto v_z = core::get_z(key) ;
+                            if(v_d == v_z) {
+                                ss << std::to_string(v_z) ;
+                            }
+                            else {
+                                ss << std::to_string(v_d) ;
+                            }
+                            break ;
+                        }
+
+                        case ParamType::STRING:
+                            ss << key << "=" << core::get_s(key) ;
+                            break ;
+
+                        default:
+                            ss << "E: Unknown option: " << key ;
+                            break ;
+                    }
+
+                    opt::VCmdLine::print(opt::ErrorMessage(ss.str())) ;
+                    return ;
+                }
 
                 if(key.find(" ") != std::string::npos) {
                     opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
                     return ;
                 }
-
-                std::stringstream ss ;
-                switch(core::validate_param_type(key)) {
-                    using core::ParamType ;
-                    case ParamType::BOOL:
-                        if(core::get_b(key)) {
-                            ss << key ;
-                        }
-                        else {
-                            ss << "no" << key ;
-                        }
-                        break ;
-
-                    case ParamType::NUMBER: {
-                        ss << key << "=" ;
-                        auto v_d = core::get_d(key) ;
-                        auto v_z = core::get_z(key) ;
-                        if(v_d == v_z) {
-                            ss << std::to_string(v_z) ;
-                        }
-                        else {
-                            ss << std::to_string(v_d) ;
-                        }
-                        break ;
-                    }
-
-                    case ParamType::STRING:
-                        ss << key << "=" << core::get_s(key) ;
-                        break ;
-
-                    default:
-                        ss << "E: Unknown option: " << key ;
-                        break ;
-                }
-
-                opt::VCmdLine::print(opt::ErrorMessage(ss.str())) ;
-                return ;
+                core::do_set(key, flag_value) ;
             }
 
-            if(key.find(" ") != std::string::npos) {
-                opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
-                return ;
+            if(reload_config) {
+                core::reconstruct_all_components() ;
             }
-            core::do_set(key, flag_value) ;
         }
 
-        if(reload_config) {
-            core::reconstruct_all_components() ;
-        }
-    }
-
-    void SyscmdSet::sprocess(core::NTypeLogger&) {
-        return ;
-    }
-
-    void SyscmdSet::sprocess(const core::CharLogger& parent_lgr) {
-        auto str = parent_lgr.to_str() ;
-        if(str.empty()) {
+        void SyscmdSet::sprocess(core::NTypeLogger&) {
             return ;
         }
 
-        auto [cmd, args] = core::divide_cmd_and_args(str) ;
-        sprocess(args, true) ;
+        void SyscmdSet::sprocess(const core::CharLogger& parent_lgr) {
+            auto str = parent_lgr.to_str() ;
+            if(str.empty()) {
+                return ;
+            }
+
+            auto [cmd, args] = core::divide_cmd_and_args(str) ;
+            sprocess(args, true) ;
+        }
     }
 }

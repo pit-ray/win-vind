@@ -15,7 +15,7 @@
 
 namespace vind
 {
-    namespace explorer {
+    namespace bind {
         //This is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
         std::filesystem::path get_current_explorer_path() {
             const auto hwnd = GetForegroundWindow() ;

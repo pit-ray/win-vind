@@ -8,13 +8,14 @@
 
 namespace vind
 {
-    namespace txutil {
+    namespace bind
+    {
         //Some editors have a visible EOL mark in a line.
         //This function select text from current position to EOL except for the visible EOL mark.
         //If the line has only null characters, it does not select.
         //  <EOL mark exists> [select] NONE    [clipboard] null characters with EOL.    (neighborhoods of LSB are 0x00)
         //  <plain text>      [select] NONE    [clipboard] null characters without EOL. (neighborhoods of LSB are 0x?0)
-        bool select_line_until_EOL(const textanalyze::SelRes* const exres) {
+        bool select_line_until_EOL(const SelectedTextResult* const exres) {
             if(exres != nullptr) {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
                 if(exres->having_EOL) {
@@ -26,7 +27,7 @@ namespace vind
                 return true ; //selected
             }
 
-            auto res = textanalyze::get_selected_text([] {
+            auto res = get_selected_text([] {
                     util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
                     util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             }) ;

@@ -52,7 +52,7 @@ namespace vind
             }
             else {
                 if(core::get_global_mode() == core::Mode::RESIDENT)
-                    ToInsert::sprocess(true) ;
+                    bind::ToInsert::sprocess(true) ;
             }
         }
     }

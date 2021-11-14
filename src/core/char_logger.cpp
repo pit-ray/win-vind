@@ -129,7 +129,7 @@ namespace vind
                 not_ascii.insert(KEYCODE_SHIFT) ;
 
                 for(const auto& key : log) {
-                    if(core::get_shifted_ascii(key)) {
+                    if(get_shifted_ascii(key)) {
                         logging(KeyLog{KEYCODE_SHIFT,key}) ;
                     }
                     else {
@@ -139,7 +139,7 @@ namespace vind
             }
             else {
                 for(const auto& key : log) {
-                    if(core::get_ascii(key)) {
+                    if(get_ascii(key)) {
                         logging(KeyLog{key}) ;
                     }
                     else {
@@ -176,7 +176,7 @@ namespace vind
         }
 
         int CharLogger::logging_state() {
-            auto log = core::get_pressed_list() ;
+            auto log = get_pressed_list() ;
 
             log = do_keycode_noremap(log) ;
 
@@ -234,13 +234,13 @@ namespace vind
                 if(itr->is_containing(KEYCODE_SHIFT)) {
                     //shifted ascii
                     for(const auto keycode : *itr) {
-                        auto c = core::get_shifted_ascii(keycode) ;
+                        auto c = get_shifted_ascii(keycode) ;
                         if(c != 0) str.push_back(c) ;
                     }
                 }
                 else {
                     for(const auto keycode : *itr) {
-                        auto c = core::get_ascii(keycode) ;
+                        auto c = get_ascii(keycode) ;
                         if(c != 0) str.push_back(c) ;
                     }
                 }

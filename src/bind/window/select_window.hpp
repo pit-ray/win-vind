@@ -5,33 +5,36 @@
 
 namespace vind
 {
-    struct SelectLeftWindow : public BindedFuncCreator<SelectLeftWindow> {
-        explicit SelectLeftWindow() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+    namespace bind
+    {
+        struct SelectLeftWindow : public BindedFuncCreator<SelectLeftWindow> {
+            explicit SelectLeftWindow() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
-    struct SelectRightWindow : public BindedFuncCreator<SelectRightWindow> {
-        explicit SelectRightWindow() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct SelectRightWindow : public BindedFuncCreator<SelectRightWindow> {
+            explicit SelectRightWindow() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
-    struct SelectUpperWindow : public BindedFuncCreator<SelectUpperWindow> {
-        explicit SelectUpperWindow() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct SelectUpperWindow : public BindedFuncCreator<SelectUpperWindow> {
+            explicit SelectUpperWindow() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
 
-    struct SelectLowerWindow : public BindedFuncCreator<SelectLowerWindow> {
-        explicit SelectLowerWindow() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+        struct SelectLowerWindow : public BindedFuncCreator<SelectLowerWindow> {
+            explicit SelectLowerWindow() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
+    }
 }
 
 #endif

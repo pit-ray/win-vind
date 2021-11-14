@@ -6,7 +6,8 @@
 
 namespace vind
 {
-    namespace explorer {
+    namespace bind
+    {
         std::filesystem::path get_current_explorer_path() ;
     }
 }

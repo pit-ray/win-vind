@@ -21,7 +21,7 @@ namespace
     using namespace vind ;
     core::NTypeLogger g_ntlgr{} ;
     core::FuncFinder g_funcfinder{} ;
-    BindedFunc::SPtr g_active_func = nullptr ;
+    bind::BindedFunc::SPtr g_active_func = nullptr ;
 }
 
 namespace vind

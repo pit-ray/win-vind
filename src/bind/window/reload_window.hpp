@@ -5,12 +5,15 @@
 
 namespace vind
 {
-    struct ReloadCurrentWindow : public BindedFuncCreator<ReloadCurrentWindow> {
-        explicit ReloadCurrentWindow() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+    namespace bind
+    {
+        struct ReloadCurrentWindow : public BindedFuncCreator<ReloadCurrentWindow> {
+            explicit ReloadCurrentWindow() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
+    }
 }
 
 #endif

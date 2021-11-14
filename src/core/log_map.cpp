@@ -30,7 +30,7 @@ namespace
             return static_cast<KeyCode>(src_code) ;
         }
         if(dst == first_src_code) {
-            PRINT_ERROR("{" + core::get_name(static_cast<KeyCode>(first_src_code)) \
+            PRINT_ERROR("{" + core::get_keycode_name(first_src_code) \
                     + "} recursively remaps itself in " + core::mode_to_name(mode) + ".") ;
             return static_cast<KeyCode>(first_src_code) ;
         }
@@ -46,12 +46,12 @@ namespace vind
             ModeKeySetMaps().swap(g_modemaps) ;
             ModeKeyCodeMap().swap(g_keycodemap) ;
 
-            std::vector<core::UniqueMap> maps ;
+            std::vector<UniqueMap> maps ;
 
             for(std::size_t i = 0 ; i < mode_num() ; i ++) {
                 maps.clear() ;
 
-                core::get_maps(static_cast<Mode>(i), maps) ;
+                get_maps(static_cast<Mode>(i), maps) ;
 
                 for(int j = 0 ; j < 256 ; j ++) {
                     g_keycodemap[i][j] = static_cast<KeyCode>(j) ;
@@ -149,8 +149,8 @@ namespace vind
                 util::press_keystate(target, true) ;
             }
             else {
-                if(core::is_really_pressed(target) \
-                        || core::is_pressed(target)) {
+                if(is_really_pressed(target) \
+                        || is_pressed(target)) {
                     util::release_keystate(target, true) ;
                 }
             }

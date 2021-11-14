@@ -8,19 +8,25 @@
 
 #include "util/box_2d.hpp"
 #include "util/def.hpp"
+#include "util/rect.hpp"
 
 namespace vind
 {
-    namespace windowutil {
+    namespace bind
+    {
         bool is_visible_hwnd(HWND hwnd) ;
         bool is_window_mode(HWND hwnd, const RECT& rect) ;
 
-        void resize(
+        void resize_window(
                 HWND hwnd,
                 LONG left, LONG top,
                 LONG width, LONG height) ;
-        void resize(HWND hwnd, const RECT& rect) ;
-        void resize(HWND hwnd, const util::Box2D& rect) ;
+        inline void resize_window(HWND hwnd, const RECT& rect) {
+            resize_window(hwnd, rect.left, rect.top, util::width(rect), util::height(rect)) ;
+        }
+        inline void resize_window(HWND hwnd, const util::Box2D& rect) {
+            resize_window(hwnd, rect.left(), rect.top(), rect.width(), rect.height()) ;
+        }
 
         void batch_resize(const std::unordered_map<HWND, util::Box2D>& rects) ;
         void batch_resize(const std::unordered_map<HWND, RECT>& rects) ;

@@ -17,13 +17,13 @@ namespace
     std::map<LONG, HWND> g_near_hwnds ;
 
     BOOL CALLBACK EnumWindowsProcForExchange(HWND hwnd, LPARAM lparam) {
-        const auto fginfo = reinterpret_cast<windowutil::ForegroundInfo*>(lparam) ;
+        const auto fginfo = reinterpret_cast<bind::ForegroundInfo*>(lparam) ;
 
         if(fginfo->hwnd == hwnd) {
             return TRUE ;
         }
 
-        if(!windowutil::is_visible_hwnd(hwnd)) {
+        if(!bind::is_visible_hwnd(hwnd)) {
             return TRUE ; //continue
         }
 
@@ -32,7 +32,7 @@ namespace
             return TRUE ;
         }
 
-        if(!windowutil::is_window_mode(hwnd, rect)) {
+        if(!bind::is_window_mode(hwnd, rect)) {
             return TRUE ; //continue
         }
 
@@ -50,38 +50,40 @@ namespace
 
 namespace vind
 {
-    //ExchangeWindowWithNearest
-    ExchangeWindowWithNearest::ExchangeWindowWithNearest()
-    : BindedFuncCreator("exchange_window_with_nearest")
-    {}
-    void ExchangeWindowWithNearest::sprocess() {
-        g_near_hwnds.clear() ;
+    namespace bind
+    {
+        //ExchangeWindowWithNearest
+        ExchangeWindowWithNearest::ExchangeWindowWithNearest()
+        : BindedFuncCreator("exchange_window_with_nearest")
+        {}
+        void ExchangeWindowWithNearest::sprocess() {
+            g_near_hwnds.clear() ;
 
-        windowutil::ForegroundInfo fginfo ;
-        if(!EnumWindows(EnumWindowsProcForExchange, reinterpret_cast<LPARAM>(&fginfo))) {
-            throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+            ForegroundInfo fginfo ;
+            if(!EnumWindows(EnumWindowsProcForExchange, reinterpret_cast<LPARAM>(&fginfo))) {
+                throw RUNTIME_EXCEPT("Could not enumerate all top-level windows on the screen.") ;
+            }
+
+            if(g_near_hwnds.empty()) {
+                return ;
+            }
+
+            auto nearest_hwnd = g_near_hwnds.begin()->second ;
+            RECT nearest_rect ;
+            if(!GetWindowRect(nearest_hwnd, &nearest_rect)) {
+                throw RUNTIME_EXCEPT("Could not get a rectangle of the nearest window.") ;
+            }
+
+            resize_window(nearest_hwnd, fginfo.rect) ;
+            resize_window(fginfo.hwnd, nearest_rect) ;
         }
-
-        if(g_near_hwnds.empty()) {
-            return ;
+        void ExchangeWindowWithNearest::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
         }
-
-        auto nearest_hwnd = g_near_hwnds.begin()->second ;
-        RECT nearest_rect ;
-        if(!GetWindowRect(nearest_hwnd, &nearest_rect)) {
-            throw RUNTIME_EXCEPT("Could not get a rectangle of the nearest window.") ;
-        }
-
-        windowutil::resize(nearest_hwnd, fginfo.rect) ;
-
-        windowutil::resize(fginfo.hwnd, nearest_rect) ;
-    }
-    void ExchangeWindowWithNearest::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+        void ExchangeWindowWithNearest::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void ExchangeWindowWithNearest::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
     }
 }

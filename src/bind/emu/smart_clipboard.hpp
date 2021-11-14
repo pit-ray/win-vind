@@ -10,38 +10,41 @@
 
 namespace vind
 {
-    class SmartClipboard {
-    private:
-        struct Impl ;
-        std::unique_ptr<Impl> pimpl ;
+    namespace bind
+    {
+        class SmartClipboard {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
-    public:
-        explicit SmartClipboard(HWND hwnd) ;
+        public:
+            explicit SmartClipboard(HWND hwnd) ;
 
-        virtual ~SmartClipboard() noexcept ;
+            virtual ~SmartClipboard() noexcept ;
 
-        void open() ;
-        void close() ;
-        void get_as_str(std::string& str, bool& having_EOL) ;
+            void open() ;
+            void close() ;
+            void get_as_str(std::string& str, bool& having_EOL) ;
 
-        //backup current clipboard to cache
-        void backup() ;
+            //backup current clipboard to cache
+            void backup() ;
 
-        //restore cache to clipboard
-        void restore_backup() ;
+            //restore cache to clipboard
+            void restore_backup() ;
 
-        void set(const char* const ar, std::size_t size) ;
+            void set(const char* const ar, std::size_t size) ;
 
-        template <typename T>
-        void set(const T& arref) {
-            return set(arref, util::sizeof_array(arref)) ;
-        }
+            template <typename T>
+            void set(const T& arref) {
+                return set(arref, util::sizeof_array(arref)) ;
+            }
 
-        SmartClipboard(SmartClipboard&&)                    = delete ;
-        SmartClipboard& operator=(SmartClipboard&&)         = delete ;
-        SmartClipboard(const SmartClipboard&)               = delete ;
-        SmartClipboard& operator=(const SmartClipboard&)    = delete ;
-    } ;
+            SmartClipboard(SmartClipboard&&)                    = delete ;
+            SmartClipboard& operator=(SmartClipboard&&)         = delete ;
+            SmartClipboard(const SmartClipboard&)               = delete ;
+            SmartClipboard& operator=(const SmartClipboard&)    = delete ;
+        } ;
+    }
 }
 
 #endif

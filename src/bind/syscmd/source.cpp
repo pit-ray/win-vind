@@ -72,6 +72,7 @@ namespace
             vind::core::RunCommandsIndex rcindex,
             Str&& args) {
         using namespace vind ;
+        using namespace vind::bind ;
         using core::RunCommandsIndex ;
 
         switch(rcindex) {
@@ -148,126 +149,129 @@ namespace
 
 namespace vind
 {
-    SyscmdSource::SyscmdSource()
-    : BindedFuncCreator("system_command_source")
+    namespace bind
     {
-        std::ifstream ifs(core::RC()) ;
-        if(!ifs.is_open()) {
-            std::ofstream ofs(core::RC(), std::ios::trunc) ;
-        }
-    }
-
-    void SyscmdSource::sprocess(
-            const std::filesystem::path& path,
-            bool reload_config,
-            bool start_from_default) {
-
-        auto return_to_default = [] {
-            core::reset_all_params() ;
-            core::reset_all_maps() ;
-        } ;
-
-        if(start_from_default) {
-            return_to_default() ;
+        SyscmdSource::SyscmdSource()
+        : BindedFuncCreator("system_command_source")
+        {
+            std::ifstream ifs(core::RC()) ;
+            if(!ifs.is_open()) {
+                std::ofstream ofs(core::RC(), std::ios::trunc) ;
+            }
         }
 
-        std::ifstream ifs(path, std::ios::in) ;
-        if(!ifs.is_open()) {
-            opt::VCmdLine::print(opt::ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
-            return ;
-        }
+        void SyscmdSource::sprocess(
+                const std::filesystem::path& path,
+                bool reload_config,
+                bool start_from_default) {
 
-        std::string aline ;
-        std::size_t lnum = 0 ;
-        while(getline(ifs, aline)) {
-            lnum ++ ;
+            auto return_to_default = [] {
+                core::reset_all_params() ;
+                core::reset_all_maps() ;
+            } ;
 
-            try {
-                core::remove_dbquote_comment(aline) ;
+            if(start_from_default) {
+                return_to_default() ;
+            }
 
-                auto [cmd, args] = core::divide_cmd_and_args(aline) ;
-                if(cmd.empty()) {
-                    continue ;
+            std::ifstream ifs(path, std::ios::in) ;
+            if(!ifs.is_open()) {
+                opt::VCmdLine::print(opt::ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
+                return ;
+            }
+
+            std::string aline ;
+            std::size_t lnum = 0 ;
+            while(getline(ifs, aline)) {
+                lnum ++ ;
+
+                try {
+                    core::remove_dbquote_comment(aline) ;
+
+                    auto [cmd, args] = core::divide_cmd_and_args(aline) ;
+                    if(cmd.empty()) {
+                        continue ;
+                    }
+
+                    auto rcindex = core::parse_run_command(cmd) ;
+
+                    do_runcommand(rcindex, args) ;
                 }
+                catch(const std::domain_error& e) {
+                    auto ltag = "L:" + std::to_string(lnum) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Not command (" + ltag + ")")) ;
 
-                auto rcindex = core::parse_run_command(cmd) ;
+                    std::stringstream ss ;
+                    ss << "RunCommandsIndex: " << e.what() << " is not supported." ;
+                    ss << " (" << path.u8string() << ", " << ltag << ") " ;
+                    PRINT_ERROR(ss.str()) ;
 
-                do_runcommand(rcindex, args) ;
+                    return_to_default() ;
+                    break ;
+                }
+                catch(const std::invalid_argument& e) {
+                    auto ltag = "L:" + std::to_string(lnum) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Argument (" + ltag + ")")) ;
+
+                    std::stringstream ss ;
+                    ss << e.what() << " is recieved invalid arguments." ;
+                    ss << " (" << path.u8string() << ", " << ltag << ") " ;
+                    PRINT_ERROR(ss.str()) ;
+
+                    return_to_default() ;
+                    break ;
+                }
+                catch(const std::logic_error& e) {
+                    auto ltag = "L:" + std::to_string(lnum) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
+
+                    std::stringstream ss ;
+                    ss << e.what() ;
+                    ss << " (" + path.u8string() + ", " + ltag + ")" ;
+                    PRINT_ERROR(ss.str()) ;
+
+                    return_to_default() ;
+                    break ;
+                }
+                catch(const std::runtime_error& e) {
+                    auto ltag = "L:" + std::to_string(lnum) ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
+
+                    std::stringstream ss ;
+                    ss << e.what() ;
+                    ss << " (" + path.u8string() + ", " + ltag + ")" ;
+                    PRINT_ERROR(ss.str()) ;
+
+                    return_to_default() ;
+                    break ;
+                }
             }
-            catch(const std::domain_error& e) {
-                auto ltag = "L:" + std::to_string(lnum) ;
-                opt::VCmdLine::print(opt::ErrorMessage("E: Not command (" + ltag + ")")) ;
 
-                std::stringstream ss ;
-                ss << "RunCommandsIndex: " << e.what() << " is not supported." ;
-                ss << " (" << path.u8string() << ", " << ltag << ") " ;
-                PRINT_ERROR(ss.str()) ;
-
-                return_to_default() ;
-                break ;
-            }
-            catch(const std::invalid_argument& e) {
-                auto ltag = "L:" + std::to_string(lnum) ;
-                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Argument (" + ltag + ")")) ;
-
-                std::stringstream ss ;
-                ss << e.what() << " is recieved invalid arguments." ;
-                ss << " (" << path.u8string() << ", " << ltag << ") " ;
-                PRINT_ERROR(ss.str()) ;
-
-                return_to_default() ;
-                break ;
-            }
-            catch(const std::logic_error& e) {
-                auto ltag = "L:" + std::to_string(lnum) ;
-                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
-
-                std::stringstream ss ;
-                ss << e.what() ;
-                ss << " (" + path.u8string() + ", " + ltag + ")" ;
-                PRINT_ERROR(ss.str()) ;
-
-                return_to_default() ;
-                break ;
-            }
-            catch(const std::runtime_error& e) {
-                auto ltag = "L:" + std::to_string(lnum) ;
-                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
-
-                std::stringstream ss ;
-                ss << e.what() ;
-                ss << " (" + path.u8string() + ", " + ltag + ")" ;
-                PRINT_ERROR(ss.str()) ;
-
-                return_to_default() ;
-                break ;
-            }
-        }
-
-        if(reload_config) {
-            core::reconstruct_all_components() ; // Apply settings
-        }
-    }
-    void SyscmdSource::sprocess(core::NTypeLogger&) {
-    }
-    void SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
-        try {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                throw RUNTIME_EXCEPT("Empty command") ;
-            }
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            if(args.empty()) {
-                sprocess(core::RC(), true) ;
-            }
-            else {
-                sprocess(core::replace_path_magic(args), true) ;
+            if(reload_config) {
+                core::reconstruct_all_components() ; // Apply settings
             }
         }
-        // If received syntax error as std::logic_error,
-        // convert to runtime_error not to terminate application.
-        catch(const std::exception& e) {
-            throw std::runtime_error(e.what()) ;
+        void SyscmdSource::sprocess(core::NTypeLogger&) {
+        }
+        void SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
+            try {
+                auto str = parent_lgr.to_str() ;
+                if(str.empty()) {
+                    throw RUNTIME_EXCEPT("Empty command") ;
+                }
+                auto [cmd, args] = core::divide_cmd_and_args(str) ;
+                if(args.empty()) {
+                    sprocess(core::RC(), true) ;
+                }
+                else {
+                    sprocess(core::replace_path_magic(args), true) ;
+                }
+            }
+            // If received syntax error as std::logic_error,
+            // convert to runtime_error not to terminate application.
+            catch(const std::exception& e) {
+                throw std::runtime_error(e.what()) ;
+            }
         }
     }
 }

@@ -6,24 +6,27 @@
 
 namespace vind
 {
-    struct ShowConfigGUI : public BindedFuncCreator<ShowConfigGUI> {
-        explicit ShowConfigGUI() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+    namespace bind
+    {
+        struct ShowConfigGUI : public BindedFuncCreator<ShowConfigGUI> {
+            explicit ShowConfigGUI() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        static void register_show_func(std::function<void()> func) noexcept ;
-    } ;
+            static void register_show_func(std::function<void()> func) noexcept ;
+        } ;
 
 
-    struct ExitConfigGUI : public BindedFuncCreator<ExitConfigGUI> {
-        explicit ExitConfigGUI() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
+        struct ExitConfigGUI : public BindedFuncCreator<ExitConfigGUI> {
+            explicit ExitConfigGUI() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
 
-        static void register_exit_func(std::function<void()> func) noexcept ;
-    } ;
+            static void register_exit_func(std::function<void()> func) noexcept ;
+        } ;
+    }
 }
 
 #endif

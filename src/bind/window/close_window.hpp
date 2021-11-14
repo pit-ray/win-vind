@@ -5,12 +5,15 @@
 
 namespace vind
 {
-    struct CloseCurrentWindow : public BindedFuncCreator<CloseCurrentWindow> {
-        explicit CloseCurrentWindow() ;
-        static void sprocess() ;
-        static void sprocess(core::NTypeLogger& parent_lgr) ;
-        static void sprocess(const core::CharLogger& parent_lgr) ;
-    } ;
+    namespace bind
+    {
+        struct CloseCurrentWindow : public BindedFuncCreator<CloseCurrentWindow> {
+            explicit CloseCurrentWindow() ;
+            static void sprocess() ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
+        } ;
+    }
 }
 
 #endif

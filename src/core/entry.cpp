@@ -130,8 +130,8 @@ namespace vind
     {
         bool initialize(const std::string& func_name) noexcept {
             try {
-                if(!std::filesystem::exists(core::CONFIG_PATH())) {
-                    std::filesystem::create_directories(core::CONFIG_PATH()) ;
+                if(!std::filesystem::exists(CONFIG_PATH())) {
+                    std::filesystem::create_directories(CONFIG_PATH()) ;
                 }
 
                 initialize_logger() ;
@@ -188,7 +188,7 @@ namespace vind
 
                 //load keyboard mapping of ascii code
                 //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
-                core::load_input_combination() ;
+                load_input_combination() ;
 
                 initialize_mainloop() ;
 
@@ -205,13 +205,13 @@ namespace vind
                     return false ;
                 }
 
-                std::unordered_map<std::string, BindedFunc::SPtr> cm {
-                    {mode_to_prefix(Mode::EDI_NORMAL), ToEdiNormal::create()},
-                    {mode_to_prefix(Mode::GUI_NORMAL), ToGUINormal::create()},
-                    {mode_to_prefix(Mode::INSERT), ToInsert::create()},
-                    {mode_to_prefix(Mode::RESIDENT), ToResident::create()}
+                std::unordered_map<std::string, bind::BindedFunc::SPtr> cm {
+                    {mode_to_prefix(Mode::EDI_NORMAL), bind::ToEdiNormal::create()},
+                    {mode_to_prefix(Mode::GUI_NORMAL), bind::ToGUINormal::create()},
+                    {mode_to_prefix(Mode::INSERT), bind::ToInsert::create()},
+                    {mode_to_prefix(Mode::RESIDENT), bind::ToResident::create()}
                 } ;
-                cm.at(core::get_s("initmode"))->process() ;
+                cm.at(get_s("initmode"))->process() ;
 
                 return true ;
             }
@@ -228,7 +228,7 @@ namespace vind
 
         bool load_config() noexcept {
             try {
-                SyscmdSource::sprocess(core::RC(), false) ;
+                bind::SyscmdSource::sprocess(RC(), false) ;
                 reconstruct_all_components() ;
                 return true ;
             }
@@ -309,10 +309,10 @@ namespace vind
 
                 opt::call_active_funcs() ;
 
-                core::refresh_toggle_state() ;
+                refresh_toggle_state() ;
 
-                if(core::is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
-                    ExitConfigGUI::sprocess() ; //exit GUI-window in system tray
+                if(is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
+                    bind::ExitConfigGUI::sprocess() ; //exit GUI-window in system tray
                     return false ;
                 }
                 return true ;
@@ -330,7 +330,7 @@ namespace vind
         //Please use it if you want to show a self config window by command.
         void register_show_window_func(std::function<void()> func) noexcept {
             try {
-                ShowConfigGUI::register_show_func(std::move(func)) ;
+                bind::ShowConfigGUI::register_show_func(std::move(func)) ;
             }
             catch(const std::exception& e) {
                 PRINT_ERROR(e.what()) ;
@@ -342,7 +342,7 @@ namespace vind
 
         void register_exit_window_func(std::function<void()> func) noexcept {
             try {
-                ExitConfigGUI::register_exit_func(std::move(func)) ;
+                bind::ExitConfigGUI::register_exit_func(std::move(func)) ;
             }
             catch(const std::exception& e) {
                 PRINT_ERROR(e.what()) ;

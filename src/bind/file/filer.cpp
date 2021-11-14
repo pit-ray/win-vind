@@ -12,37 +12,40 @@
 
 namespace vind
 {
-    //Save
-    Save::Save()
-    : BindedFuncCreator("save")
-    {}
-    void Save::sprocess() {
-        util::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
-    }
-    void Save::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
+    namespace bind
+    {
+        //Save
+        Save::Save()
+        : BindedFuncCreator("save")
+        {}
+        void Save::sprocess() {
+            util::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
+        }
+        void Save::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void Save::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-    }
-    void Save::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
 
 
-    //Open
-    Open::Open()
-    : BindedFuncCreator("open")
-    {}
-    void Open::sprocess() {
-        util::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
-    }
-    void Open::sprocess(core::NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
+        //Open
+        Open::Open()
+        : BindedFuncCreator("open")
+        {}
+        void Open::sprocess() {
+            util::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
         }
-    }
-    void Open::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
+        void Open::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void Open::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess() ;
 
+        }
     }
 }

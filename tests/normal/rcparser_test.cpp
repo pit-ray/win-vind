@@ -5,7 +5,7 @@
 
 #include <string>
 
-using namespace vind::rcparser ;
+using namespace vind::core ;
 
 // remove_dbquote_comment
 TEST_CASE("(rcparser::remove_dbquote_comment) Normal input without strings") {

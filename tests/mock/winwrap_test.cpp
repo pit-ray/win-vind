@@ -12,7 +12,7 @@
 
 namespace vind
 {
-    namespace errlogger {
+    namespace core {
         void error(const char*, const char*) {
             return ;
         }

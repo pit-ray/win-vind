@@ -12,7 +12,8 @@
 
 namespace vind
 {
-    namespace path {
+    namespace core
+    {
         const std::filesystem::path& ROOT_PATH() {
             static std::filesystem::path p{} ;
             return p ;
@@ -23,7 +24,8 @@ namespace vind
 
 namespace vind
 {
-    namespace util {
+    namespace util
+    {
         std::tuple<DWORD, DWORD, DWORD> get_Windows_versions() {
             return {10, 0, 22000} ;
         }
@@ -56,11 +58,6 @@ namespace
 }
 
 #include "core/err_logger.cpp"
-
-namespace
-{
-    using namespace vind::errlogger ;
-}
 
 #include <doctest.h>
 

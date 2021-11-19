@@ -137,6 +137,6 @@ namespace vind
             ss << std::endl ;
             return ss.str() ;
         }
-    }
 #endif
+    }
 }

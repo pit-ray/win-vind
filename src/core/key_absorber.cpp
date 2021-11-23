@@ -47,16 +47,18 @@
 
 namespace
 {
+    // Bit-base flags can be used to save memory,
+    // but, the variable should be separated 
+    // to minimize the overhead of bitwise operation in LowLevelKeyboardProc.
     std::array<bool, 256> g_low_level_state{false} ;
     std::array<bool, 256> g_real_state{false} ;
     std::array<bool, 256> g_state{false} ;  //Keyboard state win-vind understands.
+    std::array<bool, 256> g_opened{false} ;
+
     bool g_absorbed_flag{true} ;
-    vind::core::KeyLog::Data g_ignored_keys{} ;
 
     std::array<std::chrono::system_clock::time_point, 256>
         g_time_stamps{std::chrono::system_clock::now()} ;
-
-    const auto toggles = vind::core::get_toggle_keys() ;
 
     auto uninstaller = [](HHOOK* p_hook) {
         if(p_hook != nullptr) {
@@ -93,8 +95,7 @@ namespace
             auto state = !(wParam & KEYUP_MASK) ;
 
             g_low_level_state[code] = state ;
-
-            g_time_stamps[code]   = std::chrono::system_clock::now() ;
+            g_time_stamps[code] = std::chrono::system_clock::now() ;
 
             if(auto repcode = vind::core::get_representative_key(code)) {
                 if(vind::core::do_keycode_map(repcode, state) ||
@@ -111,17 +112,14 @@ namespace
 
             g_real_state[code] = state ;
             g_state[code]      = state ;
-
         }
 
-        if(g_ignored_keys.find(code) != g_ignored_keys.cend()) {
+        if(g_opened[code]) {
             return CallNextHookEx(NULL, HC_ACTION, wParam, lParam) ;
         }
-
         if(g_absorbed_flag) {
             return 1 ;
         }
-
         return CallNextHookEx(NULL, HC_ACTION, wParam, lParam) ;
     }
 }
@@ -132,8 +130,10 @@ namespace vind
     namespace core
     {
         void install_absorber_hook() {
+            g_low_level_state.fill(false) ;
             g_real_state.fill(false) ;
             g_state.fill(false) ;
+            g_opened.fill(false) ;
 
             p_handle.reset(new HHOOK(NULL)) ; //added ownership
             if(p_handle == nullptr) {
@@ -200,6 +200,7 @@ namespace vind
                 return ;
             }
 
+            static auto toggles = vind::core::get_toggle_keys() ;
             for(auto k : toggles) {
                 if(!g_low_level_state[k]) {
                     continue ;
@@ -219,15 +220,9 @@ namespace vind
         }
 
         bool is_pressed(KeyCode keycode) noexcept {
-            if(keycode < 1 || keycode > 254) {
-                return false ;
-            }
             return g_state[keycode] ;
         }
         bool is_really_pressed(KeyCode keycode) noexcept {
-            if(keycode < 1 || keycode > 254) {
-                return false ;
-            }
             return g_real_state[keycode] ;
         }
 
@@ -252,33 +247,27 @@ namespace vind
         }
 
         void close_all_ports() noexcept {
-            g_ignored_keys.clear() ;
+            g_opened.fill(false) ;
         }
 
         void close_all_ports_with_refresh() {
-            g_ignored_keys.clear() ;
+            g_opened.fill(false) ;
 
             //if this function is called by pressed button,
             //it has to send message "KEYUP" to OS (not absorbed).
-            KeyCode keycode = 0 ;
-            for(const auto& s : g_state) {
-                if(s) {
-                    util::release_keystate(keycode) ;
+            for(KeyCode i = 0 ; i < 255 ; i ++) {
+                if(g_state[i]) {
+                    util::release_keystate(i) ;
                 }
-                keycode ++ ;
             }
         }
 
         void open_some_ports(const KeyLog::Data& keys) noexcept {
-            g_ignored_keys = keys ;
+            for(auto k : keys) g_opened[k] = true ;
         }
 
         void open_port(KeyCode key) noexcept {
-            try {g_ignored_keys.insert(key) ;}
-            catch(const std::bad_alloc& e) {
-                PRINT_ERROR(e.what()) ;
-                return ;
-            }
+            g_opened[key] = true ;
         }
 
         void release_virtually(KeyCode key) noexcept {

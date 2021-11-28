@@ -11,6 +11,7 @@
 
 #include "bind/binded_func.hpp"
 #include "bind/bindings_lists.hpp"
+#include "logger_parser_mgr.hpp"
 #include "util/def.hpp"
 
 #include <array>
@@ -22,22 +23,14 @@
 #include <iostream>
 #endif
 
-//inner linkage
-namespace
-{
-    using namespace vind ;
-    std::vector<bind::BindedFunc::SPtr> g_all_func_list ;
-
-    ParsedBindingLists g_parsed_bindlists ;
-}
 
 namespace vind
 {
     namespace core
     {
-        using LoggerParserList = std::vector<LoggerParser::SPtr> ;
         struct FuncFinder::Impl {
-            ModeArray<LoggerParserList> parser_ar_{} ;
+            ModeArray<LoggerParserManager> mgrs_ {} ;
+            std::vector<bind::BindedFunc::SPtr> funcs_ = bind::all_global_binded_funcs() ;
         } ;
 
         FuncFinder::FuncFinder()
@@ -45,164 +38,76 @@ namespace vind
         {}
 
         FuncFinder::~FuncFinder() noexcept = default ;
-        FuncFinder::FuncFinder(const FuncFinder& rhs)
-        : pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
-        {}
-        FuncFinder& FuncFinder::operator=(const FuncFinder& rhs) {
-            if(rhs.pimpl) {
-                *pimpl = *(rhs.pimpl) ;
-            }
-            return *this ;
-        }
-        FuncFinder::FuncFinder(FuncFinder&& rhs)        = default ;
+        FuncFinder::FuncFinder(FuncFinder&& rhs) = default ;
         FuncFinder& FuncFinder::operator=(FuncFinder&&) = default ;
-
-        void FuncFinder::reconstruct_funcset() {
-            //clear logger parser list by swapping
-            ModeArray<LoggerParserList>().swap(pimpl->parser_ar_) ;
-
-            for(std::size_t i = 0 ; i < mode_num() ; i ++) {
-                for(const auto& func : g_all_func_list) {
-                    try {
-                        const auto& list = g_parsed_bindlists[i].at(func->name()) ;
-                        auto p_parser = std::make_shared<LoggerParser>(func) ;
-
-                        p_parser->share_parsed_binding_list(list) ;
-                        pimpl->parser_ar_[i].push_back(std::move(p_parser)) ;
-                    }
-                    catch(const std::out_of_range&) {
-                        continue ;
-                    }
-                }
-            }
-        }
 
         LoggerParser::SPtr FuncFinder::transition_parser_states_in_batch(
                 const KeyLoggerBase& lgr,
                 Mode mode) {
-            LoggerParser::SPtr ptr = nullptr ;
-            for(const auto& log : lgr) {
-                ptr = find_parser_with_transition(log, 0, mode) ;
-            }
-            return ptr ;
+            return pimpl->mgrs_[static_cast<int>(mode)].find_parser_with_transition(log, 0) ;
         }
 
         void FuncFinder::search_unrejected_parser(
                 std::vector<LoggerParser::SPtr>& results,
                 Mode mode) {
-
-            if(!results.empty()) {
-                results.clear() ;
-            }
-
-            for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-                if(!parser->is_rejected()) {
-                    results.push_back(parser) ;
-                }
-            }
+            pimpl->mgrs_[static_cast<int>(mode)].search_unrejected_parser(results) ;
         }
 
-        LoggerParser::SPtr FuncFinder::find_rejected_with_ready_parser(Mode mode) {
-            for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-                if(parser->is_rejected_with_ready()) {
-                    return parser ;
-                }
-            }
-            return nullptr ;
+        LoggerParser::SPtr
+        FuncFinder::find_rejected_with_ready_parser(Mode mode) {
+            return pimpl->mgrs_[static_cast<int>(mode)].find_rejected_with_ready_parser() ;
         }
 
         LoggerParser::SPtr FuncFinder::find_waiting_parser(Mode mode) {
-            for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-                if(parser->is_waiting()) {
-                    return parser ;
-                }
-            }
-            return nullptr ;
+            return pimpl->mgrs_[static_cast<int>(mode)].find_waiting_parser() ;
         }
 
         LoggerParser::SPtr FuncFinder::find_accepted_parser(Mode mode) {
-            for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-                if(parser->is_accepted()) {
-                    return parser ;
-                }
-            }
-            return nullptr ;
+            return pimpl->mgrs_[static_cast<int>(mode)].find_accepted_parser() ;
         }
 
         LoggerParser::SPtr FuncFinder::find_parser_with_transition(
                 const KeyLog& log,
                 std::size_t low_priority_func_id,
                 Mode mode) {
-            LoggerParser::SPtr ptr = nullptr ;
-            LoggerParser::SPtr low_priority_parser = nullptr ;
-            unsigned char mostnum = 0 ;
-
-            for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-                auto num = parser->validate_if_match(log) ;
-
-                if(parser->is_rejected()) {
-                    continue ;
-                }
-
-                if(mostnum < num) {
-                    if(parser->get_func()->id() == low_priority_func_id) {
-                        low_priority_parser = parser ;
-                    }
-                    else {
-                        ptr = parser ;
-                        mostnum = num ;
-                    }
-                }
-                else if(mostnum == num && !ptr->is_accepted()) {
-                    if(parser->is_accepted()) {
-                        ptr = parser ;
-                    }
-                    else if(ptr->is_rejected_with_ready() && parser->is_waiting()) {
-                        ptr = parser ;
-                    }
-                }
-            }
-
-            if(ptr) {
-                return ptr ;
-            }
-            if(low_priority_parser && low_priority_parser->is_accepted()) {
-                return low_priority_parser ;
-            }
-            return nullptr ;
+            return pimpl->mgrs_[static_cast<int>(mode)].find_parser_with_transition(
+                    log,
+                    low_priority_func_id) ;
         }
 
         void FuncFinder::backward_parser_states(std::size_t n, Mode mode) {
-            for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-                parser->backward_state(n) ;
-            }
+            return pimpl->mgrs_[static_cast<int>(mode)].backward_parser_states(n) ;
         }
 
         void FuncFinder::reset_parser_states(Mode mode) {
-            for(auto& parser : pimpl->parser_ar_[static_cast<std::size_t>(mode)]) {
-                parser->reset_state() ;
-            }
+            return pimpl->mgrs_[static_cast<int>(mode)].reset_parser_states() ;
         }
 
         bind::BindedFunc::SPtr FuncFinder::find_func_byname(const std::string& name) {
+            static auto funcs = bind::all_global_binded_funcs() ;
+
             auto id = bind::BindedFunc::name_to_id(name) ;
-            for(const auto& func : g_all_func_list) {
-                if(func->id() == id) return func ;
+            for(const auto& func : funcs) {
+                if(func->id() == id) {
+                    return func ;
+                }
             }
+
             return nullptr ;
         }
 
-        void FuncFinder::load_global_bindings() {
-            if(g_all_func_list.empty()) {
-                g_all_func_list = bind::all_global_binded_funcs() ;
+        void FuncFinder::reconstruct() {
+            // load configs of all function and give a chance to reconstruct FuncFinder automatically.
+            for(auto& func : pimpl->funcs_) {
+                func->reconstruct() ;
             }
 
-            ParsedBindingLists().swap(g_parsed_bindlists) ; //clear by empty swapping
+            //clear by empty swapping
+            ParsedBindingLists cmds ;
 
             std::vector<UniqueMap> maps{} ;
-
             for(size_t i = 0 ; i < mode_num() ; i ++) {
-                auto& funcmap = g_parsed_bindlists[i] ;
+                auto& funcmap = cmds[i] ;
 
                 maps.clear() ;
                 get_maps(static_cast<Mode>(i), maps) ;
@@ -217,11 +122,21 @@ namespace vind
                     }
                     shared_cmd_list->push_back(map.trigger_command()) ;
                 }
-            }
 
-            // load configs of all function and give a chance to reconstruct FuncFinder automatically.
-            for(auto& func : g_all_func_list) {
-                func->reconstruct() ;
+                std::vector<LoggerParser> parsers ;
+                for(const auto& func : pimpl->funcs_) {
+                    try {
+                        const auto& list = cmds[i].at(func->name()) ;
+                        auto p_parser = std::make_shared<LoggerParser>(func) ;
+
+                        p_parser->share_parsed_binding_list(list) ;
+                        parsers.push_back(std::move(p_parser)) ;
+                    }
+                    catch(const std::out_of_range&) {
+                        continue ;
+                    }
+                }
+                pimpl->mgrs_[i] = std::move(parsers) ;
             }
         }
     }

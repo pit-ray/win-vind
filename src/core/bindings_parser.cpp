@@ -127,49 +127,49 @@ namespace vind
             return Mode::UNDEFINED ;
         }
 
-        namespace debug {
-            std::string print(const Command& cmd) {
-                std::stringstream ss ;
-                for(const auto& keyset : cmd) {
-                    if(keyset.size() == 1) {
-                        auto name = get_keycode_name(keyset.front()) ;
-                        if(name.size() == 1) {
-                            ss << name ;
-                        }
-                        else {
-                            ss << "<" << name << ">" ;
-                        }
+#ifdef DEBUG
+        std::string print(const Command& cmd) {
+            std::stringstream ss ;
+            for(const auto& keyset : cmd) {
+                if(keyset.size() == 1) {
+                    auto name = get_keycode_name(keyset.front()) ;
+                    if(name.size() == 1) {
+                        ss << name ;
                     }
                     else {
-                        ss << "<" ;
-                        for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
-                            if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
-                                ss << "-" ;
-                            }
-                            ss << get_keycode_name(*keyitr) ;
-                        }
-                        if(keyset.size() > 1) {
-                            ss << ">" ;
-                        }
+                        ss << "<" << name << ">" ;
                     }
                 }
-                return ss.str() ;
-            }
-            std::string print(const CommandList& list) {
-                std::stringstream ss ;
-
-                ss << "[" ;
-                for(auto cmditr = list.cbegin() ; cmditr != list.cend() ; cmditr ++) {
-                    if(list.size() > 1 && cmditr != list.cbegin()) {
-                        ss << ", " ;
+                else {
+                    ss << "<" ;
+                    for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
+                        if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
+                            ss << "-" ;
+                        }
+                        ss << get_keycode_name(*keyitr) ;
                     }
-
-                    ss << print(*cmditr) ;
+                    if(keyset.size() > 1) {
+                        ss << ">" ;
+                    }
                 }
-                ss << "]" ;
-
-                return ss.str() ;
             }
+            return ss.str() ;
         }
+        std::string print(const CommandList& list) {
+            std::stringstream ss ;
+
+            ss << "[" ;
+            for(auto cmditr = list.cbegin() ; cmditr != list.cend() ; cmditr ++) {
+                if(list.size() > 1 && cmditr != list.cbegin()) {
+                    ss << ", " ;
+                }
+
+                ss << print(*cmditr) ;
+            }
+            ss << "]" ;
+
+            return ss.str() ;
+        }
+#endif
     }
 }

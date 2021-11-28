@@ -42,7 +42,6 @@ namespace
 namespace vind
 {
     namespace core {
-
         void load_input_combination() {
             char2keycode.fill(0) ;
             keycode2char.fill(0) ;

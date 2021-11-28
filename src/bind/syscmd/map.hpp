@@ -3,6 +3,7 @@
 
 #include "bind/binded_func_creator.hpp"
 
+
 namespace vind
 {
     namespace bind
@@ -27,7 +28,7 @@ namespace vind
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SyscmdUnmap: BindedFuncCreator<SyscmdUnmap> {
+        struct SyscmdUnmap : BindedFuncCreator<SyscmdUnmap> {
             explicit SyscmdUnmap() ;
             static void sprocess(
                     const core::Mode mode = core::Mode::UNDEFINED,

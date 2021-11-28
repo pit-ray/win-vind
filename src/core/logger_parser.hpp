@@ -13,12 +13,11 @@ namespace vind
     {
         class BindedFunc ;
     }
-    namespace core {
-        class KeyLog ;
-    }
 
     namespace core
     {
+        class KeyLog ;
+
         class LoggerParser {
         private:
             struct Impl ;

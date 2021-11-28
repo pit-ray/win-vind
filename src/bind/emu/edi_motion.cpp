@@ -182,8 +182,8 @@ namespace vind
             sprocess() ;
         }
         void YankWithMotion::reconstruct() {
-            pimpl->funcfinder_.reconstruct_funcset() ;
-            pimpl->parent_funcfinder_.reconstruct_funcset() ;
+            pimpl->funcfinder_.reconstruct() ;
+            pimpl->parent_funcfinder_.reconstruct() ;
         }
 
         //DeleteWithMotion
@@ -225,8 +225,8 @@ namespace vind
             sprocess() ;
         }
         void DeleteWithMotion::reconstruct() {
-            pimpl->funcfinder_.reconstruct_funcset() ;
-            pimpl->parent_funcfinder_.reconstruct_funcset() ;
+            pimpl->funcfinder_.reconstruct() ;
+            pimpl->parent_funcfinder_.reconstruct() ;
         }
 
 
@@ -269,8 +269,8 @@ namespace vind
             sprocess() ;
         }
         void ChangeWithMotion::reconstruct() {
-            pimpl->funcfinder_.reconstruct_funcset() ;
-            pimpl->parent_funcfinder_.reconstruct_funcset() ;
+            pimpl->funcfinder_.reconstruct() ;
+            pimpl->parent_funcfinder_.reconstruct() ;
         }
     }
 }

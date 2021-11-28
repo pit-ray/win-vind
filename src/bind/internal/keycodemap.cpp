@@ -1,17 +1,4 @@
-#include "log_map.hpp"
-
-#include "err_logger.hpp"
-#include "g_maps.hpp"
-#include "key_absorber.hpp"
-#include "key_log.hpp"
-#include "keycodecvt.hpp"
-#include "mapdefs.hpp"
-#include "mode.hpp"
-#include "util/keybrd.hpp"
-
-#include <stdexcept>
-#include <unordered_set>
-#include <utility>
+#include "keycodemap.hpp"
 
 namespace
 {
@@ -41,8 +28,21 @@ namespace
 
 namespace vind
 {
-    namespace core {
-        void load_keycodemap_config() {
+    namespace bind
+    {
+        KeycodeMap::Impl {
+        } ;
+
+        KeycodeMap::KeycodeMap()
+        : BindedFuncCreator("internal_keycodemap"),
+          pimpl(std::make_unique<Impl>())
+        {}
+
+        KeycodeMap::~KeycodeMap() noexcept = default ;
+        KeycodeMap::KeycodeMap(KeycodeMap&&) = default ;
+        KeycodeMap& KeycodeMap::operator=(KeycodeMap&& = default ;
+
+        void KeycodeMap::reconstruct() {
             ModeKeySetMaps().swap(g_modemaps) ;
             ModeKeyCodeMap().swap(g_keycodemap) ;
 
@@ -111,7 +111,19 @@ namespace vind
             }
         }
 
-        KeyLog do_keycode_noremap(const KeyLog& log, Mode mode) {
+        void KeycodeMap::sprocess() const {
+
+        }
+
+        void KeycodeMap::sprocess(core::NTypeLogger& parent_lgr) const {
+
+        }
+
+        void KeycodeMap::spocess(const core::CharLogger& parent_lgr) const {
+
+        }
+
+        KeyLog do_log_map(const KeyLog& log, Mode mode) {
             KeyLog::Data mapped{} ;
             KeyLog::Data converted{} ;
 
@@ -138,7 +150,7 @@ namespace vind
             return KeyLog(std::move(converted)) ;
         }
 
-        bool do_keycode_map(KeyCode key, bool press_sync_state, Mode mode) {
+        bool do_sync_map(KeyCode key, bool press_sync_state, Mode mode) {
             auto target = g_keycodemap[static_cast<int>(mode)][key] ;
             if(target == key) {
                 return false ;

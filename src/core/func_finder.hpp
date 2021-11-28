@@ -8,7 +8,6 @@
 #include "logger_parser.hpp"
 #include "mode.hpp"
 
-#include "bind/binded_func.hpp"
 
 namespace vind
 {
@@ -21,11 +20,7 @@ namespace vind
 
         public:
             explicit FuncFinder() ;
-            explicit FuncFinder(const KeyLoggerBase& lgr) ;
             virtual ~FuncFinder() noexcept ;
-
-            FuncFinder(const FuncFinder&) ;
-            FuncFinder& operator=(const FuncFinder&) ;
 
             FuncFinder(FuncFinder&&) ;
             FuncFinder& operator=(FuncFinder&&) ;
@@ -33,8 +28,6 @@ namespace vind
             LoggerParser::SPtr transition_parser_states_in_batch(
                     const KeyLoggerBase& lgr,
                     Mode mode=get_global_mode()) ;
-
-            void reconstruct_funcset() ;
 
             void search_unrejected_parser(
                     std::vector<LoggerParser::SPtr>& results,
@@ -61,8 +54,12 @@ namespace vind
             void reset_parser_states(
                     Mode mode=get_global_mode()) ;
 
+            void reconstruct() ;
+
             static bind::BindedFunc::SPtr find_func_byname(const std::string& name) ;
-            static void load_global_bindings() ;
+
+            FuncFinder(const FuncFinder&) = delete ;
+            FuncFinder& operator=(const FuncFinder&) = delete ;
         } ;
     }
 }

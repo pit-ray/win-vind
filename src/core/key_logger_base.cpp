@@ -103,8 +103,8 @@ namespace vind
             return pimpl->data != rhs.pimpl->data ;
         }
 
-        int KeyLoggerBase::logging_state() {
-            logging(get_pressed_list()) ;
+        int KeyLoggerBase::logging_state(KeyLog log) {
+            logging(log) ;
             return static_cast<int>(latest().size()) ;
         }
 

@@ -4,6 +4,7 @@
 #include "keycode_def.hpp"
 #include "keycodecvt.hpp"
 #include "log_map.hpp"
+#include "mapgate.hpp"
 
 #include <chrono>
 #include <windows.h>
@@ -97,16 +98,17 @@ namespace
             g_low_level_state[code] = state ;
             g_time_stamps[code] = std::chrono::system_clock::now() ;
 
+            static auto& instance = vind::core::MapGate::get_instance() ;
             if(auto repcode = vind::core::get_representative_key(code)) {
-                if(vind::core::do_keycode_map(repcode, state) ||
-                        vind::core::do_keycode_map(code, state)) {
+                if(instance.map_syncstate(repcode, state) ||
+                        instance.map_syncstate(code, state)) {
                     return 1 ;
                 }
 
                 g_real_state[repcode] = state ;
                 g_state[repcode]      = state ;
             }
-            else if(vind::core::do_keycode_map(code, state)) {
+            else if(instance.map_syncstate(code, state)) {
                 return 1 ;
             }
 
@@ -208,7 +210,7 @@ namespace vind
 
                 using namespace std::chrono ;
                 if((system_clock::now() - g_time_stamps[k]) > 515ms) {
-                    do_keycode_map(k, false) ;
+                    MapGate::get_instance().map_syncstate(k, false) ;
                     util::release_keystate(k) ;
 
                     g_real_state[k] = false ;
@@ -262,8 +264,36 @@ namespace vind
             }
         }
 
+        void open_some_ports(std::initializer_list<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                g_opened[k] = true ;
+            }
+        }
+        void open_some_ports(
+                std::initializer_list<KeyCode>::const_iterator begin,
+                std::initializer_list<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                g_opened[*itr] = true ;
+            }
+        }
+
+        void open_some_ports(std::vector<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                g_opened[k] = true ;
+            }
+        }
+        void open_some_ports(
+                std::vector<KeyCode>::const_iterator begin,
+                std::vector<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                g_opened[*itr] = true ;
+            }
+        }
+
         void open_some_ports(const KeyLog::Data& keys) noexcept {
-            for(auto k : keys) g_opened[k] = true ;
+            for(auto k : keys) {
+                g_opened[k] = true ;
+            }
         }
 
         void open_port(KeyCode key) noexcept {

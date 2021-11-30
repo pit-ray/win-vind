@@ -40,7 +40,13 @@ namespace vind
 {
     namespace util {
         void click(KeyCode btcode) {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
             static INPUT in = {INPUT_MOUSE} ;
+#if defined(__gnuc__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
@@ -56,7 +62,13 @@ namespace vind
         }
 
         void press_mousestate(KeyCode btcode) {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
             static INPUT in = {INPUT_MOUSE} ;
+#if defined(__gnuc__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
             in.mi.dwFlags = btcode_to_downevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 
@@ -66,7 +78,13 @@ namespace vind
         }
 
         void release_mousestate(KeyCode btcode) {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
             static INPUT in = {INPUT_MOUSE} ;
+#if defined(__gnuc__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
             in.mi.dwFlags = btcode_to_upevent(btcode) ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
 

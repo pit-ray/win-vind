@@ -1,5 +1,7 @@
 #include "logger_parser_mgr.hpp"
 
+#include "bind/binded_func.hpp"
+#include "key_logger_base.hpp"
 #include "logger_parser.hpp"
 
 
@@ -10,6 +12,10 @@ namespace vind
         struct LoggerParserManager::Impl {
             std::vector<LoggerParser::SPtr> parsers_ ;
 
+            Impl()
+            : parsers_()
+            {}
+
             template <typename T>
             Impl(T&& parsers)
             : parsers_(std::forward<T>(parsers))
@@ -18,6 +24,16 @@ namespace vind
 
         LoggerParserManager::LoggerParserManager()
         : pimpl(std::make_unique<Impl>())
+        {}
+
+        LoggerParserManager::LoggerParserManager(
+                const std::vector<LoggerParser::SPtr>& parsers)
+        : pimpl(std::make_unique<Impl>(parsers))
+        {}
+
+        LoggerParserManager::LoggerParserManager(
+                std::vector<LoggerParser::SPtr>&& parsers)
+        : pimpl(std::make_unique<Impl>(std::move(parsers)))
         {}
 
         LoggerParserManager::~LoggerParserManager() noexcept = default ;

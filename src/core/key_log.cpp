@@ -47,7 +47,7 @@ namespace vind
         {}
 
         KeyLog::KeyLog(Data&& codes)
-            : pimpl(std::make_unique<Impl>(std::move(codes)))
+        : pimpl(std::make_unique<Impl>(std::move(codes)))
         {}
 
         KeyLog::KeyLog(std::initializer_list<KeyCode>&& codes)

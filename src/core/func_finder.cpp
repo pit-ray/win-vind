@@ -29,7 +29,7 @@ namespace vind
     namespace core
     {
         struct FuncFinder::Impl {
-            ModeArray<LoggerParserManager> mgrs_ {} ;
+            ModeArray<LoggerParserManager> mgrs_{} ;
             std::vector<bind::BindedFunc::SPtr> funcs_ = bind::all_global_binded_funcs() ;
         } ;
 
@@ -44,7 +44,7 @@ namespace vind
         LoggerParser::SPtr FuncFinder::transition_parser_states_in_batch(
                 const KeyLoggerBase& lgr,
                 Mode mode) {
-            return pimpl->mgrs_[static_cast<int>(mode)].find_parser_with_transition(log, 0) ;
+            return pimpl->mgrs_[static_cast<int>(mode)].transition_parser_states_in_batch(lgr) ;
         }
 
         void FuncFinder::search_unrejected_parser(
@@ -88,45 +88,38 @@ namespace vind
 
             auto id = bind::BindedFunc::name_to_id(name) ;
             for(const auto& func : funcs) {
-                if(func->id() == id) {
-                    return func ;
-                }
+                if(func->id() == id) return func ;
             }
 
             return nullptr ;
         }
 
         void FuncFinder::reconstruct() {
-            // load configs of all function and give a chance to reconstruct FuncFinder automatically.
-            for(auto& func : pimpl->funcs_) {
-                func->reconstruct() ;
-            }
-
-            //clear by empty swapping
-            ParsedBindingLists cmds ;
-
-            std::vector<UniqueMap> maps{} ;
+            ParsedBindingTable parsed_bdtable ;
             for(size_t i = 0 ; i < mode_num() ; i ++) {
-                auto& funcmap = cmds[i] ;
+                auto& funcmap = parsed_bdtable[i] ;
 
-                maps.clear() ;
+                std::vector<UniqueMap> maps{} ;
                 get_maps(static_cast<Mode>(i), maps) ;
+
                 for(const auto& map : maps) {
                     if(!map.is_noremap_function()) {
                         continue ;
                     }
 
-                    auto& shared_cmd_list = funcmap[map.func_name()] ;
+                    auto& shared_cmd_list = funcmap[map.target_command_string()] ;
                     if(!shared_cmd_list) {
                         shared_cmd_list = std::make_shared<CommandList>() ;
                     }
                     shared_cmd_list->push_back(map.trigger_command()) ;
                 }
+            }
 
-                std::vector<LoggerParser> parsers ;
+            for(size_t i = 0 ; i < mode_num() ; i ++) {
+                std::vector<LoggerParser::SPtr> parsers ;
                 for(const auto& func : pimpl->funcs_) {
                     try {
-                        const auto& list = cmds[i].at(func->name()) ;
+                        const auto& list = parsed_bdtable[i].at(func->name()) ;
                         auto p_parser = std::make_shared<LoggerParser>(func) ;
 
                         p_parser->share_parsed_binding_list(list) ;
@@ -136,7 +129,7 @@ namespace vind
                         continue ;
                     }
                 }
-                pimpl->mgrs_[i] = std::move(parsers) ;
+                pimpl->mgrs_[i] = LoggerParserManager(std::move(parsers)) ;
             }
         }
     }

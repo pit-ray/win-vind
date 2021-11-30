@@ -199,7 +199,7 @@ namespace vind
         WindowResizer& WindowResizer::operator=(WindowResizer&&) = default ;
 
         void WindowResizer::reconstruct() {
-            pimpl->funcfinder_.reconstruct_funcset() ;
+            pimpl->funcfinder_.reconstruct() ;
             pimpl->ca_.set_acceleration(core::get_f("window_accel")) ;
             pimpl->ca_.set_max_velocity(core::get_f("window_maxv")) ;
             pimpl->ca_.set_time_weight(core::get_i("window_tweight")) ;

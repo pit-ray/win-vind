@@ -29,6 +29,7 @@
 namespace
 {
     using namespace vind ;
+
     template <typename T>
     bool is_func_name(T&& name) {
         static const auto& func_list = bind::all_global_binded_funcs() ;
@@ -39,7 +40,6 @@ namespace
         }
         return false ;
     }
-
 
     using MapModeList = ModeArray<std::unordered_map<std::size_t, core::UniqueMap>> ;
     MapModeList g_mode_maps{} ;
@@ -54,9 +54,14 @@ namespace vind
     namespace core
     {
         struct UniqueMap::Impl {
+            std::string instr_ ;
             Command in_ ;
+            std::size_t in_hash_ ;
+
             std::string outstr_ ;
             Command out_ ;
+            std::size_t out_hash_ ;
+
             MapType type_ ;
 
             template <typename T1, typename T2>
@@ -64,16 +69,22 @@ namespace vind
                     T1&& in,
                     T2&& out,
                     MapType expect_type)
-            : in_(parse_string_binding(std::forward<T1>(in))),
+            : instr_(std::forward<T1>(in)),
+              in_(parse_string_binding(instr_)),
+              in_hash_(0),
               outstr_(std::forward<T2>(out)),
               out_(),
+              out_hash_(0),
               type_(expect_type)
             {}
 
             explicit Impl()
-            : in_(),
+            : instr_(),
+              in_(),
+              in_hash_(0),
               outstr_(),
               out_(),
+              out_hash_(0),
               type_(MapType::UNDEFINED)
             {}
         } ;
@@ -125,20 +136,39 @@ namespace vind
             return pimpl->in_ ;
         }
 
-        const std::string& UniqueMap::func_name() const noexcept {
-            return pimpl->outstr_ ;
-        }
-
-        std::size_t UniqueMap::func_id() const noexcept {
-            return bind::BindedFunc::name_to_id(pimpl->outstr_) ;
+        const std::string& UniqueMap::trigger_command_string() const noexcept {
+            return pimpl->instr_ ;
         }
 
         const Command& UniqueMap::target_command() const {
             return pimpl->out_ ;
         }
 
-        std::size_t UniqueMap::compute_hash() const {
-            return compute_hash(pimpl->in_) ;
+        const std::string& UniqueMap::target_command_string() const noexcept {
+            return pimpl->outstr_ ;
+        }
+
+        bool UniqueMap::empty() const noexcept {
+            return pimpl->in_.empty() || pimpl->outstr_.empty() ;
+        }
+
+        std::size_t UniqueMap::out_hash() const {
+            if(pimpl->out_hash_ == 0) {
+                if(is_noremap_function()) {
+                    pimpl->out_hash_ = compute_hash(pimpl->outstr_) ;
+                }
+                else {
+                    pimpl->out_hash_ = compute_hash(pimpl->out_) ;
+                }
+            }
+            return pimpl->out_hash_ ;
+        }
+
+        std::size_t UniqueMap::in_hash() const {
+            if(pimpl->in_hash_ == 0) {
+                pimpl->in_hash_ = compute_hash(pimpl->in_) ;
+            }
+            return pimpl->in_hash_ ;
         }
 
         std::size_t UniqueMap::compute_hash(const std::string& strcmd) {
@@ -153,6 +183,22 @@ namespace vind
                 }
             }
             return std::hash<std::string>()(std::move(strcmd)) ;
+        }
+
+        bool UniqueMap::operator==(UniqueMap&& rhs) const {
+            return in_hash() == rhs.in_hash() && out_hash() == rhs.out_hash() ;
+        }
+
+        bool UniqueMap::operator==(const UniqueMap& rhs) const {
+            return in_hash() == rhs.in_hash() && out_hash() == rhs.out_hash() ;
+        }
+
+        bool UniqueMap::operator!=(UniqueMap&& rhs) const {
+            return in_hash() != rhs.in_hash() || out_hash() != rhs.out_hash() ;
+        }
+
+        bool UniqueMap::operator!=(const UniqueMap& rhs) const {
+            return in_hash() != rhs.in_hash() || out_hash() != rhs.out_hash() ;
         }
 
 
@@ -224,7 +270,7 @@ namespace vind
                                 continue ;
                             }
                             UniqueMap map(strcmd, name, MapType::NOREMAP_FUNCTION, false) ;
-                            maps[map.compute_hash()] = std::move(map) ;
+                            maps[map.in_hash()] = std::move(map) ;
                         }
                     }
                 }
@@ -255,7 +301,7 @@ namespace vind
 
             UniqueMap map(incmd, outcmd, MapType::MAP, false) ;
             // Overwrite map anyway
-            g_mode_maps[static_cast<int>(mode)][map.compute_hash()] = std::move(map) ;
+            g_mode_maps[static_cast<int>(mode)][map.in_hash()] = std::move(map) ;
         }
 
         void do_noremap(
@@ -270,22 +316,20 @@ namespace vind
 
             if(map.is_noremap_function()) {
                 // Overwrite if function-name or empty
-                auto hash = map.compute_hash() ;
-
                 auto& maps = g_mode_maps[static_cast<int>(mode)] ;
                 try {
-                    auto& oldmap = maps.at(hash) ;
+                    auto& oldmap = maps.at(map.in_hash()) ;
                     if(oldmap.is_noremap_function()) {
                         oldmap = std::move(map) ;
                     }
                 }
                 catch(const std::out_of_range&) {
-                    maps[hash] = std::move(map) ;
+                    maps[map.in_hash()] = std::move(map) ;
                 }
             }
             else {
                 // Overwrite map anyway
-                g_mode_maps[static_cast<int>(mode)][map.compute_hash()] = std::move(map) ;
+                g_mode_maps[static_cast<int>(mode)][map.in_hash()] = std::move(map) ;
             }
         }
 

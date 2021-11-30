@@ -1,9 +1,11 @@
 #ifndef _KEY_LOGGER_BASE_HPP
 #define _KEY_LOGGER_BASE_HPP
 
+#include "key_absorber.hpp"
+#include "key_log.hpp"
+
 #include <memory>
 #include <vector>
-#include "key_log.hpp"
 
 namespace vind
 {
@@ -56,7 +58,7 @@ namespace vind
             bool operator==(const KeyLoggerBase& rhs) const ;
             bool operator!=(const KeyLoggerBase& rhs) const ;
 
-            virtual int logging_state() = 0 ;
+            virtual int logging_state(KeyLog log=get_pressed_list()) = 0 ;
         } ;
 
 #ifdef DEBUG

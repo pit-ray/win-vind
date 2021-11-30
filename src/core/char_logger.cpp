@@ -175,11 +175,7 @@ namespace vind
             }
         }
 
-        int CharLogger::logging_state() {
-            auto log = get_pressed_list() ;
-
-            log = do_keycode_noremap(log) ;
-
+        int CharLogger::logging_state(KeyLog log) {
             if(log != pimpl->prelog_) { //type is changed
                 auto diff = log - pimpl->prelog_ ;
                 pimpl->prelog_ = log ;

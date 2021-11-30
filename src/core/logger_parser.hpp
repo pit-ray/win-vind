@@ -37,6 +37,8 @@ namespace vind
             LoggerParser(LoggerParser&&) ;
             LoggerParser& operator=(LoggerParser&&) ;
 
+            void append_binding(const Command& command) ;
+
             // Parse a command (e.g. <c-w>s) and create new CommandList.
             void append_binding(const std::string& command) ;
 

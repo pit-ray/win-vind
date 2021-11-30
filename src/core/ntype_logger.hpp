@@ -34,7 +34,7 @@ namespace vind
             NTypeLogger(NTypeLogger&&) ;
             NTypeLogger& operator=(NTypeLogger&&) ;
 
-            virtual int logging_state() override ;
+            virtual int logging_state(KeyLog log=get_pressed_list()) override ;
             virtual unsigned int get_head_num() const noexcept ;
             virtual void set_head_num(unsigned int num) noexcept ;
             virtual bool has_head_num() const noexcept ;

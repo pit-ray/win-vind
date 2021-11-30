@@ -25,7 +25,7 @@ namespace vind
 
     using ParsedStringBindingLists = FuncMap<ModeArray<ParsedStringCmd>> ;
 
-    using ParsedBindingLists = ModeArray<FuncMap<std::shared_ptr<CommandList>>> ;
+    using ParsedBindingTable = ModeArray<FuncMap<std::shared_ptr<CommandList>>> ;
 
     constexpr auto MAP_DEFINE_KEYWORD_IN_JSON = "def" ;
 }

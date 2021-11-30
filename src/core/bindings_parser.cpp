@@ -90,7 +90,6 @@ namespace vind
             }
 
             util::remove_deplication(keyset) ;
-            std::sort(keyset.begin(), keyset.end()) ;
             return keyset ; //RVO
         }
 

@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 
+#include "bind/binded_func.hpp"
 #include "key_logger_base.hpp"
 #include "logger_parser.hpp"
 #include "mode.hpp"

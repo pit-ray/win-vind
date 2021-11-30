@@ -33,6 +33,16 @@ namespace vind
         void close_all_ports() noexcept ;
         void close_all_ports_with_refresh() ;
 
+        void open_some_ports(std::initializer_list<KeyCode>&& keys) noexcept ;
+        void open_some_ports(
+                std::initializer_list<KeyCode>::const_iterator begin,
+                std::initializer_list<KeyCode>::const_iterator end) noexcept ;
+
+        void open_some_ports(std::vector<KeyCode>&& keys) noexcept ;
+        void open_some_ports(
+                std::vector<KeyCode>::const_iterator begin,
+                std::vector<KeyCode>::const_iterator end) noexcept ;
+
         void open_some_ports(const KeyLog::Data& key) noexcept ;
         void open_port(KeyCode key) noexcept ;
 

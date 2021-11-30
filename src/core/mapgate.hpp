@@ -1,14 +1,17 @@
 #ifndef _MAPGATE_HPP
 #define _MAPGATE_HPP
 
+#include "keycode_def.hpp"
 #include "mode.hpp"
+
+#include <memory>
 
 
 namespace vind
 {
     namespace core
     {
-        class KeyLog ;
+        class NTypeLogger ;
 
         class MapGate {
         private:
@@ -21,46 +24,39 @@ namespace vind
         public:
             static MapGate& get_instance() ;
 
-            //
-            //
-            //
-            //
-            //
             void reconstruct() ;
 
             //
+            // map_logger is a mapping from NTypeLogger to NTypeLogger.
+            // What it means is that it is excited by a command,
+            // and returns the NTypeLogger generated in the state which
+            // it would have been in if the corresponding command had been entered.
+            //
+            // In the case of noremap, the key message is not actually generated,
+            // but in the case of map, the key message is generated in a state that is passed to Windows.
             //
             //
-            //
-            //
-            void get_binding_hook() ;
-
-            //
-            //
-            //
-            //
-            //
-            void add_to_pool(const KeyLog& log) ;
-
-            //
-            //
-            //
-            //
-            //
-            //
-            KeyLog do_map_overlog(
-                    const KeyLog& log,
+            const NTypeLogger& map_logger(
+                    const NTypeLogger& lgr,
                     Mode mode=get_global_mode()) ;
 
             //
+            // A gate uses to synchronize the state of a key at low-level
+            // with mapped to the hook_key. It return ture if the map was done,
+            // false if the map does not exist.
             //
-            //
-            //
-            //
-            //
-            void do_map_syncstate(
-                    KeyCode key,
-                    bool state,
+            // It works like the following, with the keys connected by bars.
+            /*
+                 ______________________________________
+               _|_                        _|_        _|_
+              /   \                      /   \      /   \
+             /_____\                    /_____\    /_____\
+             hook_key        keyset = {   key1  ,    key2   }
+
+            */
+            bool map_syncstate(
+                    KeyCode hook_key,
+                    bool press_sync_state,
                     Mode mode=get_global_mode()) ;
 
             MapGate(MapGate&&)                 = delete ;

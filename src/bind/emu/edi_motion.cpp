@@ -162,8 +162,8 @@ namespace vind
         : BindedFuncCreator("yank_with_motion"),
           pimpl(std::make_unique<Impl>())
         {}
-        YankWithMotion::~YankWithMotion() noexcept                 = default ;
-        YankWithMotion::YankWithMotion(YankWithMotion&&)            = default ;
+        YankWithMotion::~YankWithMotion() noexcept = default ;
+        YankWithMotion::YankWithMotion(YankWithMotion&&) = default ;
         YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
         void YankWithMotion::sprocess() const {
             if(select_by_motion(id(), pimpl->funcfinder_)) {
@@ -204,8 +204,8 @@ namespace vind
         : BindedFuncCreator("delete_with_motion"),
           pimpl(std::make_unique<Impl>())
         {}
-        DeleteWithMotion::~DeleteWithMotion() noexcept                   = default ;
-        DeleteWithMotion::DeleteWithMotion(DeleteWithMotion&&)            = default ;
+        DeleteWithMotion::~DeleteWithMotion() noexcept = default ;
+        DeleteWithMotion::DeleteWithMotion(DeleteWithMotion&&) = default ;
         DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
 
         void DeleteWithMotion::sprocess() const {
@@ -249,8 +249,8 @@ namespace vind
         : BindedFuncCreator("change_with_motion"),
           pimpl(std::make_unique<Impl>())
         {}
-        ChangeWithMotion::~ChangeWithMotion() noexcept                                 = default ;
-        ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&)            = default ;
+        ChangeWithMotion::~ChangeWithMotion() noexcept = default ;
+        ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&) = default ;
         ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
         void ChangeWithMotion::sprocess() const {
             if(select_by_motion(id(), pimpl->funcfinder_)) {

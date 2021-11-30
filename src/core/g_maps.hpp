@@ -31,19 +31,26 @@ namespace vind
 
             bool is_noremap() const noexcept ;
             bool is_noremap_function() const noexcept ;
-
             bool is_map() const noexcept ;
 
             const Command& trigger_command() const noexcept ;
-
-            const std::string& func_name() const noexcept ;
-            std::size_t func_id() const noexcept ;
+            const std::string& trigger_command_string() const noexcept ;
 
             const Command& target_command() const ;
+            const std::string& target_command_string() const noexcept ;
 
-            std::size_t compute_hash() const ;
+            bool empty() const noexcept ;
+
+            std::size_t in_hash() const ;
+            std::size_t out_hash() const ;
             static std::size_t compute_hash(const std::string& strcmd) ;
             static std::size_t compute_hash(const Command& cmd) ;
+
+            bool operator==(UniqueMap&& rhs) const ;
+            bool operator==(const UniqueMap& rhs) const ;
+
+            bool operator!=(UniqueMap&& rhs) const ;
+            bool operator!=(const UniqueMap& rhs) const ;
         } ;
 
 

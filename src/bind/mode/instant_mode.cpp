@@ -85,7 +85,7 @@ namespace vind
         }
 
         void ToInstantGUINormal::reconstruct() {
-            pimpl->finder_.reconstruct_funcset() ;
+            pimpl->finder_.reconstruct() ;
         }
     }
 }

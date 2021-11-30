@@ -333,6 +333,17 @@ namespace vind
             return *this ;
         }
 
+        void LoggerParser::append_binding(const Command& command) {
+            if(command.empty()) return ;
+            if(!pimpl->cmdlist_ptr_) {
+                pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
+            }
+
+            if(pimpl->cmdlist_ptr_.use_count() == 1) {
+                pimpl->cmdlist_ptr_->push_back(command) ;
+            }
+        }
+
         void LoggerParser::append_binding(const std::string& command) {
             if(command.empty()) return ;
             if(!pimpl->cmdlist_ptr_) {

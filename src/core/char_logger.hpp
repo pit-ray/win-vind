@@ -41,7 +41,7 @@ namespace vind
 
             virtual void sync_state_with(const CharLogger& rhs) ;
 
-            virtual int logging_state() override ;
+            virtual int logging_state(KeyLog log=get_pressed_list()) override ;
             virtual std::string to_str() const ;
         } ;
     }

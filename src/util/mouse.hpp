@@ -22,7 +22,14 @@ namespace vind
 
         template <typename T>
         inline void _scroll_core(DWORD event, T&& scr_delta) {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
             static INPUT in = {INPUT_MOUSE} ;
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic warning "-Wmissing-field-initializers"
+#endif
             in.mi.mouseData = static_cast<int>(scr_delta) ;
             in.mi.dwFlags = event ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;

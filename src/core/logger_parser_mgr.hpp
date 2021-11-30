@@ -10,12 +10,15 @@ namespace vind
 {
     namespace core
     {
+        class KeyLoggerBase ;
+
         class LoggerParserManager {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
 
         public:
+            LoggerParserManager() ;
             explicit LoggerParserManager(
                     const std::vector<LoggerParser::SPtr>& parsers) ;
             explicit LoggerParserManager(

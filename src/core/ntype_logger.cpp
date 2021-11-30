@@ -195,9 +195,7 @@ namespace vind
             return 0 ;
         }
 
-        int NTypeLogger::logging_state() {
-            auto log = get_pressed_list() ;
-
+        int NTypeLogger::logging_state(KeyLog log) {
             log = do_keycode_noremap(log) ;
 
             int result ;

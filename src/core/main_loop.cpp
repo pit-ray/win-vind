@@ -8,11 +8,13 @@
 #include "key_logger_base.hpp"
 #include "keycode_def.hpp"
 #include "logger_parser.hpp"
+#include "mapgate.hpp"
 #include "ntype_logger.hpp"
 
 #include "opt/vcmdline.hpp"
 
 #include "bind/binded_func.hpp"
+#include "bind/bindings_lists.hpp"
 #include "bind/mode/change_mode.hpp"
 
 //internal linkage
@@ -33,8 +35,17 @@ namespace vind
         }
 
         void reconstruct_mainloop() {
-            FuncFinder::load_global_bindings() ;
-            g_funcfinder.reconstruct_funcset() ;
+            std::cout << "1\n" ;
+            static auto funcs = bind::all_global_binded_funcs() ;
+            for(auto& func : funcs) {
+                func->reconstruct() ;
+            }
+            std::cout << "2\n" ;
+            g_funcfinder.reconstruct() ;
+            std::cout << "3\n" ;
+
+            MapGate::get_instance().reconstruct() ;
+            std::cout << "4\n" ;
         }
 
         void update_mainloop() {
@@ -48,6 +59,8 @@ namespace vind
                             std::to_string(g_ntlgr.get_head_num()))) ;
                 return ;
             }
+
+            g_ntlgr = MapGate::get_instance().map_logger(g_ntlgr) ;
 
             // visualize log sequence of Logger for debug
             // std::cout << keyloggerutil::debug::print_log(g_ntlgr) ;

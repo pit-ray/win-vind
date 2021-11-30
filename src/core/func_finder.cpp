@@ -1,17 +1,16 @@
 #include "func_finder.hpp"
 
+#include "bind/binded_func.hpp"
+#include "bind/bindings_lists.hpp"
 #include "bindings_parser.hpp"
 #include "entry.hpp"
 #include "g_maps.hpp"
 #include "key_logger_base.hpp"
 #include "logger_parser.hpp"
+#include "logger_parser_mgr.hpp"
 #include "mapdefs.hpp"
 #include "mode.hpp"
 #include "path.hpp"
-
-#include "bind/binded_func.hpp"
-#include "bind/bindings_lists.hpp"
-#include "logger_parser_mgr.hpp"
 #include "util/def.hpp"
 
 #include <array>
@@ -30,7 +29,6 @@ namespace vind
     {
         struct FuncFinder::Impl {
             ModeArray<LoggerParserManager> mgrs_{} ;
-            std::vector<bind::BindedFunc::SPtr> funcs_ = bind::all_global_binded_funcs() ;
         } ;
 
         FuncFinder::FuncFinder()
@@ -84,10 +82,8 @@ namespace vind
         }
 
         bind::BindedFunc::SPtr FuncFinder::find_func_byname(const std::string& name) {
-            static auto funcs = bind::all_global_binded_funcs() ;
-
             auto id = bind::BindedFunc::name_to_id(name) ;
-            for(const auto& func : funcs) {
+            for(const auto& func : bind::all_global_binded_funcs()) {
                 if(func->id() == id) return func ;
             }
 
@@ -117,7 +113,7 @@ namespace vind
 
             for(size_t i = 0 ; i < mode_num() ; i ++) {
                 std::vector<LoggerParser::SPtr> parsers ;
-                for(const auto& func : pimpl->funcs_) {
+                for(const auto& func : bind::all_global_binded_funcs()) {
                     try {
                         const auto& list = parsed_bdtable[i].at(func->name()) ;
                         auto p_parser = std::make_shared<LoggerParser>(func) ;

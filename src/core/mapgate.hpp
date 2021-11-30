@@ -47,7 +47,7 @@ namespace vind
             //
             // It works like the following, with the keys connected by bars.
             /*
-                 ______________________________________
+                 _____________________________________
                _|_                        _|_        _|_
               /   \                      /   \      /   \
              /_____\                    /_____\    /_____\

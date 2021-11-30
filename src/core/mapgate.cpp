@@ -16,6 +16,7 @@
 #include "util/keybrd.hpp"
 
 #include <unordered_map>
+#include <unordered_set>
 
 
 namespace
@@ -122,7 +123,6 @@ namespace vind
             ModeArray<std::array<SyncKeySet, 256>> syncmap_table_{} ;
         } ;
 
-
         MapGate::MapGate()
         : pimpl(std::make_unique<Impl>())
         {}
@@ -135,6 +135,7 @@ namespace vind
         }
 
         void MapGate::reconstruct() {
+            std::cout << "Start reconstruction...\n" ;
             ModeArray<std::vector<LoggerParser::SPtr>> parsers_table ;
 
             ModeArray<std::unordered_map<std::size_t, Command>> remap_triggers_table ;
@@ -168,7 +169,7 @@ namespace vind
 
                         // The key2keyset and key2key are mapped synchronously.
                         if(trigger_cmd.size() == 1 && trigger_cmd.front().size() == 1  // trigger is key?
-                                && target_cmd.size() == 1) {                       // target is keyset?
+                                && target_cmd.size() == 1) {                           // target is keyset?
                             auto trigger_key = trigger_cmd.front().front() ;
                             auto target_keyset = target_cmd.front() ;
 
@@ -191,6 +192,7 @@ namespace vind
 
                 remap_solver_table[i] = LoggerParserManager(remap_parsers_table[i]) ;
             }
+            std::cout << "UniqueMap is loaded...\n" ;
 
             // Solve recursive mapping in MapHookReproduce and syncmap.
             for(std::size_t i = 0 ; i < mode_num() ; i ++) {
@@ -274,10 +276,11 @@ namespace vind
                         remap_parsers.end()) ;
                 pimpl->mgr_table_[i] = LoggerParserManager(parsers) ;
 
+                std::cout << "the remapping of MapHookReproduce is solved.\n" ;
 
                 // Solve recursive synchronous mapping.
                 auto& syncmap = pimpl->syncmap_table_[i] ;
-                for(int j = 0 ; j < 256 ; j ++) {
+                for(KeyCode j = 1 ; j < 255 ; j ++) {
                     auto dst = syncmap[j] ;
                     if(dst.empty()) {
                         continue ;
@@ -313,7 +316,10 @@ namespace vind
 
                     syncmap[j] = std::move(dst) ;
                 }
+
+                std::cout << "SyncMap is solved.\n" ;
             }
+            std::cout << "done.\n" ;
         }
 
         const NTypeLogger& MapGate::map_logger(const NTypeLogger& lgr, Mode mode) {

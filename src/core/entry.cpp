@@ -245,7 +245,6 @@ namespace vind
 
         bool reconstruct_all_components() noexcept {
             try {
-                load_keycodemap_config() ;
                 opt::reconstruct() ;
                 reconstruct_mainloop() ;
                 return true ;

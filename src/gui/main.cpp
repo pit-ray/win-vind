@@ -76,11 +76,11 @@ namespace vind
             {}
         } ;
 
+
         class App : public wxApp {
         private:
             bool OnInit() override {
                 try {
-                    std::cout << "init\n" ;
                     if(!wxApp::OnInit()) {
                         return false ;
                     }
@@ -92,7 +92,6 @@ namespace vind
                                 wxOK | wxICON_EXCLAMATION) ;
                     }
 
-                    std::cout << "aa\n" ;
                     if(!core::initialize(g_argument_func)) {
                         return false ;
                     }

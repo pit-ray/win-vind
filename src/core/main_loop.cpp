@@ -35,17 +35,12 @@ namespace vind
         }
 
         void reconstruct_mainloop() {
-            std::cout << "1\n" ;
-            static auto funcs = bind::all_global_binded_funcs() ;
-            for(auto& func : funcs) {
+            for(auto& func : bind::all_global_binded_funcs()) {
                 func->reconstruct() ;
             }
-            std::cout << "2\n" ;
             g_funcfinder.reconstruct() ;
-            std::cout << "3\n" ;
 
             MapGate::get_instance().reconstruct() ;
-            std::cout << "4\n" ;
         }
 
         void update_mainloop() {

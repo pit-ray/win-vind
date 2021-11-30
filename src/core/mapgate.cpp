@@ -135,7 +135,6 @@ namespace vind
         }
 
         void MapGate::reconstruct() {
-            std::cout << "Start reconstruction...\n" ;
             ModeArray<std::vector<LoggerParser::SPtr>> parsers_table ;
 
             ModeArray<std::unordered_map<std::size_t, Command>> remap_triggers_table ;
@@ -192,7 +191,6 @@ namespace vind
 
                 remap_solver_table[i] = LoggerParserManager(remap_parsers_table[i]) ;
             }
-            std::cout << "UniqueMap is loaded...\n" ;
 
             // Solve recursive mapping in MapHookReproduce and syncmap.
             for(std::size_t i = 0 ; i < mode_num() ; i ++) {
@@ -276,7 +274,6 @@ namespace vind
                         remap_parsers.end()) ;
                 pimpl->mgr_table_[i] = LoggerParserManager(parsers) ;
 
-                std::cout << "the remapping of MapHookReproduce is solved.\n" ;
 
                 // Solve recursive synchronous mapping.
                 auto& syncmap = pimpl->syncmap_table_[i] ;
@@ -297,29 +294,27 @@ namespace vind
                         }
 
                         SyncKeySet mapped {} ;
-                        for(auto key : dst) {
-                            auto buf = syncmap[key] ;
-
-                            if(buf.empty()) {
-                                mapped.insert(key) ;
-                            }
-                            else {
+                        for(auto itr = dst.begin() ; itr != dst.end() ;) {
+                            auto buf = syncmap[*itr] ;
+                            if(!buf.empty()) {
+                                itr = dst.erase(itr) ;
                                 mapped.merge(buf) ;
                             }
+                            else {
+                                itr ++ ;
+                            }
                         }
+
                         if(mapped.empty()) {
                             break ;
                         }
 
-                        dst = std::move(mapped) ;
+                        dst.merge(mapped) ;
                     }
 
                     syncmap[j] = std::move(dst) ;
                 }
-
-                std::cout << "SyncMap is solved.\n" ;
             }
-            std::cout << "done.\n" ;
         }
 
         const NTypeLogger& MapGate::map_logger(const NTypeLogger& lgr, Mode mode) {

@@ -98,15 +98,15 @@ namespace
     using Key2KeysetMap = std::array<KeyUnorderedSet, 256> ;
 
     void solve_recursive_key2keyset_mapping(Key2KeysetMap& key2keyset_table) {
-        for(KeyCode j = 1 ; j < 255 ; j ++) {
-            auto dst = key2keyset_table[j] ;
+        for(KeyCode srckey = 1 ; srckey < 255 ; srckey ++) {
+            auto dst = key2keyset_table[srckey] ;
             if(dst.empty()) {
                 continue ;
             }
 
             while(true) {
                 // Check mappings that refer to itself
-                if(dst.find(j) != dst.end()) {
+                if(dst.find(srckey) != dst.end()) {
                     dst.clear() ;
                     break ;
                 }
@@ -130,7 +130,7 @@ namespace
                 dst.merge(mapped) ;
             }
 
-            key2keyset_table[j] = std::move(dst) ;
+            key2keyset_table[srckey] = std::move(dst) ;
         }
     }
 

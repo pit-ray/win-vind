@@ -246,6 +246,16 @@ namespace vind
                 return s ;
             }
 
+            if(auto ascii = get_ascii(keycode)) {
+                char s[] = {ascii, '\0'} ;
+                return s ;
+            }
+
+            if(auto ascii = get_shifted_ascii(keycode)) {
+                char s[] = {ascii, '\0'} ;
+                return s ;
+            }
+
             for(const auto& sk : g_sys_keycode) {
                 if(sk.second == keycode) return sk.first ;
             }

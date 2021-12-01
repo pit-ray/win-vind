@@ -30,37 +30,18 @@ include_directories(
 )
 add_library(doctest STATIC doctest.cpp)
 
-file(GLOB NORMAL_TEST_CODES LIST_DIRECTORIES false ${CMAKE_CURRENT_SOURCE_DIR}/normal/*.cpp)
-add_executable(normal-test ${NORMAL_TEST_CODES})
-target_link_libraries(normal-test doctest)
-add_test(
-    NAME normal-test
-    COMMAND $<TARGET_FILE:normal-test>
-    WORKING_DIRECTORY ${ROOT_DIR}
-)
+function(AddTest TEST_NAME)
+        add_executable(${TEST_NAME} ${ARGN})
+    target_link_libraries(${TEST_NAME} doctest)
+    add_test(
+        NAME ${TEST_NAME}
+        COMMAND $<TARGET_FILE:${TEST_NAME}>
+        WORKING_DIRECTORY ${ROOT_DIR}
+    )
+endfunction()
 
-add_executable(mock-string-test ${CMAKE_CURRENT_SOURCE_DIR}/mock/string_test.cpp)
-target_link_libraries(mock-string-test doctest)
-add_test(
-    NAME mock-string-test
-    COMMAND $<TARGET_FILE:mock-string-test>
-    WORKING_DIRECTORY ${ROOT_DIR}
-)
-
-add_executable(mock-winwrap-test ${CMAKE_CURRENT_SOURCE_DIR}/mock/winwrap_test.cpp)
-target_link_libraries(mock-winwrap-test doctest)
-add_test(
-    NAME mock-winwrap-test
-    COMMAND $<TARGET_FILE:mock-winwrap-test>
-    WORKING_DIRECTORY ${ROOT_DIR}
-)
-
-add_executable(mock-err-logger-test ${CMAKE_CURRENT_SOURCE_DIR}/mock/err_logger_test.cpp)
-target_link_libraries(mock-err-logger-test doctest)
-add_test(
-    NAME mock-err-logger-test
-    COMMAND $<TARGET_FILE:mock-err-logger-test>
-    WORKING_DIRECTORY ${ROOT_DIR}
-)
+add_subdirectory(normal)
+add_subdirectory(mock)
+add_subdirectory(each)
 
 set(CMAKE_CTEST_ARGUMENTS "${CMAKE_CTEST_ARGUMENTS} --verbose --no-label-summary --parallel ${PROC_N}")

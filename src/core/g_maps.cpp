@@ -32,16 +32,14 @@ namespace
 
     template <typename T>
     bool is_func_name(T&& name) {
-        static const auto& func_list = bind::all_global_binded_funcs() ;
-
         auto id = bind::BindedFunc::name_to_id(std::forward<T>(name)) ;
-        for(const auto& f : func_list) {
+        for(const auto& f : bind::all_global_binded_funcs()) {
             if(id == f->id()) return true ;
         }
         return false ;
     }
 
-    using MapModeList = ModeArray<std::unordered_map<std::size_t, core::UniqueMap>> ;
+    using MapModeList = ModeArray<std::unordered_map<std::size_t, core::MapCell>> ;
     MapModeList g_mode_maps{} ;
 
     using namespace nlohmann ;
@@ -53,7 +51,7 @@ namespace vind
 {
     namespace core
     {
-        struct UniqueMap::Impl {
+        struct MapCell::Impl {
             std::string instr_ ;
             Command in_ ;
             std::size_t in_hash_ ;
@@ -89,11 +87,11 @@ namespace vind
             {}
         } ;
 
-        UniqueMap::UniqueMap()
+        MapCell::MapCell()
         : pimpl(std::make_shared<Impl>())
         {}
 
-        UniqueMap::UniqueMap(
+        MapCell::MapCell(
                 const std::string& in,
                 const std::string& out,
                 MapType expect_type,
@@ -120,39 +118,39 @@ namespace vind
             }
         }
 
-        bool UniqueMap::is_noremap_function() const noexcept {
+        bool MapCell::is_noremap_function() const noexcept {
             return pimpl->type_ == MapType::NOREMAP_FUNCTION ;
         }
 
-        bool UniqueMap::is_noremap() const noexcept {
+        bool MapCell::is_noremap() const noexcept {
             return pimpl->type_ == MapType::NOREMAP ;
         }
 
-        bool UniqueMap::is_map() const noexcept {
+        bool MapCell::is_map() const noexcept {
             return pimpl->type_ == MapType::MAP ;
         }
 
-        const Command& UniqueMap::trigger_command() const noexcept {
+        const Command& MapCell::trigger_command() const noexcept {
             return pimpl->in_ ;
         }
 
-        const std::string& UniqueMap::trigger_command_string() const noexcept {
+        const std::string& MapCell::trigger_command_string() const noexcept {
             return pimpl->instr_ ;
         }
 
-        const Command& UniqueMap::target_command() const {
+        const Command& MapCell::target_command() const {
             return pimpl->out_ ;
         }
 
-        const std::string& UniqueMap::target_command_string() const noexcept {
+        const std::string& MapCell::target_command_string() const noexcept {
             return pimpl->outstr_ ;
         }
 
-        bool UniqueMap::empty() const noexcept {
+        bool MapCell::empty() const noexcept {
             return pimpl->in_.empty() || pimpl->outstr_.empty() ;
         }
 
-        std::size_t UniqueMap::out_hash() const {
+        std::size_t MapCell::out_hash() const {
             if(pimpl->out_hash_ == 0) {
                 if(is_noremap_function()) {
                     pimpl->out_hash_ = compute_hash(pimpl->outstr_) ;
@@ -164,18 +162,18 @@ namespace vind
             return pimpl->out_hash_ ;
         }
 
-        std::size_t UniqueMap::in_hash() const {
+        std::size_t MapCell::in_hash() const {
             if(pimpl->in_hash_ == 0) {
                 pimpl->in_hash_ = compute_hash(pimpl->in_) ;
             }
             return pimpl->in_hash_ ;
         }
 
-        std::size_t UniqueMap::compute_hash(const std::string& strcmd) {
+        std::size_t MapCell::compute_hash(const std::string& strcmd) {
             return compute_hash(parse_string_binding(strcmd)) ;
         }
 
-        std::size_t UniqueMap::compute_hash(const Command& cmd) {
+        std::size_t MapCell::compute_hash(const Command& cmd) {
             std::string strcmd{} ;
             for(auto& set : cmd) {
                 for(auto& key : set) {
@@ -185,19 +183,19 @@ namespace vind
             return std::hash<std::string>()(std::move(strcmd)) ;
         }
 
-        bool UniqueMap::operator==(UniqueMap&& rhs) const {
+        bool MapCell::operator==(MapCell&& rhs) const {
             return in_hash() == rhs.in_hash() && out_hash() == rhs.out_hash() ;
         }
 
-        bool UniqueMap::operator==(const UniqueMap& rhs) const {
+        bool MapCell::operator==(const MapCell& rhs) const {
             return in_hash() == rhs.in_hash() && out_hash() == rhs.out_hash() ;
         }
 
-        bool UniqueMap::operator!=(UniqueMap&& rhs) const {
+        bool MapCell::operator!=(MapCell&& rhs) const {
             return in_hash() != rhs.in_hash() || out_hash() != rhs.out_hash() ;
         }
 
-        bool UniqueMap::operator!=(const UniqueMap& rhs) const {
+        bool MapCell::operator!=(const MapCell& rhs) const {
             return in_hash() != rhs.in_hash() || out_hash() != rhs.out_hash() ;
         }
 
@@ -269,7 +267,7 @@ namespace vind
                             if(strcmd.empty()) {
                                 continue ;
                             }
-                            UniqueMap map(strcmd, name, MapType::NOREMAP_FUNCTION, false) ;
+                            MapCell map(strcmd, name, MapType::NOREMAP_FUNCTION, false) ;
                             maps[map.in_hash()] = std::move(map) ;
                         }
                     }
@@ -299,7 +297,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Empty maps") ;
             }
 
-            UniqueMap map(incmd, outcmd, MapType::MAP, false) ;
+            MapCell map(incmd, outcmd, MapType::MAP, false) ;
             // Overwrite map anyway
             g_mode_maps[static_cast<int>(mode)][map.in_hash()] = std::move(map) ;
         }
@@ -312,7 +310,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Empty maps") ;
             }
 
-            UniqueMap map(incmd, outcmd, MapType::NOREMAP, true) ;
+            MapCell map(incmd, outcmd, MapType::NOREMAP, true) ;
 
             if(map.is_noremap_function()) {
                 // Overwrite if function-name or empty
@@ -339,7 +337,7 @@ namespace vind
             if(incmd.empty()) {
                 throw RUNTIME_EXCEPT("Empty map") ;
             }
-            auto hash = UniqueMap::compute_hash(incmd) ;
+            auto hash = MapCell::compute_hash(incmd) ;
 
             g_mode_maps[static_cast<int>(mode)].erase(hash) ;
         }
@@ -348,16 +346,16 @@ namespace vind
             g_mode_maps[static_cast<int>(mode)].clear() ;
         }
 
-        UniqueMap get_map(
+        MapCell get_map(
                 const std::string& cmd,
                 Mode mode) {
-            auto hash = UniqueMap::compute_hash(cmd) ;
+            auto hash = MapCell::compute_hash(cmd) ;
             return g_mode_maps[static_cast<int>(mode)].at(hash) ;
         }
 
         void get_maps(
                 Mode mode,
-                std::vector<UniqueMap>& returns) {
+                std::vector<MapCell>& returns) {
             if(!returns.empty()) {
                 returns.clear() ;
             }

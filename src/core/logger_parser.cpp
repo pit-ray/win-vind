@@ -25,28 +25,6 @@
 
 namespace
 {
-    using ParserStateRawType = std::uint32_t ;
-    enum ParserState : ParserStateRawType {
-        //State
-        WAITING             = 0b0000'0001'0000'0000,
-        WAITING_IN_NUM      = 0b0000'1001'0000'0000,
-        REJECT              = 0b0000'0010'0000'0000,
-        REJECT_WITH_SUBSET  = 0b0000'1010'0000'0000,
-        ACCEPT_IN_NUM       = 0b0000'0100'0000'0000,
-        ACCEPT              = 0b0000'1100'0000'0000,
-        ACCEPT_IN_ANY       = 0b0001'0100'0000'0000,
-
-        //Masks
-        STATE_MASK      = 0x7f00,
-        WAITING_MASK    = 0x0100,
-        REJECT_MASK     = 0x0200,
-        ACCEPT_MASK     = 0x0400,
-        KEYSET_NUM_MASK = 0x00ff,
-
-        //Option flags
-        INCLEMENT_CMDIDX= 0x8000,
-    } ;
-
     using namespace vind ;
 
     inline bool is_containing_num(const core::KeyLog& log) noexcept {
@@ -66,27 +44,6 @@ namespace
         }
         return false ;
     }
-
-
-    inline bool was_cmd_index_incremented(ParserState previdous_state) noexcept {
-        return previdous_state == ParserState::WAITING ;
-    }
-
-    using LogStatusRawType = std::uint32_t ;
-    enum LogStatus : LogStatusRawType {
-        //Status
-        ALL_FALSE        = 0b0000'0000'0000'0000,
-        HAS_KEYSUBSET    = 0b0000'0001'0000'0000,
-        ACCEPTED         = 0b0000'0010'0000'0000,
-        HAS_KEYSET       = 0b0000'0100'0000'0000,
-        ACCEPTED_OPTNUM  = 0b0000'1000'0000'0000,
-        WAITING_OPTNUM   = 0b0001'0000'0000'0000,
-        ACCEPTED_ANY     = 0b0010'0000'0000'0000,
-
-        //Masks
-        STATUS_MASK      = 0xff00,
-        MATCHED_NUM_MASK = 0x00ff,
-    } ;
 }
 
 
@@ -94,9 +51,48 @@ namespace vind
 {
     namespace core
     {
-        using StateHistory = std::stack<ParserStateRawType, std::vector<ParserStateRawType>> ;
-
         struct LoggerParser::Impl {
+            using ParserStateRawType = std::uint32_t ;
+            enum ParserState : ParserStateRawType {
+                //State
+                WAITING             = 0b0000'0001'0000'0000,
+                WAITING_IN_NUM      = 0b0000'1001'0000'0000,
+                REJECT              = 0b0000'0010'0000'0000,
+                REJECT_WITH_SUBSET  = 0b0000'1010'0000'0000,
+                ACCEPT_IN_NUM       = 0b0000'0100'0000'0000,
+                ACCEPT              = 0b0000'1100'0000'0000,
+                ACCEPT_IN_ANY       = 0b0001'0100'0000'0000,
+
+                //Masks
+                STATE_MASK      = 0x7f00,
+                WAITING_MASK    = 0x0100,
+                REJECT_MASK     = 0x0200,
+                ACCEPT_MASK     = 0x0400,
+                KEYSET_NUM_MASK = 0x00ff,
+
+                //Option flags
+                INCLEMENT_CMDIDX= 0x8000,
+            } ;
+
+
+            using LogStatusRawType = std::uint32_t ;
+            enum LogStatus : LogStatusRawType {
+                //Status
+                ALL_FALSE        = 0b0000'0000'0000'0000,
+                HAS_KEYSUBSET    = 0b0000'0001'0000'0000,
+                ACCEPTED         = 0b0000'0010'0000'0000,
+                HAS_KEYSET       = 0b0000'0100'0000'0000,
+                ACCEPTED_OPTNUM  = 0b0000'1000'0000'0000,
+                WAITING_OPTNUM   = 0b0001'0000'0000'0000,
+                ACCEPTED_ANY     = 0b0010'0000'0000'0000,
+
+                //Masks
+                STATUS_MASK      = 0xff00,
+                MATCHED_NUM_MASK = 0x00ff,
+            } ;
+
+            using StateHistory = std::stack<ParserStateRawType, std::vector<ParserStateRawType>> ;
+
             std::shared_ptr<bind::BindedFunc> func_ ;
             std::shared_ptr<CommandList> cmdlist_ptr_ ;
             StateHistory state_hist_ ;
@@ -430,26 +426,26 @@ namespace vind
                 return pimpl->do_waiting(log) ;
             }
 
-            switch(pimpl->state_hist_.top() & ParserState::STATE_MASK) {
-                case ParserState::WAITING:
+            switch(pimpl->state_hist_.top() & Impl::ParserState::STATE_MASK) {
+                case Impl::ParserState::WAITING:
                     return pimpl->do_waiting(log) ;
 
-                case ParserState::WAITING_IN_NUM:
+                case Impl::ParserState::WAITING_IN_NUM:
                     return pimpl->do_waiting_in_num(log) ;
 
-                case ParserState::REJECT:
+                case Impl::ParserState::REJECT:
                     return pimpl->do_reject(log) ;
 
-                case ParserState::REJECT_WITH_SUBSET:
+                case Impl::ParserState::REJECT_WITH_SUBSET:
                     return pimpl->do_reject_with_keysubset(log) ;
 
-                case ParserState::ACCEPT_IN_NUM:
+                case Impl::ParserState::ACCEPT_IN_NUM:
                     return pimpl->do_accept_in_num(log) ;
 
-                case ParserState::ACCEPT:
+                case Impl::ParserState::ACCEPT:
                     return pimpl->do_accept(log) ;
 
-                case ParserState::ACCEPT_IN_ANY:
+                case Impl::ParserState::ACCEPT_IN_ANY:
                     return pimpl->do_accept_in_any(log) ;
 
                 default:
@@ -458,7 +454,7 @@ namespace vind
         }
 
         void LoggerParser::reset_state() noexcept {
-            StateHistory().swap(pimpl->state_hist_) ;
+            Impl::StateHistory().swap(pimpl->state_hist_) ;
             pimpl->cmdidx_ = 0 ;
         }
 
@@ -471,7 +467,7 @@ namespace vind
             decltype(n) removed = 0 ;
             while(!pimpl->state_hist_.empty()) {
 
-                if(pimpl->state_hist_.top() & ParserState::INCLEMENT_CMDIDX) {
+                if(pimpl->state_hist_.top() & Impl::ParserState::INCLEMENT_CMDIDX) {
                     if(pimpl->cmdidx_ == 0) {
                         throw LOGIC_EXCEPT("cmdidx is decremented over.") ;
                     }
@@ -487,21 +483,21 @@ namespace vind
 
         bool LoggerParser::is_accepted() const noexcept {
             if(pimpl->state_hist_.empty()) return false ;
-            return pimpl->state_hist_.top() & ParserState::ACCEPT_MASK ;
+            return pimpl->state_hist_.top() & Impl::ParserState::ACCEPT_MASK ;
         }
 
         bool LoggerParser::is_rejected() const noexcept {
             if(pimpl->state_hist_.empty()) return false ;
-            return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT ;
+            return (pimpl->state_hist_.top() & Impl::ParserState::STATE_MASK) == Impl::ParserState::REJECT ;
         }
         bool LoggerParser::is_rejected_with_ready() const noexcept {
             if(pimpl->state_hist_.empty()) return false ;
-            return (pimpl->state_hist_.top() & ParserState::STATE_MASK) == ParserState::REJECT_WITH_SUBSET ;
+            return (pimpl->state_hist_.top() & Impl::ParserState::STATE_MASK) == Impl::ParserState::REJECT_WITH_SUBSET ;
         }
 
         bool LoggerParser::is_waiting() const noexcept {
             if(pimpl->state_hist_.empty()) return true ;
-            return pimpl->state_hist_.top() & ParserState::WAITING_MASK ;
+            return pimpl->state_hist_.top() & Impl::ParserState::WAITING_MASK ;
         }
 
         std::size_t LoggerParser::state_stack_size() const noexcept {

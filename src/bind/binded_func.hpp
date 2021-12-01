@@ -23,9 +23,9 @@ namespace vind
 
             virtual void error_process(const std::exception& e) const ;
 
-            virtual void do_process() const = 0 ;
-            virtual void do_process(core::NTypeLogger& parent_lgr) const = 0 ;
-            virtual void do_process(const core::CharLogger& parent_lgr) const = 0 ;
+            virtual void do_process() const ;
+            virtual void do_process(core::NTypeLogger& parent_lgr) const ;
+            virtual void do_process(const core::CharLogger& parent_lgr) const ;
 
         public:
             using SPtr = std::shared_ptr<BindedFunc> ;

@@ -95,7 +95,7 @@ namespace vind
             for(size_t i = 0 ; i < mode_num() ; i ++) {
                 auto& funcmap = parsed_bdtable[i] ;
 
-                std::vector<UniqueMap> maps{} ;
+                std::vector<MapCell> maps{} ;
                 get_maps(static_cast<Mode>(i), maps) ;
 
                 for(const auto& map : maps) {

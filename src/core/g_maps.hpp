@@ -16,14 +16,14 @@ namespace vind
             NOREMAP_FUNCTION    = 0b0010'0001,
         } ;
 
-        class UniqueMap {
+        class MapCell {
         private:
             struct Impl ;
             std::shared_ptr<Impl> pimpl ;
 
         public:
-            explicit UniqueMap() ;
-            explicit UniqueMap(
+            MapCell() ;
+            explicit MapCell(
                     const std::string& in,
                     const std::string& out,
                     MapType expect_type,
@@ -46,11 +46,11 @@ namespace vind
             static std::size_t compute_hash(const std::string& strcmd) ;
             static std::size_t compute_hash(const Command& cmd) ;
 
-            bool operator==(UniqueMap&& rhs) const ;
-            bool operator==(const UniqueMap& rhs) const ;
+            bool operator==(MapCell&& rhs) const ;
+            bool operator==(const MapCell& rhs) const ;
 
-            bool operator!=(UniqueMap&& rhs) const ;
-            bool operator!=(const UniqueMap& rhs) const ;
+            bool operator!=(MapCell&& rhs) const ;
+            bool operator!=(const MapCell& rhs) const ;
         } ;
 
 
@@ -73,13 +73,13 @@ namespace vind
 
         void do_mapclear(Mode mode) ;
 
-        UniqueMap get_map(
+        MapCell get_map(
                 const std::string& cmd,
                 Mode mode) ;
 
         void get_maps(
                 Mode mode,
-                std::vector<UniqueMap>& returns) ;
+                std::vector<MapCell>& returns) ;
     }
 }
 

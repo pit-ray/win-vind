@@ -46,7 +46,7 @@ namespace vind
             ModeKeySetMaps().swap(g_modemaps) ;
             ModeKeyCodeMap().swap(g_keycodemap) ;
 
-            std::vector<UniqueMap> maps ;
+            std::vector<MapCell> maps ;
 
             for(std::size_t i = 0 ; i < mode_num() ; i ++) {
                 maps.clear() ;

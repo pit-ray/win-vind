@@ -18,19 +18,6 @@ namespace
 {
     using namespace vind ;
 
-    using LoggerStateRawType = unsigned char ;
-
-    enum LoggerState : LoggerStateRawType{
-        INITIAL         = 0b0000'0001,
-        INITIAL_WAITING = 0b0000'0010,
-        WAITING         = 0b0000'0100,
-        ACCEPTED        = 0b0000'1000,
-        PARSING_NUM     = 0b0001'0000,
-
-        STATE_MASK      = 0b0001'1111,
-        LONG_PRESSING   = 0b1000'0000,
-    } ;
-
     template <typename KeyLogType>
     core::KeyLog extract_numbers(const core::KeyLog& log, KeyLogType&& ignore_keys) {
         auto to_ascii_func = [&log] (auto&& keycode) {
@@ -65,6 +52,19 @@ namespace vind
     namespace core
     {
         struct NTypeLogger::Impl {
+            using LoggerStateRawType = unsigned char ;
+
+            enum LoggerState : LoggerStateRawType{
+                INITIAL         = 0b0000'0001,
+                INITIAL_WAITING = 0b0000'0010,
+                WAITING         = 0b0000'0100,
+                ACCEPTED        = 0b0000'1000,
+                PARSING_NUM     = 0b0001'0000,
+
+                STATE_MASK      = 0b0001'1111,
+                LONG_PRESSING   = 0b1000'0000,
+            } ;
+
             KeyLog prelog_{} ;
             KeyLog prelog_without_headnum_{} ;
 
@@ -107,7 +107,7 @@ namespace vind
         int NTypeLogger::transition_to_parsing_num_state(const KeyLog& num_only_log) {
             pimpl->ksr_.reset() ;
             pimpl->head_num_ = to_number<decltype(pimpl->head_num_)>(*num_only_log.cbegin()) ;
-            pimpl->state_ = LoggerState::PARSING_NUM ;
+            pimpl->state_ = Impl::LoggerState::PARSING_NUM ;
             return -1 ;
         }
 
@@ -124,13 +124,13 @@ namespace vind
             }
 
             logging(log) ;
-            pimpl->state_ = LoggerState::WAITING ;
+            pimpl->state_ = Impl::LoggerState::WAITING ;
             return static_cast<int>(log.size()) ;
         }
 
         int NTypeLogger::do_initial_waiting_state(const KeyLog& log) {
             if(log.empty()) {
-                pimpl->state_ = LoggerState::INITIAL ;
+                pimpl->state_ = Impl::LoggerState::INITIAL ;
                 return 0 ;
             }
 
@@ -141,7 +141,7 @@ namespace vind
             }
 
             logging(nonum) ;
-            pimpl->state_ = LoggerState::WAITING ;
+            pimpl->state_ = Impl::LoggerState::WAITING ;
             return static_cast<int>(nonum.size()) ;
         }
 
@@ -162,11 +162,11 @@ namespace vind
 
             if(latest() != log) {
                 clear() ;
-                pimpl->state_ = LoggerState::INITIAL_WAITING ;
+                pimpl->state_ = Impl::LoggerState::INITIAL_WAITING ;
                 return do_initial_waiting_state(log) ; //Epsilon Transition
             }
 
-            pimpl->state_ |= LoggerState::LONG_PRESSING ;
+            pimpl->state_ |= Impl::LoggerState::LONG_PRESSING ;
             return static_cast<int>(log.size()) ;
         }
 
@@ -177,7 +177,7 @@ namespace vind
 
             auto nums = extract_numbers(log, KeyLog{}) ;
             if(nums.size() != log.size()) {
-                pimpl->state_ = LoggerState::WAITING ;
+                pimpl->state_ = Impl::LoggerState::WAITING ;
                 return do_waiting_state(log - nums) ;
             }
 
@@ -196,27 +196,25 @@ namespace vind
         }
 
         int NTypeLogger::logging_state(KeyLog log) {
-            log = do_keycode_noremap(log) ;
-
             int result ;
-            switch(pimpl->state_ & LoggerState::STATE_MASK) {
-                case LoggerState::INITIAL:
+            switch(pimpl->state_ & Impl::LoggerState::STATE_MASK) {
+                case Impl::LoggerState::INITIAL:
                     result = do_initial_state(log) ;
                     break ;
 
-                case LoggerState::INITIAL_WAITING:
+                case Impl::LoggerState::INITIAL_WAITING:
                     result = do_initial_waiting_state(log) ;
                     break ;
 
-                case LoggerState::WAITING:
+                case Impl::LoggerState::WAITING:
                     result = do_waiting_state(log) ;
                     break ;
 
-                case LoggerState::ACCEPTED:
+                case Impl::LoggerState::ACCEPTED:
                     result = do_accepted_state(log) ;
                     break ;
 
-                case LoggerState::PARSING_NUM:
+                case Impl::LoggerState::PARSING_NUM:
                     result = do_parsing_num_state(log) ;
                     break ;
 
@@ -246,7 +244,7 @@ namespace vind
         }
 
         bool NTypeLogger::is_long_pressing() const noexcept {
-            return pimpl->state_ & LoggerState::LONG_PRESSING ;
+            return pimpl->state_ & Impl::LoggerState::LONG_PRESSING ;
         }
 
         void NTypeLogger::reject() noexcept {
@@ -255,12 +253,12 @@ namespace vind
 
         void NTypeLogger::clear() noexcept {
             pimpl->head_num_ =  0 ;
-            pimpl->state_ = LoggerState::INITIAL ;
+            pimpl->state_ = Impl::LoggerState::INITIAL ;
             KeyLoggerBase::clear() ;
         }
 
         void NTypeLogger::accept() noexcept {
-            pimpl->state_ = LoggerState::ACCEPTED ;
+            pimpl->state_ = Impl::LoggerState::ACCEPTED ;
         }
     }
 }

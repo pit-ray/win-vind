@@ -26,35 +26,47 @@ namespace vind
                     static_cast<std::size_t>(rhs) & static_cast<std::size_t>(lhs)) ;
         }
 
+        template <typename ReturnType, typename T>
+        inline ReturnType enum_and(T rhs, T lhs) noexcept {
+            return static_cast<ReturnType>(
+                    static_cast<std::size_t>(rhs) & static_cast<std::size_t>(lhs)) ;
+        }
+
         template <typename T>
-        inline T enum_and(std::size_t rhs, T lhs) noexcept {
+        inline auto enum_and(std::size_t rhs, T lhs) noexcept {
             return static_cast<T>(
                     rhs & static_cast<std::size_t>(lhs)) ;
         }
 
         template <typename T>
-        inline T enum_and(T rhs, std::size_t lhs) noexcept {
+        inline auto enum_and(T rhs, std::size_t lhs) noexcept {
             return static_cast<T>(
                     static_cast<std::size_t>(rhs) & lhs) ;
         }
 
 
         template <typename T>
-        inline T enum_or(T rhs, T lhs) noexcept {
+        inline auto enum_or(T rhs, T lhs) noexcept {
             return static_cast<T>(
                     static_cast<std::size_t>(rhs) | static_cast<std::size_t>(lhs)) ;
         }
 
         template <typename T>
-        inline T enum_or(std::size_t rhs, T lhs) noexcept {
+        inline auto enum_or(std::size_t rhs, T lhs) noexcept {
             return static_cast<T>(
                     rhs | static_cast<std::size_t>(lhs)) ;
         }
 
         template <typename T>
-        inline T enum_or(T rhs, std::size_t lhs) noexcept {
+        inline auto enum_or(T rhs, std::size_t lhs) noexcept {
             return static_cast<T>(
                     static_cast<std::size_t>(rhs) | lhs) ;
+        }
+
+        template <typename ReturnType, typename T>
+        inline auto enum_or(T rhs, T lhs) noexcept {
+            return static_cast<ReturnType>(
+                    static_cast<std::size_t>(rhs) | static_cast<std::size_t>(lhs)) ;
         }
 
         template <typename T>

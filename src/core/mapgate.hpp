@@ -5,6 +5,7 @@
 #include "mode.hpp"
 
 #include <memory>
+#include <queue>
 
 
 namespace vind
@@ -12,6 +13,7 @@ namespace vind
     namespace core
     {
         class NTypeLogger ;
+        class KeyLog ;
 
         class MapGate {
         private:
@@ -29,15 +31,15 @@ namespace vind
 
             //
             // map_logger is a mapping from NTypeLogger to NTypeLogger.
-            // What it means is that it is excited by a command,
-            // and returns the NTypeLogger generated in the state which
+            // What it means is that it is excited by a command, and return the log pool.
             // it would have been in if the corresponding command had been entered.
             //
             // In the case of noremap, the key message is not actually generated,
             // but in the case of map, the key message is generated in a state that is passed to Windows.
             //
             //
-            const NTypeLogger& map_logger(
+            using KeyLogPool = std::queue<KeyLog> ;
+            KeyLogPool map_logger(
                     const NTypeLogger& lgr,
                     Mode mode=get_global_mode()) ;
 

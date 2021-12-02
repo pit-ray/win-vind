@@ -30,6 +30,7 @@ namespace vind
         void absorb() noexcept ;
         void unabsorb() noexcept ;
 
+        void close_port(KeyCode key) noexcept ;
         void close_all_ports() noexcept ;
         void close_all_ports_with_refresh() ;
 

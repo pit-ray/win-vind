@@ -52,6 +52,7 @@ namespace vind
             virtual void logging(KeyLog::Data&& lograw) ;
 
             void remove_from_back(std::size_t num_from_back) ;
+            void remove_from_top(std::size_t num_from_top) ;
 
             Data::const_reference at(std::size_t n) const ;
 
@@ -62,7 +63,8 @@ namespace vind
         } ;
 
 #ifdef DEBUG
-        std::string print_log(const KeyLoggerBase& lgr) ;
+        std::string print(const KeyLog& lgr) ;
+        std::string print(const KeyLoggerBase& lgr) ;
 #endif
     }
 }

@@ -24,8 +24,8 @@ namespace vind
             explicit KeyLog(Data&& codes) ;
             explicit KeyLog(std::initializer_list<KeyCode>&& codes) ;
 
-            template <typename Iterator>
-            explicit KeyLog(Iterator begin, Iterator end)
+            template <typename InputIterator>
+            explicit KeyLog(InputIterator begin, InputIterator end)
             : KeyLog(Data(begin, end))
             {}
 

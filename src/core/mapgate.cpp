@@ -31,14 +31,6 @@ namespace
     using namespace vind::core ;
 
     class MapHook : public bind::BindedFunc {
-    private:
-        void do_process() const override {
-        }
-        void do_process(NTypeLogger&) const override {
-        }
-        void do_process(const CharLogger&) const override {
-        }
-
     public:
         template <typename IDString>
         explicit MapHook(IDString&& id)
@@ -64,9 +56,9 @@ namespace
                 util::pushup(keyset.cbegin(), keyset.cend()) ;
             }
         }
-        void do_process(NTypeLogger&) const override {
+        void do_process(core::NTypeLogger&) const override {
         }
-        void do_process(const CharLogger&) const override {
+        void do_process(const core::CharLogger&) const override {
         }
 
     public:
@@ -88,8 +80,15 @@ namespace
 
     NTypeLogger generate_stated_logger(const Command& cmd) {
         NTypeLogger lgr ;
+        KeyLog empty_log{} ;
         for(auto& keyset : cmd) {
+            //
+            // To simulate the input, make a state transition with an empty log.
+            // This is to make the logger recognize that it is a key release,
+            // not a long pressing of the key.
+            //
             lgr.logging_state(KeyLog(keyset.cbegin(), keyset.cend())) ;
+            lgr.logging_state(empty_log) ;
         }
         return lgr ;
     }
@@ -97,6 +96,12 @@ namespace
     using KeyUnorderedSet = std::unordered_set<KeyCode> ;
     using Key2KeysetMap = std::array<KeyUnorderedSet, 256> ;
 
+    /**
+     *
+     * It solves recursive mappings in key2keyset to a single mapping.
+     * If a map is mapping to itself recursively, it will remove the map.
+     *
+     */
     void solve_recursive_key2keyset_mapping(Key2KeysetMap& key2keyset_table) {
         for(KeyCode srckey = 1 ; srckey < 255 ; srckey ++) {
             auto dst = key2keyset_table[srckey] ;
@@ -134,11 +139,16 @@ namespace
         }
     }
 
+    /*
+     *
+     * Apply the key2keyset mapping to a command.
+     *
+     */
     Command replace_command_with_key2keyset(
-            const Command& src,
-            const std::array<KeyUnorderedSet, 256>& key2keyset_table) {
+            const Command& srccmd,
+            const Key2KeysetMap& key2keyset_table) {
         Command replaced_cmd{} ;
-        for(const auto& keyset : src) {
+        for(const auto& keyset : srccmd) {
             KeySet replaced_set{} ;
             for(const auto& key : keyset) {
                 auto& mapset = key2keyset_table[key] ;
@@ -159,22 +169,28 @@ namespace
         return replaced_cmd ;
     }
 
+    /**
+     * It solves recursive mappings with the table of maps.
+     *
+     * @param[in] (map_table) MapCell unordered_map with MapCell::in_hash() as the key.
+     * @param[in] (key2keyset_table) If you want to apply key2keyset mapping, specify this. Empty mappings will be ignored.
+     * @return std::unordered_map<std::size_t, Command> Returns the solved map corresponding to the key of the map passed as the first argument.
+     */
     std::unordered_map<std::size_t, Command>
     solve_recursive_cmd2cmd_mapping(
             const std::unordered_map<std::size_t, MapCell>& map_table,
-            const std::array<KeyUnorderedSet, 256>& key2keyset_table) {
+            const Key2KeysetMap& key2keyset_table) {
 
         std::unordered_map<std::size_t, NTypeLogger> loggers{} ;
         std::unordered_map<std::size_t, Command> target_cmds{} ;
         std::unordered_map<std::size_t, std::size_t> id_func2map{} ;
 
-        LoggerParserManager solver{} ;
         std::vector<LoggerParser::SPtr> parsers{} ;
 
         // Setup LoggerParserManager for matching
         for(const auto& [mapid, map] : map_table) {
             auto func = std::make_shared<bind::BindedFunc>(
-                    map.trigger_command_string()) ;
+                    "map{" + map.trigger_command_string() + "}") ;
             auto funcid = func->id() ;
 
             id_func2map[funcid] = mapid ;
@@ -187,6 +203,8 @@ namespace
             parsers.push_back(std::move(parser)) ;
         }
 
+        LoggerParserManager solver{parsers} ;
+
         for(auto parser_itr = parsers.begin() ; parser_itr != parsers.end() ;) {
             auto func = (*parser_itr)->get_func() ;
 
@@ -198,12 +216,22 @@ namespace
 
                 bind::BindedFunc::SPtr matched = nullptr ;
                 std::size_t matched_idx = 0 ;
+
                 for(auto logitr = lgr.cbegin() ; logitr != lgr.cend() ; logitr ++) {
                     auto buf = solver.find_parser_with_transition(*logitr) ;
+
                     if(buf) {
-                        matched = buf->get_func() ;
-                        matched_idx = static_cast<std::size_t>(logitr - lgr.cbegin()) ;
-                        break ;
+                        if(buf->is_accepted()) {
+                            matched = buf->get_func() ;
+                            matched_idx = static_cast<std::size_t>(logitr - lgr.cbegin()) ;
+                            break ;
+                        }
+                        else if(!buf->is_waiting()) {
+                            solver.reset_parser_states() ;
+                        }
+                    }
+                    else {
+                        solver.reset_parser_states() ;
                     }
                 }
 
@@ -220,32 +248,42 @@ namespace
 
                 auto& i_outcmd = target_cmds[func->id()] ;
                 const auto& m_incmd = map_table.at(id_func2map[matched->id()]).trigger_command() ;
-                auto& m_outcmd = target_cmds[matched->id()] ;
+                const auto& m_outcmd = target_cmds.at(matched->id()) ;
 
                 Command merged ;
-                for(std::size_t j = 0 ; j <= matched_idx ; j ++) {
+
+                // Decide how much of the previous command you want to reuse.
+                const auto matched_begin_idx = matched_idx - (m_incmd.size() - 1) ;
+                for(std::size_t i = 0 ; i < matched_begin_idx ; i ++) {
+                    merged.push_back(i_outcmd[i]) ;
+                }
+                for(auto i = matched_begin_idx ; i <= matched_idx ; i ++) {
                     KeySet mapped_set ;
-                    for(auto key : i_outcmd[j]) {
-                        for(auto matched_key : m_incmd[j]) {
-                            if(matched_key != key) {
-                                mapped_set.push_back(key) ;
-                            }
+                    const auto& m_keyset = *(m_incmd.cbegin() + i - matched_begin_idx) ;
+                    for(auto key : i_outcmd[i]) {
+                        if(std::find(m_keyset.cbegin(), m_keyset.cend(), key) == m_keyset.cend()) {
+                            mapped_set.push_back(key) ;
                         }
                     }
-                    merged.push_back(std::move(mapped_set)) ;
+
+                    if(!mapped_set.empty()) {
+                        merged.push_back(std::move(mapped_set)) ;
+                    }
                 }
 
-                merged.insert(merged.begin(), m_outcmd.begin(), m_outcmd.end()) ;
+                // Append the mapping command.
+                merged.insert(
+                        merged.end(),
+                        m_outcmd.begin(),
+                        m_outcmd.end()) ;
 
-                auto restnum = i_outcmd.size() - matched_idx - 1 ;
-                if(restnum > 0) {
-                    merged.insert(
-                            merged.begin(),
-                            i_outcmd.begin() + restnum,
-                            i_outcmd.end()) ;
-                }
+                // Append the rest of the previous command.
+                merged.insert(
+                        merged.end(),
+                        i_outcmd.begin() + matched_idx + 1,
+                        i_outcmd.end()) ;
 
-                target_cmds[func->id()] = merged ;
+                i_outcmd = merged ;
                 lgr = generate_stated_logger(merged) ;
             }
         }
@@ -267,7 +305,7 @@ namespace vind
     namespace core
     {
         struct MapGate::Impl {
-            ModeArray<std::unordered_map<std::size_t, NTypeLogger>> lgrs_table_{} ;
+            ModeArray<std::unordered_map<std::size_t, KeyLogPool>> logpool_table_{} ;
             ModeArray<LoggerParserManager> mgr_table_{} ;
 
             ModeArray<std::array<KeyUnorderedSet, 256>> syncmap_table_{} ;
@@ -288,9 +326,6 @@ namespace vind
             std::unordered_map<std::size_t, MapCell> noremap_cmd2cmd{} ;
             std::unordered_map<std::size_t, MapCell> map_cmd2cmd{} ;
             std::array<MapCell, 256> map_key2keyset{} ;
-
-            auto& loggers = pimpl->lgrs_table_[static_cast<int>(mode)] ;
-            loggers.clear() ;
 
             auto& syncmap = pimpl->syncmap_table_[static_cast<int>(mode)] ;
             syncmap.fill(KeyUnorderedSet{}) ;
@@ -335,6 +370,9 @@ namespace vind
                 }
             }
 
+            auto& logpool = pimpl->logpool_table_[static_cast<int>(mode)] ;
+            logpool.clear() ;
+
             auto solved_target_cmds = solve_recursive_cmd2cmd_mapping(map_cmd2cmd, syncmap) ;
 
             std::vector<LoggerParser::SPtr> parsers{} ;
@@ -353,6 +391,10 @@ namespace vind
                 auto parser = std::make_shared<LoggerParser>(func) ;
                 parser->append_binding(map.trigger_command()) ;
                 parsers.push_back(std::move(parser)) ;
+
+                for(const auto& keyset : solved_target_cmds[mapid]) {
+                    logpool[func->id()].emplace(keyset.begin(), keyset.end()) ;
+                }
             }
 
             for(const auto& [mapid, map] : noremap_cmd2cmd) {
@@ -361,6 +403,10 @@ namespace vind
                 auto parser = std::make_shared<LoggerParser>(func) ;
                 parser->append_binding(map.trigger_command()) ;
                 parsers.push_back(std::move(parser)) ;
+
+                for(const auto& keyset : map.target_command()) {
+                    logpool[func->id()].emplace(keyset.begin(), keyset.end()) ;
+                }
             }
 
             pimpl->mgr_table_[static_cast<int>(mode)] \
@@ -374,24 +420,23 @@ namespace vind
             }
         }
 
-        const NTypeLogger& MapGate::map_logger(const NTypeLogger& lgr, Mode mode) {
+        MapGate::KeyLogPool MapGate::map_logger(
+                const NTypeLogger& lgr,
+                Mode mode) {
             auto midx = static_cast<int>(mode) ;
 
             auto& mgr = pimpl->mgr_table_[midx] ;
             mgr.transition_parser_states_in_batch(lgr) ;
 
             auto maphook = mgr.find_accepted_parser() ;
-            if(maphook) {
-                auto func = maphook->get_func() ;
-                func->process() ;
-
-                auto& mapped_lgr = pimpl->lgrs_table_[midx][func->id()] ;
-                if(lgr.has_head_num()) {
-                    mapped_lgr.set_head_num(lgr.get_head_num()) ;
-                }
-                return mapped_lgr ;
+            if(!maphook) {
+                return KeyLogPool{} ;
             }
-            return lgr ;
+
+            auto func = maphook->get_func() ;
+            func->process() ;
+
+            return pimpl->logpool_table_[midx][func->id()] ;
         }
 
         bool MapGate::map_syncstate(
@@ -405,13 +450,17 @@ namespace vind
 
             if(press_sync_state) {
                 for(const auto& key : target) {
+                    open_port(key) ;
                     util::press_keystate(key, true) ;
+                    close_port(key) ;
                 }
             }
             else {
                 for(const auto& key : target) {
                     if(is_really_pressed(key) || is_pressed(key)) {
+                        open_port(key) ;
                         util::release_keystate(key, true) ;
+                        close_port(key) ;
                     }
                 }
             }

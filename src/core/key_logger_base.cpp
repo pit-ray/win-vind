@@ -91,6 +91,10 @@ namespace vind
             util::remove_from_back(pimpl->data, num_from_back) ;
         }
 
+        void KeyLoggerBase::remove_from_top(std::size_t num_from_top) {
+            util::remove_from_top(pimpl->data, num_from_top) ;
+        }
+
         KeyLoggerBase::Data::const_reference KeyLoggerBase::at(std::size_t n) const {
             return pimpl->data.at(n) ;
         }
@@ -109,32 +113,36 @@ namespace vind
         }
 
 #ifdef DEBUG
-        std::string print_log(const KeyLoggerBase& lgr) {
+        std::string print(const KeyLog& log) {
+            std::stringstream ss ;
+            for(const auto& key : log) {
+                if(key == KEYCODE_SPACE) {
+                    ss << "<space> " ;
+                    continue ;
+                }
+
+                if(auto a = get_ascii(key)) {
+                    ss << a << " " ;
+                    continue ;
+                }
+                if(auto a = get_shifted_ascii(key)) {
+                    ss << a << " " ;
+                    continue ;
+                }
+                auto name = get_keycode_name(key) ;
+                ss << "<" << name << "> " ;
+            }
+            return ss.str() ;
+        }
+        std::string print(const KeyLoggerBase& lgr) {
             std::stringstream ss ;
             if(lgr.empty()) {
                 return "<Empty>\n" ;
             }
             for(const auto& log : lgr) {
-                for(const auto& key : log) {
-                    if(key == KEYCODE_SPACE) {
-                        ss << "<space> " ;
-                        continue ;
-                    }
-
-                    if(auto a = get_ascii(key)) {
-                        ss << a << " " ;
-                        continue ;
-                    }
-                    if(auto a = get_shifted_ascii(key)) {
-                        ss << a << " " ;
-                        continue ;
-                    }
-                    auto name = get_keycode_name(key) ;
-                    ss << "<" << name << "> " ;
-                }
+                ss << print(log) ;
                 ss << "| " ;
             }
-            ss << std::endl ;
             return ss.str() ;
         }
 #endif

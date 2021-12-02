@@ -24,6 +24,8 @@ namespace
     core::NTypeLogger g_ntlgr{} ;
     core::FuncFinder g_funcfinder{} ;
     bind::BindedFunc::SPtr g_active_func = nullptr ;
+
+    core::MapGate::KeyLogPool g_logpool{} ;
 }
 
 namespace vind
@@ -31,6 +33,7 @@ namespace vind
     namespace core {
         void initialize_mainloop() {
             g_ntlgr.clear() ;
+            core::MapGate::KeyLogPool().swap(g_logpool) ;
             g_active_func = nullptr ;
         }
 
@@ -44,7 +47,31 @@ namespace vind
         }
 
         void update_mainloop() {
-            auto result = g_ntlgr.logging_state() ;
+            auto has_pool = !g_logpool.empty() ;
+
+            KeyLog log{} ;
+            if(!has_pool) {
+                log = get_pressed_list() ;
+            }
+            else {
+                log = std::move(g_logpool.front()) ;
+                g_logpool.pop() ;
+            }
+            auto result = g_ntlgr.logging_state(log) ;
+
+            if(!has_pool) {
+                auto logpool = MapGate::get_instance().map_logger(g_ntlgr) ;
+                if(!logpool.empty()) {
+                    g_ntlgr.remove_from_back(g_ntlgr.size()) ;
+
+                    result = g_ntlgr.logging_state(std::move(logpool.front())) ;
+                    logpool.pop() ;
+
+                    if(!logpool.empty()) {
+                        g_logpool.swap(logpool) ;
+                    }
+                }
+            }
 
             if(NTYPE_EMPTY(result)) {
                 return ;
@@ -55,10 +82,7 @@ namespace vind
                 return ;
             }
 
-            g_ntlgr = MapGate::get_instance().map_logger(g_ntlgr) ;
-
-            // visualize log sequence of Logger for debug
-            // std::cout << keyloggerutil::debug::print_log(g_ntlgr) ;
+            std::cout << print(g_ntlgr) << std::endl ;
 
             if(g_ntlgr.is_long_pressing()) {
                 if(g_active_func) {

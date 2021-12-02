@@ -127,33 +127,46 @@ namespace vind
         }
 
 #ifdef DEBUG
-        std::string print(const Command& cmd) {
+        std::string print(const KeySet& keyset) {
+            if(keyset.empty()) {
+                return "" ;
+            }
+
             std::stringstream ss ;
-            for(const auto& keyset : cmd) {
-                if(keyset.size() == 1) {
-                    auto name = get_keycode_name(keyset.front()) ;
-                    if(name.size() == 1) {
-                        ss << name ;
-                    }
-                    else {
-                        ss << "<" << name << ">" ;
-                    }
+
+            if(keyset.size() == 1) {
+                auto name = get_keycode_name(keyset.front()) ;
+                if(name.size() == 1) {
+                    ss << name ;
                 }
                 else {
-                    ss << "<" ;
-                    for(auto keyitr = keyset.cbegin() ; keyitr != keyset.cend() ; keyitr ++) {
-                        if(keyset.size() > 1 && keyitr != keyset.cbegin()) {
-                            ss << "-" ;
-                        }
-                        ss << get_keycode_name(*keyitr) ;
-                    }
-                    if(keyset.size() > 1) {
-                        ss << ">" ;
-                    }
+                    ss << "<" << name << ">" ;
                 }
+            }
+            else {
+                ss << "<" ;
+                for(auto itr = keyset.cbegin() ; itr != keyset.cend() ; itr ++) {
+                    if(itr != keyset.cbegin()) {
+                        ss << "-" ;
+                    }
+                    ss << get_keycode_name(*itr) ;
+                }
+                ss << ">" ;
             }
             return ss.str() ;
         }
+        std::string print(const Command& cmd) {
+            if(cmd.empty()) {
+                return "" ;
+            }
+
+            std::stringstream ss ;
+            for(const auto& keyset : cmd) {
+                ss << print(keyset) ;
+            }
+            return ss.str() ;
+        }
+
         std::string print(const CommandList& list) {
             std::stringstream ss ;
 

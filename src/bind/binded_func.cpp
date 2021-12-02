@@ -165,7 +165,7 @@ namespace vind
         }
         void BindedFunc::do_process(core::NTypeLogger&) const {
         }
-        void BindedFunc::do_process(const core::CharLogger& parent_lgr) const {
+        void BindedFunc::do_process(const core::CharLogger&) const {
         }
     }
 }

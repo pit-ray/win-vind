@@ -68,8 +68,9 @@ namespace vind
                 const std::string& modestr,
                 std::string root=MAP_DEFINE_KEYWORD_IN_JSON) ;
 
-        std::string print(const Command& cmd) ;
 #ifdef DEBUG
+        std::string print(const Command& keyset) ;
+        std::string print(const KeySet& cmd) ;
         std::string print(const CommandList& list) ;
 #endif
     }

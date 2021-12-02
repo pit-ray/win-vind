@@ -248,6 +248,10 @@ namespace vind
             g_absorbed_flag = false ;
         }
 
+        void close_port(KeyCode key) noexcept {
+            g_opened[key] = false ;
+        }
+
         void close_all_ports() noexcept {
             g_opened.fill(false) ;
         }

@@ -145,11 +145,11 @@ namespace vind
             }
 
             if(press_sync_state) {
-                util::press_keystate(target, true) ;
+                util::press_keystate(target) ;
             }
             else {
                 if(is_really_pressed(target) || is_pressed(target)) {
-                    util::release_keystate(target, true) ;
+                    util::release_keystate(target) ;
                 }
             }
             return true ;

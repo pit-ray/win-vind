@@ -177,20 +177,35 @@ namespace
     } ;
 
     inline auto create_related_keys() {
-            std::array<KeyCode, 256> a{0} ;
-            a[KEYCODE_LSHIFT]  = KEYCODE_SHIFT ;
-            a[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
-            a[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
-            a[KEYCODE_RCTRL]   = KEYCODE_CTRL ;
-            /* @Double-Win-Key
-            a[KEYCODE_LWIN]    = KEYCODE_WIN ;
-            a[KEYCODE_RWIN]    = KEYCODE_WIN ;
-            */
-            a[KEYCODE_LALT]    = KEYCODE_ALT ;
-            a[KEYCODE_RALT]    = KEYCODE_ALT ;
-            a[KEYCODE_FROM_EN] = KEYCODE_IME ;
-            a[KEYCODE_TO_JP]   = KEYCODE_IME ;
-            return a ;
+        std::array<KeyCode, 256> a{0} ;
+        a[KEYCODE_LSHIFT]  = KEYCODE_SHIFT ;
+        a[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
+        a[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
+        a[KEYCODE_RCTRL]   = KEYCODE_CTRL ;
+        /* @Double-Win-Key
+        a[KEYCODE_LWIN]    = KEYCODE_WIN ;
+        a[KEYCODE_RWIN]    = KEYCODE_WIN ;
+        */
+        a[KEYCODE_LALT]    = KEYCODE_ALT ;
+        a[KEYCODE_RALT]    = KEYCODE_ALT ;
+        a[KEYCODE_FROM_EN] = KEYCODE_IME ;
+        a[KEYCODE_TO_JP]   = KEYCODE_IME ;
+        return a ;
+    }
+
+    inline auto create_physical_keys() {
+        std::array<KeyCode, 256> a{0} ;
+
+        for(int i = 0 ; i < 256 ; i ++) {
+            a[i] = static_cast<KeyCode>(i) ;
+        }
+
+        a[KEYCODE_SHIFT] = KEYCODE_LSHIFT ;
+        a[KEYCODE_CTRL]  = KEYCODE_LCTRL ;
+        //a[KEYCODE_WIN]   = KEYCODE_LWIN ;
+        a[KEYCODE_ALT]   = KEYCODE_LALT ;
+        a[KEYCODE_IME]   = KEYCODE_TO_EN;
+        return a ;
     }
 
     inline auto create_unreal_keys() {
@@ -265,6 +280,11 @@ namespace vind
 
         KeyCode get_representative_key(KeyCode key) {
             static const auto a = create_related_keys() ;
+            return a[key] ;
+        }
+
+        KeyCode to_physical(KeyCode key) {
+            static const auto a = create_physical_keys() ;
             return a[key] ;
         }
 

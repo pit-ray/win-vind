@@ -66,14 +66,229 @@ namespace vind
 
 
         //change key state without input
-        void release_keystate(
-                KeyCode key,
-                bool enable_vhook=true) ;
+        template <typename Iterator>
+        void release_keystate(Iterator begin, Iterator end) {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+            static INPUT ins[6] = {
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+            } ;
+#if defined(__gnuc__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
+
+            //optimizing for 1
+            const auto size = static_cast<std::size_t>(end - begin) ;
+            switch(size) {
+                case 1:
+                    ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
+                    ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
+                    ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    if(!SendInput(1, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    core::release_virtually(*begin) ;
+                    break ;
+
+                case 2:
+                    ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
+                    ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
+                    ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
+                    ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
+                    ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 1)) ;
+                    ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    if(!SendInput(2, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    core::release_virtually(*begin) ;
+                    core::release_virtually(*(begin + 1)) ;
+                    break ;
+
+                case 3:
+                    ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
+                    ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
+                    ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
+                    ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
+                    ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 1)) ;
+                    ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[2].ki.wVk         = static_cast<WORD>(*(begin + 2)) ;
+                    ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 2), MAPVK_VK_TO_VSC)) ;
+                    ins[2].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 2)) ;
+                    ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    if(!SendInput(3, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    core::release_virtually(*begin) ;
+                    core::release_virtually(*(begin + 1)) ;
+                    core::release_virtually(*(begin + 2)) ;
+                    break ;
+
+                default:
+                    std::unique_ptr<INPUT[]> dynamic_ins(new INPUT[size]) ;
+                    for(std::size_t i = 0 ; i < size ; i ++) {
+                        dynamic_ins[i].ki.wVk         = static_cast<WORD>(*(begin + i)) ;
+                        dynamic_ins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + i), MAPVK_VK_TO_VSC)) ;
+                        dynamic_ins[i].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + i)) ;
+                        dynamic_ins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                        core::release_virtually(*(begin + 1)) ;
+                    }
+
+                    if(!SendInput(size, dynamic_ins.get(), sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    break ;
+            }
+        }
+
+        inline void release_keystate(std::initializer_list<KeyCode>&& initlist) {
+            release_keystate(initlist.begin(), initlist.end()) ;
+        }
+
+        inline void release_keystate(KeyCode key) {
+            release_keystate({key}) ;
+        }
+
+        inline void release_keystate(KeyCode key1, KeyCode key2) {
+            release_keystate({key1, key2}) ;
+        }
+
+        template <typename... Ts>
+        inline void release_keystate(KeyCode key1, KeyCode key2, Ts&&... keys) {
+            release_keystate({key1, key2, static_cast<KeyCode>(keys)...}) ;
+        }
+
 
         //change key state without input
-        void press_keystate(
-                KeyCode key,
-                bool enable_vhook=true) ;
+        template <typename Iterator>
+        void press_keystate(Iterator begin, Iterator end) {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+            static INPUT ins[6] = {
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+                {INPUT_KEYBOARD},
+            } ;
+#if defined(__gnuc__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
+
+            //optimizing for 1
+            const auto size = static_cast<std::size_t>(end - begin) ;
+            switch(size) {
+                case 1:
+                    ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
+                    ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
+                    ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    if(!SendInput(1, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    core::press_virtually(*begin) ;
+                    break ;
+
+                case 2:
+                    ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
+                    ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
+                    ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
+                    ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
+                    ins[1].ki.dwFlags     = extended_key_flag(*(begin + 1)) ;
+                    ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    if(!SendInput(2, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    core::press_virtually(*begin) ;
+                    core::press_virtually(*(begin + 1)) ;
+                    break ;
+
+                case 3:
+                    ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
+                    ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
+                    ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
+                    ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
+                    ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
+                    ins[1].ki.dwFlags     = extended_key_flag(*(begin + 1)) ;
+                    ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    ins[2].ki.wVk         = static_cast<WORD>(*(begin + 2)) ;
+                    ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 2), MAPVK_VK_TO_VSC)) ;
+                    ins[2].ki.dwFlags     = extended_key_flag(*(begin + 2)) ;
+                    ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                    if(!SendInput(3, ins, sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    core::press_virtually(*begin) ;
+                    core::press_virtually(*(begin + 1)) ;
+                    core::press_virtually(*(begin + 2)) ;
+                    break ;
+
+                default:
+                    std::unique_ptr<INPUT[]> dynamic_ins(new INPUT[size]) ;
+                    for(std::size_t i = 0 ; i < size ; i ++) {
+                        auto key = *(begin + 1) ;
+                        dynamic_ins[i].ki.wVk         = static_cast<WORD>(key) ;
+                        dynamic_ins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
+                        dynamic_ins[i].ki.dwFlags     = extended_key_flag(key) ;
+                        dynamic_ins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                        core::press_virtually(key) ;
+                    }
+
+                    if(!SendInput(size, dynamic_ins.get(), sizeof(INPUT))) {
+                        throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+                    }
+
+                    break ;
+            }
+        }
+
+        inline void press_keystate(std::initializer_list<KeyCode>&& initlist) {
+            press_keystate(initlist.begin(), initlist.end()) ;
+        }
+
+        inline void press_keystate(KeyCode key) {
+            press_keystate({key}) ;
+        }
+
+        inline void press_keystate(KeyCode key1, KeyCode key2) {
+            press_keystate({key1, key2}) ;
+        }
+
+        template <typename... Ts>
+        inline void press_keystate(bool vhook, KeyCode key1, KeyCode key2, Ts&&... keys) {
+            press_keystate({key1, key2, static_cast<KeyCode>(keys)...}) ;
+        }
+
 
         template <typename Iterator>
         void pushup(Iterator begin, Iterator end) {

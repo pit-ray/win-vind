@@ -45,6 +45,8 @@ namespace vind
             return get_representative_key(static_cast<KeyCode>(key)) ;
         }
 
+        KeyCode to_physical(KeyCode key) ;
+
         bool is_unreal_key(KeyCode key) noexcept ;
         template <typename T>
         inline auto is_unreal_key(T key) noexcept {

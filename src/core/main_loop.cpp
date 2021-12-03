@@ -62,7 +62,7 @@ namespace vind
             if(!has_pool) {
                 auto logpool = MapGate::get_instance().map_logger(g_ntlgr) ;
                 if(!logpool.empty()) {
-                    g_ntlgr.remove_from_back(g_ntlgr.size()) ;
+                    g_ntlgr.clear() ;
 
                     result = g_ntlgr.logging_state(std::move(logpool.front())) ;
                     logpool.pop() ;

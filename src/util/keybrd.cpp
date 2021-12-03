@@ -79,52 +79,5 @@ namespace vind
                 throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
             }
         }
-
-
-        //change key state without input
-        void release_keystate(KeyCode key, bool enable_vhook) {
-#if defined(__GNUC__)
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#endif
-            static INPUT in = {INPUT_KEYBOARD} ;
-#if defined(__gnuc__)
-#pragma gcc diagnostic warning "-wmissing-field-initializers"
-#endif
-            in.ki.wVk         = static_cast<WORD>(key) ;
-            in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
-            in.ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(key) ;
-            in.ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-            if(!SendInput(1, &in, sizeof(INPUT))) {
-                throw RUNTIME_EXCEPT("failed sending keyboard event") ;
-            }
-
-            if(enable_vhook) {
-                core::release_virtually(key) ;
-            }
-        }
-
-        //change key state without input
-        void press_keystate(KeyCode key, bool enable_vhook) {
-#if defined(__GNUC__)
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#endif
-            static INPUT in = {INPUT_KEYBOARD} ;
-#if defined(__gnuc__)
-#pragma gcc diagnostic warning "-wmissing-field-initializers"
-#endif
-            in.ki.wVk         = static_cast<WORD>(key) ;
-            in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
-            in.ki.dwFlags     = extended_key_flag(key) ;
-            in.ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-            if(!SendInput(1, &in, sizeof(INPUT))) {
-                throw RUNTIME_EXCEPT("failed sending keyboard event") ;
-            }
-
-            if(enable_vhook) {
-                core::press_virtually(key) ;
-            }
-        }
     }
 }

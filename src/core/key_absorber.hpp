@@ -4,6 +4,7 @@
 #include <vector>
 #include "key_log.hpp"
 #include "keycode_def.hpp"
+#include "mapdefs.hpp"
 
 namespace vind
 {
@@ -30,7 +31,19 @@ namespace vind
         void absorb() noexcept ;
         void unabsorb() noexcept ;
 
+        void close_some_ports(std::initializer_list<KeyCode>&& keys) noexcept ;
+        void close_some_ports(
+                std::initializer_list<KeyCode>::const_iterator begin,
+                std::initializer_list<KeyCode>::const_iterator end) noexcept ;
+
+        void close_some_ports(std::vector<KeyCode>&& keys) noexcept ;
+        void close_some_ports(
+                KeySet::const_iterator begin,
+                KeySet::const_iterator end) noexcept ;
+
+
         void close_port(KeyCode key) noexcept ;
+
         void close_all_ports() noexcept ;
         void close_all_ports_with_refresh() ;
 
@@ -41,8 +54,8 @@ namespace vind
 
         void open_some_ports(std::vector<KeyCode>&& keys) noexcept ;
         void open_some_ports(
-                std::vector<KeyCode>::const_iterator begin,
-                std::vector<KeyCode>::const_iterator end) noexcept ;
+                KeySet::const_iterator begin,
+                KeySet::const_iterator end) noexcept ;
 
         void open_some_ports(const KeyLog::Data& key) noexcept ;
         void open_port(KeyCode key) noexcept ;

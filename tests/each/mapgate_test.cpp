@@ -31,11 +31,11 @@ TEST_CASE("mapgate::solve_recursive_key2keyset_mapping") {
         solve_recursive_key2keyset_mapping(table) ;
 
         // A -> {C, E, G}
-        KeyUnorderedSet expect_a = {KEYCODE_C, KEYCODE_E, KEYCODE_G} ;
+        KeySet expect_a = {KEYCODE_C, KEYCODE_E, KEYCODE_G} ;
         CHECK_EQ(table[KEYCODE_A], expect_a) ;
 
         // D -> {G, E}
-        KeyUnorderedSet expect_d = {KEYCODE_E, KEYCODE_G} ;
+        KeySet expect_d = {KEYCODE_E, KEYCODE_G} ;
         CHECK_EQ(table[KEYCODE_D], expect_d) ;
     }
 
@@ -52,18 +52,18 @@ TEST_CASE("mapgate::solve_recursive_key2keyset_mapping") {
         solve_recursive_key2keyset_mapping(table) ;
 
         // A -> {H, J, E, G, I, P}
-        KeyUnorderedSet expect_a = {
-            KEYCODE_H, KEYCODE_J, KEYCODE_E, KEYCODE_G, KEYCODE_I, KEYCODE_P
+        KeySet expect_a = {
+            KEYCODE_E, KEYCODE_G, KEYCODE_H, KEYCODE_I, KEYCODE_J, KEYCODE_P
         } ;
         CHECK_EQ(table[KEYCODE_A], expect_a) ;
 
         // X -> {H, J, E, G, I}
-        KeyUnorderedSet expect_x = {
-            KEYCODE_H, KEYCODE_J, KEYCODE_E, KEYCODE_G, KEYCODE_I
+        KeySet expect_x = {
+            KEYCODE_E, KEYCODE_G, KEYCODE_H, KEYCODE_I, KEYCODE_J
         } ;
         CHECK_EQ(table[KEYCODE_X], expect_x) ;
 
-        KeyUnorderedSet expect_z = {KEYCODE_E, KEYCODE_G, KEYCODE_I} ;
+        KeySet expect_z = {KEYCODE_E, KEYCODE_G, KEYCODE_I} ;
         CHECK_EQ(table[KEYCODE_Z], expect_z) ;
     }
 
@@ -81,7 +81,7 @@ TEST_CASE("mapgate::solve_recursive_key2keyset_mapping") {
 
         CHECK(table[KEYCODE_A].empty()) ;
 
-        KeyUnorderedSet expect = {KEYCODE_A, KEYCODE_B} ;
+        KeySet expect = {KEYCODE_A, KEYCODE_B} ;
         CHECK_EQ(table[KEYCODE_P], expect) ;
         CHECK_EQ(table[KEYCODE_J], expect) ;
     }

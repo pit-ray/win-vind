@@ -248,6 +248,38 @@ namespace vind
             g_absorbed_flag = false ;
         }
 
+        void close_some_ports(std::initializer_list<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                g_opened[k] = true ;
+            }
+        }
+        void close_some_ports(
+                std::initializer_list<KeyCode>::const_iterator begin,
+                std::initializer_list<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                g_opened[*itr] = false ;
+            }
+        }
+
+        void close_some_ports(std::vector<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                g_opened[k] = false ;
+            }
+        }
+        void close_some_ports(
+                std::vector<KeyCode>::const_iterator begin,
+                std::vector<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                g_opened[*itr] = false ;
+            }
+        }
+
+        void close_some_ports(const KeyLog::Data& keys) noexcept {
+            for(auto k : keys) {
+                g_opened[k] = false ;
+            }
+        }
+
         void close_port(KeyCode key) noexcept {
             g_opened[key] = false ;
         }

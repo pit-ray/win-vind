@@ -1,6 +1,7 @@
 #include "mapgate.hpp"
 
 #include "bind/binded_func.hpp"
+#include "bind/safe_repeater.hpp"
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "key_absorber.hpp"
@@ -93,8 +94,7 @@ namespace
         return lgr ;
     }
 
-    using KeyUnorderedSet = std::unordered_set<KeyCode> ;
-    using Key2KeysetMap = std::array<KeyUnorderedSet, 256> ;
+    using Key2KeysetMap = std::array<KeySet, 256> ;
 
     /**
      *
@@ -111,17 +111,17 @@ namespace
 
             while(true) {
                 // Check mappings that refer to itself
-                if(dst.find(srckey) != dst.end()) {
+                if(std::find(dst.begin(), dst.end(), srckey) != dst.end()) {
                     dst.clear() ;
                     break ;
                 }
 
-                KeyUnorderedSet mapped {} ;
+                KeySet mapped {} ;
                 for(auto itr = dst.begin() ; itr != dst.end() ;) {
                     auto buf = key2keyset_table[*itr] ;
                     if(!buf.empty()) {
                         itr = dst.erase(itr) ;
-                        mapped.merge(buf) ;
+                        mapped.insert(mapped.begin(), buf.begin(), buf.end()) ;
                     }
                     else {
                         itr ++ ;
@@ -132,9 +132,10 @@ namespace
                     break ;
                 }
 
-                dst.merge(mapped) ;
+                dst.insert(dst.begin(), mapped.begin(), mapped.end()) ;
             }
 
+            util::remove_deplication(dst) ;
             key2keyset_table[srckey] = std::move(dst) ;
         }
     }
@@ -308,7 +309,7 @@ namespace vind
             ModeArray<std::unordered_map<std::size_t, KeyLogPool>> logpool_table_{} ;
             ModeArray<LoggerParserManager> mgr_table_{} ;
 
-            ModeArray<std::array<KeyUnorderedSet, 256>> syncmap_table_{} ;
+            ModeArray<Key2KeysetMap> syncmap_table_{} ;
         } ;
 
         MapGate::MapGate()
@@ -328,7 +329,7 @@ namespace vind
             std::array<MapCell, 256> map_key2keyset{} ;
 
             auto& syncmap = pimpl->syncmap_table_[static_cast<int>(mode)] ;
-            syncmap.fill(KeyUnorderedSet{}) ;
+            syncmap.fill(KeySet{}) ;
 
             std::vector<MapCell> maps ;
             get_maps(mode, maps) ;
@@ -348,7 +349,7 @@ namespace vind
                         auto trigger_key = trigger_cmd.front().front() ;
                         auto target_keyset = target_cmd.front() ;
 
-                        syncmap[trigger_key] = KeyUnorderedSet(
+                        syncmap[trigger_key] = KeySet(
                                 target_keyset.begin(), target_keyset.end()) ;
 
                         map_key2keyset[trigger_key] = std::move(*itr) ;
@@ -361,12 +362,30 @@ namespace vind
 
             solve_recursive_key2keyset_mapping(syncmap) ;
             for(int i = 1 ; i < 255 ; i ++) {
-                if(!map_key2keyset[i].empty() && syncmap[i].empty()) {
-                    PRINT_ERROR(
-                            mode_to_prefix(mode) + "map " + \
-                            map_key2keyset[i].trigger_command_string() + " " +
-                            map_key2keyset[i].target_command_string() +
-                            " recursively remaps itself.") ;
+                if(syncmap[i].empty()) {
+                    if(!map_key2keyset[i].empty()) {
+                        PRINT_ERROR(
+                                mode_to_prefix(mode) + "map " + \
+                                map_key2keyset[i].trigger_command_string() + " " +
+                                map_key2keyset[i].target_command_string() +
+                                " recursively remaps itself.") ;
+                    }
+                }
+                else {
+                    KeySet keys{} ;
+                    KeySet syskeys{} ;
+
+                    for(const auto& key : syncmap[i]) {
+                        if(get_ascii(key)) {
+                            keys.push_back(key) ;
+                        }
+                        else {
+                            syskeys.push_back(to_physical(key)) ;
+                        }
+                    }
+
+                    syskeys.insert(syskeys.end(), keys.begin(), keys.end()) ;
+                    syncmap[i] = std::move(syskeys) ;
                 }
             }
 
@@ -434,7 +453,9 @@ namespace vind
             }
 
             auto func = maphook->get_func() ;
-            func->process() ;
+            bind::safe_for(lgr.get_head_num(), [&func] {
+                func->process() ;
+            }) ;
 
             return pimpl->logpool_table_[midx][func->id()] ;
         }
@@ -449,20 +470,14 @@ namespace vind
             }
 
             if(press_sync_state) {
-                for(const auto& key : target) {
-                    open_port(key) ;
-                    util::press_keystate(key, true) ;
-                    close_port(key) ;
-                }
+                open_some_ports(target.begin(), target.end()) ;
+                util::press_keystate(target.begin(), target.end()) ;
+                close_some_ports(target.begin(), target.end()) ;
             }
             else {
-                for(const auto& key : target) {
-                    if(is_really_pressed(key) || is_pressed(key)) {
-                        open_port(key) ;
-                        util::release_keystate(key, true) ;
-                        close_port(key) ;
-                    }
-                }
+                open_some_ports(target.begin(), target.end()) ;
+                util::release_keystate(target.begin(), target.end()) ;
+                close_some_ports(target.begin(), target.end()) ;
             }
             return true ;
         }

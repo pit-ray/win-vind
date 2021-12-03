@@ -440,24 +440,30 @@ namespace vind
         }
 
         MapGate::KeyLogPool MapGate::map_logger(
-                const NTypeLogger& lgr,
+                const KeyLog& log,
                 Mode mode) {
             auto midx = static_cast<int>(mode) ;
 
             auto& mgr = pimpl->mgr_table_[midx] ;
-            mgr.transition_parser_states_in_batch(lgr) ;
 
-            auto maphook = mgr.find_accepted_parser() ;
-            if(!maphook) {
-                return KeyLogPool{} ;
+            auto parser = mgr.find_parser_with_transition(log) ;
+            if(parser) {
+                if(parser->is_accepted()) {
+                    auto func = parser->get_func() ;
+                    func->process() ;
+                    mgr.reset_parser_states() ;
+                    return pimpl->logpool_table_[midx][func->id()] ;
+
+                }
+                else if(parser->is_rejected_with_ready()) {
+                    mgr.reset_parser_states() ;
+                }
+            }
+            else {
+                mgr.reset_parser_states() ;
             }
 
-            auto func = maphook->get_func() ;
-            bind::safe_for(lgr.get_head_num(), [&func] {
-                func->process() ;
-            }) ;
-
-            return pimpl->logpool_table_[midx][func->id()] ;
+            return KeyLogPool{} ;
         }
 
         bool MapGate::map_syncstate(

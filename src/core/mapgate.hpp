@@ -40,7 +40,7 @@ namespace vind
             //
             using KeyLogPool = std::queue<KeyLog> ;
             KeyLogPool map_logger(
-                    const NTypeLogger& lgr,
+                    const KeyLog& log,
                     Mode mode=get_global_mode()) ;
 
             //

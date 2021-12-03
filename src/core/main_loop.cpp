@@ -52,19 +52,10 @@ namespace vind
             KeyLog log{} ;
             if(!has_pool) {
                 log = get_pressed_list() ;
-            }
-            else {
-                log = std::move(g_logpool.front()) ;
-                g_logpool.pop() ;
-            }
-            auto result = g_ntlgr.logging_state(log) ;
 
-            if(!has_pool) {
-                auto logpool = MapGate::get_instance().map_logger(g_ntlgr) ;
+                auto logpool = MapGate::get_instance().map_logger(log) ;
                 if(!logpool.empty()) {
-                    g_ntlgr.clear() ;
-
-                    result = g_ntlgr.logging_state(std::move(logpool.front())) ;
+                    log = std::move(logpool.front()) ;
                     logpool.pop() ;
 
                     if(!logpool.empty()) {
@@ -72,6 +63,12 @@ namespace vind
                     }
                 }
             }
+            else {
+                log = std::move(g_logpool.front()) ;
+                g_logpool.pop() ;
+            }
+
+            auto result = g_ntlgr.logging_state(log) ;
 
             if(NTYPE_EMPTY(result)) {
                 return ;

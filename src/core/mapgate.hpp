@@ -5,7 +5,7 @@
 #include "mode.hpp"
 
 #include <memory>
-#include <queue>
+#include <vector>
 
 
 namespace vind
@@ -38,8 +38,7 @@ namespace vind
             // but in the case of map, the key message is generated in a state that is passed to Windows.
             //
             //
-            using KeyLogPool = std::queue<KeyLog> ;
-            KeyLogPool map_logger(
+            std::vector<KeyLog> map_logger(
                     const KeyLog& log,
                     Mode mode=get_global_mode()) ;
 

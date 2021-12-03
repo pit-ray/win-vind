@@ -7,6 +7,7 @@
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/key_absorber.hpp"
+#include "core/logpooler.hpp"
 #include "util/winwrap.hpp"
 
 namespace vind
@@ -91,7 +92,8 @@ namespace vind
             };
 
             while(core::update_background() && !(pimpl->cancel_running_)) {
-                if(!CHAR_LOGGED(lgr.logging_state())) {
+                auto log = core::LogPooler::get_instance().pop_log() ;
+                if(!CHAR_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }
 

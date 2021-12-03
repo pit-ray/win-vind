@@ -5,6 +5,7 @@
 #include "core/func_finder.hpp"
 #include "core/key_absorber.hpp"
 #include "core/key_logger_base.hpp"
+#include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/vcmdline.hpp"
@@ -43,7 +44,8 @@ namespace vind
             pimpl->finder_.reset_parser_states(lcx_vmode) ;
             core::NTypeLogger lgr ;
             while(core::update_background()) {
-                auto result = lgr.logging_state() ;
+                auto log = core::LogPooler::get_instance().pop_log() ;
+                auto result = lgr.logging_state(log) ;
                 if(NTYPE_EMPTY(result)) {
                     continue ;
                 }

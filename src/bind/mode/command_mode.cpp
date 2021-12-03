@@ -15,6 +15,7 @@
 #include "core/key_logger_base.hpp"
 #include "core/keycode_def.hpp"
 #include "core/keycodecvt.hpp"
+#include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/vcmdline.hpp"
@@ -178,7 +179,8 @@ namespace vind
                 auto& p_cmdp = pimpl->ch_.get_hist_point() ;
                 auto& lgr    = p_cmdp->logger ;
 
-                if(CHAR_EMPTY(lgr.logging_state())) {
+                auto log = core::LogPooler::get_instance().pop_log() ;
+                if(CHAR_EMPTY(lgr.logging_state(log))) {
                     continue ;
                 }
 

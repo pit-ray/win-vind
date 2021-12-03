@@ -13,6 +13,7 @@
 #include "core/func_finder.hpp"
 #include "core/g_params.hpp"
 #include "core/key_absorber.hpp"
+#include "core/logpooler.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/constant_accelerator.hpp"
@@ -220,7 +221,8 @@ namespace vind
 
             std::size_t actid = 0 ;
             while(core::update_background()) {
-                if(!NTYPE_LOGGED(lgr.logging_state())) {
+                auto log = core::LogPooler::get_instance().pop_log() ;
+                if(!NTYPE_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }
 

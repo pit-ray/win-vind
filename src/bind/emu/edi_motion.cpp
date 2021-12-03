@@ -5,6 +5,7 @@
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
 #include "core/key_absorber.hpp"
+#include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "edi_delete.hpp"
@@ -25,7 +26,8 @@ namespace
         core::InstantKeyAbsorber ika ;
 
         while(core::update_background()) {
-            auto result = lgr.logging_state() ;
+            auto log = core::LogPooler::get_instance().pop_log() ;
+            auto result = lgr.logging_state(log) ;
             if(NTYPE_EMPTY(result)) {
                 continue ;
             }
@@ -85,7 +87,8 @@ namespace
         core::InstantKeyAbsorber ika ;
 
         while(core::update_background()) {
-            auto result = lgr.logging_state() ;
+            auto log = core::LogPooler::get_instance().pop_log() ;
+            auto result = lgr.logging_state(log) ;
             auto parent_result = parent_lgr.logging_state() ;
             if(NTYPE_EMPTY(result) && NTYPE_EMPTY(parent_result)) {
                 continue ;

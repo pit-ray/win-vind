@@ -306,7 +306,7 @@ namespace vind
     namespace core
     {
         struct MapGate::Impl {
-            ModeArray<std::unordered_map<std::size_t, KeyLogPool>> logpool_table_{} ;
+            ModeArray<std::unordered_map<std::size_t, std::vector<KeyLog>>> logpool_table_{} ;
             ModeArray<LoggerParserManager> mgr_table_{} ;
 
             ModeArray<Key2KeysetMap> syncmap_table_{} ;
@@ -412,7 +412,7 @@ namespace vind
                 parsers.push_back(std::move(parser)) ;
 
                 for(const auto& keyset : solved_target_cmds[mapid]) {
-                    logpool[func->id()].emplace(keyset.begin(), keyset.end()) ;
+                    logpool[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
                 }
             }
 
@@ -424,7 +424,7 @@ namespace vind
                 parsers.push_back(std::move(parser)) ;
 
                 for(const auto& keyset : map.target_command()) {
-                    logpool[func->id()].emplace(keyset.begin(), keyset.end()) ;
+                    logpool[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
                 }
             }
 
@@ -439,7 +439,7 @@ namespace vind
             }
         }
 
-        MapGate::KeyLogPool MapGate::map_logger(
+        std::vector<KeyLog> MapGate::map_logger(
                 const KeyLog& log,
                 Mode mode) {
             auto midx = static_cast<int>(mode) ;
@@ -463,7 +463,7 @@ namespace vind
                 mgr.reset_parser_states() ;
             }
 
-            return KeyLogPool{} ;
+            return std::vector<KeyLog>{} ;
         }
 
         bool MapGate::map_syncstate(

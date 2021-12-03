@@ -151,7 +151,7 @@ namespace vind
                         core::release_virtually(*(begin + 1)) ;
                     }
 
-                    if(!SendInput(size, dynamic_ins.get(), sizeof(INPUT))) {
+                    if(!SendInput(static_cast<UINT>(size), dynamic_ins.get(), sizeof(INPUT))) {
                         throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                     }
 
@@ -264,7 +264,7 @@ namespace vind
                         core::press_virtually(key) ;
                     }
 
-                    if(!SendInput(size, dynamic_ins.get(), sizeof(INPUT))) {
+                    if(!SendInput(static_cast<UINT>(size), dynamic_ins.get(), sizeof(INPUT))) {
                         throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                     }
 

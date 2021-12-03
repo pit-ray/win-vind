@@ -31,7 +31,6 @@ namespace vind
             LogPooler(const LogPooler&)            = delete ;
             LogPooler& operator=(const LogPooler&) = delete ;
         } ;
-
     }
 }
 

@@ -9,7 +9,7 @@ namespace vind
 {
     namespace bind
     {
-        const auto& all_global_binded_funcs() {
+        const std::vector<BindedFunc::SPtr>& all_global_binded_funcs() {
             static std::vector<BindedFunc::SPtr> tmp {
             } ;
             return tmp ;

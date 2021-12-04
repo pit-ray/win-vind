@@ -17,8 +17,8 @@ namespace vind
 
         class MapGate {
         private:
-            explicit MapGate() ;
-            virtual ~MapGate() noexcept ;
+            MapGate() ;
+            ~MapGate() noexcept ;
 
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

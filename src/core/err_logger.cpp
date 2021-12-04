@@ -6,6 +6,7 @@
 #include <windows.h>
 
 #include <algorithm>
+#include <fstream>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -17,20 +18,9 @@
 #include <iostream>
 #endif
 
-#define KEEPING_LOG_COUNT (5)
 
-//internal linkage
 namespace
 {
-    constexpr auto g_er_tag = "[Error] " ;
-    constexpr auto g_mg_tag = "[Message] " ;
-
-    std::ofstream g_init_error_stream ;
-    std::ofstream g_error_stream ;
-
-    std::ofstream g_init_msg_stream ;
-    std::ofstream g_msg_stream ;
-
     void remove_files_over(
             const std::filesystem::path& log_dir,
             std::string pattern_withex,
@@ -67,30 +57,90 @@ namespace
             }
         }
     }
-
-    template <typename T>
-    inline void error_print_common_process(T&& msg, const char* scope) {
-        if(g_error_stream.is_open()) {
-            g_error_stream << g_er_tag \
-                << "Windows Error Code: [" << GetLastError() << "], " \
-                << msg << " (" << scope << ")" << std::endl ;
-            g_error_stream.flush() ;
-        }
-    }
-
-    template <typename T>
-    inline void msg_print_common_process(T&& msg, const char* scope) {
-        if(g_msg_stream.is_open()) {
-            g_msg_stream << g_mg_tag << msg << " (" << scope << ")" << std::endl ;
-            g_msg_stream.flush() ;
-        }
-    }
 }
 
 namespace vind
 {
     namespace core {
-        void initialize_logger() {
+        struct Logger::Impl {
+            std::ofstream stream_{} ;
+
+            std::string head_ ;
+            std::size_t keep_log_num_ ;
+            std::size_t header_align_width_ ;
+
+            template <typename String>
+            Impl(
+                String&& filename_head,
+                std::size_t keeping_log_num,
+                std::size_t align_width_of_header)
+            : stream_(),
+              head_(std::forward<String>(filename_head)),
+              keep_log_num_(keeping_log_num),
+              header_align_width_(align_width_of_header)
+            {}
+
+            template <typename T>
+            inline void print_error(T&& msg, const char* scope) {
+                if(stream_.is_open()) {
+                    stream_ << "[Error] " \
+                        << "Windows Error Code: [" << GetLastError() << "], " \
+                        << msg << " (" << scope << ")" << std::endl ;
+                    stream_.flush() ;
+                }
+            }
+
+            template <typename T>
+            inline void print_message(T&& msg, const char* scope) {
+                if(stream_.is_open()) {
+                    stream_ << "[Message] " \
+                        << msg << " (" << scope << ")" << std::endl ;
+                    stream_.flush() ;
+                }
+            }
+
+            template <typename Key, typename... Vals>
+            void add_spec(Key&& key, Vals&&... vals) {
+                stream_ << std::right ;
+                stream_ << std::setw(header_align_width_) ;
+                stream_ << std::forward<Key>(key) ;
+                stream_ << std::left ;
+                stream_ << std::setw(0) ;
+                ((stream_ << std::forward<Vals>(vals)), ...) ;
+                stream_ << std::endl ;
+                stream_.flush() ;
+            }
+        } ;
+
+        Logger::Logger(
+            std::string&& filename_head,
+            std::size_t keeping_log_num,
+            std::size_t align_width_of_header)
+        : pimpl(std::make_unique<Impl>(
+                    std::move(filename_head),
+                    keeping_log_num,
+                    align_width_of_header))
+        {}
+
+        Logger::~Logger() noexcept = default ;
+
+        /**
+         * NOTE: Inspired by bitcoin's logger implementation,
+         * it dynamically allocates local static variables.
+         * This allows us to leave the freeing of variables to
+         * the OS/libc and survive until the end in the process.
+         * Using this design pattern, Logger is available
+         * in destructors of objects with undefined release order,
+         * such as static/global.
+         *
+         * ref.(https://github.com/bitcoin/bitcoin/blob/57982f419e36d0023c83af2dd0d683ca3160dc2a/src/logging.cpp#L17-L36)
+         */
+        Logger& Logger::get_instance() {
+            static auto instance = new Logger("syslog_", 10, 15) ;
+            return *instance ;
+        }
+
+        void Logger::init() {
             auto log_dir = ROOT_PATH() / "log" ;
 
             SYSTEMTIME stime ;
@@ -107,67 +157,51 @@ namespace vind
                 std::filesystem::create_directories(log_dir) ;
             }
 
-            auto efile = log_dir / ("error_" + ss.str() + ".log") ;
-            auto mfile = log_dir / ("message_" + ss.str() + ".log") ;
+            auto filepath = log_dir / (pimpl->head_ + ss.str() + ".log") ;
 
-            g_init_error_stream.open(efile, std::ios::trunc) ;
-            g_error_stream.open(efile, std::ios::app) ;
-
-            g_init_msg_stream.open(mfile, std::ios::trunc) ;
-            g_msg_stream.open(mfile, std::ios::app) ;
+            pimpl->stream_.open(filepath, std::ios::app) ;
 
             // Export system infomation for handling issues.
-            constexpr auto align_width_of_header = 15 ;
-
-            g_error_stream << "========== System Infomation ==========\n" ;
-            g_error_stream << "[Windows]\n" ;
+            pimpl->stream_ << "========== System Infomation ==========\n" ;
+            pimpl->stream_ << "[Windows]\n" ;
 
             auto [major, minor, build] = util::get_Windows_versions() ;
 
-            g_error_stream << std::right << std::setw(align_width_of_header) << "Edition: " ;
-            g_error_stream << std::left << std::setw(0) << util::get_Windows_edition(major, minor) << std::endl ;
+            pimpl->add_spec("Edition: ", util::get_Windows_edition(major, minor)) ;
+            pimpl->add_spec("Version: ", util::get_Windows_display_version()) ;
+            pimpl->add_spec("Build Numbers: ", major, ".", minor, ".", build) ;
+            pimpl->add_spec("Architecture: ", util::get_Windows_architecture()) ;
 
-            g_error_stream << std::right << std::setw(align_width_of_header) << "Version: " ;
-            g_error_stream << std::left << std::setw(0) << util::get_Windows_display_version() << std::endl ;
+            pimpl->stream_ << std::endl ;
 
-            g_error_stream << std::right << std::setw(align_width_of_header) << "Build Numbers: " ;
-            g_error_stream << std::left << std::setw(0) << major << "." << minor << "." << build << std::endl ;
+            pimpl->stream_ << "[win-vind]\n" ;
+            pimpl->add_spec("Version: ", WIN_VIND_VERSION) ;
 
-            g_error_stream << std::right << std::setw(align_width_of_header) << "Architecture: " ;
-            g_error_stream << std::left << std::setw(0) << util::get_Windows_architecture() << std::endl ;
-
-            g_error_stream << std::endl ;
-
-            g_error_stream << "[win-vind]\n" ;
-            g_error_stream << std::right << std::setw(align_width_of_header) << "Version: " ;
-            g_error_stream << std::left << std::setw(0) << WIN_VIND_VERSION << std::endl ;
-            g_error_stream << std::endl ;
-
-            g_error_stream << "=======================================\n" ;
+            pimpl->stream_ << "=======================================\n" ;
+            pimpl->stream_.flush() ;
 
              //If the log files exists over five, remove old files.
-            remove_files_over(log_dir, "error_*.log", KEEPING_LOG_COUNT) ;
-            remove_files_over(log_dir, "message_*.log", KEEPING_LOG_COUNT) ;
+            remove_files_over(log_dir, pimpl->head_ + "*.log", pimpl->keep_log_num_) ;
         }
 
-        void error(const char* msg, const char* scope) {
-            error_print_common_process(msg, scope) ;
+        void Logger::error(const char* msg, const char* scope) {
+            pimpl->print_error(msg, scope) ;
         }
-        void error(std::string&& msg, const char* scope) {
-            error_print_common_process(std::move(msg), scope) ;
+        void Logger::error(std::string&& msg, const char* scope) {
+            pimpl->print_error(std::move(msg), scope) ;
         }
-        void error(const std::string& msg, const char* scope) {
-            error_print_common_process(msg, scope) ;
+        void Logger::error(const std::string& msg, const char* scope) {
+            pimpl->print_error(msg, scope) ;
         }
 
-        void message(const char* msg, const char* scope) {
-            msg_print_common_process(msg, scope) ;
+        void Logger::message(const char* msg, const char* scope) {
+            pimpl->print_message(msg, scope) ;
         }
-        void message(std::string&& msg, const char* scope) {
-            msg_print_common_process(std::move(msg), scope) ;
+        void Logger::message(std::string&& msg, const char* scope) {
+            pimpl->print_message(std::move(msg), scope) ;
         }
-        void message(const std::string& msg, const char* scope) {
-            msg_print_common_process(msg, scope) ;
+        void Logger::message(const std::string& msg, const char* scope) {
+            pimpl->print_message(msg, scope) ;
         }
     }
 }

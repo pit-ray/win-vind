@@ -94,9 +94,4 @@ TEST_CASE("(errlogger/remove_files_over) Under Fake Windows API: ")  {
     }
 }
 
-/*
-TEST_CASE("coreio/errlogger: Initialize errlogger under the fake Windows API: ") {
-}
-*/
-
 #include "util/enable_gcc_warning.hpp"

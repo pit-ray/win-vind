@@ -134,7 +134,7 @@ namespace vind
                     std::filesystem::create_directories(CONFIG_PATH()) ;
                 }
 
-                initialize_logger() ;
+                Logger::get_instance().init() ;
 
                 auto created_map = CreateFileMappingA(
                         INVALID_HANDLE_VALUE, NULL,

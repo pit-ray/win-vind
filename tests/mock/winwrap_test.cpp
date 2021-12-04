@@ -1,5 +1,7 @@
 #include <doctest.h>
 
+#define PRINT_ERROR(msg) /*(msg)*/
+
 #include "util/disable_gcc_warning.hpp"
 
 #include "util/string.cpp"
@@ -9,6 +11,7 @@
 
 #include <stdexcept>
 #include <utility>
+
 
 namespace vind
 {

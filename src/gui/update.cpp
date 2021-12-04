@@ -17,6 +17,7 @@
 #include "util/enable_gcc_warning.hpp"
 
 #include <chrono>
+#include <fstream>
 #include <sstream>
 #include <string>
 

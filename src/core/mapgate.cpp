@@ -298,38 +298,20 @@ namespace
         }
         return solved_outcmd ;
     }
-}
 
 
-namespace vind
-{
-    namespace core
-    {
-        struct MapGate::Impl {
-            ModeArray<std::unordered_map<std::size_t, std::vector<KeyLog>>> logpool_table_{} ;
-            ModeArray<LoggerParserManager> mgr_table_{} ;
+    struct _MapGate {
+        std::unordered_map<std::size_t, std::vector<KeyLog>> logpool_{} ;
+        LoggerParserManager mgr_{} ;
+        Key2KeysetMap syncmap_{} ;
 
-            ModeArray<Key2KeysetMap> syncmap_table_{} ;
-        } ;
 
-        MapGate::MapGate()
-        : pimpl(std::make_unique<Impl>())
-        {}
-
-        MapGate::~MapGate() noexcept = default ;
-
-        MapGate& MapGate::get_instance() {
-            static MapGate instance{} ;
-            return instance ;
-        }
-
-        void MapGate::reconstruct(Mode mode) {
+        void reconstruct(Mode mode) {
             std::unordered_map<std::size_t, MapCell> noremap_cmd2cmd{} ;
             std::unordered_map<std::size_t, MapCell> map_cmd2cmd{} ;
             std::array<MapCell, 256> map_key2keyset{} ;
 
-            auto& syncmap = pimpl->syncmap_table_[static_cast<int>(mode)] ;
-            syncmap.fill(KeySet{}) ;
+            syncmap_.fill(KeySet{}) ;
 
             std::vector<MapCell> maps ;
             get_maps(mode, maps) ;
@@ -349,7 +331,7 @@ namespace vind
                         auto trigger_key = trigger_cmd.front().front() ;
                         auto target_keyset = target_cmd.front() ;
 
-                        syncmap[trigger_key] = KeySet(
+                        syncmap_[trigger_key] = KeySet(
                                 target_keyset.begin(), target_keyset.end()) ;
 
                         map_key2keyset[trigger_key] = std::move(*itr) ;
@@ -360,9 +342,9 @@ namespace vind
                 }
             }
 
-            solve_recursive_key2keyset_mapping(syncmap) ;
+            solve_recursive_key2keyset_mapping(syncmap_) ;
             for(int i = 1 ; i < 255 ; i ++) {
-                if(syncmap[i].empty()) {
+                if(syncmap_[i].empty()) {
                     if(!map_key2keyset[i].empty()) {
                         PRINT_ERROR(
                                 mode_to_prefix(mode) + "map " + \
@@ -375,7 +357,7 @@ namespace vind
                     KeySet keys{} ;
                     KeySet syskeys{} ;
 
-                    for(const auto& key : syncmap[i]) {
+                    for(const auto& key : syncmap_[i]) {
                         if(get_ascii(key)) {
                             keys.push_back(key) ;
                         }
@@ -385,14 +367,13 @@ namespace vind
                     }
 
                     syskeys.insert(syskeys.end(), keys.begin(), keys.end()) ;
-                    syncmap[i] = std::move(syskeys) ;
+                    syncmap_[i] = std::move(syskeys) ;
                 }
             }
 
-            auto& logpool = pimpl->logpool_table_[static_cast<int>(mode)] ;
-            logpool.clear() ;
+            logpool_.clear() ;
 
-            auto solved_target_cmds = solve_recursive_cmd2cmd_mapping(map_cmd2cmd, syncmap) ;
+            auto solved_target_cmds = solve_recursive_cmd2cmd_mapping(map_cmd2cmd, syncmap_) ;
 
             std::vector<LoggerParser::SPtr> parsers{} ;
             for(const auto& [mapid, map] : map_cmd2cmd) {
@@ -412,7 +393,7 @@ namespace vind
                 parsers.push_back(std::move(parser)) ;
 
                 for(const auto& keyset : solved_target_cmds[mapid]) {
-                    logpool[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
+                    logpool_[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
                 }
             }
 
@@ -424,18 +405,39 @@ namespace vind
                 parsers.push_back(std::move(parser)) ;
 
                 for(const auto& keyset : map.target_command()) {
-                    logpool[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
+                    logpool_[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
                 }
             }
 
-            pimpl->mgr_table_[static_cast<int>(mode)] \
-                = LoggerParserManager(std::move(parsers)) ;
+            mgr_ = LoggerParserManager(std::move(parsers)) ;
+        }
+    } ;
+}
+
+
+namespace vind
+{
+    namespace core
+    {
+        struct MapGate::Impl {
+            ModeArray<_MapGate> c_{} ;
+        } ;
+
+        MapGate::MapGate()
+        : pimpl(std::make_unique<Impl>())
+        {}
+
+        MapGate::~MapGate() noexcept = default ;
+
+        MapGate& MapGate::get_instance() {
+            static MapGate instance{} ;
+            return instance ;
         }
 
         void MapGate::reconstruct() {
             // Extraction of registered maps
             for(std::size_t mode = 0 ; mode < mode_num() ; mode ++) {
-                reconstruct(static_cast<Mode>(mode)) ;
+                pimpl->c_[mode].reconstruct(static_cast<Mode>(mode)) ;
             }
         }
 
@@ -444,7 +446,7 @@ namespace vind
                 Mode mode) {
             auto midx = static_cast<int>(mode) ;
 
-            auto& mgr = pimpl->mgr_table_[midx] ;
+            auto& mgr = pimpl->c_[midx].mgr_ ;
 
             auto parser = mgr.find_parser_with_transition(log) ;
             if(parser) {
@@ -452,7 +454,7 @@ namespace vind
                     auto func = parser->get_func() ;
                     func->process() ;
                     mgr.reset_parser_states() ;
-                    return pimpl->logpool_table_[midx][func->id()] ;
+                    return pimpl->c_[midx].logpool_[func->id()] ;
 
                 }
                 else if(parser->is_rejected_with_ready()) {
@@ -470,7 +472,8 @@ namespace vind
                 KeyCode hook_key,
                 bool press_sync_state,
                 Mode mode) {
-            auto target = pimpl->syncmap_table_[static_cast<int>(mode)][hook_key] ;
+            auto midx = static_cast<int>(mode) ;
+            auto target = pimpl->c_[midx].syncmap_[hook_key] ;
             if(target.empty()) {
                 return false ;
             }

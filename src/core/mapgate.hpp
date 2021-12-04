@@ -26,7 +26,6 @@ namespace vind
         public:
             static MapGate& get_instance() ;
 
-            void reconstruct(Mode mode) ;
             void reconstruct() ;
 
             //

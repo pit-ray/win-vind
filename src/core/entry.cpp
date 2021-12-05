@@ -77,7 +77,6 @@ SOFTWARE.
 #include "g_params.hpp"
 #include "key_absorber.hpp"
 #include "keycodecvt.hpp"
-#include "log_map.hpp"
 #include "main_loop.hpp"
 #include "mode.hpp"
 #include "path.hpp"

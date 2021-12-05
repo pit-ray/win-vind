@@ -4,7 +4,6 @@
 #include "key_logger_base.hpp"
 #include "keycode_def.hpp"
 #include "keycodecvt.hpp"
-#include "log_map.hpp"
 #include "util/keystroke_repeater.hpp"
 
 #if defined(DEBUG)

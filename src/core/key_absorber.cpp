@@ -3,7 +3,6 @@
 #include "err_logger.hpp"
 #include "keycode_def.hpp"
 #include "keycodecvt.hpp"
-#include "log_map.hpp"
 #include "mapgate.hpp"
 
 #include <chrono>

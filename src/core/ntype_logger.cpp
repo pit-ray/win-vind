@@ -5,7 +5,6 @@
 #include "key_absorber.hpp"
 #include "key_logger_base.hpp"
 #include "keycodecvt.hpp"
-#include "log_map.hpp"
 #include "logger_parser.hpp"
 #include "mode.hpp"
 #include "util/keystroke_repeater.hpp"

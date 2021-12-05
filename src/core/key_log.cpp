@@ -12,12 +12,6 @@ namespace vind
             : log_()
             {}
 
-            virtual ~Impl() noexcept         = default ;
-            explicit Impl(const Impl& rhs)   = default ;
-            Impl& operator=(const Impl& rhs) = default ;
-            explicit Impl(Impl&& rhs)        = default ;
-            Impl& operator=(Impl&& rhs)      = default ;
-
             explicit Impl(const Data& codes)
             : log_(codes)
             {}

@@ -1,46 +1,38 @@
 #ifndef _EDI_JUMP_CARET_HPP
 #define _EDI_JUMP_CARET_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "movebase.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct JumpCaretToBOL : public BindedFuncCreator<JumpCaretToBOL> {
+        struct JumpCaretToBOL : public MoveBaseCreator<JumpCaretToBOL> {
             explicit JumpCaretToBOL() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_moving_caret() const noexcept override ;
         } ;
 
-        struct JumpCaretToEOL : public BindedFuncCreator<JumpCaretToEOL> {
+        struct JumpCaretToEOL : public MoveBaseCreator<JumpCaretToEOL> {
             explicit JumpCaretToEOL() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_moving_caret() const noexcept override ;
         } ;
 
-        struct JumpCaretToBOF : public BindedFuncCreator<JumpCaretToBOF> {
+        struct JumpCaretToBOF : public MoveBaseCreator<JumpCaretToBOF> {
             explicit JumpCaretToBOF() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_moving_caret() const noexcept override ;
         } ;
 
-        struct JumpCaretToEOF : public BindedFuncCreator<JumpCaretToEOF> {
+        struct JumpCaretToEOF : public MoveBaseCreator<JumpCaretToEOF> {
             explicit JumpCaretToEOF() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_moving_caret() const noexcept override ;
         } ;
     }
 }

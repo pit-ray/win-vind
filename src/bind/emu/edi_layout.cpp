@@ -17,7 +17,7 @@ namespace vind
         } ;
 
         JoinNextLine::JoinNextLine()
-        : BindedFuncCreator("join_next_line"),
+        : ChangeBaseCreator("join_next_line"),
           pimpl(std::make_unique<Impl>())
         {}
 

@@ -16,11 +16,8 @@ namespace vind
     {
         //JumpCaretToBOL
         JumpCaretToBOL::JumpCaretToBOL()
-        : BindedFuncCreator("jump_caret_to_BOL")
+        : MoveBaseCreator("jump_caret_to_BOL")
         {}
-        bool JumpCaretToBOL::is_for_moving_caret() const noexcept {
-            return true ;
-        }
         void JumpCaretToBOL::sprocess() {
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 util::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
@@ -41,11 +38,8 @@ namespace vind
 
         //JumpCaretToEOL
         JumpCaretToEOL::JumpCaretToEOL()
-        : BindedFuncCreator("jump_caret_to_EOL")
+        : MoveBaseCreator("jump_caret_to_EOL")
         {}
-        bool JumpCaretToEOL::is_for_moving_caret() const noexcept {
-            return true ;
-        }
         void JumpCaretToEOL::sprocess(unsigned int repeat_num) {
             //down caret N - 1
             safe_for(repeat_num - 1, [] {
@@ -72,11 +66,8 @@ namespace vind
 
         //EdiJumpCaret2NLine_DfBOF
         JumpCaretToBOF::JumpCaretToBOF()
-        : BindedFuncCreator("jump_caret_to_BOF")
+        : MoveBaseCreator("jump_caret_to_BOF")
         {}
-        bool JumpCaretToBOF::is_for_moving_caret() const noexcept {
-            return true ;
-        }
         void JumpCaretToBOF::sprocess(unsigned int repeat_num) {
             if(is_first_line_selection())
                 select_line_EOL2BOL() ;
@@ -119,11 +110,8 @@ namespace vind
 
         //EdiJumpCaret2NLine_DfEOF
         JumpCaretToEOF::JumpCaretToEOF()
-        : BindedFuncCreator("jump_caret_to_EOF")
+        : MoveBaseCreator("jump_caret_to_EOF")
         {}
-        bool JumpCaretToEOF::is_for_moving_caret() const noexcept {
-            return true ;
-        }
         void JumpCaretToEOF::sprocess(unsigned int repeat_num) {
             using util::pushup ;
 

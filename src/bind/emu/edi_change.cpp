@@ -42,7 +42,7 @@ namespace vind
 
         //ChangeLine
         ChangeLine::ChangeLine()
-        : BindedFuncCreator("change_line")
+        : ChangeBaseCreator("change_line")
         {}
         void ChangeLine::sprocess(unsigned int repeat_num) {
             auto res = get_selected_text([] {
@@ -79,7 +79,7 @@ namespace vind
 
         //ChangeChar
         ChangeChar::ChangeChar()
-        : BindedFuncCreator("change_char")
+        : ChangeBaseCreator("change_char")
         {}
         void ChangeChar::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -108,7 +108,7 @@ namespace vind
 
         //ChangeUntilEOL
         ChangeUntilEOL::ChangeUntilEOL()
-        : BindedFuncCreator("change_until_EOL")
+        : ChangeBaseCreator("change_until_EOL")
         {}
         /* Actually, If N >= 2
          *

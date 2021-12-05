@@ -23,7 +23,7 @@ namespace vind
     {
         //ToInsertBOL
         ToInsertBOL::ToInsertBOL()
-        : BindedFuncCreator("to_insert_BOL")
+        : ChangeBaseCreator("to_insert_BOL")
         {}
         void ToInsertBOL::sprocess(bool vclmodeout) {
             util::pushup(KEYCODE_HOME) ;
@@ -41,7 +41,7 @@ namespace vind
 
         //Change2EdiBkInsert
         Change2EdiBkInsert::Change2EdiBkInsert()
-        : BindedFuncCreator("to_insert_append")
+        : ChangeBaseCreator("to_insert_append")
         {}
         void Change2EdiBkInsert::sprocess(bool vclmodeout) {
             util::pushup(KEYCODE_RIGHT) ;
@@ -59,7 +59,7 @@ namespace vind
 
         //ToInsertEOL
         ToInsertEOL::ToInsertEOL()
-        : BindedFuncCreator("to_insert_EOL")
+        : ChangeBaseCreator("to_insert_EOL")
         {}
         void ToInsertEOL::sprocess(bool vclmodeout) {
             util::pushup(KEYCODE_END) ;
@@ -77,7 +77,7 @@ namespace vind
 
         //ToInsertNLBelow
         ToInsertNLBelow::ToInsertNLBelow()
-        : BindedFuncCreator("to_insert_nlbelow")
+        : ChangeBaseCreator("to_insert_nlbelow")
         {}
         void ToInsertNLBelow::sprocess(bool vclmodeout) {
             util::pushup(KEYCODE_END) ;
@@ -96,7 +96,7 @@ namespace vind
 
         //ToInsertNLAbove
         ToInsertNLAbove::ToInsertNLAbove()
-        : BindedFuncCreator("to_insert_nlabove")
+        : ChangeBaseCreator("to_insert_nlabove")
         {}
         void ToInsertNLAbove::sprocess(bool vclmodeout) {
             util::pushup(KEYCODE_HOME) ;

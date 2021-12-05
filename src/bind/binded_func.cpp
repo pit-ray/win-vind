@@ -9,8 +9,9 @@
 #include "core/keycodecvt.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
-#include "emu/edi_dot.hpp"
 #include "util/keybrd.hpp"
+#include "util/string.hpp"
+
 
 namespace vind
 {
@@ -67,10 +68,10 @@ namespace vind
         : pimpl(std::make_unique<Impl>())
         {}
         BindedFunc::BindedFunc(const std::string& name)
-        : pimpl(std::make_unique<Impl>(name))
+        : pimpl(std::make_unique<Impl>(util::A2a(name)))
         {}
         BindedFunc::BindedFunc(std::string&& name)
-        : pimpl(std::make_unique<Impl>(std::move(name)))
+        : pimpl(std::make_unique<Impl>(util::A2a(std::move(name))))
         {}
 
         BindedFunc::~BindedFunc() noexcept              = default ;
@@ -110,11 +111,6 @@ namespace vind
             try {
                 do_process(parent_lgr) ;
                 pimpl->release_fake_press() ;
-
-                if(is_for_changing_text()) {
-                    RepeatLastChange::store_change(
-                            this, parent_lgr.get_head_num()) ;
-                }
             }
             catch(const std::runtime_error& e) {
                 error_process(e) ;
@@ -125,22 +121,10 @@ namespace vind
             try {
                 do_process(parent_lgr) ;
                 pimpl->release_fake_press() ;
-
-                if(is_for_changing_text()) {
-                    RepeatLastChange::store_change(this) ;
-                }
             }
             catch(const std::runtime_error& e) {
                 error_process(e) ;
             }
-        }
-
-        bool BindedFunc::is_for_moving_caret() const noexcept {
-            return false ;
-        }
-
-        bool BindedFunc::is_for_changing_text() const noexcept {
-            return false ;
         }
 
         void BindedFunc::reconstruct() {

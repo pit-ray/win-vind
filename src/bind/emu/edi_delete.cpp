@@ -17,13 +17,39 @@ namespace vind
 {
     namespace bind
     {
+        //DeleteHighlightText (Visual only)
+        DeleteHighlightText::DeleteHighlightText()
+        : BindedFuncCreator("delete_highlight_text")
+        {}
+        void DeleteHighlightText::sprocess() {
+            using util::pushup ;
+
+            pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
+                set_register_type(RegType::Lines) ;
+            }
+            else {
+                set_register_type(RegType::Chars) ;
+            }
+            ToEdiNormal::sprocess(false) ;
+        }
+        void DeleteHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess() ;
+            }
+        }
+        void DeleteHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess() ;
+        }
+
+
         //DeleteLine
         struct DeleteLine::Impl {
             util::KeyStrokeRepeater ksr{} ;
         } ;
 
         DeleteLine::DeleteLine()
-        : BindedFuncCreator("delete_line"),
+        : ChangeBaseCreator("delete_line"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -68,7 +94,7 @@ namespace vind
         } ;
 
         DeleteLineUntilEOL::DeleteLineUntilEOL()
-        : BindedFuncCreator("delete_line_until_EOL"),
+        : ChangeBaseCreator("delete_line_until_EOL"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -112,7 +138,7 @@ namespace vind
         } ;
 
         DeleteAfter::DeleteAfter()
-        : BindedFuncCreator("delete_after"),
+        : ChangeBaseCreator("delete_after"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -154,7 +180,7 @@ namespace vind
         } ;
 
         DeleteBefore::DeleteBefore()
-        : BindedFuncCreator("delete_before"),
+        : ChangeBaseCreator("delete_before"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -187,32 +213,6 @@ namespace vind
         }
         void DeleteBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
             sprocess(1) ;
-        }
-
-
-        //DeleteHighlightText (Visual only)
-        DeleteHighlightText::DeleteHighlightText()
-        : BindedFuncCreator("delete_highlight_text")
-        {}
-        void DeleteHighlightText::sprocess() {
-            using util::pushup ;
-
-            pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-            if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
-                set_register_type(RegType::Lines) ;
-            }
-            else {
-                set_register_type(RegType::Chars) ;
-            }
-            ToEdiNormal::sprocess(false) ;
-        }
-        void DeleteHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void DeleteHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

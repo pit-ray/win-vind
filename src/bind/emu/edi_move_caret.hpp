@@ -1,13 +1,14 @@
 #ifndef _EDI_MOVE_CARET_HPP
 #define _EDI_MOVE_CARET_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "movebase.hpp"
+
 
 namespace vind
 {
     namespace bind
     {
-        class MoveCaretLeft : public BindedFuncCreator<MoveCaretLeft> {
+        class MoveCaretLeft : public MoveBaseCreator<MoveCaretLeft> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -16,10 +17,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretLeft() ;
             virtual ~MoveCaretLeft() noexcept ;
@@ -30,7 +27,7 @@ namespace vind
             MoveCaretLeft& operator=(const MoveCaretLeft&) = delete ;
         } ;
 
-        class MoveCaretRight : public BindedFuncCreator<MoveCaretRight> {
+        class MoveCaretRight : public MoveBaseCreator<MoveCaretRight> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -39,10 +36,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretRight() ;
             virtual ~MoveCaretRight() noexcept ;
@@ -53,7 +46,7 @@ namespace vind
             MoveCaretRight& operator=(const MoveCaretRight&) = delete ;
         } ;
 
-        class MoveCaretUp : public BindedFuncCreator<MoveCaretUp> {
+        class MoveCaretUp : public MoveBaseCreator<MoveCaretUp> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -62,10 +55,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretUp() ;
             virtual ~MoveCaretUp() noexcept ;
@@ -76,7 +65,7 @@ namespace vind
             MoveCaretUp& operator=(const MoveCaretUp&) = delete ;
         } ;
 
-        class MoveCaretDown : public BindedFuncCreator<MoveCaretDown> {
+        class MoveCaretDown : public MoveBaseCreator<MoveCaretDown> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -85,10 +74,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretDown() ;
             virtual ~MoveCaretDown() noexcept ;
@@ -100,7 +85,7 @@ namespace vind
         } ;
 
 
-        class MoveCaretWordForward : public BindedFuncCreator<MoveCaretWordForward> {
+        class MoveCaretWordForward : public MoveBaseCreator<MoveCaretWordForward> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -109,10 +94,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretWordForward() ;
             virtual ~MoveCaretWordForward() noexcept ;
@@ -123,7 +104,7 @@ namespace vind
             MoveCaretWordForward& operator=(const MoveCaretWordForward&) = delete ;
         } ;
 
-        class MoveCaretWordBackward : public BindedFuncCreator<MoveCaretWordBackward> {
+        class MoveCaretWordBackward : public MoveBaseCreator<MoveCaretWordBackward> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -132,10 +113,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretWordBackward() ;
             virtual ~MoveCaretWordBackward() noexcept ;
@@ -147,7 +124,7 @@ namespace vind
         } ;
 
 
-        class MoveCaretNonBlankWordForward : public BindedFuncCreator<MoveCaretNonBlankWordForward> {
+        class MoveCaretNonBlankWordForward : public MoveBaseCreator<MoveCaretNonBlankWordForward> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -156,10 +133,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretNonBlankWordForward() ;
             virtual ~MoveCaretNonBlankWordForward() noexcept ;
@@ -170,7 +143,7 @@ namespace vind
             MoveCaretDown& operator=(const MoveCaretDown&) = delete ;
         } ;
 
-        class MoveCaretNonBlankWordBackward : public BindedFuncCreator<MoveCaretNonBlankWordBackward> {
+        class MoveCaretNonBlankWordBackward : public MoveBaseCreator<MoveCaretNonBlankWordBackward> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -179,10 +152,6 @@ namespace vind
             void sprocess(unsigned int repeat_num=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
-
-            bool is_for_moving_caret() const noexcept override {
-                return true ;
-            }
 
             explicit MoveCaretNonBlankWordBackward() ;
             virtual ~MoveCaretNonBlankWordBackward() noexcept ;

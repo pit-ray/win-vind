@@ -2,7 +2,6 @@
 #define _BINDED_FUNC_WITH_CREATOR_HPP
 
 #include "binded_func.hpp"
-#include "util/string.hpp"
 
 
 namespace vind
@@ -33,11 +32,9 @@ namespace vind
             }
 
         public:
-            explicit BindedFuncCreator(const std::string& name)
-            : BindedFunc(util::A2a(name))
-            {}
-            explicit BindedFuncCreator(std::string&& name)
-            : BindedFunc(util::A2a(std::move(name)))
+            template <typename String>
+            explicit BindedFuncCreator(String&& name)
+            : BindedFunc(std::forward<String>(name))
             {}
 
             static std::unique_ptr<BindedFunc> create() {

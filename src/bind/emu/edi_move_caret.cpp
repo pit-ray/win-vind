@@ -25,7 +25,7 @@ namespace vind
         } ;
 
         MoveCaretLeft::MoveCaretLeft()
-        : BindedFuncCreator("move_caret_left"),
+        : MoveBaseCreator("move_caret_left"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -65,7 +65,7 @@ namespace vind
         } ;
 
         MoveCaretRight::MoveCaretRight()
-        : BindedFuncCreator("move_caret_right"),
+        : MoveBaseCreator("move_caret_right"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -105,7 +105,7 @@ namespace vind
         } ;
 
         MoveCaretUp::MoveCaretUp()
-        : BindedFuncCreator("move_caret_up"),
+        : MoveBaseCreator("move_caret_up"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -157,7 +157,7 @@ namespace vind
         } ;
 
         MoveCaretDown::MoveCaretDown()
-        : BindedFuncCreator("move_caret_down"),
+        : MoveBaseCreator("move_caret_down"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -213,7 +213,7 @@ namespace vind
         } ;
 
         MoveCaretWordForward::MoveCaretWordForward()
-        : BindedFuncCreator("move_caret_word_forward"),
+        : MoveBaseCreator("move_caret_word_forward"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -253,7 +253,7 @@ namespace vind
         } ;
 
         MoveCaretWordBackward::MoveCaretWordBackward()
-        : BindedFuncCreator("move_caret_word_backward"),
+        : MoveBaseCreator("move_caret_word_backward"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -293,7 +293,7 @@ namespace vind
         } ;
 
         MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward()
-        : BindedFuncCreator("move_caret_nonblank_word_forward"),
+        : MoveBaseCreator("move_caret_nonblank_word_forward"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -333,7 +333,7 @@ namespace vind
         } ;
 
         MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward()
-        : BindedFuncCreator("move_caret_nonblank_word_backward"),
+        : MoveBaseCreator("move_caret_nonblank_word_backward"),
           pimpl(std::make_unique<Impl>())
         {}
 

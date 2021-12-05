@@ -1,13 +1,14 @@
 #ifndef _EDI_LAYOUT_HPP
 #define _EDI_LAYOUT_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "changebase.hpp"
+
 
 namespace vind
 {
     namespace bind
     {
-        class JoinNextLine : public BindedFuncCreator<JoinNextLine> {
+        class JoinNextLine : public ChangeBaseCreator<JoinNextLine> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -24,10 +25,6 @@ namespace vind
             JoinNextLine& operator=(JoinNextLine&&) ;
             JoinNextLine(const JoinNextLine&)             = delete ;
             JoinNextLine& operator=(const JoinNextLine&)  = delete ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
     }
 }

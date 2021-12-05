@@ -79,7 +79,7 @@ namespace vind
     {
         //EdiNRplaceChar
         ReplaceChar::ReplaceChar()
-        : BindedFuncCreator("replace_char")
+        : ChangeBaseCreator("replace_char")
         {}
         void ReplaceChar::sprocess(unsigned int repeat_num) {
             loop_for_keymatching([repeat_num](const auto& keycodes, bool shifted=false) {
@@ -110,7 +110,7 @@ namespace vind
 
         //ReplaceSequence
         ReplaceSequence::ReplaceSequence()
-        : BindedFuncCreator("replace_sequence")
+        : ChangeBaseCreator("replace_sequence")
         {}
         void ReplaceSequence::sprocess(unsigned int repeat_num) {
             using util::pushup ;
@@ -159,7 +159,7 @@ namespace vind
 
         //SwitchCharCase
         SwitchCharCase::SwitchCharCase()
-        : BindedFuncCreator("switch_char_case")
+        : ChangeBaseCreator("switch_char_case")
         {}
         void SwitchCharCase::sprocess(unsigned int repeat_num) {
             auto res = get_selected_text([&repeat_num] {

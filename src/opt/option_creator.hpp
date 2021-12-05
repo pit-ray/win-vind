@@ -17,11 +17,9 @@ namespace vind
         template <typename Derived>
         class OptionCreator : public Option {
         public:
-            explicit OptionCreator(const std::string& name)
-            : Option(util::A2a(name))
-            {}
-            explicit OptionCreator(std::string&& name)
-            : Option(util::A2a(std::move(name)))
+            template <typename String>
+            explicit OptionCreator(String&& name)
+            : Option(util::A2a(std::forward<String>(name)))
             {}
 
             static std::unique_ptr<Option> create() {

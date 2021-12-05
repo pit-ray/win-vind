@@ -1,65 +1,46 @@
 #ifndef _EDI_CHANGE_MOVE_HPP
 #define _EDI_CHANGE_MOVE_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "changebase.hpp"
+
 
 namespace vind
 {
     namespace bind
     {
-        struct ToInsertBOL : public BindedFuncCreator<ToInsertBOL> {
+        struct ToInsertBOL : public ChangeBaseCreator<ToInsertBOL> {
             explicit ToInsertBOL() ;
             static void sprocess(bool vclmodeout=true) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
-        struct Change2EdiBkInsert : public BindedFuncCreator<Change2EdiBkInsert> {
+        struct Change2EdiBkInsert : public ChangeBaseCreator<Change2EdiBkInsert> {
             explicit Change2EdiBkInsert() ;
             static void sprocess(bool vclmodeout=true) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
-        struct ToInsertEOL : public BindedFuncCreator<ToInsertEOL> {
+        struct ToInsertEOL : public ChangeBaseCreator<ToInsertEOL> {
             explicit ToInsertEOL() ;
             static void sprocess(bool vclmodeout=true) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
-        struct ToInsertNLBelow : public BindedFuncCreator<ToInsertNLBelow> {
+        struct ToInsertNLBelow : public ChangeBaseCreator<ToInsertNLBelow> {
             explicit ToInsertNLBelow() ;
             static void sprocess(bool vclmodeout=true) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
-        struct ToInsertNLAbove : public BindedFuncCreator<ToInsertNLAbove> {
+        struct ToInsertNLAbove : public ChangeBaseCreator<ToInsertNLAbove> {
             explicit ToInsertNLAbove() ;
             static void sprocess(bool vclmodeout=true) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
     }
 }

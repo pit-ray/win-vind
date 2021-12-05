@@ -1,14 +1,15 @@
 #ifndef _EDI_PUT_HPP
 #define _EDI_PUT_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "changebase.hpp"
+
 
 namespace vind
 {
     namespace bind
     {
         //Paste
-        class PutAfter : public BindedFuncCreator<PutAfter> {
+        class PutAfter : public ChangeBaseCreator<PutAfter> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -25,13 +26,9 @@ namespace vind
             PutAfter& operator=(PutAfter&&) ;
             PutAfter(const PutAfter&)            = delete ;
             PutAfter& operator=(const PutAfter&) = delete ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
-        class PutBefore : public BindedFuncCreator<PutBefore> {
+        class PutBefore : public ChangeBaseCreator<PutBefore> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -48,10 +45,6 @@ namespace vind
             PutBefore& operator=(PutBefore&&) ;
             PutBefore(const PutBefore&)            = delete ;
             PutBefore& operator=(const PutBefore&) = delete ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
     }
 }

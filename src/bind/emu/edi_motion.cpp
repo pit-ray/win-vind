@@ -10,8 +10,11 @@
 #include "core/ntype_logger.hpp"
 #include "edi_delete.hpp"
 #include "edi_yank.hpp"
+#include "movebase.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
+
+#include <memory>
 
 #if defined(DEBUG)
 #include <iostream>
@@ -21,6 +24,7 @@
 namespace
 {
     using namespace vind ;
+    using namespace vind::bind ;
     bool select_by_motion(std::size_t caller_self_id, core::FuncFinder& ff) {
         core::NTypeLogger lgr ;
         core::InstantKeyAbsorber ika ;
@@ -43,7 +47,7 @@ namespace
                     lgr.latest(),
                     caller_self_id,
                     Mode::EDI_VISUAL) ;
-            if(parser && parser->get_func()->is_for_moving_caret()) {
+            if(parser && std::dynamic_pointer_cast<MoveBase>(parser->get_func())) {
                 if(parser->is_accepted()) {
                     core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
                     parser->get_func()->process(lgr) ;
@@ -117,9 +121,9 @@ namespace
                     caller_self_id,
                     Mode::EDI_VISUAL) ;
             if(parser_2) {
-                if(parser_2->is_accepted() && parser_2->get_func()->is_for_moving_caret()) {
+                if(parser_2->is_accepted() && std::dynamic_pointer_cast<MoveBase>(parser_2->get_func())) {
                     core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                    bind::safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
+                    safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
                         f->process(lgr) ;
                     }) ;
                     return true ;

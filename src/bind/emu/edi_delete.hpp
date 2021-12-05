@@ -2,6 +2,8 @@
 #define _EDI_DELETE_HPP
 
 #include "bind/binded_func_creator.hpp"
+#include "changebase.hpp"
+
 
 namespace vind
 {
@@ -15,7 +17,7 @@ namespace vind
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        class DeleteLine : public BindedFuncCreator<DeleteLine> {
+        class DeleteLine : public ChangeBaseCreator<DeleteLine> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -32,14 +34,10 @@ namespace vind
             DeleteLine& operator=(DeleteLine&&) ;
             DeleteLine(const DeleteLine&)            = delete ;
             DeleteLine& operator=(const DeleteLine&) = delete ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
 
-        class DeleteLineUntilEOL : public BindedFuncCreator<DeleteLineUntilEOL> {
+        class DeleteLineUntilEOL : public ChangeBaseCreator<DeleteLineUntilEOL> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -56,13 +54,9 @@ namespace vind
             DeleteLineUntilEOL& operator=(DeleteLineUntilEOL&&) ;
             DeleteLineUntilEOL(const DeleteLineUntilEOL&)            = delete ;
             DeleteLineUntilEOL& operator=(const DeleteLineUntilEOL&) = delete ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
-        class DeleteAfter : public BindedFuncCreator<DeleteAfter> {
+        class DeleteAfter : public ChangeBaseCreator<DeleteAfter> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -79,13 +73,9 @@ namespace vind
             DeleteAfter& operator=(DeleteAfter&&) ;
             DeleteAfter(const DeleteAfter&)            = delete ;
             DeleteAfter& operator=(const DeleteAfter&) = delete ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
 
-        class DeleteBefore : public BindedFuncCreator<DeleteBefore> {
+        class DeleteBefore : public ChangeBaseCreator<DeleteBefore> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -102,10 +92,6 @@ namespace vind
             DeleteBefore& operator=(DeleteBefore&&) ;
             DeleteBefore(const DeleteBefore&)            = delete ;
             DeleteBefore& operator=(const DeleteBefore&) = delete ;
-
-            bool is_for_changing_text() const noexcept override {
-                return true ;
-            }
         } ;
     }
 }

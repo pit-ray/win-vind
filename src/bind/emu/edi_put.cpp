@@ -20,7 +20,7 @@ namespace vind
         } ;
 
         PutAfter::PutAfter()
-        : BindedFuncCreator("put_after"),
+        : ChangeBaseCreator("put_after"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -66,7 +66,7 @@ namespace vind
         } ;
 
         PutBefore::PutBefore()
-        : BindedFuncCreator("put_before"),
+        : ChangeBaseCreator("put_before"),
           pimpl(std::make_unique<Impl>())
         {}
 

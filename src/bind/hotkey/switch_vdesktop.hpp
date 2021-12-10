@@ -1,13 +1,13 @@
 #ifndef _SWITCH_TASKVIEW_HPP
 #define _SWITCH_TASKVIEW_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct SwitchVDesktop2Left : public BindedFuncCreator<SwitchVDesktop2Left> {
+        struct SwitchVDesktop2Left : public BindedFuncVoid<SwitchVDesktop2Left> {
             explicit SwitchVDesktop2Left() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -15,7 +15,7 @@ namespace vind
         } ;
 
 
-        struct SwitchVDesktop2Right : public BindedFuncCreator<SwitchVDesktop2Right> {
+        struct SwitchVDesktop2Right : public BindedFuncVoid<SwitchVDesktop2Right> {
             explicit SwitchVDesktop2Right() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -23,7 +23,7 @@ namespace vind
         } ;
 
 
-        struct CreateNewVDesktop : public BindedFuncCreator<CreateNewVDesktop> {
+        struct CreateNewVDesktop : public BindedFuncVoid<CreateNewVDesktop> {
             explicit CreateNewVDesktop() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -31,7 +31,7 @@ namespace vind
         } ;
 
 
-        struct CloseCurrentVDesktop : public BindedFuncCreator<CloseCurrentVDesktop> {
+        struct CloseCurrentVDesktop : public BindedFuncVoid<CloseCurrentVDesktop> {
             explicit CloseCurrentVDesktop() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -39,7 +39,7 @@ namespace vind
         } ;
 
 
-        struct TaskView : public BindedFuncCreator<TaskView> {
+        struct TaskView : public BindedFuncVoid<TaskView> {
             explicit TaskView() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

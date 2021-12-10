@@ -1,13 +1,13 @@
 #ifndef _MOVE_CURSOR_HPP
 #define _MOVE_CURSOR_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class MoveCursorLeft : public BindedFuncCreator<MoveCursorLeft> {
+        class MoveCursorLeft : public BindedFuncVoid<MoveCursorLeft> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -29,7 +29,7 @@ namespace vind
         } ;
 
 
-        class MoveCursorRight : public BindedFuncCreator<MoveCursorRight> {
+        class MoveCursorRight : public BindedFuncVoid<MoveCursorRight> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -51,7 +51,7 @@ namespace vind
         } ;
 
 
-        class MoveCursorUp : public BindedFuncCreator<MoveCursorUp> {
+        class MoveCursorUp : public BindedFuncVoid<MoveCursorUp> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -73,7 +73,7 @@ namespace vind
         } ;
 
 
-        class MoveCursorDown : public BindedFuncCreator<MoveCursorDown> {
+        class MoveCursorDown : public BindedFuncVoid<MoveCursorDown> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

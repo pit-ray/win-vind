@@ -1,7 +1,7 @@
 #ifndef _MKDIR_HPP
 #define _MKDIR_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 #include <filesystem>
 
@@ -9,7 +9,7 @@ namespace vind
 {
     namespace bind
     {
-        struct MakeDir : public BindedFuncCreator<MakeDir> {
+        struct MakeDir : public BindedFuncVoid<MakeDir> {
             explicit MakeDir() ;
             static void sprocess(const std::filesystem::path& path="New Folder") ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

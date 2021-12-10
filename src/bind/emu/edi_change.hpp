@@ -1,7 +1,7 @@
 #ifndef _EDI_CHANGE_HPP
 #define _EDI_CHANGE_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 #include "changebase.hpp"
 
 namespace vind
@@ -10,7 +10,7 @@ namespace vind
     {
         struct SelectedTextResult ;
 
-        struct ChangeHighlightText : public BindedFuncCreator<ChangeHighlightText> {
+        struct ChangeHighlightText : public BindedFuncVoid<ChangeHighlightText> {
             explicit ChangeHighlightText() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

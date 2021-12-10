@@ -1,12 +1,12 @@
 #ifndef _CLICK_HPP
 #define _CLICK_HPP
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct ClickLeft : public BindedFuncCreator<ClickLeft> {
+        struct ClickLeft : public BindedFuncVoid<ClickLeft> {
             explicit ClickLeft() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -14,7 +14,7 @@ namespace vind
         } ;
 
 
-        struct ClickRight : public BindedFuncCreator<ClickRight> {
+        struct ClickRight : public BindedFuncVoid<ClickRight> {
             explicit ClickRight() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

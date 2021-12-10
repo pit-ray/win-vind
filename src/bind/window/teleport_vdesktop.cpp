@@ -14,7 +14,7 @@ namespace vind
     namespace bind
     {
         TeleportOverVDesktop::TeleportOverVDesktop()
-        : BindedFuncCreator("teleport_over_vdesktop")
+        : BindedFuncVoid("teleport_over_vdesktop")
         {}
 
         void TeleportOverVDesktop::sprocess(unsigned int desktop_id) {

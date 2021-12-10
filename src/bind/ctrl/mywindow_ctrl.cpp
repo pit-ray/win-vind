@@ -6,11 +6,6 @@
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
 
-namespace
-{
-    std::function<void()> show_func = [] {return ;} ;
-    std::function<void()> exit_func = [] {return ;} ;
-}
 
 namespace vind
 {
@@ -18,12 +13,12 @@ namespace vind
     {
         //ShowConfigGUI
         ShowConfigGUI::ShowConfigGUI()
-        : BindedFuncCreator("show_config_gui")
+        : BindedFuncVoid("show_config_gui")
         {}
         void ShowConfigGUI::sprocess() {
-            show_func() ;
-            Sleep(50) ; //wait until opened window.
-            JumpToActiveWindow::sprocess() ;
+            /*
+             * NOT IMPLEMENTED
+             */
         }
         void ShowConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
             if(parent_lgr.is_long_pressing()) {
@@ -33,28 +28,23 @@ namespace vind
         void ShowConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
-        void ShowConfigGUI::register_show_func(std::function<void()> func) noexcept {
-            show_func = std::move(func) ;
-        }
 
 
         //ExitConfigGUI
         ExitConfigGUI::ExitConfigGUI()
-        : BindedFuncCreator("exit_config_gui")
+        : BindedFuncFlex("exit_config_gui")
         {}
-        void ExitConfigGUI::sprocess() {
-            exit_func() ;
+        core::SystemCall ExitConfigGUI::sprocess() {
+            return core::SystemCall::TERMINATE ;
         }
-        void ExitConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
+        core::SystemCall ExitConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
+                return sprocess() ;
             }
+            return core::SystemCall::NOTHING ;
         }
-        void ExitConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-        void ExitConfigGUI::register_exit_func(std::function<void()> func) noexcept {
-            exit_func = std::move(func) ;
+        core::SystemCall ExitConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            return sprocess() ;
         }
     }
 }

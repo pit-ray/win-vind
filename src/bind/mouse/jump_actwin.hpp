@@ -1,13 +1,13 @@
 #ifndef _JUMP_ACTWIN_HPP
 #define _JUMP_ACTWIN_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct JumpToActiveWindow : public BindedFuncCreator<JumpToActiveWindow> {
+        struct JumpToActiveWindow : public BindedFuncVoid<JumpToActiveWindow> {
             explicit JumpToActiveWindow() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

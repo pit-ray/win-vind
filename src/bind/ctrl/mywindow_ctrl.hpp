@@ -1,30 +1,25 @@
 #ifndef _MYWINDOW_CTRL_HPP
 #define _MYWINDOW_CTRL_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 #include <functional>
 
 namespace vind
 {
     namespace bind
     {
-        struct ShowConfigGUI : public BindedFuncCreator<ShowConfigGUI> {
+        struct ShowConfigGUI : public BindedFuncVoid<ShowConfigGUI> {
             explicit ShowConfigGUI() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            static void register_show_func(std::function<void()> func) noexcept ;
         } ;
 
-
-        struct ExitConfigGUI : public BindedFuncCreator<ExitConfigGUI> {
+        struct ExitConfigGUI : public BindedFuncFlex<ExitConfigGUI> {
             explicit ExitConfigGUI() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
-
-            static void register_exit_func(std::function<void()> func) noexcept ;
+            static core::SystemCall sprocess() ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
     }
 }

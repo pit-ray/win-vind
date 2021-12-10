@@ -1,48 +1,48 @@
 #ifndef _JUMP_CURSOR_HPP
 #define _JUMP_CURSOR_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct JumpToLeft : public BindedFuncCreator<JumpToLeft> {
+        struct JumpToLeft : public BindedFuncVoid<JumpToLeft> {
             explicit JumpToLeft() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct JumpToRight : public BindedFuncCreator<JumpToRight> {
+        struct JumpToRight : public BindedFuncVoid<JumpToRight> {
             explicit JumpToRight() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct JumpToTop : public BindedFuncCreator<JumpToTop> {
+        struct JumpToTop : public BindedFuncVoid<JumpToTop> {
             explicit JumpToTop() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct JumpToBottom : public BindedFuncCreator<JumpToBottom> {
+        struct JumpToBottom : public BindedFuncVoid<JumpToBottom> {
             explicit JumpToBottom() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct JumpToHorizontalCenter : public BindedFuncCreator<JumpToHorizontalCenter> {
+        struct JumpToHorizontalCenter : public BindedFuncVoid<JumpToHorizontalCenter> {
             explicit JumpToHorizontalCenter() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct JumpToVerticalCenter : public BindedFuncCreator<JumpToVerticalCenter> {
+        struct JumpToVerticalCenter : public BindedFuncVoid<JumpToVerticalCenter> {
             explicit JumpToVerticalCenter() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

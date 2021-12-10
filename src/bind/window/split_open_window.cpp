@@ -13,7 +13,7 @@ namespace vind
     {
         //OpenNewWindowWithHorizontalSplit
         OpenNewWindowWithHorizontalSplit::OpenNewWindowWithHorizontalSplit()
-        : BindedFuncCreator("open_new_window_with_hsplit")
+        : BindedFuncVoid("open_new_window_with_hsplit")
         {}
 
         void OpenNewWindowWithHorizontalSplit::sprocess() {
@@ -56,7 +56,7 @@ namespace vind
 
         //OpenNewWindowWithVerticalSplit
         OpenNewWindowWithVerticalSplit::OpenNewWindowWithVerticalSplit()
-        : BindedFuncCreator("open_new_window_with_vsplit")
+        : BindedFuncVoid("open_new_window_with_vsplit")
         {}
         void OpenNewWindowWithVerticalSplit::sprocess() {
             ForegroundInfo fginfo ;

@@ -52,14 +52,17 @@ namespace
     private:
         Command cmd_ ;
 
-        void do_process() const override {
+        SystemCall do_process() const override {
             for(const auto& keyset : cmd_) {
                 util::pushup(keyset.cbegin(), keyset.cend()) ;
             }
+            return SystemCall::NOTHING ;
         }
-        void do_process(core::NTypeLogger&) const override {
+        SystemCall do_process(core::NTypeLogger&) const override {
+            return SystemCall::NOTHING ;
         }
-        void do_process(const core::CharLogger&) const override {
+        SystemCall do_process(const core::CharLogger&) const override {
+            return SystemCall::NOTHING ;
         }
 
     public:

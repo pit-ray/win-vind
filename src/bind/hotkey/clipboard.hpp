@@ -1,13 +1,13 @@
 #ifndef _CLIPBOARD_HPP
 #define _CLIPBOARD_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct HotkeyCopy : public BindedFuncCreator<HotkeyCopy> {
+        struct HotkeyCopy : public BindedFuncVoid<HotkeyCopy> {
             explicit HotkeyCopy() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -15,7 +15,7 @@ namespace vind
         } ;
 
 
-        struct HotkeyPaste : public BindedFuncCreator<HotkeyPaste> {
+        struct HotkeyPaste : public BindedFuncVoid<HotkeyPaste> {
             explicit HotkeyPaste() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -23,7 +23,7 @@ namespace vind
         } ;
 
 
-        struct HotkeyCut : public BindedFuncCreator<HotkeyCut> {
+        struct HotkeyCut : public BindedFuncVoid<HotkeyCut> {
             explicit HotkeyCut() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -31,7 +31,7 @@ namespace vind
         } ;
 
 
-        struct HotkeyDelete : public BindedFuncCreator<HotkeyDelete> {
+        struct HotkeyDelete : public BindedFuncVoid<HotkeyDelete> {
             explicit HotkeyDelete() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
@@ -39,7 +39,7 @@ namespace vind
         } ;
 
 
-        struct HotkeyBackspace : public BindedFuncCreator<HotkeyBackspace> {
+        struct HotkeyBackspace : public BindedFuncVoid<HotkeyBackspace> {
             explicit HotkeyBackspace() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

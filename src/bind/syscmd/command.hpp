@@ -1,35 +1,31 @@
 #ifndef _COMMAND_HPP
 #define _COMMAND_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct SyscmdCommand : BindedFuncCreator<SyscmdCommand> {
+        struct SyscmdCommand : BindedFuncFlex<SyscmdCommand> {
             explicit SyscmdCommand() ;
-            static void sprocess(
-                    const std::string& args="",
-                    bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const std::string& args="") ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SyscmdDelcommand : BindedFuncCreator<SyscmdDelcommand> {
+        struct SyscmdDelcommand : BindedFuncFlex<SyscmdDelcommand> {
             explicit SyscmdDelcommand() ;
-            static void sprocess(
-                    const std::string& args="",
-                    bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const std::string& args="") ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SyscmdComclear : BindedFuncCreator<SyscmdComclear> {
+        struct SyscmdComclear : BindedFuncFlex<SyscmdComclear> {
             explicit SyscmdComclear() ;
-            static void sprocess(bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static core::SystemCall sprocess() ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
     }
 }

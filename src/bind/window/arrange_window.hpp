@@ -1,13 +1,13 @@
 #ifndef _ARRANGE_WINDOW_HPP
 #define _ARRANGE_WINDOW_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct ArrangeWindows : public BindedFuncCreator<ArrangeWindows> {
+        struct ArrangeWindows : public BindedFuncVoid<ArrangeWindows> {
             explicit ArrangeWindows() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

@@ -1,7 +1,7 @@
 #ifndef _EASY_CLICK_HPP
 #define _EASY_CLICK_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 #include <windows.h>
 
@@ -13,7 +13,7 @@ namespace vind
 {
     namespace bind
     {
-        class EasyClickLeft : public BindedFuncCreator<EasyClickLeft> {
+        class EasyClickLeft : public BindedFuncVoid<EasyClickLeft> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -35,7 +35,7 @@ namespace vind
             void reconstruct() override ;
         } ;
 
-        class EasyClickRight : public BindedFuncCreator<EasyClickRight> {
+        class EasyClickRight : public BindedFuncVoid<EasyClickRight> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -57,7 +57,7 @@ namespace vind
             void reconstruct() override ;
         } ;
 
-        class EasyClickMid : public BindedFuncCreator<EasyClickMid> {
+        class EasyClickMid : public BindedFuncVoid<EasyClickMid> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -79,7 +79,7 @@ namespace vind
             void reconstruct() override ;
         } ;
 
-        class EasyClickHover : public BindedFuncCreator<EasyClickHover> {
+        class EasyClickHover : public BindedFuncVoid<EasyClickHover> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

@@ -10,7 +10,7 @@ namespace vind
     {
         //CloseCurrentWindow
         CloseCurrentWindow::CloseCurrentWindow()
-        : BindedFuncCreator("close_current_window")
+        : BindedFuncVoid("close_current_window")
         {}
         void CloseCurrentWindow::sprocess() {
             util::pushup(KEYCODE_LALT, KEYCODE_F4) ;

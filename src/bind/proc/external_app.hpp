@@ -1,7 +1,7 @@
 #ifndef _EXTERNAL_APP_HPP
 #define _EXTERNAL_APP_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 #include <filesystem>
 
@@ -10,28 +10,28 @@ namespace vind
 {
     namespace bind
     {
-        struct StartShell : public BindedFuncCreator<StartShell> {
+        struct StartShell : public BindedFuncVoid<StartShell> {
             explicit StartShell() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct StartExternal : public BindedFuncCreator<StartExternal> {
+        struct StartExternal : public BindedFuncVoid<StartExternal> {
             explicit StartExternal() ;
             static void sprocess(std::string cmd="") ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct StartExplorer : public BindedFuncCreator<StartExplorer> {
+        struct StartExplorer : public BindedFuncVoid<StartExplorer> {
             explicit StartExplorer() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct OpenStartMenu : public BindedFuncCreator<OpenStartMenu> {
+        struct OpenStartMenu : public BindedFuncVoid<OpenStartMenu> {
             explicit OpenStartMenu() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

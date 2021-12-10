@@ -17,7 +17,7 @@ namespace vind
     {
         //ClickLeft
         ClickLeft::ClickLeft()
-        : BindedFuncCreator("click_left")
+        : BindedFuncVoid("click_left")
         {}
         void ClickLeft::sprocess(unsigned int repeat_num) {
             using core::Mode ;
@@ -41,7 +41,7 @@ namespace vind
 
         //ClickRight
         ClickRight::ClickRight()
-        : BindedFuncCreator("click_right")
+        : BindedFuncVoid("click_right")
         {}
         void ClickRight::sprocess(unsigned int repeat_num) {
             using core::Mode ;

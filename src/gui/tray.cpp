@@ -103,5 +103,9 @@ namespace vind
 
             return menu ;
         }
+
+        SystemTray::~SystemTray() noexcept {
+            RemoveIcon() ;
+        }
     }
 }

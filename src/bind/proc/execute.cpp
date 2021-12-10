@@ -17,7 +17,7 @@ namespace vind
     namespace bind
     {
         Execute::Execute()
-        : BindedFuncCreator("execute")
+        : BindedFuncVoid("execute")
         {}
 
         void Execute::sprocess(std::filesystem::path filepath) {

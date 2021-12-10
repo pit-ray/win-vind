@@ -1,13 +1,13 @@
 #ifndef _SWITCH_WINDOW_HPP
 #define _SWITCH_WINDOW_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class SwitchWindow : public BindedFuncCreator<SwitchWindow> {
+        class SwitchWindow : public BindedFuncVoid<SwitchWindow> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

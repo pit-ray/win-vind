@@ -24,7 +24,7 @@ namespace vind
         } ;
 
         ToInstantGUINormal::ToInstantGUINormal()
-        : BindedFuncCreator("to_instant_gui_normal"),
+        : BindedFuncFlex("to_instant_gui_normal"),
           pimpl(std::make_unique<Impl>())
         {} 
         ToInstantGUINormal::~ToInstantGUINormal() noexcept                      = default ;
@@ -32,7 +32,7 @@ namespace vind
         ToInstantGUINormal& ToInstantGUINormal::operator=(ToInstantGUINormal&&) = default ;
 
 
-        void ToInstantGUINormal::sprocess() const {
+        core::SystemCall ToInstantGUINormal::sprocess() const {
             core::close_all_ports_with_refresh() ;
 
             core::InstantKeyAbsorber isa{} ;
@@ -43,6 +43,9 @@ namespace vind
 
             pimpl->finder_.reset_parser_states(lcx_vmode) ;
             core::NTypeLogger lgr ;
+
+            auto syscal = core::SystemCall::NOTHING ;
+
             while(core::update_background()) {
                 auto log = core::LogPooler::get_instance().pop_log() ;
                 auto result = lgr.logging_state(log) ;
@@ -59,7 +62,7 @@ namespace vind
 
                     if(parser->is_accepted()) {
                         pimpl->finder_.reset_parser_states(lcx_vmode) ;
-                        parser->get_func()->process(lgr) ;
+                        syscal = parser->get_func()->process(lgr) ;
                         break ;
                     }
                     else if(parser->is_rejected_with_ready()) {
@@ -74,16 +77,19 @@ namespace vind
                 }
             }
             opt::VCmdLine::reset() ;
+
+            return syscal ;
         }
 
-        void ToInstantGUINormal::sprocess(core::NTypeLogger& parent) const {
+        core::SystemCall ToInstantGUINormal::sprocess(core::NTypeLogger& parent) const {
             if(!parent.is_long_pressing()) {
-                sprocess() ;
+                return sprocess() ;
             }
+            return core::SystemCall::NOTHING ;
         }
 
-        void ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) const {
-            sprocess() ;
+        core::SystemCall ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) const {
+            return sprocess() ;
         }
 
         void ToInstantGUINormal::reconstruct() {

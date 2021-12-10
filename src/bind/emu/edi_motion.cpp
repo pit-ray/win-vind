@@ -166,7 +166,7 @@ namespace vind
             }
         } ;
         YankWithMotion::YankWithMotion()
-        : BindedFuncCreator("yank_with_motion"),
+        : BindedFuncVoid("yank_with_motion"),
           pimpl(std::make_unique<Impl>())
         {}
         YankWithMotion::~YankWithMotion() noexcept = default ;
@@ -208,7 +208,7 @@ namespace vind
             }
         } ;
         DeleteWithMotion::DeleteWithMotion()
-        : BindedFuncCreator("delete_with_motion"),
+        : BindedFuncVoid("delete_with_motion"),
           pimpl(std::make_unique<Impl>())
         {}
         DeleteWithMotion::~DeleteWithMotion() noexcept = default ;
@@ -253,7 +253,7 @@ namespace vind
             }
         } ;
         ChangeWithMotion::ChangeWithMotion()
-        : BindedFuncCreator("change_with_motion"),
+        : BindedFuncVoid("change_with_motion"),
           pimpl(std::make_unique<Impl>())
         {}
         ChangeWithMotion::~ChangeWithMotion() noexcept = default ;

@@ -77,23 +77,22 @@ namespace
 
         switch(rcindex) {
             case RunCommandsIndex::SET: {
-                SyscmdSet::sprocess(std::forward<Str>(args), false) ;
+                SyscmdSet::sprocess(std::forward<Str>(args)) ;
                 return ;
             }
             case RunCommandsIndex::COMMAND: {
-                SyscmdCommand::sprocess(std::forward<Str>(args), false) ;
+                SyscmdCommand::sprocess(std::forward<Str>(args)) ;
                 return ;
-
             }
             case RunCommandsIndex::DELCOMMAND: {
-                SyscmdDelcommand::sprocess(std::forward<Str>(args), false) ;
+                SyscmdDelcommand::sprocess(std::forward<Str>(args)) ;
                 return ;
             }
             case RunCommandsIndex::COMCLEAR: {
                 if(!args.empty()) {
                     throw std::invalid_argument("comclear") ;
                 }
-                SyscmdComclear::sprocess(false) ;
+                SyscmdComclear::sprocess() ;
                 return ;
             }
             case RunCommandsIndex::SOURCE: {
@@ -112,7 +111,7 @@ namespace
                 if(args_path.filename().u8string() != ".vindrc") {
                     args_path = load_remote_vindrc(std::forward<Str>(args)) ;
                 }
-                SyscmdSource::sprocess(args_path, false, false) ; //overload .vindrc
+                SyscmdSource::sprocess(args_path, false) ; //overload .vindrc
                 return ;
             }
 
@@ -126,19 +125,19 @@ namespace
                 util::enum_and(rcindex, RunCommandsIndex::MASK_MODE)) ;
 
         if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAP)) {
-            SyscmdMap::sprocess(mode, std::forward<Str>(args), false) ;
+            SyscmdMap::sprocess(mode, std::forward<Str>(args)) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_NOREMAP)) {
-            SyscmdNoremap::sprocess(mode, std::forward<Str>(args), false) ;
+            SyscmdNoremap::sprocess(mode, std::forward<Str>(args)) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_UNMAP)) {
-            SyscmdUnmap::sprocess(mode, std::forward<Str>(args), false) ;
+            SyscmdUnmap::sprocess(mode, std::forward<Str>(args)) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {
                 throw std::invalid_argument("mapclear") ;
             }
-            SyscmdMapclear::sprocess(mode, false) ;
+            SyscmdMapclear::sprocess(mode) ;
         }
         else {
             throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
@@ -152,7 +151,7 @@ namespace vind
     namespace bind
     {
         SyscmdSource::SyscmdSource()
-        : BindedFuncCreator("system_command_source")
+        : BindedFuncFlex("system_command_source")
         {
             std::ifstream ifs(core::RC()) ;
             if(!ifs.is_open()) {
@@ -160,9 +159,8 @@ namespace vind
             }
         }
 
-        void SyscmdSource::sprocess(
+        core::SystemCall SyscmdSource::sprocess(
                 const std::filesystem::path& path,
-                bool reload_config,
                 bool start_from_default) {
 
             auto return_to_default = [] {
@@ -177,7 +175,8 @@ namespace vind
             std::ifstream ifs(path, std::ios::in) ;
             if(!ifs.is_open()) {
                 opt::VCmdLine::print(opt::ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
-                return ;
+
+                return core::SystemCall::NOTHING ;
             }
 
             std::string aline ;
@@ -247,13 +246,12 @@ namespace vind
                 }
             }
 
-            if(reload_config) {
-                core::reconstruct_all_components() ; // Apply settings
-            }
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdSource::sprocess(core::NTypeLogger&) {
+        core::SystemCall SyscmdSource::sprocess(core::NTypeLogger&) {
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
+        core::SystemCall SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
             try {
                 auto str = parent_lgr.to_str() ;
                 if(str.empty()) {
@@ -266,12 +264,16 @@ namespace vind
                 else {
                     sprocess(core::replace_path_magic(args), true) ;
                 }
+
+                return core::SystemCall::RECONSTRUCT ;
             }
             // If received syntax error as std::logic_error,
             // convert to runtime_error not to terminate application.
             catch(const std::exception& e) {
                 throw std::runtime_error(e.what()) ;
             }
+
+            return core::SystemCall::NOTHING ;
         }
     }
 }

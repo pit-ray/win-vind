@@ -127,7 +127,7 @@ namespace vind
     {
         //ArrangeWindows
         ArrangeWindows::ArrangeWindows()
-        : BindedFuncCreator("arrange_windows")
+        : BindedFuncVoid("arrange_windows")
         {}
         void ArrangeWindows::sprocess() {
             auto hwnd = GetForegroundWindow() ;

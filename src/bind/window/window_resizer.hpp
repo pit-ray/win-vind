@@ -1,13 +1,13 @@
 #ifndef _WINDOW_RESIZER_HPP
 #define _WINDOW_RESIZER_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class WindowResizer : public BindedFuncCreator<WindowResizer> {
+        class WindowResizer : public BindedFuncVoid<WindowResizer> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

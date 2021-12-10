@@ -11,7 +11,7 @@ namespace vind
     {
         //GotoNextPage
         GotoNextPage::GotoNextPage()
-        : BindedFuncCreator("goto_next_page")
+        : BindedFuncVoid("goto_next_page")
         {}
         void GotoNextPage::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -30,7 +30,7 @@ namespace vind
 
         //GotoPrevPage
         GotoPrevPage::GotoPrevPage()
-        : BindedFuncCreator("goto_prev_page")
+        : BindedFuncVoid("goto_prev_page")
         {}
         void GotoPrevPage::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {

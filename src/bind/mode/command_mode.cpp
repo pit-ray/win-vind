@@ -142,7 +142,7 @@ namespace vind
         } ;
 
         ToCommand::ToCommand()
-        : BindedFuncCreator("to_command"),
+        : BindedFuncFlex("to_command"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -154,7 +154,7 @@ namespace vind
             pimpl->funcfinder_.reconstruct() ;
         }
 
-        void ToCommand::sprocess() const {
+        core::SystemCall ToCommand::sprocess() const {
             auto return_mode = [] (core::Mode* m) {
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {
@@ -174,6 +174,8 @@ namespace vind
 
             constexpr auto cmdline_prefix = ":" ;
             opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix)) ;
+
+            auto result = core::SystemCall::NOTHING ;
 
             while(core::update_background()) {
                 auto& p_cmdp = pimpl->ch_.get_hist_point() ;
@@ -204,7 +206,7 @@ namespace vind
                     opt::VCmdLine::reset() ;
 
                     if(p_cmdp->func) {
-                        p_cmdp->func->process(lgr) ;
+                        result = p_cmdp->func->process(lgr) ;
                     }
                     else {
                         opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
@@ -296,15 +298,19 @@ namespace vind
                 }
                 p_cmdp->func = nullptr ;
             }
+
+            return result ;
         }
 
-        void ToCommand::sprocess(core::NTypeLogger& parent_lgr) const {
+        core::SystemCall ToCommand::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
+                return sprocess() ;
             }
+
+            return core::SystemCall::NOTHING ;
         }
-        void ToCommand::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
-            sprocess() ;
+        core::SystemCall ToCommand::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            return sprocess() ;
         }
     }
 }

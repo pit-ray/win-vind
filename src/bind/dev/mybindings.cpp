@@ -2,7 +2,7 @@
 
 #include "mybindings.hpp"
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -14,7 +14,7 @@ namespace vind
     namespace bind
     {
         MyBinding::MyBinding()
-        : BindedFuncCreator("my_binding") //Give the unique identifier.
+        : BindedFuncVoid("my_binding") //Give the unique identifier.
         {}
         void MyBinding::sprocess() {
             util::click(KEYCODE_MOUSE_LEFT) ; //left click

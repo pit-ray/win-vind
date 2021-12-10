@@ -1,13 +1,13 @@
 #ifndef _EDI_MOTION_HPP
 #define _EDI_MOTION_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class YankWithMotion : public BindedFuncCreator<YankWithMotion> {
+        class YankWithMotion : public BindedFuncVoid<YankWithMotion> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -29,7 +29,7 @@ namespace vind
         } ;
 
 
-        class DeleteWithMotion : public BindedFuncCreator<DeleteWithMotion> {
+        class DeleteWithMotion : public BindedFuncVoid<DeleteWithMotion> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -50,7 +50,7 @@ namespace vind
             void reconstruct() override ;
         } ;
 
-        class ChangeWithMotion : public BindedFuncCreator<ChangeWithMotion> {
+        class ChangeWithMotion : public BindedFuncVoid<ChangeWithMotion> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

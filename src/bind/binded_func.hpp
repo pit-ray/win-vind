@@ -4,7 +4,9 @@
 #include <memory>
 #include <string>
 
+#include "core/defs.hpp"
 #include "core/mode.hpp"
+
 
 namespace vind
 {
@@ -23,9 +25,9 @@ namespace vind
 
             virtual void error_process(const std::exception& e) const ;
 
-            virtual void do_process() const ;
-            virtual void do_process(core::NTypeLogger& parent_lgr) const ;
-            virtual void do_process(const core::CharLogger& parent_lgr) const ;
+            virtual core::SystemCall do_process() const ;
+            virtual core::SystemCall do_process(core::NTypeLogger& parent_lgr) const ;
+            virtual core::SystemCall do_process(const core::CharLogger& parent_lgr) const ;
 
         public:
             using SPtr = std::shared_ptr<BindedFunc> ;
@@ -50,9 +52,9 @@ namespace vind
                 return std::hash<std::string>()(std::move(name)) ;
             }
 
-            void process() const ;
-            void process(core::NTypeLogger& parent_lgr) const ;
-            void process(const core::CharLogger& parent_lgr) const ;
+            core::SystemCall process() const ;
+            core::SystemCall process(core::NTypeLogger& parent_lgr) const ;
+            core::SystemCall process(const core::CharLogger& parent_lgr) const ;
 
             virtual void reconstruct() ;
 
@@ -60,6 +62,80 @@ namespace vind
             bool operator==(BindedFunc&& rhs) const noexcept ;
             bool operator!=(const BindedFunc& rhs) const noexcept ;
             bool operator!=(BindedFunc&& rhs) const noexcept ;
+        } ;
+
+
+        //use Curiously Recurring Template Pattern (CRTP)
+        //derived class must implement sprocess() and sname().
+        //If derived class does not have any variables of member, sprocess() prefers static function.
+        //If not, sprocess() is constant function.
+        template <typename Derived>
+        class BindedFuncCreator: public BindedFunc {
+        public:
+            template <typename String>
+            explicit BindedFuncCreator(String&& name)
+            : BindedFunc(std::forward<String>(name))
+            {}
+
+            static std::unique_ptr<BindedFunc> create() {
+                return std::make_unique<Derived>() ;
+            }
+
+            static std::shared_ptr<BindedFunc> create_with_cache() {
+                static std::weak_ptr<Derived> cache ;
+
+                auto pobj = cache.lock() ;
+                if(!pobj) {
+                    pobj = std::make_shared<Derived>() ;
+                    cache = pobj ;
+                }
+                return pobj ;
+            }
+        } ;
+
+
+        template <typename Derived>
+        class BindedFuncVoid : public BindedFuncCreator<Derived> {
+        private:
+            core::SystemCall do_process() const override {
+                static_cast<const Derived*>(this)->sprocess() ;
+                return core::SystemCall::NOTHING ;
+            }
+            core::SystemCall do_process(core::NTypeLogger& parent_lgr) const override {
+                static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+                return core::SystemCall::NOTHING ;
+            }
+            core::SystemCall do_process(const core::CharLogger& parent_lgr) const override {
+                static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+                return core::SystemCall::NOTHING ;
+            }
+
+        public:
+            template <typename String>
+            explicit BindedFuncVoid(String&& name)
+            : BindedFuncCreator<Derived>(std::forward<String>(name))
+            {}
+        } ;
+
+
+        template <typename Derived>
+        class BindedFuncFlex : public BindedFuncCreator<Derived> {
+        private:
+            core::SystemCall do_process() const override {
+                return static_cast<const Derived*>(this)->sprocess() ;
+            }
+            core::SystemCall do_process(core::NTypeLogger& parent_lgr) const override {
+                return static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+            }
+            core::SystemCall do_process(const core::CharLogger& parent_lgr) const override {
+                return static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+            }
+
+        public:
+            template <typename String>
+            explicit BindedFuncFlex(String&& name)
+            : BindedFuncCreator<Derived>(std::forward<String>(name))
+            {}
         } ;
     }
 }

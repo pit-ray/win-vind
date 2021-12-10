@@ -36,7 +36,7 @@ namespace vind
         } ;
 
         ScrollUp::ScrollUp()
-        : BindedFuncCreator("scroll_up"),
+        : BindedFuncVoid("scroll_up"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -67,7 +67,7 @@ namespace vind
         } ;
 
         ScrollDown::ScrollDown()
-        : BindedFuncCreator("scroll_down"),
+        : BindedFuncVoid("scroll_down"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -98,7 +98,7 @@ namespace vind
         } ;
 
         ScrollUpHalfPage::ScrollUpHalfPage()
-        : BindedFuncCreator("scroll_up_halfpage"),
+        : BindedFuncVoid("scroll_up_halfpage"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -130,7 +130,7 @@ namespace vind
         } ;
 
         ScrollDownHalfPage::ScrollDownHalfPage()
-        : BindedFuncCreator("scroll_down_halfpage"),
+        : BindedFuncVoid("scroll_down_halfpage"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -162,7 +162,7 @@ namespace vind
         } ;
 
         ScrollUpOnePage::ScrollUpOnePage()
-        : BindedFuncCreator("scroll_up_onepage"),
+        : BindedFuncVoid("scroll_up_onepage"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -194,7 +194,7 @@ namespace vind
         } ;
 
         ScrollDownOnePage::ScrollDownOnePage()
-        : BindedFuncCreator("scroll_down_onepage"),
+        : BindedFuncVoid("scroll_down_onepage"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -227,7 +227,7 @@ namespace vind
         } ;
 
         ScrollLeft::ScrollLeft()
-        : BindedFuncCreator("scroll_left"),
+        : BindedFuncVoid("scroll_left"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -258,7 +258,7 @@ namespace vind
         } ;
 
         ScrollRight::ScrollRight()
-        : BindedFuncCreator("scroll_right"),
+        : BindedFuncVoid("scroll_right"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -289,7 +289,7 @@ namespace vind
         } ;
 
         ScrollLeftHalfPage::ScrollLeftHalfPage()
-        : BindedFuncCreator("scroll_left_halfpage"),
+        : BindedFuncVoid("scroll_left_halfpage"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -321,7 +321,7 @@ namespace vind
         } ;
 
         ScrollRightHalfPage::ScrollRightHalfPage()
-        : BindedFuncCreator("scroll_right_halfpage"),
+        : BindedFuncVoid("scroll_right_halfpage"),
           pimpl(std::make_unique<Impl>())
         {}
 

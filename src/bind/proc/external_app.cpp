@@ -62,7 +62,7 @@ namespace vind
     {
         //StartShell
         StartShell::StartShell()
-        : BindedFuncCreator("start_shell")
+        : BindedFuncVoid("start_shell")
         {}
         void StartShell::sprocess() {
             util::create_process(
@@ -84,7 +84,7 @@ namespace vind
 
         //StartExternal
         StartExternal::StartExternal()
-        : BindedFuncCreator("start_external")
+        : BindedFuncVoid("start_external")
         {}
         void StartExternal::sprocess(std::string cmd) {
             if(!cmd.empty()) {
@@ -140,7 +140,7 @@ namespace vind
 
         //StartExplorer
         StartExplorer::StartExplorer()
-        : BindedFuncCreator("start_explorer")
+        : BindedFuncVoid("start_explorer")
         {}
         void StartExplorer::sprocess() {
             util::pushup(KEYCODE_LWIN, KEYCODE_E) ;
@@ -158,7 +158,7 @@ namespace vind
 
         //OpenStartMenu
         OpenStartMenu::OpenStartMenu()
-        : BindedFuncCreator("open_startmenu")
+        : BindedFuncVoid("open_startmenu")
         {}
         void OpenStartMenu::sprocess() {
             util::pushup(KEYCODE_LWIN) ;

@@ -28,7 +28,7 @@ namespace vind
         } ;
 
         MoveCursorLeft::MoveCursorLeft()
-        : BindedFuncCreator("move_cursor_left"),
+        : BindedFuncVoid("move_cursor_left"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -61,7 +61,7 @@ namespace vind
         } ;
 
         MoveCursorRight::MoveCursorRight()
-        : BindedFuncCreator("move_cursor_right"),
+        : BindedFuncVoid("move_cursor_right"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -94,7 +94,7 @@ namespace vind
         } ;
 
         MoveCursorUp::MoveCursorUp()
-        : BindedFuncCreator("move_cursor_up"),
+        : BindedFuncVoid("move_cursor_up"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -127,7 +127,7 @@ namespace vind
         } ;
 
         MoveCursorDown::MoveCursorDown()
-        : BindedFuncCreator("move_cursor_down"),
+        : BindedFuncVoid("move_cursor_down"),
           pimpl(std::make_unique<Impl>())
         {}
 

@@ -13,7 +13,7 @@ namespace vind
     {
         //MinimizeCurrentWindow
         MinimizeCurrentWindow::MinimizeCurrentWindow()
-        : BindedFuncCreator("minimize_current_window")
+        : BindedFuncVoid("minimize_current_window")
         {}
         void MinimizeCurrentWindow::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -32,7 +32,7 @@ namespace vind
 
         //MaximizeCurrentWindow
         MaximizeCurrentWindow::MaximizeCurrentWindow()
-        : BindedFuncCreator("maximize_current_window")
+        : BindedFuncVoid("maximize_current_window")
         {}
         void MaximizeCurrentWindow::sprocess(unsigned int repeat_num) {
             if(repeat_num == 1) {

@@ -1,13 +1,13 @@
 #ifndef _COMMAND_MODE_HPP
 #define _COMMAND_MODE_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class ToCommand : public BindedFuncCreator<ToCommand> {
+        class ToCommand : public BindedFuncFlex<ToCommand> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -15,9 +15,9 @@ namespace vind
         public:
             explicit ToCommand() ;
 
-            void sprocess() const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            core::SystemCall sprocess() const ;
+            core::SystemCall sprocess(core::NTypeLogger& parent_lgr) const ;
+            core::SystemCall sprocess(const core::CharLogger& parent_lgr) const ;
 
             virtual ~ToCommand() noexcept ;
             ToCommand(ToCommand&&) ;

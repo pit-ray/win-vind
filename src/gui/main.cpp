@@ -46,6 +46,10 @@ SOFTWARE.
 
 #include "about.hpp"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 
 namespace
 {
@@ -54,8 +58,6 @@ namespace
     }
 
     std::atomic_bool g_runnable(true) ;
-
-    std::string g_argument_func{} ;
 }
 
 namespace vind
@@ -64,20 +66,63 @@ namespace vind
     {
         //core system is wrought at another thread
         class SystemThread : public wxThread {
+        public:
+            core::VindEntry entry_ ;
+
+            template <typename ExitFunc>
+            SystemThread(ExitFunc&& exit_func)
+            : wxThread(wxTHREAD_DETACHED),
+              entry_(std::forward<ExitFunc>(exit_func))
+            {}
+
         private:
             virtual ExitCode Entry() override {
-                while(core::update() && g_runnable.load()) ;
+                while(g_runnable.load()) {
+                    try {
+                        entry_.update() ;
+                    }
+                    catch(const std::exception& e) {
+                        core::Logger::get_instance().error(e.what()) ;
+                        break ;
+                    }
+                    catch(const core::SafeForcedTermination& e) {
+                        core::Logger::get_instance().message(e.what()) ;
+                        break ;
+                    }
+                    catch(...) {
+                        core::Logger::get_instance().error("Fatal error occured.") ;
+                        break ;
+                    }
+                }
+
+                if(g_runnable.load()) {
+                    g_runnable.store(false) ;
+                    entry_.handle_system_call(core::SystemCall::TERMINATE) ;
+                }
+
                 return static_cast<ExitCode>(0) ;
             }
-
-        public:
-            SystemThread()
-            : wxThread(wxTHREAD_DETACHED)
-            {}
         } ;
 
 
         class App : public wxApp {
+        private:
+            std::unique_ptr<SystemThread> pst_ ;
+
+            static std::string argument_func_ ;
+
+        public:
+            App()
+            : pst_(nullptr)
+            {}
+
+            virtual ~App() noexcept {
+                if(g_runnable.load()) {
+                    // Core win_vind is running yet, so terminate core system.
+                    g_runnable.store(false) ;
+                }
+            }
+
         private:
             bool OnInit() override {
                 try {
@@ -92,7 +137,13 @@ namespace vind
                                 wxOK | wxICON_EXCLAMATION) ;
                     }
 
-                    if(!core::initialize(g_argument_func)) {
+                    pst_ = std::make_unique<SystemThread>([this] {
+                        ExitMainLoop() ;
+                    }) ;
+
+                    pst_->entry_.init(argument_func_) ;
+
+                    if(pst_->entry_.is_subprocess()) {
                         return false ;
                     }
 
@@ -108,10 +159,6 @@ namespace vind
                             vind::core::get_s("gui_fontname")) ;
 
                     dlg->Show(false) ;
-
-                    core::register_exit_window_func([dlg] {
-                        dlg->Destroy() ;
-                    }) ;
                 }
                 catch(const std::exception& e) {
                     error_box(wxString::FromUTF8(e.what()) \
@@ -122,9 +169,7 @@ namespace vind
             }
 
             int MainLoop() override {
-                //create a new thread for back-ground system
-                auto pst = std::make_unique<SystemThread>() ;
-                pst->Run() ;
+                pst_->Run() ;
                 return wxApp::MainLoop() ;
             }
 
@@ -150,7 +195,7 @@ namespace vind
                     return false ;
                 }
                 else if(parser.Found(wxT("func"), &fn)) {
-                    g_argument_func = fn.ToStdString() ;
+                    argument_func_ = fn.ToStdString() ;
                 }
                 return true ;
             }
@@ -175,15 +220,9 @@ namespace vind
                 }
                 //the program is already about to exit.
             }
-
-        public:
-            virtual ~App() noexcept {
-                if(g_runnable.load()) {
-                    // Core win_vind is running yet, so terminate core system.
-                    g_runnable.store(false) ;
-                }
-            }
         } ;
+
+        std::string App::argument_func_ ;
     }
 }
 

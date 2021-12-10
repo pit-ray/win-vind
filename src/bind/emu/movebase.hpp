@@ -24,14 +24,17 @@ namespace vind
         template <typename Derived>
         class MoveBaseCreator : public MoveBase {
         private:
-            void do_process() const override {
+            core::SystemCall do_process() const override {
                 static_cast<const Derived*>(this)->sprocess() ;
+                return core::SystemCall::NOTHING ;
             }
-            void do_process(core::NTypeLogger& parent_lgr) const override {
+            core::SystemCall do_process(core::NTypeLogger& parent_lgr) const override {
                 static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+                return core::SystemCall::NOTHING ;
             }
-            void do_process(const core::CharLogger& parent_lgr) const override {
+            core::SystemCall do_process(const core::CharLogger& parent_lgr) const override {
                 static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+                return core::SystemCall::NOTHING ;
             }
 
         public:

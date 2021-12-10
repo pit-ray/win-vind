@@ -24,7 +24,7 @@ namespace vind
             EasyClickCore core_{} ;
         } ;
         EasyClickLeft::EasyClickLeft()
-        : BindedFuncCreator("easy_click_left"),
+        : BindedFuncVoid("easy_click_left"),
           pimpl(std::make_unique<Impl>())
         {}
         EasyClickLeft::~EasyClickLeft() noexcept                 = default ;
@@ -57,7 +57,7 @@ namespace vind
             EasyClickCore core_{} ;
         } ;
         EasyClickRight::EasyClickRight()
-        : BindedFuncCreator("easy_click_right"),
+        : BindedFuncVoid("easy_click_right"),
           pimpl(std::make_unique<Impl>())
         {}
         EasyClickRight::~EasyClickRight() noexcept                  = default ;
@@ -90,7 +90,7 @@ namespace vind
             EasyClickCore core_{} ;
         } ;
         EasyClickMid::EasyClickMid()
-        : BindedFuncCreator("easy_click_mid"),
+        : BindedFuncVoid("easy_click_mid"),
           pimpl(std::make_unique<Impl>())
         {}
         EasyClickMid::~EasyClickMid() noexcept                = default ;
@@ -123,7 +123,7 @@ namespace vind
             EasyClickCore core_{} ;
         } ;
         EasyClickHover::EasyClickHover()
-        : BindedFuncCreator("easy_click_hover"),
+        : BindedFuncVoid("easy_click_hover"),
           pimpl(std::make_unique<Impl>())
         {}
         EasyClickHover::~EasyClickHover() noexcept                  = default ;

@@ -54,7 +54,7 @@ namespace vind
     {
         //ExchangeWindowWithNearest
         ExchangeWindowWithNearest::ExchangeWindowWithNearest()
-        : BindedFuncCreator("exchange_window_with_nearest")
+        : BindedFuncVoid("exchange_window_with_nearest")
         {}
         void ExchangeWindowWithNearest::sprocess() {
             g_near_hwnds.clear() ;

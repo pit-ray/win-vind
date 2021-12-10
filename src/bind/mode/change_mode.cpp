@@ -30,7 +30,7 @@ namespace vind
     {
         //ToGUINormal
         ToGUINormal::ToGUINormal()
-        : BindedFuncCreator("to_gui_normal")
+        : BindedFuncVoid("to_gui_normal")
         {}
         void ToGUINormal::sprocess(bool vclmodeout) {
             using core::Mode ;
@@ -69,7 +69,7 @@ namespace vind
 
         //ToResident
         ToResident::ToResident()
-        : BindedFuncCreator("to_resident")
+        : BindedFuncVoid("to_resident")
         {}
         void ToResident::sprocess(bool vclmodeout) {
             core::close_all_ports() ;
@@ -91,7 +91,7 @@ namespace vind
 
         //ToGUIVisual
         ToGUIVisual::ToGUIVisual()
-        : BindedFuncCreator("to_gui_visual")
+        : BindedFuncVoid("to_gui_visual")
         {}
 
         void ToGUIVisual::sprocess(bool vclmodeout) {
@@ -116,7 +116,7 @@ namespace vind
 
         //ToEdiNormal
         ToEdiNormal::ToEdiNormal()
-        : BindedFuncCreator("to_edi_normal")
+        : BindedFuncVoid("to_edi_normal")
         {
             opt::AsyncUIACacheBuilder::register_properties(
                     scanner_.get_properties()) ;
@@ -168,7 +168,7 @@ namespace vind
 
         //ToInsert
         ToInsert::ToInsert()
-        : BindedFuncCreator("to_insert")
+        : BindedFuncVoid("to_insert")
         {}
 
         void ToInsert::sprocess(bool vclmodeout) {
@@ -197,7 +197,7 @@ namespace vind
 
         //ToEdiVisual
         ToEdiVisual::ToEdiVisual()
-        : BindedFuncCreator("to_edi_visual")
+        : BindedFuncVoid("to_edi_visual")
         {}
         void ToEdiVisual::sprocess(bool vclmodeout) {
             select_words() ;
@@ -218,7 +218,7 @@ namespace vind
 
         //ToEdiVisualLine
         ToEdiVisualLine::ToEdiVisualLine()
-        : BindedFuncCreator("to_edi_visual_line")
+        : BindedFuncVoid("to_edi_visual_line")
         {}
         void ToEdiVisualLine::sprocess(bool vclmodeout) {
             select_line_EOL2BOL() ;

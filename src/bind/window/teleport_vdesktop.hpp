@@ -1,13 +1,13 @@
 #ifndef _TELEPORT_VDESKTOP_HPP
 #define _TELEPORT_VDESKTOP_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct TeleportOverVDesktop : public BindedFuncCreator<TeleportOverVDesktop> {
+        struct TeleportOverVDesktop : public BindedFuncVoid<TeleportOverVDesktop> {
             explicit TeleportOverVDesktop() ;
             static void sprocess(unsigned int repeat_num=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

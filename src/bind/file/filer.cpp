@@ -16,7 +16,7 @@ namespace vind
     {
         //Save
         Save::Save()
-        : BindedFuncCreator("save")
+        : BindedFuncVoid("save")
         {}
         void Save::sprocess() {
             util::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
@@ -33,7 +33,7 @@ namespace vind
 
         //Open
         Open::Open()
-        : BindedFuncCreator("open")
+        : BindedFuncVoid("open")
         {}
         void Open::sprocess() {
             util::pushup(KEYCODE_LCTRL, KEYCODE_O) ;

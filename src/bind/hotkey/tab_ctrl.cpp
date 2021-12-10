@@ -17,7 +17,7 @@ namespace vind
     {
         //Switch2LeftTab
         Switch2LeftTab::Switch2LeftTab()
-        : BindedFuncCreator("switch_to_left_tab")
+        : BindedFuncVoid("switch_to_left_tab")
         {}
         void Switch2LeftTab::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -36,7 +36,7 @@ namespace vind
 
         //Switch2RightTab
         Switch2RightTab::Switch2RightTab()
-        : BindedFuncCreator("switch_to_right_tab")
+        : BindedFuncVoid("switch_to_right_tab")
         {}
         void Switch2RightTab::sprocess(unsigned repeat_num) {
             safe_for(repeat_num, [] {
@@ -54,7 +54,7 @@ namespace vind
 
         //OpenNewTab
         OpenNewTab::OpenNewTab()
-        : BindedFuncCreator("open_new_tab")
+        : BindedFuncVoid("open_new_tab")
         {}
         void OpenNewTab::sprocess() {
             util::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
@@ -71,7 +71,7 @@ namespace vind
 
         //CloseCurrentTab
         CloseCurrentTab::CloseCurrentTab()
-        : BindedFuncCreator("close_current_tab")
+        : BindedFuncVoid("close_current_tab")
         {}
         void CloseCurrentTab::sprocess() {
             util::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;

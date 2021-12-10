@@ -22,7 +22,7 @@ namespace vind
     {
         //HotkeyCopy
         HotkeyCopy::HotkeyCopy()
-        : BindedFuncCreator("hotkey_copy")
+        : BindedFuncVoid("hotkey_copy")
         {}
         void HotkeyCopy::sprocess() {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
@@ -43,7 +43,7 @@ namespace vind
 
         //HotkeyPaste
         HotkeyPaste::HotkeyPaste()
-        : BindedFuncCreator("hotkey_paste")
+        : BindedFuncVoid("hotkey_paste")
         {}
         void HotkeyPaste::sprocess() {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
@@ -63,7 +63,7 @@ namespace vind
 
         //HotkeyCut
         HotkeyCut::HotkeyCut()
-        : BindedFuncCreator("hotkey_cut")
+        : BindedFuncVoid("hotkey_cut")
         {}
         void HotkeyCut::sprocess() {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
@@ -81,7 +81,7 @@ namespace vind
 
         //HotkeyDelete
         HotkeyDelete::HotkeyDelete()
-        : BindedFuncCreator("hotkey_delete")
+        : BindedFuncVoid("hotkey_delete")
         {}
         void HotkeyDelete::sprocess() {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
@@ -103,7 +103,7 @@ namespace vind
 
         //HotkeyBackspace
         HotkeyBackspace::HotkeyBackspace()
-        : BindedFuncCreator("hotkey_backspace")
+        : BindedFuncVoid("hotkey_backspace")
         {}
 
         void HotkeyBackspace::sprocess() {

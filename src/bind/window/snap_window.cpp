@@ -47,7 +47,7 @@ namespace vind
     {
         //SnapCurrentWindow2Left
         SnapCurrentWindow2Left::SnapCurrentWindow2Left()
-        : BindedFuncCreator("snap_current_window_to_left")
+        : BindedFuncVoid("snap_current_window_to_left")
         {}
 
         void SnapCurrentWindow2Left::sprocess() {
@@ -78,7 +78,7 @@ namespace vind
 
         //SnapCurrentWindow2Right
         SnapCurrentWindow2Right::SnapCurrentWindow2Right()
-        : BindedFuncCreator("snap_current_window_to_right")
+        : BindedFuncVoid("snap_current_window_to_right")
         {}
         void SnapCurrentWindow2Right::sprocess() {
             auto calc_half_size = [] (const util::Box2D& mrect) {
@@ -108,7 +108,7 @@ namespace vind
 
         //SnapCurrentWindow2Top
         SnapCurrentWindow2Top::SnapCurrentWindow2Top()
-        : BindedFuncCreator("snap_current_window_to_top")
+        : BindedFuncVoid("snap_current_window_to_top")
         {}
         void SnapCurrentWindow2Top::sprocess() {
             auto calc_half_size = [] (const util::Box2D& mrect) {
@@ -138,7 +138,7 @@ namespace vind
 
         //SnapCurrentWindow2Bottom
         SnapCurrentWindow2Bottom::SnapCurrentWindow2Bottom()
-        : BindedFuncCreator("snap_current_window_to_bottom")
+        : BindedFuncVoid("snap_current_window_to_bottom")
         {}
         void SnapCurrentWindow2Bottom::sprocess() {
             auto calc_half_size = [] (const util::Box2D& mrect) {

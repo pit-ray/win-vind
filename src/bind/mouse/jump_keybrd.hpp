@@ -1,13 +1,13 @@
 #ifndef _JUMP_KEYBRD_HPP
 #define _JUMP_KEYBRD_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class JumpWithKeybrdLayout : public BindedFuncCreator<JumpWithKeybrdLayout> {
+        class JumpWithKeybrdLayout : public BindedFuncVoid<JumpWithKeybrdLayout> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

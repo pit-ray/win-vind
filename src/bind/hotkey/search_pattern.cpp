@@ -15,7 +15,7 @@ namespace vind
     {
         //SearchPattern
         SearchPattern::SearchPattern()
-        : BindedFuncCreator("search_pattern")
+        : BindedFuncVoid("search_pattern")
         {}
         void SearchPattern::sprocess() {
             util::pushup(KEYCODE_F3) ;

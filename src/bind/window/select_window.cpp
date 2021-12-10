@@ -91,7 +91,7 @@ namespace vind
     {
         //SelectLeftWindow
         SelectLeftWindow::SelectLeftWindow()
-        : BindedFuncCreator("select_left_window")
+        : BindedFuncVoid("select_left_window")
         {}
         void SelectLeftWindow::sprocess() {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
@@ -118,7 +118,7 @@ namespace vind
 
         //SelectRightWindow
         SelectRightWindow::SelectRightWindow()
-        : BindedFuncCreator("select_right_window")
+        : BindedFuncVoid("select_right_window")
         {}
         void SelectRightWindow::sprocess() {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
@@ -145,7 +145,7 @@ namespace vind
 
         //SelectUpperWindow
         SelectUpperWindow::SelectUpperWindow()
-        : BindedFuncCreator("select_upper_window")
+        : BindedFuncVoid("select_upper_window")
         {}
         void SelectUpperWindow::sprocess() {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
@@ -172,7 +172,7 @@ namespace vind
 
         //SelectLowerWindow
         SelectLowerWindow::SelectLowerWindow()
-        : BindedFuncCreator("select_lower_window")
+        : BindedFuncVoid("select_lower_window")
         {}
         void SelectLowerWindow::sprocess() {
             auto is_if_target = [] (const auto& rect, const auto& erect) {

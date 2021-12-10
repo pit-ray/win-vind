@@ -19,6 +19,8 @@ namespace vind
                     const std::string& iconpath,
                     const std::string& tooltips) ;
             virtual wxMenu* CreatePopupMenu() override ;
+
+            virtual ~SystemTray() noexcept ;
         } ;
     }
 }

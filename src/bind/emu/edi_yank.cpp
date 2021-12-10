@@ -17,7 +17,7 @@ namespace vind
     {
         //YankHighlightText (EdiVisual only)
         YankHighlightText::YankHighlightText()
-        : BindedFuncCreator("yank_highlight_text")
+        : BindedFuncVoid("yank_highlight_text")
         {}
         void YankHighlightText::sprocess() {
             util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
@@ -44,7 +44,7 @@ namespace vind
 
         //YankLine (EdiNormal only)
         YankLine::YankLine()
-        : BindedFuncCreator("yank_line")
+        : BindedFuncVoid("yank_line")
         {}
         void YankLine::sprocess(
                 unsigned int repeat_num,

@@ -107,7 +107,7 @@ namespace vind
     {
         //RotateWindow
         RotateWindows::RotateWindows()
-        : BindedFuncCreator("rotate_windows")
+        : BindedFuncVoid("rotate_windows")
         {}
         void RotateWindows::sprocess(unsigned int repeat_num) {
             rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
@@ -138,7 +138,7 @@ namespace vind
 
         //RotateWindowsInReverse
         RotateWindowsInReverse::RotateWindowsInReverse()
-        : BindedFuncCreator("rotate_windows_in_reverse")
+        : BindedFuncVoid("rotate_windows_in_reverse")
         {}
         void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
             rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {

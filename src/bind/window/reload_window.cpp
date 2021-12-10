@@ -10,7 +10,7 @@ namespace vind
     {
         //ReloadCurrentWindow
         ReloadCurrentWindow::ReloadCurrentWindow()
-        : BindedFuncCreator("reload_current_window")
+        : BindedFuncVoid("reload_current_window")
         {}
         void ReloadCurrentWindow::sprocess() {
             util::pushup(KEYCODE_F5) ;

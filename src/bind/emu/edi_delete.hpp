@@ -1,7 +1,7 @@
 #ifndef _EDI_DELETE_HPP
 #define _EDI_DELETE_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 #include "changebase.hpp"
 
 
@@ -10,7 +10,7 @@ namespace vind
     namespace bind
     {
         //Delete
-        struct DeleteHighlightText : public BindedFuncCreator<DeleteHighlightText> {
+        struct DeleteHighlightText : public BindedFuncVoid<DeleteHighlightText> {
             explicit DeleteHighlightText() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

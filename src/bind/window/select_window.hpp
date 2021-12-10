@@ -1,34 +1,34 @@
 #ifndef _SELECT_WINDOW_HPP
 #define _SELECT_WINDOW_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct SelectLeftWindow : public BindedFuncCreator<SelectLeftWindow> {
+        struct SelectLeftWindow : public BindedFuncVoid<SelectLeftWindow> {
             explicit SelectLeftWindow() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SelectRightWindow : public BindedFuncCreator<SelectRightWindow> {
+        struct SelectRightWindow : public BindedFuncVoid<SelectRightWindow> {
             explicit SelectRightWindow() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SelectUpperWindow : public BindedFuncCreator<SelectUpperWindow> {
+        struct SelectUpperWindow : public BindedFuncVoid<SelectUpperWindow> {
             explicit SelectUpperWindow() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SelectLowerWindow : public BindedFuncCreator<SelectLowerWindow> {
+        struct SelectLowerWindow : public BindedFuncVoid<SelectLowerWindow> {
             explicit SelectLowerWindow() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

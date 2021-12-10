@@ -13,7 +13,7 @@ namespace vind
     {
         //SelectAll
         SelectAll::SelectAll()
-        : BindedFuncCreator("select_all")
+        : BindedFuncVoid("select_all")
         {}
 
         void SelectAll::sprocess() {
@@ -32,7 +32,7 @@ namespace vind
 
         //ForwardUINavigation
         ForwardUINavigation::ForwardUINavigation()
-        : BindedFuncCreator("forward_ui_navigation")
+        : BindedFuncVoid("forward_ui_navigation")
         {}
         void ForwardUINavigation::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -51,7 +51,7 @@ namespace vind
 
         //BackwardUINavigation
         BackwardUINavigation::BackwardUINavigation()
-        : BindedFuncCreator("backward_ui_navigation")
+        : BindedFuncVoid("backward_ui_navigation")
         {}
         void BackwardUINavigation::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -70,7 +70,7 @@ namespace vind
 
         //DecideFocusedUIObject
         DecideFocusedUIObject::DecideFocusedUIObject()
-        : BindedFuncCreator("decide_focused_ui_object")
+        : BindedFuncVoid("decide_focused_ui_object")
         {}
         void DecideFocusedUIObject::sprocess() {
             util::pushup(KEYCODE_SPACE) ;

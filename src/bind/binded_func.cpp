@@ -97,34 +97,46 @@ namespace vind
             }
         }
 
-        void BindedFunc::process() const {
+        core::SystemCall BindedFunc::process() const {
+            auto result = core::SystemCall::NOTHING ;
+
             try {
-                do_process() ;
+                result = do_process() ;
                 pimpl->release_fake_press() ;
             }
             catch(const std::runtime_error& e) {
                 error_process(e) ;
             }
+
+            return result ;
         }
 
-        void BindedFunc::process(core::NTypeLogger& parent_lgr) const {
+        core::SystemCall BindedFunc::process(core::NTypeLogger& parent_lgr) const {
+            auto result = core::SystemCall::NOTHING ;
+
             try {
-                do_process(parent_lgr) ;
+                result = do_process(parent_lgr) ;
                 pimpl->release_fake_press() ;
             }
             catch(const std::runtime_error& e) {
                 error_process(e) ;
             }
+
+            return result ;
         }
 
-        void BindedFunc::process(const core::CharLogger& parent_lgr) const {
+        core::SystemCall BindedFunc::process(const core::CharLogger& parent_lgr) const {
+            auto result = core::SystemCall::NOTHING ;
+
             try {
-                do_process(parent_lgr) ;
+                result = do_process(parent_lgr) ;
                 pimpl->release_fake_press() ;
             }
             catch(const std::runtime_error& e) {
                 error_process(e) ;
             }
+
+            return result ;
         }
 
         void BindedFunc::reconstruct() {
@@ -145,11 +157,14 @@ namespace vind
             return pimpl->id_ != rhs.pimpl->id_ ;
         }
 
-        void BindedFunc::do_process() const {
+        core::SystemCall BindedFunc::do_process() const {
+            return core::SystemCall::NOTHING ;
         }
-        void BindedFunc::do_process(core::NTypeLogger&) const {
+        core::SystemCall BindedFunc::do_process(core::NTypeLogger&) const {
+            return core::SystemCall::NOTHING ;
         }
-        void BindedFunc::do_process(const core::CharLogger&) const {
+        core::SystemCall BindedFunc::do_process(const core::CharLogger&) const {
+            return core::SystemCall::NOTHING ;
         }
     }
 }

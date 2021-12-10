@@ -19,7 +19,7 @@ namespace vind
     {
         //DeleteHighlightText (Visual only)
         DeleteHighlightText::DeleteHighlightText()
-        : BindedFuncCreator("delete_highlight_text")
+        : BindedFuncVoid("delete_highlight_text")
         {}
         void DeleteHighlightText::sprocess() {
             using util::pushup ;

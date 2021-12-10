@@ -16,7 +16,7 @@ namespace vind
     {
         //OpenNewWindow
         OpenNewWindow::OpenNewWindow()
-        : BindedFuncCreator("open_new_window")
+        : BindedFuncVoid("open_new_window")
         {}
         void OpenNewWindow::sprocess() {
             auto hwnd = GetForegroundWindow() ;

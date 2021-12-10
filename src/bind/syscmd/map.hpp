@@ -1,50 +1,46 @@
 #ifndef _MAP_HPP
 #define _MAP_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 
 namespace vind
 {
     namespace bind
     {
-        struct SyscmdMap : BindedFuncCreator<SyscmdMap> {
+        struct SyscmdMap : BindedFuncFlex<SyscmdMap> {
             explicit SyscmdMap() ;
-            static void sprocess(
+            static core::SystemCall sprocess(
                     const core::Mode mode = core::Mode::UNDEFINED,
-                    const std::string& args="",
-                    bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+                    const std::string& args="") ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SyscmdNoremap : BindedFuncCreator<SyscmdNoremap> {
+        struct SyscmdNoremap : BindedFuncFlex<SyscmdNoremap> {
             explicit SyscmdNoremap() ;
-            static void sprocess(
+            static core::SystemCall sprocess(
                     const core::Mode mode = core::Mode::UNDEFINED,
-                    const std::string& args="",
-                    bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+                    const std::string& args="") ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SyscmdUnmap : BindedFuncCreator<SyscmdUnmap> {
+        struct SyscmdUnmap : BindedFuncFlex<SyscmdUnmap> {
             explicit SyscmdUnmap() ;
-            static void sprocess(
+            static core::SystemCall sprocess(
                     const core::Mode mode = core::Mode::UNDEFINED,
-                    const std::string& args="",
-                    bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+                    const std::string& args="") ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct SyscmdMapclear : BindedFuncCreator<SyscmdMapclear> {
+        struct SyscmdMapclear : BindedFuncFlex<SyscmdMapclear> {
             explicit SyscmdMapclear() ;
-            static void sprocess(
-                    const core::Mode mode = core::Mode::UNDEFINED,
-                    bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static core::SystemCall sprocess(
+                    const core::Mode mode = core::Mode::UNDEFINED) ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
     }
 }

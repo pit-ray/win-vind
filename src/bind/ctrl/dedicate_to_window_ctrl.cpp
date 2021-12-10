@@ -17,7 +17,7 @@ namespace vind
     {
         //Enable
         EnableTargetingOfDedicate2Window::EnableTargetingOfDedicate2Window()
-        : BindedFuncCreator("enable_targeting_of_dedicate_to_window")
+        : BindedFuncVoid("enable_targeting_of_dedicate_to_window")
         {}
         void EnableTargetingOfDedicate2Window::sprocess() {
             opt::Dedicate2Window::enable_targeting() ;
@@ -33,7 +33,7 @@ namespace vind
 
         //Disable
         DisableTargetingOfDedicate2Window::DisableTargetingOfDedicate2Window()
-        : BindedFuncCreator("disable_targeting_of_dedicate_to_window")
+        : BindedFuncVoid("disable_targeting_of_dedicate_to_window")
         {}
         void DisableTargetingOfDedicate2Window::sprocess() {
             opt::Dedicate2Window::disable_targeting() ;

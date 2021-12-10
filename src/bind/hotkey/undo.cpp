@@ -23,7 +23,7 @@ namespace vind
         } ;
 
         Redo::Redo()
-        : BindedFuncCreator("redo"),
+        : BindedFuncVoid("redo"),
           pimpl(std::make_unique<Impl>())
         {}
 
@@ -56,7 +56,7 @@ namespace vind
         } ;
 
         Undo::Undo()
-        : BindedFuncCreator("undo"),
+        : BindedFuncVoid("undo"),
           pimpl(std::make_unique<Impl>())
         {}
 

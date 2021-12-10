@@ -191,7 +191,7 @@ namespace vind
         } ;
 
         WindowResizer::WindowResizer()
-        : BindedFuncCreator("window_resizer"),
+        : BindedFuncVoid("window_resizer"),
           pimpl(std::make_unique<Impl>())
         {}
 

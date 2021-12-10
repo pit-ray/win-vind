@@ -33,42 +33,62 @@ SOFTWARE.
 */
 
 #include <functional>
+#include <memory>
 #include <string>
+
+#include "defs.hpp"
+
 
 namespace vind
 {
     namespace core
     {
-        //
-        // This file defines packaged functions.
-        //
-        // Example:
-        // int main() {
-        //     vind::initialize() ;
-        //
-        //     while(vind::update()) ;
-        //
-        //     return 0 ;
-        // }
-        //
+        class SafeForcedTermination {
+        private:
+            std::string msg_ ;
 
-        bool initialize(const std::string& func_name="") noexcept ;
+        public:
+            explicit SafeForcedTermination() ;
+            explicit SafeForcedTermination(const std::string& what_arg) ;
+            explicit SafeForcedTermination(const char* what_arg) ;
 
-        // It load all config and reload them.
-        bool load_config() noexcept ;
+            virtual ~SafeForcedTermination() noexcept ;
 
-        // It apply settings of all components from kernel configs. 
-        bool reconstruct_all_components() noexcept ;
-
-        // It updates a main loop once with update_background().
-        bool update() noexcept ;
+            virtual const char* what() const noexcept ;
+        } ;
 
         // If you make some loop functions, the function is needed to call.
         // It includes Sleep().
-        bool update_background() noexcept ;
+        bool update_background() ;
 
-        void register_show_window_func(std::function<void()> func) noexcept ;
-        void register_exit_window_func(std::function<void()> func) noexcept ;
+        class VindEntry {
+        private:
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
+
+        public:
+            explicit VindEntry(
+                    const std::function<void()>& exit_func,
+                    const std::string& mapped_memname="qvCI980BTny1ZSFfY76sO71w7MtLTzuPVd6RQs47_p7Kn4SJZ7cnaH8QwPS901VFd2N5WuxECvx7N3hP7caWK44ZSq6",
+                    std::size_t mapped_memsize=1024) ;
+            virtual ~VindEntry() noexcept ;
+
+            bool is_subprocess() const noexcept ;
+
+            void init(const std::string& func_request) ;
+            void init() ;
+
+            void reconstruct() ;
+
+            void update() ;
+
+            void handle_system_call(SystemCall systemcall) ;
+
+            VindEntry(VindEntry&&)                 = delete ;
+            VindEntry& operator=(VindEntry&&)      = delete ;
+            VindEntry(const VindEntry&)            = delete ;
+            VindEntry& operator=(const VindEntry&) = delete ;
+        } ;
     }
 }
 

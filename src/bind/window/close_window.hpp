@@ -1,13 +1,13 @@
 #ifndef _CLOSE_WINDOW_HPP
 #define _CLOSE_WINDOW_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct CloseCurrentWindow : public BindedFuncCreator<CloseCurrentWindow> {
+        struct CloseCurrentWindow : public BindedFuncVoid<CloseCurrentWindow> {
             explicit CloseCurrentWindow() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;

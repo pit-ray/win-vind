@@ -1,12 +1,12 @@
 #ifndef _SCROLL_HPP
 #define _SCROLL_HPP
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class ScrollUp : public BindedFuncCreator<ScrollUp> {
+        class ScrollUp : public BindedFuncVoid<ScrollUp> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -26,7 +26,7 @@ namespace vind
         } ;
 
 
-        class ScrollDown : public BindedFuncCreator<ScrollDown> {
+        class ScrollDown : public BindedFuncVoid<ScrollDown> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -46,7 +46,7 @@ namespace vind
         } ;
 
 
-        class ScrollUpHalfPage : public BindedFuncCreator<ScrollUpHalfPage> {
+        class ScrollUpHalfPage : public BindedFuncVoid<ScrollUpHalfPage> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -66,7 +66,7 @@ namespace vind
         } ;
 
 
-        class ScrollDownHalfPage : public BindedFuncCreator<ScrollDownHalfPage> {
+        class ScrollDownHalfPage : public BindedFuncVoid<ScrollDownHalfPage> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -86,7 +86,7 @@ namespace vind
         } ;
 
 
-        class ScrollUpOnePage : public BindedFuncCreator<ScrollUpOnePage> {
+        class ScrollUpOnePage : public BindedFuncVoid<ScrollUpOnePage> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -106,7 +106,7 @@ namespace vind
         } ;
 
 
-        class ScrollDownOnePage : public BindedFuncCreator<ScrollDownOnePage> {
+        class ScrollDownOnePage : public BindedFuncVoid<ScrollDownOnePage> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -127,7 +127,7 @@ namespace vind
         } ;
 
 
-        class ScrollLeft : public BindedFuncCreator<ScrollLeft> {
+        class ScrollLeft : public BindedFuncVoid<ScrollLeft> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -147,7 +147,7 @@ namespace vind
         } ;
 
 
-        class ScrollRight : public BindedFuncCreator<ScrollRight> {
+        class ScrollRight : public BindedFuncVoid<ScrollRight> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -167,7 +167,7 @@ namespace vind
         } ;
 
 
-        class ScrollLeftHalfPage : public BindedFuncCreator<ScrollLeftHalfPage> {
+        class ScrollLeftHalfPage : public BindedFuncVoid<ScrollLeftHalfPage> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -187,7 +187,7 @@ namespace vind
         } ;
 
 
-        class ScrollRightHalfPage : public BindedFuncCreator<ScrollRightHalfPage> {
+        class ScrollRightHalfPage : public BindedFuncVoid<ScrollRightHalfPage> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

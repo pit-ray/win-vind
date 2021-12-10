@@ -1,7 +1,7 @@
 #include "map.hpp"
 
 #include "bind/binded_func.hpp"
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
@@ -77,30 +77,29 @@ namespace vind
     {
         // map
         SyscmdMap::SyscmdMap()
-        : BindedFuncCreator("system_command_map")
+        : BindedFuncFlex("system_command_map")
         {}
-        void SyscmdMap::sprocess(
+        core::SystemCall SyscmdMap::sprocess(
                 const core::Mode mode,
-                const std::string& args,
-                bool reload_config) {
+                const std::string& args) {
 
             std::string arg1, arg2 ;
             if(parse_argument_as_map(args, arg1, arg2)) {
                 core::do_map(arg1, arg2, mode) ;
-                if(reload_config) {
-                    core::reconstruct_all_components() ;
-                }
             }
+
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdMap::sprocess(core::NTypeLogger&) {
-            return ;
+        core::SystemCall SyscmdMap::sprocess(core::NTypeLogger&) {
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdMap::sprocess(const core::CharLogger& parent_lgr) {
+        core::SystemCall SyscmdMap::sprocess(const core::CharLogger& parent_lgr) {
             try {
                 core::Mode mode ;
                 std::string args ;
                 if(parse_arguments_from_logger(parent_lgr, "m", mode, args)) {
-                    sprocess(mode, args, true) ;
+                    sprocess(mode, args) ;
+                    return core::SystemCall::RECONSTRUCT ;
                 }
             }
             // If received syntax error as std::logic_error,
@@ -108,35 +107,34 @@ namespace vind
             catch(const std::logic_error& e) {
                 throw std::runtime_error(e.what()) ;
             }
+
+            return core::SystemCall::NOTHING ;
         }
 
 
         // noremap
         SyscmdNoremap::SyscmdNoremap()
-        : BindedFuncCreator("system_command_noremap")
+        : BindedFuncFlex("system_command_noremap")
         {}
-        void SyscmdNoremap::sprocess(
+        core::SystemCall SyscmdNoremap::sprocess(
                 const core::Mode mode,
-                const std::string& args,
-                bool reload_config) {
-
+                const std::string& args) {
             std::string arg1, arg2 ;
             if(parse_argument_as_map(args, arg1, arg2)) {
                 core::do_noremap(arg1, arg2, mode) ;
-                if(reload_config) {
-                    core::reconstruct_all_components() ;
-                }
             }
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdNoremap::sprocess(core::NTypeLogger&) {
-            return ;
+        core::SystemCall SyscmdNoremap::sprocess(core::NTypeLogger&) {
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdNoremap::sprocess(const core::CharLogger& parent_lgr) {
+        core::SystemCall SyscmdNoremap::sprocess(const core::CharLogger& parent_lgr) {
             try {
                 core::Mode mode ;
                 std::string args ;
                 if(parse_arguments_from_logger(parent_lgr, "n", mode, args)) {
-                    sprocess(mode, args, true) ;
+                    sprocess(mode, args) ;
+                    return core::SystemCall::RECONSTRUCT ;
                 }
             }
             // If received syntax error as std::logic_error,
@@ -144,38 +142,38 @@ namespace vind
             catch(const std::logic_error& e) {
                 throw std::runtime_error(e.what()) ;
             }
+
+            return core::SystemCall::NOTHING ;
         }
 
 
         // unmap
         SyscmdUnmap::SyscmdUnmap()
-        : BindedFuncCreator("system_command_unmap")
+        : BindedFuncFlex("system_command_unmap")
         {}
 
-        void SyscmdUnmap::sprocess(
+        core::SystemCall SyscmdUnmap::sprocess(
                 core::Mode mode,
-                const std::string& args,
-                bool reload_config) {
+                const std::string& args) {
             if(args.empty()) {
                 // does not have argument is empty
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return ;
             }
-
-            auto arg = core::extract_single_arg(args) ;
-            if(arg.empty()) {
-                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return ;
+            else {
+                auto arg = core::extract_single_arg(args) ;
+                if(arg.empty()) {
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
+                }
+                else {
+                    core::do_unmap(arg, mode) ;
+                }
             }
-            core::do_unmap(arg, mode) ;
-
-            if(reload_config) {
-                core::reconstruct_all_components() ;
-            }
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdUnmap::sprocess(core::NTypeLogger&) {
+        core::SystemCall SyscmdUnmap::sprocess(core::NTypeLogger&) {
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdUnmap::sprocess(const core::CharLogger& parent_lgr) {
+        core::SystemCall SyscmdUnmap::sprocess(const core::CharLogger& parent_lgr) {
             auto str = parent_lgr.to_str() ;
             if(str.empty()) {
                 throw RUNTIME_EXCEPT("Empty command") ;
@@ -188,28 +186,26 @@ namespace vind
             if(mode == core::Mode::UNDEFINED) {
                 PRINT_ERROR(str + " is Invalid mode prefix.") ;
                 opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
-                return ;
+                return core::SystemCall::NOTHING ;
             }
-            sprocess(mode, args, true) ;
+
+            sprocess(mode, args) ;
+            return core::SystemCall::RECONSTRUCT ;
         }
 
         // mapclear
         SyscmdMapclear::SyscmdMapclear()
-        : BindedFuncCreator("system_command_mapclear")
+        : BindedFuncFlex("system_command_mapclear")
         {}
 
-        void SyscmdMapclear::sprocess(
-                core::Mode mode,
-                bool reload_config) {
-
+        core::SystemCall SyscmdMapclear::sprocess(core::Mode mode) {
             core::do_mapclear(mode) ;
-            if(reload_config) {
-                core::reconstruct_all_components() ;
-            }
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdMapclear::sprocess(core::NTypeLogger&) {
+        core::SystemCall SyscmdMapclear::sprocess(core::NTypeLogger&) {
+            return core::SystemCall::NOTHING ;
         }
-        void SyscmdMapclear::sprocess(const core::CharLogger& parent_lgr) {
+        core::SystemCall SyscmdMapclear::sprocess(const core::CharLogger& parent_lgr) {
             auto str = parent_lgr.to_str() ;
             if(str.empty()) {
                 throw RUNTIME_EXCEPT("Empty command") ;
@@ -218,17 +214,21 @@ namespace vind
             auto [cmd, args] = core::divide_cmd_and_args(str) ;
             if(!args.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return ;
+            }
+            else {
+                auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
+                auto mode = core::parse_mode_prefix(prefix) ;
+                if(mode == core::Mode::UNDEFINED) {
+                    PRINT_ERROR(str + " is Invalid mode prefix.") ;
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
+                }
+                else {
+                    sprocess(mode) ;
+                    return core::SystemCall::RECONSTRUCT ;
+                }
             }
 
-            auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
-            auto mode = core::parse_mode_prefix(prefix) ;
-            if(mode == core::Mode::UNDEFINED) {
-                PRINT_ERROR(str + " is Invalid mode prefix.") ;
-                opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
-                return ;
-            }
-            sprocess(mode, true) ;
+            return core::SystemCall::NOTHING ;
         }
     }
 }

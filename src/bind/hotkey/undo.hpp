@@ -3,13 +3,13 @@
 
 #include <memory>
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        class Redo : public BindedFuncCreator<Redo> {
+        class Redo : public BindedFuncVoid<Redo> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
@@ -29,7 +29,7 @@ namespace vind
         } ;
 
 
-        struct Undo : public BindedFuncCreator<Undo> {
+        struct Undo : public BindedFuncVoid<Undo> {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;

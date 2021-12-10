@@ -1,19 +1,17 @@
 #ifndef _SET_HPP
 #define _SET_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct SyscmdSet : BindedFuncCreator<SyscmdSet> {
+        struct SyscmdSet : BindedFuncFlex<SyscmdSet> {
             explicit SyscmdSet() ;
-            static void sprocess(
-                    const std::string& args="",
-                    bool reload_config=false) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const std::string& args="") ;
+            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
     }
 }

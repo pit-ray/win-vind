@@ -49,7 +49,7 @@ namespace vind
 
         //SwitchWindow
         SwitchWindow::SwitchWindow()
-        : BindedFuncCreator("switch_window"),
+        : BindedFuncVoid("switch_window"),
           pimpl(std::make_unique<Impl>())
         {}
         SwitchWindow::~SwitchWindow() noexcept                = default ;

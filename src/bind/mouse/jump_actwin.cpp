@@ -12,7 +12,7 @@ namespace vind
     {
         //JumpToActiveWindow
         JumpToActiveWindow::JumpToActiveWindow()
-        : BindedFuncCreator("jump_cursor_to_active_window")
+        : BindedFuncVoid("jump_cursor_to_active_window")
         {}
         void JumpToActiveWindow::sprocess() {
             auto hwnd = GetForegroundWindow() ;

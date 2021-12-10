@@ -25,13 +25,13 @@ namespace vind
 
             void init() ;
 
-            void error(const char* msg, const char* scope) ;
-            void error(std::string&& msg, const char* scope) ;
-            void error(const std::string& msg, const char* scope) ;
+            void error(const char* msg, const char* scope="") ;
+            void error(std::string&& msg, const char* scope="") ;
+            void error(const std::string& msg, const char* scope="") ;
 
-            void message(const char* msg, const char* scope) ;
-            void message(std::string&& msg, const char* scope) ;
-            void message(const std::string& msg, const char* scope) ;
+            void message(const char* msg, const char* scope="") ;
+            void message(std::string&& msg, const char* scope="") ;
+            void message(const std::string& msg, const char* scope="") ;
 
             Logger(Logger&&)                 = delete ;
             Logger& operator=(Logger&&)      = delete ;

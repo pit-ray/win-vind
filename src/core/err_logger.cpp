@@ -81,20 +81,28 @@ namespace vind
             {}
 
             template <typename T>
-            inline void print_error(T&& msg, const char* scope) {
+            inline void print_error(T&& msg, const std::string& scope) {
                 if(stream_.is_open()) {
-                    stream_ << "[Error] " \
-                        << "Windows Error Code: [" << GetLastError() << "], " \
-                        << msg << " (" << scope << ")" << std::endl ;
+                    stream_ << \
+                        "[Error] " << \
+                        "Windows Error Code: [" << GetLastError() << "], " << \
+                        msg ;
+                    if(!scope.empty()) {
+                        stream_ << " (" << scope << ")" ;
+                    }
+                    stream_ <<  std::endl ;
                     stream_.flush() ;
                 }
             }
 
             template <typename T>
-            inline void print_message(T&& msg, const char* scope) {
+            inline void print_message(T&& msg, const std::string& scope) {
                 if(stream_.is_open()) {
-                    stream_ << "[Message] " \
-                        << msg << " (" << scope << ")" << std::endl ;
+                    stream_ << "[Message] " << msg ;
+                    if(!scope.empty()) {
+                        stream_ << " (" << scope << ")" ;
+                    }
+                    stream_ << std::endl ;
                     stream_.flush() ;
                 }
             }

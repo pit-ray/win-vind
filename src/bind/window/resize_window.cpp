@@ -101,7 +101,7 @@ namespace vind
     {
         //ResizeWindowWidth
         ResizeWindowWidth::ResizeWindowWidth()
-        : BindedFuncCreator("resize_window_width")
+        : BindedFuncVoid("resize_window_width")
         {}
         void ResizeWindowWidth::sprocess(long width) {
             if(width <= 0) return ;
@@ -122,7 +122,7 @@ namespace vind
 
         //IncreaseWindowWidth
         IncreaseWindowWidth::IncreaseWindowWidth()
-        : BindedFuncCreator("increase_window_width")
+        : BindedFuncVoid("increase_window_width")
         {}
         void IncreaseWindowWidth::sprocess(long delta) {
             if(delta <= 0) return ;
@@ -143,7 +143,7 @@ namespace vind
 
         //DecreaseWindowWidth
         DecreaseWindowWidth::DecreaseWindowWidth()
-        : BindedFuncCreator("decrease_window_width")
+        : BindedFuncVoid("decrease_window_width")
         {}
         void DecreaseWindowWidth::sprocess(long delta)  {
             if(delta <= 0) return ;
@@ -172,7 +172,7 @@ namespace vind
 
         //ResizeWindowHeight
         ResizeWindowHeight::ResizeWindowHeight()
-        : BindedFuncCreator("resize_window_height")
+        : BindedFuncVoid("resize_window_height")
         {}
         void ResizeWindowHeight::sprocess(long height) {
             if(height == 0) return ;
@@ -193,7 +193,7 @@ namespace vind
 
         //IncreaseWindowHeight
         IncreaseWindowHeight::IncreaseWindowHeight()
-        : BindedFuncCreator("increase_window_height")
+        : BindedFuncVoid("increase_window_height")
         {}
         void IncreaseWindowHeight::sprocess(long delta) {
             if(delta <= 0) return ;
@@ -214,7 +214,7 @@ namespace vind
 
         //DecreaseWindowHeight
         DecreaseWindowHeight::DecreaseWindowHeight()
-        : BindedFuncCreator("decrease_window_height")
+        : BindedFuncVoid("decrease_window_height")
         {}
         void DecreaseWindowHeight::sprocess(long delta) {
             if(delta <= 0) return ;

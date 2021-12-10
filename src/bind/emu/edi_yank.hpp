@@ -1,7 +1,7 @@
 #ifndef _EDI_YANK_HPP
 #define _EDI_YANK_HPP
 
-#include "bind/binded_func_creator.hpp"
+#include "bind/binded_func.hpp"
 
 namespace vind
 {
@@ -10,14 +10,14 @@ namespace vind
         struct SelectedTextResult ;
 
         //Copy
-        struct YankHighlightText : public BindedFuncCreator<YankHighlightText> {
+        struct YankHighlightText : public BindedFuncVoid<YankHighlightText> {
             explicit YankHighlightText() ;
             static void sprocess() ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct YankLine : public BindedFuncCreator<YankLine> {
+        struct YankLine : public BindedFuncVoid<YankLine> {
             explicit YankLine() ;
             static void sprocess(
                     unsigned int repeat_num=1,

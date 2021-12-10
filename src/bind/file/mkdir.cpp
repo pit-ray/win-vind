@@ -17,7 +17,7 @@ namespace vind
     namespace bind
     {
         MakeDir::MakeDir()
-        : BindedFuncCreator("makedir")
+        : BindedFuncVoid("makedir")
         {}
         void MakeDir::sprocess(const std::filesystem::path& path) {
             if(path.is_absolute()) {

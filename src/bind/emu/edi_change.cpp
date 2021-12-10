@@ -17,7 +17,7 @@ namespace vind
     {
         //ChangeHighlightText (Visual only)
         ChangeHighlightText::ChangeHighlightText()
-        : BindedFuncCreator("change_highlight_text")
+        : BindedFuncVoid("change_highlight_text")
         {}
         void ChangeHighlightText::sprocess() {
             using util::pushup ;

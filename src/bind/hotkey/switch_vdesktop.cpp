@@ -11,7 +11,7 @@ namespace vind
     {
         //SwitchVDesktop2Left
         SwitchVDesktop2Left::SwitchVDesktop2Left()
-        : BindedFuncCreator("switch_to_left_vdesktop")
+        : BindedFuncVoid("switch_to_left_vdesktop")
         {}
         void SwitchVDesktop2Left::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -30,7 +30,7 @@ namespace vind
 
         //SwitchVDesktop2Right
         SwitchVDesktop2Right::SwitchVDesktop2Right()
-        : BindedFuncCreator("switch_to_right_vdesktop")
+        : BindedFuncVoid("switch_to_right_vdesktop")
         {}
         void SwitchVDesktop2Right::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
@@ -49,7 +49,7 @@ namespace vind
 
         //CreateNewVDesktop
         CreateNewVDesktop::CreateNewVDesktop()
-        : BindedFuncCreator("create_new_vdesktop")
+        : BindedFuncVoid("create_new_vdesktop")
         {}
         void CreateNewVDesktop::sprocess() {
             util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_D) ;
@@ -66,7 +66,7 @@ namespace vind
 
         //CloseCurrentVDesktop
         CloseCurrentVDesktop::CloseCurrentVDesktop()
-        : BindedFuncCreator("close_current_vdesktop")
+        : BindedFuncVoid("close_current_vdesktop")
         {}
         void CloseCurrentVDesktop::sprocess() {
             util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_F4) ;
@@ -83,7 +83,7 @@ namespace vind
 
         //TaskView
         TaskView::TaskView()
-        : BindedFuncCreator("taskview")
+        : BindedFuncVoid("taskview")
         {}
         void TaskView::sprocess() {
             util::pushup(KEYCODE_LWIN, KEYCODE_TAB) ;

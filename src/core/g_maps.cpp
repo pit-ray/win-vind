@@ -14,8 +14,8 @@
 
 #include "bind/bindings_lists.hpp"
 #include "bindings_parser.hpp"
+#include "defs.hpp"
 #include "err_logger.hpp"
-#include "mapdefs.hpp"
 #include "mode.hpp"
 #include "path.hpp"
 #include "util/def.hpp"

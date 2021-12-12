@@ -97,7 +97,7 @@ namespace vind
 
                 if(g_runnable.load()) {
                     g_runnable.store(false) ;
-                    entry_.handle_system_call(core::SystemCall::TERMINATE) ;
+                    entry_.handle_system_call(SystemCall::TERMINATE) ;
                 }
 
                 return static_cast<ExitCode>(0) ;

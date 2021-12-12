@@ -2,6 +2,7 @@
 
 #include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
+#include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
 #include "core/key_absorber.hpp"
@@ -11,6 +12,7 @@
 #include "edi_delete.hpp"
 #include "edi_yank.hpp"
 #include "movebase.hpp"
+#include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
@@ -25,11 +27,16 @@ namespace
 {
     using namespace vind ;
     using namespace vind::bind ;
-    bool select_by_motion(std::size_t caller_self_id, core::FuncFinder& ff) {
+    bool select_by_motion(
+            std::size_t caller_self_id,
+            core::Background& bg,
+            core::FuncFinder& ff) {
         core::NTypeLogger lgr ;
         core::InstantKeyAbsorber ika ;
 
-        while(core::update_background()) {
+        while(true) {
+            bg.update() ;
+
             auto log = core::LogPooler::get_instance().pop_log() ;
             auto result = lgr.logging_state(log) ;
             if(NTYPE_EMPTY(result)) {
@@ -76,6 +83,7 @@ namespace
     //
     bool select_by_motion(
             std::size_t caller_self_id,
+            core::Background& bg,
             core::FuncFinder& ff,
             core::FuncFinder&parent_ff,
             core::NTypeLogger& parent_lgr) {
@@ -90,7 +98,9 @@ namespace
 
         core::InstantKeyAbsorber ika ;
 
-        while(core::update_background()) {
+        while(true) {
+            bg.update() ;
+
             auto log = core::LogPooler::get_instance().pop_log() ;
             auto result = lgr.logging_state(log) ;
             auto parent_result = parent_lgr.logging_state() ;
@@ -154,10 +164,12 @@ namespace vind
         struct YankWithMotion::Impl {
             core::FuncFinder funcfinder_ ;
             core::FuncFinder parent_funcfinder_ ;
+            core::Background bg_ ;
 
             explicit Impl()
             : funcfinder_(),
-              parent_funcfinder_()
+              parent_funcfinder_(),
+              bg_(opt::all_global_options())
             {}
 
             void copy() const {
@@ -173,14 +185,21 @@ namespace vind
         YankWithMotion::YankWithMotion(YankWithMotion&&) = default ;
         YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
         void YankWithMotion::sprocess() const {
-            if(select_by_motion(id(), pimpl->funcfinder_)) {
+            if(select_by_motion(
+                    id(),
+                    pimpl->bg_,
+                    pimpl->funcfinder_)) {
                 pimpl->copy() ;
             }
         }
         void YankWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
-                if(select_by_motion(id(), pimpl->funcfinder_,
-                            pimpl->parent_funcfinder_, parent_lgr)) {
+                if(select_by_motion(
+                        id(),
+                        pimpl->bg_,
+                        pimpl->funcfinder_,
+                        pimpl->parent_funcfinder_,
+                        parent_lgr)) {
                     pimpl->copy() ;
                 }
             }
@@ -197,10 +216,12 @@ namespace vind
         struct DeleteWithMotion::Impl {
             core::FuncFinder funcfinder_ ;
             core::FuncFinder parent_funcfinder_ ;
+            core::Background bg_ ;
 
             explicit Impl()
             : funcfinder_(),
-              parent_funcfinder_()
+              parent_funcfinder_(),
+              bg_(opt::all_global_options())
             {}
 
             void remove() const {
@@ -216,14 +237,21 @@ namespace vind
         DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
 
         void DeleteWithMotion::sprocess() const {
-            if(select_by_motion(id(), pimpl->funcfinder_)) {
+            if(select_by_motion(
+                    id(),
+                    pimpl->bg_,
+                    pimpl->funcfinder_)) {
                 pimpl->remove() ;
             }
         }
         void DeleteWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
-                if(select_by_motion(id(), pimpl->funcfinder_,
-                            pimpl->funcfinder_, parent_lgr)) {
+                if(select_by_motion(
+                        id(),
+                        pimpl->bg_,
+                        pimpl->funcfinder_,
+                        pimpl->funcfinder_,
+                        parent_lgr)) {
                     pimpl->remove() ;
                 }
             }
@@ -241,10 +269,12 @@ namespace vind
         struct ChangeWithMotion::Impl {
             core::FuncFinder funcfinder_ ;
             core::FuncFinder parent_funcfinder_ ;
+            core::Background bg_ ;
 
             explicit Impl()
             : funcfinder_(),
-              parent_funcfinder_()
+              parent_funcfinder_(),
+              bg_(opt::all_global_options())
             {}
 
             void remove_and_insert() {
@@ -260,14 +290,21 @@ namespace vind
         ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&) = default ;
         ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
         void ChangeWithMotion::sprocess() const {
-            if(select_by_motion(id(), pimpl->funcfinder_)) {
+            if(select_by_motion(
+                    id(),
+                    pimpl->bg_,
+                    pimpl->funcfinder_)) {
                 pimpl->remove_and_insert() ;
             }
         }
         void ChangeWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
-                if(select_by_motion(id(), pimpl->funcfinder_,
-                            pimpl->parent_funcfinder_, parent_lgr)) {
+                if(select_by_motion(
+                        id(),
+                        pimpl->bg_,
+                        pimpl->funcfinder_,
+                        pimpl->parent_funcfinder_,
+                        parent_lgr)) {
                     pimpl->remove_and_insert() ;
                 }
             }

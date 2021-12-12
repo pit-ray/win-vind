@@ -9,12 +9,14 @@
 #include "window_utility.hpp"
 
 #include "bind/emu/edi_move_caret.hpp"
+#include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
 #include "core/g_params.hpp"
 #include "core/key_absorber.hpp"
 #include "core/logpooler.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/constant_accelerator.hpp"
 #include "util/def.hpp"
@@ -48,6 +50,8 @@ namespace vind
 
             util::ConstAccelerator ca_ ;
 
+            core::Background bg_ ;
+
             explicit Impl()
             : funcfinder_(),
               left_id_(MoveCaretLeft().id()),
@@ -55,7 +59,8 @@ namespace vind
               up_id_(MoveCaretUp().id()),
               down_id_(MoveCaretDown().id()),
               ksr_(),
-              ca_()
+              ca_(),
+              bg_(opt::all_global_options())
             {}
 
             void do_resize(std::size_t id, bool first_call) {
@@ -220,7 +225,9 @@ namespace vind
             pimpl->draw_mode_status(inmode) ;
 
             std::size_t actid = 0 ;
-            while(core::update_background()) {
+            while(true) {
+                pimpl->bg_.update() ;
+
                 auto log = core::LogPooler::get_instance().pop_log() ;
                 if(!NTYPE_LOGGED(lgr.logging_state(log))) {
                     continue ;

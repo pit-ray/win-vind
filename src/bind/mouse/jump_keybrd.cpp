@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <utility>
 
+#include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
 #include "core/g_params.hpp"
@@ -17,6 +18,7 @@
 #include "core/keycodecvt.hpp"
 #include "core/ntype_logger.hpp"
 #include "core/path.hpp"
+#include "opt/optionlist.hpp"
 #include "util/def.hpp"
 #include "util/keybrd.hpp"
 #include "util/screen_metrics.hpp"
@@ -38,6 +40,8 @@ namespace vind
             using KeyPos = std::array<float, 256> ;
             KeyPos xposs{} ;
             KeyPos yposs{} ;
+
+            core::Background bg_{opt::all_global_options()} ;
         } ;
 
         JumpWithKeybrdLayout::JumpWithKeybrdLayout()
@@ -60,8 +64,12 @@ namespace vind
             auto width  = box.width() ;
             auto height = box.height() ;
 
-            while(core::update_background()) {
-                if(core::is_pressed(KEYCODE_ESC)) return ;
+            while(true) {
+                pimpl->bg_.update() ;
+
+                if(core::is_pressed(KEYCODE_ESC)) {
+                    return ;
+                }
 
                 auto log = core::get_pressed_list() - toggle_keys ;
                 if(log.empty()) continue ;

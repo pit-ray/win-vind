@@ -10,11 +10,11 @@ namespace vind
     {
         struct SyscmdSource : BindedFuncFlex<SyscmdSource> {
             explicit SyscmdSource() ;
-            static core::SystemCall sprocess(
+            static SystemCall sprocess(
                     const std::filesystem::path& path=core::RC(),
                     bool start_from_default=true) ;
-            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
-            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
+            static SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
     }
 }

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "mapdefs.hpp"
+#include "defs.hpp"
 
 namespace vind
 {

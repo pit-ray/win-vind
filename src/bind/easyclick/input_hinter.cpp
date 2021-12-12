@@ -4,10 +4,12 @@
 #include <memory>
 #include <mutex>
 
+#include "core/background.hpp"
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/key_absorber.hpp"
 #include "core/logpooler.hpp"
+#include "opt/optionlist.hpp"
 #include "util/winwrap.hpp"
 
 namespace vind
@@ -19,6 +21,8 @@ namespace vind
             std::size_t drawable_hints_num_ = 0 ;
             std::atomic_bool cancel_running_ = false ;
             std::mutex mtx_{} ;
+
+            core::Background bg_{opt::all_global_options()} ;
 
             // return : matched index
             long validate_if_match_with_hints(
@@ -36,8 +40,8 @@ namespace vind
 
                 for(std::size_t i = 0 ; i < hints.size() ; i ++) {
 
-                    std::size_t seq_idx ;
-                    for(seq_idx = 0 ; seq_idx < lgr.size() ; seq_idx ++) {
+                    std::size_t seq_idx = 0 ;
+                    while(seq_idx < lgr.size()) {
                         try {
                             if(!lgr.at(seq_idx).is_containing(hints[i].at(seq_idx))) {
                                 break ;
@@ -46,6 +50,8 @@ namespace vind
                         catch(const std::out_of_range&) {
                             break ;
                         }
+
+                        seq_idx ++ ;
                     }
 
                     if(seq_idx == lgr.size()) {
@@ -91,7 +97,9 @@ namespace vind
                 KEYCODE_BKSPACE
             };
 
-            while(core::update_background() && !(pimpl->cancel_running_)) {
+            while(!(pimpl->cancel_running_)) {
+                pimpl->bg_.update() ;
+
                 auto log = core::LogPooler::get_instance().pop_log() ;
                 if(!CHAR_LOGGED(lgr.logging_state(log))) {
                     continue ;

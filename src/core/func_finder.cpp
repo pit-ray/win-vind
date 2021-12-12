@@ -3,12 +3,12 @@
 #include "bind/binded_func.hpp"
 #include "bind/bindings_lists.hpp"
 #include "bindings_parser.hpp"
+#include "defs.hpp"
 #include "entry.hpp"
 #include "g_maps.hpp"
 #include "key_logger_base.hpp"
 #include "logger_parser.hpp"
 #include "logger_parser_mgr.hpp"
-#include "mapdefs.hpp"
 #include "mode.hpp"
 #include "path.hpp"
 #include "util/def.hpp"
@@ -29,6 +29,7 @@ namespace vind
     {
         struct FuncFinder::Impl {
             ModeArray<LoggerParserManager> mgrs_{} ;
+            std::vector<bind::BindedFunc::SPtr> funcs_{} ;
         } ;
 
         FuncFinder::FuncFinder()
@@ -81,16 +82,29 @@ namespace vind
             return pimpl->mgrs_[static_cast<int>(mode)].reset_parser_states() ;
         }
 
-        bind::BindedFunc::SPtr FuncFinder::find_func_byname(const std::string& name) {
+        bind::BindedFunc::SPtr FuncFinder::find_func_byname(const std::string& name) const {
             auto id = bind::BindedFunc::name_to_id(name) ;
-            for(const auto& func : bind::all_global_binded_funcs()) {
-                if(func->id() == id) return func ;
+            for(const auto& func : pimpl->funcs_) {
+                if(func->id() == id) {
+                    return func ;
+                }
             }
 
             return nullptr ;
         }
 
         void FuncFinder::reconstruct() {
+            pimpl->funcs_ = bind::all_global_binded_funcs() ;
+        }
+
+        void FuncFinder::reconstruct(const std::vector<bind::BindedFunc::SPtr>& funcs) {
+            pimpl->funcs_ = funcs ;
+        }
+        void FuncFinder::reconstruct(std::vector<bind::BindedFunc::SPtr>&& funcs) {
+            pimpl->funcs_ = std::move(funcs) ;
+        }
+
+        void FuncFinder::do_reconstruct() {
             ParsedBindingTable parsed_bdtable ;
             for(size_t i = 0 ; i < mode_num() ; i ++) {
                 auto& funcmap = parsed_bdtable[i] ;
@@ -113,7 +127,7 @@ namespace vind
 
             for(size_t i = 0 ; i < mode_num() ; i ++) {
                 std::vector<LoggerParser::SPtr> parsers ;
-                for(const auto& func : bind::all_global_binded_funcs()) {
+                for(const auto& func : pimpl->funcs_) {
                     try {
                         const auto& list = parsed_bdtable[i].at(func->name()) ;
                         auto p_parser = std::make_shared<LoggerParser>(func) ;

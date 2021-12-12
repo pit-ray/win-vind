@@ -15,9 +15,9 @@ namespace vind
         public:
             explicit ToCommand() ;
 
-            core::SystemCall sprocess() const ;
-            core::SystemCall sprocess(core::NTypeLogger& parent_lgr) const ;
-            core::SystemCall sprocess(const core::CharLogger& parent_lgr) const ;
+            SystemCall sprocess() const ;
+            SystemCall sprocess(core::NTypeLogger& parent_lgr) const ;
+            SystemCall sprocess(const core::CharLogger& parent_lgr) const ;
 
             virtual ~ToCommand() noexcept ;
             ToCommand(ToCommand&&) ;

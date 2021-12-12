@@ -27,7 +27,7 @@ namespace vind
             Option(Option&&) noexcept ;
             Option& operator=(Option&&) noexcept ;
 
-            Option(const Option&) = delete ;
+            Option(const Option&)            = delete ;
             Option& operator=(const Option&) = delete ;
 
             const std::string& name() const noexcept ;

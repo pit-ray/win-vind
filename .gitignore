@@ -1,8 +1,11 @@
 .VSCodeCounter
+.a
 .clangd
 .vimspector.json
 .vs
 .vscode
+:w
+:wq
 bin
 bin_32
 bin_64
@@ -25,4 +28,5 @@ replace.vim
 repo
 temp
 venv
+w
 winget

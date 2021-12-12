@@ -64,6 +64,11 @@
 #include "syscmd/set.hpp"
 #include "syscmd/source.hpp"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
+
 namespace vind
 {
     namespace bind

@@ -159,7 +159,7 @@ namespace vind
             }
         }
 
-        core::SystemCall SyscmdSource::sprocess(
+        SystemCall SyscmdSource::sprocess(
                 const std::filesystem::path& path,
                 bool start_from_default) {
 
@@ -176,7 +176,7 @@ namespace vind
             if(!ifs.is_open()) {
                 opt::VCmdLine::print(opt::ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
 
-                return core::SystemCall::NOTHING ;
+                return SystemCall::NOTHING ;
             }
 
             std::string aline ;
@@ -246,12 +246,12 @@ namespace vind
                 }
             }
 
-            return core::SystemCall::NOTHING ;
+            return SystemCall::NOTHING ;
         }
-        core::SystemCall SyscmdSource::sprocess(core::NTypeLogger&) {
-            return core::SystemCall::NOTHING ;
+        SystemCall SyscmdSource::sprocess(core::NTypeLogger&) {
+            return SystemCall::NOTHING ;
         }
-        core::SystemCall SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
+        SystemCall SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
             try {
                 auto str = parent_lgr.to_str() ;
                 if(str.empty()) {
@@ -265,7 +265,7 @@ namespace vind
                     sprocess(core::replace_path_magic(args), true) ;
                 }
 
-                return core::SystemCall::RECONSTRUCT ;
+                return SystemCall::RECONSTRUCT ;
             }
             // If received syntax error as std::logic_error,
             // convert to runtime_error not to terminate application.
@@ -273,7 +273,7 @@ namespace vind
                 throw std::runtime_error(e.what()) ;
             }
 
-            return core::SystemCall::NOTHING ;
+            return SystemCall::NOTHING ;
         }
     }
 }

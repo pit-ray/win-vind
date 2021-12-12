@@ -2,9 +2,9 @@
 #define _KEY_ABSORBER_HPP
 
 #include <vector>
+#include "defs.hpp"
 #include "key_log.hpp"
 #include "keycode_def.hpp"
-#include "mapdefs.hpp"
 
 namespace vind
 {

@@ -5,6 +5,7 @@
 
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/mouse/jump_actwin.hpp"
+#include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
 #include "core/key_absorber.hpp"
@@ -12,6 +13,7 @@
 #include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/optionlist.hpp"
 #include "util/def.hpp"
 #include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
@@ -26,11 +28,14 @@ namespace vind
             std::size_t right_id_ ;
             util::KeyStrokeRepeater ksr_ ;
 
+            core::Background bg_ ;
+
             explicit Impl()
             : funcfinder_(),
               left_id_(MoveCaretLeft().id()),
               right_id_(MoveCaretRight().id()),
-              ksr_()
+              ksr_(),
+              bg_(opt::all_global_options())
             {}
 
             bool is_valid_id(std::size_t id) const noexcept {
@@ -75,7 +80,9 @@ namespace vind
 
             core::NTypeLogger lgr ;
             std::size_t actid = 0 ;
-            while(core::update_background()) {
+            while(true) {
+                pimpl->bg_.update() ;
+
                 auto log = core::LogPooler::get_instance().pop_log() ;
                 if(!NTYPE_LOGGED(lgr.logging_state(log))) {
                     continue ;

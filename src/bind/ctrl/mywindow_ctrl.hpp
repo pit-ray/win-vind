@@ -17,9 +17,9 @@ namespace vind
 
         struct ExitConfigGUI : public BindedFuncFlex<ExitConfigGUI> {
             explicit ExitConfigGUI() ;
-            static core::SystemCall sprocess() ;
-            static core::SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
-            static core::SystemCall sprocess(const core::CharLogger& parent_lgr) ;
+            static SystemCall sprocess() ;
+            static SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            static SystemCall sprocess(const core::CharLogger& parent_lgr) ;
         } ;
     }
 }

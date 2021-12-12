@@ -1,7 +1,7 @@
 #ifndef _G_MAPS_HPP
 #define _G_MAPS_HPP
 
-#include "mapdefs.hpp"
+#include "defs.hpp"
 #include "mode.hpp"
 #include <memory>
 

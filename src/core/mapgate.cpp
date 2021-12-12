@@ -2,6 +2,7 @@
 
 #include "bind/binded_func.hpp"
 #include "bind/safe_repeater.hpp"
+#include "defs.hpp"
 #include "err_logger.hpp"
 #include "g_maps.hpp"
 #include "key_absorber.hpp"
@@ -10,7 +11,6 @@
 #include "keycode_def.hpp"
 #include "keycodecvt.hpp"
 #include "logger_parser_mgr.hpp"
-#include "mapdefs.hpp"
 #include "mode.hpp"
 #include "ntype_logger.hpp"
 #include "util/container.hpp"

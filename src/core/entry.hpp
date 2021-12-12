@@ -37,30 +37,13 @@ SOFTWARE.
 #include <string>
 
 #include "defs.hpp"
+#include "exception.hpp"
 
 
 namespace vind
 {
     namespace core
     {
-        class SafeForcedTermination {
-        private:
-            std::string msg_ ;
-
-        public:
-            explicit SafeForcedTermination() ;
-            explicit SafeForcedTermination(const std::string& what_arg) ;
-            explicit SafeForcedTermination(const char* what_arg) ;
-
-            virtual ~SafeForcedTermination() noexcept ;
-
-            virtual const char* what() const noexcept ;
-        } ;
-
-        // If you make some loop functions, the function is needed to call.
-        // It includes Sleep().
-        bool update_background() ;
-
         class VindEntry {
         private:
             struct Impl ;

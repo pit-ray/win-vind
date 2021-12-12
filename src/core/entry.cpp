@@ -65,15 +65,12 @@ SOFTWARE.
 #include <iostream>
 #endif
 
+#include "background.hpp"
 #include "bind/bindings_lists.hpp"
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/syscmd/source.hpp"
-
-#include "opt/option_loader.hpp"
-#include "opt/vcmdline.hpp"
-
 #include "err_logger.hpp"
 #include "func_finder.hpp"
 #include "g_maps.hpp"
@@ -84,8 +81,9 @@ SOFTWARE.
 #include "mapgate.hpp"
 #include "mode.hpp"
 #include "ntype_logger.hpp"
+#include "opt/optionlist.hpp"
+#include "opt/vcmdline.hpp"
 #include "path.hpp"
-
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
 #include "util/winwrap.hpp"
@@ -95,51 +93,6 @@ namespace vind
 {
     namespace core
     {
-        SafeForcedTermination::SafeForcedTermination()
-        : msg_("SAFE FORCED TERMINATION")
-        {}
-
-        SafeForcedTermination::SafeForcedTermination(const std::string& what_arg)
-        : msg_("SAFE FORCED TERMINATION: " + what_arg)
-        {}
-
-        SafeForcedTermination::SafeForcedTermination(const char* what_arg)
-        : msg_("SAFE FORCED TERMINATION: " + std::string(what_arg))
-        {}
-
-        SafeForcedTermination::~SafeForcedTermination() noexcept = default ;
-
-        const char* SafeForcedTermination::what() const noexcept {
-            return msg_.c_str() ;
-        }
-
-
-        bool update_background() {
-            try {
-                util::get_win_message() ;
-
-                Sleep(5) ;
-
-                opt::call_active_funcs() ;
-
-                refresh_toggle_state() ;
-            }
-            catch(const std::exception& e) {
-                PRINT_ERROR(e.what()) ;
-                return false ;
-            }
-            catch(...) {
-                PRINT_ERROR("Fatal error occured.") ;
-                return false ;
-            }
-
-            if(is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
-                throw SafeForcedTermination() ;
-            }
-
-            return true ;
-        }
-
         struct VindEntry::Impl {
             std::function<void()> exit_ ;
 
@@ -156,6 +109,8 @@ namespace vind
             FuncFinder finder_ ;
             bind::BindedFunc::SPtr actfunc_ ;
 
+            Background bg_ ;
+
             template <typename ExitFuncType, typename String>
             Impl(ExitFuncType&& exitfunc, String&& memname, std::size_t memsize)
             : exit_(std::forward<ExitFuncType>(exitfunc)),
@@ -166,7 +121,8 @@ namespace vind
               memread_timer_(1000'000), //1 s
               lgr_(),
               finder_(),
-              actfunc_(nullptr)
+              actfunc_(nullptr),
+              bg_(opt::all_global_options())
             {}
 
             ~Impl() noexcept {
@@ -317,27 +273,33 @@ namespace vind
         }
 
         void VindEntry::reconstruct() {
-            opt::reconstruct() ;
+            for(auto& opt : opt::all_global_options()) {
+                if(core::get_b(opt->name())) {
+                    opt->enable() ;
+                }
+                else {
+                    opt->disable() ;
+                }
+            }
 
             for(auto& func : bind::all_global_binded_funcs()) {
                 func->reconstruct() ;
             }
+
             pimpl->finder_.reconstruct() ;
 
             MapGate::get_instance().reconstruct() ;
         }
 
         void VindEntry::update() {
-            if(!update_background()) {
-                throw std::runtime_error("background is crashed.") ;
-            }
+            pimpl->bg_.update() ;
 
             if(pimpl->memread_timer_.is_passed()) {
                 //check if received messages from another win-vind.
                 if(auto data = pimpl->read_memfile(pimpl->map_)) {
                     std::string name(reinterpret_cast<const char*>(data.get())) ;
                     if(!name.empty()) {
-                        if(auto func = FuncFinder::find_func_byname(name)) {
+                        if(auto func = pimpl->finder_.find_func_byname(name)) {
                             handle_system_call(func->process()) ;
                         }
                         else {
@@ -407,13 +369,13 @@ namespace vind
 
         void VindEntry::handle_system_call(SystemCall systemcall) {
             switch(systemcall) {
-                case NOTHING:
+                case SystemCall::NOTHING:
                     return ;
 
-                case RECONSTRUCT:
+                case SystemCall::RECONSTRUCT:
                     return reconstruct() ;
 
-                case TERMINATE:
+                case SystemCall::TERMINATE:
                     return pimpl->exit_() ;
             }
         }

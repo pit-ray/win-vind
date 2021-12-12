@@ -25,7 +25,7 @@ namespace vind
         : BindedFuncFlex("system_command_set")
         {}
 
-        core::SystemCall SyscmdSet::sprocess(const std::string& args) {
+        SystemCall SyscmdSet::sprocess(const std::string& args) {
             if(args.find("=") != std::string::npos) { // set option_name = value
                 auto [key, val] = core::divide_key_and_value(args, "=") ;
 
@@ -51,7 +51,7 @@ namespace vind
                     }
                 }
 
-                return core::SystemCall::NOTHING ;
+                return SystemCall::NOTHING ;
             }
 
             // set option_name
@@ -70,7 +70,7 @@ namespace vind
 
                 if(key.find(" ") != std::string::npos) {
                     opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
-                    return core::SystemCall::NOTHING ;
+                    return SystemCall::NOTHING ;
                 }
 
                 std::stringstream ss ;
@@ -118,22 +118,22 @@ namespace vind
                 }
             }
 
-            return core::SystemCall::NOTHING ;
+            return SystemCall::NOTHING ;
         }
 
-        core::SystemCall SyscmdSet::sprocess(core::NTypeLogger&) {
-            return core::SystemCall::NOTHING ;
+        SystemCall SyscmdSet::sprocess(core::NTypeLogger&) {
+            return SystemCall::NOTHING ;
         }
 
-        core::SystemCall SyscmdSet::sprocess(const core::CharLogger& parent_lgr) {
+        SystemCall SyscmdSet::sprocess(const core::CharLogger& parent_lgr) {
             auto str = parent_lgr.to_str() ;
             if(str.empty()) {
-                return core::SystemCall::NOTHING ;
+                return SystemCall::NOTHING ;
             }
 
             auto [cmd, args] = core::divide_cmd_and_args(str) ;
             sprocess(args) ;
-            return core::SystemCall::RECONSTRUCT ;
+            return SystemCall::RECONSTRUCT ;
         }
     }
 }

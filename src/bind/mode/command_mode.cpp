@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "bind/binded_func.hpp"
+#include "core/background.hpp"
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
@@ -18,6 +19,7 @@
 #include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
@@ -139,6 +141,7 @@ namespace vind
         struct ToCommand::Impl {
             CmdHist ch_{} ;
             core::FuncFinder funcfinder_{} ;
+            core::Background bg_{opt::all_global_options()} ;
         } ;
 
         ToCommand::ToCommand()
@@ -154,7 +157,7 @@ namespace vind
             pimpl->funcfinder_.reconstruct() ;
         }
 
-        core::SystemCall ToCommand::sprocess() const {
+        SystemCall ToCommand::sprocess() const {
             auto return_mode = [] (core::Mode* m) {
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {
@@ -175,9 +178,11 @@ namespace vind
             constexpr auto cmdline_prefix = ":" ;
             opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix)) ;
 
-            auto result = core::SystemCall::NOTHING ;
+            auto result = SystemCall::NOTHING ;
 
-            while(core::update_background()) {
+            while(true) {
+                pimpl->bg_.update() ;
+
                 auto& p_cmdp = pimpl->ch_.get_hist_point() ;
                 auto& lgr    = p_cmdp->logger ;
 
@@ -302,14 +307,14 @@ namespace vind
             return result ;
         }
 
-        core::SystemCall ToCommand::sprocess(core::NTypeLogger& parent_lgr) const {
+        SystemCall ToCommand::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
                 return sprocess() ;
             }
 
-            return core::SystemCall::NOTHING ;
+            return SystemCall::NOTHING ;
         }
-        core::SystemCall ToCommand::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        SystemCall ToCommand::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
             return sprocess() ;
         }
     }

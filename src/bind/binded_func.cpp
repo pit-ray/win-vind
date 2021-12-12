@@ -97,8 +97,8 @@ namespace vind
             }
         }
 
-        core::SystemCall BindedFunc::process() const {
-            auto result = core::SystemCall::NOTHING ;
+        SystemCall BindedFunc::process() const {
+            auto result = SystemCall::NOTHING ;
 
             try {
                 result = do_process() ;
@@ -111,8 +111,8 @@ namespace vind
             return result ;
         }
 
-        core::SystemCall BindedFunc::process(core::NTypeLogger& parent_lgr) const {
-            auto result = core::SystemCall::NOTHING ;
+        SystemCall BindedFunc::process(core::NTypeLogger& parent_lgr) const {
+            auto result = SystemCall::NOTHING ;
 
             try {
                 result = do_process(parent_lgr) ;
@@ -125,8 +125,8 @@ namespace vind
             return result ;
         }
 
-        core::SystemCall BindedFunc::process(const core::CharLogger& parent_lgr) const {
-            auto result = core::SystemCall::NOTHING ;
+        SystemCall BindedFunc::process(const core::CharLogger& parent_lgr) const {
+            auto result = SystemCall::NOTHING ;
 
             try {
                 result = do_process(parent_lgr) ;
@@ -157,14 +157,14 @@ namespace vind
             return pimpl->id_ != rhs.pimpl->id_ ;
         }
 
-        core::SystemCall BindedFunc::do_process() const {
-            return core::SystemCall::NOTHING ;
+        SystemCall BindedFunc::do_process() const {
+            return SystemCall::NOTHING ;
         }
-        core::SystemCall BindedFunc::do_process(core::NTypeLogger&) const {
-            return core::SystemCall::NOTHING ;
+        SystemCall BindedFunc::do_process(core::NTypeLogger&) const {
+            return SystemCall::NOTHING ;
         }
-        core::SystemCall BindedFunc::do_process(const core::CharLogger&) const {
-            return core::SystemCall::NOTHING ;
+        SystemCall BindedFunc::do_process(const core::CharLogger&) const {
+            return SystemCall::NOTHING ;
         }
     }
 }

@@ -34,16 +34,16 @@ namespace vind
         ExitConfigGUI::ExitConfigGUI()
         : BindedFuncFlex("exit_config_gui")
         {}
-        core::SystemCall ExitConfigGUI::sprocess() {
-            return core::SystemCall::TERMINATE ;
+        SystemCall ExitConfigGUI::sprocess() {
+            return SystemCall::TERMINATE ;
         }
-        core::SystemCall ExitConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
+        SystemCall ExitConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 return sprocess() ;
             }
-            return core::SystemCall::NOTHING ;
+            return SystemCall::NOTHING ;
         }
-        core::SystemCall ExitConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+        SystemCall ExitConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             return sprocess() ;
         }
     }

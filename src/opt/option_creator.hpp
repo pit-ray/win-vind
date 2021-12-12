@@ -6,6 +6,11 @@
 
 #include <memory>
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
+
 namespace vind
 {
     namespace opt

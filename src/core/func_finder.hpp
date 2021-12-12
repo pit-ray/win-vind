@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bind/binded_func.hpp"
 #include "key_logger_base.hpp"
@@ -18,6 +19,8 @@ namespace vind
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
+
+            void do_reconstruct() ;
 
         public:
             explicit FuncFinder() ;
@@ -56,8 +59,10 @@ namespace vind
                     Mode mode=get_global_mode()) ;
 
             void reconstruct() ;
+            void reconstruct(const std::vector<bind::BindedFunc::SPtr>& funcs) ;
+            void reconstruct(std::vector<bind::BindedFunc::SPtr>&& funcs) ;
 
-            static bind::BindedFunc::SPtr find_func_byname(const std::string& name) ;
+            bind::BindedFunc::SPtr find_func_byname(const std::string& name) const ;
 
             FuncFinder(const FuncFinder&) = delete ;
             FuncFinder& operator=(const FuncFinder&) = delete ;

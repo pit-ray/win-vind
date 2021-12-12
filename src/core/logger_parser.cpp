@@ -1,10 +1,10 @@
 #include "logger_parser.hpp"
 
 #include "bindings_parser.hpp"
+#include "defs.hpp"
 #include "key_log.hpp"
 #include "keycode_def.hpp"
 #include "keycodecvt.hpp"
-#include "mapdefs.hpp"
 
 #include <cstdint>
 #include <functional>

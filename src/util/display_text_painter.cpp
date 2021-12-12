@@ -38,11 +38,6 @@ namespace vind
               logfont(),
               hfont(nullptr, util::delete_obj)
             {
-                logfont.lfHeight         = 0 ;
-                logfont.lfWidth          = 0 ;
-                logfont.lfEscapement     = 0 ;
-                logfont.lfOrientation    = 0 ;
-                logfont.lfWeight         = 0 ;
                 logfont.lfItalic         = FALSE ;
                 logfont.lfUnderline      = FALSE ;
                 logfont.lfStrikeOut      = FALSE ;
@@ -50,7 +45,6 @@ namespace vind
                 logfont.lfOutPrecision   = OUT_TT_ONLY_PRECIS ;
                 logfont.lfClipPrecision  = CLIP_DEFAULT_PRECIS ;
                 logfont.lfQuality        = ANTIALIASED_QUALITY ;
-                logfont.lfPitchAndFamily = 0 ;
                 logfont.lfFaceName[0]    = '\0' ;
             }
             virtual ~Impl() noexcept = default ;

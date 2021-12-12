@@ -95,13 +95,16 @@ namespace vind
 
         void FuncFinder::reconstruct() {
             pimpl->funcs_ = bind::all_global_binded_funcs() ;
+            do_reconstruct() ;
         }
 
         void FuncFinder::reconstruct(const std::vector<bind::BindedFunc::SPtr>& funcs) {
             pimpl->funcs_ = funcs ;
+            do_reconstruct() ;
         }
         void FuncFinder::reconstruct(std::vector<bind::BindedFunc::SPtr>&& funcs) {
             pimpl->funcs_ = std::move(funcs) ;
+            do_reconstruct() ;
         }
 
         void FuncFinder::do_reconstruct() {

@@ -20,6 +20,7 @@
 
 #if defined(DEBUG)
 #include <iostream>
+#include "core/bindings_parser.hpp"
 #endif
 
 namespace
@@ -190,18 +191,21 @@ namespace
             launch_loop() ;
 
             // append the input string according to repeat_num.
-            bind::safe_for(repeat_num, [this] {
-                for(std::size_t i = 0 ; i < str_.size() ; i ++) {
-                    util::pushup(KEYCODE_DELETE) ;
+            if(repeat_num > 1) {
+                core::release_virtually(KEYCODE_ESC) ;
+                bind::safe_for(repeat_num - 1, [this] {
+                    for(std::size_t i = 0 ; i < str_.size() ; i ++) {
+                        util::pushup(KEYCODE_DELETE) ;
 
-                    if(shifteds_[i]) {
-                        util::pushup(KEYCODE_LSHIFT, str_[i]) ;
+                        if(shifteds_[i]) {
+                            util::pushup(KEYCODE_LSHIFT, str_[i]) ;
+                        }
+                        else {
+                            util::pushup(str_[i]) ;
+                        }
                     }
-                    else {
-                        util::pushup(str_[i]) ;
-                    }
-                }
-            }) ;
+                }) ;
+            }
         }
     } ;
 }

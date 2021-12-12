@@ -185,7 +185,7 @@ namespace vind
             pimpl->map_ = CreateFileMappingA(
                     INVALID_HANDLE_VALUE, NULL,
                     PAGE_READWRITE, 0,
-                    pimpl->memsize_, pimpl->memname_.c_str()) ;
+                    static_cast<DWORD>(pimpl->memsize_), pimpl->memname_.c_str()) ;
 
             if(pimpl->map_ == NULL) {
                 throw std::runtime_error("Could not create memory-mapped file.") ;

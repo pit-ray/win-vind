@@ -272,8 +272,6 @@ namespace vind
             catch(const std::exception& e) {
                 throw std::runtime_error(e.what()) ;
             }
-
-            return SystemCall::NOTHING ;
         }
     }
 }

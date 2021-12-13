@@ -6,6 +6,8 @@
 #include "opt/dedicate_to_window.hpp"
 #include "opt/suppress_for_vim.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/def.hpp"
+#include "util/string.hpp"
 
 
 namespace vind
@@ -23,6 +25,24 @@ namespace vind
             } ;
 
             return tmp ;
+        }
+
+        Option::SPtr ref_global_options_bynames(const std::string& name) {
+            for(auto& opt : all_global_options()) {
+                if(opt->name() == util::A2a(name)) {
+                    return opt ;
+                }
+            }
+            return nullptr ;
+        }
+
+        Option::SPtr ref_global_options_bynames(std::string&& name) {
+            for(auto& opt : all_global_options()) {
+                if(opt->name() == util::A2a(name)) {
+                    return opt ;
+                }
+            }
+            return nullptr ;
         }
     }
 }

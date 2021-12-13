@@ -64,6 +64,9 @@
 #include "syscmd/set.hpp"
 #include "syscmd/source.hpp"
 
+#include "util/string.hpp"
+
+
 #ifdef DEBUG
 #include <iostream>
 #endif
@@ -227,6 +230,24 @@ namespace vind
                 SyscmdSource::create()
             } ;
             return tmp ;
+        }
+
+        BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) {
+            for(auto& func : all_global_binded_funcs()) {
+                if(func->name() == util::A2a(name)) {
+                    return func ;
+                }
+            }
+            return nullptr ;
+        }
+
+        BindedFunc::SPtr ref_global_funcs_bynames(std::string&& name) {
+            for(auto& func : all_global_binded_funcs()) {
+                if(func->name() == util::A2a(name)) {
+                    return func ;
+                }
+            }
+            return nullptr ;
         }
     }
 }

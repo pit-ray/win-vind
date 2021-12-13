@@ -16,7 +16,10 @@
 #include "core/key_absorber.hpp"
 #include "core/logpooler.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/async_uia_cache_builder.hpp"
+#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
+#include "opt/suppress_for_vim.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/constant_accelerator.hpp"
 #include "util/def.hpp"
@@ -60,7 +63,12 @@ namespace vind
               down_id_(MoveCaretDown().id()),
               ksr_(),
               ca_(),
-              bg_(opt::all_global_options())
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::Dedicate2Window().name(),
+                    opt::SuppressForVim().name(),
+                    opt::VCmdLine().name()
+              ))
             {}
 
             void do_resize(std::size_t id, bool first_call) {

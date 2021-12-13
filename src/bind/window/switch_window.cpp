@@ -13,7 +13,11 @@
 #include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/async_uia_cache_builder.hpp"
+#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
+#include "opt/suppress_for_vim.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 #include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
@@ -35,7 +39,12 @@ namespace vind
               left_id_(MoveCaretLeft().id()),
               right_id_(MoveCaretRight().id()),
               ksr_(),
-              bg_(opt::all_global_options())
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::Dedicate2Window().name(),
+                    opt::SuppressForVim().name(),
+                    opt::VCmdLine().name()
+              ))
             {}
 
             bool is_valid_id(std::size_t id) const noexcept {

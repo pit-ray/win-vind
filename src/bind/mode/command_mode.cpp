@@ -19,7 +19,10 @@
 #include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/async_uia_cache_builder.hpp"
+#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
+#include "opt/suppress_for_vim.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
@@ -139,9 +142,20 @@ namespace vind
     namespace bind
     {
         struct ToCommand::Impl {
-            CmdHist ch_{} ;
-            core::FuncFinder funcfinder_{} ;
-            core::Background bg_{opt::all_global_options()} ;
+            CmdHist ch_ ;
+            core::FuncFinder funcfinder_ ;
+            core::Background bg_ ;
+
+            Impl()
+            : ch_(),
+              funcfinder_(),
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::Dedicate2Window().name(),
+                    opt::SuppressForVim().name(),
+                    opt::VCmdLine().name()
+              ))
+            {}
         } ;
 
         ToCommand::ToCommand()

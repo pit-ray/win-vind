@@ -12,6 +12,8 @@
 #include "edi_delete.hpp"
 #include "edi_yank.hpp"
 #include "movebase.hpp"
+#include "opt/async_uia_cache_builder.hpp"
+#include "opt/blockstyle_caret.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -169,7 +171,11 @@ namespace vind
             explicit Impl()
             : funcfinder_(),
               parent_funcfinder_(),
-              bg_(opt::all_global_options())
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::BlockStyleCaret().name(),
+                    opt::VCmdLine().name()
+              ))
             {}
 
             void copy() const {
@@ -221,7 +227,11 @@ namespace vind
             explicit Impl()
             : funcfinder_(),
               parent_funcfinder_(),
-              bg_(opt::all_global_options())
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::BlockStyleCaret().name(),
+                    opt::VCmdLine().name()
+              ))
             {}
 
             void remove() const {
@@ -274,7 +284,11 @@ namespace vind
             explicit Impl()
             : funcfinder_(),
               parent_funcfinder_(),
-              bg_(opt::all_global_options())
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::BlockStyleCaret().name(),
+                    opt::VCmdLine().name()
+              ))
             {}
 
             void remove_and_insert() {

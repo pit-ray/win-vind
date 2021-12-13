@@ -16,7 +16,11 @@ namespace vind
 
         template <typename String, typename... Strings>
         std::vector<BindedFunc::SPtr> ref_global_funcs_bynames(String&& name, Strings&&... names) {
-            std::vector<BindedFunc::SPtr> out = {std::forward<String>(name)} ;
+            std::vector<BindedFunc::SPtr> out ;
+
+            if(auto func = ref_global_funcs_bynames(std::forward<String>(name))) {
+                out.push_back(std::move(func)) ;
+            }
 
             auto append = [&out](auto&& ptr) {
                 if(ptr) {

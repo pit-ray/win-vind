@@ -18,7 +18,11 @@ namespace vind
 
         template <typename String, typename... Strings>
         std::vector<Option::SPtr> ref_global_options_bynames(String&& name, Strings&&... names) {
-            std::vector<Option::SPtr> out = {std::forward<String>(name)} ;
+            std::vector<Option::SPtr> out ;
+
+            if(auto opt = ref_global_options_bynames(std::forward<String>(name))) {
+                out.push_back(std::move(opt)) ;
+            }
 
             auto append = [&out](auto&& ptr) {
                 if(ptr) {

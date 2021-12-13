@@ -18,7 +18,11 @@
 #include "core/keycodecvt.hpp"
 #include "core/ntype_logger.hpp"
 #include "core/path.hpp"
+#include "opt/async_uia_cache_builder.hpp"
+#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
+#include "opt/suppress_for_vim.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 #include "util/keybrd.hpp"
 #include "util/screen_metrics.hpp"
@@ -34,14 +38,27 @@ namespace vind
     namespace bind
     {
         struct JumpWithKeybrdLayout::Impl {
-            float max_keybrd_xposs = 0 ;
-            float max_keybrd_yposs = 0 ;
+            float max_keybrd_xposs_ = 0 ;
+            float max_keybrd_yposs_ = 0 ;
 
             using KeyPos = std::array<float, 256> ;
-            KeyPos xposs{} ;
-            KeyPos yposs{} ;
+            KeyPos xposs_{} ;
+            KeyPos yposs_{} ;
 
             core::Background bg_{opt::all_global_options()} ;
+
+            Impl()
+            : max_keybrd_xposs_(0),
+              max_keybrd_yposs_(0),
+              xposs_(),
+              yposs_(),
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::Dedicate2Window().name(),
+                    opt::SuppressForVim().name(),
+                    opt::VCmdLine().name()
+              ))
+            {}
         } ;
 
         JumpWithKeybrdLayout::JumpWithKeybrdLayout()
@@ -80,9 +97,9 @@ namespace vind
                             continue ;
 
                         auto x_pos = static_cast<int>( \
-                                pimpl->xposs[keycode] / pimpl->max_keybrd_xposs * width) ;
+                                pimpl->xposs_[keycode] / pimpl->max_keybrd_xposs_ * width) ;
                         auto y_pos = static_cast<int>( \
-                                pimpl->yposs[keycode] / pimpl->max_keybrd_yposs * height) ;
+                                pimpl->yposs_[keycode] / pimpl->max_keybrd_yposs_ * height) ;
 
                         if(x_pos == width) 
                             x_pos -= core::get_i("jump_margin") ;
@@ -129,11 +146,11 @@ namespace vind
                 throw RUNTIME_EXCEPT("The file path of keyboard layout is empty.") ;
             }
 
-            pimpl->max_keybrd_xposs = 0 ;
-            pimpl->max_keybrd_yposs = 0 ;
+            pimpl->max_keybrd_xposs_ = 0 ;
+            pimpl->max_keybrd_yposs_ = 0 ;
 
-            pimpl->xposs.fill(0) ;
-            pimpl->yposs.fill(0) ;
+            pimpl->xposs_.fill(0) ;
+            pimpl->yposs_.fill(0) ;
 
             std::ifstream ifs(filepath, std::ios::in) ;
             if(!ifs.is_open()) {
@@ -169,8 +186,8 @@ namespace vind
                     auto x = std::stof(vec[0]) ;
                     auto y = stof(vec[1]) ;
 
-                    if(x > pimpl->max_keybrd_xposs) pimpl->max_keybrd_xposs = x ;
-                    if(y > pimpl->max_keybrd_yposs) pimpl->max_keybrd_yposs = y ;
+                    if(x > pimpl->max_keybrd_xposs_) pimpl->max_keybrd_xposs_ = x ;
+                    if(y > pimpl->max_keybrd_yposs_) pimpl->max_keybrd_yposs_ = y ;
 
                     //specific code
                     auto code = vec[2] ;
@@ -178,8 +195,8 @@ namespace vind
                     if(code.size() == 1) {
                         if(auto keycode = core::get_keycode(code.front())) {
                             //overwrite
-                            pimpl->xposs[keycode] = x ;
-                            pimpl->yposs[keycode] = y ;
+                            pimpl->xposs_[keycode] = x ;
+                            pimpl->yposs_[keycode] = y ;
                             continue ;
                         }
                         ep(" is not supported in ") ;
@@ -194,14 +211,14 @@ namespace vind
                     code = code.substr(1, code.length() - 2) ;
                     if(code == "space") {
                         auto&& keycode = core::get_keycode(' ') ;
-                        pimpl->xposs[keycode] = x ;
-                        pimpl->yposs[keycode] = y ;
+                        pimpl->xposs_[keycode] = x ;
+                        pimpl->yposs_[keycode] = y ;
                         continue ;
                     }
 
                     if(auto keycode = core::get_sys_keycode(code)) {
-                        pimpl->xposs[keycode] = x ;
-                        pimpl->yposs[keycode] = y ;
+                        pimpl->xposs_[keycode] = x ;
+                        pimpl->yposs_[keycode] = y ;
                         continue ;
                     }
 

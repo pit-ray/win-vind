@@ -10,6 +10,8 @@
 #include "core/keycode_def.hpp"
 #include "core/keycodecvt.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/async_uia_cache_builder.hpp"
+#include "opt/blockstyle_caret.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "text_analyzer.hpp"
@@ -46,7 +48,11 @@ namespace
 
     public:
         explicit ReplaceMatching()
-        : bg_(opt::all_global_options())
+        : bg_(opt::ref_global_options_bynames(
+                opt::AsyncUIACacheBuilder().name(),
+                opt::BlockStyleCaret().name(),
+                opt::VCmdLine().name()
+          ))
         {}
 
         virtual ~ReplaceMatching() noexcept = default ;

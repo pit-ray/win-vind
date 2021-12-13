@@ -9,7 +9,9 @@
 #include "core/entry.hpp"
 #include "core/key_absorber.hpp"
 #include "core/logpooler.hpp"
+#include "opt/async_uia_cache_builder.hpp"
 #include "opt/optionlist.hpp"
+#include "opt/vcmdline.hpp"
 #include "util/winwrap.hpp"
 
 namespace vind
@@ -17,12 +19,26 @@ namespace vind
     namespace bind
     {
         struct InputHinter::Impl {
-            std::vector<unsigned char> matched_counts_{} ;
-            std::size_t drawable_hints_num_ = 0 ;
-            std::atomic_bool cancel_running_ = false ;
-            std::mutex mtx_{} ;
+            std::vector<unsigned char> matched_counts_ ;
+            std::size_t drawable_hints_num_ ;
+            std::atomic_bool cancel_running_ ;
+            std::mutex mtx_ ;
 
-            core::Background bg_{opt::all_global_options()} ;
+            core::Background bg_ ;
+
+            Impl()
+            : matched_counts_(),
+              drawable_hints_num_(0),
+              cancel_running_(false),
+              mtx_(),
+              bg_(opt::ref_global_options_bynames(
+                  opt::AsyncUIACacheBuilder().name(),
+                  opt::VCmdLine().name()
+              ))
+            {}
+
+
+
 
             // return : matched index
             long validate_if_match_with_hints(

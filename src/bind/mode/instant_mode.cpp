@@ -9,7 +9,11 @@
 #include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "opt/async_uia_cache_builder.hpp"
+#include "opt/blockstyle_caret.hpp"
+#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
+#include "opt/suppress_for_vim.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 
@@ -22,8 +26,19 @@ namespace vind
     namespace bind
     {
         struct ToInstantGUINormal::Impl {
-            core::FuncFinder finder_{} ;
-            core::Background bg_{opt::all_global_options()} ;
+            core::FuncFinder finder_ ;
+            core::Background bg_ ;
+
+            Impl()
+            : finder_(),
+              bg_(opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::BlockStyleCaret().name(),
+                    opt::Dedicate2Window().name(),
+                    opt::SuppressForVim().name(),
+                    opt::VCmdLine().name()
+              ))
+            {}
         } ;
 
         ToInstantGUINormal::ToInstantGUINormal()

@@ -11,6 +11,14 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - '!README.md'
+      - '!CONTRIBUTING.md'
+      - '!docs/**'
+      - 'src/**'
+      - '.github/**'
+      - 'tests/**'
+      - 'tools/**'
 
 env:
   TOKEN: ${{secrets.COVERITY_TOKEN}}

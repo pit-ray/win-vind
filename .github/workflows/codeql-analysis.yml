@@ -23,6 +23,14 @@ on:
     # The branches below must be a subset of the branches above
     branches: 
       - master
+    paths:
+      - '!README.md'
+      - '!CONTRIBUTING.md'
+      - '!docs/**'
+      - 'src/**'
+      - '.github/**'
+      - 'tests/**'
+      - 'tools/**'
 
 jobs:
   analyze:

@@ -8,6 +8,7 @@
 #include "select_window.hpp"
 #include "window_utility.hpp"
 
+#include "bind/bindings_lists.hpp"
 #include "bind/emu/edi_move_caret.hpp"
 #include "core/background.hpp"
 #include "core/entry.hpp"
@@ -181,11 +182,6 @@ namespace vind
                 }
             }
 
-            bool is_valid_id(std::size_t id) const noexcept {
-                return id == left_id_ || id == right_id_ \
-                           || id == up_id_ || id == down_id_ ;
-            }
-
             void draw_mode_status(InnerMode mode) const {
                 static const std::unordered_map<InnerMode, opt::StaticMessage> lc_msgs = {
                     {InnerMode::RESIZE, "[Resize]... \"Esc\": OK, \"e\": Change mode"},
@@ -213,7 +209,13 @@ namespace vind
         WindowResizer& WindowResizer::operator=(WindowResizer&&) = default ;
 
         void WindowResizer::reconstruct() {
-            pimpl->funcfinder_.reconstruct() ;
+            pimpl->funcfinder_.reconstruct(
+                ref_global_funcs_bynames(
+                    MoveCaretLeft().name(),
+                    MoveCaretRight().name(),
+                    MoveCaretUp().name(),
+                    MoveCaretDown().name()
+            )) ;
             pimpl->ca_.set_acceleration(core::get_f("window_accel")) ;
             pimpl->ca_.set_max_velocity(core::get_f("window_maxv")) ;
             pimpl->ca_.set_time_weight(core::get_i("window_tweight")) ;
@@ -269,19 +271,13 @@ namespace vind
                     decltype(auto) id = parser->get_func()->id() ;
 
                     if(parser->is_accepted()) {
-                        if(pimpl->is_valid_id(id)) {
-                            actid = id ;
+                        actid = id ;
 
-                            lgr.accept() ;
-                            pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                        lgr.accept() ;
+                        pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 
-                            pimpl->call_op(inmode, id, true) ;
-                            continue ;
-                        }
-                        else {
-                            lgr.reject() ;
-                            pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
-                        }
+                        pimpl->call_op(inmode, id, true) ;
+                        continue ;
                     }
                     else if(parser->is_rejected_with_ready()) {
                         lgr.remove_from_back(1) ;

@@ -3,6 +3,7 @@
 #include <memory>
 #include <windows.h>
 
+#include "bind/bindings_lists.hpp"
 #include "bind/emu/edi_move_caret.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "core/background.hpp"
@@ -47,10 +48,6 @@ namespace vind
               ))
             {}
 
-            bool is_valid_id(std::size_t id) const noexcept {
-                return id == left_id_ || id == right_id_ ;
-            }
-
             void call_op(std::size_t id) const {
                 if(id == left_id_) {
                     util::pushup(KEYCODE_LEFT) ;
@@ -71,7 +68,11 @@ namespace vind
         SwitchWindow& SwitchWindow::operator=(SwitchWindow&&) = default ;
 
         void SwitchWindow::reconstruct() {
-            pimpl->funcfinder_.reconstruct() ;
+            pimpl->funcfinder_.reconstruct(
+                ref_global_funcs_bynames(
+                    MoveCaretLeft().name(),
+                    MoveCaretRight().name()
+            )) ;
         }
 
         void SwitchWindow::sprocess() const {
@@ -118,21 +119,15 @@ namespace vind
                     decltype(auto) id = parser->get_func()->id() ;
 
                     if(parser->is_accepted()) {
-                        if(pimpl->is_valid_id(id)) {
-                            actid = id ;
+                        actid = id ;
 
-                            lgr.accept() ;
-                            pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                        lgr.accept() ;
+                        pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
 
-                            pimpl->ksr_.reset() ;
+                        pimpl->ksr_.reset() ;
 
-                            pimpl->call_op(id) ;
-                            continue ;
-                        }
-                        else {
-                            lgr.reject() ;
-                            pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
-                        }
+                        pimpl->call_op(id) ;
+                        continue ;
                     }
                     else if(parser->is_rejected_with_ready()) {
                         lgr.remove_from_back(1) ;

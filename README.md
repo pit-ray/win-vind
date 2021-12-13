@@ -120,7 +120,7 @@ If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://githu
 
 ## Related Pages
 - <a href="https://www.pit-ray.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
-- <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
+- <a href="https://www.reddit.com/user/pit-ray/submitted/">Reddit posts</a>  
 
 ## Similar Projects
 - [rcmdnk/vim_ahk](https://github.com/rcmdnk/vim_ahk)

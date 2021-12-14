@@ -8,8 +8,6 @@ You can contribute to the [homepage](https://pit-ray.github.io/win-vind/) by sen
 #### Add translation of document.
 The win-vind documentation has the potential to easily add manual translation and manage continuously. A Japanese translation is available as a sample in [here](docs/ja). Please use it as a reference when translating. The following are the steps for translation.  
 
-1. Change the current directory to `docs`.
-
 1. Create a translation directory (e.g. `fr`). 
    ```sh
    $ ./tools/create_trans.bat fr

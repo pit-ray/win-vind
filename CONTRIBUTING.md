@@ -12,15 +12,10 @@ The win-vind documentation has the potential to easily add manual translation an
 
 1. Create a translation directory (e.g. `fr`). 
    ```sh
-   $ mkdir fr
+   $ ./tools/create_trans.bat fr
    ```
 
-1. Copy the original page in the root into it.
-   ```sh
-   $ cp index.md fr ; cp -r cheat_sheet fr ; cp -r downloads fr ; cp -r faq fr ; cp -r usage fr ;
-   ```
-
-1. Add the following to the headers.
+1. Add the following to the headers for each file.
    |key|Notes|
    |:---:|:---|
    |translation|Specify the name of the directory you just created. This will be used for language selection.|
@@ -101,7 +96,7 @@ Since it builds all libraries with the best options for your system environment,
   $ cd tests/build ; ctest -C Debug ; cd ../..
   ```
 
-###### Manually (MinGW-w64 >= GCC 8.2.0)
+###### Manually (MinGW-w64 >= GCC 11.2.0)
   ```bash
   $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
   $ cmake --build tests/build

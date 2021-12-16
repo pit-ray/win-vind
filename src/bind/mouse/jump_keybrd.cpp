@@ -12,7 +12,7 @@
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/key_log.hpp"
 #include "core/keybrd_layout.hpp"
 #include "core/keycodecvt.hpp"
@@ -24,7 +24,6 @@
 #include "opt/suppress_for_vim.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/string.hpp"
 
@@ -70,11 +69,12 @@ namespace vind
         JumpWithKeybrdLayout& JumpWithKeybrdLayout::operator=(JumpWithKeybrdLayout&&) = default ;
 
         void JumpWithKeybrdLayout::sprocess() const {
+            auto& igate = core::InputGate::get_instance() ;
             //reset key state (binded key)
             core::InstantKeyAbsorber ika ;
 
             //ignore toggle keys (for example, CapsLock, NumLock, IME....)
-            auto toggle_keys = core::get_pressed_list() ;
+            auto toggle_keys = igate.pressed_list() ;
 
             auto box = util::get_conbined_metrics() ;
 
@@ -84,11 +84,11 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                if(core::is_pressed(KEYCODE_ESC)) {
+                if(igate.is_pressed(KEYCODE_ESC)) {
                     return ;
                 }
 
-                auto log = core::get_pressed_list() - toggle_keys ;
+                auto log = igate.pop_log() - toggle_keys ;
                 if(log.empty()) continue ;
 
                 try {
@@ -110,7 +110,7 @@ namespace vind
                         SetCursorPos(x_pos, y_pos) ;
 
                         for(auto& key : log) {
-                            util::release_keystate(key) ;
+                            igate.release_keystate(key) ;
                         }
                         return ;
                     }

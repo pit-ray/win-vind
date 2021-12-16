@@ -2,11 +2,11 @@
 
 #include "bind/safe_repeater.hpp"
 #include "core/char_logger.hpp"
+#include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "simple_text_selecter.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/string.hpp"
 
 
@@ -19,11 +19,12 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_BOL")
         {}
         void JumpCaretToBOL::sprocess() {
+            auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
             }
             else {
-                util::pushup(KEYCODE_HOME) ;
+                igate.pushup(KEYCODE_HOME) ;
             }
         }
         void JumpCaretToBOL::sprocess(core::NTypeLogger& parent_lgr) {
@@ -41,17 +42,19 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_EOL")
         {}
         void JumpCaretToEOL::sprocess(unsigned int repeat_num) {
+            auto& igate = core::InputGate::get_instance() ;
+
             //down caret N - 1
-            safe_for(repeat_num - 1, [] {
-                util::pushup(KEYCODE_DOWN) ;
+            safe_for(repeat_num - 1, [&igate] {
+                igate.pushup(KEYCODE_DOWN) ;
             }) ; 
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
             }
             else {
-                util::pushup(KEYCODE_END) ;
-                util::pushup(KEYCODE_LEFT) ;
+                igate.pushup(KEYCODE_END) ;
+                igate.pushup(KEYCODE_LEFT) ;
             }
         }
         void JumpCaretToEOL::sprocess(core::NTypeLogger& parent_lgr) {
@@ -69,25 +72,26 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_BOF")
         {}
         void JumpCaretToBOF::sprocess(unsigned int repeat_num) {
-            if(is_first_line_selection())
+            if(is_first_line_selection()) {
                 select_line_EOL2BOL() ;
+            }
 
-            using util::pushup ;
+            auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
 
                 //down caret N - 1
-                safe_for(repeat_num - 1, [] {
-                    pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+                safe_for(repeat_num - 1, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
                 }) ;
             }
             else {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
 
                 //down caret N - 1
-                safe_for(repeat_num - 1, [] {
-                    pushup(KEYCODE_DOWN) ;
+                safe_for(repeat_num - 1, [&igate] {
+                    igate.pushup(KEYCODE_DOWN) ;
                 }) ;
             }
         }
@@ -113,21 +117,22 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_EOF")
         {}
         void JumpCaretToEOF::sprocess(unsigned int repeat_num) {
-            using util::pushup ;
+            auto& igate = core::InputGate::get_instance() ;
 
             if(repeat_num == 1) {
                 if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                    if(is_first_line_selection())
+                    if(is_first_line_selection()) {
                         select_line_BOL2EOL() ;
+                    }
 
-                    pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_END) ;
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_END) ;
 
                     if(!(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE)) {
-                        pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
+                        igate.pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
                     }
                 }
                 else {
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_END) ;
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_END) ;
                 }
             }
             else {

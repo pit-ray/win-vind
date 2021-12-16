@@ -1,8 +1,8 @@
 #include "reload_window.hpp"
 
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 namespace vind
 {
@@ -13,7 +13,7 @@ namespace vind
         : BindedFuncVoid("reload_current_window")
         {}
         void ReloadCurrentWindow::sprocess() {
-            util::pushup(KEYCODE_F5) ;
+            core::InputGate::get_instance().pushup(KEYCODE_F5) ;
         }
         void ReloadCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

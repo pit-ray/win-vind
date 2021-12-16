@@ -1,9 +1,9 @@
 #include "switch_vdesktop.hpp"
 
 #include "bind/safe_repeater.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 namespace vind
 {
@@ -15,7 +15,8 @@ namespace vind
         {}
         void SwitchVDesktop2Left::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
             }) ;
         }
         void SwitchVDesktop2Left::sprocess(core::NTypeLogger& parent_lgr) {
@@ -34,7 +35,8 @@ namespace vind
         {}
         void SwitchVDesktop2Right::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
             }) ;
         }
         void SwitchVDesktop2Right::sprocess(core::NTypeLogger& parent_lgr) {
@@ -52,7 +54,8 @@ namespace vind
         : BindedFuncVoid("create_new_vdesktop")
         {}
         void CreateNewVDesktop::sprocess() {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_D) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_D) ;
         }
         void CreateNewVDesktop::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -69,7 +72,8 @@ namespace vind
         : BindedFuncVoid("close_current_vdesktop")
         {}
         void CloseCurrentVDesktop::sprocess() {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_F4) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_F4) ;
         }
         void CloseCurrentVDesktop::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -86,7 +90,8 @@ namespace vind
         : BindedFuncVoid("taskview")
         {}
         void TaskView::sprocess() {
-            util::pushup(KEYCODE_LWIN, KEYCODE_TAB) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LWIN, KEYCODE_TAB) ;
         }
         void TaskView::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

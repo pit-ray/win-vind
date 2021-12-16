@@ -3,9 +3,9 @@
 #include <windows.h>
 
 #include "bind/safe_repeater.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
 #include "util/mouse.hpp"
 
@@ -33,7 +33,8 @@ namespace vind
 
         void Redo::sprocess(unsigned int repeat_num) const {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_Y) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LCTRL, KEYCODE_Y) ;
             }) ;
         }
         void Redo::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -66,7 +67,8 @@ namespace vind
 
         void Undo::sprocess(unsigned int repeat_num) const {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_Z) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LCTRL, KEYCODE_Z) ;
             }) ;
         }
         void Undo::sprocess(core::NTypeLogger& parent_lgr) const {

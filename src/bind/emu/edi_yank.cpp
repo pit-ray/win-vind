@@ -2,13 +2,13 @@
 
 #include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "simple_text_register.hpp"
 #include "text_util.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 
 namespace vind
@@ -20,7 +20,9 @@ namespace vind
         : BindedFuncVoid("yank_highlight_text")
         {}
         void YankHighlightText::sprocess() {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            auto& igate = core::InputGate::get_instance() ;
+
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
 
             if(core::get_global_mode_flags() == core::ModeFlags::VISUAL_LINE) {
                 set_register_type(RegType::Lines) ;
@@ -29,7 +31,7 @@ namespace vind
                 set_register_type(RegType::Chars) ;
             }
 
-            util::pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
+            igate.pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
             ToEdiNormal::sprocess(true) ;
         }
         void YankHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
@@ -49,21 +51,21 @@ namespace vind
         void YankLine::sprocess(
                 unsigned int repeat_num,
                 const SelectedTextResult* const exres) {
+            auto& igate = core::InputGate::get_instance() ;
 
-            using util::pushup ;
-            pushup(KEYCODE_HOME) ;
+            igate.pushup(KEYCODE_HOME) ;
 
             //copy N - 1 lines
-            safe_for(repeat_num - 1, [] {
-                pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+            safe_for(repeat_num - 1, [&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
             if(!select_line_until_EOL(exres)) {
                 clear_clipboard_with_null() ;
             }
 
-            pushup(KEYCODE_LCTRL, KEYCODE_C) ;
-            pushup(KEYCODE_END) ;
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            igate.pushup(KEYCODE_END) ;
 
             set_register_type(RegType::Lines) ;
         }

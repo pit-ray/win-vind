@@ -5,7 +5,6 @@
 
 #include "core/char_logger.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
 #include "util/color.hpp"
 #include "util/display_text_painter.hpp"
 

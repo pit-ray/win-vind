@@ -1,12 +1,12 @@
 #include "edi_put.hpp"
 
 #include "bind/safe_repeater.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/ntype_logger.hpp"
 #include "edi_delete.hpp"
 #include "simple_text_register.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
 
 
@@ -29,20 +29,21 @@ namespace vind
         PutAfter& PutAfter::operator=(PutAfter&&) = default ;
 
         void PutAfter::sprocess(unsigned int repeat_num) const {
-            using util::pushup ;
+            auto& igate = core::InputGate::get_instance() ;
+
             auto t = get_register_type() ;
             if(t == RegType::Chars) {
-                pushup(KEYCODE_RIGHT) ;
+                igate.pushup(KEYCODE_RIGHT) ;
 
-                safe_for(repeat_num, [] {
-                    pushup(KEYCODE_LCTRL, KEYCODE_V) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_V) ;
                 }) ;
             }
             else if(t == RegType::Lines) {
-                pushup(KEYCODE_END) ;
-                safe_for(repeat_num, [] {
-                    pushup(KEYCODE_ENTER) ;
-                    pushup(KEYCODE_LCTRL, KEYCODE_V) ;
+                igate.pushup(KEYCODE_END) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_ENTER) ;
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_V) ;
                 }) ;
             }
         }
@@ -75,19 +76,20 @@ namespace vind
         PutBefore& PutBefore::operator=(PutBefore&&) = default ;
 
         void PutBefore::sprocess(unsigned int repeat_num) const {
-            using util::pushup ;
+            auto& igate = core::InputGate::get_instance() ;
+
             auto t = get_register_type() ;
             if(t == RegType::Chars) {
-                safe_for(repeat_num, [] {
-                    pushup(KEYCODE_LCTRL, KEYCODE_V) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_V) ;
                 }) ;
             }
             else if(t == RegType::Lines) {
-                safe_for(repeat_num, [] {
-                    pushup(KEYCODE_HOME) ;
-                    pushup(KEYCODE_ENTER) ;
-                    pushup(KEYCODE_UP) ;
-                    pushup(KEYCODE_LCTRL, KEYCODE_V) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_HOME) ;
+                    igate.pushup(KEYCODE_ENTER) ;
+                    igate.pushup(KEYCODE_UP) ;
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_V) ;
                 }) ;
             }
         }

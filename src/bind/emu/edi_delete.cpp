@@ -3,13 +3,13 @@
 #include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
 #include "core/g_params.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "simple_text_register.hpp"
 #include "text_util.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
 
 
@@ -22,9 +22,7 @@ namespace vind
         : BindedFuncVoid("delete_highlight_text")
         {}
         void DeleteHighlightText::sprocess() {
-            using util::pushup ;
-
-            pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
                 set_register_type(RegType::Lines) ;
             }
@@ -58,20 +56,21 @@ namespace vind
         DeleteLine& DeleteLine::operator=(DeleteLine&&) = default ;
 
         void DeleteLine::sprocess(unsigned int repeat_num) const {
-            using util::pushup ;
-            pushup(KEYCODE_HOME) ;
+            auto& igate = core::InputGate::get_instance() ;
 
-            safe_for(repeat_num - 1, [] {
-                pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+            igate.pushup(KEYCODE_HOME) ;
+
+            safe_for(repeat_num - 1, [&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
             if(!select_line_until_EOL(nullptr)) {
                 clear_clipboard_with_null() ;
             }
             else {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 set_register_type(RegType::Lines) ;
-                pushup(KEYCODE_DELETE) ;
+                igate.pushup(KEYCODE_DELETE) ;
             }
         }
         void DeleteLine::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -103,18 +102,18 @@ namespace vind
         DeleteLineUntilEOL& DeleteLineUntilEOL::operator=(DeleteLineUntilEOL&&) = default ;
 
         void DeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
-            using util::pushup ;
+            auto& igate = core::InputGate::get_instance() ;
 
             //delete N - 1 lines under the current line
-            safe_for(repeat_num - 1, [] {
-                pushup(KEYCODE_DOWN) ;
+            safe_for(repeat_num - 1, [&igate] {
+                igate.pushup(KEYCODE_DOWN) ;
             }) ;
 
             if(!select_line_until_EOL(nullptr)) {
                 clear_clipboard_with_null() ;
             }
             else {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 set_register_type(RegType::Chars) ;
             }
         }
@@ -147,16 +146,17 @@ namespace vind
         DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
 
         void DeleteAfter::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
             if(core::get_b("charcache")) {
-                safe_for(repeat_num, [] {
-                        util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
-                        util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                safe_for(repeat_num, [&igate] {
+                        igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+                        igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                         set_register_type(RegType::Chars) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_DELETE) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_DELETE) ;
                 }) ;
             }
         }
@@ -189,16 +189,17 @@ namespace vind
         DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
 
         void DeleteBefore::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
             if(core::get_b("charcache")) {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                     set_register_type(RegType::Chars) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_BKSPACE) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_BKSPACE) ;
                 }) ;
             }
         }

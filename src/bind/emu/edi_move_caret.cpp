@@ -3,14 +3,13 @@
 #include "bind/safe_repeater.hpp"
 #include "core/char_logger.hpp"
 #include "core/err_logger.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "simple_text_selecter.hpp"
 #include "util/def.hpp"
 #include "util/interval_timer.hpp"
-#include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
 #include "util/string.hpp"
 
@@ -34,14 +33,15 @@ namespace vind
         MoveCaretLeft& MoveCaretLeft::operator=(MoveCaretLeft&&) = default ;
 
         void MoveCaretLeft::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LEFT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LEFT) ;
                 }) ;
             }
         }
@@ -74,14 +74,15 @@ namespace vind
         MoveCaretRight& MoveCaretRight::operator=(MoveCaretRight&&) = default ;
 
         void MoveCaretRight::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, []{
-                    util::pushup(KEYCODE_RIGHT) ;
+                safe_for(repeat_num, [&igate]{
+                    igate.pushup(KEYCODE_RIGHT) ;
                 }) ;
             }
         }
@@ -114,18 +115,20 @@ namespace vind
         MoveCaretUp& MoveCaretUp::operator=(MoveCaretUp&&) = default ;
 
         void MoveCaretUp::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 if(is_first_line_selection()) {
                     select_line_EOL2BOL() ;
                 }
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
                     //moving_update() ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_UP) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_UP) ;
                 }) ;
             }
         }
@@ -166,12 +169,14 @@ namespace vind
         MoveCaretDown& MoveCaretDown::operator=(MoveCaretDown&&) = default ;
 
         void MoveCaretDown::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 if(is_first_line_selection()) {
                     select_line_BOL2EOL() ;
                 }
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
 
                     //If call MoveCaretDown after MoveCaretUp,
                     //inner variables of moving_update() are dedicated to EOL2BOL.
@@ -180,8 +185,8 @@ namespace vind
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_DOWN) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_DOWN) ;
                 }) ;
             }
         }
@@ -222,14 +227,16 @@ namespace vind
         MoveCaretWordForward& MoveCaretWordForward::operator=(MoveCaretWordForward&&) = default ;
 
         void MoveCaretWordForward::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
                 }) ;
             }
         }
@@ -262,14 +269,16 @@ namespace vind
         MoveCaretWordBackward& MoveCaretWordBackward::operator=(MoveCaretWordBackward&&) = default ;
 
         void MoveCaretWordBackward::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }
         }
@@ -302,14 +311,16 @@ namespace vind
         MoveCaretNonBlankWordForward& MoveCaretNonBlankWordForward::operator=(MoveCaretNonBlankWordForward&&) = default ;
 
         void MoveCaretNonBlankWordForward::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
                 }) ;
             }
         }
@@ -342,14 +353,16 @@ namespace vind
         MoveCaretNonBlankWordBackward& MoveCaretNonBlankWordBackward::operator=(MoveCaretNonBlankWordBackward&&) = default ;
 
         void MoveCaretNonBlankWordBackward::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }
         }

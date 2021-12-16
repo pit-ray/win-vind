@@ -6,9 +6,10 @@
 
 #include "bind/mode/change_mode.hpp"
 #include "core/char_logger.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
+
 
 namespace vind
 {
@@ -19,7 +20,8 @@ namespace vind
         : BindedFuncVoid("save")
         {}
         void Save::sprocess() {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_S) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LCTRL, KEYCODE_S) ;
         }
         void Save::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -36,7 +38,8 @@ namespace vind
         : BindedFuncVoid("open")
         {}
         void Open::sprocess() {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_O) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LCTRL, KEYCODE_O) ;
         }
         void Open::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

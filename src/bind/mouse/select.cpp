@@ -2,9 +2,9 @@
 
 #include "bind/safe_repeater.hpp"
 #include "core/char_logger.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/mouse.hpp"
 
 namespace vind
@@ -18,7 +18,8 @@ namespace vind
 
         void SelectAll::sprocess() {
             util::click(KEYCODE_MOUSE_LEFT) ;
-            util::pushup(KEYCODE_LCTRL, KEYCODE_A) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LCTRL, KEYCODE_A) ;
         }
         void SelectAll::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -36,7 +37,7 @@ namespace vind
         {}
         void ForwardUINavigation::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_TAB) ;
+                core::InputGate::get_instance().pushup(KEYCODE_TAB) ;
             }) ;
         }
         void ForwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
@@ -55,7 +56,8 @@ namespace vind
         {}
         void BackwardUINavigation::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_TAB) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LSHIFT, KEYCODE_TAB) ;
             }) ;
         }
         void BackwardUINavigation::sprocess(core::NTypeLogger& parent_lgr) {
@@ -73,7 +75,7 @@ namespace vind
         : BindedFuncVoid("decide_focused_ui_object")
         {}
         void DecideFocusedUIObject::sprocess() {
-            util::pushup(KEYCODE_SPACE) ;
+            core::InputGate::get_instance().pushup(KEYCODE_SPACE) ;
         }
         void DecideFocusedUIObject::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

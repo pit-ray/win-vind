@@ -1,8 +1,10 @@
+#define NOMINMAX
+
 #include "ntype_logger.hpp"
 
 #include "bind/binded_func.hpp"
 #include "err_logger.hpp"
-#include "key_absorber.hpp"
+#include "inputgate.hpp"
 #include "key_logger_base.hpp"
 #include "keycodecvt.hpp"
 #include "logger_parser.hpp"
@@ -115,7 +117,7 @@ namespace vind
                 return 0 ;
             }
 
-            if(is_absorbed()) {
+            if(core::InputGate::get_instance().is_absorbed()) {
                 auto nums = extract_numbers(log, KeyLog{KEYCODE_0}) ;
                 if(!nums.empty()) {
                     return transition_to_parsing_num_state(nums) ;

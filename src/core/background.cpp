@@ -2,7 +2,7 @@
 
 #include "exception.hpp"
 #include "g_params.hpp"
-#include "key_absorber.hpp"
+#include "inputgate.hpp"
 
 #include "opt/option.hpp"
 #include "opt/optionlist.hpp"
@@ -45,9 +45,10 @@ namespace vind
                 op->process() ;
             }
 
-            refresh_toggle_state() ;
+            auto& igate = InputGate::get_instance() ;
+            igate.refresh_toggle_state() ;
 
-            if(is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
+            if(igate.is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
                 throw SafeForcedTermination() ;
             }
         }

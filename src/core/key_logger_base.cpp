@@ -2,7 +2,7 @@
 
 #include "util/container.hpp"
 
-#include "key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "keycodecvt.hpp"
 
 #include <sstream>

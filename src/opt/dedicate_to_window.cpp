@@ -10,7 +10,7 @@
 #include "bind/mode/change_mode.hpp"
 #include "core/err_logger.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/mouse.hpp"

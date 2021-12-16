@@ -1,7 +1,7 @@
 #include "opt/async_uia_cache_builder.hpp"
 
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "util/debug.hpp"
 #include "util/point_2d.hpp"
@@ -188,7 +188,7 @@ namespace vind
             // Use some factors for minimal scanning
 
             // Factor1: keybaord input
-            if(!core::get_pressed_list().empty()) {
+            if(!core::InputGate::get_instance().pressed_list().empty()) {
                 return ;
             }
 

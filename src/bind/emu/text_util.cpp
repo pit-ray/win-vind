@@ -1,10 +1,11 @@
 #include "text_util.hpp"
 
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "simple_text_register.hpp"
 #include "smart_clipboard.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
+
 
 namespace vind
 {
@@ -16,10 +17,12 @@ namespace vind
         //  <EOL mark exists> [select] NONE    [clipboard] null characters with EOL.    (neighborhoods of LSB are 0x00)
         //  <plain text>      [select] NONE    [clipboard] null characters without EOL. (neighborhoods of LSB are 0x?0)
         bool select_line_until_EOL(const SelectedTextResult* const exres) {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(exres != nullptr) {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
                 if(exres->having_EOL) {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                     if(exres->str.empty()) {
                         return false ; //not selected (true text is only null text)
                     }
@@ -27,12 +30,12 @@ namespace vind
                 return true ; //selected
             }
 
-            auto res = get_selected_text([] {
-                    util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            auto res = get_selected_text([&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             }) ;
             if(res.having_EOL) {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 if(res.str.empty()) {
                     return false ;
                 }

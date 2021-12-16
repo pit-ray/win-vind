@@ -3,14 +3,13 @@ cmake_minimum_required(VERSION 3.0.0)
 set(SRCDIR ../../src)
 
 AddTest(each-mapgate-test
-    ${CMAKE_CURRENT_SOURCE_DIR}/mapgate_test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/inputgate_test.cpp
 
     ${SRCDIR}/bind/binded_func.cpp
     ${SRCDIR}/bind/emu/edi_dot.cpp
     ${SRCDIR}/core/bindings_parser.cpp
     ${SRCDIR}/core/err_logger.cpp
     ${SRCDIR}/core/g_maps.cpp
-    ${SRCDIR}/core/key_absorber.cpp
     ${SRCDIR}/core/key_log.cpp
     ${SRCDIR}/core/key_logger_base.cpp
     ${SRCDIR}/core/keycodecvt.cpp
@@ -20,7 +19,6 @@ AddTest(each-mapgate-test
     ${SRCDIR}/core/ntype_logger.cpp
     ${SRCDIR}/core/path.cpp
     ${SRCDIR}/util/interval_timer.cpp
-    ${SRCDIR}/util/keybrd.cpp
     ${SRCDIR}/util/keystroke_repeater.cpp
     ${SRCDIR}/util/string.cpp
     ${SRCDIR}/util/winwrap.cpp

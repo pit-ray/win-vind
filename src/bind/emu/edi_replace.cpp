@@ -6,7 +6,7 @@
 #include "core/background.hpp"
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/keycodecvt.hpp"
 #include "core/ntype_logger.hpp"
@@ -16,7 +16,6 @@
 #include "opt/vcmdline.hpp"
 #include "text_analyzer.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 #include <vector>
 
@@ -64,26 +63,28 @@ namespace
         ReplaceMatching& operator=(const ReplaceMatching&) = delete ;
 
         void launch_loop() {
+            auto& igate = core::InputGate::get_instance() ;
+
             //reset keys downed in order to call this function.
-            for(auto& key : core::get_pressed_list()) {
+            for(auto& key : igate.pressed_list()) {
                 if(is_shift(key)) continue ;
-                util::release_keystate(key) ;
+                igate.release_keystate(key) ;
             }
 
             while(true) {
                 bg_.update() ;
 
-                if(core::is_pressed(KEYCODE_ESC)) {
+                if(igate.is_pressed(KEYCODE_ESC)) {
                     return ;
                 }
-                auto log = core::get_pressed_list() ;
+                auto log = igate.pop_log() ;
 
                 if(!log.is_containing(KEYCODE_SHIFT)) {
                     //not shifted
                     for(auto& key : log) {
                         //For example, if replace by 'i' and 'i' key is downed,
                         //immediately will call "insert-mode", so release 'i'.
-                        util::release_keystate(key) ;
+                        igate.release_keystate(key) ;
 
                         if(!core::get_ascii(key)) {
                             continue ;
@@ -97,7 +98,7 @@ namespace
                     //shifted
                     for(auto& key : log) {
                         if(is_shift(key)) continue ;
-                        util::release_keystate(key) ;
+                        igate.release_keystate(key) ;
                         if(!core::get_shifted_ascii(key)) {
                             continue ;
                         }
@@ -139,20 +140,22 @@ namespace
         void replace_char(unsigned int repeat_num) {
             launch_loop() ;
 
-            bind::safe_for(repeat_num, [this] {
-                util::pushup(KEYCODE_DELETE) ;
+            auto& igate = core::InputGate::get_instance() ;
+
+            bind::safe_for(repeat_num, [this, &igate] {
+                igate.pushup(KEYCODE_DELETE) ;
 
                 if(shifted_) {
-                    util::pushup(KEYCODE_LSHIFT, captured_) ;
+                    igate.pushup(KEYCODE_LSHIFT, captured_) ;
                 }
                 else {
-                    util::pushup(captured_) ;
+                    igate.pushup(captured_) ;
                 }
             }) ;
 
             // returns the cursor to its original position.
-            bind::safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LEFT) ;
+            bind::safe_for(repeat_num, [&igate] {
+                igate.pushup(KEYCODE_LEFT) ;
             }) ;
         }
     } ;
@@ -166,14 +169,16 @@ namespace
         bool do_loop_hook(
                 KeyCode keycode,
                 bool shifted=false) override {
-            util::pushup(KEYCODE_DELETE) ;
+            auto& igate = core::InputGate::get_instance() ;
+
+            igate.pushup(KEYCODE_DELETE) ;
 
             if(shifted) {
-                util::pushup(KEYCODE_LSHIFT, keycode) ;
+                igate.pushup(KEYCODE_LSHIFT, keycode) ;
                 str_.push_back(keycode) ;
             }
             else {
-                util::pushup(keycode) ;
+                igate.pushup(keycode) ;
                 str_.push_back(keycode) ;
             }
             shifteds_.push_back(shifted) ;
@@ -198,16 +203,18 @@ namespace
 
             // append the input string according to repeat_num.
             if(repeat_num > 1) {
-                core::release_virtually(KEYCODE_ESC) ;
-                bind::safe_for(repeat_num - 1, [this] {
+                auto& igate = core::InputGate::get_instance() ;
+
+                igate.release_virtually(KEYCODE_ESC) ;
+                bind::safe_for(repeat_num - 1, [this, &igate] {
                     for(std::size_t i = 0 ; i < str_.size() ; i ++) {
-                        util::pushup(KEYCODE_DELETE) ;
+                        igate.pushup(KEYCODE_DELETE) ;
 
                         if(shifteds_[i]) {
-                            util::pushup(KEYCODE_LSHIFT, str_[i]) ;
+                            igate.pushup(KEYCODE_LSHIFT, str_[i]) ;
                         }
                         else {
-                            util::pushup(str_[i]) ;
+                            igate.pushup(str_[i]) ;
                         }
                     }
                 }) ;
@@ -266,8 +273,6 @@ namespace vind
         ReplaceSequence& ReplaceSequence::operator=(ReplaceSequence&&) = default ;
 
         void ReplaceSequence::sprocess(unsigned int repeat_num) const {
-            using util::pushup ;
-
             opt::VCmdLine::clear() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI REPLACE --")) ;
 
@@ -292,31 +297,33 @@ namespace vind
         : ChangeBaseCreator("switch_char_case")
         {}
         void SwitchCharCase::sprocess(unsigned int repeat_num) {
-            auto res = get_selected_text([&repeat_num] {
-                    bind::safe_for(repeat_num, [] {
-                        util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+            auto& igate = core::InputGate::get_instance() ;
+
+            auto res = get_selected_text([&repeat_num, &igate] {
+                    bind::safe_for(repeat_num, [&igate] {
+                        igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                     }) ;
-                    util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 }) ;
 
             for(char c : res.str) {
                 if(c >= 'a' && c <= 'z') {
-                    util::pushup(KEYCODE_LSHIFT, core::get_keycode(c)) ;
+                    igate.pushup(KEYCODE_LSHIFT, core::get_keycode(c)) ;
                 }
                 else if(c >= 'A' && c <= 'Z') {
                     constexpr char delta = 'a' - 'A' ;
-                    util::pushup(core::get_keycode(c + delta)) ;
+                    igate.pushup(core::get_keycode(c + delta)) ;
                 }
                 else {
                     auto keycode = core::get_keycode(c) ;
                     if(keycode) {
-                        util::pushup(keycode) ;
+                        igate.pushup(keycode) ;
                         continue ;
                     }
 
                     keycode = core::get_shifted_keycode(c) ;
                     if(keycode) {
-                        util::pushup(KEYCODE_LSHIFT, keycode) ;
+                        igate.pushup(KEYCODE_LSHIFT, keycode) ;
                         continue ;
                     }
                 }

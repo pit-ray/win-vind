@@ -1,10 +1,10 @@
 #include "edi_layout.hpp"
 
 #include "bind/safe_repeater.hpp"
+#include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
 
 
@@ -27,8 +27,9 @@ namespace vind
 
         void JoinNextLine::sprocess(unsigned int repeat_num) const {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_END) ;
-                util::pushup(KEYCODE_DELETE) ;
+                auto& igate = core::InputGate::get_instance() ;
+                igate.pushup(KEYCODE_END) ;
+                igate.pushup(KEYCODE_DELETE) ;
             }) ;
         }
         void JoinNextLine::sprocess(core::NTypeLogger& parent_lgr) const {

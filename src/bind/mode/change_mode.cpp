@@ -6,7 +6,7 @@
 #include "core/char_logger.hpp"
 #include "core/err_logger.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
@@ -14,7 +14,6 @@
 #include "opt/vcmdline.hpp"
 #include "options.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/mouse.hpp"
 #include "util/rect.hpp"
 #include "util/winwrap.hpp"
@@ -49,8 +48,9 @@ namespace vind
 
             //When this function is called, binded key is down.
             //Thus, its key is needed to be up before absorbing key.
-            core::close_all_ports_with_refresh() ;
-            core::absorb() ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.close_all_ports_with_refresh() ;
+            igate.absorb() ;
 
             core::set_global_mode(Mode::GUI_NORMAL) ;
             if(vclmodeout) {
@@ -72,8 +72,9 @@ namespace vind
         : BindedFuncVoid("to_resident")
         {}
         void ToResident::sprocess(bool vclmodeout) {
-            core::close_all_ports() ;
-            core::unabsorb() ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.close_all_ports() ;
+            igate.unabsorb() ;
             core::set_global_mode(core::Mode::RESIDENT) ;
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- RESIDENT --")) ;
@@ -134,8 +135,9 @@ namespace vind
                 unselect() ;
             }
 
-            core::close_all_ports_with_refresh() ;
-            core::absorb() ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.close_all_ports_with_refresh() ;
+            igate.absorb() ;
 
             core::set_global_mode(Mode::EDI_NORMAL) ;
             if(vclmodeout) {
@@ -177,8 +179,10 @@ namespace vind
                 util::click(KEYCODE_MOUSE_LEFT) ;
             }
 
-            core::close_all_ports() ;
-            core::unabsorb() ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.close_all_ports() ;
+            igate.unabsorb() ;
+
             core::set_global_mode(Mode::INSERT) ;
 
             if(vclmodeout) {

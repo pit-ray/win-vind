@@ -1,9 +1,10 @@
 #include "search_pattern.hpp"
 
 #include "core/char_logger.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
+
 
 #if defined(DEBUG)
 #include <iostream>
@@ -18,7 +19,7 @@ namespace vind
         : BindedFuncVoid("search_pattern")
         {}
         void SearchPattern::sprocess() {
-            util::pushup(KEYCODE_F3) ;
+            core::InputGate::get_instance().pushup(KEYCODE_F3) ;
         }
         void SearchPattern::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

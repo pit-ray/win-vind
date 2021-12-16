@@ -5,11 +5,10 @@
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "core/char_logger.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/mouse.hpp"
 
 #if defined(DEBUG)
@@ -29,7 +28,7 @@ namespace vind
 
             //there are cases in which not editable.
             //thus, not use Message Copy
-            util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }
         void HotkeyCopy::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -49,7 +48,7 @@ namespace vind
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //not selecting at paste.
-            util::pushup(KEYCODE_LCTRL, KEYCODE_V) ;
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_V) ;
         }
         void HotkeyPaste::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -67,7 +66,7 @@ namespace vind
         {}
         void HotkeyCut::sprocess() {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
-            util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
         }
         void HotkeyCut::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -88,8 +87,9 @@ namespace vind
 
             //selecting->cut
             //unselecting->delete
-            util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
-            util::pushup(KEYCODE_DELETE) ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            igate.pushup(KEYCODE_DELETE) ;
         }
         void HotkeyDelete::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -111,8 +111,9 @@ namespace vind
 
             //selecting->cut
             //unselecting->delete
-            util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
-            util::pushup(KEYCODE_BKSPACE) ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            igate.pushup(KEYCODE_BKSPACE) ;
         }
         void HotkeyBackspace::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

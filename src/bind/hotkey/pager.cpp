@@ -1,9 +1,10 @@
 #include "pager.hpp"
 
 #include "bind/safe_repeater.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
+
 
 namespace vind
 {
@@ -15,7 +16,8 @@ namespace vind
         {}
         void GotoNextPage::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LALT, KEYCODE_RIGHT) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LALT, KEYCODE_RIGHT) ;
             }) ;
         }
         void GotoNextPage::sprocess(core::NTypeLogger& parent_lgr) {
@@ -34,7 +36,8 @@ namespace vind
         {}
         void GotoPrevPage::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LALT, KEYCODE_LEFT) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LALT, KEYCODE_LEFT) ;
             }) ;
         }
         void GotoPrevPage::sprocess(core::NTypeLogger& parent_lgr) {

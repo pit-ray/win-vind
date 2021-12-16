@@ -1,6 +1,6 @@
 #include <doctest.h>
 
-#include "core/mapgate.cpp"
+#include "core/inputgate.cpp"
 
 using namespace vind ;
 using namespace vind::core ;
@@ -18,7 +18,7 @@ namespace vind
 }
 
 
-TEST_CASE("mapgate::solve_recursive_key2keyset_mapping") {
+TEST_CASE("inputgate::solve_recursive_key2keyset_mapping") {
     Key2KeysetMap table{} ;
 
     SUBCASE("One recursive mapping") {
@@ -88,7 +88,7 @@ TEST_CASE("mapgate::solve_recursive_key2keyset_mapping") {
 }
 
 
-TEST_CASE("mapgate::replace_command_with_key2keyset") {
+TEST_CASE("inputgate::replace_command_with_key2keyset") {
     Command cmd {
         {KEYCODE_SHIFT, KEYCODE_A},
         {KEYCODE_CTRL, KEYCODE_X}
@@ -109,7 +109,7 @@ TEST_CASE("mapgate::replace_command_with_key2keyset") {
 }
 
 
-TEST_CASE("mapgate::solve_recursive_cmd2cmd_mapping") {
+TEST_CASE("inputgate::solve_recursive_cmd2cmd_mapping") {
     load_input_combination() ;
 
     // define cmd2cmd mappings
@@ -142,8 +142,6 @@ TEST_CASE("mapgate::solve_recursive_cmd2cmd_mapping") {
         {KEYCODE_G}
     } ;
     CHECK_EQ(result[map1.in_hash()], expect1) ;
-    std::cout << "expect: " << print(expect1) << std::endl ;
-    std::cout << "result: " << print(result[map1.in_hash()]) << std::endl ;
 
     // t -> z<c-s-z><s-z><s-z>g
     Command expect2 {
@@ -154,8 +152,6 @@ TEST_CASE("mapgate::solve_recursive_cmd2cmd_mapping") {
         {KEYCODE_G}
     } ;
     CHECK_EQ(result[map2.in_hash()], expect2) ;
-    std::cout << "expect: " << print(expect2) << std::endl ;
-    std::cout << "result: " << print(result[map2.in_hash()]) << std::endl ;
 
     // <c-j> -> <s-z><s-z>g
     Command expect3 {

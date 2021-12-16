@@ -1,8 +1,8 @@
 #include "close_window.hpp"
 
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 namespace vind
 {
@@ -13,7 +13,8 @@ namespace vind
         : BindedFuncVoid("close_current_window")
         {}
         void CloseCurrentWindow::sprocess() {
-            util::pushup(KEYCODE_LALT, KEYCODE_F4) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LALT, KEYCODE_F4) ;
         }
         void CloseCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

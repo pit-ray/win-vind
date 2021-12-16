@@ -3,8 +3,8 @@
 #include <dwmapi.h>
 
 #include "bind/mouse/jump_actwin.hpp"
+#include "core/inputgate.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/winwrap.hpp"
 
@@ -107,7 +107,8 @@ namespace vind
                 util::set_foreground_window(hwnd) ;
 
                 //minimize it once
-                util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LWIN, KEYCODE_DOWN) ;
                 Sleep(50) ; //50ms
 
                 if(!MoveWindow(hwnd, left, top, width, height, TRUE)) {

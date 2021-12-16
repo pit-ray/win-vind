@@ -8,7 +8,6 @@
 #include "core/err_logger.hpp"
 #include "smart_clipboard.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/mouse.hpp"
 
 #if defined(DEBUG)

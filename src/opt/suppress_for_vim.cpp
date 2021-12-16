@@ -6,7 +6,7 @@
 
 #include "bind/mode/change_mode.hpp"
 #include "core/err_logger.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/string.hpp"
@@ -45,8 +45,9 @@ namespace vind
 
             //Whether it is vim
             if(exename.find("vim") != std::string::npos) {
-                core::close_all_ports() ;
-                core::unabsorb() ;
+                auto& igate = core::InputGate::get_instance() ;
+                igate.close_all_ports() ;
+                igate.unabsorb() ;
                 core::set_global_mode(core::Mode::RESIDENT) ;
                 opt::VCmdLine::print(GeneralMessage("-- RESIDENT --")) ;
             }

@@ -3,13 +3,13 @@
 #include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
 #include "core/g_params.hpp"
+#include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "edi_change_mode.hpp"
 #include "simple_text_register.hpp"
 #include "text_util.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 namespace vind
 {
@@ -20,8 +20,7 @@ namespace vind
         : BindedFuncVoid("change_highlight_text")
         {}
         void ChangeHighlightText::sprocess() {
-            using util::pushup ;
-            pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
                 set_register_type(RegType::Lines) ;
             }
@@ -45,10 +44,11 @@ namespace vind
         : ChangeBaseCreator("change_line")
         {}
         void ChangeLine::sprocess(unsigned int repeat_num) {
-            auto res = get_selected_text([] {
-                util::pushup(KEYCODE_HOME) ;
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
-                util::pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            auto& igate = core::InputGate::get_instance() ;
+            auto res = get_selected_text([&igate] {
+                igate.pushup(KEYCODE_HOME) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             }) ;
             if(res.str.empty()) {
                 ToInsert::sprocess(false) ;
@@ -60,10 +60,10 @@ namespace vind
                 ToInsertEOL::sprocess(false) ;
                 return ;
             }
-            util::pushup(KEYCODE_HOME) ;
+            igate.pushup(KEYCODE_HOME) ;
 
-            safe_for(pos, [] {
-                util::pushup(KEYCODE_RIGHT) ;
+            safe_for(pos, [&igate] {
+                igate.pushup(KEYCODE_RIGHT) ;
             }) ;
             ChangeUntilEOL::sprocess(repeat_num, &res) ;
         }
@@ -82,16 +82,18 @@ namespace vind
         : ChangeBaseCreator("change_char")
         {}
         void ChangeChar::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
+            auto& igate = core::InputGate::get_instance() ;
+
+            safe_for(repeat_num, [&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
             }) ;
 
             if(core::get_b("charcache")) {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 set_register_type(RegType::Chars) ;
             }
             else {
-                util::pushup(KEYCODE_DELETE) ;
+                igate.pushup(KEYCODE_DELETE) ;
             }
 
             ToInsert::sprocess(false) ;
@@ -139,16 +141,17 @@ namespace vind
         void ChangeUntilEOL::sprocess(
                 unsigned int repeat_num,
                 const SelectedTextResult* const exres) {
+            auto& igate = core::InputGate::get_instance() ;
 
-            safe_for(repeat_num - 1, [] {
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+            safe_for(repeat_num - 1, [&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
             if(!select_line_until_EOL(exres)) {
                 clear_clipboard_with_null() ;
             }
             else {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 set_register_type(RegType::Chars) ;
             }
             ToInsert::sprocess(false) ;

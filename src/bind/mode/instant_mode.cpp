@@ -4,9 +4,8 @@
 #include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/key_logger_base.hpp"
-#include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/async_uia_cache_builder.hpp"
@@ -51,7 +50,8 @@ namespace vind
 
 
         SystemCall ToInstantGUINormal::sprocess() const {
-            core::close_all_ports_with_refresh() ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.close_all_ports_with_refresh() ;
 
             core::InstantKeyAbsorber isa{} ;
 
@@ -67,7 +67,7 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto log = core::LogPooler::get_instance().pop_log() ;
+                auto log = igate.pop_log() ;
                 auto result = lgr.logging_state(log) ;
                 if(NTYPE_EMPTY(result)) {
                     continue ;

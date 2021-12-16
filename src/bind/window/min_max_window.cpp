@@ -2,10 +2,11 @@
 
 #include "bind/safe_repeater.hpp"
 #include "core/char_logger.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/rect.hpp"
+
 
 namespace vind
 {
@@ -17,7 +18,8 @@ namespace vind
         {}
         void MinimizeCurrentWindow::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LWIN, KEYCODE_DOWN) ;
             }) ;
         }
         void MinimizeCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
@@ -35,6 +37,8 @@ namespace vind
         : BindedFuncVoid("maximize_current_window")
         {}
         void MaximizeCurrentWindow::sprocess(unsigned int repeat_num) {
+            auto& igate = core::InputGate::get_instance() ;
+
             if(repeat_num == 1) {
                 auto hwnd = GetForegroundWindow() ;
                 if(hwnd == NULL) {
@@ -46,7 +50,7 @@ namespace vind
                     throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
                 }
 
-                util::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
+                igate.pushup(KEYCODE_LWIN, KEYCODE_UP) ;
                 Sleep(50) ;
 
                 RECT after_rect ;
@@ -56,13 +60,13 @@ namespace vind
 
                 //If not changed, regard it as a full screen and deal with it.
                 if(util::is_equal(before_rect, after_rect)) {
-                    util::pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
-                    util::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
+                    igate.pushup(KEYCODE_LWIN, KEYCODE_DOWN) ;
+                    igate.pushup(KEYCODE_LWIN, KEYCODE_UP) ;
                 }
             }
             else {
-                safe_for(repeat_num, [] {
-                    util::pushup(KEYCODE_LWIN, KEYCODE_UP) ;
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LWIN, KEYCODE_UP) ;
                 }) ;
             }
         }

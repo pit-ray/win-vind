@@ -6,9 +6,9 @@
 #include "bind/safe_repeater.hpp"
 #include "core/char_logger.hpp"
 #include "core/err_logger.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 
 namespace vind
@@ -21,7 +21,8 @@ namespace vind
         {}
         void Switch2LeftTab::sprocess(unsigned int repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
             }) ;
         }
         void Switch2LeftTab::sprocess(core::NTypeLogger& parent_lgr) {
@@ -40,7 +41,8 @@ namespace vind
         {}
         void Switch2RightTab::sprocess(unsigned repeat_num) {
             safe_for(repeat_num, [] {
-                util::pushup(KEYCODE_LCTRL, KEYCODE_TAB) ;
+                core::InputGate::get_instance().pushup(
+                        KEYCODE_LCTRL, KEYCODE_TAB) ;
             }) ;
         }
         void Switch2RightTab::sprocess(core::NTypeLogger& parent_lgr) {
@@ -57,7 +59,8 @@ namespace vind
         : BindedFuncVoid("open_new_tab")
         {}
         void OpenNewTab::sprocess() {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_T) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LCTRL, KEYCODE_T) ;
         }
         void OpenNewTab::sprocess(core::NTypeLogger& parent_lgr) {
             if(parent_lgr.is_long_pressing()) {
@@ -74,7 +77,8 @@ namespace vind
         : BindedFuncVoid("close_current_tab")
         {}
         void CloseCurrentTab::sprocess() {
-            util::pushup(KEYCODE_LCTRL, KEYCODE_F4) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LCTRL, KEYCODE_F4) ;
         }
         void CloseCurrentTab::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

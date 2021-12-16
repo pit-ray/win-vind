@@ -1,6 +1,7 @@
 #include "simple_text_selecter.hpp"
 
-#include "util/keybrd.hpp"
+#include "core/inputgate.hpp"
+
 
 namespace
 {
@@ -28,8 +29,9 @@ namespace vind
         void select_line_EOL2BOL() {
             g_first_line_selection = g_first_call ;
 
-            util::pushup(KEYCODE_END) ;
-            util::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.pushup(KEYCODE_END) ;
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
 
             g_mode = SelectMode::EOL2BOL ;
             g_first_call = false ;
@@ -38,19 +40,21 @@ namespace vind
         void select_line_BOL2EOL() {
             g_first_line_selection = g_first_call ;
 
-            util::pushup(KEYCODE_HOME) ;
-            util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.pushup(KEYCODE_HOME) ;
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
 
             g_mode = SelectMode::BOL2EOL ;
             g_first_call = false ;
         }
 
         void unselect() {
+            auto& igate = core::InputGate::get_instance() ;
             if(g_mode == SelectMode::EOL2BOL) {
-                util::pushup(KEYCODE_LEFT) ;
+                igate.pushup(KEYCODE_LEFT) ;
             }
             else if(g_mode == SelectMode::BOL2EOL) {
-                util::pushup(KEYCODE_RIGHT) ;
+                igate.pushup(KEYCODE_RIGHT) ;
             }
             _reset() ;
         }
@@ -60,10 +64,13 @@ namespace vind
         }
 
         void moving_update() {
-            if(g_mode == SelectMode::BOL2EOL)
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
-            else
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
+            auto& igate = core::InputGate::get_instance() ;
+            if(g_mode == SelectMode::BOL2EOL) {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+            }
+            else {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
+            }
         }
 
         bool is_first_line_selection() noexcept {

@@ -2,12 +2,11 @@
 
 #include "core/err_logger.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
 #include "util/box_2d.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/mouse.hpp"
 #include "util/point_2d.hpp"
 #include "util/winwrap.hpp"
@@ -203,7 +202,7 @@ namespace vind
 
             }
             else if(mode == "flex") {
-                util::pushup(KEYCODE_LEFT) ;
+                core::InputGate::get_instance().pushup(KEYCODE_LEFT) ;
             }
 
             pimpl->is_enabled_ = false ;
@@ -224,8 +223,9 @@ namespace vind
 
             }
             else if(mode == "flex") {
-                util::pushup(KEYCODE_RIGHT) ;
-                util::pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                auto& igate = core::InputGate::get_instance() ;
+                igate.pushup(KEYCODE_RIGHT) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
             }
 
             pimpl->is_enabled_ = true ;
@@ -243,7 +243,7 @@ namespace vind
                 make_caret_block_style(mode) ;
             }
             else if(mode == "flex") {
-                if(!core::get_pressed_list().empty()) {
+                if(!core::InputGate::get_instance().pressed_list().empty()) {
                     restore_caret_style(mode) ;
                 }
                 else {

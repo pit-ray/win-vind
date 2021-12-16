@@ -9,7 +9,7 @@
 #include "bind/easyclick/ui_scanner.hpp"
 #include "bind/safe_repeater.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/async_uia_cache_builder.hpp"
@@ -203,8 +203,9 @@ namespace vind
             }
 
             //Release all keys in order to avoid the next matching right after.
-            for(KeyCode key : core::get_pressed_list()) {
-                core::release_virtually(key) ;
+            auto& igate = core::InputGate::get_instance() ;
+            for(KeyCode key : igate.pressed_list()) {
+                igate.release_virtually(key) ;
             }
         }
 

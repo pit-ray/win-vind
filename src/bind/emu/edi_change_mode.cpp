@@ -3,13 +3,12 @@
 #include <windows.h>
 
 #include "bind/mode/change_mode.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/vcmdline.hpp"
 #include "simple_text_selecter.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/mouse.hpp"
 
 #if defined(DEBUG)
@@ -26,7 +25,7 @@ namespace vind
         : ChangeBaseCreator("to_insert_BOL")
         {}
         void ToInsertBOL::sprocess(bool vclmodeout) {
-            util::pushup(KEYCODE_HOME) ;
+            core::InputGate::get_instance().pushup(KEYCODE_HOME) ;
             ToInsert::sprocess(vclmodeout) ;
         }
         void ToInsertBOL::sprocess(core::NTypeLogger& parent_lgr) {
@@ -44,7 +43,7 @@ namespace vind
         : ChangeBaseCreator("to_insert_append")
         {}
         void Change2EdiBkInsert::sprocess(bool vclmodeout) {
-            util::pushup(KEYCODE_RIGHT) ;
+            core::InputGate::get_instance().pushup(KEYCODE_RIGHT) ;
             ToInsert::sprocess(vclmodeout) ;
         }
         void Change2EdiBkInsert::sprocess(core::NTypeLogger& parent_lgr) {
@@ -62,7 +61,7 @@ namespace vind
         : ChangeBaseCreator("to_insert_EOL")
         {}
         void ToInsertEOL::sprocess(bool vclmodeout) {
-            util::pushup(KEYCODE_END) ;
+            core::InputGate::get_instance().pushup(KEYCODE_END) ;
             ToInsert::sprocess(vclmodeout) ;
         }
         void ToInsertEOL::sprocess(core::NTypeLogger& parent_lgr) {
@@ -80,8 +79,9 @@ namespace vind
         : ChangeBaseCreator("to_insert_nlbelow")
         {}
         void ToInsertNLBelow::sprocess(bool vclmodeout) {
-            util::pushup(KEYCODE_END) ;
-            util::pushup(KEYCODE_ENTER) ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.pushup(KEYCODE_END) ;
+            igate.pushup(KEYCODE_ENTER) ;
             ToInsert::sprocess(vclmodeout) ;
         }
         void ToInsertNLBelow::sprocess(core::NTypeLogger& parent_lgr) {
@@ -99,9 +99,10 @@ namespace vind
         : ChangeBaseCreator("to_insert_nlabove")
         {}
         void ToInsertNLAbove::sprocess(bool vclmodeout) {
-            util::pushup(KEYCODE_HOME) ;
-            util::pushup(KEYCODE_ENTER) ;
-            util::pushup(KEYCODE_UP) ;
+            auto& igate = core::InputGate::get_instance() ;
+            igate.pushup(KEYCODE_HOME) ;
+            igate.pushup(KEYCODE_ENTER) ;
+            igate.pushup(KEYCODE_UP) ;
             ToInsert::sprocess(vclmodeout) ;
         }
         void ToInsertNLAbove::sprocess(core::NTypeLogger& parent_lgr) {

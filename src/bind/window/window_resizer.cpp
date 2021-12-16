@@ -14,8 +14,7 @@
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
-#include "core/logpooler.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/dedicate_to_window.hpp"
@@ -24,7 +23,6 @@
 #include "opt/vcmdline.hpp"
 #include "util/constant_accelerator.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
 #include "util/screen_metrics.hpp"
 
@@ -234,11 +232,13 @@ namespace vind
 
             pimpl->draw_mode_status(inmode) ;
 
+            auto& igate = core::InputGate::get_instance() ;
+
             std::size_t actid = 0 ;
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto log = core::LogPooler::get_instance().pop_log() ;
+                auto log = igate.pop_log() ;
                 if(!NTYPE_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }
@@ -290,8 +290,8 @@ namespace vind
                 }
             }
 
-            core::release_virtually(KEYCODE_ESC) ;
-            core::release_virtually(KEYCODE_ENTER) ;
+            igate.release_virtually(KEYCODE_ESC) ;
+            igate.release_virtually(KEYCODE_ENTER) ;
             opt::VCmdLine::reset() ;
         }
         void WindowResizer::sprocess(core::NTypeLogger& parent_lgr) const {

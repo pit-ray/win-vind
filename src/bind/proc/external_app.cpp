@@ -17,11 +17,11 @@
 #include "core/char_logger.hpp"
 #include "core/err_logger.hpp"
 #include "core/g_params.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
 #include "core/path.hpp"
 #include "external_app.hpp"
 #include "opt/vcmdline.hpp"
-#include "util/keybrd.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
 
@@ -143,7 +143,8 @@ namespace vind
         : BindedFuncVoid("start_explorer")
         {}
         void StartExplorer::sprocess() {
-            util::pushup(KEYCODE_LWIN, KEYCODE_E) ;
+            core::InputGate::get_instance().pushup(
+                    KEYCODE_LWIN, KEYCODE_E) ;
             Sleep(100) ; //wait until select window by OS.
             JumpToActiveWindow::sprocess() ;
         }
@@ -161,7 +162,7 @@ namespace vind
         : BindedFuncVoid("open_startmenu")
         {}
         void OpenStartMenu::sprocess() {
-            util::pushup(KEYCODE_LWIN) ;
+            core::InputGate::get_instance().pushup(KEYCODE_LWIN) ;
             Sleep(100) ; //wait until select window by OS.
             JumpToActiveWindow::sprocess() ;
         }

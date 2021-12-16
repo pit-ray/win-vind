@@ -5,11 +5,10 @@
 
 #include "core/char_logger.hpp"
 #include "core/err_logger.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/keycodecvt.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
-#include "util/keybrd.hpp"
 #include "util/string.hpp"
 
 
@@ -36,29 +35,31 @@ namespace vind
             void release_fake_press() {
                 //correct the state to avoid cases that a virtual key is judged to be pressed,
                 //though a real key is released.
-                for(auto& key : core::get_pressed_list()) {
-                    if(!core::is_really_pressed(key)) {
-                        core::release_virtually(key) ;
+                auto& igate = core::InputGate::get_instance() ;
+                for(auto& key : igate.pressed_list()) {
+                    if(!igate.is_really_pressed(key)) {
+                        igate.release_virtually(key) ;
                     }
                 }
             }
 
             void calibrate_absorber_state() {
-                auto buf = core::get_pressed_list() ;
+                auto& igate = core::InputGate::get_instance() ;
+                auto buf = igate.pressed_list() ;
                 if(!buf.empty()) {
-                    if(core::is_absorbed()) {
-                        core::open_some_ports(buf.get()) ;
+                    if(igate.is_absorbed()) {
+                        igate.open_some_ports(buf.get()) ;
                     }
                     for(auto& key : buf) {
-                        util::release_keystate(key) ;
+                        igate.release_keystate(key) ;
                     }
-                    if(core::is_absorbed()) {
-                        core::close_all_ports() ;
-                        core::absorb() ;
+                    if(igate.is_absorbed()) {
+                        igate.close_all_ports() ;
+                        igate.absorb() ;
                     }
                     else {
-                        core::close_all_ports() ;
-                        core::unabsorb() ;
+                        igate.close_all_ports() ;
+                        igate.unabsorb() ;
                     }
                 }
             }

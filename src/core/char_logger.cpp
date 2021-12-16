@@ -1,6 +1,6 @@
 #include "char_logger.hpp"
 
-#include "key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "key_logger_base.hpp"
 #include "keycode_def.hpp"
 #include "keycodecvt.hpp"

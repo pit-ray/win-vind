@@ -9,9 +9,8 @@
 #include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/key_logger_base.hpp"
-#include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/async_uia_cache_builder.hpp"
@@ -20,7 +19,6 @@
 #include "opt/suppress_for_vim.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 #include "util/keystroke_repeater.hpp"
 
 namespace vind
@@ -49,11 +47,12 @@ namespace vind
             {}
 
             void call_op(std::size_t id) const {
+                auto& igate = core::InputGate::get_instance() ;
                 if(id == left_id_) {
-                    util::pushup(KEYCODE_LEFT) ;
+                    igate.pushup(KEYCODE_LEFT) ;
                 }
                 else if(id == right_id_) {
-                    util::pushup(KEYCODE_RIGHT) ;
+                    igate.pushup(KEYCODE_RIGHT) ;
                 }
             }
         } ;
@@ -76,13 +75,15 @@ namespace vind
         }
 
         void SwitchWindow::sprocess() const {
+            auto& igate = core::InputGate::get_instance() ;
+
             core::InstantKeyAbsorber ika ;
 
-            util::ScopedKey alt(KEYCODE_LALT) ;
+            core::ScopedKey alt(KEYCODE_LALT) ;
             alt.press() ;
-            core::release_virtually(KEYCODE_LALT) ;
+            igate.release_virtually(KEYCODE_LALT) ;
 
-            util::pushup(KEYCODE_TAB) ;
+            igate.pushup(KEYCODE_TAB) ;
 
             constexpr auto lcx_vmode = core::Mode::EDI_NORMAL ;
 
@@ -93,7 +94,7 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto log = core::LogPooler::get_instance().pop_log() ;
+                auto log = igate.pop_log() ;
                 if(!NTYPE_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }
@@ -140,8 +141,8 @@ namespace vind
                 }
             }
 
-            core::release_virtually(KEYCODE_ESC) ;
-            core::release_virtually(KEYCODE_ENTER) ;
+            igate.release_virtually(KEYCODE_ESC) ;
+            igate.release_virtually(KEYCODE_ENTER) ;
 
             alt.release() ;
 

@@ -7,8 +7,7 @@
 #include "core/background.hpp"
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
-#include "core/key_absorber.hpp"
-#include "core/logpooler.hpp"
+#include "core/inputgate.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
@@ -113,21 +112,23 @@ namespace vind
                 KEYCODE_BKSPACE
             };
 
+            auto& igate = core::InputGate::get_instance() ;
+
             while(!(pimpl->cancel_running_)) {
                 pimpl->bg_.update() ;
 
-                auto log = core::LogPooler::get_instance().pop_log() ;
+                auto log = igate.pop_log() ;
                 if(!CHAR_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }
 
                 if(lgr.latest().is_containing(KEYCODE_ESC)) {
-                    core::release_virtually(KEYCODE_ESC) ;
+                    igate.release_virtually(KEYCODE_ESC) ;
                     return nullptr ;
                 }
 
                 if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
-                    core::release_virtually(KEYCODE_BKSPACE) ;
+                    igate.release_virtually(KEYCODE_BKSPACE) ;
                     if(lgr.size() == 1) {
                         return nullptr ;
                     }

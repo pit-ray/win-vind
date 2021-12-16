@@ -71,14 +71,12 @@ SOFTWARE.
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/syscmd/source.hpp"
+#include "core/inputgate.hpp"
 #include "err_logger.hpp"
 #include "func_finder.hpp"
 #include "g_maps.hpp"
 #include "g_params.hpp"
-#include "key_absorber.hpp"
 #include "keycodecvt.hpp"
-#include "logpooler.hpp"
-#include "mapgate.hpp"
 #include "mode.hpp"
 #include "ntype_logger.hpp"
 #include "opt/optionlist.hpp"
@@ -249,7 +247,7 @@ namespace vind
 
             //lower keyboard hook
             //If you use debugger, must be disable this line not to be slow.
-            install_absorber_hook() ;
+            InputGate::get_instance().install_hook() ;
 
             // When Windows was started up, cursor is hidden until move mouse by default.
             //Thus, send lowlevel move event in order to show cursor.
@@ -288,7 +286,7 @@ namespace vind
 
             pimpl->finder_.reconstruct() ;
 
-            MapGate::get_instance().reconstruct() ;
+            InputGate::get_instance().reconstruct() ;
         }
 
         void VindEntry::update() {
@@ -312,7 +310,7 @@ namespace vind
                 }
             }
 
-            auto log = LogPooler::get_instance().pop_log() ;
+            auto log = InputGate::get_instance().pop_log() ;
 
             auto result = pimpl->lgr_.logging_state(log) ;
 

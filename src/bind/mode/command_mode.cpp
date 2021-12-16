@@ -12,11 +12,10 @@
 #include "core/err_logger.hpp"
 #include "core/func_finder.hpp"
 #include "core/g_params.hpp"
-#include "core/key_absorber.hpp"
+#include "core/inputgate.hpp"
 #include "core/key_logger_base.hpp"
 #include "core/keycode_def.hpp"
 #include "core/keycodecvt.hpp"
-#include "core/logpooler.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/async_uia_cache_builder.hpp"
@@ -26,7 +25,6 @@
 #include "opt/vcmdline.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
 
 #if defined(DEBUG)
 #include <iostream>
@@ -200,7 +198,7 @@ namespace vind
                 auto& p_cmdp = pimpl->ch_.get_hist_point() ;
                 auto& lgr    = p_cmdp->logger ;
 
-                auto log = core::LogPooler::get_instance().pop_log() ;
+                auto log = core::InputGate::get_instance().pop_log() ;
                 if(CHAR_EMPTY(lgr.logging_state(log))) {
                     continue ;
                 }

@@ -130,7 +130,7 @@ I recommend to install follow softwares or libraries.
 All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
 
 ### Making a new function
-- Make a source file and a header file into [core/include/bind/dev/](https://github.com/pit-ray/win-vind/blob/master/core/include/bind/dev) and [core/src/bind/dev/](https://github.com/pit-ray/win-vind/blob/master/core/src/bind/dev).
+- Make a source file and a header file into [core/include/bind/](https://github.com/pit-ray/win-vind/blob/master/core/include/bind) and [core/src/bind/](https://github.com/pit-ray/win-vind/blob/master/core/src/bind).
 - Add a path of source file into [core/CMakeLists.txt](https://github.com/pit-ray/win-vind/blob/master/core/include/bind/dev).
 - Define a new derived class (e.g. **MyBinding**).  
 

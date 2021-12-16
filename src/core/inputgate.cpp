@@ -1,11 +1,10 @@
-#include "mapgate.hpp"
+#include "inputgate.hpp"
 
 #include "bind/binded_func.hpp"
 #include "bind/safe_repeater.hpp"
 #include "defs.hpp"
 #include "err_logger.hpp"
 #include "g_maps.hpp"
-#include "key_absorber.hpp"
 #include "key_log.hpp"
 #include "key_logger_base.hpp"
 #include "keycode_def.hpp"
@@ -14,17 +13,28 @@
 #include "mode.hpp"
 #include "ntype_logger.hpp"
 #include "util/container.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
-#include "util/keybrd.hpp"
+#include "util/interval_timer.hpp"
+#include "util/keystroke_repeater.hpp"
+#include "util/winwrap.hpp"
+
+#include <windows.h>
 
 #include <array>
+#include <chrono>
+#include <functional>
+#include <queue>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
-#ifdef DEBUG
-#include "bindings_parser.hpp"
+#if defined(DEBUG)
+#include <iostream>
 #endif
+
+
+#define KEYUP_MASK 0x0001
 
 
 namespace
@@ -55,7 +65,7 @@ namespace
 
         SystemCall do_process() const override {
             for(const auto& keyset : cmd_) {
-                util::pushup(keyset.cbegin(), keyset.cend()) ;
+                InputGate::get_instance().pushup(keyset.cbegin(), keyset.cend()) ;
             }
             return SystemCall::NOTHING ;
         }
@@ -101,10 +111,8 @@ namespace
     using Key2KeysetMap = std::array<KeySet, 256> ;
 
     /**
-     *
-     * It solves recursive mappings in key2keyset to a single mapping.
+     * NOTE: It solves recursive mappings in key2keyset to a single mapping.
      * If a map is mapping to itself recursively, it will remove the map.
-     *
      */
     void solve_recursive_key2keyset_mapping(Key2KeysetMap& key2keyset_table) {
         for(KeyCode srckey = 1 ; srckey < 255 ; srckey ++) {
@@ -304,7 +312,7 @@ namespace
     }
 
 
-    struct _MapGate {
+    struct MapGate {
         std::unordered_map<std::size_t, std::vector<KeyLog>> logpool_{} ;
         LoggerParserManager mgr_{} ;
         Key2KeysetMap syncmap_{} ;
@@ -416,41 +424,337 @@ namespace
             mgr_ = LoggerParserManager(std::move(parsers)) ;
         }
     } ;
-}
+} // namespace
 
 
 namespace vind
 {
     namespace core
     {
-        struct MapGate::Impl {
-            ModeArray<_MapGate> c_{} ;
+        struct InputGate::Impl {
+            HHOOK hook_ = nullptr ;
+
+            // Bit-base flags can be used to save memory,
+            // but, the variable should be separated 
+            // to minimize the overhead of bitwise operation in LowLevelKeyboardProc.
+            std::array<bool, 256> lowlevel_state_{false} ;
+            std::array<bool, 256> real_state_{false} ;
+            std::array<bool, 256> state_{false} ;  //Keyboard state win-vind understands.
+            std::array<bool, 256> port_state_{false} ;
+
+            std::array<std::chrono::system_clock::time_point, 256>
+                timestamps_{std::chrono::system_clock::now()} ;
+
+            bool absorb_state_{true} ;
+
+            ModeArray<MapGate> mapgate_{} ;
+
+            std::queue<KeyLog> pool_{} ;
         } ;
 
-        MapGate::MapGate()
+        InputGate::InputGate()
         : pimpl(std::make_unique<Impl>())
         {}
 
-        MapGate::~MapGate() noexcept = default ;
+        InputGate::~InputGate() noexcept {
+            uninstall_hook() ;
+        }
 
-        MapGate& MapGate::get_instance() {
-            static MapGate instance{} ;
+        InputGate& InputGate::get_instance() {
+            static InputGate instance ;
             return instance ;
         }
 
-        void MapGate::reconstruct() {
-            // Extraction of registered maps
-            for(std::size_t mode = 0 ; mode < mode_num() ; mode ++) {
-                pimpl->c_[mode].reconstruct(static_cast<Mode>(mode)) ;
+        void InputGate::install_hook() {
+            if(!pimpl->hook_) {
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+#else
+#pragma GCC diagnostic ignored "-Wpmf-conversions"
+#endif
+                pimpl->hook_ = SetWindowsHookEx(
+                    WH_KEYBOARD_LL,
+                    &InputGate::hook_proc,
+                    NULL, 0
+                ) ;
+
+
+#if defined(_MSC_VER) && _MSC_VER >= 1500
+#else
+#pragma GCC diagnostic warning "-Wpmf-conversions"
+#endif
+            }
+
+            if(!pimpl->hook_) {
+                throw RUNTIME_EXCEPT("KeyAbosorber's hook handle is null") ;
             }
         }
 
-        std::vector<KeyLog> MapGate::map_logger(
+        void InputGate::uninstall_hook() noexcept {
+            if(pimpl->hook_) {
+                if(!UnhookWindowsHookEx(pimpl->hook_)) {
+                    PRINT_ERROR("Cannot unhook LowLevelKeyboardProc") ;
+                }
+                pimpl->hook_ = nullptr ;
+            }
+
+            // prohibit to keep pressing after termination.
+            for(KeyCode i = 1 ; i < 255 ; i ++) {
+                if(pimpl->real_state_[i]) {
+                    release_keystate(i) ;
+                }
+            }
+        }
+
+        void InputGate::reconstruct() {
+            // Extraction of registered maps
+            for(std::size_t mode = 0 ; mode < mode_num() ; mode ++) {
+                pimpl->mapgate_[mode].reconstruct(static_cast<Mode>(mode)) ;
+            }
+        }
+
+        LRESULT CALLBACK InputGate::hook_proc(int n_code, WPARAM w_param, LPARAM l_param) {
+            if(n_code < HC_ACTION) { //not processed
+                return CallNextHookEx(NULL, n_code, w_param, l_param) ;
+            }
+
+            auto& self = get_instance() ;
+
+            auto kbd = reinterpret_cast<KBDLLHOOKSTRUCT*>(l_param) ;
+            auto code = static_cast<vind::KeyCode>(kbd->vkCode) ;
+            if(!(kbd->flags & LLKHF_INJECTED)) {
+                // The message is not generated with SendInput.
+                auto state = !(w_param & KEYUP_MASK) ;
+
+                self.pimpl->lowlevel_state_[code] = state ;
+                self.pimpl->timestamps_[code] = std::chrono::system_clock::now() ;
+
+                if(auto repcode = vind::core::get_representative_key(code)) {
+                    if(self.map_syncstate(repcode, state) || self.map_syncstate(code, state)) {
+                        return 1 ;
+                    }
+
+                    self.pimpl->real_state_[repcode] = state ;
+                    self.pimpl->state_[repcode]      = state ;
+                }
+                else if(self.map_syncstate(code, state)) {
+                    return 1 ;
+                }
+
+                self.pimpl->real_state_[code] = state ;
+                self.pimpl->state_[code] = state ;
+            }
+
+            if(self.pimpl->port_state_[code]) {
+                return CallNextHookEx(NULL, HC_ACTION, w_param, l_param) ;
+            }
+            if(self.pimpl->absorb_state_) {
+                return 1 ;
+            }
+            return CallNextHookEx(NULL, HC_ACTION, w_param, l_param) ;
+        }
+
+        //
+        // It makes the toggle keys behave just like any general keys. 
+        // However, the current implementation has a small delay in releasing the state.
+        // This is because LowLevelKeyboardProc (LLKP) and SetWindowsHookEx can only
+        // capture the down event of the toggle key, not the up event, and the strange event cycle.
+        // 
+        // (1)
+        // For example, we press CapsLock for 3 seconds. Then we will get the following signal in LLKP.
+        //
+        // Signal in LLKP:
+        //
+        //      ______________________
+        // ____|               _ _ _ _
+        //     0    1    2    3
+        //
+        // Thus, LLKP could not capture up event.
+        //
+        // (2)
+        // So, let's use g_low_level_state to detect if the LLKP has been called or not.
+        // Then, if the hook is not called for a while, it will release CapsLock.
+        //
+        // Signal out of LLKP:
+        //
+        //      __                          ___________________~~~~_____
+        // ____|  |__(about 500ms)_________|                   ~~~~     |____
+        //     0                                         1     ....  3 (has some delay)
+        //
+        // The toggle key is sending me a stroke instead of a key state (e.g. h.... hhhhhhh).
+        // This means that there will be a buffer time of about 500ms after the first positive signal.
+        // If you assign <CapsLock> to <Ctrl> and press <CapsLock-s>, 
+        // as there is a high chance of collision during this buffer time, so it's so bad.
+        //
+        // (3)
+        // As a result, I implemented to be released toggle keys
+        // when LLKP has not been called for more than the buffer time.
+        // This way, even if the key is actually released, if it is less than 500 ms,
+        // it will continue to be pressed, causing a delay.
+        //
+        //
+        // Unfortunately, for keymap and normal mode, the flow of key messages needs
+        // to be stopped, and this can only be done using Hook.
+        // Therefore, this is a challenging task.  If you have any ideas, we welcome pull requests.
+        //
+        void InputGate::refresh_toggle_state() {
+            static util::IntervalTimer timer(5'000) ;
+            if(!timer.is_passed()) {
+                return ;
+            }
+
+            static auto toggles = vind::core::get_toggle_keys() ;
+            for(auto k : toggles) {
+                if(!pimpl->lowlevel_state_[k]) {
+                    continue ;
+                }
+
+                using namespace std::chrono ;
+                if((system_clock::now() - pimpl->timestamps_[k]) > 515ms) {
+                    map_syncstate(k, false) ;
+                    release_keystate(k) ;
+
+                    pimpl->real_state_[k] = false ;
+                    pimpl->state_[k] = false ;
+                    pimpl->lowlevel_state_[k] = false ;
+                }
+            }
+        }
+
+        bool InputGate::is_pressed(KeyCode keycode) noexcept {
+            return pimpl->state_[keycode] ;
+        }
+        bool InputGate::is_really_pressed(KeyCode keycode) noexcept {
+            return pimpl->real_state_[keycode] ;
+        }
+
+        KeyLog InputGate::pressed_list() {
+            KeyLog::Data res{} ;
+            for(KeyCode i = 1 ; i < 255 ; i ++) {
+                if(is_pressed(i)) {
+                    res.insert(i) ;
+                }
+            }
+            return KeyLog(res) ;
+        }
+
+        bool InputGate::is_absorbed() noexcept {
+            return pimpl->absorb_state_ ;
+        }
+
+        void InputGate::absorb() noexcept {
+            pimpl->absorb_state_ = true ;
+        }
+        void InputGate::unabsorb() noexcept {
+            pimpl->absorb_state_ = false ;
+        }
+
+        void InputGate::close_some_ports(
+                std::initializer_list<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                pimpl->port_state_[k] = true ;
+            }
+        }
+        void InputGate::close_some_ports(
+                std::initializer_list<KeyCode>::const_iterator begin,
+                std::initializer_list<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                pimpl->port_state_[*itr] = false ;
+            }
+        }
+
+        void InputGate::close_some_ports(
+                std::vector<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                pimpl->port_state_[k] = false ;
+            }
+        }
+        void InputGate::close_some_ports(
+                std::vector<KeyCode>::const_iterator begin,
+                std::vector<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                pimpl->port_state_[*itr] = false ;
+            }
+        }
+
+        void InputGate::close_some_ports(
+                const KeyLog::Data& keys) noexcept {
+            for(auto k : keys) {
+                pimpl->port_state_[k] = false ;
+            }
+        }
+
+        void InputGate::close_port(KeyCode key) noexcept {
+            pimpl->port_state_[key] = false ;
+        }
+
+        void InputGate::close_all_ports() noexcept {
+            pimpl->port_state_.fill(false) ;
+        }
+
+        void InputGate::close_all_ports_with_refresh() {
+            pimpl->port_state_.fill(false) ;
+
+            //if this function is called by pressed button,
+            //it has to send message "KEYUP" to OS (not absorbed).
+            for(KeyCode i = 0 ; i < 255 ; i ++) {
+                if(pimpl->state_[i]) {
+                    release_keystate(i) ;
+                }
+            }
+        }
+
+        void InputGate::open_some_ports(
+                std::initializer_list<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                pimpl->port_state_[k] = true ;
+            }
+        }
+        void InputGate::open_some_ports(
+                std::initializer_list<KeyCode>::const_iterator begin,
+                std::initializer_list<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                pimpl->port_state_[*itr] = true ;
+            }
+        }
+
+        void InputGate::open_some_ports(
+                std::vector<KeyCode>&& keys) noexcept {
+            for(auto k : keys) {
+                pimpl->port_state_[k] = true ;
+            }
+        }
+        void InputGate::open_some_ports(
+                std::vector<KeyCode>::const_iterator begin,
+                std::vector<KeyCode>::const_iterator end) noexcept {
+            for(auto itr = begin ; itr != end ; itr ++) {
+                pimpl->port_state_[*itr] = true ;
+            }
+        }
+
+        void InputGate::open_some_ports(
+                const KeyLog::Data& keys) noexcept {
+            for(auto k : keys) {
+                pimpl->port_state_[k] = true ;
+            }
+        }
+
+        void InputGate::open_port(KeyCode key) noexcept {
+            pimpl->port_state_[key] = true ;
+        }
+
+        void InputGate::release_virtually(KeyCode key) noexcept {
+            pimpl->state_[key] = false ;
+        }
+        void InputGate::press_virtually(KeyCode key) noexcept {
+            pimpl->state_[key] = true ;
+        }
+
+        std::vector<KeyLog> InputGate::map_logger(
                 const KeyLog& log,
                 Mode mode) {
             auto midx = static_cast<int>(mode) ;
 
-            auto& mgr = pimpl->c_[midx].mgr_ ;
+            auto& mgr = pimpl->mapgate_[midx].mgr_ ;
 
             auto parser = mgr.find_parser_with_transition(log) ;
             if(parser) {
@@ -458,7 +762,7 @@ namespace vind
                     auto func = parser->get_func() ;
                     func->process() ;
                     mgr.reset_parser_states() ;
-                    return pimpl->c_[midx].logpool_[func->id()] ;
+                    return pimpl->mapgate_[midx].logpool_[func->id()] ;
 
                 }
                 else if(parser->is_rejected_with_ready()) {
@@ -472,27 +776,145 @@ namespace vind
             return std::vector<KeyLog>{} ;
         }
 
-        bool MapGate::map_syncstate(
+        bool InputGate::map_syncstate(
                 KeyCode hook_key,
                 bool press_sync_state,
                 Mode mode) {
             auto midx = static_cast<int>(mode) ;
-            auto target = pimpl->c_[midx].syncmap_[hook_key] ;
+            auto target = pimpl->mapgate_[midx].syncmap_[hook_key] ;
             if(target.empty()) {
                 return false ;
             }
 
             if(press_sync_state) {
                 open_some_ports(target.begin(), target.end()) ;
-                util::press_keystate(target.begin(), target.end()) ;
+                press_keystate(target.begin(), target.end()) ;
                 close_some_ports(target.begin(), target.end()) ;
             }
             else {
                 open_some_ports(target.begin(), target.end()) ;
-                util::release_keystate(target.begin(), target.end()) ;
+                release_keystate(target.begin(), target.end()) ;
                 close_some_ports(target.begin(), target.end()) ;
             }
             return true ;
         }
+
+        KeyLog InputGate::pop_log() {
+            KeyLog log ;
+            if(pimpl->pool_.empty()) {
+                log = pressed_list() ;
+
+                auto logs = map_logger(log) ;
+                if(!logs.empty()) {
+                    auto itr = std::make_move_iterator(logs.begin()) ;
+                    log = std::move(*itr) ;
+                    itr ++ ;
+
+                    //
+                    // To simulate the input, make a state transition with an empty log.
+                    // This is to make the logger recognize that it is a key release,
+                    // not a long pressing of the key.
+                    //
+                    while(itr != std::make_move_iterator(logs.end())) {
+                        pimpl->pool_.emplace() ;
+                        pimpl->pool_.push(std::move(*itr)) ;
+                        itr ++ ;
+                    }
+                }
+            }
+            else {
+                log = std::move(pimpl->pool_.front()) ;
+                pimpl->pool_.pop() ;
+            }
+
+            return log ;
+        }
+    } // namespace core
+} // namespace vind
+
+
+namespace
+{
+    bool is_pressed_actually(KeyCode key) noexcept {
+        return GetAsyncKeyState(key) & 0x8000 ;
     }
 }
+
+namespace vind
+{
+    namespace core
+    {
+        struct ScopedKey::Impl {
+            INPUT in ;
+            KeyCode key ;
+
+            explicit Impl(KeyCode keycode)
+            : in(),
+              key(keycode)
+            {
+                in.type     = INPUT_KEYBOARD ;
+                in.ki.wVk   = static_cast<WORD>(key) ;
+                in.ki.wScan = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
+            }
+        } ;
+
+        ScopedKey::ScopedKey(KeyCode key)
+        : pimpl(std::make_unique<Impl>(key))
+        {}
+
+        ScopedKey::~ScopedKey() noexcept {
+            try {release() ;}
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
+            }
+        }
+
+        ScopedKey::ScopedKey(ScopedKey&&)            = default ;
+        ScopedKey& ScopedKey::operator=(ScopedKey&&) = default ;
+
+        void ScopedKey::send_event(bool pressed) {
+            pimpl->in.ki.dwFlags = (pressed ? 0 : KEYEVENTF_KEYUP) | extended_key_flag(pimpl->key) ;
+            if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
+                throw RUNTIME_EXCEPT("failed sending keyboard event") ;
+            }
+        }
+
+        void ScopedKey::press() {
+            auto& igate = InputGate::get_instance() ;
+
+            igate.open_port(pimpl->key) ;
+            send_event(true) ;
+            igate.close_all_ports() ;
+            if(!is_pressed_actually(pimpl->key)) {
+                throw RUNTIME_EXCEPT("You sent a key pressing event successfully, but the state of its key was not changed.") ;
+            }
+        }
+
+        void ScopedKey::release() {
+            auto& igate = InputGate::get_instance() ;
+
+            igate.open_port(pimpl->key) ;
+            send_event(false) ;
+            igate.close_all_ports() ;
+            if(is_pressed_actually(pimpl->key)) {
+                throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
+            }
+        }
+
+
+        InstantKeyAbsorber::InstantKeyAbsorber()
+        : flag_(false)
+        {
+            auto& igate = InputGate::get_instance() ;
+            flag_ = igate.is_absorbed() ;
+            igate.close_all_ports_with_refresh() ;
+            igate.absorb() ;
+        }
+
+        InstantKeyAbsorber::~InstantKeyAbsorber() noexcept {
+            if(!flag_) {
+                InputGate::get_instance().unabsorb() ;
+            }
+        }
+    } // namespace core
+} // namespace vind

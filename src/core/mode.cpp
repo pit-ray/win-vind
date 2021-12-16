@@ -1,6 +1,7 @@
 #include "mode.hpp"
 
 #include <array>
+#include <mutex>
 #include <stdexcept>
 #include <unordered_map>
 
@@ -9,15 +10,41 @@ namespace
 {
     using namespace vind::core ;
 
-    auto& global_mode() noexcept {
-        static auto instance = Mode::INSERT ;
-        return instance ;
-    }
+    class ModeManager {
+        Mode mode_ ;
+        ModeFlags flags_ ;
+        mutable std::mutex mtx_ ;
 
-    auto& global_mode_flags() noexcept {
-        static auto instance = ModeFlags::NONE ;
-        return instance ;
-    }
+        explicit ModeManager()
+        : mode_(Mode::INSERT),
+          flags_(ModeFlags::NONE),
+          mtx_()
+        {}
+
+        virtual ~ModeManager() noexcept = default ;
+
+    public:
+        static ModeManager& get_instance() {
+            static ModeManager instance ;
+            return instance ;
+        }
+
+        void set_mode(Mode mode, ModeFlags flags) noexcept {
+            std::lock_guard<std::mutex> scoped_lock{mtx_} ;
+            mode_ = mode ;
+            flags_ = flags ;
+        }
+
+        auto get_mode() const noexcept {
+            std::lock_guard<std::mutex> scoped_lock{mtx_} ;
+            return mode_ ;
+        }
+
+        auto get_flags() const noexcept {
+            std::lock_guard<std::mutex> scoped_lock{mtx_} ;
+            return flags_ ;
+        }
+    } ;
 }
 
 
@@ -26,15 +53,14 @@ namespace vind
     namespace core
     {
         void set_global_mode(Mode mode, ModeFlags flags) noexcept {
-            global_mode() = mode ;
-            global_mode_flags() = flags ;
+            ModeManager::get_instance().set_mode(mode, flags) ;
         }
 
         Mode get_global_mode() noexcept {
-            return global_mode() ;
+            return ModeManager::get_instance().get_mode() ;
         }
         ModeFlags get_global_mode_flags() noexcept {
-            return global_mode_flags() ;
+            return ModeManager::get_instance().get_flags() ;
         }
 
         std::string mode_to_prefix(Mode mode) noexcept {

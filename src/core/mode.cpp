@@ -8,20 +8,16 @@
 namespace
 {
     using namespace vind::core ;
-    const auto g_mode_prefix = [] {
-        std::array<std::string, mode_num()> tmp ;
-        tmp[static_cast<int>(Mode::INSERT)]     = "i" ;
-        tmp[static_cast<int>(Mode::GUI_NORMAL)] = "gn" ;
-        tmp[static_cast<int>(Mode::GUI_VISUAL)] = "gv" ;
-        tmp[static_cast<int>(Mode::EDI_NORMAL)] = "en" ;
-        tmp[static_cast<int>(Mode::EDI_VISUAL)] = "ev" ;
-        tmp[static_cast<int>(Mode::COMMAND)]    = "c" ;
-        tmp[static_cast<int>(Mode::RESIDENT)]   = "r" ;
-        return tmp ;
-    } () ;
 
-    auto g_mode  = Mode::INSERT ;
-    auto g_flags = ModeFlags::NONE ;
+    auto& global_mode() noexcept {
+        static auto instance = Mode::INSERT ;
+        return instance ;
+    }
+
+    auto& global_mode_flags() noexcept {
+        static auto instance = ModeFlags::NONE ;
+        return instance ;
+    }
 }
 
 
@@ -30,32 +26,45 @@ namespace vind
     namespace core
     {
         void set_global_mode(Mode mode, ModeFlags flags) noexcept {
-            g_mode = mode ;
-            g_flags = flags ;
+            global_mode() = mode ;
+            global_mode_flags() = flags ;
         }
 
         Mode get_global_mode() noexcept {
-            return g_mode ;
+            return global_mode() ;
         }
         ModeFlags get_global_mode_flags() noexcept {
-            return g_flags ;
+            return global_mode_flags() ;
         }
 
         std::string mode_to_prefix(Mode mode) noexcept {
-            return g_mode_prefix[static_cast<int>(mode)] ;
+            static auto to_prefix = [] {
+                std::array<std::string, mode_num()> tmp ;
+                tmp[static_cast<int>(Mode::INSERT)]     = "i" ;
+                tmp[static_cast<int>(Mode::GUI_NORMAL)] = "gn" ;
+                tmp[static_cast<int>(Mode::GUI_VISUAL)] = "gv" ;
+                tmp[static_cast<int>(Mode::EDI_NORMAL)] = "en" ;
+                tmp[static_cast<int>(Mode::EDI_VISUAL)] = "ev" ;
+                tmp[static_cast<int>(Mode::COMMAND)]    = "c" ;
+                tmp[static_cast<int>(Mode::RESIDENT)]   = "r" ;
+                return tmp ;
+            } () ;
+            return to_prefix[static_cast<int>(mode)] ;
         }
 
         Mode parse_mode_prefix(const std::string& prefix) noexcept {
-            static auto obj = [] {
-                std::unordered_map<std::string, Mode> um ;
-                for(std::size_t i = 0 ; i < mode_num() ; i ++) {
-                    um[g_mode_prefix[i]] = static_cast<Mode>(i) ;
-                }
-                return um ;
-            }() ;
+            static std::unordered_map<std::string, Mode> to_mode {
+                {"i",  Mode::INSERT},
+                {"gn", Mode::GUI_NORMAL},
+                {"gv", Mode::GUI_VISUAL},
+                {"en", Mode::EDI_NORMAL},
+                {"ev", Mode::EDI_VISUAL},
+                {"c",  Mode::COMMAND},
+                {"r",  Mode::RESIDENT}
+            } ;
 
             try {
-                return obj.at(prefix) ;
+                return to_mode.at(prefix) ;
             }
             catch(const std::out_of_range&) {
                 return Mode::UNDEFINED ;
@@ -64,14 +73,14 @@ namespace vind
 
         const std::string& mode_to_name(Mode mode) noexcept {
             static const std::unordered_map<Mode, std::string> obj {
-                {Mode::INSERT,       "Insert"},
-                {Mode::GUI_NORMAL,   "GUI Normal"},
-                {Mode::GUI_VISUAL,   "GUI Visual"},
-                {Mode::EDI_NORMAL,   "Editor Normal"},
-                {Mode::EDI_VISUAL,   "Editor Visual"},
-                {Mode::INSERT,       "Insert"},
-                {Mode::COMMAND,      "Command"},
-                {Mode::RESIDENT,     "Resident"}
+                {Mode::INSERT,     "Insert"},
+                {Mode::GUI_NORMAL, "GUI Normal"},
+                {Mode::GUI_VISUAL, "GUI Visual"},
+                {Mode::EDI_NORMAL, "Editor Normal"},
+                {Mode::EDI_VISUAL, "Editor Visual"},
+                {Mode::INSERT,     "Insert"},
+                {Mode::COMMAND,    "Command"},
+                {Mode::RESIDENT,   "Resident"}
             } ;
 
             try {

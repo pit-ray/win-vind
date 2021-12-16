@@ -757,22 +757,21 @@ namespace vind
             auto& mgr = pimpl->mapgate_[midx].mgr_ ;
 
             auto parser = mgr.find_parser_with_transition(log) ;
-            if(parser) {
-                if(parser->is_accepted()) {
-                    auto func = parser->get_func() ;
-                    func->process() ;
-                    mgr.reset_parser_states() ;
-                    return pimpl->mapgate_[midx].logpool_[func->id()] ;
-
-                }
-                else if(parser->is_rejected_with_ready()) {
-                    mgr.reset_parser_states() ;
-                }
+            if(!parser) {
+                mgr.reset_parser_states() ;
+                return std::vector<KeyLog>{} ;
             }
-            else {
+
+            if(parser->is_accepted()) {
+                auto func = parser->get_func() ;
+                func->process() ;
+                mgr.reset_parser_states() ;
+                return pimpl->mapgate_[midx].logpool_[func->id()] ;
+
+            }
+            else if(parser->is_rejected_with_ready()) {
                 mgr.reset_parser_states() ;
             }
-
             return std::vector<KeyLog>{} ;
         }
 
@@ -799,34 +798,34 @@ namespace vind
             return true ;
         }
 
-        KeyLog InputGate::pop_log() {
-            KeyLog log ;
-            if(pimpl->pool_.empty()) {
-                log = pressed_list() ;
-
-                auto logs = map_logger(log) ;
-                if(!logs.empty()) {
-                    auto itr = std::make_move_iterator(logs.begin()) ;
-                    log = std::move(*itr) ;
-                    itr ++ ;
-
-                    //
-                    // To simulate the input, make a state transition with an empty log.
-                    // This is to make the logger recognize that it is a key release,
-                    // not a long pressing of the key.
-                    //
-                    while(itr != std::make_move_iterator(logs.end())) {
-                        pimpl->pool_.emplace() ;
-                        pimpl->pool_.push(std::move(*itr)) ;
-                        itr ++ ;
-                    }
-                }
-            }
-            else {
-                log = std::move(pimpl->pool_.front()) ;
+        KeyLog InputGate::pop_log(Mode mode) {
+            if(!pimpl->pool_.empty()) {
+                auto log = std::move(pimpl->pool_.front()) ;
                 pimpl->pool_.pop() ;
+                return log ;
             }
 
+            auto log = pressed_list() ;
+
+            auto logs = map_logger(log, mode) ;
+            if(logs.empty()) {
+                return log ;
+            }
+
+            auto itr = std::make_move_iterator(logs.begin()) ;
+            log = std::move(*itr) ;
+            itr ++ ;
+
+            //
+            // To simulate the input, make a state transition with an empty log.
+            // This is to make the logger recognize that it is a key release,
+            // not a long pressing of the key.
+            //
+            while(itr != std::make_move_iterator(logs.end())) {
+                pimpl->pool_.emplace() ;
+                pimpl->pool_.push(std::move(*itr)) ;
+                itr ++ ;
+            }
             return log ;
         }
     } // namespace core

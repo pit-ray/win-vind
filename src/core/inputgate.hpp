@@ -498,7 +498,12 @@ namespace vind
             }
 
 
-            KeyLog pop_log() ;
+            /**
+             * NOTE: This function samples a log from the log pool based on the key mapping
+             * instead of getting the key status obtained from the hook.
+             */
+            KeyLog pop_log(Mode mode=get_global_mode()) ;
+
 
             /**
              * NOTE: map_logger is a mapping from NTypeLogger to NTypeLogger.

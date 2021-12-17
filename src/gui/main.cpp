@@ -56,8 +56,6 @@ namespace
     inline void error_box(const wxString& msg) {
         wxMessageBox(msg, wxT("Error - win-vind"), wxOK | wxICON_EXCLAMATION) ;
     }
-
-    std::atomic_bool g_runnable(true) ;
 }
 
 namespace vind
@@ -69,15 +67,19 @@ namespace vind
         public:
             core::VindEntry entry_ ;
 
+            std::atomic<bool> runnable_ ;
+
             template <typename ExitFunc>
             SystemThread(ExitFunc&& exit_func)
             : wxThread(wxTHREAD_DETACHED),
-              entry_(std::forward<ExitFunc>(exit_func))
+              entry_(std::forward<ExitFunc>(exit_func)),
+              runnable_(true)
             {}
 
         private:
             virtual ExitCode Entry() override {
-                while(g_runnable.load()) {
+                runnable_.store(true) ;
+                while(runnable_.load()) {
                     try {
                         entry_.update() ;
                     }
@@ -95,13 +97,29 @@ namespace vind
                     }
                 }
 
-                if(g_runnable.load()) {
-                    g_runnable.store(false) ;
+                if(runnable_.load()) {
+                    runnable_.store(false) ;
                     entry_.handle_system_call(SystemCall::TERMINATE) ;
                 }
 
                 return static_cast<ExitCode>(0) ;
             }
+
+        public:
+            void exit() noexcept {
+                runnable_.store(false) ;
+            }
+
+            bool is_running() const noexcept {
+                return runnable_.load() ;
+            }
+
+            virtual ~SystemThread() noexcept = default ;
+
+            SystemThread(SystemThread&&)                 = delete ;
+            SystemThread& operator=(SystemThread&&)      = delete ;
+            SystemThread(const SystemThread&)            = delete ;
+            SystemThread& operator=(const SystemThread&) = delete ;
         } ;
 
 
@@ -117,10 +135,8 @@ namespace vind
             {}
 
             virtual ~App() noexcept {
-                if(g_runnable.load()) {
-                    // Core win_vind is running yet, so terminate core system.
-                    g_runnable.store(false) ;
-                }
+                // Core win_vind is running yet, so terminate core system.
+                pst_->exit() ;
             }
 
         private:

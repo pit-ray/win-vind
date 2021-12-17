@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
+#include <mutex>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -63,11 +64,15 @@ namespace vind
 {
     namespace core {
         struct Logger::Impl {
-            std::ofstream stream_{} ;
+            std::ofstream stream_ ;
 
             std::string head_ ;
             std::size_t keep_log_num_ ;
             std::size_t header_align_width_ ;
+
+            // When writing to a stream in a multi-threaded manner,
+            // an exclusion process is performed so that the contents do not get mixed up.
+            std::mutex mtx_ ;
 
             template <typename String>
             Impl(
@@ -77,12 +82,15 @@ namespace vind
             : stream_(),
               head_(std::forward<String>(filename_head)),
               keep_log_num_(keeping_log_num),
-              header_align_width_(align_width_of_header)
+              header_align_width_(align_width_of_header),
+              mtx_()
             {}
 
             template <typename T>
             inline void print_error(T&& msg, const std::string& scope) {
                 if(stream_.is_open()) {
+                    std::lock_guard<std::mutex> scoped_lock{mtx_} ;
+
                     stream_ << \
                         "[Error] " << \
                         "Windows Error Code: [" << GetLastError() << "], " << \
@@ -98,6 +106,8 @@ namespace vind
             template <typename T>
             inline void print_message(T&& msg, const std::string& scope) {
                 if(stream_.is_open()) {
+                    std::lock_guard<std::mutex> scoped_lock{mtx_} ;
+
                     stream_ << "[Message] " << msg ;
                     if(!scope.empty()) {
                         stream_ << " (" << scope << ")" ;

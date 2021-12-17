@@ -6,12 +6,10 @@
 
 #include "core/background.hpp"
 #include "core/char_logger.hpp"
-#include "core/entry.hpp"
 #include "core/inputgate.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
-#include "util/winwrap.hpp"
 
 namespace vind
 {
@@ -20,7 +18,7 @@ namespace vind
         struct InputHinter::Impl {
             std::vector<unsigned char> matched_counts_ ;
             std::size_t drawable_hints_num_ ;
-            std::atomic_bool cancel_running_ ;
+            std::atomic<bool> cancel_running_ ;
             std::mutex mtx_ ;
 
             core::Background bg_ ;
@@ -36,8 +34,13 @@ namespace vind
               ))
             {}
 
-
-
+            void init(std::size_t all_hints_num) {
+                std::lock_guard<std::mutex> socoped_lock{mtx_} ;
+                matched_counts_.clear() ;
+                matched_counts_.resize(all_hints_num) ;
+                drawable_hints_num_ = all_hints_num ;
+                cancel_running_ = false ;
+            }
 
             // return : matched index
             long validate_if_match_with_hints(
@@ -93,18 +96,11 @@ namespace vind
 
         InputHinter::~InputHinter() noexcept = default ;
 
-        InputHinter::InputHinter(InputHinter&&)            = default ;
-        InputHinter& InputHinter::operator=(InputHinter&&) = default ;
-
-
         std::shared_ptr<util::Point2D> InputHinter::launch_loop(
                 const std::vector<util::Point2D>& positions,
                 const std::vector<Hint>& hints) {
 
-            pimpl->matched_counts_.clear() ;
-            pimpl->matched_counts_.resize(positions.size()) ;
-            pimpl->drawable_hints_num_ = positions.size() ;
-            pimpl->cancel_running_ = false ;
+            pimpl->init(positions.size()) ;
 
             core::InstantKeyAbsorber ika ;
             core::CharLogger lgr{
@@ -147,11 +143,8 @@ namespace vind
                             positions[full_match_idx].y()) ;
                 }
 
-                if(pimpl->drawable_hints_num_ == 0) {
+                if(drawable_hints_num() == 0) {
                     lgr.remove_from_back(1) ;
-                }
-                else {
-                    util::refresh_display(NULL) ;
                 }
             }
             return nullptr ;
@@ -176,10 +169,12 @@ namespace vind
         }
 
         const std::vector<unsigned char>& InputHinter::matched_counts() const noexcept {
+            std::lock_guard<std::mutex> socoped_lock{pimpl->mtx_} ;
             return pimpl->matched_counts_ ;
         }
 
         const std::size_t& InputHinter::drawable_hints_num() const noexcept {
+            std::lock_guard<std::mutex> socoped_lock{pimpl->mtx_} ;
             return pimpl->drawable_hints_num_ ;
         }
     }

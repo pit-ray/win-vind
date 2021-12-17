@@ -171,9 +171,13 @@ namespace vind
                     pimpl->hints_) ;
 
             using namespace std::chrono ;
+
+            auto prev_draw_num = pimpl->input_hinter_.drawable_hints_num() ;
             while(ft.wait_for(50ms) == std::future_status::timeout) {
                 try {
-                    if(pimpl->input_hinter_.drawable_hints_num() == pimpl->hints_.size()) {
+                    auto draw_num = pimpl->input_hinter_.drawable_hints_num() ;
+
+                    if(draw_num == pimpl->hints_.size()) {
                         // Hints were not matched yet, so must draw all hints.
                         pimpl->display_hinter_.paint_all_hints(
                                 pimpl->positions_,
@@ -184,7 +188,13 @@ namespace vind
                                 pimpl->positions_,
                                 pimpl->strhints_,
                                 pimpl->input_hinter_.matched_counts()) ;
+
+                        if(prev_draw_num != draw_num) {
+                            util::refresh_display(NULL) ;
+                        }
                     }
+
+                    prev_draw_num = draw_num ;
                 }
                 catch(const std::exception& e) {
                     pimpl->input_hinter_.cancel() ;

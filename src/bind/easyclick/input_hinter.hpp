@@ -20,11 +20,10 @@ namespace vind
             explicit InputHinter() ;
             virtual ~InputHinter() noexcept ;
 
-            InputHinter(const InputHinter&)            = delete ;
+            InputHinter(InputHinter&&)      = delete ;
+            InputHinter(const InputHinter&) = delete ;
+            InputHinter& operator=(InputHinter&&)      = delete ;
             InputHinter& operator=(const InputHinter&) = delete ;
-
-            InputHinter(InputHinter&&) ;
-            InputHinter& operator=(InputHinter&&) ;
 
             void load_config() ;
 

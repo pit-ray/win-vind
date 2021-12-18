@@ -63,6 +63,7 @@ namespace vind
             std::string name_ ;
             std::variant<
                 bool,
+                int,
                 long,
                 float,
                 std::string> val_ ;
@@ -78,6 +79,9 @@ namespace vind
                 {}
 
                 ReturnType operator()(bool v) {
+                    return static_cast<ReturnType>(v) ;
+                }
+                ReturnType operator()(int v) {
                     return static_cast<ReturnType>(v) ;
                 }
                 ReturnType operator()(long v) {
@@ -99,6 +103,12 @@ namespace vind
             Param()
             : name_(),
               val_()
+            {}
+
+            template <typename ParamName>
+            Param(ParamName&& name, const char* value)
+            : name_(std::forward<ParamName>(name)),
+              val_(std::string(value))
             {}
 
             template <typename ParamName, typename ValueType>
@@ -218,6 +228,12 @@ namespace vind
         template <>
         std::string Param::Visitor<std::string>::operator()(bool v) {
             return v ? "1" : "0" ;
+        }
+
+        // int -> std::string
+        template <>
+        std::string Param::Visitor<std::string>::operator()(int v) {
+            return std::to_string(v) ;
         }
 
         // long -> std::string

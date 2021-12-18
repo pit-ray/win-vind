@@ -21,6 +21,8 @@
     @goto coverity
 ) else if %build_type% == -test (
    @goto test 
+) else if %build_type% == -test (
+   @goto test 
 ) else if %build_type% == -coveralls (
     @goto coveralls
 ) else (
@@ -84,10 +86,16 @@
     @goto exit
 
 :test
-    cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
-    cmake --build tests/build
+    @if %compiler% == -msvc (
+        cmake -B tests/build_msvc -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" tests
+        cmake --build tests/build_msvc --config Debug
+        cd tests/build_msvc
+    ) else (
+        cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
+        cmake --build tests/build --config Debug
+        cd tests/build
+    )
 
-    cd tests/build
     ctest -C Debug
     cd ../..
     @goto exit

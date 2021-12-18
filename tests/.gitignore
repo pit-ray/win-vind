@@ -2,4 +2,5 @@ doctest
 fff
 build
 build_linux
+build_msvc
 old

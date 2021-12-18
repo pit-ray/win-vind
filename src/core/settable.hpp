@@ -42,6 +42,13 @@ namespace vind
             inline void set(const std::string& name, T val) {
                 set(name, static_cast<long>(val)) ;
             }
+            inline void set(const std::string& name, double val) {
+                set(name, static_cast<float>(val)) ;
+            }
+
+            inline void set(const std::string& name, const char* val) {
+                set(name, std::string(val)) ;
+            }
 
             void set(const Param& param) ;
             void set(Param&& param) ;

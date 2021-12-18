@@ -13,9 +13,9 @@
 #include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/func_finder.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
@@ -78,17 +78,23 @@ namespace vind
                     return ;
                 }
 
+                auto& settable = core::SetTable::get_instance() ;
+
                 if(id == left_id_) {
-                    DecreaseWindowWidth::sprocess(core::get_l("window_hdelta")) ;
+                    DecreaseWindowWidth::sprocess(
+                            settable.get("window_hdelta").get<long>()) ;
                 }
                 else if(id == right_id_) {
-                    IncreaseWindowWidth::sprocess(core::get_l("window_hdelta")) ;
+                    IncreaseWindowWidth::sprocess(
+                            settable.get("window_hdelta").get<long>()) ;
                 }
                 else if(id == up_id_) {
-                    DecreaseWindowHeight::sprocess(core::get_l("window_vdelta")) ;
+                    DecreaseWindowHeight::sprocess(
+                            settable.get("window_vdelta").get<long>()) ;
                 }
                 else if(id == down_id_) {
-                    IncreaseWindowHeight::sprocess(core::get_l("window_vdelta")) ;
+                    IncreaseWindowHeight::sprocess(
+                            settable.get("window_vdelta").get<long>()) ;
                 }
             }
 
@@ -214,9 +220,15 @@ namespace vind
                     MoveCaretUp().name(),
                     MoveCaretDown().name()
             )) ;
-            pimpl->ca_.set_acceleration(core::get_f("window_accel")) ;
-            pimpl->ca_.set_max_velocity(core::get_f("window_maxv")) ;
-            pimpl->ca_.set_time_weight(core::get_i("window_tweight")) ;
+
+            auto& settable = core::SetTable::get_instance() ;
+
+            pimpl->ca_.set_acceleration(
+                    settable.get("window_accel").get<float>()) ;
+            pimpl->ca_.set_max_velocity(
+                    settable.get("window_maxv").get<float>()) ;
+            pimpl->ca_.set_time_weight(
+                    settable.get("window_tweight").get<int>()) ;
         }
 
         void WindowResizer::sprocess() const {
@@ -228,7 +240,10 @@ namespace vind
 
             core::NTypeLogger lgr ;
 
-            auto inmode = Impl::cvt_modulo(core::get_i("winresizer_initmode")) ;
+            auto& settable = core::SetTable::get_instance() ;
+
+            auto inmode = Impl::cvt_modulo(
+                    settable.get("winresizer_initmode").get<int>()) ;
 
             pimpl->draw_mode_status(inmode) ;
 

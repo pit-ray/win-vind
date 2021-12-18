@@ -9,9 +9,9 @@
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
+#include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/mouse.hpp"
 
@@ -36,7 +36,8 @@ namespace vind
         }
 
         void Dedicate2Window::enable_targeting() {
-            if(core::get_b("dedicate_to_window")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("dedicate_to_window").get<bool>()) {
                 target_hwnd = GetForegroundWindow() ;
                 past_hwnd   = NULL ;
                 opt::VCmdLine::print(GeneralMessage("-- TARGET ON --")) ;
@@ -44,7 +45,8 @@ namespace vind
         }
 
         void Dedicate2Window::disable_targeting() {
-            if(core::get_b("dedicate_to_window")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("dedicate_to_window").get<bool>()) {
                 target_hwnd = NULL ;
                 past_hwnd   = NULL ;
                 opt::VCmdLine::print(GeneralMessage("-- TARGET OFF --")) ;

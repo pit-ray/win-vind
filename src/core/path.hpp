@@ -4,7 +4,6 @@
 #include <filesystem>
 #include <string>
 
-#include "g_params.hpp"
 
 namespace vind
 {
@@ -47,6 +46,11 @@ namespace vind
         }
         inline const auto& SETTINGS() {
             static const auto obj = CONFIG_PATH() / "settings.json" ;
+            return obj ;
+        }
+
+        inline const auto& RC_DEFAULT() {
+            static const auto obj = DEFAULT_CONFIG_PATH() / ".vindrc" ;
             return obj ;
         }
 

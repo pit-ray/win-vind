@@ -4,7 +4,7 @@
 #include <string>
 
 #include "core/char_logger.hpp"
-#include "core/g_params.hpp"
+#include "core/settable.hpp"
 #include "util/color.hpp"
 #include "util/display_text_painter.hpp"
 
@@ -53,14 +53,18 @@ namespace vind
         DisplayHinter& DisplayHinter::operator=(DisplayHinter&&) = default ;
 
         void DisplayHinter::load_config() {
+            auto& settable = core::SetTable::get_instance() ;
+
             //Colors
-            auto [bk_r, bk_g, bk_b] = util::hex2rgb(core::get_s("easyclick_bgcolor")) ;
+            auto [bk_r, bk_g, bk_b] = util::hex2rgb(
+                    settable.get("easyclick_bgcolor").get<std::string>()) ;
             auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
 
-            auto [tx_r, tx_g, tx_b] = util::hex2rgb(core::get_s("easyclick_fontcolor")) ;
+            auto [tx_r, tx_g, tx_b] = util::hex2rgb(
+                    settable.get("easyclick_fontcolor").get<std::string>()) ;
             auto txcolor = RGB(tx_r, tx_g, tx_b) ;
 
-            unsigned char decay = core::get_uc("easyclick_colordecay") ;
+            unsigned char decay = settable.get("easyclick_colordecay").get<unsigned char>() ;
             using util::to_gray ;
             char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
@@ -69,12 +73,12 @@ namespace vind
                     tx_g < decay ? 0 : tx_g + sign*decay,
                     tx_b < decay ? 0 : tx_b + sign*decay) ;
 
-            pimpl->fontsize_ = core::get_l("easyclick_fontsize") ;
+            pimpl->fontsize_ = settable.get("easyclick_fontsize").get<long>() ;
 
             pimpl->painter_.set_font(
                     pimpl->fontsize_,
-                    core::get_l("easyclick_fontweight"),
-                    core::get_s("easyclick_fontname")) ;
+                    settable.get("easyclick_fontweight").get<long>(),
+                    settable.get("easyclick_fontname").get<std::string>()) ;
 
             pimpl->painter_.set_back_color(bkcolor) ;
             pimpl->painter_.set_text_color(txcolor) ;

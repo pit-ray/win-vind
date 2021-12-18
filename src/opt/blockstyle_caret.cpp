@@ -1,10 +1,10 @@
 #include "opt/blockstyle_caret.hpp"
 
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
+#include "core/settable.hpp"
 #include "util/box_2d.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
@@ -139,7 +139,9 @@ namespace
         //
         //
 
-        auto width = static_cast<DWORD>(core::get_i("blockstylecaret_width")) ;
+        auto& settable = core::SetTable::get_instance() ;
+
+        auto width = static_cast<DWORD>(settable.get("blockstylecaret_width").get<int>()) ;
 
         util::detach_thread_input(hwnd) ;
 
@@ -184,7 +186,9 @@ namespace vind
         }
 
         void BlockStyleCaret::do_disable() const {
-            auto mode = util::A2a(core::get_s("blockstylecaret_mode")) ;
+            auto& settable = core::SetTable::get_instance() ;
+            auto mode = util::A2a(
+                    settable.get("blockstylecaret_mode").get<std::string>()) ;
             restore_caret_style(mode) ;
         }
 
@@ -214,7 +218,8 @@ namespace vind
             }
 
             if(mode == "solid") {
-                auto width = core::get_i("blockstylecaret_width") ;
+                auto& settable = core::SetTable::get_instance() ;
+                auto width = settable.get("blockstylecaret_width").get<int>() ;
                 if(pimpl->ft_.valid()) {
                     pimpl->ft_.wait() ;
                     pimpl->ft_.get() ;
@@ -232,7 +237,9 @@ namespace vind
         }
 
         void BlockStyleCaret::do_process() const {
-            auto mode = util::A2a(core::get_s("blockstylecaret_mode")) ;
+            auto& settable = core::SetTable::get_instance() ;
+            auto mode = util::A2a(
+                    settable.get("blockstylecaret_mode").get<std::string>()) ;
 
             if(core::get_global_mode() != core::Mode::EDI_NORMAL) {
                 restore_caret_style(mode) ;

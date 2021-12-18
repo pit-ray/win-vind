@@ -1,7 +1,6 @@
 #include "background.hpp"
 
 #include "exception.hpp"
-#include "g_params.hpp"
 #include "inputgate.hpp"
 
 #include "opt/option.hpp"

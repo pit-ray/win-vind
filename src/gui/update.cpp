@@ -25,6 +25,7 @@
 #include "bind/proc/execute.hpp"
 #include "core/err_logger.hpp"
 #include "core/path.hpp"
+#include "core/settable.hpp"
 #include "core/version.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
@@ -120,7 +121,10 @@ namespace vind
 
             using namespace vind ;
 
-            std::filesystem::path tempdir(core::get_s("tempdir")) ;
+            auto& settable = core::SetTable::get_instance() ;
+
+            std::filesystem::path tempdir{
+                settable.get("tempdir").get<std::string>()} ;
             tempdir = core::replace_path_magic(tempdir) ;
 
             util::create_process(

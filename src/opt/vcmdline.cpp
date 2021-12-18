@@ -7,9 +7,9 @@
 #include <unordered_map>
 
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/mode.hpp"
 #include "core/path.hpp"
+#include "core/settable.hpp"
 #include "util/display_text_painter.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/winwrap.hpp"
@@ -46,17 +46,22 @@ namespace vind
 
 
         void VCmdLine::do_enable() const {
+            auto& settable = core::SetTable::get_instance() ;
+
             pimpl->dtp_.set_font(
-                    core::get_l("cmd_fontsize"),
-                    core::get_l("cmd_fontweight"),
-                    core::get_s("cmd_fontname")) ;
+                    settable.get("cmd_fontsize").get<long>(),
+                    settable.get("cmd_fontweight").get<long>(),
+                    settable.get("cmd_fontname").get<std::string>()) ;
 
-            pimpl->dtp_.set_text_color(core::get_s("cmd_fontcolor")) ;
-            pimpl->dtp_.set_back_color(core::get_s("cmd_bgcolor")) ;
+            pimpl->dtp_.set_text_color(
+                    settable.get("cmd_fontcolor").get<std::string>()) ;
 
-            auto pos = core::get_s("cmd_roughpos") ;
-            auto xma = core::get_i("cmd_xmargin") ;
-            auto yma = core::get_i("cmd_ymargin") ;
+            pimpl->dtp_.set_back_color(
+                    settable.get("cmd_bgcolor").get<std::string>()) ;
+
+            auto pos = settable.get("cmd_roughpos").get<std::string>() ;
+            auto xma = settable.get("cmd_xmargin").get<int>() ;
+            auto yma = settable.get("cmd_ymargin").get<int>() ;
 
             auto rect = util::get_primary_metrics() ;
 
@@ -77,7 +82,8 @@ namespace vind
                 {"LowerRight", {w - xma - midxbuf,  h - yma}}
             } ;
             try {
-                const auto& p = pos_list.at(core::get_s("cmd_roughpos")) ;
+                const auto& p = pos_list.at(
+                        settable.get("cmd_roughpos").get<std::string>()) ;
                 pimpl->x_ = p.first ;
                 pimpl->y_ = p.second ;
             }
@@ -86,11 +92,12 @@ namespace vind
                 pimpl->x_ = p.first ;
                 pimpl->y_ = p.second ;
                 PRINT_ERROR(std::string(e.what()) + "in " + core::SETTINGS().u8string() + \
-                        ", " + core::get_s("cmd_roughpos") + "is invalid syntax.") ;
+                        ", " + settable.get("cmd_roughpos").get<std::string>() + "is invalid syntax.") ;
             }
 
-            pimpl->extra_ = core::get_i("cmd_fontextra") ;
-            pimpl->fadeout_time_ = std::chrono::seconds(core::get_i("cmd_fadeout")) ;
+            pimpl->extra_ = settable.get("cmd_fontextra").get<int>() ;
+            pimpl->fadeout_time_ = std::chrono::seconds(
+                    settable.get("cmd_fadeout").get<int>()) ;
         }
 
         void VCmdLine::do_disable() const {

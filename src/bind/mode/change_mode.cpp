@@ -5,11 +5,11 @@
 #include "bind/emu/simple_text_selecter.hpp"
 #include "core/char_logger.hpp"
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/vcmdline.hpp"
 #include "options.hpp"
@@ -144,7 +144,8 @@ namespace vind
                 opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
             }
 
-            if(core::get_b("autofocus_textarea")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("autofocus_textarea").get<bool>()) {
                 auto hwnd = GetForegroundWindow() ;
                 if(!hwnd) {
                     throw RUNTIME_EXCEPT("There is no foreground window.") ;

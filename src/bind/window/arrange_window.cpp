@@ -12,8 +12,8 @@
 #include "window_utility.hpp"
 
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "util/box_2d.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
@@ -195,7 +195,9 @@ namespace vind
         }
         void ArrangeWindows::reconstruct() {
             g_ignores.clear() ;
-            auto str = core::get_s("arrangewin_ignore") ;
+
+            auto& settable = core::SetTable::get_instance() ;
+            auto str = settable.get("arrangewin_ignore").get<std::string>() ;
 
             auto modules = util::split(str, ",") ;
             for(auto& m : modules) {

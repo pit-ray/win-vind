@@ -13,6 +13,11 @@ TEST_CASE("(rcparser::remove_dbquote_comment) Normal input without strings") {
     CHECK_NOTHROW(remove_dbquote_comment(str)) ;
     CHECK_EQ(str, "foo bar") ;
 }
+TEST_CASE("(rcparser::remove_dbquote_comment) all comment") {
+    std::string str("  \" comment area \"aa\" bb") ;
+    CHECK_NOTHROW(remove_dbquote_comment(str)) ;
+    CHECK(str.empty()) ;
+}
 
 TEST_CASE("(rcparser::remove_dbquote_comment) Normal input with strings") {
     std::string str("foo bar \"str1\" \"str2\"\" comment area") ;

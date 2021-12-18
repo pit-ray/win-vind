@@ -1,8 +1,8 @@
 #include "opt/async_uia_cache_builder.hpp"
 
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
+#include "core/settable.hpp"
 #include "util/debug.hpp"
 #include "util/point_2d.hpp"
 #include "util/uia.hpp"
@@ -88,8 +88,9 @@ namespace
 
         bool is_valid() {
             if(!time_.has_stamp()) return false ;
-            return time_.elapsed().count() \
-                < core::get_i("uiacachebuild_lifetime") ;
+
+            auto& settable = core::SetTable::get_instance() ;
+            return time_.elapsed().count() < settable.get("uiacachebuild_lifetime").get<int>() ;
         }
 
         void create_thread() {
@@ -207,15 +208,17 @@ namespace vind
                 return ;
             }
 
+            auto& settable = core::SetTable::get_instance() ;
+
             // When the mouse is staying, scan only for the initial time range.
             // When the mouse is moving, the cache is less reliable,
             // and when the computer is neglected for a long time, there is no need to scan it.
             auto keep_delta = duration_cast<milliseconds>(
                     system_clock::now() - keeptime).count() ;
-            if(keep_delta < core::get_i("uiacachebuild_staybegin")) {
+            if(keep_delta < settable.get("uiacachebuild_staybegin").get<int>()) {
                 return ;
             }
-            if(keep_delta > core::get_i("uiacachebuild_stayend")) {
+            if(keep_delta > settable.get("uiacachebuild_stayend").get<int>()) {
                 return ;
             }
 

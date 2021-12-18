@@ -41,8 +41,8 @@ SOFTWARE.
 
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/path.hpp"
+#include "core/settable.hpp"
 
 #include "about.hpp"
 
@@ -163,16 +163,20 @@ namespace vind
                         return false ;
                     }
 
+                    auto& settable = core::SetTable::get_instance() ;
+
+                    const auto& icon_style = settable.get("icon_style") ;
+
                     // Root window
                     auto dlg = new AboutDialog(
 #ifdef DEBUG
-                            (vind::core::RESOUECE_ROOT_PATH() / vind::core::get_s("icon_style")).u8string(),
+                            (vind::core::RESOUECE_ROOT_PATH() / icon_style.get<std::string>()).u8string(),
 #else
-                            vind::core::get_s("icon_style"),
+                            icon_style.get<std::string>(),
 #endif
                             "win-vind",
-                            vind::core::get_i("gui_fontsize"),
-                            vind::core::get_s("gui_fontname")) ;
+                            settable.get("gui_fontsize").get<int>(),
+                            settable.get("gui_fontname").get<std::string>()) ;
 
                     dlg->Show(false) ;
                 }

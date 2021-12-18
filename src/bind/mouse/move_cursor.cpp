@@ -6,8 +6,8 @@
 #include <cmath>
 
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "util/constant_accelerator.hpp"
 #include "util/def.hpp"
 #include "util/math.hpp"
@@ -49,9 +49,13 @@ namespace vind
             sprocess() ;
         }
         void MoveCursorLeft::reconstruct() {
-            pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
-            pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
-            pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
+            auto& settable = core::SetTable::get_instance() ;
+            pimpl->ca_.set_acceleration(
+                    settable.get("cursor_accel").get<float>()) ;
+            pimpl->ca_.set_max_velocity(
+                    settable.get("cursor_maxv").get<float>()) ;
+            pimpl->ca_.set_time_weight(
+                    settable.get("cursor_tweight").get<int>()) ;
         }
 
 
@@ -82,9 +86,13 @@ namespace vind
             sprocess() ;
         }
         void MoveCursorRight::reconstruct() {
-            pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
-            pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
-            pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
+            auto& settable = core::SetTable::get_instance() ;
+            pimpl->ca_.set_acceleration(
+                    settable.get("cursor_accel").get<float>()) ;
+            pimpl->ca_.set_max_velocity(
+                    settable.get("cursor_maxv").get<float>()) ;
+            pimpl->ca_.set_time_weight(
+                    settable.get("cursor_tweight").get<int>()) ;
         }
 
 
@@ -115,9 +123,13 @@ namespace vind
             sprocess() ;
         }
         void MoveCursorUp::reconstruct() {
-            pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
-            pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
-            pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
+            auto& settable = core::SetTable::get_instance() ;
+            pimpl->ca_.set_acceleration(
+                    settable.get("cursor_accel").get<float>()) ;
+            pimpl->ca_.set_max_velocity(
+                    settable.get("cursor_maxv").get<float>()) ;
+            pimpl->ca_.set_time_weight(
+                    settable.get("cursor_tweight").get<int>()) ;
         }
 
 
@@ -148,9 +160,13 @@ namespace vind
             sprocess() ;
         }
         void MoveCursorDown::reconstruct() {
-            pimpl->ca_.set_acceleration(core::get_f("cursor_accel")) ;
-            pimpl->ca_.set_max_velocity(core::get_f("cursor_maxv")) ;
-            pimpl->ca_.set_time_weight(core::get_i("cursor_tweight")) ;
+            auto& settable = core::SetTable::get_instance() ;
+            pimpl->ca_.set_acceleration(
+                    settable.get("cursor_accel").get<float>()) ;
+            pimpl->ca_.set_max_velocity(
+                    settable.get("cursor_maxv").get<float>()) ;
+            pimpl->ca_.set_time_weight(
+                    settable.get("cursor_tweight").get<int>()) ;
         }
     }
 }

@@ -2,10 +2,10 @@
 
 #include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "edi_change_mode.hpp"
 #include "simple_text_register.hpp"
 #include "text_util.hpp"
@@ -88,7 +88,8 @@ namespace vind
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
             }) ;
 
-            if(core::get_b("charcache")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("charcache").get<bool>()) {
                 igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 set_register_type(RegType::Chars) ;
             }

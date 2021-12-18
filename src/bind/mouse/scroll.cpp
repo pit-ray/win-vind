@@ -2,8 +2,8 @@
 
 #include <windows.h>
 
-#include "core/g_params.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "util/def.hpp"
 #include "util/interval_timer.hpp"
 #include "util/keystroke_repeater.hpp"
@@ -45,7 +45,9 @@ namespace vind
         ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
         void ScrollUp::sprocess(unsigned int repeat_num) const {
-            util::vscroll(core::get_i("vscroll_speed") * repeat_num) ;
+            auto& settable = core::SetTable::get_instance() ;
+            util::vscroll(
+                    settable.get("vscroll_speed").get<int>() * repeat_num) ;
         }
         void ScrollUp::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -76,7 +78,9 @@ namespace vind
         ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
 
         void ScrollDown::sprocess(unsigned int repeat_num) const {
-            util::vscroll(-core::get_i("vscroll_speed") * repeat_num) ;
+            auto& settable = core::SetTable::get_instance() ;
+            util::vscroll(
+                    -1 * settable.get("vscroll_speed").get<int>() * repeat_num) ;
         }
         void ScrollDown::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -107,8 +111,9 @@ namespace vind
         ScrollUpHalfPage& ScrollUpHalfPage::operator=(ScrollUpHalfPage&&) = default ;
 
         void ScrollUpHalfPage::sprocess(unsigned int repeat_num) const {
+            auto& settable = core::SetTable::get_instance() ;
             util::vscroll(0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
-                    core::get_f("vscroll_pageratio")) ;
+                    settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollUpHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -139,8 +144,9 @@ namespace vind
         ScrollDownHalfPage& ScrollDownHalfPage::operator=(ScrollDownHalfPage&&)    = default ;
 
         void ScrollDownHalfPage::sprocess(unsigned int repeat_num) const {
+            auto& settable = core::SetTable::get_instance() ;
             util::vscroll(-0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
-                    core::get_f("vscroll_pageratio")) ;
+                    settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollDownHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -171,8 +177,9 @@ namespace vind
         ScrollUpOnePage& ScrollUpOnePage::operator=(ScrollUpOnePage&&)   = default ;
 
         void ScrollUpOnePage::sprocess(unsigned int repeat_num) const {
+            auto& settable = core::SetTable::get_instance() ;
             util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
-                    core::get_f("vscroll_pageratio")) ;
+                    settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollUpOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -203,8 +210,9 @@ namespace vind
         ScrollDownOnePage& ScrollDownOnePage::operator=(ScrollDownOnePage&&) = default ;
 
         void ScrollDownOnePage::sprocess(unsigned int repeat_num) const {
+            auto& settable = core::SetTable::get_instance() ;
             util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
-                    -core::get_f("vscroll_pageratio")) ;
+                    -1 * settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollDownOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -236,7 +244,9 @@ namespace vind
         ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
 
         void ScrollLeft::sprocess(unsigned int repeat_num) const {
-            util::hscroll(-core::get_i("hscroll_speed") * repeat_num) ;
+            auto& settable = core::SetTable::get_instance() ;
+            util::hscroll(
+                    -1 * settable.get("hscroll_speed").get<int>() * repeat_num) ;
         }
         void ScrollLeft::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -267,7 +277,9 @@ namespace vind
         ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
 
         void ScrollRight::sprocess(unsigned int repeat_num) const {
-            util::hscroll(core::get_f("hscroll_speed") * repeat_num) ;
+            auto& settable = core::SetTable::get_instance() ;
+            util::hscroll(
+                    settable.get("hscroll_speed").get<float>() * repeat_num) ;
         }
         void ScrollRight::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -298,8 +310,9 @@ namespace vind
         ScrollLeftHalfPage& ScrollLeftHalfPage::operator=(ScrollLeftHalfPage&&)    = default ;
 
         void ScrollLeftHalfPage::sprocess(unsigned int repeat_num) const {
+            auto& settable = core::SetTable::get_instance() ;
             util::hscroll(-0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
-                    core::get_f("hscroll_pageratio")) ;
+                    settable.get("hscroll_pageratio").get<float>()) ;
         }
         void ScrollLeftHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -330,8 +343,9 @@ namespace vind
         ScrollRightHalfPage& ScrollRightHalfPage::operator=(ScrollRightHalfPage&&) = default ;
 
         void ScrollRightHalfPage::sprocess(unsigned int repeat_num) const {
+            auto& settable = core::SetTable::get_instance() ;
             util::hscroll(0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
-                    core::get_f("hscroll_pageratio")) ;
+                    settable.get("hscroll_pageratio").get<float>()) ;
         }
         void ScrollRightHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {

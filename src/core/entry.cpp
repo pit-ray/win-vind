@@ -75,13 +75,13 @@ SOFTWARE.
 #include "err_logger.hpp"
 #include "func_finder.hpp"
 #include "g_maps.hpp"
-#include "g_params.hpp"
 #include "keycodecvt.hpp"
 #include "mode.hpp"
 #include "ntype_logger.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "path.hpp"
+#include "settable.hpp"
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
 #include "util/winwrap.hpp"
@@ -234,12 +234,16 @@ namespace vind
             }
 
             // Load default config
-            initialize_params() ;
             initialize_maps() ;
 
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             load_input_combination() ;
+
+            auto& settable = SetTable::get_instance() ;
+            settable.clear() ;
+            bind::SyscmdSource::sprocess(RC_DEFAULT(), false) ;
+            settable.save_asdef() ;
 
             bind::SyscmdSource::sprocess(RC(), true) ;
 
@@ -267,12 +271,15 @@ namespace vind
                 {mode_to_prefix(Mode::INSERT), bind::ToInsert::create()},
                 {mode_to_prefix(Mode::RESIDENT), bind::ToResident::create()}
             } ;
-            handle_system_call(cm.at(get_s("initmode"))->process()) ;
+
+            handle_system_call(cm.at(
+                        settable.get("initmode").get<std::string>())->process()) ;
         }
 
         void VindEntry::reconstruct() {
+            auto& settable = SetTable::get_instance() ;
             for(auto& opt : opt::all_global_options()) {
-                if(core::get_b(opt->name())) {
+                if(settable.get(opt->name()).get<bool>()) {
                     opt->enable() ;
                 }
                 else {

@@ -8,10 +8,10 @@
 #include "bind/easyclick/input_hinter.hpp"
 #include "bind/easyclick/ui_scanner.hpp"
 #include "bind/safe_repeater.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "util/container.hpp"
 #include "util/debug.hpp"
@@ -119,7 +119,8 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
             }
 
-            if(core::get_b("uiacachebuild")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("uiacachebuild").get<bool>()) {
                 auto root_elem = opt::AsyncUIACacheBuilder::get_root_element(hwnd) ;
                 pimpl->scanner_.scan(root_elem, pimpl->elements_) ;
             }

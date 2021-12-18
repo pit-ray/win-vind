@@ -8,6 +8,7 @@
 #include "util/enable_gcc_warning.hpp"
 
 #include "core/path.hpp"
+#include "core/settable.hpp"
 #include "util/winwrap.hpp"
 
 #include "startup.hpp"
@@ -66,11 +67,12 @@ namespace vind
             }, MENU_OPENROOT) ;
 
             Bind(wxEVT_MENU, [parent, iconpath](auto&) {
+                auto& settable = core::SetTable::get_instance() ;
                 auto dlg = new UpdateDialog(
                         parent,
                         iconpath,
-                        vind::core::get_i("gui_fontsize"),
-                        vind::core::get_s("gui_fontname")) ;
+                        settable.get("gui_fontsize").get<int>(),
+                        settable.get("gui_fontname").get<std::string>()) ;
                 dlg->CenterOnScreen() ;
                 dlg->Show(true) ;
             }, MENU_UPDATE) ;

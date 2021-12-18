@@ -2,11 +2,11 @@
 
 #include "bind/mode/change_mode.hpp"
 #include "bind/safe_repeater.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode_def.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "simple_text_register.hpp"
 #include "text_util.hpp"
 #include "util/def.hpp"
@@ -147,7 +147,8 @@ namespace vind
 
         void DeleteAfter::sprocess(unsigned int repeat_num) const {
             auto& igate = core::InputGate::get_instance() ;
-            if(core::get_b("charcache")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("charcache").get<bool>()) {
                 safe_for(repeat_num, [&igate] {
                         igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                         igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
@@ -190,7 +191,8 @@ namespace vind
 
         void DeleteBefore::sprocess(unsigned int repeat_num) const {
             auto& igate = core::InputGate::get_instance() ;
-            if(core::get_b("charcache")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("charcache").get<bool>()) {
                 safe_for(repeat_num, [&igate] {
                     igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;

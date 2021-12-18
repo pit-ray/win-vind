@@ -11,13 +11,13 @@
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
 #include "core/func_finder.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/key_logger_base.hpp"
 #include "core/keycode_def.hpp"
 #include "core/keycodecvt.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
@@ -110,8 +110,8 @@ namespace
             if(idx_ == hist_.size() - 1) {
                 //recently logger
 
-                auto over_num =
-                    static_cast<long>(hist_.size()) - core::get_l("cmd_maxhist") ;
+                auto& settable = core::SetTable::get_instance() ;
+                auto over_num = hist_.size() - settable.get("cmd_maxhist").get<std::size_t>() ;
 
                 if(over_num > 0) {
                     util::remove_from_top(hist_, over_num) ;

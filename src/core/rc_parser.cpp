@@ -18,7 +18,24 @@ namespace vind
 {
     namespace core {
         void remove_dbquote_comment(std::string& line) {
-            std::size_t start_pos = 0 ;
+            // If a line begins with a double quote, it are considered as a blank line.
+            // 
+            // For example,
+            //  " foo "bar"
+            // { "foo "bar"} is comment.
+            auto start_pos = line.find_first_not_of(" ") ;
+            if(start_pos == std::string::npos || line[start_pos] == '\"') {
+                line.clear() ;
+                return ;
+            }
+
+            // If there are double quotes in the middle of a line,
+            // the last double quote without a pair is considered a comment.
+            //
+            // For example,
+            // foo "bar" " hoge
+            // {foo "bar" } is valid, {" hoge} is comment.
+            //
             while(true) {
                 auto left_dquote = line.find_first_of("\"", start_pos) ;
                 if(left_dquote == std::string::npos) {

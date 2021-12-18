@@ -11,13 +11,13 @@
 #include "core/background.hpp"
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/inputgate.hpp"
 #include "core/key_log.hpp"
 #include "core/keybrd_layout.hpp"
 #include "core/keycodecvt.hpp"
 #include "core/ntype_logger.hpp"
 #include "core/path.hpp"
+#include "core/settable.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
@@ -101,11 +101,14 @@ namespace vind
                         auto y_pos = static_cast<int>( \
                                 pimpl->yposs_[keycode] / pimpl->max_keybrd_yposs_ * height) ;
 
-                        if(x_pos == width) 
-                            x_pos -= core::get_i("jump_margin") ;
+                        auto& settable = core::SetTable::get_instance() ;
+                        if(x_pos == width) {
+                            x_pos -= settable.get("jump_margin").get<int>() ;
+                        }
 
-                        if(y_pos == height) 
-                            y_pos -= core::get_i("jump_margin") ;
+                        if(y_pos == height) {
+                            y_pos -= settable.get("jump_margin").get<int>() ;
+                        }
 
                         SetCursorPos(x_pos, y_pos) ;
 
@@ -131,7 +134,8 @@ namespace vind
 
 
         void JumpWithKeybrdLayout::reconstruct() {
-            auto layoutfile = core::get_s("keybrd_layout") ;
+            auto& settable = core::SetTable::get_instance() ;
+            auto layoutfile = settable.get("keybrd_layout").get<std::string>() ;
             std::filesystem::path filepath ;
             if(!layoutfile.empty()) {
                 filepath = core::CONFIG_PATH() / layoutfile ;

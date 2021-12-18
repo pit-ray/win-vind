@@ -1,7 +1,7 @@
 #include "jump_cursor.hpp"
 
-#include "core/g_params.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/screen_metrics.hpp"
@@ -39,7 +39,10 @@ namespace vind
 
             auto box = util::get_conbined_metrics() ;
 
-            SetCursorPos(box.width() - core::get_i("jump_margin"), pos.y) ;
+            auto& settable = core::SetTable::get_instance() ;
+            SetCursorPos(
+                    box.width() - settable.get("jump_margin").get<int>(),
+                    pos.y) ;
         }
         void JumpToRight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -82,7 +85,11 @@ namespace vind
             GetCursorPos(&pos) ;
 
             auto box = util::get_conbined_metrics() ;
-            SetCursorPos(pos.x, box.height() - core::get_i("jump_margin")) ;
+
+            auto& settable = core::SetTable::get_instance() ;
+            SetCursorPos(
+                    pos.x,
+                    box.height() - settable.get("jump_margin").get<int>()) ;
         }
         void JumpToBottom::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

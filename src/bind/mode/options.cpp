@@ -1,6 +1,6 @@
 #include "options.hpp"
 
-#include "core/g_params.hpp"
+#include "core/settable.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "util/box_2d.hpp"
 #include "util/def.hpp"
@@ -29,7 +29,8 @@ namespace vind
 
             std::vector<util::SmartElement> editables{} ;
 
-            if(core::get_b("uiacachebuild")) {
+            auto& settable = core::SetTable::get_instance() ;
+            if(settable.get("uiacachebuild").get<bool>()) {
                 auto root_elem = opt::AsyncUIACacheBuilder::get_root_element(hwnd) ;
                 instance.scan(root_elem, editables) ;
             }

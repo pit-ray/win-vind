@@ -6,10 +6,10 @@
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
 #include "core/g_maps.hpp"
-#include "core/g_params.hpp"
 #include "core/mode.hpp"
 #include "core/path.hpp"
 #include "core/rc_parser.hpp"
+#include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 #include "util/type_traits.hpp"
@@ -164,7 +164,7 @@ namespace vind
                 bool start_from_default) {
 
             auto return_to_default = [] {
-                core::reset_all_params() ;
+                core::SetTable::get_instance().reset_todef() ;
                 core::reset_all_maps() ;
             } ;
 

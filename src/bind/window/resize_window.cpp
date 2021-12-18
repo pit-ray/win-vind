@@ -3,9 +3,9 @@
 #include "window_utility.hpp"
 
 #include "core/char_logger.hpp"
-#include "core/g_params.hpp"
 #include "core/key_logger_base.hpp"
 #include "core/ntype_logger.hpp"
+#include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
@@ -133,7 +133,9 @@ namespace vind
         }
         void IncreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
-                sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+                auto& settable = core::SetTable::get_instance() ;
+                sprocess(parent_lgr.get_head_num() * \
+                        settable.get("window_hdelta").get<long>()) ;
             }
         }
         void IncreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
@@ -162,7 +164,9 @@ namespace vind
         }
         void DecreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
-                sprocess(core::get_l("window_hdelta") * parent_lgr.get_head_num()) ;
+                auto& settable = core::SetTable::get_instance() ;
+                sprocess(parent_lgr.get_head_num() * \
+                        settable.get("window_hdelta").get<long>()) ;
             }
         }
         void DecreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
@@ -204,7 +208,9 @@ namespace vind
         }
         void IncreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
-                sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
+                auto& settable = core::SetTable::get_instance() ;
+                sprocess(parent_lgr.get_head_num() * \
+                        settable.get("window_vdelta").get<long>()) ;
             }
         }
         void IncreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
@@ -234,7 +240,9 @@ namespace vind
         }
         void DecreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
-                sprocess(core::get_l("window_vdelta") * parent_lgr.get_head_num()) ;
+                auto& settable = core::SetTable::get_instance() ;
+                sprocess(parent_lgr.get_head_num() * \
+                        settable.get("window_vdelta").get<long>()) ;
             }
         }
         void DecreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {

@@ -1,14 +1,15 @@
 #include "set.hpp"
 
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include "bind/binded_func.hpp"
 #include "bind/binded_func.hpp"
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
-#include "core/g_params.hpp"
 #include "core/rc_parser.hpp"
+#include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
@@ -26,6 +27,8 @@ namespace vind
         {}
 
         SystemCall SyscmdSet::sprocess(const std::string& args) {
+            auto& settable = core::SetTable::get_instance() ;
+
             if(args.find("=") != std::string::npos) { // set option_name = value
                 auto [key, val] = core::divide_key_and_value(args, "=") ;
 
@@ -40,14 +43,19 @@ namespace vind
                 else {
                     key = util::A2a(key) ;
 
-                    if(val.empty()) {
-                        core::do_set(key, val) ;
+                    if(val.empty()) { // empty string
+                        settable.set(key, val) ;
                     }
-                    else if(val.find_first_not_of("0123456789.") == std::string::npos) {
-                        core::do_set(key, std::stod(val)) ;
+                    else if(val.find_first_not_of("0123456789.") == std::string::npos) { // number
+                        if(val.find_first_of(".") != std::string::npos) {
+                            settable.set(key, std::stof(val)) ;
+                        }
+                        else { 
+                            settable.set(key, std::stol(val)) ;
+                        }
                     }
-                    else {
-                        core::do_set(key, val) ;
+                    else { // string
+                        settable.set(key, val) ;
                     }
                 }
 
@@ -74,37 +82,24 @@ namespace vind
                 }
 
                 std::stringstream ss ;
-                switch(core::validate_param_type(key)) {
-                    using core::ParamType ;
-                    case ParamType::BOOL:
-                        if(core::get_b(key)) {
+
+                try {
+                    const auto& param = settable.get(key) ;
+                    if(param.is_bool()) {
+                        if(settable.get(key).get<bool>()) {
                             ss << key ;
                         }
                         else {
                             ss << "no" << key ;
                         }
-                        break ;
-
-                    case ParamType::NUMBER: {
-                        ss << key << "=" ;
-                        auto v_d = core::get_d(key) ;
-                        auto v_z = core::get_z(key) ;
-                        if(v_d == v_z) {
-                            ss << std::to_string(v_z) ;
-                        }
-                        else {
-                            ss << std::to_string(v_d) ;
-                        }
-                        break ;
                     }
-
-                    case ParamType::STRING:
-                        ss << key << "=" << core::get_s(key) ;
-                        break ;
-
-                    default:
-                        ss << "E: Unknown option: " << key ;
-                        break ;
+                    else {
+                        ss << key << "=" ;
+                        ss << settable.get(key).get<std::string>() ;
+                    }
+                }
+                catch(const std::out_of_range&) {
+                    ss << "E: Unknown option: " << key ;
                 }
 
                 opt::VCmdLine::print(opt::ErrorMessage(ss.str())) ;
@@ -114,7 +109,7 @@ namespace vind
                     opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
                 }
                 else {
-                    core::do_set(key, flag_value) ;
+                    settable.set(key, flag_value) ;
                 }
             }
 

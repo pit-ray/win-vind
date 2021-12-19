@@ -4,6 +4,7 @@
 #include "defs.hpp"
 #include "util/def.hpp"
 
+#include <array>
 #include <mutex>
 #include <unordered_map>
 

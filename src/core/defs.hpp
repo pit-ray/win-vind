@@ -4,6 +4,7 @@
 #include "keycode_def.hpp"
 #include "mode.hpp"
 
+#include <array>
 #include <memory>
 #include <string>
 #include <unordered_map>

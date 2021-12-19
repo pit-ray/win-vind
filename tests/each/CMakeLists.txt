@@ -24,3 +24,17 @@ AddTest(each-mapgate-test
     ${SRCDIR}/util/winwrap.cpp
 )
 target_link_libraries(each-mapgate-test userenv)
+
+AddTest(each-maptable-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/maptable_test.cpp
+
+    ${SRCDIR}/core/bindings_parser.cpp
+    ${SRCDIR}/core/err_logger.cpp
+    ${SRCDIR}/core/key_log.cpp
+    ${SRCDIR}/core/keycodecvt.cpp
+    ${SRCDIR}/core/mode.cpp
+    ${SRCDIR}/core/path.cpp
+    ${SRCDIR}/util/string.cpp
+    ${SRCDIR}/util/winwrap.cpp
+)
+target_link_libraries(each-maptable-test userenv)

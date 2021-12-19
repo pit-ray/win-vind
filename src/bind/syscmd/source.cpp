@@ -5,7 +5,7 @@
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
-#include "core/g_maps.hpp"
+#include "core/maptable.hpp"
 #include "core/mode.hpp"
 #include "core/path.hpp"
 #include "core/rc_parser.hpp"
@@ -165,7 +165,7 @@ namespace vind
 
             auto return_to_default = [] {
                 core::SetTable::get_instance().reset_todef() ;
-                core::reset_all_maps() ;
+                core::MapTable::get_instance().reset_todef() ;
             } ;
 
             if(start_from_default) {

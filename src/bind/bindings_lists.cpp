@@ -234,7 +234,7 @@ namespace vind
 
         BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) {
             for(auto& func : all_global_binded_funcs()) {
-                if(func->id() == BindedFunc::name_to_id(name)) {
+                if(func->id() == BindedFunc::name_to_id(util::A2a(name))) {
                     return func ;
                 }
             }
@@ -243,7 +243,7 @@ namespace vind
 
         BindedFunc::SPtr ref_global_funcs_bynames(std::string&& name) {
             for(auto& func : all_global_binded_funcs()) {
-                if(func->id() == BindedFunc::name_to_id(name)) {
+                if(func->id() == BindedFunc::name_to_id(util::A2a(name))) {
                     return func ;
                 }
             }

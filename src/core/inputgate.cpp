@@ -1,15 +1,16 @@
 #include "inputgate.hpp"
 
 #include "bind/binded_func.hpp"
+#include "bind/bindings_lists.hpp"
 #include "bind/safe_repeater.hpp"
 #include "defs.hpp"
 #include "err_logger.hpp"
-#include "g_maps.hpp"
 #include "key_log.hpp"
 #include "key_logger_base.hpp"
 #include "keycode_def.hpp"
 #include "keycodecvt.hpp"
 #include "logger_parser_mgr.hpp"
+#include "maptable.hpp"
 #include "mode.hpp"
 #include "ntype_logger.hpp"
 #include "util/container.hpp"
@@ -191,7 +192,7 @@ namespace
      */
     std::unordered_map<std::size_t, Command>
     solve_recursive_cmd2cmd_mapping(
-            const std::unordered_map<std::size_t, MapCell>& map_table,
+            const std::unordered_map<std::size_t, Map>& map_table,
             const Key2KeysetMap& key2keyset_table) {
 
         std::unordered_map<std::size_t, NTypeLogger> loggers{} ;
@@ -319,24 +320,31 @@ namespace
 
 
         void reconstruct(Mode mode) {
-            std::unordered_map<std::size_t, MapCell> noremap_cmd2cmd{} ;
-            std::unordered_map<std::size_t, MapCell> map_cmd2cmd{} ;
-            std::array<MapCell, 256> map_key2keyset{} ;
+            std::unordered_map<std::size_t, Map> noremap_cmd2cmd{} ;
+            std::unordered_map<std::size_t, Map> map_cmd2cmd{} ;
+            std::array<Map, 256> map_key2keyset{} ;
 
             syncmap_.fill(KeySet{}) ;
 
-            std::vector<MapCell> maps ;
-            get_maps(mode, maps) ;
+            auto& maptable = core::MapTable::get_instance() ;
+            auto maps = maptable.get_allmaps(mode) ;
             for(auto itr = std::make_move_iterator(maps.begin()) ;
                      itr != std::make_move_iterator(maps.end()) ; itr ++) {
 
-                if(itr->is_noremap()) {
-                    noremap_cmd2cmd[itr->in_hash()] = std::move(*itr) ;
-                }
-                else if(itr->is_map()) {
-                    auto trigger_cmd = itr->trigger_command() ;
-                    auto target_cmd = itr->target_command() ;
+                const auto& trigger_cmd = itr->trigger_command() ;
+                const auto& target_cmd = itr->target_command() ;
 
+                // Ignore mappings to the same command.
+                if(trigger_cmd == target_cmd) {
+                    continue ;
+                }
+
+                if(itr->is_noremap()) {
+                    if(!bind::ref_global_funcs_bynames(itr->target_command_string())) {
+                        noremap_cmd2cmd[itr->in_hash()] = std::move(*itr) ;
+                    }
+                }
+                else { // remappable
                     // The key2keyset and key2key are mapped synchronously.
                     if(trigger_cmd.size() == 1 && trigger_cmd.front().size() == 1  // trigger is key?
                             && target_cmd.size() == 1) {                           // target is keyset?

@@ -53,9 +53,17 @@ def append_from_set_json(outfile, json_filename: str):
 
         for name, obj in objects.items():
             outfile.write('" {}\n'.format(obj['en']))
-            outfile.write('set {}={}\n'.format(name, obj['value']))
-            outfile.write('\n')
 
+            val = obj['value']
+            if isinstance(val, bool):
+                if val:
+                    outfile.write('set {}\n'.format(name, val))
+                else:
+                    outfile.write('set no{}\n'.format(name, val))
+            else:
+                outfile.write('set {}={}\n'.format(name, val))
+
+            outfile.write('\n')
         outfile.write('\n')
 
 

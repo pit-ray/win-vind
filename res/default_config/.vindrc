@@ -25,6 +25,7 @@
 " It is not recommended to edit this file directly.
 " Instead, rewrite the .vindrc file in the home directory opened by :e.
 
+
 " => set" Initial Mode
 set initmode=i
 
@@ -128,19 +129,19 @@ set shellcmdflag=-c
 set shell_startupdir=
 
 " Autotrack Popup
-set autotrack_popup=False
+set noautotrack_popup
 
 " Dedicate to One Window
-set dedicate_to_window=False
+set nodedicate_to_window
 
 " Virtual Command Line
-set vcmdline=True
+set vcmdline
 
 " Suppress For Vim
-set suppress_for_vim=False
+set nosuppress_for_vim
 
 " Block Style Caret
-set blockstylecaret=False
+set noblockstylecaret
 
 " Width of block style caret on solid mode
 set blockstylecaret_width=15
@@ -149,10 +150,10 @@ set blockstylecaret_width=15
 set blockstylecaret_mode=solid
 
 " Autofocus Text Area
-set autofocus_textarea=False
+set noautofocus_textarea
 
 " Build UI Automation cache asynchronously
-set uiacachebuild=False
+set nouiacachebuild
 
 " Valid period of UI Automation cache(ms)
 set uiacachebuild_lifetime=1500
@@ -182,7 +183,7 @@ set easyclick_bgcolor=323232
 set easyclick_colordecay=100
 
 " Enable Char Cache
-set charcache=False
+set nocharcache
 
 " Window Width delta for resizing
 set window_hdelta=100

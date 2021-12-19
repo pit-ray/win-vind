@@ -6,12 +6,6 @@
 
 #include <windows.h>
 
-#include "util/disable_gcc_warning.hpp"
-
-#include <nlohmann/json.hpp>
-
-#include "util/enable_gcc_warning.hpp"
-
 #include "bind/file/explorer_util.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "core/char_logger.hpp"

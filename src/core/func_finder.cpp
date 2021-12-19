@@ -3,9 +3,9 @@
 #include "bind/binded_func.hpp"
 #include "bind/bindings_lists.hpp"
 #include "bindings_parser.hpp"
+#include "core/maptable.hpp"
 #include "defs.hpp"
 #include "entry.hpp"
-#include "g_maps.hpp"
 #include "key_logger_base.hpp"
 #include "logger_parser.hpp"
 #include "logger_parser_mgr.hpp"
@@ -108,34 +108,37 @@ namespace vind
         }
 
         void FuncFinder::do_reconstruct() {
-            ParsedBindingTable parsed_bdtable ;
+            auto& maptable = MapTable::get_instance() ;
+
+            std::unordered_set<std::size_t> funcid_set ;
+            for(const auto& func : pimpl->funcs_) {
+                funcid_set.insert(func->id()) ;
+            }
+
             for(size_t i = 0 ; i < mode_num() ; i ++) {
-                auto& funcmap = parsed_bdtable[i] ;
+                FuncMap<std::shared_ptr<CommandList>> funcmap ;
 
-                std::vector<MapCell> maps{} ;
-                get_maps(static_cast<Mode>(i), maps) ;
-
+                auto maps = maptable.get_noremaps(static_cast<Mode>(i)) ;
                 for(const auto& map : maps) {
-                    if(!map.is_noremap_function()) {
+                    const auto& func_name = map.target_command_string() ;
+                    auto func_id = bind::BindedFunc::name_to_id(func_name) ;
+
+                    if(funcid_set.find(func_id) == funcid_set.end()) {
                         continue ;
                     }
 
-                    auto& shared_cmd_list = funcmap[map.target_command_string()] ;
+                    auto& shared_cmd_list = funcmap[func_name] ;
                     if(!shared_cmd_list) {
                         shared_cmd_list = std::make_shared<CommandList>() ;
                     }
                     shared_cmd_list->push_back(map.trigger_command()) ;
                 }
-            }
 
-            for(size_t i = 0 ; i < mode_num() ; i ++) {
                 std::vector<LoggerParser::SPtr> parsers ;
                 for(const auto& func : pimpl->funcs_) {
                     try {
-                        const auto& list = parsed_bdtable[i].at(func->name()) ;
                         auto p_parser = std::make_shared<LoggerParser>(func) ;
-
-                        p_parser->share_parsed_binding_list(list) ;
+                        p_parser->share_parsed_binding_list(funcmap.at(func->name())) ;
                         parsers.push_back(std::move(p_parser)) ;
                     }
                     catch(const std::out_of_range&) {

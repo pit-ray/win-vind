@@ -9,12 +9,12 @@ AddTest(each-mapgate-test
     ${SRCDIR}/bind/emu/edi_dot.cpp
     ${SRCDIR}/core/bindings_parser.cpp
     ${SRCDIR}/core/err_logger.cpp
-    ${SRCDIR}/core/g_maps.cpp
     ${SRCDIR}/core/key_log.cpp
     ${SRCDIR}/core/key_logger_base.cpp
     ${SRCDIR}/core/keycodecvt.cpp
     ${SRCDIR}/core/logger_parser.cpp
     ${SRCDIR}/core/logger_parser_mgr.cpp
+    ${SRCDIR}/core/maptable.cpp
     ${SRCDIR}/core/mode.cpp
     ${SRCDIR}/core/ntype_logger.cpp
     ${SRCDIR}/core/path.cpp

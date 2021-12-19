@@ -3,7 +3,7 @@
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/err_logger.hpp"
-#include "core/g_maps.hpp"
+#include "core/maptable.hpp"
 #include "core/rc_parser.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -30,7 +30,8 @@ namespace vind
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support reference of command yet")) ;
             }
             else {
-                core::do_noremap(arg1, arg2, core::Mode::COMMAND) ;
+                auto& maptable = core::MapTable::get_instance() ;
+                maptable.add_noremap(arg1, arg2, core::Mode::COMMAND) ;
             }
 
             return SystemCall::NOTHING ;
@@ -66,7 +67,8 @@ namespace vind
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             }
             else {
-                core::do_unmap(arg, core::Mode::COMMAND) ;
+                auto& maptable = core::MapTable::get_instance() ;
+                maptable.remove(arg, core::Mode::COMMAND) ;
             }
 
             return SystemCall::NOTHING ;
@@ -91,7 +93,8 @@ namespace vind
         : BindedFuncFlex("system_command_comclear")
         {}
         SystemCall SyscmdComclear::sprocess() {
-            core::do_mapclear(core::Mode::COMMAND) ;
+            auto& maptable = core::MapTable::get_instance() ;
+            maptable.clear(core::Mode::COMMAND) ;
             return SystemCall::NOTHING ;
         }
         SystemCall SyscmdComclear::sprocess(core::NTypeLogger&) {

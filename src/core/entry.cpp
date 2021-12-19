@@ -74,8 +74,8 @@ SOFTWARE.
 #include "core/inputgate.hpp"
 #include "err_logger.hpp"
 #include "func_finder.hpp"
-#include "g_maps.hpp"
 #include "keycodecvt.hpp"
+#include "maptable.hpp"
 #include "mode.hpp"
 #include "ntype_logger.hpp"
 #include "opt/optionlist.hpp"
@@ -233,17 +233,20 @@ namespace vind
                 throw std::runtime_error("Your system is not supported DPI.") ;
             }
 
-            // Load default config
-            initialize_maps() ;
-
             //load keyboard mapping of ascii code
             //For example, we type LShift + 1 or RShift + 1 in order to input '!' at JP-Keyboard.
             load_input_combination() ;
 
             auto& settable = SetTable::get_instance() ;
+            auto& maptable = MapTable::get_instance() ;
+
             settable.clear() ;
+            maptable.clear_all() ;
+
             bind::SyscmdSource::sprocess(RC_DEFAULT(), false) ;
+
             settable.save_asdef() ;
+            maptable.save_asdef() ;
 
             bind::SyscmdSource::sprocess(RC(), true) ;
 

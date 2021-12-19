@@ -9,10 +9,8 @@ namespace vind
 {
     namespace bind
     {
-        const std::vector<BindedFunc::SPtr>& all_global_binded_funcs() {
-            static std::vector<BindedFunc::SPtr> tmp {
-            } ;
-            return tmp ;
+        BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) {
+            return nullptr ;
         }
     }
 }
@@ -113,11 +111,11 @@ TEST_CASE("inputgate::solve_recursive_cmd2cmd_mapping") {
     load_input_combination() ;
 
     // define cmd2cmd mappings
-    MapCell map1("g<s-h>h", "ty<c-j>", MapType::MAP) ;
-    MapCell map2("t", "z<c-h><c-j>", MapType::MAP) ;
-    MapCell map3("<c-j>", "hhg", MapType::MAP) ;
+    Map map1("g<s-h>h", "ty<c-j>", true) ;
+    Map map2("t", "z<c-h><c-j>", true) ;
+    Map map3("<c-j>", "hhg", true) ;
 
-    std::unordered_map<std::size_t, MapCell> cmd2cmd {
+    std::unordered_map<std::size_t, Map> cmd2cmd {
         {map1.in_hash(), map1},
         {map2.in_hash(), map2},
         {map3.in_hash(), map3}

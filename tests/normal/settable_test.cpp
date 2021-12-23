@@ -144,7 +144,6 @@ TEST_CASE("SetTable") {
         CHECK_EQ(f.get<std::string>(), "hello") ;
 
         settable.set("G", 0xffff'8f9f) ;
-        std::cout << 0xffffffff << std::endl ;
         const auto& g = settable.get("G") ;
         CHECK_EQ(g.get<bool>(), true) ;
         CHECK_EQ(g.get<char>(), -97) ;

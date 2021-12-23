@@ -1,6 +1,7 @@
 #ifndef _KEYCODE_HPP
 #define _KEYCODE_HPP
 
+#include <ostream>
 #include <string>
 
 
@@ -18,16 +19,25 @@ namespace vind
             KeyCode() ;
             KeyCode(char ascii) ;
             KeyCode(unsigned char keycode) ;
-            KeyCode(const std::string& name) ;
-            KeyCode(const char* name) ;
+            KeyCode(int keycode) ;
 
-            template <typename T>
-            KeyCode(T keycode)
-            : KeyCode(static_cast<unsigned char>(keycode))
-            {}
+            /**
+             * @param[in] (prefer_ascii) 
+             *   If there is a conflict between the name of the 
+             *   system keycode and the ascii, the bool value 
+             *   determines which takes precedence.
+             *
+             *   For example, <alt> can also be written as <a>.
+             *
+             *   KeyCode("a", true)  => KEYCODE_A
+             *   KeyCode("a", false) => KEYCODE_ALT
+             *
+             */
+            KeyCode(const std::string& name, bool prefer_ascii=true) ;
 
             char to_ascii() const noexcept ;
             int to_number() const noexcept ;
+            unsigned char to_code() const noexcept ;
 
             KeyCode to_representative() const noexcept ;
             KeyCode to_physical() const noexcept ;
@@ -38,11 +48,9 @@ namespace vind
             bool is_number() const noexcept ;
             bool is_toggle() const noexcept ;
 
-            bool has_code() const noexcept ;
+            bool empty() const noexcept ;
 
             const std::string& name() const noexcept ;
-
-            unsigned char get() const noexcept ;
 
             operator bool() const noexcept ;
             operator char() const noexcept ;
@@ -52,10 +60,23 @@ namespace vind
             operator const char*() const noexcept ;
 
             bool operator!() const noexcept ;
+
+            bool operator==(const KeyCode& rhs) const noexcept ;
+            bool operator==(KeyCode&& rhs) const noexcept ;
+            bool operator==(char rhs) const noexcept ;
+            bool operator==(unsigned char rhs) const noexcept ;
+            bool operator==(const std::string& rhs) const noexcept ;
+            bool operator==(const char* rhs) const noexcept ;
+
+            bool operator!=(const KeyCode& rhs) const noexcept ;
+            bool operator!=(KeyCode&& rhs) const noexcept ;
+            bool operator!=(char rhs) const noexcept ;
+            bool operator!=(unsigned char rhs) const noexcept ;
+            bool operator!=(const std::string& rhs) const noexcept ;
+            bool operator!=(const char* rhs) const noexcept ;
         } ;
 
-        template <typename Stream>
-        Stream& operator<<(Stream&& stream, const KeyCode& rhs) {
+        std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) {
             stream << rhs.name() ;
             return stream ;
         }

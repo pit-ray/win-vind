@@ -1,6 +1,7 @@
 #include "keycode.hpp"
 
 #include "keycode_def.hpp"
+#include "util/string.hpp"
 
 #include <windows.h>
 
@@ -55,7 +56,7 @@ namespace
             std::array<char, 256> s_c2a ;
             std::array<unsigned char, 256> s_a2c ;
 
-            const auto data = {
+            const auto printable_ascii = {
                 ' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')',
                 '*', '+', ',', '-', '.', '/', '0', '1', '2', '3',
                 '4', '5', '6', '7', '8', '9', ':', ';', '<', '=',
@@ -67,17 +68,12 @@ namespace
                 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
                 'z', '{', '|', '}', '~'
             } ;
-            std::array<std::string, 256> magic_ascii ;
-            magic_ascii[' '] = "space" ;
-            magic_ascii['-'] = "hbar" ;
-            magic_ascii['>'] = "gt" ;
-            magic_ascii['<'] = "lt" ;
 
-            for(auto c : data) {
+            for(auto c : printable_ascii) {
                 auto res = VkKeyScanA(c) ;
 
-                auto keycode = static_cast<unsigned short>(res & 0xff) ;
-                auto shifted = (res & 0x0100) != 0 ;
+                auto keycode = static_cast<unsigned char>(res & 0x00ff) ;
+                auto shifted = (res & 0x0100) != 0x0000 ;
 
                 if(shifted) {
                     s_a2c[c] = keycode ;
@@ -98,7 +94,6 @@ namespace
             togglable[KEYCODE_IME]      = true ;
 
             std::array<unsigned char, 256> p2r ;
-            std::array<bool, 256> represent ;
             p2r[KEYCODE_LSHIFT]  = KEYCODE_SHIFT ;
             p2r[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
             p2r[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
@@ -112,11 +107,11 @@ namespace
             p2r[KEYCODE_FROM_EN] = KEYCODE_IME ;
             p2r[KEYCODE_TO_JP]   = KEYCODE_IME ;
 
-            for(unsigned char i = 1 ; i < 255 ; i ++) {
-                if(auto r = p2r[i]) {
-                    represent[r] = true ;
-                }
-            }
+            std::array<unsigned char, 256> r2p ;
+            r2p[KEYCODE_SHIFT] = KEYCODE_LSHIFT ;
+            r2p[KEYCODE_CTRL]  = KEYCODE_LCTRL ;
+            r2p[KEYCODE_ALT]   = KEYCODE_LALT ;
+            r2p[KEYCODE_IME]   = KEYCODE_FROM_EN ;
 
             const std::unordered_map<std::string, unsigned char> n2c {
                 {"ime",         KEYCODE_IME},
@@ -215,6 +210,12 @@ namespace
                 c2ns[c].insert(n) ;
             }
 
+            std::array<std::string, 256> magic_ascii ;
+            magic_ascii[' '] = "space" ;
+            magic_ascii['-'] = "hbar" ;
+            magic_ascii['>'] = "gt" ;
+            magic_ascii['<'] = "lt" ;
+
             for(unsigned short keycode = 0 ; keycode < 256 ; keycode ++) {
                 auto code = keycode ;
 
@@ -222,55 +223,66 @@ namespace
                     code |= CodeMask::TOGGLE ;
                 }
 
-                if(represent[keycode]) {
+                if(r2p[keycode]) {
                     code |= CodeMask::UNREAL ;
                 }
 
-                if(KEYCODE_0 <= code && code <= KEYCODE_9) {
-                    code |= CodeMask::NUMBER ;
+                auto nameset = c2ns[keycode] ;
+                if(!nameset.empty()) {  // Non-ascii code
+                    key2code_[keycode] = code ;
+
+                    std::size_t maxlen = 0 ;
+                    std::string longest ;
+                    for(const auto& name : nameset) {
+                        name2code_.emplace(name, code) ;
+
+                        if(name.length() > maxlen) {
+                            maxlen = name.length() ;
+                            longest = name ;
+                        }
+                    }
+                    code2name_[code] = longest ;
                 }
 
-                char ascii = 0 ;
-                if(c2a[keycode]) {
-                    ascii = c2a[keycode] ;
-                }
-                else if(s_c2a[keycode]) {
-                    code |= CodeMask::SHIFT ;
-                    ascii = s_c2a[keycode] ;
-                }
+                auto add_ascii = [this, &magic_ascii](auto code, auto ascii) {
+                    if('0' <= ascii && ascii <= '9') {
+                        code |= CodeMask::NUMBER ;
+                    }
 
-                key2code_[keycode] = code ;
+                    key2code_[code & CodeMask::CODE] = code ;
 
-                if(ascii) {
                     ascii2code_[ascii] = code ;
                     code2ascii_[code] = ascii ;
 
                     auto name = magic_ascii[ascii] ;
-                    if(name.empty()) {
-                        char s[] = {ascii, '\0'} ;
-                        name = s ;
-                        std::cout << name << std::endl ;
+                    if(!name.empty()) {
+                        name2code_.emplace(name, code) ;
                     }
-                    code2name_[code] = name ;
-                    name2code_.emplace(name, code) ;
+
+                    char as[] = {ascii, '\0'} ;
+                    code2name_[code] = as ;
+                } ;
+
+                // If there are two shift-ascii and ascii,
+                // ascii will be registered with priority.
+                if(auto s_ascii = s_c2a[keycode]) {
+                    add_ascii(code | CodeMask::SHIFT, s_ascii) ;
                 }
-                else {
-                    auto nameset = c2ns[keycode] ;
-                    if(!nameset.empty()) {
-                        std::size_t maxlen = 0 ;
-                        std::string longest ;
-                        for(const auto& name : nameset) {
-                            code2name_[code] = name ;
+                if(auto ascii = c2a[keycode]) {
+                    add_ascii(code, ascii) ;
+                }
 
-                            if(name.length() > maxlen) {
-                                maxlen = name.length() ;
-                                longest = name ;
-                            }
-                        }
+            }
 
-                        code2name_[code] = longest ;
-                        name2code_.emplace(longest, code) ;
-                    }
+            for(unsigned short keycode = 0 ; keycode < 256 ; keycode ++) {
+                auto code = key2code_[keycode] ;
+
+                if(auto rep_keycode = p2r[keycode]) {
+                    code2repre_[code] = key2code_[rep_keycode] ;
+                }
+
+                if(auto phy_keycode = r2p[keycode]) {
+                    code2physial_[code] = key2code_[phy_keycode] ;
                 }
             }
         }
@@ -308,6 +320,22 @@ namespace vind
         : code_(KeyCodeTable::get_instance().key2code_[keycode])
         {}
 
+        KeyCode::KeyCode(int keycode)
+        : KeyCode(static_cast<unsigned char>(keycode))
+        {}
+
+        KeyCode::KeyCode(const std::string& name, bool prefer_ascii)
+        : code_(0)
+        {
+            auto& table = KeyCodeTable::get_instance() ;
+            if(prefer_ascii && name.length() == 1) {
+                code_ = table.ascii2code_[name[0]] ;
+            }
+            else {
+                code_ = table.name2code_.at(util::A2a(name)) ;
+            }
+        }
+
         KeyCode::KeyCode(unsigned short code)
         : code_(code)
         {}
@@ -317,7 +345,11 @@ namespace vind
         }
 
         int KeyCode::to_number() const noexcept {
-            return get() - KEYCODE_0 ;
+            return to_code() - KEYCODE_0 ;
+        }
+
+        unsigned char KeyCode::to_code() const noexcept {
+            return static_cast<unsigned char>(code_ & CodeMask::CODE) ;
         }
 
         KeyCode KeyCode::to_representative() const noexcept {
@@ -348,16 +380,12 @@ namespace vind
             return static_cast<bool>(code_ & CodeMask::TOGGLE) ;
         }
 
-        bool KeyCode::has_code() const noexcept {
-            return code_ != 0 ;
+        bool KeyCode::empty() const noexcept {
+            return code_ == 0 ;
         }
 
         const std::string& KeyCode::name() const noexcept {
             return KeyCodeTable::get_instance().code2name_[code_] ;
-        }
-
-        unsigned char KeyCode::get() const noexcept {
-            return static_cast<unsigned char>(code_ & CodeMask::CODE) ;
         }
 
         KeyCode::operator bool() const noexcept {
@@ -385,7 +413,47 @@ namespace vind
         }
 
         bool KeyCode::operator!() const noexcept {
-            return !has_code() ;
+            return code_ == 0 ;
+        }
+
+        bool KeyCode::operator==(const KeyCode& rhs) const noexcept {
+            return code_ == rhs.code_ ;
+        }
+        bool KeyCode::operator==(KeyCode&& rhs) const noexcept {
+            return code_ == rhs.code_ ;
+        }
+
+        bool KeyCode::operator==(char rhs) const noexcept {
+            return to_ascii() == rhs ;
+        }
+        bool KeyCode::operator==(unsigned char rhs) const noexcept {
+            return to_code() == rhs ;
+        }
+        bool KeyCode::operator==(const std::string& rhs) const noexcept {
+            return name() == rhs ;
+        }
+        bool KeyCode::operator==(const char* rhs) const noexcept {
+            return name() == rhs ;
+        }
+
+        bool KeyCode::operator!=(const KeyCode& rhs) const noexcept {
+            return code_ != rhs.code_ ;
+        }
+        bool KeyCode::operator!=(KeyCode&& rhs) const noexcept {
+            return code_ != rhs.code_ ;
+        }
+
+        bool KeyCode::operator!=(char rhs) const noexcept {
+            return to_ascii() != rhs ;
+        }
+        bool KeyCode::operator!=(unsigned char rhs) const noexcept {
+            return to_code() != rhs ;
+        }
+        bool KeyCode::operator!=(const std::string& rhs) const noexcept {
+            return name() != rhs ;
+        }
+        bool KeyCode::operator!=(const char* rhs) const noexcept {
+            return name() != rhs ;
         }
     }
 }

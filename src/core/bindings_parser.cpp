@@ -1,15 +1,15 @@
 #include "bindings_parser.hpp"
 
-#include <algorithm>
-#include <sstream>
-#include <string>
-
 #include "err_logger.hpp"
-
-#include "keycodecvt.hpp"
+#include "keycode.hpp"
+#include "keycode_def.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
+
+#include <algorithm>
+#include <sstream>
+#include <string>
 
 #include "mode.hpp"
 
@@ -26,14 +26,12 @@ namespace vind
         //     'A' -> {KEYCODE_SHIFT, KEYCODE_A}
         //
         KeySet parse_pure_one_character_command(char onechar) {
-            //ascii
-            if(auto keycode = get_keycode(onechar)) { //ex) a
-                return KeySet{keycode} ;
+            core::KeyCode keycode(onechar) ;
+            if(keycode.is_shifted()) {  //ex) A (A is divided to a and SHIFT)
+                return KeySet{core::KeyCode(KEYCODE_SHIFT), keycode} ;
             }
-
-            //shifted ascii
-            if(auto keycode = get_shifted_keycode(onechar)) { //ex) A (A is divided to a and SHIFT)
-                return KeySet{KEYCODE_SHIFT, keycode} ;
+            else {  //ex) a
+                return KeySet{keycode} ;
             }
             throw RUNTIME_EXCEPT(std::string("The character '") + onechar + "' is invalid ascii key code.") ;
         }
@@ -70,12 +68,8 @@ namespace vind
                 // regard as a specific system keycode.
                 auto lowercode = util::A2a(*code) ;
 
-                if(auto keycode = get_keycode_of_magic(lowercode)) {
-                    keyset.push_back(keycode) ;
-                    continue ;
-                }
-
-                if(auto keycode = get_sys_keycode(lowercode)) {
+                core::KeyCode keycode(lowercode, PREFER_SYSTEM_CODE) ;
+                if(!keycode.empty()) {
                     keyset.push_back(keycode) ;
                     continue ;
                 }
@@ -115,17 +109,6 @@ namespace vind
             return cmd ;
         }
 
-        Mode parse_string_modecode(
-                const std::string& modestr,
-                std::string root) {
-            if(modestr.front() == '<' && modestr.back() == '>') {
-                auto inside = util::A2a(modestr.substr(1, modestr.size() - 2)) ;
-                auto prefix = inside.substr(0, inside.find(root)) ;
-                return parse_mode_prefix(prefix) ;
-            }
-            return Mode::UNDEFINED ;
-        }
-
 #ifdef DEBUG
         std::string print(const KeySet& keyset) {
             if(keyset.empty()) {
@@ -135,12 +118,12 @@ namespace vind
             std::stringstream ss ;
 
             if(keyset.size() == 1) {
-                auto name = get_keycode_name(keyset.front()) ;
-                if(name.size() == 1) {
-                    ss << name ;
+                auto& keyset_f = keyset.front() ;
+                if(keyset_f.is_ascii()) {
+                    ss << keyset_f ;
                 }
                 else {
-                    ss << "<" << name << ">" ;
+                    ss << "<" << keyset_f << ">" ;
                 }
             }
             else {
@@ -149,7 +132,7 @@ namespace vind
                     if(itr != keyset.cbegin()) {
                         ss << "-" ;
                     }
-                    ss << get_keycode_name(*itr) ;
+                    ss << *itr ;
                 }
                 ss << ">" ;
             }

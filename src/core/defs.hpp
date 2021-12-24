@@ -19,10 +19,6 @@ namespace vind
         RECONSTRUCT = 0b0000'0010
     } ;
 
-    using KeySet = std::vector<KeyCode> ;
-    using Command = std::vector<KeySet> ;
-    using CommandList = std::vector<Command> ;
-
     using ParsedStringCmd = std::vector<std::string> ;
 
     template <typename T>
@@ -33,7 +29,7 @@ namespace vind
 
     using ParsedStringBindingLists = FuncMap<ModeArray<ParsedStringCmd>> ;
 
-    using ParsedBindingTable = ModeArray<FuncMap<std::shared_ptr<CommandList>>> ;
+    // using ParsedBindingTable = ModeArray<FuncMap<std::shared_ptr<CommandList>>> ;
 
     constexpr auto MAP_DEFINE_KEYWORD_IN_JSON = "def" ;
 }

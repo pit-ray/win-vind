@@ -1,7 +1,8 @@
 #include "ec_hints.hpp"
 
+#include "core/keycode.hpp"
 #include "core/keycode_def.hpp"
-#include "core/keycodecvt.hpp"
+#include "util/string.hpp"
 
 #include <array>
 #include <stdexcept>
@@ -10,7 +11,7 @@
 namespace
 {
     using namespace vind ;
-    constexpr std::array<KeyCode, 26> gcx_labels = {
+    constexpr std::array<unsigned char, 26> gcx_labels = {
         KEYCODE_A, KEYCODE_S, KEYCODE_D, KEYCODE_G, KEYCODE_H,
         KEYCODE_K, KEYCODE_L, KEYCODE_Q, KEYCODE_W, KEYCODE_E,
         KEYCODE_R, KEYCODE_T, KEYCODE_Y, KEYCODE_U, KEYCODE_I,
@@ -29,7 +30,7 @@ namespace vind
             if(target_count <= gcx_labels.size()) {
                 hints.resize(target_count) ;
                 for(std::size_t i = 0 ; i < target_count ; i ++) {
-                    hints[i].push_back(gcx_labels[i]) ;
+                    hints[i].emplace_back(gcx_labels[i]) ;
                 }
                 return ;
             }
@@ -42,15 +43,16 @@ namespace vind
                 std::size_t idx = 0 ;
                 auto l2_num = target_count / gcx_labels.size() + 1 ;
                 for(auto i = l2_num ; i < gcx_labels.size() ; i ++) {
-                    hints[idx].push_back(gcx_labels[i]) ;
+                    hints[idx].emplace_back(gcx_labels[i]) ;
                     idx ++ ;
                 }
 
                 for(std::size_t j = 0 ; j < l2_num ; j ++) {
                     try {
                         for(std::size_t  i = 0 ; i < gcx_labels.size() ; i ++) {
-                            hints.at(idx).push_back(gcx_labels[j]) ;
-                            hints[idx].push_back(gcx_labels[i]) ;
+                            auto& hint =  hints.at(idx) ;
+                            hint.emplace_back(gcx_labels[j]) ;
+                            hint.emplace_back(gcx_labels[i]) ;
                             idx ++ ;
                         }
                     }
@@ -72,8 +74,9 @@ namespace vind
             std::size_t idx = 0 ;
             for(std::size_t j = l3_num ; j < gcx_labels.size() ; j ++) {
                 for(std::size_t i = 0 ; i < gcx_labels.size() ; i ++) {
-                    hints[idx].push_back(gcx_labels[j]) ;
-                    hints[idx].push_back(gcx_labels[i]) ;
+                    auto& hint = hints[idx] ;
+                    hint.emplace_back(gcx_labels[j]) ;
+                    hint.emplace_back(gcx_labels[i]) ;
                     idx ++ ;
                 }
             }
@@ -82,9 +85,10 @@ namespace vind
                 try {
                     for(std::size_t j = 0 ; j < gcx_labels.size() ; j ++) {
                         for(std::size_t i = 0 ; i < gcx_labels.size() ; i ++) {
-                            hints.at(idx).push_back(gcx_labels[k]) ;
-                            hints[idx].push_back(gcx_labels[j]) ;
-                            hints[idx].push_back(gcx_labels[i]) ;
+                            auto& hint = hints.at(idx) ;
+                            hint.emplace_back(gcx_labels[k]) ;
+                            hint.emplace_back(gcx_labels[j]) ;
+                            hint.emplace_back(gcx_labels[i]) ;
                             idx ++ ;
                         }
                     }
@@ -99,9 +103,9 @@ namespace vind
             for(std::size_t i = 0 ; i < hints.size() ; i ++) {
                 std::string str ;
                 for(auto& key : hints[i]) {
-                    str.push_back(core::get_shifted_ascii(key)) ;
+                    str.push_back(key.to_ascii()) ;
                 }
-                hint_strings[i] = std::move(str) ;
+                hint_strings[i] = util::a2A(str) ;
             }
         }
     }

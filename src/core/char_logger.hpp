@@ -2,6 +2,7 @@
 #define _CHAR_LOGGER_HPP
 
 #include "key_logger_base.hpp"
+#include "keycode.hpp"
 #include <initializer_list>
 #include <set>
 

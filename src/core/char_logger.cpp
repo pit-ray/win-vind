@@ -2,8 +2,8 @@
 
 #include "core/inputgate.hpp"
 #include "key_logger_base.hpp"
+#include "keycode.hpp"
 #include "keycode_def.hpp"
-#include "keycodecvt.hpp"
 #include "util/keystroke_repeater.hpp"
 
 #if defined(DEBUG)
@@ -14,18 +14,9 @@ namespace
 {
     using namespace vind ;
     bool is_including_ascii(const core::KeyLog& log) {
-        if(log.is_containing(KEYCODE_SHIFT)) {
-            for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
-                if(core::get_shifted_ascii(*itr)) {
-                    return true ;
-                }
-            }
-        }
-        else {
-            for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
-                if(core::get_ascii(*itr)) {
-                    return true ;
-                }
+        for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
+            if(itr->is_ascii()) {
+                return true ;
             }
         }
         return false ;
@@ -128,7 +119,7 @@ namespace vind
                 not_ascii.insert(KEYCODE_SHIFT) ;
 
                 for(const auto& key : log) {
-                    if(get_shifted_ascii(key)) {
+                    if(key.is_ascii()) {
                         logging(KeyLog{KEYCODE_SHIFT,key}) ;
                     }
                     else {
@@ -138,7 +129,7 @@ namespace vind
             }
             else {
                 for(const auto& key : log) {
-                    if(get_ascii(key)) {
+                    if(key.is_ascii()) {
                         logging(KeyLog{key}) ;
                     }
                     else {
@@ -229,14 +220,16 @@ namespace vind
                 if(itr->is_containing(KEYCODE_SHIFT)) {
                     //shifted ascii
                     for(const auto keycode : *itr) {
-                        auto c = get_shifted_ascii(keycode) ;
-                        if(c != 0) str.push_back(c) ;
+                        if(auto c = keycode.to_shifted_ascii()) {
+                            str.push_back(c) ;
+                        }
                     }
                 }
                 else {
                     for(const auto keycode : *itr) {
-                        auto c = get_ascii(keycode) ;
-                        if(c != 0) str.push_back(c) ;
+                        if(auto c = keycode.to_ascii()) {
+                            str.push_back(c) ;
+                        }
                     }
                 }
             }

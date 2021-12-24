@@ -9,6 +9,7 @@
 #include "bind/easyclick/ui_scanner.hpp"
 #include "bind/safe_repeater.hpp"
 #include "core/inputgate.hpp"
+#include "core/keycode.hpp"
 #include "core/keycode_def.hpp"
 #include "core/ntype_logger.hpp"
 #include "core/settable.hpp"
@@ -161,7 +162,7 @@ namespace vind
         }
 
         void EasyClickCore::create_matching_loop(
-                KeyCode sendkey,
+                core::KeyCode sendkey,
                 unsigned int repeat_num) const {
             if(pimpl->positions_.empty() || pimpl->hints_.empty()) {
                 return ;
@@ -207,7 +208,7 @@ namespace vind
 
             if(auto pos = ft.get()) {
                 if(SetCursorPos(pos->x(), pos->y())) {
-                    safe_for(repeat_num, [sendkey] {
+                    safe_for(repeat_num, [&sendkey] {
                         util::click(sendkey) ;
                     }) ;
                 }
@@ -215,7 +216,7 @@ namespace vind
 
             //Release all keys in order to avoid the next matching right after.
             auto& igate = core::InputGate::get_instance() ;
-            for(KeyCode key : igate.pressed_list()) {
+            for(const auto& key : igate.pressed_list()) {
                 igate.release_virtually(key) ;
             }
         }

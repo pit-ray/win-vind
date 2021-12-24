@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "core/keycode.hpp"
 #include "core/keycode_def.hpp"
 
 namespace vind
@@ -28,7 +29,7 @@ namespace vind
 
             void scan_ui_objects(HWND hwnd) const ;
             void create_matching_loop(
-                    KeyCode sendkey=KEYCODE_UNDEFINED,
+                    core::KeyCode sendkey=KEYCODE_UNDEFINED,
                     unsigned int repeat_num=1) const ;
 
             void reconstruct() ;

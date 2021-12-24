@@ -1,7 +1,7 @@
 #ifndef _MAPTABLE_HPP
 #define _MAPTABLE_HPP
 
-#include "defs.hpp"
+#include "keycode.hpp"
 #include "mode.hpp"
 
 #include <memory>

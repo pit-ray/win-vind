@@ -22,10 +22,11 @@ namespace
         CODE   = 0b0000'0000'1111'1111,
 
         FLAG   = 0b1111'1111'0000'0000,
-        SHIFT  = 0b0000'0001'0000'0000,
-        TOGGLE = 0b0000'0010'0000'0000,
-        UNREAL = 0b0000'0100'0000'0000,
-        NUMBER = 0b0000'1000'0000'0000,
+        ASCII  = 0b1000'0000'0000'0000,
+        NUMBER = 0b0100'0000'0000'0000,
+        SHIFT  = 0b0010'0000'0000'0000,
+        UNREAL = 0b0001'0000'0000'0000,
+        TOGGLE = 0b0000'1000'0000'0000,
     } ;
 
     class KeyCodeTable {
@@ -34,6 +35,7 @@ namespace
 
         std::array<unsigned short, 256> ascii2code_ ;
         std::array<char, 65535> code2ascii_ ;
+        std::array<char, 65535> code2shascii_ ;
 
         std::array<std::string, 65535> code2name_ ;
         std::unordered_map<std::string, unsigned short> name2code_ ;
@@ -46,6 +48,7 @@ namespace
         : key2code_(),
           ascii2code_(),
           code2ascii_(),
+          code2shascii_(),
           code2name_(),
           name2code_(),
           code2repre_(),
@@ -219,16 +222,16 @@ namespace
             for(unsigned short keycode = 0 ; keycode < 256 ; keycode ++) {
                 auto code = keycode ;
 
-                if(togglable[keycode]) {
-                    code |= CodeMask::TOGGLE ;
-                }
-
-                if(r2p[keycode]) {
-                    code |= CodeMask::UNREAL ;
-                }
-
                 auto nameset = c2ns[keycode] ;
                 if(!nameset.empty()) {  // Non-ascii code
+                    if(togglable[keycode]) {
+                        code |= CodeMask::TOGGLE ;
+                    }
+
+                    if(r2p[keycode]) {
+                        code |= CodeMask::UNREAL ;
+                    }
+
                     key2code_[keycode] = code ;
 
                     std::size_t maxlen = 0 ;
@@ -242,36 +245,57 @@ namespace
                         }
                     }
                     code2name_[code] = longest ;
+
+                    continue ;
                 }
 
-                auto add_ascii = [this, &magic_ascii](auto code, auto ascii) {
+                code |= CodeMask::ASCII ;
+
+                auto add_ascii = [this, &magic_ascii](auto flagged_code, auto ascii) {
+                    // If there are two shift-ascii and ascii,
+                    // ascii will be registered with priority.
+                    key2code_[flagged_code & CodeMask::CODE] = flagged_code ;
+
+                    ascii2code_[ascii] = flagged_code ;
+
+                    auto name = magic_ascii[ascii] ;
+                    if(!name.empty()) {
+                        name2code_.emplace(name, flagged_code) ;
+                    }
+
+                    char as[] = {ascii, '\0'} ;
+                    code2name_[flagged_code] = as ;
+                } ;
+
+                auto s_ascii = s_c2a[keycode] ;
+                auto ascii = c2a[keycode] ;
+
+                if(s_ascii) {
+                    auto s_code = code | CodeMask::SHIFT ;
+                    if('0' <= s_ascii && s_ascii <= '9') {
+                        s_code |= CodeMask::NUMBER ;
+                    }
+
+                    add_ascii(s_code, s_ascii) ;
+                    code2shascii_[s_code] = s_ascii ;
+
+                    if(ascii) {
+                        code2ascii_[s_code] = ascii ;
+                    }
+                }
+
+                if(ascii) {
                     if('0' <= ascii && ascii <= '9') {
                         code |= CodeMask::NUMBER ;
                     }
 
-                    key2code_[code & CodeMask::CODE] = code ;
-
-                    ascii2code_[ascii] = code ;
+                    add_ascii(code, ascii) ;
                     code2ascii_[code] = ascii ;
 
-                    auto name = magic_ascii[ascii] ;
-                    if(!name.empty()) {
-                        name2code_.emplace(name, code) ;
+                    if(s_ascii) {
+                        code2shascii_[code] = s_ascii ;
                     }
-
-                    char as[] = {ascii, '\0'} ;
-                    code2name_[code] = as ;
-                } ;
-
-                // If there are two shift-ascii and ascii,
-                // ascii will be registered with priority.
-                if(auto s_ascii = s_c2a[keycode]) {
-                    add_ascii(code | CodeMask::SHIFT, s_ascii) ;
                 }
-                if(auto ascii = c2a[keycode]) {
-                    add_ascii(code, ascii) ;
-                }
-
             }
 
             for(unsigned short keycode = 0 ; keycode < 256 ; keycode ++) {
@@ -283,6 +307,9 @@ namespace
 
                 if(auto phy_keycode = r2p[keycode]) {
                     code2physial_[code] = key2code_[phy_keycode] ;
+                }
+                else {
+                    code2physial_[code] = code ;
                 }
             }
         }
@@ -340,8 +367,18 @@ namespace vind
         : code_(code)
         {}
 
+        char KeyCode::to_auto_ascii() const noexcept {
+            auto& table = KeyCodeTable::get_instance() ;
+            return is_shifted() ? \
+                table.code2shascii_[code_] : table.code2ascii_[code_] ;
+        }
+
         char KeyCode::to_ascii() const noexcept {
             return KeyCodeTable::get_instance().code2ascii_[code_] ;
+        }
+
+        char KeyCode::to_shifted_ascii() const noexcept {
+            return KeyCodeTable::get_instance().code2shascii_[code_] ;
         }
 
         int KeyCode::to_number() const noexcept {
@@ -361,7 +398,7 @@ namespace vind
         }
 
         bool KeyCode::is_ascii() const noexcept {
-            return KeyCodeTable::get_instance().code2ascii_[code_] != 0 ;
+            return static_cast<bool>(code_ & CodeMask::ASCII) ;
         }
 
         bool KeyCode::is_shifted() const noexcept {
@@ -388,12 +425,16 @@ namespace vind
             return KeyCodeTable::get_instance().code2name_[code_] ;
         }
 
+        unsigned short KeyCode::get() const noexcept {
+            return code_ ;
+        }
+
         KeyCode::operator bool() const noexcept {
             return code_ != 0 ;
         }
 
         KeyCode::operator char() const noexcept {
-            return to_ascii() ;
+            return to_auto_ascii() ;
         }
 
         KeyCode::operator unsigned char() const noexcept {
@@ -414,6 +455,19 @@ namespace vind
 
         bool KeyCode::operator!() const noexcept {
             return code_ == 0 ;
+        }
+
+        bool KeyCode::operator<(const KeyCode& rhs) const noexcept {
+            return code_ < rhs.code_ ;
+        }
+        bool KeyCode::operator>(const KeyCode& rhs) const noexcept {
+            return code_ > rhs.code_ ;
+        }
+        bool KeyCode::operator<=(const KeyCode& rhs) const noexcept {
+            return code_ <= rhs.code_ ;
+        }
+        bool KeyCode::operator>=(const KeyCode& rhs) const noexcept {
+            return code_ >= rhs.code_ ;
         }
 
         bool KeyCode::operator==(const KeyCode& rhs) const noexcept {

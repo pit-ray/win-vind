@@ -106,32 +106,45 @@ TEST_SUITE("core/keycode") {
         CHECK_FALSE(k12.is_toggle()) ;
     }
 
-    TEST_CASE("KeyCode::to_ascii") {
+    TEST_CASE("KeyCode::to_auto_ascii, KeyCode::to_ascii, KeyCode::to_shifted_ascii") {
         char c1 = 'A' ;
         core::KeyCode k1(c1) ;
-        CHECK_EQ(k1.to_ascii(), c1) ;
+        CHECK_EQ(k1.to_auto_ascii(), 'A') ;
+        CHECK_EQ(k1.to_ascii(), 'a') ;
+        CHECK_EQ(k1.to_shifted_ascii(), 'A') ;
 
         char c2 = 'b' ;
         core::KeyCode k2(c2) ;
-        CHECK_EQ(k2.to_ascii(), c2) ;
+        CHECK_EQ(k2.to_auto_ascii(), 'b') ;
+        CHECK_EQ(k2.to_ascii(), 'b') ;
+        CHECK_EQ(k2.to_shifted_ascii(), 'B') ;
 
         char c3 = '=' ;
         core::KeyCode k3(c3) ;
-        CHECK_EQ(k3.to_ascii(), c3) ;
+        CHECK_EQ(k3.to_auto_ascii(), '=') ;
 
         char c4 = '\\' ;
         core::KeyCode k4(c4) ;
-        CHECK_EQ(k4.to_ascii(), c4) ;
+        CHECK_EQ(k4.to_auto_ascii(), c4) ;
 
         char c5 = '5' ;
         core::KeyCode k5(c5) ;
-        CHECK_EQ(k5.to_ascii(), c5) ;
+        CHECK_EQ(k5.to_auto_ascii(), c5) ;
 
         core::KeyCode k6(KEYCODE_SPACE) ;
+        CHECK_EQ(k6.to_auto_ascii(), ' ') ;
         CHECK_EQ(k6.to_ascii(), ' ') ;
+        CHECK_EQ(k6.to_shifted_ascii(), 0) ;
 
         core::KeyCode k7(KEYCODE_ESC) ;
+        CHECK_EQ(k7.to_auto_ascii(), 0) ;
         CHECK_EQ(k7.to_ascii(), 0) ;
+        CHECK_EQ(k7.to_shifted_ascii(), 0) ;
+
+        core::KeyCode k8("space") ;
+        CHECK_EQ(k8.to_auto_ascii(), ' ') ;
+        CHECK_EQ(k8.to_ascii(), ' ') ;
+        CHECK_EQ(k8.to_shifted_ascii(), 0) ;
     }
 
     TEST_CASE("KeyCode::to_number") {
@@ -164,12 +177,12 @@ TEST_SUITE("core/keycode") {
         core::KeyCode k1(KEYCODE_LSHIFT) ;
         core::KeyCode expect1(KEYCODE_SHIFT) ;
         CHECK_EQ(k1.to_representative(), expect1) ;
-        CHECK(k1.to_physical().empty()) ;
+        CHECK_EQ(k1.to_physical(), k1) ;
 
         core::KeyCode k2(KEYCODE_RCTRL) ;
         core::KeyCode expect2(KEYCODE_CTRL) ;
         CHECK_EQ(k2.to_representative(), expect2) ;
-        CHECK(k2.to_physical().empty()) ;
+        CHECK_EQ(k2.to_physical(), k2) ;
 
         core::KeyCode k3(KEYCODE_SHIFT) ;
         core::KeyCode expect3(KEYCODE_LSHIFT) ;

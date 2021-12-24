@@ -6,7 +6,7 @@
 #include "err_logger.hpp"
 #include "inputgate.hpp"
 #include "key_logger_base.hpp"
-#include "keycodecvt.hpp"
+#include "keycode.hpp"
 #include "logger_parser.hpp"
 #include "mode.hpp"
 #include "util/keystroke_repeater.hpp"
@@ -17,18 +17,14 @@
 
 namespace
 {
-    using namespace vind ;
+    using namespace vind::core ;
 
     template <typename KeyLogType>
-    core::KeyLog extract_numbers(const core::KeyLog& log, KeyLogType&& ignore_keys) {
-        auto to_ascii_func = [&log] (auto&& keycode) {
-            if(log.is_containing(KEYCODE_SHIFT))
-                return core::get_shifted_ascii(keycode) ;
-            else
-                return core::get_ascii(keycode) ;
-        } ;
+    KeyLog extract_numbers(
+            const KeyLog& log,
+            KeyLogType&& ignore_keys) {
 
-        core::KeyLog::Data nums{} ;
+        KeyLog::Data nums{} ;
         for(const KeyCode& keycode : log) {
             // The repeat number isn't begun with zero.
             // 01 or 02 are invalid syntax.
@@ -36,14 +32,22 @@ namespace
                 continue ;
             }
 
+            if(!keycode.is_ascii()) {
+                continue ;
+            }
+
             // Once convert inputted keycode to ASCII to distinguish if
             // a numeric keycode is typed in order to write a number. 
-            if(core::is_number_ascii(to_ascii_func(keycode))) {
+            KeyCode rege_code(
+                    log.is_containing(KEYCODE_SHIFT) ? \
+                    keycode.to_shifted_ascii() : keycode.to_ascii()) ;
+
+            if(rege_code.is_number()) {
                 nums.insert(keycode) ;
             }
         }
 
-        return core::KeyLog(nums) ;
+        return KeyLog(nums) ;
     }
 }
 
@@ -74,7 +78,7 @@ namespace vind
             LoggerStateRawType state_ = LoggerState::INITIAL ;
 
             void concatenate_repeating_number(KeyCode keycode) {
-                auto num = to_number<unsigned int>(keycode) ;
+                auto num = static_cast<unsigned int>(keycode.to_number()) ;
                 constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
                 if(head_num_ < max) {
                     head_num_ = head_num_ * 10 + num ;
@@ -107,7 +111,8 @@ namespace vind
 
         int NTypeLogger::transition_to_parsing_num_state(const KeyLog& num_only_log) {
             pimpl->ksr_.reset() ;
-            pimpl->head_num_ = to_number<decltype(pimpl->head_num_)>(*num_only_log.cbegin()) ;
+            pimpl->head_num_ = static_cast<decltype(pimpl->head_num_)>( \
+                    num_only_log.cbegin()->to_number()) ;
             pimpl->state_ = Impl::LoggerState::PARSING_NUM ;
             return -1 ;
         }

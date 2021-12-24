@@ -4,13 +4,14 @@
 #include <string>
 #include <vector>
 
+#include "core/keycode.hpp"
 #include "core/keycode_def.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        using Hint = std::vector<KeyCode> ;
+        using Hint = std::vector<core::KeyCode> ;
 
         void assign_identifier_hints(
                 std::size_t target_count,

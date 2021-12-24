@@ -8,7 +8,6 @@
 #include "key_log.hpp"
 #include "key_logger_base.hpp"
 #include "keycode_def.hpp"
-#include "keycodecvt.hpp"
 #include "logger_parser_mgr.hpp"
 #include "maptable.hpp"
 #include "mode.hpp"
@@ -116,7 +115,7 @@ namespace
      * If a map is mapping to itself recursively, it will remove the map.
      */
     void solve_recursive_key2keyset_mapping(Key2KeysetMap& key2keyset_table) {
-        for(KeyCode srckey = 1 ; srckey < 255 ; srckey ++) {
+        for(unsigned char srckey = 1 ; srckey < 255 ; srckey ++) {
             auto dst = key2keyset_table[srckey] ;
             if(dst.empty()) {
                 continue ;
@@ -131,7 +130,7 @@ namespace
 
                 KeySet mapped {} ;
                 for(auto itr = dst.begin() ; itr != dst.end() ;) {
-                    auto buf = key2keyset_table[*itr] ;
+                    auto buf = key2keyset_table[itr->to_code()] ;
                     if(!buf.empty()) {
                         itr = dst.erase(itr) ;
                         mapped.insert(mapped.begin(), buf.begin(), buf.end()) ;
@@ -165,7 +164,7 @@ namespace
         for(const auto& keyset : srccmd) {
             KeySet replaced_set{} ;
             for(const auto& key : keyset) {
-                auto& mapset = key2keyset_table[key] ;
+                auto& mapset = key2keyset_table[key.to_code()] ;
                 if(!mapset.empty()) {
                     replaced_set.insert(
                             replaced_set.begin(),
@@ -351,10 +350,10 @@ namespace
                         auto trigger_key = trigger_cmd.front().front() ;
                         auto target_keyset = target_cmd.front() ;
 
-                        syncmap_[trigger_key] = KeySet(
+                        syncmap_[trigger_key.to_code()] = KeySet(
                                 target_keyset.begin(), target_keyset.end()) ;
 
-                        map_key2keyset[trigger_key] = std::move(*itr) ;
+                        map_key2keyset[trigger_key.to_code()] = std::move(*itr) ;
                     }
                     else {
                         map_cmd2cmd[itr->in_hash()] = std::move(*itr) ;
@@ -378,11 +377,11 @@ namespace
                     KeySet syskeys{} ;
 
                     for(const auto& key : syncmap_[i]) {
-                        if(get_ascii(key)) {
+                        if(key.to_ascii()) {
                             keys.push_back(key) ;
                         }
                         else {
-                            syskeys.push_back(to_physical(key)) ;
+                            syskeys.push_back(key.to_physical()) ;
                         }
                     }
 
@@ -506,7 +505,7 @@ namespace vind
             }
 
             // prohibit to keep pressing after termination.
-            for(KeyCode i = 1 ; i < 255 ; i ++) {
+            for(unsigned char i = 1 ; i < 255 ; i ++) {
                 if(pimpl->real_state_[i]) {
                     release_keystate(i) ;
                 }
@@ -528,7 +527,7 @@ namespace vind
             auto& self = get_instance() ;
 
             auto kbd = reinterpret_cast<KBDLLHOOKSTRUCT*>(l_param) ;
-            auto code = static_cast<vind::KeyCode>(kbd->vkCode) ;
+            auto code = static_cast<unsigned char>(kbd->vkCode) ;
             if(!(kbd->flags & LLKHF_INJECTED)) {
                 // The message is not generated with SendInput.
                 auto state = !(w_param & KEYUP_MASK) ;
@@ -536,15 +535,17 @@ namespace vind
                 self.pimpl->lowlevel_state_[code] = state ;
                 self.pimpl->timestamps_[code] = std::chrono::system_clock::now() ;
 
-                if(auto repcode = vind::core::get_representative_key(code)) {
-                    if(self.map_syncstate(repcode, state) || self.map_syncstate(code, state)) {
+                core::KeyCode keycode(code) ;
+                if(auto repcode = keycode.to_representative()) {
+                    if(self.map_syncstate(repcode, state) || \
+                            self.map_syncstate(keycode, state)) {
                         return 1 ;
                     }
 
-                    self.pimpl->real_state_[repcode] = state ;
-                    self.pimpl->state_[repcode]      = state ;
+                    self.pimpl->real_state_[repcode.to_code()] = state ;
+                    self.pimpl->state_[repcode.to_code()]      = state ;
                 }
-                else if(self.map_syncstate(code, state)) {
+                else if(self.map_syncstate(keycode, state)) {
                     return 1 ;
                 }
 
@@ -610,34 +611,44 @@ namespace vind
                 return ;
             }
 
-            static auto toggles = vind::core::get_toggle_keys() ;
+            static auto toggles =[] {
+                std::vector<core::KeyCode> buf ;
+                for(unsigned char i = 1 ; i < 255 ; i ++) {
+                    core::KeyCode k(i) ;
+                    if(k.is_toggle()) {
+                        buf.push_back(std::move(k)) ;
+                    }
+                }
+                return buf ;
+            }() ;
+
             for(auto k : toggles) {
-                if(!pimpl->lowlevel_state_[k]) {
+                if(!pimpl->lowlevel_state_[k.to_code()]) {
                     continue ;
                 }
 
                 using namespace std::chrono ;
-                if((system_clock::now() - pimpl->timestamps_[k]) > 515ms) {
+                if((system_clock::now() - pimpl->timestamps_[k.to_code()]) > 515ms) {
                     map_syncstate(k, false) ;
                     release_keystate(k) ;
 
-                    pimpl->real_state_[k] = false ;
-                    pimpl->state_[k] = false ;
-                    pimpl->lowlevel_state_[k] = false ;
+                    pimpl->real_state_[k.to_code()] = false ;
+                    pimpl->state_[k.to_code()] = false ;
+                    pimpl->lowlevel_state_[k.to_code()] = false ;
                 }
             }
         }
 
         bool InputGate::is_pressed(KeyCode keycode) noexcept {
-            return pimpl->state_[keycode] ;
+            return pimpl->state_[keycode.to_code()] ;
         }
         bool InputGate::is_really_pressed(KeyCode keycode) noexcept {
-            return pimpl->real_state_[keycode] ;
+            return pimpl->real_state_[keycode.to_code()] ;
         }
 
         KeyLog InputGate::pressed_list() {
             KeyLog::Data res{} ;
-            for(KeyCode i = 1 ; i < 255 ; i ++) {
+            for(unsigned char i = 1 ; i < 255 ; i ++) {
                 if(is_pressed(i)) {
                     res.insert(i) ;
                 }
@@ -659,40 +670,40 @@ namespace vind
         void InputGate::close_some_ports(
                 std::initializer_list<KeyCode>&& keys) noexcept {
             for(auto k : keys) {
-                pimpl->port_state_[k] = true ;
+                pimpl->port_state_[k.to_code()] = true ;
             }
         }
         void InputGate::close_some_ports(
                 std::initializer_list<KeyCode>::const_iterator begin,
                 std::initializer_list<KeyCode>::const_iterator end) noexcept {
             for(auto itr = begin ; itr != end ; itr ++) {
-                pimpl->port_state_[*itr] = false ;
+                pimpl->port_state_[itr->to_code()] = false ;
             }
         }
 
         void InputGate::close_some_ports(
                 std::vector<KeyCode>&& keys) noexcept {
             for(auto k : keys) {
-                pimpl->port_state_[k] = false ;
+                pimpl->port_state_[k.to_code()] = false ;
             }
         }
         void InputGate::close_some_ports(
                 std::vector<KeyCode>::const_iterator begin,
                 std::vector<KeyCode>::const_iterator end) noexcept {
             for(auto itr = begin ; itr != end ; itr ++) {
-                pimpl->port_state_[*itr] = false ;
+                pimpl->port_state_[itr->to_code()] = false ;
             }
         }
 
         void InputGate::close_some_ports(
                 const KeyLog::Data& keys) noexcept {
             for(auto k : keys) {
-                pimpl->port_state_[k] = false ;
+                pimpl->port_state_[k.to_code()] = false ;
             }
         }
 
         void InputGate::close_port(KeyCode key) noexcept {
-            pimpl->port_state_[key] = false ;
+            pimpl->port_state_[key.to_code()] = false ;
         }
 
         void InputGate::close_all_ports() noexcept {
@@ -704,7 +715,7 @@ namespace vind
 
             //if this function is called by pressed button,
             //it has to send message "KEYUP" to OS (not absorbed).
-            for(KeyCode i = 0 ; i < 255 ; i ++) {
+            for(unsigned char i = 0 ; i < 255 ; i ++) {
                 if(pimpl->state_[i]) {
                     release_keystate(i) ;
                 }
@@ -714,47 +725,47 @@ namespace vind
         void InputGate::open_some_ports(
                 std::initializer_list<KeyCode>&& keys) noexcept {
             for(auto k : keys) {
-                pimpl->port_state_[k] = true ;
+                pimpl->port_state_[k.to_code()] = true ;
             }
         }
         void InputGate::open_some_ports(
                 std::initializer_list<KeyCode>::const_iterator begin,
                 std::initializer_list<KeyCode>::const_iterator end) noexcept {
             for(auto itr = begin ; itr != end ; itr ++) {
-                pimpl->port_state_[*itr] = true ;
+                pimpl->port_state_[itr->to_code()] = true ;
             }
         }
 
         void InputGate::open_some_ports(
                 std::vector<KeyCode>&& keys) noexcept {
             for(auto k : keys) {
-                pimpl->port_state_[k] = true ;
+                pimpl->port_state_[k.to_code()] = true ;
             }
         }
         void InputGate::open_some_ports(
                 std::vector<KeyCode>::const_iterator begin,
                 std::vector<KeyCode>::const_iterator end) noexcept {
             for(auto itr = begin ; itr != end ; itr ++) {
-                pimpl->port_state_[*itr] = true ;
+                pimpl->port_state_[itr->to_code()] = true ;
             }
         }
 
         void InputGate::open_some_ports(
                 const KeyLog::Data& keys) noexcept {
             for(auto k : keys) {
-                pimpl->port_state_[k] = true ;
+                pimpl->port_state_[k.to_code()] = true ;
             }
         }
 
         void InputGate::open_port(KeyCode key) noexcept {
-            pimpl->port_state_[key] = true ;
+            pimpl->port_state_[key.to_code()] = true ;
         }
 
         void InputGate::release_virtually(KeyCode key) noexcept {
-            pimpl->state_[key] = false ;
+            pimpl->state_[key.to_code()] = false ;
         }
         void InputGate::press_virtually(KeyCode key) noexcept {
-            pimpl->state_[key] = true ;
+            pimpl->state_[key.to_code()] = true ;
         }
 
         std::vector<KeyLog> InputGate::map_logger(
@@ -788,7 +799,7 @@ namespace vind
                 bool press_sync_state,
                 Mode mode) {
             auto midx = static_cast<int>(mode) ;
-            auto target = pimpl->mapgate_[midx].syncmap_[hook_key] ;
+            auto target = pimpl->mapgate_[midx].syncmap_[hook_key.to_code()] ;
             if(target.empty()) {
                 return false ;
             }
@@ -843,7 +854,7 @@ namespace vind
 namespace
 {
     bool is_pressed_actually(KeyCode key) noexcept {
-        return GetAsyncKeyState(key) & 0x8000 ;
+        return GetAsyncKeyState(key.to_code()) & 0x8000 ;
     }
 }
 
@@ -852,16 +863,16 @@ namespace vind
     namespace core
     {
         struct ScopedKey::Impl {
-            INPUT in ;
-            KeyCode key ;
+            INPUT in_ ;
+            KeyCode key_ ;
 
             explicit Impl(KeyCode keycode)
-            : in(),
-              key(keycode)
+            : in_(),
+              key_(keycode)
             {
-                in.type     = INPUT_KEYBOARD ;
-                in.ki.wVk   = static_cast<WORD>(key) ;
-                in.ki.wScan = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
+                in_.type       = INPUT_KEYBOARD ;
+                in_.ki.wVk     = static_cast<WORD>(key_.to_code()) ;
+                in_.ki.wScan   = static_cast<WORD>(MapVirtualKeyA(in_.ki.wVk, MAPVK_VK_TO_VSC)) ;
             }
         } ;
 
@@ -880,8 +891,8 @@ namespace vind
         ScopedKey& ScopedKey::operator=(ScopedKey&&) = default ;
 
         void ScopedKey::send_event(bool pressed) {
-            pimpl->in.ki.dwFlags = (pressed ? 0 : KEYEVENTF_KEYUP) | extended_key_flag(pimpl->key) ;
-            if(!SendInput(1, &pimpl->in, sizeof(INPUT))) {
+            pimpl->in_.ki.dwFlags = (pressed ? 0 : KEYEVENTF_KEYUP) | extended_key_flag(pimpl->in_.ki.wVk) ;
+            if(!SendInput(1, &pimpl->in_, sizeof(INPUT))) {
                 throw RUNTIME_EXCEPT("failed sending keyboard event") ;
             }
         }
@@ -889,10 +900,10 @@ namespace vind
         void ScopedKey::press() {
             auto& igate = InputGate::get_instance() ;
 
-            igate.open_port(pimpl->key) ;
+            igate.open_port(pimpl->key_) ;
             send_event(true) ;
             igate.close_all_ports() ;
-            if(!is_pressed_actually(pimpl->key)) {
+            if(!is_pressed_actually(pimpl->key_)) {
                 throw RUNTIME_EXCEPT("You sent a key pressing event successfully, but the state of its key was not changed.") ;
             }
         }
@@ -900,10 +911,10 @@ namespace vind
         void ScopedKey::release() {
             auto& igate = InputGate::get_instance() ;
 
-            igate.open_port(pimpl->key) ;
+            igate.open_port(pimpl->key_) ;
             send_event(false) ;
             igate.close_all_ports() ;
-            if(is_pressed_actually(pimpl->key)) {
+            if(is_pressed_actually(pimpl->key_)) {
                 throw RUNTIME_EXCEPT("You sent a key releasing event successfully, but the state of its key was not changed.") ;
             }
         }

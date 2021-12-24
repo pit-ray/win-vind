@@ -14,7 +14,6 @@
 #include "core/inputgate.hpp"
 #include "core/key_logger_base.hpp"
 #include "core/keycode_def.hpp"
-#include "core/keycodecvt.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "core/settable.hpp"

@@ -1,10 +1,6 @@
 #ifndef _KEYCODE_DEF_HPP
 #define _KEYCODE_DEF_HPP
 
-namespace vind {
-    using KeyCode = unsigned char ;
-}
-
 #define KEYCODE_MOUSE_LEFT   (static_cast<unsigned char>(1))
 #define KEYCODE_MOUSE_RIGHT  (static_cast<unsigned char>(2))
 #define KEYCODE_MOUSE_MID    (static_cast<unsigned char>(4))

@@ -108,8 +108,6 @@ TEST_CASE("inputgate::replace_command_with_key2keyset") {
 
 
 TEST_CASE("inputgate::solve_recursive_cmd2cmd_mapping") {
-    load_input_combination() ;
-
     // define cmd2cmd mappings
     Map map1("g<s-h>h", "ty<c-j>", true) ;
     Map map2("t", "z<c-h><c-j>", true) ;

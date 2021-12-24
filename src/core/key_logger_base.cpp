@@ -3,7 +3,6 @@
 #include "util/container.hpp"
 
 #include "core/inputgate.hpp"
-#include "keycodecvt.hpp"
 
 #include <sstream>
 
@@ -120,24 +119,19 @@ namespace vind
                     ss << "<space> " ;
                     continue ;
                 }
-
-                if(auto a = get_ascii(key)) {
-                    ss << a << " " ;
-                    continue ;
+                if(key.is_ascii()) {
+                    ss << key << " " ;
                 }
-                if(auto a = get_shifted_ascii(key)) {
-                    ss << a << " " ;
-                    continue ;
+                else {
+                    ss << "<" << key << "> " ;
                 }
-                auto name = get_keycode_name(key) ;
-                ss << "<" << name << "> " ;
             }
             return ss.str() ;
         }
         std::string print(const KeyLoggerBase& lgr) {
             std::stringstream ss ;
             if(lgr.empty()) {
-                return "<Empty>\n" ;
+                return "empty\n" ;
             }
             for(const auto& log : lgr) {
                 ss << print(log) ;

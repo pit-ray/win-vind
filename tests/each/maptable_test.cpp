@@ -1,17 +1,14 @@
 #include <doctest.h>
 
-#include "core/keycodecvt.hpp"
-
 #include "core/maptable.cpp"
 
 #include <algorithm>
+#include <iostream>
 
 
 TEST_CASE("Map") {
     using namespace vind ;
     using namespace vind::core ;
-
-    load_input_combination() ;
 
     Map a("a<s-h>j", "jblk", true) ;
 
@@ -23,6 +20,7 @@ TEST_CASE("Map") {
         {KEYCODE_SHIFT, KEYCODE_H},
         {KEYCODE_J}
     } ;
+
     CHECK_EQ(a.trigger_command(), expect_trigger) ;
     CHECK_EQ(a.trigger_command_string(), "a<s-h>j") ;
 
@@ -47,8 +45,6 @@ TEST_CASE("Map") {
 
 TEST_CASE("MapTable") {
     using namespace vind::core ;
-
-    load_input_combination() ;
 
     auto& maptable = MapTable::get_instance() ;
 

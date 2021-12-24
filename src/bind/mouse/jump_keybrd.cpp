@@ -14,7 +14,7 @@
 #include "core/inputgate.hpp"
 #include "core/key_log.hpp"
 #include "core/keybrd_layout.hpp"
-#include "core/keycodecvt.hpp"
+#include "core/keycode.hpp"
 #include "core/ntype_logger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
@@ -92,14 +92,15 @@ namespace vind
                 if(log.empty()) continue ;
 
                 try {
-                    for(auto& keycode : log) {
-                        if(core::is_unreal_key(keycode))
+                    for(const auto& keycode : log) {
+                        if(keycode.is_unreal()) {
                             continue ;
+                        }
 
                         auto x_pos = static_cast<int>( \
-                                pimpl->xposs_[keycode] / pimpl->max_keybrd_xposs_ * width) ;
+                                pimpl->xposs_[keycode.to_code()] / pimpl->max_keybrd_xposs_ * width) ;
                         auto y_pos = static_cast<int>( \
-                                pimpl->yposs_[keycode] / pimpl->max_keybrd_yposs_ * height) ;
+                                pimpl->yposs_[keycode.to_code()] / pimpl->max_keybrd_yposs_ * height) ;
 
                         auto& settable = core::SetTable::get_instance() ;
                         if(x_pos == width) {
@@ -197,10 +198,11 @@ namespace vind
                     auto code = vec[2] ;
                     //is ascii code
                     if(code.size() == 1) {
-                        if(auto keycode = core::get_keycode(code.front())) {
+                        core::KeyCode keycode(code.front()) ;
+                        if(keycode) {
                             //overwrite
-                            pimpl->xposs_[keycode] = x ;
-                            pimpl->yposs_[keycode] = y ;
+                            pimpl->xposs_[keycode.to_code()] = x ;
+                            pimpl->yposs_[keycode.to_code()] = y ;
                             continue ;
                         }
                         ep(" is not supported in ") ;
@@ -213,16 +215,11 @@ namespace vind
                     }
 
                     code = code.substr(1, code.length() - 2) ;
-                    if(code == "space") {
-                        auto&& keycode = core::get_keycode(' ') ;
-                        pimpl->xposs_[keycode] = x ;
-                        pimpl->yposs_[keycode] = y ;
-                        continue ;
-                    }
+                    core::KeyCode keycode(code) ;
 
-                    if(auto keycode = core::get_sys_keycode(code)) {
-                        pimpl->xposs_[keycode] = x ;
-                        pimpl->yposs_[keycode] = y ;
+                    if(keycode) {
+                        pimpl->xposs_[keycode.to_code()] = x ;
+                        pimpl->yposs_[keycode.to_code()] = y ;
                         continue ;
                     }
 

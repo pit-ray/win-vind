@@ -1,8 +1,8 @@
 #ifndef _INPUTGATE_HPP
 #define _INPUTGATE_HPP
 
-#include "defs.hpp"
 #include "key_log.hpp"
+#include "keycode.hpp"
 #include "keycode_def.hpp"
 #include "mode.hpp"
 
@@ -18,8 +18,7 @@ namespace vind
 {
     namespace core
     {
-        template <typename T>
-        auto extended_key_flag(T key) noexcept {
+        auto extended_key_flag(unsigned char key) noexcept {
             switch(key) {
                 case KEYCODE_UP:
                 case KEYCODE_DOWN:
@@ -123,43 +122,47 @@ namespace vind
             //change key state without input
             template <typename Iterator>
             void release_keystate(Iterator begin, Iterator end) {
+                const auto size = static_cast<std::size_t>(end - begin) ;
+                switch(size) {
+                    case 1: {
 #if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
-                static INPUT ins[6] = {
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                } ;
-#if defined(__gnuc__)
+                        INPUT in = {INPUT_KEYBOARD} ;
+#if defined(__GNUC__)
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
+                        in.ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(in.ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        in.ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(in.ki.wVk) ;
+                        in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                //optimizing for 1
-                const auto size = static_cast<std::size_t>(end - begin) ;
-                switch(size) {
-                    case 1:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
-                        ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
-                        ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                        if(!SendInput(1, ins, sizeof(INPUT))) {
+                        if(!SendInput(1, &in, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
 
                         release_virtually(*begin) ;
                         break ;
-
-                    case 2:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
-                        ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
+                    }
+                    case 2: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT ins[] = {
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD}
+                        } ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
-                        ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 1)) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         if(!SendInput(2, ins, sizeof(INPUT))) {
@@ -169,21 +172,33 @@ namespace vind
                         release_virtually(*begin) ;
                         release_virtually(*(begin + 1)) ;
                         break ;
+                    }
 
-                    case 3:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
-                        ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
+                    case 3: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT ins[] = {
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD}
+                        } ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
-                        ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 1)) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[2].ki.wVk         = static_cast<WORD>(*(begin + 2)) ;
-                        ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 2), MAPVK_VK_TO_VSC)) ;
-                        ins[2].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 2)) ;
+                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_code()) ;
+                        ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[2].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[2].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[2].ki.wVk) ;
                         ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         if(!SendInput(3, ins, sizeof(INPUT))) {
@@ -194,23 +209,25 @@ namespace vind
                         release_virtually(*(begin + 1)) ;
                         release_virtually(*(begin + 2)) ;
                         break ;
+                    }
 
-                    default:
-                        std::unique_ptr<INPUT[]> dynamic_ins(new INPUT[size]) ;
+                    default: {
+                        std::unique_ptr<INPUT[]> dins(new INPUT[size]) ;
                         for(std::size_t i = 0 ; i < size ; i ++) {
-                            dynamic_ins[i].ki.wVk         = static_cast<WORD>(*(begin + i)) ;
-                            dynamic_ins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + i), MAPVK_VK_TO_VSC)) ;
-                            dynamic_ins[i].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + i)) ;
-                            dynamic_ins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
+                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_code()) ;
+                            dins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(dins[i].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                            dins[i].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(dins[i].ki.wVk) ;
+                            dins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                             release_virtually(*(begin + 1)) ;
                         }
 
-                        if(!SendInput(static_cast<UINT>(size), dynamic_ins.get(), sizeof(INPUT))) {
+                        if(!SendInput(static_cast<UINT>(size), dins.get(), sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
 
                         break ;
+                    }
                 }
             }
 
@@ -223,6 +240,18 @@ namespace vind
                 release_keystate({key}) ;
             }
 
+            void release_keystate(unsigned char key1, unsigned char key2) {
+                release_keystate({KeyCode(key1), KeyCode(key2)}) ;
+            }
+
+            void release_keystate(unsigned char key1, KeyCode key2) {
+                release_keystate({KeyCode(key1), key2}) ;
+            }
+
+            void release_keystate(KeyCode key1, unsigned char key2) {
+                release_keystate({key1, KeyCode(key2)}) ;
+            }
+
             void release_keystate(KeyCode key1, KeyCode key2) {
                 release_keystate({key1, key2}) ;
             }
@@ -232,50 +261,56 @@ namespace vind
                     KeyCode key1,
                     KeyCode key2,
                     Ts&&... keys) {
-                release_keystate({key1, key2, static_cast<KeyCode>(keys)...}) ;
+                release_keystate({key1, key2, KeyCode(keys)...}) ;
             }
 
 
             //change key state without input
             template <typename Iterator>
             void press_keystate(Iterator begin, Iterator end) {
-#if defined(__GNUC__)
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#endif
-                static INPUT ins[6] = {
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                } ;
-#if defined(__gnuc__)
-#pragma gcc diagnostic warning "-wmissing-field-initializers"
-#endif
-
                 //optimizing for 1
                 const auto size = static_cast<std::size_t>(end - begin) ;
                 switch(size) {
-                    case 1:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
-                        ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
-                        ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
+                    case 1: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT in = {INPUT_KEYBOARD} ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
+                        in.ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(in.ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        in.ki.dwFlags     = extended_key_flag(in.ki.wVk) ;
+                        in.ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        if(!SendInput(1, ins, sizeof(INPUT))) {
+                        if(!SendInput(1, &in, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
 
                         press_virtually(*begin) ;
                         break ;
+                    }
+                    case 2: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT ins[] = {
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD}
+                        } ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
 
-                    case 2:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
-                        ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
-                        ins[1].ki.dwFlags     = extended_key_flag(*(begin + 1)) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         if(!SendInput(2, ins, sizeof(INPUT))) {
@@ -285,21 +320,33 @@ namespace vind
                         press_virtually(*begin) ;
                         press_virtually(*(begin + 1)) ;
                         break ;
+                    }
+                    case 3: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT ins[] = {
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD}
+                        } ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
 
-                    case 3:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*begin, MAPVK_VK_TO_VSC)) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 1), MAPVK_VK_TO_VSC)) ;
-                        ins[1].ki.dwFlags     = extended_key_flag(*(begin + 1)) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[2].ki.wVk         = static_cast<WORD>(*(begin + 2)) ;
-                        ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(*(begin + 2), MAPVK_VK_TO_VSC)) ;
-                        ins[2].ki.dwFlags     = extended_key_flag(*(begin + 2)) ;
+                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_code()) ;
+                        ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[2].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[2].ki.dwFlags     = extended_key_flag(ins[2].ki.wVk) ;
                         ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         if(!SendInput(3, ins, sizeof(INPUT))) {
@@ -310,24 +357,24 @@ namespace vind
                         press_virtually(*(begin + 1)) ;
                         press_virtually(*(begin + 2)) ;
                         break ;
-
-                    default:
-                        std::unique_ptr<INPUT[]> dynamic_ins(new INPUT[size]) ;
+                    }
+                    default: {
+                        std::unique_ptr<INPUT[]> dins(new INPUT[size]) ;
                         for(std::size_t i = 0 ; i < size ; i ++) {
-                            auto key = *(begin + 1) ;
-                            dynamic_ins[i].ki.wVk         = static_cast<WORD>(key) ;
-                            dynamic_ins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
-                            dynamic_ins[i].ki.dwFlags     = extended_key_flag(key) ;
-                            dynamic_ins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
+                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_code()) ;
+                            dins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(dins[i].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                            dins[i].ki.dwFlags     = extended_key_flag(dins[i].ki.wVk) ;
+                            dins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                            press_virtually(key) ;
+                            press_virtually(*(begin + i)) ;
                         }
 
-                        if(!SendInput(static_cast<UINT>(size), dynamic_ins.get(), sizeof(INPUT))) {
+                        if(!SendInput(static_cast<UINT>(size), dins.get(), sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
 
                         break ;
+                     }
                 }
             }
 
@@ -340,6 +387,18 @@ namespace vind
                 press_keystate({key}) ;
             }
 
+            void press_keystate(unsigned char key1, unsigned char key2) {
+                press_keystate({KeyCode(key1), KeyCode(key2)}) ;
+            }
+
+            void press_keystate(unsigned char key1, KeyCode key2) {
+                press_keystate({KeyCode(key1), key2}) ;
+            }
+
+            void press_keystate(KeyCode key1, unsigned char key2) {
+                press_keystate({key1, KeyCode(key2)}) ;
+            }
+
             void press_keystate(KeyCode key1, KeyCode key2) {
                 press_keystate({key1, key2}) ;
             }
@@ -350,40 +409,38 @@ namespace vind
                     KeyCode key1,
                     KeyCode key2,
                     Ts&&... keys) {
-                press_keystate({key1, key2, static_cast<KeyCode>(keys)...}) ;
+                press_keystate({key1, key2, KeyCode(keys)...}) ;
             }
 
 
             template <typename Iterator>
             void pushup(Iterator begin, Iterator end) {
-#if defined(__GNUC__)
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#endif
-                static INPUT ins[6] = {
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD},
-                    {INPUT_KEYBOARD}
-                } ;
-#if defined(__gnuc__)
-#pragma gcc diagnostic warning "-wmissing-field-initializers"
-#endif
-
                 const auto pre_state = pressed_list() ;
 
                 auto size = static_cast<std::size_t>(end - begin) ;
 
                 //optimizing for 1
                 switch(size) {
-                    case 1:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
+                    case 1: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT ins[] = {
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD}
+                        } ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
+
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
+                        ins[1].ki.wVk         = ins[0].ki.wVk ;
+                        ins[1].ki.wScan       = ins[0].ki.wScan ;
+                        ins[1].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         open_port(*begin) ;
@@ -392,22 +449,39 @@ namespace vind
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
                         break ;
+                    }
+                    case 2: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT ins[] = {
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD}
+                        } ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
 
-                    case 2:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[1].ki.dwFlags     = extended_key_flag(*(begin + 1)) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[2].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[2].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 1));
+                        ins[2].ki.wVk         = ins[1].ki.wVk ;
+                        ins[2].ki.wScan       = ins[1].ki.wScan ;
+                        ins[2].ki.dwFlags     = ins[1].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[3].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[3].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin) ;
+                        ins[3].ki.wVk         = ins[0].ki.wVk ;
+                        ins[3].ki.wScan       = ins[0].ki.wScan ;
+                        ins[3].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         open_some_ports(begin, end) ;
@@ -415,30 +489,51 @@ namespace vind
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
                         break ;
+                    }
+                    case 3: {
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+                        INPUT ins[] = {
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD},
+                            {INPUT_KEYBOARD}
+                        } ;
+#if defined(__GNUC__)
+#pragma gcc diagnostic warning "-wmissing-field-initializers"
+#endif
 
-                    case 3:
-                        ins[0].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[1].ki.dwFlags     = extended_key_flag(*(begin + 1)) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.dwFlags) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[2].ki.wVk         = static_cast<WORD>(*(begin + 2)) ;
-                        ins[2].ki.dwFlags     = extended_key_flag(*(begin + 2)) ;
+                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_code()) ;
+                        ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[2].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                        ins[2].ki.dwFlags     = extended_key_flag(ins[2].ki.wVk) ;
                         ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[3].ki.wVk         = static_cast<WORD>(*(begin + 2)) ;
-                        ins[3].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 2)) ;
+                        ins[3].ki.wVk         = ins[2].ki.wVk ;
+                        ins[3].ki.wScan       = ins[2].ki.wScan ;
+                        ins[3].ki.dwFlags     = ins[2].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[4].ki.wVk         = static_cast<WORD>(*(begin + 1)) ;
-                        ins[4].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*(begin + 1)) ;
+                        ins[4].ki.wVk         = ins[1].ki.wVk ;
+                        ins[4].ki.wScan       = ins[1].ki.wScan ;
+                        ins[4].ki.dwFlags     = ins[1].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[4].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[5].ki.wVk         = static_cast<WORD>(*begin) ;
-                        ins[5].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(*begin);
+                        ins[5].ki.wVk         = ins[0].ki.wVk ;
+                        ins[5].ki.wScan       = ins[0].ki.wScan ;
+                        ins[5].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[5].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         open_some_ports(begin, end) ;
@@ -446,28 +541,28 @@ namespace vind
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
                         break ;
-
-                    default: 
+                    }
+                    default: {
                         //>=4
-                        std::unique_ptr<INPUT[]> dynamic_ins(new INPUT[size * 2]) ;
+                        std::unique_ptr<INPUT[]> dins(new INPUT[size * 2]) ;
                         for(std::size_t i = 0 ; i < size ; i ++) {
-                            auto key = *(begin + 1) ;
-                            dynamic_ins[i].ki.wVk         = static_cast<WORD>(key) ;
-                            dynamic_ins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
-                            dynamic_ins[i].ki.dwFlags     = extended_key_flag(key) ;
-                            dynamic_ins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
+                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_code()) ;
+                            dins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(dins[i].ki.wVk, MAPVK_VK_TO_VSC)) ;
+                            dins[i].ki.dwFlags     = extended_key_flag(dins[i].ki.wVk) ;
+                            dins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                            dynamic_ins[size - i - 1].ki.wVk         = static_cast<WORD>(key) ;
-                            dynamic_ins[size - i - 1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(key, MAPVK_VK_TO_VSC)) ;
-                            dynamic_ins[size - i - 1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(key) ;
-                            dynamic_ins[size - i - 1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+                            dins[size - i - 1].ki.wVk         = dins[i].ki.wVk ;
+                            dins[size - i - 1].ki.wScan       = dins[i].ki.wScan ;
+                            dins[size - i - 1].ki.dwFlags     = dins[i].ki.dwFlags | KEYEVENTF_KEYUP ;
+                            dins[size - i - 1].ki.dwExtraInfo = GetMessageExtraInfo() ;
                         }
 
-                        if(!SendInput(static_cast<UINT>(size), dynamic_ins.get(), sizeof(INPUT))) {
+                        if(!SendInput(static_cast<UINT>(size), dins.get(), sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
 
                         break ;
+                    }
                 }
 
                 close_all_ports() ;
@@ -485,6 +580,18 @@ namespace vind
                 pushup({key}) ;
             }
 
+            void pushup(unsigned char key1, unsigned char key2) {
+                pushup({KeyCode(key1), KeyCode(key2)}) ;
+            }
+
+            void pushup(unsigned char key1, KeyCode key2) {
+                pushup({KeyCode(key1), key2}) ;
+            }
+
+            void pushup(KeyCode key1, unsigned char key2) {
+                pushup({key1, KeyCode(key2)}) ;
+            }
+
             void pushup(KeyCode key1, KeyCode key2) {
                 pushup({key1, key2}) ;
             }
@@ -494,7 +601,7 @@ namespace vind
                     KeyCode key1,
                     KeyCode key2,
                     Ts&&... keys) {
-                pushup({key1, key2, static_cast<KeyCode>(keys)...}) ;
+                pushup({key1, key2, KeyCode(keys)...}) ;
             }
 
 

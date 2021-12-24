@@ -11,7 +11,7 @@ AddTest(each-mapgate-test
     ${SRCDIR}/core/err_logger.cpp
     ${SRCDIR}/core/key_log.cpp
     ${SRCDIR}/core/key_logger_base.cpp
-    ${SRCDIR}/core/keycodecvt.cpp
+    ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/logger_parser.cpp
     ${SRCDIR}/core/logger_parser_mgr.cpp
     ${SRCDIR}/core/maptable.cpp
@@ -31,7 +31,7 @@ AddTest(each-maptable-test
     ${SRCDIR}/core/bindings_parser.cpp
     ${SRCDIR}/core/err_logger.cpp
     ${SRCDIR}/core/key_log.cpp
-    ${SRCDIR}/core/keycodecvt.cpp
+    ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/mode.cpp
     ${SRCDIR}/core/path.cpp
     ${SRCDIR}/util/string.cpp

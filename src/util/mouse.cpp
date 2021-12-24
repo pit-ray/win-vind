@@ -13,7 +13,7 @@
 
 namespace
 {
-    std::unordered_map<vind::KeyCode, bool> btstate = {
+    std::unordered_map<unsigned char, bool> btstate = {
         {KEYCODE_MOUSE_LEFT,  false},
         {KEYCODE_MOUSE_MID,   false},
         {KEYCODE_MOUSE_RIGHT, false}
@@ -39,7 +39,7 @@ namespace
 namespace vind
 {
     namespace util {
-        void click(KeyCode btcode) {
+        void click(unsigned char btcode) {
 #if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
@@ -61,7 +61,7 @@ namespace vind
             }
         }
 
-        void press_mousestate(KeyCode btcode) {
+        void press_mousestate(unsigned char btcode) {
 #if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
@@ -77,7 +77,7 @@ namespace vind
             }
         }
 
-        void release_mousestate(KeyCode btcode) {
+        void release_mousestate(unsigned char btcode) {
 #if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
@@ -93,7 +93,7 @@ namespace vind
             }
         }
 
-        bool is_releasing_occured(KeyCode btcode) {
+        bool is_releasing_occured(unsigned char btcode) {
             if(GetAsyncKeyState(btcode) & 0x8000) {
                 if(!btstate[btcode]) btstate[btcode] = true ;
             }

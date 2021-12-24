@@ -7,8 +7,8 @@
 #include "core/char_logger.hpp"
 #include "core/entry.hpp"
 #include "core/inputgate.hpp"
+#include "core/keycode.hpp"
 #include "core/keycode_def.hpp"
-#include "core/keycodecvt.hpp"
 #include "core/ntype_logger.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/blockstyle_caret.hpp"
@@ -28,7 +28,7 @@ namespace
 {
     using namespace vind ;
 
-    inline auto is_shift(unsigned key) noexcept {
+    inline bool is_shift(unsigned char key) noexcept {
         return key == KEYCODE_SHIFT || key == KEYCODE_LSHIFT || key == KEYCODE_RSHIFT ;
     }
 
@@ -40,7 +40,7 @@ namespace
          * @return: [true] continue loop, [false] break loop
          */
         virtual bool do_loop_hook(
-                KeyCode UNUSED(keycode),
+                core::KeyCode UNUSED(keycode),
                 bool UNUSED(shifted)) {
             return false ;
         }
@@ -86,7 +86,7 @@ namespace
                         //immediately will call "insert-mode", so release 'i'.
                         igate.release_keystate(key) ;
 
-                        if(!core::get_ascii(key)) {
+                        if(!key.to_ascii()) {
                             continue ;
                         }
                         if(!do_loop_hook(key, false)) {
@@ -97,9 +97,12 @@ namespace
                 else {
                     //shifted
                     for(auto& key : log) {
-                        if(is_shift(key)) continue ;
+                        if(is_shift(key)) {
+                            continue ;
+                        }
+
                         igate.release_keystate(key) ;
-                        if(!core::get_shifted_ascii(key)) {
+                        if(!key.to_ascii()) {
                             continue ;
                         }
                         if(!do_loop_hook(key, true)) {
@@ -114,11 +117,11 @@ namespace
 
     class ReplaceMatchingForChar : public ReplaceMatching {
     private:
-        KeyCode captured_ ;
+        core::KeyCode captured_ ;
         bool shifted_ ;
 
         bool do_loop_hook(
-                KeyCode keycode,
+                core::KeyCode keycode,
                 bool shifted=false) override {
             captured_ = keycode ;
             shifted_ = shifted ;
@@ -127,7 +130,7 @@ namespace
 
     public:
         explicit ReplaceMatchingForChar()
-        : captured_(KEYCODE_UNDEFINED),
+        : captured_(),
           shifted_(false)
         {}
 
@@ -163,11 +166,11 @@ namespace
 
     class ReplaceMatchingForSequence : public ReplaceMatching {
     private:
-        std::vector<KeyCode> str_ ;
+        std::vector<core::KeyCode> str_ ;
         std::vector<bool> shifteds_ ;
 
         bool do_loop_hook(
-                KeyCode keycode,
+                core::KeyCode keycode,
                 bool shifted=false) override {
             auto& igate = core::InputGate::get_instance() ;
 
@@ -308,23 +311,20 @@ namespace vind
 
             for(char c : res.str) {
                 if(c >= 'a' && c <= 'z') {
-                    igate.pushup(KEYCODE_LSHIFT, core::get_keycode(c)) ;
+                    igate.pushup(KEYCODE_LSHIFT, core::KeyCode(c)) ;
                 }
                 else if(c >= 'A' && c <= 'Z') {
                     constexpr char delta = 'a' - 'A' ;
-                    igate.pushup(core::get_keycode(c + delta)) ;
+                    igate.pushup(core::KeyCode(c + delta)) ;
                 }
                 else {
-                    auto keycode = core::get_keycode(c) ;
-                    if(keycode) {
-                        igate.pushup(keycode) ;
-                        continue ;
-                    }
+                    core::KeyCode keycode(c) ;
 
-                    keycode = core::get_shifted_keycode(c) ;
-                    if(keycode) {
+                    if(keycode.is_shifted()) {
                         igate.pushup(KEYCODE_LSHIFT, keycode) ;
-                        continue ;
+                    }
+                    else {
+                        igate.pushup(keycode) ;
                     }
                 }
             }

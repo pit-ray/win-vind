@@ -4,7 +4,6 @@
 #include "defs.hpp"
 #include "key_log.hpp"
 #include "keycode_def.hpp"
-#include "keycodecvt.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -25,20 +24,20 @@
 
 namespace
 {
-    using namespace vind ;
+    using namespace vind::core ;
 
-    inline bool is_containing_num(const core::KeyLog& log) noexcept {
+    inline bool is_containing_num(const KeyLog& log) noexcept {
         for(const KeyCode& key : log) {
-            if(core::is_number(key)) {
+            if(key.is_number()) {
                 return true ;
             }
         }
         return false ;
     }
 
-    inline bool is_containing_ascii(const core::KeyLog& log) noexcept {
+    inline bool is_containing_ascii(const KeyLog& log) noexcept {
         for(const KeyCode& keycode : log) {
-            if(core::get_ascii(keycode) || core::get_shifted_ascii(keycode)) {
+            if(keycode.is_ascii()) {
                 return true ;
             }
         }

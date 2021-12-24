@@ -3,6 +3,10 @@
 
 #include <ostream>
 #include <string>
+#include <vector>
+
+#define PREFER_ASCII_CODE true
+#define PREFER_SYSTEM_CODE false
 
 
 namespace vind
@@ -33,9 +37,11 @@ namespace vind
              *   KeyCode("a", false) => KEYCODE_ALT
              *
              */
-            KeyCode(const std::string& name, bool prefer_ascii=true) ;
+            KeyCode(const std::string& name, bool prefer_ascii=PREFER_ASCII_CODE) ;
 
+            char to_auto_ascii() const noexcept ;
             char to_ascii() const noexcept ;
+            char to_shifted_ascii() const noexcept ;
             int to_number() const noexcept ;
             unsigned char to_code() const noexcept ;
 
@@ -52,6 +58,8 @@ namespace vind
 
             const std::string& name() const noexcept ;
 
+            unsigned short get() const noexcept ;
+
             operator bool() const noexcept ;
             operator char() const noexcept ;
             operator unsigned char() const noexcept ;
@@ -60,6 +68,11 @@ namespace vind
             operator const char*() const noexcept ;
 
             bool operator!() const noexcept ;
+
+            bool operator<(const KeyCode& rhs) const noexcept ;
+            bool operator>(const KeyCode& rhs) const noexcept ;
+            bool operator<=(const KeyCode& rhs) const noexcept ;
+            bool operator>=(const KeyCode& rhs) const noexcept ;
 
             bool operator==(const KeyCode& rhs) const noexcept ;
             bool operator==(KeyCode&& rhs) const noexcept ;
@@ -80,7 +93,21 @@ namespace vind
             stream << rhs.name() ;
             return stream ;
         }
+
+        using KeySet = std::vector<KeyCode> ;
+        using Command = std::vector<KeySet> ;
+        using CommandList = std::vector<Command> ;
     }
+}
+
+
+namespace std {
+    template <>
+    struct hash<vind::core::KeyCode> {
+        size_t operator()(const vind::core::KeyCode& rhs) const {
+            return static_cast<size_t>(rhs.get()) ;
+        }
+    } ;
 }
 
 #endif

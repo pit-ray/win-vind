@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_set>
 
+#include "keycode.hpp"
 #include "keycode_def.hpp"
 
 namespace vind

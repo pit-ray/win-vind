@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "defs.hpp"
+#include "keycode.hpp"
 #include "mode.hpp"
 
 namespace vind
@@ -55,18 +55,6 @@ namespace vind
         //
         //
         Command parse_string_binding(const std::string& cmdstr) ;
-
-
-        //
-        // It parses a string mode with brackets.
-        // Ex)
-        //      <guin>  ->  Mode::Normal
-        //
-        // If Failed, return Mode::None.
-        //
-        Mode parse_string_modecode(
-                const std::string& modestr,
-                std::string root=MAP_DEFINE_KEYWORD_IN_JSON) ;
 
 #ifdef DEBUG
         std::string print(const Command& keyset) ;

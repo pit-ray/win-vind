@@ -14,11 +14,11 @@
 namespace vind
 {
     namespace util {
-        void click(KeyCode btcode) ;
-        void press_mousestate(KeyCode btcode) ;
-        void release_mousestate(KeyCode btcode) ;
+        void click(unsigned char btcode) ;
+        void press_mousestate(unsigned char btcode) ;
+        void release_mousestate(unsigned char btcode) ;
 
-        bool is_releasing_occured(KeyCode btcode) ; //(since the last call)
+        bool is_releasing_occured(unsigned char btcode) ; //(since the last call)
 
         template <typename T>
         inline void _scroll_core(DWORD event, T&& scr_delta) {

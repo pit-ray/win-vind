@@ -38,3 +38,15 @@ AddTest(each-maptable-test
     ${SRCDIR}/util/winwrap.cpp
 )
 target_link_libraries(each-maptable-test userenv)
+
+AddTest(each-bindings-parser-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/bindings_parser_test.cpp
+
+    ${SRCDIR}/util/string.cpp
+    ${SRCDIR}/core/bindings_parser.cpp
+    ${SRCDIR}/core/err_logger.cpp
+    ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/core/path.cpp
+    ${SRCDIR}/util/winwrap.cpp
+)
+target_link_libraries(each-bindings-parser-test userenv)

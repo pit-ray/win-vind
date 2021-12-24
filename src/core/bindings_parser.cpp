@@ -27,13 +27,15 @@ namespace vind
         //
         KeySet parse_pure_one_character_command(char onechar) {
             core::KeyCode keycode(onechar) ;
-            if(keycode.is_shifted()) {  //ex) A (A is divided to a and SHIFT)
+            if(keycode.empty()) {
+                throw RUNTIME_EXCEPT(std::string("The character '") + onechar + "' is invalid ascii key code.") ;
+            }
+
+            if(KeyCode::is_shifted(onechar)) {  //ex) A (A is divided to a and SHIFT)
                 return KeySet{core::KeyCode(KEYCODE_SHIFT), keycode} ;
             }
-            else {  //ex) a
-                return KeySet{keycode} ;
-            }
-            throw RUNTIME_EXCEPT(std::string("The character '") + onechar + "' is invalid ascii key code.") ;
+            //ex) a
+            return KeySet{keycode} ;
         }
 
         //

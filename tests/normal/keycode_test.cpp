@@ -23,126 +23,106 @@ TEST_SUITE("core/keycode") {
     TEST_CASE("KeyCode::is_*") {
         core::KeyCode k1('a') ;
         CHECK(k1.is_ascii()) ;
-        CHECK_FALSE(k1.is_shifted()) ;
         CHECK_FALSE(k1.is_unreal()) ;
         CHECK_FALSE(k1.is_number()) ;
         CHECK_FALSE(k1.is_toggle()) ;
 
         core::KeyCode k2('B') ;
         CHECK(k2.is_ascii()) ;
-        CHECK(k2.is_shifted()) ;
         CHECK_FALSE(k2.is_unreal()) ;
         CHECK_FALSE(k2.is_number()) ;
         CHECK_FALSE(k2.is_toggle()) ;
 
         core::KeyCode k3('2') ;
         CHECK(k3.is_ascii()) ;
-        //CHECK_FALSE(k3.is_shifted()) ;
         CHECK_FALSE(k3.is_unreal()) ;
         CHECK(k3.is_number()) ;
         CHECK_FALSE(k3.is_toggle()) ;
 
         core::KeyCode k4(KEYCODE_B) ;
         CHECK(k4.is_ascii()) ;
-        CHECK_FALSE(k4.is_shifted()) ;
         CHECK_FALSE(k4.is_unreal()) ;
         CHECK_FALSE(k4.is_number()) ;
         CHECK_FALSE(k4.is_toggle()) ;
 
         core::KeyCode k5(KEYCODE_7) ;
         CHECK(k5.is_ascii()) ;
-        //CHECK_FALSE(k5.is_shifted()) ;
         CHECK_FALSE(k5.is_unreal()) ;
         CHECK(k5.is_number()) ;
         CHECK_FALSE(k5.is_toggle()) ;
 
         core::KeyCode k6(KEYCODE_SHIFT) ;
         CHECK_FALSE(k6.is_ascii()) ;
-        CHECK_FALSE(k6.is_shifted()) ;
         CHECK(k6.is_unreal()) ;
         CHECK_FALSE(k6.is_number()) ;
         CHECK_FALSE(k6.is_toggle()) ;
 
         core::KeyCode k7(KEYCODE_LCTRL) ;
         CHECK_FALSE(k7.is_ascii()) ;
-        CHECK_FALSE(k7.is_shifted()) ;
         CHECK_FALSE(k7.is_unreal()) ;
         CHECK_FALSE(k7.is_number()) ;
         CHECK_FALSE(k7.is_toggle()) ;
 
         core::KeyCode k8(KEYCODE_CAPSLOCK) ;
         CHECK_FALSE(k8.is_ascii()) ;
-        CHECK_FALSE(k8.is_shifted()) ;
         CHECK_FALSE(k8.is_unreal()) ;
         CHECK_FALSE(k8.is_number()) ;
         CHECK(k8.is_toggle()) ;
 
         core::KeyCode k9('"') ;
         CHECK(k9.is_ascii()) ;
-        //CHECK_FALSE(k9.is_shifted()) ;
         CHECK_FALSE(k9.is_unreal()) ;
         CHECK_FALSE(k9.is_number()) ;
         CHECK_FALSE(k9.is_toggle()) ;
 
         core::KeyCode k10('#') ;
         CHECK(k10.is_ascii()) ;
-        //CHECK_FALSE(k10.is_shifted()) ;
         CHECK_FALSE(k10.is_unreal()) ;
         CHECK_FALSE(k10.is_number()) ;
         CHECK_FALSE(k10.is_toggle()) ;
 
         core::KeyCode k11("alt") ;
         CHECK_FALSE(k11.is_ascii()) ;
-        CHECK_FALSE(k11.is_shifted()) ;
         CHECK(k11.is_unreal()) ;
         CHECK_FALSE(k11.is_number()) ;
         CHECK_FALSE(k11.is_toggle()) ;
 
         core::KeyCode k12("space") ;  // magic ascii
         CHECK(k12.is_ascii()) ;
-        CHECK_FALSE(k12.is_shifted()) ;
         CHECK_FALSE(k12.is_unreal()) ;
         CHECK_FALSE(k12.is_number()) ;
         CHECK_FALSE(k12.is_toggle()) ;
     }
 
-    TEST_CASE("KeyCode::to_auto_ascii, KeyCode::to_ascii, KeyCode::to_shifted_ascii") {
+    TEST_CASE("KeyCode::to_ascii, KeyCode::to_shifted_ascii") {
         char c1 = 'A' ;
         core::KeyCode k1(c1) ;
-        CHECK_EQ(k1.to_auto_ascii(), 'A') ;
         CHECK_EQ(k1.to_ascii(), 'a') ;
         CHECK_EQ(k1.to_shifted_ascii(), 'A') ;
 
         char c2 = 'b' ;
         core::KeyCode k2(c2) ;
-        CHECK_EQ(k2.to_auto_ascii(), 'b') ;
         CHECK_EQ(k2.to_ascii(), 'b') ;
         CHECK_EQ(k2.to_shifted_ascii(), 'B') ;
 
         char c3 = '=' ;
         core::KeyCode k3(c3) ;
-        CHECK_EQ(k3.to_auto_ascii(), '=') ;
 
         char c4 = '\\' ;
         core::KeyCode k4(c4) ;
-        CHECK_EQ(k4.to_auto_ascii(), c4) ;
 
         char c5 = '5' ;
         core::KeyCode k5(c5) ;
-        CHECK_EQ(k5.to_auto_ascii(), c5) ;
 
         core::KeyCode k6(KEYCODE_SPACE) ;
-        CHECK_EQ(k6.to_auto_ascii(), ' ') ;
         CHECK_EQ(k6.to_ascii(), ' ') ;
         CHECK_EQ(k6.to_shifted_ascii(), 0) ;
 
         core::KeyCode k7(KEYCODE_ESC) ;
-        CHECK_EQ(k7.to_auto_ascii(), 0) ;
         CHECK_EQ(k7.to_ascii(), 0) ;
         CHECK_EQ(k7.to_shifted_ascii(), 0) ;
 
         core::KeyCode k8("space") ;
-        CHECK_EQ(k8.to_auto_ascii(), ' ') ;
         CHECK_EQ(k8.to_ascii(), ' ') ;
         CHECK_EQ(k8.to_shifted_ascii(), 0) ;
     }
@@ -192,7 +172,7 @@ TEST_SUITE("core/keycode") {
 
     TEST_CASE("KeyCode::name") {
         core::KeyCode k1("A") ;
-        CHECK_EQ(k1.name(), "A") ;
+        CHECK_EQ(k1.name(), "a") ;
 
         core::KeyCode k2(KEYCODE_ESC) ;
         CHECK_EQ(k2.name(), "esc") ;
@@ -208,8 +188,8 @@ TEST_SUITE("core/keycode") {
         core::KeyCode k1('a') ;
         CHECK_EQ(static_cast<char>(k1), 'a') ;
 
-        core::KeyCode k2('#') ;
-        CHECK_EQ(static_cast<char>(k2), '#') ;
+        core::KeyCode k2(' ') ;
+        CHECK_EQ(static_cast<char>(k2), ' ') ;
 
         core::KeyCode k3(KEYCODE_ALT) ;
         CHECK_EQ(static_cast<char>(k3), 0) ;
@@ -239,8 +219,8 @@ TEST_SUITE("core/keycode") {
         CHECK_EQ(std::strcmp(static_cast<const char*>(k2), "0"), 0) ;
 
         core::KeyCode k3('A') ;
-        CHECK_EQ(static_cast<std::string>(k3), "A") ;
-        CHECK_EQ(std::strcmp(static_cast<const char*>(k3), "A"), 0) ;
+        CHECK_EQ(static_cast<std::string>(k3), "a") ;
+        CHECK_EQ(std::strcmp(static_cast<const char*>(k3), "a"), 0) ;
 
         core::KeyCode k4(KEYCODE_LSHIFT) ;
         CHECK_EQ(static_cast<std::string>(k4), "lshift") ;
@@ -266,7 +246,7 @@ TEST_SUITE("core/keycode") {
         CHECK(k4 == k4) ;
         CHECK(k4 == k4_) ;
 
-        CHECK(k1 != k2) ;
+        CHECK(k1 == k2) ;
         CHECK(k1 != k3) ;
         CHECK(k1 != k4) ;
 
@@ -284,10 +264,15 @@ TEST_SUITE("core/keycode") {
         core::KeyCode k3("A", false) ;
         core::KeyCode k4("a", false) ;
 
-        CHECK_EQ(k1.name(), "A") ;
+        CHECK_EQ(k1.name(), "a") ;
         CHECK_EQ(k2.name(), "a") ;
         CHECK_EQ(k3.name(), "alt") ;
         CHECK_EQ(k4.name(), "alt") ;
+    }
+
+    TEST_CASE("KeyCode::is_shifted") {
+        CHECK_FALSE(core::KeyCode::is_shifted('a')) ;
+        CHECK(core::KeyCode::is_shifted('A')) ;
     }
 
     TEST_CASE("operator<<(Stream, KeyCode)") {
@@ -307,6 +292,6 @@ TEST_SUITE("core/keycode") {
             }
         }
 
-        CHECK_EQ(ss.str(), "H<shift><alt>c") ;
+        CHECK_EQ(ss.str(), "h<shift><alt>c") ;
     }
 }

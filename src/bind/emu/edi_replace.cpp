@@ -318,13 +318,11 @@ namespace vind
                     igate.pushup(core::KeyCode(c + delta)) ;
                 }
                 else {
-                    core::KeyCode keycode(c) ;
-
-                    if(keycode.is_shifted()) {
-                        igate.pushup(KEYCODE_LSHIFT, keycode) ;
+                    if(core::KeyCode::is_shifted(c)) {
+                        igate.pushup(KEYCODE_LSHIFT, c) ;
                     }
                     else {
-                        igate.pushup(keycode) ;
+                        igate.pushup(c) ;
                     }
                 }
             }

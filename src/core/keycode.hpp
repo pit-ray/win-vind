@@ -39,7 +39,6 @@ namespace vind
              */
             KeyCode(const std::string& name, bool prefer_ascii=PREFER_ASCII_CODE) ;
 
-            char to_auto_ascii() const noexcept ;
             char to_ascii() const noexcept ;
             char to_shifted_ascii() const noexcept ;
             int to_number() const noexcept ;
@@ -49,7 +48,6 @@ namespace vind
             KeyCode to_physical() const noexcept ;
 
             bool is_ascii() const noexcept ;
-            bool is_shifted() const noexcept ;
             bool is_unreal() const noexcept ;
             bool is_number() const noexcept ;
             bool is_toggle() const noexcept ;
@@ -87,6 +85,8 @@ namespace vind
             bool operator!=(unsigned char rhs) const noexcept ;
             bool operator!=(const std::string& rhs) const noexcept ;
             bool operator!=(const char* rhs) const noexcept ;
+
+            static bool is_shifted(char ascii) noexcept ;
         } ;
 
         std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) {

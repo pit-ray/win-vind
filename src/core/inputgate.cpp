@@ -439,24 +439,37 @@ namespace vind
     namespace core
     {
         struct InputGate::Impl {
-            HHOOK hook_ = nullptr ;
+            HHOOK hook_ ;
 
-            // Bit-base flags can be used to save memory,
-            // but, the variable should be separated 
-            // to minimize the overhead of bitwise operation in LowLevelKeyboardProc.
-            std::array<bool, 256> lowlevel_state_{false} ;
-            std::array<bool, 256> real_state_{false} ;
-            std::array<bool, 256> state_{false} ;  //Keyboard state win-vind understands.
-            std::array<bool, 256> port_state_{false} ;
+            // Use bit-based optimization with std::vector<bool>.
+            std::vector<bool> lowlevel_state_ ;
+            std::vector<bool> real_state_ ;
+            std::vector<bool> state_ ;  //Keyboard state win-vind understands.
+            std::vector<bool> port_state_ ;
 
-            std::array<std::chrono::system_clock::time_point, 256>
-                timestamps_{std::chrono::system_clock::now()} ;
+            std::array<std::chrono::system_clock::time_point, 256> timestamps_ ;
 
-            bool absorb_state_{true} ;
+            bool absorb_state_ ;
 
-            ModeArray<MapGate> mapgate_{} ;
+            ModeArray<MapGate> mapgate_ ;
 
-            std::queue<KeyLog> pool_{} ;
+            std::queue<KeyLog> pool_ ;
+
+            Impl()
+            : hook_(nullptr),
+              lowlevel_state_(256, false),
+              real_state_(256, false),
+              state_(256, false),
+              port_state_(256, false),
+              timestamps_(),
+              absorb_state_(true),
+              mapgate_(),
+              pool_()
+            {}
+
+            ~Impl() noexcept = default ;
+            Impl(const Impl&) = delete ;
+            Impl& operator=(const Impl&) = delete ;
         } ;
 
         InputGate::InputGate()
@@ -707,11 +720,17 @@ namespace vind
         }
 
         void InputGate::close_all_ports() noexcept {
-            pimpl->port_state_.fill(false) ;
+            std::fill(
+                    pimpl->port_state_.begin(),
+                    pimpl->port_state_.end(),
+                    false) ;
         }
 
         void InputGate::close_all_ports_with_refresh() {
-            pimpl->port_state_.fill(false) ;
+            std::fill(
+                    pimpl->port_state_.begin(),
+                    pimpl->port_state_.end(),
+                    false) ;
 
             //if this function is called by pressed button,
             //it has to send message "KEYUP" to OS (not absorbed).

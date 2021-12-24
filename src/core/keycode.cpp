@@ -6,6 +6,7 @@
 #include <windows.h>
 
 #include <array>
+#include <initializer_list>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -22,16 +23,18 @@ namespace
         CODE   = 0b0000'0000'1111'1111,
 
         FLAG   = 0b1111'1111'0000'0000,
-        ASCII  = 0b1000'0000'0000'0000,
-        NUMBER = 0b0100'0000'0000'0000,
-        SHIFT  = 0b0010'0000'0000'0000,
-        UNREAL = 0b0001'0000'0000'0000,
-        TOGGLE = 0b0000'1000'0000'0000,
+        ASCII  = 0b0000'1000'0000'0000,
+        NUMBER = 0b0000'0100'0000'0000,
+        UNREAL = 0b0000'0010'0000'0000,
+        TOGGLE = 0b0000'0001'0000'0000,
     } ;
 
     class KeyCodeTable {
     public:
         std::array<unsigned short, 256> key2code_ ;
+
+        // Use bit-based optimization with std::vector<bool>.
+        std::vector<bool> shifted_ ;
 
         std::array<unsigned short, 256> ascii2code_ ;
         std::array<char, 65535> code2ascii_ ;
@@ -46,6 +49,7 @@ namespace
     private:
         KeyCodeTable()
         : key2code_(),
+          shifted_(256),
           ascii2code_(),
           code2ascii_(),
           code2shascii_(),
@@ -81,6 +85,8 @@ namespace
                 if(shifted) {
                     s_a2c[c] = keycode ;
                     s_c2a[keycode] = c ;
+
+                    shifted_[c] = true ;
                 }
                 else {
                     a2c[c] = keycode ;
@@ -88,7 +94,7 @@ namespace
                 }
             }
 
-            std::array<bool, 256> togglable ;
+            std::vector<bool> togglable(256) ;
             togglable[KEYCODE_CAPSLOCK] = true ;
             togglable[KEYCODE_KANA]     = true ;
             togglable[KEYCODE_NUMLOCK]  = true ;
@@ -251,50 +257,32 @@ namespace
 
                 code |= CodeMask::ASCII ;
 
-                auto add_ascii = [this, &magic_ascii](auto flagged_code, auto ascii) {
+                auto ascii = c2a[keycode] ;
+                auto s_ascii = s_c2a[keycode] ;
+
+                for(auto a : {s_ascii, ascii}) {
+                    auto buf_code = code ;
+
+                    if('0' <= a && a <= '9') {
+                        buf_code |= CodeMask::NUMBER ;
+                    }
+
                     // If there are two shift-ascii and ascii,
                     // ascii will be registered with priority.
-                    key2code_[flagged_code & CodeMask::CODE] = flagged_code ;
+                    key2code_[keycode] = buf_code ;
 
-                    ascii2code_[ascii] = flagged_code ;
+                    ascii2code_[a] = buf_code ;
 
-                    auto name = magic_ascii[ascii] ;
+                    auto name = magic_ascii[a] ;
                     if(!name.empty()) {
-                        name2code_.emplace(name, flagged_code) ;
+                        name2code_.emplace(name, buf_code) ;
                     }
 
-                    char as[] = {ascii, '\0'} ;
-                    code2name_[flagged_code] = as ;
-                } ;
+                    char as[] = {a, '\0'} ;
+                    code2name_[buf_code] = as ;
 
-                auto s_ascii = s_c2a[keycode] ;
-                auto ascii = c2a[keycode] ;
-
-                if(s_ascii) {
-                    auto s_code = code | CodeMask::SHIFT ;
-                    if('0' <= s_ascii && s_ascii <= '9') {
-                        s_code |= CodeMask::NUMBER ;
-                    }
-
-                    add_ascii(s_code, s_ascii) ;
-                    code2shascii_[s_code] = s_ascii ;
-
-                    if(ascii) {
-                        code2ascii_[s_code] = ascii ;
-                    }
-                }
-
-                if(ascii) {
-                    if('0' <= ascii && ascii <= '9') {
-                        code |= CodeMask::NUMBER ;
-                    }
-
-                    add_ascii(code, ascii) ;
-                    code2ascii_[code] = ascii ;
-
-                    if(s_ascii) {
-                        code2shascii_[code] = s_ascii ;
-                    }
+                    code2ascii_[buf_code] = ascii ;
+                    code2shascii_[buf_code] = s_ascii ;
                 }
             }
 
@@ -367,12 +355,6 @@ namespace vind
         : code_(code)
         {}
 
-        char KeyCode::to_auto_ascii() const noexcept {
-            auto& table = KeyCodeTable::get_instance() ;
-            return is_shifted() ? \
-                table.code2shascii_[code_] : table.code2ascii_[code_] ;
-        }
-
         char KeyCode::to_ascii() const noexcept {
             return KeyCodeTable::get_instance().code2ascii_[code_] ;
         }
@@ -399,10 +381,6 @@ namespace vind
 
         bool KeyCode::is_ascii() const noexcept {
             return static_cast<bool>(code_ & CodeMask::ASCII) ;
-        }
-
-        bool KeyCode::is_shifted() const noexcept {
-            return static_cast<bool>(code_ & CodeMask::SHIFT) ;
         }
 
         bool KeyCode::is_unreal() const noexcept {
@@ -434,7 +412,7 @@ namespace vind
         }
 
         KeyCode::operator char() const noexcept {
-            return to_auto_ascii() ;
+            return to_ascii() ; // use non-shifted ascii
         }
 
         KeyCode::operator unsigned char() const noexcept {
@@ -508,6 +486,10 @@ namespace vind
         }
         bool KeyCode::operator!=(const char* rhs) const noexcept {
             return name() != rhs ;
+        }
+
+        bool KeyCode::is_shifted(char ascii) noexcept {
+            return KeyCodeTable::get_instance().shifted_[ascii] ;
         }
     }
 }

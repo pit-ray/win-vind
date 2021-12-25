@@ -317,6 +317,7 @@ namespace
     public:
         static KeyCodeTable& get_instance() {
             static KeyCodeTable instance ;
+            std::cout << "called\n" ;
             return instance ;
         }
     } ;

@@ -18,8 +18,9 @@ namespace vind
 {
     namespace core
     {
-        auto extended_key_flag(unsigned char key) noexcept {
-            switch(key) {
+        template <typename T>
+        auto extended_key_flag(T key) noexcept {
+            switch(static_cast<unsigned char>(key)) {
                 case KEYCODE_UP:
                 case KEYCODE_DOWN:
                 case KEYCODE_LEFT:

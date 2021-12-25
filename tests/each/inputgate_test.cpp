@@ -9,7 +9,7 @@ namespace vind
 {
     namespace bind
     {
-        BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) {
+        BindedFunc::SPtr ref_global_funcs_bynames(const std::string&) {
             return nullptr ;
         }
     }

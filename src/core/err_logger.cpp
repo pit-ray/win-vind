@@ -91,14 +91,36 @@ namespace vind
                 if(stream_.is_open()) {
                     std::lock_guard<std::mutex> scoped_lock{mtx_} ;
 
-                    stream_ << \
-                        "[Error] " << \
-                        "Windows Error Code: [" << GetLastError() << "], " << \
-                        msg ;
+                    auto win_ercode = GetLastError() ;
+                    if(win_ercode) {
+                        stream_ << "[Error] " ;
+
+                        LPSTR msgbuf = nullptr ;
+                        if(auto size = FormatMessageA(
+                                    FORMAT_MESSAGE_ALLOCATE_BUFFER | \
+                                    FORMAT_MESSAGE_FROM_SYSTEM | \
+                                    FORMAT_MESSAGE_IGNORE_INSERTS,
+                                    NULL, win_ercode,
+                                    MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
+                                    reinterpret_cast<LPSTR>(&msgbuf),
+                                    0, NULL)) {
+
+                            // print message without \r\n
+                            stream_ << std::string(msgbuf, size - 2) ;
+                            LocalFree(msgbuf) ;
+                        }
+                        else {
+                            stream_ << "Windows Error Code: [" << win_ercode << "]" ;
+                        }
+                    }
+                    stream_ <<  std::endl ;
+
+                    stream_ << "[Error] " << msg ;
                     if(!scope.empty()) {
                         stream_ << " (" << scope << ")" ;
                     }
-                    stream_ <<  std::endl ;
+                    stream_ << std::endl ;
+
                     stream_.flush() ;
                 }
             }

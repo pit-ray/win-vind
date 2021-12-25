@@ -56,5 +56,5 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         cd tests/build
-        ctest -C ${{env.BUILD_TYPE}}
+        ctest -C ${{env.BUILD_TYPE}} --output-on-failure
         cd ../..

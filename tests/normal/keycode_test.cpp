@@ -222,20 +222,25 @@ TEST_SUITE("core/keycode") {
     }
 
     TEST_CASE("KeyCode::operator std::string, const char*") {
+        auto check_std_string = [](auto& key, auto&& str) {
+            std::string sbuf = key ;
+            CHECK_EQ(sbuf, str) ;
+        } ;
+
         core::KeyCode k1("tab") ;
-        CHECK_EQ(static_cast<std::string>(k1), "tab") ;
+        check_std_string(k1, "tab") ;
         CHECK_EQ(std::strcmp(static_cast<const char*>(k1), "tab"), 0) ;
 
         core::KeyCode k2(KEYCODE_0) ;
-        CHECK_EQ(static_cast<std::string>(k2), "0") ;
+        check_std_string(k2, "0") ;
         CHECK_EQ(std::strcmp(static_cast<const char*>(k2), "0"), 0) ;
 
         core::KeyCode k3('A') ;
-        CHECK_EQ(static_cast<std::string>(k3), "a") ;
+        check_std_string(k3, "a") ;
         CHECK_EQ(std::strcmp(static_cast<const char*>(k3), "a"), 0) ;
 
         core::KeyCode k4(KEYCODE_LSHIFT) ;
-        CHECK_EQ(static_cast<std::string>(k4), "lshift") ;
+        check_std_string(k4, "lshift") ;
         CHECK_EQ(std::strcmp(static_cast<const char*>(k4), "lshift"), 0) ;
     }
 

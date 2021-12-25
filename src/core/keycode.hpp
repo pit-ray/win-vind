@@ -37,7 +37,9 @@ namespace vind
              *   KeyCode("a", false) => KEYCODE_ALT
              *
              */
-            KeyCode(const std::string& name, bool prefer_ascii=PREFER_ASCII_CODE) ;
+            KeyCode(
+                    const std::string& name,
+                    bool prefer_ascii=PREFER_ASCII_CODE) ;
 
             char to_ascii() const noexcept ;
             char to_shifted_ascii() const noexcept ;

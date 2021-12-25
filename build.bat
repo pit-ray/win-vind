@@ -96,7 +96,7 @@
         cd tests/build
     )
 
-    ctest -C Debug
+    ctest -C Debug --output-on-failure
     cd ../..
     @goto exit
 

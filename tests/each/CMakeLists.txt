@@ -6,7 +6,6 @@ AddTest(each-mapgate-test
     ${CMAKE_CURRENT_SOURCE_DIR}/inputgate_test.cpp
 
     ${SRCDIR}/bind/binded_func.cpp
-    ${SRCDIR}/bind/emu/edi_dot.cpp
     ${SRCDIR}/core/bindings_parser.cpp
     ${SRCDIR}/core/err_logger.cpp
     ${SRCDIR}/core/key_log.cpp

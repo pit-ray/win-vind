@@ -7,10 +7,12 @@
 
 #include <array>
 #include <initializer_list>
+#include <limits>
 #include <unordered_map>
 #include <unordered_set>
 
 #ifdef DEBUG
+#include "err_logger.hpp"
 #include <iostream>
 #endif
 
@@ -29,6 +31,7 @@ namespace
         TOGGLE = 0b0000'0001'0000'0000,
     } ;
 
+
     class KeyCodeTable {
     public:
         std::array<unsigned short, 256> key2code_ ;
@@ -36,7 +39,7 @@ namespace
         // Use bit-based optimization with std::vector<bool>.
         std::vector<bool> shifted_ ;
 
-        std::array<unsigned short, 256> ascii2code_ ;
+        std::array<unsigned short, 128> ascii2code_ ;
         std::array<char, 65535> code2ascii_ ;
         std::array<char, 65535> code2shascii_ ;
 
@@ -58,10 +61,10 @@ namespace
           code2repre_(),
           code2physial_()
         {
-            std::array<char, 256> c2a ;
-            std::array<unsigned char, 256> a2c ;
-            std::array<char, 256> s_c2a ;
-            std::array<unsigned char, 256> s_a2c ;
+            std::array<char, 256> c2a{} ;
+            std::array<unsigned char, 256> a2c{} ;
+            std::array<char, 256> s_c2a{} ;
+            std::array<unsigned char, 256> s_a2c{} ;
 
             const auto printable_ascii = {
                 ' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')',
@@ -102,7 +105,7 @@ namespace
             togglable[KEYCODE_TO_EN]    = true ;
             togglable[KEYCODE_IME]      = true ;
 
-            std::array<unsigned char, 256> p2r ;
+            std::array<unsigned char, 256> p2r{} ;
             p2r[KEYCODE_LSHIFT]  = KEYCODE_SHIFT ;
             p2r[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
             p2r[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
@@ -125,7 +128,7 @@ namespace
             unreal[KEYCODE_OPTIONAL] = true ;
             unreal[KEYCODE_OPTNUMBER] = true ;
 
-            std::array<unsigned char, 256> r2p ;
+            std::array<unsigned char, 256> r2p{} ;
             r2p[KEYCODE_SHIFT] = KEYCODE_LSHIFT ;
             r2p[KEYCODE_CTRL]  = KEYCODE_LCTRL ;
             r2p[KEYCODE_ALT]   = KEYCODE_LALT ;
@@ -226,12 +229,12 @@ namespace
                 {"num",         KEYCODE_OPTNUMBER}
             } ;
 
-            std::array<std::unordered_set<std::string>, 256> c2ns ;
+            std::array<std::unordered_set<std::string>, 256> c2ns{} ;
             for(const auto& [n, c] : n2c) {
                 c2ns[c].insert(n) ;
             }
 
-            std::array<std::string, 256> magic_ascii ;
+            std::array<std::string, 128> magic_ascii{} ;
             magic_ascii[' '] = "space" ;
             magic_ascii['-'] = "hbar" ;
             magic_ascii['>'] = "gt" ;
@@ -284,9 +287,10 @@ namespace
                     if(a == 0) {
                         continue ;
                     }
-                    ascii2code_[a] = code ;
 
-                    auto name = magic_ascii[a] ;
+                    ascii2code_[static_cast<unsigned char>(a)] = code ;
+
+                    auto name = magic_ascii[static_cast<unsigned char>(a)] ;
                     if(!name.empty()) {
                         name2code_.emplace(name, code) ;
                     }
@@ -317,7 +321,6 @@ namespace
     public:
         static KeyCodeTable& get_instance() {
             static KeyCodeTable instance ;
-            std::cout << "called\n" ;
             return instance ;
         }
     } ;

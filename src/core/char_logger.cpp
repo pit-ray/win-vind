@@ -120,7 +120,7 @@ namespace vind
 
                 for(const auto& key : log) {
                     if(key.is_ascii()) {
-                        logging(KeyLog{KEYCODE_SHIFT,key}) ;
+                        logging(KeyLog{KEYCODE_SHIFT, key}) ;
                     }
                     else {
                         not_ascii.insert(key) ;
@@ -193,23 +193,23 @@ namespace vind
                 pimpl->ksr_.reset() ;
                 return static_cast<int>(latest().size()) ;
             }
-            else { //long pressing
-                if(log.empty()) {
-                    return 0 ;
-                }
 
-                if(!pimpl->is_including_enabled_chars(log) \
-                        && !is_including_ascii(log)) {
-                    return 0 ;
-                }
-
-                //emulate key stroke
-                if(pimpl->ksr_.is_passed()) {
-                    logging_without_multi_ascii(std::move(log)) ;
-                    return static_cast<int>(latest().size()) ;
-                }
+            //long pressing
+            if(log.empty()) {
                 return 0 ;
             }
+
+            if(!pimpl->is_including_enabled_chars(log) \
+                    && !is_including_ascii(log)) {
+                return 0 ;
+            }
+
+            //emulate key stroke
+            if(pimpl->ksr_.is_passed()) {
+                logging_without_multi_ascii(std::move(log)) ;
+                return static_cast<int>(latest().size()) ;
+            }
+            return 0 ;
         }
 
         std::string CharLogger::to_str() const {
@@ -221,14 +221,14 @@ namespace vind
             for(auto itr = cbegin() ; itr != cend() ; itr ++) {
                 if(itr->is_containing(KEYCODE_SHIFT)) {
                     //shifted ascii
-                    for(const auto keycode : *itr) {
+                    for(const auto& keycode : *itr) {
                         if(auto c = keycode.to_shifted_ascii()) {
                             str.push_back(c) ;
                         }
                     }
                 }
                 else {
-                    for(const auto keycode : *itr) {
+                    for(const auto& keycode : *itr) {
                         if(auto c = keycode.to_ascii()) {
                             str.push_back(c) ;
                         }

@@ -291,10 +291,10 @@ namespace vind
 
                 opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
 
-                // 
-                // Since there may be multiple logging in one iteration,
-                // transition the state by the increase from the previous iteration.
-                //
+                /**
+                 * NOTE: Since there may be multiple logging in one iteration,
+                 *       transition the state by the increase from the previous iteration.
+                 */
                 core::LoggerParser::SPtr parser ;
                 auto appended_num = lgr.size() - p_cmdp->lastlgr_size ;
                 for(auto itr = lgr.end() - appended_num ; itr != lgr.end() ; itr ++) {

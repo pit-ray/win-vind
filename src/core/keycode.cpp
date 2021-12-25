@@ -124,7 +124,6 @@ namespace
             unreal[KEYCODE_SHIFT_CAPSLOCK] = true ;
             unreal[KEYCODE_OPTIONAL] = true ;
             unreal[KEYCODE_OPTNUMBER] = true ;
-            unreal[KEYCODE_OPTNUMBER] = true ;
 
             std::array<unsigned char, 256> r2p ;
             r2p[KEYCODE_SHIFT] = KEYCODE_LSHIFT ;
@@ -270,36 +269,30 @@ namespace
 
                 code |= CodeMask::ASCII ;
 
+                if(KEYCODE_0 <= keycode && keycode <= KEYCODE_9) {
+                    code |= CodeMask::NUMBER ;
+                }
+                key2code_[keycode] = code ;
+
                 auto ascii = c2a[keycode] ;
                 auto s_ascii = s_c2a[keycode] ;
+
+                code2ascii_[code] = ascii ;
+                code2shascii_[code] = s_ascii ;
 
                 for(auto a : {s_ascii, ascii}) {
                     if(a == 0) {
                         continue ;
                     }
-
-                    auto buf_code = code ;
-
-                    if('0' <= a && a <= '9') {
-                        buf_code |= CodeMask::NUMBER ;
-                    }
-
-                    // If there are two shift-ascii and ascii,
-                    // ascii will be registered with priority.
-                    key2code_[keycode] = buf_code ;
-
-                    ascii2code_[a] = buf_code ;
+                    ascii2code_[a] = code ;
 
                     auto name = magic_ascii[a] ;
                     if(!name.empty()) {
-                        name2code_.emplace(name, buf_code) ;
+                        name2code_.emplace(name, code) ;
                     }
 
                     char as[] = {a, '\0'} ;
-                    code2name_[buf_code] = as ;
-
-                    code2ascii_[buf_code] = ascii ;
-                    code2shascii_[buf_code] = s_ascii ;
+                    code2name_[code] = as ;
                 }
             }
 

@@ -60,6 +60,21 @@ TEST_SUITE("core/bindings_parser") {
         } ;
         CHECK_EQ(cmd2, expect2) ;
 
+        auto cmd3 = parse_string_binding("!<any>") ;
+        Command expect3 ;
+
+        KeyCode k3('!') ;
+
+        KeySet ks3{} ;
+        if(KeyCode::is_shifted('!')) {
+            ks3.emplace_back(KEYCODE_SHIFT) ;
+        }
+        ks3.push_back(k3) ;
+        expect3.push_back(ks3) ;
+
+        expect3.emplace_back(KEYCODE_OPTIONAL) ;
+        CHECK_EQ(cmd3, expect3) ;
+
         CHECK_THROWS(parse_string_binding("b<shift-j><a-jmh")) ;
     }
 }

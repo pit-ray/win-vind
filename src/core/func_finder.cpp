@@ -115,7 +115,7 @@ namespace vind
                 funcid_set.insert(func->id()) ;
             }
 
-            for(size_t i = 0 ; i < mode_num() ; i ++) {
+            for(std::size_t i = 0 ; i < mode_num() ; i ++) {
                 FuncMap<std::shared_ptr<CommandList>> funcmap ;
 
                 auto maps = maptable.get_noremaps(static_cast<Mode>(i)) ;

@@ -25,7 +25,7 @@ namespace
             KeyLogType&& ignore_keys) {
 
         KeyLog::Data nums{} ;
-        for(const KeyCode& keycode : log) {
+        for(const auto& keycode : log) {
             // The repeat number isn't begun with zero.
             // 01 or 02 are invalid syntax.
             if(ignore_keys.is_containing(keycode)) {
@@ -201,7 +201,7 @@ namespace vind
             return 0 ;
         }
 
-        int NTypeLogger::logging_state(KeyLog log) {
+        int NTypeLogger::logging_state(const KeyLog& log) {
             int result ;
             switch(pimpl->state_ & Impl::LoggerState::STATE_MASK) {
                 case Impl::LoggerState::INITIAL:

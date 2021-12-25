@@ -96,7 +96,7 @@ namespace
     NTypeLogger generate_stated_logger(const Command& cmd) {
         NTypeLogger lgr ;
         KeyLog empty_log{} ;
-        for(auto& keyset : cmd) {
+        for(const auto& keyset : cmd) {
             //
             // To simulate the input, make a state transition with an empty log.
             // This is to make the logger recognize that it is a key release,
@@ -487,21 +487,11 @@ namespace vind
 
         void InputGate::install_hook() {
             if(!pimpl->hook_) {
-#if defined(_MSC_VER) && _MSC_VER >= 1500
-#else
-#pragma GCC diagnostic ignored "-Wpmf-conversions"
-#endif
                 pimpl->hook_ = SetWindowsHookEx(
                     WH_KEYBOARD_LL,
                     &InputGate::hook_proc,
                     NULL, 0
                 ) ;
-
-
-#if defined(_MSC_VER) && _MSC_VER >= 1500
-#else
-#pragma GCC diagnostic warning "-Wpmf-conversions"
-#endif
             }
 
             if(!pimpl->hook_) {

@@ -27,7 +27,7 @@ namespace
     using namespace vind::core ;
 
     inline bool is_containing_num(const KeyLog& log) noexcept {
-        for(const KeyCode& key : log) {
+        for(const auto& key : log) {
             if(key.is_number()) {
                 return true ;
             }
@@ -36,7 +36,7 @@ namespace
     }
 
     inline bool is_containing_ascii(const KeyLog& log) noexcept {
-        for(const KeyCode& keycode : log) {
+        for(const auto& keycode : log) {
             if(keycode.is_ascii()) {
                 return true ;
             }

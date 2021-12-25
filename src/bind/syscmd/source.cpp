@@ -186,6 +186,9 @@ namespace vind
 
                 try {
                     core::remove_dbquote_comment(aline) ;
+                    if(aline.empty()) {
+                        continue ;
+                    }
 
                     auto [cmd, args] = core::divide_cmd_and_args(aline) ;
                     if(cmd.empty()) {

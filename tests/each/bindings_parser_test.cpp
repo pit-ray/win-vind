@@ -54,6 +54,12 @@ TEST_SUITE("core/bindings_parser") {
         } ;
         CHECK_EQ(cmd1, expect1) ;
 
+        auto cmd2 = parse_string_binding("<Esc-Left>") ;
+        Command expect2 {
+            {KEYCODE_ESC, KEYCODE_LEFT}
+        } ;
+        CHECK_EQ(cmd2, expect2) ;
+
         CHECK_THROWS(parse_string_binding("b<shift-j><a-jmh")) ;
     }
 }

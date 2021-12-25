@@ -77,11 +77,11 @@ namespace
                 if(igate.is_pressed(KEYCODE_ESC)) {
                     return ;
                 }
-                auto log = igate.pop_log() ;
 
+                auto log = igate.pop_log() ;
                 if(!log.is_containing(KEYCODE_SHIFT)) {
                     //not shifted
-                    for(auto& key : log) {
+                    for(const auto& key : log) {
                         //For example, if replace by 'i' and 'i' key is downed,
                         //immediately will call "insert-mode", so release 'i'.
                         igate.release_keystate(key) ;
@@ -96,7 +96,7 @@ namespace
                 }
                 else {
                     //shifted
-                    for(auto& key : log) {
+                    for(const auto& key : log) {
                         if(is_shift(key)) {
                             continue ;
                         }

@@ -113,7 +113,7 @@ namespace vind
 
                         SetCursorPos(x_pos, y_pos) ;
 
-                        for(auto& key : log) {
+                        for(const auto& key : log) {
                             igate.release_keystate(key) ;
                         }
                         return ;

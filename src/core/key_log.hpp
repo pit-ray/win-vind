@@ -1,13 +1,14 @@
 #ifndef _KEY_LOG_HPP
 #define _KEY_LOG_HPP
 
-#include <initializer_list>
-#include <memory>
-#include <string>
-#include <unordered_set>
-
 #include "keycode.hpp"
 #include "keycode_def.hpp"
+
+#include <initializer_list>
+#include <memory>
+#include <ostream>
+#include <string>
+#include <unordered_set>
 
 namespace vind
 {
@@ -73,6 +74,8 @@ namespace vind
             KeyLog& operator-=(const Data& rhs) ;
             KeyLog& operator-=(Data&& rhs) ;
         } ;
+
+        std::ostream& operator<<(std::ostream& stream, const KeyLog& rhs) ;
     }
 }
 

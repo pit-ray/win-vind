@@ -107,7 +107,7 @@ namespace vind
             auto mi = static_cast<int>(mode) ;
 
             std::vector<Map> out{} ;
-            out.reserve(pimpl->table_.size() / 2) ;
+            out.reserve(pimpl->table_[mi].size() / 2) ;
             for(const auto& [hash, map] : pimpl->table_[mi]) {
                 if(map.is_noremap()) {
                     out.push_back(map) ;
@@ -121,7 +121,7 @@ namespace vind
             auto mi = static_cast<int>(mode) ;
 
             std::vector<Map> out{} ;
-            out.reserve(pimpl->table_.size() / 2) ;
+            out.reserve(pimpl->table_[mi].size() / 2) ;
             for(const auto& [hash, map] : pimpl->table_[mi]) {
                 if(map.is_map()) {
                     out.push_back(map) ;
@@ -135,7 +135,7 @@ namespace vind
             auto mi = static_cast<int>(mode) ;
 
             std::vector<Map> out{} ;
-            out.reserve(pimpl->table_.size()) ;
+            out.reserve(pimpl->table_[mi].size()) ;
             for(const auto& [hash, map] : pimpl->table_[mi]) {
                 out.push_back(map) ;
             }
@@ -244,10 +244,16 @@ namespace vind
         }
 
         std::size_t Map::compute_hash(const Command& cmd) {
+            /**
+             * TODO: The unsigned char keycodes are considered as 
+             *       as 8-bit characters, and compute its hash by
+             *       std::string. This should be a more efficient
+             *       method in the future.
+             */
             std::string strcmd{} ;
-            for(auto& set : cmd) {
-                for(auto& key : set) {
-                    strcmd.push_back(key) ;
+            for(const auto& set : cmd) {
+                for(const auto& key : set) {
+                    strcmd.push_back(key.to_code()) ;
                 }
             }
             return std::hash<std::string>()(std::move(strcmd)) ;

@@ -49,7 +49,7 @@ namespace
     private:
         KeyCodeTable()
         : key2code_(),
-          shifted_(256),
+          shifted_(256, false),
           ascii2code_(),
           code2ascii_(),
           code2shascii_(),
@@ -94,7 +94,7 @@ namespace
                 }
             }
 
-            std::vector<bool> togglable(256) ;
+            std::vector<bool> togglable(256, false) ;
             togglable[KEYCODE_CAPSLOCK] = true ;
             togglable[KEYCODE_KANA]     = true ;
             togglable[KEYCODE_NUMLOCK]  = true ;
@@ -115,6 +115,16 @@ namespace
             p2r[KEYCODE_RALT]    = KEYCODE_ALT ;
             p2r[KEYCODE_FROM_EN] = KEYCODE_IME ;
             p2r[KEYCODE_TO_JP]   = KEYCODE_IME ;
+
+            std::vector<bool> unreal(256, false) ;
+            unreal[KEYCODE_SHIFT] = true ;
+            unreal[KEYCODE_CTRL] = true ;
+            unreal[KEYCODE_ALT] = true ;
+            unreal[KEYCODE_IME] = true ;
+            unreal[KEYCODE_SHIFT_CAPSLOCK] = true ;
+            unreal[KEYCODE_OPTIONAL] = true ;
+            unreal[KEYCODE_OPTNUMBER] = true ;
+            unreal[KEYCODE_OPTNUMBER] = true ;
 
             std::array<unsigned char, 256> r2p ;
             r2p[KEYCODE_SHIFT] = KEYCODE_LSHIFT ;
@@ -211,7 +221,10 @@ namespace
 
                 {"numlock",     KEYCODE_NUMLOCK},
                 {"backtab",     KEYCODE_BACKTAB},
-                {"bktab",       KEYCODE_BACKTAB}
+                {"bktab",       KEYCODE_BACKTAB},
+
+                {"any",         KEYCODE_OPTIONAL},
+                {"num",         KEYCODE_OPTNUMBER}
             } ;
 
             std::array<std::unordered_set<std::string>, 256> c2ns ;
@@ -234,7 +247,7 @@ namespace
                         code |= CodeMask::TOGGLE ;
                     }
 
-                    if(r2p[keycode]) {
+                    if(unreal[keycode]) {
                         code |= CodeMask::UNREAL ;
                     }
 
@@ -494,6 +507,63 @@ namespace vind
 
         bool KeyCode::is_shifted(char ascii) noexcept {
             return KeyCodeTable::get_instance().shifted_[ascii] ;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) {
+            stream << rhs.name() ;
+            return stream ;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) {
+            if(rhs.empty()) {
+                return stream ;
+            }
+
+            if(rhs.size() == 1) {
+                const auto& rhs_f = rhs.front() ;
+                if(rhs_f.is_ascii()) {
+                    stream << rhs_f ;
+                }
+                else {
+                    stream << "<" << rhs_f << ">" ;
+                }
+
+                return stream;
+            }
+
+            stream << "<" ;
+            for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
+                if(itr != rhs.cbegin()) {
+                    stream << "-" ;
+                }
+                stream << *itr ;
+            }
+            stream << ">" ;
+            return stream;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const Command& rhs) {
+            if(!rhs.empty()) {
+                for(const auto& keyset : rhs) {
+                    stream << keyset ;
+                }
+            }
+            return stream ;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const CommandList& rhs) {
+            if(!rhs.empty()) {
+                stream << "[" ;
+                for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
+                    if(rhs.size() > 1 && itr != rhs.cbegin()) {
+                        stream << ", " ;
+                    }
+                    stream << *itr ;
+                }
+                stream << "]" ;
+            }
+
+            return stream ;
         }
     }
 }

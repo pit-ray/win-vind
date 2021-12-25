@@ -326,7 +326,7 @@ namespace vind
                 return ;
             }
 
-            // std::cout << print(pimpl->lgr_) << std::endl ;
+            // std::cout << pimpl->lgr_ << std::endl ;
 
             if(pimpl->lgr_.is_long_pressing()) {
                 if(pimpl->actfunc_) {

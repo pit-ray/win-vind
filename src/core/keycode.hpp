@@ -89,66 +89,15 @@ namespace vind
             static bool is_shifted(char ascii) noexcept ;
         } ;
 
-        std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) {
-            stream << rhs.name() ;
-            return stream ;
-        }
+        std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) ;
 
         using KeySet = std::vector<KeyCode> ;
         using Command = std::vector<KeySet> ;
         using CommandList = std::vector<Command> ;
 
-        std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) {
-            if(rhs.empty()) {
-                return stream ;
-            }
-
-            if(rhs.size() == 1) {
-                const auto& rhs_f = rhs.front() ;
-                if(rhs_f.is_ascii()) {
-                    stream << rhs_f ;
-                }
-                else {
-                    stream << "<" << rhs_f << ">" ;
-                }
-
-                return stream;
-            }
-
-            stream << "<" ;
-            for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
-                if(itr != rhs.cbegin()) {
-                    stream << "-" ;
-                }
-                stream << *itr ;
-            }
-            stream << ">" ;
-            return stream;
-        }
-
-        std::ostream& operator<<(std::ostream& stream, const Command& rhs) {
-            if(!rhs.empty()) {
-                for(const auto& keyset : rhs) {
-                    stream << keyset ;
-                }
-            }
-            return stream ;
-        }
-
-        std::ostream& operator<<(std::ostream& stream, const CommandList& rhs) {
-            if(!rhs.empty()) {
-                stream << "[" ;
-                for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
-                    if(rhs.size() > 1 && itr != rhs.cbegin()) {
-                        stream << ", " ;
-                    }
-                    stream << *itr ;
-                }
-                stream << "]" ;
-            }
-
-            return stream ;
-        }
+        std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) ;
+        std::ostream& operator<<(std::ostream& stream, const Command& rhs) ;
+        std::ostream& operator<<(std::ostream& stream, const CommandList& rhs) ;
     }
 }
 

@@ -92,6 +92,18 @@ TEST_SUITE("core/keycode") {
         CHECK_FALSE(k12.is_unreal()) ;
         CHECK_FALSE(k12.is_number()) ;
         CHECK_FALSE(k12.is_toggle()) ;
+
+        core::KeyCode k13("num") ;
+        CHECK_FALSE(k13.is_ascii()) ;
+        CHECK(k13.is_unreal()) ;
+        CHECK_FALSE(k13.is_number()) ;
+        CHECK_FALSE(k13.is_toggle()) ;
+
+        core::KeyCode k14("any") ;
+        CHECK_FALSE(k14.is_ascii()) ;
+        CHECK(k14.is_unreal()) ;
+        CHECK_FALSE(k14.is_number()) ;
+        CHECK_FALSE(k14.is_toggle()) ;
     }
 
     TEST_CASE("KeyCode::to_ascii, KeyCode::to_shifted_ascii") {

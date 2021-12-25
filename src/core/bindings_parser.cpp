@@ -9,7 +9,6 @@
 #include "util/string.hpp"
 
 #include <algorithm>
-#include <sstream>
 #include <string>
 
 #ifdef DEBUG
@@ -24,11 +23,13 @@ namespace vind
         KeySet parse_pure_one_character_command(char onechar) {
             core::KeyCode keycode(onechar) ;
             if(keycode.empty()) {
-                throw RUNTIME_EXCEPT(std::string("The character '") + onechar + "' is invalid ascii key code.") ;
+                throw RUNTIME_EXCEPT( \
+                        std::string("The character '") + \
+                        onechar + "' is invalid ascii key code.") ;
             }
 
             if(KeyCode::is_shifted(onechar)) {  //ex) A (A is divided to a and SHIFT)
-                return KeySet{core::KeyCode(KEYCODE_SHIFT), keycode} ;
+                return KeySet{KEYCODE_SHIFT, keycode} ;
             }
             //ex) a
             return KeySet{keycode} ;

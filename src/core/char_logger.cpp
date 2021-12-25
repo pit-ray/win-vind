@@ -14,8 +14,8 @@ namespace
 {
     using namespace vind ;
     bool is_including_ascii(const core::KeyLog& log) {
-        for(auto itr = log.cbegin() ; itr != log.cend() ; itr ++) {
-            if(itr->is_ascii()) {
+        for(const auto& keycode : log) {
+            if(keycode.is_ascii()) {
                 return true ;
             }
         }
@@ -59,8 +59,8 @@ namespace vind
             {}
 
             bool is_including_enabled_chars(const KeyLog& log) {
-                for(auto itr = non_chars_.cbegin() ; itr != non_chars_.cend() ; itr ++) {
-                    if(log.is_containing(*itr)) {
+                for(const auto& keycode : non_chars_) {
+                    if(log.is_containing(keycode)) {
                         return true ;
                     }
                 }
@@ -165,7 +165,7 @@ namespace vind
             }
         }
 
-        int CharLogger::logging_state(KeyLog log) {
+        int CharLogger::logging_state(const KeyLog& log) {
             if(log != pimpl->prelog_) { //type is changed
                 auto diff = log - pimpl->prelog_ ;
                 pimpl->prelog_ = log ;
@@ -213,7 +213,9 @@ namespace vind
         }
 
         std::string CharLogger::to_str() const {
-            if(empty()) return "" ;
+            if(empty()) {
+                return "" ;
+            }
 
             std::string str{} ;
             for(auto itr = cbegin() ; itr != cend() ; itr ++) {

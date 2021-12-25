@@ -1,5 +1,7 @@
 #include "key_log.hpp"
 
+#include "keycode.hpp"
+
 #include <algorithm>
 
 namespace vind
@@ -27,7 +29,9 @@ namespace vind
             template <typename T>
             KeyLog::Data erased_diff(T&& rhs) const {
                 auto diff = log_ ;
-                for(auto& k : rhs) diff.erase(k) ;
+                for(auto& k : rhs) {
+                    diff.erase(k) ;
+                }
                 return diff ;
             }
         } ;
@@ -177,6 +181,13 @@ namespace vind
         KeyLog& KeyLog::operator-=(KeyLog::Data&& rhs) {
             for(const auto& k : rhs) pimpl->log_.erase(k) ;
             return *this ;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const KeyLog& rhs) {
+            KeySet set(rhs.begin(), rhs.end()) ;
+            std::sort(set.begin(), set.end()) ;
+            stream << set ;
+            return stream ;
         }
     }
 }

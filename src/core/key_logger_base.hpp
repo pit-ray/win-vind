@@ -4,6 +4,7 @@
 #include "key_log.hpp"
 
 #include <memory>
+#include <ostream>
 #include <vector>
 
 namespace vind
@@ -58,13 +59,10 @@ namespace vind
             bool operator==(const KeyLoggerBase& rhs) const ;
             bool operator!=(const KeyLoggerBase& rhs) const ;
 
-            virtual int logging_state(KeyLog log) = 0 ;
+            virtual int logging_state(const KeyLog& log) = 0 ;
         } ;
 
-#ifdef DEBUG
-        std::string print(const KeyLog& lgr) ;
-        std::string print(const KeyLoggerBase& lgr) ;
-#endif
+        std::ostream& operator<<(std::ostream& stream, const KeyLoggerBase& rhs) ;
     }
 }
 

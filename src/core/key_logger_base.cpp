@@ -106,39 +106,18 @@ namespace vind
             return pimpl->data != rhs.pimpl->data ;
         }
 
-        int KeyLoggerBase::logging_state(KeyLog log) {
+        int KeyLoggerBase::logging_state(const KeyLog& log) {
             logging(log) ;
             return static_cast<int>(latest().size()) ;
         }
 
-#ifdef DEBUG
-        std::string print(const KeyLog& log) {
-            std::stringstream ss ;
-            for(const auto& key : log) {
-                if(key == KEYCODE_SPACE) {
-                    ss << "<space> " ;
-                    continue ;
-                }
-                if(key.is_ascii()) {
-                    ss << key << " " ;
-                }
-                else {
-                    ss << "<" << key << "> " ;
+        std::ostream& operator<<(std::ostream& stream, const KeyLoggerBase& rhs) {
+            if(!rhs.empty()) {
+                for(auto itr = rhs.begin() ; itr != rhs.end() ; itr ++) {
+                    stream << *itr ;
                 }
             }
-            return ss.str() ;
+            return stream ;
         }
-        std::string print(const KeyLoggerBase& lgr) {
-            std::stringstream ss ;
-            if(lgr.empty()) {
-                return "empty\n" ;
-            }
-            for(const auto& log : lgr) {
-                ss << print(log) ;
-                ss << "| " ;
-            }
-            return ss.str() ;
-        }
-#endif
     }
 }

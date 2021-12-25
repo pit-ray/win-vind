@@ -20,7 +20,7 @@ namespace vind
     namespace opt
     {
         struct VCmdLine::Impl {
-            util::DisplayTextPainter  dtp_{25, FW_MEDIUM, "Consolas"} ;
+            util::DisplayTextPainter dtp_{25, FW_MEDIUM, "Consolas"} ;
             int x_ = 0 ;
             int y_ = 0 ;
             int extra_ = 0 ;

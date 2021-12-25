@@ -72,13 +72,11 @@ TEST_SUITE("core/keycode") {
         core::KeyCode k9('"') ;
         CHECK(k9.is_ascii()) ;
         CHECK_FALSE(k9.is_unreal()) ;
-        CHECK_FALSE(k9.is_number()) ;
         CHECK_FALSE(k9.is_toggle()) ;
 
         core::KeyCode k10('#') ;
         CHECK(k10.is_ascii()) ;
         CHECK_FALSE(k10.is_unreal()) ;
-        CHECK_FALSE(k10.is_number()) ;
         CHECK_FALSE(k10.is_toggle()) ;
 
         core::KeyCode k11("alt") ;

@@ -225,7 +225,7 @@ namespace
             magic_ascii['>'] = "gt" ;
             magic_ascii['<'] = "lt" ;
 
-            for(unsigned short keycode = 0 ; keycode < 256 ; keycode ++) {
+            for(unsigned short keycode = 1 ; keycode < 255 ; keycode ++) {
                 auto code = keycode ;
 
                 auto nameset = c2ns[keycode] ;
@@ -261,6 +261,10 @@ namespace
                 auto s_ascii = s_c2a[keycode] ;
 
                 for(auto a : {s_ascii, ascii}) {
+                    if(a == 0) {
+                        continue ;
+                    }
+
                     auto buf_code = code ;
 
                     if('0' <= a && a <= '9') {

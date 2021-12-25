@@ -58,12 +58,6 @@ namespace vind
          *
          */
         Command parse_string_binding(const std::string& cmdstr) ;
-
-#ifdef DEBUG
-        std::string print(const Command& keyset) ;
-        std::string print(const KeySet& cmd) ;
-        std::string print(const CommandList& list) ;
-#endif
     }
 }
 

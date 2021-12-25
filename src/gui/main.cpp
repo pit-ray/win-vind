@@ -184,6 +184,7 @@ namespace vind
                     error_box(wxString::FromUTF8(e.what()) \
                             + wxT(" Could not initialize win-vind, so terminate." \
                             + wxT(" (Windows Error Code: ") + std::to_string(GetLastError()) + ")")) ;
+                    return false ;
                 }
                 return true ;
             }
@@ -225,6 +226,7 @@ namespace vind
                     throw ; //Rethrow the current exception.
                 }
                 catch(const std::exception& e) {
+                    pst_->exit() ;
                     PRINT_ERROR(e.what()) ;
                 }
 
@@ -236,8 +238,10 @@ namespace vind
                     throw ; //Rethrow the current exception.
                 }
                 catch(const std::exception& e) {
+                    pst_->exit() ;
                     PRINT_ERROR(e.what()) ;
                 }
+
                 //the program is already about to exit.
             }
         } ;

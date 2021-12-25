@@ -4,12 +4,18 @@
 
 #include <algorithm>
 
+#ifdef DEBUG
+#include "err_logger.hpp"
+#endif
+
+
 namespace vind
 {
     namespace core
     {
         struct KeyLog::Impl {
-            Data log_ ;
+            KeyLog::Data log_ ;
+
             explicit Impl()
             : log_()
             {}
@@ -52,10 +58,12 @@ namespace vind
         : pimpl(std::make_unique<Impl>(std::move(codes)))
         {}
 
-        KeyLog::~KeyLog() noexcept          = default ;
+        KeyLog::~KeyLog() noexcept = default ;
 
         KeyLog::KeyLog(const KeyLog& rhs)
-        : pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+        : pimpl(rhs.pimpl ? \
+                std::make_unique<Impl>(rhs.pimpl->log_) : \
+                std::make_unique<Impl>())
         {}
 
         KeyLog::KeyLog(KeyLog&&)            = default ;
@@ -67,7 +75,9 @@ namespace vind
         }
 
         KeyLog& KeyLog::operator=(const KeyLog& rhs) {
-            if(rhs.pimpl) *pimpl = *rhs.pimpl ;
+            if(rhs.pimpl) {
+                pimpl->log_ = rhs.pimpl->log_ ;
+            }
             return *this ;
         }
 

@@ -62,12 +62,10 @@ namespace
         }
     } ;
 
-    using CmdHistory = std::vector<CmdPoint::SPtr> ;
-
     class CmdHist
     {
     private:
-        CmdHistory hist_ ;
+        std::vector<CmdPoint::SPtr> hist_ ;
         std::size_t idx_ ;
 
     public:
@@ -76,7 +74,7 @@ namespace
           idx_(0)
         {}
 
-        const CmdPoint::SPtr& get_hist_point() {
+        CmdPoint::SPtr get_hist_point() {
             return hist_.at(idx_) ;
         }
 
@@ -194,7 +192,7 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto& p_cmdp = pimpl->ch_.get_hist_point() ;
+                auto p_cmdp = pimpl->ch_.get_hist_point() ;
                 auto& lgr    = p_cmdp->logger ;
 
                 auto log = core::InputGate::get_instance().pop_log() ;
@@ -230,6 +228,9 @@ namespace vind
 
                     pimpl->ch_.generate_new_hist() ;
                     auto& new_lgr = pimpl->ch_.get_hist_point()->logger ;
+
+                    // Let the new created Logger of CmdPoint
+                    // inherit the state of the last logger.
                     new_lgr.sync_state_with(lgr) ;
 
                     break ;

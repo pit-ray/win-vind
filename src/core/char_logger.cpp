@@ -7,6 +7,7 @@
 #include "util/keystroke_repeater.hpp"
 
 #if defined(DEBUG)
+#include "err_logger.hpp"
 #include <iostream>
 #endif
 

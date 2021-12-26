@@ -29,8 +29,9 @@ AddTest(each-maptable-test
 
     ${SRCDIR}/core/cmdparser.cpp
     ${SRCDIR}/core/errlogger.cpp
-    ${SRCDIR}/core/keylog.cpp
     ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/core/keylog.cpp
+    ${SRCDIR}/core/maptable.cpp
     ${SRCDIR}/core/mode.cpp
     ${SRCDIR}/core/path.cpp
     ${SRCDIR}/util/string.cpp

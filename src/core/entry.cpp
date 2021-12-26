@@ -352,6 +352,8 @@ namespace vind
                     }
 
                     pimpl->actfunc_ = parser->get_func() ;
+                    // std::cout << pimpl->actfunc_->name() << std::endl ;
+
                     handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
 
                     pimpl->lgr_.accept() ;

@@ -13,6 +13,7 @@
 #include "path.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/string.hpp"
 
 #include <array>
 #include <memory>
@@ -117,7 +118,7 @@ namespace vind
 
                 auto maps = maptable.get_noremaps(static_cast<Mode>(i)) ;
                 for(const auto& map : maps) {
-                    const auto& func_name = map.target_command_string() ;
+                    const auto& func_name = util::A2a(map.target_command_string()) ;
                     auto func_id = bind::BindedFunc::name_to_id(func_name) ;
 
                     if(funcid_set.find(func_id) == funcid_set.end()) {

@@ -2,6 +2,7 @@
 
 #include "bindings_parser.hpp"
 #include "defs.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 
 #include <array>

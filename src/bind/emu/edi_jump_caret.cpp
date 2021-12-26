@@ -6,6 +6,7 @@
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
 #include "simple_text_selecter.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 

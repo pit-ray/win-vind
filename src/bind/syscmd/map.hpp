@@ -1,7 +1,7 @@
 #ifndef _MAP_HPP
 #define _MAP_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 
 namespace vind

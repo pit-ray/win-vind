@@ -1,8 +1,8 @@
 #ifndef _CHANGEBASE_HPP
 #define _CHANGEBASE_HPP
 
-#include "bind/binded_func.hpp"
-#include "edi_dot.hpp"
+#include "bind/bindedfunc.hpp"
+#include "dot.hpp"
 
 
 namespace vind

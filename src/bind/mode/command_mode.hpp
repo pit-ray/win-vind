@@ -1,7 +1,7 @@
 #ifndef _COMMAND_MODE_HPP
 #define _COMMAND_MODE_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {

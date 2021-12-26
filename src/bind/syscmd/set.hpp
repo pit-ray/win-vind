@@ -1,7 +1,7 @@
 #ifndef _SET_HPP
 #define _SET_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {

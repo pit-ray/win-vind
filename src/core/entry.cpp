@@ -62,9 +62,8 @@ SOFTWARE.
 
 
 #include "background.hpp"
-#include "bind/bindings_lists.hpp"
-#include "bind/ctrl/mywindow_ctrl.hpp"
-#include "bind/emu/edi_change_mode.hpp"
+#include "bind/bindinglist.hpp"
+#include "bind/emu/moveinsert.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/syscmd/source.hpp"
 #include "core/inputgate.hpp"

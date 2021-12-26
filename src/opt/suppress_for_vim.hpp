@@ -1,7 +1,7 @@
 #ifndef _SUPPRESS_FOR_VIM_HPP
 #define _SUPPRESS_FOR_VIM_HPP
 
-#include "option_creator.hpp"
+#include "option.hpp"
 
 namespace vind
 {

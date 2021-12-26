@@ -1,7 +1,7 @@
 #ifndef _CHANGE_MODE_HPP
 #define _CHANGE_MODE_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 #include "text_area_scanner.hpp"
 
 namespace vind

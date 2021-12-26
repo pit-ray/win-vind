@@ -21,7 +21,6 @@
 #include <sstream>
 #include <string>
 
-#include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/proc/execute.hpp"
 #include "core/errlogger.hpp"
 #include "core/path.hpp"
@@ -271,7 +270,7 @@ namespace vind
 
                                 root->Add(btn_sizer, flags) ;
 
-                                Bind(wxEVT_BUTTON, [js, latest_version, tempdir] (auto&) {
+                                Bind(wxEVT_BUTTON, [js, latest_version, tempdir, parent] (auto&) {
                                     try {
                                         auto asset_name = get_asset_name_for_same_install(latest_version) ;
 
@@ -291,7 +290,7 @@ namespace vind
                                                     std::ifstream check(dl_filepath) ;
                                                     if(check.is_open()) {
                                                     bind::Execute::sprocess(dl_filepath) ;
-                                                        bind::ExitConfigGUI::sprocess() ; // exit win-vind for update
+                                                        parent->Destroy() ;  // exit win-vind for update
                                                         break ;
                                                     }
                                                     if(system_clock::now() - dl_start > 60s) { //timeout

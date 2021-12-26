@@ -1,7 +1,7 @@
 #ifndef _INSTANT_MODE_HPP
 #define _INSTANT_MODE_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {

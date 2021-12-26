@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 #include "keylgrbase.hpp"
 #include "lgrparser.hpp"
 #include "lgrparsermgr.hpp"

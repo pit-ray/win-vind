@@ -1,6 +1,6 @@
 #include "lgrparsermgr.hpp"
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 #include "keylgrbase.hpp"
 #include "lgrparser.hpp"
 

@@ -1,10 +1,10 @@
 #include "optionlist.hpp"
 
-#include "opt/async_uia_cache_builder.hpp"
 #include "opt/autotrack_popup.hpp"
-#include "opt/blockstyle_caret.hpp"
+#include "opt/blockstylecaret.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/suppress_for_vim.hpp"
+#include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"

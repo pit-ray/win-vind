@@ -11,8 +11,8 @@
 #include <stack>
 #include <utility>
 
-#include "bind/binded_func.hpp"
-#include "bind/bindings_lists.hpp"
+#include "bind/bindedfunc.hpp"
+#include "bind/bindinglist.hpp"
 #include "util/container.hpp"
 #include "util/def.hpp"
 

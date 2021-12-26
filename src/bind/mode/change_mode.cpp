@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include "bind/emu/simple_text_selecter.hpp"
+#include "bind/emu/textsel.hpp"
 #include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
@@ -10,7 +10,7 @@
 #include "core/mode.hpp"
 #include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
-#include "opt/async_uia_cache_builder.hpp"
+#include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "options.hpp"
 #include "util/debug.hpp"

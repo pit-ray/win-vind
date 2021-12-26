@@ -1,7 +1,7 @@
 #include "funcfinder.hpp"
 
-#include "bind/binded_func.hpp"
-#include "bind/bindings_lists.hpp"
+#include "bind/bindedfunc.hpp"
+#include "bind/bindinglist.hpp"
 #include "cmdparser.hpp"
 #include "core/maptable.hpp"
 #include "defs.hpp"

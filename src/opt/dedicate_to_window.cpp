@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include "bind/emu/edi_change_mode.hpp"
+#include "bind/emu/moveinsert.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"

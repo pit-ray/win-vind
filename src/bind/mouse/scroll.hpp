@@ -1,6 +1,6 @@
 #ifndef _SCROLL_HPP
 #define _SCROLL_HPP
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {

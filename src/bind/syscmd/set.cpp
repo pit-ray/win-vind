@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <string>
 
-#include "bind/binded_func.hpp"
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
+#include "bind/bindedfunc.hpp"
 #include "core/charlogger.hpp"
 #include "core/entry.hpp"
 #include "core/rcparser.hpp"

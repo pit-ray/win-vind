@@ -1,6 +1,6 @@
 #include "source.hpp"
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 #include "core/charlogger.hpp"
 #include "core/cmdparser.hpp"
 #include "core/entry.hpp"

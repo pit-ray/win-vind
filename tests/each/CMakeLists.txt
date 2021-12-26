@@ -5,7 +5,7 @@ set(SRCDIR ../../src)
 AddTest(each-mapgate-test
     ${CMAKE_CURRENT_SOURCE_DIR}/inputgate_test.cpp
 
-    ${SRCDIR}/bind/binded_func.cpp
+    ${SRCDIR}/bind/bindedfunc.cpp
     ${SRCDIR}/core/cmdparser.cpp
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/keylog.cpp

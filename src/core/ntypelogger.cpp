@@ -2,7 +2,7 @@
 
 #include "ntypelogger.hpp"
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 #include "errlogger.hpp"
 #include "inputgate.hpp"
 #include "keycode.hpp"

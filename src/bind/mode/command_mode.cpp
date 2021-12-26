@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 #include "core/background.hpp"
 #include "core/charlogger.hpp"
 #include "core/entry.hpp"
@@ -17,10 +17,10 @@
 #include "core/mode.hpp"
 #include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
-#include "opt/async_uia_cache_builder.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/suppress_for_vim.hpp"
+#include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/container.hpp"
 #include "util/debug.hpp"

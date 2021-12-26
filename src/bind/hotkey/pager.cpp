@@ -1,6 +1,6 @@
 #include "pager.hpp"
 
-#include "bind/safe_repeater.hpp"
+#include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
 #include "core/ntypelogger.hpp"
 #include "util/def.hpp"

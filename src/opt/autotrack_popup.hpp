@@ -1,7 +1,7 @@
 #ifndef _AUTOTRACK_POPUP_HPP
 #define _AUTOTRACK_POPUP_HPP
 
-#include "option_creator.hpp"
+#include "option.hpp"
 
 namespace vind
 {

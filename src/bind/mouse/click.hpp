@@ -1,6 +1,6 @@
 #ifndef _CLICK_HPP
 #define _CLICK_HPP
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {

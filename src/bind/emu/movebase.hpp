@@ -1,7 +1,7 @@
 #ifndef _MOVEBASE_HPP
 #define _MOVEBASE_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 
 namespace vind

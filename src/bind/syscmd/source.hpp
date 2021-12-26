@@ -1,7 +1,7 @@
 #ifndef _SOURCE_HPP
 #define _SOURCE_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 #include "core/path.hpp"
 
 namespace vind

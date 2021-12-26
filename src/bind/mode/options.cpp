@@ -1,7 +1,7 @@
 #include "options.hpp"
 
 #include "core/settable.hpp"
-#include "opt/async_uia_cache_builder.hpp"
+#include "opt/uiacachebuild.hpp"
 #include "util/box_2d.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"

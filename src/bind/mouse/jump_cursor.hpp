@@ -1,7 +1,7 @@
 #ifndef _JUMP_CURSOR_HPP
 #define _JUMP_CURSOR_HPP
 
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {

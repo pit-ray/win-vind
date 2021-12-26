@@ -1,6 +1,6 @@
 #ifndef _SELECT_HPP
 #define _SELECT_HPP
-#include "bind/binded_func.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {

@@ -1,9 +1,9 @@
-#include "char_logger.hpp"
+#include "charlogger.hpp"
 
 #include "core/inputgate.hpp"
-#include "key_logger_base.hpp"
 #include "keycode.hpp"
-#include "keycode_def.hpp"
+#include "keycodedef.hpp"
+#include "keylgrbase.hpp"
 #include "util/debug.hpp"
 #include "util/keystroke_repeater.hpp"
 

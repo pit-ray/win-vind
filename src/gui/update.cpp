@@ -23,7 +23,7 @@
 
 #include "bind/ctrl/mywindow_ctrl.hpp"
 #include "bind/proc/execute.hpp"
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
 #include "core/version.hpp"

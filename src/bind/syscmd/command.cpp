@@ -1,10 +1,10 @@
 #include "command.hpp"
 
-#include "core/char_logger.hpp"
+#include "core/charlogger.hpp"
 #include "core/entry.hpp"
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/maptable.hpp"
-#include "core/rc_parser.hpp"
+#include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
 

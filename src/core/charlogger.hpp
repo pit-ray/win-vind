@@ -1,8 +1,8 @@
 #ifndef _CHAR_LOGGER_HPP
 #define _CHAR_LOGGER_HPP
 
-#include "key_logger_base.hpp"
 #include "keycode.hpp"
+#include "keylgrbase.hpp"
 #include <initializer_list>
 #include <set>
 

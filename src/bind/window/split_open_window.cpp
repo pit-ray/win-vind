@@ -3,7 +3,7 @@
 #include "window_utility.hpp"
 
 #include "bind/proc/open_window.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
 

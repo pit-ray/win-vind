@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "smart_clipboard.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"

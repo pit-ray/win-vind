@@ -2,9 +2,9 @@
 
 #include "window_utility.hpp"
 
-#include "core/char_logger.hpp"
-#include "core/key_logger_base.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/charlogger.hpp"
+#include "core/keylgrbase.hpp"
+#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"

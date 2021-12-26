@@ -1,6 +1,6 @@
-#include "keybrd_layout.hpp"
+#include "keylayout.hpp"
 
-#include "language_code_id.hpp"
+#include "langid.hpp"
 #include "path.hpp"
 
 namespace vind

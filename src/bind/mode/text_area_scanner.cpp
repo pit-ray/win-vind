@@ -1,6 +1,6 @@
 #include "text_area_scanner.hpp"
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"

@@ -5,7 +5,7 @@
 #include "window_utility.hpp"
 
 #include "bind/mouse/jump_actwin.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 #include "util/box_2d.hpp"
 #include "util/rect.hpp"
 #include "util/screen_metrics.hpp"

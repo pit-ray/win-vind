@@ -1,9 +1,9 @@
-#include "logger_parser.hpp"
+#include "lgrparser.hpp"
 
-#include "bindings_parser.hpp"
+#include "cmdparser.hpp"
 #include "defs.hpp"
-#include "key_log.hpp"
-#include "keycode_def.hpp"
+#include "keycodedef.hpp"
+#include "keylog.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -341,7 +341,7 @@ namespace vind
             }
 
             if(pimpl->cmdlist_ptr_.use_count() == 1) {
-                pimpl->cmdlist_ptr_->push_back(parse_string_binding(command)) ;
+                pimpl->cmdlist_ptr_->push_back(parse_command(command)) ;
             }
         }
 

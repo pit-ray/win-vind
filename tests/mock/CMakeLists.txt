@@ -9,5 +9,5 @@ AddTest(mock-winwrap-test
 )
 
 AddTest(mock-err-logger-test
-    ${CMAKE_CURRENT_SOURCE_DIR}/err_logger_test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/errlogger_test.cpp
 )

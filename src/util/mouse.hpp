@@ -3,8 +3,8 @@
 
 #include <windows.h>
 
-#include "core/err_logger.hpp"
-#include "core/keycode_def.hpp"
+#include "core/errlogger.hpp"
+#include "core/keycodedef.hpp"
 #include "util/def.hpp"
 
 #ifndef MOUSEEVENTF_HWHEEL

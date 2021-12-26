@@ -1,7 +1,7 @@
 #include <doctest.h>
 
 #include "core/mode.hpp"
-#include "core/rc_parser.cpp"
+#include "core/rcparser.cpp"
 
 #include <string>
 

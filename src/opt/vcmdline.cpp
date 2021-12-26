@@ -6,7 +6,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/mode.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"

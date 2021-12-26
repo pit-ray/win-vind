@@ -11,8 +11,8 @@
 
 #include "window_utility.hpp"
 
-#include "core/err_logger.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/errlogger.hpp"
+#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "util/box_2d.hpp"
 #include "util/def.hpp"

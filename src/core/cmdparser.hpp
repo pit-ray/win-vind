@@ -57,7 +57,7 @@ namespace vind
          * @return (Command(std::vector<std::vector<KeyCode>>))
          *
          */
-        Command parse_string_binding(const std::string& cmdstr) ;
+        Command parse_command(const std::string& cmdstr) ;
     }
 }
 

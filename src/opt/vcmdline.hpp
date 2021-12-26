@@ -1,7 +1,7 @@
 # ifndef _VCMDLINE_HPP
 #define _VCMDLINE_HPP
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "message.hpp"
 #include "option_creator.hpp"
 

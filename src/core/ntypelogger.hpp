@@ -1,7 +1,7 @@
 #ifndef _NTYPE_LOGGER_HPP
 #define _NTYPE_LOGGER_HPP
 
-#include "key_logger_base.hpp"
+#include "keylgrbase.hpp"
 
 #define NTYPE_HEAD_NUM(result)  ((result) == -1)
 #define NTYPE_EMPTY(result)     ((result) == 0)

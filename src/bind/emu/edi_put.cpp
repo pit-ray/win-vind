@@ -2,8 +2,8 @@
 
 #include "bind/safe_repeater.hpp"
 #include "core/inputgate.hpp"
-#include "core/keycode_def.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/keycodedef.hpp"
+#include "core/ntypelogger.hpp"
 #include "edi_delete.hpp"
 #include "simple_text_register.hpp"
 #include "util/def.hpp"

@@ -3,7 +3,7 @@
 #include <mutex>
 #include <string>
 
-#include "core/char_logger.hpp"
+#include "core/charlogger.hpp"
 #include "core/settable.hpp"
 #include "util/color.hpp"
 #include "util/debug.hpp"

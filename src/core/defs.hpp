@@ -1,7 +1,7 @@
 #ifndef _DEFS_HPP
 #define _DEFS_HPP
 
-#include "keycode_def.hpp"
+#include "keycodedef.hpp"
 #include "mode.hpp"
 
 #include <array>

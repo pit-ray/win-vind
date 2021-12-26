@@ -1,7 +1,7 @@
 #include "text_util.hpp"
 
 #include "core/inputgate.hpp"
-#include "core/keycode_def.hpp"
+#include "core/keycodedef.hpp"
 #include "simple_text_register.hpp"
 #include "smart_clipboard.hpp"
 #include "util/def.hpp"

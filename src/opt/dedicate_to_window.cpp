@@ -4,9 +4,9 @@
 
 #include "bind/emu/edi_change_mode.hpp"
 #include "bind/mode/change_mode.hpp"
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/keycode_def.hpp"
+#include "core/keycodedef.hpp"
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/mouse.hpp"

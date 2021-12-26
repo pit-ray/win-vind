@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "core/background.hpp"
-#include "core/char_logger.hpp"
+#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/optionlist.hpp"

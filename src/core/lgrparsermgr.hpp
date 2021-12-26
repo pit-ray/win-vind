@@ -1,7 +1,7 @@
 #ifndef _LOGGER_PARSER_MGR_HPP
 #define _LOGGER_PARSER_MGR_HPP
 
-#include "logger_parser.hpp"
+#include "lgrparser.hpp"
 
 #include <memory>
 

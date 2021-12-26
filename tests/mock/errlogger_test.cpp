@@ -57,7 +57,7 @@ namespace
     auto VALID_HANDLE = reinterpret_cast<HANDLE>(&valid_value) ;
 }
 
-#include "core/err_logger.cpp"
+#include "core/errlogger.cpp"
 
 #include <doctest.h>
 

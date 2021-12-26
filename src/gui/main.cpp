@@ -40,7 +40,7 @@ SOFTWARE.
 #include "util/enable_gcc_warning.hpp"
 
 #include "core/entry.hpp"
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
 

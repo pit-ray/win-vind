@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"

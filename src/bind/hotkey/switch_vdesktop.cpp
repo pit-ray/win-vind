@@ -2,7 +2,7 @@
 
 #include "bind/safe_repeater.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 namespace vind

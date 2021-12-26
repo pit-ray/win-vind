@@ -1,7 +1,7 @@
 #include "bind/emu/edi_dot.hpp"
 
 #include "bind/binded_func.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 
 
 namespace vind

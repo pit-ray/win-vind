@@ -1,13 +1,13 @@
 #define NOMINMAX
 
-#include "ntype_logger.hpp"
+#include "ntypelogger.hpp"
 
 #include "bind/binded_func.hpp"
-#include "err_logger.hpp"
+#include "errlogger.hpp"
 #include "inputgate.hpp"
-#include "key_logger_base.hpp"
 #include "keycode.hpp"
-#include "logger_parser.hpp"
+#include "keylgrbase.hpp"
+#include "lgrparser.hpp"
 #include "mode.hpp"
 #include "util/keystroke_repeater.hpp"
 

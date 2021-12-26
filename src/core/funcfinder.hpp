@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "bind/binded_func.hpp"
-#include "key_logger_base.hpp"
-#include "logger_parser.hpp"
-#include "logger_parser_mgr.hpp"
+#include "keylgrbase.hpp"
+#include "lgrparser.hpp"
+#include "lgrparsermgr.hpp"
 #include "mode.hpp"
 
 

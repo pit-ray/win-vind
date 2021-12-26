@@ -1,9 +1,9 @@
 #ifndef _INPUTGATE_HPP
 #define _INPUTGATE_HPP
 
-#include "key_log.hpp"
 #include "keycode.hpp"
-#include "keycode_def.hpp"
+#include "keycodedef.hpp"
+#include "keylog.hpp"
 #include "mode.hpp"
 
 #include "util/def.hpp"

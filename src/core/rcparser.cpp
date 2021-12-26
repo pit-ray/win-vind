@@ -1,4 +1,4 @@
-#include "rc_parser.hpp"
+#include "rcparser.hpp"
 
 #include "mode.hpp"
 #include "util/def.hpp"

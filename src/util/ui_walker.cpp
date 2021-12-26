@@ -1,6 +1,6 @@
 #include "ui_walker.hpp"
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 
 #include "container.hpp"
 #include "def.hpp"

@@ -1,7 +1,7 @@
 #ifndef _KEY_LOGGER_BASE_HPP
 #define _KEY_LOGGER_BASE_HPP
 
-#include "key_log.hpp"
+#include "keylog.hpp"
 
 #include <memory>
 #include <ostream>

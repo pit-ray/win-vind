@@ -2,7 +2,7 @@
 
 #include <cstring>
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 
 #include "util/def.hpp"
 

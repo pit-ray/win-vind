@@ -5,9 +5,9 @@
 #include <memory>
 
 #include "bind/mode/change_mode.hpp"
-#include "core/char_logger.hpp"
+#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 

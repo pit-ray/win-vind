@@ -1,6 +1,6 @@
 #include "opt/option.hpp"
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 
 #include <mutex>
 #include <stdexcept>

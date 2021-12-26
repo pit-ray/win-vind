@@ -1,8 +1,8 @@
 #include "opt/blockstyle_caret.hpp"
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/keycode_def.hpp"
+#include "core/keycodedef.hpp"
 #include "core/mode.hpp"
 #include "core/settable.hpp"
 #include "util/box_2d.hpp"

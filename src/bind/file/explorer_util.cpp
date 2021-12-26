@@ -6,7 +6,7 @@
 #include <exdisp.h>
 #include <shlobj.h>
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "util/def.hpp"
 #include "util/smartcom.hpp"
 #include "util/string.hpp"

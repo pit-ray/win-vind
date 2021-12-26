@@ -1,6 +1,6 @@
 #include "winwrap.hpp"
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 
 #include "def.hpp"
 #include "point_2d.hpp"

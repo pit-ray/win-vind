@@ -12,7 +12,7 @@
 
 #include "util/enable_gcc_warning.hpp"
 
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/version.hpp"
 
 #include "font.hpp"

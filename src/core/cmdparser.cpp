@@ -1,8 +1,8 @@
-#include "bindings_parser.hpp"
+#include "cmdparser.hpp"
 
-#include "err_logger.hpp"
+#include "errlogger.hpp"
 #include "keycode.hpp"
-#include "keycode_def.hpp"
+#include "keycodedef.hpp"
 #include "mode.hpp"
 #include "util/container.hpp"
 #include "util/debug.hpp"
@@ -73,7 +73,7 @@ namespace vind
         }
 
 
-        Command parse_string_binding(const std::string& cmdstr) {
+        Command parse_command(const std::string& cmdstr) {
             Command cmd ;
             for(std::size_t i = 0 ; i < cmdstr.length() ; i ++) {
                 auto onechar = cmdstr[i] ;

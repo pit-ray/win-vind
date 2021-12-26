@@ -30,7 +30,7 @@ SOFTWARE.
 */
 
 #include "entry.hpp"
-#include "keycode_def.hpp"
+#include "keycodedef.hpp"
 #include <chrono>
 
 #define _WIN32_WINNT_WIN10 0x0A00 //Windows 10
@@ -68,11 +68,11 @@ SOFTWARE.
 #include "bind/mode/change_mode.hpp"
 #include "bind/syscmd/source.hpp"
 #include "core/inputgate.hpp"
-#include "err_logger.hpp"
-#include "func_finder.hpp"
+#include "errlogger.hpp"
+#include "funcfinder.hpp"
 #include "maptable.hpp"
 #include "mode.hpp"
-#include "ntype_logger.hpp"
+#include "ntypelogger.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "path.hpp"

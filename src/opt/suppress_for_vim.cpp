@@ -5,7 +5,7 @@
 #include <string>
 
 #include "bind/mode/change_mode.hpp"
-#include "core/err_logger.hpp"
+#include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "opt/vcmdline.hpp"

@@ -1,8 +1,7 @@
 #include <doctest.h>
 
-#include "core/bindings_parser.hpp"
-
-#include "core/keycode_def.hpp"
+#include "core/cmdparser.hpp"
+#include "core/keycodedef.hpp"
 
 #include <iostream>
 
@@ -43,8 +42,8 @@ TEST_SUITE("core/bindings_parser") {
         CHECK_THROWS(parse_combined_command("shift-fjakls")) ;
     }
 
-    TEST_CASE("parse_string_binding") {
-        auto cmd1 = parse_string_binding("<s-h>jH<alt-b><m-m>") ;
+    TEST_CASE("parse_command") {
+        auto cmd1 = parse_command("<s-h>jH<alt-b><m-m>") ;
         Command expect1 {
             {KEYCODE_SHIFT, KEYCODE_H},
             {KEYCODE_J},
@@ -54,13 +53,13 @@ TEST_SUITE("core/bindings_parser") {
         } ;
         CHECK_EQ(cmd1, expect1) ;
 
-        auto cmd2 = parse_string_binding("<Esc-Left>") ;
+        auto cmd2 = parse_command("<Esc-Left>") ;
         Command expect2 {
             {KEYCODE_ESC, KEYCODE_LEFT}
         } ;
         CHECK_EQ(cmd2, expect2) ;
 
-        auto cmd3 = parse_string_binding("!<any>") ;
+        auto cmd3 = parse_command("!<any>") ;
 
         KeySet ks3{} ;
         KeyCode k3('!') ;
@@ -76,6 +75,6 @@ TEST_SUITE("core/bindings_parser") {
 
         CHECK_EQ(cmd3, expect3) ;
 
-        CHECK_THROWS(parse_string_binding("b<shift-j><a-jmh")) ;
+        CHECK_THROWS(parse_command("b<shift-j><a-jmh")) ;
     }
 }

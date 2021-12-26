@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "core/keycode.hpp"
-#include "core/keycode_def.hpp"
+#include "core/keycodedef.hpp"
 
 namespace vind
 {

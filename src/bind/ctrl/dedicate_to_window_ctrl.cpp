@@ -1,7 +1,7 @@
 #include "dedicate_to_window_ctrl.hpp"
 
-#include "core/char_logger.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/charlogger.hpp"
+#include "core/ntypelogger.hpp"
 
 #include "opt/dedicate_to_window.hpp"
 #include "util/debug.hpp"

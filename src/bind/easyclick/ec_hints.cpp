@@ -1,7 +1,7 @@
 #include "ec_hints.hpp"
 
 #include "core/keycode.hpp"
-#include "core/keycode_def.hpp"
+#include "core/keycodedef.hpp"
 #include "util/string.hpp"
 
 #include <array>

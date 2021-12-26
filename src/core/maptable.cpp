@@ -1,6 +1,6 @@
 #include "maptable.hpp"
 
-#include "bindings_parser.hpp"
+#include "cmdparser.hpp"
 #include "defs.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
@@ -160,10 +160,10 @@ namespace vind
                     T2&& out,
                     bool remappable)
             : istr_(std::forward<T1>(in)),
-              icmd_(parse_string_binding(istr_)),
+              icmd_(parse_command(istr_)),
               ihash_(0),
               ostr_(std::forward<T2>(out)),
-              ocmd_(parse_string_binding(ostr_)),
+              ocmd_(parse_command(ostr_)),
               ohash_(0),
               remappable_(remappable)
             {}
@@ -241,7 +241,7 @@ namespace vind
         }
 
         std::size_t Map::compute_hash(const std::string& strcmd) {
-            return compute_hash(parse_string_binding(strcmd)) ;
+            return compute_hash(parse_command(strcmd)) ;
         }
 
         std::size_t Map::compute_hash(const Command& cmd) {

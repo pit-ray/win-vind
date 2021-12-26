@@ -4,7 +4,7 @@
 #include "bind/safe_repeater.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "edi_change_mode.hpp"
 #include "simple_text_register.hpp"

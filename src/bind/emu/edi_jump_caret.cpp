@@ -1,10 +1,10 @@
 #include "edi_jump_caret.hpp"
 
 #include "bind/safe_repeater.hpp"
-#include "core/char_logger.hpp"
+#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntype_logger.hpp"
+#include "core/ntypelogger.hpp"
 #include "simple_text_selecter.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"

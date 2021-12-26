@@ -1,4 +1,4 @@
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <windows.h>
 
@@ -94,4 +94,4 @@ TEST_CASE("(errlogger/remove_files_over) Under Fake Windows API: ")  {
     }
 }
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"

@@ -3,7 +3,7 @@
 
 #include <windows.h>
 
-#include "disable_gcc_warning.hpp"
+#include "disable_compiler_warning.hpp"
 
 #if defined(_MSC_VER) && _MSC_VER >= 1500
 #include <uiautomationclient.h>
@@ -11,7 +11,7 @@
 #include <um/uiautomationclient.h>
 #endif
 
-#include "enable_gcc_warning.hpp"
+#include "enable_compiler_warning.hpp"
 
 #include "smartcom.hpp"
 

@@ -1,11 +1,11 @@
 #ifndef _ABOUT_HPP
 #define _ABOUT_HPP
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/dialog.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #include <memory>
 

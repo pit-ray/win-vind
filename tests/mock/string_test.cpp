@@ -1,6 +1,6 @@
 #include <doctest.h>
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <cstring>
 #include <string>
@@ -164,5 +164,5 @@ TEST_CASE("util/string Under Fake Windows API: ") {
     }
 }
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 

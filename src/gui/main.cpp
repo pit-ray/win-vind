@@ -31,13 +31,13 @@ SOFTWARE.
 
 #include <atomic>
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/app.h>
 #include <wx/cmdline.h>
 #include <wx/msgdlg.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
@@ -247,9 +247,9 @@ namespace vind
 }
 
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 DECLARE_APP(vind::gui::App) ;
 IMPLEMENT_APP(vind::gui::App) ;
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"

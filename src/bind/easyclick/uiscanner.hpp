@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "util/ui_walker.hpp"
+#include "util/uiwalker.hpp"
 
 namespace vind
 {

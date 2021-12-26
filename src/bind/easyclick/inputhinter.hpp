@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "easyclickhint.hpp"
-#include "util/point_2d.hpp"
+#include "util/point2d.hpp"
 
 namespace vind
 {

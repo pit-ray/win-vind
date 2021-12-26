@@ -3,7 +3,7 @@
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/settable.hpp"
-#include "util/point_2d.hpp"
+#include "util/point2d.hpp"
 #include "util/uia.hpp"
 #include "util/winwrap.hpp"
 

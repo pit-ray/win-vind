@@ -1,11 +1,11 @@
 #ifndef _METRICS_HPP
 #define _METRICS_HPP
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/gdicmn.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #define GOLDEN_WIDTH_RATIO  (1.618)
 

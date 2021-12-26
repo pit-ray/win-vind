@@ -1,11 +1,11 @@
 #include "tray.hpp"
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/icon.h>
 #include <wx/menu.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #include "core/path.hpp"
 #include "core/settable.hpp"

@@ -3,14 +3,14 @@
 #include "core/errlogger.hpp"
 
 #include "def.hpp"
-#include "point_2d.hpp"
+#include "point2d.hpp"
 
 #include <sstream>
 #include <unordered_set>
 
-#include "disable_gcc_warning.hpp"
+#include "disable_compiler_warning.hpp"
 #include <ntstatus.h>
-#include "enable_gcc_warning.hpp"
+#include "enable_compiler_warning.hpp"
 
 #include <psapi.h>
 

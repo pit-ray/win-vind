@@ -1,6 +1,6 @@
 #include "about.hpp"
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/button.h>
 #include <wx/defs.h>
@@ -10,7 +10,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #include "core/errlogger.hpp"
 #include "core/version.hpp"

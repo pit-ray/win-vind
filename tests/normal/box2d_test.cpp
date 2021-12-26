@@ -1,6 +1,6 @@
 #include <doctest.h>
 
-#include "util/box_2d.cpp"
+#include "util/box2d.cpp"
 
 using namespace vind ;
 using namespace vind::util ;

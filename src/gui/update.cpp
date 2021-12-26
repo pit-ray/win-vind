@@ -2,7 +2,7 @@
 
 #include <shlobj.h>
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/button.h>
 #include <wx/defs.h>
@@ -14,7 +14,7 @@
 #include <wx/sstream.h>
 #include <wx/stattext.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #include <chrono>
 #include <fstream>
@@ -30,12 +30,12 @@
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <maddy/parser.h>
 #include <nlohmann/json.hpp>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #include "font.hpp"
 #include "metrics.hpp"

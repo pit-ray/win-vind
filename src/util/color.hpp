@@ -3,11 +3,11 @@
 
 #include <windows.h>
 
-#include "disable_gcc_warning.hpp"
+#include "disable_compiler_warning.hpp"
 
 #include <tuple>
 
-#include "enable_gcc_warning.hpp"
+#include "enable_compiler_warning.hpp"
 
 #include <string>
 

@@ -3,15 +3,15 @@
 #include "def.hpp"
 #include "winwrap.hpp"
 
-#include "disable_gcc_warning.hpp"
+#include "disable_compiler_warning.hpp"
 
 #include <windows.h>
-#include "guid_definition.hpp"
+#include "guiddef.hpp"
 #include <oleauto.h>
 #include <winerror.h>
 #include <winuser.h>
 
-#include "enable_gcc_warning.hpp"
+#include "enable_compiler_warning.hpp"
 
 #include <memory>
 

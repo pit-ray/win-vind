@@ -1,11 +1,11 @@
 #ifndef _FONT_HPP
 #define _FONT_HPP
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/font.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 #include <string>
 

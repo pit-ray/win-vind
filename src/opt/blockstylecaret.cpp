@@ -5,10 +5,10 @@
 #include "core/keycodedef.hpp"
 #include "core/mode.hpp"
 #include "core/settable.hpp"
-#include "util/box_2d.hpp"
+#include "util/box2d.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
-#include "util/point_2d.hpp"
+#include "util/point2d.hpp"
 #include "util/winwrap.hpp"
 
 #include <future>

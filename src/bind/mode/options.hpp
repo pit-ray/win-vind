@@ -2,7 +2,7 @@
 #define _OPTIONS_HPP
 
 #include "text_area_scanner.hpp"
-#include "util/point_2d.hpp"
+#include "util/point2d.hpp"
 
 
 namespace vind

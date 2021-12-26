@@ -1,12 +1,12 @@
 #ifndef _TRAY_HPP
 #define _TRAY_HPP
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <wx/taskbar.h>
 #include <wx/toplevel.h>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 namespace vind
 {

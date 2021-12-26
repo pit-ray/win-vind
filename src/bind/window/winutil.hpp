@@ -6,7 +6,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "util/box_2d.hpp"
+#include "util/box2d.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
 

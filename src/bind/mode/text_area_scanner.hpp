@@ -1,7 +1,7 @@
 #ifndef _BIND_MODE_OPTIONS_HPP
 #define _BIND_MODE_OPTIONS_HPP
 
-#include "util/ui_walker.hpp"
+#include "util/uiwalker.hpp"
 
 
 namespace vind

@@ -1,12 +1,12 @@
 #ifndef _TEXT_ANALYZER_HPP
 #define _TEXT_ANALYZER_HPP
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include <functional>
 #include <string>
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"
 
 namespace vind
 {

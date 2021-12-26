@@ -14,7 +14,7 @@
 #include "core/errlogger.hpp"
 #include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
-#include "util/box_2d.hpp"
+#include "util/box2d.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/screen_metrics.hpp"

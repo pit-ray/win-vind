@@ -2,7 +2,7 @@
 
 #include "core/settable.hpp"
 #include "opt/uiacachebuild.hpp"
-#include "util/box_2d.hpp"
+#include "util/box2d.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"

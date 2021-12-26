@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "box_2d.hpp"
+#include "box2d.hpp"
 
 
 namespace vind

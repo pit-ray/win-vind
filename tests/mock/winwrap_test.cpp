@@ -2,7 +2,7 @@
 
 #define PRINT_ERROR(msg) /*(msg)*/
 
-#include "util/disable_gcc_warning.hpp"
+#include "util/disable_compiler_warning.hpp"
 
 #include "util/string.cpp"
 #include "util/winwrap.cpp"
@@ -94,4 +94,4 @@ TEST_CASE("util/winwrap Under Fake Windows API: ") {
     }
 }
 
-#include "util/enable_gcc_warning.hpp"
+#include "util/enable_compiler_warning.hpp"

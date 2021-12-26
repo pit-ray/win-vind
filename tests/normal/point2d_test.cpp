@@ -1,6 +1,6 @@
 #include <doctest.h>
 
-#include "util/point_2d.hpp"
+#include "util/point2d.hpp"
 
 #include "util/rect.hpp"
 

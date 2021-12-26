@@ -155,7 +155,7 @@ namespace vind
         //YankWithMotion
         struct YankWithMotion::Impl {
             core::FuncFinder finder_ ;
-            ModeArray<core::FuncFinder> parent_finders_ ;
+            core::ModeArray<core::FuncFinder> parent_finders_ ;
             core::Background bg_ ;
 
             explicit Impl()
@@ -213,7 +213,7 @@ namespace vind
         //DeleteWithMotion
         struct DeleteWithMotion::Impl {
             core::FuncFinder finder_ ;
-            ModeArray<core::FuncFinder> parent_finders_ ;
+            core::ModeArray<core::FuncFinder> parent_finders_ ;
             core::Background bg_ ;
 
             explicit Impl()
@@ -272,7 +272,7 @@ namespace vind
         //ChangeWithMotion
         struct ChangeWithMotion::Impl {
             core::FuncFinder finder_ ;
-            ModeArray<core::FuncFinder> parent_finders_ ;
+            core::ModeArray<core::FuncFinder> parent_finders_ ;
             core::Background bg_ ;
 
             explicit Impl()

@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-#include "core/defs.hpp"
 #include "core/mode.hpp"
+#include "core/syscalldef.hpp"
 
 
 namespace vind

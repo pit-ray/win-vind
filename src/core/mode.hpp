@@ -1,7 +1,9 @@
 #ifndef _MODE_HPP
 #define _MODE_HPP
 
+#include <array>
 #include <string>
+
 
 namespace vind
 {
@@ -58,6 +60,11 @@ namespace vind
         inline const std::string& mode_to_name(T mode) noexcept {
             return mode_to_name(static_cast<Mode>(mode)) ;
         }
+
+
+
+        template <typename T>
+        using ModeArray = std::array<T, core::mode_num()> ;
     }
 }
 

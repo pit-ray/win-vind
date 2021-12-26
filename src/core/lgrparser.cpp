@@ -1,7 +1,6 @@
 #include "lgrparser.hpp"
 
 #include "cmdparser.hpp"
-#include "defs.hpp"
 #include "keycodedef.hpp"
 #include "keylog.hpp"
 

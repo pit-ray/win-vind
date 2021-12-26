@@ -1,7 +1,6 @@
 #include "maptable.hpp"
 
 #include "cmdparser.hpp"
-#include "defs.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 

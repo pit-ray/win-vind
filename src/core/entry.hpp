@@ -36,8 +36,8 @@ SOFTWARE.
 #include <memory>
 #include <string>
 
-#include "defs.hpp"
 #include "exception.hpp"
+#include "syscalldef.hpp"
 
 
 namespace vind

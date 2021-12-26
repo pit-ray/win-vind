@@ -4,7 +4,6 @@
 #include "bind/bindinglist.hpp"
 #include "cmdparser.hpp"
 #include "core/maptable.hpp"
-#include "defs.hpp"
 #include "entry.hpp"
 #include "keylgrbase.hpp"
 #include "lgrparser.hpp"
@@ -74,7 +73,8 @@ namespace vind
                 funcid_set.insert(func->id()) ;
             }
 
-            FuncMap<std::shared_ptr<CommandList>> funcmap ;
+            std::unordered_map<std::string, \
+                std::shared_ptr<CommandList>> funcmap ;
 
             auto maps = maptable.get_noremaps(mode) ;
             for(const auto& map : maps) {

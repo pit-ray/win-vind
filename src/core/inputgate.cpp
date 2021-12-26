@@ -3,7 +3,6 @@
 #include "bind/bindedfunc.hpp"
 #include "bind/bindinglist.hpp"
 #include "bind/saferepeat.hpp"
-#include "defs.hpp"
 #include "errlogger.hpp"
 #include "keycodedef.hpp"
 #include "keylgrbase.hpp"

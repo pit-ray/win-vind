@@ -56,9 +56,17 @@ namespace
                 util::concat_args("clone", "--depth=1", remote_url, target_repo_path.u8string()),
                 false, true) ;
         }
+        /**
+         * TODO: For security reasons, it should ensure that
+         *       the .vindrc is the same as the first time.
+         *       Therefore, we temporarily mark the following as comments.
+         */
+
+        /*
         else {
             util::create_process(target_repo_path, "git", "pull", false, true) ;
         }
+        */
 
         return target_repo_path / ".vindrc" ;
     }

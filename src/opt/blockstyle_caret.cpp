@@ -46,77 +46,73 @@ namespace
         }
     }
 
-    //
-    // ############################################################################################
-    // #                                                                                          #
-    // #                                    For developers                                        #
-    // #                                                                                          #
-    // ############################################################################################
-    //
-    // Ideally, we should get the average or maximum width of a character in the focused text area
-    // and change the caret size dynamically. As you can imagine, changing it every time the caret
-    // is moved is not realistic, but we could at least change it every time the focus is given.
-    //
-    // I tried some ways, but could not work. So I leave with what I tried and some feature works.
-    //
-    // 1. Get width from device context
-    //
-    //    hwnd = GetFocus() ; // BTW, it needs thread attaching
-    //    auto hdc = GetDC(hwnd) ;
-    //
-    //    (1)
-    //    SIZE size ;
-    //    GetTextExtentPoint32W(hdc, L"A", 1, &size) ;
-    //    // size.cx is always 11.
-    //
-    //    GetTextExtentPoint32W is based on the logical coordinate, so I also tried next one.
-    //
-    //    // convert coordinates from logical to device.
-    //    POINT p{size.cx, size.cy} ;
-    //    LPtoDP(hdc, &p, 1) ;
-    //
-    //    However, the device context was mapped by MM_TEXT, so each logical unit is mapped to one device pixel.
-    //
-    //    auto mapping_mode = GetMapMode(hdc) ; // always returned MM_TEXT
-    //
-    //
-    //    By the way, the other functions did not work either.
-    //
-    //    (2)
-    //    int buf ;
-    //    GetCharWidth32A(hdc, 'A', 'A', &buf);
-    //    // buf is always 11.
-    //
-    //    (3)
-    //    TEXTMETRIC txm ;
-    //    GetTextMetrics(hdc, &txm) ;
-    //    // txm.tmAveCharWidth is always 8
-    //    // txm.tmMaxCharWidth is always 16
-    //
-    //    (4)
-    //    ABC abc ;
-    //    GetCharABCWidthsA(hdc, 'A', 'A', &abc) ;
-    //    // abc.abcA is always 0
-    //    // abc.abcB is always 11
-    //    // abc.abcC is always 0
-    //
-    //    By the way, you can refer to ABC definitions at https://docs.microsoft.com/en-us/windows/win32/gdi/character-widths .
-    //
-    //
-    // 2. Send a message to get font information.
-    //
-    //    auto handle = reinterpret_cast<HANDLE>(SendMessage(hwnd, WM_GETFONT, 0, 0)) ;
-    //    LOGFONT lf ;
-    //    GetObject(handle, sizeof(lf), &lf) ;
-    //    // lf.lfFaceName // It is works only in simple text area like notepad.exe
-    //    // lf.lfWidth    // However, it is always 0.
-    //
-    //
-    // It may be possible to get it from properties using UI Automation. Another method is to use OCR
-    // or object detection neural networks to get the position and size of characters as bounding boxes.
-    // The method to get the font properties must also take into account the magnification of the text area.
-    // The one by image processing will work well if we ignore the computation cost.
-    //
+    /**
+     * NOTE:
+     * Ideally, we should get the average or maximum width of a character in the focused text area
+     * and change the caret size dynamically. As you can imagine, changing it every time the caret
+     * is moved is not realistic, but we could at least change it every time the focus is given.
+     *
+     * I tried some ways, but could not work. So I leave with what I tried and some feature works.
+     *
+     * 1. Get width from device context
+     *
+     *    hwnd = GetFocus() ; // BTW, it needs thread attaching
+     *    auto hdc = GetDC(hwnd) ;
+     *
+     *    (1)
+     *    SIZE size ;
+     *    GetTextExtentPoint32W(hdc, L"A", 1, &size) ;
+     *    // size.cx is always 11.
+     *
+     *    GetTextExtentPoint32W is based on the logical coordinate, so I also tried next one.
+     *
+     *    // convert coordinates from logical to device.
+     *    POINT p{size.cx, size.cy} ;
+     *    LPtoDP(hdc, &p, 1) ;
+     *
+     *    However, the device context was mapped by MM_TEXT, so each logical unit is mapped to one device pixel.
+     *
+     *    auto mapping_mode = GetMapMode(hdc) ; // always returned MM_TEXT
+     *
+     *
+     *    By the way, the other functions did not work either.
+     *
+     *    (2)
+     *    int buf ;
+     *    GetCharWidth32A(hdc, 'A', 'A', &buf);
+     *    // buf is always 11.
+     *
+     *    (3)
+     *    TEXTMETRIC txm ;
+     *    GetTextMetrics(hdc, &txm) ;
+     *    // txm.tmAveCharWidth is always 8
+     *    // txm.tmMaxCharWidth is always 16
+     *
+     *    (4)
+     *    ABC abc ;
+     *    GetCharABCWidthsA(hdc, 'A', 'A', &abc) ;
+     *    // abc.abcA is always 0
+     *    // abc.abcB is always 11
+     *    // abc.abcC is always 0
+     *
+     *    By the way, you can refer to ABC definitions at https://docs.microsoft.com/en-us/windows/win32/gdi/character-widths .
+     *
+     *
+     * 2. Send a message to get font information.
+     *
+     *    auto handle = reinterpret_cast<HANDLE>(SendMessage(hwnd, WM_GETFONT, 0, 0)) ;
+     *    LOGFONT lf ;
+     *    GetObject(handle, sizeof(lf), &lf) ;
+     *    // lf.lfFaceName // It is works only in simple text area like notepad.exe
+     *    // lf.lfWidth    // However, it is always 0.
+     *
+     *
+     * It may be possible to get it from properties using UI Automation. Another method is to use OCR
+     * or object detection neural networks to get the position and size of characters as bounding boxes.
+     * The method to get the font properties must also take into account the magnification of the text area.
+     * The one by image processing will work well if we ignore the computation cost.
+     */
+
 #if defined(DEBUG)
     DWORD get_character_width_pixel() {
         auto hwnd = GetForegroundWindow() ;

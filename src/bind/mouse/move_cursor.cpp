@@ -9,13 +9,10 @@
 #include "core/ntype_logger.hpp"
 #include "core/settable.hpp"
 #include "util/constant_accelerator.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/math.hpp"
 #include "util/mouse.hpp"
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace vind

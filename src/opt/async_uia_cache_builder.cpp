@@ -10,11 +10,6 @@
 #include <chrono>
 #include <unordered_map>
 
-#if defined(DEBUG)
-#include "util/debug.hpp"
-#include <iostream>
-#endif
-
 
 namespace vind
 {

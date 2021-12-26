@@ -17,11 +17,6 @@
 #include "util/def.hpp"
 
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
-
-
 namespace
 {
     using namespace vind::core ;

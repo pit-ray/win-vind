@@ -15,13 +15,10 @@
 #include "opt/blockstyle_caret.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 
 #include <memory>
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace

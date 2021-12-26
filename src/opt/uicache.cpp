@@ -1,6 +1,7 @@
 #include "uicache.hpp"
 
 #include "core/settable.hpp"
+#include "util/cuia.hpp"
 #include "util/uia.hpp"
 
 #include <chrono>
@@ -56,7 +57,7 @@ namespace vind
 
         auto& shared_cache_request() {
             static auto instance = [] {
-                auto req = util::create_cache_request() ;
+                auto req = util::CUIA::get_instance().create_cache_request() ;
 
                 util::add_property(req, UIA_IsEnabledPropertyId) ;
                 util::add_property(req, UIA_IsOffscreenPropertyId) ;
@@ -100,7 +101,8 @@ namespace vind
         {}
 
         UICache::UICache(HWND hwnd)
-        : pimpl(std::make_unique<Impl>(util::get_root_element(hwnd)))
+        : pimpl(std::make_unique<Impl>(
+                    util::CUIA::get_instance().get_root_element(hwnd)))
         {}
 
         UICache::~UICache() noexcept = default ;

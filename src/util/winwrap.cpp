@@ -14,9 +14,6 @@
 
 #include <psapi.h>
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace vind
 {

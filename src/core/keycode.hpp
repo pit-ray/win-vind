@@ -5,9 +5,6 @@
 #include <string>
 #include <vector>
 
-#ifdef DEBUG
-#include "err_logger.hpp"
-#endif
 
 #define PREFER_ASCII_CODE true
 #define PREFER_SYSTEM_CODE false

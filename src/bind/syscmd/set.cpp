@@ -11,12 +11,10 @@
 #include "core/rc_parser.hpp"
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace vind
 {

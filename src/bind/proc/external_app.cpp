@@ -16,12 +16,10 @@
 #include "core/settable.hpp"
 #include "external_app.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace
 {

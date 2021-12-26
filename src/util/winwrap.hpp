@@ -11,10 +11,6 @@
 #include "point_2d.hpp"
 #include "string.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
-
 
 namespace vind
 {

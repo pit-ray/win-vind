@@ -10,9 +10,6 @@
 #include <unordered_map>
 #include <utility>
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace vind
 {

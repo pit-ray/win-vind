@@ -5,11 +5,9 @@
 #include "bind/safe_repeater.hpp"
 #include "core/mode.hpp"
 #include "core/ntype_logger.hpp"
+#include "util/debug.hpp"
 #include "util/mouse.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace vind
 {

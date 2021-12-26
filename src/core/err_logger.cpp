@@ -1,5 +1,8 @@
 #include "err_logger.hpp"
+
 #include "path.hpp"
+#include "util/debug.hpp"
+#include "util/winwrap.hpp"
 #include "version.hpp"
 
 #include <unordered_map>
@@ -12,12 +15,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "util/winwrap.hpp"
-
-#ifdef DEBUG
-#include <iostream>
-#endif
 
 
 namespace

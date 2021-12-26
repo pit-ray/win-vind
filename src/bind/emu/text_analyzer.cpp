@@ -7,12 +7,10 @@
 
 #include "core/err_logger.hpp"
 #include "smart_clipboard.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace vind
 {

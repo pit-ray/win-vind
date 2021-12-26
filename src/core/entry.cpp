@@ -60,10 +60,6 @@ SOFTWARE.
 #include <cstring>
 #include <memory>
 
-#if defined(DEBUG)
-#include "util/debug.hpp"
-#include <iostream>
-#endif
 
 #include "background.hpp"
 #include "bind/bindings_lists.hpp"

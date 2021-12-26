@@ -9,33 +9,6 @@ namespace vind
 {
     namespace util
     {
-        const CUIA& get_global_cuia() {
-            static CUIA g_cuia{} ;
-            return g_cuia ;
-        }
-
-        SmartCacheReq create_cache_request() {
-            IUIAutomationCacheRequest* cr_raw ;
-            if(util::is_failed(get_global_cuia()->CreateCacheRequest(&cr_raw))) {
-                throw RUNTIME_EXCEPT("Could not create IUIAutomationCacheRequest.") ;
-            }
-            if(!cr_raw) {
-                throw RUNTIME_EXCEPT("Could not get IUIAutomationCacheRequest properly.") ;
-            }
-            return SmartCacheReq(cr_raw) ;
-        }
-
-        SmartElement get_root_element(HWND hwnd) {
-            IUIAutomationElement* elem_raw ;
-            if(util::is_failed(get_global_cuia()->ElementFromHandle(hwnd, &elem_raw))) {
-                throw RUNTIME_EXCEPT("Could not get IUIAutomationElement from HWND by COM method.") ;
-            }
-            if(!elem_raw) {
-                throw RUNTIME_EXCEPT("Could not get UIAutomationElement from HWND.") ;
-            }
-            return SmartElement(elem_raw) ;
-        }
-
         void add_property(
                 const SmartCacheReq& request,
                 PROPERTYID id) {

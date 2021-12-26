@@ -1,10 +1,7 @@
 #ifndef _UIA_HPP
 #define _UIA_HPP
 
-#include "cuia.hpp"
 #include "uiafwd.hpp"
-
-#include "smartcom.hpp"
 
 #include <vector>
 
@@ -13,15 +10,6 @@ namespace vind
 {
     namespace util
     {
-        using SmartElement      = SmartCom<IUIAutomationElement> ;
-        using SmartElementArray = SmartCom<IUIAutomationElementArray> ;
-        using SmartCacheReq     = SmartCom<IUIAutomationCacheRequest> ;
-
-        const CUIA& get_global_cuia() ;
-
-        SmartCacheReq create_cache_request() ;
-        SmartElement get_root_element(HWND hwnd) ;
-
         SmartElement update_element(
                 const SmartElement& elem,
                 const SmartCacheReq& request) ;

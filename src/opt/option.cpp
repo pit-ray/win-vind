@@ -2,10 +2,6 @@
 
 #include "core/err_logger.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
-
 #include <mutex>
 #include <stdexcept>
 

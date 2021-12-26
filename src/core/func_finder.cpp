@@ -11,16 +11,13 @@
 #include "logger_parser_mgr.hpp"
 #include "mode.hpp"
 #include "path.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 
 #include <array>
 #include <memory>
 #include <stdexcept>
 #include <unordered_map>
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace vind

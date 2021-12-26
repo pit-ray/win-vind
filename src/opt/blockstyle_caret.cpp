@@ -14,11 +14,6 @@
 #include <future>
 #include <memory>
 
-#if defined(DEBUG)
-#include <chrono>
-#include <iostream>
-#endif
-
 
 namespace
 {

@@ -6,10 +6,6 @@
 #include "core/keycode_def.hpp"
 #include "def.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
-
 
 namespace
 {

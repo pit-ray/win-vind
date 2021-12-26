@@ -8,10 +8,6 @@
 #include "util/def.hpp"
 #include "util/string.hpp"
 
-#ifdef DEBUG
-#include <iostream>
-#endif
-
 
 namespace vind
 {

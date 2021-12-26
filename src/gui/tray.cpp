@@ -15,10 +15,6 @@
 #include "tray.hpp"
 #include "update.hpp"
 
-#ifdef DEBUG
-#include "core/err_logger.hpp"
-#endif
-
 
 namespace
 {

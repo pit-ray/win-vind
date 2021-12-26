@@ -1,13 +1,9 @@
 #include "text_area_scanner.hpp"
 
 #include "core/err_logger.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
-
-#if defined(DEBUG)
-#include <iostream>
-#include "util/string.hpp"
-#endif
 
 
 namespace vind

@@ -13,14 +13,11 @@
 #include "opt/async_uia_cache_builder.hpp"
 #include "opt/vcmdline.hpp"
 #include "options.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
 #include "util/rect.hpp"
 #include "util/winwrap.hpp"
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace vind

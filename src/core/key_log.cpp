@@ -4,10 +4,6 @@
 
 #include <algorithm>
 
-#ifdef DEBUG
-#include "err_logger.hpp"
-#endif
-
 
 namespace vind
 {

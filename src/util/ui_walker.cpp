@@ -6,6 +6,8 @@
 #include "def.hpp"
 #include "rect.hpp"
 #include "screen_metrics.hpp"
+#include "util/cuia.hpp"
+#include "util/uia.hpp"
 #include "winwrap.hpp"
 
 #include <initializer_list>
@@ -13,18 +15,14 @@
 #include <unordered_set>
 #include <vector>
 
-#if defined(DEBUG)
-#include <iostream>
-#include "debug.hpp"
-#endif
-
 
 namespace vind
 {
     namespace util
     {
         struct UIWalker::Impl {
-            SmartCacheReq cache_request_ = create_cache_request() ;
+            SmartCacheReq cache_request_ = \
+                CUIA::get_instance().create_cache_request() ;
             std::unordered_set<PROPERTYID> properties_{} ;
         } ;
 
@@ -174,7 +172,7 @@ namespace vind
                 HWND hwnd,
                 std::vector<SmartElement>& elements) {
 
-            auto root = get_root_element(hwnd) ;
+            auto root = CUIA::get_instance().get_root_element(hwnd) ;
             root = update_element(root, pimpl->cache_request_) ;
             scan_element_subtree(root, elements) ;
         }

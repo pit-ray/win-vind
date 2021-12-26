@@ -15,14 +15,10 @@
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
 #include "text_analyzer.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 
 #include <vector>
-
-#if defined(DEBUG)
-#include <iostream>
-#include "core/bindings_parser.hpp"
-#endif
 
 namespace
 {

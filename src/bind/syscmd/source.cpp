@@ -11,6 +11,7 @@
 #include "core/rc_parser.hpp"
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
@@ -25,10 +26,6 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace

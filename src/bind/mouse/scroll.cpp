@@ -4,14 +4,11 @@
 
 #include "core/ntype_logger.hpp"
 #include "core/settable.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/interval_timer.hpp"
 #include "util/keystroke_repeater.hpp"
 #include "util/mouse.hpp"
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace

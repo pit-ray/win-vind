@@ -3,6 +3,7 @@
 #include "core/settable.hpp"
 #include "opt/async_uia_cache_builder.hpp"
 #include "util/box_2d.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/uia.hpp"
@@ -10,10 +11,6 @@
 
 #include <limits>
 
-#if defined(DEBUG)
-#include <iostream>
-#include "util/debug.hpp"
-#endif
 
 #undef max
 

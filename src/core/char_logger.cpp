@@ -4,12 +4,9 @@
 #include "key_logger_base.hpp"
 #include "keycode.hpp"
 #include "keycode_def.hpp"
+#include "util/debug.hpp"
 #include "util/keystroke_repeater.hpp"
 
-#if defined(DEBUG)
-#include "err_logger.hpp"
-#include <iostream>
-#endif
 
 namespace 
 {

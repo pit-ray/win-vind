@@ -6,9 +6,6 @@
 
 #include "interval_timer.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace
 {

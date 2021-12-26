@@ -3,12 +3,9 @@
 #include "core/char_logger.hpp"
 #include "core/inputgate.hpp"
 #include "core/ntype_logger.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace vind
 {

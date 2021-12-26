@@ -1,9 +1,5 @@
 #include "opt/autotrack_popup.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
-
 #include <windows.h>
 
 #include "core/err_logger.hpp"

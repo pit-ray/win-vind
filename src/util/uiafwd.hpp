@@ -13,4 +13,17 @@
 
 #include "enable_gcc_warning.hpp"
 
+#include "smartcom.hpp"
+
+
+namespace vind
+{
+    namespace util
+    {
+        using SmartElement      = SmartCom<IUIAutomationElement> ;
+        using SmartElementArray = SmartCom<IUIAutomationElementArray> ;
+        using SmartCacheReq     = SmartCom<IUIAutomationCacheRequest> ;
+    }
+}
+
 #endif

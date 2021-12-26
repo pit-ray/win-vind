@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "box_2d.hpp"
-#include "uia.hpp"
+#include "uiafwd.hpp"
 
 
 namespace vind

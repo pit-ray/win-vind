@@ -8,12 +8,9 @@
 #include "core/ntype_logger.hpp"
 #include "opt/vcmdline.hpp"
 #include "simple_text_selecter.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace vind

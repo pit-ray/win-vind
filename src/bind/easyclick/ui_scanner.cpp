@@ -1,12 +1,10 @@
 #include "ui_scanner.hpp"
 
 #include "core/err_logger.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace vind
 {

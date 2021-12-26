@@ -41,10 +41,6 @@
 #include "font.hpp"
 #include "metrics.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
-
 
 // GCC
 #if defined(__GNUC__)

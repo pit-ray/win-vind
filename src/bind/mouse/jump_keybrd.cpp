@@ -23,13 +23,10 @@
 #include "opt/optionlist.hpp"
 #include "opt/suppress_for_vim.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/string.hpp"
-
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 
 namespace vind

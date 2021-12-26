@@ -6,11 +6,9 @@
 #include "core/char_logger.hpp"
 #include "core/settable.hpp"
 #include "util/color.hpp"
+#include "util/debug.hpp"
 #include "util/display_text_painter.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
 
 namespace
 {

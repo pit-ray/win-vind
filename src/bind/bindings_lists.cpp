@@ -64,12 +64,8 @@
 #include "syscmd/set.hpp"
 #include "syscmd/source.hpp"
 
+#include "util/debug.hpp"
 #include "util/string.hpp"
-
-
-#ifdef DEBUG
-#include <iostream>
-#endif
 
 
 namespace vind

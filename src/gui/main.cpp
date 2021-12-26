@@ -46,10 +46,6 @@ SOFTWARE.
 
 #include "about.hpp"
 
-#ifdef DEBUG
-#include <iostream>
-#endif
-
 
 namespace
 {

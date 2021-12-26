@@ -1,6 +1,7 @@
 #include "keycode.hpp"
 
 #include "keycode_def.hpp"
+#include "util/debug.hpp"
 #include "util/string.hpp"
 
 #include <windows.h>
@@ -10,11 +11,6 @@
 #include <limits>
 #include <unordered_map>
 #include <unordered_set>
-
-#ifdef DEBUG
-#include "err_logger.hpp"
-#include <iostream>
-#endif
 
 
 namespace

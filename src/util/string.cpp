@@ -6,10 +6,6 @@
 
 #include "def.hpp"
 
-#if defined(DEBUG)
-#include <iostream>
-#endif
-
 
 namespace vind
 {

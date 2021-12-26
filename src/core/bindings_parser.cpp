@@ -5,15 +5,12 @@
 #include "keycode_def.hpp"
 #include "mode.hpp"
 #include "util/container.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 
 #include <algorithm>
 #include <string>
-
-#ifdef DEBUG
-#include <iostream>
-#endif
 
 
 namespace vind

@@ -15,16 +15,14 @@
 #include "opt/vcmdline.hpp"
 #include "util/mouse.hpp"
 
-namespace
-{
-    HWND target_hwnd = NULL ;
-    HWND past_hwnd   = NULL ;
-}
 
 namespace vind
 {
     namespace opt
     {
+        HWND Dedicate2Window::target_hwnd_ = NULL ;
+        HWND Dedicate2Window::past_hwnd_   = NULL ;
+
         Dedicate2Window::Dedicate2Window()
         : OptionCreator("dedicate_to_window")
         {}
@@ -38,8 +36,8 @@ namespace vind
         void Dedicate2Window::enable_targeting() {
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("dedicate_to_window").get<bool>()) {
-                target_hwnd = GetForegroundWindow() ;
-                past_hwnd   = NULL ;
+                target_hwnd_ = GetForegroundWindow() ;
+                past_hwnd_   = NULL ;
                 opt::VCmdLine::print(GeneralMessage("-- TARGET ON --")) ;
             }
         }
@@ -47,29 +45,29 @@ namespace vind
         void Dedicate2Window::disable_targeting() {
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("dedicate_to_window").get<bool>()) {
-                target_hwnd = NULL ;
-                past_hwnd   = NULL ;
+                target_hwnd_ = NULL ;
+                past_hwnd_   = NULL ;
                 opt::VCmdLine::print(GeneralMessage("-- TARGET OFF --")) ;
             }
         }
 
         void Dedicate2Window::do_process() const {
-            if(!target_hwnd)  return ;
+            if(!target_hwnd_)  return ;
 
             auto foreground_hwnd = GetForegroundWindow() ;
 
             //is selected window changed?
-            if(past_hwnd == foreground_hwnd) {
+            if(past_hwnd_ == foreground_hwnd) {
                 return ;
             }
 
-            if(target_hwnd == foreground_hwnd) { //other -> target
+            if(target_hwnd_ == foreground_hwnd) { //other -> target
                 bind::ToEdiNormal::sprocess(true) ;
             }
-            else if(past_hwnd == target_hwnd) { //target -> other
+            else if(past_hwnd_ == target_hwnd_) { //target -> other
                 bind::ToInsert::sprocess(true) ;
             }
-            past_hwnd = foreground_hwnd ;
+            past_hwnd_ = foreground_hwnd ;
         }
     }
 }

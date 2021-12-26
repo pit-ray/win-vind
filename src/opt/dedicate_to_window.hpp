@@ -3,6 +3,9 @@
 
 #include "option_creator.hpp"
 
+#include <windows.h>
+
+
 namespace vind
 {
     namespace opt
@@ -12,6 +15,9 @@ namespace vind
             void do_enable() const override ;
             void do_disable() const override ;
             void do_process() const override ;
+
+            static HWND target_hwnd_ ;
+            static HWND past_hwnd_ ;
 
         public:
             explicit Dedicate2Window() ;

@@ -2,9 +2,11 @@
 #define _ASYNC_UIA_CACHE_BUILDER_HPP
 
 #include "option_creator.hpp"
+#include "uicache.hpp"
 #include "util/uia.hpp"
 
 #include <initializer_list>
+#include <unordered_map>
 #include <unordered_set>
 
 
@@ -17,6 +19,12 @@ namespace vind
             void do_enable() const override ;
             void do_disable() const override ;
             void do_process() const override ;
+
+            static std::unordered_map<HWND, UICache> caches_ ;
+
+            static inline auto has_cache(HWND hwnd) noexcept {
+                return caches_.find(hwnd) != caches_.end() ;
+            }
 
         public:
             explicit AsyncUIACacheBuilder() ;

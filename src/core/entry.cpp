@@ -232,9 +232,17 @@ namespace vind
                 throw std::runtime_error("Your system is not supported DPI.") ;
             }
 
-            // When Windows was started up, cursor is hidden until move mouse by default.
-            //Thus, send lowlevel move event in order to show cursor.
-            INPUT in ;
+            /**
+             * TODO: The screen turns black when the following SendInput 
+             *       is enabled in debugging. Unknown cause.
+             */
+#if !defined(DEBUG)
+            /**
+             * When Windows was started up, cursor is hidden until
+             * move mouse by default.  Thus, send lowlevel move 
+             * event in order to show cursor.
+             */
+            INPUT in{} ;
             in.type           = INPUT_MOUSE ;
             in.mi.dx          = 1 ;
             in.mi.dy          = 1 ;
@@ -243,6 +251,7 @@ namespace vind
             if(!SendInput(1, &in, sizeof(INPUT))) {
                 throw std::runtime_error("Could not move the mouse cursor to show it.") ;
             }
+#endif
 
             auto& settable = SetTable::get_instance() ;
             auto& maptable = MapTable::get_instance() ;

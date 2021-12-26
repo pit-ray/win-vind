@@ -40,6 +40,7 @@ else()
 
     set(CMAKE_CXX_FLAGS 
         -static
+        -std=c++17
         -lstdc++
         -lstdc++fs
         -lgcc

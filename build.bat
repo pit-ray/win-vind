@@ -77,10 +77,13 @@
     @goto exit
 
 :coverity
-    cov-configure --config debug/covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
-    cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
-    cd debug
-    cov-build --config ./covtest/cov.xml --dir cov-int cmake --build .
+    @set covdir=build_cov
+    "cov_tools/bin/cov-configure" --config %covdir%/covtest/cov.xml --comptype g++ --compiler g++ --template --xml-option=skip_file:".*/libs.*" --xml-option=skip_file:".*/mingw64.*"
+    cmake -B %covdir% -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+
+    "cov_tools/bin/cov-build" --config %covdir%/covtest/cov.xml --dir %covdir%/cov-int cmake --build %covdir%
+
+    cd %covdir%
     tar -czvf cov-int.tgz cov-int
     cd ..
     @goto exit

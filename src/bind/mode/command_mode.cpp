@@ -160,7 +160,7 @@ namespace vind
         ToCommand& ToCommand::operator=(ToCommand&&) = default ;
 
         void ToCommand::reconstruct() {
-            pimpl->funcfinder_.reconstruct() ;
+            pimpl->funcfinder_.reconstruct(core::Mode::COMMAND) ;
         }
 
         SystemCall ToCommand::sprocess() const {

@@ -99,7 +99,7 @@ namespace vind
             util::IntervalTimer memread_timer_ ;
 
             NTypeLogger lgr_ ;
-            FuncFinder finder_ ;
+            ModeArray<FuncFinder> finders_ ;
             bind::BindedFunc::SPtr actfunc_ ;
 
             Background bg_ ;
@@ -113,7 +113,7 @@ namespace vind
               subprocess_(false),
               memread_timer_(1000'000), //1 s
               lgr_(),
-              finder_(),
+              finders_(),
               actfunc_(nullptr),
               bg_(opt::all_global_options())
             {}
@@ -292,7 +292,9 @@ namespace vind
                 func->reconstruct() ;
             }
 
-            pimpl->finder_.reconstruct() ;
+            for(std::size_t i = 0 ; i < pimpl->finders_.size() ; i ++) {
+                pimpl->finders_[i].reconstruct(i) ;
+            }
 
             InputGate::get_instance().reconstruct() ;
         }
@@ -300,12 +302,14 @@ namespace vind
         void VindEntry::update() {
             pimpl->bg_.update() ;
 
+            auto& finder = pimpl->finders_[get_global_mode<int>()] ;
+
             if(pimpl->memread_timer_.is_passed()) {
                 //check if received messages from another win-vind.
                 if(auto data = pimpl->read_memfile(pimpl->map_)) {
                     std::string name(reinterpret_cast<const char*>(data.get())) ;
                     if(!name.empty()) {
-                        if(auto func = pimpl->finder_.find_func_byname(name)) {
+                        if(auto func = finder.find_func_byname(name)) {
                             handle_system_call(func->process()) ;
                         }
                         else {
@@ -341,7 +345,7 @@ namespace vind
             }
 
             auto actid = pimpl->actfunc_ ? pimpl->actfunc_->id() : 0 ;
-            auto parser = pimpl->finder_.find_parser_with_transition(
+            auto parser = finder.find_parser_with_transition(
                     pimpl->lgr_.latest(), actid) ;
             pimpl->actfunc_ = nullptr ;
 
@@ -357,12 +361,12 @@ namespace vind
                     handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
 
                     pimpl->lgr_.accept() ;
-                    pimpl->finder_.reset_parser_states() ;
+                    finder.reset_parser_states() ;
                 }
                 else if(parser->is_rejected_with_ready()) {
                     // It did not accepted, but only matched subsets.
                     // For example, bindings <ctrl> in <ctrl-f>
-                    pimpl->finder_.backward_parser_states(1) ;
+                    finder.backward_parser_states(1) ;
                     pimpl->lgr_.remove_from_back(1) ;
                 }
             }
@@ -371,7 +375,7 @@ namespace vind
                     opt::VCmdLine::refresh() ;
                 }
                 pimpl->lgr_.reject() ;
-                pimpl->finder_.reset_parser_states() ;
+                finder.reset_parser_states() ;
             }
         }
 

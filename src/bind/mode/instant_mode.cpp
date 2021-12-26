@@ -55,9 +55,7 @@ namespace vind
 
             opt::VCmdLine::print(opt::GeneralMessage("-- Instant GUI Normal --")) ;
 
-            constexpr auto lcx_vmode = core::Mode::GUI_NORMAL ;
-
-            pimpl->finder_.reset_parser_states(lcx_vmode) ;
+            pimpl->finder_.reset_parser_states() ;
             core::NTypeLogger lgr ;
 
             auto syscal = SystemCall::NOTHING ;
@@ -75,18 +73,17 @@ namespace vind
                     continue ;
                 }
 
-                if(auto parser = pimpl->finder_.find_parser_with_transition(
-                            lgr.latest(), 0, lcx_vmode)) {
+                if(auto parser = pimpl->finder_.find_parser_with_transition(lgr.latest(), 0)) {
 
                     if(parser->is_accepted()) {
-                        pimpl->finder_.reset_parser_states(lcx_vmode) ;
+                        pimpl->finder_.reset_parser_states() ;
                         syscal = parser->get_func()->process(lgr) ;
                         break ;
                     }
                     else if(parser->is_rejected_with_ready()) {
                         // It did not accepted, but only matched subsets.
                         // For example, bindings <ctrl> in <ctrl-f>
-                        pimpl->finder_.backward_parser_states(1, lcx_vmode) ;
+                        pimpl->finder_.backward_parser_states(1) ;
                         lgr.remove_from_back(1) ;
                     }
                 }
@@ -111,7 +108,7 @@ namespace vind
         }
 
         void ToInstantGUINormal::reconstruct() {
-            pimpl->finder_.reconstruct() ;
+            pimpl->finder_.reconstruct(core::Mode::GUI_NORMAL) ;
         }
     }
 }

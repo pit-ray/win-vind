@@ -38,6 +38,11 @@ namespace vind
         }
 
         Mode get_global_mode() noexcept ;
+        template <typename T>
+        T get_global_mode() noexcept {
+            return static_cast<T>(get_global_mode()) ;
+        }
+
         ModeFlags get_global_mode_flags() noexcept ;
 
         std::string mode_to_prefix(Mode mode) noexcept ;

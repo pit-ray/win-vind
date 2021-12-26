@@ -68,10 +68,12 @@ namespace vind
 
         void SwitchWindow::reconstruct() {
             pimpl->funcfinder_.reconstruct(
+                core::Mode::EDI_NORMAL,
                 ref_global_funcs_bynames(
                     MoveCaretLeft().name(),
                     MoveCaretRight().name()
-            )) ;
+                )
+            ) ;
         }
 
         void SwitchWindow::sprocess() const {
@@ -85,9 +87,7 @@ namespace vind
 
             igate.pushup(KEYCODE_TAB) ;
 
-            constexpr auto lcx_vmode = core::Mode::EDI_NORMAL ;
-
-            pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+            pimpl->funcfinder_.reset_parser_states() ;
 
             core::NTypeLogger lgr ;
             std::size_t actid = 0 ;
@@ -114,8 +114,7 @@ namespace vind
                     break ;
                 }
 
-                if(auto parser = pimpl->funcfinder_.find_parser_with_transition(
-                            lgr.latest(), id(), lcx_vmode)) {
+                if(auto parser = pimpl->funcfinder_.find_parser_with_transition(lgr.latest(), id())) {
 
                     decltype(auto) id = parser->get_func()->id() ;
 
@@ -123,7 +122,7 @@ namespace vind
                         actid = id ;
 
                         lgr.accept() ;
-                        pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                        pimpl->funcfinder_.reset_parser_states() ;
 
                         pimpl->ksr_.reset() ;
 
@@ -132,12 +131,12 @@ namespace vind
                     }
                     else if(parser->is_rejected_with_ready()) {
                         lgr.remove_from_back(1) ;
-                        pimpl->funcfinder_.backward_parser_states(1, lcx_vmode) ;
+                        pimpl->funcfinder_.backward_parser_states(1) ;
                     }
                 }
                 else {
                     lgr.reject() ;
-                    pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                    pimpl->funcfinder_.reset_parser_states() ;
                 }
             }
 

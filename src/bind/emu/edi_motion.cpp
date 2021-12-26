@@ -48,10 +48,7 @@ namespace
 
             using core::Mode ;
             using core::ModeFlags ;
-            auto parser = ff.find_parser_with_transition(
-                    lgr.latest(),
-                    caller_self_id,
-                    Mode::EDI_VISUAL) ;
+            auto parser = ff.find_parser_with_transition(lgr.latest(), caller_self_id) ;
             if(parser && std::dynamic_pointer_cast<MoveBase>(parser->get_func())) {
                 if(parser->is_accepted()) {
                     core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
@@ -83,12 +80,12 @@ namespace
             std::size_t caller_self_id,
             core::Background& bg,
             core::FuncFinder& ff,
-            core::FuncFinder&parent_ff,
+            core::FuncFinder& parent_ff,
             core::NTypeLogger& parent_lgr) {
 
         using core::Mode ;
         using core::ModeFlags ;
-        ff.reset_parser_states(Mode::EDI_VISUAL) ;
+        ff.reset_parser_states() ;
         parent_ff.reset_parser_states() ;
         parent_ff.transition_parser_states_in_batch(parent_lgr) ;
 
@@ -124,10 +121,7 @@ namespace
                 }
             }
 
-            auto parser_2 = ff.find_parser_with_transition(
-                    lgr.latest(),
-                    caller_self_id,
-                    Mode::EDI_VISUAL) ;
+            auto parser_2 = ff.find_parser_with_transition(lgr.latest(), caller_self_id) ;
             if(parser_2) {
                 if(parser_2->is_accepted() && std::dynamic_pointer_cast<MoveBase>(parser_2->get_func())) {
                     core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
@@ -143,7 +137,7 @@ namespace
 
             if((parser_1 && parser_1->is_rejected_with_ready()) \
                     || (parser_2 && parser_2->is_rejected_with_ready())) {
-                ff.backward_parser_states(1, Mode::EDI_VISUAL) ;
+                ff.backward_parser_states(1) ;
                 lgr.remove_from_back(1) ;
                 parent_ff.backward_parser_states(1) ;
                 parent_lgr.remove_from_back(1) ;
@@ -160,13 +154,13 @@ namespace vind
     {
         //YankWithMotion
         struct YankWithMotion::Impl {
-            core::FuncFinder funcfinder_ ;
-            core::FuncFinder parent_funcfinder_ ;
+            core::FuncFinder finder_ ;
+            ModeArray<core::FuncFinder> parent_finders_ ;
             core::Background bg_ ;
 
             explicit Impl()
-            : funcfinder_(),
-              parent_funcfinder_(),
+            : finder_(),
+              parent_finders_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::BlockStyleCaret().name(),
@@ -190,7 +184,7 @@ namespace vind
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
-                    pimpl->funcfinder_)) {
+                    pimpl->finder_)) {
                 pimpl->copy() ;
             }
         }
@@ -199,8 +193,8 @@ namespace vind
                 if(select_by_motion(
                         id(),
                         pimpl->bg_,
-                        pimpl->funcfinder_,
-                        pimpl->parent_funcfinder_,
+                        pimpl->finder_,
+                        pimpl->parent_finders_[core::get_global_mode<int>()],
                         parent_lgr)) {
                     pimpl->copy() ;
                 }
@@ -210,19 +204,21 @@ namespace vind
             sprocess() ;
         }
         void YankWithMotion::reconstruct() {
-            pimpl->funcfinder_.reconstruct() ;
-            pimpl->parent_funcfinder_.reconstruct() ;
+            pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
+            for(std::size_t i = 0 ; i < pimpl->parent_finders_.size() ; i ++) {
+                pimpl->parent_finders_[i].reconstruct(i) ;
+            }
         }
 
         //DeleteWithMotion
         struct DeleteWithMotion::Impl {
-            core::FuncFinder funcfinder_ ;
-            core::FuncFinder parent_funcfinder_ ;
+            core::FuncFinder finder_ ;
+            ModeArray<core::FuncFinder> parent_finders_ ;
             core::Background bg_ ;
 
             explicit Impl()
-            : funcfinder_(),
-              parent_funcfinder_(),
+            : finder_(),
+              parent_finders_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::BlockStyleCaret().name(),
@@ -246,7 +242,7 @@ namespace vind
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
-                    pimpl->funcfinder_)) {
+                    pimpl->finder_)) {
                 pimpl->remove() ;
             }
         }
@@ -255,8 +251,8 @@ namespace vind
                 if(select_by_motion(
                         id(),
                         pimpl->bg_,
-                        pimpl->funcfinder_,
-                        pimpl->funcfinder_,
+                        pimpl->finder_,
+                        pimpl->parent_finders_[core::get_global_mode<int>()],
                         parent_lgr)) {
                     pimpl->remove() ;
                 }
@@ -266,20 +262,22 @@ namespace vind
             sprocess() ;
         }
         void DeleteWithMotion::reconstruct() {
-            pimpl->funcfinder_.reconstruct() ;
-            pimpl->parent_funcfinder_.reconstruct() ;
+            pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
+            for(std::size_t i = 0 ; i < pimpl->parent_finders_.size() ; i ++) {
+                pimpl->parent_finders_[i].reconstruct(i) ;
+            }
         }
 
 
         //ChangeWithMotion
         struct ChangeWithMotion::Impl {
-            core::FuncFinder funcfinder_ ;
-            core::FuncFinder parent_funcfinder_ ;
+            core::FuncFinder finder_ ;
+            ModeArray<core::FuncFinder> parent_finders_ ;
             core::Background bg_ ;
 
             explicit Impl()
-            : funcfinder_(),
-              parent_funcfinder_(),
+            : finder_(),
+              parent_finders_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::BlockStyleCaret().name(),
@@ -303,7 +301,7 @@ namespace vind
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
-                    pimpl->funcfinder_)) {
+                    pimpl->finder_)) {
                 pimpl->remove_and_insert() ;
             }
         }
@@ -312,8 +310,8 @@ namespace vind
                 if(select_by_motion(
                         id(),
                         pimpl->bg_,
-                        pimpl->funcfinder_,
-                        pimpl->parent_funcfinder_,
+                        pimpl->finder_,
+                        pimpl->parent_finders_[core::get_global_mode<int>()],
                         parent_lgr)) {
                     pimpl->remove_and_insert() ;
                 }
@@ -323,8 +321,10 @@ namespace vind
             sprocess() ;
         }
         void ChangeWithMotion::reconstruct() {
-            pimpl->funcfinder_.reconstruct() ;
-            pimpl->parent_funcfinder_.reconstruct() ;
+            pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
+            for(std::size_t i = 0 ; i < pimpl->parent_finders_.size() ; i ++) {
+                pimpl->parent_finders_[i].reconstruct(i) ;
+            }
         }
     }
 }

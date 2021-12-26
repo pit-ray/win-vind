@@ -214,12 +214,14 @@ namespace vind
 
         void WindowResizer::reconstruct() {
             pimpl->funcfinder_.reconstruct(
+                core::Mode::EDI_NORMAL,
                 ref_global_funcs_bynames(
                     MoveCaretLeft().name(),
                     MoveCaretRight().name(),
                     MoveCaretUp().name(),
                     MoveCaretDown().name()
-            )) ;
+                )
+            ) ;
 
             auto& settable = core::SetTable::get_instance() ;
 
@@ -232,11 +234,9 @@ namespace vind
         }
 
         void WindowResizer::sprocess() const {
-            constexpr auto lcx_vmode = core::Mode::EDI_NORMAL ;
-
             core::InstantKeyAbsorber ika ;
 
-            pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+            pimpl->funcfinder_.reset_parser_states() ;
 
             core::NTypeLogger lgr ;
 
@@ -274,14 +274,14 @@ namespace vind
                 }
                 if(lgr.latest().is_containing(KEYCODE_E)) { //mode change
                     lgr.accept() ;
-                    pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                    pimpl->funcfinder_.reset_parser_states() ;
                     inmode = Impl::cvt_modulo(static_cast<int>(inmode) + 1) ;
                     pimpl->draw_mode_status(inmode) ;
                     continue ;
                 }
 
                 if(auto parser = pimpl->funcfinder_.find_parser_with_transition(
-                            lgr.latest(), id(), lcx_vmode)) {
+                            lgr.latest(), id())) {
 
                     decltype(auto) id = parser->get_func()->id() ;
 
@@ -289,19 +289,19 @@ namespace vind
                         actid = id ;
 
                         lgr.accept() ;
-                        pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                        pimpl->funcfinder_.reset_parser_states() ;
 
                         pimpl->call_op(inmode, id, true) ;
                         continue ;
                     }
                     else if(parser->is_rejected_with_ready()) {
                         lgr.remove_from_back(1) ;
-                        pimpl->funcfinder_.backward_parser_states(1, lcx_vmode) ;
+                        pimpl->funcfinder_.backward_parser_states(1) ;
                     }
                 }
                 else {
                     lgr.reject() ;
-                    pimpl->funcfinder_.reset_parser_states(lcx_vmode) ;
+                    pimpl->funcfinder_.reset_parser_states() ;
                 }
             }
 

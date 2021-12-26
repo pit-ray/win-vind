@@ -713,18 +713,20 @@ namespace vind
         }
 
         void InputGate::close_all_ports_with_refresh() {
+            // If this function is called by pressed button,
+            // it has to send message "KEYUP" to OS (not absorbed).
+            for(unsigned char i = 1 ; i < 255 ; i ++) {
+                if(pimpl->state_[i]) {
+                    // open a port to release the key state.
+                    open_port(i) ;
+                    release_keystate(i) ;
+                }
+            }
+
             std::fill(
                     pimpl->port_state_.begin(),
                     pimpl->port_state_.end(),
                     false) ;
-
-            //if this function is called by pressed button,
-            //it has to send message "KEYUP" to OS (not absorbed).
-            for(unsigned char i = 0 ; i < 255 ; i ++) {
-                if(pimpl->state_[i]) {
-                    release_keystate(i) ;
-                }
-            }
         }
 
         void InputGate::open_some_ports(

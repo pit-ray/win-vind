@@ -504,8 +504,14 @@ namespace vind
 
             // prohibit to keep pressing after termination.
             for(unsigned char i = 1 ; i < 255 ; i ++) {
-                if(pimpl->real_state_[i]) {
-                    release_keystate(i) ;
+                try {
+                    if(pimpl->real_state_[i]) {
+                        release_keystate(i) ;
+                    }
+                }
+                catch(const std::exception& e) {
+                    PRINT_ERROR(e.what()) ;
+                    continue ;
                 }
             }
         }

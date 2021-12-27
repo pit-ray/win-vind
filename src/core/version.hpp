@@ -1,6 +1,6 @@
 #ifndef _VERSION_HPP
 #define _VERSION_HPP
 
-#define WIN_VIND_VERSION "4.2.1"
+#define WIN_VIND_VERSION "4.3.0"
 
 #endif

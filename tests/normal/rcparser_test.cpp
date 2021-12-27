@@ -111,7 +111,9 @@ TEST_SUITE("core/rcparser") {
     }
 
     TEST_CASE("(rcparser::extract_double_args) Triple argument") {
-        CHECK_THROWS(extract_double_args("foo bar bar")) ;
+        auto [arg1, arg2] = extract_double_args("foo bar bar") ;
+        CHECK_EQ(arg1, "foo") ;
+        CHECK_EQ(arg2, "bar bar") ;
     }
 
 

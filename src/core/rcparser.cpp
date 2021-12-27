@@ -108,18 +108,15 @@ namespace vind
             if(delimiter == std::string::npos) {
                 return std::make_pair(args.substr(arg1_first), "") ;
             }
+            auto arg1 = args.substr(arg1_first, delimiter - arg1_first) ;
 
             auto arg2_first = args.find_first_not_of(" ", delimiter + 1) ;
             if(arg2_first == std::string::npos) {
-                return std::make_pair(args.substr(arg1_first, delimiter - arg1_first), "") ;
+                return std::make_pair(arg1, "") ;
             }
             auto arg2_last = args.find_last_not_of(" ") ;
             auto arg2 = args.substr(arg2_first, arg2_last - arg2_first + 1) ;
-            if(arg2.find(" ") != std::string::npos) {
-                throw RUNTIME_EXCEPT("It was parsed as double arguments, but it contains bigger than two.") ;
-            }
 
-            auto arg1 = args.substr(arg1_first, delimiter - arg1_first) ;
             return std::make_pair(arg1, arg2) ;
         }
 

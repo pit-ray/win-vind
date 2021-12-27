@@ -37,10 +37,10 @@ namespace vind
                 std::string str{} ;
                 std::getline(ifs, str) ;
 
-                if(str.front() == '1') {
+                if(str.front() == 'i') {
                     return InstallType::INSTALLER ;
                 }
-                else if(str.front() == '2') {
+                else if(str.front() == 'c') {
                     return InstallType::CHOCOLATEY ;
                 }
 

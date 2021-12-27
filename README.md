@@ -25,17 +25,22 @@
 **win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.
 
 ### Features
+#### System design
 - Fast binding system
 - Vim-like mode management
-- GUI operation without mouse
-- Vim emulation everywhere
-- Process control like `:!vim ~/.vimrc` on resident command line
 - .vimrc style configuration
 - Low-level key mapping (e.g. Capslock -> Ctrl)
+- Keystroke macros
 - Running in user permission
 - Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
+
+#### Callable Top Features
+- GUI operation without mouse
+- Vim emulation everywhere
+- Process launcher like `:!vim ~/.vimrc` on resident command line
 - Tiling window manager
 - Hinting feature like Vimium or EasyMotion for GUI.
+
 
 
 #### Demo
@@ -106,7 +111,6 @@ inoremap <f17> easy_click_left
 
 imap <app> <f18>
 inoremap <f18> window_resizer
-
 ```
 
 The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keywords/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/defaults">Default Mappings</a>. 

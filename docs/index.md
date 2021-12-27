@@ -14,14 +14,21 @@ description: Vim Key Binder for Windows
 
 **win-vind** is a toolbox to operate Windows inspired by Vim and its plugins.  
 
+
 ### Features
-- Lightweight binding system
+#### System Design
+- Fast binding system
 - Vim-like mode management
-- GUI operation without mouse
-- Vim emulation everywhere
-- Low-level key mapping (e.g. Capslock -> Ctrl)
+- .vimrc style configuration
 - Running in user permission
 - Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
+
+#### Callable Top Features
+- GUI operation without mouse
+- Vim emulation everywhere
+- Process launcher like `:!vim ~/.vimrc` on resident command line
+- Low-level key mapping (e.g. Capslock -> Ctrl)
+- Keystroke macros
 - Tiling window manager
 - Hinting feature like Vimium or EasyMotion for GUI.
 

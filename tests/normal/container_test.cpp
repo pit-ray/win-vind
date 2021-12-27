@@ -20,6 +20,20 @@ TEST_SUITE("util/container") {
         CHECK_EQ(v, expect) ;
     }
 
+    TEST_CASE("(util::remove_deplication) multiple call") {
+        std::vector<int> v{1, 2, 2, 3, 4, 5, 5, 1} ;
+        std::vector<int> expect{1, 2, 3, 4, 5} ;
+
+        remove_deplication(v) ;
+        CHECK_EQ(v, expect) ;
+
+        remove_deplication(v) ;
+        CHECK_EQ(v, expect) ;
+
+        remove_deplication(v) ;
+        CHECK_EQ(v, expect) ;
+    }
+
 
     // util::sizeof_array
     TEST_CASE("(util::sizeof_array) normal") {

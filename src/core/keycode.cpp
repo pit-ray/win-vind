@@ -18,13 +18,14 @@ namespace
     using namespace vind ;
 
     enum CodeMask : unsigned short {
-        CODE   = 0b0000'0000'1111'1111,
+        CODE    = 0b0000'0000'1111'1111,
+        FLAG    = 0b1111'1111'0000'0000,
 
-        FLAG   = 0b1111'1111'0000'0000,
-        ASCII  = 0b0000'1000'0000'0000,
-        NUMBER = 0b0000'0100'0000'0000,
-        PHYSIC = 0b0000'0010'0000'0000,
-        TOGGLE = 0b0000'0001'0000'0000,
+        ASCII   = 0b0001'0000'0000'0000,
+        NUMBER  = 0b0000'1000'0000'0000,
+        PHYSIC  = 0b0000'0100'0000'0000,
+        ONLYONE = 0b0000'0010'0000'0000,
+        TOGGLE  = 0b0000'0001'0000'0000,
     } ;
 
 
@@ -239,6 +240,8 @@ namespace
             for(unsigned short keycode = 1 ; keycode < 255 ; keycode ++) {
                 auto code = keycode ;
 
+                // Make the virtual key come first
+                // when sorted in ascending order.
                 if(!unreal[keycode]) {
                     code |= CodeMask::PHYSIC ;
                 }
@@ -247,6 +250,13 @@ namespace
                 if(!nameset.empty()) {  // Non-ascii code
                     if(togglable[keycode]) {
                         code |= CodeMask::TOGGLE ;
+                    }
+
+                    // When sorted in ascending order,
+                    // those with the most representative
+                    // keys should come first.
+                    if(!p2r[keycode]) {
+                        code |= CodeMask::ONLYONE ;
                     }
 
                     key2code_[keycode] = code ;

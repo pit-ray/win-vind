@@ -2,6 +2,7 @@
 
 #include "core/keycode.cpp"
 
+#include <algorithm>
 #include <cstring>
 #include <sstream>
 #include <vector>
@@ -308,5 +309,26 @@ TEST_SUITE("core/keycode") {
         }
 
         CHECK_EQ(ss.str(), "h<shift><alt>c") ;
+    }
+
+    TEST_CASE("Sortable") {
+        std::vector<core::KeyCode> keys {
+            KEYCODE_A,
+            KEYCODE_LSHIFT
+        } ;
+
+        std::vector<core::KeyCode> expect {
+            KEYCODE_LSHIFT,
+            KEYCODE_A
+        } ;
+
+        std::sort(keys.begin(), keys.end()) ;
+        CHECK_EQ(keys, expect) ;
+
+        std::sort(keys.begin(), keys.end()) ;
+        CHECK_EQ(keys, expect) ;
+
+        std::sort(keys.begin(), keys.end()) ;
+        CHECK_EQ(keys, expect) ;
     }
 }

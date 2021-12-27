@@ -60,7 +60,7 @@ namespace
 
         SystemCall do_process() const override {
             for(const auto& keyset : cmd_) {
-                InputGate::get_instance().pushup(keyset.cbegin(), keyset.cend()) ;
+                InputGate::get_instance().pushup(keyset.begin(), keyset.end()) ;
             }
             return SystemCall::NOTHING ;
         }
@@ -148,9 +148,7 @@ namespace
     }
 
     /*
-     *
      * Apply the key2keyset mapping to a command.
-     *
      */
     Command replace_command_with_key2keyset(
             const Command& srccmd,
@@ -204,7 +202,7 @@ namespace
             id_func2map[funcid] = mapid ;
             target_cmds[funcid] = replace_command_with_key2keyset(
                                         map.target_command(), key2keyset_table) ;
-            loggers[funcid]     = generate_stated_logger(target_cmds[funcid]) ;
+            loggers[funcid] = generate_stated_logger(target_cmds[funcid]) ;
 
             auto parser = std::make_unique<LoggerParser>(func) ;
             parser->append_binding(map.trigger_command()) ;
@@ -300,6 +298,15 @@ namespace
         for(const auto& parser : parsers) {
             auto funcid = parser->get_func()->id() ;
 
+            // To generate keystrokes, convert them to physical
+            // keys and also arrange the order of the keys.
+            for(auto& keyset : target_cmds[funcid]) {
+                for(auto& key : keyset) {
+                    key = key.to_physical() ;
+                }
+                util::remove_deplication(keyset) ;
+            }
+
             auto mapid = id_func2map[funcid] ;
             solved_outcmd[mapid] = std::move(target_cmds[funcid]) ;
         }
@@ -391,7 +398,8 @@ namespace
 
             std::vector<LoggerParser::SPtr> parsers{} ;
             for(const auto& [mapid, map] : map_cmd2cmd) {
-                if(solved_target_cmds.find(mapid) == solved_target_cmds.end()) { PRINT_ERROR( mode_to_prefix(mode) + "map " + \
+                if(solved_target_cmds.find(mapid) == solved_target_cmds.end()) {
+                    PRINT_ERROR( mode_to_prefix(mode) + "map " + \
                             map.trigger_command_string() + " " +
                             map.target_command_string() +
                             " recursively remaps itself.") ;

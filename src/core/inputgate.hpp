@@ -506,7 +506,6 @@ namespace vind
 #if defined(__GNUC__)
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
-
                         ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
@@ -514,7 +513,7 @@ namespace vind
 
                         ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
                         ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
-                        ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.dwFlags) ;
+                        ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
                         ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_code()) ;

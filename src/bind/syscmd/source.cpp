@@ -108,9 +108,11 @@ namespace
                 auto args_path = std::filesystem::u8path(
                         core::replace_path_magic(args)) ;
 
-                if(std::filesystem::equivalent(core::RC(), args_path)) {
-                    throw std::invalid_argument(
-                            "Recursive references to the same .vindrc are not allowed.") ;
+                if(std::filesystem::exists(args_path)) {
+                    if(std::filesystem::equivalent(core::RC(), args_path)) {
+                        throw std::invalid_argument(
+                                "Recursive references to the same .vindrc are not allowed.") ;
+                    }
                 }
 
                 if(args_path.filename().u8string() != ".vindrc") {

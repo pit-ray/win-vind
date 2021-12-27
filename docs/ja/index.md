@@ -20,13 +20,19 @@ description: Vim Key Binder for Windows
 
 
 ### 機能  
+#### システム設計
 - 軽量なバインディング
 - Vimライクなモード管理
-- マウスレスのGUI操作
-- どこでもVimエミュレーション
-- 低レベルなキーマッピング (例: CapsLockをCtrl)
+- .vimrcスタイルの設定
 - ユーザ権限内での実行
 - VimやAHKからのワンショット利用 (例: `$ win-vind -f easy_click_left`)
+
+#### 代表的な機能
+- マウスレスのGUI操作
+- どこでもVimエミュレーション
+- 常駐コマンドラインを利用したプロセス起動 (例: `:!vim ~/.vimrc`)
+- 低レベルなキーマッピング (例: CapsLockをCtrl)
+- キーストロークのマクロ定義
 - タイルウィンドウマネージャ
 - GUIのためのVimium/EasyMotionライクな操作
 

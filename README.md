@@ -32,7 +32,7 @@
 - Running in user permission
 - Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
 
-#### Callable Top Features
+#### Top Features
 - GUI operation without mouse
 - Vim emulation everywhere
 - Process launcher like `:!vim ~/.vimrc` on resident command line

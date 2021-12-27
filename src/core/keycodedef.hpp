@@ -131,11 +131,7 @@
 
 #define KEYCODE_BACKTAB      (static_cast<unsigned char>(245))
 
-//
-// Keyboards with two Windows-keys are rare, so we don't support them.
-// Replated Code: @Double-Win-Key
-//
-//#define KEYCODE_WIN          (static_cast<unsigned char>(15))
+#define KEYCODE_WIN          (static_cast<unsigned char>(15))
 
 #define KEYCODE_SHIFT        (static_cast<unsigned char>(16))
 #define KEYCODE_CTRL         (static_cast<unsigned char>(17))

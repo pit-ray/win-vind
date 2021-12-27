@@ -9,9 +9,11 @@ namespace vind
     namespace util {
         template <typename T>
         inline void remove_deplication(T&& vec) {
-            if(vec.empty()) return ;
+            if(vec.empty()) {
+                return ;
+            }
             std::sort(vec.begin(), vec.end()) ;
-            decltype(auto) itr = std::unique(vec.begin(), vec.end()) ;
+            auto itr = std::unique(vec.begin(), vec.end()) ;
             vec.erase(itr, vec.end()) ;
         }
 

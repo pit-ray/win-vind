@@ -9,6 +9,7 @@
 #include "core/mode.hpp"
 #include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 
 #include <string>
@@ -85,8 +86,7 @@ namespace vind
 
             std::string arg1, arg2 ;
             if(parse_argument_as_map(args, arg1, arg2)) {
-                auto& maptable = core::MapTable::get_instance() ;
-                maptable.add_map(arg1, arg2, mode) ;
+                core::MapTable::get_instance().add_map(arg1, arg2, mode) ;
             }
 
             return SystemCall::NOTHING ;
@@ -122,8 +122,7 @@ namespace vind
                 const std::string& args) {
             std::string arg1, arg2 ;
             if(parse_argument_as_map(args, arg1, arg2)) {
-                auto& maptable = core::MapTable::get_instance() ;
-                maptable.add_noremap(arg1, arg2, mode) ;
+                core::MapTable::get_instance().add_noremap(arg1, arg2, mode) ;
             }
             return SystemCall::NOTHING ;
         }
@@ -167,8 +166,7 @@ namespace vind
                     opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
                 }
                 else {
-                    auto& maptable = core::MapTable::get_instance() ;
-                    maptable.remove(arg, mode) ;
+                    core::MapTable::get_instance().remove(arg, mode) ;
                 }
             }
             return SystemCall::NOTHING ;
@@ -202,8 +200,7 @@ namespace vind
         {}
 
         SystemCall SyscmdMapclear::sprocess(core::Mode mode) {
-            auto& maptable = core::MapTable::get_instance() ;
-            maptable.clear(mode) ;
+            core::MapTable::get_instance().clear(mode) ;
             return SystemCall::NOTHING ;
         }
         SystemCall SyscmdMapclear::sprocess(core::NTypeLogger&) {

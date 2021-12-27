@@ -23,7 +23,7 @@ namespace
         FLAG   = 0b1111'1111'0000'0000,
         ASCII  = 0b0000'1000'0000'0000,
         NUMBER = 0b0000'0100'0000'0000,
-        UNREAL = 0b0000'0010'0000'0000,
+        PHYSIC = 0b0000'0010'0000'0000,
         TOGGLE = 0b0000'0001'0000'0000,
     } ;
 
@@ -106,27 +106,27 @@ namespace
             p2r[KEYCODE_RSHIFT]  = KEYCODE_SHIFT ;
             p2r[KEYCODE_LCTRL]   = KEYCODE_CTRL ;
             p2r[KEYCODE_RCTRL]   = KEYCODE_CTRL ;
-            /* @Double-Win-Key
             p2r[KEYCODE_LWIN]    = KEYCODE_WIN ;
             p2r[KEYCODE_RWIN]    = KEYCODE_WIN ;
-            */
             p2r[KEYCODE_LALT]    = KEYCODE_ALT ;
             p2r[KEYCODE_RALT]    = KEYCODE_ALT ;
             p2r[KEYCODE_FROM_EN] = KEYCODE_IME ;
             p2r[KEYCODE_TO_JP]   = KEYCODE_IME ;
 
             std::vector<bool> unreal(256, false) ;
-            unreal[KEYCODE_SHIFT] = true ;
-            unreal[KEYCODE_CTRL] = true ;
-            unreal[KEYCODE_ALT] = true ;
-            unreal[KEYCODE_IME] = true ;
+            unreal[KEYCODE_SHIFT]          = true ;
+            unreal[KEYCODE_CTRL]           = true ;
+            unreal[KEYCODE_ALT]            = true ;
+            unreal[KEYCODE_IME]            = true ;
+            unreal[KEYCODE_WIN]            = true ;
             unreal[KEYCODE_SHIFT_CAPSLOCK] = true ;
-            unreal[KEYCODE_OPTIONAL] = true ;
-            unreal[KEYCODE_OPTNUMBER] = true ;
+            unreal[KEYCODE_OPTIONAL]       = true ;
+            unreal[KEYCODE_OPTNUMBER]      = true ;
 
             std::array<unsigned char, 256> r2p{} ;
             r2p[KEYCODE_SHIFT] = KEYCODE_LSHIFT ;
             r2p[KEYCODE_CTRL]  = KEYCODE_LCTRL ;
+            r2p[KEYCODE_WIN]   = KEYCODE_LWIN ;
             r2p[KEYCODE_ALT]   = KEYCODE_LALT ;
             r2p[KEYCODE_IME]   = KEYCODE_FROM_EN ;
 
@@ -160,7 +160,7 @@ namespace
                 {"rctrl",       KEYCODE_RCTRL},
                 {"rc",          KEYCODE_RCTRL},
 
-                {"win",         KEYCODE_LWIN}, // @Double-Win-Key
+                {"win",         KEYCODE_WIN}, // @Double-Win-Key
                 {"lwin",        KEYCODE_LWIN},
                 {"rwin",        KEYCODE_RWIN},
 
@@ -239,14 +239,14 @@ namespace
             for(unsigned short keycode = 1 ; keycode < 255 ; keycode ++) {
                 auto code = keycode ;
 
+                if(!unreal[keycode]) {
+                    code |= CodeMask::PHYSIC ;
+                }
+
                 auto nameset = c2ns[keycode] ;
                 if(!nameset.empty()) {  // Non-ascii code
                     if(togglable[keycode]) {
                         code |= CodeMask::TOGGLE ;
-                    }
-
-                    if(unreal[keycode]) {
-                        code |= CodeMask::UNREAL ;
                     }
 
                     key2code_[keycode] = code ;
@@ -394,7 +394,7 @@ namespace vind
         }
 
         bool KeyCode::is_unreal() const noexcept {
-            return static_cast<bool>(code_ & CodeMask::UNREAL) ;
+            return !static_cast<bool>(code_ & CodeMask::PHYSIC) ;
         }
 
         bool KeyCode::is_number() const noexcept {

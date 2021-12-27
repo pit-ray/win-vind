@@ -391,9 +391,7 @@ namespace
 
             std::vector<LoggerParser::SPtr> parsers{} ;
             for(const auto& [mapid, map] : map_cmd2cmd) {
-                if(solved_target_cmds.find(mapid) == solved_target_cmds.end()) {
-                    PRINT_ERROR(
-                            mode_to_prefix(mode) + "map " + \
+                if(solved_target_cmds.find(mapid) == solved_target_cmds.end()) { PRINT_ERROR( mode_to_prefix(mode) + "map " + \
                             map.trigger_command_string() + " " +
                             map.target_command_string() +
                             " recursively remaps itself.") ;
@@ -818,6 +816,7 @@ namespace vind
 
             if(press_sync_state) {
                 open_some_ports(target.begin(), target.end()) ;
+
                 press_keystate(target.begin(), target.end()) ;
                 close_some_ports(target.begin(), target.end()) ;
             }

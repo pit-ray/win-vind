@@ -5,7 +5,7 @@
 #include "keycodedef.hpp"
 #include "keylog.hpp"
 #include "mode.hpp"
-
+#include "util/debug.hpp"
 #include "util/def.hpp"
 
 #include <windows.h>
@@ -133,7 +133,7 @@ namespace vind
 #if defined(__GNUC__)
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
-                        in.ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        in.ki.wVk         = static_cast<WORD>(begin->to_physical().to_code()) ;
                         in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(in.ki.wVk, MAPVK_VK_TO_VSC)) ;
                         in.ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(in.ki.wVk) ;
                         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -156,12 +156,12 @@ namespace vind
 #if defined(__GNUC__)
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
-                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_physical().to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_physical().to_code()) ;
                         ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -187,17 +187,17 @@ namespace vind
 #if defined(__GNUC__)
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
-                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_physical().to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_physical().to_code()) ;
                         ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[1].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_code()) ;
+                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_physical().to_code()) ;
                         ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[2].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[2].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(ins[2].ki.wVk) ;
                         ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -215,7 +215,7 @@ namespace vind
                     default: {
                         std::unique_ptr<INPUT[]> dins(new INPUT[size]) ;
                         for(std::size_t i = 0 ; i < size ; i ++) {
-                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_code()) ;
+                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_physical().to_code()) ;
                             dins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(dins[i].ki.wVk, MAPVK_VK_TO_VSC)) ;
                             dins[i].ki.dwFlags     = KEYEVENTF_KEYUP | extended_key_flag(dins[i].ki.wVk) ;
                             dins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -280,7 +280,7 @@ namespace vind
 #if defined(__GNUC__)
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
-                        in.ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        in.ki.wVk         = static_cast<WORD>(begin->to_physical().to_code()) ;
                         in.ki.wScan       = static_cast<WORD>(MapVirtualKeyA(in.ki.wVk, MAPVK_VK_TO_VSC)) ;
                         in.ki.dwFlags     = extended_key_flag(in.ki.wVk) ;
                         in.ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -304,12 +304,12 @@ namespace vind
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
 
-                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_physical().to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_physical().to_code()) ;
                         ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -335,17 +335,17 @@ namespace vind
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
 
-                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_physical().to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = extended_key_flag(*begin) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_physical().to_code()) ;
                         ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_code()) ;
+                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_physical().to_code()) ;
                         ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[2].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[2].ki.dwFlags     = extended_key_flag(ins[2].ki.wVk) ;
                         ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -362,7 +362,7 @@ namespace vind
                     default: {
                         std::unique_ptr<INPUT[]> dins(new INPUT[size]) ;
                         for(std::size_t i = 0 ; i < size ; i ++) {
-                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_code()) ;
+                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_physical().to_code()) ;
                             dins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(dins[i].ki.wVk, MAPVK_VK_TO_VSC)) ;
                             dins[i].ki.dwFlags     = extended_key_flag(dins[i].ki.wVk) ;
                             dins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -428,8 +428,6 @@ namespace vind
 
                 auto size = static_cast<std::size_t>(end - begin) ;
 
-                open_some_ports(begin, end) ;
-
                 //optimizing for 1
                 switch(size) {
                     case 1: {
@@ -444,7 +442,8 @@ namespace vind
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
 
-                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        auto phy = begin->to_physical() ;
+                        ins[0].ki.wVk         = static_cast<WORD>(phy.to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -453,6 +452,8 @@ namespace vind
                         ins[1].ki.wScan       = ins[0].ki.wScan ;
                         ins[1].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                        open_port(phy) ;
 
                         if(!SendInput(2, ins, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
@@ -473,12 +474,14 @@ namespace vind
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
 
-                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        auto phy1 = begin->to_physical() ;
+                        ins[0].ki.wVk         = static_cast<WORD>(phy1.to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        auto phy2 = (begin + 1)->to_physical() ;
+                        ins[1].ki.wVk         = static_cast<WORD>(phy2.to_code()) ;
                         ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -492,6 +495,9 @@ namespace vind
                         ins[3].ki.wScan       = ins[0].ki.wScan ;
                         ins[3].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                        open_port(phy1) ;
+                        open_port(phy2) ;
 
                         if(!SendInput(4, ins, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
@@ -513,17 +519,20 @@ namespace vind
 #if defined(__GNUC__)
 #pragma gcc diagnostic warning "-wmissing-field-initializers"
 #endif
-                        ins[0].ki.wVk         = static_cast<WORD>(begin->to_code()) ;
+                        auto phy1 = begin->to_physical() ;
+                        ins[0].ki.wVk         = static_cast<WORD>(phy1.to_code()) ;
                         ins[0].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[0].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[0].ki.dwFlags     = extended_key_flag(ins[0].ki.wVk) ;
                         ins[0].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[1].ki.wVk         = static_cast<WORD>((begin + 1)->to_code()) ;
+                        auto phy2 = (begin + 1)->to_physical() ;
+                        ins[1].ki.wVk         = static_cast<WORD>(phy2.to_code()) ;
                         ins[1].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[1].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[1].ki.dwFlags     = extended_key_flag(ins[1].ki.wVk) ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        ins[2].ki.wVk         = static_cast<WORD>((begin + 2)->to_code()) ;
+                        auto phy3 = (begin + 2)->to_physical() ;
+                        ins[2].ki.wVk         = static_cast<WORD>(phy3.to_code()) ;
                         ins[2].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(ins[2].ki.wVk, MAPVK_VK_TO_VSC)) ;
                         ins[2].ki.dwFlags     = extended_key_flag(ins[2].ki.wVk) ;
                         ins[2].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -543,6 +552,10 @@ namespace vind
                         ins[5].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[5].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
+                        open_port(phy1) ;
+                        open_port(phy2) ;
+                        open_port(phy3) ;
+
                         if(!SendInput(6, ins, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
@@ -552,7 +565,8 @@ namespace vind
                         //>=4
                         std::unique_ptr<INPUT[]> dins(new INPUT[size * 2]) ;
                         for(std::size_t i = 0 ; i < size ; i ++) {
-                            dins[i].ki.wVk         = static_cast<WORD>((begin + i)->to_code()) ;
+                            auto phy = (begin + 1)->to_physical() ;
+                            dins[i].ki.wVk         = static_cast<WORD>(phy.to_code()) ;
                             dins[i].ki.wScan       = static_cast<WORD>(MapVirtualKeyA(dins[i].ki.wVk, MAPVK_VK_TO_VSC)) ;
                             dins[i].ki.dwFlags     = extended_key_flag(dins[i].ki.wVk) ;
                             dins[i].ki.dwExtraInfo = GetMessageExtraInfo() ;
@@ -561,6 +575,8 @@ namespace vind
                             dins[size - i - 1].ki.wScan       = dins[i].ki.wScan ;
                             dins[size - i - 1].ki.dwFlags     = dins[i].ki.dwFlags | KEYEVENTF_KEYUP ;
                             dins[size - i - 1].ki.dwExtraInfo = GetMessageExtraInfo() ;
+
+                            open_port(phy) ;
                         }
 
                         if(!SendInput(static_cast<UINT>(size), dins.get(), sizeof(INPUT))) {
@@ -612,23 +628,13 @@ namespace vind
 
 
             /**
-             * NOTE: This function samples a log from the log pool based on the key mapping
-             * instead of getting the key status obtained from the hook.
+             * NOTE: This function samples a log from the log pool based on 
+             *       the key mapping instead of getting the key status obtained
+             *       from the hook. In the case of noremap, the key message is 
+             *       not actually generated, but in the case of map, the key
+             *       message is generated in a state that is passed to Windows.
              */
             KeyLog pop_log(Mode mode=get_global_mode()) ;
-
-
-            /**
-             * NOTE: map_logger is a mapping from NTypeLogger to NTypeLogger.
-             * What it means is that it is excited by a command, and return the log pool.
-             * it would have been in if the corresponding command had been entered.
-             *
-             * In the case of noremap, the key message is not actually generated,
-             * but in the case of map, the key message is generated in a state that is passed to Windows.
-             */
-            std::vector<KeyLog> map_logger(
-                    const KeyLog& log,
-                    Mode mode=get_global_mode()) ;
 
             /**
              * A gate uses to synchronize the state of a key at low-level

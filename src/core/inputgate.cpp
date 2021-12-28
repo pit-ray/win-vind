@@ -18,6 +18,7 @@
 #include "util/keystroke_repeater.hpp"
 #include "util/winwrap.hpp"
 
+#include <iterator>
 #include <windows.h>
 
 #include <array>
@@ -31,6 +32,9 @@
 
 #define KEYUP_MASK 0x0001
 
+#define SC_MAPHOOK static_cast<vind::SystemCall>(105)
+#define SC_MAPHOOK_REPRD static_cast<vind::SystemCall>(100)
+
 
 namespace
 {
@@ -38,54 +42,40 @@ namespace
     using namespace vind::core ;
 
     class MapHook : public bind::BindedFunc {
+    private:
+        SystemCall do_process() const override {
+            return SC_MAPHOOK ;
+        }
+        SystemCall do_process(core::NTypeLogger&) const override {
+            return SC_MAPHOOK ;
+        }
+        SystemCall do_process(const core::CharLogger&) const override {
+            return SC_MAPHOOK ;
+        }
     public:
         template <typename IDString>
         explicit MapHook(IDString&& id)
         : BindedFunc("maphook_" + id)
         {}
-
-        virtual ~MapHook() noexcept = default ;
-
-        MapHook(MapHook&&) = default ;
-        MapHook& operator=(MapHook&&) = default ;
-
-        MapHook(const MapHook&) = delete ;
-        MapHook& operator=(const MapHook&) = delete ;
     } ;
-
 
     class MapHookReproduce : public bind::BindedFunc {
     private:
-        Command cmd_ ;
-
         SystemCall do_process() const override {
-            auto& igate = InputGate::get_instance() ;
-            for(const auto& keyset : cmd_) {
-                igate.pushup(keyset.begin(), keyset.end()) ;
-            }
-            return SystemCall::NOTHING ;
+            return SC_MAPHOOK_REPRD ;
         }
         SystemCall do_process(core::NTypeLogger&) const override {
-            return SystemCall::NOTHING ;
+            return SC_MAPHOOK_REPRD ;
         }
         SystemCall do_process(const core::CharLogger&) const override {
-            return SystemCall::NOTHING ;
+            return SC_MAPHOOK_REPRD ;
         }
 
     public:
-        template <typename IDString, typename TypeCommand>
-        explicit MapHookReproduce(IDString&& id, TypeCommand&& cmd)
-        : BindedFunc("maphook_reproduce_" + id),
-          cmd_(std::forward<TypeCommand>(cmd))
+        template <typename IDString>
+        explicit MapHookReproduce(IDString&& id)
+        : BindedFunc("maphook_reproduce_" + id)
         {}
-
-        virtual ~MapHookReproduce() noexcept = default ;
-
-        MapHookReproduce(MapHookReproduce&&) = default ;
-        MapHookReproduce& operator=(MapHookReproduce&&) = default ;
-
-        MapHookReproduce(const MapHookReproduce&) = delete ;
-        MapHookReproduce& operator=(const MapHookReproduce&) = delete ;
     } ;
 
 
@@ -273,6 +263,8 @@ namespace
                         }
                     }
 
+                    util::remove_deplication(mapped_set) ;
+
                     if(!mapped_set.empty()) {
                         merged.push_back(std::move(mapped_set)) ;
                     }
@@ -299,15 +291,6 @@ namespace
         for(const auto& parser : parsers) {
             auto funcid = parser->get_func()->id() ;
 
-            // To generate keystrokes, convert them to physical
-            // keys and also arrange the order of the keys.
-            for(auto& keyset : target_cmds[funcid]) {
-                for(auto& key : keyset) {
-                    key = key.to_physical() ;
-                }
-                util::remove_deplication(keyset) ;
-            }
-
             auto mapid = id_func2map[funcid] ;
             solved_outcmd[mapid] = std::move(target_cmds[funcid]) ;
         }
@@ -316,7 +299,7 @@ namespace
 
 
     struct MapGate {
-        std::unordered_map<std::size_t, std::vector<KeyLog>> logpool_{} ;
+        std::unordered_map<std::size_t, Command> cmdtable_{} ;
         LoggerParserManager mgr_{} ;
         Key2KeysetMap syncmap_{} ;
 
@@ -384,7 +367,7 @@ namespace
                             keys.push_back(key) ;
                         }
                         else {
-                            syskeys.push_back(key.to_physical()) ;
+                            syskeys.push_back(key) ;
                         }
                     }
 
@@ -393,14 +376,15 @@ namespace
                 }
             }
 
-            logpool_.clear() ;
+            cmdtable_.clear() ;
 
             auto solved_target_cmds = solve_recursive_cmd2cmd_mapping(map_cmd2cmd, syncmap_) ;
 
             std::vector<LoggerParser::SPtr> parsers{} ;
             for(const auto& [mapid, map] : map_cmd2cmd) {
                 if(solved_target_cmds.find(mapid) == solved_target_cmds.end()) {
-                    PRINT_ERROR( mode_to_prefix(mode) + "map " + \
+                    PRINT_ERROR(
+                            mode_to_prefix(mode) + "map " + \
                             map.trigger_command_string() + " " +
                             map.target_command_string() +
                             " recursively remaps itself.") ;
@@ -408,26 +392,25 @@ namespace
                 }
 
                 auto func = std::make_shared<MapHookReproduce>(
-                    map.trigger_command_string(), solved_target_cmds[mapid]) ;
+                        map.trigger_command_string()) ;
+
                 auto parser = std::make_shared<LoggerParser>(func) ;
                 parser->append_binding(map.trigger_command()) ;
-                parsers.push_back(std::move(parser)) ;
+                parsers.push_back(parser) ;
 
-                for(const auto& keyset : solved_target_cmds[mapid]) {
-                    logpool_[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
-                }
+                cmdtable_[func->id()] = solved_target_cmds[mapid] ;
             }
 
             for(const auto& [mapid, map] : noremap_cmd2cmd) {
                 auto func = std::make_shared<MapHook>(
                         map.trigger_command_string()) ;
+
                 auto parser = std::make_shared<LoggerParser>(func) ;
                 parser->append_binding(map.trigger_command()) ;
-                parsers.push_back(std::move(parser)) ;
 
-                for(const auto& keyset : map.target_command()) {
-                    logpool_[func->id()].emplace_back(keyset.begin(), keyset.end()) ;
-                }
+                parsers.push_back(parser) ;
+
+                cmdtable_[func->id()] = map.target_command() ;
             }
 
             mgr_ = LoggerParserManager(std::move(parsers)) ;
@@ -457,7 +440,8 @@ namespace vind
 
             ModeArray<MapGate> mapgate_ ;
 
-            std::queue<KeyLog> pool_ ;
+            std::queue<KeySet> pool_ ;
+            bool pool_reprd_mode_ ;
 
             Impl()
             : hook_(nullptr),
@@ -469,7 +453,8 @@ namespace vind
               absorb_state_(true),
               lgr_(),
               mapgate_(),
-              pool_()
+              pool_(),
+              pool_reprd_mode_(false)
             {}
 
             ~Impl() noexcept = default ;
@@ -814,12 +799,25 @@ namespace vind
             return true ;
         }
 
-        std::vector<KeyLog> InputGate::map_logger(
-                const KeyLog& log,
-                Mode mode) {
+
+        KeyLog InputGate::pop_log(Mode mode) {
+            if(!pimpl->pool_.empty()) {
+                auto keyset = std::move(pimpl->pool_.front()) ;
+                pimpl->pool_.pop() ;
+
+                if(pimpl->pool_reprd_mode_ && !keyset.empty()) {
+                    pushup(keyset.begin(), keyset.end()) ;
+                }
+
+                return KeyLog(
+                        std::make_move_iterator(keyset.begin()),
+                        std::make_move_iterator(keyset.end())) ;
+            }
+
+            auto log = pressed_list() ;
 
             if(NTYPE_EMPTY(pimpl->lgr_.logging_state(log))) {
-                return std::vector<KeyLog>{} ;
+                return log ;
             }
 
             auto& gate = pimpl->mapgate_[static_cast<int>(mode)] ;
@@ -828,51 +826,43 @@ namespace vind
             if(!parser) {
                 pimpl->lgr_.reject() ;
                 gate.mgr_.reset_parser_states() ;
-                return std::vector<KeyLog>{} ;
+                return log ;
             }
 
             if(parser->is_accepted()) {
-                auto func = parser->get_func() ;
-                func->process() ;
                 pimpl->lgr_.accept() ;
                 gate.mgr_.reset_parser_states() ;
-                return gate.logpool_[func->id()] ;
 
+                auto func = parser->get_func() ;
+                auto sc = func->process() ;
+
+                pimpl->pool_reprd_mode_ = sc == SC_MAPHOOK_REPRD ;
+
+                const auto& cmd = gate.cmdtable_.at(func->id()) ;
+
+                auto itr = cmd.begin() ;
+
+                log = KeyLog(itr->begin(), itr->end()) ;
+
+                if(pimpl->pool_reprd_mode_) {
+                    pushup(itr->begin(), itr->end()) ;
+                }
+                itr ++ ;
+
+                //
+                // To simulate the input, make a state transition with an empty log.
+                // This is to make the logger recognize that it is a key release,
+                // not a long pressing of the key.
+                //
+                while(itr != cmd.end()) {
+                    pimpl->pool_.emplace() ;
+                    pimpl->pool_.push(*itr) ;
+                    itr ++ ;
+                }
             }
-            if(parser->is_rejected_with_ready()) {
+            else if(parser->is_rejected_with_ready()) {
                 gate.mgr_.backward_parser_states(1) ;
                 pimpl->lgr_.remove_from_back(1) ;
-            }
-            return std::vector<KeyLog>{} ;
-        }
-
-        KeyLog InputGate::pop_log(Mode mode) {
-            if(!pimpl->pool_.empty()) {
-                auto log = std::move(pimpl->pool_.front()) ;
-                pimpl->pool_.pop() ;
-                return log ;
-            }
-
-            auto log = pressed_list() ;
-
-            auto logs = map_logger(log, mode) ;
-            if(logs.empty()) {
-                return log ;
-            }
-
-            auto itr = std::make_move_iterator(logs.begin()) ;
-            log = std::move(*itr) ;
-            itr ++ ;
-
-            //
-            // To simulate the input, make a state transition with an empty log.
-            // This is to make the logger recognize that it is a key release,
-            // not a long pressing of the key.
-            //
-            while(itr != std::make_move_iterator(logs.end())) {
-                pimpl->pool_.emplace() ;
-                pimpl->pool_.push(std::move(*itr)) ;
-                itr ++ ;
             }
             return log ;
         }

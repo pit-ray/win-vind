@@ -128,13 +128,13 @@ TEST_CASE("inputgate::solve_recursive_cmd2cmd_mapping") {
     // g<s-h>h -> z<c-s-z><s-z><s-z>gy<s-z><s-z>g
     Command expect1 {
         {KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_CTRL, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
         {KEYCODE_G},
         {KEYCODE_Y},
-        {KEYCODE_LSHIFT, KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
         {KEYCODE_G}
     } ;
     CHECK_EQ(result[map1.in_hash()], expect1) ;
@@ -142,17 +142,17 @@ TEST_CASE("inputgate::solve_recursive_cmd2cmd_mapping") {
     // t -> z<c-s-z><s-z><s-z>g
     Command expect2 {
         {KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_CTRL, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
         {KEYCODE_G}
     } ;
     CHECK_EQ(result[map2.in_hash()], expect2) ;
 
     // <c-j> -> <s-z><s-z>g
     Command expect3 {
-        {KEYCODE_LSHIFT, KEYCODE_Z},
-        {KEYCODE_LSHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
+        {KEYCODE_SHIFT, KEYCODE_Z},
         {KEYCODE_G}
     } ;
     CHECK_EQ(result[map3.in_hash()], expect3) ;

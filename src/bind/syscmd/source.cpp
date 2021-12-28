@@ -27,6 +27,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <shlwapi.h>
+
 
 namespace
 {
@@ -51,10 +53,16 @@ namespace
         if(!std::filesystem::exists(target_repo_path)) {
             const auto remote_url = "https://github.com/" + args + ".git" ;
 
-            util::create_process(
-                core::HOME_PATH(), "git",
-                util::concat_args("clone", "--depth=1", remote_url, target_repo_path.u8string()),
-                false, true) ;
+            try {
+                util::create_process(
+                    core::HOME_PATH(), "git",
+                    util::concat_args("clone", "--depth=1", remote_url, target_repo_path.u8string()),
+                    false, true) ;
+            }
+            catch(const std::runtime_error&) {
+                opt::VCmdLine::print(opt::ErrorMessage("E: 'git' is not available")) ;
+                return std::filesystem::path() ;
+            }
         }
         /**
          * TODO: For security reasons, it should ensure that
@@ -118,7 +126,10 @@ namespace
                 if(args_path.filename().u8string() != ".vindrc") {
                     args_path = load_remote_vindrc(std::forward<Str>(args)) ;
                 }
-                SyscmdSource::sprocess(args_path, false) ; //overload .vindrc
+
+                if(!args_path.empty()) {
+                    SyscmdSource::sprocess(args_path, false) ; //overload .vindrc
+                }
                 return ;
             }
 

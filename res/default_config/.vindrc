@@ -90,7 +90,7 @@ set cmd_roughpos=LowerMid
 set cmd_xmargin=32
 
 " Vertical Margin
-set cmd_ymargin=64
+set cmd_ymargin=96
 
 " Font Extra
 set cmd_fontextra=1

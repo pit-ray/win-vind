@@ -100,12 +100,13 @@ namespace
             idx_ = hist_.size() - 1 ;
         }
 
-        void generate_new_hist() {
+        CmdPoint::SPtr generate_new_hist() {
             if(idx_ == hist_.size() - 1) {
                 //recently logger
 
                 auto& settable = core::SetTable::get_instance() ;
-                auto over_num = hist_.size() - settable.get("cmd_maxhist").get<std::size_t>() ;
+                auto over_num = static_cast<long>(hist_.size()) \
+                                - settable.get("cmd_maxhist").get<long>() ;
 
                 if(over_num > 0) {
                     util::remove_from_top(hist_, over_num) ;
@@ -121,6 +122,8 @@ namespace
                 auto p = hist_.at(idx_) ;
                 p->reset() ;
             }
+
+            return hist_.at(idx_) ;
         }
 
         bool is_pointing_latest() noexcept {
@@ -223,8 +226,7 @@ namespace vind
                         opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
                     }
 
-                    pimpl->ch_.generate_new_hist() ;
-                    auto& new_lgr = pimpl->ch_.get_hist_point()->logger ;
+                    auto& new_lgr = pimpl->ch_.generate_new_hist()->logger ;
 
                     // Let the new created Logger of CmdPoint
                     // inherit the state of the last logger.

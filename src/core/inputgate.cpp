@@ -59,8 +59,9 @@ namespace
         Command cmd_ ;
 
         SystemCall do_process() const override {
+            auto& igate = InputGate::get_instance() ;
             for(const auto& keyset : cmd_) {
-                InputGate::get_instance().pushup(keyset.begin(), keyset.end()) ;
+                igate.pushup(keyset.begin(), keyset.end()) ;
             }
             return SystemCall::NOTHING ;
         }

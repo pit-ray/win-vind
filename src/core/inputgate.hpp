@@ -417,8 +417,18 @@ namespace vind
             template <typename Iterator>
             void pushup(Iterator begin, Iterator end) {
                 const auto pre_state = pressed_list() ;
+                for(const auto& key : pre_state) {
+                    if(is_really_pressed(key)) {
+                        release_keystate(key) ;
+                    }
+                    else {
+                        release_virtually(key) ;
+                    }
+                }
 
                 auto size = static_cast<std::size_t>(end - begin) ;
+
+                open_some_ports(begin, end) ;
 
                 //optimizing for 1
                 switch(size) {
@@ -443,8 +453,6 @@ namespace vind
                         ins[1].ki.wScan       = ins[0].ki.wScan ;
                         ins[1].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[1].ki.dwExtraInfo = GetMessageExtraInfo() ;
-
-                        open_port(*begin) ;
 
                         if(!SendInput(2, ins, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
@@ -485,7 +493,6 @@ namespace vind
                         ins[3].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[3].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        open_some_ports(begin, end) ;
                         if(!SendInput(4, ins, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
@@ -536,7 +543,6 @@ namespace vind
                         ins[5].ki.dwFlags     = ins[0].ki.dwFlags | KEYEVENTF_KEYUP ;
                         ins[5].ki.dwExtraInfo = GetMessageExtraInfo() ;
 
-                        open_some_ports(begin, end) ;
                         if(!SendInput(6, ins, sizeof(INPUT))) {
                             throw RUNTIME_EXCEPT("failed sending keyboard event") ;
                         }
@@ -565,10 +571,10 @@ namespace vind
                     }
                 }
 
-                close_all_ports() ;
+                close_some_ports(begin, end) ;
 
-                for(auto key : (pre_state - pressed_list())) {
-                    press_keystate(key) ;
+                for(const auto& key : (pre_state - pressed_list())) {
+                    press_virtually(key) ;
                 }
             }
 

@@ -74,10 +74,5 @@ jobs:
         cd ..
 
     - name: Submit tarball to Coverity
-      run: |
-        curl --form token=$TOKEN \
-          --form email=$EMAIL \
-          --form file=@build/cov-int.tgz \
-          --form version="latest" \
-          --form description="Automatic submission with GitHub Actions" \
-          https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
+      run: curl --form token=$TOKEN --form email=$EMAIL --form file=@build/cov-int.tgz --form version="latest" --form description="Automatic submission with GitHub Actions" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
+      shell: cmd

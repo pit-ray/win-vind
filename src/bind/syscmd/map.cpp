@@ -122,18 +122,18 @@ namespace vind
                 const std::string& args) {
             std::string arg1, arg2 ;
             if(parse_argument_as_map(args, arg1, arg2)) {
-                auto& mtable = core::MapTable::get_instance() ;
-
                 core::Map map(arg1, arg2, false) ;
+
                 if(map.target_command().size() > 6 && \
                         !bind::ref_global_funcs_bynames(map.target_command_string())) {
-                    PRINT_WARNING(
+                    core::Logger::get_instance().warning(
                             "{" + \
                             mode_to_prefix(mode) + "noremap " + \
                             map.trigger_command_string() + " " + map.target_command_string() + \
                             "} is not a function ID, so considered as a keystroke to be generated.") ;
                 }
 
+                auto& mtable = core::MapTable::get_instance() ;
                 mtable.add(std::move(map), mode) ;
             }
             return SystemCall::NOTHING ;

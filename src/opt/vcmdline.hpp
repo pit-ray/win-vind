@@ -77,7 +77,7 @@ namespace vind
                 msg_ = std::forward<T>(str) ;
 
                 if(msg_.dumpable()) {
-                    PRINT_MSG(msg_) ;
+                    core::Logger::get_instance().message(msg_) ;
                 }
 
                 if(must_refresh) {

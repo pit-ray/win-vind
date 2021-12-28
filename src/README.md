@@ -7,7 +7,9 @@ This document describes the high-layer architecture of win-vind.
 
 <img src="docs/image/keymatch_overview.png">
 
-win-vind hocks the function to capture input messages at low-level events on the operating system. This function is managed by KeyAbsorber. It switches between absorbing a key message and passing it on to other applications.  
+win-vind hocks a function that captures messages for low-level key events on the OS. To mediate input and output between the OS and win-vind, The singleton InputGate is in charge of this. cmd2cmd mapping by noremap or map is reflected in the key state record provided by InputGate.
+
+<img src="docs/image/inputgate_overview.png" >
 
 The captured inputs are converted into a convenient sequence of keycodes by KeyLogger. Currently, CharLogger and NTypeLogger are typical key loggers. CharLogger logs like general textual inputs, while NTypeLogger parses head numbers (e.g. `2gg`, `3h`) and logs raw keycodes by its automaton.  
 
@@ -31,9 +33,7 @@ By the way, the state transition diagrams of the automaton described here are as
 # Data Formats and its Managers
 ## FuncFinder
 
-<img src="docs/image/func_finder.png" >
-
-FuncFinder is used to select a function that matches the key sequence of the keylogger.  It has an internal array of modes, each of which holds pointers to the LoggerParser of valid functions.  Since LoggerParser is an automaton as described above, it transitions the state of all LoggerParser in the current mode when matching.
+FuncFinder is used to select a function that matches the key sequence of the keylogger.  It has an internal array of modes, each of which holds pointers to the LoggerParser of valid functions.  
 
 And the mode array in FuncFinder is reconstructed each time the settings are loaded for example by Apply button.
 
@@ -98,11 +98,6 @@ namespace vind
 #### CommandList  
 
 <img src="docs/image/parse_overview.png">  
-
-CommandList is keycode arrays generated from the settings file.  It is generated for each mode of the function, but is shared among modes in a syntax like `"edin": ["<guin>"]` .  
-
-<img src="docs/image/global_parsed_bindings_lists.png">
-
 
 
 # Authors

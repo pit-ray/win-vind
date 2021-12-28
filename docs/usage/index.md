@@ -89,9 +89,9 @@ The following commands are supported. By the way, `{` and `}` themselves are not
 |`set {option}`|Set the value of the option to **true**.|
 |`set no{option}`|Set the value of the option to **false**.|
 |`set {option} = {val}`|Set a value of the option. The value can be a string or a number that allows floating points. The string does not need quotation marks, and any character after the non-white character will be handled as the value. White spaces at both ends of the equals sign are ignored.|
-|`{mode}map {in-key} {out-key}`|It performs **key2key** mapping with low-level. The keymap influences Windows as a whole, not just the win-vind scope.|
+|`{mode}map {in-key} {out-key}`|It performs **cmd2cmd** mapping with low-level. The defined low-level map is actually propagated to Windows as keystroke. By the way, only the key2keyset format can synchronize the key state without delay.|
 |`{mode}noremap {in-cmd} {func-id}`|It defines the map to call the function.|
-|`{mode}noremap {in-keyset} {out-keyset}`|It performs **keyset2keyset** mapping in win-vind scope. However, since the `{func-id}` definition has higher priority than its syntax, it may result in exactly one level of recursive mapping.|
+|`{mode}noremap {in-keyset} {out-keyset}`|It performs **cmd2cmd** mapping in win-vind scope. However, since the `{func-id}` definition has higher priority than its syntax, it may result in exactly one level of recursive mapping.|
 |`{mode}unmap {in-cmd}`|Remove the map corresponding to the `{in-cmd}`.|
 |`{mode}mapclear`|Delete all maps.|
 |`command {in-cmd} {func-id}`|It defines the command to call the function.|
@@ -110,7 +110,7 @@ Let's do the last tutorial!
    <img src="{{ site.url }}/imgs/instant_gui_normal_mode.jpg" width=450 >  
    <p align="center">Instant GUI Normal Demo</p>
    </p>
-1. Open your `.vindrc` with `:e ~/.win-vind/.vindrc`.  
+1. Open your `.vindrc` with `:e`.
    <p align="center">
    <img src="{{ site.url }}/imgs/edit_vindrc_demo.jpg" width=450 >  
    <p align="center">Edit .vindrc Demo</p>
@@ -120,13 +120,15 @@ Let's do the last tutorial!
    set cmd_fontname = Times New Roman
    imap <Capslock> <ctrl>
    inoremap <Alt> easy_click_left
+   imap <ctrl-a> Vim is the best editor.
+   gnnoremap <ctrl-1> :!notepad<cr>
    ```
 1. If you done, try reloading `.vindrc` with `:source` of win-vind. (No arguments are needed.)
    <p align="center">
    <img src="{{ site.url }}/imgs/source_demo.jpg" width=450 >  
    <p align="center">Reload Demo</p>
    </p>
-1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and call EasyClick with a single `<Alt>`.
+1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and call EasyClick with a single `<Alt>`. And, you can insert a fixed form text with pressing Ctrl and A at the same time. **In GUI Normal Mode**, pressing Ctrl and 1 at the same time will open Notepad.
 
 <br>
 <br>

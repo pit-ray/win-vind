@@ -9,7 +9,7 @@ icon: home
 translation: ja
 translators:
   - pit-ray
-version: 4.2.1
+version: 4.3.0
 description: Vim Key Binder for Windows
 ---
 
@@ -77,6 +77,10 @@ inoremap <f17> easy_click_left
 
 imap <app> <f18>
 inoremap <f18> window_resizer
+
+" Define keystroke macros
+gnnoremap <ctrl-1> :!notepad<cr>
+gnnoremap <ctrl-2> :e https://www.google.com<cr>
 ```
 
 ## ライセンス

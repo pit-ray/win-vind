@@ -7,7 +7,7 @@ order: 3
 translation: ja
 translators:
   - pit-ray
-version: 4.2.1
+version: 4.3.0
 icon: question
 ---
 

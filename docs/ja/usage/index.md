@@ -7,7 +7,7 @@ icon: map-signs
 translation: ja
 translators:
   - pit-ray
-version: 4.2.1
+version: 4.3.0
 disable_anchors: true
 ---
 
@@ -90,9 +90,9 @@ disable_anchors: true
 |`set {option}`|オプションの値を**true**にします。|
 |`set no{option}`|オプションの値を**false**にします。|
 |`set {option} = {val}`|オプションのパラメータを設定します。値には文字列か浮動小数点を含む数値です。文字列には引用符は不要で、空白以外の文字以降が値として扱われます。ちなみに等号の両端の空白は無視されます。|
-|`{mode}map {in-key} {out-key}`|低レベルなkey2keyマッピングを行います。定義された低レベルマップは、win-vindだけでなく、Windows全体に影響を与えます。|
+|`{mode}map {in-key} {out-key}`|低レベルなcmd2cmdマッピングを行います。定義された低レベルマップは、実際にWindowsにキーストロークとして伝わります。key2keyset形式に限り、遅延なしにキーの状態を同期することができます。|
 |`{mode}noremap {in-cmd} {func-id}`|ファンクションを呼び出すためのマッピングを定義します。|
-|`{mode}noremap {in-keyset} {out-keyset}`|win-vindのスコープでkeyset2keysetのマッピングを行います。ただし、`{func-id}`を利用した構文のほうが優先度が高いため、正確には1段階の再帰的なマッピングが生じる可能性があります。|
+|`{mode}noremap {in-keyset} {out-keyset}`|win-vindのスコープでcmd2cmdのマッピングを行います。ただし、`{func-id}`を利用した構文のほうが優先度が高いため、正確には1段階の再帰的なマッピングが生じる可能性があります。|
 |`{mode}unmap {in-cmd}`|`{in-cmd}`に割り当てられたマップを削除します。|
 |`{mode}mapclear`|すべてのマップを削除します。|
 |`command {in-cmd} {func-id}`|ファンクションを呼び出すためのコマンドを定義します。`{in-cmd}`に`:`は不要です。|
@@ -111,7 +111,7 @@ disable_anchors: true
    <img src="{{ site.url }}/imgs/instant_gui_normal_mode.jpg" width=450 >  
    <p align="center">Instant GUI Normal Demo</p>
    </p>
-1. `:e ~/.win-vind/.vindrc`で`.vindrc`を開きます。
+1. `:e`で`.vindrc`を開きます。
    <p align="center">
    <img src="{{ site.url }}/imgs/edit_vindrc_demo.jpg" width=450 >  
    <p align="center">:e Demo</p>
@@ -121,13 +121,16 @@ disable_anchors: true
    set cmd_fontname = Times New Roman
    imap <Capslock> <ctrl>
    inoremap <Alt> easy_click_left
+   imap <ctrl-a> Vim is the best editor.
+   gnnoremap <ctrl-1> :!notepad<cr>
    ```
 1. 次のように`:source`コマンドを実行すると`.vindrc`が読み込まれます。引数は不要です。
    <p align="center">
    <img src="{{ site.url }}/imgs/source_demo.jpg" width=450 >  
    <p align="center">:source Demo</p>
    </p>
-1. **Insertモード**では、Ctrlの代わりにCapslockを利用でき、Altキー一つで**EasyClick**を起動できるようになります。
+1. **Insertモード**では、Ctrlの代わりにCapslockを利用でき、Altキー一つで**EasyClick**を起動できるようになります。また、CtrlとAを同時に押すと、定型文を挿入できます。**GUI Normal**モードでは、Ctrlと1を同時に押すと、メモ帳が開くようになります。
+
 
 <br>
 <br>

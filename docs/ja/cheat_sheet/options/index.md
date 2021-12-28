@@ -6,7 +6,7 @@ disable_anchors: true
 translation: ja
 translators:
   - pit-ray
-version: 4.2.1
+version: 4.3.0
 show_in_menu: false
 ---
 
@@ -32,7 +32,7 @@ show_in_menu: false
 |`cmd_maxhist`|num|10|仮想コマンドラインで保持する履歴の最大数。|
 |`cmd_roughpos`|str|LowerMid|仮想コマンドラインの大まかな位置。`UpperLeft`, `UpperMid`, `UpperRight`, `MidLeft`, `Center`, `MidRight`, `LowerLeft`, `LowerMid`, `LowerRight`のうちのどれかを指定してください。|
 |`cmd_xmargin`|num|32|`cmd_roughpos`で大まかな位置を決め、ピクセル単位で水平方向の微調整を行います。|
-|`cmd_ymargin`|num|64|`cmd_roughpos`で大まかな位置を決め、ピクセル単位で垂直方向の微調整を行います。|
+|`cmd_ymargin`|num|96|`cmd_roughpos`で大まかな位置を決め、ピクセル単位で垂直方向の微調整を行います。|
 |`cursor_accel`|num|95|マウスカーソルの等加速度運動におけるピクセルレベルの加速度。|
 |`cursor_maxv`|num|12|マウスカーソルの最大速度。|
 |`cursor_tweight`|num|250|マウスカーソルの等加速度運動における時間のスケーリング値。|

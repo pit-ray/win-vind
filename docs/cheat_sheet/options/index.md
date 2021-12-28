@@ -28,7 +28,7 @@ show_in_menu: false
 |`cmd_maxhist`|num|10|Maximum number of histories in the virtual command line.|
 |`cmd_roughpos`|str|LowerMid|Rough position of virtual command line. The choices are `UpperLeft`, `UpperMid`, `UpperRight`, `MidLeft`, `Center`, `MidRight`, `LowerLeft`, `LowerMid`, or `LowerRight`.|
 |`cmd_xmargin`|num|32|Use `cmd_roughpos` to determine the rough position, and `cmd_xmargin` to determine the detailed horizontal position. The units are in pixels.|
-|`cmd_ymargin`|num|64|Use `cmd_roughpos` to determine the rough position, and `cmd_ymargin` to determine the detailed vertical position. The units are in pixels.|
+|`cmd_ymargin`|num|96|Use `cmd_roughpos` to determine the rough position, and `cmd_ymargin` to determine the detailed vertical position. The units are in pixels.|
 |`cursor_accel`|num|95|Pixel-level acceleration in the constatnt acceleration motion of the mouse cursor.|
 |`cursor_maxv`|num|12|Maximum velocity of the mouse cursor|
 |`cursor_tweight`|num|250|A weight for scaling the time of constant acceleration motion of the mouse cursor.|

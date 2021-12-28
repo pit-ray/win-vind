@@ -72,6 +72,10 @@ inoremap <f17> easy_click_left
 
 imap <app> <f18>
 inoremap <f18> window_resizer
+
+" Define keystroke macros
+gnnoremap <ctrl-1> :!notepad<cr>
+gnnoremap <ctrl-2> :e https://www.google.com<cr>
 ```
 
 ## License

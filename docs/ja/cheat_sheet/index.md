@@ -7,7 +7,7 @@ icon: scroll
 translation: ja
 translators:
   - pit-ray
-version: 4.3.0
+version: 4.3.1
 disable_anchors: true
 ---
 

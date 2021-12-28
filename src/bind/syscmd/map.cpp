@@ -1,7 +1,7 @@
 #include "map.hpp"
 
 #include "bind/bindedfunc.hpp"
-#include "bind/bindedfunc.hpp"
+#include "bind/bindinglist.hpp"
 #include "core/charlogger.hpp"
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
@@ -122,7 +122,19 @@ namespace vind
                 const std::string& args) {
             std::string arg1, arg2 ;
             if(parse_argument_as_map(args, arg1, arg2)) {
-                core::MapTable::get_instance().add_noremap(arg1, arg2, mode) ;
+                auto& mtable = core::MapTable::get_instance() ;
+
+                core::Map map(arg1, arg2, false) ;
+                if(map.target_command().size() > 6 && \
+                        !bind::ref_global_funcs_bynames(map.target_command_string())) {
+                    PRINT_WARNING(
+                            "{" + \
+                            mode_to_prefix(mode) + "noremap " + \
+                            map.trigger_command_string() + " " + map.target_command_string() + \
+                            "} is not a function ID, so considered as a keystroke to be generated.") ;
+                }
+
+                mtable.add(std::move(map), mode) ;
             }
             return SystemCall::NOTHING ;
         }

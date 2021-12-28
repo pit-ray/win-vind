@@ -83,59 +83,6 @@ namespace vind
               mtx_()
             {}
 
-            template <typename T>
-            inline void print_error(T&& msg, const std::string& scope) {
-                if(stream_.is_open()) {
-                    std::lock_guard<std::mutex> scoped_lock{mtx_} ;
-
-                    auto win_ercode = GetLastError() ;
-                    if(win_ercode) {
-                        stream_ << "[Error] " ;
-
-                        LPSTR msgbuf = nullptr ;
-                        if(auto size = FormatMessageA(
-                                    FORMAT_MESSAGE_ALLOCATE_BUFFER | \
-                                    FORMAT_MESSAGE_FROM_SYSTEM | \
-                                    FORMAT_MESSAGE_IGNORE_INSERTS,
-                                    NULL, win_ercode,
-                                    MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
-                                    reinterpret_cast<LPSTR>(&msgbuf),
-                                    0, NULL)) {
-
-                            // print message without \r\n
-                            stream_ << std::string(msgbuf, size - 2) ;
-                            LocalFree(msgbuf) ;
-                        }
-                        else {
-                            stream_ << "Windows Error Code: [" << win_ercode << "]" ;
-                        }
-                    }
-                    stream_ <<  std::endl ;
-
-                    stream_ << "[Error] " << msg ;
-                    if(!scope.empty()) {
-                        stream_ << " (" << scope << ")" ;
-                    }
-                    stream_ << std::endl ;
-
-                    stream_.flush() ;
-                }
-            }
-
-            template <typename T>
-            inline void print_message(T&& msg, const std::string& scope) {
-                if(stream_.is_open()) {
-                    std::lock_guard<std::mutex> scoped_lock{mtx_} ;
-
-                    stream_ << "[Message] " << msg ;
-                    if(!scope.empty()) {
-                        stream_ << " (" << scope << ")" ;
-                    }
-                    stream_ << std::endl ;
-                    stream_.flush() ;
-                }
-            }
-
             template <typename Key, typename... Vals>
             void add_spec(Key&& key, Vals&&... vals) {
                 stream_ << std::right ;
@@ -221,24 +168,68 @@ namespace vind
             remove_files_over(log_dir, pimpl->head_ + "*.log", pimpl->keep_log_num_) ;
         }
 
-        void Logger::error(const char* msg, const char* scope) {
-            pimpl->print_error(msg, scope) ;
-        }
-        void Logger::error(std::string&& msg, const char* scope) {
-            pimpl->print_error(std::move(msg), scope) ;
-        }
-        void Logger::error(const std::string& msg, const char* scope) {
-            pimpl->print_error(msg, scope) ;
+        void Logger::error(const std::string& msg, const std::string& scope) {
+            if(pimpl->stream_.is_open()) {
+                std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
+
+                auto win_ercode = GetLastError() ;
+                if(win_ercode) {
+                    pimpl->stream_ << "[Error] " ;
+
+                    LPSTR msgbuf = nullptr ;
+                    if(auto size = FormatMessageA(
+                                FORMAT_MESSAGE_ALLOCATE_BUFFER | \
+                                FORMAT_MESSAGE_FROM_SYSTEM | \
+                                FORMAT_MESSAGE_IGNORE_INSERTS,
+                                NULL, win_ercode,
+                                MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
+                                reinterpret_cast<LPSTR>(&msgbuf),
+                                0, NULL)) {
+
+                        // print message without \r\n
+                        pimpl->stream_ << std::string(msgbuf, size - 2) ;
+                        LocalFree(msgbuf) ;
+                    }
+                    else {
+                        pimpl->stream_ << "Windows Error Code: [" << win_ercode << "]" ;
+                    }
+                }
+                pimpl->stream_ <<  std::endl ;
+
+                pimpl->stream_ << "[Error] " << msg ;
+                if(!scope.empty()) {
+                    pimpl->stream_ << " (" << scope << ")" ;
+                }
+                pimpl->stream_ << std::endl ;
+
+                pimpl->stream_.flush() ;
+            }
         }
 
-        void Logger::message(const char* msg, const char* scope) {
-            pimpl->print_message(msg, scope) ;
+        void Logger::message(const std::string& msg, const std::string& scope) {
+            if(pimpl->stream_.is_open()) {
+                std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
+
+                pimpl->stream_ << "[Message] " << msg ;
+                if(!scope.empty()) {
+                    pimpl->stream_ << " (" << scope << ")" ;
+                }
+                pimpl->stream_ << std::endl ;
+                pimpl->stream_.flush() ;
+            }
         }
-        void Logger::message(std::string&& msg, const char* scope) {
-            pimpl->print_message(std::move(msg), scope) ;
-        }
-        void Logger::message(const std::string& msg, const char* scope) {
-            pimpl->print_message(msg, scope) ;
+
+        void Logger::warning(const std::string& msg, const std::string& scope) {
+            if(pimpl->stream_.is_open()) {
+                std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
+
+                pimpl->stream_ << "[Warning] " << msg ;
+                if(!scope.empty()) {
+                    pimpl->stream_ << " (" << scope << ")" ;
+                }
+                pimpl->stream_ << std::endl ;
+                pimpl->stream_.flush() ;
+            }
         }
     }
 }

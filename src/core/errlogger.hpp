@@ -25,13 +25,11 @@ namespace vind
 
             void init() ;
 
-            void error(const char* msg, const char* scope="") ;
-            void error(std::string&& msg, const char* scope="") ;
-            void error(const std::string& msg, const char* scope="") ;
+            void error(const std::string& msg, const std::string& scope="") ;
 
-            void message(const char* msg, const char* scope="") ;
-            void message(std::string&& msg, const char* scope="") ;
-            void message(const std::string& msg, const char* scope="") ;
+            void message(const std::string& msg, const std::string& scope="") ;
+
+            void warning(const std::string& msg, const std::string& scope="") ;
 
             Logger(Logger&&)                 = delete ;
             Logger& operator=(Logger&&)      = delete ;
@@ -72,5 +70,23 @@ namespace vind
 #endif // __GNUC__
 
 #endif // PRINT_MSG
+
+
+
+#ifndef PRINT_WARNING
+
+#if defined(__GNUC__)
+#define PRINT_WARNING(MSG) vind::core::Logger::get_instance().warning((MSG), __PRETTY_FUNCTION__)
+
+#elif defined(_MSC_VER) && _MSC_VER >= 1500
+#define PRINT_WARNING(MSG) vind::core::Logger::get_instance().warning((MSG), __FUNCSIG__)
+
+#else
+#define PRINT_WARNING(MSG) vind::core::Logger::get_instance().warning(MSG)
+
+#endif // __GNUC__
+
+#endif // PRINT_WARNING
+
 
 #endif

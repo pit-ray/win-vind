@@ -3,11 +3,11 @@
 #include "bind/bindedfunc.hpp"
 #include "bind/bindinglist.hpp"
 #include "cmdparser.hpp"
-#include "core/maptable.hpp"
 #include "entry.hpp"
 #include "keylgrbase.hpp"
 #include "lgrparser.hpp"
 #include "lgrparsermgr.hpp"
+#include "maptable.hpp"
 #include "mode.hpp"
 #include "path.hpp"
 #include "util/debug.hpp"
@@ -78,7 +78,7 @@ namespace vind
 
             auto maps = maptable.get_noremaps(mode) ;
             for(const auto& map : maps) {
-                const auto& func_name = util::A2a(map.target_command_string()) ;
+                const auto func_name = util::A2a(map.target_command_string()) ;
                 auto func_id = bind::BindedFunc::name_to_id(func_name) ;
 
                 if(funcid_set.find(func_id) == funcid_set.end()) {

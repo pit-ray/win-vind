@@ -453,6 +453,8 @@ namespace vind
 
             bool absorb_state_ ;
 
+            NTypeLogger lgr_ ;
+
             ModeArray<MapGate> mapgate_ ;
 
             std::queue<KeyLog> pool_ ;
@@ -465,6 +467,7 @@ namespace vind
               port_state_(256, false),
               timestamps_(),
               absorb_state_(true),
+              lgr_(),
               mapgate_(),
               pool_()
             {}
@@ -787,32 +790,6 @@ namespace vind
             pimpl->state_[key.to_code()] = true ;
         }
 
-        std::vector<KeyLog> InputGate::map_logger(
-                const KeyLog& log,
-                Mode mode) {
-            auto midx = static_cast<int>(mode) ;
-
-            auto& mgr = pimpl->mapgate_[midx].mgr_ ;
-
-            auto parser = mgr.find_parser_with_transition(log) ;
-            if(!parser) {
-                mgr.reset_parser_states() ;
-                return std::vector<KeyLog>{} ;
-            }
-
-            if(parser->is_accepted()) {
-                auto func = parser->get_func() ;
-                func->process() ;
-                mgr.reset_parser_states() ;
-                return pimpl->mapgate_[midx].logpool_[func->id()] ;
-
-            }
-            else if(parser->is_rejected_with_ready()) {
-                mgr.reset_parser_states() ;
-            }
-            return std::vector<KeyLog>{} ;
-        }
-
         bool InputGate::map_syncstate(
                 KeyCode hook_key,
                 bool press_sync_state,
@@ -835,6 +812,38 @@ namespace vind
                 close_some_ports(target.begin(), target.end()) ;
             }
             return true ;
+        }
+
+        std::vector<KeyLog> InputGate::map_logger(
+                const KeyLog& log,
+                Mode mode) {
+
+            if(NTYPE_EMPTY(pimpl->lgr_.logging_state(log))) {
+                return std::vector<KeyLog>{} ;
+            }
+
+            auto& gate = pimpl->mapgate_[static_cast<int>(mode)] ;
+
+            auto parser = gate.mgr_.find_parser_with_transition(log) ;
+            if(!parser) {
+                pimpl->lgr_.reject() ;
+                gate.mgr_.reset_parser_states() ;
+                return std::vector<KeyLog>{} ;
+            }
+
+            if(parser->is_accepted()) {
+                auto func = parser->get_func() ;
+                func->process() ;
+                pimpl->lgr_.accept() ;
+                gate.mgr_.reset_parser_states() ;
+                return gate.logpool_[func->id()] ;
+
+            }
+            if(parser->is_rejected_with_ready()) {
+                gate.mgr_.backward_parser_states(1) ;
+                pimpl->lgr_.remove_from_back(1) ;
+            }
+            return std::vector<KeyLog>{} ;
         }
 
         KeyLog InputGate::pop_log(Mode mode) {

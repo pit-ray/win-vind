@@ -14,6 +14,7 @@
 #include "opt/optionlist.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
+#include "smartclipboard.hpp"
 #include "textanalyze.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
@@ -36,8 +37,8 @@ namespace
          * @return: [true] continue loop, [false] break loop
          */
         virtual bool do_loop_hook(
-                core::KeyCode UNUSED(keycode),
-                bool UNUSED(shifted)) {
+                const core::KeyCode& UNUSED(keycode),
+                const core::KeyCode& UNUSED(shift)) {
             return false ;
         }
 
@@ -75,33 +76,18 @@ namespace
                 }
 
                 auto log = igate.pop_log() ;
-                if(!log.is_containing(KEYCODE_SHIFT)) {
-                    //not shifted
-                    for(const auto& key : log) {
-                        //For example, if replace by 'i' and 'i' key is downed,
-                        //immediately will call "insert-mode", so release 'i'.
-                        igate.release_keystate(key) ;
 
-                        if(!key.to_ascii()) {
-                            continue ;
-                        }
-                        if(!do_loop_hook(key, false)) {
-                            return ;
-                        }
+                for(const auto& keycode : log) {
+                    if(keycode.is_major_system()) {
+                        continue ;
                     }
-                }
-                else {
-                    //shifted
-                    for(const auto& key : log) {
-                        if(is_shift(key)) {
-                            continue ;
-                        }
 
-                        igate.release_keystate(key) ;
-                        if(!key.to_ascii()) {
-                            continue ;
-                        }
-                        if(!do_loop_hook(key, true)) {
+                    auto uni = core::keycode_to_unicode(keycode, log) ;
+                    if(!uni.empty()) {
+                        auto shift = core::get_shift_keycode(uni.front()) ;
+
+                        igate.release_keystate(keycode) ;
+                        if(!do_loop_hook(keycode, shift)) {
                             return ;
                         }
                     }
@@ -114,25 +100,25 @@ namespace
     class ReplaceMatchingForChar : public ReplaceMatching {
     private:
         core::KeyCode captured_ ;
-        bool shifted_ ;
+        core::KeyCode shift_ ;
 
         bool do_loop_hook(
-                core::KeyCode keycode,
-                bool shifted=false) override {
+                const core::KeyCode& keycode,
+                const core::KeyCode& shift) override {
             captured_ = keycode ;
-            shifted_ = shifted ;
+            shift_    = shift ;
             return false ; // break
         }
 
     public:
         explicit ReplaceMatchingForChar()
         : captured_(),
-          shifted_(false)
+          shift_()
         {}
 
         void launch_loop() {
             captured_ = KEYCODE_UNDEFINED ;
-            shifted_ = false ;
+            shift_ = KEYCODE_UNDEFINED ;
             ReplaceMatching::launch_loop() ;
         }
 
@@ -144,8 +130,8 @@ namespace
             bind::safe_for(repeat_num, [this, &igate] {
                 igate.pushup(KEYCODE_DELETE) ;
 
-                if(shifted_) {
-                    igate.pushup(KEYCODE_LSHIFT, captured_) ;
+                if(shift_) {
+                    igate.pushup(shift_, captured_) ;
                 }
                 else {
                     igate.pushup(captured_) ;
@@ -163,24 +149,24 @@ namespace
     class ReplaceMatchingForSequence : public ReplaceMatching {
     private:
         std::vector<core::KeyCode> str_ ;
-        std::vector<bool> shifteds_ ;
+        std::vector<core::KeyCode> shifts_ ;
 
         bool do_loop_hook(
-                core::KeyCode keycode,
-                bool shifted=false) override {
+                const core::KeyCode& keycode,
+                const core::KeyCode& shift) override {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_DELETE) ;
 
-            if(shifted) {
-                igate.pushup(KEYCODE_LSHIFT, keycode) ;
+            if(shift) {
+                igate.pushup(shift, keycode) ;
                 str_.push_back(keycode) ;
             }
             else {
                 igate.pushup(keycode) ;
                 str_.push_back(keycode) ;
             }
-            shifteds_.push_back(shifted) ;
+            shifts_.push_back(shift) ;
 
             return true ; //continue looping
         }
@@ -188,12 +174,12 @@ namespace
     public:
         explicit ReplaceMatchingForSequence()
         : str_(),
-          shifteds_()
+          shifts_()
         {}
 
         void launch_loop() {
             str_.clear() ;
-            shifteds_.clear() ;
+            shifts_.clear() ;
             ReplaceMatching::launch_loop() ;
         }
 
@@ -209,8 +195,8 @@ namespace
                     for(std::size_t i = 0 ; i < str_.size() ; i ++) {
                         igate.pushup(KEYCODE_DELETE) ;
 
-                        if(shifteds_[i]) {
-                            igate.pushup(KEYCODE_LSHIFT, str_[i]) ;
+                        if(shifts_[i]) {
+                            igate.pushup(shifts_[i], str_[i]) ;
                         }
                         else {
                             igate.pushup(str_[i]) ;
@@ -296,6 +282,11 @@ namespace vind
         : ChangeBaseCreator("switch_char_case")
         {}
         void SwitchCharCase::sprocess(unsigned int repeat_num) {
+            auto hwnd = GetForegroundWindow() ;
+            if(!hwnd) {
+                throw RUNTIME_EXCEPT("There is no foreground window.") ;
+            }
+
             auto& igate = core::InputGate::get_instance() ;
 
             auto res = get_selected_text([&repeat_num, &igate] {
@@ -305,23 +296,22 @@ namespace vind
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                 }) ;
 
-            for(char c : res.str) {
-                if(c >= 'a' && c <= 'z') {
-                    igate.pushup(KEYCODE_LSHIFT, core::KeyCode(c)) ;
+            for(auto& c : res.str) {
+                if('a' <= c && c <= 'z') {
+                    c -= ('a' - 'A') ;
                 }
-                else if(c >= 'A' && c <= 'Z') {
-                    constexpr char delta = 'a' - 'A' ;
-                    igate.pushup(core::KeyCode(c + delta)) ;
-                }
-                else {
-                    if(core::KeyCode::is_shifted(c)) {
-                        igate.pushup(KEYCODE_LSHIFT, c) ;
-                    }
-                    else {
-                        igate.pushup(c) ;
-                    }
+                else if('A' <= c && c <= 'Z') {
+                    c += ('a' - 'A') ;
                 }
             }
+
+            SmartClipboard scb(hwnd) ;
+            scb.open() ;
+            scb.set(res.str) ;
+            scb.close() ;
+
+            Sleep(30) ;
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_INSERT) ;
         }
         void SwitchCharCase::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

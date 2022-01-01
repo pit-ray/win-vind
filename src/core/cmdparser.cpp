@@ -25,8 +25,8 @@ namespace vind
                         onechar + "' is invalid ascii key code.") ;
             }
 
-            if(KeyCode::is_shifted(onechar)) {  //ex) A (A is divided to a and SHIFT)
-                return KeySet{KEYCODE_SHIFT, keycode} ;
+            if(auto shift = core::get_shift_keycode(onechar)) {  //ex) A (A is divided to a and SHIFT)
+                return KeySet{shift, keycode} ;
             }
             //ex) a
             return KeySet{keycode} ;

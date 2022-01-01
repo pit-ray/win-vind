@@ -19,31 +19,45 @@ namespace
 {
     using namespace vind::core ;
 
-    template <typename KeyLogType>
+    bool only_having_shift(const KeyLog& log) {
+        for(const auto& keycode : log) {
+            if(!keycode.is_shift()) {
+                return false ;
+            }
+        }
+
+        return true ;
+    }
+
+    template <
+        typename KeyCodeSet,
+        typename ShiftSubSet,
+        typename IgnoreKeyCodeSet>
     KeyLog extract_numbers(
-            const KeyLog& log,
-            KeyLogType&& ignore_keys) {
+            KeyCodeSet&& log,
+            ShiftSubSet&& shift_subset,
+            IgnoreKeyCodeSet&& ignore_keys) {
 
         KeyLog::Data nums{} ;
         for(const auto& keycode : log) {
             // The repeat number isn't begun with zero.
             // 01 or 02 are invalid syntax.
-            if(ignore_keys.is_containing(keycode)) {
+            if(std::find(
+                    ignore_keys.begin(),
+                    ignore_keys.end(),
+                    keycode) != ignore_keys.end()) {
+
                 continue ;
             }
 
-            if(!keycode.is_ascii()) {
-                continue ;
-            }
-
-            // Once convert inputted keycode to ASCII to distinguish if
-            // a numeric keycode is typed in order to write a number. 
-            KeyCode rege_code(
-                    log.is_containing(KEYCODE_SHIFT) ? \
-                    keycode.to_shifted_ascii() : keycode.to_ascii()) ;
-
-            if(rege_code.is_number()) {
-                nums.insert(keycode) ;
+            auto uni = keycode_to_unicode(
+                    keycode,
+                    std::forward<ShiftSubSet>(shift_subset)) ;
+            if(!uni.empty()) {
+                auto ascii = uni.front() ;
+                if('0' <= ascii && ascii <= '9') {
+                    nums.insert(keycode) ;
+                }
             }
         }
 
@@ -77,8 +91,7 @@ namespace vind
             unsigned int head_num_ = 0 ;
             LoggerStateRawType state_ = LoggerState::INITIAL ;
 
-            void concatenate_repeating_number(KeyCode keycode) {
-                auto num = static_cast<unsigned int>(keycode.to_number()) ;
+            void concat_repeat_num(unsigned int num) {
                 constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
                 if(head_num_ < max) {
                     head_num_ = head_num_ * 10 + num ;
@@ -118,12 +131,12 @@ namespace vind
         }
 
         int NTypeLogger::do_initial_state(const KeyLog& log) {
-            if(log.empty()) {
+            if(log.empty() || only_having_shift(log)) {
                 return 0 ;
             }
 
             if(core::InputGate::get_instance().is_absorbed()) {
-                auto nums = extract_numbers(log, KeyLog{KEYCODE_0}) ;
+                auto nums = extract_numbers(log, log, KeyLog{KEYCODE_0}) ;
                 if(!nums.empty()) {
                     return transition_to_parsing_num_state(nums) ;
                 }
@@ -140,7 +153,7 @@ namespace vind
                 return 0 ;
             }
 
-            auto nums = extract_numbers(log, KeyLog{KEYCODE_0}) ;
+            auto nums = extract_numbers(log, log, KeyLog{KEYCODE_0}) ;
             auto nonum = log - nums ;
             if(nonum.empty()) {
                 return 0 ;
@@ -181,24 +194,43 @@ namespace vind
                 return 0 ;
             }
 
-            auto nums = extract_numbers(log, KeyLog{}) ;
-            if(nums.size() != log.size()) {
-                pimpl->state_ = Impl::LoggerState::WAITING ;
-                return do_waiting_state(log - nums) ;
-            }
-
-            if(log != pimpl->prelog_) {
-                pimpl->concatenate_repeating_number(*nums.cbegin()) ;
-                pimpl->ksr_.reset() ;
-                return -1 ;
-            }
-            else {
-                if(pimpl->ksr_.is_passed()) {
-                    pimpl->concatenate_repeating_number(*nums.cbegin()) ;
-                    return -1 ;
+            KeyLog::Data subset ;
+            for(const auto& keycode : log) {
+                if(keycode.is_shift()) {
+                    subset.insert(keycode) ;
                 }
             }
-            return 0 ;
+
+            // Wait for input of numbers until shift and non-numbers are input.
+            auto nums = extract_numbers(log, subset, KeyLog{}) ;
+            if(nums.empty()) {
+                if(!subset.empty()) {
+                    return 0 ;
+                }
+
+                pimpl->state_ = Impl::LoggerState::WAITING ;
+                return do_waiting_state(log) ;
+            }
+
+            if(log == pimpl->prelog_) {
+                if(pimpl->ksr_.is_passed()) {
+                    pimpl->concat_repeat_num(pimpl->head_num_ % 10) ;
+                    return -1 ;
+                }
+                return 0 ;
+            }
+
+            // To prevent overlapping character input, use only the
+            // newly entered ones. For example, when you input `10`,
+            // it may generate some merged messages, such as <1><1-0><0>.
+            auto diff_nums = nums - pimpl->prelog_ ;
+            if(diff_nums.empty()) {
+                return 0 ;
+            }
+
+            pimpl->concat_repeat_num(diff_nums.cbegin()->to_number()) ;
+            pimpl->ksr_.reset() ;
+            return -1 ;
         }
 
         int NTypeLogger::logging_state(const KeyLog& log) {

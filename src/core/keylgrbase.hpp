@@ -51,8 +51,8 @@ namespace vind
             virtual void logging(const KeyLog::Data& lograw) ;
             virtual void logging(KeyLog::Data&& lograw) ;
 
-            void remove_from_back(std::size_t num_from_back) ;
-            void remove_from_top(std::size_t num_from_top) ;
+            virtual void remove_from_back(std::size_t num_from_back) ;
+            virtual void remove_from_top(std::size_t num_from_top) ;
 
             Data::const_reference at(std::size_t n) const ;
 

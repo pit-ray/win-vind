@@ -86,8 +86,8 @@ namespace vind
             return pimpl->log_ ;
         }
 
-        KeyLog::Data&& KeyLog::get() && noexcept {
-            return std::move(pimpl->log_) ;
+        const KeyLog::Data& KeyLog::data() const & noexcept {
+            return pimpl->log_ ;
         }
 
         KeyLog::Data::const_iterator KeyLog::begin() const noexcept {
@@ -187,6 +187,13 @@ namespace vind
         KeyLog& KeyLog::operator-=(KeyLog::Data&& rhs) {
             for(const auto& k : rhs) pimpl->log_.erase(k) ;
             return *this ;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const KeyLog::Data& rhs) {
+            KeySet set(rhs.begin(), rhs.end()) ;
+            std::sort(set.begin(), set.end()) ;
+            stream << set ;
+            return stream ;
         }
 
         std::ostream& operator<<(std::ostream& stream, const KeyLog& rhs) {

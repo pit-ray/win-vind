@@ -63,8 +63,9 @@ TEST_SUITE("core/bindings_parser") {
 
         KeySet ks3{} ;
         KeyCode k3('!') ;
-        if(KeyCode::is_shifted('!')) {
-            ks3.emplace_back(KEYCODE_SHIFT) ;
+
+        if(auto shift = get_shift_keycode('!')) {
+            ks3.emplace_back(shift) ;
         }
         ks3.push_back(k3) ;
 

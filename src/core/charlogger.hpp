@@ -4,7 +4,6 @@
 #include "keycode.hpp"
 #include "keylgrbase.hpp"
 #include <initializer_list>
-#include <set>
 
 #define CHAR_EMPTY(result)  ((result) == 0)
 #define CHAR_LOGGED(result) ((result) > 0)
@@ -24,8 +23,8 @@ namespace vind
             explicit CharLogger(const std::initializer_list<KeyCode>& enabled_non_chars) ;
             explicit CharLogger(std::initializer_list<KeyCode>&& enabled_non_chars) ;
 
-            explicit CharLogger(const std::set<KeyCode>& enabled_non_chars) ;
-            explicit CharLogger(std::set<KeyCode>&& enabled_non_chars) ;
+            explicit CharLogger(const KeyLog::Data& enabled_non_chars) ;
+            explicit CharLogger(KeyLog::Data&& enabled_non_chars) ;
 
             virtual ~CharLogger() noexcept ;
 
@@ -35,7 +34,10 @@ namespace vind
             CharLogger(CharLogger&&) ;
             CharLogger& operator=(CharLogger&&) ;
 
-            virtual void logging_without_multi_ascii(const KeyLog& log) ;
+            virtual void clear() noexcept override ;
+
+            virtual void remove_from_back(std::size_t num_from_back) override ;
+            virtual void remove_from_top(std::size_t num_from_top) override ;
 
             void enable_non_character(KeyCode keycode) ;
             void disable_non_character(KeyCode keycode) ;
@@ -43,7 +45,7 @@ namespace vind
             virtual void sync_state_with(const CharLogger& rhs) ;
 
             virtual int logging_state(const KeyLog& log) override ;
-            virtual std::string to_str() const ;
+            std::string to_str() const noexcept ;
         } ;
     }
 }

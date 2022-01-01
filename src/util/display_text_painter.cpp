@@ -5,6 +5,7 @@
 #include "rect.hpp"
 #include "rect.hpp"
 #include "screen_metrics.hpp"
+#include "string.hpp"
 #include "winwrap.hpp"
 
 #include <cstring>
@@ -25,7 +26,7 @@ namespace vind
             COLORREF fg_color ;
             COLORREF bg_color ;
 
-            LOGFONTA logfont ; //infomation struct for creation of font
+            LOGFONTW logfont ; //infomation struct for creation of font
             util::HFontUPtr hfont ; //font handle
 
             explicit Impl()
@@ -45,7 +46,7 @@ namespace vind
                 logfont.lfOutPrecision   = OUT_TT_ONLY_PRECIS ;
                 logfont.lfClipPrecision  = CLIP_DEFAULT_PRECIS ;
                 logfont.lfQuality        = ANTIALIASED_QUALITY ;
-                logfont.lfFaceName[0]    = '\0' ;
+                logfont.lfFaceName[0]    = L'\0' ;
             }
             virtual ~Impl() noexcept = default ;
 
@@ -145,19 +146,19 @@ namespace vind
             pimpl->logfont.lfWeight = font_weight ;
 
             if(face_name.empty()) {
-                pimpl->logfont.lfFaceName[0] = '\0' ;
+                pimpl->logfont.lfFaceName[0] = L'\0' ;
             }
             else {
-                auto src = face_name.c_str() ;
+                auto wstr = s_to_ws(face_name) ;
                 auto dst = pimpl->logfont.lfFaceName ;
 
                 if(face_name.size() < LF_FACESIZE) {
-                    std::memcpy(dst, src, sizeof(CHAR) * face_name.size()) ;
-                    dst[face_name.size()] = '\0' ;
+                    std::memcpy(dst, wstr.c_str(), sizeof(WCHAR) * wstr.length()) ;
+                    dst[face_name.size()] = L'\0' ;
                 }
                 else {
-                    std::memcpy(dst, src, sizeof(CHAR) * (LF_FACESIZE - 1)) ;
-                    dst[LF_FACESIZE - 1] = '\0' ;
+                    std::memcpy(dst, wstr.c_str(), sizeof(WCHAR) * (LF_FACESIZE - 1)) ;
+                    dst[LF_FACESIZE - 1] = L'\0' ;
                 }
             }
 
@@ -199,7 +200,8 @@ namespace vind
             if(SetTextCharacterExtra(pimpl->hdc.get(), extra) == static_cast<int>(0x80000000)) {
                 throw RUNTIME_EXCEPT("Could not set a character margin.") ;
             }
-            if(!TextOutA(pimpl->hdc.get(), x, y, str.c_str(), lstrlenA(str.c_str()))) {
+            auto wstr = s_to_ws(str) ;
+            if(!TextOutW(pimpl->hdc.get(), x, y, wstr.c_str(), wstr.length())) {
                 throw RUNTIME_EXCEPT("Could not draw a text (" + str + ").") ;
             }
         }

@@ -334,8 +334,6 @@ namespace vind
                 return ;
             }
 
-            // std::cout << pimpl->lgr_ << std::endl ;
-
             if(pimpl->lgr_.is_long_pressing()) {
                 if(pimpl->actfunc_) {
                     handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
@@ -355,7 +353,6 @@ namespace vind
                     }
 
                     pimpl->actfunc_ = parser->get_func() ;
-                    // std::cout << pimpl->actfunc_->name() << std::endl ;
 
                     handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
 

@@ -94,7 +94,7 @@ namespace vind
         void set_dc_text_color(HDCSPtr& hdc, const COLORREF& color) ;
         void set_dc_back_color(HDCSPtr& hdc, const COLORREF& color) ;
 
-        HFontUPtr create_font(const LOGFONTA& logfont) ;
+        HFontUPtr create_font(const LOGFONTW& logfont) ;
 
         template <typename SmartPtr>
         inline void select_obj(HDCSPtr& hdc, const SmartPtr& obj) {

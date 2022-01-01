@@ -1,6 +1,7 @@
 #include "lgrparser.hpp"
 
 #include "cmdparser.hpp"
+#include "keycode.hpp"
 #include "keycodedef.hpp"
 #include "keylog.hpp"
 
@@ -22,16 +23,17 @@ namespace
 
     inline bool is_containing_num(const KeyLog& log) noexcept {
         for(const auto& key : log) {
-            if(key.is_number()) {
-                return true ;
+            if(key.is_major_system()) {
+                continue ;
             }
-        }
-        return false ;
-    }
 
-    inline bool is_containing_ascii(const KeyLog& log) noexcept {
-        for(const auto& keycode : log) {
-            if(keycode.is_ascii()) {
+            auto uni = keycode_to_unicode(key, log) ;
+            if(uni.empty()) {
+                continue ;
+            }
+
+            auto ascii = uni.front() ;
+            if('0' <= ascii && ascii <= '9') {
                 return true ;
             }
         }
@@ -302,10 +304,12 @@ namespace vind
         : pimpl(std::make_unique<Impl>())
         {}
 
-        LoggerParser::LoggerParser(const std::shared_ptr<bind::BindedFunc>& func)
+        LoggerParser::LoggerParser(
+                const std::shared_ptr<bind::BindedFunc>& func)
         : pimpl(std::make_unique<Impl>(func))
         {}
-        LoggerParser::LoggerParser(std::shared_ptr<bind::BindedFunc>&& func)
+        LoggerParser::LoggerParser(
+                std::shared_ptr<bind::BindedFunc>&& func)
         : pimpl(std::make_unique<Impl>(std::move(func)))
         {}
 
@@ -315,7 +319,9 @@ namespace vind
         LoggerParser& LoggerParser::operator=(LoggerParser&&) = default ;
 
         LoggerParser::LoggerParser(const LoggerParser& rhs)
-        : pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+        : pimpl(rhs.pimpl ? \
+                std::make_unique<Impl>(*(rhs.pimpl)) : \
+                std::make_unique<Impl>())
         {}
         LoggerParser& LoggerParser::operator=(const LoggerParser& rhs) {
             if(rhs.pimpl) *pimpl = *(rhs.pimpl) ;
@@ -344,7 +350,8 @@ namespace vind
             }
         }
 
-        void LoggerParser::append_binding_list(const std::vector<std::string>& list) {
+        void LoggerParser::append_binding_list(
+                const std::vector<std::string>& list) {
             if(list.empty()) return ;
             if(!pimpl->cmdlist_ptr_) {
                 pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
@@ -354,7 +361,8 @@ namespace vind
                 for(const auto& cmd : list) append_binding(cmd) ;
             }
         }
-        void LoggerParser::append_binding_list(std::vector<std::string>&& list) {
+        void LoggerParser::append_binding_list(
+                std::vector<std::string>&& list) {
             if(list.empty()) return ;
             if(!pimpl->cmdlist_ptr_) {
                 pimpl->cmdlist_ptr_ = std::make_shared<CommandList>() ;
@@ -373,16 +381,19 @@ namespace vind
             append_binding(std::move(command)) ;
         }
 
-        void LoggerParser::share_parsed_binding_list(const std::shared_ptr<CommandList>& cmdlist) {
+        void LoggerParser::share_parsed_binding_list(
+                const std::shared_ptr<CommandList>& cmdlist) {
             pimpl->cmdlist_ptr_.reset() ;
             pimpl->cmdlist_ptr_ = cmdlist ;
         }
 
-        void LoggerParser::reset_binding_list(const std::vector<std::string>& list) {
+        void LoggerParser::reset_binding_list(
+                const std::vector<std::string>& list) {
             pimpl->cmdlist_ptr_.reset() ;
             append_binding_list(list) ;
         }
-        void LoggerParser::reset_binding_list(std::vector<std::string>&& list) {
+        void LoggerParser::reset_binding_list(
+                std::vector<std::string>&& list) {
             pimpl->cmdlist_ptr_.reset() ;
             append_binding_list(std::move(list)) ;
         }
@@ -394,10 +405,12 @@ namespace vind
         void LoggerParser::unbind_function() noexcept {
             pimpl->func_ = nullptr ;
         }
-        void LoggerParser::bind_function(const std::shared_ptr<bind::BindedFunc>& func) {
+        void LoggerParser::bind_function(
+                const std::shared_ptr<bind::BindedFunc>& func) {
             if(func) pimpl->func_ = func ;
         }
-        void LoggerParser::bind_function(std::shared_ptr<bind::BindedFunc>&& func) {
+        void LoggerParser::bind_function(
+                std::shared_ptr<bind::BindedFunc>&& func) {
             if(func) pimpl->func_ = std::move(func) ;
         }
 
@@ -410,7 +423,8 @@ namespace vind
             return !pimpl->cmdlist_ptr_->empty() ;
         }
 
-        const std::shared_ptr<bind::BindedFunc>& LoggerParser::get_func() const noexcept {
+        const std::shared_ptr<bind::BindedFunc>&
+        LoggerParser::get_func() const noexcept {
             return pimpl->func_ ;
         }
 
@@ -419,7 +433,9 @@ namespace vind
                 return pimpl->do_waiting(log) ;
             }
 
-            switch(pimpl->state_hist_.top() & Impl::ParserState::STATE_MASK) {
+            switch(pimpl->state_hist_.top()
+                    & Impl::ParserState::STATE_MASK) {
+
                 case Impl::ParserState::WAITING:
                     return pimpl->do_waiting(log) ;
 
@@ -460,7 +476,8 @@ namespace vind
             decltype(n) removed = 0 ;
             while(!pimpl->state_hist_.empty()) {
 
-                if(pimpl->state_hist_.top() & Impl::ParserState::INCLEMENT_CMDIDX) {
+                if(pimpl->state_hist_.top() \
+                        & Impl::ParserState::INCLEMENT_CMDIDX) {
                     if(pimpl->cmdidx_ == 0) {
                         throw LOGIC_EXCEPT("cmdidx is decremented over.") ;
                     }
@@ -475,22 +492,36 @@ namespace vind
         }
 
         bool LoggerParser::is_accepted() const noexcept {
-            if(pimpl->state_hist_.empty()) return false ;
-            return pimpl->state_hist_.top() & Impl::ParserState::ACCEPT_MASK ;
+            if(pimpl->state_hist_.empty()) {
+                return false ;
+            }
+            return pimpl->state_hist_.top() \
+                        & Impl::ParserState::ACCEPT_MASK ;
         }
 
         bool LoggerParser::is_rejected() const noexcept {
-            if(pimpl->state_hist_.empty()) return false ;
-            return (pimpl->state_hist_.top() & Impl::ParserState::STATE_MASK) == Impl::ParserState::REJECT ;
+            if(pimpl->state_hist_.empty()) {
+                return false ;
+            }
+            return (pimpl->state_hist_.top() \
+                        & Impl::ParserState::STATE_MASK) \
+                            == Impl::ParserState::REJECT ;
         }
         bool LoggerParser::is_rejected_with_ready() const noexcept {
-            if(pimpl->state_hist_.empty()) return false ;
-            return (pimpl->state_hist_.top() & Impl::ParserState::STATE_MASK) == Impl::ParserState::REJECT_WITH_SUBSET ;
+            if(pimpl->state_hist_.empty()) {
+                return false ;
+            }
+            return (pimpl->state_hist_.top() \
+                        & Impl::ParserState::STATE_MASK) \
+                            == Impl::ParserState::REJECT_WITH_SUBSET ;
         }
 
         bool LoggerParser::is_waiting() const noexcept {
-            if(pimpl->state_hist_.empty()) return true ;
-            return pimpl->state_hist_.top() & Impl::ParserState::WAITING_MASK ;
+            if(pimpl->state_hist_.empty()) {
+                return true ;
+            }
+            return pimpl->state_hist_.top() \
+                        & Impl::ParserState::WAITING_MASK ;
         }
 
         std::size_t LoggerParser::state_stack_size() const noexcept {

@@ -24,7 +24,9 @@ namespace vind
 
             void open() ;
             void close() ;
-            void get_as_str(std::string& str, bool& having_EOL) ;
+
+            // If there is a visible EOL mark, then True is returned.
+            bool get_as_str(std::string& str) ;
 
             //backup current clipboard to cache
             void backup() ;
@@ -32,12 +34,7 @@ namespace vind
             //restore cache to clipboard
             void restore_backup() ;
 
-            void set(const char* const ar, std::size_t size) ;
-
-            template <typename T>
-            void set(const T& arref) {
-                return set(arref, util::sizeof_array(arref)) ;
-            }
+            void set(const std::string& str) ;
 
             SmartClipboard(SmartClipboard&&)                    = delete ;
             SmartClipboard& operator=(SmartClipboard&&)         = delete ;

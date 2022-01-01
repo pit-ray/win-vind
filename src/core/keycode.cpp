@@ -7,10 +7,22 @@
 #include <windows.h>
 
 #include <array>
+#include <cctype>
 #include <initializer_list>
 #include <limits>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
+
+#define SHIFTED_SHIFT   (0x0100)
+#define SHIFTED_CTRL    (0x0200)
+#define SHIFTED_ALT     (0x0400)
+#define SHIFTED_HANKAKU (0x0800)
+
+#ifdef DEBUG
+#include "errlogger.hpp"
+#endif
+
 
 
 namespace
@@ -21,24 +33,18 @@ namespace
         CODE    = 0b0000'0000'1111'1111,
         FLAG    = 0b1111'1111'0000'0000,
 
-        ASCII   = 0b0001'0000'0000'0000,
-        NUMBER  = 0b0000'1000'0000'0000,
-        PHYSIC  = 0b0000'0100'0000'0000,
-        ONLYONE = 0b0000'0010'0000'0000,
-        TOGGLE  = 0b0000'0001'0000'0000,
+        NOMAJORSYS = 0b1000'0000'0000'0000,
+        NUMBER     = 0b0100'0000'0000'0000,
+        PHYSIC     = 0b0010'0000'0000'0000,
+        ONLYONE    = 0b0001'0000'0000'0000,
+        TOGGLE     = 0b0000'1000'0000'0000,
+        SHIFT      = 0b0000'0001'0000'0000,
     } ;
 
 
     class KeyCodeTable {
     public:
         std::array<unsigned short, 256> key2code_ ;
-
-        // Use bit-based optimization with std::vector<bool>.
-        std::vector<bool> shifted_ ;
-
-        std::array<unsigned short, 128> ascii2code_ ;
-        std::array<char, 65535> code2ascii_ ;
-        std::array<char, 65535> code2shascii_ ;
 
         std::array<std::string, 65535> code2name_ ;
         std::unordered_map<std::string, unsigned short> name2code_ ;
@@ -49,51 +55,11 @@ namespace
     private:
         KeyCodeTable()
         : key2code_(),
-          shifted_(256, false),
-          ascii2code_(),
-          code2ascii_(),
-          code2shascii_(),
           code2name_(),
           name2code_(),
           code2repre_(),
           code2physial_()
         {
-            std::array<char, 256> c2a{} ;
-            std::array<unsigned char, 256> a2c{} ;
-            std::array<char, 256> s_c2a{} ;
-            std::array<unsigned char, 256> s_a2c{} ;
-
-            const auto printable_ascii = {
-                ' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')',
-                '*', '+', ',', '-', '.', '/', '0', '1', '2', '3',
-                '4', '5', '6', '7', '8', '9', ':', ';', '<', '=',
-                '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-                'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
-                'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[',
-                '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e',
-                'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-                'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
-                'z', '{', '|', '}', '~'
-            } ;
-
-            for(auto c : printable_ascii) {
-                auto res = VkKeyScanA(c) ;
-
-                auto keycode = static_cast<unsigned char>(res & 0x00ff) ;
-                auto shifted = (res & 0x0100) != 0x0000 ;
-
-                if(shifted) {
-                    s_a2c[c] = keycode ;
-                    s_c2a[keycode] = c ;
-
-                    shifted_[c] = true ;
-                }
-                else {
-                    a2c[c] = keycode ;
-                    c2a[keycode] = c ;
-                }
-            }
-
             std::vector<bool> togglable(256, false) ;
             togglable[KEYCODE_CAPSLOCK] = true ;
             togglable[KEYCODE_KANA]     = true ;
@@ -231,11 +197,11 @@ namespace
                 c2ns[c].insert(n) ;
             }
 
-            std::array<std::string, 128> magic_ascii{} ;
-            magic_ascii[' '] = "space" ;
-            magic_ascii['-'] = "hbar" ;
-            magic_ascii['>'] = "gt" ;
-            magic_ascii['<'] = "lt" ;
+            std::vector<bool> shift(256, false) ;
+            shift[KEYCODE_SHIFT]  = true ;
+            shift[KEYCODE_RALT]   = true ;
+            shift[KEYCODE_LSHIFT] = true ;
+            shift[KEYCODE_RSHIFT] = true ;
 
             for(unsigned short keycode = 1 ; keycode < 255 ; keycode ++) {
                 auto code = keycode ;
@@ -250,6 +216,10 @@ namespace
                 if(!nameset.empty()) {  // Non-ascii code
                     if(togglable[keycode]) {
                         code |= CodeMask::TOGGLE ;
+                    }
+
+                    if(shift[keycode]) {
+                        code |= CodeMask::SHIFT ;
                     }
 
                     // When sorted in ascending order,
@@ -276,37 +246,11 @@ namespace
                     continue ;
                 }
 
-                code |= CodeMask::ASCII ;
-
-                if(KEYCODE_0 <= keycode && keycode <= KEYCODE_9) {
-                    code |= CodeMask::NUMBER ;
-                }
+                code |= CodeMask::NOMAJORSYS ;
                 key2code_[keycode] = code ;
-
-                auto ascii = c2a[keycode] ;
-                auto s_ascii = s_c2a[keycode] ;
-
-                code2ascii_[code] = ascii ;
-                code2shascii_[code] = s_ascii ;
-
-                for(auto a : {s_ascii, ascii}) {
-                    if(a == 0) {
-                        continue ;
-                    }
-
-                    ascii2code_[static_cast<unsigned char>(a)] = code ;
-
-                    auto name = magic_ascii[static_cast<unsigned char>(a)] ;
-                    if(!name.empty()) {
-                        name2code_.emplace(name, code) ;
-                    }
-
-                    char as[] = {a, '\0'} ;
-                    code2name_[code] = as ;
-                }
             }
 
-            for(unsigned short keycode = 0 ; keycode < 256 ; keycode ++) {
+            for(unsigned char keycode = 1 ; keycode < 255 ; keycode ++) {
                 auto code = key2code_[keycode] ;
 
                 if(auto rep_keycode = p2r[keycode]) {
@@ -348,7 +292,7 @@ namespace vind
         {}
 
         KeyCode::KeyCode(char ascii)
-        : code_(KeyCodeTable::get_instance().ascii2code_[ascii])
+        : KeyCode(char_to_keycode(ascii))
         {}
 
         KeyCode::KeyCode(unsigned char keycode)
@@ -362,26 +306,36 @@ namespace vind
         KeyCode::KeyCode(const std::string& name, bool prefer_ascii)
         : code_(0)
         {
+            static std::unordered_map<std::string, char> magic_ascii_{
+                {"space", ' '},
+                {"hbar",  '-'},
+                {"gt",    '>'},
+                {"lt",    '<'}
+            } ;
+
             auto& table = KeyCodeTable::get_instance() ;
+
             if(prefer_ascii && name.length() == 1) {
-                code_ = table.ascii2code_[name[0]] ;
+                KeyCode::operator=(char_to_keycode(name[0])) ;
+                return ;
             }
-            else {
+
+            try {
                 code_ = table.name2code_.at(util::A2a(name)) ;
+            }
+            catch(const std::out_of_range&) {
+                if(name.length() == 1) {
+                    KeyCode::operator=(char_to_keycode(name[0])) ;
+                }
+                else {
+                    code_ = magic_ascii_.at(util::A2a(name)) ;
+                }
             }
         }
 
         KeyCode::KeyCode(unsigned short code)
         : code_(code)
         {}
-
-        char KeyCode::to_ascii() const noexcept {
-            return KeyCodeTable::get_instance().code2ascii_[code_] ;
-        }
-
-        char KeyCode::to_shifted_ascii() const noexcept {
-            return KeyCodeTable::get_instance().code2shascii_[code_] ;
-        }
 
         int KeyCode::to_number() const noexcept {
             return to_code() - KEYCODE_0 ;
@@ -399,8 +353,8 @@ namespace vind
             return KeyCodeTable::get_instance().code2physial_[code_] ;
         }
 
-        bool KeyCode::is_ascii() const noexcept {
-            return static_cast<bool>(code_ & CodeMask::ASCII) ;
+        bool KeyCode::is_major_system() const noexcept {
+            return !static_cast<bool>(code_ & CodeMask::NOMAJORSYS) ;
         }
 
         bool KeyCode::is_unreal() const noexcept {
@@ -415,12 +369,20 @@ namespace vind
             return static_cast<bool>(code_ & CodeMask::TOGGLE) ;
         }
 
+        bool KeyCode::is_shift() const noexcept {
+            return static_cast<bool>(code_ & CodeMask::SHIFT) ;
+        }
+
         bool KeyCode::empty() const noexcept {
             return code_ == 0 ;
         }
 
-        const std::string& KeyCode::name() const noexcept {
-            return KeyCodeTable::get_instance().code2name_[code_] ;
+        std::string KeyCode::name() const noexcept {
+            auto sn = KeyCodeTable::get_instance().code2name_[code_] ;
+            if(!sn.empty()) {
+                return sn ;
+            }
+            return keycode_to_unicode(*this) ;
         }
 
         unsigned short KeyCode::get() const noexcept {
@@ -429,10 +391,6 @@ namespace vind
 
         KeyCode::operator bool() const noexcept {
             return code_ != 0 ;
-        }
-
-        KeyCode::operator char() const noexcept {
-            return to_ascii() ; // use non-shifted ascii
         }
 
         KeyCode::operator unsigned char() const noexcept {
@@ -475,9 +433,6 @@ namespace vind
             return code_ == rhs.code_ ;
         }
 
-        bool KeyCode::operator==(char rhs) const noexcept {
-            return to_ascii() == rhs ;
-        }
         bool KeyCode::operator==(unsigned char rhs) const noexcept {
             return to_code() == rhs ;
         }
@@ -495,9 +450,6 @@ namespace vind
             return code_ != rhs.code_ ;
         }
 
-        bool KeyCode::operator!=(char rhs) const noexcept {
-            return to_ascii() != rhs ;
-        }
         bool KeyCode::operator!=(unsigned char rhs) const noexcept {
             return to_code() != rhs ;
         }
@@ -506,10 +458,6 @@ namespace vind
         }
         bool KeyCode::operator!=(const char* rhs) const noexcept {
             return name() != rhs ;
-        }
-
-        bool KeyCode::is_shifted(char ascii) noexcept {
-            return KeyCodeTable::get_instance().shifted_[ascii] ;
         }
 
         std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) {
@@ -524,11 +472,11 @@ namespace vind
 
             if(rhs.size() == 1) {
                 const auto& rhs_f = rhs.front() ;
-                if(rhs_f.is_ascii()) {
-                    stream << rhs_f ;
+                if(rhs_f.is_major_system()) {
+                    stream << "<" << rhs_f << ">" ;
                 }
                 else {
-                    stream << "<" << rhs_f << ">" ;
+                    stream << rhs_f ;
                 }
 
                 return stream;
@@ -567,6 +515,94 @@ namespace vind
             }
 
             return stream ;
+        }
+
+
+        KeyCode get_shift_keycode(char ascii) {
+            auto res = VkKeyScanW(
+                    util::s_to_ws(std::string{ascii})[0]) ;
+            if((res & 0xff00) == 0xff00) {
+                return KeyCode{} ;
+            }
+
+            if(res & SHIFTED_ALT) {
+                return KeyCode{KEYCODE_RALT} ;
+            }
+            if(res & SHIFTED_SHIFT) {
+                return KeyCode{KEYCODE_SHIFT} ;
+            }
+
+            return KeyCode{} ;
+        }
+
+        KeyCode char_to_keycode(char ascii) {
+            auto res = VkKeyScanW(
+                    util::s_to_ws(std::string{ascii})[0]) ;
+            auto keycode = static_cast<unsigned char>(res & 0x00ff) ;
+
+            if(keycode == 0xff) {
+                return KeyCode{} ;
+            }
+
+            return KeyCode{keycode} ;
+        }
+
+        bool is_need_deadkey_for_input(char ascii) {
+            auto res = VkKeyScanW(
+                    util::s_to_ws(std::string{ascii})[0]) ;
+            auto vkc = static_cast<unsigned char>(res & 0x00ff) ;
+            auto scan = MapVirtualKeyW(vkc, MAPVK_VK_TO_VSC) ;
+
+            std::array<unsigned char, 256> states{} ;
+
+            if(res & SHIFTED_ALT) {
+                states[KEYCODE_ALT] = 0x80 ;
+            }
+            if(res & SHIFTED_SHIFT) {
+                states[KEYCODE_SHIFT] = 0x80 ;
+            }
+            if(res & SHIFTED_CTRL) {
+                states[KEYCODE_CTRL] = 0x80 ;
+            }
+
+            constexpr std::size_t buf_size = 5 ;
+            WCHAR buf[buf_size] = {} ;
+
+            auto result = ToUnicode(
+                    vkc, scan, states.data(),
+                    buf, buf_size, 0) ;
+
+            return result == -1 ;
+        }
+
+        std::string keycode_to_unicode_impl(
+                const KeyCode& keycode,
+                const std::array<unsigned char, 256>& states) {
+
+            auto vkc = keycode.to_code() ;
+            auto scan = MapVirtualKeyW(vkc, MAPVK_VK_TO_VSC) ;
+
+            constexpr std::size_t buf_size = 5 ;
+            WCHAR buf[buf_size] = {} ;
+
+            auto result = ToUnicode(
+                    vkc, scan, states.data(),
+                    buf, buf_size, 0) ;
+            if(result < 0) {
+                // When a dead key is entered, the conversion is
+                // performed again, and the dead key itself is
+                // output as a single character.
+                result = ToUnicode(
+                        vkc, scan, states.data(),
+                        buf, buf_size, 0) ;
+                return util::ws_to_s(std::wstring(buf, 1)) ;
+            }
+
+            if(result == 0) {
+                return std::string() ;
+            }
+
+            return util::ws_to_s(std::wstring(buf, result)) ;
         }
     }
 }

@@ -42,7 +42,8 @@ namespace vind
             KeyLog& operator=(const KeyLog::Data&) ;
 
             const Data& get() const & noexcept ;
-            Data&& get() && noexcept ;
+
+            const Data& data() const & noexcept ;
 
             Data::const_iterator begin() const noexcept ;
             Data::const_iterator end() const noexcept ;
@@ -75,6 +76,7 @@ namespace vind
             KeyLog& operator-=(Data&& rhs) ;
         } ;
 
+        std::ostream& operator<<(std::ostream& stream, const KeyLog::Data& rhs) ;
         std::ostream& operator<<(std::ostream& stream, const KeyLog& rhs) ;
     }
 }

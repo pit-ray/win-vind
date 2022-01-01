@@ -185,7 +185,7 @@ namespace vind
         }
 
         HDCUPtr create_display_dc() {
-            auto raw_hdc = CreateDCA("DISPLAY", NULL, NULL, NULL) ;
+            auto raw_hdc = CreateDCW(L"DISPLAY", NULL, NULL, NULL) ;
             if(!raw_hdc) {
                 throw RUNTIME_EXCEPT("Could not create HDC of DISPLAY.") ;
             }
@@ -208,8 +208,8 @@ namespace vind
             }
         }
 
-        HFontUPtr create_font(const LOGFONTA& logfont) {
-            auto raw_font = CreateFontIndirectA(&logfont) ;
+        HFontUPtr create_font(const LOGFONTW& logfont) {
+            auto raw_font = CreateFontIndirectW(&logfont) ;
             if(!raw_font) {
                 throw RUNTIME_EXCEPT("Could not create a font.") ;
             }

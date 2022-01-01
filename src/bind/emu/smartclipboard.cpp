@@ -4,11 +4,13 @@
 
 #include "core/errlogger.hpp"
 
+#include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/string.hpp"
 
 //std::string is 8bit-based object, so CF_UNICODETEXT (UTF-16) does not appropriate.
 //Therefore, only used CF_OEMTEXT in CF_TEXT.
-#define COMMON_FORMAT CF_OEMTEXT
+#define COMMON_FORMAT CF_UNICODETEXT
 
 namespace vind
 {
@@ -65,7 +67,7 @@ namespace vind
             pimpl->opening = false ;
         }
 
-        void SmartClipboard::get_as_str(std::string& str, bool& having_EOL) {
+        bool SmartClipboard::get_as_str(std::string& str) {
             if(!pimpl->opening) {
                 throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
             }
@@ -89,17 +91,19 @@ namespace vind
             if(!data_size) {
                 throw RUNTIME_EXCEPT("the clipboard does not have data.") ; 
             }
-            auto rawstr = reinterpret_cast<char*>(locked_data.get()) ;
-            str = rawstr ;
+            std::wstring wstr(reinterpret_cast<wchar_t*>(locked_data.get())) ;
 
-            if(data_size < 2) {
-                having_EOL = false ;
+            str = util::ws_to_s(wstr) ;
+
+            if(wstr.empty()) {
+                // Not including EOL.
+                return false ;
             }
-            else {
-                //if includes EOL, the four back words is 0x0000, else 0x??00.
-                having_EOL = rawstr[data_size - 1] == '\0' &&\
-                             rawstr[data_size - 2] == '\0' ;
-            }
+
+            // If there is a visible line break mark in
+            // an application such as Word, there are
+            // two margins, including the null character.
+            return data_size == (sizeof(wchar_t) * (wstr.length() + 2)) ;
         }
 
         //backup current clipboard to cache
@@ -167,10 +171,13 @@ namespace vind
             pimpl->cache = NULL ;
         }
 
-        void SmartClipboard::set(const char* const ar, std::size_t size) {
+        void SmartClipboard::set(const std::string& str) {
             if(!pimpl->opening) {
                 throw LOGIC_EXCEPT("Thread does not have a clipboard open.") ;
             }
+
+            auto wstr = util::s_to_ws(str) ;
+            auto size = sizeof(wchar_t) * (wstr.size() + 1) ;
 
             auto gmem = GlobalAlloc(GHND, size) ;
             if(gmem == NULL) {
@@ -188,7 +195,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Failed initalization of clipboard") ;
             }
 
-            std::memcpy(locked_gmem.get(), ar, size) ;
+            std::memcpy(locked_gmem.get(), wstr.c_str(), size) ;
             locked_gmem.reset() ; //unlock
 
             //If SetClipboardData succeeds, the system owns gmem, so should not free gmem.

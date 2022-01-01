@@ -219,6 +219,10 @@ namespace vind
                     p_cmdp->backward(1) ; //remove log including KEYCODE_ENTER
                     opt::VCmdLine::reset() ;
 
+                    if(lgr.empty()) {
+                        break ;
+                    }
+
                     if(p_cmdp->func) {
                         result = p_cmdp->func->process(lgr) ;
                     }
@@ -244,7 +248,8 @@ namespace vind
                     }
 
                     p_cmdp->backward(2) ;
-                    opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
+                    opt::VCmdLine::print(
+                            opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
                     opt::VCmdLine::refresh() ;
 
                     pimpl->funcfinder_.backward_parser_states(1) ;
@@ -265,7 +270,8 @@ namespace vind
                         auto& b_lgr = pimpl->ch_.get_hist_point()->logger ;
                         b_lgr.sync_state_with(lgr) ;
 
-                        opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + b_lgr.to_str())) ;
+                        opt::VCmdLine::print(
+                                opt::StaticMessage(cmdline_prefix + b_lgr.to_str())) ;
                         opt::VCmdLine::refresh() ;
 
                         pimpl->funcfinder_.reset_parser_states() ;
@@ -280,7 +286,8 @@ namespace vind
                         auto& f_lgr = pimpl->ch_.get_hist_point()->logger ;
                         f_lgr.sync_state_with(lgr) ;
 
-                        opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + f_lgr.to_str())) ;
+                        opt::VCmdLine::print(
+                                opt::StaticMessage(cmdline_prefix + f_lgr.to_str())) ;
                         opt::VCmdLine::refresh() ;
 
                         pimpl->funcfinder_.reset_parser_states() ;
@@ -289,7 +296,8 @@ namespace vind
                     continue ;
                 }
 
-                opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
+                opt::VCmdLine::print(
+                        opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
 
                 /**
                  * NOTE: Since there may be multiple logging in one iteration,
@@ -302,17 +310,12 @@ namespace vind
                 }
                 p_cmdp->lastlgr_size = lgr.size() ;
 
-                if(parser) {
-                    if(parser->is_accepted()) {
-                        p_cmdp->func = parser->get_func() ;
-                        continue ;
-                    }
-                    else if(parser->is_rejected_with_ready()) {
-                        pimpl->funcfinder_.backward_parser_states(1) ;
-                        p_cmdp->backward(1) ;
-                    }
+                if(parser && parser->is_accepted()) {
+                    p_cmdp->func = parser->get_func() ;
                 }
-                p_cmdp->func = nullptr ;
+                else {
+                    p_cmdp->func = nullptr ;
+                }
             }
 
             return result ;

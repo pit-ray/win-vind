@@ -103,7 +103,8 @@ namespace vind
             for(std::size_t i = 0 ; i < hints.size() ; i ++) {
                 std::string str ;
                 for(auto& key : hints[i]) {
-                    str.push_back(key.to_ascii()) ;
+                    auto uni = core::keycode_to_unicode(key) ;
+                    str += uni ;
                 }
                 hint_strings[i] = util::a2A(str) ;
             }

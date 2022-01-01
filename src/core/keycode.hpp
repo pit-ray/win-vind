@@ -1,6 +1,11 @@
 #ifndef _KEYCODE_HPP
 #define _KEYCODE_HPP
 
+#include "keycodedef.hpp"
+#include "util/debug.hpp"
+
+#include <algorithm>
+#include <array>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -42,27 +47,25 @@ namespace vind
                     const std::string& name,
                     bool prefer_ascii=PREFER_ASCII_CODE) ;
 
-            char to_ascii() const noexcept ;
-            char to_shifted_ascii() const noexcept ;
             int to_number() const noexcept ;
             unsigned char to_code() const noexcept ;
 
             KeyCode to_representative() const noexcept ;
             KeyCode to_physical() const noexcept ;
 
-            bool is_ascii() const noexcept ;
+            bool is_shift() const noexcept ;
+            bool is_major_system() const noexcept ;
             bool is_unreal() const noexcept ;
             bool is_number() const noexcept ;
             bool is_toggle() const noexcept ;
 
             bool empty() const noexcept ;
 
-            const std::string& name() const noexcept ;
+            std::string name() const noexcept ;
 
             unsigned short get() const noexcept ;
 
             operator bool() const noexcept ;
-            operator char() const noexcept ;
             operator unsigned char() const noexcept ;
             operator int() const noexcept ;
             operator std::string() const noexcept ;
@@ -77,19 +80,16 @@ namespace vind
 
             bool operator==(const KeyCode& rhs) const noexcept ;
             bool operator==(KeyCode&& rhs) const noexcept ;
-            bool operator==(char rhs) const noexcept ;
             bool operator==(unsigned char rhs) const noexcept ;
             bool operator==(const std::string& rhs) const noexcept ;
             bool operator==(const char* rhs) const noexcept ;
 
             bool operator!=(const KeyCode& rhs) const noexcept ;
             bool operator!=(KeyCode&& rhs) const noexcept ;
-            bool operator!=(char rhs) const noexcept ;
             bool operator!=(unsigned char rhs) const noexcept ;
             bool operator!=(const std::string& rhs) const noexcept ;
             bool operator!=(const char* rhs) const noexcept ;
 
-            static bool is_shifted(char ascii) noexcept ;
         } ;
 
         std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) ;
@@ -101,6 +101,38 @@ namespace vind
         std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) ;
         std::ostream& operator<<(std::ostream& stream, const Command& rhs) ;
         std::ostream& operator<<(std::ostream& stream, const CommandList& rhs) ;
+
+        KeyCode get_shift_keycode(char ascii) ;
+
+        KeyCode char_to_keycode(char ascii) ;
+
+        bool is_need_deadkey_for_input(char ascii) ;
+
+        std::string keycode_to_unicode_impl(
+                const KeyCode& keycode,
+                const std::array<unsigned char, 256>& states) ;
+
+        template <typename KeyCodeSet>
+        inline auto keycode_to_unicode(const KeyCode& keycode, KeyCodeSet&& set) {
+            std::array<unsigned char, 256> states{} ;
+            if(!set.empty()) {
+                for(const auto& key : set) {
+                    states[key.to_code()] = 0x80 ;
+
+                    // The RAlt key is converted internally into Ctrl+Alt.
+                    if(key == KEYCODE_RALT) {
+                        states[KEYCODE_ALT]  = 0x80 ;
+                        states[KEYCODE_CTRL] = 0x80 ;
+                    }
+                }
+            }
+            return keycode_to_unicode_impl(keycode, states) ;
+        }
+
+        inline auto keycode_to_unicode(const KeyCode& keycode) {
+            static std::array<unsigned char, 256> states{} ;
+            return keycode_to_unicode_impl(keycode, states) ;
+        }
     }
 }
 

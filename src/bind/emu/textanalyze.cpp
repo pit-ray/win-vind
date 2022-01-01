@@ -41,12 +41,12 @@ namespace vind
             //insofar as having already arrived the copied text
             //from the editor to a clipboard,
             //so wait for a little.
-            Sleep(100) ;
+            Sleep(75) ;
 
             scb.open() ; //<open>-------------------------
 
             SelectedTextResult out{} ;
-            scb.get_as_str(out.str, out.having_EOL) ;
+            out.having_EOL = scb.get_as_str(out.str) ;
 
             if(backup) scb.restore_backup() ;
 

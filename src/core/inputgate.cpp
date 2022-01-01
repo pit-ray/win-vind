@@ -359,20 +359,7 @@ namespace
                     }
                 }
                 else {
-                    KeySet keys{} ;
-                    KeySet syskeys{} ;
-
-                    for(const auto& key : syncmap_[i]) {
-                        if(key.to_ascii()) {
-                            keys.push_back(key) ;
-                        }
-                        else {
-                            syskeys.push_back(key) ;
-                        }
-                    }
-
-                    syskeys.insert(syskeys.end(), keys.begin(), keys.end()) ;
-                    syncmap_[i] = std::move(syskeys) ;
+                    std::sort(syncmap_[i].begin(), syncmap_[i].end()) ;
                 }
             }
 

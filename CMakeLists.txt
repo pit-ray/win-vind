@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.6.0)
 project(win-vind VERSION 4.3.1)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 if(NOT BIT_TYPE)
     set(BIT_TYPE 64)
 endif()

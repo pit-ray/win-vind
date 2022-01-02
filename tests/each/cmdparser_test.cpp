@@ -27,11 +27,11 @@ TEST_SUITE("core/bindings_parser") {
         CHECK_EQ(ks1, expect1) ;
 
         auto ks2 = parse_combined_command("shift-ctrl-X-b-a") ;
-        KeySet expect2 = {KEYCODE_SHIFT, KEYCODE_CTRL, KEYCODE_A, KEYCODE_B, KEYCODE_X} ;
+        KeySet expect2 = {KEYCODE_CTRL, KEYCODE_SHIFT, KEYCODE_A, KEYCODE_B, KEYCODE_X} ;
         CHECK_EQ(ks2, expect2) ;
 
         auto ks3 = parse_combined_command("ctrl-p-N-alt") ;
-        KeySet expect3 = {KEYCODE_SHIFT, KEYCODE_CTRL, KEYCODE_ALT, KEYCODE_N, KEYCODE_P} ;
+        KeySet expect3 = {KEYCODE_CTRL, KEYCODE_ALT, KEYCODE_SHIFT, KEYCODE_N, KEYCODE_P} ;
         CHECK_EQ(ks3, expect3) ;
 
         auto ks4 = parse_combined_command("a-a") ;

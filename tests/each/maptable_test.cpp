@@ -1,7 +1,7 @@
 #include <doctest.h>
 
 #include "core/keycodedef.hpp"
-#include "core/maptable.cpp"
+#include "core/maptable.hpp"
 
 #include <algorithm>
 #include <iostream>

@@ -47,7 +47,6 @@ namespace vind
                     const std::string& name,
                     bool prefer_ascii=PREFER_ASCII_CODE) ;
 
-            int to_number() const noexcept ;
             unsigned char to_code() const noexcept ;
 
             KeyCode to_representative() const noexcept ;
@@ -56,7 +55,6 @@ namespace vind
             bool is_shift() const noexcept ;
             bool is_major_system() const noexcept ;
             bool is_unreal() const noexcept ;
-            bool is_number() const noexcept ;
             bool is_toggle() const noexcept ;
 
             bool empty() const noexcept ;
@@ -69,7 +67,6 @@ namespace vind
             operator unsigned char() const noexcept ;
             operator int() const noexcept ;
             operator std::string() const noexcept ;
-            operator const char*() const noexcept ;
 
             bool operator!() const noexcept ;
 
@@ -89,10 +86,11 @@ namespace vind
             bool operator!=(unsigned char rhs) const noexcept ;
             bool operator!=(const std::string& rhs) const noexcept ;
             bool operator!=(const char* rhs) const noexcept ;
-
         } ;
 
         std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) ;
+
+        int keycode_to_number(const KeyCode& keycode) noexcept ;
 
         using KeySet = std::vector<KeyCode> ;
         using Command = std::vector<KeySet> ;

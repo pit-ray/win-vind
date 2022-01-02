@@ -8,6 +8,6 @@ AddTest(mock-winwrap-test
     ${CMAKE_CURRENT_SOURCE_DIR}/winwrap_test.cpp
 )
 
-AddTest(mock-err-logger-test
+AddTest(mock-errlogger-test
     ${CMAKE_CURRENT_SOURCE_DIR}/errlogger_test.cpp
 )

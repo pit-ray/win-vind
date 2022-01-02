@@ -125,7 +125,7 @@ namespace vind
         int NTypeLogger::transition_to_parsing_num_state(const KeyLog& num_only_log) {
             pimpl->ksr_.reset() ;
             pimpl->head_num_ = static_cast<decltype(pimpl->head_num_)>( \
-                    num_only_log.cbegin()->to_number()) ;
+                    keycode_to_number(*(num_only_log.cbegin()))) ;
             pimpl->state_ = Impl::LoggerState::PARSING_NUM ;
             return -1 ;
         }
@@ -228,7 +228,8 @@ namespace vind
                 return 0 ;
             }
 
-            pimpl->concat_repeat_num(diff_nums.cbegin()->to_number()) ;
+            pimpl->concat_repeat_num(
+                    keycode_to_number(*(diff_nums.cbegin()))) ;
             pimpl->ksr_.reset() ;
             return -1 ;
         }

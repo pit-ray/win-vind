@@ -201,7 +201,9 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not set a character margin.") ;
             }
             auto wstr = s_to_ws(str) ;
-            if(!TextOutW(pimpl->hdc.get(), x, y, wstr.c_str(), wstr.length())) {
+            if(!TextOutW(
+                        pimpl->hdc.get(), x, y,
+                        wstr.c_str(), static_cast<int>(wstr.length()))) {
                 throw RUNTIME_EXCEPT("Could not draw a text (" + str + ").") ;
             }
         }

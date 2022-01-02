@@ -34,7 +34,6 @@ namespace
         FLAG    = 0b1111'1111'0000'0000,
 
         NOMAJORSYS = 0b1000'0000'0000'0000,
-        NUMBER     = 0b0100'0000'0000'0000,
         PHYSIC     = 0b0010'0000'0000'0000,
         ONLYONE    = 0b0001'0000'0000'0000,
         TOGGLE     = 0b0000'1000'0000'0000,
@@ -306,6 +305,10 @@ namespace vind
         KeyCode::KeyCode(const std::string& name, bool prefer_ascii)
         : code_(0)
         {
+            if(name.empty()) {
+                return ;
+            }
+
             static std::unordered_map<std::string, char> magic_ascii_{
                 {"space", ' '},
                 {"hbar",  '-'},
@@ -315,20 +318,23 @@ namespace vind
 
             auto& table = KeyCodeTable::get_instance() ;
 
-            if(prefer_ascii && name.length() == 1) {
-                KeyCode::operator=(char_to_keycode(name[0])) ;
-                return ;
-            }
-
-            try {
-                code_ = table.name2code_.at(util::A2a(name)) ;
-            }
-            catch(const std::out_of_range&) {
-                if(name.length() == 1) {
+            if(name.length() == 1) {
+                if(prefer_ascii) {
                     KeyCode::operator=(char_to_keycode(name[0])) ;
                 }
                 else {
-                    code_ = magic_ascii_.at(util::A2a(name)) ;
+                    code_ = table.name2code_.at(util::A2a(name)) ;
+                }
+            }
+            else {
+                auto n = util::A2a(name) ;
+
+                if(magic_ascii_.find(n) != magic_ascii_.end()) {
+                    KeyCode::operator=(char_to_keycode(
+                            magic_ascii_.at(util::A2a(name)))) ;
+                }
+                else {
+                    code_ = table.name2code_.at(util::A2a(name)) ;
                 }
             }
         }
@@ -336,10 +342,6 @@ namespace vind
         KeyCode::KeyCode(unsigned short code)
         : code_(code)
         {}
-
-        int KeyCode::to_number() const noexcept {
-            return to_code() - KEYCODE_0 ;
-        }
 
         unsigned char KeyCode::to_code() const noexcept {
             return static_cast<unsigned char>(code_ & CodeMask::CODE) ;
@@ -359,10 +361,6 @@ namespace vind
 
         bool KeyCode::is_unreal() const noexcept {
             return !static_cast<bool>(code_ & CodeMask::PHYSIC) ;
-        }
-
-        bool KeyCode::is_number() const noexcept {
-            return static_cast<bool>(code_ & CodeMask::NUMBER) ;
         }
 
         bool KeyCode::is_toggle() const noexcept {
@@ -403,10 +401,6 @@ namespace vind
 
         KeyCode::operator std::string() const noexcept {
             return name() ;
-        }
-
-        KeyCode::operator const char*() const noexcept {
-            return name().c_str() ;
         }
 
         bool KeyCode::operator!() const noexcept {
@@ -463,6 +457,10 @@ namespace vind
         std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) {
             stream << rhs.name() ;
             return stream ;
+        }
+
+        int keycode_to_number(const KeyCode& keycode) noexcept {
+            return keycode.to_code() - KEYCODE_0 ;
         }
 
         std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) {
@@ -578,6 +576,10 @@ namespace vind
         std::string keycode_to_unicode_impl(
                 const KeyCode& keycode,
                 const std::array<unsigned char, 256>& states) {
+
+            if(keycode.is_major_system()) {
+                return std::string{} ;
+            }
 
             auto vkc = keycode.to_code() ;
             auto scan = MapVirtualKeyW(vkc, MAPVK_VK_TO_VSC) ;

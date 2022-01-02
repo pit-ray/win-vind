@@ -25,6 +25,7 @@
 #include <chrono>
 #include <functional>
 #include <queue>
+#include <sstream>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -83,13 +84,21 @@ namespace
         NTypeLogger lgr ;
         KeyLog empty_log{} ;
         for(const auto& keyset : cmd) {
-            //
-            // To simulate the input, make a state transition with an empty log.
-            // This is to make the logger recognize that it is a key release,
-            // not a long pressing of the key.
-            //
-            lgr.logging_state(KeyLog(keyset.cbegin(), keyset.cend())) ;
-            lgr.logging_state(empty_log) ;
+            /**
+             * NOTE:
+             * To simulate the input, make a state transition with an empty log.
+             * This is to make the logger recognize that it is a key release,
+             * not a long pressing of the key.
+             */
+            if(NTYPE_EMPTY(lgr.logging_state(
+                        KeyLog(keyset.cbegin(), keyset.cend())))) {
+                std::stringstream ss ;
+                ss << "Failed logging of " << keyset ;
+                throw RUNTIME_EXCEPT(ss.str()) ;
+            }
+            if(!NTYPE_EMPTY(lgr.logging_state(empty_log))) {
+                throw RUNTIME_EXCEPT("Failed to write an empty log.") ;
+            }
         }
         return lgr ;
     }

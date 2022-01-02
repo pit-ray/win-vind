@@ -49,8 +49,8 @@ namespace vind
 
             unsigned char to_code() const noexcept ;
 
-            KeyCode to_representative() const noexcept ;
-            KeyCode to_physical() const noexcept ;
+            KeyCode to_representative() const ;
+            KeyCode to_physical() const ;
 
             bool is_shift() const noexcept ;
             bool is_major_system() const noexcept ;
@@ -59,14 +59,14 @@ namespace vind
 
             bool empty() const noexcept ;
 
-            std::string name() const noexcept ;
+            std::string name() const ;
 
             unsigned short get() const noexcept ;
 
             operator bool() const noexcept ;
             operator unsigned char() const noexcept ;
             operator int() const noexcept ;
-            operator std::string() const noexcept ;
+            operator std::string() const ;
 
             bool operator!() const noexcept ;
 
@@ -78,14 +78,14 @@ namespace vind
             bool operator==(const KeyCode& rhs) const noexcept ;
             bool operator==(KeyCode&& rhs) const noexcept ;
             bool operator==(unsigned char rhs) const noexcept ;
-            bool operator==(const std::string& rhs) const noexcept ;
-            bool operator==(const char* rhs) const noexcept ;
+            bool operator==(const std::string& rhs) const ;
+            bool operator==(const char* rhs) const ;
 
             bool operator!=(const KeyCode& rhs) const noexcept ;
             bool operator!=(KeyCode&& rhs) const noexcept ;
             bool operator!=(unsigned char rhs) const noexcept ;
-            bool operator!=(const std::string& rhs) const noexcept ;
-            bool operator!=(const char* rhs) const noexcept ;
+            bool operator!=(const std::string& rhs) const ;
+            bool operator!=(const char* rhs) const ;
         } ;
 
         std::ostream& operator<<(std::ostream& stream, const KeyCode& rhs) ;

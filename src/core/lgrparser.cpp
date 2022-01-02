@@ -21,7 +21,7 @@ namespace
 {
     using namespace vind::core ;
 
-    inline bool is_containing_num(const KeyLog& log) noexcept {
+    inline bool is_containing_num(const KeyLog& log) {
         for(const auto& key : log) {
             if(key.is_major_system()) {
                 continue ;

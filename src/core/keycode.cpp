@@ -347,11 +347,11 @@ namespace vind
             return static_cast<unsigned char>(code_ & CodeMask::CODE) ;
         }
 
-        KeyCode KeyCode::to_representative() const noexcept {
+        KeyCode KeyCode::to_representative() const {
             return KeyCodeTable::get_instance().code2repre_[code_] ;
         }
 
-        KeyCode KeyCode::to_physical() const noexcept {
+        KeyCode KeyCode::to_physical() const {
             return KeyCodeTable::get_instance().code2physial_[code_] ;
         }
 
@@ -375,7 +375,7 @@ namespace vind
             return code_ == 0 ;
         }
 
-        std::string KeyCode::name() const noexcept {
+        std::string KeyCode::name() const {
             auto sn = KeyCodeTable::get_instance().code2name_[code_] ;
             if(!sn.empty()) {
                 return sn ;
@@ -399,7 +399,7 @@ namespace vind
             return code_ & CodeMask::CODE ;
         }
 
-        KeyCode::operator std::string() const noexcept {
+        KeyCode::operator std::string() const {
             return name() ;
         }
 
@@ -430,10 +430,10 @@ namespace vind
         bool KeyCode::operator==(unsigned char rhs) const noexcept {
             return to_code() == rhs ;
         }
-        bool KeyCode::operator==(const std::string& rhs) const noexcept {
+        bool KeyCode::operator==(const std::string& rhs) const {
             return name() == rhs ;
         }
-        bool KeyCode::operator==(const char* rhs) const noexcept {
+        bool KeyCode::operator==(const char* rhs) const {
             return name() == rhs ;
         }
 
@@ -447,10 +447,10 @@ namespace vind
         bool KeyCode::operator!=(unsigned char rhs) const noexcept {
             return to_code() != rhs ;
         }
-        bool KeyCode::operator!=(const std::string& rhs) const noexcept {
+        bool KeyCode::operator!=(const std::string& rhs) const {
             return name() != rhs ;
         }
-        bool KeyCode::operator!=(const char* rhs) const noexcept {
+        bool KeyCode::operator!=(const char* rhs) const {
             return name() != rhs ;
         }
 

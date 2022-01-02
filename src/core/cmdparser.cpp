@@ -17,7 +17,7 @@ namespace vind
 {
     namespace core
     {
-        KeySet parse_pure_one_character_command(char onechar) {
+        KeySet parse_ascii_command(char onechar) {
             core::KeyCode keycode(onechar) ;
             if(keycode.empty()) {
                 throw RUNTIME_EXCEPT( \
@@ -25,7 +25,8 @@ namespace vind
                         onechar + "' is invalid ascii key code.") ;
             }
 
-            if(auto shift = core::get_shift_keycode(onechar)) {  //ex) A (A is divided to a and SHIFT)
+            //ex) A (A is divided to a and SHIFT)
+            if(auto shift = core::get_shift_keycode(onechar)) {
                 return KeySet{shift, keycode} ;
             }
             //ex) a
@@ -42,7 +43,7 @@ namespace vind
                 //If isn't begin(), regards it as ascii.
                 if(itr != keystrset.begin() && itr->length() == 1) {
                     //ascii
-                    for(auto& keycode : parse_pure_one_character_command(itr->front())) {
+                    for(const auto& keycode : parse_ascii_command(itr->front())) {
                         keyset.push_back(keycode) ;
                     }
                     continue ;
@@ -50,6 +51,19 @@ namespace vind
 
                 // regard as a specific system keycode.
                 auto lowercode = util::A2a(*itr) ;
+
+                static std::unordered_map<std::string, char> magic_ascii_{
+                    {"space", ' '},
+                    {"hbar",  '-'},
+                    {"gt",    '>'},
+                    {"lt",    '<'}
+                } ;
+                if(magic_ascii_.find(lowercode) != magic_ascii_.end()) {
+                    for(const auto& keycode : parse_ascii_command(magic_ascii_[lowercode])) {
+                        keyset.push_back(keycode) ;
+                    }
+                    continue ;
+                }
 
                 core::KeyCode keycode(lowercode, PREFER_SYSTEM_CODE) ;
                 if(!keycode.empty()) {
@@ -78,7 +92,7 @@ namespace vind
             for(std::size_t i = 0 ; i < cmdstr.length() ; i ++) {
                 auto onechar = cmdstr[i] ;
                 if(onechar != '<') {
-                    cmd.push_back(parse_pure_one_character_command(onechar)) ;
+                    cmd.push_back(parse_ascii_command(onechar)) ;
                     continue ;
                 }
 

@@ -330,11 +330,11 @@ namespace vind
                 auto n = util::A2a(name) ;
 
                 if(magic_ascii_.find(n) != magic_ascii_.end()) {
-                    KeyCode::operator=(char_to_keycode(
-                            magic_ascii_.at(util::A2a(name)))) ;
+                    KeyCode::operator=(
+                            char_to_keycode(magic_ascii_.at(n))) ;
                 }
                 else {
-                    code_ = table.name2code_.at(util::A2a(name)) ;
+                    code_ = table.name2code_.at(n) ;
                 }
             }
         }

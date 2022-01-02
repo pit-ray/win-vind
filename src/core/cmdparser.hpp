@@ -20,7 +20,7 @@ namespace vind
          *
          * @return (KeySet(std::vector<KeyCode>))
          */
-        KeySet parse_pure_one_character_command(char onechar) ;
+        KeySet parse_ascii_command(char onechar) ;
 
         /**
          * NOTE: It parse a combined command, which is sandwiched 

@@ -9,16 +9,16 @@
 TEST_SUITE("core/bindings_parser") {
     using namespace vind::core ;
 
-    TEST_CASE("parse_pure_one_character_command") {
-        auto ks1 = parse_pure_one_character_command('A') ;
+    TEST_CASE("parse_ascii_command") {
+        auto ks1 = parse_ascii_command('A') ;
         KeySet expect1 = {KEYCODE_SHIFT, KEYCODE_A} ;
         CHECK_EQ(ks1, expect1) ;
 
-        auto ks2 = parse_pure_one_character_command('x') ;
+        auto ks2 = parse_ascii_command('x') ;
         KeySet expect2 = {KEYCODE_X} ;
         CHECK_EQ(ks2, expect2) ;
 
-        CHECK_THROWS(parse_pure_one_character_command(0)) ;
+        CHECK_THROWS(parse_ascii_command(0)) ;
     }
 
     TEST_CASE("parse_combined_command") {

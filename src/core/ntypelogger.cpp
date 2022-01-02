@@ -194,17 +194,24 @@ namespace vind
                 return 0 ;
             }
 
-            KeyLog::Data subset ;
+            KeyLog::Data target_subset{} ;
+            KeyLog::Data shift_subset{} ;
             for(const auto& keycode : log) {
                 if(keycode.is_shift()) {
-                    subset.insert(keycode) ;
+                    shift_subset.insert(keycode) ;
+                }
+                else {
+                    target_subset.insert(keycode) ;
                 }
             }
 
             // Wait for input of numbers until shift and non-numbers are input.
-            auto nums = extract_numbers(log, subset, KeyLog{}) ;
+            auto nums = extract_numbers(target_subset, shift_subset, KeyLog{}) ;
             if(nums.empty()) {
-                if(!subset.empty()) {
+                // Consider the case where use shift to enter
+                // numbers, such as in the French keyboard layout,
+                // and continue when shift and numbers only.
+                if(!shift_subset.empty() && nums == target_subset) {
                     return 0 ;
                 }
 

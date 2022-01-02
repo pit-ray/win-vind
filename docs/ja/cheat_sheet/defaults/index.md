@@ -6,7 +6,7 @@ title: デフォルトのマッピング - win-vind
 translation: ja
 translators:
   - pit-ray
-version: 4.3.1
+version: 4.3.2
 nav: デフォルトのマッピング
 ---
 

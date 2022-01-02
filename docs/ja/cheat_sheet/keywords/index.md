@@ -6,7 +6,7 @@ show_in_menu: false
 translation: ja
 translators:
   - pit-ray
-version: 4.3.1
+version: 4.3.2
 disable_anchors: true
 ---
 

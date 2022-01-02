@@ -65,12 +65,12 @@ $ winget install win-vind
 ```
 
 ### Installer Version
-- [win-vind_4.3.1_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.1/win-vind_4.3.1_32bit_installer.zip)
-- [win-vind_4.3.1_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.1/win-vind_4.3.1_64bit_installer.zip)
+- [win-vind_4.3.2_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_32bit_installer.zip)
+- [win-vind_4.3.2_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_64bit_installer.zip)
 
 ### Portable Version
-- [win-vind_4.3.1_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.1/win-vind_4.3.1_32bit_portable.zip)
-- [win-vind_4.3.1_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.1/win-vind_4.3.1_64bit_portable.zip)
+- [win-vind_4.3.2_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_32bit_portable.zip)
+- [win-vind_4.3.2_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_64bit_portable.zip)
 
 
 ## Usage

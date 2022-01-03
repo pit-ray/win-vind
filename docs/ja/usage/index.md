@@ -98,6 +98,7 @@ disable_anchors: true
 |`command {in-cmd} {func-id}`|ファンクションを呼び出すためのコマンドを定義します。`{in-cmd}`に`:`は不要です。|
 |`delcommand {in-cmd}`|`{in-cmd}`に割り当てられたコマンドを削除します。|
 |`comclear`|すべてのコマンドを削除します。|
+|`source`|別の.vindrcを読み込みます。.vindrcへのパスを記入するか、`user/repo`という構文でGitHubリポジトリのルートの.vindrcを読み込みます。|
 
   
 `{mode}`は、[モード接頭辞]({{ site.url }}/ja/cheat_sheet/keywords/#モード接頭辞)です。また、`.vindrc`は**UTF-8**フォーマットのみがサポートされています。

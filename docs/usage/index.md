@@ -97,6 +97,7 @@ The following commands are supported. By the way, `{` and `}` themselves are not
 |`command {in-cmd} {func-id}`|It defines the command to call the function.|
 |`delcommand {in-cmd}`|Remove the command corresponding to the `{in-cmd}`.|
 |`comclear`|delete all commands.|
+|`source`|Load another .vindrc. Either fill in the path to the .vindrc or use the syntax `user/repo` to load the .vindrc in the root directory of the GitHub repository.|
 
 `{mode}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). And only **UTF-8** format is supported for `.vindrc`.  
 

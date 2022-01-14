@@ -7,7 +7,20 @@ def append_license(outfile, license_filename='LICENSE.txt'):
         for line in f:
             outfile.write('" {}'.format(line))
 
-        outfile.write('\n')
+        outfile.write('"\n')
+
+
+def append_note(outfile):
+    notes = [
+        'NOTE: This is default .vindrc.',
+        'It is not recommended to edit this file directly.',
+        'Instead, rewrite the .vindrc file in the home directory opened by :e.'
+    ]
+
+    outfile.write('"\n')
+    for line in notes:
+        outfile.write('" {}\n'.format(line))
+    outfile.write('"\n\n')
 
 
 def append_from_map_json(outfile, json_filename: str):
@@ -74,14 +87,15 @@ def generate_vindrc(
 
     with open(out_filename, mode='w') as fout:
         append_license(fout)
+        append_note(fout)
 
         if len(set_jsons) > 0:
-            fout.write('" => set')
+            fout.write('" => set ' + ('-' * 20) + '{{{1\n')
             for f in set_jsons:
                 append_from_set_json(fout, f)
 
         if len(map_jsons) > 0:
-            fout.write('" => mappings')
+            fout.write('" => map ' + ('-' * 20) + '{{{1\n')
             for f in map_jsons:
                 append_from_map_json(fout, f)
 

@@ -24,9 +24,10 @@
 " NOTE: This is default .vindrc.
 " It is not recommended to edit this file directly.
 " Instead, rewrite the .vindrc file in the home directory opened by :e.
+"
 
-
-" => set" Initial Mode
+" => set --------------------{{{1
+" Initial Mode
 set initmode=i
 
 " Screen Position Buffer
@@ -66,7 +67,7 @@ set vscroll_pageratio=0.125
 set hscroll_pageratio=0.125
 
 " Max Character Num
-set cmd_maxchar=100
+set cmd_maxchar=32
 
 " Max Command History Num
 set cmd_maxhist=10
@@ -90,7 +91,7 @@ set cmd_roughpos=LowerMid
 set cmd_xmargin=32
 
 " Vertical Margin
-set cmd_ymargin=96
+set cmd_ymargin=64
 
 " Font Extra
 set cmd_fontextra=1
@@ -195,7 +196,8 @@ set window_vdelta=100
 set arrangewin_ignore=
 
 
-" => mappings" GUI Normal Mode
+" => map --------------------{{{1
+" GUI Normal Mode
 command guinormal to_gui_normal
 command gn to_gui_normal
 ennoremap <Esc-Left> to_gui_normal

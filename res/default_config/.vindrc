@@ -67,7 +67,7 @@ set vscroll_pageratio=0.125
 set hscroll_pageratio=0.125
 
 " Max Character Num
-set cmd_maxchar=32
+set cmd_maxchar=128
 
 " Max Command History Num
 set cmd_maxhist=10
@@ -91,7 +91,7 @@ set cmd_roughpos=LowerMid
 set cmd_xmargin=32
 
 " Vertical Margin
-set cmd_ymargin=64
+set cmd_ymargin=96
 
 " Font Extra
 set cmd_fontextra=1

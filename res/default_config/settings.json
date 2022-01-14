@@ -88,7 +88,7 @@
         "ja": "横ページスクロール比"
     },
     "cmd_maxchar": {
-        "value": 32,
+        "value": 128,
         "en": "Max Character Num",
         "ja": "最大文字数"
     },
@@ -175,7 +175,7 @@
         "ja": "横の余白"
     },
     "cmd_ymargin": {
-        "value": 64,
+        "value": 96,
         "en": "Vertical Margin",
         "ja": "縦の余白"
     },

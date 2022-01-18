@@ -15,7 +15,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName",        "pit-ray\0"
             VALUE "FileDescription",    "win-vind (@BIT_TYPE@-bit)\0"
-            VALUE "LegalCopyright",     "Copyright (c) 2020-2021 pit-ray\0"
+            VALUE "LegalCopyright",     "Copyright (c) 2020-2022 pit-ray\0"
             VALUE "InternalName",       "win-vind (@BIT_TYPE@-bit)\0"
             VALUE "OriginalFilename",   "win-vind.exe\0"
             VALUE "ProductName",        "win-vind (@BIT_TYPE@bit)\0"

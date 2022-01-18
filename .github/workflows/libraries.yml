@@ -39,7 +39,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/libs
-        key: x64-libs-cache-210923
+        key: x64-libs-cache-220119
 
     - name: Setup Libraries
       run: "tools/setup_libs.bat -msvc 64"
@@ -57,7 +57,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/libs
-        key: x86-libs-cache-210923
+        key: x86-libs-cache-220119
 
     - name: Setup Library
       run: "tools/setup_libs.bat -msvc 32"

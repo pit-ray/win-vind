@@ -54,7 +54,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/libs
-        key: x64-libs-cache-210828
+        key: x64-libs-cache-220119
 
     - name: Install Libraries
       run: "tools/setup_libs.bat -mingw 64"

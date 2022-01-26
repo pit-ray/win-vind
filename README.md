@@ -57,6 +57,7 @@ win-vind supports installation using [Chocolatey](https://chocolatey.org/). To i
 $ choco install win-vind
 ```
 
+<!--
 However, [win-vind 4.3.2](https://community.chocolatey.org/packages/win-vind/4.3.2) is not still approved on Chocolatey. Therefore, download the [Chocolatey package source](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_chocolatey_package_source.zip) manually and execute the following command in the extracted directory.
 
 ```sh
@@ -65,11 +66,12 @@ $ choco install win-vind.4.3.2.nupkg
 ```
 
 #### Current Status
-- [ ] 4.3.2
-- [ ] 4.3.1
-- [ ] 4.3.0
+- [X] 4.3.2
+- [X] 4.3.1
+- [X] 4.3.0
 - [x] 4.2.1
 - [x] 4.2.0
+-->
 
 ### winget Version
 [winget](https://github.com/microsoft/winget-cli) is also supported. To install the package, run the following command from your command line.
@@ -78,12 +80,14 @@ $ choco install win-vind.4.3.2.nupkg
 $ winget install win-vind
 ```
 
+<!--
 #### Current Status
 - [x] 4.3.2
 - [x] 4.3.1
 - [x] 4.3.0
 - [x] 4.2.1
 - [x] 4.2.0
+-->
 
 ### Installer Version
 - [win-vind_4.3.2_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_32bit_installer.zip)

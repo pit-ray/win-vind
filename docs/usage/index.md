@@ -11,7 +11,7 @@ This software only supports Windows 10 or Windows 11 on real machines. Therefore
 
 ## Installation
 
-- Download the latest version of the type that suits your preference from the [Downlods page]({{ site.url }}/downloads) and install it.
+- Download the latest version of the type that suits your preference from the [Downloads page]({{ site.url }}/downloads) and install it.
 
 - Install and run win-vind.exe.
 

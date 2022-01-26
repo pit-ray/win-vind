@@ -39,7 +39,10 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/libs
-        key: x64-libs-cache-220120
+        key: x64-libs-cache-test-220126
+
+    - name: Setup Libraries
+      run: "tools/setup_libs.bat -msvc 64"
 
     - name: Setup Test Framework
       run: "tools/setup_test_framework.bat"

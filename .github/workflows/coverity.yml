@@ -39,6 +39,7 @@ jobs:
       run: |
         choco install -y unzip
         choco install -y mingw --version=10.3.0
+        choco install -y make
 
     - name: Cache libraries
       uses: actions/cache@v2

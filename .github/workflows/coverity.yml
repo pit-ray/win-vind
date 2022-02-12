@@ -39,7 +39,7 @@ jobs:
     - name: Setup Environment
       run: |
         choco install -y unzip
-        choco install -y mingw --version=10.3.0
+        #choco install -y mingw --version=10.3.0
 
     - name: Export Path
       run: |

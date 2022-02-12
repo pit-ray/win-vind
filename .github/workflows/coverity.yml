@@ -41,6 +41,10 @@ jobs:
         choco install -y unzip
         choco install -y mingw --version=10.3.0
         choco install -y make
+
+    - name: Export Path
+      run: |
+        echo "C:\ProgramData\chocolatey\bin" >> $GITHUB_PATH
         refreshenv
 
     - name: Cache libraries

@@ -76,6 +76,10 @@ jobs:
         tar -czvf cov-int.tgz cov-int
         cd ..
 
+    - name: Get short SHA
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
     - name: Submit tarball to Coverity
-      run: curl --form token=$TOKEN --form email=$EMAIL --form file=@${{env.OUTDIR}}/cov-int.tgz --form version="${{github.sha}}" --form description="Automatic submission with GitHub Actions" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
+      run: curl --form token=$TOKEN --form email=$EMAIL --form file=@${{env.OUTDIR}}/cov-int.tgz --form version="${{steps.vars.outputs.sha_short}}" --form description="Automatic submission with GitHub Actions" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
       shell: cmd

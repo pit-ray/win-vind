@@ -24,7 +24,7 @@ on:
 env:
   TOKEN: ${{secrets.COVERITY_TOKEN}}
   EMAIL: ${{secrets.COVERITY_EMAIL}}
-  env:OUTDIR: ${{github.workspace}}/build
+  OUTDIR: ${{github.workspace}}/build
 
 jobs:
   x64:

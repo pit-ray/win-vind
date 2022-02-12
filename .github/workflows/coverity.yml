@@ -40,12 +40,13 @@ jobs:
       run: |
         choco install -y unzip
         choco install -y mingw --version=10.3.0
-        choco install -y make
 
     - name: Export Path
       run: |
+        echo "before-env: GITHUB_PATH"
+        cat $env:GITHUB_PATH
         @("C:\ProgramData\chocolatey\bin") + (Get-Content $env:GITHUB_PATH) | Set-Content $env:GITHUB_PATH
-        echo "env: GITHUB_PATH"
+        echo "after-env: GITHUB_PATH"
         cat $env:GITHUB_PATH
         refreshenv
 

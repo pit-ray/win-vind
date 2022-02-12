@@ -24,6 +24,7 @@ on:
 env:
   TOKEN: ${{secrets.COVERITY_TOKEN}}
   EMAIL: ${{secrets.COVERITY_EMAIL}}
+  OUTDIR: ${{github.workspace}}/build
 
 jobs:
   x64:
@@ -36,19 +37,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Environment
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Install tools
       run: |
         choco install -y unzip
-        #choco install -y mingw --version=10.3.0
-
-    - name: Export Path
-      run: |
-        #echo ${{github.workspace}} >> $env:GITHUB_PATH
-        #echo "C:\ProgramData\chocolatey\bin" >> $env:GITHUB_PATH
-        #echo "===== Environment Variables ====="
-        #cat $env:GITHUB_PATH
-        #echo "---------------------------------"
-        refreshenv
 
     - name: Cache libraries
       uses: actions/cache@v2
@@ -57,7 +52,7 @@ jobs:
         key: x64-libs-cache-coverity-220126
 
     - name: Install libraries
-      run: "tools/setup_libs.bat -mingw 64"
+      run: "tools/setup_libs.bat -msvc 64"
 
     - name: Cache Coverity scan tools
       uses: actions/cache@v2
@@ -70,17 +65,17 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cov_tools/bin/cov-configure --config build/covtest/cov.xml --comptype g++ --compiler g++ --template
-        cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+        cov_tools/bin/cov-configure --config $env:OUTDIR/covtest/cov.xml --msvc --template --xml-option=skip_file:".*/libs.*"
+        cmake -B $env:OUTDIR -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
 
     - name: Build with Coverity
       run: |
-        cov_tools/bin/cov-build --config build/covtest/cov.xml --dir build/cov-int cmake --build build
-        cd build
+        cov_tools/bin/cov-build --config $env:OUTDIR/covtest/cov.xml --dir $env:OUTDIR/cov-int cmake --build $env:OUTDIR
+        cd $env:OUTDIR
         tail cov-int/build-log.txt
         tar -czvf cov-int.tgz cov-int
         cd ..
 
     - name: Submit tarball to Coverity
-      run: curl --form token=$TOKEN --form email=$EMAIL --form file=@build/cov-int.tgz --form version="${{github.sha}}" --form description="Automatic submission with GitHub Actions" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
+      run: curl --form token=$TOKEN --form email=$EMAIL --form file=@$env:OUTDIR/cov-int.tgz --form version="${{github.sha}}" --form description="Automatic submission with GitHub Actions" https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
       shell: cmd

@@ -24,7 +24,7 @@ on:
 env:
   TOKEN: ${{secrets.COVERITY_TOKEN}}
   EMAIL: ${{secrets.COVERITY_EMAIL}}
-  OUTDIR: ${{github.workspace}}/build
+  env:OUTDIR: ${{github.workspace}}/build
 
 jobs:
   x64:
@@ -65,13 +65,13 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cov_tools/bin/cov-configure --config $OUTDIR/covtest/cov.xml --msvc --template --xml-option=skip_file:".*/libs.*"
-        cmake -B $OUTDIR -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+        cov_tools/bin/cov-configure --config $env:OUTDIR/covtest/cov.xml --msvc --template --xml-option=skip_file:".*/libs.*"
+        cmake -B $env:OUTDIR -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
 
     - name: Build with Coverity
       run: |
-        cov_tools/bin/cov-build --config $OUTDIR/covtest/cov.xml --dir $OUTDIR/cov-int cmake --build $OUTDIR
-        cd $OUTDIR
+        cov_tools/bin/cov-build --config $env:OUTDIR/covtest/cov.xml --dir $env:OUTDIR/cov-int cmake --build $env:OUTDIR
+        cd $env:OUTDIR
         tail cov-int/build-log.txt
         tar -czvf cov-int.tgz cov-int
         cd ..

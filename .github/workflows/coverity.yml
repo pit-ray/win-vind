@@ -44,9 +44,9 @@ jobs:
 
     - name: Export Path
       run: |
-        @("C:\ProgramData\chocolatey\bin") + (Get-Content "$GITHUB_PATH") | Set-Content "$GITHUB_PATH"
+        @("C:\ProgramData\chocolatey\bin") + (Get-Content $env:GITHUB_PATH) | Set-Content $env:GITHUB_PATH
         echo "env: GITHUB_PATH"
-        cat "$GITHUB_PATH"
+        cat $env:GITHUB_PATH
         refreshenv
 
     - name: Cache libraries

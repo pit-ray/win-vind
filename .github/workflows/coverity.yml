@@ -43,11 +43,11 @@ jobs:
 
     - name: Export Path
       run: |
-        echo ${{github.workspace}} >> $env:GITHUB_PATH
-        echo "C:\ProgramData\chocolatey\bin" >> $env:GITHUB_PATH
-        echo "===== Environment Variables ====="
-        cat $env:GITHUB_PATH
-        echo "---------------------------------"
+        #echo ${{github.workspace}} >> $env:GITHUB_PATH
+        #echo "C:\ProgramData\chocolatey\bin" >> $env:GITHUB_PATH
+        #echo "===== Environment Variables ====="
+        #cat $env:GITHUB_PATH
+        #echo "---------------------------------"
         refreshenv
 
     - name: Cache libraries

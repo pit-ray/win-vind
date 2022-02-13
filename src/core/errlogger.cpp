@@ -168,8 +168,16 @@ namespace vind
             remove_files_over(log_dir, pimpl->head_ + "*.log", pimpl->keep_log_num_) ;
         }
 
-        void Logger::error(const std::string& msg, const std::string& scope) {
-            if(pimpl->stream_.is_open()) {
+        /*
+         * Note: Since error, message, and warning may be called
+         *       in a destructor, make strong guarantees and output
+         *       them only if they are writable.
+         */
+        void Logger::error(const std::string& msg, const std::string& scope) noexcept {
+            if(!pimpl->stream_.is_open()) {
+                return ;
+            }
+            try {
                 std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
 
                 auto win_ercode = GetLastError() ;
@@ -204,10 +212,17 @@ namespace vind
 
                 pimpl->stream_.flush() ;
             }
+            catch(...) {
+                return ;
+            }
         }
 
-        void Logger::message(const std::string& msg, const std::string& scope) {
-            if(pimpl->stream_.is_open()) {
+        void Logger::message(const std::string& msg, const std::string& scope) noexcept {
+            if(!pimpl->stream_.is_open()) {
+                return ;
+            }
+
+            try {
                 std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
 
                 pimpl->stream_ << "[Message] " << msg ;
@@ -217,10 +232,17 @@ namespace vind
                 pimpl->stream_ << std::endl ;
                 pimpl->stream_.flush() ;
             }
+            catch(...) {
+                return ;
+            }
         }
 
-        void Logger::warning(const std::string& msg, const std::string& scope) {
-            if(pimpl->stream_.is_open()) {
+        void Logger::warning(const std::string& msg, const std::string& scope) noexcept {
+            if(!pimpl->stream_.is_open()) {
+                return ;
+            }
+
+            try {
                 std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
 
                 pimpl->stream_ << "[Warning] " << msg ;
@@ -229,6 +251,9 @@ namespace vind
                 }
                 pimpl->stream_ << std::endl ;
                 pimpl->stream_.flush() ;
+            }
+            catch(...) {
+                return ;
             }
         }
     }

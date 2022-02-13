@@ -134,10 +134,10 @@ namespace vind
 
         void CharLogger::sync_state_with(const CharLogger& rhs) {
             if(rhs.pimpl) {
-                pimpl->prelog_ = rhs.pimpl->prelog_ ;
-                pimpl->ksr_    = rhs.pimpl->ksr_ ;
+                pimpl->ksr_ = rhs.pimpl->ksr_ ;
                 pimpl->last_keycode_ = rhs.pimpl->last_keycode_ ;
                 pimpl->laststr_ = rhs.pimpl->laststr_ ;
+                pimpl->prelog_ = rhs.pimpl->prelog_ ;
             }
         }
 

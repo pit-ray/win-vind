@@ -25,11 +25,11 @@ namespace vind
 
             void init() ;
 
-            void error(const std::string& msg, const std::string& scope="") ;
+            void error(const std::string& msg, const std::string& scope="") noexcept ;
 
-            void message(const std::string& msg, const std::string& scope="") ;
+            void message(const std::string& msg, const std::string& scope="") noexcept ;
 
-            void warning(const std::string& msg, const std::string& scope="") ;
+            void warning(const std::string& msg, const std::string& scope="") noexcept ;
 
             Logger(Logger&&)                 = delete ;
             Logger& operator=(Logger&&)      = delete ;

@@ -114,7 +114,7 @@ namespace vind
 
             pimpl->ksr_.reset() ;
             pimpl->last_keycode_ = KeyCode() ;
-            pimpl->last_str_.clear() ;
+            pimpl->laststr_.clear() ;
 
             pimpl->strlog_.clear() ;
             KeyLoggerBase::clear() ;

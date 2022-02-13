@@ -60,50 +60,15 @@ namespace
 namespace vind
 {
     namespace core {
-        struct Logger::Impl {
-            std::ofstream stream_ ;
-
-            std::string head_ ;
-            std::size_t keep_log_num_ ;
-            std::size_t header_align_width_ ;
-
-            // When writing to a stream in a multi-threaded manner,
-            // an exclusion process is performed so that the contents do not get mixed up.
-            std::mutex mtx_ ;
-
-            template <typename String>
-            Impl(
-                String&& filename_head,
-                std::size_t keeping_log_num,
-                std::size_t align_width_of_header)
-            : stream_(),
-              head_(std::forward<String>(filename_head)),
-              keep_log_num_(keeping_log_num),
-              header_align_width_(align_width_of_header),
-              mtx_()
-            {}
-
-            template <typename Key, typename... Vals>
-            void add_spec(Key&& key, Vals&&... vals) {
-                stream_ << std::right ;
-                stream_ << std::setw(header_align_width_) ;
-                stream_ << std::forward<Key>(key) ;
-                stream_ << std::left ;
-                stream_ << std::setw(0) ;
-                ((stream_ << std::forward<Vals>(vals)), ...) ;
-                stream_ << std::endl ;
-                stream_.flush() ;
-            }
-        } ;
-
         Logger::Logger(
-            std::string&& filename_head,
+            const std::string& filename_head,
             std::size_t keeping_log_num,
-            std::size_t align_width_of_header)
-        : pimpl(std::make_unique<Impl>(
-                    std::move(filename_head),
-                    keeping_log_num,
-                    align_width_of_header))
+            std::size_t align_width_of_header) noexcept
+        : stream_(),
+          head_(filename_head),
+          keep_log_num_(keeping_log_num),
+          header_align_width_(align_width_of_header),
+          mtx_()
         {}
 
         Logger::~Logger() noexcept = default ;
@@ -141,31 +106,42 @@ namespace vind
                 std::filesystem::create_directories(log_dir) ;
             }
 
-            auto filepath = log_dir / (pimpl->head_ + ss.str() + ".log") ;
+            auto filepath = log_dir / (head_ + ss.str() + ".log") ;
 
-            pimpl->stream_.open(filepath, std::ios::app) ;
+            stream_.open(filepath, std::ios::app) ;
+
+            auto add_spec = [this](auto&& key, auto&&... vals) {
+                stream_ << std::right ;
+                stream_ << std::setw(header_align_width_) ;
+                stream_ << std::forward<decltype(key)>(key) ;
+                stream_ << std::left ;
+                stream_ << std::setw(0) ;
+                ((stream_ << std::forward<decltype(vals)>(vals)), ...) ;
+                stream_ << std::endl ;
+                stream_.flush() ;
+            } ;
 
             // Export system infomation for handling issues.
-            pimpl->stream_ << "========== System Infomation ==========\n" ;
-            pimpl->stream_ << "[Windows]\n" ;
+            stream_ << "========== System Infomation ==========\n" ;
+            stream_ << "[Windows]\n" ;
 
             auto [major, minor, build] = util::get_Windows_versions() ;
 
-            pimpl->add_spec("Edition: ", util::get_Windows_edition(major, minor)) ;
-            pimpl->add_spec("Version: ", util::get_Windows_display_version()) ;
-            pimpl->add_spec("Build Numbers: ", major, ".", minor, ".", build) ;
-            pimpl->add_spec("Architecture: ", util::get_Windows_architecture()) ;
+            add_spec("Edition: ", util::get_Windows_edition(major, minor)) ;
+            add_spec("Version: ", util::get_Windows_display_version()) ;
+            add_spec("Build Numbers: ", major, ".", minor, ".", build) ;
+            add_spec("Architecture: ", util::get_Windows_architecture()) ;
 
-            pimpl->stream_ << std::endl ;
+            stream_ << std::endl ;
 
-            pimpl->stream_ << "[win-vind]\n" ;
-            pimpl->add_spec("Version: ", WIN_VIND_VERSION) ;
+            stream_ << "[win-vind]\n" ;
+            add_spec("Version: ", WIN_VIND_VERSION) ;
 
-            pimpl->stream_ << "=======================================\n" ;
-            pimpl->stream_.flush() ;
+            stream_ << "=======================================\n" ;
+            stream_.flush() ;
 
              //If the log files exists over five, remove old files.
-            remove_files_over(log_dir, pimpl->head_ + "*.log", pimpl->keep_log_num_) ;
+            remove_files_over(log_dir, head_ + "*.log", keep_log_num_) ;
         }
 
         /*
@@ -174,15 +150,15 @@ namespace vind
          *       them only if they are writable.
          */
         void Logger::error(const std::string& msg, const std::string& scope) noexcept {
-            if(!pimpl->stream_.is_open()) {
+            if(!stream_.is_open()) {
                 return ;
             }
             try {
-                std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
+                std::lock_guard<std::mutex> scoped_lock{mtx_} ;
 
                 auto win_ercode = GetLastError() ;
                 if(win_ercode) {
-                    pimpl->stream_ << "[Error] " ;
+                    stream_ << "[Error] " ;
 
                     LPSTR msgbuf = nullptr ;
                     if(auto size = FormatMessageA(
@@ -195,22 +171,22 @@ namespace vind
                                 0, NULL)) {
 
                         // print message without \r\n
-                        pimpl->stream_ << std::string(msgbuf, size - 2) ;
+                        stream_ << std::string(msgbuf, size - 2) ;
                         LocalFree(msgbuf) ;
                     }
                     else {
-                        pimpl->stream_ << "Windows Error Code: [" << win_ercode << "]" ;
+                        stream_ << "Windows Error Code: [" << win_ercode << "]" ;
                     }
                 }
-                pimpl->stream_ <<  std::endl ;
+                stream_ <<  std::endl ;
 
-                pimpl->stream_ << "[Error] " << msg ;
+                stream_ << "[Error] " << msg ;
                 if(!scope.empty()) {
-                    pimpl->stream_ << " (" << scope << ")" ;
+                    stream_ << " (" << scope << ")" ;
                 }
-                pimpl->stream_ << std::endl ;
+                stream_ << std::endl ;
 
-                pimpl->stream_.flush() ;
+                stream_.flush() ;
             }
             catch(...) {
                 return ;
@@ -218,19 +194,19 @@ namespace vind
         }
 
         void Logger::message(const std::string& msg, const std::string& scope) noexcept {
-            if(!pimpl->stream_.is_open()) {
+            if(!stream_.is_open()) {
                 return ;
             }
 
             try {
-                std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
+                std::lock_guard<std::mutex> scoped_lock{mtx_} ;
 
-                pimpl->stream_ << "[Message] " << msg ;
+                stream_ << "[Message] " << msg ;
                 if(!scope.empty()) {
-                    pimpl->stream_ << " (" << scope << ")" ;
+                    stream_ << " (" << scope << ")" ;
                 }
-                pimpl->stream_ << std::endl ;
-                pimpl->stream_.flush() ;
+                stream_ << std::endl ;
+                stream_.flush() ;
             }
             catch(...) {
                 return ;
@@ -238,19 +214,19 @@ namespace vind
         }
 
         void Logger::warning(const std::string& msg, const std::string& scope) noexcept {
-            if(!pimpl->stream_.is_open()) {
+            if(!stream_.is_open()) {
                 return ;
             }
 
             try {
-                std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
+                std::lock_guard<std::mutex> scoped_lock{mtx_} ;
 
-                pimpl->stream_ << "[Warning] " << msg ;
+                stream_ << "[Warning] " << msg ;
                 if(!scope.empty()) {
-                    pimpl->stream_ << " (" << scope << ")" ;
+                    stream_ << " (" << scope << ")" ;
                 }
-                pimpl->stream_ << std::endl ;
-                pimpl->stream_.flush() ;
+                stream_ << std::endl ;
+                stream_.flush() ;
             }
             catch(...) {
                 return ;

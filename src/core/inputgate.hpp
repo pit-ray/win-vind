@@ -66,16 +66,11 @@ namespace vind
             inline bool is_pressed(
                     KeyCode keycode,
                     Args&&... keys) noexcept {
-                return is_pressed(keycode) && is_pressed(std::forward<Args>(keys)...) ;
+                return is_pressed(keycode) && \
+                       is_pressed(std::forward<Args>(keys)...) ;
             }
 
             bool is_really_pressed(KeyCode keycode) noexcept ;
-            template <typename... Args>
-            inline bool is_really_pressed(
-                    KeyCode keycode,
-                    Args&&... keys) noexcept {
-                return is_really_pressed(keycode) && is_really_pressed(std::forward<Args>(keys)...) ;
-            }
 
             KeyLog pressed_list() ;
 

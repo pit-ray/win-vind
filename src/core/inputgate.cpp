@@ -945,8 +945,13 @@ namespace vind
         }
 
         InstantKeyAbsorber::~InstantKeyAbsorber() noexcept {
-            if(!flag_) {
-                InputGate::get_instance().unabsorb() ;
+            try {
+                if(!flag_) {
+                    InputGate::get_instance().unabsorb() ;
+                }
+            }
+            catch(const std::exception& e) {
+                PRINT_ERROR(e.what()) ;
             }
         }
     } // namespace core

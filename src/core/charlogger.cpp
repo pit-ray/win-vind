@@ -20,7 +20,7 @@ namespace vind
     namespace core
     {
         struct CharLogger::Impl {
-            KeyLog prelog_ ;
+            KeyLog::Data prelog_ ;
             util::KeyStrokeRepeater ksr_ ; 
             KeyLog::Data non_chars_ ;
             std::vector<std::string> strlog_ ;
@@ -110,7 +110,12 @@ namespace vind
         CharLogger& CharLogger::operator=(CharLogger&&) = default ;
 
         void CharLogger::clear() noexcept {
-            sync_state_with(CharLogger()) ;
+            pimpl->prelog_.clear() ;
+
+            pimpl->ksr_.reset() ;
+            pimpl->last_keycode_ = KeyCode() ;
+            pimpl->last_str_.clear() ;
+
             pimpl->strlog_.clear() ;
             KeyLoggerBase::clear() ;
         }
@@ -170,7 +175,7 @@ namespace vind
             }
 
             auto diff = log - pimpl->prelog_ ;
-            pimpl->prelog_ = log ;
+            pimpl->prelog_ = log.data() ;
 
             if(diff.empty()) {
                 return 0 ;

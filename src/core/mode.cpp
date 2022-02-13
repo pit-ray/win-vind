@@ -78,7 +78,7 @@ namespace vind
             return to_prefix[static_cast<int>(mode)] ;
         }
 
-        Mode parse_mode_prefix(const std::string& prefix) noexcept {
+        Mode parse_mode_prefix(const std::string& prefix) {
             static std::unordered_map<std::string, Mode> to_mode {
                 {"i",  Mode::INSERT},
                 {"gn", Mode::GUI_NORMAL},
@@ -89,12 +89,7 @@ namespace vind
                 {"r",  Mode::RESIDENT}
             } ;
 
-            try {
-                return to_mode.at(prefix) ;
-            }
-            catch(const std::out_of_range&) {
-                return Mode::UNDEFINED ;
-            }
+            return to_mode.at(prefix) ;
         }
 
         const std::string& mode_to_name(Mode mode) noexcept {

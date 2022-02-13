@@ -101,6 +101,10 @@ namespace vind
             for(auto& parser : pimpl->parsers_) {
                 auto num = parser->validate_if_match(log) ;
 
+                if(num <= 0) {
+                    continue ;
+                }
+
                 if(parser->is_rejected()) {
                     continue ;
                 }

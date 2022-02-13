@@ -1,8 +1,7 @@
 #ifndef _ERR_LOGGER_HPP
 #define _ERR_LOGGER_HPP
 
-#include <fstream>
-#include <mutex>
+#include <memory>
 #include <string>
 
 
@@ -12,26 +11,19 @@ namespace vind
     {
         class Logger {
         private:
-            std::ofstream stream_ ;
-
-            std::string head_ ;
-            std::size_t keep_log_num_ ;
-            std::size_t header_align_width_ ;
-
-            // When writing to a stream in a multi-threaded manner,
-            // an exclusion process is performed so that the contents do not get mixed up.
-            std::mutex mtx_ ;
-
-            Logger(
-                const std::string& filename_head,
-                std::size_t keeping_log_num,
-                std::size_t align_width_of_header) noexcept ;
+            Logger() noexcept ;
             ~Logger() noexcept ;
+
+            struct Impl ;
+            std::unique_ptr<Impl> pimpl ;
 
         public:
             static Logger& get_instance() ;
 
-            void init() ;
+            void init(
+                    const std::string& filename_head,
+                    std::size_t keeping_log_num,
+                    std::size_t align_width_of_header) ;
 
             void error(const std::string& msg, const std::string& scope="") noexcept ;
 

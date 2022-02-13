@@ -172,7 +172,7 @@ namespace vind
                 std::filesystem::create_directories(CONFIG_PATH()) ;
             }
 
-            Logger::get_instance().init() ;
+            Logger::get_instance().init("syslog_", 10, 15) ;
 
             pimpl->map_ = CreateFileMappingA(
                     INVALID_HANDLE_VALUE, NULL,

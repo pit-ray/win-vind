@@ -11,10 +11,7 @@ namespace vind
     {
         class Logger {
         private:
-            Logger(
-                std::string&& filename_head,
-                std::size_t keeping_log_num,
-                std::size_t align_width_of_header) ;
+            Logger() noexcept ;
             ~Logger() noexcept ;
 
             struct Impl ;
@@ -23,13 +20,16 @@ namespace vind
         public:
             static Logger& get_instance() ;
 
-            void init() ;
+            void init(
+                    const std::string& filename_head,
+                    std::size_t keeping_log_num,
+                    std::size_t align_width_of_header) ;
 
-            void error(const std::string& msg, const std::string& scope="") ;
+            void error(const std::string& msg, const std::string& scope="") noexcept ;
 
-            void message(const std::string& msg, const std::string& scope="") ;
+            void message(const std::string& msg, const std::string& scope="") noexcept ;
 
-            void warning(const std::string& msg, const std::string& scope="") ;
+            void warning(const std::string& msg, const std::string& scope="") noexcept ;
 
             Logger(Logger&&)                 = delete ;
             Logger& operator=(Logger&&)      = delete ;

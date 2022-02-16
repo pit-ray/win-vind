@@ -47,7 +47,8 @@ namespace vind
             auto& igate = InputGate::get_instance() ;
             igate.refresh_toggle_state() ;
 
-            if(igate.is_really_pressed(KEYCODE_F8, KEYCODE_F9)) {
+            if(igate.is_really_pressed(KEYCODE_F8) && \
+               igate.is_really_pressed(KEYCODE_F9)) {
                 throw SafeForcedTermination() ;
             }
         }

@@ -74,11 +74,11 @@ namespace vind
                 tmp[static_cast<int>(Mode::COMMAND)]    = "c" ;
                 tmp[static_cast<int>(Mode::RESIDENT)]   = "r" ;
                 return tmp ;
-            } () ;
+            }() ;
             return to_prefix[static_cast<int>(mode)] ;
         }
 
-        Mode parse_mode_prefix(const std::string& prefix) noexcept {
+        Mode parse_mode_prefix(const std::string& prefix) {
             static std::unordered_map<std::string, Mode> to_mode {
                 {"i",  Mode::INSERT},
                 {"gn", Mode::GUI_NORMAL},
@@ -89,33 +89,23 @@ namespace vind
                 {"r",  Mode::RESIDENT}
             } ;
 
-            try {
-                return to_mode.at(prefix) ;
-            }
-            catch(const std::out_of_range&) {
-                return Mode::UNDEFINED ;
-            }
+            return to_mode.at(prefix) ;
         }
 
         const std::string& mode_to_name(Mode mode) noexcept {
-            static const std::unordered_map<Mode, std::string> obj {
-                {Mode::INSERT,     "Insert"},
-                {Mode::GUI_NORMAL, "GUI Normal"},
-                {Mode::GUI_VISUAL, "GUI Visual"},
-                {Mode::EDI_NORMAL, "Editor Normal"},
-                {Mode::EDI_VISUAL, "Editor Visual"},
-                {Mode::INSERT,     "Insert"},
-                {Mode::COMMAND,    "Command"},
-                {Mode::RESIDENT,   "Resident"}
-            } ;
-
-            try {
-                return obj.at(mode) ;
-            }
-            catch(const std::out_of_range&) {
-                static const std::string undef_str("Undefined") ;
-                return undef_str ;
-            }
+            static auto to_str = [] {
+                std::array<std::string, mode_num()> tmp ;
+                tmp[static_cast<int>(Mode::INSERT)]     = "Insert" ;
+                tmp[static_cast<int>(Mode::GUI_NORMAL)] = "GUI Normal" ;
+                tmp[static_cast<int>(Mode::GUI_VISUAL)] = "GUI Visual" ;
+                tmp[static_cast<int>(Mode::EDI_NORMAL)] = "Editor Normal" ;
+                tmp[static_cast<int>(Mode::EDI_VISUAL)] = "Editor Visual" ;
+                tmp[static_cast<int>(Mode::INSERT)]     = "Insert" ;
+                tmp[static_cast<int>(Mode::COMMAND)]    = "Command" ;
+                tmp[static_cast<int>(Mode::RESIDENT)]   = "Resident" ;
+                return tmp ;
+            }() ;
+            return to_str[static_cast<int>(mode)] ;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace vind
             return mode_to_prefix(static_cast<Mode>(mode)) ;
         }
 
-        Mode parse_mode_prefix(const std::string& prefix) noexcept ;
+        Mode parse_mode_prefix(const std::string& prefix) ;
 
         const std::string& mode_to_name(Mode mode) noexcept ;
         template <typename T>

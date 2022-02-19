@@ -66,7 +66,7 @@ jobs:
     - name: Configure CMake
       run: |
         cov_tools/bin/cov-configure --config $env:OUTDIR/covtest/cov.xml --msvc --template --xml-option=skip_file:".*/libs.*"
-        cmake -B $env:OUTDIR -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+        cmake -B $env:OUTDIR -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
 
     - name: Build with Coverity
       run: |

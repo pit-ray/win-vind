@@ -62,4 +62,4 @@ AddTest(each-keycode-test
 AddTest(each-unicode-test
     ${CMAKE_CURRENT_SOURCE_DIR}/unicode_test.cpp
 )
-target_link_libraries(each-unicode-test ${ICU_LIB})
+target_link_libraries(each-unicode-test icu)

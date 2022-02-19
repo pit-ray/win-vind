@@ -61,7 +61,7 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DBIT_TYPE=64 -DCCACHE_ENABLE=OFF .
+        cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCCACHE_ENABLE=OFF .
 
     - name: Build
       run: |

@@ -5,10 +5,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-if(NOT BIT_TYPE)
-    set(BIT_TYPE 64)
-endif()
-
 option(CCACHE_ENABLE ON)
 
 enable_language(CXX)
@@ -26,14 +22,6 @@ if(${MSVC})
     endif()
 
 else()
-    if(NOT WINDOWS_SDK_INCLUDE_DIR)
-        get_winsdk_include(WINDOWS_SDK_INCLUDE_DIR)
-    endif()
-
-    if(NOT WINDOWS_SDK_LIB_DIR)
-        get_winsdk_lib(WINDOWS_SDK_LIB_DIR)
-    endif()
-
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS OFF)
@@ -72,11 +60,11 @@ else()
     list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS)
     string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-    if(${BIT_TYPE} STREQUAL 32)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-    else()
+    #if(${CMAKE_GENERATOR_PLATFORM} STREQUAL x64)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
-    endif()
+    #else()
+        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+    #endif()
 
     if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g3 -DDEBUG")
@@ -95,6 +83,17 @@ message(STATUS "The number of processors: " ${PROC_N})
 set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
+if(NOT WINDOWS_SDK_INCLUDE_DIR)
+    get_winsdk_include(WINDOWS_SDK_INCLUDE_DIR)
+endif()
+include_directories(${WINDOWS_SDK_INCLUDE_DIR})
+
+if(NOT WINDOWS_SDK_LIB_DIR)
+    get_winsdk_lib(WINDOWS_SDK_LIB_DIR)
+endif()
+link_directories(${WINDOWS_SDK_LIB_DIR})
 
 # set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake_modules)
 
@@ -115,11 +114,13 @@ set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
 set(CPACK_GENERATOR NSIS)
 
+get_gen_arch(gen_arch)
+
 set(CPACK_PACKAGE_NAME ${CPACK_PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION ${CPACK_PROJECT_VERSION})
 set(CPACK_PACKAGE_VENDOR "pit-ray")
 set(CPACK_PACKAGE_COPYRIGHT "Copyright (c) 2020-2022 pit-ray")
-set(CPACK_PACKAGE_DESCRIPTION "win-vind - Simple Vim Key Binder for Windows (${BIT_TYPE}-bit)")
+set(CPACK_PACKAGE_DESCRIPTION "win-vind - Simple Vim Key Binder for Windows (${gen_arch})")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://pit-ray.github.io/win-vind/")
 set(CPACK_PACKAGE_FILE_NAME "setup_${CPACK_PROJECT_NAME}_${CPACK_PROJECT_VERSION}")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")

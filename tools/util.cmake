@@ -25,9 +25,30 @@ function(get_winsdk_include output)
             "Could not find the directory (${winsdk_include})."
             "You can fix by the cmake flag; -D${output}=<Path>")
     endif()
-    message(STATUS "Detected Windows SDK (Include): ${winsdk_include}")
 
-    set(${output} ${winsdk_include} PARENT_SCOPE)
+    if(${MINGW})
+        # Since MinGW conflicts with some files,
+        # include the SDK explicitly, such as.
+        # #include <um/uiautomationclient.h>
+        set(winsdk_include_dirs ${winsdk_include})
+    else()
+        file(GLOB winsdk_include_dirs LIST_DIRECTORIES true "${winsdk_include}/*")
+    endif()
+
+    message(STATUS "Detected Windows SDK (Include): ${winsdk_include_dirs}")
+
+    set(${output} ${winsdk_include_dirs} PARENT_SCOPE)
+endfunction()
+
+
+function(get_gen_arch output)
+    if(NOT CMAKE_GENERATOR_PLATFORM)
+        set(gen_arch "x64")
+    else()
+        string(TOLOWER ${CMAKE_GENERATOR_PLATFORM} gen_arch)
+    endif()
+
+    set(${output} ${gen_arch} PARENT_SCOPE)
 endfunction()
 
 
@@ -40,9 +61,23 @@ function(get_winsdk_lib output)
             "Could not find the directory (${winsdk_lib})."
             "You can fix by the cmake flag; -D${output}=<Path>")
     endif()
-    message(STATUS "Detected Windows SDK (Lib): ${winsdk_lib}")
 
-    set(${output} ${winsdk_lib} PARENT_SCOPE)
+    get_gen_arch(gen_arch)
+    if(${gen_arch} STREQUAL "arm")
+        set(winsdk_arch "arm")
+    elseif(${gen_arch} STREQUAL "arm64")
+        set(winsdk_arch "arm64")
+    elseif(${gen_arch} STREQUAL "win32")
+        set(winsdk_arch "x86")
+    else()
+        set(winsdk_arch "x64")
+    endif()
+
+    file(GLOB winsdk_lib_dirs LIST_DIRECTORIES true "${winsdk_lib}/*/${winsdk_arch}")
+
+    message(STATUS "Detected Windows SDK (Lib): ${winsdk_lib_dirs}")
+
+    set(${output} ${winsdk_lib_dirs} PARENT_SCOPE)
 endfunction()
 
 

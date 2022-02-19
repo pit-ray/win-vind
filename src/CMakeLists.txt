@@ -97,7 +97,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/libs
-    ${WINDOWS_SDK_INCLUDE_DIR}
     ${wxWidgets_INCLUDE_DIRS}
 )
 
@@ -110,8 +109,6 @@ if(${MSVC})
         ${winresobj}
         ${SOURCE_FILES}
     )
-
-    set(ICU_LIB icu)
 
 else()
     # If you have installed it in Program Files,
@@ -143,8 +140,6 @@ else()
             ${SOURCE_FILES}
         )
     endif()
-
-    icu_absolute_x64(${WINDOWS_SDK_LIB_DIR} ICU_LIB)
 endif()
 
 
@@ -153,5 +148,5 @@ target_link_libraries(${PROJECT_NAME}
     psapi
     dwmapi
     userenv
-    ${ICU_LIB}
+    icu
 )

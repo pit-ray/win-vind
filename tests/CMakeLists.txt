@@ -10,27 +10,24 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(ROOT_DIR ..)
 
-include(${ROOT_DIR}/tools/util.cmake)
-
 if(${MSVC})
     add_compile_options(/W4 /std:c++17 /MT /D_UNICODE /DUNICODE /DEBUG /DDEBUG /utf-8)
     add_link_options(/FORCE:MULTIPLE)
-
-    set(ICU_LIB icu)
 else()
     set(CMAKE_CXX_FLAGS "-static -lstdc++ -lstdc++fs -lgcc -fdiagnostics-color -DUNICODE -D_UNICODE -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00 --coverage -m64 -O0 -g3 -DDEBUG -Wl,--allow-multiple-definition")
-
-    if(NOT WINDOWS_SDK_INCLUDE_DIR)
-        get_winsdk_include(WINDOWS_SDK_INCLUDE_DIR)
-    endif()
-
-    if(NOT WINDOWS_SDK_LIB_DIR)
-        get_winsdk_lib(WINDOWS_SDK_LIB_DIR)
-    endif()
-
-    include_directories(${WINDOWS_SDK_INCLUDE_DIR})
-    icu_absolute_x64(${WINDOWS_SDK_LIB_DIR} ICU_LIB)
 endif()
+
+include(${ROOT_DIR}/tools/util.cmake)
+
+if(NOT WINDOWS_SDK_INCLUDE_DIR)
+    get_winsdk_include(WINDOWS_SDK_INCLUDE_DIR)
+endif()
+include_directories(${WINDOWS_SDK_INCLUDE_DIR})
+
+if(NOT WINDOWS_SDK_LIB_DIRS)
+    get_winsdk_lib(WINDOWS_SDK_LIB_DIR)
+endif()
+link_directories(${WINDOWS_SDK_LIB_DIR})
 
 include(ProcessorCount)
 ProcessorCount(PROC_N)

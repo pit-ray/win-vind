@@ -35,6 +35,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Install tools
+      run: |
+        choco install -y unzip
+
     - name: Cache Libraries
       uses: actions/cache@v2
       with:
@@ -59,6 +67,8 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         cd tests/build
-        cp C:/Windows/System32/icu.dll .
+        cmd /c curl -OL https://github.com/unicode-org/icu/releases/download/release-70-1/icu4c-70_1-Win64-MSVC2019.zip
+        unzip icu4c-70_1-Win64-MSVC2019.zip
+        mv bin64/icuuc70.dll icu.dll
         ctest -C ${{env.BUILD_TYPE}} --output-on-failure
         cd ../..

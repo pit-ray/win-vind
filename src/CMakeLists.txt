@@ -144,5 +144,5 @@ target_link_libraries(${PROJECT_NAME}
     psapi
     dwmapi
     userenv
-    icu
+    icuuc
 )

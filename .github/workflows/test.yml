@@ -5,6 +5,7 @@ on:
     branches: [ master ]
     tags:
       - v*.*.*
+      - test*
     paths:
       - '!README.md'
       - '!CONTRIBUTING.md'
@@ -32,16 +33,16 @@ jobs:
   test-on-Windows:
     runs-on: windows-latest
 
+    defaults:
+      run:
+        shell: powershell
+
     steps:
     - uses: actions/checkout@v2
 
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-
-    - name: Install tools
-      run: |
-        choco install -y unzip
 
     - name: Cache Libraries
       uses: actions/cache@v2
@@ -63,17 +64,7 @@ jobs:
       run: |
         cmake --build ${{github.workspace}}/tests/build --config ${{env.BUILD_TYPE}}
 
-    - name: Prepare ICU
-      run: |
-        cmd /c curl -OL https://github.com/unicode-org/icu/releases/download/release-70-1/icu4c-70_1-Win64-MSVC2019.zip
-        unzip icu4c-70_1-Win64-MSVC2019.zip
-        cp bin64/icuuc70.dll bin64/icu.dll
-        $env:PATH="${{github.workspace}}\bin64;"+$env:PATH
-        echo $env:PATH
-
     - name: Test
-      working-directory: ${{github.workspace}}
+      working-directory: ${{github.workspace}}/tests/build
       run: |
-        cd tests/build
         ctest -C ${{env.BUILD_TYPE}} --output-on-failure
-        cd ../..

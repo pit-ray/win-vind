@@ -111,6 +111,8 @@ if(${MSVC})
         ${SOURCE_FILES}
     )
 
+    set(ICU_LIB icu)
+
 else()
     # If you have installed it in Program Files,
     # it will not be escaped properly, so use the environment path.
@@ -141,7 +143,15 @@ else()
             ${SOURCE_FILES}
         )
     endif()
+
+    set(ICU_LIB ${WINDOWS_SDK_LIB_DIR}/um/x64/icu.lib)
 endif()
 
+
 link_wxWidgets(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} psapi dwmapi userenv)
+target_link_libraries(${PROJECT_NAME}
+    psapi
+    dwmapi
+    userenv
+    ${ICU_LIB}
+)

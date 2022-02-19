@@ -27,15 +27,28 @@ else()
     if(NOT WINDOWS_SDK_INCLUDE_DIR)
         get_filename_component(WINDOWS_SDK_ROOT_DIR
             "[HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows Kits\\Installed Roots;KitsRoot10]" REALPATH)
-        file(GLOB WINDOWS_SDK_INCS LIST_DIRECTORIES true "${WINDOWS_SDK_ROOT_DIR}/Include/10.0.*.*")
-        list(SORT WINDOWS_SDK_INCS ORDER DESCENDING)
-        list(GET WINDOWS_SDK_INCS 0 WINDOWS_SDK_INCLUDE_DIR)
+
+        function(get_latest_sdk catdir output)
+            file(GLOB WINDOWS_SDKS LIST_DIRECTORIES true "${WINDOWS_SDK_ROOT_DIR}/${catdir}/10.0.*.*")
+            list(SORT WINDOWS_SDKS ORDER DESCENDING)
+            list(GET WINDOWS_SDKS 0 WINDOWS_SDK_DIR)
+            set(${output} ${WINDOWS_SDK_DIR} PARENT_SCOPE)
+        endfunction()
+
+        get_latest_sdk("Include" WINDOWS_SDK_INCLUDE_DIR)
+        get_latest_sdk("Lib" WINDOWS_SDK_LIB_DIR)
     endif()
     if(NOT EXISTS ${WINDOWS_SDK_INCLUDE_DIR})
         message(FATAL_ERROR "Could not find the directory; ${WINDOWS_SDK_INCLUDE_DIR}."
             "You can fix by the cmake flag; -DWINDOWS_SDK_INCLUDE_DIR=<Path>")
     endif()
-    message(STATUS "Detected Windows SDK: ${WINDOWS_SDK_INCLUDE_DIR}")
+    message(STATUS "Detected Windows SDK (Include): ${WINDOWS_SDK_INCLUDE_DIR}")
+
+    if(NOT EXISTS ${WINDOWS_SDK_LIB_DIR})
+        message(FATAL_ERROR "Could not find the directory; ${WINDOWS_SDK_LIB_DIR}."
+            "You can fix by the cmake flag; -DWINDOWS_SDK_LIB_DIR=<Path>")
+    endif()
+    message(STATUS "Detected Windows SDK (Lib): ${WINDOWS_SDK_LIB_DIR}")
 
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)

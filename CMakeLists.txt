@@ -11,6 +11,8 @@ enable_language(CXX)
 
 include(tools/util.cmake)
 
+get_gen_arch(GEN_ARCH)
+
 if(${MSVC})
     add_compile_options(/W4 /std:c++17 /MT /D_UNICODE /DUNICODE /utf-8)
 
@@ -114,13 +116,11 @@ set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
 set(CPACK_GENERATOR NSIS)
 
-get_gen_arch(gen_arch)
-
 set(CPACK_PACKAGE_NAME ${CPACK_PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION ${CPACK_PROJECT_VERSION})
 set(CPACK_PACKAGE_VENDOR "pit-ray")
 set(CPACK_PACKAGE_COPYRIGHT "Copyright (c) 2020-2022 pit-ray")
-set(CPACK_PACKAGE_DESCRIPTION "win-vind - Simple Vim Key Binder for Windows (${gen_arch})")
+set(CPACK_PACKAGE_DESCRIPTION "win-vind - Simple Vim Key Binder for Windows (${GEN_ARCH})")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://pit-ray.github.io/win-vind/")
 set(CPACK_PACKAGE_FILE_NAME "setup_${CPACK_PROJECT_NAME}_${CPACK_PROJECT_VERSION}")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")

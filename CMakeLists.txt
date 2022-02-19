@@ -13,6 +13,8 @@ option(CCACHE_ENABLE ON)
 
 enable_language(CXX)
 
+include(tools/util.cmake)
+
 if(${MSVC})
     add_compile_options(/W4 /std:c++17 /MT /D_UNICODE /DUNICODE /utf-8)
 
@@ -25,30 +27,12 @@ if(${MSVC})
 
 else()
     if(NOT WINDOWS_SDK_INCLUDE_DIR)
-        get_filename_component(WINDOWS_SDK_ROOT_DIR
-            "[HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows Kits\\Installed Roots;KitsRoot10]" REALPATH)
-
-        function(get_latest_sdk catdir output)
-            file(GLOB WINDOWS_SDKS LIST_DIRECTORIES true "${WINDOWS_SDK_ROOT_DIR}/${catdir}/10.0.*.*")
-            list(SORT WINDOWS_SDKS ORDER DESCENDING)
-            list(GET WINDOWS_SDKS 0 WINDOWS_SDK_DIR)
-            set(${output} ${WINDOWS_SDK_DIR} PARENT_SCOPE)
-        endfunction()
-
-        get_latest_sdk("Include" WINDOWS_SDK_INCLUDE_DIR)
-        get_latest_sdk("Lib" WINDOWS_SDK_LIB_DIR)
+        get_winsdk_include(WINDOWS_SDK_INCLUDE_DIR)
     endif()
-    if(NOT EXISTS ${WINDOWS_SDK_INCLUDE_DIR})
-        message(FATAL_ERROR "Could not find the directory; ${WINDOWS_SDK_INCLUDE_DIR}."
-            "You can fix by the cmake flag; -DWINDOWS_SDK_INCLUDE_DIR=<Path>")
-    endif()
-    message(STATUS "Detected Windows SDK (Include): ${WINDOWS_SDK_INCLUDE_DIR}")
 
-    if(NOT EXISTS ${WINDOWS_SDK_LIB_DIR})
-        message(FATAL_ERROR "Could not find the directory; ${WINDOWS_SDK_LIB_DIR}."
-            "You can fix by the cmake flag; -DWINDOWS_SDK_LIB_DIR=<Path>")
+    if(NOT WINDOWS_SDK_LIB_DIR)
+        get_winsdk_lib(WINDOWS_SDK_LIB_DIR)
     endif()
-    message(STATUS "Detected Windows SDK (Lib): ${WINDOWS_SDK_LIB_DIR}")
 
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -112,21 +96,9 @@ set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake_modules)
+# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake_modules)
 
-find_program(CCACHE ccache)
-if(CCACHE)
-    if(${CCACHE_ENABLE})
-        if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-            message(STATUS "Enable ccache")
-            if(CMAKE_CXX_COMPILER_LAUNCHER)
-                set(CMAKE_CXX_COMPILER_LAUNCHER "${CMAKE_CXX_COMPILER_LAUNCHER}" "${CCACHE}")
-            else()
-                set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE}")
-            endif()
-        endif()
-    endif()
-endif()
+# enable_ccache()
 
 add_subdirectory(src)
 

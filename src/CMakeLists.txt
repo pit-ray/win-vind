@@ -144,7 +144,7 @@ else()
         )
     endif()
 
-    set(ICU_LIB ${WINDOWS_SDK_LIB_DIR}/um/x64/icu.lib)
+    icu_absolute_x64(${WINDOWS_SDK_LIB_DIR} ICU_LIB)
 endif()
 
 

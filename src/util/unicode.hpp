@@ -11,7 +11,7 @@ namespace vind
         /*
          * It performs grapheme boundary detection on multi-byte strings
          * encoded in UTF-8, and returns a UTF-32 string containing only
-         * the first code point of each. The length matches the grapheme
+         * the first codepoint of each. The length matches the grapheme
          * cluster.
          *
          * @param[in] (utf8str) Multi-byte character strings encoded in UTF-8.
@@ -21,7 +21,7 @@ namespace vind
 
         /*
          * It performs general UTF-8 to UTF-32 conversion. Thus, the length
-         * of the returned string will match the number of code points.
+         * of the returned string will match the number of codepoints.
          *
          * @param[in] (utf8str) Multi-byte character strings encoded in UTF-8.
          * @return std::u32string

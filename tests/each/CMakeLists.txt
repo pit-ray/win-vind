@@ -58,3 +58,8 @@ AddTest(each-keycode-test
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/util/string.cpp
 )
+
+AddTest(each-unicode-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/unicode_test.cpp
+)
+target_link_libraries(each-unicode-test ${ICU_LIB})

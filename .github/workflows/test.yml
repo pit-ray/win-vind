@@ -58,8 +58,7 @@ jobs:
     - name: Test
       working-directory: ${{github.workspace}}
       run: |
-        $env:PATH="C:\Windows\System32;"+$env:PATH
-        echo $env:PATH
         cd tests/build
+        cp C:/Windows/System32/icu.dll .
         ctest -C ${{env.BUILD_TYPE}} --output-on-failure
         cd ../..

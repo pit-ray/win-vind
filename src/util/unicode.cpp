@@ -384,10 +384,9 @@ namespace vind
             // binary search in table
             int first = 0 ;
             int last = static_cast<int>(cp_table.size()) - 1 ;
-            int mid ;
             while(first <= last) {
                 // NOTE: (first + last) / 2 may overflow.
-                mid = first + (last - first) / 2 ;
+                auto mid = first + (last - first) / 2 ;
 
                 if(cp < std::get<0>(cp_table[mid])) {
                     last = mid - 1 ;

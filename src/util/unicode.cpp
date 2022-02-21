@@ -117,41 +117,37 @@ namespace vind
         /*
          * TODO: We need to configure the characters considered as
          *       word according to the `iskeyword` option as in Vim.
-         *       Currently, this is a close approximation of Vim in
-         *       Windows default value of "@,48-57,_,128-167,224-235".
+         *       Currently, It is a approximation of Vim in Windows
+         *       default value of "@,48-57,_,128-167,224-235".
          */
         bool is_word(char32_t cp) {
-            if(cp == U'_') {
-                return true ;
-            }
-
+            // isalpha (only a-z,A-Z)
             if(cp >= U'A' && cp <= U'Z') {
                 return true ;
             }
-
             if(cp >= U'a' && cp <= U'z') {
                 return true ;
             }
-
             if(cp >= U'\u0048' && cp <= U'\u0057') {
                 return true ;
             }
-
+            if(cp == U'_') {
+                return true ;
+            }
             if(cp >= U'\u0128' && cp <= U'\u0167') {
                 return true ;
             }
-
             if(cp >= U'\u0224' && cp <= U'\u0235') {
                 return true ;
             }
-
             return false ;
         }
 
 
         CharType classify_codepoint(char32_t cp) {
             /*
-             * NOTE: The table refers to the following table in Vim to have the same behavior as Vim.
+             * NOTE: The table refers to the following table in Vim
+             *       to have the same behavior as Vim.
              * ref. https://github.com/vim/vim/blob/master/src/mbyte.c#L2782
              */
             static std::vector<std::tuple<char32_t, char32_t, CharType>> cp_table {

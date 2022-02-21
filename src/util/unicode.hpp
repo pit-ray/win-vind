@@ -27,6 +27,34 @@ namespace vind
          * @return std::u32string
          */
         std::u32string break_unicode_codepoint(const std::string& utf8str) ;
+
+
+        enum class CharType : unsigned char {
+            WHITE_SPACE,
+            PUNCTUATION,
+
+            EMOJI,
+
+            SUPERSCRIPT,
+            SUBSCRIPT,
+            BRAILLE,
+
+            HIRAGANA,
+            KATAKANA,
+            CJK_IDEOGRAPHS,
+            HANGUL_SYLLABLES,
+
+            OTHERWISE,
+        } ;
+
+        /*
+         * Classify classes of unicode code points.
+         * The class criteria is based on vim/mbyte.c.
+         *
+         * @param[in] (cp) UTF-32 character corresponding the code point.
+         * @return CharType
+         */
+        CharType classify_codepoint(char32_t cp) ;
     }
 }
 

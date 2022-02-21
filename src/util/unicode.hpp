@@ -46,6 +46,8 @@ namespace vind
             CJK_IDEOGRAPHS,
             HANGUL_SYLLABLES,
 
+            CARRIAGE_RETURN,
+
             OTHERWISE,
         } ;
 

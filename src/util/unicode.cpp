@@ -107,13 +107,6 @@ namespace vind
         }
 
 
-        inline bool is_white_space(char32_t cp) noexcept {
-            return cp == U' ' || \
-                   cp == U'\t' || \
-                   cp == U'\u0000' || \
-                   cp == U'\u00a0' ;
-        }
-
         /*
          * TODO: We need to configure the characters considered as
          *       word according to the `iskeyword` option as in Vim.
@@ -372,8 +365,11 @@ namespace vind
             } ;
 
             if(cp < U'\u0100') {
-                if(is_white_space(cp)) {
+                if(cp == U' ' || cp == U'\t' || cp == U'\u0000' || cp == U'\u00a0') {
                     return CharType::WHITE_SPACE ;
+                }
+                if(cp == U'\r') {
+                    return CharType::CARRIAGE_RETURN ;
                 }
                 if(is_word(cp)) {
                     return CharType::OTHERWISE ;

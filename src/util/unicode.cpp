@@ -108,11 +108,10 @@ namespace vind
 
 
         inline bool is_white_space(char32_t cp) noexcept {
-            if(cp == U' ') return true ;
-            if(cp == U'\t') return true ;
-            if(cp == U'\u0000') return true ;
-            if(cp == U'\u00a0') return true ;
-            return false ;
+            return cp == U' ' || \
+                   cp == U'\t' || \
+                   cp == U'\u0000' || \
+                   cp == U'\u00a0' ;
         }
 
         /*

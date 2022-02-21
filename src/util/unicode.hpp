@@ -30,6 +30,8 @@ namespace vind
 
 
         enum class CharType : unsigned char {
+            UNDEFINED,
+
             WHITE_SPACE,
             PUNCTUATION,
 

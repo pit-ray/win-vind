@@ -2,14 +2,26 @@
 
 #include "movebase.hpp"
 
+#include "bind/saferepeat.hpp"
+#include "core/inputgate.hpp"
 #include "core/ntypelogger.hpp"
 #include "smartclipboard.hpp"
+#include "textanalyze.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/unicode.hpp"
 #include "util/winwrap.hpp"
 
 #include <string>
+
+
+namespace
+{
+    inline auto break_unicode(const std::string& utf8str) {
+        auto str = util::break_unicode_grapheme(res.str) ;
+        //auto str = util::break_unicode_codepoint(res.str) ;
+    }
+}
 
 
 namespace vind
@@ -20,7 +32,39 @@ namespace vind
         : MoveBaseCreator("move_fwd_word")
         {}
         void MoveFwdWord::sprocess(unsigned int repeat_num) const {
-            auto hwnd = util::get_foreground_window() ;
+            auto& igate = core::InputGate::get_instance() ;
+
+            auto res = get_selected_text([repeat_num, &igate] {
+                bind::safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+                }) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+                igate.pushup(KEYCODE_LEFT) ;
+            }) ;
+
+            auto str = break_unicode(res.str) ;
+            if(str.size() <= 1) {
+                igate.pushup(KEYCODE_RIGHT) ;
+                return ;
+            }
+
+            auto itr = str.begin() ;
+            auto pre_type = util::classify_codepoint(*itr) ;
+            igate.pushup(KEYCODE_RIGHT) ;
+            itr ++ ;
+
+            using vind::util::CharType ;
+            while(itr != str.end()) {
+                auto type = util::classify_codepoint(*itr) ;
+                if(pre_type != type) {
+                    if(type != CharType::WHITE_SPACE) {
+                        break ;
+                    }
+                    pre_type = type ;
+                }
+                igate.pushup(KEYCODE_RIGHT) ;
+                itr ++ ;
+            }
         }
         void MoveFwdWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {

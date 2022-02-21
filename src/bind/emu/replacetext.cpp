@@ -287,12 +287,12 @@ namespace vind
 
             auto& igate = core::InputGate::get_instance() ;
 
-            auto res = get_selected_text([&repeat_num, &igate] {
-                    bind::safe_for(repeat_num, [&igate] {
-                        igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
-                    }) ;
-                    igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            auto res = get_selected_text([repeat_num, &igate] {
+                bind::safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                 }) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            }) ;
 
             for(auto& c : res.str) {
                 if('a' <= c && c <= 'z') {

@@ -147,6 +147,7 @@ namespace vind
                 MoveCursorLeft::create(),
                 MoveCursorRight::create(),
                 MoveCursorUp::create(),
+                MoveEndBigWord::create(),
                 MoveEndWord::create(),
                 MoveFwdBigWord::create(),
                 MoveFwdWord::create(),

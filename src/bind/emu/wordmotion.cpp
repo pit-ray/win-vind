@@ -66,6 +66,60 @@ namespace
         core::InputGate::get_instance().pushup(KEYCODE_RIGHT) ;
         return ++ itr != end ;
     }
+
+
+    void fwd_word(unsigned int repeat_num, bool bigword) {
+        auto str = capture_forward(repeat_num) ;
+        if(inc_caret_if_single(str))
+            return ;
+
+        auto itr = str.begin() ;
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            auto pre_type = util::classify_codepoint(*itr, bigword) ;
+            auto type = pre_type ;
+            do {
+                if(!inc_caret(itr, str.end()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            } while(pre_type == type) ;
+
+            while(type == util::CharType::WHITE_SPACE || \
+                  type == util::CharType::CARRIAGE_RETURN) {
+                if(!inc_caret(itr, str.end()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            }
+        }
+    }
+
+
+    void end_word(unsigned int repeat_num, bool bigword) {
+        auto str = capture_forward(repeat_num) ;
+        if(inc_caret_if_single(str))
+            return ;
+
+        auto itr = str.begin() ;
+        util::CharType type ;
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            do {
+                if(!inc_caret(itr, str.end()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            } while(type == util::CharType::WHITE_SPACE || \
+                    type == util::CharType::CARRIAGE_RETURN) ;
+
+            if(++ itr == str.end())
+                return ;
+            type = util::classify_codepoint(*itr, bigword) ;
+
+            while(type != util::CharType::WHITE_SPACE) {
+                if(!inc_caret(itr, str.end()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            }
+            itr -- ;
+        }
+    }
 }
 
 
@@ -77,31 +131,7 @@ namespace vind
         : MoveBaseCreator("move_fwd_word")
         {}
         void MoveFwdWord::sprocess(unsigned int repeat_num) const {
-            auto str = capture_forward(repeat_num) ;
-            if(inc_caret_if_single(str))
-                return ;
-
-            auto itr = str.begin() ;
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
-                auto pre_type = util::classify_codepoint(*itr) ;
-                auto type = pre_type ;
-                do {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                    type = util::classify_codepoint(*itr) ;
-                } while(pre_type == type) ;
-
-                while(type == util::CharType::WHITE_SPACE) {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                    type = util::classify_codepoint(*itr) ;
-                }
-
-                if(type == util::CharType::CARRIAGE_RETURN) {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                }
-            }
+            fwd_word(repeat_num, false) ;
         }
         void MoveFwdWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -116,30 +146,7 @@ namespace vind
         : MoveBaseCreator("move_fwd_bigword")
         {}
         void MoveFwdBigWord::sprocess(unsigned int repeat_num) const {
-            auto str = capture_forward(repeat_num) ;
-            if(inc_caret_if_single(str))
-                return ;
-
-            auto itr = str.begin() ;
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
-                auto type = util::classify_codepoint(*itr) ;
-                while(type != util::CharType::WHITE_SPACE) {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                    type = util::classify_codepoint(*itr) ;
-                }
-
-                while(type == util::CharType::WHITE_SPACE) {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                    type = util::classify_codepoint(*itr) ;
-                }
-
-                if(type == util::CharType::CARRIAGE_RETURN) {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                }
-            }
+            fwd_word(repeat_num, true) ;
         }
         void MoveFwdBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -224,7 +231,7 @@ namespace vind
         : MoveBaseCreator("move_end_bigword")
         {}
         void MoveEndBigWord::sprocess(unsigned int repeat_num) const {
-            std::cout << repeat_num << std::endl ;
+            end_word(repeat_num, false) ;
         }
         void MoveEndBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -239,7 +246,7 @@ namespace vind
         : MoveBaseCreator("move_bckend_word")
         {}
         void MoveBckEndWord::sprocess(unsigned int repeat_num) const {
-            std::cout << repeat_num << std::endl ;
+            end_word(repeat_num, true) ;
         }
         void MoveBckEndWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {

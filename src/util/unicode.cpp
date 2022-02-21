@@ -137,7 +137,7 @@ namespace vind
         }
 
 
-        CharType classify_codepoint(char32_t cp) {
+        CharType classify_codepoint(char32_t cp, bool bigword) {
             /*
              * NOTE: The table refers to the following table in Vim
              *       to have the same behavior as Vim.
@@ -364,13 +364,17 @@ namespace vind
                 {U'\U0002f800', U'\U0002fa1f', CharType::CJK_IDEOGRAPHS}, // CJK Ideographs
             } ;
 
+            if(cp == U' ' || cp == U'\t' || cp == U'\u0000' || cp == U'\u00a0') {
+                return CharType::WHITE_SPACE ;
+            }
+            if(cp == U'\r') {
+                return CharType::CARRIAGE_RETURN ;
+            }
+            if(bigword) {
+                return CharType::OTHERWISE ;
+            }
+
             if(cp < U'\u0100') {
-                if(cp == U' ' || cp == U'\t' || cp == U'\u0000' || cp == U'\u00a0') {
-                    return CharType::WHITE_SPACE ;
-                }
-                if(cp == U'\r') {
-                    return CharType::CARRIAGE_RETURN ;
-                }
                 if(is_word(cp)) {
                     return CharType::OTHERWISE ;
                 }

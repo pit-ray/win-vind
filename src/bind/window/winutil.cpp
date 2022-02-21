@@ -87,10 +87,7 @@ namespace vind
                 throw RUNTIME_EXCEPT("Could not change window size") ;
             }
 
-            util::Box2D rect ;
-            if(!GetWindowRect(hwnd, &(rect.data()))) {
-                throw RUNTIME_EXCEPT("Could not get a rectangle of a window.") ;
-            }
+            auto rect = util::get_window_rect(hwnd) ;
 
             if(rect.width() != width || rect.height() != height) {
                 //If a window is Chromium browser (e.g. GoogleChrome or Microsoft Edge) and when it is full screen,

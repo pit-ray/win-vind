@@ -9,6 +9,7 @@
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 namespace
 {
@@ -69,10 +70,7 @@ namespace vind
             }
 
             auto nearest_hwnd = g_near_hwnds.begin()->second ;
-            RECT nearest_rect ;
-            if(!GetWindowRect(nearest_hwnd, &nearest_rect)) {
-                throw RUNTIME_EXCEPT("Could not get a rectangle of the nearest window.") ;
-            }
+            auto nearest_rect = util::get_window_rect(nearest_hwnd) ;
 
             resize_window(nearest_hwnd, fginfo.rect) ;
             resize_window(fginfo.hwnd, nearest_rect) ;

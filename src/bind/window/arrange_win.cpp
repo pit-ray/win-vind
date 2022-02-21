@@ -130,10 +130,7 @@ namespace vind
         : BindedFuncVoid("arrange_windows")
         {}
         void ArrangeWindows::sprocess() {
-            auto hwnd = GetForegroundWindow() ;
-            if(hwnd == NULL) {
-                throw RUNTIME_EXCEPT("There is not a foreground window.") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
 
             //Search visible windows
             g_m_ordered_hwnd.clear() ;

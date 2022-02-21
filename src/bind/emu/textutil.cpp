@@ -5,6 +5,7 @@
 #include "smartclipboard.hpp"
 #include "textreg.hpp"
 #include "util/def.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace vind
@@ -44,10 +45,7 @@ namespace vind
         }
 
         void clear_clipboard_with_null() {
-            auto hwnd = GetForegroundWindow() ;
-            if(!hwnd) {
-                throw RUNTIME_EXCEPT("not exist active window") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
             SmartClipboard scb(hwnd) ;
             scb.open() ;
             scb.set("") ;

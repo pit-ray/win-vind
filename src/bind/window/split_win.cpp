@@ -6,6 +6,7 @@
 #include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 namespace vind
 {
@@ -29,13 +30,10 @@ namespace vind
                     w, h / 2) ;
             OpenNewWindow::sprocess() ;
 
-            auto new_hwnd = GetForegroundWindow() ;
-            if(new_hwnd == NULL) {
-                throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-            }
+            auto new_hwnd = util::get_foreground_window() ;
             if(new_hwnd == fginfo.hwnd) {
                 Sleep(500) ;
-                new_hwnd = GetForegroundWindow() ;
+                new_hwnd = util::get_foreground_window() ;
             }
 
             //snap a new window to bottom
@@ -71,13 +69,10 @@ namespace vind
                     w / 2, h) ;
             OpenNewWindow::sprocess() ;
 
-            auto new_hwnd = GetForegroundWindow() ;
-            if(new_hwnd == NULL) {
-                throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-            }
+            auto new_hwnd = util::get_foreground_window() ;
             if(new_hwnd == fginfo.hwnd) {
                 Sleep(500) ;
-                new_hwnd = GetForegroundWindow() ;
+                new_hwnd = util::get_foreground_window() ;
             }
 
             //snap a new window to right

@@ -3,9 +3,11 @@
 #include "movebase.hpp"
 
 #include "core/ntypelogger.hpp"
+#include "smartclipboard.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/unicode.hpp"
+#include "util/winwrap.hpp"
 
 #include <string>
 
@@ -18,7 +20,7 @@ namespace vind
         : MoveBaseCreator("move_fwd_word")
         {}
         void MoveFwdWord::sprocess(unsigned int repeat_num) const {
-            std::cout << repeat_num << std::endl ;
+            auto hwnd = util::get_foreground_window() ;
         }
         void MoveFwdWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {

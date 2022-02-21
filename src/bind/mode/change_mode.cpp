@@ -143,11 +143,7 @@ namespace vind
 
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("autofocus_textarea").get<bool>()) {
-                auto hwnd = GetForegroundWindow() ;
-                if(!hwnd) {
-                    throw RUNTIME_EXCEPT("There is no foreground window.") ;
-                }
-
+                auto hwnd = util::get_foreground_window() ;
                 util::Point2D pos ;
                 if(!GetCursorPos(&(pos.data()))) {
                     throw RUNTIME_EXCEPT("Could not get the cursor position.") ;

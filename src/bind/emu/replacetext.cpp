@@ -18,6 +18,7 @@
 #include "textanalyze.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/winwrap.hpp"
 
 #include <vector>
 
@@ -282,10 +283,7 @@ namespace vind
         : ChangeBaseCreator("switch_char_case")
         {}
         void SwitchCharCase::sprocess(unsigned int repeat_num) {
-            auto hwnd = GetForegroundWindow() ;
-            if(!hwnd) {
-                throw RUNTIME_EXCEPT("There is no foreground window.") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
 
             auto& igate = core::InputGate::get_instance() ;
 

@@ -25,6 +25,7 @@
 #include "util/def.hpp"
 #include "util/keystroke_repeater.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 namespace
 {
@@ -103,12 +104,8 @@ namespace vind
                     ca_.reset() ;
                 }
 
-                auto hwnd = GetForegroundWindow() ;
-
-                util::Box2D rect ;
-                if(!GetWindowRect(hwnd, &(rect.data()))) {
-                    throw RUNTIME_EXCEPT("Could not get a rectangle of foreground window.") ;
-                }
+                auto hwnd = util::get_foreground_window() ;
+                auto rect = util::get_window_rect(hwnd) ;
 
                 auto cb_rect = util::get_conbined_metrics() ;
 

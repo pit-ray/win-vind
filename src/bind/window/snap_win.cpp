@@ -8,6 +8,7 @@
 #include "util/box2d.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 namespace
 {
@@ -16,21 +17,14 @@ namespace
             const std::function<util::Box2D(const util::Box2D&)>& calc_half_size,
             const std::function<POINT(const util::Box2D&)>& next_monitor_pos) {
 
-        auto hwnd = GetForegroundWindow() ;
-        if(hwnd == NULL) {
-            throw RUNTIME_EXCEPT("There is not the foreground window.") ;
-        }
+        auto hwnd = util::get_foreground_window() ;
 
         util::MonitorInfo minfo ;
         util::get_monitor_metrics(hwnd, minfo) ;
 
         auto half_rect = calc_half_size(minfo.work_rect) ;
 
-        util::Box2D cur_rect ;
-        if(!GetWindowRect(hwnd, &(cur_rect.data()))) {
-            throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
-        }
-
+        auto cur_rect = util::get_window_rect(hwnd) ;
         if(cur_rect == half_rect) {
             util::get_monitor_metrics(next_monitor_pos(minfo.rect), minfo) ;
 

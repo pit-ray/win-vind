@@ -10,6 +10,7 @@
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/mouse.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace vind
@@ -32,7 +33,7 @@ namespace vind
         void Dedicate2Window::enable_targeting() {
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("dedicate_to_window").get<bool>()) {
-                target_hwnd_ = GetForegroundWindow() ;
+                target_hwnd_ = util::get_foreground_window() ;
                 past_hwnd_   = NULL ;
                 opt::VCmdLine::print(GeneralMessage("-- TARGET ON --")) ;
             }
@@ -50,7 +51,7 @@ namespace vind
         void Dedicate2Window::do_process() const {
             if(!target_hwnd_)  return ;
 
-            auto foreground_hwnd = GetForegroundWindow() ;
+            auto foreground_hwnd = util::get_foreground_window() ;
 
             //is selected window changed?
             if(past_hwnd_ == foreground_hwnd) {

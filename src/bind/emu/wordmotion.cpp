@@ -3,12 +3,16 @@
 #include "movebase.hpp"
 
 #include "bind/saferepeat.hpp"
+#include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/ntypelogger.hpp"
+#include "core/settable.hpp"
 #include "smartclipboard.hpp"
 #include "textanalyze.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/keystroke_repeater.hpp"
+#include "util/string.hpp"
 #include "util/unicode.hpp"
 #include "util/winwrap.hpp"
 
@@ -21,9 +25,20 @@ namespace
     using namespace vind::bind ;
 
     inline auto break_unicode(const std::string& utf8str) {
-        auto str = util::break_unicode_grapheme(utf8str) ;
-        //auto str = util::break_unicode_codepoint(res.str) ;
-        return str ;
+        auto& settable = core::SetTable::get_instance() ;
+        auto mode = settable.get("charbreak").get<std::string>() ;
+
+        auto low_mode = util::A2a(mode) ;
+
+        if(low_mode == "grapheme") {
+            return util::break_unicode_grapheme(utf8str) ;
+        }
+        if(low_mode == "codepoint") {
+            return util::break_unicode_codepoint(utf8str) ;
+        }
+
+        PRINT_ERROR("Not supported value: " + mode) ;
+        return util::break_unicode_grapheme(utf8str) ;
     }
 
     /**
@@ -333,6 +348,89 @@ namespace vind
             }
         }
         void MoveBckEndBigWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess(1) ;
+        }
+
+
+        // For visual mode.
+        struct MoveFwdWordSimple::Impl {
+            util::KeyStrokeRepeater ksr{} ;
+        } ;
+
+        MoveFwdWordSimple::MoveFwdWordSimple()
+        : MoveBaseCreator("move_fwd_word_simple"),
+          pimpl(std::make_unique<Impl>())
+        {}
+
+        MoveFwdWordSimple::~MoveFwdWordSimple() noexcept = default ;
+        MoveFwdWordSimple::MoveFwdWordSimple(MoveFwdWordSimple&&) = default ;
+        MoveFwdWordSimple& MoveFwdWordSimple::operator=(MoveFwdWordSimple&&) = default ;
+
+        void MoveFwdWordSimple::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                }) ;
+            }
+            else {
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
+                }) ;
+            }
+        }
+        void MoveFwdWordSimple::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+                pimpl->ksr.reset() ;
+            }
+            else if(pimpl->ksr.is_passed()) {
+                sprocess(1) ;
+            }
+        }
+        void MoveFwdWordSimple::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+            sprocess(1) ;
+        }
+
+
+        struct MoveBckWordSimple::Impl {
+            util::KeyStrokeRepeater ksr{} ;
+        } ;
+
+        MoveBckWordSimple::MoveBckWordSimple()
+        : MoveBaseCreator("move_bck_word_simple"),
+          pimpl(std::make_unique<Impl>())
+        {}
+
+        MoveBckWordSimple::~MoveBckWordSimple() noexcept = default ;
+        MoveBckWordSimple::MoveBckWordSimple(MoveBckWordSimple&&) = default ;
+        MoveBckWordSimple& MoveBckWordSimple::operator=(MoveBckWordSimple&&) = default ;
+
+        void MoveBckWordSimple::sprocess(unsigned int repeat_num) const {
+            auto& igate = core::InputGate::get_instance() ;
+
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                }) ;
+            }
+            else {
+                safe_for(repeat_num, [&igate] {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
+                }) ;
+            }
+        }
+        void MoveBckWordSimple::sprocess(core::NTypeLogger& parent_lgr) const {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+                pimpl->ksr.reset() ;
+            }
+            else if(pimpl->ksr.is_passed()) {
+                sprocess(1) ;
+            }
+        }
+        void MoveBckWordSimple::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
             sprocess(1) ;
         }
     }

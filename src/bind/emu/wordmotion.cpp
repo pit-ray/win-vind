@@ -41,6 +41,20 @@ namespace
         return util::break_unicode_grapheme(utf8str) ;
     }
 
+    inline auto cls(char32_t cp, bool bigword) {
+        auto type = util::classify_codepoint(cp) ;
+
+        if(bigword) {
+            using util::CharType ;
+            if(type != CharType::WHITE_SPACE && \
+               type != CharType::CARRIAGE_RETURN) {
+                return CharType::OTHERWISE ;
+            }
+        }
+
+        return type ;
+    }
+
     /**
      * TODO: Currently, it does not capture more than
      *       two lines due to efficiency issues.
@@ -48,7 +62,7 @@ namespace
     auto capture_fwd(unsigned int UNUSED(repeat_num)) {
         auto& igate = core::InputGate::get_instance() ;
         auto res = get_selected_text([&igate] {
-            igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN, KEYCODE_END) ;
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             Sleep(30) ;
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;
@@ -63,7 +77,7 @@ namespace
     auto capture_bck(unsigned int UNUSED(repeat_num)) {
         auto& igate = core::InputGate::get_instance() ;
         auto res = get_selected_text([&igate] {
-            igate.pushup(KEYCODE_LSHIFT, KEYCODE_UP, KEYCODE_HOME) ;
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
             Sleep(30) ;
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;
@@ -128,19 +142,19 @@ namespace
 
         auto itr = str.begin() ;
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
-            auto pre_type = util::classify_codepoint(*itr, bigword) ;
+            auto pre_type = cls(*itr, bigword) ;
             auto type = pre_type ;
             do {
                 if(!inc_caret(itr, str.end()))
                     return ;
-                type = util::classify_codepoint(*itr, bigword) ;
+                type = cls(*itr, bigword) ;
             } while(pre_type == type) ;
 
             while(type == util::CharType::WHITE_SPACE || \
                   type == util::CharType::CARRIAGE_RETURN) {
                 if(!inc_caret(itr, str.end()))
                     return ;
-                type = util::classify_codepoint(*itr, bigword) ;
+                type = cls(*itr, bigword) ;
             }
         }
     }
@@ -151,21 +165,31 @@ namespace
             return ;
 
         auto itr = str.rbegin() ;
-        util::CharType type ;
+        /**
+         * NOTE: Such as Office Word will insert \r after the
+         * copied text, so should ignore it in the backword.
+         */
+        auto type = cls(*itr, bigword) ;
+        while(type == util::CharType::CARRIAGE_RETURN) {
+            if(++ itr == str.rend())
+                return ;
+            type = cls(*itr, bigword) ;
+        }
+
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            while(type == util::CharType::WHITE_SPACE || \
+                  type == util::CharType::CARRIAGE_RETURN) {
+                if(!dec_caret(itr, str.rend()))
+                    return ;
+                type = cls(*itr, bigword) ;
+            }
+
+            auto end_type = type ;
             do {
                 if(!dec_caret(itr, str.rend()))
                     return ;
-                type = util::classify_codepoint(*itr, bigword) ;
-            } while(type == util::CharType::WHITE_SPACE || \
-                    type == util::CharType::CARRIAGE_RETURN) ;
-
-            auto end_type = type ;
-            while(end_type == type) {
-                if(!dec_caret(itr, str.rend()))
-                    return ;
-                type = util::classify_codepoint(*itr, bigword) ;
-            }
+                type = cls(*itr, bigword) ;
+            } while(end_type == type) ;
         }
     }
 
@@ -180,19 +204,19 @@ namespace
             do {
                 if(!inc_caret(itr, str.end()))
                     return ;
-                type = util::classify_codepoint(*itr, bigword) ;
+                type = cls(*itr, bigword) ;
             } while(type == util::CharType::WHITE_SPACE || \
                     type == util::CharType::CARRIAGE_RETURN) ;
 
             auto head_type = type ;
             if(++ itr == str.end())
                 return ;
-            type = util::classify_codepoint(*itr, bigword) ;
+            type = cls(*itr, bigword) ;
 
             while(type == head_type) {
                 if(!inc_caret(itr, str.end()))
                     return ;
-                type = util::classify_codepoint(*itr, bigword) ;
+                type = cls(*itr, bigword) ;
             }
             itr -- ;
         }
@@ -204,24 +228,36 @@ namespace
             return ;
 
         auto itr = str.rbegin() ;
+        /**
+         * NOTE: Such as Office Word will insert \r after the
+         * copied text, so should ignore it in the backword.
+         */
+        auto type = cls(*itr, bigword) ;
+        while(type == util::CharType::CARRIAGE_RETURN) {
+            if(++ itr == str.rend())
+                return ;
+            type = cls(*itr, bigword) ;
+        }
+
+        auto pre_type = type ;
         for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
-            auto pre_type = util::classify_codepoint(*itr, bigword) ;
-            auto type = pre_type ;
             do {
                 if(!dec_caret(itr, str.rend()))
                     return ;
-                type = util::classify_codepoint(*itr, bigword) ;
+                type = cls(*itr, bigword) ;
             } while(pre_type == type) ;
 
             while(type == util::CharType::WHITE_SPACE || \
                   type == util::CharType::CARRIAGE_RETURN) {
                 if(!dec_caret(itr, str.rend()))
                     return ;
-                type = util::classify_codepoint(*itr, bigword) ;
+                type = cls(*itr, bigword) ;
             }
 
             if(!dec_caret(itr, str.rend()))
                 return ;
+
+            pre_type = type ;
         }
     }
 }

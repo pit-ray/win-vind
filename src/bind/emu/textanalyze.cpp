@@ -39,7 +39,7 @@ namespace vind
             //insofar as having already arrived the copied text
             //from the editor to a clipboard,
             //so wait for a little.
-            Sleep(75) ;
+            Sleep(300) ;
 
             scb.open() ; //<open>-------------------------
 

@@ -56,10 +56,9 @@ namespace vind
          * The class criteria is based on vim/mbyte.c.
          *
          * @param[in] (cp) UTF-32 character corresponding the code point.
-         * @param[in] (bigword) Determines if it is a white space or not.
          * @return CharType
          */
-        CharType classify_codepoint(char32_t cp, bool bigword=false) ;
+        CharType classify_codepoint(char32_t cp) ;
     }
 }
 

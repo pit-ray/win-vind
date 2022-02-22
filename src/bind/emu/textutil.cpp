@@ -12,6 +12,16 @@ namespace vind
 {
     namespace bind
     {
+        bool has_EOL(const SelectedTextResult& res) {
+            if(res.having_EOL) {
+                return true ;
+            }
+            if(!res.str.empty() && res.str.back() == '\n') {
+                return true ;
+            }
+            return false ;
+        }
+
         //Some editors have a visible EOL mark in a line.
         //This function select text from current position to EOL except for the visible EOL mark.
         //If the line has only null characters, it does not select.
@@ -22,7 +32,7 @@ namespace vind
 
             if(exres != nullptr) {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
-                if(exres->having_EOL) {
+                if(has_EOL(*exres)) {
                     igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                     if(exres->str.empty()) {
                         return false ; //not selected (true text is only null text)
@@ -35,7 +45,7 @@ namespace vind
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
                 igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             }) ;
-            if(res.having_EOL) {
+            if(has_EOL(res)) {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 if(res.str.empty()) {
                     return false ;

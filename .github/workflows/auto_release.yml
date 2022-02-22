@@ -7,7 +7,7 @@ on:
 
 jobs:
   x64-and-x86:
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     defaults:
       run:

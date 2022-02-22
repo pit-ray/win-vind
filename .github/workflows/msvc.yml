@@ -30,7 +30,7 @@ env:
 
 jobs:
   x64:
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
     - uses: actions/checkout@v2
@@ -56,7 +56,7 @@ jobs:
         cmake --build ${{github.workspace}}/build_msvc_x64 --config ${{env.BUILD_TYPE}}
 
   x86:
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
     - uses: actions/checkout@v2

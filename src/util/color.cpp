@@ -17,9 +17,9 @@ namespace vind
                 auto r_hex = hex.substr(0, 2) ;
                 auto g_hex = hex.substr(2, 2) ;
                 auto b_hex = hex.substr(4, 2) ;
-                r = static_cast<unsigned char>(strtol(r_hex.c_str(), nullptr, 16)) ;
-                g = static_cast<unsigned char>(strtol(g_hex.c_str(), nullptr, 16)) ;
-                b = static_cast<unsigned char>(strtol(b_hex.c_str(), nullptr, 16)) ;
+                r = static_cast<unsigned char>(std::stol(r_hex, nullptr, 16)) ;
+                g = static_cast<unsigned char>(std::stol(g_hex, nullptr, 16)) ;
+                b = static_cast<unsigned char>(std::stol(b_hex, nullptr, 16)) ;
             }
 
             return {r, g, b} ;

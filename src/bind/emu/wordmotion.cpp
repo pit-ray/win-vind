@@ -30,7 +30,7 @@ namespace
      * TODO: Currently, it does not capture more than
      *       two lines due to efficiency issues.
      */
-    auto capture_forward(unsigned int UNUSED(repeat_num)) {
+    auto capture_fwd(unsigned int UNUSED(repeat_num)) {
         auto& igate = core::InputGate::get_instance() ;
         auto res = get_selected_text([&igate] {
             igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN, KEYCODE_END) ;
@@ -41,6 +41,21 @@ namespace
         auto str = break_unicode(res.str) ;
         if(str.size() > 1) {
             igate.pushup(KEYCODE_LEFT) ;
+        }
+        return str ;
+    }
+
+    auto capture_bck(unsigned int UNUSED(repeat_num)) {
+        auto& igate = core::InputGate::get_instance() ;
+        auto res = get_selected_text([&igate] {
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_UP, KEYCODE_HOME) ;
+            Sleep(30) ;
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+        }) ;
+
+        auto str = break_unicode(res.str) ;
+        if(str.size() > 1) {
+            igate.pushup(KEYCODE_RIGHT) ;
         }
         return str ;
     }
@@ -68,8 +83,31 @@ namespace
     }
 
 
+    bool dec_caret_if_single(const std::u32string& str) {
+        auto size = str.size() ;
+        if(size == 0) {
+            return true ;
+        }
+        if(size == 1) {
+            core::InputGate::get_instance().pushup(KEYCODE_LEFT) ;
+            return true ;
+        }
+        return false ;
+    }
+
+    bool dec_caret(
+            std::u32string::reverse_iterator& itr,
+            const std::u32string::reverse_iterator& end) {
+        if(itr == end) {
+            return false ;
+        }
+        core::InputGate::get_instance().pushup(KEYCODE_LEFT) ;
+        return ++ itr != end ;
+    }
+
+
     void fwd_word(unsigned int repeat_num, bool bigword) {
-        auto str = capture_forward(repeat_num) ;
+        auto str = capture_fwd(repeat_num) ;
         if(inc_caret_if_single(str))
             return ;
 
@@ -92,9 +130,32 @@ namespace
         }
     }
 
+    void bck_word(unsigned int repeat_num, bool bigword) {
+        auto str = capture_bck(repeat_num) ;
+        if(dec_caret_if_single(str))
+            return ;
+
+        auto itr = str.rbegin() ;
+        util::CharType type ;
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            do {
+                if(!dec_caret(itr, str.rend()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            } while(type == util::CharType::WHITE_SPACE || \
+                    type == util::CharType::CARRIAGE_RETURN) ;
+
+            auto end_type = type ;
+            while(end_type == type) {
+                if(!dec_caret(itr, str.rend()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            }
+        }
+    }
 
     void end_word(unsigned int repeat_num, bool bigword) {
-        auto str = capture_forward(repeat_num) ;
+        auto str = capture_fwd(repeat_num) ;
         if(inc_caret_if_single(str))
             return ;
 
@@ -108,16 +169,44 @@ namespace
             } while(type == util::CharType::WHITE_SPACE || \
                     type == util::CharType::CARRIAGE_RETURN) ;
 
+            auto head_type = type ;
             if(++ itr == str.end())
                 return ;
             type = util::classify_codepoint(*itr, bigword) ;
 
-            while(type != util::CharType::WHITE_SPACE) {
+            while(type == head_type) {
                 if(!inc_caret(itr, str.end()))
                     return ;
                 type = util::classify_codepoint(*itr, bigword) ;
             }
             itr -- ;
+        }
+    }
+
+    void bckend_word(unsigned int repeat_num, bool bigword) {
+        auto str = capture_bck(repeat_num) ;
+        if(dec_caret_if_single(str))
+            return ;
+
+        auto itr = str.rbegin() ;
+        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+            auto pre_type = util::classify_codepoint(*itr, bigword) ;
+            auto type = pre_type ;
+            do {
+                if(!dec_caret(itr, str.rend()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            } while(pre_type == type) ;
+
+            while(type == util::CharType::WHITE_SPACE || \
+                  type == util::CharType::CARRIAGE_RETURN) {
+                if(!dec_caret(itr, str.rend()))
+                    return ;
+                type = util::classify_codepoint(*itr, bigword) ;
+            }
+
+            if(!dec_caret(itr, str.rend()))
+                return ;
         }
     }
 }
@@ -161,7 +250,7 @@ namespace vind
         : MoveBaseCreator("move_bck_word")
         {}
         void MoveBckWord::sprocess(unsigned int repeat_num) const {
-            std::cout << repeat_num << std::endl ;
+            bck_word(repeat_num, false) ;
         }
         void MoveBckWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -176,7 +265,7 @@ namespace vind
         : MoveBaseCreator("move_bck_bigword")
         {}
         void MoveBckBigWord::sprocess(unsigned int repeat_num) const {
-            std::cout << repeat_num << std::endl ;
+            bck_word(repeat_num, true) ;
         }
         void MoveBckBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -191,32 +280,7 @@ namespace vind
         : MoveBaseCreator("move_end_word")
         {}
         void MoveEndWord::sprocess(unsigned int repeat_num) const {
-            auto str = capture_forward(repeat_num) ;
-            if(inc_caret_if_single(str))
-                return ;
-
-            auto itr = str.begin() ;
-            util::CharType type ;
-            for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
-                do {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                    type = util::classify_codepoint(*itr) ;
-                } while(type == util::CharType::WHITE_SPACE || \
-                        type == util::CharType::CARRIAGE_RETURN) ;
-
-                auto head_type = type ;
-                if(++ itr == str.end())
-                    return ;
-                type = util::classify_codepoint(*itr) ;
-
-                while(type == head_type) {
-                    if(!inc_caret(itr, str.end()))
-                        return ;
-                    type = util::classify_codepoint(*itr) ;
-                }
-                itr -- ;
-            }
+            end_word(repeat_num, false) ;
         }
         void MoveEndWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -231,7 +295,7 @@ namespace vind
         : MoveBaseCreator("move_end_bigword")
         {}
         void MoveEndBigWord::sprocess(unsigned int repeat_num) const {
-            end_word(repeat_num, false) ;
+            end_word(repeat_num, true) ;
         }
         void MoveEndBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -246,7 +310,7 @@ namespace vind
         : MoveBaseCreator("move_bckend_word")
         {}
         void MoveBckEndWord::sprocess(unsigned int repeat_num) const {
-            end_word(repeat_num, true) ;
+            bckend_word(repeat_num, false) ;
         }
         void MoveBckEndWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -261,7 +325,7 @@ namespace vind
         : MoveBaseCreator("move_bckend_bigword")
         {}
         void MoveBckEndBigWord::sprocess(unsigned int repeat_num) const {
-            std::cout << repeat_num << std::endl ;
+            bckend_word(repeat_num, true) ;
         }
         void MoveBckEndBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {

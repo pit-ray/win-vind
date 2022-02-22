@@ -1,4 +1,5 @@
 #include <doctest.h>
+#include <stdexcept>
 
 #include "util/color.cpp"
 
@@ -28,10 +29,7 @@ TEST_SUITE("util/color") {
     }
 
     TEST_CASE("(util::hex2rgb) invalid characters") {
-        auto [r, g, b] = hex2rgb("#zx140c") ;
-        CHECK_EQ(r, 0) ;
-        CHECK_EQ(g, 20) ;
-        CHECK_EQ(b, 12) ;
+        CHECK_THROWS_AS(hex2rgb("#zx140c"), std::invalid_argument) ;
     }
 
     TEST_CASE("(util::hex2COLORREF) normal") {

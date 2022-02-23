@@ -9,6 +9,7 @@
 
 #include <processthreadsapi.h>
 
+#include <iostream>
 #include <stdexcept>
 #include <utility>
 
@@ -41,6 +42,9 @@ FAKE_VALUE_FUNC(DWORD, GetWindowThreadProcessId, HWND, LPDWORD) ;
 FAKE_VALUE_FUNC(DWORD, GetModuleFileNameExW, HANDLE, HMODULE, LPWSTR, DWORD) ;
 FAKE_VALUE_FUNC(HANDLE, OpenProcess, DWORD, BOOL, DWORD) ;
 
+FAKE_VALUE_FUNC(LSTATUS, RegGetValueW, \
+        HKEY, LPCWSTR, LPCWSTR, DWORD, LPDWORD, PVOID, LPDWORD) ;
+
 namespace
 {
     using namespace vind::util ;
@@ -62,6 +66,7 @@ TEST_CASE("util/winwrap Under Fake Windows API: ") {
     RESET_FAKE(DispatchMessageW) ;
     RESET_FAKE(InvalidateRect) ;
     RESET_FAKE(CreateProcessW) ;
+    RESET_FAKE(RegGetValueW) ;
 
     FFF_RESET_HISTORY() ;
 
@@ -80,7 +85,9 @@ TEST_CASE("util/winwrap Under Fake Windows API: ") {
 
     SUBCASE("(util::refresh_display) exception test") {
         InvalidateRect_fake.return_val = FALSE ;
-        CHECK_THROWS_AS(refresh_display(NULL), std::runtime_error) ;
+        CHECK_THROWS_AS(
+                refresh_display(NULL),
+                std::runtime_error) ;
     }
 
     SUBCASE("(util::b_to_B) Type test") {
@@ -90,7 +97,16 @@ TEST_CASE("util/winwrap Under Fake Windows API: ") {
 
     SUBCASE("(util::create_process) Exception Error") {
         CreateProcessW_fake.return_val = FALSE ;
-        CHECK_THROWS_AS(create_process("DIR", "CMD", concat_args("A", "B")), std::runtime_error) ;
+        CHECK_THROWS_AS(
+                create_process("DIR", "CMD", concat_args("A", "B")),
+                std::runtime_error) ;
+    }
+
+    SUBCASE("(util::get_Windows_display_version)") {
+        RegGetValueW_fake.return_val = ERROR_NOT_ENOUGH_MEMORY ;
+        CHECK_THROWS_AS(
+                get_Windows_display_version(),
+                std::runtime_error) ;
     }
 }
 

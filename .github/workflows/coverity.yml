@@ -79,8 +79,15 @@ jobs:
       id: vars
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
-    - name: Submit tarball to Coverity
+    - name: Setup MSYS2
       uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        install: >-
+          base-devel
+          mingw-w64-x86_64-curl
+
+    - name: Submit tarball to Coverity
       shell: msys2 {0}
       run: |
         curl --form token="${{env.TOKEN}}" \

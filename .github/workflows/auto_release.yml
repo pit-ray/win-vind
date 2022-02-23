@@ -28,19 +28,19 @@ jobs:
         $TAG=$($(echo ${{github.ref}}).Replace('refs/tags/v', ''))
         echo "::set-output name=VERSION::$TAG"
 
+    - name: Cache libraries
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/libs
+        key: libs-cache-release-220224
+
+    - name: Setup Libraries
+      run: "tools/setup_libs.bat -msvc"
+
     - name: Setup x64 MSVC
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-
-    - name: Cache x64 libraries
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-release-220126
-
-    - name: Setup Libraries
-      run: "tools/setup_libs.bat -msvc 64"
 
     - name: Build x64 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 64
@@ -49,15 +49,6 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x86
-
-    - name: Cache x86 libraries
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/libs
-        key: x86-libs-cache-release-220126
-
-    - name: Setup Library
-      run: "tools/setup_libs.bat -msvc 32"
 
     - name: Build x86 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32

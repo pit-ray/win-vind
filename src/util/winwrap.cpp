@@ -602,14 +602,24 @@ namespace vind
             // include the null terminator
             auto size = static_cast<DWORD>(str.size() * sizeof(wchar_t) + 1) ;
 
-            auto result = RegGetValueW(
+            const std::wstring version_keys[2] = {L"DisplayVersion", L"CurrentVersion"};
+            bool currentversion_found = false;
+            LSTATUS result;
+            for (std::wstring version_key : version_keys) 
+                result = RegGetValueW(
                     HKEY_LOCAL_MACHINE,
                     L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
-                    L"DisplayVersion",
+                    version_key,
                     RRF_RT_REG_SZ,
                     nullptr, &str[0], &size) ;
+                if(result == ERROR_SUCCESS){
+                    currentversion_found = true;
+                    break;
+                }
+            }
+            
 
-            if(result != ERROR_SUCCESS) {
+            if(currentversion_found == false) {
                 throw RUNTIME_EXCEPT(
                         "Could not read the registory value at " \
                         "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion .") ;

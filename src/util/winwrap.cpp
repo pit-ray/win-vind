@@ -628,7 +628,6 @@ namespace vind
             throw std::runtime_error(
                     "Could not read the registory value at "
                     "\"HKEY_LOCAL_MACHINE" + util::ws_to_s(subkey) + "\".") ;
-            return std::string{} ;
         }
     }
 }

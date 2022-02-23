@@ -755,11 +755,9 @@ evnoremap b move_bck_word_simple
 
 " WORDS forward (Vim Emulation: W)
 ennoremap W move_fwd_bigword
-evnoremap W move_fwd_word_simple
 
 " WORDS backward (Vim Emulation: B)
 ennoremap B move_bck_bigword
-evnoremap B move_bck_word_simple
 
 " Forward to the end of word (Vim Emulation: e)
 ennoremap e move_end_word

@@ -5,6 +5,9 @@ on:
     tags:
       - v*.*.*
 
+    tags-ignore:
+      - v*.*.*-rc*
+
 jobs:
   x64-and-x86:
     runs-on: windows-2019

@@ -3,10 +3,8 @@ name: auto release
 on:
   push:
     tags:
-      - v*.*.*
-
-    tags-ignore:
-      - v*.*.*-rc*
+      - 'v*.*.*'
+      - '!*-rc*'
 
 jobs:
   x64-and-x86:

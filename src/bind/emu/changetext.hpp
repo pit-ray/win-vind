@@ -19,14 +19,14 @@ namespace vind
 
         struct ChangeLine : public ChangeBaseCreator<ChangeLine> {
             explicit ChangeLine() ;
-            static void sprocess(unsigned int repeat_num=1) ;
+            static void sprocess(unsigned int count=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
         struct ChangeChar : public ChangeBaseCreator<ChangeChar> {
             explicit ChangeChar() ;
-            static void sprocess(unsigned int repeat_num=1) ;
+            static void sprocess(unsigned int count=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
@@ -34,7 +34,7 @@ namespace vind
         struct ChangeUntilEOL : public ChangeBaseCreator<ChangeUntilEOL> {
             explicit ChangeUntilEOL() ;
             static void sprocess(
-                    unsigned int repeat_num=1,
+                    unsigned int count=1,
                     const SelectedTextResult* const exres=nullptr) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;

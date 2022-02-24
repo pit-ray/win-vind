@@ -49,14 +49,14 @@ namespace vind
         : BindedFuncVoid("yank_line")
         {}
         void YankLine::sprocess(
-                unsigned int repeat_num,
+                unsigned int count,
                 const SelectedTextResult* const exres) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_HOME) ;
 
             //copy N - 1 lines
-            safe_for(repeat_num - 1, [&igate] {
+            safe_for(count - 1, [&igate] {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 

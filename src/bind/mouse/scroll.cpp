@@ -41,10 +41,10 @@ namespace vind
         ScrollUp::ScrollUp(ScrollUp&&)            = default ;
         ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
-        void ScrollUp::sprocess(unsigned int repeat_num) const {
+        void ScrollUp::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
             util::vscroll(
-                    settable.get("vscroll_speed").get<int>() * repeat_num) ;
+                    settable.get("vscroll_speed").get<int>() * count) ;
         }
         void ScrollUp::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -74,10 +74,10 @@ namespace vind
         ScrollDown::ScrollDown(ScrollDown&&)            = default ;
         ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
 
-        void ScrollDown::sprocess(unsigned int repeat_num) const {
+        void ScrollDown::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
             util::vscroll(
-                    -1 * settable.get("vscroll_speed").get<int>() * repeat_num) ;
+                    -1 * settable.get("vscroll_speed").get<int>() * count) ;
         }
         void ScrollDown::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -107,9 +107,9 @@ namespace vind
         ScrollUpHalfPage::ScrollUpHalfPage(ScrollUpHalfPage&&)            = default ;
         ScrollUpHalfPage& ScrollUpHalfPage::operator=(ScrollUpHalfPage&&) = default ;
 
-        void ScrollUpHalfPage::sprocess(unsigned int repeat_num) const {
+        void ScrollUpHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
+            util::vscroll(0.5f * static_cast<float>(MAX_Y_POS * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollUpHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -140,9 +140,9 @@ namespace vind
         ScrollDownHalfPage::ScrollDownHalfPage(ScrollDownHalfPage&&)               = default ;
         ScrollDownHalfPage& ScrollDownHalfPage::operator=(ScrollDownHalfPage&&)    = default ;
 
-        void ScrollDownHalfPage::sprocess(unsigned int repeat_num) const {
+        void ScrollDownHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(-0.5f * static_cast<float>(MAX_Y_POS * repeat_num) * \
+            util::vscroll(-0.5f * static_cast<float>(MAX_Y_POS * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollDownHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -173,9 +173,9 @@ namespace vind
         ScrollUpOnePage::ScrollUpOnePage(ScrollUpOnePage&&)              = default ;
         ScrollUpOnePage& ScrollUpOnePage::operator=(ScrollUpOnePage&&)   = default ;
 
-        void ScrollUpOnePage::sprocess(unsigned int repeat_num) const {
+        void ScrollUpOnePage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
+            util::vscroll(static_cast<float>(MAX_Y_POS * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollUpOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -206,9 +206,9 @@ namespace vind
         ScrollDownOnePage::ScrollDownOnePage(ScrollDownOnePage&&)            = default ;
         ScrollDownOnePage& ScrollDownOnePage::operator=(ScrollDownOnePage&&) = default ;
 
-        void ScrollDownOnePage::sprocess(unsigned int repeat_num) const {
+        void ScrollDownOnePage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(static_cast<float>(MAX_Y_POS * repeat_num) * \
+            util::vscroll(static_cast<float>(MAX_Y_POS * count) * \
                     -1 * settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollDownOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -240,10 +240,10 @@ namespace vind
         ScrollLeft::ScrollLeft(ScrollLeft&&)            = default ;
         ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
 
-        void ScrollLeft::sprocess(unsigned int repeat_num) const {
+        void ScrollLeft::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
             util::hscroll(
-                    -1 * settable.get("hscroll_speed").get<int>() * repeat_num) ;
+                    -1 * settable.get("hscroll_speed").get<int>() * count) ;
         }
         void ScrollLeft::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -273,10 +273,10 @@ namespace vind
         ScrollRight::ScrollRight(ScrollRight&&)             = default ;
         ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
 
-        void ScrollRight::sprocess(unsigned int repeat_num) const {
+        void ScrollRight::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
             util::hscroll(
-                    settable.get("hscroll_speed").get<float>() * repeat_num) ;
+                    settable.get("hscroll_speed").get<float>() * count) ;
         }
         void ScrollRight::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -306,9 +306,9 @@ namespace vind
         ScrollLeftHalfPage::ScrollLeftHalfPage(ScrollLeftHalfPage&&)               = default ;
         ScrollLeftHalfPage& ScrollLeftHalfPage::operator=(ScrollLeftHalfPage&&)    = default ;
 
-        void ScrollLeftHalfPage::sprocess(unsigned int repeat_num) const {
+        void ScrollLeftHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::hscroll(-0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
+            util::hscroll(-0.5f * static_cast<float>(MAX_X_POS * count) * \
                     settable.get("hscroll_pageratio").get<float>()) ;
         }
         void ScrollLeftHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -339,9 +339,9 @@ namespace vind
         ScrollRightHalfPage::ScrollRightHalfPage(ScrollRightHalfPage&&)            = default ;
         ScrollRightHalfPage& ScrollRightHalfPage::operator=(ScrollRightHalfPage&&) = default ;
 
-        void ScrollRightHalfPage::sprocess(unsigned int repeat_num) const {
+        void ScrollRightHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::hscroll(0.5f * static_cast<float>(MAX_X_POS * repeat_num) * \
+            util::hscroll(0.5f * static_cast<float>(MAX_X_POS * count) * \
                     settable.get("hscroll_pageratio").get<float>()) ;
         }
         void ScrollRightHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {

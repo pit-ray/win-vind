@@ -17,13 +17,13 @@ namespace vind
         ClickLeft::ClickLeft()
         : BindedFuncVoid("click_left")
         {}
-        void ClickLeft::sprocess(unsigned int repeat_num) {
+        void ClickLeft::sprocess(unsigned int count) {
             using core::Mode ;
             if(core::get_global_mode() == Mode::GUI_VISUAL) {
                 core::set_global_mode(Mode::GUI_NORMAL) ;
             }
 
-            safe_for(repeat_num, [] {
+            safe_for(count, [] {
                 util::click(KEYCODE_MOUSE_LEFT) ;
             }) ;
         }
@@ -41,13 +41,13 @@ namespace vind
         ClickRight::ClickRight()
         : BindedFuncVoid("click_right")
         {}
-        void ClickRight::sprocess(unsigned int repeat_num) {
+        void ClickRight::sprocess(unsigned int count) {
             using core::Mode ;
             if(core::get_global_mode() == Mode::GUI_VISUAL) {
                 core::set_global_mode(Mode::GUI_NORMAL) ;
             }
 
-            safe_for(repeat_num, [] {
+            safe_for(count, [] {
                 util::click(KEYCODE_MOUSE_RIGHT) ;
             }) ;
         }

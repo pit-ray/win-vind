@@ -42,11 +42,11 @@ namespace vind
         JumpCaretToEOL::JumpCaretToEOL()
         : MoveBaseCreator("jump_caret_to_EOL")
         {}
-        void JumpCaretToEOL::sprocess(unsigned int repeat_num) {
+        void JumpCaretToEOL::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             //down caret N - 1
-            safe_for(repeat_num - 1, [&igate] {
+            safe_for(count - 1, [&igate] {
                 igate.pushup(KEYCODE_DOWN) ;
             }) ; 
 
@@ -72,7 +72,7 @@ namespace vind
         JumpCaretToBOF::JumpCaretToBOF()
         : MoveBaseCreator("jump_caret_to_BOF")
         {}
-        void JumpCaretToBOF::sprocess(unsigned int repeat_num) {
+        void JumpCaretToBOF::sprocess(unsigned int count) {
             if(is_first_line_selection()) {
                 select_line_EOL2BOL() ;
             }
@@ -83,7 +83,7 @@ namespace vind
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_HOME) ;
 
                 //down caret N - 1
-                safe_for(repeat_num - 1, [&igate] {
+                safe_for(count - 1, [&igate] {
                     igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
                 }) ;
             }
@@ -91,7 +91,7 @@ namespace vind
                 igate.pushup(KEYCODE_LCTRL, KEYCODE_HOME) ;
 
                 //down caret N - 1
-                safe_for(repeat_num - 1, [&igate] {
+                safe_for(count - 1, [&igate] {
                     igate.pushup(KEYCODE_DOWN) ;
                 }) ;
             }
@@ -117,10 +117,10 @@ namespace vind
         JumpCaretToEOF::JumpCaretToEOF()
         : MoveBaseCreator("jump_caret_to_EOF")
         {}
-        void JumpCaretToEOF::sprocess(unsigned int repeat_num) {
+        void JumpCaretToEOF::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
-            if(repeat_num == 1) {
+            if(count == 1) {
                 if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                     if(is_first_line_selection()) {
                         select_line_BOL2EOL() ;
@@ -137,7 +137,7 @@ namespace vind
                 }
             }
             else {
-                JumpCaretToBOF::sprocess(repeat_num) ;
+                JumpCaretToBOF::sprocess(count) ;
             }
         }
         void JumpCaretToEOF::sprocess(core::NTypeLogger& parent_lgr) {

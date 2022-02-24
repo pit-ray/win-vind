@@ -55,12 +55,12 @@ namespace vind
         DeleteLine::DeleteLine(DeleteLine&&)            = default ;
         DeleteLine& DeleteLine::operator=(DeleteLine&&) = default ;
 
-        void DeleteLine::sprocess(unsigned int repeat_num) const {
+        void DeleteLine::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_HOME) ;
 
-            safe_for(repeat_num - 1, [&igate] {
+            safe_for(count - 1, [&igate] {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
@@ -103,11 +103,11 @@ namespace vind
         DeleteLineUntilEOL::DeleteLineUntilEOL(DeleteLineUntilEOL&&)            = default ;
         DeleteLineUntilEOL& DeleteLineUntilEOL::operator=(DeleteLineUntilEOL&&) = default ;
 
-        void DeleteLineUntilEOL::sprocess(unsigned int repeat_num) const {
+        void DeleteLineUntilEOL::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
 
             //delete N - 1 lines under the current line
-            safe_for(repeat_num - 1, [&igate] {
+            safe_for(count - 1, [&igate] {
                 igate.pushup(KEYCODE_DOWN) ;
             }) ;
 
@@ -147,18 +147,18 @@ namespace vind
         DeleteAfter::DeleteAfter(DeleteAfter&&)            = default ;
         DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
 
-        void DeleteAfter::sprocess(unsigned int repeat_num) const {
+        void DeleteAfter::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("charcache").get<bool>()) {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                         igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                         igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                         set_register_type(RegType::Chars) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_DELETE) ;
                 }) ;
             }
@@ -191,18 +191,18 @@ namespace vind
         DeleteBefore::DeleteBefore(DeleteBefore&&)            = default ;
         DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
 
-        void DeleteBefore::sprocess(unsigned int repeat_num) const {
+        void DeleteBefore::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("charcache").get<bool>()) {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
                     set_register_type(RegType::Chars) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_BKSPACE) ;
                 }) ;
             }

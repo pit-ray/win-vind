@@ -10,8 +10,8 @@ namespace vind
     namespace bind
     {
         template <typename T, typename FuncType, typename ...Args>
-        inline void safe_for(T repeat_num, FuncType&& func, Args... args) {
-            for(T i = 0 ; i < repeat_num ; i ++) {
+        inline void safe_for(T count, FuncType&& func, Args... args) {
+            for(T i = 0 ; i < count ; i ++) {
                 if(core::InputGate::get_instance().is_pressed(KEYCODE_ESC)) {
                     break ;
                 }

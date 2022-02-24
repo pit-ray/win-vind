@@ -30,7 +30,7 @@ namespace vind
             void scan_ui_objects(HWND hwnd) const ;
             void create_matching_loop(
                     core::KeyCode sendkey=KEYCODE_UNDEFINED,
-                    unsigned int repeat_num=1) const ;
+                    unsigned int count=1) const ;
 
             void reconstruct() ;
         } ;

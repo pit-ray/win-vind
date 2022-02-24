@@ -109,9 +109,9 @@ namespace vind
         RotateWindows::RotateWindows()
         : BindedFuncVoid("rotate_windows")
         {}
-        void RotateWindows::sprocess(unsigned int repeat_num) {
-            rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
-                safe_for(repeat_num, [&angle_hwnds] {
+        void RotateWindows::sprocess(unsigned int count) {
+            rotate_windows_core([count] (AngleOrderedHWND& angle_hwnds) {
+                safe_for(count, [&angle_hwnds] {
                     auto itr     = angle_hwnds.rbegin() ;
                     auto pre_itr = itr ;
                     auto last_hwnd = itr->second ;
@@ -140,9 +140,9 @@ namespace vind
         RotateWindowsInReverse::RotateWindowsInReverse()
         : BindedFuncVoid("rotate_windows_in_reverse")
         {}
-        void RotateWindowsInReverse::sprocess(unsigned int repeat_num) {
-            rotate_windows_core([repeat_num] (AngleOrderedHWND& angle_hwnds) {
-                safe_for(repeat_num, [&angle_hwnds] {
+        void RotateWindowsInReverse::sprocess(unsigned int count) {
+            rotate_windows_core([count] (AngleOrderedHWND& angle_hwnds) {
+                safe_for(count, [&angle_hwnds] {
                     auto itr     = angle_hwnds.begin() ;
                     auto pre_itr = itr ;
                     auto last_hwnd = itr->second ;

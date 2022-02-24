@@ -9,14 +9,14 @@ namespace vind
     {
         struct MoveFwdWord : public MoveBaseCreator<MoveFwdWord> {
             explicit MoveFwdWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
 
         struct MoveFwdBigWord : public MoveBaseCreator<MoveFwdBigWord> {
             explicit MoveFwdBigWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
@@ -24,14 +24,14 @@ namespace vind
 
         struct MoveBckWord : public MoveBaseCreator<MoveBckWord> {
             explicit MoveBckWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
 
         struct MoveBckBigWord : public MoveBaseCreator<MoveBckBigWord> {
             explicit MoveBckBigWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
@@ -39,14 +39,14 @@ namespace vind
 
         struct MoveEndWord : public MoveBaseCreator<MoveEndWord> {
             explicit MoveEndWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
 
         struct MoveEndBigWord : public MoveBaseCreator<MoveEndBigWord> {
             explicit MoveEndBigWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
@@ -54,14 +54,14 @@ namespace vind
 
         struct MoveBckEndWord : public MoveBaseCreator<MoveBckEndWord> {
             explicit MoveBckEndWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
 
         struct MoveBckEndBigWord : public MoveBaseCreator<MoveBckEndBigWord> {
             explicit MoveBckEndBigWord() ;
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
         } ;
@@ -72,7 +72,7 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
 
@@ -91,7 +91,7 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int repeat_num=1) const ;
+            void sprocess(unsigned int count=1) const ;
             void sprocess(core::NTypeLogger& parent_lgr) const ;
             void sprocess(const core::CharLogger& parent_lgr) const ;
 

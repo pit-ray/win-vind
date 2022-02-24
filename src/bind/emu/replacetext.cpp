@@ -123,12 +123,12 @@ namespace
             ReplaceMatching::launch_loop() ;
         }
 
-        void replace_char(unsigned int repeat_num) {
+        void replace_char(unsigned int count) {
             launch_loop() ;
 
             auto& igate = core::InputGate::get_instance() ;
 
-            bind::safe_for(repeat_num, [this, &igate] {
+            bind::safe_for(count, [this, &igate] {
                 igate.pushup(KEYCODE_DELETE) ;
 
                 if(shift_) {
@@ -140,7 +140,7 @@ namespace
             }) ;
 
             // returns the cursor to its original position.
-            bind::safe_for(repeat_num, [&igate] {
+            bind::safe_for(count, [&igate] {
                 igate.pushup(KEYCODE_LEFT) ;
             }) ;
         }
@@ -184,15 +184,15 @@ namespace
             ReplaceMatching::launch_loop() ;
         }
 
-        void replace_sequence(unsigned int repeat_num) {
+        void replace_sequence(unsigned int count) {
             launch_loop() ;
 
-            // append the input string according to repeat_num.
-            if(repeat_num > 1) {
+            // append the input string according to count.
+            if(count > 1) {
                 auto& igate = core::InputGate::get_instance() ;
 
                 igate.release_virtually(KEYCODE_ESC) ;
-                bind::safe_for(repeat_num - 1, [this, &igate] {
+                bind::safe_for(count - 1, [this, &igate] {
                     for(std::size_t i = 0 ; i < str_.size() ; i ++) {
                         igate.pushup(KEYCODE_DELETE) ;
 
@@ -258,11 +258,11 @@ namespace vind
         ReplaceSequence::ReplaceSequence(ReplaceSequence&&) = default ;
         ReplaceSequence& ReplaceSequence::operator=(ReplaceSequence&&) = default ;
 
-        void ReplaceSequence::sprocess(unsigned int repeat_num) const {
+        void ReplaceSequence::sprocess(unsigned int count) const {
             opt::VCmdLine::clear() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI REPLACE --")) ;
 
-            pimpl->match_.replace_sequence(repeat_num) ;
+            pimpl->match_.replace_sequence(count) ;
 
             opt::VCmdLine::reset() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
@@ -282,13 +282,13 @@ namespace vind
         SwitchCharCase::SwitchCharCase()
         : ChangeBaseCreator("switch_char_case")
         {}
-        void SwitchCharCase::sprocess(unsigned int repeat_num) {
+        void SwitchCharCase::sprocess(unsigned int count) {
             auto hwnd = util::get_foreground_window() ;
 
             auto& igate = core::InputGate::get_instance() ;
 
-            auto res = get_selected_text([repeat_num, &igate] {
-                bind::safe_for(repeat_num, [&igate] {
+            auto res = get_selected_text([count, &igate] {
+                bind::safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
                 }) ;
                 igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;

@@ -91,7 +91,7 @@ namespace vind
             unsigned int head_num_ = 0 ;
             LoggerStateRawType state_ = LoggerState::INITIAL ;
 
-            void concat_repeat_num(unsigned int num) {
+            void concat_count(unsigned int num) {
                 constexpr auto max = std::numeric_limits<unsigned int>::max() / 10 ;
                 if(head_num_ < max) {
                     head_num_ = head_num_ * 10 + num ;
@@ -221,7 +221,7 @@ namespace vind
 
             if(log == pimpl->prelog_) {
                 if(pimpl->ksr_.is_passed()) {
-                    pimpl->concat_repeat_num(pimpl->head_num_ % 10) ;
+                    pimpl->concat_count(pimpl->head_num_ % 10) ;
                     return -1 ;
                 }
                 return 0 ;
@@ -235,7 +235,7 @@ namespace vind
                 return 0 ;
             }
 
-            pimpl->concat_repeat_num(
+            pimpl->concat_count(
                     keycode_to_number(*(diff_nums.cbegin()))) ;
             pimpl->ksr_.reset() ;
             return -1 ;

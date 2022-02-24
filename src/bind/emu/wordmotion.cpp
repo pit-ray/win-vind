@@ -59,7 +59,7 @@ namespace
      * TODO: Currently, it does not capture more than
      *       two lines due to efficiency issues.
      */
-    auto capture_fwd(unsigned int UNUSED(repeat_num)) {
+    auto capture_fwd(unsigned int UNUSED(count)) {
         auto& igate = core::InputGate::get_instance() ;
         auto res = get_selected_text([&igate] {
             igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
@@ -74,7 +74,7 @@ namespace
         return str ;
     }
 
-    auto capture_bck(unsigned int UNUSED(repeat_num)) {
+    auto capture_bck(unsigned int UNUSED(count)) {
         auto& igate = core::InputGate::get_instance() ;
         auto res = get_selected_text([&igate] {
             igate.pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
@@ -135,13 +135,13 @@ namespace
     }
 
 
-    void fwd_word(unsigned int repeat_num, bool bigword) {
-        auto str = capture_fwd(repeat_num) ;
+    void fwd_word(unsigned int count, bool bigword) {
+        auto str = capture_fwd(count) ;
         if(inc_caret_if_single(str))
             return ;
 
         auto itr = str.begin() ;
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        for(decltype(count) i = 0 ; i < count ; i ++) {
             auto pre_type = cls(*itr, bigword) ;
             auto type = pre_type ;
             do {
@@ -159,8 +159,8 @@ namespace
         }
     }
 
-    void bck_word(unsigned int repeat_num, bool bigword) {
-        auto str = capture_bck(repeat_num) ;
+    void bck_word(unsigned int count, bool bigword) {
+        auto str = capture_bck(count) ;
         if(dec_caret_if_single(str))
             return ;
 
@@ -176,7 +176,7 @@ namespace
             type = cls(*itr, bigword) ;
         }
 
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        for(decltype(count) i = 0 ; i < count ; i ++) {
             while(type == util::CharType::WHITE_SPACE || \
                   type == util::CharType::CARRIAGE_RETURN) {
                 if(!dec_caret(itr, str.rend()))
@@ -193,14 +193,14 @@ namespace
         }
     }
 
-    void end_word(unsigned int repeat_num, bool bigword) {
-        auto str = capture_fwd(repeat_num) ;
+    void end_word(unsigned int count, bool bigword) {
+        auto str = capture_fwd(count) ;
         if(inc_caret_if_single(str))
             return ;
 
         auto itr = str.begin() ;
         util::CharType type ;
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        for(decltype(count) i = 0 ; i < count ; i ++) {
             do {
                 if(!inc_caret(itr, str.end()))
                     return ;
@@ -222,8 +222,8 @@ namespace
         }
     }
 
-    void bckend_word(unsigned int repeat_num, bool bigword) {
-        auto str = capture_bck(repeat_num) ;
+    void bckend_word(unsigned int count, bool bigword) {
+        auto str = capture_bck(count) ;
         if(dec_caret_if_single(str))
             return ;
 
@@ -240,7 +240,7 @@ namespace
         }
 
         auto pre_type = type ;
-        for(decltype(repeat_num) i = 0 ; i < repeat_num ; i ++) {
+        for(decltype(count) i = 0 ; i < count ; i ++) {
             do {
                 if(!dec_caret(itr, str.rend()))
                     return ;
@@ -270,8 +270,8 @@ namespace vind
         MoveFwdWord::MoveFwdWord()
         : MoveBaseCreator("move_fwd_word")
         {}
-        void MoveFwdWord::sprocess(unsigned int repeat_num) const {
-            fwd_word(repeat_num, false) ;
+        void MoveFwdWord::sprocess(unsigned int count) const {
+            fwd_word(count, false) ;
         }
         void MoveFwdWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -285,8 +285,8 @@ namespace vind
         MoveFwdBigWord::MoveFwdBigWord()
         : MoveBaseCreator("move_fwd_bigword")
         {}
-        void MoveFwdBigWord::sprocess(unsigned int repeat_num) const {
-            fwd_word(repeat_num, true) ;
+        void MoveFwdBigWord::sprocess(unsigned int count) const {
+            fwd_word(count, true) ;
         }
         void MoveFwdBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -300,8 +300,8 @@ namespace vind
         MoveBckWord::MoveBckWord()
         : MoveBaseCreator("move_bck_word")
         {}
-        void MoveBckWord::sprocess(unsigned int repeat_num) const {
-            bck_word(repeat_num, false) ;
+        void MoveBckWord::sprocess(unsigned int count) const {
+            bck_word(count, false) ;
         }
         void MoveBckWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -315,8 +315,8 @@ namespace vind
         MoveBckBigWord::MoveBckBigWord()
         : MoveBaseCreator("move_bck_bigword")
         {}
-        void MoveBckBigWord::sprocess(unsigned int repeat_num) const {
-            bck_word(repeat_num, true) ;
+        void MoveBckBigWord::sprocess(unsigned int count) const {
+            bck_word(count, true) ;
         }
         void MoveBckBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -330,8 +330,8 @@ namespace vind
         MoveEndWord::MoveEndWord()
         : MoveBaseCreator("move_end_word")
         {}
-        void MoveEndWord::sprocess(unsigned int repeat_num) const {
-            end_word(repeat_num, false) ;
+        void MoveEndWord::sprocess(unsigned int count) const {
+            end_word(count, false) ;
         }
         void MoveEndWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -345,8 +345,8 @@ namespace vind
         MoveEndBigWord::MoveEndBigWord()
         : MoveBaseCreator("move_end_bigword")
         {}
-        void MoveEndBigWord::sprocess(unsigned int repeat_num) const {
-            end_word(repeat_num, true) ;
+        void MoveEndBigWord::sprocess(unsigned int count) const {
+            end_word(count, true) ;
         }
         void MoveEndBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -360,8 +360,8 @@ namespace vind
         MoveBckEndWord::MoveBckEndWord()
         : MoveBaseCreator("move_bckend_word")
         {}
-        void MoveBckEndWord::sprocess(unsigned int repeat_num) const {
-            bckend_word(repeat_num, false) ;
+        void MoveBckEndWord::sprocess(unsigned int count) const {
+            bckend_word(count, false) ;
         }
         void MoveBckEndWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -375,8 +375,8 @@ namespace vind
         MoveBckEndBigWord::MoveBckEndBigWord()
         : MoveBaseCreator("move_bckend_bigword")
         {}
-        void MoveBckEndBigWord::sprocess(unsigned int repeat_num) const {
-            bckend_word(repeat_num, true) ;
+        void MoveBckEndBigWord::sprocess(unsigned int count) const {
+            bckend_word(count, true) ;
         }
         void MoveBckEndBigWord::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -402,16 +402,16 @@ namespace vind
         MoveFwdWordSimple::MoveFwdWordSimple(MoveFwdWordSimple&&) = default ;
         MoveFwdWordSimple& MoveFwdWordSimple::operator=(MoveFwdWordSimple&&) = default ;
 
-        void MoveFwdWordSimple::sprocess(unsigned int repeat_num) const {
+        void MoveFwdWordSimple::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_RIGHT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_RIGHT) ;
                 }) ;
             }
@@ -443,16 +443,16 @@ namespace vind
         MoveBckWordSimple::MoveBckWordSimple(MoveBckWordSimple&&) = default ;
         MoveBckWordSimple& MoveBckWordSimple::operator=(MoveBckWordSimple&&) = default ;
 
-        void MoveBckWordSimple::sprocess(unsigned int repeat_num) const {
+        void MoveBckWordSimple::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LSHIFT, KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }
             else {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }

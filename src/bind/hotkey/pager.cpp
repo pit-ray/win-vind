@@ -14,8 +14,8 @@ namespace vind
         GotoNextPage::GotoNextPage()
         : BindedFuncVoid("goto_next_page")
         {}
-        void GotoNextPage::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void GotoNextPage::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LALT, KEYCODE_RIGHT) ;
             }) ;
@@ -34,8 +34,8 @@ namespace vind
         GotoPrevPage::GotoPrevPage()
         : BindedFuncVoid("goto_prev_page")
         {}
-        void GotoPrevPage::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void GotoPrevPage::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LALT, KEYCODE_LEFT) ;
             }) ;

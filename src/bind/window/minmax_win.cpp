@@ -17,8 +17,8 @@ namespace vind
         MinimizeCurrentWindow::MinimizeCurrentWindow()
         : BindedFuncVoid("minimize_current_window")
         {}
-        void MinimizeCurrentWindow::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void MinimizeCurrentWindow::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LWIN, KEYCODE_DOWN) ;
             }) ;
@@ -37,10 +37,10 @@ namespace vind
         MaximizeCurrentWindow::MaximizeCurrentWindow()
         : BindedFuncVoid("maximize_current_window")
         {}
-        void MaximizeCurrentWindow::sprocess(unsigned int repeat_num) {
+        void MaximizeCurrentWindow::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
-            if(repeat_num == 1) {
+            if(count == 1) {
                 auto hwnd = util::get_foreground_window() ;
 
                 auto before_rect = util::get_window_rect(hwnd) ;
@@ -57,7 +57,7 @@ namespace vind
                 }
             }
             else {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LWIN, KEYCODE_UP) ;
                 }) ;
             }

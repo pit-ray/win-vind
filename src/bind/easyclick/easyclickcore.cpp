@@ -160,7 +160,7 @@ namespace vind
 
         void EasyClickCore::create_matching_loop(
                 core::KeyCode sendkey,
-                unsigned int repeat_num) const {
+                unsigned int count) const {
             if(pimpl->positions_.empty() || pimpl->hints_.empty()) {
                 return ;
             }
@@ -205,7 +205,7 @@ namespace vind
 
             if(auto pos = ft.get()) {
                 if(SetCursorPos(pos->x(), pos->y())) {
-                    safe_for(repeat_num, [&sendkey] {
+                    safe_for(count, [&sendkey] {
                         util::click(sendkey) ;
                     }) ;
                 }

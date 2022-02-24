@@ -31,10 +31,10 @@ namespace vind
         EasyClickLeft::EasyClickLeft(EasyClickLeft&&)            = default ;
         EasyClickLeft& EasyClickLeft::operator=(EasyClickLeft&&) = default ;
 
-        void EasyClickLeft::sprocess(unsigned int repeat_num) const {
+        void EasyClickLeft::sprocess(unsigned int count) const {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
-            pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, repeat_num) ;
+            pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, count) ;
         }
         void EasyClickLeft::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -61,10 +61,10 @@ namespace vind
         EasyClickRight::EasyClickRight(EasyClickRight&&)            = default ;
         EasyClickRight& EasyClickRight::operator=(EasyClickRight&&) = default ;
 
-        void EasyClickRight::sprocess(unsigned int repeat_num) const {
+        void EasyClickRight::sprocess(unsigned int count) const {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
-            pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, repeat_num) ;
+            pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, count) ;
         }
         void EasyClickRight::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {
@@ -91,10 +91,10 @@ namespace vind
         EasyClickMid::EasyClickMid(EasyClickMid&&)            = default ;
         EasyClickMid& EasyClickMid::operator=(EasyClickMid&&) = default ;
 
-        void EasyClickMid::sprocess(unsigned int repeat_num) const {
+        void EasyClickMid::sprocess(unsigned int count) const {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
-            pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, repeat_num) ;
+            pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, count) ;
         }
         void EasyClickMid::sprocess(core::NTypeLogger& parent_lgr) const {
             if(!parent_lgr.is_long_pressing()) {

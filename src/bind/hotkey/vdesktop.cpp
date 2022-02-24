@@ -13,8 +13,8 @@ namespace vind
         SwitchVDesktop2Left::SwitchVDesktop2Left()
         : BindedFuncVoid("switch_to_left_vdesktop")
         {}
-        void SwitchVDesktop2Left::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void SwitchVDesktop2Left::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
             }) ;
@@ -33,8 +33,8 @@ namespace vind
         SwitchVDesktop2Right::SwitchVDesktop2Right()
         : BindedFuncVoid("switch_to_right_vdesktop")
         {}
-        void SwitchVDesktop2Right::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void SwitchVDesktop2Right::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
             }) ;

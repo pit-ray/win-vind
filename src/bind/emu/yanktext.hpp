@@ -20,7 +20,7 @@ namespace vind
         struct YankLine : public BindedFuncVoid<YankLine> {
             explicit YankLine() ;
             static void sprocess(
-                    unsigned int repeat_num=1,
+                    unsigned int count=1,
                     const SelectedTextResult* const exres=nullptr) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;

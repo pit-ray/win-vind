@@ -28,20 +28,20 @@ namespace vind
         PutAfter::PutAfter(PutAfter&&)            = default ;
         PutAfter& PutAfter::operator=(PutAfter&&) = default ;
 
-        void PutAfter::sprocess(unsigned int repeat_num) const {
+        void PutAfter::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
 
             auto t = get_register_type() ;
             if(t == RegType::Chars) {
                 igate.pushup(KEYCODE_RIGHT) ;
 
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_V) ;
                 }) ;
             }
             else if(t == RegType::Lines) {
                 igate.pushup(KEYCODE_END) ;
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_ENTER) ;
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_V) ;
                 }) ;
@@ -75,17 +75,17 @@ namespace vind
         PutBefore::PutBefore(PutBefore&&)            = default ;
         PutBefore& PutBefore::operator=(PutBefore&&) = default ;
 
-        void PutBefore::sprocess(unsigned int repeat_num) const {
+        void PutBefore::sprocess(unsigned int count) const {
             auto& igate = core::InputGate::get_instance() ;
 
             auto t = get_register_type() ;
             if(t == RegType::Chars) {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_V) ;
                 }) ;
             }
             else if(t == RegType::Lines) {
-                safe_for(repeat_num, [&igate] {
+                safe_for(count, [&igate] {
                     igate.pushup(KEYCODE_HOME) ;
                     igate.pushup(KEYCODE_ENTER) ;
                     igate.pushup(KEYCODE_UP) ;

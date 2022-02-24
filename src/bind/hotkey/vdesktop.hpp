@@ -9,7 +9,7 @@ namespace vind
     {
         struct SwitchVDesktop2Left : public BindedFuncVoid<SwitchVDesktop2Left> {
             explicit SwitchVDesktop2Left() ;
-            static void sprocess(unsigned int repeat_num=1) ;
+            static void sprocess(unsigned int count=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
@@ -17,7 +17,7 @@ namespace vind
 
         struct SwitchVDesktop2Right : public BindedFuncVoid<SwitchVDesktop2Right> {
             explicit SwitchVDesktop2Right() ;
-            static void sprocess(unsigned int repeat_num=1) ;
+            static void sprocess(unsigned int count=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;

@@ -35,8 +35,8 @@ namespace vind
         ForwardUINavigation::ForwardUINavigation()
         : BindedFuncVoid("forward_ui_navigation")
         {}
-        void ForwardUINavigation::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void ForwardUINavigation::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(KEYCODE_TAB) ;
             }) ;
         }
@@ -54,8 +54,8 @@ namespace vind
         BackwardUINavigation::BackwardUINavigation()
         : BindedFuncVoid("backward_ui_navigation")
         {}
-        void BackwardUINavigation::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void BackwardUINavigation::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LSHIFT, KEYCODE_TAB) ;
             }) ;

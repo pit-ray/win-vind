@@ -19,8 +19,8 @@ namespace vind
         Switch2LeftTab::Switch2LeftTab()
         : BindedFuncVoid("switch_to_left_tab")
         {}
-        void Switch2LeftTab::sprocess(unsigned int repeat_num) {
-            safe_for(repeat_num, [] {
+        void Switch2LeftTab::sprocess(unsigned int count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
             }) ;
@@ -39,8 +39,8 @@ namespace vind
         Switch2RightTab::Switch2RightTab()
         : BindedFuncVoid("switch_to_right_tab")
         {}
-        void Switch2RightTab::sprocess(unsigned repeat_num) {
-            safe_for(repeat_num, [] {
+        void Switch2RightTab::sprocess(unsigned count) {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_TAB) ;
             }) ;

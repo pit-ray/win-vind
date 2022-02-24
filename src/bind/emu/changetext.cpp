@@ -43,7 +43,7 @@ namespace vind
         ChangeLine::ChangeLine()
         : ChangeBaseCreator("change_line")
         {}
-        void ChangeLine::sprocess(unsigned int repeat_num) {
+        void ChangeLine::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
             auto res = get_selected_text([&igate] {
                 igate.pushup(KEYCODE_HOME) ;
@@ -65,7 +65,7 @@ namespace vind
             safe_for(pos, [&igate] {
                 igate.pushup(KEYCODE_RIGHT) ;
             }) ;
-            ChangeUntilEOL::sprocess(repeat_num, &res) ;
+            ChangeUntilEOL::sprocess(count, &res) ;
         }
         void ChangeLine::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -81,10 +81,10 @@ namespace vind
         ChangeChar::ChangeChar()
         : ChangeBaseCreator("change_char")
         {}
-        void ChangeChar::sprocess(unsigned int repeat_num) {
+        void ChangeChar::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
-            safe_for(repeat_num, [&igate] {
+            safe_for(count, [&igate] {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_RIGHT) ;
             }) ;
 
@@ -140,11 +140,11 @@ namespace vind
          *
          */
         void ChangeUntilEOL::sprocess(
-                unsigned int repeat_num,
+                unsigned int count,
                 const SelectedTextResult* const exres) {
             auto& igate = core::InputGate::get_instance() ;
 
-            safe_for(repeat_num - 1, [&igate] {
+            safe_for(count - 1, [&igate] {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 

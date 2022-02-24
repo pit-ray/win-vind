@@ -29,8 +29,8 @@ namespace vind
         Redo::Redo(Redo&&)            = default ;
         Redo& Redo::operator=(Redo&&) = default ;
 
-        void Redo::sprocess(unsigned int repeat_num) const {
-            safe_for(repeat_num, [] {
+        void Redo::sprocess(unsigned int count) const {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_Y) ;
             }) ;
@@ -63,8 +63,8 @@ namespace vind
         Undo::Undo(Undo&&)            = default ;
         Undo& Undo::operator=(Undo&&) = default ;
 
-        void Undo::sprocess(unsigned int repeat_num) const {
-            safe_for(repeat_num, [] {
+        void Undo::sprocess(unsigned int count) const {
+            safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_Z) ;
             }) ;

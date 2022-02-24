@@ -25,8 +25,8 @@ namespace vind
         JoinNextLine::JoinNextLine(JoinNextLine&&)               = default ;
         JoinNextLine& JoinNextLine::operator=(JoinNextLine&&)    = default ;
 
-        void JoinNextLine::sprocess(unsigned int repeat_num) const {
-            safe_for(repeat_num, [] {
+        void JoinNextLine::sprocess(unsigned int count) const {
+            safe_for(count, [] {
                 auto& igate = core::InputGate::get_instance() ;
                 igate.pushup(KEYCODE_END) ;
                 igate.pushup(KEYCODE_DELETE) ;

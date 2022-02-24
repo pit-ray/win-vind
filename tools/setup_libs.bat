@@ -55,16 +55,16 @@ call "tools/install_maddy.bat" %1 %2
 @echo Setup wxWidgets --------------------------------------------------------------------------
 @echo.
 
-@if exist libs/wxWidgets (
-    @if "%3" == "-update" (
-        @goto start_setup_wxWidgets
-    )
-    @echo.
-    @echo wxWidgets is already installed. If you want to re-install, pass -update as the third argument.
-    @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
-    @echo.
-    @goto end_of_wxWidgets
-)
-:start_setup_wxWidgets
+@rem @if exist libs/wxWidgets (
+@rem     @if "%3" == "-update" (
+@rem         @goto start_setup_wxWidgets
+@rem     )
+@rem     @echo.
+@rem     @echo wxWidgets is already installed. If you want to re-install, pass -update as the third argument.
+@rem     @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
+@rem     @echo.
+@rem     @goto end_of_wxWidgets
+@rem )
+@rem :start_setup_wxWidgets
 call "tools/install_wxWidgets.bat" %1 %2
-:end_of_wxWidgets
+@rem :end_of_wxWidgets

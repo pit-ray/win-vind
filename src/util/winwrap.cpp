@@ -2,6 +2,7 @@
 
 #include "core/errlogger.hpp"
 
+#include "debug.hpp"
 #include "def.hpp"
 #include "point2d.hpp"
 
@@ -612,25 +613,37 @@ namespace vind
         }
 
         std::string get_Windows_display_version() {
-            std::wstring str ;
-            str.resize(10) ;
+            constexpr auto subkey = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" ;
 
-            // include the null terminator
-            auto size = static_cast<DWORD>(str.size() * sizeof(wchar_t) + 1) ;
+            const std::wstring version_keys[] = {
+                L"DisplayVersion",
+                L"ReleaseId"
+            } ;
+            for (auto version_key : version_keys) {
+                DWORD size ;
+                if(ERROR_SUCCESS != RegGetValueW(
+                        HKEY_LOCAL_MACHINE, subkey, version_key.c_str(),
+                        RRF_RT_REG_SZ, NULL, NULL, &size) ) {
+                    continue ;
+                }
 
-            auto result = RegGetValueW(
-                    HKEY_LOCAL_MACHINE,
-                    L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
-                    L"DisplayVersion",
-                    RRF_RT_REG_SZ,
-                    nullptr, &str[0], &size) ;
+                std::wstring val ;
+                val.resize(size) ; // Consider null-terminator
 
-            if(result != ERROR_SUCCESS) {
-                throw RUNTIME_EXCEPT(
-                        "Could not read the registory value at " \
-                        "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion .") ;
+                if(ERROR_SUCCESS != RegGetValueW(
+                        HKEY_LOCAL_MACHINE, subkey, version_key.c_str(),
+                        RRF_RT_REG_SZ, NULL, &val[0], &size)) {
+                    continue ;
+                }
+
+                // Resize down the string to avoid multiple null terminated string.
+                val.resize(size - 1) ;
+                return util::ws_to_s(val) ;
             }
-            return util::ws_to_s(str) ;
+
+            throw std::runtime_error(
+                    "Could not read the registory value at "
+                    "\"HKEY_LOCAL_MACHINE" + util::ws_to_s(subkey) + "\".") ;
         }
     }
 }

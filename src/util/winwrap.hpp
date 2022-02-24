@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 
+#include "box2d.hpp"
 #include "def.hpp"
 #include "point2d.hpp"
 #include "string.hpp"
@@ -19,7 +20,10 @@ namespace vind
 
         void refresh_display(HWND hwnd) ;
 
+        HWND get_foreground_window() ;
         void set_foreground_window(HWND hwnd) ;
+
+        Box2D get_window_rect(HWND hwnd) ;
 
         inline BOOL b_to_B(bool b) noexcept {
             return b ? TRUE : FALSE ;

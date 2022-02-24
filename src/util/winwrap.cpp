@@ -36,10 +36,26 @@ namespace vind
             }
         }
 
+        HWND get_foreground_window() {
+            auto hwnd = GetForegroundWindow() ;
+            if(!hwnd) {
+                throw std::runtime_error("There is no foreground window.") ;
+            }
+            return hwnd ;
+        }
+
         void set_foreground_window(HWND hwnd) {
             if(!SetForegroundWindow(hwnd)) {
-                throw RUNTIME_EXCEPT("Could not set a window as foreground.") ;
+                throw std::runtime_error("Could not set a window as foreground.") ;
             }
+        }
+
+        Box2D get_window_rect(HWND hwnd) {
+            util::Box2D rect ;
+            if(!GetWindowRect(hwnd, &(rect.data()))) {
+                throw std::runtime_error("Could not get a rectangle of the window.") ;
+            }
+            return rect ;
         }
 
         template <typename StdString, typename Path>

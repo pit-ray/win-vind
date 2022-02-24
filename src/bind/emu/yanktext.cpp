@@ -60,6 +60,8 @@ namespace vind
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
+            Sleep(24) ;
+
             if(!select_line_until_EOL(exres)) {
                 clear_clipboard_with_null() ;
             }

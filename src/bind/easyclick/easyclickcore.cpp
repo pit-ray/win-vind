@@ -115,10 +115,7 @@ namespace vind
             pimpl->positions_.clear() ;
             pimpl->strhints_.clear() ;
 
-            RECT root_rect ;
-            if(!GetWindowRect(hwnd, &root_rect)) {
-                throw RUNTIME_EXCEPT("Could not get a rectangle of the root window.") ;
-            }
+            auto root_rect = util::get_window_rect(hwnd) ;
 
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("uiacachebuild").get<bool>()) {

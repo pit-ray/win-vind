@@ -16,17 +16,13 @@ message(STATUS "Detected wxWidgets Root Directory: ${wxWidgets_ROOT_DIR}")
 
 if(NOT wxWidgets_LIB_DIR)
     if(${MSVC})
-        if(${BIT_TYPE} STREQUAL 32)
-            set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_lib)
-        else()
+        if(${GEN_ARCH} STREQUAL "x64")
             set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)
+        else()
+            set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_lib)
         endif()
     else()
-        #if(${BIT_TYPE} STREQUAL 32)
-            set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/gcc_lib)
-        #else()
-            #set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/gcc_x64_lib)
-        #endif()
+        set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/gcc_lib)
     endif()
 endif()
 if(NOT EXISTS ${wxWidgets_LIB_DIR})
@@ -97,7 +93,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/libs
-    ${WINDOWS_SDK_INCLUDE_DIR}
     ${wxWidgets_INCLUDE_DIRS}
 )
 
@@ -143,5 +138,11 @@ else()
     endif()
 endif()
 
+
 link_wxWidgets(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} psapi dwmapi userenv)
+target_link_libraries(${PROJECT_NAME}
+    psapi
+    dwmapi
+    userenv
+    icuuc
+)

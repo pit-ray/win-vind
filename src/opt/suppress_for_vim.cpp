@@ -34,8 +34,10 @@ namespace vind
 
             static HWND pre_hwnd = NULL ;
 
-            auto hwnd = GetForegroundWindow() ;
-            if(pre_hwnd == hwnd) return ;
+            auto hwnd = util::get_foreground_window() ;
+            if(pre_hwnd == hwnd) {
+                return ;
+            }
 
             pre_hwnd = hwnd ;
 

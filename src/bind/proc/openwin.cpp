@@ -19,10 +19,7 @@ namespace vind
         : BindedFuncVoid("open_new_window")
         {}
         void OpenNewWindow::sprocess() {
-            auto hwnd = GetForegroundWindow() ;
-            if(!hwnd) {
-                throw RUNTIME_EXCEPT("The foreground window is not existed") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
 
             DWORD proc_id = 0 ;
             GetWindowThreadProcessId(hwnd, &proc_id) ;

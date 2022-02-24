@@ -10,6 +10,7 @@
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace vind
@@ -19,10 +20,7 @@ namespace vind
         SelectedTextResult get_selected_text(
                 std::function<void()> clip_func,
                 bool backup) {
-            auto hwnd = GetForegroundWindow() ;
-            if(!hwnd) {
-                throw RUNTIME_EXCEPT("not exist active window") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
 
             SmartClipboard scb(hwnd) ;
             scb.open() ; //<open>-------------------------
@@ -41,7 +39,7 @@ namespace vind
             //insofar as having already arrived the copied text
             //from the editor to a clipboard,
             //so wait for a little.
-            Sleep(75) ;
+            Sleep(300) ;
 
             scb.open() ; //<open>-------------------------
 

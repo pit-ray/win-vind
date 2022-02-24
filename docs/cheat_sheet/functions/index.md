@@ -171,67 +171,81 @@ disable_anchors: true
 
 **Mode**  
 
-|ID|Feature|
-|:---:|:---|
-|**to_insert_BOL**|Insert to begin of line|
-|**to_insert_EOL**|Append end of line|
-|**to_insert_append**|Append after a caret|
-|**to_insert_nlabove**|Begin new line above a caret|
-|**to_insert_nlbelow**|Begin new line below a caret|
+|ID|Feature|Emulation|
+|:---:|:---|:---:|
+|**to_insert_BOL**|Insert to begin of line.|`I`|
+|**to_insert_EOL**|Append end of line.|`A`|
+|**to_insert_append**|Append after a caret.|`a`|
+|**to_insert_nlabove**|Begin new line above a caret.|`O`|
+|**to_insert_nlbelow**|Begin new line below a caret.|`o`|
 
 <br>
 
 **Move**  
+In 4.4, `move_caret_word_forward`, `move_caret_nonblank_word_forward`, `move_caret_word_backward`, and `move_caret_nonblank_word_backward` are deprecated. Instead, functions equivalent to `w`, `b`, `W`, `B`, `e`, `E`, `ge`, and `gE` have been added. These functions do not work in visual mode except for `w` and `b`, because they copy the text once and retrieve the text via the clipboard. `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.  
 
-|ID|Feature|
-|:---:|:---|
-|**move_caret_down**|Move the caret down|
-|**move_caret_left**|Move the caret to left|
-|**move_caret_nonblank_word_backward**|Backward with WORDS|
-|**move_caret_nonblank_word_forward**|Forward with WORDS|
-|**move_caret_right**|Move the caret to right|
-|**move_caret_up**|Move the caret up|
-|**move_caret_word_backward**|Backward with words|
-|**move_caret_word_forward**|Forward with words|
+There is an option [charbreak]({{ site.url }}/cheat_sheet/options) to set the criteria for considering a Unicode character as a single character. 
+
+|ID|Feature|Emulation|
+|:---:|:---|:---:|
+|**move_caret_left**|Move the caret to left.|`h`|
+|**move_caret_down**|Move the caret down.|`j`|
+|**move_caret_up**|Move the caret up|`k`|
+|**move_caret_right**|Move the caret to right.|`l`|
+|~~**move_caret_word_forward**~~|Forward with words (Deprecated in 4.4)|`w`|
+|~~**move_caret_nonblank_word_forward**~~|Forward with WORDS. (Deprecated in 4.4)|`W`|
+|~~**move_caret_word_backward**~~|Backward with words (Deprecated in 4.4)|`b`|
+|~~**move_caret_nonblank_word_backward**~~|Backward with WORDS. (Deprecated in 4.4)|`B`|
+|**move_fwd_word**|words forward for normal mode.|`w`|
+|**move_fwd_word_simple**|words forward for visual mode.|`w`|
+|**move_bck_word**|words backward for normal mode.|`b`|
+|**move_bck_word_simple**|words backward for visual mode.|`b`|
+|**move_fwd_bigword**|WORDS forward.|`W`|
+|**move_bck_bigword**|WORDS backward.|`B`|
+|**move_end_word**|Forward to the end of words.|`e`|
+|**move_end_bigword**|Forward to the end of WORDS.|`E`|
+|**move_bckend_word**|Backward to the end of words.|`ge`|
+|**move_bckend_bigword**|Backward to the end of WORDS.|`gE`|
+
 
 <br>
 
 **Jump**  
 
-|ID|Feature|
-|:---:|:---|
-|**jump_caret_to_BOF**|Jump the caret to BOF|
-|**jump_caret_to_BOL**|Jump the caret to begin of line|
-|**jump_caret_to_EOF**|Jump the caret to EOF|
-|**jump_caret_to_EOL**|Jump the caret to end of line|
+|ID|Feature|Emulation|
+|:---:|:---|:---:|
+|**jump_caret_to_BOF**|Jump the caret to BOF|`gg`|
+|**jump_caret_to_BOL**|Jump the caret to begin of line|`0`|
+|**jump_caret_to_EOF**|Jump the caret to EOF|`G`|
+|**jump_caret_to_EOL**|Jump the caret to end of line|`$`|
 
 <br>
 
 **Edit**  
 
-|ID|Feature|
-|:---:|:---|
-|**change_char**|Change Characters|
-|**change_highlight_text**|Change highlighted texts|
-|**change_line**|Change Lines|
-|**change_until_EOL**|Change until EOL|
-|**change_with_motion**|Change texts with motion|
-|**delete_after**|Delete chars after the caret|
-|**delete_before**|Delete chars before the caret|
-|**delete_highlight_text**|Delete highlighted texts|
-|**delete_line**|Delete lines|
-|**delete_line_until_EOL**|Delete texts until end of line|
-|**delete_with_motion**|Delete texts with motion|
-|**join_next_line**|Join a next line|
-|**put_after**|Put texts after the caret|
-|**put_before**|Put texts before the caret|
-|**repeat_last_change**|Repeat last simple change (Dot command)|
-|**replace_char**|Replace a char|
-|**replace_sequence**|Replace Mode|
-|**switch_char_case**|Switch char case|
-|**yank_highlight_text**|Yank highlighted texts|
-|**yank_line**|Yank lines|
-|**yank_with_motion**|Yank lines with motion|
+|ID|Feature|Emulation|
+|:---:|:---|:---:|
+|**change_char**|Change Characters|`s`|
+|**change_highlight_text**|Change highlighted texts|`c`, `s`, `S`|
+|**change_line**|Change Lines|`cc`, `S`|
+|**change_until_EOL**|Change until EOL|`C`|
+|**change_with_motion**|Change texts with motion|`c{motion}`|
+|**delete_after**|Delete chars after the caret|`x`|
+|**delete_before**|Delete chars before the caret|`X`|
+|**delete_highlight_text**|Delete highlighted texts|`d`, `x`, `X`|
+|**delete_line**|Delete lines|`dd`|
+|**delete_line_until_EOL**|Delete texts until end of line|`D`|
+|**delete_with_motion**|Delete texts with motion|`d{motion}`|
+|**join_next_line**|Join a next line|`J`|
+|**put_after**|Put texts after the caret|`p`|
+|**put_before**|Put texts before the caret|`P`|
+|**repeat_last_change**|Repeat last simple change|`.`|
+|**replace_char**|Replace a char|`r`|
+|**replace_sequence**|Replace Mode|`R`|
+|**switch_char_case**|Switch char case|`~`|
+|**yank_highlight_text**|Yank highlighted texts|`y`|
+|**yank_line**|Yank lines|`yy`, `Y`|
+|**yank_with_motion**|Yank lines with motion|`y{motion}`|
 
 
 <br>

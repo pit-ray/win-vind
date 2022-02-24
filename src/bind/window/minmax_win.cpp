@@ -6,6 +6,7 @@
 #include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace vind
@@ -40,23 +41,14 @@ namespace vind
             auto& igate = core::InputGate::get_instance() ;
 
             if(repeat_num == 1) {
-                auto hwnd = GetForegroundWindow() ;
-                if(hwnd == NULL) {
-                    throw RUNTIME_EXCEPT("There is no foreground window.") ;
-                }
+                auto hwnd = util::get_foreground_window() ;
 
-                RECT before_rect ;
-                if(!GetWindowRect(hwnd, &before_rect)) {
-                    throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
-                }
+                auto before_rect = util::get_window_rect(hwnd) ;
 
                 igate.pushup(KEYCODE_LWIN, KEYCODE_UP) ;
                 Sleep(50) ;
 
-                RECT after_rect ;
-                if(!GetWindowRect(hwnd, &after_rect)) {
-                    throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
-                }
+                auto after_rect = util::get_window_rect(hwnd) ;
 
                 //If not changed, regard it as a full screen and deal with it.
                 if(util::is_equal(before_rect, after_rect)) {

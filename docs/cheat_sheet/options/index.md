@@ -16,6 +16,7 @@ show_in_menu: false
 |`blockstylecaret_mode`|str|solid|Mode of block style caret.  There is a `solid` mode with fixed size and a `flex` mode with pseudo blocks by selection.|
 |`blockstylecaret_width`|num|15|Width of block style caret on solid mode|
 |`blockstylecaret`|bool|false|Block Style Caret|
+|`charbreak`|str|grapheme|Mode for how to split a single Unicode character. The `grapheme` mode treats a combination character as a single character. The `codepoint` mode processes the combination character for each codepoint.|
 |`charcache`|bool|false|It is a very small cache for one character used by `x` or `X` commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.|
 |`cmd_bgcolor`|str|323232|Background color in the virtual command line. (# is optional)|
 |`cmd_fadeout`|num|5|Fade-out time in seconds for the virtual command line. If you want the command line to always be visible, make this value large enough.|

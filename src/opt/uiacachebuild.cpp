@@ -75,10 +75,7 @@ namespace vind
                 return ;
             }
 
-            auto hwnd = GetForegroundWindow() ;
-            if(hwnd == NULL) { // don't scan for desktop root
-                return ;
-            }
+            auto hwnd = util::get_foreground_window() ;
 
             if(!has_cache(hwnd)) {
                 caches_.emplace(hwnd, hwnd) ;

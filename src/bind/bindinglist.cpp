@@ -15,6 +15,7 @@
 #include "emu/moveinsert.hpp"
 #include "emu/puttext.hpp"
 #include "emu/replacetext.hpp"
+#include "emu/wordmotion.hpp"
 #include "emu/yanktext.hpp"
 
 #include "file/filer.hpp"
@@ -146,6 +147,16 @@ namespace vind
                 MoveCursorLeft::create(),
                 MoveCursorRight::create(),
                 MoveCursorUp::create(),
+                MoveBckBigWord::create(),
+                MoveBckEndBigWord::create(),
+                MoveBckEndWord::create(),
+                MoveBckWord::create(),
+                MoveBckWordSimple::create(),
+                MoveEndBigWord::create(),
+                MoveEndWord::create(),
+                MoveFwdBigWord::create(),
+                MoveFwdWord::create(),
+                MoveFwdWordSimple::create(),
                 Open::create(),
                 OpenNewTab::create(),
                 OpenNewWindow::create(),

@@ -28,8 +28,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretLeft::~MoveCaretLeft() noexcept                    = default ;
-        MoveCaretLeft::MoveCaretLeft(MoveCaretLeft&&)            = default ;
+        MoveCaretLeft::~MoveCaretLeft() noexcept = default ;
+        MoveCaretLeft::MoveCaretLeft(MoveCaretLeft&&) = default ;
         MoveCaretLeft& MoveCaretLeft::operator=(MoveCaretLeft&&) = default ;
 
         void MoveCaretLeft::sprocess(unsigned int repeat_num) const {
@@ -69,8 +69,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretRight::~MoveCaretRight() noexcept                     = default ;
-        MoveCaretRight::MoveCaretRight(MoveCaretRight&&)            = default ;
+        MoveCaretRight::~MoveCaretRight() noexcept = default ;
+        MoveCaretRight::MoveCaretRight(MoveCaretRight&&) = default ;
         MoveCaretRight& MoveCaretRight::operator=(MoveCaretRight&&) = default ;
 
         void MoveCaretRight::sprocess(unsigned int repeat_num) const {
@@ -110,8 +110,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretUp::~MoveCaretUp() noexcept                  = default ;
-        MoveCaretUp::MoveCaretUp(MoveCaretUp&&)            = default ;
+        MoveCaretUp::~MoveCaretUp() noexcept = default ;
+        MoveCaretUp::MoveCaretUp(MoveCaretUp&&) = default ;
         MoveCaretUp& MoveCaretUp::operator=(MoveCaretUp&&) = default ;
 
         void MoveCaretUp::sprocess(unsigned int repeat_num) const {
@@ -164,8 +164,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretDown::~MoveCaretDown() noexcept                    = default ;
-        MoveCaretDown::MoveCaretDown(MoveCaretDown&&)            = default ;
+        MoveCaretDown::~MoveCaretDown() noexcept = default ;
+        MoveCaretDown::MoveCaretDown(MoveCaretDown&&) = default ;
         MoveCaretDown& MoveCaretDown::operator=(MoveCaretDown&&) = default ;
 
         void MoveCaretDown::sprocess(unsigned int repeat_num) const {
@@ -222,8 +222,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretWordForward::~MoveCaretWordForward() noexcept                             = default ;
-        MoveCaretWordForward::MoveCaretWordForward(MoveCaretWordForward&&)            = default ;
+        MoveCaretWordForward::~MoveCaretWordForward() noexcept = default ;
+        MoveCaretWordForward::MoveCaretWordForward(MoveCaretWordForward&&) = default ;
         MoveCaretWordForward& MoveCaretWordForward::operator=(MoveCaretWordForward&&) = default ;
 
         void MoveCaretWordForward::sprocess(unsigned int repeat_num) const {
@@ -264,8 +264,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretWordBackward::~MoveCaretWordBackward() noexcept                              = default ;
-        MoveCaretWordBackward::MoveCaretWordBackward(MoveCaretWordBackward&&)            = default ;
+        MoveCaretWordBackward::~MoveCaretWordBackward() noexcept = default ;
+        MoveCaretWordBackward::MoveCaretWordBackward(MoveCaretWordBackward&&) = default ;
         MoveCaretWordBackward& MoveCaretWordBackward::operator=(MoveCaretWordBackward&&) = default ;
 
         void MoveCaretWordBackward::sprocess(unsigned int repeat_num) const {
@@ -306,8 +306,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretNonBlankWordForward::~MoveCaretNonBlankWordForward() noexcept                             = default ;
-        MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&)            = default ;
+        MoveCaretNonBlankWordForward::~MoveCaretNonBlankWordForward() noexcept = default ;
+        MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&) = default ;
         MoveCaretNonBlankWordForward& MoveCaretNonBlankWordForward::operator=(MoveCaretNonBlankWordForward&&) = default ;
 
         void MoveCaretNonBlankWordForward::sprocess(unsigned int repeat_num) const {
@@ -348,8 +348,8 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        MoveCaretNonBlankWordBackward::~MoveCaretNonBlankWordBackward() noexcept                              = default ;
-        MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&)            = default ;
+        MoveCaretNonBlankWordBackward::~MoveCaretNonBlankWordBackward() noexcept = default ;
+        MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&) = default ;
         MoveCaretNonBlankWordBackward& MoveCaretNonBlankWordBackward::operator=(MoveCaretNonBlankWordBackward&&) = default ;
 
         void MoveCaretNonBlankWordBackward::sprocess(unsigned int repeat_num) const {

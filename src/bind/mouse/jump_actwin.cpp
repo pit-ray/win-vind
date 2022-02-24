@@ -5,6 +5,7 @@
 
 #include "core/ntypelogger.hpp"
 #include "util/def.hpp"
+#include "util/winwrap.hpp"
 
 namespace vind
 {
@@ -15,20 +16,9 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_active_window")
         {}
         void JumpToActiveWindow::sprocess() {
-            auto hwnd = GetForegroundWindow() ;
-            if(!hwnd) {
-                throw RUNTIME_EXCEPT("GetForegoundWindow return nullptr") ;
-            }
-
-            RECT rect ;
-            if(!GetWindowRect(hwnd, &rect)) {
-                throw RUNTIME_EXCEPT("cannot get window rect") ;
-            }
-
-            auto&& xpos = static_cast<int>(rect.left + (rect.right - rect.left) / 2) ;
-            auto&& ypos = static_cast<int>(rect.top + (rect.bottom - rect.top) / 2) ;
-
-            SetCursorPos(xpos, ypos) ;
+            auto hwnd = util::get_foreground_window() ;
+            auto rect = util::get_window_rect(hwnd) ;
+            SetCursorPos(rect.center_x(), rect.center_y()) ;
         }
         void JumpToActiveWindow::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

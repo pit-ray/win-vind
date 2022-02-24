@@ -20,6 +20,7 @@ show_in_menu: false
 |`blockstylecaret_mode`|str|solid|ブロックスタイルのキャレットのモード。サイズ固定の`solid`モードと選択による疑似的な`flex`モードがあります。|
 |`blockstylecaret_width`|num|15|solidモードのブロックスタイルキャレットの幅。|
 |`blockstylecaret`|bool|false|ブロックスタイルのキャレット。|
+|`charbreak`|str|grapheme|Unicodeの1文字をどのように解釈するかを決めるモード。`grapheme`モードは、組み合わせ文字を考慮し、書記素クラスタを1文字とします。`codepoint`モードは、組み合わせ文字を各コードポイントに分けて処理します。|
 |`charcache`|bool|false|`x`や`X`コマンドの時使われる1文字用の小さなキャッシュ。有効にすると、その都度クリップボードが開かれ、Vimと同じ動作になりますが、パフォーマンスが少し低下します。|
 |`cmd_bgcolor`|str|323232|仮想コマンドラインの背景色(#は任意)。|
 |`cmd_fadeout`|num|5|仮想コマンドラインのフェードアウト時間(秒)。コマンドラインを消えないようにするには、この値を十分大きなものにしてください。|

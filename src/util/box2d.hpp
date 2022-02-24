@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "util/point2d.hpp"
+#include "point2d.hpp"
 
 namespace vind
 {

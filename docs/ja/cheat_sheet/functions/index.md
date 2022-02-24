@@ -175,67 +175,79 @@ version: 4.3.2
 
 **モード**  
 
-|ID|機能|
-|:---:|:---|
-|**to_insert_BOL**|行頭に挿入|
-|**to_insert_EOL**|行末に追加|
-|**to_insert_append**|キャレットの後ろに追加|
-|**to_insert_nlabove**|キャレットの上に行を挿入|
-|**to_insert_nlbelow**|キャレットの下に行を追加|
+|ID|機能|エミュレーション|
+|:---:|:---|:---:|
+|**to_insert_BOL**|行頭に挿入|`I`|
+|**to_insert_EOL**|行末に追加|`A`|
+|**to_insert_append**|キャレットの後ろに追加|`a`|
+|**to_insert_nlabove**|キャレットの上に行を挿入|`O`|
+|**to_insert_nlbelow**|キャレットの下に行を追加|`o`|
 
 <br>
 
 **移動**  
+　4.4から`move_caret_word_forward`, `move_caret_nonblank_word_forward`, `move_caret_word_backward`, and `move_caret_nonblank_word_backward`は非推奨となりました。代わりに`w`, `b`, `W`, `B`, `e`, `E`, `ge`, `gE`に相当する関数が追加されました。これらの関数は、一度テキストをコピーし、クリップボードからテキストを取得しているため、`w`と`b`以外の関数はVisualモードで動作しません。`iskeyword`オプションは、WindowsのVimの規定値に固定しており、現在は変更することができません。  
+　Unicodeの1文字の基準を設定するオプション[charbreak]({{ site.url }}/cheat_sheet/options)があります。
 
-|ID|機能|
-|:---:|:---|
-|**move_caret_down**|キャレットを下へ移動|
-|**move_caret_left**|キャレットを左へ移動|
-|**move_caret_nonblank_word_backward**|キャレットをN-WORDだけ戻す|
-|**move_caret_nonblank_word_forward**|キャレットをN-WORD先へ進める|
-|**move_caret_right**|キャレットを右へ移動|
-|**move_caret_up**|キャレットを上へ移動|
-|**move_caret_word_backward**|キャレットをN-wordだけ戻す|
-|**move_caret_word_forward**|キャレットをN-word先へ進める|
+|ID|機能|エミュレーション|
+|:---:|:---|:---:|
+|**move_caret_left**|キャレットを左へ移動|`h`|
+|**move_caret_down**|キャレットを下へ移動|`j`|
+|**move_caret_up**|キャレットを上へ移動|`k`|
+|**move_caret_right**|キャレットを右へ移動|`l`|
+|~~**move_caret_word_forward**~~|{count}word分、キャレットを進める(4.4から非推奨)|`w`|
+|~~**move_caret_nonblank_word_forward**~~|{count}WORD分、キャレットを進める(4.4から非推奨)|`W`|
+|~~**move_caret_word_backward**~~|{count}word分、キャレットを戻す(4.4から非推奨)|`b`|
+|~~**move_caret_nonblank_word_backward**~~|{count}WORD分、キャレットを戻す(4.4から非推奨)|`B`|
+|**move_fwd_word**|Normalモードで次のwordsに進む|`w`|
+|**move_fwd_word_simple**|Visualモードで次のwords進む|`w`|
+|**move_bck_word**|Normalモードで前のwordsに戻る|`b`|
+|**move_bck_word_simple**|Visualモードで前のwordsに戻る|`b`|
+|**move_fwd_bigword**|次のWORDSに進む|`W`|
+|**move_bck_bigword**|前のWORDSに戻る|`B`|
+|**move_end_word**|次のwordsの最後まで進む|`e`|
+|**move_end_bigword**|次のWORDSの最後まで進む|`E`|
+|**move_bckend_word**|前のwordsの最後に戻る|`ge`|
+|**move_bckend_bigword**|前のWORDSの最後に戻る|`gE`|
 
 <br>
 
 **ジャンプ**  
 
-|ID|機能|
-|:---:|:---|
-|**jump_caret_to_BOF**|ファイルの先頭にキャレットを移動|
-|**jump_caret_to_BOL**|行頭にキャレットを移動|
-|**jump_caret_to_EOF**|ファイルの末尾にキャレットを移動|
-|**jump_caret_to_EOL**|行末にキャレットを移動|
+|ID|機能|エミュレーション|
+|:---:|:---|:---:|
+|**jump_caret_to_BOF**|ファイルの先頭にキャレットを移動|`gg`|
+|**jump_caret_to_BOL**|行頭にキャレットを移動|`0`|
+|**jump_caret_to_EOF**|ファイルの末尾にキャレットを移動|`G`|
+|**jump_caret_to_EOL**|行末にキャレットを移動|`$`|
 
 <br>
 
 **編集**  
 
-|ID|機能|
-|:---:|:---|
-|**change_char**|文字を削除し、Insertモードへ移行|
-|**change_highlight_text**|選択されたテキストを削除し、Insertモードへ移行|
-|**change_line**|行を削除し、Insertモードへ移行|
-|**change_until_EOL**|行末まで削除し、Insertモードへ移行|
-|**change_with_motion**|現在位置からこのコマンド直後に移動した位置までを削除し、Insertモードへ移行|
-|**delete_after**|キャレットの次の文字を削除|
-|**delete_before**|キャレットの前の文字を削除|
-|**delete_highlight_text**|選択されたテキストを削除|
-|**delete_line**|行を削除|
-|**delete_line_until_EOL**|行末まで削除|
-|**delete_with_motion**|現在位置からこのコマンド直後に移動した位置までを削除|
-|**join_next_line**|次の行を現在の行の行末に移動|
-|**put_after**|キャレットの次の位置にテキストを貼り付け|
-|**put_before**|キャレットの前の位置にテキストを貼り付け|
-|**repeat_last_change**|最後の変更を繰り返す(ドットコマンド)|
-|**replace_char**|文字を置換|
-|**replace_sequence**|置換モード|
-|**switch_char_case**|大文字と小文字を入れ替える|
-|**yank_highlight_text**|選択されたテキストをコピー|
-|**yank_line**|行をコピー|
-|**yank_with_motion**|現在位置からこのコマンド直後に移動した位置までをコピー|
+|ID|機能|エミュレーション|
+|:---:|:---|:---:|
+|**change_char**|文字を削除し、Insertモードへ移行|`s`|
+|**change_highlight_text**|選択されたテキストを削除し、Insertモードへ移行|`c`, `s`, `S`|
+|**change_line**|行を削除し、Insertモードへ移行|`cc`, `S`|
+|**change_until_EOL**|行末まで削除し、Insertモードへ移行|`C`|
+|**change_with_motion**|現在位置からこのコマンド直後に移動した位置までを削除し、Insertモードへ移行|`c{motion}`|
+|**delete_after**|キャレットの次の文字を削除|`x`|
+|**delete_before**|キャレットの前の文字を削除|`X`|
+|**delete_highlight_text**|選択されたテキストを削除|`d`, `x`, `X`|
+|**delete_line**|行を削除|`dd`|
+|**delete_line_until_EOL**|行末まで削除|`D`|
+|**delete_with_motion**|現在位置からこのコマンド直後に移動した位置までを削除|`d{motion}`|
+|**join_next_line**|次の行を現在の行の行末に移動|`J`|
+|**put_after**|キャレットの次の位置にテキストを貼り付け|`p`|
+|**put_before**|キャレットの前の位置にテキストを貼り付け|`P`|
+|**repeat_last_change**|最後の変更を繰り返す|`.`|
+|**replace_char**|文字を置換|`r`|
+|**replace_sequence**|置換モード|`R`|
+|**switch_char_case**|大文字と小文字を入れ替える|`~`|
+|**yank_highlight_text**|選択されたテキストをコピー|`y`|
+|**yank_line**|行をコピー|`yy`, `Y`|
+|**yank_with_motion**|現在位置からこのコマンド直後に移動した位置までをコピー|`y{motion}`|
 
 
 <br>

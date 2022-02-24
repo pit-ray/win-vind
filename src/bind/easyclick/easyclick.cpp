@@ -32,10 +32,7 @@ namespace vind
         EasyClickLeft& EasyClickLeft::operator=(EasyClickLeft&&) = default ;
 
         void EasyClickLeft::sprocess(unsigned int repeat_num) const {
-            auto hwnd = GetForegroundWindow() ;
-            if(hwnd == NULL) {
-                throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, repeat_num) ;
         }
@@ -65,10 +62,7 @@ namespace vind
         EasyClickRight& EasyClickRight::operator=(EasyClickRight&&) = default ;
 
         void EasyClickRight::sprocess(unsigned int repeat_num) const {
-            auto hwnd = GetForegroundWindow() ;
-            if(hwnd == NULL) {
-                throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, repeat_num) ;
         }
@@ -98,10 +92,7 @@ namespace vind
         EasyClickMid& EasyClickMid::operator=(EasyClickMid&&) = default ;
 
         void EasyClickMid::sprocess(unsigned int repeat_num) const {
-            auto hwnd = GetForegroundWindow() ;
-            if(hwnd == NULL) {
-                throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, repeat_num) ;
         }
@@ -131,10 +122,7 @@ namespace vind
         EasyClickHover& EasyClickHover::operator=(EasyClickHover&&) = default ;
 
         void EasyClickHover::sprocess() const {
-            auto hwnd = GetForegroundWindow() ;
-            if(hwnd == NULL) {
-                throw RUNTIME_EXCEPT("Could not find a foreground window.") ;
-            }
+            auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop() ;
         }

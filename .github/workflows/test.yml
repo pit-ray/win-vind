@@ -5,6 +5,7 @@ on:
     branches: [ master ]
     tags:
       - v*.*.*
+      - test*
     paths:
       - '!README.md'
       - '!CONTRIBUTING.md'
@@ -32,8 +33,16 @@ jobs:
   test-on-Windows:
     runs-on: windows-2019
 
+    defaults:
+      run:
+        shell: powershell
+
     steps:
     - uses: actions/checkout@v2
+
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
 
     - name: Cache Libraries
       uses: actions/cache@v2
@@ -56,8 +65,6 @@ jobs:
         cmake --build ${{github.workspace}}/tests/build --config ${{env.BUILD_TYPE}}
 
     - name: Test
-      working-directory: ${{github.workspace}}
+      working-directory: ${{github.workspace}}/tests/build
       run: |
-        cd tests/build
         ctest -C ${{env.BUILD_TYPE}} --output-on-failure
-        cd ../..

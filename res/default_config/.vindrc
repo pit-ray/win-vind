@@ -195,6 +195,12 @@ set window_vdelta=100
 " List to ignore in ArrangeWindows
 set arrangewin_ignore=
 
+" Mode for how to split a single Unicode character.
+" The `grapheme` mode treats a combination character
+" as a single character. The `codepoint` mode processes
+" the combination character for each codepoint.
+" choice: ['grapheme', 'codepoint']
+set charbreak=grapheme
 
 " => map --------------------{{{1
 " GUI Normal Mode
@@ -739,21 +745,31 @@ evnoremap <Down> move_caret_down
 evnoremap <Enter> move_caret_down
 evnoremap <C-m> move_caret_down
 
-" Forward with words (Vim Emulation: w)
-ennoremap w move_caret_word_forward
-evnoremap w move_caret_word_forward
+" words forward (Vim Emulation: w)
+ennoremap w move_fwd_word
+evnoremap w move_fwd_word_simple
 
-" Backward with words (Vim Emulation: b)
-ennoremap b move_caret_word_backward
-evnoremap b move_caret_word_backward
+" words backward (Vim Emulation: b)
+ennoremap b move_bck_word
+evnoremap b move_bck_word_simple
 
-" Forward with WORDS (Vim Emulation: W)
-ennoremap W move_caret_nonblank_word_forward
-evnoremap W move_caret_nonblank_word_forward
+" WORDS forward (Vim Emulation: W)
+ennoremap W move_fwd_bigword
 
-" Backward with WORDS (Vim Emulation: B)
-ennoremap B move_caret_nonblank_word_backward
-evnoremap B move_caret_nonblank_word_backward
+" WORDS backward (Vim Emulation: B)
+ennoremap B move_bck_bigword
+
+" Forward to the end of word (Vim Emulation: e)
+ennoremap e move_end_word
+
+" Forward to the end of WORD (Vim Emulation: E)
+ennoremap E move_end_bigword
+
+" Backward to the end of word (Vim Emulation: ge)
+ennoremap ge move_bckend_word
+
+" Backward to the end of WORD (Vim Emulation: gE)
+ennoremap gE move_bckend_bigword
 
 " Jump the caret to begin of line (Vim Emulation: 0)
 ennoremap 0 jump_caret_to_BOL

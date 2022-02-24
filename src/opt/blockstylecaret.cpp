@@ -41,9 +41,7 @@ namespace
                 SPI_SETCARETWIDTH, 0, val,
                 SPIF_UPDATEINIFILE | SPIF_SENDCHANGE) ;
 
-        if(auto hwnd = GetForegroundWindow()) {
-            update_caret(hwnd) ;
-        }
+        update_caret(util::get_foreground_window()) ;
     }
 
     /**
@@ -115,10 +113,7 @@ namespace
 
 #if defined(DEBUG)
     DWORD get_character_width_pixel() {
-        auto hwnd = GetForegroundWindow() ;
-        if(hwnd == NULL) {
-            return 0 ;
-        }
+        auto hwnd = util::get_foreground_window() ;
 
         util::attach_thread_input(hwnd) ;
 

@@ -18,11 +18,7 @@ namespace vind
     namespace bind {
         //This is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
         std::filesystem::path get_current_explorer_path() {
-            const auto hwnd = GetForegroundWindow() ;
-
-            if(hwnd == NULL) {
-                return std::filesystem::path() ;
-            }
+            auto hwnd = util::get_foreground_window() ;
 
             if(util::is_failed(CoInitialize(NULL))) {
                 throw RUNTIME_EXCEPT("initialization failed") ;

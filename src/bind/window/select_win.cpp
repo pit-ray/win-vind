@@ -50,10 +50,7 @@ namespace
     inline void select_nearest_window(
             T1&& is_if_target,
             T2&& calc_distance) {
-        auto fg_hwnd = GetForegroundWindow() ;
-        if(fg_hwnd == NULL) {
-            throw RUNTIME_EXCEPT("There is not a foreground window.") ;
-        }
+        auto fg_hwnd = util::get_foreground_window() ;
 
         g_rects.clear() ;
         if(!EnumWindows(EnumWindowsProcForNearest,
@@ -62,10 +59,7 @@ namespace
             throw RUNTIME_EXCEPT("Could not enumerate all top-level windows.") ;
         }
 
-        util::Box2D fg_rect ;
-        if(!GetWindowRect(fg_hwnd, &(fg_rect.data()))) {
-            throw RUNTIME_EXCEPT("Could not get a rectangle of a foreground window.") ;
-        }
+        auto fg_rect = util::get_window_rect(fg_hwnd) ;
 
         std::map<LONG, HWND> distance_order_hwnd ;
         for(const auto& [enu_hwnd, enu_rect] : g_rects) {

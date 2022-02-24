@@ -62,7 +62,7 @@ namespace
     auto capture_fwd(unsigned int UNUSED(count)) {
         auto& igate = core::InputGate::get_instance() ;
         auto res = get_selected_text([&igate] {
-            igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN, KEYCODE_END) ;
             Sleep(30) ;
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;
@@ -77,7 +77,7 @@ namespace
     auto capture_bck(unsigned int UNUSED(count)) {
         auto& igate = core::InputGate::get_instance() ;
         auto res = get_selected_text([&igate] {
-            igate.pushup(KEYCODE_LSHIFT, KEYCODE_UP) ;
+            igate.pushup(KEYCODE_LSHIFT, KEYCODE_UP, KEYCODE_HOME) ;
             Sleep(30) ;
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }) ;

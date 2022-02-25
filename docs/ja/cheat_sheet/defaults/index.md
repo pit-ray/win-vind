@@ -249,14 +249,22 @@ nav: デフォルトのマッピング
 
 |バインディング|ID|
 |:---:|:---:|
-|`B`|**move_caret_nonblank_word_backward**|
-|`W`|**move_caret_nonblank_word_forward**|
-|`b`|**move_caret_word_backward**|
 |`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|
 |`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|
 |`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|
 |`l`, `<Space>`, `<Right>`|**move_caret_right**|
-|`w`|**move_caret_word_forward**|
+|`w`|**move_caret_word_forward** (4.4で非推奨)|
+|`W`|**move_caret_nonblank_word_forward** (4.4で非推奨)|
+|`b`|**move_caret_word_backward** (4.4で非推奨)|
+|`B`|**move_caret_nonblank_word_backward** (4.4で非推奨)|
+|`w`|**move_fwd_word** (4.4で追加)|
+|`b`|**move_bck_word** (4.4で追加)|
+|`W`|**move_fwd_bigword** (4.4で追加)|
+|`B`|**move_bck_bigword** (4.4で追加)|
+|`e`|**move_end_word** (4.4で追加)|
+|`E`|**move_end_bigword** (4.4で追加)|
+|`ge`|**move_bckend_word** (4.4で追加)|
+|`gE`|**move_bckend_bigword** (4.4で追加)|
 
 <br>
 
@@ -327,14 +335,16 @@ nav: デフォルトのマッピング
 
 |バインディング|ID|
 |:---:|:---:|
-|`B`|**move_caret_nonblank_word_backward**|
-|`W`|**move_caret_nonblank_word_forward**|
-|`b`|**move_caret_word_backward**|
 |`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|
 |`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|
 |`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|
 |`l`, `<Space>`, `<Right>`|**move_caret_right**|
-|`w`|**move_caret_word_forward**|
+|`w`|**move_caret_word_forward** (4.4で非推奨)|
+|`W`|**move_caret_nonblank_word_forward** (4.4で非推奨)|
+|`b`|**move_caret_word_backward** (4.4で非推奨)|
+|`B`|**move_caret_nonblank_word_backward** (4.4で非推奨)|
+|`w`|**move_fwd_word_simple** (4.4で追加)|
+|`b`|**move_bck_word_simple** (4.4で追加)|
 
 <br>
 

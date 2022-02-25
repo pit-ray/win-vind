@@ -244,14 +244,22 @@ nav: Default Mappings
 
 |Bindings|ID|
 |:---:|:---:|
-|`B`|**move_caret_nonblank_word_backward**|
-|`W`|**move_caret_nonblank_word_forward**|
-|`b`|**move_caret_word_backward**|
 |`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|
 |`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|
 |`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|
 |`l`, `<Space>`, `<Right>`|**move_caret_right**|
-|`w`|**move_caret_word_forward**|
+|`w`|**move_caret_word_forward** (Deprecated in 4.4)|
+|`W`|**move_caret_nonblank_word_forward** (Deprecated in 4.4)|
+|`b`|**move_caret_word_backward** (Deprecated in 4.4)|
+|`B`|**move_caret_nonblank_word_backward** (Deprecated in 4.4)|
+|`w`|**move_fwd_word** (in 4.4)|
+|`b`|**move_bck_word** (in 4.4)|
+|`W`|**move_fwd_bigword** (in 4.4)|
+|`B`|**move_bck_bigword** (in 4.4)|
+|`e`|**move_end_word** (in 4.4)|
+|`E`|**move_end_bigword** (in 4.4)|
+|`ge`|**move_bckend_word** (in 4.4)|
+|`gE`|**move_bckend_bigword** (in 4.4)|
 
 <br>
 
@@ -322,14 +330,16 @@ nav: Default Mappings
 
 |Bindings|ID|
 |:---:|:---:|
-|`B`|**move_caret_nonblank_word_backward**|
-|`W`|**move_caret_nonblank_word_forward**|
-|`b`|**move_caret_word_backward**|
 |`h`, `<C-h>`, `<BS>`, `<Left>`|**move_caret_left**|
 |`j`, `+`, `gj`, `<C-n>`, `<Down>`, `<Enter>`, `<C-m>`|**move_caret_down**|
 |`k`, `-`, `gk`, `<C-p>`, `<Up>`|**move_caret_up**|
 |`l`, `<Space>`, `<Right>`|**move_caret_right**|
-|`w`|**move_caret_word_forward**|
+|`w`|**move_caret_word_forward** (Deprecated in 4.4)|
+|`W`|**move_caret_nonblank_word_forward** (Deprecated in 4.4)|
+|`b`|**move_caret_word_backward** (Deprecated in 4.4)|
+|`B`|**move_caret_nonblank_word_backward** (Deprecated in 4.4)|
+|`w`|**move_fwd_word_simple** (in 4.4)|
+|`b`|**move_bck_word_simple** (in 4.4)|
 
 <br>
 

@@ -9,7 +9,7 @@ icon: home
 translation: ja
 translators:
   - pit-ray
-version: 4.3.2
+version: 4.3.3
 description: Vim Key Binder for Windows
 ---
 

@@ -58,15 +58,15 @@ $ choco install win-vind
 ```
 
 <!--
-However, [win-vind 4.3.2](https://community.chocolatey.org/packages/win-vind/4.3.2) is not still approved on Chocolatey. Therefore, download the [Chocolatey package source](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_chocolatey_package_source.zip) manually and execute the following command in the extracted directory.
+However, [win-vind 4.3.3](https://community.chocolatey.org/packages/win-vind/4.3.3) is not still approved on Chocolatey. Therefore, download the [Chocolatey package source](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_chocolatey_package_source.zip) manually and execute the following command in the extracted directory.
 
 ```sh
-$ cd win-vind_4.3.2_chocolatey_package_source
-$ choco install win-vind.4.3.2.nupkg
+$ cd win-vind_4.3.3_chocolatey_package_source
+$ choco install win-vind.4.3.3.nupkg
 ```
 
 #### Current Status
-- [X] 4.3.2
+- [X] 4.3.3
 - [X] 4.3.1
 - [X] 4.3.0
 - [x] 4.2.1
@@ -82,7 +82,7 @@ $ winget install win-vind
 
 <!--
 #### Current Status
-- [x] 4.3.2
+- [x] 4.3.3
 - [x] 4.3.1
 - [x] 4.3.0
 - [x] 4.2.1
@@ -90,12 +90,12 @@ $ winget install win-vind
 -->
 
 ### Installer Version
-- [win-vind_4.3.2_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_32bit_installer.zip)
-- [win-vind_4.3.2_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_64bit_installer.zip)
+- [win-vind_4.3.3_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_installer.zip)
+- [win-vind_4.3.3_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_installer.zip)
 
 ### Portable Version
-- [win-vind_4.3.2_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_32bit_portable.zip)
-- [win-vind_4.3.2_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.2/win-vind_4.3.2_64bit_portable.zip)
+- [win-vind_4.3.3_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_portable.zip)
+- [win-vind_4.3.3_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_portable.zip)
 
 
 ## Usage

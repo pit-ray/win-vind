@@ -121,16 +121,23 @@ namespace vind
             if(cp >= U'a' && cp <= U'z') {
                 return true ;
             }
-            if(cp >= U'\u0048' && cp <= U'\u0057') {
+
+            // 0 ~ 9
+            if(cp >= U'\u0030' && cp <= U'\u0039') {
                 return true ;
             }
+
             if(cp == U'_') {
                 return true ;
             }
-            if(cp >= U'\u0128' && cp <= U'\u0167') {
+
+            // 128 ~ 167
+            if(cp >= U'\u0080' && cp <= U'\u00A7') {
                 return true ;
             }
-            if(cp >= U'\u0224' && cp <= U'\u0235') {
+
+            // 224 ~ 235
+            if(cp >= U'\u00E0' && cp <= U'\u00EB') {
                 return true ;
             }
             return false ;

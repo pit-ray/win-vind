@@ -48,10 +48,7 @@ namespace vind
             static util::Point2D prepos ;
             static auto keeptime = system_clock::now() ;
 
-            util::Point2D pos ;
-            if(!GetCursorPos(&pos.data())) {
-                throw RUNTIME_EXCEPT("Could not get the mouse cursor position.") ;
-            }
+            auto pos = util::get_cursor_pos() ;
             if(pos != prepos) {
                 prepos = pos ;
                 keeptime = system_clock::now() ;

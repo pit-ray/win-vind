@@ -204,11 +204,10 @@ namespace vind
             util::refresh_display(NULL) ;
 
             if(auto pos = ft.get()) {
-                if(SetCursorPos(pos->x(), pos->y())) {
-                    safe_for(count, [&sendkey] {
-                        util::click(sendkey) ;
-                    }) ;
-                }
+                util::set_cursor_pos(*pos) ;
+                safe_for(count, [&sendkey] {
+                    util::click(sendkey) ;
+                }) ;
             }
 
             //Release all keys in order to avoid the next matching right after.

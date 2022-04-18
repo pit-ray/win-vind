@@ -27,6 +27,7 @@
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/string.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace vind
@@ -108,7 +109,7 @@ namespace vind
                             y_pos -= settable.get("jump_margin").get<int>() ;
                         }
 
-                        SetCursorPos(x_pos, y_pos) ;
+                        util::set_cursor_pos(x_pos, y_pos) ;
 
                         for(const auto& key : log) {
                             igate.release_keystate(key) ;

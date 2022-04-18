@@ -222,9 +222,20 @@ namespace vind
                 throw std::runtime_error("The main process is already running.") ;
             }
 
-            //enable high DPI support
-            if(!SetProcessDPIAware()) {
-                throw std::runtime_error("Your system is not supported DPI.") ;
+            /*
+             * It enable DPI Awareness per monitor as per the documentation.
+             * ref. https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+             *
+             * This fix was discussed in #54 (https://github.com/pit-ray/win-vind/issues/54).
+             */
+            if(!SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)) {
+                Logger::get_instance().error(
+                        "Application scaling could not be set to Pre-Monitor V2. "
+                        "Instead, set it to Legacy DPI Aware.") ;
+
+                if(!SetProcessDPIAware()) {
+                    throw std::runtime_error("Your system is not supported DPI.") ;
+                }
             }
 
             /**

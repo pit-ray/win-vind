@@ -253,6 +253,20 @@ namespace vind
             }
         }
 
+        Point2D get_cursor_pos() {
+            Point2D pos ;
+            if(!GetCursorPos(&(pos.data()))) {
+                throw RUNTIME_EXCEPT("Could not get the cursor position.") ;
+            }
+            return pos ;
+        }
+
+        void set_cursor_pos(int x, int y) {
+            if(!SetCursorPos(x, y)) {
+                throw RUNTIME_EXCEPT("Could not move the cursor.") ;
+            }
+        }
+
         Point2D get_caret_pos(HWND hwnd) {
             attach_thread_input(hwnd) ;
 

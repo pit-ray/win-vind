@@ -5,6 +5,7 @@
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 namespace vind
 {
@@ -15,9 +16,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_left")
         {}
         void JumpToLeft::sprocess() {
-            POINT pos ;
-            GetCursorPos(&pos) ;
-            SetCursorPos(0, pos.y) ;
+            auto pos = util::get_cursor_pos() ;
+            util::set_cursor_pos(0, pos.y()) ;
         }
         void JumpToLeft::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -34,15 +34,14 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_right")
         {}
         void JumpToRight::sprocess() {
-            POINT pos ;
-            GetCursorPos(&pos) ;
+            auto pos = util::get_cursor_pos() ;
 
             auto box = util::get_conbined_metrics() ;
 
             auto& settable = core::SetTable::get_instance() ;
-            SetCursorPos(
+            util::set_cursor_pos(
                     box.width() - settable.get("jump_margin").get<int>(),
-                    pos.y) ;
+                    pos.y()) ;
         }
         void JumpToRight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -59,12 +58,10 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_top")
         {}
         void JumpToTop::sprocess() {
-            POINT pos ;
-            GetCursorPos(&pos) ;
-
+            auto pos = util::get_cursor_pos() ;
             auto box = util::get_conbined_metrics() ;
 
-            SetCursorPos(pos.x, box.top()) ;
+            util::set_cursor_pos(pos.x(), box.top()) ;
         }
         void JumpToTop::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -81,14 +78,12 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_bottom")
         {}
         void JumpToBottom::sprocess() {
-            POINT pos ;
-            GetCursorPos(&pos) ;
-
+            auto pos = util::get_cursor_pos() ;
             auto box = util::get_conbined_metrics() ;
 
             auto& settable = core::SetTable::get_instance() ;
-            SetCursorPos(
-                    pos.x,
+            util::set_cursor_pos(
+                    pos.x(),
                     box.height() - settable.get("jump_margin").get<int>()) ;
         }
         void JumpToBottom::sprocess(core::NTypeLogger& parent_lgr) {
@@ -106,11 +101,9 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_hcenter")
         {}
         void JumpToHorizontalCenter::sprocess() {
-            POINT pos ;
-            GetCursorPos(&pos) ;
-
+            auto pos = util::get_cursor_pos() ;
             auto box = util::get_conbined_metrics() ;
-            SetCursorPos(box.center_x(), pos.y) ;
+            util::set_cursor_pos(box.center_x(), pos.y()) ;
         }
         void JumpToHorizontalCenter::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -127,11 +120,9 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_vcenter")
         {}
         void JumpToVerticalCenter::sprocess() {
-            POINT pos ;
-            GetCursorPos(&pos) ;
-
+            auto pos = util::get_cursor_pos() ;
             auto box = util::get_conbined_metrics() ;
-            SetCursorPos(pos.x, box.center_y()) ;
+            util::set_cursor_pos(pos.x(), box.center_y()) ;
         }
         void JumpToVerticalCenter::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

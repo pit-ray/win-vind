@@ -34,14 +34,10 @@ jobs:
 
     defaults:
       run:
-        shell: powershell
+        shell: bash
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Setup Dependencies
-      run: |
-        choco install -y mingw --version=11.2.0.07112021
 
     - name: Cache Libraries
       uses: actions/cache@v2

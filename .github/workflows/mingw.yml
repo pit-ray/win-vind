@@ -34,21 +34,18 @@ jobs:
 
     defaults:
       run:
-        shell: msys2 {0}
+        shell: bash
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup MinGW
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW64
-        install: >-
-          git
-          base-devel
-          mingw-w64-x86_64-gcc
-          mingw-w64-x86_64-make
-          mingw-w64-x86_64-cmake
+    - name: Setup Dependencies
+      shell: powershell
+      run: |
+        choco install -y mingw --version=11.2.0.07112021
+
+    - name: Export chocolatey
+      run: export PATH=C:\\ProgramData\\chocolatey\\bin:$PATH
 
     - name: Cache Libraries
       uses: actions/cache@v2

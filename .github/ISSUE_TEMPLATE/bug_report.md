@@ -7,14 +7,20 @@ assignees: ''
 
 ---
 
-**Describe the bug**
+# About Bug
 A clear and concise description of what the bug is.
+It would be helpful if you could attach a log file with your personal information (e.g. user directory name) withheld.
 
-**Environment (please complete the following information):**
-- Windows 10 Edition: [e.g. Home, Pro, Enterprise]
-- OS Type: [64bit/32bit]
-- OS Version: [e.g. 1909, 20H2]
-- OS Build: [e.g. 19042.804]
-- win-vind Version: [e.g. 4.0.0]
-- win-vind Type: [zip/installer]
-- Is it reproducible?: [Yes/No]
+# Steps to reproduce
+1.
+
+# Environments
+
+|Environments|Delete the example and fill in your information.|
+|:---:|:---|
+|Windows Edition|[e.g. 10 Home, 10 Pro, 10 Enterprise, 11 Home]|
+|Windows Version|[e.g. 1909, 20H2]|
+|Windows Build|[e.g. 19042.804]|
+|Architecture|[e.g. 64bit/32bit]|
+|win-vind Version|[e.g. 4.0.0]|
+|win-vind Install Type|[zip/installer/chocolatey/winget]|

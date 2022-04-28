@@ -42,7 +42,6 @@ jobs:
     - name: Setup Dependencies
       run: |
         choco install -y mingw --version=11.2.0.07112021
-        choco install -y make --version=4.3
 
     - name: Cache Libraries
       uses: actions/cache@v2

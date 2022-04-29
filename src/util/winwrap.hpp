@@ -110,6 +110,14 @@ namespace vind
         void attach_thread_input(HWND hwnd) ;
         void detach_thread_input(HWND hwnd) ;
 
+        Point2D get_cursor_pos() ;
+
+        void set_cursor_pos(int x, int y) ;
+
+        inline auto set_cursor_pos(const Point2D& pos) {
+            return set_cursor_pos(pos.x(), pos.y()) ;
+        }
+
         Point2D get_caret_pos(HWND hwnd) ;
 
         // To get Windows system informations

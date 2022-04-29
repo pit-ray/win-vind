@@ -18,7 +18,7 @@ namespace vind
         void JumpToActiveWindow::sprocess() {
             auto hwnd = util::get_foreground_window() ;
             auto rect = util::get_window_rect(hwnd) ;
-            SetCursorPos(rect.center_x(), rect.center_y()) ;
+            util::set_cursor_pos(rect.center()) ;
         }
         void JumpToActiveWindow::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {

@@ -9,13 +9,12 @@
 #include "util/interval_timer.hpp"
 #include "util/keystroke_repeater.hpp"
 #include "util/mouse.hpp"
+#include "util/screen_metrics.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace
 {
-    const auto MAX_X_POS = GetSystemMetrics(SM_CXSCREEN) ;
-    const auto MAX_Y_POS = GetSystemMetrics(SM_CYSCREEN) ;
-
     constexpr auto DELTA_US = 30 ;
     constexpr auto WAIT_MS  = 30 ;
 
@@ -109,7 +108,9 @@ namespace vind
 
         void ScrollUpHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(0.5f * static_cast<float>(MAX_Y_POS * count) * \
+            util::MonitorInfo m_info ;
+            util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
+            util::vscroll(0.5f * static_cast<float>(m_info.rect.height() * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollUpHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -142,7 +143,9 @@ namespace vind
 
         void ScrollDownHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(-0.5f * static_cast<float>(MAX_Y_POS * count) * \
+            util::MonitorInfo m_info ;
+            util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
+            util::vscroll(-0.5f * static_cast<float>(m_info.rect.height() * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollDownHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -175,7 +178,9 @@ namespace vind
 
         void ScrollUpOnePage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(static_cast<float>(MAX_Y_POS * count) * \
+            util::MonitorInfo m_info ;
+            util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
+            util::vscroll(static_cast<float>(m_info.rect.height() * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollUpOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -208,7 +213,9 @@ namespace vind
 
         void ScrollDownOnePage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(static_cast<float>(MAX_Y_POS * count) * \
+            util::MonitorInfo m_info ;
+            util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
+            util::vscroll(static_cast<float>(m_info.rect.height() * count) * \
                     -1 * settable.get("vscroll_pageratio").get<float>()) ;
         }
         void ScrollDownOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -308,7 +315,9 @@ namespace vind
 
         void ScrollLeftHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::hscroll(-0.5f * static_cast<float>(MAX_X_POS * count) * \
+            util::MonitorInfo m_info ;
+            util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
+            util::hscroll(-0.5f * static_cast<float>(m_info.rect.width() * count) * \
                     settable.get("hscroll_pageratio").get<float>()) ;
         }
         void ScrollLeftHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
@@ -341,7 +350,9 @@ namespace vind
 
         void ScrollRightHalfPage::sprocess(unsigned int count) const {
             auto& settable = core::SetTable::get_instance() ;
-            util::hscroll(0.5f * static_cast<float>(MAX_X_POS * count) * \
+            util::MonitorInfo m_info ;
+            util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
+            util::hscroll(0.5f * static_cast<float>(m_info.rect.width() * count) * \
                     settable.get("hscroll_pageratio").get<float>()) ;
         }
         void ScrollRightHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {

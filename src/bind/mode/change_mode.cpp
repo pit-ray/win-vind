@@ -144,11 +144,7 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("autofocus_textarea").get<bool>()) {
                 auto hwnd = util::get_foreground_window() ;
-                util::Point2D pos ;
-                if(!GetCursorPos(&(pos.data()))) {
-                    throw RUNTIME_EXCEPT("Could not get the cursor position.") ;
-                }
-
+                auto pos = util::get_cursor_pos() ;
                 focus_nearest_textarea(hwnd, pos, scanner_) ;
             }
         }

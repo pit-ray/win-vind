@@ -32,7 +32,7 @@ namespace vind
         MoveCaretLeft::MoveCaretLeft(MoveCaretLeft&&) = default ;
         MoveCaretLeft& MoveCaretLeft::operator=(MoveCaretLeft&&) = default ;
 
-        void MoveCaretLeft::sprocess(unsigned int count) const {
+        void MoveCaretLeft::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 safe_for(count, [&igate] {
@@ -45,7 +45,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretLeft::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretLeft::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -54,7 +54,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCaretLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -73,7 +73,7 @@ namespace vind
         MoveCaretRight::MoveCaretRight(MoveCaretRight&&) = default ;
         MoveCaretRight& MoveCaretRight::operator=(MoveCaretRight&&) = default ;
 
-        void MoveCaretRight::sprocess(unsigned int count) const {
+        void MoveCaretRight::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 safe_for(count, [&igate] {
@@ -86,7 +86,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretRight::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretRight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -95,7 +95,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCaretRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -114,7 +114,7 @@ namespace vind
         MoveCaretUp::MoveCaretUp(MoveCaretUp&&) = default ;
         MoveCaretUp& MoveCaretUp::operator=(MoveCaretUp&&) = default ;
 
-        void MoveCaretUp::sprocess(unsigned int count) const {
+        void MoveCaretUp::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -132,7 +132,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretUp::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretUp::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -141,7 +141,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretUp::sprocess(const core::CharLogger& parent_lgr) const {
+        void MoveCaretUp::sprocess(const core::CharLogger& parent_lgr) {
             auto str = parent_lgr.to_str() ;
             if(str.empty()) return ;
 
@@ -168,7 +168,7 @@ namespace vind
         MoveCaretDown::MoveCaretDown(MoveCaretDown&&) = default ;
         MoveCaretDown& MoveCaretDown::operator=(MoveCaretDown&&) = default ;
 
-        void MoveCaretDown::sprocess(unsigned int count) const {
+        void MoveCaretDown::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -190,7 +190,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretDown::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretDown::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -199,7 +199,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretDown::sprocess(const core::CharLogger& parent_lgr) const {
+        void MoveCaretDown::sprocess(const core::CharLogger& parent_lgr) {
             auto str = parent_lgr.to_str() ;
             if(str.empty()) return ;
 
@@ -226,7 +226,7 @@ namespace vind
         MoveCaretWordForward::MoveCaretWordForward(MoveCaretWordForward&&) = default ;
         MoveCaretWordForward& MoveCaretWordForward::operator=(MoveCaretWordForward&&) = default ;
 
-        void MoveCaretWordForward::sprocess(unsigned int count) const {
+        void MoveCaretWordForward::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -240,7 +240,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretWordForward::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretWordForward::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -249,7 +249,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCaretWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -268,7 +268,7 @@ namespace vind
         MoveCaretWordBackward::MoveCaretWordBackward(MoveCaretWordBackward&&) = default ;
         MoveCaretWordBackward& MoveCaretWordBackward::operator=(MoveCaretWordBackward&&) = default ;
 
-        void MoveCaretWordBackward::sprocess(unsigned int count) const {
+        void MoveCaretWordBackward::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -282,7 +282,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretWordBackward::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretWordBackward::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -291,7 +291,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCaretWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -310,7 +310,7 @@ namespace vind
         MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&) = default ;
         MoveCaretNonBlankWordForward& MoveCaretNonBlankWordForward::operator=(MoveCaretNonBlankWordForward&&) = default ;
 
-        void MoveCaretNonBlankWordForward::sprocess(unsigned int count) const {
+        void MoveCaretNonBlankWordForward::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -324,7 +324,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretNonBlankWordForward::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretNonBlankWordForward::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -333,7 +333,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretNonBlankWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCaretNonBlankWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -352,7 +352,7 @@ namespace vind
         MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&) = default ;
         MoveCaretNonBlankWordBackward& MoveCaretNonBlankWordBackward::operator=(MoveCaretNonBlankWordBackward&&) = default ;
 
-        void MoveCaretNonBlankWordBackward::sprocess(unsigned int count) const {
+        void MoveCaretNonBlankWordBackward::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -366,7 +366,7 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretNonBlankWordBackward::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCaretNonBlankWordBackward::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
             }
@@ -374,7 +374,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void MoveCaretNonBlankWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCaretNonBlankWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
     }

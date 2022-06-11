@@ -25,17 +25,17 @@ namespace vind
         template <typename Derived>
         class ChangeBaseCreator : public ChangeBase {
         private:
-            SystemCall do_process() const override {
-                static_cast<const Derived*>(this)->sprocess() ;
+            SystemCall do_process() override {
+                static_cast<Derived*>(this)->sprocess() ;
                 return SystemCall::NOTHING ;
             }
-            SystemCall do_process(core::NTypeLogger& parent_lgr) const override {
-                static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+            SystemCall do_process(core::NTypeLogger& parent_lgr) override {
+                static_cast<Derived*>(this)->sprocess(parent_lgr) ;
                 RepeatLastChange::store_change(this) ;
                 return SystemCall::NOTHING ;
             }
-            SystemCall do_process(const core::CharLogger& parent_lgr) const override {
-                static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+            SystemCall do_process(const core::CharLogger& parent_lgr) override {
+                static_cast<Derived*>(this)->sprocess(parent_lgr) ;
                 RepeatLastChange::store_change(this) ;
                 return SystemCall::NOTHING ;
             }

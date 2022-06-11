@@ -44,13 +44,13 @@ namespace
 
     class MapHook : public bind::BindedFunc {
     private:
-        SystemCall do_process() const override {
+        SystemCall do_process() override {
             return SC_MAPHOOK ;
         }
-        SystemCall do_process(core::NTypeLogger&) const override {
+        SystemCall do_process(core::NTypeLogger&) override {
             return SC_MAPHOOK ;
         }
-        SystemCall do_process(const core::CharLogger&) const override {
+        SystemCall do_process(const core::CharLogger&) override {
             return SC_MAPHOOK ;
         }
     public:
@@ -62,13 +62,13 @@ namespace
 
     class MapHookReproduce : public bind::BindedFunc {
     private:
-        SystemCall do_process() const override {
+        SystemCall do_process() override {
             return SC_MAPHOOK_REPRD ;
         }
-        SystemCall do_process(core::NTypeLogger&) const override {
+        SystemCall do_process(core::NTypeLogger&) override {
             return SC_MAPHOOK_REPRD ;
         }
-        SystemCall do_process(const core::CharLogger&) const override {
+        SystemCall do_process(const core::CharLogger&) override {
             return SC_MAPHOOK_REPRD ;
         }
 

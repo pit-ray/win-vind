@@ -17,9 +17,9 @@ namespace vind
             explicit ReplaceChar() ;
             virtual ~ReplaceChar() noexcept ;
 
-            void sprocess() const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess() ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             ReplaceChar(ReplaceChar&&) ;
             ReplaceChar& operator=(ReplaceChar&&) ;
@@ -37,9 +37,9 @@ namespace vind
             explicit ReplaceSequence() ;
             virtual ~ReplaceSequence() noexcept ;
 
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             ReplaceSequence(ReplaceSequence&&) ;
             ReplaceSequence& operator=(ReplaceSequence&&) ;

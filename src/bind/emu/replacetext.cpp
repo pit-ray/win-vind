@@ -15,7 +15,7 @@
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "smartclipboard.hpp"
-#include "textanalyze.hpp"
+#include "textutil.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
@@ -229,16 +229,16 @@ namespace vind
         ReplaceChar::ReplaceChar(ReplaceChar&&) = default ;
         ReplaceChar& ReplaceChar::operator=(ReplaceChar&&) = default ;
 
-        void ReplaceChar::sprocess() const {
+        void ReplaceChar::sprocess() {
             pimpl->match_.replace_char(1) ;
         }
-        void ReplaceChar::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ReplaceChar::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 pimpl->match_.replace_char(parent_lgr.get_head_num()) ;
             }
         }
         void ReplaceChar::sprocess(
-                const core::CharLogger& UNUSED(parent_lgr)) const {
+                const core::CharLogger& UNUSED(parent_lgr)) {
             pimpl->match_.replace_char(1) ;
         }
 
@@ -258,7 +258,7 @@ namespace vind
         ReplaceSequence::ReplaceSequence(ReplaceSequence&&) = default ;
         ReplaceSequence& ReplaceSequence::operator=(ReplaceSequence&&) = default ;
 
-        void ReplaceSequence::sprocess(unsigned int count) const {
+        void ReplaceSequence::sprocess(unsigned int count) {
             opt::VCmdLine::clear() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI REPLACE --")) ;
 
@@ -267,13 +267,13 @@ namespace vind
             opt::VCmdLine::reset() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
         }
-        void ReplaceSequence::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ReplaceSequence::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
             }
         }
         void ReplaceSequence::sprocess(
-                const core::CharLogger& UNUSED(parent_lgr)) const {
+                const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 

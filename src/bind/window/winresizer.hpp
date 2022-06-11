@@ -15,9 +15,9 @@ namespace vind
         public:
             explicit WindowResizer() ;
 
-            void sprocess() const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess() ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             virtual ~WindowResizer() noexcept ;
             WindowResizer(WindowResizer&&) ;

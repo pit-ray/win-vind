@@ -1,10 +1,18 @@
 #include "textutil.hpp"
 
+#include <windows.h>
+
+#include <memory>
+#include <vector>
+
+#include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
 #include "smartclipboard.hpp"
 #include "textreg.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/mouse.hpp"
 #include "util/winwrap.hpp"
 
 
@@ -12,40 +20,49 @@ namespace vind
 {
     namespace bind
     {
-        bool has_EOL(const SelectedTextResult& res) {
-            if(res.having_EOL) {
-                return true ;
-            }
-            if(!res.str.empty() && res.str.back() == '\n') {
-                return true ;
-            }
-            return false ;
+        SelectedTextResult get_selected_text(
+                std::function<void()> clip_func,
+                bool backup) {
+            auto hwnd = util::get_foreground_window() ;
+
+            SmartClipboard scb(hwnd) ;
+            scb.open() ;
+
+            if(backup) scb.backup() ;
+
+            //initialize clipboard
+            scb.set("") ;
+
+            scb.close() ;
+
+            //By copy or cut functions, sends text to analyze to clipboard.
+            clip_func() ;
+
+            //It needs to start reading text in a clipboard,
+            //insofar as having already arrived the copied text
+            //from the editor to a clipboard,
+            //so wait for a little.
+            Sleep(300) ;
+
+            scb.open() ;
+
+            SelectedTextResult out{} ;
+            out.having_EOL = scb.get_as_str(out.str) ;
+
+            if(backup) scb.restore_backup() ;
+
+            scb.close() ;
+            return out ;
         }
 
-        //Some editors have a visible EOL mark in a line.
-        //This function select text from current position to EOL except for the visible EOL mark.
-        //If the line has only null characters, it does not select.
-        //  <EOL mark exists> [select] NONE    [clipboard] null characters with EOL.    (neighborhoods of LSB are 0x00)
-        //  <plain text>      [select] NONE    [clipboard] null characters without EOL. (neighborhoods of LSB are 0x?0)
-        bool select_line_until_EOL(const SelectedTextResult* const exres) {
+        bool select_line_until_EOL() {
             auto& igate = core::InputGate::get_instance() ;
-
-            if(exres != nullptr) {
-                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
-                if(has_EOL(*exres)) {
-                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
-                    if(exres->str.empty()) {
-                        return false ; //not selected (true text is only null text)
-                    }
-                }
-                return true ; //selected
-            }
-
             auto res = get_selected_text([&igate] {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
                 igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             }) ;
-            if(has_EOL(res)) {
+
+            if(res.having_EOL) {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
                 if(res.str.empty()) {
                     return false ;

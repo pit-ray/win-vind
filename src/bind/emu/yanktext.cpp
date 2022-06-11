@@ -48,27 +48,18 @@ namespace vind
         YankLine::YankLine()
         : BindedFuncVoid("yank_line")
         {}
-        void YankLine::sprocess(
-                unsigned int count,
-                const SelectedTextResult* const exres) {
+        void YankLine::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_HOME) ;
-
-            //copy N - 1 lines
-            safe_for(count - 1, [&igate] {
+            safe_for(count, [&igate] {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
             Sleep(24) ;
 
-            if(!select_line_until_EOL(exres)) {
-                clear_clipboard_with_null() ;
-            }
-
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
-            igate.pushup(KEYCODE_END) ;
-
+            igate.pushup(KEYCODE_HOME) ;
             set_register_type(RegType::Lines) ;
         }
         void YankLine::sprocess(core::NTypeLogger& parent_lgr) {
@@ -77,7 +68,7 @@ namespace vind
             }
         }
         void YankLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1, nullptr) ;
+            sprocess(1) ;
         }
     }
 }

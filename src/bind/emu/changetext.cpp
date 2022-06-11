@@ -11,6 +11,7 @@
 #include "textutil.hpp"
 #include "util/def.hpp"
 
+
 namespace vind
 {
     namespace bind
@@ -41,7 +42,7 @@ namespace vind
 
         //ChangeLine
         ChangeLine::ChangeLine()
-        : ChangeBaseCreator("change_line")
+        : DeleteLineUntilEOLBase("change_line")
         {}
         void ChangeLine::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
@@ -54,18 +55,16 @@ namespace vind
                 ToInsert::sprocess(false) ;
                 return ;
             }
-
-            auto pos = res.str.find_first_not_of(" \t") ; //position except for space or tab
-            if(pos == std::string::npos) { //space only
-                ToInsertEOL::sprocess(false) ;
-                return ;
-            }
             igate.pushup(KEYCODE_HOME) ;
 
-            safe_for(pos, [&igate] {
-                igate.pushup(KEYCODE_RIGHT) ;
-            }) ;
-            ChangeUntilEOL::sprocess(count, &res) ;
+            auto pos = res.str.find_first_not_of(" \t") ;
+            if(pos != std::string::npos) {
+                safe_for(pos, [&igate] {
+                    igate.pushup(KEYCODE_RIGHT) ;
+                }) ;
+            }
+            DeleteLineUntilEOLBase<ChangeLine>::sprocess(count) ;
+            ToInsert::sprocess(false) ;
         }
         void ChangeLine::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -111,7 +110,7 @@ namespace vind
 
         //ChangeUntilEOL
         ChangeUntilEOL::ChangeUntilEOL()
-        : ChangeBaseCreator("change_until_EOL")
+        : DeleteLineUntilEOLBase("change_until_EOL")
         {}
         /* Actually, If N >= 2
          *
@@ -139,24 +138,8 @@ namespace vind
          * In future, must fix.
          *
          */
-        void ChangeUntilEOL::sprocess(
-                unsigned int count,
-                const SelectedTextResult* const exres) {
-            auto& igate = core::InputGate::get_instance() ;
-
-            safe_for(count - 1, [&igate] {
-                igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
-            }) ;
-
-            Sleep(24) ;
-
-            if(!select_line_until_EOL(exres)) {
-                clear_clipboard_with_null() ;
-            }
-            else {
-                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-                set_register_type(RegType::Chars) ;
-            }
+        void ChangeUntilEOL::sprocess(unsigned int count) {
+            DeleteLineUntilEOLBase<ChangeUntilEOL>::sprocess(count) ;
             ToInsert::sprocess(false) ;
         }
         void ChangeUntilEOL::sprocess(core::NTypeLogger& parent_lgr) {

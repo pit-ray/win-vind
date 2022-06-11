@@ -25,14 +25,14 @@ namespace vind
         JoinNextLine::JoinNextLine(JoinNextLine&&)               = default ;
         JoinNextLine& JoinNextLine::operator=(JoinNextLine&&)    = default ;
 
-        void JoinNextLine::sprocess(unsigned int count) const {
+        void JoinNextLine::sprocess(unsigned int count) {
             safe_for(count, [] {
                 auto& igate = core::InputGate::get_instance() ;
                 igate.pushup(KEYCODE_END) ;
                 igate.pushup(KEYCODE_DELETE) ;
             }) ;
         }
-        void JoinNextLine::sprocess(core::NTypeLogger& parent_lgr) const {
+        void JoinNextLine::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -41,7 +41,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void JoinNextLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void JoinNextLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
     }

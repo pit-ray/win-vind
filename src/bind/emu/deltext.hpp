@@ -2,7 +2,14 @@
 #define _EDI_DELETE_HPP
 
 #include "bind/bindedfunc.hpp"
+#include "bind/saferepeat.hpp"
 #include "changebase.hpp"
+#include "core/inputgate.hpp"
+#include "core/keycodedef.hpp"
+#include "core/ntypelogger.hpp"
+#include "textreg.hpp"
+#include "textutil.hpp"
+#include "util/keystroke_repeater.hpp"
 
 
 namespace vind
@@ -23,9 +30,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit DeleteLine() ;
             virtual ~DeleteLine() noexcept ;
@@ -36,24 +43,53 @@ namespace vind
             DeleteLine& operator=(const DeleteLine&) = delete ;
         } ;
 
-
-        class DeleteLineUntilEOL : public ChangeBaseCreator<DeleteLineUntilEOL> {
+        template <typename Derived>
+        class DeleteLineUntilEOLBase : public ChangeBaseCreator<Derived> {
         private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
+            util::KeyStrokeRepeater ksr_ ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            template <typename String>
+            explicit DeleteLineUntilEOLBase(String&& func_name)
+            : ChangeBaseCreator<Derived>(std::forward<String>(func_name)),
+              ksr_()
+            {}
 
+            void sprocess(unsigned int count=1) {
+                auto& igate = core::InputGate::get_instance() ;
+
+                //delete N - 1 lines under the current line
+                safe_for(count - 1, [&igate] {
+                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+                }) ;
+
+                if(!select_line_until_EOL()) {
+                    clear_clipboard_with_null() ;
+                }
+                else {
+                    igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+                    set_register_type(RegType::Chars) ;
+                }
+            }
+
+            void sprocess(core::NTypeLogger& parent_lgr) {
+                if(!parent_lgr.is_long_pressing()) {
+                    sprocess(parent_lgr.get_head_num()) ;
+                    ksr_.reset() ;
+                }
+                else if(ksr_.is_passed()) {
+                    sprocess(1) ;
+                }
+            }
+
+            void sprocess(const core::CharLogger&) {
+                sprocess(1) ;
+            }
+        } ;
+
+
+        struct DeleteLineUntilEOL : public DeleteLineUntilEOLBase<DeleteLineUntilEOL> {
             explicit DeleteLineUntilEOL() ;
-            virtual ~DeleteLineUntilEOL() noexcept ;
-
-            DeleteLineUntilEOL(DeleteLineUntilEOL&&) ;
-            DeleteLineUntilEOL& operator=(DeleteLineUntilEOL&&) ;
-            DeleteLineUntilEOL(const DeleteLineUntilEOL&)            = delete ;
-            DeleteLineUntilEOL& operator=(const DeleteLineUntilEOL&) = delete ;
         } ;
 
         class DeleteAfter : public ChangeBaseCreator<DeleteAfter> {
@@ -62,9 +98,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit DeleteAfter() ;
             virtual ~DeleteAfter() noexcept ;
@@ -81,9 +117,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit DeleteBefore() ;
             virtual ~DeleteBefore() noexcept ;

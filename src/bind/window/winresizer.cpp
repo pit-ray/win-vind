@@ -230,7 +230,7 @@ namespace vind
                     settable.get("window_tweight").get<int>()) ;
         }
 
-        void WindowResizer::sprocess() const {
+        void WindowResizer::sprocess() {
             core::InstantKeyAbsorber ika ;
 
             pimpl->funcfinder_.reset_parser_states() ;
@@ -306,12 +306,12 @@ namespace vind
             igate.release_virtually(KEYCODE_ENTER) ;
             opt::VCmdLine::reset() ;
         }
-        void WindowResizer::sprocess(core::NTypeLogger& parent_lgr) const {
+        void WindowResizer::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess() ;
             }
         }
-        void WindowResizer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void WindowResizer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
     }

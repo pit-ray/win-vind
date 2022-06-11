@@ -85,7 +85,7 @@ namespace vind
             return pimpl->id_ ;
         }
 
-        void BindedFunc::error_process(const std::exception& e) const {
+        void BindedFunc::error_process(const std::exception& e) {
             PRINT_ERROR(name() + " failed. " + e.what()) ;
             try {
                 pimpl->calibrate_absorber_state() ;
@@ -97,7 +97,7 @@ namespace vind
             }
         }
 
-        SystemCall BindedFunc::process() const {
+        SystemCall BindedFunc::process() {
             auto result = SystemCall::NOTHING ;
 
             try {
@@ -111,7 +111,7 @@ namespace vind
             return result ;
         }
 
-        SystemCall BindedFunc::process(core::NTypeLogger& parent_lgr) const {
+        SystemCall BindedFunc::process(core::NTypeLogger& parent_lgr) {
             auto result = SystemCall::NOTHING ;
 
             try {
@@ -125,7 +125,7 @@ namespace vind
             return result ;
         }
 
-        SystemCall BindedFunc::process(const core::CharLogger& parent_lgr) const {
+        SystemCall BindedFunc::process(const core::CharLogger& parent_lgr) {
             auto result = SystemCall::NOTHING ;
 
             try {
@@ -157,13 +157,13 @@ namespace vind
             return pimpl->id_ != rhs.pimpl->id_ ;
         }
 
-        SystemCall BindedFunc::do_process() const {
+        SystemCall BindedFunc::do_process() {
             return SystemCall::NOTHING ;
         }
-        SystemCall BindedFunc::do_process(core::NTypeLogger&) const {
+        SystemCall BindedFunc::do_process(core::NTypeLogger&) {
             return SystemCall::NOTHING ;
         }
-        SystemCall BindedFunc::do_process(const core::CharLogger&) const {
+        SystemCall BindedFunc::do_process(const core::CharLogger&) {
             return SystemCall::NOTHING ;
         }
     }

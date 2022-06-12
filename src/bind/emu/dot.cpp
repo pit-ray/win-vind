@@ -8,7 +8,7 @@ namespace vind
 {
     namespace bind
     {
-        const BindedFunc* RepeatLastChange::lastchange_ = nullptr ;
+        BindedFunc* RepeatLastChange::lastchange_ = nullptr ;
         unsigned int RepeatLastChange::repeat_count_ = 1 ;
 
         RepeatLastChange::RepeatLastChange()

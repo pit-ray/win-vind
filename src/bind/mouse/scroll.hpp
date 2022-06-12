@@ -12,9 +12,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollUp() ;
             virtual ~ScrollUp() noexcept ;
@@ -32,9 +32,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollDown() ;
             virtual ~ScrollDown() noexcept ;
@@ -52,9 +52,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollUpHalfPage() ;
             virtual ~ScrollUpHalfPage() noexcept ;
@@ -72,9 +72,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollDownHalfPage() ;
             virtual ~ScrollDownHalfPage() noexcept ;
@@ -92,9 +92,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollUpOnePage() ;
             virtual ~ScrollUpOnePage() noexcept ;
@@ -113,9 +113,9 @@ namespace vind
 
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollDownOnePage() ;
             virtual ~ScrollDownOnePage() noexcept ;
@@ -133,9 +133,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollLeft() ;
             virtual ~ScrollLeft() noexcept ;
@@ -153,9 +153,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollRight() ;
             virtual ~ScrollRight() noexcept ;
@@ -173,9 +173,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollLeftHalfPage() ;
             virtual ~ScrollLeftHalfPage() noexcept ;
@@ -193,9 +193,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit ScrollRightHalfPage() ;
             virtual ~ScrollRightHalfPage() noexcept ;

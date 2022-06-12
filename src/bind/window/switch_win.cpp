@@ -76,7 +76,7 @@ namespace vind
             ) ;
         }
 
-        void SwitchWindow::sprocess() const {
+        void SwitchWindow::sprocess() {
             auto& igate = core::InputGate::get_instance() ;
 
             core::InstantKeyAbsorber ika ;
@@ -149,12 +149,12 @@ namespace vind
             Sleep(50) ; //send select-message to OS(wait)
             JumpToActiveWindow::sprocess() ;
         }
-        void SwitchWindow::sprocess(core::NTypeLogger& parent_lgr) const {
+        void SwitchWindow::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess() ;
             }
         }
-        void SwitchWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void SwitchWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
     }

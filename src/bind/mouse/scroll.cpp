@@ -40,12 +40,12 @@ namespace vind
         ScrollUp::ScrollUp(ScrollUp&&)            = default ;
         ScrollUp& ScrollUp::operator=(ScrollUp&&) = default ;
 
-        void ScrollUp::sprocess(unsigned int count) const {
+        void ScrollUp::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::vscroll(
                     settable.get("vscroll_speed").get<int>() * count) ;
         }
-        void ScrollUp::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollUp::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr_.reset() ;
@@ -54,7 +54,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollUp::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollUp::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -73,12 +73,12 @@ namespace vind
         ScrollDown::ScrollDown(ScrollDown&&)            = default ;
         ScrollDown& ScrollDown::operator=(ScrollDown&&) = default ;
 
-        void ScrollDown::sprocess(unsigned int count) const {
+        void ScrollDown::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::vscroll(
                     -1 * settable.get("vscroll_speed").get<int>() * count) ;
         }
-        void ScrollDown::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollDown::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr_.reset() ;
@@ -87,7 +87,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollDown::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollDown::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -106,14 +106,14 @@ namespace vind
         ScrollUpHalfPage::ScrollUpHalfPage(ScrollUpHalfPage&&)            = default ;
         ScrollUpHalfPage& ScrollUpHalfPage::operator=(ScrollUpHalfPage&&) = default ;
 
-        void ScrollUpHalfPage::sprocess(unsigned int count) const {
+        void ScrollUpHalfPage::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
             util::vscroll(0.5f * static_cast<float>(m_info.rect.height() * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
-        void ScrollUpHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollUpHalfPage::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -122,7 +122,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollUpHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollUpHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
 
@@ -141,14 +141,14 @@ namespace vind
         ScrollDownHalfPage::ScrollDownHalfPage(ScrollDownHalfPage&&)               = default ;
         ScrollDownHalfPage& ScrollDownHalfPage::operator=(ScrollDownHalfPage&&)    = default ;
 
-        void ScrollDownHalfPage::sprocess(unsigned int count) const {
+        void ScrollDownHalfPage::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
             util::vscroll(-0.5f * static_cast<float>(m_info.rect.height() * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
-        void ScrollDownHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollDownHalfPage::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -157,7 +157,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollDownHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollDownHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
 
@@ -176,14 +176,14 @@ namespace vind
         ScrollUpOnePage::ScrollUpOnePage(ScrollUpOnePage&&)              = default ;
         ScrollUpOnePage& ScrollUpOnePage::operator=(ScrollUpOnePage&&)   = default ;
 
-        void ScrollUpOnePage::sprocess(unsigned int count) const {
+        void ScrollUpOnePage::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
             util::vscroll(static_cast<float>(m_info.rect.height() * count) * \
                     settable.get("vscroll_pageratio").get<float>()) ;
         }
-        void ScrollUpOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollUpOnePage::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -192,7 +192,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollUpOnePage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollUpOnePage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
 
@@ -211,14 +211,14 @@ namespace vind
         ScrollDownOnePage::ScrollDownOnePage(ScrollDownOnePage&&)            = default ;
         ScrollDownOnePage& ScrollDownOnePage::operator=(ScrollDownOnePage&&) = default ;
 
-        void ScrollDownOnePage::sprocess(unsigned int count) const {
+        void ScrollDownOnePage::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
             util::vscroll(static_cast<float>(m_info.rect.height() * count) * \
                     -1 * settable.get("vscroll_pageratio").get<float>()) ;
         }
-        void ScrollDownOnePage::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollDownOnePage::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -227,7 +227,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollDownOnePage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollDownOnePage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
 
@@ -247,12 +247,12 @@ namespace vind
         ScrollLeft::ScrollLeft(ScrollLeft&&)            = default ;
         ScrollLeft& ScrollLeft::operator=(ScrollLeft&&) = default ;
 
-        void ScrollLeft::sprocess(unsigned int count) const {
+        void ScrollLeft::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::hscroll(
                     -1 * settable.get("hscroll_speed").get<int>() * count) ;
         }
-        void ScrollLeft::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollLeft::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -261,7 +261,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
 
@@ -280,12 +280,12 @@ namespace vind
         ScrollRight::ScrollRight(ScrollRight&&)             = default ;
         ScrollRight& ScrollRight::operator=(ScrollRight&&)  = default ;
 
-        void ScrollRight::sprocess(unsigned int count) const {
+        void ScrollRight::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::hscroll(
                     settable.get("hscroll_speed").get<float>() * count) ;
         }
-        void ScrollRight::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollRight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -294,7 +294,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
 
@@ -313,14 +313,14 @@ namespace vind
         ScrollLeftHalfPage::ScrollLeftHalfPage(ScrollLeftHalfPage&&)               = default ;
         ScrollLeftHalfPage& ScrollLeftHalfPage::operator=(ScrollLeftHalfPage&&)    = default ;
 
-        void ScrollLeftHalfPage::sprocess(unsigned int count) const {
+        void ScrollLeftHalfPage::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
             util::hscroll(-0.5f * static_cast<float>(m_info.rect.width() * count) * \
                     settable.get("hscroll_pageratio").get<float>()) ;
         }
-        void ScrollLeftHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollLeftHalfPage::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -329,7 +329,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollLeftHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollLeftHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
 
@@ -348,14 +348,14 @@ namespace vind
         ScrollRightHalfPage::ScrollRightHalfPage(ScrollRightHalfPage&&)            = default ;
         ScrollRightHalfPage& ScrollRightHalfPage::operator=(ScrollRightHalfPage&&) = default ;
 
-        void ScrollRightHalfPage::sprocess(unsigned int count) const {
+        void ScrollRightHalfPage::sprocess(unsigned int count) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
             util::hscroll(0.5f * static_cast<float>(m_info.rect.width() * count) * \
                     settable.get("hscroll_pageratio").get<float>()) ;
         }
-        void ScrollRightHalfPage::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ScrollRightHalfPage::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->timer_.reset() ;
@@ -364,7 +364,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void ScrollRightHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ScrollRightHalfPage::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(SCROLL_FACTOR_FROM_COMMAND) ;
         }
     }

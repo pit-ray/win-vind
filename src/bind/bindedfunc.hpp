@@ -23,11 +23,11 @@ namespace vind
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
 
-            virtual void error_process(const std::exception& e) const ;
+            virtual void error_process(const std::exception& e) ;
 
-            virtual SystemCall do_process() const ;
-            virtual SystemCall do_process(core::NTypeLogger& parent_lgr) const ;
-            virtual SystemCall do_process(const core::CharLogger& parent_lgr) const ;
+            virtual SystemCall do_process() ;
+            virtual SystemCall do_process(core::NTypeLogger& parent_lgr) ;
+            virtual SystemCall do_process(const core::CharLogger& parent_lgr) ;
 
         public:
             using SPtr = std::shared_ptr<BindedFunc> ;
@@ -52,9 +52,9 @@ namespace vind
                 return std::hash<std::string>()(std::move(name)) ;
             }
 
-            SystemCall process() const ;
-            SystemCall process(core::NTypeLogger& parent_lgr) const ;
-            SystemCall process(const core::CharLogger& parent_lgr) const ;
+            SystemCall process() ;
+            SystemCall process(core::NTypeLogger& parent_lgr) ;
+            SystemCall process(const core::CharLogger& parent_lgr) ;
 
             virtual void reconstruct() ;
 
@@ -97,16 +97,18 @@ namespace vind
         template <typename Derived>
         class BindedFuncVoid : public BindedFuncCreator<Derived> {
         private:
-            SystemCall do_process() const override {
-                static_cast<const Derived*>(this)->sprocess() ;
+            SystemCall do_process() override {
+                static_cast<Derived*>(this)->sprocess() ;
                 return SystemCall::NOTHING ;
             }
-            SystemCall do_process(core::NTypeLogger& parent_lgr) const override {
-                static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+
+            SystemCall do_process(core::NTypeLogger& parent_lgr) override {
+                static_cast<Derived*>(this)->sprocess(parent_lgr) ;
                 return SystemCall::NOTHING ;
             }
-            SystemCall do_process(const core::CharLogger& parent_lgr) const override {
-                static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+
+            SystemCall do_process(const core::CharLogger& parent_lgr) override {
+                static_cast<Derived*>(this)->sprocess(parent_lgr) ;
                 return SystemCall::NOTHING ;
             }
 
@@ -121,14 +123,16 @@ namespace vind
         template <typename Derived>
         class BindedFuncFlex : public BindedFuncCreator<Derived> {
         private:
-            SystemCall do_process() const override {
-                return static_cast<const Derived*>(this)->sprocess() ;
+            SystemCall do_process() override {
+                return static_cast<Derived*>(this)->sprocess() ;
             }
-            SystemCall do_process(core::NTypeLogger& parent_lgr) const override {
-                return static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+
+            SystemCall do_process(core::NTypeLogger& parent_lgr) override {
+                return static_cast<Derived*>(this)->sprocess(parent_lgr) ;
             }
-            SystemCall do_process(const core::CharLogger& parent_lgr) const override {
-                return static_cast<const Derived*>(this)->sprocess(parent_lgr) ;
+
+            SystemCall do_process(const core::CharLogger& parent_lgr) override {
+                return static_cast<Derived*>(this)->sprocess(parent_lgr) ;
             }
 
         public:

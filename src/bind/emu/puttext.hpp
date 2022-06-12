@@ -15,9 +15,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit PutAfter() ;
             virtual ~PutAfter() noexcept ;
@@ -34,9 +34,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit PutBefore() ;
             virtual ~PutBefore() noexcept ;

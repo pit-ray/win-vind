@@ -14,9 +14,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretLeft() ;
             virtual ~MoveCaretLeft() noexcept ;
@@ -33,9 +33,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretRight() ;
             virtual ~MoveCaretRight() noexcept ;
@@ -52,9 +52,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretUp() ;
             virtual ~MoveCaretUp() noexcept ;
@@ -71,9 +71,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretDown() ;
             virtual ~MoveCaretDown() noexcept ;
@@ -91,9 +91,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretWordForward() ;
             virtual ~MoveCaretWordForward() noexcept ;
@@ -110,9 +110,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretWordBackward() ;
             virtual ~MoveCaretWordBackward() noexcept ;
@@ -130,9 +130,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretNonBlankWordForward() ;
             virtual ~MoveCaretNonBlankWordForward() noexcept ;
@@ -149,9 +149,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit MoveCaretNonBlankWordBackward() ;
             virtual ~MoveCaretNonBlankWordBackward() noexcept ;

@@ -23,9 +23,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit DeleteLine() ;
             virtual ~DeleteLine() noexcept ;
@@ -36,25 +36,13 @@ namespace vind
             DeleteLine& operator=(const DeleteLine&) = delete ;
         } ;
 
-
-        class DeleteLineUntilEOL : public ChangeBaseCreator<DeleteLineUntilEOL> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
-
+        struct DeleteLineUntilEOL : public ChangeBaseCreator<DeleteLineUntilEOL> {
             explicit DeleteLineUntilEOL() ;
-            virtual ~DeleteLineUntilEOL() noexcept ;
-
-            DeleteLineUntilEOL(DeleteLineUntilEOL&&) ;
-            DeleteLineUntilEOL& operator=(DeleteLineUntilEOL&&) ;
-            DeleteLineUntilEOL(const DeleteLineUntilEOL&)            = delete ;
-            DeleteLineUntilEOL& operator=(const DeleteLineUntilEOL&) = delete ;
+            static void sprocess(unsigned int count=1) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger&) ;
         } ;
+
 
         class DeleteAfter : public ChangeBaseCreator<DeleteAfter> {
         private:
@@ -62,9 +50,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit DeleteAfter() ;
             virtual ~DeleteAfter() noexcept ;
@@ -81,9 +69,9 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(unsigned int count=1) const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess(unsigned int count=1) ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             explicit DeleteBefore() ;
             virtual ~DeleteBefore() noexcept ;

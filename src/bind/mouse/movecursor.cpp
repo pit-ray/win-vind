@@ -33,16 +33,16 @@ namespace vind
         MoveCursorLeft::MoveCursorLeft(MoveCursorLeft&&)            = default ;
         MoveCursorLeft& MoveCursorLeft::operator=(MoveCursorLeft&&) = default ;
 
-        void MoveCursorLeft::sprocess(int delta) const {
+        void MoveCursorLeft::sprocess(int delta) {
             util::move_cursor(-delta, 0) ;
         }
-        void MoveCursorLeft::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCursorLeft::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 pimpl->ca_.reset() ;
             }
             sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
         }
-        void MoveCursorLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCursorLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void MoveCursorLeft::reconstruct() {
@@ -70,16 +70,16 @@ namespace vind
         MoveCursorRight::MoveCursorRight(MoveCursorRight&&)            = default ;
         MoveCursorRight& MoveCursorRight::operator=(MoveCursorRight&&) = default ;
 
-        void MoveCursorRight::sprocess(int delta) const {
+        void MoveCursorRight::sprocess(int delta) {
             util::move_cursor(delta, 0) ;
         }
-        void MoveCursorRight::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCursorRight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 pimpl->ca_.reset() ;
             }
             sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
         }
-        void MoveCursorRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCursorRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void MoveCursorRight::reconstruct() {
@@ -107,16 +107,16 @@ namespace vind
         MoveCursorUp::MoveCursorUp(MoveCursorUp&&)            = default ;
         MoveCursorUp& MoveCursorUp::operator=(MoveCursorUp&&) = default ;
 
-        void MoveCursorUp::sprocess(int delta) const {
+        void MoveCursorUp::sprocess(int delta) {
             util::move_cursor(0, -delta) ;
         }
-        void MoveCursorUp::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCursorUp::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 pimpl->ca_.reset() ;
             }
             sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
         }
-        void MoveCursorUp::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCursorUp::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void MoveCursorUp::reconstruct() {
@@ -144,16 +144,16 @@ namespace vind
         MoveCursorDown::MoveCursorDown(MoveCursorDown&&)            = default ;
         MoveCursorDown& MoveCursorDown::operator=(MoveCursorDown&&) = default ;
 
-        void MoveCursorDown::sprocess(int delta) const {
+        void MoveCursorDown::sprocess(int delta) {
             util::move_cursor(0, delta) ;
         }
-        void MoveCursorDown::sprocess(core::NTypeLogger& parent_lgr) const {
+        void MoveCursorDown::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 pimpl->ca_.reset() ;
             }
             sprocess(pimpl->ca_.delta<int>() * parent_lgr.get_head_num()) ;
         }
-        void MoveCursorDown::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void MoveCursorDown::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void MoveCursorDown::reconstruct() {

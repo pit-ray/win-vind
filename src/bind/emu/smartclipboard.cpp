@@ -96,13 +96,11 @@ namespace vind
             str = util::ws_to_s(wstr) ;
 
             if(wstr.empty()) {
-                // Not including EOL.
                 return false ;
             }
 
-            // If there is a visible line break mark in
-            // an application such as Word, there are
-            // two margins, including the null character.
+            // If there is a visible line break mark in an application such
+            // as MS Word, there are two margins, including the null character.
             return data_size == (sizeof(wchar_t) * (wstr.length() + 2)) ;
         }
 

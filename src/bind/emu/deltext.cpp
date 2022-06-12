@@ -7,10 +7,12 @@
 #include "core/mode.hpp"
 #include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
+#include "smartclipboard.hpp"
 #include "textreg.hpp"
 #include "textutil.hpp"
 #include "util/def.hpp"
 #include "util/keystroke_repeater.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace vind
@@ -55,27 +57,20 @@ namespace vind
         DeleteLine::DeleteLine(DeleteLine&&)            = default ;
         DeleteLine& DeleteLine::operator=(DeleteLine&&) = default ;
 
-        void DeleteLine::sprocess(unsigned int count) const {
+        void DeleteLine::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_HOME) ;
-
-            safe_for(count - 1, [&igate] {
+            safe_for(count, [&igate] {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
             Sleep(24) ;
 
-            if(!select_line_until_EOL(nullptr)) {
-                clear_clipboard_with_null() ;
-            }
-            else {
-                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-                set_register_type(RegType::Lines) ;
-                igate.pushup(KEYCODE_DELETE) ;
-            }
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            set_register_type(RegType::Lines) ;
         }
-        void DeleteLine::sprocess(core::NTypeLogger& parent_lgr) const {
+        void DeleteLine::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -84,51 +79,53 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void DeleteLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void DeleteLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
 
-        //DeleteLineUntilEOL
-        struct DeleteLineUntilEOL::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
+        // DeleteLineUntilEOL
         DeleteLineUntilEOL::DeleteLineUntilEOL()
-        : ChangeBaseCreator("delete_line_until_EOL"),
-          pimpl(std::make_unique<Impl>())
+        : ChangeBaseCreator("delete_line_until_EOL")
         {}
 
-        DeleteLineUntilEOL::~DeleteLineUntilEOL() noexcept                          = default ;
-        DeleteLineUntilEOL::DeleteLineUntilEOL(DeleteLineUntilEOL&&)            = default ;
-        DeleteLineUntilEOL& DeleteLineUntilEOL::operator=(DeleteLineUntilEOL&&) = default ;
-
-        void DeleteLineUntilEOL::sprocess(unsigned int count) const {
+        void DeleteLineUntilEOL::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             //delete N - 1 lines under the current line
             safe_for(count - 1, [&igate] {
-                igate.pushup(KEYCODE_DOWN) ;
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
             }) ;
 
-            if(!select_line_until_EOL(nullptr)) {
-                clear_clipboard_with_null() ;
+            auto res = get_selected_text([&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            }) ;
+
+            // Some editors have a visible EOL mark in a line.
+            if(res.having_EOL) {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                if(res.str.empty()) {
+                    // clear clipboard with null
+                    auto hwnd = util::get_foreground_window() ;
+                    SmartClipboard scb(hwnd) ;
+                    scb.open() ;
+                    scb.set("") ;
+                    scb.close() ;
+                }
             }
-            else {
-                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-                set_register_type(RegType::Chars) ;
-            }
+
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            set_register_type(RegType::Chars) ;
         }
-        void DeleteLineUntilEOL::sprocess(core::NTypeLogger& parent_lgr) const {
+
+        void DeleteLineUntilEOL::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
             }
         }
-        void DeleteLineUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+
+        void DeleteLineUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -137,6 +134,7 @@ namespace vind
         struct DeleteAfter::Impl {
             util::KeyStrokeRepeater ksr{} ;
         } ;
+
 
         DeleteAfter::DeleteAfter()
         : ChangeBaseCreator("delete_after"),
@@ -147,7 +145,7 @@ namespace vind
         DeleteAfter::DeleteAfter(DeleteAfter&&)            = default ;
         DeleteAfter& DeleteAfter::operator=(DeleteAfter&&) = default ;
 
-        void DeleteAfter::sprocess(unsigned int count) const {
+        void DeleteAfter::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("charcache").get<bool>()) {
@@ -163,7 +161,7 @@ namespace vind
                 }) ;
             }
         }
-        void DeleteAfter::sprocess(core::NTypeLogger& parent_lgr) const {
+        void DeleteAfter::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -172,7 +170,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void DeleteAfter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void DeleteAfter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
 
@@ -191,7 +189,7 @@ namespace vind
         DeleteBefore::DeleteBefore(DeleteBefore&&)            = default ;
         DeleteBefore& DeleteBefore::operator=(DeleteBefore&&) = default ;
 
-        void DeleteBefore::sprocess(unsigned int count) const {
+        void DeleteBefore::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("charcache").get<bool>()) {
@@ -207,7 +205,7 @@ namespace vind
                 }) ;
             }
         }
-        void DeleteBefore::sprocess(core::NTypeLogger& parent_lgr) const {
+        void DeleteBefore::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
                 pimpl->ksr.reset() ;
@@ -216,7 +214,7 @@ namespace vind
                 sprocess(1) ;
             }
         }
-        void DeleteBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void DeleteBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess(1) ;
         }
     }

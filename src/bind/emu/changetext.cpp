@@ -1,5 +1,6 @@
 #include "changetext.hpp"
 
+#include "bind/emu/deltext.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
@@ -10,6 +11,7 @@
 #include "textreg.hpp"
 #include "textutil.hpp"
 #include "util/def.hpp"
+
 
 namespace vind
 {
@@ -54,18 +56,16 @@ namespace vind
                 ToInsert::sprocess(false) ;
                 return ;
             }
-
-            auto pos = res.str.find_first_not_of(" \t") ; //position except for space or tab
-            if(pos == std::string::npos) { //space only
-                ToInsertEOL::sprocess(false) ;
-                return ;
-            }
             igate.pushup(KEYCODE_HOME) ;
 
-            safe_for(pos, [&igate] {
-                igate.pushup(KEYCODE_RIGHT) ;
-            }) ;
-            ChangeUntilEOL::sprocess(count, &res) ;
+            auto pos = res.str.find_first_not_of(" \t") ;
+            if(pos != std::string::npos) {
+                safe_for(pos, [&igate] {
+                    igate.pushup(KEYCODE_RIGHT) ;
+                }) ;
+            }
+            DeleteLineUntilEOL::sprocess(count) ;
+            ToInsert::sprocess(false) ;
         }
         void ChangeLine::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
@@ -139,24 +139,8 @@ namespace vind
          * In future, must fix.
          *
          */
-        void ChangeUntilEOL::sprocess(
-                unsigned int count,
-                const SelectedTextResult* const exres) {
-            auto& igate = core::InputGate::get_instance() ;
-
-            safe_for(count - 1, [&igate] {
-                igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
-            }) ;
-
-            Sleep(24) ;
-
-            if(!select_line_until_EOL(exres)) {
-                clear_clipboard_with_null() ;
-            }
-            else {
-                igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-                set_register_type(RegType::Chars) ;
-            }
+        void ChangeUntilEOL::sprocess(unsigned int count) {
+            DeleteLineUntilEOL::sprocess(count) ;
             ToInsert::sprocess(false) ;
         }
         void ChangeUntilEOL::sprocess(core::NTypeLogger& parent_lgr) {

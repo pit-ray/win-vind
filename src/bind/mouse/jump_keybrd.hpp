@@ -22,9 +22,9 @@ namespace vind
             JumpWithKeybrdLayout(const JumpWithKeybrdLayout&)            = delete ;
             JumpWithKeybrdLayout& operator=(const JumpWithKeybrdLayout&) = delete ;
 
-            void sprocess() const ;
-            void sprocess(core::NTypeLogger& parent_lgr) const ;
-            void sprocess(const core::CharLogger& parent_lgr) const ;
+            void sprocess() ;
+            void sprocess(core::NTypeLogger& parent_lgr) ;
+            void sprocess(const core::CharLogger& parent_lgr) ;
 
             void reconstruct() override ;
         } ;

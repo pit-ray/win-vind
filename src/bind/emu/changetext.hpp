@@ -33,9 +33,7 @@ namespace vind
 
         struct ChangeUntilEOL : public ChangeBaseCreator<ChangeUntilEOL> {
             explicit ChangeUntilEOL() ;
-            static void sprocess(
-                    unsigned int count=1,
-                    const SelectedTextResult* const exres=nullptr) ;
+            static void sprocess(unsigned int count=1) ;
             static void sprocess(core::NTypeLogger& parent_lgr) ;
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;

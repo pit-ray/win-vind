@@ -10,7 +10,7 @@ namespace vind
     {
         class RepeatLastChange : public BindedFuncFlex<RepeatLastChange> {
         private:
-            static const BindedFunc* lastchange_ ;
+            static BindedFunc* lastchange_ ;
             static unsigned int repeat_count_ ;
 
         public:
@@ -20,7 +20,7 @@ namespace vind
             static SystemCall sprocess(const core::CharLogger& parent_lgr) ;
 
             inline static void store_change(
-                    const BindedFunc* const func,
+                    BindedFunc* const func,
                     unsigned int repeat_count=1) noexcept {
                 lastchange_   = func ;
                 repeat_count_ = repeat_count ;

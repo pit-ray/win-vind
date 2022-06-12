@@ -16,9 +16,9 @@ namespace vind
             explicit ToInstantGUINormal() ;
             virtual ~ToInstantGUINormal() noexcept ;
 
-            SystemCall sprocess() const ;
-            SystemCall sprocess(core::NTypeLogger& parent_lgr) const ;
-            SystemCall sprocess(const core::CharLogger& parent_lgr) const ;
+            SystemCall sprocess() ;
+            SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
+            SystemCall sprocess(const core::CharLogger& parent_lgr) ;
 
             void reconstruct() override ;
 

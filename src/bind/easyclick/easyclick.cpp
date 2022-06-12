@@ -31,17 +31,17 @@ namespace vind
         EasyClickLeft::EasyClickLeft(EasyClickLeft&&)            = default ;
         EasyClickLeft& EasyClickLeft::operator=(EasyClickLeft&&) = default ;
 
-        void EasyClickLeft::sprocess(unsigned int count) const {
+        void EasyClickLeft::sprocess(unsigned int count) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, count) ;
         }
-        void EasyClickLeft::sprocess(core::NTypeLogger& parent_lgr) const {
+        void EasyClickLeft::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
             }
         }
-        void EasyClickLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void EasyClickLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void EasyClickLeft::reconstruct() {
@@ -61,17 +61,17 @@ namespace vind
         EasyClickRight::EasyClickRight(EasyClickRight&&)            = default ;
         EasyClickRight& EasyClickRight::operator=(EasyClickRight&&) = default ;
 
-        void EasyClickRight::sprocess(unsigned int count) const {
+        void EasyClickRight::sprocess(unsigned int count) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, count) ;
         }
-        void EasyClickRight::sprocess(core::NTypeLogger& parent_lgr) const {
+        void EasyClickRight::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
             }
         }
-        void EasyClickRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void EasyClickRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void EasyClickRight::reconstruct() {
@@ -91,17 +91,17 @@ namespace vind
         EasyClickMid::EasyClickMid(EasyClickMid&&)            = default ;
         EasyClickMid& EasyClickMid::operator=(EasyClickMid&&) = default ;
 
-        void EasyClickMid::sprocess(unsigned int count) const {
+        void EasyClickMid::sprocess(unsigned int count) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, count) ;
         }
-        void EasyClickMid::sprocess(core::NTypeLogger& parent_lgr) const {
+        void EasyClickMid::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess(parent_lgr.get_head_num()) ;
             }
         }
-        void EasyClickMid::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void EasyClickMid::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void EasyClickMid::reconstruct() {
@@ -121,17 +121,17 @@ namespace vind
         EasyClickHover::EasyClickHover(EasyClickHover&&)            = default ;
         EasyClickHover& EasyClickHover::operator=(EasyClickHover&&) = default ;
 
-        void EasyClickHover::sprocess() const {
+        void EasyClickHover::sprocess() {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop() ;
         }
-        void EasyClickHover::sprocess(core::NTypeLogger& parent_lgr) const {
+        void EasyClickHover::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 sprocess() ;
             }
         }
-        void EasyClickHover::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void EasyClickHover::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void EasyClickHover::reconstruct() {

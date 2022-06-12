@@ -180,7 +180,7 @@ namespace vind
         YankWithMotion::~YankWithMotion() noexcept = default ;
         YankWithMotion::YankWithMotion(YankWithMotion&&) = default ;
         YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
-        void YankWithMotion::sprocess() const {
+        void YankWithMotion::sprocess() {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -188,7 +188,7 @@ namespace vind
                 pimpl->copy() ;
             }
         }
-        void YankWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
+        void YankWithMotion::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 if(select_by_motion(
                         id(),
@@ -200,7 +200,7 @@ namespace vind
                 }
             }
         }
-        void YankWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void YankWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void YankWithMotion::reconstruct() {
@@ -238,7 +238,7 @@ namespace vind
         DeleteWithMotion::DeleteWithMotion(DeleteWithMotion&&) = default ;
         DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
 
-        void DeleteWithMotion::sprocess() const {
+        void DeleteWithMotion::sprocess() {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -246,7 +246,7 @@ namespace vind
                 pimpl->remove() ;
             }
         }
-        void DeleteWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
+        void DeleteWithMotion::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 if(select_by_motion(
                         id(),
@@ -258,7 +258,7 @@ namespace vind
                 }
             }
         }
-        void DeleteWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void DeleteWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void DeleteWithMotion::reconstruct() {
@@ -297,7 +297,7 @@ namespace vind
         ChangeWithMotion::~ChangeWithMotion() noexcept = default ;
         ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&) = default ;
         ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
-        void ChangeWithMotion::sprocess() const {
+        void ChangeWithMotion::sprocess() {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -305,7 +305,7 @@ namespace vind
                 pimpl->remove_and_insert() ;
             }
         }
-        void ChangeWithMotion::sprocess(core::NTypeLogger& parent_lgr) const {
+        void ChangeWithMotion::sprocess(core::NTypeLogger& parent_lgr) {
             if(!parent_lgr.is_long_pressing()) {
                 if(select_by_motion(
                         id(),
@@ -317,7 +317,7 @@ namespace vind
                 }
             }
         }
-        void ChangeWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) const {
+        void ChangeWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
             sprocess() ;
         }
         void ChangeWithMotion::reconstruct() {

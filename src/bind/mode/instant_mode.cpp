@@ -47,7 +47,7 @@ namespace vind
         ToInstantGUINormal& ToInstantGUINormal::operator=(ToInstantGUINormal&&) = default ;
 
 
-        SystemCall ToInstantGUINormal::sprocess() const {
+        SystemCall ToInstantGUINormal::sprocess() {
             auto& igate = core::InputGate::get_instance() ;
             igate.close_all_ports_with_refresh() ;
 
@@ -96,14 +96,14 @@ namespace vind
             return syscal ;
         }
 
-        SystemCall ToInstantGUINormal::sprocess(core::NTypeLogger& parent) const {
+        SystemCall ToInstantGUINormal::sprocess(core::NTypeLogger& parent) {
             if(!parent.is_long_pressing()) {
                 return sprocess() ;
             }
             return SystemCall::NOTHING ;
         }
 
-        SystemCall ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) const {
+        SystemCall ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) {
             return sprocess() ;
         }
 

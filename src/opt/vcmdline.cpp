@@ -3,7 +3,6 @@
 #include <windows.h>
 
 #include <chrono>
-#include <functional>
 #include <memory>
 #include <sstream>
 #include <unordered_map>
@@ -256,19 +255,18 @@ namespace vind
 {
     namespace opt
     {
-        using Projection = std::function<util::Point2D(LONG, LONG)> ;
         struct VCmdLine::Impl {
             util::DisplayTextPainter dtp_{25, FW_MEDIUM, "Consolas"} ;
 
-            std::unique_ptr<Projector> projector_{nullptr} ;
-            int extra_ = 0 ;
-
-            ProjectionMethod proj_method_ = ProjectionMethod::PRIMARY ;
+            std::chrono::seconds fadeout_time_{} ;
 
             std::vector<util::Point2D> coords_{} ;
-            std::size_t fixed_monitor_idx_ = 0 ;
+            int extra_ = 0 ;
 
-            std::chrono::seconds fadeout_time_{} ;
+            std::unique_ptr<Projector> projector_{nullptr} ;
+
+            ProjectionMethod proj_method_ = ProjectionMethod::PRIMARY ;
+            std::size_t fixed_monitor_idx_ = 0 ;
 
             std::chrono::seconds coords_update_interval_{} ;
             std::chrono::system_clock::time_point last_coords_update_{} ;

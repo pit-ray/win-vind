@@ -76,7 +76,6 @@ namespace vind
 
                 x += buf.rect.width() ;
                 y_mid = buf.rect.center_y() ;
-
             }
 
             return minfos ;

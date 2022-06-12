@@ -21,13 +21,13 @@ namespace vind
         : OptionCreator("suppress_for_vim")
         {}
 
-        void SuppressForVim::do_enable() const {
+        void SuppressForVim::do_enable() {
         }
 
-        void SuppressForVim::do_disable() const {
+        void SuppressForVim::do_disable() {
         }
 
-        void SuppressForVim::do_process() const {
+        void SuppressForVim::do_process() {
             if(core::get_global_mode() == core::Mode::RESIDENT) {
                 return ;
             }

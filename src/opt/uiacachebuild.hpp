@@ -16,9 +16,9 @@ namespace vind
     {
         class AsyncUIACacheBuilder : public OptionCreator<AsyncUIACacheBuilder> {
         private:
-            void do_enable() const override ;
-            void do_disable() const override ;
-            void do_process() const override ;
+            void do_enable() override ;
+            void do_disable() override ;
+            void do_process() override ;
 
             static std::unordered_map<HWND, UICache> caches_ ;
 

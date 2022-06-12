@@ -85,7 +85,17 @@ set cmd_fontcolor=c8c8c8
 set cmd_bgcolor=323232
 
 " Position
-set cmd_roughpos=LowerMid
+"    UpperLeft | UpperMid | UpperRight
+"     MidLeft  |  Center  |  MidRight
+"    LowerLeft | LowerMid | LowerRight
+set cmd_roughpos=LowerLeft
+
+" Monitor to draw the virtual command line on.
+"   primary  : Primary monitor.
+"   all      : All monitor.
+"   active   : Monitor where the selected window is located.
+"   {number} : {number}th monitor. For example, `set cmd_monitor=1`.
+set cmd_monitor=active
 
 " Horizontal Margin
 set cmd_xmargin=32

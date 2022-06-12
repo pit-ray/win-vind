@@ -5,14 +5,18 @@
 #include <sstream>
 #include <string>
 
+#include "debug.hpp"
 #include "def.hpp"
 #include "rect.hpp"
+
+#define MONITOR_SEARCH_MARGIN (256)
+
 
 namespace vind
 {
     namespace util
     {
-        Box2D get_conbined_metrics() {
+        Box2D get_combined_metrics() {
             WINDOWINFO winfo ;
             winfo.cbSize = sizeof(WINDOWINFO) ;
             if(!GetWindowInfo(GetDesktopWindow(), &winfo)) {
@@ -56,6 +60,25 @@ namespace vind
 
         void get_monitor_metrics(POINT&& pos, MonitorInfo& minfo) {
             get_monitor_metrics(MonitorFromPoint(std::move(pos), MONITOR_DEFAULTTONEAREST), minfo) ;
+        }
+
+        // TODO: we should be implement vertical monitor detection.
+        std::vector<MonitorInfo> get_all_monitor_metrics() {
+            std::vector<MonitorInfo> minfos ;
+            auto entire_box = get_combined_metrics() ;
+
+            MonitorInfo buf ;
+            long x = entire_box.left() + MONITOR_SEARCH_MARGIN ;
+            long y_mid = 1 ;
+            while(x < entire_box.right()) {
+                get_monitor_metrics(Point2D{x, y_mid}, buf) ;
+                minfos.push_back(buf) ;
+
+                x += buf.rect.width() ;
+                y_mid = buf.rect.center_y() ;
+            }
+
+            return minfos ;
         }
 
         namespace debug {

@@ -24,10 +24,10 @@ namespace vind
         : OptionCreator("dedicate_to_window")
         {}
 
-        void Dedicate2Window::do_enable() const {
+        void Dedicate2Window::do_enable() {
         }
 
-        void Dedicate2Window::do_disable() const {
+        void Dedicate2Window::do_disable() {
         }
 
         void Dedicate2Window::enable_targeting() {
@@ -48,7 +48,7 @@ namespace vind
             }
         }
 
-        void Dedicate2Window::do_process() const {
+        void Dedicate2Window::do_process() {
             if(!target_hwnd_)  return ;
 
             auto foreground_hwnd = util::get_foreground_window() ;

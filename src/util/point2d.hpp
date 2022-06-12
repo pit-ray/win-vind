@@ -3,6 +3,7 @@
 
 #include <windows.h>
 
+#include <initializer_list>
 #include <utility>
 
 namespace vind
@@ -14,13 +15,18 @@ namespace vind
             POINT pos_ ;
 
         public:
-            explicit Point2D(LONG x=0, LONG y=0)
+            Point2D(LONG x=0, LONG y=0)
             : pos_{x, y}
             {}
 
             template <typename T>
             explicit Point2D(T x, T y)
             : Point2D(static_cast<LONG>(x), static_cast<LONG>(y))
+            {}
+
+            template <typename T>
+            explicit Point2D(std::initializer_list<T>&& pos)
+            : Point2D(*pos.begin(), *(pos.begin() + 1))
             {}
 
             explicit Point2D(const POINT& pos)

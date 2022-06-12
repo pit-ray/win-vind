@@ -15,9 +15,9 @@ namespace vind
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
-            virtual void do_enable() const  = 0 ;
-            virtual void do_disable() const = 0 ;
-            virtual void do_process() const = 0 ;
+            virtual void do_enable() = 0 ;
+            virtual void do_disable() = 0 ;
+            virtual void do_process() = 0 ;
 
         public:
             using SPtr = std::shared_ptr<Option> ;
@@ -39,7 +39,7 @@ namespace vind
             void disable() ;
 
             bool is_enabled() const noexcept ;
-            void process() const ;
+            void process() ;
         } ;
 
 

@@ -21,14 +21,14 @@ namespace vind
         : OptionCreator("uiacachebuild")
         {}
 
-        void AsyncUIACacheBuilder::do_enable() const {
+        void AsyncUIACacheBuilder::do_enable() {
         }
 
-        void AsyncUIACacheBuilder::do_disable() const {
+        void AsyncUIACacheBuilder::do_disable() {
             caches_.clear() ;
         }
 
-        void AsyncUIACacheBuilder::do_process() const {
+        void AsyncUIACacheBuilder::do_process() {
             // Ignore in Insert Mode or Resident Mode.
             using core::Mode ;
             auto mode = core::get_global_mode() ;

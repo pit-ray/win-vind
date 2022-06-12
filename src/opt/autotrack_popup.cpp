@@ -54,19 +54,19 @@ namespace vind
         AutotrackPopup::AutotrackPopup(AutotrackPopup&&)            = default ;
         AutotrackPopup& AutotrackPopup::operator=(AutotrackPopup&&) = default ;
 
-        void AutotrackPopup::do_enable() const {
+        void AutotrackPopup::do_enable() {
             if(get_property() != TRUE) {
                 set_property(TRUE) ;
             }
         }
 
-        void AutotrackPopup::do_disable() const {
+        void AutotrackPopup::do_disable() {
             if(get_property() != FALSE) {
                 set_property(FALSE) ;
             }
         }
 
-        void AutotrackPopup::do_process() const {
+        void AutotrackPopup::do_process() {
         }
     }
 }

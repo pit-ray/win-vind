@@ -39,14 +39,14 @@ namespace
         const int area_bias_x_ ;
 
         template <typename T1>
-        Projector(T1 out_margin_x, T1 out_margin_y)
+        explicit Projector(T1 out_margin_x, T1 out_margin_y)
         : out_margin_x_(static_cast<int>(out_margin_x)),
           out_margin_y_(static_cast<int>(out_margin_y)),
           area_bias_x_(-256)
         {}
 
         template <typename T1, typename T2>
-        Projector(T1 out_margin_x, T1 out_margin_y, T2 area_bias_x)
+        explicit Projector(T1 out_margin_x, T1 out_margin_y, T2 area_bias_x)
         : out_margin_x_(static_cast<int>(out_margin_x)),
           out_margin_y_(static_cast<int>(out_margin_y)),
           area_bias_x_(static_cast<int>(area_bias_x))
@@ -59,7 +59,7 @@ namespace
 
     struct UpperLeftProjector : public Projector {
         template <typename... Args>
-        UpperLeftProjector(Args&&... args)
+        explicit UpperLeftProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -77,7 +77,7 @@ namespace
 
     struct UpperMidProjector : public Projector {
         template <typename... Args>
-        UpperMidProjector(Args&&... args)
+        explicit UpperMidProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -95,7 +95,7 @@ namespace
 
     struct UpperRightProjector : public Projector {
         template <typename... Args>
-        UpperRightProjector(Args&&... args)
+        explicit UpperRightProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -113,7 +113,7 @@ namespace
 
     struct MidLeftProjector : public Projector {
         template <typename... Args>
-        MidLeftProjector(Args&&... args)
+        explicit MidLeftProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -131,7 +131,7 @@ namespace
 
     struct CenterProjector : public Projector {
         template <typename... Args>
-        CenterProjector(Args&&... args)
+        explicit CenterProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -149,7 +149,7 @@ namespace
 
     struct MidRightProjector : public Projector {
         template <typename... Args>
-        MidRightProjector(Args&&... args)
+        explicit MidRightProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -167,7 +167,7 @@ namespace
 
     struct LowerLeftProjector : public Projector {
         template <typename... Args>
-        LowerLeftProjector(Args&&... args)
+        explicit LowerLeftProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -185,7 +185,7 @@ namespace
 
     struct LowerMidProjector : public Projector {
         template <typename... Args>
-        LowerMidProjector(Args&&... args)
+        explicit LowerMidProjector(Args&&... args)
         : Projector(args...)
         {}
 
@@ -203,7 +203,7 @@ namespace
 
     struct LowerRightProjector : public Projector {
         template <typename... Args>
-        LowerRightProjector(Args&&... args)
+        explicit LowerRightProjector(Args&&... args)
         : Projector(args...)
         {}
 

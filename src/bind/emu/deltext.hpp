@@ -2,14 +2,7 @@
 #define _EDI_DELETE_HPP
 
 #include "bind/bindedfunc.hpp"
-#include "bind/saferepeat.hpp"
 #include "changebase.hpp"
-#include "core/inputgate.hpp"
-#include "core/keycodedef.hpp"
-#include "core/ntypelogger.hpp"
-#include "textreg.hpp"
-#include "textutil.hpp"
-#include "util/keystroke_repeater.hpp"
 
 
 namespace vind
@@ -43,54 +36,13 @@ namespace vind
             DeleteLine& operator=(const DeleteLine&) = delete ;
         } ;
 
-        template <typename Derived>
-        class DeleteLineUntilEOLBase : public ChangeBaseCreator<Derived> {
-        private:
-            util::KeyStrokeRepeater ksr_ ;
-
-        public:
-            template <typename String>
-            explicit DeleteLineUntilEOLBase(String&& func_name)
-            : ChangeBaseCreator<Derived>(std::forward<String>(func_name)),
-              ksr_()
-            {}
-
-            void sprocess(unsigned int count=1) {
-                auto& igate = core::InputGate::get_instance() ;
-
-                //delete N - 1 lines under the current line
-                safe_for(count - 1, [&igate] {
-                    igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
-                }) ;
-
-                if(!select_line_until_EOL()) {
-                    clear_clipboard_with_null() ;
-                }
-                else {
-                    igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
-                    set_register_type(RegType::Chars) ;
-                }
-            }
-
-            void sprocess(core::NTypeLogger& parent_lgr) {
-                if(!parent_lgr.is_long_pressing()) {
-                    sprocess(parent_lgr.get_head_num()) ;
-                    ksr_.reset() ;
-                }
-                else if(ksr_.is_passed()) {
-                    sprocess(1) ;
-                }
-            }
-
-            void sprocess(const core::CharLogger&) {
-                sprocess(1) ;
-            }
-        } ;
-
-
-        struct DeleteLineUntilEOL : public DeleteLineUntilEOLBase<DeleteLineUntilEOL> {
+        struct DeleteLineUntilEOL : public ChangeBaseCreator<DeleteLineUntilEOL> {
             explicit DeleteLineUntilEOL() ;
+            static void sprocess(unsigned int count=1) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger&) ;
         } ;
+
 
         class DeleteAfter : public ChangeBaseCreator<DeleteAfter> {
         private:

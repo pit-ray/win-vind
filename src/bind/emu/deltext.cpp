@@ -7,10 +7,12 @@
 #include "core/mode.hpp"
 #include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
+#include "smartclipboard.hpp"
 #include "textreg.hpp"
 #include "textutil.hpp"
 #include "util/def.hpp"
 #include "util/keystroke_repeater.hpp"
+#include "util/winwrap.hpp"
 
 
 namespace vind
@@ -84,14 +86,55 @@ namespace vind
 
         // DeleteLineUntilEOL
         DeleteLineUntilEOL::DeleteLineUntilEOL()
-        : DeleteLineUntilEOLBase("delete_line_until_EOL")
+        : ChangeBaseCreator("delete_line_until_EOL")
         {}
+
+        void DeleteLineUntilEOL::sprocess(unsigned int count) {
+            auto& igate = core::InputGate::get_instance() ;
+
+            //delete N - 1 lines under the current line
+            safe_for(count - 1, [&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_DOWN) ;
+            }) ;
+
+            auto res = get_selected_text([&igate] {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_END) ;
+                igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
+            }) ;
+
+            // Some editors have a visible EOL mark in a line.
+            if(res.having_EOL) {
+                igate.pushup(KEYCODE_LSHIFT, KEYCODE_LEFT) ;
+                if(res.str.empty()) {
+                    // clear clipboard with null
+                    auto hwnd = util::get_foreground_window() ;
+                    SmartClipboard scb(hwnd) ;
+                    scb.open() ;
+                    scb.set("") ;
+                    scb.close() ;
+                }
+            }
+
+            igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
+            set_register_type(RegType::Chars) ;
+        }
+
+        void DeleteLineUntilEOL::sprocess(core::NTypeLogger& parent_lgr) {
+            if(!parent_lgr.is_long_pressing()) {
+                sprocess(parent_lgr.get_head_num()) ;
+            }
+        }
+
+        void DeleteLineUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
+            sprocess(1) ;
+        }
 
 
         //DeleteAfter
         struct DeleteAfter::Impl {
             util::KeyStrokeRepeater ksr{} ;
         } ;
+
 
         DeleteAfter::DeleteAfter()
         : ChangeBaseCreator("delete_after"),

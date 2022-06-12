@@ -2,7 +2,6 @@
 #define _EDI_CHANGE_HPP
 
 #include "bind/bindedfunc.hpp"
-#include "bind/emu/deltext.hpp"
 #include "changebase.hpp"
 
 namespace vind
@@ -18,11 +17,11 @@ namespace vind
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct ChangeLine : public DeleteLineUntilEOLBase<ChangeLine> {
+        struct ChangeLine : public ChangeBaseCreator<ChangeLine> {
             explicit ChangeLine() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(unsigned int count=1) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
         struct ChangeChar : public ChangeBaseCreator<ChangeChar> {
@@ -32,11 +31,11 @@ namespace vind
             static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
 
-        struct ChangeUntilEOL : public DeleteLineUntilEOLBase<ChangeUntilEOL> {
+        struct ChangeUntilEOL : public ChangeBaseCreator<ChangeUntilEOL> {
             explicit ChangeUntilEOL() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(unsigned int count=1) ;
+            static void sprocess(core::NTypeLogger& parent_lgr) ;
+            static void sprocess(const core::CharLogger& parent_lgr) ;
         } ;
     }
 }

@@ -1,5 +1,6 @@
 #include "changetext.hpp"
 
+#include "bind/emu/deltext.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
@@ -42,7 +43,7 @@ namespace vind
 
         //ChangeLine
         ChangeLine::ChangeLine()
-        : DeleteLineUntilEOLBase("change_line")
+        : ChangeBaseCreator("change_line")
         {}
         void ChangeLine::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
@@ -63,7 +64,7 @@ namespace vind
                     igate.pushup(KEYCODE_RIGHT) ;
                 }) ;
             }
-            DeleteLineUntilEOLBase<ChangeLine>::sprocess(count) ;
+            DeleteLineUntilEOL::sprocess(count) ;
             ToInsert::sprocess(false) ;
         }
         void ChangeLine::sprocess(core::NTypeLogger& parent_lgr) {
@@ -110,7 +111,7 @@ namespace vind
 
         //ChangeUntilEOL
         ChangeUntilEOL::ChangeUntilEOL()
-        : DeleteLineUntilEOLBase("change_until_EOL")
+        : ChangeBaseCreator("change_until_EOL")
         {}
         /* Actually, If N >= 2
          *
@@ -139,7 +140,7 @@ namespace vind
          *
          */
         void ChangeUntilEOL::sprocess(unsigned int count) {
-            DeleteLineUntilEOLBase<ChangeUntilEOL>::sprocess(count) ;
+            DeleteLineUntilEOL::sprocess(count) ;
             ToInsert::sprocess(false) ;
         }
         void ChangeUntilEOL::sprocess(core::NTypeLogger& parent_lgr) {

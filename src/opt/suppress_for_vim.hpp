@@ -9,9 +9,9 @@ namespace vind
     {
         class SuppressForVim : public OptionCreator<SuppressForVim> {
         private:
-            void do_enable() const override ;
-            void do_disable() const override ;
-            void do_process() const override ;
+            void do_enable() override ;
+            void do_disable() override ;
+            void do_process() override ;
 
         public:
             explicit SuppressForVim() ;

@@ -12,9 +12,9 @@ namespace vind
     {
         class Dedicate2Window : public OptionCreator<Dedicate2Window> {
         private:
-            void do_enable() const override ;
-            void do_disable() const override ;
-            void do_process() const override ;
+            void do_enable() override ;
+            void do_disable() override ;
+            void do_process() override ;
 
             static HWND target_hwnd_ ;
             static HWND past_hwnd_ ;

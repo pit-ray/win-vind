@@ -12,9 +12,9 @@ namespace vind
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
 
-            void do_enable() const override ;
-            void do_disable() const override ;
-            void do_process() const override ;
+            void do_enable() override ;
+            void do_disable() override ;
+            void do_process() override ;
 
         public:
             explicit AutotrackPopup() ;

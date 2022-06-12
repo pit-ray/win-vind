@@ -66,7 +66,7 @@ namespace vind
             pimpl->display_dc = util::create_display_dc() ;
 
             if(enable_double_buffering) {
-                auto box = util::get_conbined_metrics() ;
+                auto box = util::get_combined_metrics() ;
 
                 auto width  = box.width() ;
                 auto height = box.height() ;
@@ -211,7 +211,7 @@ namespace vind
 
         void DisplayTextPainter::refresh() {
             if(pimpl->compatible_dc) {
-                auto box = util::get_conbined_metrics() ;
+                auto box = util::get_combined_metrics() ;
                 if(!BitBlt(pimpl->display_dc.get(), 0, 0,
                            box.width(),
                            box.height(),

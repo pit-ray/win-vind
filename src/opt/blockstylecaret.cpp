@@ -168,10 +168,10 @@ namespace vind
         BlockStyleCaret::BlockStyleCaret(BlockStyleCaret&&)            = default ;
         BlockStyleCaret& BlockStyleCaret::operator=(BlockStyleCaret&&) = default ;
 
-        void BlockStyleCaret::do_enable() const {
+        void BlockStyleCaret::do_enable() {
         }
 
-        void BlockStyleCaret::do_disable() const {
+        void BlockStyleCaret::do_disable() {
             auto& settable = core::SetTable::get_instance() ;
             auto mode = util::A2a(
                     settable.get("blockstylecaret_mode").get<std::string>()) ;
@@ -222,7 +222,7 @@ namespace vind
             pimpl->is_enabled_ = true ;
         }
 
-        void BlockStyleCaret::do_process() const {
+        void BlockStyleCaret::do_process() {
             auto& settable = core::SetTable::get_instance() ;
             auto mode = util::A2a(
                     settable.get("blockstylecaret_mode").get<std::string>()) ;

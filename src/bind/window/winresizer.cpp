@@ -107,7 +107,7 @@ namespace vind
                 auto hwnd = util::get_foreground_window() ;
                 auto rect = util::get_window_rect(hwnd) ;
 
-                auto cb_rect = util::get_conbined_metrics() ;
+                auto cb_rect = util::get_combined_metrics() ;
 
                 auto left = rect.left() ;
                 auto top = rect.top() ;

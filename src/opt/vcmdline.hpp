@@ -46,11 +46,9 @@ namespace vind
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
 
-            void update_drawing() const ;
-
-            void do_enable() const override ;
-            void do_disable() const override ;
-            void do_process() const override ;
+            void do_enable() override ;
+            void do_disable() override ;
+            void do_process() override ;
 
             static Message msg_ ;
 
@@ -93,6 +91,8 @@ namespace vind
 
             // Reset the buffer and pixels
             static void reset() ;
+
+            void update_drawing_coordinates() ;
 
             VCmdLine(const VCmdLine&)            = delete ;
             VCmdLine& operator=(const VCmdLine&) = delete ;

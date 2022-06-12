@@ -36,7 +36,7 @@ namespace vind
         void JumpToRight::sprocess() {
             auto pos = util::get_cursor_pos() ;
 
-            auto box = util::get_conbined_metrics() ;
+            auto box = util::get_combined_metrics() ;
 
             auto& settable = core::SetTable::get_instance() ;
             util::set_cursor_pos(
@@ -59,7 +59,7 @@ namespace vind
         {}
         void JumpToTop::sprocess() {
             auto pos = util::get_cursor_pos() ;
-            auto box = util::get_conbined_metrics() ;
+            auto box = util::get_combined_metrics() ;
 
             util::set_cursor_pos(pos.x(), box.top()) ;
         }
@@ -79,7 +79,7 @@ namespace vind
         {}
         void JumpToBottom::sprocess() {
             auto pos = util::get_cursor_pos() ;
-            auto box = util::get_conbined_metrics() ;
+            auto box = util::get_combined_metrics() ;
 
             auto& settable = core::SetTable::get_instance() ;
             util::set_cursor_pos(
@@ -102,7 +102,7 @@ namespace vind
         {}
         void JumpToHorizontalCenter::sprocess() {
             auto pos = util::get_cursor_pos() ;
-            auto box = util::get_conbined_metrics() ;
+            auto box = util::get_combined_metrics() ;
             util::set_cursor_pos(box.center_x(), pos.y()) ;
         }
         void JumpToHorizontalCenter::sprocess(core::NTypeLogger& parent_lgr) {
@@ -121,7 +121,7 @@ namespace vind
         {}
         void JumpToVerticalCenter::sprocess() {
             auto pos = util::get_cursor_pos() ;
-            auto box = util::get_conbined_metrics() ;
+            auto box = util::get_combined_metrics() ;
             util::set_cursor_pos(pos.x(), box.center_y()) ;
         }
         void JumpToVerticalCenter::sprocess(core::NTypeLogger& parent_lgr) {

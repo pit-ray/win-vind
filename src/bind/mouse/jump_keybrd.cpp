@@ -74,7 +74,7 @@ namespace vind
             //ignore toggle keys (for example, CapsLock, NumLock, IME....)
             auto toggle_keys = igate.pressed_list() ;
 
-            auto box = util::get_conbined_metrics() ;
+            auto box = util::get_combined_metrics() ;
 
             auto width  = box.width() ;
             auto height = box.height() ;

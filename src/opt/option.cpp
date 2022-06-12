@@ -29,13 +29,13 @@ namespace vind
               name_(std::move(name))
             {}
 
-            virtual ~Impl() noexcept         = default ;
+            virtual ~Impl() noexcept = default ;
 
-            Impl(Impl&&) noexcept            = default ;
+            Impl(Impl&&) noexcept = default ;
             Impl& operator=(Impl&&) noexcept = default ;
 
-            Impl(const Impl&)                = default ;
-            Impl& operator=(const Impl&)     = default ;
+            Impl(const Impl&) = default ;
+            Impl& operator=(const Impl&) = default ;
         } ;
 
         Option::Option(const std::string& name)
@@ -46,9 +46,9 @@ namespace vind
         : pimpl(std::make_unique<Impl>(std::move(name)))
         {}
 
-        Option::~Option() noexcept                     = default ;
-        Option::Option(Option&&) noexcept              = default ;
-        Option& Option::operator=(Option&&) noexcept   = default ;
+        Option::~Option() noexcept = default ;
+        Option::Option(Option&&) noexcept = default ;
+        Option& Option::operator=(Option&&) noexcept = default ;
 
         const std::string& Option::name() const noexcept {
             return pimpl->name_ ;
@@ -81,7 +81,7 @@ namespace vind
             return pimpl->flag_ ;
         }
 
-        void Option::process() const {
+        void Option::process() {
             if(!pimpl->flag_) {
                 return ;
             }

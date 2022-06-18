@@ -101,6 +101,11 @@ Since it builds all libraries with the best options for your system environment,
   $ cd tests/build ; ctest -C Debug ; cd ../..
   ```
 
+#### Make Installer
+```bash
+$ ./tools/create_assets.bat 1.0.0 -msvc 64
+```
+
 You can refer to ToDo at <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a> and its architecture at <a href="src/README.md">devdocs</a>.  
 
 

@@ -52,7 +52,7 @@ https://user-images.githubusercontent.com/42631247/147887231-24424d36-410d-4379-
 
 <br>  
 
-## Download
+## Installation
 ### Chocolatey Version
 win-vind supports installation using [Chocolatey](https://chocolatey.org/). To install win-vind with Chocolatey, run the following command from the command line or from PowerShell.
 
@@ -152,6 +152,33 @@ The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page 
 ## Known Issues
 - EasyClick does not seem to work properly for some applications on older Windows 10 before 1803. The cause is not known, but we have confirmed that it works after 1909. ([#11](https://github.com/pit-ray/win-vind/issues/11))
 - Windows 10/11 Single Language does not seem to be able to map toggle keys such as `<Capslock>`. ([#40](https://github.com/pit-ray/win-vind/issues/40))
+
+## How to build
+
+#### Preparation
+The dependencies required for the build are installed locally in the project directory. The system is not affected.
+```bash
+$ ./tools/setup_libs.bat -msvc 64
+```
+
+#### Debug
+
+```bash
+$ cmake -B debug -G "Visual Studio 16 2019" .
+$ cmake --build debug
+$ ./debug/Debug/win-vind.exe
+```
+
+#### Release
+
+```bash
+$ cmake -B release -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" .
+$ cmake --build release --config Release
+$ ./debug/Release/win-vind.exe
+```
+
+If you want to build with MinGW or create an installer, see [here](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md#to-development).
+
 
 ## Contribute
 If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).

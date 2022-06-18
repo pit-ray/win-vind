@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "jump_keybrd.hpp"
 
 #include <algorithm>
@@ -35,9 +37,6 @@ namespace vind
     namespace bind
     {
         struct JumpWithKeybrdLayout::Impl {
-            float max_keybrd_xposs_ = 0 ;
-            float max_keybrd_yposs_ = 0 ;
-
             using KeyPos = std::array<float, 256> ;
             KeyPos xposs_{} ;
             KeyPos yposs_{} ;
@@ -45,9 +44,7 @@ namespace vind
             core::Background bg_{opt::all_global_options()} ;
 
             Impl()
-            : max_keybrd_xposs_(0),
-              max_keybrd_yposs_(0),
-              xposs_(),
+            : xposs_(),
               yposs_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
@@ -74,11 +71,6 @@ namespace vind
             //ignore toggle keys (for example, CapsLock, NumLock, IME....)
             auto toggle_keys = igate.pressed_list() ;
 
-            auto box = util::get_combined_metrics() ;
-
-            auto width  = box.width() ;
-            auto height = box.height() ;
-
             while(true) {
                 pimpl->bg_.update() ;
 
@@ -87,38 +79,42 @@ namespace vind
                 }
 
                 auto log = igate.pop_log() - toggle_keys ;
-                if(log.empty()) continue ;
-
-                try {
-                    for(const auto& keycode : log) {
-                        if(keycode.is_unreal()) {
-                            continue ;
-                        }
-
-                        auto x_pos = static_cast<int>( \
-                                pimpl->xposs_[keycode.to_code()] / pimpl->max_keybrd_xposs_ * width) ;
-                        auto y_pos = static_cast<int>( \
-                                pimpl->yposs_[keycode.to_code()] / pimpl->max_keybrd_yposs_ * height) ;
-
-                        auto& settable = core::SetTable::get_instance() ;
-                        if(x_pos == width) {
-                            x_pos -= settable.get("jump_margin").get<int>() ;
-                        }
-
-                        if(y_pos == height) {
-                            y_pos -= settable.get("jump_margin").get<int>() ;
-                        }
-
-                        util::set_cursor_pos(x_pos, y_pos) ;
-
-                        for(const auto& key : log) {
-                            igate.release_keystate(key) ;
-                        }
-                        return ;
-                    }
-                }
-                catch(const std::out_of_range&) {
+                if(log.empty()) {
                     continue ;
+                }
+
+                for(const auto& keycode : log) {
+                    if(keycode.is_unreal()) {
+                        continue ;
+                    }
+                    auto x = pimpl->xposs_[keycode.to_code()] ;
+                    auto y = pimpl->yposs_[keycode.to_code()] ;
+
+                    util::MonitorInfo minfo ;
+                    util::get_monitor_metrics(util::get_cursor_pos(), minfo) ;
+
+                    auto x_base = static_cast<decltype(x)>(minfo.rect.left()) ;
+                    auto y_base = static_cast<decltype(y)>(minfo.rect.top()) ;
+                    auto width  = static_cast<decltype(x)>(minfo.rect.width()) ;
+                    auto height = static_cast<decltype(y)>(minfo.rect.height()) ;
+
+                    x = x_base + x * width ;
+                    y = y_base + y * height ;
+
+                    auto& settable = core::SetTable::get_instance() ;
+                    auto margin = settable.get("jump_margin").get<int>() ;
+
+                    x = std::max(x, x_base + margin) ;
+                    y = std::max(y, y_base + margin) ;
+                    x = std::min(x, x_base + width - margin) ;
+                    y = std::min(y, y_base + height - margin) ;
+
+                    util::set_cursor_pos(x, y) ;
+
+                    for(const auto& key : log) {
+                        igate.release_keystate(key) ;
+                    }
+                    return ;
                 }
             }
         }
@@ -149,9 +145,6 @@ namespace vind
                 throw RUNTIME_EXCEPT("The file path of keyboard layout is empty.") ;
             }
 
-            pimpl->max_keybrd_xposs_ = 0 ;
-            pimpl->max_keybrd_yposs_ = 0 ;
-
             pimpl->xposs_.fill(0) ;
             pimpl->yposs_.fill(0) ;
 
@@ -166,6 +159,8 @@ namespace vind
                 PRINT_ERROR(buf + msg + "\"" + filepath.u8string() + "\", L" + std::to_string(lnum) + ".") ;
             } ;
 
+            float max_x = 0.0f ;
+            float max_y = 0.0f ;
             while(getline(ifs, buf)) {
                 try {
                     lnum ++ ;
@@ -189,8 +184,8 @@ namespace vind
                     auto x = std::stof(vec[0]) ;
                     auto y = stof(vec[1]) ;
 
-                    if(x > pimpl->max_keybrd_xposs_) pimpl->max_keybrd_xposs_ = x ;
-                    if(y > pimpl->max_keybrd_yposs_) pimpl->max_keybrd_yposs_ = y ;
+                    if(x > max_x) max_x = x ;
+                    if(y > max_y) max_y = y ;
 
                     //specific code
                     auto code = vec[2] ;
@@ -227,6 +222,11 @@ namespace vind
                     PRINT_ERROR(e.what()) ;
                     continue ;
                 }
+            }
+
+            for(std::size_t i = 0 ; i < pimpl->xposs_.size() ; i ++) {
+                pimpl->xposs_[i] /= max_x ;
+                pimpl->yposs_[i] /= max_y ;
             }
         }
     }

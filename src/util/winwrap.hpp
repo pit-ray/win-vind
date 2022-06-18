@@ -114,6 +114,11 @@ namespace vind
 
         void set_cursor_pos(int x, int y) ;
 
+        template <typename T1, typename T2>
+        inline void set_cursor_pos(T1 x, T2 y) {
+            return set_cursor_pos(static_cast<int>(x), static_cast<int>(y)) ;
+        }
+
         inline auto set_cursor_pos(const Point2D& pos) {
             return set_cursor_pos(pos.x(), pos.y()) ;
         }

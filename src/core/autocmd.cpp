@@ -8,9 +8,8 @@ namespace
 
     } ;
 
-    class AutoPat {
+    struct AutoPat {
         std::vector<AutoCmd> cmds_ ;
-
     } ;
 }
 

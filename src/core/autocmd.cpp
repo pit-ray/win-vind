@@ -1,15 +1,36 @@
 #include "autocmd.hpp"
+#include "bind/bindedfunc.hpp"
+#include "lgrparser.hpp"
+#include "maptable.hpp"
+
+#include <array>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
+
 namespace
 {
-    class AutoCmd {
+    using namespace vind ;
 
+    struct SequentialCmd {
+        int a = 0 ;
     } ;
 
     struct AutoPat {
-        std::vector<AutoCmd> cmds_ ;
+        std::vector<SequentialCmd> cmds_ ;
+
+        explicit AutoPat()
+        : cmds_()
+        {}
+    } ;
+
+    struct AutoEvent {
+        std::unordered_map<std::string, AutoPat> pats_ ;
+
+        explicit AutoEvent()
+        : pats_()
+        {}
     } ;
 }
 
@@ -39,5 +60,41 @@ namespace vind
             return names.at(event_name) ;
         }
 
+        struct AutoCmd::Impl {
+            std::array<AutoEvent, static_cast<int>(AutoCmdEvent::EVENT_NUM)> events_ ;
+
+            explicit Impl()
+            : events_()
+            {}
+        } ;
+
+        AutoCmd::AutoCmd()
+        : pimpl(std::make_unique<Impl>())
+        {}
+
+        AutoCmd::~AutoCmd() noexcept = default ;
+
+        AutoCmd& AutoCmd::get_instance() {
+            static AutoCmd instance{} ;
+            return instance ;
+        }
+
+        void AutoCmd::add_autocmd(
+            AutoCmdEvent event,
+            const std::string& pattern,
+            const std::string& cmd) {
+
+        }
+
+        void AutoCmd::apply_autocmds(AutoCmdEvent event) {
+            auto evt = pimpl->events_[static_cast<int>(event)] ;
+
+            // Get the path for executable file of the foreground window.
+
+            // Check pattern
+
+            // Do sequential command
+
+        }
     }
 }

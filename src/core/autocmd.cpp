@@ -17,20 +17,24 @@ namespace
         int a = 0 ;
     } ;
 
-    struct AutoPat {
-        std::vector<SequentialCmd> cmds_ ;
+    class AutoEvent {
+    private:
+        std::unordered_map<std::string, SequentialCmd> pats_ ;
 
-        explicit AutoPat()
-        : cmds_()
-        {}
-    } ;
-
-    struct AutoEvent {
-        std::unordered_map<std::string, AutoPat> pats_ ;
-
+    public:
         explicit AutoEvent()
         : pats_()
         {}
+
+        void add_pattern_cmd(const std::string& pat, const SequentialCmd& cmd) {
+        }
+
+        bool has_pattern(const std::string& pat) {
+        }
+
+        const SequentialCmd& get_sequential_cmd(const std::string& pat) {
+            return pats_.at(pat) ;
+        }
     } ;
 }
 

@@ -1,4 +1,4 @@
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 #include "core/keycodedef.hpp"
 #include "core/maptable.hpp"

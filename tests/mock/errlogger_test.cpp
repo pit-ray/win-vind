@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include <fff.h>
+#include <meekrosoft/fff.h>
 
 #include <filesystem>
 #include <iostream>
@@ -59,7 +59,7 @@ namespace
 
 #include "core/errlogger.cpp"
 
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 TEST_CASE("(errlogger/remove_files_over) Under Fake Windows API: ")  {
     RESET_FAKE(FindFirstFileW) ;

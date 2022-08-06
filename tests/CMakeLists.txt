@@ -37,10 +37,8 @@ set(CMAKE_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM} -j ${PROC_N}")
 include_directories(
     ${ROOT_DIR}/src
     ${ROOT_DIR}/libs
-    ${CMAKE_CURRENT_SOURCE_DIR}/doctest/doctest
-    ${CMAKE_CURRENT_SOURCE_DIR}/fff
 )
-add_library(doctest STATIC doctest.cpp)
+add_library(doctest STATIC test.cpp)
 
 function(AddTest TEST_NAME)
         add_executable(${TEST_NAME} ${ARGN})

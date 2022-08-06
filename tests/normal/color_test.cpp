@@ -1,4 +1,4 @@
-#include <doctest.h>
+#include <doctest/doctest.h>
 #include <stdexcept>
 
 #include "util/color.cpp"

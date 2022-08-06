@@ -22,7 +22,6 @@ debug
 debug_cov
 debugvs
 is_initialized
-libs
 log
 release
 release_32

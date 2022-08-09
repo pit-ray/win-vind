@@ -31,26 +31,26 @@ namespace vind
             void reset_todef() ;
 
             void add_map(
-                    const std::string& trigger_cmd,
-                    const std::string& target_cmd,
-                    Mode mode) ;
+                const std::string& trigger_cmd,
+                const std::string& target_cmd,
+                Mode mode) ;
 
             void add_noremap(
-                    const std::string& trigger_cmd,
-                    const std::string& target_cmd,
-                    Mode mode) ;
+                const std::string& trigger_cmd,
+                const std::string& target_cmd,
+                Mode mode) ;
 
             void add(const Map& map, Mode mode) ;
 
             void add(Map&& map, Mode mode) ;
 
             const Map& get(
-                    const std::string& trigger_cmd,
-                    Mode mode) ;
+                const std::string& trigger_cmd,
+                Mode mode) ;
 
             void remove(
-                    const std::string& trigger_cmd,
-                    Mode mode) ;
+                const std::string& trigger_cmd,
+                Mode mode) ;
 
             void clear(Mode mode) ;
 
@@ -72,9 +72,9 @@ namespace vind
         public:
             Map() ;
             explicit Map(
-                    const std::string& in,
-                    const std::string& out,
-                    bool allow_remap=false) ;
+                const std::string& in,
+                const std::string& out,
+                bool allow_remap=false) ;
 
             bool is_noremap() const noexcept ;
             bool is_map() const noexcept ;

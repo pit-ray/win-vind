@@ -3,6 +3,8 @@
 #include "cmdparser.hpp"
 #include "keycode.hpp"
 
+#include "bind/binded_func.hpp"
+
 
 namespace vind
 {
@@ -12,6 +14,8 @@ namespace vind
             bool external_ ;
 
             std::vector<KeyCode> keys_ ;
+
+            bind::BindedFunc::SPtr func_ ;
 
             template <typename String>
             Impl(bool external)

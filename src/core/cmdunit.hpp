@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 
+
 namespace vind
 {
     namespace core
@@ -16,7 +17,7 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            using Data = std::vector<KeyCode> ;
+            using Data = std::unordered_set<KeyCode> ;
             explicit CmdUnit() ;
             explicit CmdUnit(std::string&& strkeyset, bool external=false) ;
             explicit CmdUnit(const std::string& strkeyset, bool external=false) ;
@@ -42,6 +43,28 @@ namespace vind
             bool for_internal() const noexcept ;
 
             void execute() ;
+        } ;
+
+        class InternalCmdUnit : public CmdUnit {
+        private:
+
+        public:
+            explicit InternalCmdUnit() ;
+            explicit InternalCmdUnit(std::string&& strkeyset, bool external=false) ;
+            explicit InternalCmdUnit(const std::string& strkeyset, bool external=false) ;
+
+            virtual ~InternalCmdUnit() noexcept ;
+        } ;
+
+        class ExternalCmdUnit : public CmdUnit {
+        private:
+
+        public:
+            explicit ExternalCmdUnit() ;
+            explicit ExternalCmdUnit(std::string&& strkeyset, bool external=false) ;
+            explicit ExternalCmdUnit(const std::string& strkeyset, bool external=false) ;
+
+            virtual ~ExternalCmdUnit() noexcept ;
         } ;
     }
 }

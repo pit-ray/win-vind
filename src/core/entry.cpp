@@ -264,10 +264,10 @@ namespace vind
 
             settable.clear() ;
             maptable.clear_all() ;
-
             bind::SyscmdSource::sprocess(RC_DEFAULT(), false) ;
             settable.save_asdef() ;
             maptable.save_asdef() ;
+
             bind::SyscmdSource::sprocess(RC(), true) ;
 
             reconstruct() ;

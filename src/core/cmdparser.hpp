@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "cmdunit.hpp"
 #include "keycode.hpp"
 #include "mode.hpp"
 

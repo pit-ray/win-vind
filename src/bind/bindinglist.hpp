@@ -11,6 +11,8 @@ namespace vind
     {
         const std::vector<BindedFunc::SPtr>& all_global_binded_funcs() ;
 
+        BindedFunc::SPtr ref_global_func_byname(const std::string& name) ;
+
         BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) ;
         BindedFunc::SPtr ref_global_funcs_bynames(std::string&& name) ;
 

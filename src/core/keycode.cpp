@@ -19,11 +19,6 @@
 #define SHIFTED_ALT     (0x0400)
 #define SHIFTED_HANKAKU (0x0800)
 
-#ifdef DEBUG
-#include "errlogger.hpp"
-#endif
-
-
 
 namespace
 {

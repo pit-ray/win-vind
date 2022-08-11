@@ -16,11 +16,11 @@ namespace vind
         : keycodes_()
         {}
 
-        CmdUnit::CmdUnit(const Data& codes)
+        CmdUnit::CmdUnit(const CmdUnitSet& codes)
         : keycodes_(codes)
         {}
 
-        CmdUnit::CmdUnit(Data&& codes)
+        CmdUnit::CmdUnit(CmdUnitSet&& codes)
         : keycodes_(std::move(codes))
         {}
 
@@ -37,32 +37,32 @@ namespace vind
         CmdUnit::CmdUnit(CmdUnit&&) = default ;
         CmdUnit& CmdUnit::operator=(CmdUnit&&) = default ;
 
-        CmdUnit& CmdUnit::operator=(const CmdUnit::Data& rhs) {
+        CmdUnit& CmdUnit::operator=(const CmdUnitSet& rhs) {
             keycodes_ = rhs ;
             return *this ;
         }
 
-        const CmdUnit::Data& CmdUnit::get() const & noexcept {
+        const CmdUnitSet& CmdUnit::get() const & noexcept {
             return keycodes_ ;
         }
 
-        const CmdUnit::Data& CmdUnit::data() const & noexcept {
+        const CmdUnitSet& CmdUnit::data() const & noexcept {
             return keycodes_ ;
         }
 
-        CmdUnit::Data::const_iterator CmdUnit::begin() const noexcept {
+        CmdUnitSet::const_iterator CmdUnit::begin() const noexcept {
             return keycodes_.begin() ;
         }
 
-        CmdUnit::Data::const_iterator CmdUnit::end() const noexcept {
+        CmdUnitSet::const_iterator CmdUnit::end() const noexcept {
             return keycodes_.end() ;
         }
 
-        CmdUnit::Data::const_iterator CmdUnit::cbegin() const noexcept {
+        CmdUnitSet::const_iterator CmdUnit::cbegin() const noexcept {
             return keycodes_.cbegin() ;
         }
 
-        CmdUnit::Data::const_iterator CmdUnit::cend() const noexcept {
+        CmdUnitSet::const_iterator CmdUnit::cend() const noexcept {
             return keycodes_.cend() ;
         }
 
@@ -85,10 +85,10 @@ namespace vind
         bool CmdUnit::operator==(CmdUnit&& rhs) const {
             return keycodes_ == rhs.keycodes_ ;
         }
-        bool CmdUnit::operator==(const CmdUnit::Data& rhs) const {
+        bool CmdUnit::operator==(const CmdUnitSet& rhs) const {
             return keycodes_ == rhs ;
         }
-        bool CmdUnit::operator==(CmdUnit::Data&& rhs) const {
+        bool CmdUnit::operator==(CmdUnitSet&& rhs) const {
             return keycodes_ == rhs ;
         }
 
@@ -98,10 +98,10 @@ namespace vind
         bool CmdUnit::operator!=(CmdUnit&& rhs) const {
             return keycodes_ != rhs.keycodes_ ;
         }
-        bool CmdUnit::operator!=(const CmdUnit::Data& rhs) const {
+        bool CmdUnit::operator!=(const CmdUnitSet& rhs) const {
             return keycodes_ != rhs ;
         }
-        bool CmdUnit::operator!=(CmdUnit::Data&& rhs) const {
+        bool CmdUnit::operator!=(CmdUnitSet&& rhs) const {
             return keycodes_ != rhs ;
         }
 
@@ -111,10 +111,10 @@ namespace vind
         const CmdUnit CmdUnit::operator-(CmdUnit&& rhs) const {
             return CmdUnit(erased_diff(std::move(rhs.keycodes_))) ;
         }
-        const CmdUnit CmdUnit::operator-(const CmdUnit::Data& rhs) const {
+        const CmdUnit CmdUnit::operator-(const CmdUnitSet& rhs) const {
             return CmdUnit(erased_diff(rhs)) ;
         }
-        const CmdUnit CmdUnit::operator-(CmdUnit::Data&& rhs) const {
+        const CmdUnit CmdUnit::operator-(CmdUnitSet&& rhs) const {
             return CmdUnit(erased_diff(std::move(rhs))) ;
         }
 
@@ -130,13 +130,13 @@ namespace vind
             }
             return *this ;
         }
-        CmdUnit& CmdUnit::operator-=(const CmdUnit::Data& rhs) {
+        CmdUnit& CmdUnit::operator-=(const CmdUnitSet& rhs) {
             for(const auto& k : rhs) {
                 keycodes_.erase(k) ;
             }
             return *this ;
         }
-        CmdUnit& CmdUnit::operator-=(CmdUnit::Data&& rhs) {
+        CmdUnit& CmdUnit::operator-=(CmdUnitSet&& rhs) {
             for(const auto& k : rhs) {
                 keycodes_.erase(k) ;
             }
@@ -170,13 +170,77 @@ namespace vind
 
 
         std::unique_ptr<CmdUnit> create_cmdunit(const std::string& strcommand) {
-            auto ptr = bind::ref_global_funcs_bynames(strcommand) ;
+            auto ptr = bind::ref_global_func_byname(strcommand) ;
             if(ptr) {
                 return std::make_unique<FunctionalCmdUnit>(std::move(ptr)) ;
             }
 
             auto cmd = parse_combined_command(strcommand) ;
-            return std::make_unique<InternalCmdUnit>(InternalCmdUnit::Data(cmd.begin(), cmd.end())) ;
+            return std::make_unique<InternalCmdUnit>(CmdUnitSet(cmd.begin(), cmd.end())) ;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const CmdUnitSet& rhs) {
+            if(rhs.empty()) {
+                return stream ;
+            }
+
+            if(rhs.size() == 1) {
+                const auto& rhs_f = *rhs.cbegin() ;
+                if(rhs_f.is_major_system()) {
+                    stream << "<" << rhs_f << ">" ;
+                }
+                else {
+                    stream << rhs_f ;
+                }
+
+                return stream;
+            }
+
+            stream << "<" ;
+            for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
+                if(itr != rhs.cbegin()) {
+                    stream << "-" ;
+                }
+                stream << *itr ;
+            }
+            stream << ">" ;
+            return stream;
+        }
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<CmdUnit>& rhs) {
+            for(const auto& keyset : rhs) {
+                stream << keyset ;
+            }
+            return stream ;
+        }
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<CmdUnitSet>& rhs) {
+            for(const auto& keyset : rhs) {
+                stream << keyset ;
+            }
+            return stream ;
+        }
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<std::shared_ptr<CmdUnit>>& rhs) {
+            for(const auto& keyset : rhs) {
+                stream << *keyset ;
+            }
+            return stream ;
+        }
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<std::unique_ptr<CmdUnit>>& rhs) {
+            for(const auto& keyset : rhs) {
+                stream << *keyset ;
+            }
+            return stream ;
         }
     }
 }

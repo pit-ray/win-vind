@@ -55,6 +55,33 @@ AddTest(each-cmdparser-test
 target_link_libraries(each-cmdparser-test userenv)
 
 
+AddTest(each-cmdparser-new-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_new_test.cpp
+
+    ${SRCDIR}/util/string.cpp
+    ${SRCDIR}/core/cmdparser_new.cpp
+    ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/core/cmdunit.cpp
+    ${SRCDIR}/bind/bindedfunc.cpp
+
+    ${SRCDIR}/core/errlogger.cpp
+    ${SRCDIR}/core/keylog.cpp
+    ${SRCDIR}/core/inputgate.cpp
+    ${SRCDIR}/core/path.cpp
+    ${SRCDIR}/core/mode.cpp
+    ${SRCDIR}/core/ntypelogger.cpp
+    ${SRCDIR}/core/keylgrbase.cpp
+    ${SRCDIR}/core/maptable.cpp
+    ${SRCDIR}/util/winwrap.cpp
+    ${SRCDIR}/util/interval_timer.cpp
+    ${SRCDIR}/util/box2d.cpp
+    ${SRCDIR}/util/keystroke_repeater.cpp
+    ${SRCDIR}/core/lgrparser.cpp
+    ${SRCDIR}/core/lgrparsermgr.cpp
+)
+target_link_libraries(each-cmdparser-new-test userenv)
+
+
 AddTest(each-keycode-test
     ${CMAKE_CURRENT_SOURCE_DIR}/keycode_test.cpp
 

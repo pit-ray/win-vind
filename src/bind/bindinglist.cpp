@@ -239,6 +239,15 @@ namespace vind
             return tmp ;
         }
 
+        BindedFunc::SPtr ref_global_func_byname(const std::string& name) {
+            for(auto& func : all_global_binded_funcs()) {
+                if(func->id() == BindedFunc::name_to_id(util::A2a(name))) {
+                    return func ;
+                }
+            }
+            return nullptr ;
+        }
+
         BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) {
             for(auto& func : all_global_binded_funcs()) {
                 if(func->id() == BindedFunc::name_to_id(util::A2a(name))) {

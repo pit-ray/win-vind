@@ -3,30 +3,30 @@
 
 #include "keycode.hpp"
 
+#include "bind/bindedfunc.hpp"
+
 #include <initializer_list>
 #include <memory>
+#include <ostream>
 #include <string>
 #include <unordered_set>
 
 
 namespace vind
 {
-    namespace bind
-    {
-        class BindedFunc ;
-    }
-
     namespace core
     {
+        using CmdUnitSet = std::unordered_set<KeyCode> ;
+
         class CmdUnit {
         public:
-            using Data = std::unordered_set<KeyCode> ;
+            using SPtr = std::shared_ptr<CmdUnit> ;
 
         private:
-            Data keycodes_ ;
+            CmdUnitSet keycodes_ ;
 
             template <typename T>
-            Data erased_diff(T&& rhs) const {
+            CmdUnitSet erased_diff(T&& rhs) const {
                 auto diff = keycodes_ ;
                 for(auto& k : rhs) {
                     diff.erase(k) ;
@@ -36,34 +36,34 @@ namespace vind
 
         public:
             explicit CmdUnit() ;
-            explicit CmdUnit(const Data& codes) ;
-            explicit CmdUnit(Data&& codes) ;
+            explicit CmdUnit(const CmdUnitSet& codes) ;
+            explicit CmdUnit(CmdUnitSet&& codes) ;
             explicit CmdUnit(std::initializer_list<KeyCode>&& codes) ;
 
             template <typename InputIterator>
             explicit CmdUnit(InputIterator begin, InputIterator end)
-            : CmdUnit(Data(begin, end))
+            : CmdUnit(CmdUnitSet(begin, end))
             {}
 
             virtual ~CmdUnit() noexcept ;
 
             CmdUnit(CmdUnit&&) ;
             CmdUnit& operator=(CmdUnit&&) ;
-            CmdUnit& operator=(CmdUnit::Data&&) ;
+            CmdUnit& operator=(CmdUnitSet&&) ;
 
             CmdUnit(const CmdUnit&) ;
             CmdUnit& operator=(const CmdUnit&) ;
-            CmdUnit& operator=(const CmdUnit::Data&) ;
+            CmdUnit& operator=(const CmdUnitSet&) ;
 
-            const Data& get() const & noexcept ;
+            const CmdUnitSet& get() const & noexcept ;
 
-            const Data& data() const & noexcept ;
+            const CmdUnitSet& data() const & noexcept ;
 
-            Data::const_iterator begin() const noexcept ;
-            Data::const_iterator end() const noexcept ;
+            CmdUnitSet::const_iterator begin() const noexcept ;
+            CmdUnitSet::const_iterator end() const noexcept ;
 
-            Data::const_iterator cbegin() const noexcept ;
-            Data::const_iterator cend() const noexcept ;
+            CmdUnitSet::const_iterator cbegin() const noexcept ;
+            CmdUnitSet::const_iterator cend() const noexcept ;
 
             std::size_t size() const noexcept ;
             bool empty() const noexcept ;
@@ -71,23 +71,23 @@ namespace vind
 
             bool operator==(const CmdUnit& rhs) const ;
             bool operator==(CmdUnit&& rhs) const ;
-            bool operator==(const Data& rhsraw) const ;
-            bool operator==(Data&& rhsraw) const ;
+            bool operator==(const CmdUnitSet& rhsraw) const ;
+            bool operator==(CmdUnitSet&& rhsraw) const ;
 
             bool operator!=(const CmdUnit& rhs) const ;
             bool operator!=(CmdUnit&& rhs) const ;
-            bool operator!=(const Data& rhs) const ;
-            bool operator!=(Data&& rhsw) const ;
+            bool operator!=(const CmdUnitSet& rhs) const ;
+            bool operator!=(CmdUnitSet&& rhsw) const ;
 
             const CmdUnit operator-(const CmdUnit& rhs) const ;
             const CmdUnit operator-(CmdUnit&& rhs) const ;
-            const CmdUnit operator-(const Data& rhs) const ;
-            const CmdUnit operator-(Data&& rhs) const ;
+            const CmdUnit operator-(const CmdUnitSet& rhs) const ;
+            const CmdUnit operator-(CmdUnitSet&& rhs) const ;
 
             CmdUnit& operator-=(const CmdUnit& rhs) ;
             CmdUnit& operator-=(CmdUnit&& rhs) ;
-            CmdUnit& operator-=(const Data& rhs) ;
-            CmdUnit& operator-=(Data&& rhs) ;
+            CmdUnit& operator-=(const CmdUnitSet& rhs) ;
+            CmdUnit& operator-=(CmdUnitSet&& rhs) ;
 
             virtual void execute() ;
         } ;
@@ -114,7 +114,7 @@ namespace vind
 
         class FunctionalCmdUnit : public CmdUnit {
         private:
-            std::shared_ptr<bind::BindedFunc> func_ ;
+            bind::BindedFunc::SPtr func_ ;
 
         public:
             template <typename T>
@@ -125,12 +125,38 @@ namespace vind
 
             bool has_function() const noexcept ;
 
-            const std::shared_ptr<bind::BindedFunc>& get_function() const ;
+            const bind::BindedFunc::SPtr& get_function() const ;
 
             void execute() override ;
         } ;
 
         std::unique_ptr<CmdUnit> create_cmdunit(const std::string& strcommand) ;
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const CmdUnitSet& rhs) ;
+
+        inline std::ostream& operator<<(
+            std::ostream& stream,
+            const CmdUnit& rhs) {
+            return stream << rhs.get() ;
+        }
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<CmdUnit>& rhs) ;
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<CmdUnitSet>& rhs) ;
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<std::shared_ptr<CmdUnit>>& rhs) ;
+
+        std::ostream& operator<<(
+            std::ostream& stream,
+            const std::vector<std::unique_ptr<CmdUnit>>& rhs) ;
     }
 }
 

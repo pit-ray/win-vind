@@ -168,17 +168,6 @@ namespace vind
             func_->process() ;
         }
 
-
-        std::unique_ptr<CmdUnit> create_cmdunit(const std::string& strcommand) {
-            auto ptr = bind::ref_global_func_byname(strcommand) ;
-            if(ptr) {
-                return std::make_unique<FunctionalCmdUnit>(std::move(ptr)) ;
-            }
-
-            auto cmd = parse_combined_command(strcommand) ;
-            return std::make_unique<InternalCmdUnit>(CmdUnitSet(cmd.begin(), cmd.end())) ;
-        }
-
         std::ostream& operator<<(std::ostream& stream, const CmdUnitSet& rhs) {
             if(rhs.empty()) {
                 return stream ;

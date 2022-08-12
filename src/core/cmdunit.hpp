@@ -38,7 +38,7 @@ namespace vind
             explicit CmdUnit() ;
             explicit CmdUnit(const CmdUnitSet& codes) ;
             explicit CmdUnit(CmdUnitSet&& codes) ;
-            explicit CmdUnit(std::initializer_list<KeyCode>&& codes) ;
+            CmdUnit(std::initializer_list<KeyCode>&& codes) ;
 
             template <typename InputIterator>
             explicit CmdUnit(InputIterator begin, InputIterator end)
@@ -129,8 +129,6 @@ namespace vind
 
             void execute() override ;
         } ;
-
-        std::unique_ptr<CmdUnit> create_cmdunit(const std::string& strcommand) ;
 
         std::ostream& operator<<(
             std::ostream& stream,

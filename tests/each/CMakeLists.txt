@@ -82,6 +82,16 @@ AddTest(each-cmdparser-new-test
 target_link_libraries(each-cmdparser-new-test userenv)
 
 
+AddTest(each-cmdmatcher-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmdmatcher_test.cpp
+
+    ${SRCDIR}/core/cmdmatcher.cpp
+    ${SRCDIR}/core/cmdunit.cpp
+    ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/util/string.cpp
+)
+
+
 AddTest(each-keycode-test
     ${CMAKE_CURRENT_SOURCE_DIR}/keycode_test.cpp
 

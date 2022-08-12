@@ -19,7 +19,7 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            explicit MapSolver() ;
+            explicit MapSolver(bool enable_typing_emulator=true) ;
             virtual ~MapSolver() noexcept ;
 
             MapSolver(const MapSolver&) = delete ;
@@ -29,43 +29,27 @@ namespace vind
             MapSolver& operator=(MapSolver&&) ;
 
             void add_map(
-                const std::string& trigger_cmd,
-                const std::string& target_cmd,
-                Mode mode) ;
+                const std::string& trigger_strcmd,
+                const std::string& target_strcmd) ;
 
             void add_noremap(
-                const std::string& trigger_cmd,
-                const std::string& target_cmd,
-                Mode mode) ;
+                const std::string& trigger_strcmd,
+                const std::string& target_strcmd) ;
 
-            void solve(Mode mode) ;
+            void remove(const std::string& trigger_strcmd) ;
 
-            void add_solved_map(
-                const std::string& trigger_cmd,
-                const std::string& target_cmd,
-                Mode mode) ;
+            void solve() ;
 
-            void add_solved_noremap(
-                const std::string& trigger_cmd,
-                const std::string& target_cmd,
-                Mode mode) ;
+            void clear() ;
 
-            void remove(
-                const std::string& trigger_cmd,
-                Mode mode) ;
-
-            void clear(Mode mode) ;
-
-            void clear_all() ;
-
-            void backward_state(std::size_t) ;
+            void backward_state(std::size_t n) ;
 
             void reset_state() ;
 
             // If the trigger command is matched, it return true.
             bool map_command_to(
-                const std::shared_ptr<CmdUnit>& trigger_cmdunit,
-                std::vector<std::shared_ptr<CmdUnit>>& target_cmd,
+                const CmdUnit& raw_cmdunit,
+                std::vector<CmdUnit::SPtr>& target_cmd,
                 unsigned int& count) ;
 
             /**
@@ -81,11 +65,7 @@ namespace vind
              * hook_key        keyset = {   key1  ,    key2   }
              *
              */
-            bool map_syncstate(
-                KeyCode hook_key,
-                bool press_sync_state,
-                Mode mode=get_global_mode()) ;
-
+            bool map_syncstate(KeyCode hook_key, bool press_sync_state) ;
         } ;
     }
 }

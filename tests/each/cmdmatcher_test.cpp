@@ -45,7 +45,7 @@ TEST_SUITE("core/cmdmatcher") {
 
             CmdUnit in2{KEYCODE_F, KEYCODE_SHIFT, KEYCODE_LSHIFT} ;
             res = matcher.update_state(in2) ;
-            CHECK_EQ(res, 2) ;
+            CHECK_EQ(res, 3) ;
             CHECK(matcher.is_matching()) ;
 
             CmdUnit in3{KEYCODE_F, KEYCODE_SHIFT} ;
@@ -89,7 +89,7 @@ TEST_SUITE("core/cmdmatcher") {
 
             CmdUnit in2{KEYCODE_F, KEYCODE_SHIFT, KEYCODE_LSHIFT} ;
             res = matcher.update_state(in2) ;
-            CHECK_EQ(res, 2) ;
+            CHECK_EQ(res, 3) ;
             CHECK(matcher.is_matching()) ;
 
             CmdUnit in3{KEYCODE_CTRL, KEYCODE_F} ;
@@ -163,7 +163,7 @@ TEST_SUITE("core/cmdmatcher") {
 
             CmdUnit in2{KEYCODE_1, KEYCODE_2} ;
             res = matcher.update_state(in2) ;
-            CHECK_EQ(res, 1) ;
+            CHECK_EQ(res, 2) ;
             CHECK(matcher.is_matching()) ;
 
             CmdUnit in3{KEYCODE_2} ;
@@ -180,13 +180,40 @@ TEST_SUITE("core/cmdmatcher") {
 
             CmdUnit in5{KEYCODE_9, KEYCODE_8} ;
             res = matcher.update_state(in5) ;
-            CHECK_EQ(res, 1) ;
+            CHECK_EQ(res, 2) ;
             CHECK(matcher.is_matching()) ;
 
             CmdUnit in6{KEYCODE_J} ;
             res = matcher.update_state(in6) ;
             CHECK_EQ(res, 0) ;
             CHECK(matcher.is_rejected()) ;
+        }
+    }
+
+    TEST_CASE("typing") {
+        std::vector<CmdUnitSet> cmd {
+            {KEYCODE_CTRL, KEYCODE_B},
+        } ;
+
+        std::vector<CmdUnit::SPtr> ptrcmd{} ;
+        for(const auto& cmdunit : cmd) {
+            ptrcmd.push_back(std::make_shared<CmdUnit>(cmdunit)) ;
+        }
+
+        CmdMatcher matcher{ptrcmd} ;
+
+        SUBCASE("case1") {
+            CmdUnit in1{KEYCODE_CTRL} ;
+            int res = matcher.update_state(in1) ;
+            CHECK_EQ(res, 0) ;
+            CHECK(matcher.is_rejected()) ;
+
+            matcher.backward_state(1) ;
+
+            CmdUnit in2{KEYCODE_CTRL, KEYCODE_B} ;
+            res = matcher.update_state(in2) ;
+            CHECK_EQ(res, 2) ;
+            CHECK(matcher.is_accepted()) ;
         }
     }
 }

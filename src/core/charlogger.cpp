@@ -1,5 +1,6 @@
 #include "charlogger.hpp"
 
+#include "core/cmdunit.hpp"
 #include "core/inputgate.hpp"
 #include "keycode.hpp"
 #include "keycodedef.hpp"

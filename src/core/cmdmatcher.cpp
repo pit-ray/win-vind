@@ -58,6 +58,14 @@ namespace vind
         CmdMatcher::CmdMatcher(CmdMatcher&&) = default ;
         CmdMatcher& CmdMatcher::operator=(CmdMatcher&&) = default ;
 
+        std::size_t CmdMatcher::history_size() const noexcept {
+            return pimpl->states_.size() ;
+        }
+
+        const std::vector<CmdUnit::SPtr>& CmdMatcher::get_command() const noexcept {
+            return pimpl->cmd_ ;
+        }
+
         int CmdMatcher::update_accepted(const CmdUnit& in_cmdunit) {
             return update_rejected(in_cmdunit) ;
         }
@@ -86,33 +94,33 @@ namespace vind
             }
 
             bool reject = false ;
-            for(const auto& ikey : in_cmdunit) {
-                if(!ikey.is_unreal()) {
-                    // If an inputted key is a physical key (e.g. <lshift>),
-                    // confirm the target cmd unit contains the physical key
+            for(const auto& tkey : *unit) {
+                if(!tkey.is_unreal()) {
+                    // If an target key is a physical key (e.g. <lshift>),
+                    // confirm the inputted cmd unit contains the physical key
                     // or its representative key (e.g. <shift>).
-                    if(!unit->is_containing(ikey) &&
-                        !unit->is_containing(ikey.to_representative())) {
+                    if(!in_cmdunit.is_containing(tkey) &&
+                        !in_cmdunit.is_containing(tkey.to_representative())) {
                         reject = true ;
                         break ;
                     }
-                    continue ;
                 }
-
-                // If an inputted key is unreal (e.g. <shift>, <ctrl>),
-                // verifies the target cmd unit contains the certain unreal
-                // key or the physical key associated with the unreal key
-                // (e.g. <lshift>, <rctrl>).
-                bool has_key = false ;
-                for(const auto& tkey : *unit) {
-                    if(ikey == tkey || ikey == tkey.to_representative()) {
-                        has_key = true ;
+                else {
+                    // If an target key is unreal (e.g. <shift>, <ctrl>),
+                    // verifies the inputted cmd unit contains the certain unreal
+                    // key or the physical key associated with the unreal key
+                    // (e.g. <lshift>, <rctrl>).
+                    bool has_key = false ;
+                    for(const auto& ikey : in_cmdunit) {
+                        if(tkey == ikey || tkey == ikey.to_representative()) {
+                            has_key = true ;
+                            break ;
+                        }
+                    }
+                    if(!has_key) {
+                        reject = true ;
                         break ;
                     }
-                }
-                if(!has_key) {
-                    reject = true ;
-                    break ;
                 }
             }
             if(reject) {
@@ -126,7 +134,7 @@ namespace vind
                 pimpl->states_.push(State::ACCEPTED) ;
             }
             pimpl->heads_.push(head) ;
-            return unit->size() ;
+            return in_cmdunit.size() ;
         }
 
         int CmdMatcher::update_any(const CmdUnit& in_cmdunit) {
@@ -154,7 +162,7 @@ namespace vind
 
             pimpl->states_.push(State::ANYNUM_MATCHING) ;
             pimpl->heads_.push(pimpl->heads_.top()) ;
-            return 1 ;
+            return in_cmdunit.size() ;
         }
 
         int CmdMatcher::update_state(const CmdUnit& in_cmdunit) {

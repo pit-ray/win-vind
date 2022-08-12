@@ -189,13 +189,6 @@ namespace vind
             return *this ;
         }
 
-        std::ostream& operator<<(std::ostream& stream, const KeyLog::Data& rhs) {
-            KeySet set(rhs.begin(), rhs.end()) ;
-            std::sort(set.begin(), set.end()) ;
-            stream << set ;
-            return stream ;
-        }
-
         std::ostream& operator<<(std::ostream& stream, const KeyLog& rhs) {
             KeySet set(rhs.begin(), rhs.end()) ;
             std::sort(set.begin(), set.end()) ;

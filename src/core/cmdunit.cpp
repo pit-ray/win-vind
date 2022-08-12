@@ -7,6 +7,8 @@
 #include "bind/bindinglist.hpp"
 #include "util/def.hpp"
 
+#include <algorithm>
+
 
 namespace vind
 {
@@ -37,6 +39,7 @@ namespace vind
         CmdUnit::CmdUnit(CmdUnit&&) = default ;
         CmdUnit& CmdUnit::operator=(CmdUnit&&) = default ;
 
+        CmdUnit& CmdUnit::operator=(const CmdUnit&) = default ;
         CmdUnit& CmdUnit::operator=(const CmdUnitSet& rhs) {
             keycodes_ = rhs ;
             return *this ;
@@ -174,7 +177,7 @@ namespace vind
             }
 
             if(rhs.size() == 1) {
-                const auto& rhs_f = *rhs.cbegin() ;
+                const auto& rhs_f = *rhs.begin() ;
                 if(rhs_f.is_major_system()) {
                     stream << "<" << rhs_f << ">" ;
                 }
@@ -185,9 +188,12 @@ namespace vind
                 return stream;
             }
 
+            std::vector<KeyCode> sorted(rhs.begin(), rhs.end()) ;
+            std::sort(sorted.begin(), sorted.end()) ;
+
             stream << "<" ;
-            for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
-                if(itr != rhs.cbegin()) {
+            for(auto itr = sorted.begin() ; itr != sorted.end() ; itr ++) {
+                if(itr != sorted.begin()) {
                     stream << "-" ;
                 }
                 stream << *itr ;

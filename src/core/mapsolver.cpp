@@ -1,3 +1,5 @@
+#ifdef SOLVE
+
 #include "cmdmatcher.hpp"
 #include "cmdunit.hpp"
 #include "mapsolver.hpp"
@@ -125,3 +127,4 @@ namespace vind
         }
     }
 }
+#endif

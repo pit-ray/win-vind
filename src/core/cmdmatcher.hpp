@@ -35,6 +35,10 @@ namespace vind
             CmdMatcher(CmdMatcher&&) ;
             CmdMatcher& operator=(CmdMatcher&&) ;
 
+            std::size_t history_size() const noexcept ;
+
+            const std::vector<CmdUnit::SPtr>& get_command() const noexcept ;
+
             int update_state(const CmdUnit& in_cmdunit) ;
 
             bool is_accepted() const noexcept ;

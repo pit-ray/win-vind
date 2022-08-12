@@ -76,7 +76,6 @@ namespace vind
             KeyLog& operator-=(Data&& rhs) ;
         } ;
 
-        std::ostream& operator<<(std::ostream& stream, const KeyLog::Data& rhs) ;
         std::ostream& operator<<(std::ostream& stream, const KeyLog& rhs) ;
     }
 }

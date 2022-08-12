@@ -66,6 +66,7 @@ SOFTWARE.
 #include "bind/emu/moveinsert.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/syscmd/source.hpp"
+#include "core/cmdmatcher.hpp"
 #include "core/inputgate.hpp"
 #include "errlogger.hpp"
 #include "funcfinder.hpp"
@@ -79,6 +80,120 @@ SOFTWARE.
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
 #include "util/winwrap.hpp"
+
+#ifdef DEBUG
+#include <algorithm>
+#include "util/keystroke_repeater.hpp"
+namespace
+{
+    using namespace vind ;
+    using namespace vind::core ;
+
+    std::vector<CmdMatcher> setup() {
+        std::vector<CmdMatcher> matchers_ ;
+
+        std::vector<CmdUnitSet> cmdset1 {
+            {KEYCODE_G},
+            {KEYCODE_F}
+        } ;
+        std::vector<CmdUnit::SPtr> cmd1 ;
+        for(const auto& c : cmdset1) {
+            cmd1.push_back(std::make_shared<CmdUnit>(c)) ;
+        }
+        matchers_.emplace_back(cmd1) ;
+
+        std::vector<CmdUnitSet> cmdset2 {
+            {KEYCODE_CTRL, KEYCODE_D},
+        } ;
+        std::vector<CmdUnit::SPtr> cmd2 ;
+        for(const auto& c : cmdset2) {
+            cmd2.push_back(std::make_shared<CmdUnit>(c)) ;
+        }
+        matchers_.emplace_back(cmd2) ;
+
+        return matchers_ ;
+    }
+
+    template <typename T>
+    void test_cmdmatcher(T&& log) {
+        static auto matchers = setup() ;
+
+        static CmdUnit l1_cmdunit{} ;
+        static CmdUnit l2_cmdunit{} ;
+        static util::KeyStrokeRepeater ksr ;
+
+        auto raw_cmdunit = CmdUnit(log.get()) ;
+        auto in_cmdunit = raw_cmdunit - l1_cmdunit ;
+
+        l2_cmdunit = l1_cmdunit ;
+        l1_cmdunit = raw_cmdunit ;
+
+        if(raw_cmdunit.empty()) {
+            ksr.reset() ;
+            return ;
+        }
+        else {
+            if(in_cmdunit.empty()) {
+                if(!ksr.is_passed()) {
+                    return ;
+                }
+                in_cmdunit = raw_cmdunit ;
+            }
+        }
+
+        std::vector<int> accept_num(matchers.size(), 0) ;
+
+        bool all_rejected = true ;
+        for(int i = 0 ; i < matchers.size() ; i ++) {
+            auto& mt = matchers[i] ;
+            auto res = mt.update_state(in_cmdunit) ;
+            if(mt.is_accepted()) {
+                accept_num[i] = res ;
+            }
+
+            if(!mt.is_rejected()) {
+                all_rejected = false ;
+            }
+        }
+
+        if(all_rejected) {
+            bool only_syscode = true ;
+            for(auto& key : in_cmdunit) {
+                if(!key.is_major_system()) {
+                    only_syscode = false ;
+                    break ;
+                }
+            }
+
+            if(only_syscode) {
+                for(auto& mt : matchers) {
+                    mt.backward_state(1) ;
+                }
+                l1_cmdunit = l2_cmdunit ;
+            }
+            else {
+                for(auto& mt : matchers) {
+                    mt.reset_state() ;
+                }
+            }
+        }
+        else {
+            auto max_itr = std::max_element(accept_num.begin(), accept_num.end()) ;
+            if(*max_itr > 0) {
+                auto max_idx = std::distance(accept_num.begin(), max_itr) ;
+
+                const auto& matched_cmd = matchers[max_idx].get_command() ;
+                std::cout << " CALL: " << matched_cmd << std::endl ;
+
+                for(auto& mt : matchers) {
+                    mt.reset_state() ;
+                }
+            }
+        }
+    }
+}
+
+#endif
 
 
 namespace vind
@@ -333,6 +448,8 @@ namespace vind
             }
 
             auto log = InputGate::get_instance().pop_log() ;
+
+            test_cmdmatcher(log) ;
 
             auto result = pimpl->lgr_.logging_state(log) ;
 

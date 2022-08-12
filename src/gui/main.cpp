@@ -250,6 +250,11 @@ namespace vind
 #include "util/disable_compiler_warning.hpp"
 
 DECLARE_APP(vind::gui::App) ;
+
+#ifdef DEBUG
+IMPLEMENT_APP_CONSOLE(vind::gui::App) ;
+#else
 IMPLEMENT_APP(vind::gui::App) ;
+#endif
 
 #include "util/enable_compiler_warning.hpp"

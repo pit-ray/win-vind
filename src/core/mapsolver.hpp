@@ -28,6 +28,10 @@ namespace vind
             MapSolver(MapSolver&&) ;
             MapSolver& operator=(MapSolver&&) ;
 
+            void add_default(
+                const std::string& trigger_strcmd,
+                const std::string& target_strcmd) ;
+
             void add_map(
                 const std::string& trigger_strcmd,
                 const std::string& target_strcmd) ;
@@ -36,11 +40,14 @@ namespace vind
                 const std::string& trigger_strcmd,
                 const std::string& target_strcmd) ;
 
-            void remove(const std::string& trigger_strcmd) ;
+            bool remove(const std::string& trigger_strcmd) ;
+            bool remove_default(const std::string& trigger_strcmd) ;
 
-            void solve() ;
+            void deploy() ;
+            void deploy_default(bool solve=true) ;
 
             void clear() ;
+            void clear_default() ;
 
             void backward_state(std::size_t n) ;
 
@@ -52,20 +59,8 @@ namespace vind
                 std::vector<CmdUnit::SPtr>& target_cmd,
                 unsigned int& count) ;
 
-            /**
-             * A gate uses to synchronize the state of a key at low-level
-             * with mapped to the hook_key. It return ture if the map was done,
-             * false if the map does not exist.
-             * It works like the following, with the keys connected by bars.
-             *
-             *     _____________________________________
-             *   _|_                        _|_        _|_
-             *  /   \                      /   \      /   \
-             * /_____\                    /_____\    /_____\
-             * hook_key        keyset = {   key1  ,    key2   }
-             *
-             */
-            bool map_syncstate(KeyCode hook_key, bool press_sync_state) ;
+            std::vector<std::vector<CmdUnit::SPtr>> get_trigger_commands() const ;
+            std::vector<std::vector<CmdUnit::SPtr>> get_target_commands() const ;
         } ;
     }
 }

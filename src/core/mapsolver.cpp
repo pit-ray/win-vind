@@ -45,17 +45,7 @@ namespace
         return true ;
     }
 
-
-    std::vector<CmdUnit> convert_from_pointer_cmdunit(
-            const std::vector<CmdUnit::SPtr>& ptrcmd) {
-        std::vector<CmdUnit> cmd{} ;
-        for(auto& unitptr : ptrcmd) {
-            cmd.push_back(*unitptr) ;
-        }
-        return cmd ;
-    }
-
-    void remove_triggered_map(
+    bool remove_triggered_map(
             std::vector<PreMap>& map_table,
             const std::vector<CmdUnit::SPtr>& remove_trigger) {
         std::vector<PreMap> new_map{} ;
@@ -65,6 +55,80 @@ namespace
             }
         }
         map_table.swap(new_map) ;
+        return new_map.size() != map_table.size() ;
+    }
+
+    std::vector<CmdUnit::SPtr> solve_mapping(
+            const PreMap& premap,
+            std::vector<Map>& refmap_table,
+            bool recursively=false) {
+
+        std::vector<CmdUnit::SPtr> solved_target ;
+        if(solved_target.empty()) {
+            return solved_target ;
+        }
+        if(is_same_command(premap.trigger_cmd, premap.target_cmd)) {
+            return solved_target ;
+        }
+
+        for(auto& map : refmap_table) {
+            map.trigger_matcher.reset_state() ;
+        }
+
+        for(const auto& in_cmdunit : premap.target_cmd) {
+            std::vector<int> acc_nums(refmap_table.size(), 0) ;
+            bool all_rejected = true ;
+            for(int i = 0 ; i < refmap_table.size() ; i ++) {
+                auto& mt = refmap_table[i].trigger_matcher ;
+                auto res = mt.update_state(*in_cmdunit) ;
+                if(mt.is_accepted()) {
+                    acc_nums[i] = res ;
+                }
+                else if(!mt.is_rejected()) {
+                    all_rejected = false ;
+                }
+            }
+
+            if(all_rejected) {
+                for(auto& map : refmap_table) {
+                    map.trigger_matcher.reset_state() ;
+                }
+                continue ;
+            }
+
+            auto max_itr = std::max_element(acc_nums.begin(), acc_nums.end()) ;
+            if(*max_itr > 0) {
+                auto max_idx = std::distance(acc_nums.begin(), max_itr) ;
+                auto t_cmd = refmap_table[max_idx].target_cmd ;
+
+                if(recursively) {
+                    PreMap solved_premap{premap.trigger_cmd, t_cmd} ;
+                    auto solved_subcmd = solve_mapping(
+                        solved_premap, refmap_table, true) ;
+                    if(solved_subcmd.empty()) {
+                        solved_target.insert(
+                            solved_target.begin(),
+                            t_cmd.begin(), t_cmd.end()) ;
+                    }
+                    else {
+                        solved_target.insert(
+                            solved_target.begin(),
+                            solved_subcmd.begin(), solved_subcmd.end()) ;
+                    }
+                }
+                else {
+                    solved_target.insert(
+                        solved_target.begin(),
+                        t_cmd.begin(), t_cmd.end()) ;
+                }
+
+                for(auto& map : refmap_table) {
+                    map.trigger_matcher.reset_state() ;
+                }
+            }
+        }
+
+        return solved_target ;
     }
 }
 
@@ -75,7 +139,8 @@ namespace vind
     {
         struct MapSolver::Impl {
             std::vector<Map> deployed_{} ;
-            std::vector<Map> default_noremap_{} ;
+            std::vector<Map> default_{} ;
+            std::vector<PreMap> registered_default_{} ;
             std::vector<PreMap> registered_noremap_{} ;
             std::vector<PreMap> registered_map_{} ;
             std::unique_ptr<TypingEmulator> typeemu_{nullptr} ;
@@ -94,12 +159,23 @@ namespace vind
         MapSolver::MapSolver(MapSolver&&) = default ;
         MapSolver& MapSolver::operator=(MapSolver&&) = default ;
 
+        void MapSolver::add_default(
+            const std::string& trigger_strcmd,
+            const std::string& target_strcmd) {
+            auto trigger_cmd = parse_command(trigger_strcmd) ;
+            auto target_ptrcmd = parse_command(target_strcmd) ;
+
+            remove_triggered_map(pimpl->registered_default_, trigger_cmd) ;
+            pimpl->registered_default_.emplace_back(trigger_cmd, target_ptrcmd) ;
+        }
+
         void MapSolver::add_map(
                 const std::string& trigger_strcmd,
                 const std::string& target_strcmd) {
             auto trigger_cmd = parse_command(trigger_strcmd) ;
             auto target_ptrcmd = parse_command(target_strcmd) ;
 
+            remove_triggered_map(pimpl->registered_map_, trigger_cmd) ;
             remove_triggered_map(pimpl->registered_noremap_, trigger_cmd) ;
             pimpl->registered_map_.emplace_back(trigger_cmd, target_ptrcmd) ;
         }
@@ -111,73 +187,114 @@ namespace vind
             auto target_ptrcmd = parse_command(target_strcmd) ;
 
             remove_triggered_map(pimpl->registered_map_, trigger_cmd) ;
+            remove_triggered_map(pimpl->registered_noremap_, trigger_cmd) ;
             pimpl->registered_noremap_.emplace_back(trigger_cmd, target_ptrcmd) ;
         }
 
-        void MapSolver::remove(const std::string& trigger_strcmd) {
+        bool MapSolver::remove(const std::string& trigger_strcmd) {
             auto remove_cmd = parse_command(trigger_strcmd) ;
-
-            remove_triggered_map(pimpl->registered_map_, remove_cmd) ;
-            remove_triggered_map(pimpl->registered_noremap_, remove_cmd) ;
+            return remove_triggered_map(pimpl->registered_map_, remove_cmd) ||
+                   remove_triggered_map(pimpl->registered_noremap_, remove_cmd) ;
         }
 
-        void MapSolver::solve() {
+        bool MapSolver::remove_default(const std::string& trigger_strcmd) {
+            auto remove_cmd = parse_command(trigger_strcmd) ;
+            return remove_triggered_map(pimpl->registered_default_, remove_cmd) ;
+        }
+
+        void MapSolver::deploy() {
             pimpl->deployed_.clear() ;
 
-            // noremap
-            auto& refmap = pimpl->default_noremap_ ;
-            for(auto& map : pimpl->registered_noremap_) {
-                std::vector<CmdUnit::SPtr> solved_target ;
-                for(auto& in_cmdunit : map.target_cmd) {
-                    std::vector<int> acc_nums(refmap.size(), 0) ;
-                    bool all_rejected = true ;
-                    for(int i = 0 ; i < refmap.size() ; i ++) {
-                        auto& mt = refmap[i].trigger_matcher ;
-                        auto res = mt.update_state(*in_cmdunit) ;
-                        if(mt.is_accepted()) {
-                            acc_nums[i] = res ;
-                        }
-                        else if(!mt.is_rejected()) {
-                            all_rejected = false ;
-                        }
-                    }
+            std::vector<Map> solved_maps{} ;
+            solved_maps.reserve(
+                pimpl->registered_noremap_.size() + pimpl->registered_map_.size()) ;
 
-                    if(all_rejected) {
-                        for(auto& map : refmap) {
-                            map.trigger_matcher.reset_state() ;
-                        }
-                        continue ;
-                    }
+            std::vector<PreMap> tmp_noremap{} ;
+            tmp_noremap.reserve(
+                pimpl->default_.size() + pimpl->registered_noremap_.size()) ;
 
-                    auto max_itr = std::max_element(acc_nums.begin(), acc_nums.end()) ;
-                    if(*max_itr > 0) {
-                        auto max_idx = std::distance(acc_nums.begin(), max_itr) ;
-                        auto t_cmd = refmap[max_idx].target_cmd ;
-                        solved_target.insert(
-                            solved_target.begin(), t_cmd.begin(), t_cmd.end()) ;
+            for(const auto& map : pimpl->default_) {
+                tmp_noremap.emplace_back(
+                    map.trigger_matcher.get_command(), map.target_cmd) ;
+            }
 
-                        for(auto& map : refmap) {
-                            map.trigger_matcher.reset_state() ;
-                        }
-                    }
-                }
+            for(const auto& map : pimpl->registered_noremap_) {
+                remove_triggered_map(tmp_noremap, map.trigger_cmd) ;
+                tmp_noremap.emplace_back(map.trigger_cmd, map.target_cmd) ;
+            }
+
+            for(const auto& premap : pimpl->registered_noremap_) {
+                auto solved_target = solve_mapping(premap, pimpl->default_, false) ;
 
                 if(!solved_target.empty()) {
-                    pimpl->deployed_.emplace_back(map.trigger_cmd, solved_target) ;
+                    solved_maps.emplace_back(premap.trigger_cmd, solved_target) ;
+                }
+            }
+
+            auto tmp_maps = solved_maps ;
+            for(const auto& premap : pimpl->registered_map_) {
+                tmp_maps.emplace_back(premap.trigger_cmd, premap.target_cmd) ;
+            }
+
+            for(const auto& premap : pimpl->registered_map_) {
+                auto solved_target = solve_mapping(premap, tmp_maps, true) ;
+
+                if(!solved_target.empty()) {
+                    solved_maps.emplace_back(premap.trigger_cmd, solved_target) ;
                 }
             }
 
 
-            // map
+            for(auto& map :solved_maps) {
+                if(map.trigger_matcher.get_command().size() == 1 &&
+                        map.trigger_matcher.get_command()[0]->size() == 1 &&
+                        map.target_cmd.size() == 1) {
+                    // key2keyset mapping
+                    // register_inputgate
 
-            // create matcher
-            // solve recursively
+                    // for debug -----------
+                    //
+                    pimpl->deployed_.push_back(std::move(map)) ;
+                    ///
+                    ///---------------------
+                }
+                else {
+                    pimpl->deployed_.push_back(std::move(map)) ;
+                }
+            }
+        }
+
+        void MapSolver::deploy_default(bool solve) {
+            std::vector<Map> tmp_maps ;
+            tmp_maps.reserve(pimpl->registered_default_.size()) ;
+
+            for(const auto& premap : pimpl->registered_default_) {
+                tmp_maps.emplace_back(premap.trigger_cmd, premap.target_cmd) ;
+            }
+
+            if(!solve) {
+                pimpl->default_ = tmp_maps ;
+                return ;
+            }
+
+            pimpl->default_.clear() ;
+            for(auto& premap : pimpl->registered_default_) {
+                auto solved_target = solve_mapping(premap, tmp_maps, true) ;
+                if(!solved_target.empty()) {
+                    pimpl->default_.emplace_back(premap.trigger_cmd, solved_target) ;
+                }
+            }
         }
 
         void MapSolver::clear() {
             pimpl->deployed_.clear() ;
             pimpl->registered_noremap_.clear() ;
             pimpl->registered_map_.clear() ;
+        }
+
+        void MapSolver::clear_default() {
+            pimpl->default_.clear() ;
+            pimpl->registered_default_.clear() ;
         }
 
         void MapSolver::backward_state(std::size_t n) {
@@ -254,11 +371,20 @@ namespace vind
             return false ;
         }
 
-        bool MapSolver::map_syncstate(
-                KeyCode hook_key,
-                bool press_sync_state) {
+        std::vector<std::vector<CmdUnit::SPtr>> MapSolver::get_trigger_commands() const {
+            std::vector<std::vector<CmdUnit::SPtr>> tmp{} ;
+            for(const auto& map : pimpl->deployed_) {
+                tmp.push_back(map.trigger_matcher.get_command()) ;
+            }
+            return tmp ;
+        }
 
-            return true ;
+        std::vector<std::vector<CmdUnit::SPtr>> MapSolver::get_target_commands() const {
+            std::vector<std::vector<CmdUnit::SPtr>> tmp{} ;
+            for(const auto& map : pimpl->deployed_) {
+                tmp.emplace_back(map.target_cmd) ;
+            }
+            return tmp ;
         }
     }
 }

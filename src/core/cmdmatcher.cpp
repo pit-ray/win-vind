@@ -28,12 +28,31 @@ namespace vind
             std::stack<State, std::vector<State>> states_ ;
             std::stack<int, std::vector<int>> heads_ ;
 
-            template <typename T>
-            Impl(T&& cmd)
-            : cmd_(std::forward<T>(cmd)),
+            Impl()
+            : cmd_(),
               states_(),
               heads_()
             {}
+
+            Impl(const std::vector<CmdUnit::SPtr>& cmd)
+            : cmd_(cmd),
+              states_(),
+              heads_()
+            {}
+
+            Impl(std::vector<CmdUnit::SPtr>&& cmd)
+            : cmd_(std::move(cmd)),
+              states_(),
+              heads_()
+            {}
+
+            ~Impl() noexcept = default ;
+
+            Impl(const Impl&) = default ;
+            Impl& operator=(const Impl&) = default ;
+
+            Impl(Impl&&) = default ;
+            Impl& operator=(Impl&&) = default ;
         } ;
 
         CmdMatcher::CmdMatcher(CmdUnit::SPtr&& cmdunit)
@@ -55,6 +74,16 @@ namespace vind
         {}
 
         CmdMatcher::~CmdMatcher() noexcept = default ;
+
+        CmdMatcher::CmdMatcher(const CmdMatcher& rhs)
+        : pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+        {}
+
+        CmdMatcher& CmdMatcher::operator=(const CmdMatcher& rhs) {
+            if(rhs.pimpl) *pimpl = *(rhs.pimpl) ;
+            return *this ;
+        }
+
         CmdMatcher::CmdMatcher(CmdMatcher&&) = default ;
         CmdMatcher& CmdMatcher::operator=(CmdMatcher&&) = default ;
 

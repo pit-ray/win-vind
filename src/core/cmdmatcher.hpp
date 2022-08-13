@@ -29,8 +29,8 @@ namespace vind
 
             virtual ~CmdMatcher() noexcept ;
 
-            CmdMatcher(const CmdMatcher&) = delete ;
-            CmdMatcher& operator=(const CmdMatcher&) = delete ;
+            CmdMatcher(const CmdMatcher&) ;
+            CmdMatcher& operator=(const CmdMatcher&) ;
 
             CmdMatcher(CmdMatcher&&) ;
             CmdMatcher& operator=(CmdMatcher&&) ;

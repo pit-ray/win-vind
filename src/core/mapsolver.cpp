@@ -3,9 +3,14 @@
 #include "cmdmatcher.hpp"
 #include "cmdparser_new.hpp"
 #include "cmdunit.hpp"
+#include "errlogger.hpp"
 #include "typeemu.hpp"
 
+#include "util/debug.hpp"
+
 #include <algorithm>
+#include <sstream>
+#include <string>
 
 
 namespace
@@ -50,7 +55,7 @@ namespace
             const std::vector<CmdUnit::SPtr>& remove_trigger) {
         std::vector<PreMap> new_map{} ;
         for(auto& map : map_table) {
-            if(is_same_command(map.trigger_cmd, remove_trigger)) {
+            if(!is_same_command(map.trigger_cmd, remove_trigger)) {
                 new_map.push_back(std::move(map)) ;
             }
         }
@@ -58,16 +63,13 @@ namespace
         return new_map.size() != map_table.size() ;
     }
 
-    std::vector<CmdUnit::SPtr> solve_mapping(
+    std::vector<CmdUnit::SPtr> solve_mapping_recursive_impl(
             const PreMap& premap,
             std::vector<Map>& refmap_table,
             bool recursively=false) {
 
         std::vector<CmdUnit::SPtr> solved_target ;
-        if(solved_target.empty()) {
-            return solved_target ;
-        }
-        if(is_same_command(premap.trigger_cmd, premap.target_cmd)) {
+        if(premap.target_cmd.empty()) {
             return solved_target ;
         }
 
@@ -84,7 +86,7 @@ namespace
                 if(mt.is_accepted()) {
                     acc_nums[i] = res ;
                 }
-                else if(!mt.is_rejected()) {
+                if(!mt.is_rejected()) {
                     all_rejected = false ;
                 }
             }
@@ -93,6 +95,7 @@ namespace
                 for(auto& map : refmap_table) {
                     map.trigger_matcher.reset_state() ;
                 }
+                solved_target.push_back(in_cmdunit) ;
                 continue ;
             }
 
@@ -101,25 +104,23 @@ namespace
                 auto max_idx = std::distance(acc_nums.begin(), max_itr) ;
                 auto t_cmd = refmap_table[max_idx].target_cmd ;
 
-                if(recursively) {
+                if(!recursively) {
+                    solved_target.insert(
+                        solved_target.end(), t_cmd.begin(), t_cmd.end()) ;
+                }
+                else if(!is_same_command(premap.trigger_cmd, t_cmd)) {
                     PreMap solved_premap{premap.trigger_cmd, t_cmd} ;
-                    auto solved_subcmd = solve_mapping(
+                    auto solved_subcmd = solve_mapping_recursive_impl(
                         solved_premap, refmap_table, true) ;
                     if(solved_subcmd.empty()) {
                         solved_target.insert(
-                            solved_target.begin(),
-                            t_cmd.begin(), t_cmd.end()) ;
+                            solved_target.end(), t_cmd.begin(), t_cmd.end()) ;
                     }
                     else {
                         solved_target.insert(
-                            solved_target.begin(),
+                            solved_target.end(),
                             solved_subcmd.begin(), solved_subcmd.end()) ;
                     }
-                }
-                else {
-                    solved_target.insert(
-                        solved_target.begin(),
-                        t_cmd.begin(), t_cmd.end()) ;
                 }
 
                 for(auto& map : refmap_table) {
@@ -129,6 +130,16 @@ namespace
         }
 
         return solved_target ;
+    }
+
+    std::vector<CmdUnit::SPtr> solve_mapping(
+            const PreMap& premap,
+            std::vector<Map>& refmap_table,
+            bool recursively=false) {
+        if(is_same_command(premap.trigger_cmd, premap.target_cmd)) {
+            return {} ;
+        }
+        return solve_mapping_recursive_impl(premap, refmap_table, recursively) ;
     }
 }
 
@@ -223,9 +234,8 @@ namespace vind
                 tmp_noremap.emplace_back(map.trigger_cmd, map.target_cmd) ;
             }
 
-            for(const auto& premap : pimpl->registered_noremap_) {
+            for(const auto& premap : tmp_noremap) {
                 auto solved_target = solve_mapping(premap, pimpl->default_, false) ;
-
                 if(!solved_target.empty()) {
                     solved_maps.emplace_back(premap.trigger_cmd, solved_target) ;
                 }
@@ -238,7 +248,6 @@ namespace vind
 
             for(const auto& premap : pimpl->registered_map_) {
                 auto solved_target = solve_mapping(premap, tmp_maps, true) ;
-
                 if(!solved_target.empty()) {
                     solved_maps.emplace_back(premap.trigger_cmd, solved_target) ;
                 }
@@ -287,13 +296,11 @@ namespace vind
         }
 
         void MapSolver::clear() {
-            pimpl->deployed_.clear() ;
             pimpl->registered_noremap_.clear() ;
             pimpl->registered_map_.clear() ;
         }
 
         void MapSolver::clear_default() {
-            pimpl->default_.clear() ;
             pimpl->registered_default_.clear() ;
         }
 
@@ -332,7 +339,7 @@ namespace vind
                 if(mt.is_accepted()) {
                     acc_nums[i] = res ;
                 }
-                else if(!mt.is_rejected()) {
+                if(!mt.is_rejected()) {
                     all_rejected = false ;
                 }
             }

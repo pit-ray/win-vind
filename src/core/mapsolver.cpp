@@ -70,6 +70,20 @@ namespace
         return new_map.size() != map_table.size() ;
     }
 
+    bool remove_triggered_map(
+            std::vector<Map>& map_table,
+            const std::vector<CmdUnit::SPtr>& remove_trigger) {
+        std::vector<Map> new_map{} ;
+        for(auto& map : map_table) {
+            if(!is_same_command(
+                    map.trigger_matcher.get_command(), remove_trigger)) {
+                new_map.push_back(std::move(map)) ;
+            }
+        }
+        map_table.swap(new_map) ;
+        return new_map.size() != map_table.size() ;
+    }
+
     /**
      * It solves multiple remapping to single mapping recursively.
      * This function is designed to call from only solve_mapping function.
@@ -290,7 +304,9 @@ namespace vind
             // Each matcher of tmp_maps is used to solve the remapping.
             auto tmp_maps = solved_maps ;
             for(const auto& premap : pimpl->registered_map_) {
-                remove_triggered_map(tmp_mps, premap.trigger_cmd) ;
+                // To remove the duplicate trigger command from default map, 
+                // By the way, noremap and map are disjoint.
+                remove_triggered_map(tmp_maps, premap.trigger_cmd) ;
                 tmp_maps.emplace_back(premap.trigger_cmd, premap.target_cmd) ;
             }
 
@@ -348,7 +364,7 @@ namespace vind
             pimpl->registered_default_.clear() ;
         }
 
-        void MapSolver::backward_state(std::size_t n) {
+        void MapSolver::backward_state(int n) {
             for(auto& map : pimpl->deployed_) {
                 map.trigger_matcher.backward_state(n) ;
             }

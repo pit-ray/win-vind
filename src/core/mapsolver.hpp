@@ -53,11 +53,19 @@ namespace vind
             void clear() ;
             void clear_default() ;
 
-            void backward_state(std::size_t n) ;
+            void backward_state(int n) ;
 
             void reset_state() ;
 
-            // If the trigger command is matched, it return true.
+            /*
+             * The i
+             *
+             * @param[in] (raw_cmdunit) 
+             * @param[in] (target_cmd)
+             * @param[in] (count)
+             *
+             * @return If the trigger command is matched, it return true.
+             */
             bool map_command_to(
                 const CmdUnit& raw_cmdunit,
                 std::vector<CmdUnit::SPtr>& target_cmd,

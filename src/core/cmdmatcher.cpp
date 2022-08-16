@@ -102,7 +102,7 @@ namespace vind
 
         int CmdMatcher::update_rejected(const CmdUnit& UNUSED(in_cmdunit)) {
             pimpl->states_.push(State::REJECTED) ;
-            pimpl->heads_.push(pimpl->cmd_.size()) ;
+            pimpl->heads_.push(static_cast<int>(pimpl->cmd_.size())) ;
             return 0 ;
         }
 
@@ -172,13 +172,13 @@ namespace vind
                 pimpl->states_.push(State::ACCEPTED) ;
             }
             pimpl->heads_.push(head) ;
-            return in_cmdunit.size() ;
+            return static_cast<int>(in_cmdunit.size()) ;
         }
 
         int CmdMatcher::update_any(const CmdUnit& in_cmdunit) {
             pimpl->states_.push(State::ANY_ACCEPTED) ;
             pimpl->heads_.push(pimpl->heads_.top()) ;
-            return in_cmdunit.size() ;
+            return static_cast<int>(in_cmdunit.size()) ;
         }
 
         int CmdMatcher::update_anynum(const CmdUnit& in_cmdunit) {
@@ -200,7 +200,7 @@ namespace vind
 
             pimpl->states_.push(State::ANYNUM_MATCHING) ;
             pimpl->heads_.push(pimpl->heads_.top()) ;
-            return in_cmdunit.size() ;
+            return static_cast<int>(in_cmdunit.size()) ;
         }
 
         int CmdMatcher::update_state(const CmdUnit& in_cmdunit) {

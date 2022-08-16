@@ -89,9 +89,9 @@ namespace vind
         std::vector<CmdUnit::SPtr> parse_command(const std::string& strcmd) {
             std::vector<CmdUnit::SPtr> parsed ;
 
-            int start = 0 ;
+            std::size_t start = 0 ;
             while(start < strcmd.length()) {
-                int next = strcmd.length() ;
+                auto next = strcmd.length() ;
 
                 // scope_length denotes CmdUnit scope range, internal or external.
                 // e.g.

@@ -1,5 +1,6 @@
 #include "typeemu.hpp"
 
+#include "cmdunit.hpp"
 #include "keycode.hpp"
 
 #include "util/keystroke_repeater.hpp"
@@ -50,7 +51,11 @@ namespace vind
 
             auto in_cmdunit = raw_cmdunit - pimpl->prev_cmdunit_ ;
             if(!system_set.empty() && !ascii_set.empty()) {
-                // ASCII and System
+                // If the inputted command unit has system keys and ASCII keys,
+                // keep the system keycode as is. For example, when <s-h> after
+                // <s-b>, the <shift> key is always kept pressed, so the simple
+                // difference between the previous command unit and a raw
+                // command becomes empty.
                 auto tmp = in_cmdunit.data() ;
                 tmp.merge(system_set) ;
                 in_cmdunit = tmp ;

@@ -23,6 +23,10 @@ namespace vind
             TypingEmulator(TypingEmulator&&) ;
             TypingEmulator& operator=(TypingEmulator&&) ;
 
+            /**
+             * It converts the raw keycodes duplicated sequentially
+             * to the command unit as if typing.
+             */
             CmdUnit::SPtr lowlevel_to_typing(
                 const CmdUnit& raw_cmdunit) ;
         } ;

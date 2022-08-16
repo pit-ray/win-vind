@@ -40,9 +40,13 @@ namespace vind
                 const std::string& trigger_strcmd,
                 const std::string& target_strcmd) ;
 
+            // Delete user-defined mappings.
             bool remove(const std::string& trigger_strcmd) ;
+
             bool remove_default(const std::string& trigger_strcmd) ;
 
+            // Resolve the remapping of the added maps and deploy
+            // to the mapping used in the matching.
             void deploy() ;
             void deploy_default(bool solve=true) ;
 

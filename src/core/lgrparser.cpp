@@ -1,6 +1,6 @@
 #include "lgrparser.hpp"
 
-#include "cmdparser.hpp"
+#include "cmdparser_old.hpp"
 #include "keycode.hpp"
 #include "keycodedef.hpp"
 #include "keylog.hpp"
@@ -346,7 +346,7 @@ namespace vind
             }
 
             if(pimpl->cmdlist_ptr_.use_count() == 1) {
-                pimpl->cmdlist_ptr_->push_back(parse_command(command)) ;
+                pimpl->cmdlist_ptr_->push_back(parse_command_old(command)) ;
             }
         }
 

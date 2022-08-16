@@ -1,7 +1,7 @@
 #include "mapsolver.hpp"
 
 #include "cmdmatcher.hpp"
-#include "cmdparser_new.hpp"
+#include "cmdparser.hpp"
 #include "cmdunit.hpp"
 #include "errlogger.hpp"
 #include "typeemu.hpp"
@@ -44,7 +44,7 @@ namespace
         if(lhs.size() != rhs.size()) {
             return false ;
         }
-        for(int i = 0 ; i < lhs.size() ; i ++) {
+        for(std::size_t i = 0 ; i < lhs.size() ; i ++) {
             if(*(lhs[i]) != *(rhs[i])) {
                 return false ;
             }
@@ -104,7 +104,7 @@ namespace
             // having the maximum matched number.
             std::vector<int> acc_nums(refmap_table.size(), 0) ;
             bool all_rejected = true ;
-            for(int i = 0 ; i < refmap_table.size() ; i ++) {
+            for(std::size_t i = 0 ; i < refmap_table.size() ; i ++) {
                 auto& mt = refmap_table[i].trigger_matcher ;
                 auto res = mt.update_state(*in_cmdunit) ;
                 if(mt.is_accepted()) {
@@ -398,7 +398,7 @@ namespace vind
             // priority to the matcher having the maximum matched number.
             std::vector<int> acc_nums(pimpl->deployed_.size(), 0) ;
             bool all_rejected = true ;
-            for(int i = 0 ; i < pimpl->deployed_.size() ; i ++) {
+            for(std::size_t i = 0 ; i < pimpl->deployed_.size() ; i ++) {
                 auto& mt = pimpl->deployed_[i].trigger_matcher ;
                 auto res = mt.update_state(in_cmdunit) ;
                 if(mt.is_accepted()) {

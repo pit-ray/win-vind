@@ -1,6 +1,6 @@
 #include "maptable.hpp"
 
-#include "cmdparser.hpp"
+#include "cmdparser_old.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 
@@ -159,10 +159,10 @@ namespace vind
                     T2&& out,
                     bool remappable)
             : istr_(std::forward<T1>(in)),
-              icmd_(parse_command(istr_)),
+              icmd_(parse_command_old(istr_)),
               ihash_(0),
               ostr_(std::forward<T2>(out)),
-              ocmd_(parse_command(ostr_)),
+              ocmd_(parse_command_old(ostr_)),
               ohash_(0),
               remappable_(remappable)
             {}
@@ -240,7 +240,7 @@ namespace vind
         }
 
         std::size_t Map::compute_hash(const std::string& strcmd) {
-            return compute_hash(parse_command(strcmd)) ;
+            return compute_hash(parse_command_old(strcmd)) ;
         }
 
         std::size_t Map::compute_hash(const Command& cmd) {

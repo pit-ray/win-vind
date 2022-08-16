@@ -29,19 +29,19 @@ namespace vind
             std::stack<State, std::vector<State>> states_ ;
             std::stack<int, std::vector<int>> heads_ ;
 
-            Impl()
+            explicit Impl()
             : cmd_(),
               states_(),
               heads_()
             {}
 
-            Impl(const std::vector<CmdUnit::SPtr>& cmd)
+            explicit Impl(const std::vector<CmdUnit::SPtr>& cmd)
             : cmd_(cmd),
               states_(),
               heads_()
             {}
 
-            Impl(std::vector<CmdUnit::SPtr>&& cmd)
+            explicit Impl(std::vector<CmdUnit::SPtr>&& cmd)
             : cmd_(std::move(cmd)),
               states_(),
               heads_()
@@ -108,7 +108,7 @@ namespace vind
 
         int CmdMatcher::update_matching(const CmdUnit& in_cmdunit) {
             int head = pimpl->heads_.empty() ? 0 : pimpl->heads_.top() + 1 ;
-            if(head >= pimpl->cmd_.size()) {
+            if(head >= static_cast<int>(pimpl->cmd_.size())) {
                 return update_rejected(in_cmdunit) ;
             }
 

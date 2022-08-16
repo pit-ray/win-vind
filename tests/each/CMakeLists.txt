@@ -6,7 +6,7 @@ AddTest(each-mapgate-test
     ${CMAKE_CURRENT_SOURCE_DIR}/inputgate_test.cpp
 
     ${SRCDIR}/bind/bindedfunc.cpp
-    ${SRCDIR}/core/cmdparser.cpp
+    ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/keylgrbase.cpp
@@ -28,7 +28,7 @@ target_link_libraries(each-mapgate-test userenv)
 AddTest(each-maptable-test
     ${CMAKE_CURRENT_SOURCE_DIR}/maptable_test.cpp
 
-    ${SRCDIR}/core/cmdparser.cpp
+    ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/keylog.cpp
@@ -41,26 +41,26 @@ AddTest(each-maptable-test
 )
 target_link_libraries(each-maptable-test userenv)
 
-AddTest(each-cmdparser-test
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_test.cpp
+AddTest(each-cmdparser-old-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_old_test.cpp
 
     ${SRCDIR}/util/string.cpp
-    ${SRCDIR}/core/cmdparser.cpp
+    ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/path.cpp
     ${SRCDIR}/util/box2d.cpp
     ${SRCDIR}/util/winwrap.cpp
 )
-target_link_libraries(each-cmdparser-test userenv)
+target_link_libraries(each-cmdparser-old-test userenv)
 
 
-AddTest(each-cmdparser-new-test
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_new_test.cpp
+AddTest(each-cmdparser-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_test.cpp
 
     ${SRCDIR}/bind/bindedfunc.cpp
     ${SRCDIR}/core/cmdparser.cpp
-    ${SRCDIR}/core/cmdparser_new.cpp
+    ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/util/string.cpp
@@ -80,7 +80,7 @@ AddTest(each-cmdparser-new-test
     ${SRCDIR}/util/keystroke_repeater.cpp
     ${SRCDIR}/util/winwrap.cpp
 )
-target_link_libraries(each-cmdparser-new-test userenv)
+target_link_libraries(each-cmdparser-test userenv)
 
 
 AddTest(each-cmdmatcher-test
@@ -99,7 +99,7 @@ AddTest(each-mapsolver-test
     ${SRCDIR}/bind/bindedfunc.cpp
     ${SRCDIR}/core/cmdmatcher.cpp
     ${SRCDIR}/core/cmdparser.cpp
-    ${SRCDIR}/core/cmdparser_new.cpp
+    ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/mapsolver.cpp

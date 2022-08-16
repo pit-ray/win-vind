@@ -1,12 +1,8 @@
-#ifndef _BINDINGS_PARSER_HPP
-#define _BINDINGS_PARSER_HPP
-
-#include <string>
-#include <vector>
+#ifndef _CMDPARSER_HPP
+#define _CMDPARSER_HPP
 
 #include "cmdunit.hpp"
-#include "keycode.hpp"
-#include "mode.hpp"
+
 
 namespace vind
 {
@@ -21,7 +17,8 @@ namespace vind
          *
          * @return (KeySet(std::vector<KeyCode>))
          */
-        KeySet parse_ascii_command(char onechar) ;
+        CmdUnitSet parse_ascii_command(char onechar) ;
+
 
         /**
          * NOTE: It parse a combined command, which is sandwiched 
@@ -38,27 +35,29 @@ namespace vind
          *
          * @return (KeySet(std::vector<KeyCode>))
          */
-        KeySet parse_combined_command(const std::string& inside_of_brackets) ;
+        CmdUnitSet parse_combined_command(const std::string& inside_of_brackets) ;
 
 
         /**
-         * NOTE: It parses a string command as Command.
-         *  Ex)
-         *      abc     -> {
-         *                     {KEYCODE_A},
-         *                     {KEYCODE_B},
-         *                     {KEYCODE_C}
-         *                 }
+         * It parses a command to a vector of the command unit.
+         * Each element of the returned vector is based on polymorphism,
+         * so the original class may be InternalCmdUnit, ExternalCmdUnit,
+         * or FunctionalCmdUnit.
          *
-         *      <s-d>e  -> {
-         *                     {KEYCODE_SHIFT, KEYCODE_D},
-         *                     {KEYCODE_E},
-         *                 }
+         * e.g.
+         *   a<c-j>            ->    ICU('a'), ICU('ctrl', 'j')
+         *   b{jj}             ->    ICU('b'), ECU('j'), ECU('j')
+         *  <easy_click_left>  -> FCU('easy_click_left')
+         *   {{}}              ->    ECU('{'), ICU('}')
          *
-         * @return (Command(std::vector<std::vector<KeyCode>>))
-         *
+         *   The {} denotes the external scope cmd unit and it matches with the first appeared bracket.
+         *   For example, {{}} has the following correspondence of brackets.
+         *   {  {   }   }
+         *   |      |
+         *   +______+
+         *   external scope correspondence
          */
-        Command parse_command(const std::string& cmdstr) ;
+        std::vector<CmdUnit::SPtr> parse_command(const std::string& cmdstr) ;
     }
 }
 

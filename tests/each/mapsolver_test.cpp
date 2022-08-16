@@ -18,10 +18,6 @@ namespace vind
         BindedFunc::SPtr ref_global_funcs_bynames(const std::string&) {
             return nullptr ;
         }
-
-        BindedFunc::SPtr ref_global_funcs_bynames(std::string&&) {
-            return nullptr ;
-        }
     }
 }
 

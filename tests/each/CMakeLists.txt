@@ -59,6 +59,7 @@ AddTest(each-cmdparser-new-test
     ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_new_test.cpp
 
     ${SRCDIR}/bind/bindedfunc.cpp
+    ${SRCDIR}/core/cmdparser.cpp
     ${SRCDIR}/core/cmdparser_new.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/keycode.cpp
@@ -97,6 +98,7 @@ AddTest(each-mapsolver-test
 
     ${SRCDIR}/bind/bindedfunc.cpp
     ${SRCDIR}/core/cmdmatcher.cpp
+    ${SRCDIR}/core/cmdparser.cpp
     ${SRCDIR}/core/cmdparser_new.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/keycode.cpp

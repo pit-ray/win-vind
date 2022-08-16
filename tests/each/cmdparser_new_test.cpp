@@ -24,8 +24,8 @@ namespace vind
             return nullptr ;
         }
 
-        std::vector<BindedFunc::SPtr> ref_global_funcs_bynames(const std::string& name) {
-            return std::vector<BindedFunc::SPtr>{} ;
+        BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) {
+            return nullptr ;
         }
     }
 }

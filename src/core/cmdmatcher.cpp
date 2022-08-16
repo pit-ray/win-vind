@@ -4,6 +4,7 @@
 
 #include "util/def.hpp"
 
+#include <iterator>
 #include <stack>
 #include <vector>
 
@@ -122,37 +123,45 @@ namespace vind
                 return update_anynum(in_cmdunit) ;
             }
 
-            bool reject = false ;
-            for(const auto& tkey : *unit) {
-                if(!tkey.is_unreal()) {
-                    // If an target key is a physical key (e.g. <lshift>),
-                    // confirm the inputted cmd unit contains the physical key
+            std::vector<bool> conds(unit->size(), false) ;
+            for(const auto& ikey : in_cmdunit) {
+                bool is_matched = false ;
+                if(!ikey.is_unreal()) {
+                    // If an inputted key is a physical key (e.g. <lshift>),
+                    // confirm the target command unit contains the physical key
                     // or its representative key (e.g. <shift>).
-                    if(!in_cmdunit.is_containing(tkey) &&
-                        !in_cmdunit.is_containing(tkey.to_representative())) {
-                        reject = true ;
-                        break ;
+                    for(auto itr = unit->begin() ; itr != unit->end() ; itr ++) {
+                        auto idx = std::distance(unit->begin(), itr) ;
+                        // When the cmd unit has duplicate keycodes (e.g. <shift-lshift-s>),
+                        // it processes properly without 'break' statement.
+                        if(*itr == ikey || *itr == ikey.to_representative()) {
+                            conds[idx] = true ;
+                            is_matched = true ;
+                        }
                     }
                 }
                 else {
-                    // If an target key is unreal (e.g. <shift>, <ctrl>),
-                    // verifies the inputted cmd unit contains the certain unreal
+                    // If an inputted key is unreal (e.g. <shift>, <ctrl>),
+                    // verifies the target command unit contains the certain unreal
                     // key or the physical key associated with the unreal key
                     // (e.g. <lshift>, <rctrl>).
-                    bool has_key = false ;
-                    for(const auto& ikey : in_cmdunit) {
-                        if(tkey == ikey || tkey == ikey.to_representative()) {
-                            has_key = true ;
-                            break ;
+                    for(auto itr = unit->begin() ; itr != unit->end() ; itr ++) {
+                        auto idx = std::distance(unit->begin(), itr) ;
+                        // When the cmd unit has duplicate keycodes (e.g. <shift-lshift-s>),
+                        // it processes properly without 'break' statement.
+                        if(*itr == ikey || itr->to_representative() == ikey) {
+                            conds[idx] = true ;
+                            is_matched = true ;
                         }
                     }
-                    if(!has_key) {
-                        reject = true ;
-                        break ;
-                    }
+                }
+
+                if(!is_matched) {
+                    return update_rejected(in_cmdunit) ;
                 }
             }
-            if(reject) {
+
+            if(!std::all_of(conds.begin(), conds.end(), [](bool v) {return v ;})) {
                 return update_rejected(in_cmdunit) ;
             }
 

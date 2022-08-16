@@ -132,6 +132,10 @@ namespace vind
 
         std::ostream& operator<<(
             std::ostream& stream,
+            const CmdUnit::SPtr& rhs) ;
+
+        std::ostream& operator<<(
+            std::ostream& stream,
             const CmdUnitSet& rhs) ;
 
         inline std::ostream& operator<<(

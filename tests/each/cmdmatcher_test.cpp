@@ -9,6 +9,11 @@ namespace vind
 {
     namespace bind
     {
+        const std::string& BindedFunc::name() const noexcept {
+            static std::string tmp = "<func>" ;
+            return tmp ;
+        }
+
         SystemCall BindedFunc::process() {
             return SystemCall::NOTHING ;
         }
@@ -190,7 +195,7 @@ TEST_SUITE("core/cmdmatcher") {
         }
     }
 
-    TEST_CASE("typing") {
+    TEST_CASE("typing w/ ctrl") {
         std::vector<CmdUnitSet> cmd {
             {KEYCODE_CTRL, KEYCODE_B},
         } ;
@@ -202,18 +207,55 @@ TEST_SUITE("core/cmdmatcher") {
 
         CmdMatcher matcher{ptrcmd} ;
 
-        SUBCASE("case1") {
-            CmdUnit in1{KEYCODE_CTRL} ;
-            int res = matcher.update_state(in1) ;
-            CHECK_EQ(res, 0) ;
-            CHECK(matcher.is_rejected()) ;
+        CmdUnit in1{KEYCODE_CTRL} ;
+        int res = matcher.update_state(in1) ;
+        CHECK_EQ(res, 0) ;
+        CHECK(matcher.is_rejected()) ;
 
-            matcher.backward_state(1) ;
+        matcher.backward_state(1) ;
 
-            CmdUnit in2{KEYCODE_CTRL, KEYCODE_B} ;
-            res = matcher.update_state(in2) ;
-            CHECK_EQ(res, 2) ;
-            CHECK(matcher.is_accepted()) ;
+        CmdUnit in2{KEYCODE_CTRL, KEYCODE_B} ;
+        res = matcher.update_state(in2) ;
+        CHECK_EQ(res, 2) ;
+        CHECK(matcher.is_accepted()) ;
+    }
+
+    TEST_CASE("typing w/ shift") {
+        std::vector<CmdUnitSet> cmd {
+            {KEYCODE_SHIFT, KEYCODE_F},
+            {KEYCODE_SHIFT, KEYCODE_F},
+        } ;
+
+        std::vector<CmdUnit::SPtr> ptrcmd{} ;
+        for(const auto& cmdunit : cmd) {
+            ptrcmd.push_back(std::make_shared<CmdUnit>(cmdunit)) ;
         }
+
+        CmdMatcher matcher{ptrcmd} ;
+
+        CmdUnit in1{KEYCODE_SHIFT} ;
+        int res = matcher.update_state(in1) ;
+        CHECK_EQ(res, 0) ;
+        CHECK(matcher.is_rejected()) ;
+
+        matcher.backward_state(1) ;
+
+        CmdUnit in2{KEYCODE_SHIFT, KEYCODE_F} ;
+        res = matcher.update_state(in2) ;
+        CHECK_EQ(res, 2) ;
+        CHECK(matcher.is_matching()) ;
+
+        CmdUnit in3{KEYCODE_SHIFT} ;
+        res = matcher.update_state(in3) ;
+        CHECK_EQ(res, 0) ;
+        CHECK(matcher.is_rejected()) ;
+
+        matcher.backward_state(1) ;
+
+        CmdUnit in4{KEYCODE_SHIFT, KEYCODE_F} ;
+        res = matcher.update_state(in4) ;
+        CHECK_EQ(res, 2) ;
+        CHECK(matcher.is_accepted()) ;
+
     }
 }

@@ -122,6 +122,18 @@ AddTest(each-mapsolver-test
 target_link_libraries(each-mapsolver-test userenv)
 
 
+AddTest(each-typemu-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/typeemu_test.cpp
+
+    ${SRCDIR}/core/cmdunit.cpp
+    ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/core/typeemu.cpp
+    ${SRCDIR}/util/interval_timer.cpp
+    ${SRCDIR}/util/keystroke_repeater.cpp
+    ${SRCDIR}/util/string.cpp
+)
+
+
 AddTest(each-keycode-test
     ${CMAKE_CURRENT_SOURCE_DIR}/keycode_test.cpp
 

@@ -328,7 +328,10 @@ namespace vind
                 if(!unit_ptr) {
                     return false ;
                 }
-                in_cmdunit = std::move(*unit_ptr) ;
+                in_cmdunit = *unit_ptr ;
+            }
+            else {
+                in_cmdunit = raw_cmdunit ;
             }
 
             std::vector<int> acc_nums(pimpl->deployed_.size(), 0) ;
@@ -345,12 +348,14 @@ namespace vind
             }
 
             if(all_rejected) {
-                bool ignore = false ;
-                if(pimpl->typeemu_) {
-                    ignore = pimpl->typeemu_->ignore_if_syskey_only(in_cmdunit) ;
+                bool only_syskey = true ;
+                for(const auto& key : in_cmdunit) {
+                    if(!key.is_major_system()){
+                        only_syskey = false ;
+                        break ;
+                    }
                 }
-
-                if(ignore) {
+                if(only_syskey) {
                     for(auto& map : pimpl->deployed_) {
                         map.trigger_matcher.backward_state(1) ;
                     }

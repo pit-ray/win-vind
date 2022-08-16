@@ -25,8 +25,6 @@ namespace vind
 
             CmdUnit::SPtr lowlevel_to_typing(
                 const CmdUnit& raw_cmdunit) ;
-
-            bool ignore_if_syskey_only(const CmdUnit& in_cmdunit) ;
         } ;
     }
 }

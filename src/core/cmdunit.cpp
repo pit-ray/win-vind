@@ -8,6 +8,7 @@
 #include "util/def.hpp"
 
 #include <algorithm>
+#include <memory>
 
 
 namespace vind
@@ -160,7 +161,7 @@ namespace vind
             return func_ != nullptr ;
         }
 
-        const std::shared_ptr<bind::BindedFunc>& FunctionalCmdUnit::get_function() const {
+        const bind::BindedFunc::SPtr& FunctionalCmdUnit::get_function() const {
             return func_ ;
         }
 
@@ -171,13 +172,18 @@ namespace vind
             func_->process() ;
         }
 
-        std::ostream& operator<<(std::ostream& stream, const CmdUnitSet& rhs) {
-            if(rhs.empty()) {
+        std::ostream& operator<<(std::ostream& stream, const CmdUnit::SPtr& rhs) {
+            if(auto func_cmdunit = std::dynamic_pointer_cast<FunctionalCmdUnit>(rhs)) {
+                stream << "<" << func_cmdunit->get_function()->name() << ">" ;
                 return stream ;
             }
 
-            if(rhs.size() == 1) {
-                const auto& rhs_f = *rhs.begin() ;
+            if(rhs->empty()) {
+                return stream ;
+            }
+
+            if(rhs->size() == 1) {
+                const auto& rhs_f = *(rhs->begin()) ;
                 if(rhs_f.is_major_system()) {
                     stream << "<" << rhs_f << ">" ;
                 }
@@ -188,7 +194,7 @@ namespace vind
                 return stream;
             }
 
-            std::vector<KeyCode> sorted(rhs.begin(), rhs.end()) ;
+            std::vector<KeyCode> sorted(rhs->begin(), rhs->end()) ;
             std::sort(sorted.begin(), sorted.end()) ;
 
             stream << "<" ;
@@ -200,6 +206,11 @@ namespace vind
             }
             stream << ">" ;
             return stream;
+        }
+
+        std::ostream& operator<<(std::ostream& stream, const CmdUnitSet& rhs) {
+            stream << std::make_shared<CmdUnit>(rhs) ;
+            return stream ;
         }
 
         std::ostream& operator<<(
@@ -222,9 +233,9 @@ namespace vind
 
         std::ostream& operator<<(
             std::ostream& stream,
-            const std::vector<std::shared_ptr<CmdUnit>>& rhs) {
+            const std::vector<CmdUnit::SPtr>& rhs) {
             for(const auto& keyset : rhs) {
-                stream << *keyset ;
+                stream << keyset ;
             }
             return stream ;
         }

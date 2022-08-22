@@ -9,30 +9,26 @@ namespace vind
     {
         struct Switch2LeftTab : public BindedFuncVoid<Switch2LeftTab> {
             explicit Switch2LeftTab() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct Switch2RightTab : public BindedFuncVoid<Switch2RightTab> {
             explicit Switch2RightTab() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct OpenNewTab : public BindedFuncVoid<OpenNewTab> {
             explicit OpenNewTab() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct CloseCurrentTab : public BindedFuncVoid<CloseCurrentTab> {
             explicit CloseCurrentTab() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

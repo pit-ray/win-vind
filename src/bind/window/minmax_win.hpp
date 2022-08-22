@@ -9,16 +9,14 @@ namespace vind
     {
         struct MinimizeCurrentWindow : public BindedFuncVoid<MinimizeCurrentWindow> {
             explicit MinimizeCurrentWindow() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct MaximizeCurrentWindow : public BindedFuncVoid<MaximizeCurrentWindow> {
             explicit MaximizeCurrentWindow() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

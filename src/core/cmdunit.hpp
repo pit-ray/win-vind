@@ -16,6 +16,8 @@ namespace vind
 {
     namespace core
     {
+        class MapSolver ;
+
         using CmdUnitSet = std::unordered_set<KeyCode> ;
 
         class CmdUnit {
@@ -89,7 +91,9 @@ namespace vind
             CmdUnit& operator-=(const CmdUnitSet& rhs) ;
             CmdUnit& operator-=(CmdUnitSet&& rhs) ;
 
-            virtual void execute() ;
+            virtual void execute(
+                std::uint16_t count=1,
+                const std::string& args="") ;
         } ;
 
         class InternalCmdUnit : public CmdUnit {
@@ -99,7 +103,9 @@ namespace vind
             : CmdUnit(std::forward<T>(keycodes))
             {}
 
-            void execute() override ;
+            void execute(
+                std::uint16_t count=1,
+                const std::string& args="") override ;
         } ;
 
         class ExternalCmdUnit : public CmdUnit {
@@ -109,7 +115,9 @@ namespace vind
             : CmdUnit(std::forward<T>(keycodes))
             {}
 
-            void execute() override ;
+            void execute(
+                std::uint16_t count=1,
+                const std::string& args="") override ;
         } ;
 
         class FunctionalCmdUnit : public CmdUnit {
@@ -127,7 +135,9 @@ namespace vind
 
             const bind::BindedFunc::SPtr& get_function() const ;
 
-            void execute() override ;
+            void execute(
+                std::uint16_t count=1,
+                const std::string& args="") override ;
         } ;
 
         std::ostream& operator<<(

@@ -10,16 +10,14 @@ namespace vind
     {
         struct ShowConfigGUI : public BindedFuncVoid<ShowConfigGUI> {
             explicit ShowConfigGUI() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct ExitConfigGUI : public BindedFuncFlex<ExitConfigGUI> {
             explicit ExitConfigGUI() ;
-            static SystemCall sprocess() ;
-            static SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
-            static SystemCall sprocess(const core::CharLogger& parent_lgr) ;
+            static SystemCall sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

@@ -47,7 +47,8 @@ namespace vind
         ToInstantGUINormal& ToInstantGUINormal::operator=(ToInstantGUINormal&&) = default ;
 
 
-        SystemCall ToInstantGUINormal::sprocess() {
+        SystemCall ToInstantGUINormal::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& igate = core::InputGate::get_instance() ;
             igate.close_all_ports_with_refresh() ;
 
@@ -63,7 +64,7 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto log = igate.pop_log() ;
+                core::KeyLog log{igate.pressed_list().data()} ;
                 auto result = lgr.logging_state(log) ;
                 if(NTYPE_EMPTY(result)) {
                     continue ;
@@ -77,7 +78,7 @@ namespace vind
 
                     if(parser->is_accepted()) {
                         pimpl->finder_.reset_parser_states() ;
-                        syscal = parser->get_func()->process(lgr) ;
+                        syscal = parser->get_func()->process() ;
                         break ;
                     }
                     else if(parser->is_rejected_with_ready()) {
@@ -96,19 +97,8 @@ namespace vind
             return syscal ;
         }
 
-        SystemCall ToInstantGUINormal::sprocess(core::NTypeLogger& parent) {
-            if(!parent.is_long_pressing()) {
-                return sprocess() ;
-            }
-            return SystemCall::NOTHING ;
-        }
-
-        SystemCall ToInstantGUINormal::sprocess(const core::CharLogger& UNUSED(parent)) {
-            return sprocess() ;
-        }
-
         void ToInstantGUINormal::reconstruct() {
-            pimpl->finder_.reconstruct(core::Mode::GUI_NORMAL) ;
+            // pimpl->finder_.reconstruct(core::Mode::GUI_NORMAL) ;
         }
     }
 }

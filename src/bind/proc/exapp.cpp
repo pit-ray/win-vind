@@ -57,30 +57,24 @@ namespace vind
         StartShell::StartShell()
         : BindedFuncVoid("start_shell")
         {}
-        void StartShell::sprocess() {
+        void StartShell::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& settable = core::SetTable::get_instance() ;
             util::create_process(
                     get_shell_startupdirectory(),
                     settable.get("shell").get<std::string>()) ;
 
             Sleep(100) ; //wait until the window is selectable
-            JumpToActiveWindow::sprocess() ;
+            JumpToActiveWindow::sprocess(1, "") ;
         }
-        void StartShell::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void StartShell::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //StartExternal
         StartExternal::StartExternal()
         : BindedFuncVoid("start_external")
         {}
-        void StartExternal::sprocess(std::string cmd) {
+        void StartExternal::sprocess(
+                std::uint16_t count, const std::string& args) {
+            auto cmd = util::trim(args) ;
             if(cmd.empty()) {
                 return ;
             }
@@ -88,7 +82,7 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
             auto last_char_pos = cmd.find_last_not_of(" ") ;
             if(last_char_pos == std::string::npos) {
-                StartShell::sprocess() ;
+                StartShell::sprocess(1, "") ;
                 return ;
             }
 
@@ -122,54 +116,30 @@ namespace vind
             }
 
             Sleep(100) ; //wait until the window is selectable
-            JumpToActiveWindow::sprocess() ;
+            JumpToActiveWindow::sprocess(1, "") ;
         }
-        void StartExternal::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess("shell") ;
-            }
-        }
-        void StartExternal::sprocess(const core::CharLogger& parent_lgr) {
-            auto cmd = parent_lgr.to_str() ;
-            sprocess(cmd.substr(1)) ;
-        }
-
 
         //StartExplorer
         StartExplorer::StartExplorer()
         : BindedFuncVoid("start_explorer")
         {}
-        void StartExplorer::sprocess() {
+        void StartExplorer::sprocess(
+                std::uint16_t count, const std::string& args) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LWIN, KEYCODE_E) ;
             Sleep(100) ; //wait until select window by OS.
-            JumpToActiveWindow::sprocess() ;
-        }
-        void StartExplorer::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void StartExplorer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
+            JumpToActiveWindow::sprocess(1, "") ;
         }
 
         //OpenStartMenu
         OpenStartMenu::OpenStartMenu()
         : BindedFuncVoid("open_startmenu")
         {}
-        void OpenStartMenu::sprocess() {
+        void OpenStartMenu::sprocess(
+                std::uint16_t count, const std::string& args) {
             core::InputGate::get_instance().pushup(KEYCODE_LWIN) ;
             Sleep(100) ; //wait until select window by OS.
-            JumpToActiveWindow::sprocess() ;
-        }
-        void OpenStartMenu::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void OpenStartMenu::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
+            JumpToActiveWindow::sprocess(1, "") ;
         }
     }
 }

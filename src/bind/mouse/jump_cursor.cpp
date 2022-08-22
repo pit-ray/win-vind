@@ -15,25 +15,18 @@ namespace vind
         JumpToLeft::JumpToLeft()
         : BindedFuncVoid("jump_cursor_to_left")
         {}
-        void JumpToLeft::sprocess() {
+        void JumpToLeft::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto pos = util::get_cursor_pos() ;
             util::set_cursor_pos(0, pos.y()) ;
         }
-        void JumpToLeft::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpToLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //JumpToRight
         JumpToRight::JumpToRight()
         : BindedFuncVoid("jump_cursor_to_right")
         {}
-        void JumpToRight::sprocess() {
+        void JumpToRight::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto pos = util::get_cursor_pos() ;
 
             auto box = util::get_combined_metrics() ;
@@ -43,41 +36,25 @@ namespace vind
                     box.width() - settable.get("jump_margin").get<int>(),
                     pos.y()) ;
         }
-        void JumpToRight::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpToRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //JumpToTop
         JumpToTop::JumpToTop()
         : BindedFuncVoid("jump_cursor_to_top")
         {}
-        void JumpToTop::sprocess() {
+        void JumpToTop::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
 
             util::set_cursor_pos(pos.x(), box.top()) ;
         }
-        void JumpToTop::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpToTop::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //JumpToBottom
         JumpToBottom::JumpToBottom()
         : BindedFuncVoid("jump_cursor_to_bottom")
         {}
-        void JumpToBottom::sprocess() {
+        void JumpToBottom::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
 
@@ -86,51 +63,27 @@ namespace vind
                     pos.x(),
                     box.height() - settable.get("jump_margin").get<int>()) ;
         }
-        void JumpToBottom::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpToBottom::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //JumpToHorizontalCenter
         JumpToHorizontalCenter::JumpToHorizontalCenter()
         : BindedFuncVoid("jump_cursor_to_hcenter")
         {}
-        void JumpToHorizontalCenter::sprocess() {
+        void JumpToHorizontalCenter::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
             util::set_cursor_pos(box.center_x(), pos.y()) ;
         }
-        void JumpToHorizontalCenter::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpToHorizontalCenter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //JumpToVerticalCenter
         JumpToVerticalCenter::JumpToVerticalCenter()
         : BindedFuncVoid("jump_cursor_to_vcenter")
         {}
-        void JumpToVerticalCenter::sprocess() {
+        void JumpToVerticalCenter::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
             util::set_cursor_pos(pos.x(), box.center_y()) ;
-        }
-        void JumpToVerticalCenter::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpToVerticalCenter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

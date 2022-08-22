@@ -8,30 +8,26 @@ namespace vind
     {
         struct SelectAll : public BindedFuncVoid<SelectAll> {
             explicit SelectAll() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct ForwardUINavigation : public BindedFuncVoid<ForwardUINavigation> {
             explicit ForwardUINavigation() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct BackwardUINavigation : public BindedFuncVoid<BackwardUINavigation> {
             explicit BackwardUINavigation() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct DecideFocusedUIObject : public BindedFuncVoid<DecideFocusedUIObject> {
             explicit DecideFocusedUIObject() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

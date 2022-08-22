@@ -17,7 +17,8 @@ namespace vind
         ClickLeft::ClickLeft()
         : BindedFuncVoid("click_left")
         {}
-        void ClickLeft::sprocess(unsigned int count) {
+        void ClickLeft::sprocess(
+                std::uint16_t count, const std::string& args) {
             using core::Mode ;
             if(core::get_global_mode() == Mode::GUI_VISUAL) {
                 core::set_global_mode(Mode::GUI_NORMAL) ;
@@ -27,21 +28,13 @@ namespace vind
                 util::click(KEYCODE_MOUSE_LEFT) ;
             }) ;
         }
-        void ClickLeft::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void ClickLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //ClickRight
         ClickRight::ClickRight()
         : BindedFuncVoid("click_right")
         {}
-        void ClickRight::sprocess(unsigned int count) {
+        void ClickRight::sprocess(
+                std::uint16_t count, const std::string& args) {
             using core::Mode ;
             if(core::get_global_mode() == Mode::GUI_VISUAL) {
                 core::set_global_mode(Mode::GUI_NORMAL) ;
@@ -50,15 +43,6 @@ namespace vind
             safe_for(count, [] {
                 util::click(KEYCODE_MOUSE_RIGHT) ;
             }) ;
-        }
-        void ClickRight::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-
-        void ClickRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

@@ -129,7 +129,8 @@ namespace vind
         ArrangeWindows::ArrangeWindows()
         : BindedFuncVoid("arrange_windows")
         {}
-        void ArrangeWindows::sprocess() {
+        void ArrangeWindows::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
 
             //Search visible windows
@@ -181,14 +182,6 @@ namespace vind
             batch_resize(rects) ;
 
             util::set_foreground_window(hwnd) ;
-        }
-        void ArrangeWindows::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ArrangeWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
         void ArrangeWindows::reconstruct() {
             g_ignores.clear() ;

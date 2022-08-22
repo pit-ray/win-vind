@@ -73,7 +73,7 @@ namespace
             auto nearest_hwnd = distance_order_hwnd.begin()->second ;
             util::set_foreground_window(nearest_hwnd) ;
             Sleep(50) ;
-            bind::JumpToActiveWindow::sprocess() ;
+            bind::JumpToActiveWindow::sprocess(1, "") ;
         }
     }
 }
@@ -87,7 +87,8 @@ namespace vind
         SelectLeftWindow::SelectLeftWindow()
         : BindedFuncVoid("select_left_window")
         {}
-        void SelectLeftWindow::sprocess() {
+        void SelectLeftWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_x() >= erect.center_x() ;
             } ;
@@ -100,21 +101,13 @@ namespace vind
 
             select_nearest_window(is_if_target, calc_distance) ;
         }
-        void SelectLeftWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SelectLeftWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //SelectRightWindow
         SelectRightWindow::SelectRightWindow()
         : BindedFuncVoid("select_right_window")
         {}
-        void SelectRightWindow::sprocess() {
+        void SelectRightWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_x() <= erect.center_x() ;
             } ;
@@ -127,21 +120,13 @@ namespace vind
 
             select_nearest_window(is_if_target, calc_distance) ;
         }
-        void SelectRightWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SelectRightWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //SelectUpperWindow
         SelectUpperWindow::SelectUpperWindow()
         : BindedFuncVoid("select_upper_window")
         {}
-        void SelectUpperWindow::sprocess() {
+        void SelectUpperWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_y() >= erect.center_y() ;
             } ;
@@ -154,21 +139,13 @@ namespace vind
 
             select_nearest_window(is_if_target, calc_distance) ;
         }
-        void SelectUpperWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SelectUpperWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //SelectLowerWindow
         SelectLowerWindow::SelectLowerWindow()
         : BindedFuncVoid("select_lower_window")
         {}
-        void SelectLowerWindow::sprocess() {
+        void SelectLowerWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_y() <= erect.center_y() ;
             } ;
@@ -180,14 +157,6 @@ namespace vind
             } ;
 
             select_nearest_window(is_if_target, calc_distance) ;
-        }
-        void SelectLowerWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SelectLowerWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

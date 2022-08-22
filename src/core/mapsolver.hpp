@@ -58,18 +58,12 @@ namespace vind
             void reset_state() ;
 
             /*
-             * The i
-             *
              * @param[in] (raw_cmdunit) 
-             * @param[in] (target_cmd)
-             * @param[in] (count)
              *
-             * @return If the trigger command is matched, it return true.
+             * @return target command
              */
-            bool map_command_to(
-                const CmdUnit& raw_cmdunit,
-                std::vector<CmdUnit::SPtr>& target_cmd,
-                unsigned int& count) ;
+            std::vector<CmdUnit::SPtr> map_command_from(
+                    const CmdUnit& raw_cmdunit) ;
 
             std::vector<std::vector<CmdUnit::SPtr>> get_trigger_commands() const ;
             std::vector<std::vector<CmdUnit::SPtr>> get_target_commands() const ;

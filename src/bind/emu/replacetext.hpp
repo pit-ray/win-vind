@@ -17,9 +17,8 @@ namespace vind
             explicit ReplaceChar() ;
             virtual ~ReplaceChar() noexcept ;
 
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             ReplaceChar(ReplaceChar&&) ;
             ReplaceChar& operator=(ReplaceChar&&) ;
@@ -37,9 +36,8 @@ namespace vind
             explicit ReplaceSequence() ;
             virtual ~ReplaceSequence() noexcept ;
 
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             ReplaceSequence(ReplaceSequence&&) ;
             ReplaceSequence& operator=(ReplaceSequence&&) ;
@@ -50,9 +48,8 @@ namespace vind
 
         struct SwitchCharCase : public ChangeBaseCreator<SwitchCharCase> {
             explicit SwitchCharCase() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

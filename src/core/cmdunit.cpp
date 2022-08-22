@@ -1,6 +1,7 @@
 #include "cmdunit.hpp"
 
 #include "cmdparser.hpp"
+#include "inputgate.hpp"
 #include "keycode.hpp"
 
 #include "bind/bindedfunc.hpp"
@@ -147,14 +148,28 @@ namespace vind
             return *this ;
         }
 
-        void CmdUnit::execute() {
+        void CmdUnit::execute(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            return ;
         }
 
-        void InternalCmdUnit::execute() {
+        void InternalCmdUnit::execute(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            return ;
         }
 
-        void ExternalCmdUnit::execute() {
-            // SendInput
+        void ExternalCmdUnit::execute(
+                std::uint16_t count,
+                const std::string& args) {
+            // To reproduce the keystroke, should consider the order for pressing.
+            // The value of keycode are designed as sortable object for this purpose.
+            std::vector<KeyCode> sequential(data().begin(), data().end()) ;
+            std::sort(sequential.begin(), sequential.end()) ;
+            for(decltype(count) i = 0 ; i < count ; i ++) {
+                InputGate::get_instance().pushup(sequential.begin(), sequential.end()) ;
+            }
         }
 
         bool FunctionalCmdUnit::has_function() const noexcept {
@@ -165,11 +180,13 @@ namespace vind
             return func_ ;
         }
 
-        void FunctionalCmdUnit::execute() {
+        void FunctionalCmdUnit::execute(
+                std::uint16_t count,
+                const std::string& args) {
             if(!has_function()) {
                 throw RUNTIME_EXCEPT("Does not have an associated function.") ;
             }
-            func_->process() ;
+            func_->process(count) ;
         }
 
         std::ostream& operator<<(std::ostream& stream, const CmdUnit::SPtr& rhs) {

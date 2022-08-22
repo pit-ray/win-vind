@@ -35,7 +35,7 @@ namespace
         while(true) {
             bg.update() ;
 
-            auto log = core::InputGate::get_instance().pop_log() ;
+            core::KeyLog log{core::InputGate::get_instance().pressed_list().data()} ;
             auto result = lgr.logging_state(log) ;
             if(NTYPE_EMPTY(result)) {
                 continue ;
@@ -52,7 +52,7 @@ namespace
             if(parser && std::dynamic_pointer_cast<MoveBase>(parser->get_func())) {
                 if(parser->is_accepted()) {
                     core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                    parser->get_func()->process(lgr) ;
+                    // parser->get_func()->process(lgr) ;
                     return true ;
                 }
                 else if(parser->is_rejected_with_ready()) {
@@ -96,7 +96,7 @@ namespace
         while(true) {
             bg.update() ;
 
-            auto log = core::InputGate::get_instance().pop_log() ;
+            core::KeyLog log{core::InputGate::get_instance().pressed_list().data()} ;
             auto result = lgr.logging_state(log) ;
             auto parent_result = parent_lgr.logging_state(log) ;
             if(NTYPE_EMPTY(result) && NTYPE_EMPTY(parent_result)) {
@@ -116,7 +116,7 @@ namespace
                 }
                 else if(parser_1->is_accepted()) {
                     opt::VCmdLine::reset() ;
-                    parser_1->get_func()->process(parent_lgr) ;
+                    // parser_1->get_func()->process(parent_lgr) ;
                     return false ;
                 }
             }
@@ -126,7 +126,7 @@ namespace
                 if(parser_2->is_accepted() && std::dynamic_pointer_cast<MoveBase>(parser_2->get_func())) {
                     core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
                     safe_for(parent_lgr.get_head_num(), [f = parser_2->get_func(), &lgr] {
-                        f->process(lgr) ;
+                        // f->process(lgr) ;
                     }) ;
                     return true ;
                 }
@@ -169,8 +169,8 @@ namespace vind
             {}
 
             void copy() const {
-                YankHighlightText::sprocess() ;
-                ToEdiNormal::sprocess(false) ;
+                YankHighlightText::sprocess(1, "") ;
+                ToEdiNormal::sprocess(1, "", false) ;
             }
         } ;
         YankWithMotion::YankWithMotion()
@@ -180,7 +180,9 @@ namespace vind
         YankWithMotion::~YankWithMotion() noexcept = default ;
         YankWithMotion::YankWithMotion(YankWithMotion&&) = default ;
         YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
-        void YankWithMotion::sprocess() {
+
+        void YankWithMotion::sprocess(
+                std::uint16_t count, const std::string& args) {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -188,25 +190,11 @@ namespace vind
                 pimpl->copy() ;
             }
         }
-        void YankWithMotion::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                if(select_by_motion(
-                        id(),
-                        pimpl->bg_,
-                        pimpl->finder_,
-                        pimpl->parent_finders_[core::get_global_mode<int>()],
-                        parent_lgr)) {
-                    pimpl->copy() ;
-                }
-            }
-        }
-        void YankWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
+
         void YankWithMotion::reconstruct() {
-            pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
+            // pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
             for(std::size_t i = 0 ; i < pimpl->parent_finders_.size() ; i ++) {
-                pimpl->parent_finders_[i].reconstruct(i) ;
+                // pimpl->parent_finders_[i].reconstruct(i) ;
             }
         }
 
@@ -227,7 +215,7 @@ namespace vind
             {}
 
             void remove() const {
-                DeleteHighlightText::sprocess() ;
+                DeleteHighlightText::sprocess(1, "") ;
             }
         } ;
         DeleteWithMotion::DeleteWithMotion()
@@ -238,7 +226,8 @@ namespace vind
         DeleteWithMotion::DeleteWithMotion(DeleteWithMotion&&) = default ;
         DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
 
-        void DeleteWithMotion::sprocess() {
+        void DeleteWithMotion::sprocess(
+                std::uint16_t count, const std::string& args) {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -246,25 +235,10 @@ namespace vind
                 pimpl->remove() ;
             }
         }
-        void DeleteWithMotion::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                if(select_by_motion(
-                        id(),
-                        pimpl->bg_,
-                        pimpl->finder_,
-                        pimpl->parent_finders_[core::get_global_mode<int>()],
-                        parent_lgr)) {
-                    pimpl->remove() ;
-                }
-            }
-        }
-        void DeleteWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
         void DeleteWithMotion::reconstruct() {
-            pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
+            // pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
             for(std::size_t i = 0 ; i < pimpl->parent_finders_.size() ; i ++) {
-                pimpl->parent_finders_[i].reconstruct(i) ;
+                // pimpl->parent_finders_[i].reconstruct(i) ;
             }
         }
 
@@ -286,8 +260,8 @@ namespace vind
             {}
 
             void remove_and_insert() {
-                DeleteHighlightText::sprocess() ;
-                ToInsert::sprocess(false) ;
+                DeleteHighlightText::sprocess(1, "") ;
+                ToInsert::sprocess(1, "", false) ;
             }
         } ;
         ChangeWithMotion::ChangeWithMotion()
@@ -297,7 +271,8 @@ namespace vind
         ChangeWithMotion::~ChangeWithMotion() noexcept = default ;
         ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&) = default ;
         ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
-        void ChangeWithMotion::sprocess() {
+        void ChangeWithMotion::sprocess(
+                std::uint16_t count, const std::string& args) {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -305,25 +280,11 @@ namespace vind
                 pimpl->remove_and_insert() ;
             }
         }
-        void ChangeWithMotion::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                if(select_by_motion(
-                        id(),
-                        pimpl->bg_,
-                        pimpl->finder_,
-                        pimpl->parent_finders_[core::get_global_mode<int>()],
-                        parent_lgr)) {
-                    pimpl->remove_and_insert() ;
-                }
-            }
-        }
-        void ChangeWithMotion::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
+
         void ChangeWithMotion::reconstruct() {
-            pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
+            // pimpl->finder_.reconstruct(core::Mode::EDI_VISUAL) ;
             for(std::size_t i = 0 ; i < pimpl->parent_finders_.size() ; i ++) {
-                pimpl->parent_finders_[i].reconstruct(i) ;
+                // pimpl->parent_finders_[i].reconstruct(i) ;
             }
         }
     }

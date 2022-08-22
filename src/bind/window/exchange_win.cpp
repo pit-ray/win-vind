@@ -57,7 +57,8 @@ namespace vind
         ExchangeWindowWithNearest::ExchangeWindowWithNearest()
         : BindedFuncVoid("exchange_window_with_nearest")
         {}
-        void ExchangeWindowWithNearest::sprocess() {
+        void ExchangeWindowWithNearest::sprocess(
+                std::uint16_t count, const std::string& args) {
             g_near_hwnds.clear() ;
 
             ForegroundInfo fginfo ;
@@ -74,14 +75,6 @@ namespace vind
 
             resize_window(nearest_hwnd, fginfo.rect) ;
             resize_window(fginfo.hwnd, nearest_rect) ;
-        }
-        void ExchangeWindowWithNearest::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ExchangeWindowWithNearest::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

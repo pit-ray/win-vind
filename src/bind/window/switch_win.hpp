@@ -15,9 +15,8 @@ namespace vind
         public:
             explicit SwitchWindow() ;
 
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             virtual ~SwitchWindow() noexcept ;
             SwitchWindow(SwitchWindow&&) ;

@@ -18,7 +18,8 @@ namespace vind
         OpenNewWindow::OpenNewWindow()
         : BindedFuncVoid("open_new_window")
         {}
-        void OpenNewWindow::sprocess() {
+        void OpenNewWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
 
             DWORD proc_id = 0 ;
@@ -45,14 +46,6 @@ namespace vind
 
             util::create_process(core::HOME_PATH(), util::ws_to_s(path)) ;
             Sleep(100) ;
-        }
-        void OpenNewWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void OpenNewWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

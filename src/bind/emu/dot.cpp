@@ -22,28 +22,15 @@ namespace vind
         // so we repeat the last change of only commands to edit.
         // Recording in insert mode will be a future work due to load concerns.
         //
-        SystemCall RepeatLastChange::sprocess() {
+        SystemCall RepeatLastChange::sprocess(
+                std::uint16_t count, const std::string& args) {
             if(!lastchange_) {
                 return SystemCall::NOTHING ;
             }
-            return lastchange_->process() ;
-        }
-
-        SystemCall RepeatLastChange::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!lastchange_) {
-                return SystemCall::NOTHING ;
+            if(repeat_count_ > 1 && count == 1) {
+                count = repeat_count_ ;
             }
-            if(repeat_count_ > 1 && parent_lgr.get_head_num() == 1) {
-                parent_lgr.set_head_num(repeat_count_) ;
-            }
-            return lastchange_->process(parent_lgr) ;
-        }
-
-        SystemCall RepeatLastChange::sprocess(const core::CharLogger& parent_lgr) {
-            if(!lastchange_) {
-                return SystemCall::NOTHING ;
-            }
-            return lastchange_->process(parent_lgr) ;
+            return lastchange_->process(count) ;
         }
     }
 }

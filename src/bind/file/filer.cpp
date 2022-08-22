@@ -19,36 +19,20 @@ namespace vind
         Save::Save()
         : BindedFuncVoid("save")
         {}
-        void Save::sprocess() {
+        void Save::sprocess(
+                std::uint16_t count, const std::string& args) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LCTRL, KEYCODE_S) ;
         }
-        void Save::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void Save::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //Open
         Open::Open()
         : BindedFuncVoid("open")
         {}
-        void Open::sprocess() {
+        void Open::sprocess(
+                std::uint16_t count, const std::string& args) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LCTRL, KEYCODE_O) ;
-        }
-        void Open::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void Open::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-
         }
     }
 }

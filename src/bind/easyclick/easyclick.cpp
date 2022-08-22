@@ -31,18 +31,11 @@ namespace vind
         EasyClickLeft::EasyClickLeft(EasyClickLeft&&)            = default ;
         EasyClickLeft& EasyClickLeft::operator=(EasyClickLeft&&) = default ;
 
-        void EasyClickLeft::sprocess(unsigned int count) {
+        void EasyClickLeft::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, count) ;
-        }
-        void EasyClickLeft::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void EasyClickLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
         void EasyClickLeft::reconstruct() {
             pimpl->core_.reconstruct() ;
@@ -61,18 +54,11 @@ namespace vind
         EasyClickRight::EasyClickRight(EasyClickRight&&)            = default ;
         EasyClickRight& EasyClickRight::operator=(EasyClickRight&&) = default ;
 
-        void EasyClickRight::sprocess(unsigned int count) {
+        void EasyClickRight::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, count) ;
-        }
-        void EasyClickRight::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void EasyClickRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
         void EasyClickRight::reconstruct() {
             pimpl->core_.reconstruct() ;
@@ -91,18 +77,11 @@ namespace vind
         EasyClickMid::EasyClickMid(EasyClickMid&&)            = default ;
         EasyClickMid& EasyClickMid::operator=(EasyClickMid&&) = default ;
 
-        void EasyClickMid::sprocess(unsigned int count) {
+        void EasyClickMid::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, count) ;
-        }
-        void EasyClickMid::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void EasyClickMid::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
         void EasyClickMid::reconstruct() {
             pimpl->core_.reconstruct() ;
@@ -121,18 +100,11 @@ namespace vind
         EasyClickHover::EasyClickHover(EasyClickHover&&)            = default ;
         EasyClickHover& EasyClickHover::operator=(EasyClickHover&&) = default ;
 
-        void EasyClickHover::sprocess() {
+        void EasyClickHover::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop() ;
-        }
-        void EasyClickHover::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void EasyClickHover::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
         void EasyClickHover::reconstruct() {
             pimpl->core_.reconstruct() ;

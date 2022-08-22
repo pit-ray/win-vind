@@ -65,6 +65,7 @@ SOFTWARE.
 #include "bind/bindinglist.hpp"
 #include "bind/emu/moveinsert.hpp"
 #include "bind/mode/change_mode.hpp"
+#include "bind/saferepeat.hpp"
 #include "bind/syscmd/source.hpp"
 #include "core/cmdmatcher.hpp"
 #include "core/inputgate.hpp"
@@ -81,42 +82,6 @@ SOFTWARE.
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
 #include "util/winwrap.hpp"
-
-#ifdef DEBUG
-#include <algorithm>
-#include "mapdefault.hpp"
-#include "util/keystroke_repeater.hpp"
-namespace
-{
-    using namespace vind ;
-    using namespace vind::core ;
-    MapSolver setup_solver() {
-        MapSolver solver{} ;
-
-        for(const auto& [trigger, target] : vind::core::get_default_map(Mode::GUI_NORMAL)) {
-            solver.add_default(trigger, target) ;
-        }
-
-        solver.deploy_default() ;
-        solver.deploy() ;
-        return solver ;
-    }
-
-    template <typename T>
-    void test_mapsolver(T&& log) {
-        static auto solver = setup_solver() ;
-
-        auto raw_cmdunit = CmdUnit(log.get()) ;
-
-        std::vector<CmdUnit::SPtr> targets{} ;
-        unsigned int count = 0 ;
-        if(solver.map_command_to(raw_cmdunit, targets, count)) {
-            std::cout << "MATCH: " << targets << " (" << targets.size() << ")\n" ;
-        }
-    }
-}
-
-#endif
 
 
 namespace vind
@@ -296,17 +261,7 @@ namespace vind
                 throw std::runtime_error("Could not move the mouse cursor to show it.") ;
             }
 #endif
-
-            auto& settable = SetTable::get_instance() ;
-            auto& maptable = MapTable::get_instance() ;
-
-            settable.clear() ;
-            maptable.clear_all() ;
-            bind::SyscmdSource::sprocess(RC_DEFAULT(), false) ;
-            settable.save_asdef() ;
-            maptable.save_asdef() ;
-
-            bind::SyscmdSource::sprocess(RC(), true) ;
+            bind::SyscmdSource::sprocess(1, RC().u8string()) ;
 
             reconstruct() ;
 
@@ -321,12 +276,19 @@ namespace vind
                 {mode_to_prefix(Mode::RESIDENT), bind::ToResident::create()}
             } ;
 
-            handle_system_call(cm.at(
-                        settable.get("initmode").get<std::string>())->process()) ;
+            auto& settable = SetTable::get_instance() ;
+            try {
+                auto func = cm.at(settable.get("initmode").get<std::string>()) ;
+                handle_system_call(func->process()) ;
+            }
+            catch(const std::out_of_range&) {
+                handle_system_call(cm.at("i")->process()) ;
+            }
         }
 
         void VindEntry::reconstruct() {
             auto& settable = SetTable::get_instance() ;
+
             for(auto& opt : opt::all_global_options()) {
                 if(settable.get(opt->name()).get<bool>()) {
                     opt->enable() ;
@@ -340,24 +302,18 @@ namespace vind
                 func->reconstruct() ;
             }
 
-            for(std::size_t i = 0 ; i < pimpl->finders_.size() ; i ++) {
-                pimpl->finders_[i].reconstruct(i) ;
-            }
-
             InputGate::get_instance().reconstruct() ;
         }
 
         void VindEntry::update() {
             pimpl->bg_.update() ;
 
-            auto& finder = pimpl->finders_[get_global_mode<int>()] ;
-
             if(pimpl->memread_timer_.is_passed()) {
                 //check if received messages from another win-vind.
                 if(auto data = pimpl->read_memfile(pimpl->map_)) {
                     std::string name(reinterpret_cast<const char*>(data.get())) ;
                     if(!name.empty()) {
-                        if(auto func = finder.find_func_byname(name)) {
+                        if(auto func = bind::ref_global_func_byname(name)) {
                             handle_system_call(func->process()) ;
                         }
                         else {
@@ -370,59 +326,27 @@ namespace vind
                 }
             }
 
-            auto log = InputGate::get_instance().pop_log() ;
-
-            test_mapsolver(log) ;
-
-            auto result = pimpl->lgr_.logging_state(log) ;
-
-            if(NTYPE_EMPTY(result)) {
+            auto in_cmdunit = InputGate::get_instance().pressed_list() ;
+            if(in_cmdunit.empty()) {
                 return ;
             }
-            if(NTYPE_HEAD_NUM(result)) {
-                opt::VCmdLine::print(opt::StaticMessage(
-                            std::to_string(pimpl->lgr_.get_head_num()))) ;
-                return ;
-            }
+            std::cout << "in: " << in_cmdunit << std::endl ;
 
-            if(pimpl->lgr_.is_long_pressing()) {
-                if(pimpl->actfunc_) {
-                    handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
+            std::uint16_t count = 1 ;
+            auto solver = MapTable::get_instance().get_solver() ;
+            auto out_cmd = solver->map_command_from(in_cmdunit) ;
+            std::cout << "out: " << out_cmd << std::endl ;
+            if(!out_cmd.empty()) {
+                if(out_cmd.size() > 1) {
+                    bind::safe_for(count, [&out_cmd] {
+                        for(auto& out_cmdunit : out_cmd) {
+                            out_cmdunit->execute(1) ;
+                        }
+                    }) ;
                 }
-                return ;
-            }
-
-            auto actid = pimpl->actfunc_ ? pimpl->actfunc_->id() : 0 ;
-            auto parser = finder.find_parser_with_transition(
-                    pimpl->lgr_.latest(), actid) ;
-            pimpl->actfunc_ = nullptr ;
-
-            if(parser) {
-                if(parser->is_accepted()) {
-                    if(pimpl->lgr_.has_head_num()) {
-                        opt::VCmdLine::reset() ;
-                    }
-
-                    pimpl->actfunc_ = parser->get_func() ;
-
-                    handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
-
-                    pimpl->lgr_.accept() ;
-                    finder.reset_parser_states() ;
+                else {
+                    out_cmd.front()->execute(count) ;
                 }
-                else if(parser->is_rejected_with_ready()) {
-                    // It did not accepted, but only matched subsets.
-                    // For example, bindings <ctrl> in <ctrl-f>
-                    finder.backward_parser_states(1) ;
-                    pimpl->lgr_.remove_from_back(1) ;
-                }
-            }
-            else {
-                if(pimpl->lgr_.has_head_num()) {
-                    opt::VCmdLine::refresh() ;
-                }
-                pimpl->lgr_.reject() ;
-                finder.reset_parser_states() ;
             }
         }
 

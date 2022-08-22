@@ -113,7 +113,7 @@ namespace vind
             while(!(pimpl->cancel_running_)) {
                 pimpl->bg_.update() ;
 
-                auto log = igate.pop_log() ;
+                core::KeyLog log{igate.pressed_list().data()} ;
                 if(!CHAR_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }

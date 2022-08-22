@@ -12,16 +12,9 @@ namespace vind
         ReloadCurrentWindow::ReloadCurrentWindow()
         : BindedFuncVoid("reload_current_window")
         {}
-        void ReloadCurrentWindow::sprocess() {
+        void ReloadCurrentWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             core::InputGate::get_instance().pushup(KEYCODE_F5) ;
-        }
-        void ReloadCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ReloadCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

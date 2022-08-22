@@ -670,8 +670,7 @@ namespace vind
 {
     namespace core
     {
-        const std::vector<std::pair<std::string, std::string>>&
-        get_default_map(Mode mode) {
+        const std::vector<std::pair<std::string, std::string>>& get_default_map(Mode mode) {
             static auto tmp = [] {
                 ModeArray<std::vector<std::pair<std::string, std::string>>> tmp_ ;
                 tmp_[static_cast<int>(Mode::GUI_NORMAL)] = gui_normal() ;

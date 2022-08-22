@@ -20,7 +20,9 @@ namespace vind
         : BindedFuncVoid("execute")
         {}
 
-        void Execute::sprocess(std::filesystem::path filepath) {
+        void Execute::sprocess(
+                std::uint16_t count, const std::string& args) {
+            auto filepath = std::filesystem::u8path(util::trim(args)) ;
             if(filepath.empty()) {
                 return ;
             }
@@ -74,24 +76,6 @@ namespace vind
                 default:
                     break ;
             }
-        }
-
-        void Execute::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(core::RC()) ;
-            }
-        }
-
-        void Execute::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-
-            auto [cmd, arg] = core::divide_cmd_and_args(str) ;
-            if(arg.empty()) {
-                sprocess(core::RC()) ;
-                return ;
-            }
-
-            sprocess(std::filesystem::u8path(arg)) ;
         }
     }
 }

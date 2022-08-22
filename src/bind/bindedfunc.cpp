@@ -1,6 +1,7 @@
 #include "bindedfunc.hpp"
 
 #include <array>
+#include <cstdint>
 #include <functional>
 
 #include "core/charlogger.hpp"
@@ -97,39 +98,12 @@ namespace vind
             }
         }
 
-        SystemCall BindedFunc::process() {
+        SystemCall BindedFunc::process(
+                std::uint16_t count, const std::string& args) {
             auto result = SystemCall::NOTHING ;
 
             try {
-                result = do_process() ;
-                pimpl->release_fake_press() ;
-            }
-            catch(const std::runtime_error& e) {
-                error_process(e) ;
-            }
-
-            return result ;
-        }
-
-        SystemCall BindedFunc::process(core::NTypeLogger& parent_lgr) {
-            auto result = SystemCall::NOTHING ;
-
-            try {
-                result = do_process(parent_lgr) ;
-                pimpl->release_fake_press() ;
-            }
-            catch(const std::runtime_error& e) {
-                error_process(e) ;
-            }
-
-            return result ;
-        }
-
-        SystemCall BindedFunc::process(const core::CharLogger& parent_lgr) {
-            auto result = SystemCall::NOTHING ;
-
-            try {
-                result = do_process(parent_lgr) ;
+                result = do_process(count, args) ;
                 pimpl->release_fake_press() ;
             }
             catch(const std::runtime_error& e) {
@@ -157,13 +131,8 @@ namespace vind
             return pimpl->id_ != rhs.pimpl->id_ ;
         }
 
-        SystemCall BindedFunc::do_process() {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall BindedFunc::do_process(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall BindedFunc::do_process(const core::CharLogger&) {
+        SystemCall BindedFunc::do_process(
+                std::uint16_t UNUSED(count), const std::string& UNUSED(args)) {
             return SystemCall::NOTHING ;
         }
     }

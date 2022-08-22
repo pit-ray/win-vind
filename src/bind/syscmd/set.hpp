@@ -9,9 +9,8 @@ namespace vind
     {
         struct SyscmdSet : BindedFuncFlex<SyscmdSet> {
             explicit SyscmdSet() ;
-            static SystemCall sprocess(const std::string& args="") ;
-            static SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
-            static SystemCall sprocess(const core::CharLogger& parent_lgr) ;
+            static SystemCall sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

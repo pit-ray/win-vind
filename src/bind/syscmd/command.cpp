@@ -16,7 +16,8 @@ namespace vind
         SyscmdCommand::SyscmdCommand()
         : BindedFuncFlex("system_command_command")
         {}
-        SystemCall SyscmdCommand::sprocess(const std::string& args) {
+        SystemCall SyscmdCommand::sprocess(
+                std::uint16_t count, const std::string& args) {
             if(args.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
                 return SystemCall::NOTHING ;
@@ -36,26 +37,13 @@ namespace vind
 
             return SystemCall::NOTHING ;
         }
-        SystemCall SyscmdCommand::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdCommand::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                throw RUNTIME_EXCEPT("Empty command") ;
-            }
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            sprocess(args) ;
-
-            return SystemCall::RECONSTRUCT ;
-        }
-
 
         // delcommand
         SyscmdDelcommand::SyscmdDelcommand()
         : BindedFuncFlex("system_command_delcommand")
         {}
-        SystemCall SyscmdDelcommand::sprocess(const std::string& args) {
+        SystemCall SyscmdDelcommand::sprocess(
+                std::uint16_t count, const std::string& args) {
             if(args.empty()) {
                 // does not have argument is empty
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
@@ -73,47 +61,16 @@ namespace vind
 
             return SystemCall::NOTHING ;
         }
-        SystemCall SyscmdDelcommand::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdDelcommand::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                throw RUNTIME_EXCEPT("Empty command") ;
-            }
-
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            sprocess(args) ;
-
-            return SystemCall::RECONSTRUCT ;
-        }
 
         // comclear
         SyscmdComclear::SyscmdComclear()
         : BindedFuncFlex("system_command_comclear")
         {}
-        SystemCall SyscmdComclear::sprocess() {
+        SystemCall SyscmdComclear::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& maptable = core::MapTable::get_instance() ;
             maptable.clear(core::Mode::COMMAND) ;
             return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdComclear::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdComclear::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                throw RUNTIME_EXCEPT("Empty command") ;
-            }
-
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            if(!args.empty()) {
-                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return SystemCall::NOTHING ;
-            }
-
-            sprocess() ;
-            return SystemCall::RECONSTRUCT ;
         }
     }
 }

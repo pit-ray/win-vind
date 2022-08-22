@@ -9,41 +9,32 @@ namespace vind
     {
         struct HotkeyCopy : public BindedFuncVoid<HotkeyCopy> {
             explicit HotkeyCopy() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
-
 
         struct HotkeyPaste : public BindedFuncVoid<HotkeyPaste> {
             explicit HotkeyPaste() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
-
 
         struct HotkeyCut : public BindedFuncVoid<HotkeyCut> {
             explicit HotkeyCut() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
-
 
         struct HotkeyDelete : public BindedFuncVoid<HotkeyDelete> {
             explicit HotkeyDelete() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
-
 
         struct HotkeyBackspace : public BindedFuncVoid<HotkeyBackspace> {
             explicit HotkeyBackspace() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

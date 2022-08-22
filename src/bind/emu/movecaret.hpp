@@ -8,158 +8,53 @@ namespace vind
 {
     namespace bind
     {
-        class MoveCaretLeft : public MoveBaseCreator<MoveCaretLeft> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretLeft : public MoveBaseCreator<MoveCaretLeft> {
             explicit MoveCaretLeft() ;
-            virtual ~MoveCaretLeft() noexcept ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ; } ;
 
-            MoveCaretLeft(MoveCaretLeft&&) ;
-            MoveCaretLeft& operator=(MoveCaretLeft&&) ;
-            MoveCaretLeft(const MoveCaretLeft&)            = delete ;
-            MoveCaretLeft& operator=(const MoveCaretLeft&) = delete ;
-        } ;
-
-        class MoveCaretRight : public MoveBaseCreator<MoveCaretRight> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretRight : public MoveBaseCreator<MoveCaretRight> {
             explicit MoveCaretRight() ;
-            virtual ~MoveCaretRight() noexcept ;
-
-            MoveCaretRight(MoveCaretRight&&) ;
-            MoveCaretRight& operator=(MoveCaretRight&&) ;
-            MoveCaretRight(const MoveCaretRight&)            = delete ;
-            MoveCaretRight& operator=(const MoveCaretRight&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-        class MoveCaretUp : public MoveBaseCreator<MoveCaretUp> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretUp : public MoveBaseCreator<MoveCaretUp> {
             explicit MoveCaretUp() ;
-            virtual ~MoveCaretUp() noexcept ;
-
-            MoveCaretUp(MoveCaretUp&&) ;
-            MoveCaretUp& operator=(MoveCaretUp&&) ;
-            MoveCaretUp(const MoveCaretUp&)            = delete ;
-            MoveCaretUp& operator=(const MoveCaretUp&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-        class MoveCaretDown : public MoveBaseCreator<MoveCaretDown> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretDown : public MoveBaseCreator<MoveCaretDown> {
             explicit MoveCaretDown() ;
-            virtual ~MoveCaretDown() noexcept ;
-
-            MoveCaretDown(MoveCaretDown&&) ;
-            MoveCaretDown& operator=(MoveCaretDown&&) ;
-            MoveCaretDown(const MoveCaretDown&)            = delete ;
-            MoveCaretDown& operator=(const MoveCaretDown&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
 
-        class MoveCaretWordForward : public MoveBaseCreator<MoveCaretWordForward> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretWordForward : public MoveBaseCreator<MoveCaretWordForward> {
             explicit MoveCaretWordForward() ;
-            virtual ~MoveCaretWordForward() noexcept ;
-
-            MoveCaretWordForward(MoveCaretWordForward&&) ;
-            MoveCaretWordForward& operator=(MoveCaretWordForward&&) ;
-            MoveCaretWordForward(const MoveCaretWordForward&)            = delete ;
-            MoveCaretWordForward& operator=(const MoveCaretWordForward&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-        class MoveCaretWordBackward : public MoveBaseCreator<MoveCaretWordBackward> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretWordBackward : public MoveBaseCreator<MoveCaretWordBackward> {
             explicit MoveCaretWordBackward() ;
-            virtual ~MoveCaretWordBackward() noexcept ;
-
-            MoveCaretWordBackward(MoveCaretWordBackward&&) ;
-            MoveCaretWordBackward& operator=(MoveCaretWordBackward&&) ;
-            MoveCaretWordBackward(const MoveCaretWordBackward&)            = delete ;
-            MoveCaretWordBackward& operator=(const MoveCaretWordBackward&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
 
-        class MoveCaretNonBlankWordForward : public MoveBaseCreator<MoveCaretNonBlankWordForward> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretNonBlankWordForward : public MoveBaseCreator<MoveCaretNonBlankWordForward> {
             explicit MoveCaretNonBlankWordForward() ;
-            virtual ~MoveCaretNonBlankWordForward() noexcept ;
-
-            MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&) ;
-            MoveCaretNonBlankWordForward& operator=(MoveCaretNonBlankWordForward&&) ;
-            MoveCaretNonBlankWordForward(const MoveCaretNonBlankWordForward&)            = delete ;
-            MoveCaretDown& operator=(const MoveCaretDown&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-        class MoveCaretNonBlankWordBackward : public MoveBaseCreator<MoveCaretNonBlankWordBackward> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveCaretNonBlankWordBackward : public MoveBaseCreator<MoveCaretNonBlankWordBackward> {
             explicit MoveCaretNonBlankWordBackward() ;
-            virtual ~MoveCaretNonBlankWordBackward() noexcept ;
-
-            MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&) ;
-            MoveCaretNonBlankWordBackward& operator=(MoveCaretNonBlankWordBackward&&) ;
-            MoveCaretNonBlankWordBackward(const MoveCaretNonBlankWordBackward&)            = delete ;
-            MoveCaretNonBlankWordBackward& operator=(const MoveCaretNonBlankWordBackward&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

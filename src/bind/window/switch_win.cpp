@@ -67,6 +67,7 @@ namespace vind
         SwitchWindow& SwitchWindow::operator=(SwitchWindow&&) = default ;
 
         void SwitchWindow::reconstruct() {
+            /*
             pimpl->funcfinder_.reconstruct(
                 core::Mode::EDI_NORMAL,
                 ref_global_funcs_bynames(
@@ -74,9 +75,11 @@ namespace vind
                     MoveCaretRight().name()
                 )
             ) ;
+            */
         }
 
-        void SwitchWindow::sprocess() {
+        void SwitchWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& igate = core::InputGate::get_instance() ;
 
             core::InstantKeyAbsorber ika ;
@@ -94,7 +97,7 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto log = igate.pop_log() ;
+                core::KeyLog log{igate.pressed_list().data()} ;
                 if(!NTYPE_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }
@@ -147,15 +150,7 @@ namespace vind
 
             //jump cursor to a selected window after releasing alt and tab.
             Sleep(50) ; //send select-message to OS(wait)
-            JumpToActiveWindow::sprocess() ;
-        }
-        void SwitchWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SwitchWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
+            JumpToActiveWindow::sprocess(1, "") ;
         }
     }
 }

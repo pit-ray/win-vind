@@ -163,10 +163,11 @@ namespace vind
         ToCommand& ToCommand::operator=(ToCommand&&) = default ;
 
         void ToCommand::reconstruct() {
-            pimpl->funcfinder_.reconstruct(core::Mode::COMMAND) ;
+            // pimpl->funcfinder_.reconstruct(core::Mode::COMMAND) ;
         }
 
-        SystemCall ToCommand::sprocess() {
+        SystemCall ToCommand::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto return_mode = [] (core::Mode* m) {
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {
@@ -195,7 +196,7 @@ namespace vind
                 auto p_cmdp = pimpl->ch_.get_hist_point() ;
                 auto& lgr    = p_cmdp->logger ;
 
-                auto log = core::InputGate::get_instance().pop_log() ;
+                core::KeyLog log{core::InputGate::get_instance().pressed_list().data()} ;
                 if(CHAR_EMPTY(lgr.logging_state(log))) {
                     continue ;
                 }
@@ -224,7 +225,7 @@ namespace vind
                     }
 
                     if(p_cmdp->func) {
-                        result = p_cmdp->func->process(lgr) ;
+                        result = p_cmdp->func->process() ;
                     }
                     else {
                         opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
@@ -319,17 +320,6 @@ namespace vind
             }
 
             return result ;
-        }
-
-        SystemCall ToCommand::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                return sprocess() ;
-            }
-
-            return SystemCall::NOTHING ;
-        }
-        SystemCall ToCommand::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            return sprocess() ;
         }
     }
 }

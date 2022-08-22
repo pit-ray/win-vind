@@ -9,99 +9,65 @@ namespace vind
     {
         struct MoveFwdWord : public MoveBaseCreator<MoveFwdWord> {
             explicit MoveFwdWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct MoveFwdBigWord : public MoveBaseCreator<MoveFwdBigWord> {
             explicit MoveFwdBigWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
 
         struct MoveBckWord : public MoveBaseCreator<MoveBckWord> {
             explicit MoveBckWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct MoveBckBigWord : public MoveBaseCreator<MoveBckBigWord> {
             explicit MoveBckBigWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
 
         struct MoveEndWord : public MoveBaseCreator<MoveEndWord> {
             explicit MoveEndWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct MoveEndBigWord : public MoveBaseCreator<MoveEndBigWord> {
             explicit MoveEndBigWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
-
 
         struct MoveBckEndWord : public MoveBaseCreator<MoveBckEndWord> {
             explicit MoveBckEndWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct MoveBckEndBigWord : public MoveBaseCreator<MoveBckEndBigWord> {
             explicit MoveBckEndBigWord() ;
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-        class MoveFwdWordSimple : public MoveBaseCreator<MoveFwdWordSimple> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
 
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveFwdWordSimple : public MoveBaseCreator<MoveFwdWordSimple> {
             explicit MoveFwdWordSimple() ;
-            virtual ~MoveFwdWordSimple() noexcept ;
-
-            MoveFwdWordSimple(MoveFwdWordSimple&&) ;
-            MoveFwdWordSimple& operator=(MoveFwdWordSimple&&) ;
-            MoveFwdWordSimple(const MoveFwdWordSimple&)            = delete ;
-            MoveFwdWordSimple& operator=(const MoveFwdWordSimple&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-        class MoveBckWordSimple : public MoveBaseCreator<MoveBckWordSimple> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct MoveBckWordSimple : public MoveBaseCreator<MoveBckWordSimple> {
             explicit MoveBckWordSimple() ;
-            virtual ~MoveBckWordSimple() noexcept ;
-
-            MoveBckWordSimple(MoveBckWordSimple&&) ;
-            MoveBckWordSimple& operator=(MoveBckWordSimple&&) ;
-            MoveBckWordSimple(const MoveBckWordSimple&)            = delete ;
-            MoveBckWordSimple& operator=(const MoveBckWordSimple&) = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

@@ -113,7 +113,7 @@ namespace vind
                 }
             }
 
-            JumpToActiveWindow::sprocess() ;
+            JumpToActiveWindow::sprocess(1, "") ;
         }
 
         void batch_resize(const std::unordered_map<HWND, util::Box2D>& rects) {

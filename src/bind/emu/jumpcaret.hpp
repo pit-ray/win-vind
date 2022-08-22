@@ -9,30 +9,26 @@ namespace vind
     {
         struct JumpCaretToBOL : public MoveBaseCreator<JumpCaretToBOL> {
             explicit JumpCaretToBOL() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct JumpCaretToEOL : public MoveBaseCreator<JumpCaretToEOL> {
             explicit JumpCaretToEOL() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct JumpCaretToBOF : public MoveBaseCreator<JumpCaretToBOF> {
             explicit JumpCaretToBOF() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct JumpCaretToEOF : public MoveBaseCreator<JumpCaretToEOF> {
             explicit JumpCaretToEOF() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

@@ -105,11 +105,11 @@ namespace vind
 {
     namespace bind
     {
-        //RotateWindow
         RotateWindows::RotateWindows()
         : BindedFuncVoid("rotate_windows")
         {}
-        void RotateWindows::sprocess(unsigned int count) {
+        void RotateWindows::sprocess(
+                std::uint16_t count, const std::string& args) {
             rotate_windows_core([count] (AngleOrderedHWND& angle_hwnds) {
                 safe_for(count, [&angle_hwnds] {
                     auto itr     = angle_hwnds.rbegin() ;
@@ -126,21 +126,12 @@ namespace vind
                 }) ;
             }) ;
         }
-        void RotateWindows::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void RotateWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
 
-
-        //RotateWindowsInReverse
         RotateWindowsInReverse::RotateWindowsInReverse()
         : BindedFuncVoid("rotate_windows_in_reverse")
         {}
-        void RotateWindowsInReverse::sprocess(unsigned int count) {
+        void RotateWindowsInReverse::sprocess(
+                std::uint16_t count, const std::string& args) {
             rotate_windows_core([count] (AngleOrderedHWND& angle_hwnds) {
                 safe_for(count, [&angle_hwnds] {
                     auto itr     = angle_hwnds.begin() ;
@@ -156,14 +147,6 @@ namespace vind
                     pre_itr->second = last_hwnd ;
                 }) ;
             }) ;
-        }
-        void RotateWindowsInReverse::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void RotateWindowsInReverse::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

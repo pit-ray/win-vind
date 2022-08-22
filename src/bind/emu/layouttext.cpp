@@ -12,37 +12,16 @@ namespace vind
 {
     namespace bind
     {
-        struct JoinNextLine::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         JoinNextLine::JoinNextLine()
-        : ChangeBaseCreator("join_next_line"),
-          pimpl(std::make_unique<Impl>())
+        : ChangeBaseCreator("join_next_line")
         {}
-
-        JoinNextLine::~JoinNextLine() noexcept                    = default ;
-        JoinNextLine::JoinNextLine(JoinNextLine&&)               = default ;
-        JoinNextLine& JoinNextLine::operator=(JoinNextLine&&)    = default ;
-
-        void JoinNextLine::sprocess(unsigned int count) {
+        void JoinNextLine::sprocess(
+                std::uint16_t count, const std::string& args) {
             safe_for(count, [] {
                 auto& igate = core::InputGate::get_instance() ;
                 igate.pushup(KEYCODE_END) ;
                 igate.pushup(KEYCODE_DELETE) ;
             }) ;
-        }
-        void JoinNextLine::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void JoinNextLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

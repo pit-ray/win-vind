@@ -21,66 +21,43 @@ namespace vind
         HotkeyCopy::HotkeyCopy()
         : BindedFuncVoid("hotkey_copy")
         {}
-        void HotkeyCopy::sprocess() {
+        void HotkeyCopy::sprocess(
+                std::uint16_t count, const std::string& args) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //there are cases in which not editable.
             //thus, not use Message Copy
             core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_C) ;
         }
-        void HotkeyCopy::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void HotkeyCopy::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //HotkeyPaste
         HotkeyPaste::HotkeyPaste()
         : BindedFuncVoid("hotkey_paste")
         {}
-        void HotkeyPaste::sprocess() {
+        void HotkeyPaste::sprocess(
+                std::uint16_t count, const std::string& args) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //not selecting at paste.
             core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_V) ;
         }
-        void HotkeyPaste::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void HotkeyPaste::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //HotkeyCut
         HotkeyCut::HotkeyCut()
         : BindedFuncVoid("hotkey_cut")
         {}
-        void HotkeyCut::sprocess() {
+        void HotkeyCut::sprocess(
+                std::uint16_t count, const std::string& args) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
             core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
         }
-        void HotkeyCut::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void HotkeyCut::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //HotkeyDelete
         HotkeyDelete::HotkeyDelete()
         : BindedFuncVoid("hotkey_delete")
         {}
-        void HotkeyDelete::sprocess() {
+        void HotkeyDelete::sprocess(
+                std::uint16_t count, const std::string& args) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //selecting->cut
@@ -89,22 +66,13 @@ namespace vind
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             igate.pushup(KEYCODE_DELETE) ;
         }
-        void HotkeyDelete::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void HotkeyDelete::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //HotkeyBackspace
         HotkeyBackspace::HotkeyBackspace()
         : BindedFuncVoid("hotkey_backspace")
         {}
-
-        void HotkeyBackspace::sprocess() {
+        void HotkeyBackspace::sprocess(
+                std::uint16_t count, const std::string& args) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //selecting->cut
@@ -112,14 +80,6 @@ namespace vind
             auto& igate = core::InputGate::get_instance() ;
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             igate.pushup(KEYCODE_BKSPACE) ;
-        }
-        void HotkeyBackspace::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void HotkeyBackspace::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

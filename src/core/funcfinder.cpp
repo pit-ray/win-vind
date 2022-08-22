@@ -76,6 +76,7 @@ namespace vind
             std::unordered_map<std::string, \
                 std::shared_ptr<CommandList>> funcmap ;
 
+            /*
             auto maps = maptable.get_noremaps(mode) ;
             for(const auto& map : maps) {
                 const auto func_name = util::A2a(map.target_command_string()) ;
@@ -106,6 +107,7 @@ namespace vind
 
             LoggerParserManager::operator=(
                     LoggerParserManager(std::move(parsers))) ;
+            */
         }
     }
 }

@@ -24,7 +24,8 @@ namespace vind
         : BindedFuncFlex("system_command_set")
         {}
 
-        SystemCall SyscmdSet::sprocess(const std::string& args) {
+        SystemCall SyscmdSet::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& settable = core::SetTable::get_instance() ;
 
             if(args.find("=") != std::string::npos) { // set option_name = value
@@ -112,21 +113,6 @@ namespace vind
             }
 
             return SystemCall::NOTHING ;
-        }
-
-        SystemCall SyscmdSet::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-
-        SystemCall SyscmdSet::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                return SystemCall::NOTHING ;
-            }
-
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            sprocess(args) ;
-            return SystemCall::RECONSTRUCT ;
         }
     }
 }

@@ -82,20 +82,16 @@ namespace vind
                 auto& settable = core::SetTable::get_instance() ;
 
                 if(id == left_id_) {
-                    DecreaseWindowWidth::sprocess(
-                            settable.get("window_hdelta").get<long>()) ;
+                    DecreaseWindowWidth::sprocess(1, "") ;
                 }
                 else if(id == right_id_) {
-                    IncreaseWindowWidth::sprocess(
-                            settable.get("window_hdelta").get<long>()) ;
+                    IncreaseWindowWidth::sprocess(1, "") ;
                 }
                 else if(id == up_id_) {
-                    DecreaseWindowHeight::sprocess(
-                            settable.get("window_vdelta").get<long>()) ;
+                    DecreaseWindowHeight::sprocess(1, "") ;
                 }
                 else if(id == down_id_) {
-                    IncreaseWindowHeight::sprocess(
-                            settable.get("window_vdelta").get<long>()) ;
+                    IncreaseWindowHeight::sprocess(1, "") ;
                 }
             }
 
@@ -151,16 +147,16 @@ namespace vind
                 }
 
                 if(id == left_id_) {
-                    SelectLeftWindow::sprocess() ;
+                    SelectLeftWindow::sprocess(1, "") ;
                 }
                 else if(id == right_id_) {
-                    SelectRightWindow::sprocess() ;
+                    SelectRightWindow::sprocess(1, "") ;
                 }
                 else if(id == up_id_) {
-                    SelectUpperWindow::sprocess() ;
+                    SelectUpperWindow::sprocess(1, "") ;
                 }
                 else if(id == down_id_) {
-                    SelectLowerWindow::sprocess() ;
+                    SelectLowerWindow::sprocess(1, "") ;
                 }
             }
 
@@ -210,6 +206,7 @@ namespace vind
         WindowResizer& WindowResizer::operator=(WindowResizer&&) = default ;
 
         void WindowResizer::reconstruct() {
+            /*
             pimpl->funcfinder_.reconstruct(
                 core::Mode::EDI_NORMAL,
                 ref_global_funcs_bynames(
@@ -219,6 +216,7 @@ namespace vind
                     MoveCaretDown().name()
                 )
             ) ;
+            */
 
             auto& settable = core::SetTable::get_instance() ;
 
@@ -230,7 +228,8 @@ namespace vind
                     settable.get("window_tweight").get<int>()) ;
         }
 
-        void WindowResizer::sprocess() {
+        void WindowResizer::sprocess(
+                std::uint16_t count, const std::string& args) {
             core::InstantKeyAbsorber ika ;
 
             pimpl->funcfinder_.reset_parser_states() ;
@@ -250,7 +249,7 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto log = igate.pop_log() ;
+                core::KeyLog log{igate.pressed_list().data()} ;
                 if(!NTYPE_LOGGED(lgr.logging_state(log))) {
                     continue ;
                 }
@@ -305,14 +304,6 @@ namespace vind
             igate.release_virtually(KEYCODE_ESC) ;
             igate.release_virtually(KEYCODE_ENTER) ;
             opt::VCmdLine::reset() ;
-        }
-        void WindowResizer::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void WindowResizer::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

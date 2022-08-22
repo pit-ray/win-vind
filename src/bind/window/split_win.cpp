@@ -16,8 +16,8 @@ namespace vind
         OpenNewWindowWithHorizontalSplit::OpenNewWindowWithHorizontalSplit()
         : BindedFuncVoid("open_new_window_with_hsplit")
         {}
-
-        void OpenNewWindowWithHorizontalSplit::sprocess() {
+        void OpenNewWindowWithHorizontalSplit::sprocess(
+                std::uint16_t count, const std::string& args) {
             ForegroundInfo fginfo ;
 
             auto w = fginfo.rect.width() ;
@@ -28,7 +28,7 @@ namespace vind
                     fginfo.hwnd,
                     fginfo.rect.left(), fginfo.rect.top(),
                     w, h / 2) ;
-            OpenNewWindow::sprocess() ;
+            OpenNewWindow::sprocess(1, "") ;
 
             auto new_hwnd = util::get_foreground_window() ;
             if(new_hwnd == fginfo.hwnd) {
@@ -42,21 +42,13 @@ namespace vind
                     fginfo.rect.left(), fginfo.rect.top() + h / 2,
                     w, h / 2) ;
         }
-        void OpenNewWindowWithHorizontalSplit::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void OpenNewWindowWithHorizontalSplit::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //OpenNewWindowWithVerticalSplit
         OpenNewWindowWithVerticalSplit::OpenNewWindowWithVerticalSplit()
         : BindedFuncVoid("open_new_window_with_vsplit")
         {}
-        void OpenNewWindowWithVerticalSplit::sprocess() {
+        void OpenNewWindowWithVerticalSplit::sprocess(
+                std::uint16_t count, const std::string& args) {
             ForegroundInfo fginfo ;
 
             auto w = fginfo.rect.width() ;
@@ -67,7 +59,7 @@ namespace vind
                     fginfo.hwnd,
                     fginfo.rect.left(), fginfo.rect.top(),
                     w / 2, h) ;
-            OpenNewWindow::sprocess() ;
+            OpenNewWindow::sprocess(1, "") ;
 
             auto new_hwnd = util::get_foreground_window() ;
             if(new_hwnd == fginfo.hwnd) {
@@ -80,14 +72,6 @@ namespace vind
                     new_hwnd,
                     fginfo.rect.left() + w / 2, fginfo.rect.top(),
                     w / 2, h) ;
-        }
-        void OpenNewWindowWithVerticalSplit::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void OpenNewWindowWithVerticalSplit::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

@@ -63,7 +63,8 @@ namespace vind
         JumpWithKeybrdLayout::JumpWithKeybrdLayout(JumpWithKeybrdLayout&&)            = default ;
         JumpWithKeybrdLayout& JumpWithKeybrdLayout::operator=(JumpWithKeybrdLayout&&) = default ;
 
-        void JumpWithKeybrdLayout::sprocess() {
+        void JumpWithKeybrdLayout::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& igate = core::InputGate::get_instance() ;
             //reset key state (binded key)
             core::InstantKeyAbsorber ika ;
@@ -78,7 +79,7 @@ namespace vind
                     return ;
                 }
 
-                auto log = igate.pop_log() - toggle_keys ;
+                core::KeyLog log{(igate.pressed_list() - toggle_keys).data()} ;
                 if(log.empty()) {
                     continue ;
                 }
@@ -118,15 +119,6 @@ namespace vind
                 }
             }
         }
-        void JumpWithKeybrdLayout::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpWithKeybrdLayout::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         void JumpWithKeybrdLayout::reconstruct() {
             auto& settable = core::SetTable::get_instance() ;

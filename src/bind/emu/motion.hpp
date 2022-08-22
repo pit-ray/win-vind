@@ -13,9 +13,8 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             explicit YankWithMotion() ;
             virtual ~YankWithMotion() noexcept ;
@@ -35,9 +34,8 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             explicit DeleteWithMotion() ;
 
@@ -56,9 +54,8 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             explicit ChangeWithMotion() ;
 

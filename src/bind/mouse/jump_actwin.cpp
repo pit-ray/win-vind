@@ -15,18 +15,11 @@ namespace vind
         JumpToActiveWindow::JumpToActiveWindow()
         : BindedFuncVoid("jump_cursor_to_active_window")
         {}
-        void JumpToActiveWindow::sprocess() {
+        void JumpToActiveWindow::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
             auto rect = util::get_window_rect(hwnd) ;
             util::set_cursor_pos(rect.center()) ;
-        }
-        void JumpToActiveWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpToActiveWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

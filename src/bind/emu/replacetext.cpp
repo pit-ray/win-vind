@@ -76,7 +76,7 @@ namespace
                     return ;
                 }
 
-                auto log = igate.pop_log() ;
+                core::KeyLog log{igate.pressed_list().data()} ;
 
                 for(const auto& keycode : log) {
                     if(keycode.is_major_system()) {
@@ -229,19 +229,10 @@ namespace vind
         ReplaceChar::ReplaceChar(ReplaceChar&&) = default ;
         ReplaceChar& ReplaceChar::operator=(ReplaceChar&&) = default ;
 
-        void ReplaceChar::sprocess() {
-            pimpl->match_.replace_char(1) ;
-        }
-        void ReplaceChar::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                pimpl->match_.replace_char(parent_lgr.get_head_num()) ;
-            }
-        }
         void ReplaceChar::sprocess(
-                const core::CharLogger& UNUSED(parent_lgr)) {
-            pimpl->match_.replace_char(1) ;
+                std::uint16_t count, const std::string& args) {
+            pimpl->match_.replace_char(count) ;
         }
-
 
         //ReplaceSequence
         struct ReplaceSequence::Impl {
@@ -258,7 +249,8 @@ namespace vind
         ReplaceSequence::ReplaceSequence(ReplaceSequence&&) = default ;
         ReplaceSequence& ReplaceSequence::operator=(ReplaceSequence&&) = default ;
 
-        void ReplaceSequence::sprocess(unsigned int count) {
+        void ReplaceSequence::sprocess(
+                std::uint16_t count, const std::string& args) {
             opt::VCmdLine::clear() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI REPLACE --")) ;
 
@@ -267,22 +259,13 @@ namespace vind
             opt::VCmdLine::reset() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
         }
-        void ReplaceSequence::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void ReplaceSequence::sprocess(
-                const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //SwitchCharCase
         SwitchCharCase::SwitchCharCase()
         : ChangeBaseCreator("switch_char_case")
         {}
-        void SwitchCharCase::sprocess(unsigned int count) {
+        void SwitchCharCase::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto hwnd = util::get_foreground_window() ;
 
             auto& igate = core::InputGate::get_instance() ;
@@ -310,14 +293,6 @@ namespace vind
 
             Sleep(30) ;
             igate.pushup(KEYCODE_LSHIFT, KEYCODE_INSERT) ;
-        }
-        void SwitchCharCase::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void SwitchCharCase::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

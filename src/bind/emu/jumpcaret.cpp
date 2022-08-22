@@ -19,7 +19,8 @@ namespace vind
         JumpCaretToBOL::JumpCaretToBOL()
         : MoveBaseCreator("jump_caret_to_BOL")
         {}
-        void JumpCaretToBOL::sprocess() {
+        void JumpCaretToBOL::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
@@ -28,21 +29,13 @@ namespace vind
                 igate.pushup(KEYCODE_HOME) ;
             }
         }
-        void JumpCaretToBOL::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpCaretToBOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //JumpCaretToEOL
         JumpCaretToEOL::JumpCaretToEOL()
         : MoveBaseCreator("jump_caret_to_EOL")
         {}
-        void JumpCaretToEOL::sprocess(unsigned int count) {
+        void JumpCaretToEOL::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& igate = core::InputGate::get_instance() ;
 
             //down caret N - 1
@@ -58,21 +51,19 @@ namespace vind
                 igate.pushup(KEYCODE_LEFT) ;
             }
         }
-        void JumpCaretToEOL::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(1) ;
-            }
-        }
-        void JumpCaretToEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //EdiJumpCaret2NLine_DfBOF
         JumpCaretToBOF::JumpCaretToBOF()
         : MoveBaseCreator("jump_caret_to_BOF")
         {}
-        void JumpCaretToBOF::sprocess(unsigned int count) {
+        void JumpCaretToBOF::sprocess(
+                std::uint16_t count, const std::string& args) {
+            if(!args.empty()) {
+                if(auto num = util::extract_num(args)) {
+                    count = num ;
+                }
+            }
+
             if(is_first_line_selection()) {
                 select_line_EOL2BOL() ;
             }
@@ -96,28 +87,13 @@ namespace vind
                 }) ;
             }
         }
-        void JumpCaretToBOF::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(1) ;
-            }
-        }
-        void JumpCaretToBOF::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) return ;
-            if(auto num = util::extract_num(str)) {
-                sprocess(num) ;
-            }
-            else {
-                throw RUNTIME_EXCEPT("There is no numeric character in the passed command.") ;
-            }
-        }
-
 
         //EdiJumpCaret2NLine_DfEOF
         JumpCaretToEOF::JumpCaretToEOF()
         : MoveBaseCreator("jump_caret_to_EOF")
         {}
-        void JumpCaretToEOF::sprocess(unsigned int count) {
+        void JumpCaretToEOF::sprocess(
+                std::uint16_t count, const std::string& args) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(count == 1) {
@@ -137,16 +113,8 @@ namespace vind
                 }
             }
             else {
-                JumpCaretToBOF::sprocess(count) ;
+                JumpCaretToBOF::sprocess(count, args) ;
             }
-        }
-        void JumpCaretToEOF::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void JumpCaretToEOF::sprocess(const core::CharLogger& parent_lgr) {
-            JumpCaretToBOF::sprocess(parent_lgr) ;
         }
     }
 }

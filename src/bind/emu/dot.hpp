@@ -15,9 +15,8 @@ namespace vind
 
         public:
             explicit RepeatLastChange() ;
-            static SystemCall sprocess() ;
-            static SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
-            static SystemCall sprocess(const core::CharLogger& parent_lgr) ;
+            static SystemCall sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             inline static void store_change(
                     BindedFunc* const func,

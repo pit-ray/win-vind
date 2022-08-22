@@ -28,9 +28,8 @@ namespace vind
             EasyClickLeft(EasyClickLeft&&) ;
             EasyClickLeft& operator=(EasyClickLeft&&) ;
 
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             void reconstruct() override ;
         } ;
@@ -50,9 +49,8 @@ namespace vind
             EasyClickRight(EasyClickRight&&) ;
             EasyClickRight& operator=(EasyClickRight&&) ;
 
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             void reconstruct() override ;
         } ;
@@ -72,9 +70,8 @@ namespace vind
             EasyClickMid(EasyClickMid&&) ;
             EasyClickMid& operator=(EasyClickMid&&) ;
 
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             void reconstruct() override ;
         } ;
@@ -94,9 +91,8 @@ namespace vind
             EasyClickHover(EasyClickHover&&) ;
             EasyClickHover& operator=(EasyClickHover&&) ;
 
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             void reconstruct() override ;
         } ;

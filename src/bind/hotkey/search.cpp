@@ -15,16 +15,9 @@ namespace vind
         SearchPattern::SearchPattern()
         : BindedFuncVoid("search_pattern")
         {}
-        void SearchPattern::sprocess() {
+        void SearchPattern::sprocess(
+                std::uint16_t count, const std::string& args) {
             core::InputGate::get_instance().pushup(KEYCODE_F3) ;
-        }
-        void SearchPattern::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SearchPattern::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

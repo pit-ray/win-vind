@@ -90,22 +90,22 @@ namespace
 
         switch(rcindex) {
             case RunCommandsIndex::SET: {
-                SyscmdSet::sprocess(std::forward<Str>(args)) ;
+                SyscmdSet::sprocess(1, std::forward<Str>(args)) ;
                 return ;
             }
             case RunCommandsIndex::COMMAND: {
-                SyscmdCommand::sprocess(std::forward<Str>(args)) ;
+                SyscmdCommand::sprocess(1, std::forward<Str>(args)) ;
                 return ;
             }
             case RunCommandsIndex::DELCOMMAND: {
-                SyscmdDelcommand::sprocess(std::forward<Str>(args)) ;
+                SyscmdDelcommand::sprocess(1, std::forward<Str>(args)) ;
                 return ;
             }
             case RunCommandsIndex::COMCLEAR: {
                 if(!args.empty()) {
                     throw std::invalid_argument("comclear") ;
                 }
-                SyscmdComclear::sprocess() ;
+                SyscmdComclear::sprocess(1, "") ;
                 return ;
             }
             case RunCommandsIndex::SOURCE: {
@@ -128,7 +128,7 @@ namespace
                 }
 
                 if(!args_path.empty()) {
-                    SyscmdSource::sprocess(args_path, false) ; //overload .vindrc
+                    SyscmdSource::sprocess(1, args_path.u8string()) ; //overload .vindrc
                 }
                 return ;
             }
@@ -143,19 +143,19 @@ namespace
                 util::enum_and(rcindex, RunCommandsIndex::MASK_MODE)) ;
 
         if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAP)) {
-            SyscmdMap::sprocess(mode, std::forward<Str>(args)) ;
+            SyscmdMap::sprocess(1, std::forward<Str>(args)) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_NOREMAP)) {
-            SyscmdNoremap::sprocess(mode, std::forward<Str>(args)) ;
+            SyscmdNoremap::sprocess(1, std::forward<Str>(args)) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_UNMAP)) {
-            SyscmdUnmap::sprocess(mode, std::forward<Str>(args)) ;
+            SyscmdUnmap::sprocess(1, std::forward<Str>(args)) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {
                 throw std::invalid_argument("mapclear") ;
             }
-            SyscmdMapclear::sprocess(mode) ;
+            SyscmdMapclear::sprocess(1, "") ;
         }
         else {
             throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
@@ -178,17 +178,27 @@ namespace vind
         }
 
         SystemCall SyscmdSource::sprocess(
-                const std::filesystem::path& path,
-                bool start_from_default) {
+                std::uint16_t count, const std::string& args) {
+            std::filesystem::path path{} ;
+            if(args.empty()) {
+                path = core::RC() ;
+            }
+            else {
+                path = core::replace_path_magic(args) ;
+            }
 
             auto return_to_default = [] {
+                /*
                 core::SetTable::get_instance().reset_todef() ;
                 core::MapTable::get_instance().reset_todef() ;
+                */
             } ;
 
+            /*
             if(start_from_default) {
                 return_to_default() ;
             }
+            */
 
             std::ifstream ifs(path, std::ios::in) ;
             if(!ifs.is_open()) {
@@ -268,31 +278,6 @@ namespace vind
             }
 
             return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdSource::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
-            try {
-                auto str = parent_lgr.to_str() ;
-                if(str.empty()) {
-                    throw RUNTIME_EXCEPT("Empty command") ;
-                }
-                auto [cmd, args] = core::divide_cmd_and_args(str) ;
-                if(args.empty()) {
-                    sprocess(core::RC(), true) ;
-                }
-                else {
-                    sprocess(core::replace_path_magic(args), true) ;
-                }
-
-                return SystemCall::RECONSTRUCT ;
-            }
-            // If received syntax error as std::logic_error,
-            // convert to runtime_error not to terminate application.
-            catch(const std::exception& e) {
-                throw std::runtime_error(e.what()) ;
-            }
         }
     }
 }

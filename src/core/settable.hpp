@@ -28,10 +28,6 @@ namespace vind
 
             void clear() ;
 
-            void save_asdef() ;
-
-            void reset_todef() ;
-
             void set(const std::string& name, bool val) ;
             void set(const std::string& name, long val) ;
             void set(const std::string& name, float val) ;

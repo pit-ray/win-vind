@@ -9,16 +9,14 @@ namespace vind
     {
         struct EnableTargetingOfDedicate2Window : public BindedFuncVoid<EnableTargetingOfDedicate2Window> {
             explicit EnableTargetingOfDedicate2Window() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct DisableTargetingOfDedicate2Window : public BindedFuncVoid<DisableTargetingOfDedicate2Window> {
             explicit DisableTargetingOfDedicate2Window() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

@@ -11,25 +11,33 @@ namespace vind
         struct SyscmdMap : BindedFuncFlex<SyscmdMap> {
             explicit SyscmdMap() ;
             static SystemCall sprocess(
-                std::uint16_t count, const std::string& args) ;
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix="") ;
         } ;
 
         struct SyscmdNoremap : BindedFuncFlex<SyscmdNoremap> {
             explicit SyscmdNoremap() ;
             static SystemCall sprocess(
-                std::uint16_t count, const std::string& args) ;
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix="") ;
         } ;
 
         struct SyscmdUnmap : BindedFuncFlex<SyscmdUnmap> {
             explicit SyscmdUnmap() ;
             static SystemCall sprocess(
-                std::uint16_t count, const std::string& args) ;
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix="") ;
         } ;
 
         struct SyscmdMapclear : BindedFuncFlex<SyscmdMapclear> {
             explicit SyscmdMapclear() ;
             static SystemCall sprocess(
-                std::uint16_t count, const std::string& args) ;
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix="") ;
         } ;
     }
 }

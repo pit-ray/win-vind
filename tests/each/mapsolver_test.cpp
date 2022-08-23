@@ -7,11 +7,14 @@ namespace vind
 {
     namespace bind
     {
-        SystemCall BindedFunc::process() {
+        SystemCall BindedFunc::process(std::uint16_t, const std::string&) {
             return SystemCall::NOTHING ;
         }
 
-        BindedFunc::SPtr ref_global_func_byname(const std::string&) {
+        BindedFunc::SPtr ref_global_func_byname(const std::string& name) {
+            if(name == "click_right") {
+                return std::make_unique<BindedFunc>(name) ;
+            }
             return nullptr ;
         }
 
@@ -24,6 +27,7 @@ namespace vind
 
 TEST_SUITE("core/mapsolver") {
     using namespace vind::core ;
+    /*
 
     TEST_CASE("default") {
         MapSolver solver{} ;
@@ -428,6 +432,26 @@ TEST_SUITE("core/mapsolver") {
                 }
             }
         }
+    }
+    */
+
+    TEST_CASE("map") {
+        MapSolver solver{} ;
+        solver.add_default("a", "<click_right>") ;
+        solver.deploy_default() ;
+
+        solver.add_map("a", "{g}") ;
+        solver.deploy() ;
+
+        auto triggers = solver.get_trigger_commands() ;
+        CHECK_EQ(triggers.size(), 1) ;
+
+        CHECK_EQ(*triggers[0][0], CmdUnitSet{KEYCODE_A}) ;
+
+        auto targets = solver.get_target_commands() ;
+        CHECK_EQ(targets.size(), 1) ;
+
+        CHECK_EQ(*targets[0][0], CmdUnitSet{KEYCODE_G}) ;
     }
 
     TEST_CASE("map_command_to") {

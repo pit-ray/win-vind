@@ -3,7 +3,6 @@
 #include "mode.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
-#include "util/type_traits.hpp"
 
 #include <stdexcept>
 #include <string>
@@ -193,6 +192,116 @@ namespace vind
                     {"sour",        RunCommandsIndex::SOURCE},
                     {"sou",         RunCommandsIndex::SOURCE},
                     {"so",          RunCommandsIndex::SOURCE},
+
+                    {"map",         RunCommandsIndex::MAP},
+                    {"ma",          RunCommandsIndex::MAP},
+                    {"m",           RunCommandsIndex::MAP},
+
+                    {"gmap",        RunCommandsIndex::MAP_GUI},
+                    {"gma",         RunCommandsIndex::MAP_GUI},
+                    {"gm",          RunCommandsIndex::MAP_GUI},
+
+                    {"emap",        RunCommandsIndex::MAP_EDI},
+                    {"ema",         RunCommandsIndex::MAP_EDI},
+                    {"em",          RunCommandsIndex::MAP_EDI},
+
+                    {"nmap",        RunCommandsIndex::MAP_N},
+                    {"nma",         RunCommandsIndex::MAP_N},
+                    {"nm",          RunCommandsIndex::MAP_N},
+
+                    {"vmap",        RunCommandsIndex::MAP_V},
+                    {"vma",         RunCommandsIndex::MAP_V},
+                    {"vm",          RunCommandsIndex::MAP_V},
+
+                    {"noremap",     RunCommandsIndex::NOREMAP},
+                    {"norema",      RunCommandsIndex::NOREMAP},
+                    {"norem",       RunCommandsIndex::NOREMAP},
+                    {"nore",        RunCommandsIndex::NOREMAP},
+                    {"nor",         RunCommandsIndex::NOREMAP},
+                    {"no",          RunCommandsIndex::NOREMAP},
+
+                    {"gnoremap",    RunCommandsIndex::NOREMAP_GUI},
+                    {"gnorema",     RunCommandsIndex::NOREMAP_GUI},
+                    {"gnorem",      RunCommandsIndex::NOREMAP_GUI},
+                    {"gnore",       RunCommandsIndex::NOREMAP_GUI},
+                    {"gnor",        RunCommandsIndex::NOREMAP_GUI},
+                    {"gno",         RunCommandsIndex::NOREMAP_GUI},
+
+                    {"enoremap",    RunCommandsIndex::NOREMAP_EDI},
+                    {"enorema",     RunCommandsIndex::NOREMAP_EDI},
+                    {"enorem",      RunCommandsIndex::NOREMAP_EDI},
+                    {"enore",       RunCommandsIndex::NOREMAP_EDI},
+                    {"enor",        RunCommandsIndex::NOREMAP_EDI},
+                    {"eno",         RunCommandsIndex::NOREMAP_EDI},
+
+                    {"nnoremap",    RunCommandsIndex::NOREMAP_N},
+                    {"nnorema",     RunCommandsIndex::NOREMAP_N},
+                    {"nnorem",      RunCommandsIndex::NOREMAP_N},
+                    {"nnore",       RunCommandsIndex::NOREMAP_N},
+                    {"nnor",        RunCommandsIndex::NOREMAP_N},
+                    {"nno",         RunCommandsIndex::NOREMAP_N},
+
+                    {"vnoremap",    RunCommandsIndex::NOREMAP_V},
+                    {"vnorema",     RunCommandsIndex::NOREMAP_V},
+                    {"vnorem",      RunCommandsIndex::NOREMAP_V},
+                    {"vnore",       RunCommandsIndex::NOREMAP_V},
+                    {"vnor",        RunCommandsIndex::NOREMAP_V},
+                    {"vno",         RunCommandsIndex::NOREMAP_V},
+
+                    {"unmap",       RunCommandsIndex::UNMAP},
+                    {"unma",        RunCommandsIndex::UNMAP},
+                    {"unm",         RunCommandsIndex::UNMAP},
+                    {"un",          RunCommandsIndex::UNMAP},
+
+                    {"gunmap",      RunCommandsIndex::UNMAP_GUI},
+                    {"gunma",       RunCommandsIndex::UNMAP_GUI},
+                    {"gunm",        RunCommandsIndex::UNMAP_GUI},
+                    {"gun",         RunCommandsIndex::UNMAP_GUI},
+
+                    {"eunmap",      RunCommandsIndex::UNMAP_EDI},
+                    {"eunma",       RunCommandsIndex::UNMAP_EDI},
+                    {"eunm",        RunCommandsIndex::UNMAP_EDI},
+                    {"eun",         RunCommandsIndex::UNMAP_EDI},
+
+                    {"nunmap",      RunCommandsIndex::UNMAP_N},
+                    {"nunma",       RunCommandsIndex::UNMAP_N},
+                    {"nunm",        RunCommandsIndex::UNMAP_N},
+                    {"nun",         RunCommandsIndex::UNMAP_N},
+
+                    {"vunmap",      RunCommandsIndex::UNMAP_V},
+                    {"vunma",       RunCommandsIndex::UNMAP_V},
+                    {"vunm",        RunCommandsIndex::UNMAP_V},
+                    {"vun",         RunCommandsIndex::UNMAP_V},
+
+                    {"mapclear",    RunCommandsIndex::MAPCLEAR},
+                    {"mapclea",     RunCommandsIndex::MAPCLEAR},
+                    {"mapcle",      RunCommandsIndex::MAPCLEAR},
+                    {"mapcl",       RunCommandsIndex::MAPCLEAR},
+                    {"mapc",        RunCommandsIndex::MAPCLEAR},
+
+                    {"gmapclear",   RunCommandsIndex::MAPCLEAR_GUI},
+                    {"gmapclea",    RunCommandsIndex::MAPCLEAR_GUI},
+                    {"gmapcle",     RunCommandsIndex::MAPCLEAR_GUI},
+                    {"gmapcl",      RunCommandsIndex::MAPCLEAR_GUI},
+                    {"gmapc",       RunCommandsIndex::MAPCLEAR_GUI},
+
+                    {"emapclear",   RunCommandsIndex::MAPCLEAR_EDI},
+                    {"emapclea",    RunCommandsIndex::MAPCLEAR_EDI},
+                    {"emapcle",     RunCommandsIndex::MAPCLEAR_EDI},
+                    {"emapcl",      RunCommandsIndex::MAPCLEAR_EDI},
+                    {"emapc",       RunCommandsIndex::MAPCLEAR_EDI},
+
+                    {"nmapclear",   RunCommandsIndex::MAPCLEAR_N},
+                    {"nmapclea",    RunCommandsIndex::MAPCLEAR_N},
+                    {"nmapcle",     RunCommandsIndex::MAPCLEAR_N},
+                    {"nmapcl",      RunCommandsIndex::MAPCLEAR_N},
+                    {"nmapc",       RunCommandsIndex::MAPCLEAR_N},
+
+                    {"vmapclear",   RunCommandsIndex::MAPCLEAR_V},
+                    {"vmapclea",    RunCommandsIndex::MAPCLEAR_V},
+                    {"vmapcle",     RunCommandsIndex::MAPCLEAR_V},
+                    {"vmapcl",      RunCommandsIndex::MAPCLEAR_V},
+                    {"vmapc",       RunCommandsIndex::MAPCLEAR_V},
                 } ;
 
                 for(std::size_t i = 0 ; i < mode_num() ; i ++) {

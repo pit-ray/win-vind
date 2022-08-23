@@ -337,16 +337,17 @@ namespace
     const std::vector<std::pair<std::string, std::string>>& insert() {
         static std::vector<std::pair<std::string, std::string>> tmp = {
             {"<Esc-Left>", "<to_gui_normal>"},
+            {"<ctrl-]>", "<to_gui_normal>"},
             {"<F8>", "<to_instant_gui_normal>"},
             {"<Esc-Down>", "<to_resident>"},
             {"<Esc-Right>", "<to_edi_normal>"},
+            {"<ctrl-[>", "<to_edi_normal>"},
         } ;
         return tmp ;
     }
 
     const std::vector<std::pair<std::string, std::string>>& resident() {
         static std::vector<std::pair<std::string, std::string>> tmp = {
-
             {"<Esc-Left>", "<to_gui_normal>"},
             {"<Esc-Down>", "<to_resident>"},
             {"<Esc-Right>", "<to_edi_normal>"},
@@ -357,7 +358,6 @@ namespace
 
     const std::vector<std::pair<std::string, std::string>>& command() {
         static std::vector<std::pair<std::string, std::string>> tmp = {
-
             {"guinormal", "<to_gui_normal>"},
             {"gn", "<to_gui_normal>"},
             {"resident", "<to_resident>"},

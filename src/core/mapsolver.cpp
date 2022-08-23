@@ -161,6 +161,11 @@ namespace
             no_match_subcmd.clear() ;
         }
 
+        // Matching the target command, the loop is breaked.
+        solved_target.insert(
+            solved_target.end(),
+            no_match_subcmd.begin(), no_match_subcmd.end()) ;
+
         return solved_target ;
     }
 
@@ -313,11 +318,12 @@ namespace vind
             for(const auto& premap : pimpl->registered_map_) {
                 auto solved_target = solve_mapping(premap, tmp_maps, true) ;
                 if(!solved_target.empty()) {
+                    remove_triggered_map(solved_maps, premap.trigger_cmd) ;
                     solved_maps.emplace_back(premap.trigger_cmd, solved_target) ;
                 }
             }
 
-            for(auto& map :solved_maps) {
+            for(auto& map : solved_maps) {
                 if(map.trigger_matcher.get_command().size() == 1 &&
                         map.trigger_matcher.get_command()[0]->size() == 1 &&
                         map.target_cmd.size() == 1) {

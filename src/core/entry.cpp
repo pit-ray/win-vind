@@ -233,8 +233,8 @@ namespace vind
              */
             if(!SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)) {
                 Logger::get_instance().error(
-                        "Application scaling could not be set to Pre-Monitor V2. "
-                        "Instead, set it to Legacy DPI Aware.") ;
+                    "Application scaling could not be set to Pre-Monitor V2. "
+                    "Instead, set it to Legacy DPI Aware.") ;
 
                 if(!SetProcessDPIAware()) {
                     throw std::runtime_error("Your system is not supported DPI.") ;
@@ -258,15 +258,15 @@ namespace vind
             in.mi.dwFlags     = MOUSEEVENTF_MOVE ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
             if(!SendInput(1, &in, sizeof(INPUT))) {
-                throw std::runtime_error("Could not move the mouse cursor to show it.") ;
+                PRINT_ERROR("Could not move the mouse cursor to show it.") ;
             }
 #endif
-            bind::SyscmdSource::sprocess(1, RC().u8string()) ;
+            bind::SyscmdSource::sprocess(1, "") ;
 
             reconstruct() ;
 
-            //lower keyboard hook
-            //If you use debugger, must be disable this line not to be slow.
+            // lower keyboard hook
+            // If you use debugger, must be disable this line not to be slow.
             InputGate::get_instance().install_hook() ;
 
             std::unordered_map<std::string, bind::BindedFunc::SPtr> cm {
@@ -287,8 +287,9 @@ namespace vind
         }
 
         void VindEntry::reconstruct() {
-            auto& settable = SetTable::get_instance() ;
+            MapTable::get_instance().apply_mapping() ;
 
+            auto& settable = SetTable::get_instance() ;
             for(auto& opt : opt::all_global_options()) {
                 if(settable.get(opt->name()).get<bool>()) {
                     opt->enable() ;
@@ -301,8 +302,6 @@ namespace vind
             for(auto& func : bind::all_global_binded_funcs()) {
                 func->reconstruct() ;
             }
-
-            InputGate::get_instance().reconstruct() ;
         }
 
         void VindEntry::update() {
@@ -327,15 +326,9 @@ namespace vind
             }
 
             auto in_cmdunit = InputGate::get_instance().pressed_list() ;
-            if(in_cmdunit.empty()) {
-                return ;
-            }
-            std::cout << "in: " << in_cmdunit << std::endl ;
-
             std::uint16_t count = 1 ;
             auto solver = MapTable::get_instance().get_solver() ;
             auto out_cmd = solver->map_command_from(in_cmdunit) ;
-            std::cout << "out: " << out_cmd << std::endl ;
             if(!out_cmd.empty()) {
                 if(out_cmd.size() > 1) {
                     bind::safe_for(count, [&out_cmd] {

@@ -19,56 +19,50 @@ namespace
 {
     using namespace vind ;
 
-    template <typename T>
-    inline bool parse_argument_as_map(
-            T&& args,
-            std::string& return_arg1,
-            std::string& return_arg2) {
-        if(args.empty()) {
-            opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of map yet")) ;
-            return false ;
+    std::vector<core::Mode> prefix_to_modes(const std::string& prefix) {
+        using core::Mode ;
+        if(prefix.empty()) {
+            return {
+                Mode::GUI_NORMAL,
+                Mode::GUI_VISUAL,
+                Mode::EDI_NORMAL,
+                Mode::EDI_VISUAL,
+            } ;
+        }
+        if(prefix == "g") {
+            return {
+                Mode::GUI_NORMAL,
+                Mode::GUI_VISUAL,
+            } ;
+        }
+        if(prefix == "e") {
+            return {
+                Mode::EDI_NORMAL,
+                Mode::EDI_VISUAL,
+            } ;
+        }
+        if(prefix == "n") {
+            return {
+                Mode::GUI_NORMAL,
+                Mode::EDI_NORMAL,
+            } ;
         }
 
-        auto [a1, a2] = core::extract_double_args(std::forward<T>(args)) ;
-        if(a1.empty()) {
-            opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of map yet")) ;
-            return false ;
+        if(prefix == "v") {
+            return {
+                Mode::GUI_VISUAL,
+                Mode::EDI_VISUAL,
+            } ;
         }
-        if(a2.empty()) {
-            opt::VCmdLine::print(opt::ErrorMessage("E: Not support reference of map yet")) ;
-            return false ;
-        }
-
-        return_arg1 = std::move(a1) ;
-        return_arg2 = std::move(a2) ;
-        return true ;
-    }
-
-
-    template <typename T>
-    inline bool parse_arguments_from_logger(
-            const core::CharLogger& lgr,
-            T&& after_prefix,
-            core::Mode& return_mode,
-            std::string& return_args) {
-        auto str = lgr.to_str() ;
-        if(str.empty()) {
-            throw RUNTIME_EXCEPT("Empty command") ;
-        }
-
-        auto [cmd, args] = core::divide_cmd_and_args(str) ;
-        auto [prefix, _] = core::divide_prefix_and_cmd(cmd, after_prefix) ;
 
         auto mode = core::parse_mode_prefix(prefix) ;
         if(mode == core::Mode::UNDEFINED) {
-            PRINT_ERROR(str + " is Invalid mode prefix.") ;
-            opt::VCmdLine::print(opt::ErrorMessage("E: Unsupported mode prefix")) ;
-            return false ;
+            PRINT_ERROR(prefix + " is invalid mode prefix.") ;
+            opt::VCmdLine::print(
+                opt::ErrorMessage("E: Unsupported mode prefix")) ;
+            return {} ;
         }
-
-        return_mode = mode ;
-        return_args = std::move(args) ;
-        return true ;
+        return {mode} ;
     }
 }
 
@@ -81,15 +75,33 @@ namespace vind
         : BindedFuncFlex("system_command_map")
         {}
         SystemCall SyscmdMap::sprocess(
-                std::uint16_t count, const std::string& args) {
-            auto mode = core::Mode::GUI_NORMAL ;
-
-            std::string arg1, arg2 ;
-            if(parse_argument_as_map(args, arg1, arg2)) {
-                core::MapTable::get_instance().add_map(arg1, arg2, mode) ;
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix) {
+            if(args.empty()) {
+                opt::VCmdLine::print(
+                    opt::ErrorMessage("E: Not support list of map yet")) ;
+                return SystemCall::NOTHING ;
             }
 
-            return SystemCall::NOTHING ;
+            auto [a1, a2] = core::extract_double_args(args) ;
+            if(a1.empty()) {
+                opt::VCmdLine::print(
+                    opt::ErrorMessage("E: Not support list of map yet")) ;
+                return SystemCall::NOTHING ;
+            }
+            if(a2.empty()) {
+                opt::VCmdLine::print(
+                    opt::ErrorMessage("E: Not support reference of map yet")) ;
+                return SystemCall::NOTHING ;
+            }
+
+            auto& mtable = core::MapTable::get_instance() ;
+            auto modes = prefix_to_modes(prefix) ;
+            for(auto mode : modes) {
+                mtable.add_map(a1, a2, mode) ;
+            }
+            return SystemCall::RECONSTRUCT ;
         }
 
         // noremap
@@ -97,63 +109,75 @@ namespace vind
         : BindedFuncFlex("system_command_noremap")
         {}
         SystemCall SyscmdNoremap::sprocess(
-                std::uint16_t count, const std::string& args) {
-            auto mode = core::Mode::GUI_NORMAL ;
-
-            std::string arg1, arg2 ;
-            if(parse_argument_as_map(args, arg1, arg2)) {
-                /*
-                if(map.target_command().size() > 6 && \
-                        !bind::ref_global_funcs_bynames(map.target_command_string())) {
-                    core::Logger::get_instance().warning(
-                            "{" + \
-                            mode_to_prefix(mode) + "noremap " + \
-                            map.trigger_command_string() + " " + map.target_command_string() + \
-                            "} is not a function ID, so considered as a keystroke to be generated.") ;
-                }
-                */
-
-                auto& mtable = core::MapTable::get_instance() ;
-                mtable.add_noremap(arg1, arg2, mode) ;
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix) {
+            if(args.empty()) {
+                opt::VCmdLine::print(
+                    opt::ErrorMessage("E: Not support list of map yet")) ;
+                return SystemCall::NOTHING ;
             }
-            return SystemCall::NOTHING ;
+
+            auto [a1, a2] = core::extract_double_args(args) ;
+            if(a1.empty()) {
+                opt::VCmdLine::print(
+                    opt::ErrorMessage("E: Not support list of map yet")) ;
+                return SystemCall::NOTHING ;
+            }
+            if(a2.empty()) {
+                opt::VCmdLine::print(
+                    opt::ErrorMessage("E: Not support reference of map yet")) ;
+                return SystemCall::NOTHING ;
+            }
+
+            auto& mtable = core::MapTable::get_instance() ;
+            auto modes = prefix_to_modes(prefix) ;
+            for(auto mode : modes) {
+                mtable.add_noremap(a1, a2, mode) ;
+            }
+            return SystemCall::RECONSTRUCT ;
         }
 
         // unmap
         SyscmdUnmap::SyscmdUnmap()
         : BindedFuncFlex("system_command_unmap")
         {}
-
         SystemCall SyscmdUnmap::sprocess(
-                std::uint16_t count, const std::string& args) {
-            auto mode = core::Mode::GUI_NORMAL ;
-
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix) {
             if(args.empty()) {
                 // does not have argument is empty
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
+                return SystemCall::NOTHING ;
             }
-            else {
-                auto arg = core::extract_single_arg(args) ;
-                if(arg.empty()) {
-                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                }
-                else {
-                    core::MapTable::get_instance().remove(arg, mode) ;
-                }
+
+            auto arg = core::extract_single_arg(args) ;
+            if(arg.empty()) {
+                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
+                return SystemCall::NOTHING ;
             }
-            return SystemCall::NOTHING ;
+
+            auto modes = prefix_to_modes(prefix) ;
+            for(auto mode : modes) {
+                core::MapTable::get_instance().remove(arg, mode) ;
+            }
+            return SystemCall::RECONSTRUCT ;
         }
 
         // mapclear
         SyscmdMapclear::SyscmdMapclear()
         : BindedFuncFlex("system_command_mapclear")
         {}
-
         SystemCall SyscmdMapclear::sprocess(
-                std::uint16_t count, const std::string& args) {
-            auto mode = core::Mode::GUI_NORMAL ;
-            core::MapTable::get_instance().clear(mode) ;
-            return SystemCall::NOTHING ;
+                std::uint16_t count,
+                const std::string& args,
+                const std::string& prefix) {
+            auto modes = prefix_to_modes(prefix) ;
+            for(auto mode : modes) {
+                core::MapTable::get_instance().clear(mode) ;
+            }
+            return SystemCall::RECONSTRUCT ;
         }
     }
 }

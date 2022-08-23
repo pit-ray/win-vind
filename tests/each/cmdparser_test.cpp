@@ -10,7 +10,7 @@ namespace vind
 {
     namespace bind
     {
-        SystemCall BindedFunc::process() {
+        SystemCall BindedFunc::process(std::uint16_t, const std::string&) {
             return SystemCall::NOTHING ;
         }
 
@@ -341,6 +341,24 @@ TEST_SUITE("core/cmdparser") {
 
         SUBCASE("case9") {
             CHECK_THROWS(parse_command("<c-s><bad_function_name>{b}")) ;
+        }
+
+        SUBCASE("case10") {
+            std::vector<CmdUnitSet> expect {
+                {KEYCODE_G},
+            } ;
+
+            std::vector<UnitScope> scope {
+                UnitScope::EXTERNAL
+            } ;
+
+            auto cmd = parse_command("{g}") ;
+            CHECK_EQ(cmd.size(), expect.size()) ;
+
+            for(std::size_t i = 0 ; i < expect.size() ; i ++) {
+                CHECK(check_scope(cmd[i], scope[i])) ;
+                CHECK_EQ(*cmd[i], expect[i]) ;
+            }
         }
     }
 }

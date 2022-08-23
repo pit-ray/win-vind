@@ -25,6 +25,7 @@ namespace vind
                     solver->add_default(trigger, target) ;
                 }
                 solver->deploy_default(true) ;
+                solver->deploy() ;
                 pimpl->solvers_[m] = std::move(solver) ;
             }
         }
@@ -64,11 +65,17 @@ namespace vind
             get_solver(mode)->clear() ;
         }
 
-        void MapTable::solve_remapping(Mode mode) {
+        void MapTable::clear() {
+            for(auto& solver : pimpl->solvers_) {
+                solver->clear() ;
+            }
+        }
+
+        void MapTable::apply_mapping(Mode mode) {
             get_solver(mode)->deploy() ;
         }
 
-        void MapTable::solve_remapping() {
+        void MapTable::apply_mapping() {
             for(auto& solver : pimpl->solvers_) {
                 solver->deploy() ;
             }

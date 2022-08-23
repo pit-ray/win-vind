@@ -49,28 +49,6 @@ TEST_SUITE("core/settable") {
         auto& settable = SetTable::get_instance() ;
 
         settable.clear() ;
-
-        SUBCASE("Default") {
-            settable.set("A", 56.9) ;
-            settable.set("B", "gg") ;
-            settable.save_asdef() ;
-
-            CHECK_EQ(settable.get("A").get<float>(), 56.9f) ;
-            CHECK_EQ(settable.get("B").get<std::string>(), "gg") ;
-
-            settable.set("B", false) ;
-            settable.set("C", "hh") ;
-
-            CHECK_EQ(settable.get("A").get<float>(), 56.9f) ;
-            CHECK_EQ(settable.get("B").get<bool>(), false) ;
-            CHECK_EQ(settable.get("C").get<std::string>(), "hh") ;
-
-            settable.reset_todef() ;
-            CHECK_EQ(settable.get("A").get<float>(), 56.9f) ;
-            CHECK_EQ(settable.get("B").get<std::string>(), "gg") ;
-            CHECK_THROWS(settable.get("C")) ;
-        }
-
         SUBCASE("I/O conversion") {
             settable.set("A", true) ;
             const auto& a = settable.get("A") ;

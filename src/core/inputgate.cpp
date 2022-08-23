@@ -54,8 +54,6 @@ namespace vind
 
             bool absorb_state_ ;
 
-            NTypeLogger lgr_ ;
-
             std::queue<KeySet> pool_ ;
             bool pool_reprd_mode_ ;
 
@@ -67,7 +65,6 @@ namespace vind
               port_state_(256, false),
               timestamps_(),
               absorb_state_(true),
-              lgr_(),
               pool_(),
               pool_reprd_mode_(false)
             {}

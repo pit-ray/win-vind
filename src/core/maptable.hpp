@@ -38,9 +38,10 @@ namespace vind
                 Mode mode) ;
 
             void clear(Mode mode) ;
+            void clear() ;
 
-            void solve_remapping(Mode mode) ;
-            void solve_remapping() ;
+            void apply_mapping(Mode mode) ;
+            void apply_mapping() ;
         } ;
     }
 }

@@ -10,6 +10,7 @@ namespace vind
     {
         struct SyscmdSource : BindedFuncFlex<SyscmdSource> {
             explicit SyscmdSource() ;
+
             static SystemCall sprocess(
                 std::uint16_t count, const std::string& args) ;
         } ;

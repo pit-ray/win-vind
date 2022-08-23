@@ -14,7 +14,7 @@ namespace vind
             return tmp ;
         }
 
-        SystemCall BindedFunc::process() {
+        SystemCall BindedFunc::process(std::uint16_t, const std::string&) {
             return SystemCall::NOTHING ;
         }
 

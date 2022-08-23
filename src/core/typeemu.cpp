@@ -28,6 +28,7 @@ namespace vind
         CmdUnit::SPtr TypingEmulator::lowlevel_to_typing(const CmdUnit& raw_cmdunit) {
             if(raw_cmdunit.empty()) {
                 pimpl->prev_cmdunit_ = raw_cmdunit ;
+                pimpl->ksr_.reset() ;
                 return nullptr ;
             }
 

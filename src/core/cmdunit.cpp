@@ -163,6 +163,7 @@ namespace vind
         void ExternalCmdUnit::execute(
                 std::uint16_t count,
                 const std::string& args) {
+            std::cout << "executed(EX)\n" ;
             // To reproduce the keystroke, should consider the order for pressing.
             // The value of keycode are designed as sortable object for this purpose.
             std::vector<KeyCode> sequential(data().begin(), data().end()) ;

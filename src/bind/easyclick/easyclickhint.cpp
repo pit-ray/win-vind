@@ -25,7 +25,9 @@ namespace vind
     namespace bind
     {
         //Currrently, supported only 26 x 26 x 26 = 17576 patterns.
-        void assign_identifier_hints(std::size_t target_count, std::vector<Hint>& hints) {
+        void assign_identifier_hints(
+                std::size_t target_count,
+                std::vector<Hint>& hints) {
             // <= 26
             if(target_count <= gcx_labels.size()) {
                 hints.resize(target_count) ;
@@ -97,7 +99,9 @@ namespace vind
             }
         }
 
-        void convert_hints_to_strings(const std::vector<Hint>& hints, std::vector<std::string>& hint_strings) {
+        void convert_hints_to_strings(
+                const std::vector<Hint>& hints,
+                std::vector<std::string>& hint_strings) {
             hint_strings.resize(hints.size()) ;
 
             for(std::size_t i = 0 ; i < hints.size() ; i ++) {

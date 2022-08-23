@@ -9,21 +9,21 @@ namespace vind
 {
     namespace bind
     {
-        //Enable
         EnableTargetingOfDedicate2Window::EnableTargetingOfDedicate2Window()
         : BindedFuncVoid("enable_targeting_of_dedicate_to_window")
         {}
         void EnableTargetingOfDedicate2Window::sprocess(
-                std::uint16_t UNUSED(count), const std::string& UNUSED(args)) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             opt::Dedicate2Window::enable_targeting() ;
         }
 
-        //Disable
         DisableTargetingOfDedicate2Window::DisableTargetingOfDedicate2Window()
         : BindedFuncVoid("disable_targeting_of_dedicate_to_window")
         {}
         void DisableTargetingOfDedicate2Window::sprocess(
-                std::uint16_t UNUSED(count), const std::string& UNUSED(args)) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             opt::Dedicate2Window::disable_targeting() ;
         }
     }

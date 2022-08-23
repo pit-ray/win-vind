@@ -40,6 +40,8 @@ namespace vind
             explicit CmdUnit() ;
             explicit CmdUnit(const CmdUnitSet& codes) ;
             explicit CmdUnit(CmdUnitSet&& codes) ;
+            explicit CmdUnit(const KeyCode& code) ;
+            explicit CmdUnit(KeyCode&& code) ;
             explicit CmdUnit(std::initializer_list<KeyCode>&& codes) ;
 
             template <typename InputIterator>

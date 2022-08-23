@@ -11,7 +11,6 @@
 #include "core/inputgate.hpp"
 #include "core/keycode.hpp"
 #include "core/keycodedef.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "util/container.hpp"
@@ -166,8 +165,7 @@ namespace vind
             }
 
             auto ft = pimpl->input_hinter_.launch_async_loop(
-                    pimpl->positions_,
-                    pimpl->hints_) ;
+                    pimpl->positions_, pimpl->hints_) ;
 
             using namespace std::chrono ;
 
@@ -179,13 +177,11 @@ namespace vind
                     if(draw_num == pimpl->hints_.size()) {
                         // Hints were not matched yet, so must draw all hints.
                         pimpl->display_hinter_.paint_all_hints(
-                                pimpl->positions_,
-                                pimpl->strhints_) ;
+                                pimpl->positions_, pimpl->strhints_) ;
                     }
                     else {
                         pimpl->display_hinter_.paint_matching_hints(
-                                pimpl->positions_,
-                                pimpl->strhints_,
+                                pimpl->positions_, pimpl->strhints_,
                                 pimpl->input_hinter_.matched_counts()) ;
 
                         if(prev_draw_num != draw_num) {

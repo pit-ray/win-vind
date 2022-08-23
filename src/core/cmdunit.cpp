@@ -28,6 +28,14 @@ namespace vind
         : keycodes_(std::move(codes))
         {}
 
+        CmdUnit::CmdUnit(const KeyCode& code)
+        : keycodes_{code}
+        {}
+
+        CmdUnit::CmdUnit(KeyCode&& code)
+        : keycodes_{std::move(code)}
+        {}
+
         CmdUnit::CmdUnit(std::initializer_list<KeyCode>&& codes)
         : keycodes_(codes)
         {}

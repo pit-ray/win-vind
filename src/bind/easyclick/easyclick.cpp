@@ -8,7 +8,6 @@
 #include "bind/easyclick/inputhinter.hpp"
 #include "bind/easyclick/uiscanner.hpp"
 #include "core/keycodedef.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
 #include "util/winwrap.hpp"
@@ -32,7 +31,8 @@ namespace vind
         EasyClickLeft& EasyClickLeft::operator=(EasyClickLeft&&) = default ;
 
         void EasyClickLeft::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_LEFT, count) ;
@@ -55,7 +55,8 @@ namespace vind
         EasyClickRight& EasyClickRight::operator=(EasyClickRight&&) = default ;
 
         void EasyClickRight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_RIGHT, count) ;
@@ -78,7 +79,8 @@ namespace vind
         EasyClickMid& EasyClickMid::operator=(EasyClickMid&&) = default ;
 
         void EasyClickMid::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop(KEYCODE_MOUSE_MID, count) ;
@@ -101,7 +103,8 @@ namespace vind
         EasyClickHover& EasyClickHover::operator=(EasyClickHover&&) = default ;
 
         void EasyClickHover::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
             pimpl->core_.scan_ui_objects(hwnd) ;
             pimpl->core_.create_matching_loop() ;

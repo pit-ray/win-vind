@@ -8,6 +8,7 @@ order: 1
 disable_anchors: true
 ---
 
+**Stable Version**: {{ site.project.version }}
 
 ### Chocolatey
 win-vind supports installation using [Chocolatey](https://chocolatey.org/). To install win-vind with Chocolatey, run the following command from the command line or from PowerShell.

@@ -181,6 +181,8 @@ If you want to build with MinGW or create an installer, see [here](https://githu
 ## Contribute
 If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).
 
+The project is managed with <a href="https://github.com/users/pit-ray/projects/2">GitHub Projects</a>. 
+
 ## Related Pages
 - <a href="https://pit-ray.hatenablog.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
 - <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  

@@ -8,8 +8,12 @@ assignees: ''
 ---
 
 # About Bug
+<!--
 A clear and concise description of what the bug is.
 It would be helpful if you could attach a log file with your personal information (e.g. user directory name) withheld.
+
+To prevent duplicated issue posts, please check the task list at https://github.com/users/pit-ray/projects/2.
+-->
 
 # Steps to reproduce
 1.

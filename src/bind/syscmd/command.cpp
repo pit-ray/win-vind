@@ -32,7 +32,11 @@ namespace vind
             }
             else {
                 auto& maptable = core::MapTable::get_instance() ;
+                // No argument version
                 maptable.add_noremap(arg1, arg2, core::Mode::COMMAND) ;
+
+                // To accept arguments
+                maptable.add_noremap(arg1 + " <any>", arg2, core::Mode::COMMAND) ;
             }
 
             return SystemCall::NOTHING ;

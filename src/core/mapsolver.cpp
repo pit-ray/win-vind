@@ -27,12 +27,12 @@ namespace
         {}
     } ;
 
-    struct PreMap {
+    struct DraftMap {
         std::vector<CmdUnit::SPtr> trigger_cmd ;
         std::vector<CmdUnit::SPtr> target_cmd ;
 
         template <typename T1, typename T2>
-        PreMap(T1&& trigger_command, T2&& target_command)
+        DraftMap(T1&& trigger_command, T2&& target_command)
         : trigger_cmd(std::forward<T1>(trigger_command)),
           target_cmd(std::forward<T2>(target_command))
         {}
@@ -58,9 +58,9 @@ namespace
      * If it removed, returns true, otherwise false.
      */
     bool remove_triggered_map(
-            std::vector<PreMap>& map_table,
+            std::vector<DraftMap>& map_table,
             const std::vector<CmdUnit::SPtr>& remove_trigger) {
-        std::vector<PreMap> new_map{} ;
+        std::vector<DraftMap> new_map{} ;
         for(auto& map : map_table) {
             if(!is_same_command(map.trigger_cmd, remove_trigger)) {
                 new_map.push_back(std::move(map)) ;
@@ -89,7 +89,7 @@ namespace
      * This function is designed to call from only solve_mapping function.
      */
     std::vector<CmdUnit::SPtr> solve_mapping_recursive_impl(
-            const PreMap& premap,
+            const DraftMap& draft_map,
             std::vector<Map>& refmap_table,
             bool recursively=false) {
         std::vector<CmdUnit::SPtr> solved_target ;
@@ -98,7 +98,7 @@ namespace
         }
 
         std::vector<CmdUnit::SPtr> no_match_subcmd{} ;
-        for(const auto& in_cmdunit : premap.target_cmd) {
+        for(const auto& in_cmdunit : draft_map.target_cmd) {
             // Saves the matched number of each matcher.
             // Then, gives high priority to the matcher
             // having the maximum matched number.
@@ -117,7 +117,7 @@ namespace
 
             if(all_rejected) {
                 // If all matchers do not match with the target sub-command
-                // of premap, the target sub command keeps as is.
+                // of draft_map, the target sub command keeps as is.
                 for(auto& map : refmap_table) {
                     map.trigger_matcher.reset_state() ;
                 }
@@ -144,9 +144,9 @@ namespace
                     solved_target.insert(
                         solved_target.end(), t_cmd.begin(), t_cmd.end()) ;
                 }
-                else if(!is_same_command(premap.trigger_cmd, t_cmd)) {
+                else if(!is_same_command(draft_map.trigger_cmd, t_cmd)) {
                     auto solved_subcmd = solve_mapping_recursive_impl(
-                            PreMap{premap.trigger_cmd, t_cmd},
+                            DraftMap{draft_map.trigger_cmd, t_cmd},
                             refmap_table, true) ;
                     solved_target.insert(
                         solved_target.end(),
@@ -184,21 +184,21 @@ namespace
      *   map <s-f> uh
      *   map <c-y> uh<c-v>
      *
-     * @param[in] (premap) The target map to solve remapping.
+     * @param[in] (draft_map) The target map to solve remapping.
      * @param[in] (refmap_table) The reference map table to search a command triggered with the target command of the target map.
      * @param[in] (recursively) If it is false, it solves only once, otherwise, it solves recursively like the above example.
-     * @return The target command solved from premap.target_cmd.
+     * @return The target command solved from draft_map.target_cmd.
      *
      */
     std::vector<CmdUnit::SPtr> solve_mapping(
-            const PreMap& premap,
+            const DraftMap& draft_map,
             std::vector<Map>& refmap_table,
             bool recursively=false) {
         // Self-mapping (e.g. map <s-c> <s-c>) is invalid.
-        if(is_same_command(premap.trigger_cmd, premap.target_cmd)) {
+        if(is_same_command(draft_map.trigger_cmd, draft_map.target_cmd)) {
             return {} ;
         }
-        return solve_mapping_recursive_impl(premap, refmap_table, recursively) ;
+        return solve_mapping_recursive_impl(draft_map, refmap_table, recursively) ;
     }
 }
 
@@ -210,9 +210,9 @@ namespace vind
         struct MapSolver::Impl {
             std::vector<Map> deployed_{} ;
             std::vector<Map> default_{} ;
-            std::vector<PreMap> registered_default_{} ;
-            std::vector<PreMap> registered_noremap_{} ;
-            std::vector<PreMap> registered_map_{} ;
+            std::vector<DraftMap> registered_default_{} ;
+            std::vector<DraftMap> registered_noremap_{} ;
+            std::vector<DraftMap> registered_map_{} ;
             std::unique_ptr<TypingEmulator> typeemu_{nullptr} ;
         } ;
 
@@ -282,7 +282,7 @@ namespace vind
             solved_maps.reserve(
                 pimpl->registered_noremap_.size() + pimpl->registered_map_.size()) ;
 
-            std::vector<PreMap> tmp_noremap{} ;
+            std::vector<DraftMap> tmp_noremap{} ;
             tmp_noremap.reserve(
                 pimpl->default_.size() + pimpl->registered_noremap_.size()) ;
 
@@ -293,33 +293,33 @@ namespace vind
             }
 
             // Add and overwrite map with user-defined map.
-            for(const auto& premap : pimpl->registered_noremap_) {
-                remove_triggered_map(tmp_noremap, premap.trigger_cmd) ;
-                tmp_noremap.emplace_back(premap.trigger_cmd, premap.target_cmd) ;
+            for(const auto& draft_map : pimpl->registered_noremap_) {
+                remove_triggered_map(tmp_noremap, draft_map.trigger_cmd) ;
+                tmp_noremap.emplace_back(draft_map.trigger_cmd, draft_map.target_cmd) ;
             }
 
-            for(const auto& premap : tmp_noremap) {
-                auto solved_target = solve_mapping(premap, pimpl->default_, false) ;
+            for(const auto& draft_map : tmp_noremap) {
+                auto solved_target = solve_mapping(draft_map, pimpl->default_, false) ;
                 if(!solved_target.empty()) {
-                    solved_maps.emplace_back(premap.trigger_cmd, solved_target) ;
+                    solved_maps.emplace_back(draft_map.trigger_cmd, solved_target) ;
                 }
             }
 
             // Initialize with default noremap and solved noremap.
             // Each matcher of tmp_maps is used to solve the remapping.
             auto tmp_maps = solved_maps ;
-            for(const auto& premap : pimpl->registered_map_) {
+            for(const auto& draft_map : pimpl->registered_map_) {
                 // To remove the duplicate trigger command from default map, 
                 // By the way, noremap and map are disjoint.
-                remove_triggered_map(tmp_maps, premap.trigger_cmd) ;
-                tmp_maps.emplace_back(premap.trigger_cmd, premap.target_cmd) ;
+                remove_triggered_map(tmp_maps, draft_map.trigger_cmd) ;
+                tmp_maps.emplace_back(draft_map.trigger_cmd, draft_map.target_cmd) ;
             }
 
-            for(const auto& premap : pimpl->registered_map_) {
-                auto solved_target = solve_mapping(premap, tmp_maps, true) ;
+            for(const auto& draft_map : pimpl->registered_map_) {
+                auto solved_target = solve_mapping(draft_map, tmp_maps, true) ;
                 if(!solved_target.empty()) {
-                    remove_triggered_map(solved_maps, premap.trigger_cmd) ;
-                    solved_maps.emplace_back(premap.trigger_cmd, solved_target) ;
+                    remove_triggered_map(solved_maps, draft_map.trigger_cmd) ;
+                    solved_maps.emplace_back(draft_map.trigger_cmd, solved_target) ;
                 }
             }
 
@@ -343,8 +343,8 @@ namespace vind
             std::vector<Map> tmp_maps ;
             tmp_maps.reserve(pimpl->registered_default_.size()) ;
 
-            for(const auto& premap : pimpl->registered_default_) {
-                tmp_maps.emplace_back(premap.trigger_cmd, premap.target_cmd) ;
+            for(const auto& draft_map : pimpl->registered_default_) {
+                tmp_maps.emplace_back(draft_map.trigger_cmd, draft_map.target_cmd) ;
             }
 
             if(!solve) {
@@ -353,10 +353,10 @@ namespace vind
             }
 
             pimpl->default_.clear() ;
-            for(auto& premap : pimpl->registered_default_) {
-                auto solved_target = solve_mapping(premap, tmp_maps, true) ;
+            for(auto& draft_map : pimpl->registered_default_) {
+                auto solved_target = solve_mapping(draft_map, tmp_maps, true) ;
                 if(!solved_target.empty()) {
-                    pimpl->default_.emplace_back(premap.trigger_cmd, solved_target) ;
+                    pimpl->default_.emplace_back(draft_map.trigger_cmd, solved_target) ;
                 }
             }
         }

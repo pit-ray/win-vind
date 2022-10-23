@@ -57,7 +57,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/cov_tools
-        key: x64-coverity-cache-210829-4
+        key: x64-coverity-cache-221023
 
     - name: Install Coverity scan tools
       run: "tools/install_coverity_tools.bat $TOKEN"

@@ -69,6 +69,11 @@ namespace vind
             std::vector<std::vector<CmdUnit::SPtr>> get_target_commands() const ;
 
             void copy_deployment_from(const MapSolver& rhs) ;
+
+            bool is_matching_any() const noexcept ;
+            bool is_accepted_any() const noexcept ;
+            bool is_rejected_any() const noexcept ;
+            bool is_rejected_all() const noexcept ;
         } ;
     }
 }

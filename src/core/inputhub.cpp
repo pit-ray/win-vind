@@ -7,34 +7,35 @@
 #include "typeemu.hpp"
 
 #include "util/def.hpp"
+#include "util/string.hpp"
+
+#include <algorithm>
 #include <memory>
 
 
 namespace
 {
-    /*
     using namespace vind ;
     std::string extract_numbers(
             const core::CmdUnit& input_unit,
             bool allow_zero=true) {
-        KeyLog::Data nums{} ;
+        std::vector<char> nums{} ;
         for(const auto& keycode : input_unit) {
-            auto uni = keycode_to_unicode(keycode, input_unit) ;
+            auto uni = core::keycode_to_unicode(keycode, input_unit) ;
             if(uni.empty()) {
                 continue ;
             }
             auto ascii = uni.front() ;
             if(!allow_zero && ascii == '0') {
-                continue
+                continue ;
             }
             if('0' <= ascii && ascii <= '9') {
-                nums.insert(keycode) ;
+                nums.push_back(ascii) ;
             }
         }
-
-        return KeyLog(nums) ;
+        std::sort(nums.begin(), nums.end()) ;
+        return std::string(nums.begin(), nums.end()) ;
     }
-    */
 }
 
 namespace vind
@@ -44,6 +45,7 @@ namespace vind
         struct InputHub::Impl {
             ModeArray<std::shared_ptr<MapSolver>> solvers_{} ;
             TypingEmulator typeemu_{} ;
+            std::string count_{} ;
 
             template <typename T>
             std::shared_ptr<MapSolver> get_solver(T mode) {
@@ -83,9 +85,23 @@ namespace vind
                 return false ;
             }
 
-            std::uint16_t count = 1 ; // from inputs
-
             auto solver = pimpl->get_solver(mode) ;
+
+            if(!solver->is_matching_any()) {
+                // parses the sequence of head counts as the string
+                // and converts them into a number.
+                auto new_count = extract_numbers(*inputs, pimpl->count_.size() > 0) ;
+                if(!new_count.empty()) {
+                    pimpl->count_ += new_count ;
+                    return false ;
+                }
+            }
+
+            std::uint16_t count = 1 ;
+            if(!pimpl->count_.empty()) {
+                count = static_cast<std::uint16_t>(util::extract_num(pimpl->count_)) ;
+                pimpl->count_.clear() ;
+            }
 
             auto map_cmd = solver->map_command_from(*inputs) ;
             if(map_cmd.empty()) {
@@ -105,12 +121,16 @@ namespace vind
                 }
             }
 
+            // For commands consisting of single command unit,
+            // it is more efficient to repeat using an internal counter.
             if(map_cmd.size() == 1) {
                 fetched_inputs.push_back(map_cmd.front()) ;
                 fetched_counts.push_back(count) ;
                 return true ;
             }
 
+            // For commands consisting of the multiple unit,
+            // assume the count as one and add multiple commands with a count of one.
             std::vector<std::uint16_t> counts(map_cmd.size(), 1) ;
             for(std::uint16_t i = 0 ; i < count ; i ++) {
                 fetched_inputs.insert(

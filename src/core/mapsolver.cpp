@@ -482,5 +482,43 @@ namespace vind
             }
             return tmp ;
         }
+
+        bool MapSolver::is_matching_any() const noexcept {
+            for(const auto& map : pimpl->deployed_) {
+                if(map.trigger_matcher.history_size() > 0) {
+                    return true ;
+                }
+            }
+            return false ;
+        }
+
+        bool MapSolver::is_accepted_any() const noexcept {
+            for(const auto& map : pimpl->deployed_) {
+                if(map.trigger_matcher.is_accepted()) {
+                    return true ;
+                }
+            }
+            return false ;
+        }
+
+        bool MapSolver::is_rejected_any() const noexcept {
+            for(const auto& map : pimpl->deployed_) {
+                if(map.trigger_matcher.is_rejected()) {
+                    return true ;
+                }
+            }
+            return false ;
+        }
+
+        bool MapSolver::is_rejected_all() const noexcept {
+            bool flag = true ;
+            for(const auto& map : pimpl->deployed_) {
+                if(!map.trigger_matcher.is_rejected()) {
+                    flag = false ;
+                    break ;
+                }
+            }
+            return flag ;
+        }
     }
 }

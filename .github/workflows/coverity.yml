@@ -43,6 +43,7 @@ jobs:
     - name: Install tools
       run: |
         choco install -y unzip
+        choco install -y wget
 
     - name: Cache libraries
       uses: actions/cache@v2

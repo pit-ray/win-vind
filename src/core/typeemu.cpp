@@ -25,6 +25,15 @@ namespace vind
         TypingEmulator::TypingEmulator(TypingEmulator&&) = default ;
         TypingEmulator& TypingEmulator::operator=(TypingEmulator&&) = default ;
 
+        TypingEmulator::TypingEmulator(const TypingEmulator& rhs)
+        : pimpl(rhs.pimpl ? std::make_unique<Impl>(*(rhs.pimpl)) : std::make_unique<Impl>())
+        {}
+
+        TypingEmulator& TypingEmulator::operator=(const TypingEmulator& rhs) {
+            if(rhs.pimpl) *pimpl = *(rhs.pimpl) ;
+            return *this ;
+        }
+
         CmdUnit::SPtr TypingEmulator::lowlevel_to_typing(const CmdUnit& raw_cmdunit) {
             if(raw_cmdunit.empty()) {
                 pimpl->prev_cmdunit_ = raw_cmdunit ;

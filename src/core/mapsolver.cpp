@@ -229,6 +229,11 @@ namespace vind
         MapSolver::MapSolver(MapSolver&&) = default ;
         MapSolver& MapSolver::operator=(MapSolver&&) = default ;
 
+        void MapSolver::copy_deployment_from(const MapSolver& rhs) {
+            pimpl->deployed_ = rhs.pimpl->deployed_ ;
+            pimpl->typeemu_ = std::make_unique<TypingEmulator>(*(rhs.pimpl->typeemu_)) ;
+        }
+
         void MapSolver::add_default(
             const std::string& trigger_strcmd,
             const std::string& target_strcmd) {
@@ -382,8 +387,8 @@ namespace vind
             }
         }
 
-        std::vector<CmdUnit::SPtr> MapSolver::map_command_from(
-                const CmdUnit& raw_cmdunit) {
+        std::vector<CmdUnit::SPtr>
+        MapSolver::map_command_from(const CmdUnit& raw_cmdunit) {
             // Converts the sequentially duplicated low-level input
             // to the formatted command unit as if typing.
             CmdUnit in_cmdunit{} ;
@@ -460,7 +465,8 @@ namespace vind
             return pimpl->deployed_[max_idx].target_cmd ;
         }
 
-        std::vector<std::vector<CmdUnit::SPtr>> MapSolver::get_trigger_commands() const {
+        std::vector<std::vector<CmdUnit::SPtr>>
+        MapSolver::get_trigger_commands() const {
             std::vector<std::vector<CmdUnit::SPtr>> tmp{} ;
             for(const auto& map : pimpl->deployed_) {
                 tmp.push_back(map.trigger_matcher.get_command()) ;
@@ -468,7 +474,8 @@ namespace vind
             return tmp ;
         }
 
-        std::vector<std::vector<CmdUnit::SPtr>> MapSolver::get_target_commands() const {
+        std::vector<std::vector<CmdUnit::SPtr>>
+        MapSolver::get_target_commands() const {
             std::vector<std::vector<CmdUnit::SPtr>> tmp{} ;
             for(const auto& map : pimpl->deployed_) {
                 tmp.emplace_back(map.target_cmd) ;

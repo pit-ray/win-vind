@@ -62,23 +62,25 @@ SOFTWARE.
 
 
 #include "background.hpp"
+#include "cmdmatcher.hpp"
+#include "errlogger.hpp"
+#include "funcfinder.hpp"
+#include "inputgate.hpp"
+#include "inputhub.hpp"
+#include "mapsolver.hpp"
+#include "maptable.hpp"
+#include "mode.hpp"
+#include "ntypelogger.hpp"
+#include "path.hpp"
+#include "settable.hpp"
+
 #include "bind/bindinglist.hpp"
 #include "bind/emu/moveinsert.hpp"
 #include "bind/mode/change_mode.hpp"
 #include "bind/saferepeat.hpp"
 #include "bind/syscmd/source.hpp"
-#include "core/cmdmatcher.hpp"
-#include "core/inputgate.hpp"
-#include "errlogger.hpp"
-#include "funcfinder.hpp"
-#include "mapsolver.hpp"
-#include "maptable.hpp"
-#include "mode.hpp"
-#include "ntypelogger.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
-#include "path.hpp"
-#include "settable.hpp"
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
 #include "util/winwrap.hpp"
@@ -325,22 +327,7 @@ namespace vind
                 }
             }
 
-            auto in_cmdunit = InputGate::get_instance().pressed_list() ;
-            std::uint16_t count = 1 ;
-            auto solver = MapTable::get_instance().get_solver() ;
-            auto out_cmd = solver->map_command_from(in_cmdunit) ;
-            if(!out_cmd.empty()) {
-                if(out_cmd.size() > 1) {
-                    bind::safe_for(count, [&out_cmd] {
-                        for(auto& out_cmdunit : out_cmd) {
-                            out_cmdunit->execute(1) ;
-                        }
-                    }) ;
-                }
-                else {
-                    out_cmd.front()->execute(count) ;
-                }
-            }
+            InputHub::get_instance().pull_inputs() ;
         }
 
         void VindEntry::handle_system_call(SystemCall systemcall) {

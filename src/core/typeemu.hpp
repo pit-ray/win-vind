@@ -17,8 +17,8 @@ namespace vind
             explicit TypingEmulator() ;
             virtual ~TypingEmulator() noexcept ;
 
-            TypingEmulator(const TypingEmulator&) = delete ;
-            TypingEmulator& operator=(const TypingEmulator&) = delete ;
+            TypingEmulator(const TypingEmulator&) ;
+            TypingEmulator& operator=(const TypingEmulator&) ;
 
             TypingEmulator(TypingEmulator&&) ;
             TypingEmulator& operator=(TypingEmulator&&) ;

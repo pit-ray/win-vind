@@ -67,6 +67,8 @@ namespace vind
 
             std::vector<std::vector<CmdUnit::SPtr>> get_trigger_commands() const ;
             std::vector<std::vector<CmdUnit::SPtr>> get_target_commands() const ;
+
+            void copy_deployment_from(const MapSolver& rhs) ;
         } ;
     }
 }

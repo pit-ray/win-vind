@@ -48,7 +48,8 @@ namespace vind
 
 
         SystemCall ToInstantGUINormal::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             igate.close_all_ports_with_refresh() ;
 

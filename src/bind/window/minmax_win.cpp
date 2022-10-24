@@ -18,7 +18,8 @@ namespace vind
         : BindedFuncVoid("minimize_current_window")
         {}
         void MinimizeCurrentWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LWIN, KEYCODE_DOWN) ;
@@ -30,7 +31,8 @@ namespace vind
         : BindedFuncVoid("maximize_current_window")
         {}
         void MaximizeCurrentWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(count == 1) {

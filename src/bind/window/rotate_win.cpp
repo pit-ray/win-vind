@@ -109,7 +109,8 @@ namespace vind
         : BindedFuncVoid("rotate_windows")
         {}
         void RotateWindows::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             rotate_windows_core([count] (AngleOrderedHWND& angle_hwnds) {
                 safe_for(count, [&angle_hwnds] {
                     auto itr     = angle_hwnds.rbegin() ;
@@ -131,7 +132,8 @@ namespace vind
         : BindedFuncVoid("rotate_windows_in_reverse")
         {}
         void RotateWindowsInReverse::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             rotate_windows_core([count] (AngleOrderedHWND& angle_hwnds) {
                 safe_for(count, [&angle_hwnds] {
                     auto itr     = angle_hwnds.begin() ;

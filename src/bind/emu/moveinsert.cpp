@@ -22,8 +22,8 @@ namespace vind
         : ChangeBaseCreator("to_insert_BOL")
         {}
         void ToInsertBOL::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             core::InputGate::get_instance().pushup(KEYCODE_HOME) ;
             ToInsert::sprocess(1, "", vclmodeout) ;
@@ -34,8 +34,8 @@ namespace vind
         : ChangeBaseCreator("to_insert_append")
         {}
         void Change2EdiBkInsert::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             core::InputGate::get_instance().pushup(KEYCODE_RIGHT) ;
             ToInsert::sprocess(1, "", vclmodeout) ;
@@ -46,8 +46,8 @@ namespace vind
         : ChangeBaseCreator("to_insert_EOL")
         {}
         void ToInsertEOL::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             core::InputGate::get_instance().pushup(KEYCODE_END) ;
             ToInsert::sprocess(1, "", vclmodeout) ;
@@ -58,8 +58,8 @@ namespace vind
         : ChangeBaseCreator("to_insert_nlbelow")
         {}
         void ToInsertNLBelow::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             auto& igate = core::InputGate::get_instance() ;
             igate.pushup(KEYCODE_END) ;
@@ -72,8 +72,8 @@ namespace vind
         : ChangeBaseCreator("to_insert_nlabove")
         {}
         void ToInsertNLAbove::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             auto& igate = core::InputGate::get_instance() ;
             igate.pushup(KEYCODE_HOME) ;

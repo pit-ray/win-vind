@@ -14,7 +14,8 @@ namespace vind
         : BindedFuncVoid("switch_to_left_vdesktop")
         {}
         void SwitchVDesktop2Left::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_LEFT) ;
@@ -26,7 +27,8 @@ namespace vind
         : BindedFuncVoid("switch_to_right_vdesktop")
         {}
         void SwitchVDesktop2Right::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_RIGHT) ;
@@ -38,7 +40,8 @@ namespace vind
         : BindedFuncVoid("create_new_vdesktop")
         {}
         void CreateNewVDesktop::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_D) ;
         }
@@ -48,7 +51,8 @@ namespace vind
         : BindedFuncVoid("close_current_vdesktop")
         {}
         void CloseCurrentVDesktop::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LCTRL, KEYCODE_LWIN, KEYCODE_F4) ;
         }
@@ -58,7 +62,8 @@ namespace vind
         : BindedFuncVoid("taskview")
         {}
         void TaskView::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LWIN, KEYCODE_TAB) ;
         }

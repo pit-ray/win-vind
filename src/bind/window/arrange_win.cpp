@@ -130,7 +130,8 @@ namespace vind
         : BindedFuncVoid("arrange_windows")
         {}
         void ArrangeWindows::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
 
             //Search visible windows

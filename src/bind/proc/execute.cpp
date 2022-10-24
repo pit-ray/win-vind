@@ -21,7 +21,8 @@ namespace vind
         {}
 
         void Execute::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             auto filepath = std::filesystem::u8path(util::trim(args)) ;
             if(filepath.empty()) {
                 return ;

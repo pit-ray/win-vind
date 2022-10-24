@@ -170,8 +170,7 @@ namespace vind
 
         void ExternalCmdUnit::execute(
                 std::uint16_t count,
-                const std::string& args) {
-            std::cout << "executed(EX)\n" ;
+                const std::string& UNUSED(args)) {
             // To reproduce the keystroke, should consider the order for pressing.
             // The value of keycode are designed as sortable object for this purpose.
             std::vector<KeyCode> sequential(data().begin(), data().end()) ;
@@ -191,7 +190,7 @@ namespace vind
 
         void FunctionalCmdUnit::execute(
                 std::uint16_t count,
-                const std::string& args) {
+                const std::string& UNUSED(args)) {
             if(!has_function()) {
                 throw RUNTIME_EXCEPT("Does not have an associated function.") ;
             }

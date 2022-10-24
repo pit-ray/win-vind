@@ -175,7 +175,8 @@ namespace vind
         }
 
         SystemCall SyscmdSource::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             std::filesystem::path path{} ;
             if(args.empty()) {
                 path = core::RC() ;
@@ -202,12 +203,12 @@ namespace vind
                     continue ;
                 }
 
-                auto [cmd, args] = core::divide_cmd_and_args(aline) ;
+                auto [cmd, line_args] = core::divide_cmd_and_args(aline) ;
                 if(cmd.empty()) {
                     continue ;
                 }
 
-                if(auto err = do_runcommand(cmd, args)) {
+                if(auto err = do_runcommand(cmd, line_args)) {
                     auto ltag = "L:" + std::to_string(lnum) ;
                     std::stringstream cmdline_ss ;
                     std::stringstream log_ss ;

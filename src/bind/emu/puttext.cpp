@@ -47,9 +47,9 @@ namespace vind
         PutAfter::PutAfter()
         : ChangeBaseCreator("put_after")
         {}
-
         void PutAfter::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             if(!remove_crlf_in_clipboard()) {
                 return ;
             }
@@ -75,9 +75,9 @@ namespace vind
         PutBefore::PutBefore()
         : ChangeBaseCreator("put_before")
         {}
-
         void PutBefore::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             if(!remove_crlf_in_clipboard()) {
                 return ;
             }

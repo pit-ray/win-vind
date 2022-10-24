@@ -23,18 +23,17 @@ namespace vind
         struct MoveCursorLeft::Impl {
             util::ConstAccelerator ca_{} ;
         } ;
-
         MoveCursorLeft::MoveCursorLeft()
         : BindedFuncVoid("move_cursor_left"),
           pimpl(std::make_unique<Impl>())
         {}
-
         MoveCursorLeft::~MoveCursorLeft() noexcept                  = default ;
         MoveCursorLeft::MoveCursorLeft(MoveCursorLeft&&)            = default ;
         MoveCursorLeft& MoveCursorLeft::operator=(MoveCursorLeft&&) = default ;
 
         void MoveCursorLeft::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto delta = pimpl->ca_.delta<int>() * count ;
             util::move_cursor(-delta, 0) ;
         }
@@ -48,23 +47,21 @@ namespace vind
                     settable.get("cursor_tweight").get<int>()) ;
         }
 
-
         //MoveCursorRight
         struct MoveCursorRight::Impl {
             util::ConstAccelerator ca_{} ;
         } ;
-
         MoveCursorRight::MoveCursorRight()
         : BindedFuncVoid("move_cursor_right"),
           pimpl(std::make_unique<Impl>())
         {}
-
         MoveCursorRight::~MoveCursorRight() noexcept                   = default ;
         MoveCursorRight::MoveCursorRight(MoveCursorRight&&)            = default ;
         MoveCursorRight& MoveCursorRight::operator=(MoveCursorRight&&) = default ;
 
         void MoveCursorRight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto delta = pimpl->ca_.delta<int>() * count ;
             util::move_cursor(delta, 0) ;
         }
@@ -78,23 +75,21 @@ namespace vind
                     settable.get("cursor_tweight").get<int>()) ;
         }
 
-
         //MoveCursorUp
         struct MoveCursorUp::Impl {
             util::ConstAccelerator ca_{} ;
         } ;
-
         MoveCursorUp::MoveCursorUp()
         : BindedFuncVoid("move_cursor_up"),
           pimpl(std::make_unique<Impl>())
         {}
-
         MoveCursorUp::~MoveCursorUp() noexcept                = default ;
         MoveCursorUp::MoveCursorUp(MoveCursorUp&&)            = default ;
         MoveCursorUp& MoveCursorUp::operator=(MoveCursorUp&&) = default ;
 
         void MoveCursorUp::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto delta = pimpl->ca_.delta<int>() * count ;
             util::move_cursor(0, -delta) ;
         }
@@ -112,18 +107,17 @@ namespace vind
         struct MoveCursorDown::Impl {
             util::ConstAccelerator ca_{} ;
         } ;
-
         MoveCursorDown::MoveCursorDown()
         : BindedFuncVoid("move_cursor_down"),
           pimpl(std::make_unique<Impl>())
         {}
-
         MoveCursorDown::~MoveCursorDown() noexcept                  = default ;
         MoveCursorDown::MoveCursorDown(MoveCursorDown&&)            = default ;
         MoveCursorDown& MoveCursorDown::operator=(MoveCursorDown&&) = default ;
 
         void MoveCursorDown::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto delta = pimpl->ca_.delta<int>() * count ;
             util::move_cursor(0, delta) ;
         }

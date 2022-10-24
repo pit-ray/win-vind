@@ -16,7 +16,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_active_window")
         {}
         void JumpToActiveWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
             auto rect = util::get_window_rect(hwnd) ;
             util::set_cursor_pos(rect.center()) ;

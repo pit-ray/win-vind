@@ -20,7 +20,8 @@ namespace vind
         : BindedFuncVoid("makedir")
         {}
         void MakeDir::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             std::filesystem::path path = util::trim(args) ;
 
             if(path.is_absolute()) {

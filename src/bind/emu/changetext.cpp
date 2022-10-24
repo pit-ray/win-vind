@@ -22,7 +22,8 @@ namespace vind
         : BindedFuncVoid("change_highlight_text")
         {}
         void ChangeHighlightText::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
                 set_register_type(RegType::Lines) ;
@@ -38,7 +39,8 @@ namespace vind
         : ChangeBaseCreator("change_line")
         {}
         void ChangeLine::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             auto res = get_selected_text([&igate] {
                 igate.pushup(KEYCODE_HOME) ;
@@ -61,13 +63,13 @@ namespace vind
             ToInsert::sprocess(1, "", false) ;
         }
 
-
         //ChangeChar
         ChangeChar::ChangeChar()
         : ChangeBaseCreator("change_char")
         {}
         void ChangeChar::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             safe_for(count, [&igate] {
@@ -85,7 +87,6 @@ namespace vind
 
             ToInsert::sprocess(1, "", false) ;
         }
-
 
         //ChangeUntilEOL
         ChangeUntilEOL::ChangeUntilEOL()
@@ -118,7 +119,8 @@ namespace vind
          *
          */
         void ChangeUntilEOL::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             DeleteLineUntilEOL::sprocess(count, "") ;
             ToInsert::sprocess(1, "", false) ;
         }

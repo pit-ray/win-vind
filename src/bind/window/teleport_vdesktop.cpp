@@ -17,7 +17,8 @@ namespace vind
         : BindedFuncVoid("teleport_over_vdesktop")
         {}
         void TeleportOverVDesktop::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
 #ifdef DEBUG
             /*
             if(util::is_failed(CoInitialize(NULL))) {

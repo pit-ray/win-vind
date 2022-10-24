@@ -25,7 +25,8 @@ namespace vind
         {}
 
         SystemCall SyscmdSet::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             auto& settable = core::SetTable::get_instance() ;
 
             if(args.find("=") != std::string::npos) { // set option_name = value

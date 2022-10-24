@@ -19,7 +19,8 @@ namespace vind
         : BindedFuncVoid("open_new_window")
         {}
         void OpenNewWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
 
             DWORD proc_id = 0 ;

@@ -16,7 +16,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_left")
         {}
         void JumpToLeft::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto pos = util::get_cursor_pos() ;
             util::set_cursor_pos(0, pos.y()) ;
         }
@@ -26,7 +27,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_right")
         {}
         void JumpToRight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto pos = util::get_cursor_pos() ;
 
             auto box = util::get_combined_metrics() ;
@@ -42,7 +44,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_top")
         {}
         void JumpToTop::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
 
@@ -54,7 +57,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_bottom")
         {}
         void JumpToBottom::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
 
@@ -69,7 +73,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_hcenter")
         {}
         void JumpToHorizontalCenter::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
             util::set_cursor_pos(box.center_x(), pos.y()) ;
@@ -80,7 +85,8 @@ namespace vind
         : BindedFuncVoid("jump_cursor_to_vcenter")
         {}
         void JumpToVerticalCenter::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto pos = util::get_cursor_pos() ;
             auto box = util::get_combined_metrics() ;
             util::set_cursor_pos(pos.x(), box.center_y()) ;

@@ -88,7 +88,8 @@ namespace vind
         : BindedFuncVoid("select_left_window")
         {}
         void SelectLeftWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_x() >= erect.center_x() ;
             } ;
@@ -107,7 +108,8 @@ namespace vind
         : BindedFuncVoid("select_right_window")
         {}
         void SelectRightWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_x() <= erect.center_x() ;
             } ;
@@ -126,7 +128,8 @@ namespace vind
         : BindedFuncVoid("select_upper_window")
         {}
         void SelectUpperWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_y() >= erect.center_y() ;
             } ;
@@ -145,7 +148,8 @@ namespace vind
         : BindedFuncVoid("select_lower_window")
         {}
         void SelectLowerWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto is_if_target = [] (const auto& rect, const auto& erect) {
                 return rect.center_y() <= erect.center_y() ;
             } ;

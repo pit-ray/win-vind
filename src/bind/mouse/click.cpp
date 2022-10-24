@@ -18,7 +18,8 @@ namespace vind
         : BindedFuncVoid("click_left")
         {}
         void ClickLeft::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             using core::Mode ;
             if(core::get_global_mode() == Mode::GUI_VISUAL) {
                 core::set_global_mode(Mode::GUI_NORMAL) ;
@@ -34,7 +35,8 @@ namespace vind
         : BindedFuncVoid("click_right")
         {}
         void ClickRight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             using core::Mode ;
             if(core::get_global_mode() == Mode::GUI_VISUAL) {
                 core::set_global_mode(Mode::GUI_NORMAL) ;

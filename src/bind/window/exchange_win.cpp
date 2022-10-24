@@ -58,7 +58,8 @@ namespace vind
         : BindedFuncVoid("exchange_window_with_nearest")
         {}
         void ExchangeWindowWithNearest::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             g_near_hwnds.clear() ;
 
             ForegroundInfo fginfo ;

@@ -15,9 +15,9 @@ namespace vind
         SelectAll::SelectAll()
         : BindedFuncVoid("select_all")
         {}
-
         void SelectAll::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             util::click(KEYCODE_MOUSE_LEFT) ;
             core::InputGate::get_instance().pushup(
                     KEYCODE_LCTRL, KEYCODE_A) ;
@@ -28,7 +28,8 @@ namespace vind
         : BindedFuncVoid("forward_ui_navigation")
         {}
         void ForwardUINavigation::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(KEYCODE_TAB) ;
             }) ;
@@ -39,7 +40,8 @@ namespace vind
         : BindedFuncVoid("backward_ui_navigation")
         {}
         void BackwardUINavigation::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LSHIFT, KEYCODE_TAB) ;
@@ -51,7 +53,8 @@ namespace vind
         : BindedFuncVoid("decide_focused_ui_object")
         {}
         void DecideFocusedUIObject::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(KEYCODE_SPACE) ;
         }
     }

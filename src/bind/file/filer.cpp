@@ -20,9 +20,9 @@ namespace vind
         : BindedFuncVoid("save")
         {}
         void Save::sprocess(
-                std::uint16_t count, const std::string& args) {
-            core::InputGate::get_instance().pushup(
-                    KEYCODE_LCTRL, KEYCODE_S) ;
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_S) ;
         }
 
         //Open
@@ -30,9 +30,9 @@ namespace vind
         : BindedFuncVoid("open")
         {}
         void Open::sprocess(
-                std::uint16_t count, const std::string& args) {
-            core::InputGate::get_instance().pushup(
-                    KEYCODE_LCTRL, KEYCODE_O) ;
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_O) ;
         }
     }
 }

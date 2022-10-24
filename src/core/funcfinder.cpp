@@ -65,8 +65,8 @@ namespace vind
             do_reconstruct(mode) ;
         }
 
-        void FuncFinder::do_reconstruct(Mode mode) {
-            auto& maptable = MapTable::get_instance() ;
+        void FuncFinder::do_reconstruct(Mode UNUSED(mode)) {
+            // auto& maptable = MapTable::get_instance() ;
 
             std::unordered_set<std::size_t> funcid_set ;
             for(const auto& func : pimpl->funcs_) {

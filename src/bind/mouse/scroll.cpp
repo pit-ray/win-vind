@@ -31,10 +31,10 @@ namespace vind
         : BindedFuncVoid("scroll_up")
         {}
         void ScrollUp::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(
-                    settable.get("vscroll_speed").get<int>() * count) ;
+            util::vscroll(settable.get("vscroll_speed").get<int>() * count) ;
         }
 
         //ScrollDown
@@ -42,10 +42,10 @@ namespace vind
         : BindedFuncVoid("scroll_down")
         {}
         void ScrollDown::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
-            util::vscroll(
-                    -1 * settable.get("vscroll_speed").get<int>() * count) ;
+            util::vscroll(-settable.get("vscroll_speed").get<int>() * count) ;
         }
 
         //ScrollUpHalfPage
@@ -53,7 +53,8 @@ namespace vind
         : BindedFuncVoid("scroll_up_halfpage")
         {}
         void ScrollUpHalfPage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
@@ -66,7 +67,8 @@ namespace vind
         : BindedFuncVoid("scroll_down_halfpage")
         {}
         void ScrollDownHalfPage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
@@ -79,7 +81,8 @@ namespace vind
         : BindedFuncVoid("scroll_up_onepage")
         {}
         void ScrollUpOnePage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
@@ -92,7 +95,8 @@ namespace vind
         : BindedFuncVoid("scroll_down_onepage")
         {}
         void ScrollDownOnePage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
@@ -106,10 +110,10 @@ namespace vind
         : BindedFuncVoid("scroll_left")
         {}
         void ScrollLeft::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
-            util::hscroll(
-                    -1 * settable.get("hscroll_speed").get<int>() * count) ;
+            util::hscroll(-settable.get("hscroll_speed").get<int>() * count) ;
         }
 
         //ScrollRight
@@ -117,10 +121,10 @@ namespace vind
         : BindedFuncVoid("scroll_right")
         {}
         void ScrollRight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
-            util::hscroll(
-                    settable.get("hscroll_speed").get<float>() * count) ;
+            util::hscroll(settable.get("hscroll_speed").get<float>() * count) ;
         }
 
         //ScrollLeftHalfPage
@@ -128,7 +132,8 @@ namespace vind
         : BindedFuncVoid("scroll_left_halfpage")
         {}
         void ScrollLeftHalfPage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;
@@ -141,7 +146,8 @@ namespace vind
         : BindedFuncVoid("scroll_right_halfpage")
         {}
         void ScrollRightHalfPage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
             util::MonitorInfo m_info ;
             util::get_monitor_metrics(util::get_cursor_pos(), m_info) ;

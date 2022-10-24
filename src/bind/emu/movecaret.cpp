@@ -22,9 +22,9 @@ namespace vind
         MoveCaretLeft::MoveCaretLeft()
         : MoveBaseCreator("move_caret_left")
         {}
-
         void MoveCaretLeft::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 safe_for(count, [&igate] {
@@ -42,9 +42,9 @@ namespace vind
         MoveCaretRight::MoveCaretRight()
         : MoveBaseCreator("move_caret_right")
         {}
-
         void MoveCaretRight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 safe_for(count, [&igate] {
@@ -62,12 +62,12 @@ namespace vind
         MoveCaretUp::MoveCaretUp()
         : MoveBaseCreator("move_caret_up")
         {}
-
         void MoveCaretUp::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             if(!args.empty()) {
                 if(auto num = util::extract_num(args)) {
-                    count = num ;
+                    count = static_cast<std::uint16_t>(num) ;
                 }
             }
 
@@ -93,12 +93,12 @@ namespace vind
         MoveCaretDown::MoveCaretDown()
         : MoveBaseCreator("move_caret_down")
         {}
-
         void MoveCaretDown::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             if(!args.empty()) {
                 if(auto num = util::extract_num(args)) {
-                    count = num ;
+                    count = static_cast<std::uint16_t>(num) ;
                 }
             }
 
@@ -128,9 +128,9 @@ namespace vind
         MoveCaretWordForward::MoveCaretWordForward()
         : MoveBaseCreator("move_caret_word_forward")
         {}
-
         void MoveCaretWordForward::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -149,9 +149,9 @@ namespace vind
         MoveCaretWordBackward::MoveCaretWordBackward()
         : MoveBaseCreator("move_caret_word_backward")
         {}
-
         void MoveCaretWordBackward::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -170,9 +170,9 @@ namespace vind
         MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward()
         : MoveBaseCreator("move_caret_nonblank_word_forward")
         {}
-
         void MoveCaretNonBlankWordForward::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -191,9 +191,9 @@ namespace vind
         MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward()
         : MoveBaseCreator("move_caret_nonblank_word_backward")
         {}
-
         void MoveCaretNonBlankWordBackward::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {

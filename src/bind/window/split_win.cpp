@@ -17,7 +17,8 @@ namespace vind
         : BindedFuncVoid("open_new_window_with_hsplit")
         {}
         void OpenNewWindowWithHorizontalSplit::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             ForegroundInfo fginfo ;
 
             auto w = fginfo.rect.width() ;
@@ -48,7 +49,8 @@ namespace vind
         : BindedFuncVoid("open_new_window_with_vsplit")
         {}
         void OpenNewWindowWithVerticalSplit::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             ForegroundInfo fginfo ;
 
             auto w = fginfo.rect.width() ;

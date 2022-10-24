@@ -79,7 +79,8 @@ namespace vind
         }
 
         void SwitchWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             core::InstantKeyAbsorber ika ;

@@ -182,7 +182,8 @@ namespace vind
         YankWithMotion& YankWithMotion::operator=(YankWithMotion&&) = default ;
 
         void YankWithMotion::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -227,7 +228,8 @@ namespace vind
         DeleteWithMotion& DeleteWithMotion::operator=(DeleteWithMotion&&) = default ;
 
         void DeleteWithMotion::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,
@@ -272,7 +274,8 @@ namespace vind
         ChangeWithMotion::ChangeWithMotion(ChangeWithMotion&&) = default ;
         ChangeWithMotion& ChangeWithMotion::operator=(ChangeWithMotion&&) = default ;
         void ChangeWithMotion::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             if(select_by_motion(
                     id(),
                     pimpl->bg_,

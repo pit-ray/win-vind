@@ -58,7 +58,8 @@ namespace vind
         : BindedFuncVoid("start_shell")
         {}
         void StartShell::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& settable = core::SetTable::get_instance() ;
             util::create_process(
                     get_shell_startupdirectory(),
@@ -73,7 +74,8 @@ namespace vind
         : BindedFuncVoid("start_external")
         {}
         void StartExternal::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             auto cmd = util::trim(args) ;
             if(cmd.empty()) {
                 return ;
@@ -124,9 +126,9 @@ namespace vind
         : BindedFuncVoid("start_explorer")
         {}
         void StartExplorer::sprocess(
-                std::uint16_t count, const std::string& args) {
-            core::InputGate::get_instance().pushup(
-                    KEYCODE_LWIN, KEYCODE_E) ;
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputGate::get_instance().pushup(KEYCODE_LWIN, KEYCODE_E) ;
             Sleep(100) ; //wait until select window by OS.
             JumpToActiveWindow::sprocess(1, "") ;
         }
@@ -136,7 +138,8 @@ namespace vind
         : BindedFuncVoid("open_startmenu")
         {}
         void OpenStartMenu::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(KEYCODE_LWIN) ;
             Sleep(100) ; //wait until select window by OS.
             JumpToActiveWindow::sprocess(1, "") ;

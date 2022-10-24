@@ -1,7 +1,5 @@
 #include "change_mode.hpp"
 
-#include <windows.h>
-
 #include "bind/emu/textsel.hpp"
 #include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
@@ -29,8 +27,8 @@ namespace vind
         : BindedFuncVoid("to_gui_normal")
         {}
         void ToGUINormal::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             using core::Mode ;
 
@@ -63,8 +61,8 @@ namespace vind
         : BindedFuncVoid("to_resident")
         {}
         void ToResident::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             auto& igate = core::InputGate::get_instance() ;
             igate.close_all_ports() ;
@@ -80,8 +78,8 @@ namespace vind
         : BindedFuncVoid("to_gui_visual")
         {}
         void ToGUIVisual::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             core::set_global_mode(core::Mode::GUI_VISUAL) ;
             if(vclmodeout) {
@@ -101,8 +99,8 @@ namespace vind
                     scanner_.get_properties()) ;
         }
         void ToEdiNormal::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             using core::Mode ;
             auto mode = core::get_global_mode() ;
@@ -138,8 +136,8 @@ namespace vind
         : BindedFuncVoid("to_insert")
         {}
         void ToInsert::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             using core::Mode ;
             if(core::get_global_mode() == Mode::GUI_NORMAL) {
@@ -162,8 +160,8 @@ namespace vind
         : BindedFuncVoid("to_edi_visual")
         {}
         void ToEdiVisual::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             select_words() ;
             core::set_global_mode(core::Mode::EDI_VISUAL) ;
@@ -177,8 +175,8 @@ namespace vind
         : BindedFuncVoid("to_edi_visual_line")
         {}
         void ToEdiVisualLine::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 bool vclmodeout) {
             select_line_EOL2BOL() ;
             core::set_global_mode(

@@ -104,7 +104,8 @@ namespace vind
         : BindedFuncVoid("resize_window_width")
         {}
         void ResizeWindowWidth::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             if(args.empty()) {
                 return ;
             }
@@ -118,7 +119,8 @@ namespace vind
         : BindedFuncVoid("increase_window_width")
         {}
         void IncreaseWindowWidth::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             long delta = 0 ;
             if(args.empty()) {
                 auto& settable = core::SetTable::get_instance() ;
@@ -138,7 +140,8 @@ namespace vind
         : BindedFuncVoid("decrease_window_width")
         {}
         void DecreaseWindowWidth::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             long delta = 0 ;
             if(args.empty()) {
                 auto& settable = core::SetTable::get_instance() ;
@@ -167,7 +170,8 @@ namespace vind
         : BindedFuncVoid("resize_window_height")
         {}
         void ResizeWindowHeight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             if(args.empty()) {
                 return ;
             }
@@ -181,7 +185,8 @@ namespace vind
         : BindedFuncVoid("increase_window_height")
         {}
         void IncreaseWindowHeight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             long delta = 0 ;
             if(args.empty()) {
                 auto& settable = core::SetTable::get_instance() ;
@@ -201,7 +206,8 @@ namespace vind
         : BindedFuncVoid("decrease_window_height")
         {}
         void DecreaseWindowHeight::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             long delta = 0 ;
             if(args.empty()) {
                 auto& settable = core::SetTable::get_instance() ;

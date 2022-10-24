@@ -16,7 +16,8 @@ namespace vind
         : ChangeBaseCreator("join_next_line")
         {}
         void JoinNextLine::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 auto& igate = core::InputGate::get_instance() ;
                 igate.pushup(KEYCODE_END) ;

@@ -17,7 +17,8 @@ namespace vind
         : BindedFuncFlex("system_command_command")
         {}
         SystemCall SyscmdCommand::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             if(args.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
                 return SystemCall::NOTHING ;
@@ -47,7 +48,8 @@ namespace vind
         : BindedFuncFlex("system_command_delcommand")
         {}
         SystemCall SyscmdDelcommand::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
             if(args.empty()) {
                 // does not have argument is empty
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
@@ -71,7 +73,8 @@ namespace vind
         : BindedFuncFlex("system_command_comclear")
         {}
         SystemCall SyscmdComclear::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& maptable = core::MapTable::get_instance() ;
             maptable.clear(core::Mode::COMMAND) ;
             return SystemCall::NOTHING ;

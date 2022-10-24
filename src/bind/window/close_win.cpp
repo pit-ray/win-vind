@@ -13,9 +13,9 @@ namespace vind
         : BindedFuncVoid("close_current_window")
         {}
         void CloseCurrentWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
-            core::InputGate::get_instance().pushup(
-                    KEYCODE_LALT, KEYCODE_F4) ;
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputGate::get_instance().pushup(KEYCODE_LALT, KEYCODE_F4) ;
         }
     }
 }

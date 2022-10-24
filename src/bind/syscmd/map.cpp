@@ -75,7 +75,7 @@ namespace vind
         : BindedFuncFlex("system_command_map")
         {}
         SystemCall SyscmdMap::sprocess(
-                std::uint16_t count,
+                std::uint16_t UNUSED(count),
                 const std::string& args,
                 const std::string& prefix) {
             if(args.empty()) {
@@ -109,7 +109,7 @@ namespace vind
         : BindedFuncFlex("system_command_noremap")
         {}
         SystemCall SyscmdNoremap::sprocess(
-                std::uint16_t count,
+                std::uint16_t UNUSED(count),
                 const std::string& args,
                 const std::string& prefix) {
             if(args.empty()) {
@@ -143,7 +143,7 @@ namespace vind
         : BindedFuncFlex("system_command_unmap")
         {}
         SystemCall SyscmdUnmap::sprocess(
-                std::uint16_t count,
+                std::uint16_t UNUSED(count),
                 const std::string& args,
                 const std::string& prefix) {
             if(args.empty()) {
@@ -170,8 +170,8 @@ namespace vind
         : BindedFuncFlex("system_command_mapclear")
         {}
         SystemCall SyscmdMapclear::sprocess(
-                std::uint16_t count,
-                const std::string& args,
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args),
                 const std::string& prefix) {
             auto modes = prefix_to_modes(prefix) ;
             for(auto mode : modes) {

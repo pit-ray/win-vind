@@ -44,7 +44,8 @@ namespace vind
         : BindedFuncVoid("snap_current_window_to_left")
         {}
         void SnapCurrentWindow2Left::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D{
                     mrect.left(),
@@ -66,7 +67,8 @@ namespace vind
         : BindedFuncVoid("snap_current_window_to_right")
         {}
         void SnapCurrentWindow2Right::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D {
                     mrect.center_x(),
@@ -88,7 +90,8 @@ namespace vind
         : BindedFuncVoid("snap_current_window_to_top")
         {}
         void SnapCurrentWindow2Top::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D {
                     mrect.left(),
@@ -110,7 +113,8 @@ namespace vind
         : BindedFuncVoid("snap_current_window_to_bottom")
         {}
         void SnapCurrentWindow2Bottom::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D {
                     mrect.left(),

@@ -64,7 +64,8 @@ namespace vind
         JumpWithKeybrdLayout& JumpWithKeybrdLayout::operator=(JumpWithKeybrdLayout&&) = default ;
 
         void JumpWithKeybrdLayout::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             //reset key state (binded key)
             core::InstantKeyAbsorber ika ;

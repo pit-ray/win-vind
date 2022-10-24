@@ -230,7 +230,8 @@ namespace vind
         ReplaceChar& ReplaceChar::operator=(ReplaceChar&&) = default ;
 
         void ReplaceChar::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             pimpl->match_.replace_char(count) ;
         }
 
@@ -250,7 +251,8 @@ namespace vind
         ReplaceSequence& ReplaceSequence::operator=(ReplaceSequence&&) = default ;
 
         void ReplaceSequence::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             opt::VCmdLine::clear() ;
             opt::VCmdLine::print(opt::GeneralMessage("-- EDI REPLACE --")) ;
 
@@ -265,7 +267,8 @@ namespace vind
         : ChangeBaseCreator("switch_char_case")
         {}
         void SwitchCharCase::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
 
             auto& igate = core::InputGate::get_instance() ;

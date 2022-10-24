@@ -271,7 +271,8 @@ namespace vind
         : MoveBaseCreator("move_fwd_word")
         {}
         void MoveFwdWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             fwd_word(count, false) ;
         }
 
@@ -279,7 +280,8 @@ namespace vind
         : MoveBaseCreator("move_fwd_bigword")
         {}
         void MoveFwdBigWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             fwd_word(count, true) ;
         }
 
@@ -287,7 +289,8 @@ namespace vind
         : MoveBaseCreator("move_bck_word")
         {}
         void MoveBckWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bck_word(count, false) ;
         }
 
@@ -295,7 +298,8 @@ namespace vind
         : MoveBaseCreator("move_bck_bigword")
         {}
         void MoveBckBigWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bck_word(count, true) ;
         }
 
@@ -303,7 +307,8 @@ namespace vind
         : MoveBaseCreator("move_end_word")
         {}
         void MoveEndWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             end_word(count, false) ;
         }
 
@@ -311,7 +316,8 @@ namespace vind
         : MoveBaseCreator("move_end_bigword")
         {}
         void MoveEndBigWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             end_word(count, true) ;
         }
 
@@ -319,7 +325,8 @@ namespace vind
         : MoveBaseCreator("move_bckend_word")
         {}
         void MoveBckEndWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bckend_word(count, false) ;
         }
 
@@ -327,17 +334,18 @@ namespace vind
         : MoveBaseCreator("move_bckend_bigword")
         {}
         void MoveBckEndBigWord::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bckend_word(count, true) ;
         }
-
 
         // For visual mode.
         MoveFwdWordSimple::MoveFwdWordSimple()
         : MoveBaseCreator("move_fwd_word_simple")
         {}
         void MoveFwdWordSimple::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -356,7 +364,8 @@ namespace vind
         : MoveBaseCreator("move_bck_word_simple")
         {}
         void MoveBckWordSimple::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {

@@ -20,7 +20,8 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_BOL")
         {}
         void JumpCaretToBOL::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 igate.pushup(KEYCODE_LSHIFT, KEYCODE_HOME) ;
@@ -35,7 +36,8 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_EOL")
         {}
         void JumpCaretToEOL::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             //down caret N - 1
@@ -57,10 +59,11 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_BOF")
         {}
         void JumpCaretToBOF::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             if(!args.empty()) {
                 if(auto num = util::extract_num(args)) {
-                    count = num ;
+                    count = static_cast<std::uint16_t>(num) ;
                 }
             }
 
@@ -93,7 +96,8 @@ namespace vind
         : MoveBaseCreator("jump_caret_to_EOF")
         {}
         void JumpCaretToEOF::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& args) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(count == 1) {

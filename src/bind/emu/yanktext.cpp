@@ -20,7 +20,8 @@ namespace vind
         : BindedFuncVoid("yank_highlight_text")
         {}
         void YankHighlightText::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
@@ -41,7 +42,8 @@ namespace vind
         : BindedFuncVoid("yank_line")
         {}
         void YankLine::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_HOME) ;

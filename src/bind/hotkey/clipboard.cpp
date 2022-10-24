@@ -22,7 +22,8 @@ namespace vind
         : BindedFuncVoid("hotkey_copy")
         {}
         void HotkeyCopy::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //there are cases in which not editable.
@@ -35,7 +36,8 @@ namespace vind
         : BindedFuncVoid("hotkey_paste")
         {}
         void HotkeyPaste::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //not selecting at paste.
@@ -47,7 +49,8 @@ namespace vind
         : BindedFuncVoid("hotkey_cut")
         {}
         void HotkeyCut::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
             core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
         }
@@ -57,7 +60,8 @@ namespace vind
         : BindedFuncVoid("hotkey_delete")
         {}
         void HotkeyDelete::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //selecting->cut
@@ -72,7 +76,8 @@ namespace vind
         : BindedFuncVoid("hotkey_backspace")
         {}
         void HotkeyBackspace::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             util::release_mousestate(KEYCODE_MOUSE_LEFT) ;
 
             //selecting->cut

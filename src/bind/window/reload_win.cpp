@@ -13,7 +13,8 @@ namespace vind
         : BindedFuncVoid("reload_current_window")
         {}
         void ReloadCurrentWindow::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(KEYCODE_F5) ;
         }
     }

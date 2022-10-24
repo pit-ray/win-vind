@@ -20,7 +20,8 @@ namespace vind
         : BindedFuncVoid("switch_to_left_tab")
         {}
         void Switch2LeftTab::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_LSHIFT, KEYCODE_TAB) ;
@@ -32,7 +33,8 @@ namespace vind
         : BindedFuncVoid("switch_to_right_tab")
         {}
         void Switch2RightTab::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_TAB) ;
@@ -44,7 +46,8 @@ namespace vind
         : BindedFuncVoid("open_new_tab")
         {}
         void OpenNewTab::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LCTRL, KEYCODE_T) ;
         }
@@ -54,7 +57,8 @@ namespace vind
         : BindedFuncVoid("close_current_tab")
         {}
         void CloseCurrentTab::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(
                     KEYCODE_LCTRL, KEYCODE_F4) ;
         }

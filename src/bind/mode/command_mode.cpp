@@ -167,7 +167,8 @@ namespace vind
         }
 
         SystemCall ToCommand::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto return_mode = [] (core::Mode* m) {
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {

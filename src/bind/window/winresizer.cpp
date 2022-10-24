@@ -79,7 +79,7 @@ namespace vind
                     return ;
                 }
 
-                auto& settable = core::SetTable::get_instance() ;
+                // auto& settable = core::SetTable::get_instance() ;
 
                 if(id == left_id_) {
                     DecreaseWindowWidth::sprocess(1, "") ;
@@ -229,7 +229,8 @@ namespace vind
         }
 
         void WindowResizer::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InstantKeyAbsorber ika ;
 
             pimpl->funcfinder_.reset_parser_states() ;

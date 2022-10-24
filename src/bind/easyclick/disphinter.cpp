@@ -66,9 +66,9 @@ namespace vind
             char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
             auto txcolor_ready = RGB(
-                tx_r < decay ? 0 : tx_r + sign*decay,
-                tx_g < decay ? 0 : tx_g + sign*decay,
-                tx_b < decay ? 0 : tx_b + sign*decay) ;
+                (tx_r < decay) ? 0 : (tx_r + sign * decay),
+                (tx_g < decay) ? 0 : (tx_g + sign * decay),
+                (tx_b < decay) ? 0 : (tx_b + sign * decay)) ;
 
             pimpl->fontsize_ = settable.get("easyclick_fontsize").get<long>() ;
 

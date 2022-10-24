@@ -20,7 +20,8 @@ namespace vind
         : BindedFuncVoid("redo")
         {}
         void Redo::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_Y) ;
@@ -32,7 +33,8 @@ namespace vind
         : BindedFuncVoid("undo")
         {}
         void Undo::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LCTRL, KEYCODE_Z) ;

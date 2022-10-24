@@ -15,7 +15,8 @@ namespace vind
         : BindedFuncVoid("goto_next_page")
         {}
         void GotoNextPage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LALT, KEYCODE_RIGHT) ;
@@ -27,7 +28,8 @@ namespace vind
         : BindedFuncVoid("goto_prev_page")
         {}
         void GotoPrevPage::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LALT, KEYCODE_LEFT) ;

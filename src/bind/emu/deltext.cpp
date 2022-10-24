@@ -24,7 +24,8 @@ namespace vind
         : BindedFuncVoid("delete_highlight_text")
         {}
         void DeleteHighlightText::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
                 set_register_type(RegType::Lines) ;
@@ -35,14 +36,13 @@ namespace vind
             ToEdiNormal::sprocess(1, "", false) ;
         }
 
-
         //DeleteLine
         DeleteLine::DeleteLine()
         : ChangeBaseCreator("delete_line")
         {}
-
         void DeleteLine::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_HOME) ;
@@ -56,14 +56,13 @@ namespace vind
             set_register_type(RegType::Lines) ;
         }
 
-
         // DeleteLineUntilEOL
         DeleteLineUntilEOL::DeleteLineUntilEOL()
         : ChangeBaseCreator("delete_line_until_EOL")
         {}
-
         void DeleteLineUntilEOL::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             //delete N - 1 lines under the current line
@@ -88,7 +87,6 @@ namespace vind
                     scb.close() ;
                 }
             }
-
             igate.pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             set_register_type(RegType::Chars) ;
         }
@@ -97,9 +95,9 @@ namespace vind
         DeleteAfter::DeleteAfter()
         : ChangeBaseCreator("delete_after")
         {}
-
         void DeleteAfter::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("charcache").get<bool>()) {
@@ -120,9 +118,9 @@ namespace vind
         DeleteBefore::DeleteBefore()
         : ChangeBaseCreator("delete_before")
         {}
-
         void DeleteBefore::sprocess(
-                std::uint16_t count, const std::string& args) {
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("charcache").get<bool>()) {

@@ -21,7 +21,7 @@ namespace vind
     {
         //MoveCaretLeft
         MoveCaretLeft::MoveCaretLeft()
-        : MoveBaseCreator("move_caret_left")
+        : BindedFuncVoid("move_caret_left")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -43,7 +43,7 @@ namespace vind
 
         //MoveCaretRight
         MoveCaretRight::MoveCaretRight()
-        : MoveBaseCreator("move_caret_right")
+        : BindedFuncVoid("move_caret_right")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -65,7 +65,7 @@ namespace vind
 
         //MoveCaretUp
         MoveCaretUp::MoveCaretUp()
-        : MoveBaseCreator("move_caret_up")
+        : BindedFuncVoid("move_caret_up")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -98,7 +98,7 @@ namespace vind
 
         //MoveCaretDown
         MoveCaretDown::MoveCaretDown()
-        : MoveBaseCreator("move_caret_down")
+        : BindedFuncVoid("move_caret_down")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -135,7 +135,7 @@ namespace vind
 
         //EdiMoveCaretNwordsForward
         MoveCaretWordForward::MoveCaretWordForward()
-        : MoveBaseCreator("move_caret_word_forward")
+        : BindedFuncVoid("move_caret_word_forward")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -158,7 +158,7 @@ namespace vind
 
         //EdiMoveCaretNwordsBackward
         MoveCaretWordBackward::MoveCaretWordBackward()
-        : MoveBaseCreator("move_caret_word_backward")
+        : BindedFuncVoid("move_caret_word_backward")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -181,7 +181,7 @@ namespace vind
 
         //EdiMoveCaretNWORDSForward
         MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward()
-        : MoveBaseCreator("move_caret_nonblank_word_forward")
+        : BindedFuncVoid("move_caret_nonblank_word_forward")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -204,7 +204,7 @@ namespace vind
 
         //EdiMoveCaretNWORDSBackward
         MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward()
-        : MoveBaseCreator("move_caret_nonblank_word_backward")
+        : BindedFuncVoid("move_caret_nonblank_word_backward")
         {
             MotionIds::get_instance().register_id(id()) ;
         }

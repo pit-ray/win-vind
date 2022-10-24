@@ -1,7 +1,5 @@
 #include "replacetext.hpp"
 
-#include <windows.h>
-
 #include "bind/saferepeat.hpp"
 #include "core/background.hpp"
 #include "core/charlogger.hpp"
@@ -9,7 +7,6 @@
 #include "core/inputgate.hpp"
 #include "core/keycode.hpp"
 #include "core/keycodedef.hpp"
-#include "core/ntypelogger.hpp"
 #include "opt/blockstylecaret.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/uiacachebuild.hpp"

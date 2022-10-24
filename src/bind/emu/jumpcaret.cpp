@@ -18,7 +18,7 @@ namespace vind
     {
         //JumpCaretToBOL
         JumpCaretToBOL::JumpCaretToBOL()
-        : MoveBaseCreator("jump_caret_to_BOL")
+        : BindedFuncVoid("jump_caret_to_BOL")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -36,7 +36,7 @@ namespace vind
 
         //JumpCaretToEOL
         JumpCaretToEOL::JumpCaretToEOL()
-        : MoveBaseCreator("jump_caret_to_EOL")
+        : BindedFuncVoid("jump_caret_to_EOL")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -61,7 +61,7 @@ namespace vind
 
         //EdiJumpCaret2NLine_DfBOF
         JumpCaretToBOF::JumpCaretToBOF()
-        : MoveBaseCreator("jump_caret_to_BOF")
+        : BindedFuncVoid("jump_caret_to_BOF")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -100,7 +100,7 @@ namespace vind
 
         //EdiJumpCaret2NLine_DfEOF
         JumpCaretToEOF::JumpCaretToEOF()
-        : MoveBaseCreator("jump_caret_to_EOF")
+        : BindedFuncVoid("jump_caret_to_EOF")
         {
             MotionIds::get_instance().register_id(id()) ;
         }

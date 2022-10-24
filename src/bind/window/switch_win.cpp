@@ -8,11 +8,10 @@
 #include "bind/mouse/jump_actwin.hpp"
 #include "core/background.hpp"
 #include "core/entry.hpp"
-#include "core/funcfinder.hpp"
 #include "core/inputgate.hpp"
+#include "core/inputhub.hpp"
 #include "core/keylgrbase.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/suppress_for_vim.hpp"
@@ -26,18 +25,14 @@ namespace vind
     namespace bind
     {
         struct SwitchWindow::Impl {
-            core::FuncFinder funcfinder_ ;
             std::size_t left_id_ ;
             std::size_t right_id_ ;
-            util::KeyStrokeRepeater ksr_ ;
 
             core::Background bg_ ;
 
             explicit Impl()
-            : funcfinder_(),
-              left_id_(MoveCaretLeft().id()),
+            : left_id_(MoveCaretLeft().id()),
               right_id_(MoveCaretRight().id()),
-              ksr_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::Dedicate2Window().name(),
@@ -66,87 +61,41 @@ namespace vind
         SwitchWindow::SwitchWindow(SwitchWindow&&)            = default ;
         SwitchWindow& SwitchWindow::operator=(SwitchWindow&&) = default ;
 
-        void SwitchWindow::reconstruct() {
-            /*
-            pimpl->funcfinder_.reconstruct(
-                core::Mode::EDI_NORMAL,
-                ref_global_funcs_bynames(
-                    MoveCaretLeft().name(),
-                    MoveCaretRight().name()
-                )
-            ) ;
-            */
-        }
-
         void SwitchWindow::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
+            using core::Mode ;
+
             auto& igate = core::InputGate::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
 
             core::InstantKeyAbsorber ika ;
 
             core::ScopedKey alt(KEYCODE_LALT) ;
             alt.press() ;
             igate.release_virtually(KEYCODE_LALT) ;
-
             igate.pushup(KEYCODE_TAB) ;
 
-            pimpl->funcfinder_.reset_parser_states() ;
-
-            core::NTypeLogger lgr ;
-            std::size_t actid = 0 ;
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::KeyLog log{igate.pressed_list().data()} ;
-                if(!NTYPE_LOGGED(lgr.logging_state(log))) {
-                    continue ;
-                }
-
-                if(lgr.is_long_pressing()) {
-                    if(pimpl->ksr_.is_passed()) {
-                        pimpl->call_op(actid) ;
-                    }
-                    continue ;
-                }
-                actid = 0 ;
-
-                if(lgr.latest().is_containing(KEYCODE_ESC)) {
-                    break ;
-                }
-                if(lgr.latest().is_containing(KEYCODE_ENTER)) {
+                if(igate.is_pressed(KEYCODE_ESC) || igate.is_pressed(KEYCODE_ENTER)) {
                     break ;
                 }
 
-                if(auto parser = pimpl->funcfinder_.find_parser_with_transition(lgr.latest(), id())) {
-
-                    decltype(auto) id = parser->get_func()->id() ;
-
-                    if(parser->is_accepted()) {
-                        actid = id ;
-
-                        lgr.accept() ;
-                        pimpl->funcfinder_.reset_parser_states() ;
-
-                        pimpl->ksr_.reset() ;
-
-                        pimpl->call_op(id) ;
-                        continue ;
-                    }
-                    else if(parser->is_rejected_with_ready()) {
-                        lgr.remove_from_back(1) ;
-                        pimpl->funcfinder_.backward_parser_states(1) ;
-                    }
+                std::vector<core::CmdUnit::SPtr> inputs ;
+                std::vector<std::uint16_t> counts ;
+                if(!ihub.fetch_inputs(inputs, counts, Mode::EDI_NORMAL)) {
+                    continue ;
                 }
-                else {
-                    lgr.reject() ;
-                    pimpl->funcfinder_.reset_parser_states() ;
+
+                for(int i = 0 ; i < inputs.size() ; i ++) {
+                    pimpl->call_op(inputs[i]->id()) ;
                 }
             }
 
             igate.release_virtually(KEYCODE_ESC) ;
             igate.release_virtually(KEYCODE_ENTER) ;
-
             alt.release() ;
 
             //jump cursor to a selected window after releasing alt and tab.

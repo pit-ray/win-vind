@@ -3,7 +3,6 @@
 #include "changetext.hpp"
 #include "deltext.hpp"
 #include "motionids.hpp"
-#include "movebase.hpp"
 #include "yanktext.hpp"
 
 #include "bind/mode/change_mode.hpp"

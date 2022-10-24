@@ -1,7 +1,6 @@
 #include "wordmotion.hpp"
 
 #include "motionids.hpp"
-#include "movebase.hpp"
 
 #include "bind/saferepeat.hpp"
 #include "core/errlogger.hpp"
@@ -269,7 +268,7 @@ namespace vind
     namespace bind
     {
         MoveFwdWord::MoveFwdWord()
-        : MoveBaseCreator("move_fwd_word")
+        : BindedFuncVoid("move_fwd_word")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -280,7 +279,7 @@ namespace vind
         }
 
         MoveFwdBigWord::MoveFwdBigWord()
-        : MoveBaseCreator("move_fwd_bigword")
+        : BindedFuncVoid("move_fwd_bigword")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -291,7 +290,7 @@ namespace vind
         }
 
         MoveBckWord::MoveBckWord()
-        : MoveBaseCreator("move_bck_word")
+        : BindedFuncVoid("move_bck_word")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -302,7 +301,7 @@ namespace vind
         }
 
         MoveBckBigWord::MoveBckBigWord()
-        : MoveBaseCreator("move_bck_bigword")
+        : BindedFuncVoid("move_bck_bigword")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -313,7 +312,7 @@ namespace vind
         }
 
         MoveEndWord::MoveEndWord()
-        : MoveBaseCreator("move_end_word")
+        : BindedFuncVoid("move_end_word")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -324,7 +323,7 @@ namespace vind
         }
 
         MoveEndBigWord::MoveEndBigWord()
-        : MoveBaseCreator("move_end_bigword")
+        : BindedFuncVoid("move_end_bigword")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -335,7 +334,7 @@ namespace vind
         }
 
         MoveBckEndWord::MoveBckEndWord()
-        : MoveBaseCreator("move_bckend_word")
+        : BindedFuncVoid("move_bckend_word")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -346,7 +345,7 @@ namespace vind
         }
 
         MoveBckEndBigWord::MoveBckEndBigWord()
-        : MoveBaseCreator("move_bckend_bigword")
+        : BindedFuncVoid("move_bckend_bigword")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -358,7 +357,7 @@ namespace vind
 
         // For visual mode.
         MoveFwdWordSimple::MoveFwdWordSimple()
-        : MoveBaseCreator("move_fwd_word_simple")
+        : BindedFuncVoid("move_fwd_word_simple")
         {
             MotionIds::get_instance().register_id(id()) ;
         }
@@ -380,7 +379,7 @@ namespace vind
         }
 
         MoveBckWordSimple::MoveBckWordSimple()
-        : MoveBaseCreator("move_bck_word_simple")
+        : BindedFuncVoid("move_bck_word_simple")
         {
             MotionIds::get_instance().register_id(id()) ;
         }

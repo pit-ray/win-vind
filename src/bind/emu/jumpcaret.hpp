@@ -1,31 +1,31 @@
 #ifndef _EDI_JUMP_CARET_HPP
 #define _EDI_JUMP_CARET_HPP
 
-#include "movebase.hpp"
+#include "bind/bindedfunc.hpp"
 
 namespace vind
 {
     namespace bind
     {
-        struct JumpCaretToBOL : public MoveBaseCreator<JumpCaretToBOL> {
+        struct JumpCaretToBOL : public BindedFuncVoid<JumpCaretToBOL> {
             explicit JumpCaretToBOL() ;
             static void sprocess(
                 std::uint16_t count, const std::string& args) ;
         } ;
 
-        struct JumpCaretToEOL : public MoveBaseCreator<JumpCaretToEOL> {
+        struct JumpCaretToEOL : public BindedFuncVoid<JumpCaretToEOL> {
             explicit JumpCaretToEOL() ;
             static void sprocess(
                 std::uint16_t count, const std::string& args) ;
         } ;
 
-        struct JumpCaretToBOF : public MoveBaseCreator<JumpCaretToBOF> {
+        struct JumpCaretToBOF : public BindedFuncVoid<JumpCaretToBOF> {
             explicit JumpCaretToBOF() ;
             static void sprocess(
                 std::uint16_t count, const std::string& args) ;
         } ;
 
-        struct JumpCaretToEOF : public MoveBaseCreator<JumpCaretToEOF> {
+        struct JumpCaretToEOF : public BindedFuncVoid<JumpCaretToEOF> {
             explicit JumpCaretToEOF() ;
             static void sprocess(
                 std::uint16_t count, const std::string& args) ;

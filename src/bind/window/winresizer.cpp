@@ -14,6 +14,7 @@
 #include "core/entry.hpp"
 #include "core/funcfinder.hpp"
 #include "core/inputgate.hpp"
+#include "core/inputhub.hpp"
 #include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "opt/dedicate_to_window.hpp"
@@ -42,27 +43,18 @@ namespace vind
     namespace bind
     {
         struct WindowResizer::Impl {
-            core::FuncFinder funcfinder_ ;
-
             std::size_t left_id_ ;
             std::size_t right_id_ ;
             std::size_t up_id_ ;
             std::size_t down_id_ ;
 
-            util::KeyStrokeRepeater ksr_ ;
-
-            util::ConstAccelerator ca_ ;
-
             core::Background bg_ ;
 
             explicit Impl()
-            : funcfinder_(),
-              left_id_(MoveCaretLeft().id()),
+            : left_id_(MoveCaretLeft().id()),
               right_id_(MoveCaretRight().id()),
               up_id_(MoveCaretUp().id()),
               down_id_(MoveCaretDown().id()),
-              ksr_(),
-              ca_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::Dedicate2Window().name(),
@@ -71,16 +63,7 @@ namespace vind
               ))
             {}
 
-            void do_resize(std::size_t id, bool first_call) {
-                if(first_call) {
-                    ksr_.reset() ;
-                }
-                else if(!ksr_.is_passed()) {
-                    return ;
-                }
-
-                // auto& settable = core::SetTable::get_instance() ;
-
+            void do_resize(std::size_t id) {
                 if(id == left_id_) {
                     DecreaseWindowWidth::sprocess(1, "") ;
                 }
@@ -95,11 +78,7 @@ namespace vind
                 }
             }
 
-            void do_move(std::size_t id, bool first_call) {
-                if(first_call) {
-                    ca_.reset() ;
-                }
-
+            void do_move(std::size_t id) {
                 auto hwnd = util::get_foreground_window() ;
                 auto rect = util::get_window_rect(hwnd) ;
 
@@ -108,26 +87,29 @@ namespace vind
                 auto left = rect.left() ;
                 auto top = rect.top() ;
 
+                auto& settable = core::SetTable::get_instance() ;
+                auto delta = settable.get("window_velocity").get<long>() ;
+
                 if(id == left_id_) {
-                    left -= ca_.delta<long>() ;
+                    left -= delta ;
                     if(left < cb_rect.left()) {
                         left = cb_rect.left() ;
                     }
                 }
                 else if(id == right_id_) {
-                    left += ca_.delta<long>() ;
+                    left += delta ;
                     if(left > cb_rect.right()) {
                         left = cb_rect.right() ;
                     }
                 }
                 else if(id == up_id_) {
-                    top -= ca_.delta<long>() ;
+                    top -= delta ;
                     if(top < cb_rect.top()) {
                         top = cb_rect.top() ;
                     }
                 }
                 else if(id == down_id_) {
-                    top += ca_.delta<long>() ;
+                    top += delta ;
                     if(top > cb_rect.bottom()) {
                         top = cb_rect.bottom() ;
                     }
@@ -138,14 +120,7 @@ namespace vind
                 }
             }
 
-            void do_focus(std::size_t id, bool first_call) {
-                if(first_call) {
-                    ksr_.reset() ;
-                }
-                else if(!ksr_.is_passed()) {
-                    return ;
-                }
-
+            void do_focus(std::size_t id) {
                 if(id == left_id_) {
                     SelectLeftWindow::sprocess(1, "") ;
                 }
@@ -160,22 +135,15 @@ namespace vind
                 }
             }
 
-            void call_op(InnerMode mode, std::size_t id, bool first_call) {
-                switch(mode) {
-                    case InnerMode::RESIZE:
-                        do_resize(id, first_call) ;
-                        break ;
-
-                    case InnerMode::MOVE:
-                        do_move(id, first_call) ;
-                        break ;
-
-                    case InnerMode::FOCUS:
-                        do_focus(id, first_call) ;
-                        break ;
-
-                    default:
-                        throw LOGIC_EXCEPT("Unknown id") ;
+            void call_op(InnerMode mode, std::size_t id) {
+                if(mode == InnerMode::RESIZE) {
+                    do_resize(id) ;
+                }
+                else if(mode == InnerMode::MOVE) {
+                    do_move(id) ;
+                }
+                else if(mode == InnerMode::FOCUS) {
+                    do_focus(id) ;
                 }
             }
 
@@ -205,100 +173,44 @@ namespace vind
         WindowResizer::WindowResizer(WindowResizer&&)            = default ;
         WindowResizer& WindowResizer::operator=(WindowResizer&&) = default ;
 
-        void WindowResizer::reconstruct() {
-            /*
-            pimpl->funcfinder_.reconstruct(
-                core::Mode::EDI_NORMAL,
-                ref_global_funcs_bynames(
-                    MoveCaretLeft().name(),
-                    MoveCaretRight().name(),
-                    MoveCaretUp().name(),
-                    MoveCaretDown().name()
-                )
-            ) ;
-            */
-
-            auto& settable = core::SetTable::get_instance() ;
-
-            pimpl->ca_.set_acceleration(
-                    settable.get("window_accel").get<float>()) ;
-            pimpl->ca_.set_max_velocity(
-                    settable.get("window_maxv").get<float>()) ;
-            pimpl->ca_.set_time_weight(
-                    settable.get("window_tweight").get<int>()) ;
-        }
-
         void WindowResizer::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
-            core::InstantKeyAbsorber ika ;
-
-            pimpl->funcfinder_.reset_parser_states() ;
-
-            core::NTypeLogger lgr ;
-
+            using core::Mode ;
+            auto& igate = core::InputGate::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
 
             auto inmode = Impl::cvt_modulo(
                     settable.get("winresizer_initmode").get<int>()) ;
-
             pimpl->draw_mode_status(inmode) ;
 
-            auto& igate = core::InputGate::get_instance() ;
-
-            std::size_t actid = 0 ;
+            core::InstantKeyAbsorber ika ;
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::KeyLog log{igate.pressed_list().data()} ;
-                if(!NTYPE_LOGGED(lgr.logging_state(log))) {
-                    continue ;
-                }
-
-                if(lgr.is_long_pressing()) {
-                    if(actid != 0) {
-                        pimpl->call_op(inmode, actid, false) ;
-                    }
-                    continue ;
-                }
-                actid = 0 ;
-
-                if(lgr.latest().is_containing(KEYCODE_ESC)) {
+                if(igate.is_pressed(KEYCODE_ESC) || igate.is_pressed(KEYCODE_ENTER)) {
                     break ;
                 }
-                if(lgr.latest().is_containing(KEYCODE_ENTER)) {
-                    break ;
-                }
-                if(lgr.latest().is_containing(KEYCODE_E)) { //mode change
-                    lgr.accept() ;
-                    pimpl->funcfinder_.reset_parser_states() ;
+
+                if(igate.is_pressed(KEYCODE_E)) { //mode change
                     inmode = Impl::cvt_modulo(static_cast<int>(inmode) + 1) ;
                     pimpl->draw_mode_status(inmode) ;
+
+                    // Release key state for processing at regular intervals.
+                    // release_virtually is more efficient and simpler.
+                    igate.release_virtually(KEYCODE_E) ;
                     continue ;
                 }
 
-                if(auto parser = pimpl->funcfinder_.find_parser_with_transition(
-                            lgr.latest(), id())) {
-
-                    decltype(auto) id = parser->get_func()->id() ;
-
-                    if(parser->is_accepted()) {
-                        actid = id ;
-
-                        lgr.accept() ;
-                        pimpl->funcfinder_.reset_parser_states() ;
-
-                        pimpl->call_op(inmode, id, true) ;
-                        continue ;
-                    }
-                    else if(parser->is_rejected_with_ready()) {
-                        lgr.remove_from_back(1) ;
-                        pimpl->funcfinder_.backward_parser_states(1) ;
-                    }
+                std::vector<core::CmdUnit::SPtr> inputs ;
+                std::vector<std::uint16_t> counts ;
+                if(!ihub.fetch_inputs(inputs, counts, Mode::EDI_NORMAL)) {
+                    continue ;
                 }
-                else {
-                    lgr.reject() ;
-                    pimpl->funcfinder_.reset_parser_states() ;
+
+                for(int i = 0 ; i < inputs.size() ; i ++) {
+                    pimpl->call_op(inmode, inputs[i]->id()) ;
                 }
             }
 

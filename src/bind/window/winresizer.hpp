@@ -23,8 +23,6 @@ namespace vind
             WindowResizer& operator=(WindowResizer&&) ;
             WindowResizer(const WindowResizer&)            = delete ;
             WindowResizer& operator=(const WindowResizer&) = delete ;
-
-            void reconstruct() override ;
         } ;
     }
 }

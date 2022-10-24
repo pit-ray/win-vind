@@ -5,7 +5,7 @@
 #include "core/charlogger.hpp"
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
-#include "core/maptable.hpp"
+#include "core/inputhub.hpp"
 #include "core/mode.hpp"
 #include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"
@@ -96,10 +96,10 @@ namespace vind
                 return SystemCall::NOTHING ;
             }
 
-            auto& mtable = core::MapTable::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
             auto modes = prefix_to_modes(prefix) ;
             for(auto mode : modes) {
-                mtable.add_map(a1, a2, mode) ;
+                ihub.add_map(a1, a2, mode) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
@@ -130,10 +130,10 @@ namespace vind
                 return SystemCall::NOTHING ;
             }
 
-            auto& mtable = core::MapTable::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
             auto modes = prefix_to_modes(prefix) ;
             for(auto mode : modes) {
-                mtable.add_noremap(a1, a2, mode) ;
+                ihub.add_noremap(a1, a2, mode) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
@@ -160,7 +160,7 @@ namespace vind
 
             auto modes = prefix_to_modes(prefix) ;
             for(auto mode : modes) {
-                core::MapTable::get_instance().remove(arg, mode) ;
+                core::InputHub::get_instance().remove_mapping(arg, mode) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
@@ -175,7 +175,7 @@ namespace vind
                 const std::string& prefix) {
             auto modes = prefix_to_modes(prefix) ;
             for(auto mode : modes) {
-                core::MapTable::get_instance().clear(mode) ;
+                core::InputHub::get_instance().clear_mapping(mode) ;
             }
             return SystemCall::RECONSTRUCT ;
         }

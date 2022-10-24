@@ -5,7 +5,7 @@
 #include "core/cmdparser.hpp"
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
-#include "core/maptable.hpp"
+#include "core/inputhub.hpp"
 #include "core/mode.hpp"
 #include "core/path.hpp"
 #include "core/rcparser.hpp"
@@ -232,7 +232,7 @@ namespace vind
                     log_ss << " (" << path.u8string() << ", " << ltag << ") " ;
                     PRINT_ERROR(log_ss.str()) ;
 
-                    core::MapTable::get_instance().clear() ;
+                    core::InputHub::get_instance().clear_mapping() ;
                     break ;
                 }
             }

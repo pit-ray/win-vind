@@ -8,7 +8,6 @@
 #include "keylgrbase.hpp"
 #include "keylog.hpp"
 #include "lgrparsermgr.hpp"
-#include "maptable.hpp"
 #include "mode.hpp"
 #include "ntypelogger.hpp"
 #include "util/container.hpp"

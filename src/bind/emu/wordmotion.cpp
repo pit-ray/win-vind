@@ -1,5 +1,6 @@
 #include "wordmotion.hpp"
 
+#include "motionids.hpp"
 #include "movebase.hpp"
 
 #include "bind/saferepeat.hpp"
@@ -269,7 +270,9 @@ namespace vind
     {
         MoveFwdWord::MoveFwdWord()
         : MoveBaseCreator("move_fwd_word")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveFwdWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -278,7 +281,9 @@ namespace vind
 
         MoveFwdBigWord::MoveFwdBigWord()
         : MoveBaseCreator("move_fwd_bigword")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveFwdBigWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -287,7 +292,9 @@ namespace vind
 
         MoveBckWord::MoveBckWord()
         : MoveBaseCreator("move_bck_word")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveBckWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -296,7 +303,9 @@ namespace vind
 
         MoveBckBigWord::MoveBckBigWord()
         : MoveBaseCreator("move_bck_bigword")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveBckBigWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -305,7 +314,9 @@ namespace vind
 
         MoveEndWord::MoveEndWord()
         : MoveBaseCreator("move_end_word")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveEndWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -314,7 +325,9 @@ namespace vind
 
         MoveEndBigWord::MoveEndBigWord()
         : MoveBaseCreator("move_end_bigword")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveEndBigWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -323,7 +336,9 @@ namespace vind
 
         MoveBckEndWord::MoveBckEndWord()
         : MoveBaseCreator("move_bckend_word")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveBckEndWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -332,7 +347,9 @@ namespace vind
 
         MoveBckEndBigWord::MoveBckEndBigWord()
         : MoveBaseCreator("move_bckend_bigword")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveBckEndBigWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -342,7 +359,9 @@ namespace vind
         // For visual mode.
         MoveFwdWordSimple::MoveFwdWordSimple()
         : MoveBaseCreator("move_fwd_word_simple")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveFwdWordSimple::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -362,7 +381,9 @@ namespace vind
 
         MoveBckWordSimple::MoveBckWordSimple()
         : MoveBaseCreator("move_bck_word_simple")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveBckWordSimple::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {

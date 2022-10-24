@@ -23,8 +23,6 @@ namespace vind
             YankWithMotion& operator=(YankWithMotion&&) ;
             YankWithMotion(const YankWithMotion&)            = delete ;
             YankWithMotion& operator=(const YankWithMotion&) = delete ;
-
-            void reconstruct() override ;
         } ;
 
 
@@ -44,8 +42,6 @@ namespace vind
             DeleteWithMotion& operator=(DeleteWithMotion&&) ;
             DeleteWithMotion(const DeleteWithMotion&)            = delete ;
             DeleteWithMotion& operator=(const DeleteWithMotion&) = delete ;
-
-            void reconstruct() override ;
         } ;
 
         class ChangeWithMotion : public BindedFuncVoid<ChangeWithMotion> {
@@ -64,8 +60,6 @@ namespace vind
             ChangeWithMotion& operator=(ChangeWithMotion&&) ;
             ChangeWithMotion(const ChangeWithMotion&)            = delete ;
             ChangeWithMotion& operator=(const ChangeWithMotion&) = delete ;
-
-            void reconstruct() override ;
         } ;
     }
 }

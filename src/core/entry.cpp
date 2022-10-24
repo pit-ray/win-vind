@@ -68,7 +68,6 @@ SOFTWARE.
 #include "inputgate.hpp"
 #include "inputhub.hpp"
 #include "mapsolver.hpp"
-#include "maptable.hpp"
 #include "mode.hpp"
 #include "ntypelogger.hpp"
 #include "path.hpp"
@@ -289,7 +288,7 @@ namespace vind
         }
 
         void VindEntry::reconstruct() {
-            MapTable::get_instance().apply_mapping() ;
+            InputHub::get_instance().apply_mapping() ;
 
             auto& settable = SetTable::get_instance() ;
             for(auto& opt : opt::all_global_options()) {

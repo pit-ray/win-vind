@@ -9,6 +9,7 @@
 #include "util/def.hpp"
 
 #include <algorithm>
+#include <cstdlib>
 #include <memory>
 
 
@@ -17,33 +18,40 @@ namespace vind
     namespace core
     {
         CmdUnit::CmdUnit()
-        : keycodes_()
+        : keycodes_(),
+          id_(0)
         {}
 
         CmdUnit::CmdUnit(const CmdUnitSet& codes)
-        : keycodes_(codes)
+        : keycodes_(codes),
+          id_(compute_id(keycodes_))
         {}
 
         CmdUnit::CmdUnit(CmdUnitSet&& codes)
-        : keycodes_(std::move(codes))
+        : keycodes_(std::move(codes)),
+          id_(compute_id(keycodes_))
         {}
 
         CmdUnit::CmdUnit(const KeyCode& code)
-        : keycodes_{code}
+        : keycodes_{code},
+          id_(compute_id(keycodes_))
         {}
 
         CmdUnit::CmdUnit(KeyCode&& code)
-        : keycodes_{std::move(code)}
+        : keycodes_{std::move(code)},
+          id_(compute_id(keycodes_))
         {}
 
         CmdUnit::CmdUnit(std::initializer_list<KeyCode>&& codes)
-        : keycodes_(codes)
+        : keycodes_(codes),
+          id_(compute_id(keycodes_))
         {}
 
         CmdUnit::~CmdUnit() noexcept = default ;
 
         CmdUnit::CmdUnit(const CmdUnit& rhs)
-        : keycodes_(rhs.keycodes_)
+        : keycodes_(rhs.keycodes_),
+          id_(rhs.id_)
         {}
 
         CmdUnit::CmdUnit(CmdUnit&&) = default ;
@@ -52,7 +60,25 @@ namespace vind
         CmdUnit& CmdUnit::operator=(const CmdUnit&) = default ;
         CmdUnit& CmdUnit::operator=(const CmdUnitSet& rhs) {
             keycodes_ = rhs ;
+            id_ = compute_id(keycodes_) ;
             return *this ;
+        }
+
+        std::size_t CmdUnit::compute_id(const CmdUnitSet& keys) const {
+            /**
+             * TODO: The unsigned char keycodes are considered as 
+             *       as 8-bit characters, and compute its hash by
+             *       std::string. This should be a more efficient
+             *       method in the future.
+             */
+            std::vector<KeyCode> sorted_keys(keys.begin(), keys.end()) ;
+            std::sort(sorted_keys.begin(), sorted_keys.end()) ;
+
+            std::string str{} ;
+            for(const auto& key : sorted_keys) {
+                str.push_back(key.to_code()) ;
+            }
+            return std::hash<std::string>()(std::move(str)) ;
         }
 
         const CmdUnitSet& CmdUnit::get() const & noexcept {
@@ -79,6 +105,10 @@ namespace vind
             return keycodes_.cend() ;
         }
 
+        std::size_t CmdUnit::id() const noexcept {
+            return id_ ;
+        }
+
         std::size_t CmdUnit::size() const noexcept {
             return keycodes_.size() ;
         }
@@ -93,10 +123,10 @@ namespace vind
         }
 
         bool CmdUnit::operator==(const CmdUnit& rhs) const {
-            return keycodes_ == rhs.keycodes_ ;
+            return id_ == rhs.id_ ;
         }
         bool CmdUnit::operator==(CmdUnit&& rhs) const {
-            return keycodes_ == rhs.keycodes_ ;
+            return id_ == rhs.id_ ;
         }
         bool CmdUnit::operator==(const CmdUnitSet& rhs) const {
             return keycodes_ == rhs ;
@@ -106,10 +136,10 @@ namespace vind
         }
 
         bool CmdUnit::operator!=(const CmdUnit& rhs) const {
-            return keycodes_ != rhs.keycodes_ ;
+            return id_ != rhs.id_ ;
         }
         bool CmdUnit::operator!=(CmdUnit&& rhs) const {
-            return keycodes_ != rhs.keycodes_ ;
+            return id_ != rhs.id_ ;
         }
         bool CmdUnit::operator!=(const CmdUnitSet& rhs) const {
             return keycodes_ != rhs ;
@@ -135,24 +165,28 @@ namespace vind
             for(const auto& k : rhs) {
                 keycodes_.erase(k) ;
             }
+            id_ = compute_id(keycodes_) ;
             return *this ;
         }
         CmdUnit& CmdUnit::operator-=(CmdUnit&& rhs) {
             for(const auto& k : rhs) {
                 keycodes_.erase(k) ;
             }
+            id_ = compute_id(keycodes_) ;
             return *this ;
         }
         CmdUnit& CmdUnit::operator-=(const CmdUnitSet& rhs) {
             for(const auto& k : rhs) {
                 keycodes_.erase(k) ;
             }
+            id_ = compute_id(keycodes_) ;
             return *this ;
         }
         CmdUnit& CmdUnit::operator-=(CmdUnitSet&& rhs) {
             for(const auto& k : rhs) {
                 keycodes_.erase(k) ;
             }
+            id_ = compute_id(keycodes_) ;
             return *this ;
         }
 
@@ -186,6 +220,13 @@ namespace vind
 
         const bind::BindedFunc::SPtr& FunctionalCmdUnit::get_function() const {
             return func_ ;
+        }
+
+        std::size_t FunctionalCmdUnit::id() const noexcept {
+            if(has_function()) {
+                return func_->id() ;
+            }
+            return 0 ;
         }
 
         void FunctionalCmdUnit::execute(

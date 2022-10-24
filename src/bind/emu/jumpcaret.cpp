@@ -5,6 +5,7 @@
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
 #include "core/ntypelogger.hpp"
+#include "motionids.hpp"
 #include "textsel.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
@@ -18,7 +19,9 @@ namespace vind
         //JumpCaretToBOL
         JumpCaretToBOL::JumpCaretToBOL()
         : MoveBaseCreator("jump_caret_to_BOL")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void JumpCaretToBOL::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
@@ -34,7 +37,9 @@ namespace vind
         //JumpCaretToEOL
         JumpCaretToEOL::JumpCaretToEOL()
         : MoveBaseCreator("jump_caret_to_EOL")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void JumpCaretToEOL::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -57,7 +62,9 @@ namespace vind
         //EdiJumpCaret2NLine_DfBOF
         JumpCaretToBOF::JumpCaretToBOF()
         : MoveBaseCreator("jump_caret_to_BOF")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void JumpCaretToBOF::sprocess(
                 std::uint16_t count,
                 const std::string& args) {
@@ -94,7 +101,9 @@ namespace vind
         //EdiJumpCaret2NLine_DfEOF
         JumpCaretToEOF::JumpCaretToEOF()
         : MoveBaseCreator("jump_caret_to_EOF")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void JumpCaretToEOF::sprocess(
                 std::uint16_t count,
                 const std::string& args) {

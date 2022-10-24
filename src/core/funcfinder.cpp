@@ -7,7 +7,6 @@
 #include "keylgrbase.hpp"
 #include "lgrparser.hpp"
 #include "lgrparsermgr.hpp"
-#include "maptable.hpp"
 #include "mode.hpp"
 #include "path.hpp"
 #include "util/debug.hpp"

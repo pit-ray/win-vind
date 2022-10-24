@@ -26,6 +26,7 @@ namespace vind
 
         private:
             CmdUnitSet keycodes_ ;
+            std::size_t id_ ;
 
             template <typename T>
             CmdUnitSet erased_diff(T&& rhs) const {
@@ -35,6 +36,8 @@ namespace vind
                 }
                 return diff ;
             }
+
+            std::size_t compute_id(const CmdUnitSet& keys) const ;
 
         public:
             explicit CmdUnit() ;
@@ -69,6 +72,7 @@ namespace vind
             CmdUnitSet::const_iterator cbegin() const noexcept ;
             CmdUnitSet::const_iterator cend() const noexcept ;
 
+            virtual std::size_t id() const noexcept ;
             std::size_t size() const noexcept ;
             bool empty() const noexcept ;
             bool is_containing(KeyCode key) const ;
@@ -136,6 +140,8 @@ namespace vind
             bool has_function() const noexcept ;
 
             const bind::BindedFunc::SPtr& get_function() const ;
+
+            std::size_t id() const noexcept override ;
 
             void execute(
                 std::uint16_t count=1,

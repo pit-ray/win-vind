@@ -7,6 +7,7 @@
 #include "core/keycodedef.hpp"
 #include "core/mode.hpp"
 #include "core/ntypelogger.hpp"
+#include "motionids.hpp"
 #include "textsel.hpp"
 #include "util/def.hpp"
 #include "util/interval_timer.hpp"
@@ -21,7 +22,9 @@ namespace vind
         //MoveCaretLeft
         MoveCaretLeft::MoveCaretLeft()
         : MoveBaseCreator("move_caret_left")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretLeft::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -41,7 +44,9 @@ namespace vind
         //MoveCaretRight
         MoveCaretRight::MoveCaretRight()
         : MoveBaseCreator("move_caret_right")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretRight::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -61,7 +66,9 @@ namespace vind
         //MoveCaretUp
         MoveCaretUp::MoveCaretUp()
         : MoveBaseCreator("move_caret_up")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretUp::sprocess(
                 std::uint16_t count,
                 const std::string& args) {
@@ -92,7 +99,9 @@ namespace vind
         //MoveCaretDown
         MoveCaretDown::MoveCaretDown()
         : MoveBaseCreator("move_caret_down")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretDown::sprocess(
                 std::uint16_t count,
                 const std::string& args) {
@@ -127,7 +136,9 @@ namespace vind
         //EdiMoveCaretNwordsForward
         MoveCaretWordForward::MoveCaretWordForward()
         : MoveBaseCreator("move_caret_word_forward")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretWordForward::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -148,7 +159,9 @@ namespace vind
         //EdiMoveCaretNwordsBackward
         MoveCaretWordBackward::MoveCaretWordBackward()
         : MoveBaseCreator("move_caret_word_backward")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretWordBackward::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -169,7 +182,9 @@ namespace vind
         //EdiMoveCaretNWORDSForward
         MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward()
         : MoveBaseCreator("move_caret_nonblank_word_forward")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretNonBlankWordForward::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
@@ -190,7 +205,9 @@ namespace vind
         //EdiMoveCaretNWORDSBackward
         MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward()
         : MoveBaseCreator("move_caret_nonblank_word_backward")
-        {}
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
         void MoveCaretNonBlankWordBackward::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {

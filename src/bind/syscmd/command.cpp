@@ -3,7 +3,7 @@
 #include "core/charlogger.hpp"
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
-#include "core/maptable.hpp"
+#include "core/inputhub.hpp"
 #include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -32,12 +32,12 @@ namespace vind
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support reference of command yet")) ;
             }
             else {
-                auto& maptable = core::MapTable::get_instance() ;
+                auto& ihub = core::InputHub::get_instance() ;
                 // No argument version
-                maptable.add_noremap(arg1, arg2, core::Mode::COMMAND) ;
+                ihub.add_noremap(arg1, arg2, core::Mode::COMMAND) ;
 
                 // To accept arguments
-                maptable.add_noremap(arg1 + " <any>", arg2, core::Mode::COMMAND) ;
+                ihub.add_noremap(arg1 + " <any>", arg2, core::Mode::COMMAND) ;
             }
 
             return SystemCall::NOTHING ;
@@ -61,8 +61,8 @@ namespace vind
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             }
             else {
-                auto& maptable = core::MapTable::get_instance() ;
-                maptable.remove(arg, core::Mode::COMMAND) ;
+                auto& ihub = core::InputHub::get_instance() ;
+                ihub.remove_mapping(arg, core::Mode::COMMAND) ;
             }
 
             return SystemCall::NOTHING ;
@@ -75,8 +75,7 @@ namespace vind
         SystemCall SyscmdComclear::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
-            auto& maptable = core::MapTable::get_instance() ;
-            maptable.clear(core::Mode::COMMAND) ;
+            core::InputHub::get_instance().clear_mapping(core::Mode::COMMAND) ;
             return SystemCall::NOTHING ;
         }
     }

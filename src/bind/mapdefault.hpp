@@ -1,7 +1,7 @@
 #ifndef _MAP_DEFAULT_HPP
 #define _MAP_DEFAULT_HPP
 
-#include "mode.hpp"
+#include "core/mode.hpp"
 
 #include <string>
 #include <utility>

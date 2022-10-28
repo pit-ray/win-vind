@@ -13,69 +13,59 @@
 #include "util/def.hpp"
 
 #include <string>
-#include <unordered_map>
 
-namespace
-{
-    using namespace vind ;
-
-    std::vector<core::Mode> prefix_to_modes(const std::string& prefix) {
-        using core::Mode ;
-        if(prefix.empty()) {
-            return {
-                Mode::GUI_NORMAL,
-                Mode::GUI_VISUAL,
-                Mode::EDI_NORMAL,
-                Mode::EDI_VISUAL,
-            } ;
-        }
-        if(prefix == "g") {
-            return {
-                Mode::GUI_NORMAL,
-                Mode::GUI_VISUAL,
-            } ;
-        }
-        if(prefix == "e") {
-            return {
-                Mode::EDI_NORMAL,
-                Mode::EDI_VISUAL,
-            } ;
-        }
-        if(prefix == "n") {
-            return {
-                Mode::GUI_NORMAL,
-                Mode::EDI_NORMAL,
-            } ;
-        }
-
-        if(prefix == "v") {
-            return {
-                Mode::GUI_VISUAL,
-                Mode::EDI_VISUAL,
-            } ;
-        }
-
-        auto mode = core::parse_mode_prefix(prefix) ;
-        if(mode == core::Mode::UNDEFINED) {
-            PRINT_ERROR(prefix + " is invalid mode prefix.") ;
-            opt::VCmdLine::print(
-                opt::ErrorMessage("E: Unsupported mode prefix")) ;
-            return {} ;
-        }
-        return {mode} ;
-    }
-}
 
 namespace vind
 {
     namespace bind
     {
-        // map
-        SyscmdMap::SyscmdMap()
-        : BindedFuncFlex("system_command_map")
-        {}
-        SystemCall SyscmdMap::sprocess(
-                std::uint16_t UNUSED(count),
+        std::unordered_set<core::Mode> prefix_to_modes(const std::string& prefix) {
+            using core::Mode ;
+            if(prefix.empty()) {
+                return {
+                    Mode::GUI_NORMAL,
+                    Mode::GUI_VISUAL,
+                    Mode::EDI_NORMAL,
+                    Mode::EDI_VISUAL,
+                } ;
+            }
+            if(prefix == "g") {
+                return {
+                    Mode::GUI_NORMAL,
+                    Mode::GUI_VISUAL,
+                } ;
+            }
+            if(prefix == "e") {
+                return {
+                    Mode::EDI_NORMAL,
+                    Mode::EDI_VISUAL,
+                } ;
+            }
+            if(prefix == "n") {
+                return {
+                    Mode::GUI_NORMAL,
+                    Mode::EDI_NORMAL,
+                } ;
+            }
+
+            if(prefix == "v") {
+                return {
+                    Mode::GUI_VISUAL,
+                    Mode::EDI_VISUAL,
+                } ;
+            }
+
+            auto mode = core::parse_mode_prefix(prefix) ;
+            if(mode == core::Mode::UNDEFINED) {
+                PRINT_ERROR(prefix + " is invalid mode prefix.") ;
+                opt::VCmdLine::print(
+                    opt::ErrorMessage("E: Unsupported mode prefix")) ;
+                return {} ;
+            }
+            return {mode} ;
+        }
+
+        SystemCall do_map(
                 const std::string& args,
                 const std::string& prefix) {
             if(args.empty()) {
@@ -97,19 +87,13 @@ namespace vind
             }
 
             auto& ihub = core::InputHub::get_instance() ;
-            auto modes = prefix_to_modes(prefix) ;
-            for(auto mode : modes) {
+            for(auto mode : prefix_to_modes(prefix)) {
                 ihub.add_map(a1, a2, mode) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
 
-        // noremap
-        SyscmdNoremap::SyscmdNoremap()
-        : BindedFuncFlex("system_command_noremap")
-        {}
-        SystemCall SyscmdNoremap::sprocess(
-                std::uint16_t UNUSED(count),
+        SystemCall do_noremap(
                 const std::string& args,
                 const std::string& prefix) {
             if(args.empty()) {
@@ -131,19 +115,13 @@ namespace vind
             }
 
             auto& ihub = core::InputHub::get_instance() ;
-            auto modes = prefix_to_modes(prefix) ;
-            for(auto mode : modes) {
+            for(auto mode : prefix_to_modes(prefix)) {
                 ihub.add_noremap(a1, a2, mode) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
 
-        // unmap
-        SyscmdUnmap::SyscmdUnmap()
-        : BindedFuncFlex("system_command_unmap")
-        {}
-        SystemCall SyscmdUnmap::sprocess(
-                std::uint16_t UNUSED(count),
+        SystemCall do_unmap(
                 const std::string& args,
                 const std::string& prefix) {
             if(args.empty()) {
@@ -158,23 +136,14 @@ namespace vind
                 return SystemCall::NOTHING ;
             }
 
-            auto modes = prefix_to_modes(prefix) ;
-            for(auto mode : modes) {
+            for(auto mode : prefix_to_modes(prefix)) {
                 core::InputHub::get_instance().remove_mapping(arg, mode) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
 
-        // mapclear
-        SyscmdMapclear::SyscmdMapclear()
-        : BindedFuncFlex("system_command_mapclear")
-        {}
-        SystemCall SyscmdMapclear::sprocess(
-                std::uint16_t UNUSED(count),
-                const std::string& UNUSED(args),
-                const std::string& prefix) {
-            auto modes = prefix_to_modes(prefix) ;
-            for(auto mode : modes) {
+        SystemCall do_mapclear(const std::string& prefix) {
+            for(auto mode : prefix_to_modes(prefix)) {
                 core::InputHub::get_instance().clear_mapping(mode) ;
             }
             return SystemCall::RECONSTRUCT ;

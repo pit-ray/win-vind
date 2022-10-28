@@ -46,6 +46,7 @@ target_link_libraries(each-cmdparser-test userenv)
 AddTest(each-cmdmatcher-test
     ${CMAKE_CURRENT_SOURCE_DIR}/cmdmatcher_test.cpp
 
+    ${SRCDIR}/bind/bindedfunc.cpp
     ${SRCDIR}/core/cmdmatcher.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/errlogger.cpp
@@ -66,15 +67,15 @@ AddTest(each-mapsolver-test
     ${CMAKE_CURRENT_SOURCE_DIR}/mapsolver_test.cpp
 
     ${SRCDIR}/bind/bindedfunc.cpp
+    ${SRCDIR}/bind/mapdefault.cpp
     ${SRCDIR}/core/cmdmatcher.cpp
     ${SRCDIR}/core/cmdparser.cpp
     ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/mapsolver.cpp
-    ${SRCDIR}/core/mapdefault.cpp
-    ${SRCDIR}/util/string.cpp
     ${SRCDIR}/core/typeemu.cpp
+    ${SRCDIR}/util/string.cpp
 
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/inputgate.cpp
@@ -96,6 +97,7 @@ target_link_libraries(each-mapsolver-test userenv)
 AddTest(each-typeemu-test
     ${CMAKE_CURRENT_SOURCE_DIR}/typeemu_test.cpp
 
+    ${SRCDIR}/bind/bindedfunc.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/inputgate.cpp

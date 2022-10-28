@@ -218,7 +218,7 @@ TEST_SUITE("core/keycode") {
     }
 
     TEST_CASE("KeyCode::KeyCode") {
-        CHECK_THROWS_AS(KeyCode("hhogehogejflak;"), std::out_of_range) ;
+        CHECK_THROWS_AS(KeyCode("hhogehogejflak;"), std::logic_error) ;
 
         KeyCode k1("A", true) ;
         KeyCode k2("a", true) ;

@@ -164,6 +164,7 @@ namespace vind
                     }
                     else {
                         auto unitset = parse_combined_command(inside_cmd) ;
+
                         if(for_external) {
                             parsed.push_back(
                                 std::make_shared<ExternalCmdUnit>(std::move(unitset))) ;

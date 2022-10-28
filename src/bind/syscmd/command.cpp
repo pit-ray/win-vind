@@ -13,10 +13,10 @@ namespace vind
     namespace bind
     {
         // command
-        SyscmdCommand::SyscmdCommand()
-        : BindedFuncFlex("system_command_command")
+        Command::Command()
+        : BindedFuncFlex("command")
         {}
-        SystemCall SyscmdCommand::sprocess(
+        SystemCall Command::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
             if(args.empty()) {
@@ -44,10 +44,10 @@ namespace vind
         }
 
         // delcommand
-        SyscmdDelcommand::SyscmdDelcommand()
-        : BindedFuncFlex("system_command_delcommand")
+        Delcommand::Delcommand()
+        : BindedFuncFlex("delcommand")
         {}
-        SystemCall SyscmdDelcommand::sprocess(
+        SystemCall Delcommand::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
             if(args.empty()) {
@@ -69,10 +69,10 @@ namespace vind
         }
 
         // comclear
-        SyscmdComclear::SyscmdComclear()
-        : BindedFuncFlex("system_command_comclear")
+        Comclear::Comclear()
+        : BindedFuncFlex("comclear")
         {}
-        SystemCall SyscmdComclear::sprocess(
+        SystemCall Comclear::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             core::InputHub::get_instance().clear_mapping(core::Mode::COMMAND) ;

@@ -33,6 +33,8 @@
 
 namespace
 {
+    using namespace vind ;
+
     template <typename Str>
     auto load_remote_vindrc(Str&& args) {
         using namespace vind ;
@@ -87,22 +89,22 @@ namespace
         auto rcindex = core::parse_run_command(cmd) ;
         switch(rcindex) {
             case RunCommandsIndex::SET: {
-                SyscmdSet::sprocess(1, args) ;
+                Set::sprocess(1, args) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::COMMAND: {
-                SyscmdCommand::sprocess(1, args) ;
+                Command::sprocess(1, args) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::DELCOMMAND: {
-                SyscmdDelcommand::sprocess(1, args) ;
+                Delcommand::sprocess(1, args) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::COMCLEAR: {
                 if(!args.empty()) {
                     return std::make_error_code(std::errc::invalid_argument) ;
                 }
-                SyscmdComclear::sprocess(1, "") ;
+                Comclear::sprocess(1, "") ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::SOURCE: {
@@ -124,7 +126,7 @@ namespace
                 }
 
                 if(!args_path.empty()) {
-                    SyscmdSource::sprocess(1, args_path.u8string()) ; //overload .vindrc
+                    Source::sprocess(1, args_path.u8string()) ; //overload .vindrc
                 }
                 return std::error_code() ;
             }
@@ -136,22 +138,22 @@ namespace
         using core::Mode ;
         if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
-            SyscmdMap::sprocess(1, args, prefix) ;
+            do_map(args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_NOREMAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "n") ;
-            SyscmdNoremap::sprocess(1, args, prefix) ;
+            do_noremap(args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_UNMAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "u") ;
-            SyscmdUnmap::sprocess(1, args, prefix) ;
+            do_unmap(args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {
                 return std::make_error_code(std::errc::invalid_argument) ;
             }
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
-            SyscmdMapclear::sprocess(1, "", prefix) ;
+            do_mapclear(prefix) ;
         }
         else {
             return std::make_error_code(std::errc::argument_out_of_domain) ;
@@ -165,8 +167,8 @@ namespace vind
 {
     namespace bind
     {
-        SyscmdSource::SyscmdSource()
-        : BindedFuncFlex("system_command_source")
+        Source::Source()
+        : BindedFuncFlex("source")
         {
             std::ifstream ifs(core::RC()) ;
             if(!ifs.is_open()) {
@@ -174,7 +176,7 @@ namespace vind
             }
         }
 
-        SystemCall SyscmdSource::sprocess(
+        SystemCall Source::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
             std::filesystem::path path{} ;
@@ -236,7 +238,6 @@ namespace vind
                     break ;
                 }
             }
-
             return SystemCall::RECONSTRUCT ;
         }
     }

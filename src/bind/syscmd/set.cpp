@@ -20,11 +20,11 @@ namespace vind
 {
     namespace bind
     {
-        SyscmdSet::SyscmdSet()
-        : BindedFuncFlex("system_command_set")
+        Set::Set()
+        : BindedFuncFlex("set")
         {}
 
-        SystemCall SyscmdSet::sprocess(
+        SystemCall Set::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
             auto& settable = core::SetTable::get_instance() ;

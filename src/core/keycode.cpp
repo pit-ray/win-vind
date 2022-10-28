@@ -2,6 +2,7 @@
 
 #include "keycodedef.hpp"
 #include "util/debug.hpp"
+#include "util/def.hpp"
 #include "util/string.hpp"
 
 #include <windows.h>
@@ -325,11 +326,13 @@ namespace vind
                 auto n = util::A2a(name) ;
 
                 if(magic_ascii_.find(n) != magic_ascii_.end()) {
-                    KeyCode::operator=(
-                            char_to_keycode(magic_ascii_.at(n))) ;
+                    KeyCode::operator=(char_to_keycode(magic_ascii_[n])) ;
+                }
+                else if(table.name2code_.find(n) != table.name2code_.end()){
+                    code_ = table.name2code_[n] ;
                 }
                 else {
-                    code_ = table.name2code_.at(n) ;
+                    throw LOGIC_EXCEPT(name + " is not supported.") ;
                 }
             }
         }

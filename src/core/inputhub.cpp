@@ -1,9 +1,10 @@
 #include "inputhub.hpp"
 
+#include "bind/mapdefault.hpp"
 #include "cmdunit.hpp"
 #include "inputgate.hpp"
-#include "mapdefault.hpp"
 #include "mapsolver.hpp"
+#include "mode.hpp"
 #include "typeemu.hpp"
 
 #include "util/def.hpp"
@@ -194,7 +195,7 @@ namespace vind
         void InputHub::apply_mapping(Mode mode) {
             if(mode == Mode::UNDEFINED) {
                 for(auto& solver : pimpl->solvers_) {
-                    solver->clear() ;
+                    solver->deploy() ;
                 }
             }
             else {

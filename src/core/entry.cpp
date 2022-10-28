@@ -262,7 +262,7 @@ namespace vind
                 PRINT_ERROR("Could not move the mouse cursor to show it.") ;
             }
 #endif
-            bind::SyscmdSource::sprocess(1, "") ;
+            bind::Source::sprocess(1, "") ;
 
             reconstruct() ;
 

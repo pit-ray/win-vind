@@ -7,8 +7,8 @@ namespace vind
 {
     namespace bind
     {
-        struct SyscmdSet : BindedFuncFlex<SyscmdSet> {
-            explicit SyscmdSet() ;
+        struct Set : public BindedFuncFlex<Set> {
+            explicit Set() ;
             static SystemCall sprocess(
                 std::uint16_t count, const std::string& args) ;
         } ;

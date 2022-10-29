@@ -3,6 +3,7 @@
 #include "keycode.hpp"
 
 #include "util/def.hpp"
+#include "util/type_traits.hpp"
 
 #include <iterator>
 #include <stack>
@@ -17,6 +18,7 @@ namespace
         MATCHING        = 0b0000'0100,
         ANY_ACCEPTED    = 0b0001'0001,
         ANYNUM_MATCHING = 0b0010'0100,
+        ANYNUM_ACCEPTED = 0b0010'0001,
     } ;
 }
 
@@ -115,12 +117,10 @@ namespace vind
             const auto& unit = pimpl->cmd_[head] ;
 
             if(unit->is_containing(KEYCODE_OPTIONAL)) {
-                pimpl->heads_.push(head) ;
-                return update_any(in_cmdunit) ;
+                return update_any(in_cmdunit, head) ;
             }
             if(unit->is_containing(KEYCODE_OPTNUMBER)) {
-                pimpl->heads_.push(head) ;
-                return update_anynum(in_cmdunit) ;
+                return update_anynum(in_cmdunit, head) ;
             }
 
             std::vector<bool> conds(unit->size(), false) ;
@@ -165,23 +165,30 @@ namespace vind
                 return update_rejected(in_cmdunit) ;
             }
 
-            if(pimpl->states_.size() < pimpl->cmd_.size() - 1) {
-                pimpl->states_.push(State::MATCHING) ;
+            if(head == pimpl->cmd_.size() - 1) {
+                pimpl->states_.push(State::ACCEPTED) ;
             }
             else {
-                pimpl->states_.push(State::ACCEPTED) ;
+                pimpl->states_.push(State::MATCHING) ;
             }
             pimpl->heads_.push(head) ;
             return static_cast<int>(in_cmdunit.size()) ;
         }
 
-        int CmdMatcher::update_any(const CmdUnit& in_cmdunit) {
+        int CmdMatcher::update_any(const CmdUnit& in_cmdunit, int head) {
             pimpl->states_.push(State::ANY_ACCEPTED) ;
-            pimpl->heads_.push(pimpl->heads_.top()) ;
+            if(head < 0) {
+                head = pimpl->heads_.top() ;
+            }
+            pimpl->heads_.push(head) ;
             return static_cast<int>(in_cmdunit.size()) ;
         }
 
-        int CmdMatcher::update_anynum(const CmdUnit& in_cmdunit) {
+        int CmdMatcher::update_anynum(const CmdUnit& in_cmdunit, int head) {
+            if(head < 0) {
+                head = pimpl->heads_.top() ;
+            }
+
             for(const auto& key : in_cmdunit) {
                 if(key.is_major_system()) {
                     continue ;
@@ -194,12 +201,25 @@ namespace vind
 
                 auto ascii = uc.front() ;
                 if(ascii < '0' || '9' < ascii) {
+                    if(head == pimpl->cmd_.size() - 1) {
+                        return update_rejected(in_cmdunit) ;
+                    }
                     return update_matching(in_cmdunit) ;
                 }
             }
 
-            pimpl->states_.push(State::ANYNUM_MATCHING) ;
-            pimpl->heads_.push(pimpl->heads_.top()) ;
+            // Check whether the head points to the last position of
+            // the command to take account of some cases when the <num>
+            // is placed on the last of the command like `abc<num>`.
+            if(head == pimpl->cmd_.size() - 1) {
+                pimpl->states_.push(State::ANYNUM_ACCEPTED) ;
+            }
+            else {
+                pimpl->states_.push(State::ANYNUM_MATCHING) ;
+            }
+
+            pimpl->heads_.push(head) ;
+
             return static_cast<int>(in_cmdunit.size()) ;
         }
 
@@ -222,6 +242,7 @@ namespace vind
                     return update_any(in_cmdunit) ;
 
                 case State::ANYNUM_MATCHING:
+                case State::ANYNUM_ACCEPTED:
                     return update_anynum(in_cmdunit) ;
             }
 
@@ -232,21 +253,21 @@ namespace vind
             if(pimpl->states_.empty()) {
                 return false ;
             }
-            return (pimpl->states_.top() & State::ACCEPTED) == State::ACCEPTED ;
+            return util::enum_has_bits(pimpl->states_.top(), State::ACCEPTED) ;
         }
 
         bool CmdMatcher::is_rejected() const noexcept {
             if(pimpl->states_.empty()) {
                 return false ;
             }
-            return (pimpl->states_.top() & State::REJECTED) == State::REJECTED ;
+            return util::enum_has_bits(pimpl->states_.top(), State::REJECTED) ;
         }
 
         bool CmdMatcher::is_matching() const noexcept {
             if(pimpl->states_.empty()) {
                 return true ;
             }
-            return (pimpl->states_.top() & State::MATCHING) == State::MATCHING ;
+            return util::enum_has_bits(pimpl->states_.top(), State::MATCHING) ;
         }
 
         void CmdMatcher::reset_state() {

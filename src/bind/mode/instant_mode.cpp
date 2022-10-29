@@ -60,7 +60,7 @@ namespace vind
             pimpl->finder_.reset_parser_states() ;
             core::NTypeLogger lgr ;
 
-            auto syscal = SystemCall::NOTHING ;
+            auto syscal = SystemCall::SUCCEEDED ;
 
             while(true) {
                 pimpl->bg_.update() ;

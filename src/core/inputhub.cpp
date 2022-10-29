@@ -5,10 +5,12 @@
 #include "inputgate.hpp"
 #include "mapsolver.hpp"
 #include "mode.hpp"
+#include "syscalldef.hpp"
 #include "typeemu.hpp"
 
 #include "util/def.hpp"
 #include "util/string.hpp"
+#include "util/type_traits.hpp"
 
 #include <algorithm>
 #include <memory>
@@ -47,11 +49,6 @@ namespace vind
             ModeArray<std::shared_ptr<MapSolver>> solvers_{} ;
             TypingEmulator typeemu_{} ;
             std::string count_{} ;
-
-            template <typename T>
-            std::shared_ptr<MapSolver> get_solver(T mode) {
-                return solvers_[static_cast<int>(mode)] ;
-            }
         } ;
 
         InputHub::InputHub()
@@ -59,7 +56,7 @@ namespace vind
         {
             for(std::size_t m = 0 ; m < pimpl->solvers_.size() ; m ++) {
                 auto solver = std::make_shared<MapSolver>(false) ;
-                for(const auto& [trigger, target] : get_default_map(m)) {
+                for(const auto& [trigger, target] : bind::get_default_map(m)) {
                     solver->add_default(trigger, target) ;
                 }
                 solver->deploy_default(true) ;
@@ -75,110 +72,114 @@ namespace vind
             return instance ;
         }
 
-        bool InputHub::fetch_inputs(
-                std::vector<CmdUnit::SPtr>& fetched_inputs,
-                std::vector<std::uint16_t>& fetched_counts,
-                Mode mode) {
-            auto raw_inputs = InputGate::get_instance().pressed_list() ;
+        std::shared_ptr<MapSolver> InputHub::get_solver(Mode mode) {
+            return pimpl->solvers_[static_cast<int>(mode)] ;
+        }
 
-            auto inputs = pimpl->typeemu_.lowlevel_to_typing(raw_inputs) ;
-            if(!inputs) {
-                return false ;
+        void InputHub::fetch_inputs(
+                CmdUnit::SPtr& fetched_input,
+                std::vector<CmdUnit::SPtr>& fetched_outputs,
+                std::vector<std::uint16_t>& fetched_counts,
+                Mode mode,
+                bool parse_count) {
+            auto raw_input = InputGate::get_instance().pressed_list() ;
+            auto input = pimpl->typeemu_.lowlevel_to_typing(raw_input) ;
+            if(!input) {
+                return ;
             }
 
-            auto solver = pimpl->get_solver(mode) ;
+            auto solver = get_solver(mode) ;
 
-            if(!solver->is_matching_any()) {
+            if(parse_count && !solver->is_matching_any()) {
                 // parses the sequence of head counts as the string
                 // and converts them into a number.
-                auto new_count = extract_numbers(*inputs, pimpl->count_.size() > 0) ;
+                auto new_count = extract_numbers(
+                        *input, pimpl->count_.size() > 0) ;
                 if(!new_count.empty()) {
                     pimpl->count_ += new_count ;
-                    return false ;
+                    return ;
                 }
             }
 
             std::uint16_t count = 1 ;
             if(!pimpl->count_.empty()) {
-                count = static_cast<std::uint16_t>(util::extract_num(pimpl->count_)) ;
+                count = static_cast<std::uint16_t>(
+                        util::extract_num(pimpl->count_)) ;
                 pimpl->count_.clear() ;
             }
 
-            auto map_cmd = solver->map_command_from(*inputs) ;
+            fetched_input = input ;
+
+            auto map_cmd = solver->map_command_from(*input) ;
             if(map_cmd.empty()) {
-                return false ;
+                return ;
             }
 
             // Update states of a solver using the solved mapping.
             for(const auto& unit : map_cmd) {
-                if(unit->empty()) {
-                    continue ;
-                }
-
-                // To make solver state transition.
-                auto cmd = solver->map_command_from(*unit) ;
-                if(!cmd.empty()) {
-                    throw RUNTIME_EXCEPT("Mapping has not been resolved.") ;
+                if(!unit->empty()) {
+                    // To make solver state transition.
+                    solver->map_command_from(*unit) ;
                 }
             }
 
             // For commands consisting of single command unit,
             // it is more efficient to repeat using an internal counter.
             if(map_cmd.size() == 1) {
-                fetched_inputs.push_back(map_cmd.front()) ;
+                fetched_outputs.push_back(map_cmd.front()) ;
                 fetched_counts.push_back(count) ;
-                return true ;
+                return ;
             }
 
             // For commands consisting of the multiple unit,
             // assume the count as one and add multiple commands with a count of one.
             std::vector<std::uint16_t> counts(map_cmd.size(), 1) ;
             for(std::uint16_t i = 0 ; i < count ; i ++) {
-                fetched_inputs.insert(
-                    fetched_inputs.end(),
+                fetched_outputs.insert(
+                    fetched_outputs.end(),
                     map_cmd.begin(), map_cmd.end()) ;
 
                 fetched_counts.insert(
                     fetched_counts.end(),
                     counts.begin(), counts.end()) ;
             }
-            return true ;
         }
 
-        void InputHub::pull_inputs(Mode mode) {
-            std::vector<CmdUnit::SPtr> inputs{} ;
-            std::vector<std::uint16_t> counts{} ;
-            if(!fetch_inputs(inputs, counts, mode)) {
-                return ;
-            }
+        SystemCall InputHub::pull_inputs(Mode mode) {
+            CmdUnit::SPtr input ;
+            std::vector<CmdUnit::SPtr> outputs ;
+            std::vector<std::uint16_t> counts ;
+            fetch_inputs(input, outputs, counts, mode) ;
 
-            for(int i = 0 ; i < inputs.size() ; i ++) {
-                inputs[i]->execute(counts[i]) ;
+            auto res = SystemCall::SUCCEEDED ;
+            for(int i = 0 ; i < outputs.size() ; i ++) {
+                res = util::enum_or(res, outputs[i]->execute(counts[i])) ;
             }
+            return res ;
         }
 
         void InputHub::forget_previous_input(Mode mode) {
-            pimpl->get_solver(mode)->backward_state(1) ;
+            get_solver(mode)->backward_state(1) ;
         }
 
         void InputHub::add_map(
             const std::string& trigger_cmd,
             const std::string& target_cmd,
             Mode mode) {
-            pimpl->get_solver(mode)->add_map(trigger_cmd, target_cmd) ;
+            get_solver(mode)->add_map(trigger_cmd, target_cmd) ;
         }
 
         void InputHub::add_noremap(
             const std::string& trigger_cmd,
             const std::string& target_cmd,
             Mode mode) {
-            pimpl->get_solver(mode)->add_noremap(trigger_cmd, target_cmd) ;
+            get_solver(mode)->add_noremap(trigger_cmd, target_cmd) ;
         }
 
         bool InputHub::remove_mapping(
             const std::string& trigger_cmd,
             Mode mode) {
-            return pimpl->get_solver(mode)->remove(trigger_cmd) ;
+            return get_solver(mode)->remove(trigger_cmd) ;
         }
 
         void InputHub::clear_mapping(Mode mode) {
@@ -188,7 +189,7 @@ namespace vind
                 }
             }
             else {
-                pimpl->get_solver(mode)->clear() ;
+                get_solver(mode)->clear() ;
             }
         }
 
@@ -199,7 +200,7 @@ namespace vind
                 }
             }
             else {
-                pimpl->get_solver(mode)->deploy() ;
+                get_solver(mode)->deploy() ;
             }
         }
     }

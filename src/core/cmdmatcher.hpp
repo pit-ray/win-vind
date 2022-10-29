@@ -17,8 +17,8 @@ namespace vind
             int update_accepted(const CmdUnit& in_cmdunit) ;
             int update_rejected(const CmdUnit& in_cmdunit) ;
             int update_matching(const CmdUnit& in_cmdunit) ;
-            int update_any(const CmdUnit& in_cmdunit) ;
-            int update_anynum(const CmdUnit& in_cmdunit) ;
+            int update_any(const CmdUnit& in_cmdunit, int head=-1) ;
+            int update_anynum(const CmdUnit& in_cmdunit, int head=-1) ;
 
         public:
             explicit CmdMatcher(CmdUnit::SPtr&& cmdunit) ;

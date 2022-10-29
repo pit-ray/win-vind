@@ -100,7 +100,7 @@ namespace vind
 
         SystemCall BindedFunc::process(
                 std::uint16_t count, const std::string& args) {
-            auto result = SystemCall::NOTHING ;
+            auto result = SystemCall::SUCCEEDED ;
 
             try {
                 result = do_process(count, args) ;
@@ -133,7 +133,7 @@ namespace vind
 
         SystemCall BindedFunc::do_process(
                 std::uint16_t UNUSED(count), const std::string& UNUSED(args)) {
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
     }
 }

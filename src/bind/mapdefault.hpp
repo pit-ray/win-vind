@@ -10,13 +10,13 @@
 
 namespace vind
 {
-    namespace core
+    namespace bind
     {
-        const std::vector<std::pair<std::string, std::string>>& get_default_map(Mode mode) ;
+        const std::vector<std::pair<std::string, std::string>>& get_default_map(core::Mode mode) ;
 
         template <typename T>
         inline const std::vector<std::pair<std::string, std::string>>& get_default_map(T mode) {
-            return get_default_map(static_cast<Mode>(mode)) ;
+            return get_default_map(static_cast<core::Mode>(mode)) ;
         }
     }
 }

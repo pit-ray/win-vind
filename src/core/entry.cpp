@@ -82,6 +82,7 @@ SOFTWARE.
 #include "opt/vcmdline.hpp"
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
+#include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
 
 
@@ -326,19 +327,15 @@ namespace vind
                 }
             }
 
-            InputHub::get_instance().pull_inputs() ;
+            handle_system_call(InputHub::get_instance().pull_inputs()) ;
         }
 
         void VindEntry::handle_system_call(SystemCall systemcall) {
-            switch(systemcall) {
-                case SystemCall::NOTHING:
-                    return ;
-
-                case SystemCall::RECONSTRUCT:
-                    return reconstruct() ;
-
-                case SystemCall::TERMINATE:
-                    return pimpl->exit_() ;
+            if(util::enum_has_bits(systemcall, SystemCall::TERMINATE)) {
+                pimpl->exit_() ;
+            }
+            if(util::enum_has_bits(systemcall, SystemCall::RECONSTRUCT)) {
+                reconstruct() ;
             }
         }
     }

@@ -388,7 +388,9 @@ namespace vind
         }
 
         std::vector<CmdUnit::SPtr>
-        MapSolver::map_command_from(const CmdUnit& raw_cmdunit) {
+        MapSolver::map_command_from(
+                const CmdUnit& raw_cmdunit,
+                bool auto_reset) {
             // Converts the sequentially duplicated low-level input
             // to the formatted command unit as if typing.
             CmdUnit in_cmdunit{} ;
@@ -442,7 +444,7 @@ namespace vind
                         map.trigger_matcher.backward_state(1) ;
                     }
                 }
-                else {
+                else if(auto_reset) {
                     for(auto& map : pimpl->deployed_) {
                         map.trigger_matcher.reset_state() ;
                     }
@@ -458,8 +460,10 @@ namespace vind
             auto max_idx = std::distance(acc_nums.begin(), max_itr) ;
 
             // Make the matchers reset for the next matching.
-            for(auto& map : pimpl->deployed_) {
-                map.trigger_matcher.reset_state() ;
+            if(auto_reset) {
+                for(auto& map : pimpl->deployed_) {
+                    map.trigger_matcher.reset_state() ;
+                }
             }
 
             return pimpl->deployed_[max_idx].target_cmd ;

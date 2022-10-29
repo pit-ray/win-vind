@@ -189,11 +189,20 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                if(igate.is_pressed(KEYCODE_ESC) || igate.is_pressed(KEYCODE_ENTER)) {
+                core::CmdUnit::SPtr input ;
+                std::vector<core::CmdUnit::SPtr> outputs ;
+                std::vector<std::uint16_t> counts ;
+                ihub.fetch_inputs(
+                        input, outputs, counts, Mode::EDI_NORMAL, false) ;
+
+                if(!input) {
+                    continue ;
+                }
+                if(input->is_containing(KEYCODE_ESC) ||
+                        input->is_containing(KEYCODE_ENTER)) {
                     break ;
                 }
-
-                if(igate.is_pressed(KEYCODE_E)) { //mode change
+                if(input->is_containing(KEYCODE_E)) { //mode change
                     inmode = Impl::cvt_modulo(static_cast<int>(inmode) + 1) ;
                     pimpl->draw_mode_status(inmode) ;
 
@@ -203,14 +212,8 @@ namespace vind
                     continue ;
                 }
 
-                std::vector<core::CmdUnit::SPtr> inputs ;
-                std::vector<std::uint16_t> counts ;
-                if(!ihub.fetch_inputs(inputs, counts, Mode::EDI_NORMAL)) {
-                    continue ;
-                }
-
-                for(int i = 0 ; i < inputs.size() ; i ++) {
-                    pimpl->call_op(inmode, inputs[i]->id()) ;
+                for(int i = 0 ; i < outputs.size() ; i ++) {
+                    pimpl->call_op(inmode, outputs[i]->id()) ;
                 }
             }
 

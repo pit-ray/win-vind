@@ -19,12 +19,13 @@ namespace vind
         SystemCall Command::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
-            if(args.empty()) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            if(pargs.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
-            auto [arg1, arg2] = core::extract_double_args(args) ;
+            auto [arg1, arg2] = core::extract_double_args(pargs) ;
             if(arg1.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
             }
@@ -40,7 +41,7 @@ namespace vind
                 ihub.add_noremap(arg1 + " <any>", arg2, core::Mode::COMMAND) ;
             }
 
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
 
         // delcommand
@@ -50,13 +51,14 @@ namespace vind
         SystemCall Delcommand::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
-            if(args.empty()) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            if(pargs.empty()) {
                 // does not have argument is empty
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
-            auto arg = core::extract_single_arg(args) ;
+            auto arg = core::extract_single_arg(pargs) ;
             if(arg.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             }
@@ -65,7 +67,7 @@ namespace vind
                 ihub.remove_mapping(arg, core::Mode::COMMAND) ;
             }
 
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
 
         // comclear
@@ -76,7 +78,7 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             core::InputHub::get_instance().clear_mapping(core::Mode::COMMAND) ;
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
     }
 }

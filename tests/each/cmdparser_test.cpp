@@ -11,7 +11,7 @@ namespace vind
     namespace bind
     {
         SystemCall BindedFunc::process(std::uint16_t, const std::string&) {
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
 
         BindedFunc::SPtr ref_global_func_byname(const std::string& name) {

@@ -2,6 +2,7 @@
 #define _CMDUNIT_HPP
 
 #include "keycode.hpp"
+#include "syscalldef.hpp"
 
 #include "bind/bindedfunc.hpp"
 
@@ -97,7 +98,7 @@ namespace vind
             CmdUnit& operator-=(const CmdUnitSet& rhs) ;
             CmdUnit& operator-=(CmdUnitSet&& rhs) ;
 
-            virtual void execute(
+            virtual SystemCall execute(
                 std::uint16_t count=1,
                 const std::string& args="") ;
         } ;
@@ -109,7 +110,7 @@ namespace vind
             : CmdUnit(std::forward<T>(keycodes))
             {}
 
-            void execute(
+            SystemCall execute(
                 std::uint16_t count=1,
                 const std::string& args="") override ;
         } ;
@@ -121,7 +122,7 @@ namespace vind
             : CmdUnit(std::forward<T>(keycodes))
             {}
 
-            void execute(
+            SystemCall execute(
                 std::uint16_t count=1,
                 const std::string& args="") override ;
         } ;
@@ -143,11 +144,12 @@ namespace vind
 
             std::size_t id() const noexcept override ;
 
-            void execute(
+            SystemCall execute(
                 std::uint16_t count=1,
                 const std::string& args="") override ;
         } ;
 
+        // Stream operators
         std::ostream& operator<<(
             std::ostream& stream,
             const CmdUnit::SPtr& rhs) ;
@@ -177,6 +179,15 @@ namespace vind
         std::ostream& operator<<(
             std::ostream& stream,
             const std::vector<std::unique_ptr<CmdUnit>>& rhs) ;
+
+        // String operators
+        std::string to_string(const CmdUnit::SPtr& rhs) ;
+        std::string to_string(const CmdUnitSet& rhs) ;
+        std::string to_string(const CmdUnit& rhs) ;
+        std::string to_string(const std::vector<CmdUnit>& rhs) ;
+        std::string to_string(const std::vector<CmdUnitSet>& rhs) ;
+        std::string to_string(const std::vector<std::shared_ptr<CmdUnit>>& rhs) ;
+        std::string to_string(const std::vector<std::unique_ptr<CmdUnit>>& rhs) ;
     }
 }
 

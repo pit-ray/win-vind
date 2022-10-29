@@ -23,7 +23,7 @@ namespace vind
                     std::uint16_t count, const std::string& args) override {
                 static_cast<Derived*>(this)->sprocess(count, args) ;
                 RepeatLastChange::store_change(this) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
         public:

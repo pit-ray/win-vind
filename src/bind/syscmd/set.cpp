@@ -27,10 +27,11 @@ namespace vind
         SystemCall Set::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
             auto& settable = core::SetTable::get_instance() ;
 
-            if(args.find("=") != std::string::npos) { // set option_name = value
-                auto [key, val] = core::divide_key_and_value(args, "=") ;
+            if(pargs.find("=") != std::string::npos) { // set option_name = value
+                auto [key, val] = core::divide_key_and_value(pargs, "=") ;
 
                 if(key.empty()) {
                     if(val.empty()) {
@@ -59,11 +60,11 @@ namespace vind
                     }
                 }
 
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
             // set option_name
-            auto key = core::extract_single_arg(util::A2a(args)) ;
+            auto key = core::extract_single_arg(util::A2a(pargs)) ;
 
             bool flag_value = true ;
             if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {
@@ -78,7 +79,7 @@ namespace vind
 
                 if(key.find(" ") != std::string::npos) {
                     opt::VCmdLine::print(opt::ErrorMessage("E: Unknown option: " + key)) ;
-                    return SystemCall::NOTHING ;
+                    return SystemCall::SUCCEEDED ;
                 }
 
                 std::stringstream ss ;
@@ -113,7 +114,7 @@ namespace vind
                 }
             }
 
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
     }
 }

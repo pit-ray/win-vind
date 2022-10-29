@@ -3,6 +3,7 @@
 
 #include "cmdunit.hpp"
 #include "mode.hpp"
+#include "syscalldef.hpp"
 
 #include <memory>
 #include <string>
@@ -13,6 +14,8 @@ namespace vind
 {
     namespace core
     {
+        class MapSolver ;
+
         class InputHub {
         private:
             struct Impl ;
@@ -24,12 +27,16 @@ namespace vind
         public:
             static InputHub& get_instance() ;
 
-            bool fetch_inputs(
-                    std::vector<CmdUnit::SPtr>& fetched_inputs,
-                    std::vector<std::uint16_t>& counts,
-                    Mode mode=get_global_mode()) ;
+            std::shared_ptr<MapSolver> get_solver(Mode mode) ;
 
-            void pull_inputs(Mode mode=get_global_mode()) ;
+            void fetch_inputs(
+                    CmdUnit::SPtr& fetched_input,
+                    std::vector<CmdUnit::SPtr>& fetched_outputs,
+                    std::vector<std::uint16_t>& counts,
+                    Mode mode=get_global_mode(),
+                    bool parse_count=true) ;
+
+            SystemCall pull_inputs(Mode mode=get_global_mode()) ;
 
             void forget_previous_input(Mode mode=get_global_mode()) ;
 

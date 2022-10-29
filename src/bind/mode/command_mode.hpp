@@ -22,8 +22,6 @@ namespace vind
             ToCommand& operator=(ToCommand&&) ;
             ToCommand(const ToCommand&)            = delete ;
             ToCommand& operator=(const ToCommand&) = delete ;
-
-            void reconstruct() override ;
         } ;
     }
 }

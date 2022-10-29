@@ -68,22 +68,23 @@ namespace vind
         SystemCall do_map(
                 const std::string& args,
                 const std::string& prefix) {
-            if(args.empty()) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            if(pargs.empty()) {
                 opt::VCmdLine::print(
                     opt::ErrorMessage("E: Not support list of map yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
-            auto [a1, a2] = core::extract_double_args(args) ;
+            auto [a1, a2] = core::extract_double_args(pargs) ;
             if(a1.empty()) {
                 opt::VCmdLine::print(
                     opt::ErrorMessage("E: Not support list of map yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
             if(a2.empty()) {
                 opt::VCmdLine::print(
                     opt::ErrorMessage("E: Not support reference of map yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
             auto& ihub = core::InputHub::get_instance() ;
@@ -96,22 +97,23 @@ namespace vind
         SystemCall do_noremap(
                 const std::string& args,
                 const std::string& prefix) {
-            if(args.empty()) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            if(pargs.empty()) {
                 opt::VCmdLine::print(
                     opt::ErrorMessage("E: Not support list of map yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
-            auto [a1, a2] = core::extract_double_args(args) ;
+            auto [a1, a2] = core::extract_double_args(pargs) ;
             if(a1.empty()) {
                 opt::VCmdLine::print(
                     opt::ErrorMessage("E: Not support list of map yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
             if(a2.empty()) {
                 opt::VCmdLine::print(
                     opt::ErrorMessage("E: Not support reference of map yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
             auto& ihub = core::InputHub::get_instance() ;
@@ -124,16 +126,17 @@ namespace vind
         SystemCall do_unmap(
                 const std::string& args,
                 const std::string& prefix) {
-            if(args.empty()) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            if(pargs.empty()) {
                 // does not have argument is empty
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
-            auto arg = core::extract_single_arg(args) ;
+            auto arg = core::extract_single_arg(pargs) ;
             if(arg.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
             for(auto mode : prefix_to_modes(prefix)) {

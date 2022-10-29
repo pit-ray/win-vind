@@ -23,7 +23,8 @@ namespace vind
         void Execute::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
-            auto filepath = std::filesystem::u8path(util::trim(args)) ;
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            auto filepath = std::filesystem::u8path(util::trim(pargs)) ;
             if(filepath.empty()) {
                 return ;
             }

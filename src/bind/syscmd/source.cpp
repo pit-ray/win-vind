@@ -179,12 +179,13 @@ namespace vind
         SystemCall Source::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
             std::filesystem::path path{} ;
-            if(args.empty()) {
+            if(pargs.empty()) {
                 path = core::RC() ;
             }
             else {
-                path = core::replace_path_magic(args) ;
+                path = core::replace_path_magic(pargs) ;
             }
 
             std::ifstream ifs(path, std::ios::in) ;
@@ -192,7 +193,7 @@ namespace vind
                 std::stringstream ss ;
                 ss << "Could not open \"" << path.u8string() << "\".\n" ;
                 opt::VCmdLine::print(opt::ErrorMessage(ss.str())) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
             std::string aline ;

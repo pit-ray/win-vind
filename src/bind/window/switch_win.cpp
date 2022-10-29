@@ -79,18 +79,21 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                if(igate.is_pressed(KEYCODE_ESC) || igate.is_pressed(KEYCODE_ENTER)) {
-                    break ;
-                }
-
-                std::vector<core::CmdUnit::SPtr> inputs ;
+                core::CmdUnit::SPtr input ;
+                std::vector<core::CmdUnit::SPtr> outputs ;
                 std::vector<std::uint16_t> counts ;
-                if(!ihub.fetch_inputs(inputs, counts, Mode::EDI_NORMAL)) {
+                ihub.fetch_inputs(
+                        input, outputs, counts, Mode::EDI_NORMAL, false) ;
+
+                if(!input) {
                     continue ;
                 }
-
-                for(int i = 0 ; i < inputs.size() ; i ++) {
-                    pimpl->call_op(inputs[i]->id()) ;
+                if(input->is_containing(KEYCODE_ESC) ||
+                        input->is_containing(KEYCODE_ENTER)) {
+                    break ;
+                }
+                for(int i = 0 ; i < outputs.size() ; i ++) {
+                    pimpl->call_op(outputs[i]->id()) ;
                 }
             }
 

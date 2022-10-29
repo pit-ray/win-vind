@@ -76,7 +76,7 @@ namespace vind
         void StartExternal::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& args) {
-            auto cmd = util::trim(args) ;
+            auto cmd = util::trim(args.substr(1)) ;
             if(cmd.empty()) {
                 return ;
             }

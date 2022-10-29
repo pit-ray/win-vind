@@ -26,7 +26,7 @@ namespace vind
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
             if(!lastchange_) {
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
             if(repeat_count_ > 1 && count == 1) {
                 count = repeat_count_ ;

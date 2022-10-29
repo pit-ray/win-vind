@@ -15,7 +15,7 @@ namespace vind
         }
 
         SystemCall BindedFunc::process(std::uint16_t, const std::string&) {
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
 
         BindedFunc::SPtr ref_global_func_byname(const std::string& name) {
@@ -146,7 +146,7 @@ TEST_SUITE("core/cmdmatcher") {
         }
     }
 
-    TEST_CASE("<num>") {
+    TEST_CASE("<num> case1") {
         std::vector<CmdUnitSet> cmd {
             {KEYCODE_LCTRL, KEYCODE_B},
             {KEYCODE_OPTNUMBER},
@@ -160,39 +160,65 @@ TEST_SUITE("core/cmdmatcher") {
 
         CmdMatcher matcher{ptrcmd} ;
 
-        SUBCASE("case1") {
-            CmdUnit in1{KEYCODE_CTRL, KEYCODE_B} ;
-            int res = matcher.update_state(in1) ;
-            CHECK_EQ(res, 2) ;
-            CHECK(matcher.is_matching()) ;
+        CmdUnit in1{KEYCODE_CTRL, KEYCODE_B} ;
+        int res = matcher.update_state(in1) ;
+        CHECK_EQ(res, 2) ;
+        CHECK(matcher.is_matching()) ;
 
-            CmdUnit in2{KEYCODE_1, KEYCODE_2} ;
-            res = matcher.update_state(in2) ;
-            CHECK_EQ(res, 2) ;
-            CHECK(matcher.is_matching()) ;
+        CmdUnit in2{KEYCODE_1, KEYCODE_2} ;
+        res = matcher.update_state(in2) ;
+        CHECK_EQ(res, 2) ;
+        CHECK(matcher.is_matching()) ;
 
-            CmdUnit in3{KEYCODE_2} ;
-            res = matcher.update_state(in3) ;
-            CHECK_EQ(res, 1) ;
-            CHECK(matcher.is_matching()) ;
+        CmdUnit in3{KEYCODE_2} ;
+        res = matcher.update_state(in3) ;
+        CHECK_EQ(res, 1) ;
+        CHECK(matcher.is_matching()) ;
 
-            CmdUnit in4{KEYCODE_F} ;
-            res = matcher.update_state(in4) ;
-            CHECK_EQ(res, 1) ;
-            CHECK(matcher.is_accepted()) ;
+        CmdUnit in4{KEYCODE_F} ;
+        res = matcher.update_state(in4) ;
+        CHECK_EQ(res, 1) ;
+        CHECK(matcher.is_accepted()) ;
 
-            matcher.backward_state(1) ;
+        matcher.backward_state(1) ;
 
-            CmdUnit in5{KEYCODE_9, KEYCODE_8} ;
-            res = matcher.update_state(in5) ;
-            CHECK_EQ(res, 2) ;
-            CHECK(matcher.is_matching()) ;
+        CmdUnit in5{KEYCODE_9, KEYCODE_8} ;
+        res = matcher.update_state(in5) ;
+        CHECK_EQ(res, 2) ;
+        CHECK(matcher.is_matching()) ;
 
-            CmdUnit in6{KEYCODE_J} ;
-            res = matcher.update_state(in6) ;
-            CHECK_EQ(res, 0) ;
-            CHECK(matcher.is_rejected()) ;
+        CmdUnit in6{KEYCODE_J} ;
+        res = matcher.update_state(in6) ;
+        CHECK_EQ(res, 0) ;
+        CHECK(matcher.is_rejected()) ;
+    }
+
+    TEST_CASE("<num> case2") {
+        std::vector<CmdUnitSet> cmd {
+            {KEYCODE_OPTNUMBER},
+        } ;
+
+        std::vector<CmdUnit::SPtr> ptrcmd{} ;
+        for(const auto& cmdunit : cmd) {
+            ptrcmd.push_back(std::make_shared<CmdUnit>(cmdunit)) ;
         }
+
+        CmdMatcher matcher{ptrcmd} ;
+
+        CmdUnit in1{KEYCODE_1} ;
+        int res = matcher.update_state(in1) ;
+        CHECK_EQ(res, 1) ;
+        CHECK(matcher.is_accepted()) ;
+
+        CmdUnit in2{KEYCODE_1, KEYCODE_2} ;
+        res = matcher.update_state(in2) ;
+        CHECK_EQ(res, 2) ;
+        CHECK(matcher.is_accepted()) ;
+
+        CmdUnit in3{KEYCODE_J} ;
+        res = matcher.update_state(in3) ;
+        CHECK_EQ(res, 0) ;
+        CHECK(matcher.is_rejected()) ;
     }
 
     TEST_CASE("typing w/ ctrl") {

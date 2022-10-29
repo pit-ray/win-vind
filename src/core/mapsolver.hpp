@@ -60,10 +60,15 @@ namespace vind
             /*
              * @param[in] (raw_cmdunit) 
              *
+             * @param[in] (auto_reset)
+             *     If true, the states of each matcher are reset
+             *     after any are accepted or rejected automatically.
+             *
              * @return target command
              */
             std::vector<CmdUnit::SPtr> map_command_from(
-                    const CmdUnit& raw_cmdunit) ;
+                const CmdUnit& raw_cmdunit,
+                bool auto_reset=true) ;
 
             std::vector<std::vector<CmdUnit::SPtr>> get_trigger_commands() const ;
             std::vector<std::vector<CmdUnit::SPtr>> get_target_commands() const ;

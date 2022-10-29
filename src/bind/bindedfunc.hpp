@@ -92,7 +92,7 @@ namespace vind
             SystemCall do_process(
                     std::uint16_t count, const std::string& args) override {
                 static_cast<Derived*>(this)->sprocess(count, args) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
         public:

@@ -56,21 +56,23 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                std::vector<core::CmdUnit::SPtr> inputs ;
+                core::CmdUnit::SPtr input ;
+                std::vector<core::CmdUnit::SPtr> outputs ;
                 std::vector<std::uint16_t> counts ;
-                if(!ihub.fetch_inputs(inputs, counts)) {
+                ihub.fetch_inputs(input, outputs, counts) ;
+
+                if(!input) {
                     continue ;
                 }
-
-                for(int i = 0 ; i < inputs.size() ; i ++) {
+                for(int i = 0 ; i < outputs.size() ; i ++) {
                     std::uint16_t correct_count = count * counts[i] ;
-                    if(inputs[i]->id() == id()) {
+                    if(outputs[i]->id() == id()) {
                         bind::YankLine::sprocess(correct_count, "") ;
                         return ;
                     }
-                    if(MotionIds::get_instance().is_motion(inputs[i]->id())) {
+                    if(MotionIds::get_instance().is_motion(outputs[i]->id())) {
                         core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                        inputs[i]->execute(correct_count, "") ;
+                        outputs[i]->execute(correct_count, "") ;
                         YankHighlightText::sprocess(1, "") ;
                         ToEdiNormal::sprocess(1, "", false) ;
                         return ;
@@ -110,21 +112,23 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                std::vector<core::CmdUnit::SPtr> inputs ;
+                core::CmdUnit::SPtr input ;
+                std::vector<core::CmdUnit::SPtr> outputs ;
                 std::vector<std::uint16_t> counts ;
-                if(!ihub.fetch_inputs(inputs, counts)) {
+                ihub.fetch_inputs(input, outputs, counts) ;
+
+                if(!input) {
                     continue ;
                 }
-
-                for(int i = 0 ; i < inputs.size() ; i ++) {
+                for(int i = 0 ; i < outputs.size() ; i ++) {
                     std::uint16_t correct_count = count * counts[i] ;
-                    if(inputs[i]->id() == id()) {
+                    if(outputs[i]->id() == id()) {
                         bind::DeleteLine::sprocess(correct_count, "") ;
                         return ;
                     }
-                    if(MotionIds::get_instance().is_motion(inputs[i]->id())) {
+                    if(MotionIds::get_instance().is_motion(outputs[i]->id())) {
                         core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                        inputs[i]->execute(correct_count, "") ;
+                        outputs[i]->execute(correct_count, "") ;
                         DeleteHighlightText::sprocess(1, "") ;
                         return ;
                     }
@@ -162,21 +166,23 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                std::vector<core::CmdUnit::SPtr> inputs ;
+                core::CmdUnit::SPtr input ;
+                std::vector<core::CmdUnit::SPtr> outputs ;
                 std::vector<std::uint16_t> counts ;
-                if(!ihub.fetch_inputs(inputs, counts)) {
+                ihub.fetch_inputs(input, outputs, counts) ;
+
+                if(!input) {
                     continue ;
                 }
-
-                for(int i = 0 ; i < inputs.size() ; i ++) {
+                for(int i = 0 ; i < outputs.size() ; i ++) {
                     std::uint16_t correct_count = count * counts[i] ;
-                    if(inputs[i]->id() == id()) {
+                    if(outputs[i]->id() == id()) {
                         bind::ChangeLine::sprocess(correct_count, "") ;
                         return ;
                     }
-                    if(MotionIds::get_instance().is_motion(inputs[i]->id())) {
+                    if(MotionIds::get_instance().is_motion(outputs[i]->id())) {
                         core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                        inputs[i]->execute(correct_count, "") ;
+                        outputs[i]->execute(correct_count, "") ;
                         DeleteHighlightText::sprocess(1, "") ;
                         ToInsert::sprocess(1, "", false) ;
                         return ;

@@ -3,6 +3,7 @@
 #include "cmdparser.hpp"
 #include "inputgate.hpp"
 #include "keycode.hpp"
+#include "syscalldef.hpp"
 
 #include "bind/bindedfunc.hpp"
 #include "bind/bindinglist.hpp"
@@ -11,6 +12,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <memory>
+#include <sstream>
 
 
 namespace vind
@@ -190,19 +192,19 @@ namespace vind
             return *this ;
         }
 
-        void CmdUnit::execute(
+        SystemCall CmdUnit::execute(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
-            return ;
+            return SystemCall::SUCCEEDED ;
         }
 
-        void InternalCmdUnit::execute(
+        SystemCall InternalCmdUnit::execute(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
-            return ;
+            return SystemCall::SUCCEEDED ;
         }
 
-        void ExternalCmdUnit::execute(
+        SystemCall ExternalCmdUnit::execute(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
             // To reproduce the keystroke, should consider the order for pressing.
@@ -212,6 +214,7 @@ namespace vind
             for(decltype(count) i = 0 ; i < count ; i ++) {
                 InputGate::get_instance().pushup(sequential.begin(), sequential.end()) ;
             }
+            return SystemCall::SUCCEEDED ;
         }
 
         bool FunctionalCmdUnit::has_function() const noexcept {
@@ -229,15 +232,16 @@ namespace vind
             return 0 ;
         }
 
-        void FunctionalCmdUnit::execute(
+        SystemCall FunctionalCmdUnit::execute(
                 std::uint16_t count,
-                const std::string& UNUSED(args)) {
+                const std::string& args) {
             if(!has_function()) {
                 throw RUNTIME_EXCEPT("Does not have an associated function.") ;
             }
-            func_->process(count) ;
+            return func_->process(count, args) ;
         }
 
+        // Stream operators
         std::ostream& operator<<(std::ostream& stream, const CmdUnit::SPtr& rhs) {
             if(auto func_cmdunit = std::dynamic_pointer_cast<FunctionalCmdUnit>(rhs)) {
                 stream << "<" << func_cmdunit->get_function()->name() << ">" ;
@@ -313,6 +317,44 @@ namespace vind
                 stream << *keyset ;
             }
             return stream ;
+        }
+
+
+        // String operators
+        std::string to_string(const CmdUnit::SPtr& rhs) {
+            std::stringstream ss ;
+            ss << rhs ;
+            return ss.str() ;
+        }
+        std::string to_string(const CmdUnitSet& rhs) {
+            std::stringstream ss ;
+            ss << rhs ;
+            return ss.str() ;
+        }
+        std::string to_string(const CmdUnit& rhs) {
+            std::stringstream ss ;
+            ss << rhs ;
+            return ss.str() ;
+        }
+        std::string to_string(const std::vector<CmdUnit>& rhs) {
+            std::stringstream ss ;
+            ss << rhs ;
+            return ss.str() ;
+        }
+        std::string to_string(const std::vector<CmdUnitSet>& rhs) {
+            std::stringstream ss ;
+            ss << rhs ;
+            return ss.str() ;
+        }
+        std::string to_string(const std::vector<std::shared_ptr<CmdUnit>>& rhs) {
+            std::stringstream ss ;
+            ss << rhs ;
+            return ss.str() ;
+        }
+        std::string to_string(const std::vector<std::unique_ptr<CmdUnit>>& rhs) {
+            std::stringstream ss ;
+            ss << rhs ;
+            return ss.str() ;
         }
     }
 }

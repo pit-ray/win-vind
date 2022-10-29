@@ -173,11 +173,13 @@ namespace vind
 
                 if(contains(KEYCODE_ESC)) {
                     opt::VCmdLine::reset() ;
+                    util::remove_from_back(pimpl->hists_, 1) ;
                     break ;
                 }
                 if(contains(KEYCODE_BKSPACE)) {
                     if(hist->empty()) {
                         opt::VCmdLine::reset() ;
+                        util::remove_from_back(pimpl->hists_, 1) ;
                         break ;
                     }
                     hist->backward() ;
@@ -186,13 +188,13 @@ namespace vind
                 }
                 if(contains(KEYCODE_UP)) {
                     hist_idx = (std::max)(hist_idx - 1, 0) ;
-                    hist = pimpl->hists_[hist_idx] ;
+                    *pimpl->hists_.back() = *pimpl->hists_[hist_idx] ;
                     opt::VCmdLine::print(opt::StaticMessage(":" + hist->to_string())) ;
                     continue ;
                 }
                 if(contains(KEYCODE_DOWN)) {
                     hist_idx = (std::min)(hist_idx + 1, max_hist_idx) ;
-                    hist = pimpl->hists_[hist_idx] ;
+                    *pimpl->hists_.back() = *pimpl->hists_[hist_idx] ;
                     opt::VCmdLine::print(opt::StaticMessage(":" + hist->to_string())) ;
                     continue ;
                 }

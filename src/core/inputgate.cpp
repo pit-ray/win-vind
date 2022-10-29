@@ -49,6 +49,9 @@ namespace vind
             std::vector<bool> state_ ;  //Keyboard state win-vind understands.
             std::vector<bool> port_state_ ;
 
+            ModeArray<std::vector<bool>> identity_map_ ;
+            ModeArray<std::array<std::vector<KeyCode>, 256>> k2ks_map_ ;
+
             std::array<std::chrono::system_clock::time_point, 256> timestamps_ ;
 
             bool absorb_state_ ;
@@ -62,11 +65,21 @@ namespace vind
               real_state_(256, false),
               state_(256, false),
               port_state_(256, false),
+              identity_map_(),
+              k2ks_map_(),
               timestamps_(),
               absorb_state_(true),
               pool_(),
               pool_reprd_mode_(false)
-            {}
+            {
+                for(int i = 0 ; i < identity_map_.size() ; i ++) {
+                    identity_map_[i].resize(256) ;
+                    std::fill(
+                        identity_map_[i].begin(),
+                        identity_map_[i].end(),
+                        false) ;
+                }
+            }
 
             ~Impl() noexcept = default ;
             Impl(const Impl&) = delete ;
@@ -134,6 +147,9 @@ namespace vind
 
             auto kbd = reinterpret_cast<KBDLLHOOKSTRUCT*>(l_param) ;
             auto code = static_cast<unsigned char>(kbd->vkCode) ;
+
+            auto mode = get_global_mode() ;
+
             if(!(kbd->flags & LLKHF_INJECTED)) {
                 // The message is not generated with SendInput.
                 auto state = !(w_param & KEYUP_MASK) ;
@@ -143,27 +159,24 @@ namespace vind
 
                 core::KeyCode keycode(code) ;
                 if(auto repcode = keycode.to_representative()) {
-                    /*
-                    if(self.map_syncstate(repcode, state) || \
-                            self.map_syncstate(keycode, state)) {
+                    if(self.map_syncstate(repcode, state, mode) \
+                            || self.map_syncstate(keycode, state, mode)) {
                         return 1 ;
                     }
-                    */
 
                     self.pimpl->real_state_[repcode.to_code()] = state ;
                     self.pimpl->state_[repcode.to_code()]      = state ;
                 }
-                /*
-                else if(self.map_syncstate(keycode, state)) {
+                else if(self.map_syncstate(keycode, state, mode)) {
                     return 1 ;
                 }
-                */
 
                 self.pimpl->real_state_[code] = state ;
                 self.pimpl->state_[code] = state ;
             }
 
-            if(self.pimpl->port_state_[code]) {
+            if(self.pimpl->port_state_[code] \
+                    || self.pimpl->identity_map_[static_cast<int>(mode)][code]) {
                 return CallNextHookEx(NULL, HC_ACTION, w_param, l_param) ;
             }
             if(self.pimpl->absorb_state_) {
@@ -239,7 +252,9 @@ namespace vind
 
                 using namespace std::chrono ;
                 if((system_clock::now() - pimpl->timestamps_[k.to_code()]) > 515ms) {
-                    // map_syncstate(k, false) ;
+                    for(int m = 0 ; m < mode_num() ; m ++) {
+                        map_syncstate(k, false, static_cast<Mode>(m)) ;
+                    }
                     release_keystate(k) ;
 
                     pimpl->real_state_[k.to_code()] = false ;
@@ -384,6 +399,51 @@ namespace vind
         }
         void InputGate::press_virtually(KeyCode key) noexcept {
             pimpl->state_[key.to_code()] = true ;
+        }
+
+        bool InputGate::map_syncstate(KeyCode key, bool press_sync_state, Mode mode) {
+            auto target = pimpl->k2ks_map_[static_cast<int>(mode)][key.to_code()] ;
+            if(target.empty()) {
+                return false;
+            }
+
+            if(press_sync_state) {
+                open_some_ports(target.begin(), target.end()) ;
+                press_keystate(target.begin(), target.end()) ;
+                close_some_ports(target.begin(), target.end()) ;
+            }
+            else {
+                open_some_ports(target.begin(), target.end()) ;
+                release_keystate(target.begin(), target.end()) ;
+                close_some_ports(target.begin(), target.end()) ;
+            }
+            return true ;
+        }
+
+        void InputGate::clear_hotkeys(Mode mode) {
+            auto midx = static_cast<int>(mode) ;
+            std::fill(
+                pimpl->identity_map_[midx].begin(),
+                pimpl->identity_map_[midx].end(),
+                false) ;
+            pimpl->k2ks_map_[midx].fill({}) ;
+        }
+
+        void InputGate::register_hotkey(
+                const KeyCode& trigger,
+                const CmdUnit& target,
+                Mode mode) {
+            auto trigger_code = trigger.to_physical().to_code() ;
+
+            std::cout << mode_to_name(mode) << " " << trigger << " * " << target << std::endl ;
+            if(target.size() == 1 && trigger == *target.begin()) {
+                pimpl->identity_map_[static_cast<int>(mode)][trigger_code] = true ;
+                return ;
+            }
+
+            std::vector<KeyCode> keyset(target.begin(), target.end()) ;
+            std::sort(keyset.begin(), keyset.end()) ;
+            pimpl->k2ks_map_[static_cast<int>(mode)][trigger_code] = keyset ;
         }
     } // namespace core
 } // namespace vind

@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "math.hpp"
+#include "util/math.hpp"
 
 
 namespace vind
@@ -92,7 +92,7 @@ namespace vind
         }
 
         float ConstAccelerator::compute_delta() noexcept {
-            constexpr auto TIME_COEF = util::pow_f(10, -3) ;
+            constexpr auto TIME_COEF = util::pow_f(10, -5) ;
             auto t = pimpl->delta_t() * TIME_COEF / pimpl->time_w_ ;
             auto x = pimpl->v_*t + 0.5f*pimpl->accel_*t*t ;
             auto delta_v = pimpl->accel_ * t ;

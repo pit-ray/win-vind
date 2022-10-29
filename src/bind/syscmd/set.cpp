@@ -60,7 +60,7 @@ namespace vind
                     }
                 }
 
-                return SystemCall::SUCCEEDED ;
+                return SystemCall::RECONSTRUCT ;
             }
 
             // set option_name
@@ -114,7 +114,7 @@ namespace vind
                 }
             }
 
-            return SystemCall::SUCCEEDED ;
+            return SystemCall::RECONSTRUCT ;
         }
     }
 }

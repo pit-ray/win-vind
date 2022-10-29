@@ -89,15 +89,15 @@ namespace
         auto rcindex = core::parse_run_command(cmd) ;
         switch(rcindex) {
             case RunCommandsIndex::SET: {
-                Set::sprocess(1, args) ;
+                Set::sprocess(1, cmd + " " + args) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::COMMAND: {
-                Command::sprocess(1, args) ;
+                Command::sprocess(1, cmd + " " + args) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::DELCOMMAND: {
-                Delcommand::sprocess(1, args) ;
+                Delcommand::sprocess(1, cmd + " " + args) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::COMCLEAR: {
@@ -126,7 +126,7 @@ namespace
                 }
 
                 if(!args_path.empty()) {
-                    Source::sprocess(1, args_path.u8string()) ; //overload .vindrc
+                    Source::sprocess(1, cmd + " " + args_path.u8string()) ; //overload .vindrc
                 }
                 return std::error_code() ;
             }
@@ -138,15 +138,15 @@ namespace
         using core::Mode ;
         if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
-            do_map(args, prefix) ;
+            do_map(cmd + " " + args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_NOREMAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "n") ;
-            do_noremap(args, prefix) ;
+            do_noremap(cmd + " " + args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_UNMAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "u") ;
-            do_unmap(args, prefix) ;
+            do_unmap(cmd + " " + args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {

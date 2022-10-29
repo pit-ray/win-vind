@@ -4,6 +4,7 @@
 #include "cmdparser.hpp"
 #include "cmdunit.hpp"
 #include "errlogger.hpp"
+#include "inputgate.hpp"
 #include "typeemu.hpp"
 
 #include "util/debug.hpp"
@@ -280,8 +281,12 @@ namespace vind
             return remove_triggered_map(pimpl->registered_default_, remove_cmd) ;
         }
 
-        void MapSolver::deploy() {
+        void MapSolver::deploy(Mode mode) {
             pimpl->deployed_.clear() ;
+
+            if(mode != Mode::UNDEFINED) {
+                InputGate::get_instance().clear_hotkeys(mode) ;
+            }
 
             std::vector<Map> solved_maps{} ;
             solved_maps.reserve(
@@ -329,14 +334,19 @@ namespace vind
             }
 
             for(auto& map : solved_maps) {
-                if(map.trigger_matcher.get_command().size() == 1 &&
-                        map.trigger_matcher.get_command()[0]->size() == 1 &&
+                auto& trigger_cmd = map.trigger_matcher.get_command() ;
+                if(trigger_cmd.size() == 1 && trigger_cmd[0]->size() == 1 &&
                         map.target_cmd.size() == 1) {
                     // key2keyset mapping
-                    // register_inputgate
-
-                    // a folliwing code is for debug.
-                    pimpl->deployed_.push_back(std::move(map)) ;
+                    auto& tgtunit = map.target_cmd[0] ;
+                    if(mode != Mode::UNDEFINED \
+                            && std::dynamic_pointer_cast<ExternalCmdUnit>(tgtunit)) {
+                        // For the external command unit, applies low-level mapping.
+                        InputGate::get_instance().register_hotkey(*trigger_cmd[0]->begin(), *tgtunit, mode) ;
+                    }
+                    else {
+                        pimpl->deployed_.push_back(std::move(map)) ;
+                    }
                 }
                 else {
                     pimpl->deployed_.push_back(std::move(map)) ;

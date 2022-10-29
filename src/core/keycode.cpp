@@ -461,59 +461,6 @@ namespace vind
             return keycode.to_code() - KEYCODE_0 ;
         }
 
-        std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) {
-            if(rhs.empty()) {
-                return stream ;
-            }
-
-            if(rhs.size() == 1) {
-                const auto& rhs_f = rhs.front() ;
-                if(rhs_f.is_major_system()) {
-                    stream << "<" << rhs_f << ">" ;
-                }
-                else {
-                    stream << rhs_f ;
-                }
-
-                return stream;
-            }
-
-            stream << "<" ;
-            for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
-                if(itr != rhs.cbegin()) {
-                    stream << "-" ;
-                }
-                stream << *itr ;
-            }
-            stream << ">" ;
-            return stream;
-        }
-
-        std::ostream& operator<<(std::ostream& stream, const Command& rhs) {
-            if(!rhs.empty()) {
-                for(const auto& keyset : rhs) {
-                    stream << keyset ;
-                }
-            }
-            return stream ;
-        }
-
-        std::ostream& operator<<(std::ostream& stream, const CommandList& rhs) {
-            if(!rhs.empty()) {
-                stream << "[" ;
-                for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
-                    if(rhs.size() > 1 && itr != rhs.cbegin()) {
-                        stream << ", " ;
-                    }
-                    stream << *itr ;
-                }
-                stream << "]" ;
-            }
-
-            return stream ;
-        }
-
-
         KeyCode get_shift_keycode(char ascii) {
             auto res = VkKeyScanW(
                     util::s_to_ws(std::string{ascii})[0]) ;

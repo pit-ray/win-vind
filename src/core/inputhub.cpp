@@ -60,7 +60,7 @@ namespace vind
                     solver->add_default(trigger, target) ;
                 }
                 solver->deploy_default(true) ;
-                solver->deploy() ;
+                solver->deploy(static_cast<Mode>(m)) ;
                 pimpl->solvers_[m] = std::move(solver) ;
             }
         }
@@ -195,12 +195,12 @@ namespace vind
 
         void InputHub::apply_mapping(Mode mode) {
             if(mode == Mode::UNDEFINED) {
-                for(auto& solver : pimpl->solvers_) {
-                    solver->deploy() ;
+                for(int m = 0 ; m < pimpl->solvers_.size() ; m ++) {
+                    pimpl->solvers_[m]->deploy(static_cast<Mode>(m)) ;
                 }
             }
             else {
-                get_solver(mode)->deploy() ;
+                get_solver(mode)->deploy(mode) ;
             }
         }
     }

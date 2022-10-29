@@ -50,6 +50,11 @@ namespace vind
                     WPARAM w_param,
                     LPARAM l_param) ;
 
+            bool map_syncstate(
+                KeyCode key,
+                bool press_sync_state,
+                Mode mode) ;
+
         public:
             static InputGate& get_instance() ;
 
@@ -87,8 +92,8 @@ namespace vind
             void close_some_ports(
                     std::vector<KeyCode>&& keys) noexcept ;
             void close_some_ports(
-                    KeySet::const_iterator begin,
-                    KeySet::const_iterator end) noexcept ;
+                    std::vector<KeyCode>::const_iterator begin,
+                    std::vector<KeyCode>::const_iterator end) noexcept ;
 
             void close_some_ports(const CmdUnitSet& key) noexcept ;
             void close_port(KeyCode key) noexcept ;
@@ -104,8 +109,8 @@ namespace vind
 
             void open_some_ports(std::vector<KeyCode>&& keys) noexcept ;
             void open_some_ports(
-                    KeySet::const_iterator begin,
-                    KeySet::const_iterator end) noexcept ;
+                    std::vector<KeyCode>::const_iterator begin,
+                    std::vector<KeyCode>::const_iterator end) noexcept ;
 
             void open_some_ports(const CmdUnitSet& key) noexcept ;
             void open_port(KeyCode key) noexcept ;
@@ -620,6 +625,13 @@ namespace vind
                     Ts&&... keys) {
                 pushup({key1, key2, KeyCode(keys)...}) ;
             }
+
+            void clear_hotkeys(Mode mode) ;
+
+            void register_hotkey(
+                const KeyCode& trigger,
+                const CmdUnit& target,
+                Mode mode) ;
         } ;
 
 

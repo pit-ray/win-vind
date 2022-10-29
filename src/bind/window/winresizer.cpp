@@ -22,7 +22,6 @@
 #include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
-#include "util/constant_accelerator.hpp"
 #include "util/def.hpp"
 #include "util/keystroke_repeater.hpp"
 #include "util/screen_metrics.hpp"

@@ -5,10 +5,11 @@
 #include <chrono>
 #include <cmath>
 
+#include "constant_accelerator.hpp"
+
 #include "core/errlogger.hpp"
 #include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
-#include "util/constant_accelerator.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/math.hpp"

@@ -47,7 +47,11 @@ namespace vind
 
             // Resolve the remapping of the added maps and deploy
             // to the mapping used in the matching.
-            void deploy() ;
+            // The mode is used to register the low-level key mapping
+            // into InputGate for specific mode. If the mode is UNDEFINED,
+            // the low-level mapping is treated the same as the general
+            // mappings without low-level.
+            void deploy(Mode mode=Mode::UNDEFINED) ;
             void deploy_default(bool solve=true) ;
 
             void clear() ;

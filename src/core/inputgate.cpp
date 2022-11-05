@@ -435,7 +435,6 @@ namespace vind
                 Mode mode) {
             auto trigger_code = trigger.to_physical().to_code() ;
 
-            std::cout << mode_to_name(mode) << " " << trigger << " * " << target << std::endl ;
             if(target.size() == 1 && trigger == *target.begin()) {
                 pimpl->identity_map_[static_cast<int>(mode)][trigger_code] = true ;
                 return ;

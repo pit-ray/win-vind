@@ -10,6 +10,7 @@
 #include "util/debug.hpp"
 
 #include <algorithm>
+#include <memory>
 #include <sstream>
 #include <string>
 
@@ -98,8 +99,21 @@ namespace
             map.trigger_matcher.reset_state() ;
         }
 
-        std::vector<CmdUnit::SPtr> no_match_subcmd{} ;
+        std::vector<CmdUnit::SPtr> subcmd_queue{} ;
         for(const auto& in_cmdunit : draft_map.target_cmd) {
+            // If the mapping like `gmap t {hello}` could result in
+            // `o` being `click_left`. However, the external mapping
+            // take precedence over functional mappings because
+            // the user likely want to input the keys.
+            if(std::dynamic_pointer_cast<ExternalCmdUnit>(in_cmdunit)) {
+                subcmd_queue.push_back(in_cmdunit) ;
+                solved_target.insert(
+                    solved_target.end(),
+                    subcmd_queue.begin(), subcmd_queue.end()) ;
+                subcmd_queue.clear() ;
+                continue ;
+            }
+
             // Saves the matched number of each matcher.
             // Then, gives high priority to the matcher
             // having the maximum matched number.
@@ -122,18 +136,18 @@ namespace
                 for(auto& map : refmap_table) {
                     map.trigger_matcher.reset_state() ;
                 }
-                no_match_subcmd.push_back(in_cmdunit) ;
+                subcmd_queue.push_back(in_cmdunit) ;
                 solved_target.insert(
                     solved_target.end(),
-                    no_match_subcmd.begin(), no_match_subcmd.end()) ;
-                no_match_subcmd.clear() ;
+                    subcmd_queue.begin(), subcmd_queue.end()) ;
+                subcmd_queue.clear() ;
                 continue ;
             }
 
             auto max_itr = std::max_element(acc_nums.begin(), acc_nums.end()) ;
             if(*max_itr == 0) {
                 // Any matchers does not accept, but matching.
-                no_match_subcmd.push_back(in_cmdunit) ;
+                subcmd_queue.push_back(in_cmdunit) ;
                 continue ;
             }
 
@@ -159,13 +173,13 @@ namespace
             for(auto& map : refmap_table) {
                 map.trigger_matcher.reset_state() ;
             }
-            no_match_subcmd.clear() ;
+            subcmd_queue.clear() ;
         }
 
         // Matching the target command, the loop is breaked.
         solved_target.insert(
             solved_target.end(),
-            no_match_subcmd.begin(), no_match_subcmd.end()) ;
+            subcmd_queue.begin(), subcmd_queue.end()) ;
 
         return solved_target ;
     }
@@ -195,7 +209,15 @@ namespace
             const DraftMap& draft_map,
             std::vector<Map>& refmap_table,
             bool recursively=false) {
-        // Self-mapping (e.g. map <s-c> <s-c>) is invalid.
+        // We allow the external key2key self-mapping to disable key absorbing.
+        // (e.g. map <alt> {<alt>})
+        if(draft_map.trigger_cmd.size() == 1 \
+                && draft_map.target_cmd.size() == 1 \
+                && std::dynamic_pointer_cast<ExternalCmdUnit>(draft_map.target_cmd[0])) {
+            return draft_map.target_cmd ;
+        }
+
+        // However, other self-mapping (e.g. map <s-c> <s-c>) is invalid.
         if(is_same_command(draft_map.trigger_cmd, draft_map.target_cmd)) {
             return {} ;
         }

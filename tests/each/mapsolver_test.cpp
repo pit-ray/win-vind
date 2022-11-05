@@ -197,13 +197,20 @@ TEST_SUITE("core/mapsolver") {
             solver.deploy_default() ;
             solver.deploy() ;
 
+            // It default {<left>} is external unit, so stop remapping.
+            // Then, we assume the new <left> as general trigger key,
+            // it mapped <left> -> h -> {<left>}. However, the internal
+            // self-mapping is ignored, but the external self-mapping is
+            // not ignored.
+
             auto triggers = solver.get_trigger_commands() ;
-            CHECK_EQ(triggers.size(), 3) ;
+            CHECK_EQ(triggers.size(), 4) ;
 
             std::vector<std::vector<CmdUnitSet>> expect_triggers {
+                {{KEYCODE_H}},
                 {{KEYCODE_J}},
                 {{KEYCODE_K}},
-                {{KEYCODE_L}}
+                {{KEYCODE_L}},
             } ;
 
             for(int i = 0 ; i < triggers.size() ; i ++) {
@@ -213,12 +220,13 @@ TEST_SUITE("core/mapsolver") {
             }
 
             auto targets = solver.get_target_commands() ;
-            CHECK_EQ(targets.size(), 3) ;
+            CHECK_EQ(targets.size(), 4) ;
 
             std::vector<std::vector<CmdUnitSet>> expect_targets {
+                {{KEYCODE_LEFT}},
                 {{KEYCODE_DOWN}},
                 {{KEYCODE_UP}},
-                {{KEYCODE_RIGHT}}
+                {{KEYCODE_RIGHT}},
             } ;
 
             for(int i = 0 ; i < targets.size() ; i ++) {

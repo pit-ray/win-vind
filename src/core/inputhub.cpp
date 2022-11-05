@@ -152,6 +152,9 @@ namespace vind
             fetch_inputs(input, outputs, counts, mode) ;
 
             auto res = SystemCall::SUCCEEDED ;
+            if(input && !input->empty()) {
+                std::cout << input << " => " << outputs << std::endl ;
+            }
             for(int i = 0 ; i < outputs.size() ; i ++) {
                 res = util::enum_or(res, outputs[i]->execute(counts[i])) ;
             }

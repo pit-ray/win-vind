@@ -53,6 +53,7 @@ AddTest(each-cmdmatcher-test
     ${SRCDIR}/core/inputgate.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/path.cpp
+    ${SRCDIR}/core/mode.cpp
     ${SRCDIR}/core/typeemu.cpp
     ${SRCDIR}/util/box2d.cpp
     ${SRCDIR}/util/interval_timer.cpp
@@ -104,6 +105,7 @@ AddTest(each-typeemu-test
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/path.cpp
     ${SRCDIR}/core/typeemu.cpp
+    ${SRCDIR}/core/mode.cpp
     ${SRCDIR}/util/interval_timer.cpp
     ${SRCDIR}/util/keystroke_repeater.cpp
     ${SRCDIR}/util/string.cpp

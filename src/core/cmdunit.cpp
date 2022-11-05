@@ -248,7 +248,7 @@ namespace vind
                 return stream ;
             }
 
-            if(rhs->empty()) {
+            if(!rhs || rhs->empty()) {
                 return stream ;
             }
 

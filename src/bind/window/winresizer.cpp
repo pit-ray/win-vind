@@ -11,11 +11,8 @@
 #include "bind/bindinglist.hpp"
 #include "bind/emu/movecaret.hpp"
 #include "core/background.hpp"
-#include "core/entry.hpp"
-#include "core/funcfinder.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
@@ -211,7 +208,7 @@ namespace vind
                     continue ;
                 }
 
-                for(int i = 0 ; i < outputs.size() ; i ++) {
+                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
                     pimpl->call_op(inmode, outputs[i]->id()) ;
                 }
             }

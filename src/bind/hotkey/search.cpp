@@ -1,8 +1,6 @@
 #include "search.hpp"
 
-#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 

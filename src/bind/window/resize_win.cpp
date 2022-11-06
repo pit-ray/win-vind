@@ -2,9 +2,6 @@
 
 #include "winutil.hpp"
 
-#include "core/charlogger.hpp"
-#include "core/keylgrbase.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"

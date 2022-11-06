@@ -11,13 +11,10 @@
 #include <utility>
 
 #include "core/background.hpp"
-#include "core/entry.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode.hpp"
 #include "core/keylayout.hpp"
-#include "core/keylog.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
 #include "opt/dedicate_to_window.hpp"
@@ -80,12 +77,15 @@ namespace vind
                     return ;
                 }
 
-                core::KeyLog log{(igate.pressed_list() - toggle_keys).data()} ;
-                if(log.empty()) {
+                auto inputs = igate.pressed_list() ;
+                if(inputs.empty()) {
                     continue ;
                 }
 
-                for(const auto& keycode : log) {
+                for(const auto& keycode : inputs) {
+                    if(toggle_keys.is_containing(keycode)) {
+                        continue ;
+                    }
                     if(keycode.is_unreal()) {
                         continue ;
                     }
@@ -113,7 +113,7 @@ namespace vind
 
                     util::set_cursor_pos(x, y) ;
 
-                    for(const auto& key : log) {
+                    for(const auto& key : inputs) {
                         igate.release_keystate(key) ;
                     }
                     return ;

@@ -3,7 +3,6 @@
 #include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/keystroke_repeater.hpp"
 

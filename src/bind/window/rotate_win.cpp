@@ -12,8 +12,6 @@
 
 #include "bind/mouse/jump_actwin.hpp"
 #include "bind/saferepeat.hpp"
-#include "core/charlogger.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/winwrap.hpp"

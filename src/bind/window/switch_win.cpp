@@ -10,7 +10,6 @@
 #include "core/entry.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
-#include "core/keylgrbase.hpp"
 #include "core/mode.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
@@ -92,7 +91,7 @@ namespace vind
                         input->is_containing(KEYCODE_ENTER)) {
                     break ;
                 }
-                for(int i = 0 ; i < outputs.size() ; i ++) {
+                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
                     pimpl->call_op(outputs[i]->id()) ;
                 }
             }

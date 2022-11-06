@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <windows.h>
 
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"
 

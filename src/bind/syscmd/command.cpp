@@ -1,6 +1,5 @@
 #include "command.hpp"
 
-#include "core/charlogger.hpp"
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputhub.hpp"

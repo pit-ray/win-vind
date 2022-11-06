@@ -4,7 +4,6 @@
 
 #include "winutil.hpp"
 
-#include "core/ntypelogger.hpp"
 #include "util/box2d.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"

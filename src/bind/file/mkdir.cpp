@@ -1,8 +1,6 @@
 #include "mkdir.hpp"
 
-#include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/path.hpp"
 
 #include "util/def.hpp"

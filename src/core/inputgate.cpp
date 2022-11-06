@@ -5,11 +5,7 @@
 #include "bind/saferepeat.hpp"
 #include "errlogger.hpp"
 #include "keycodedef.hpp"
-#include "keylgrbase.hpp"
-#include "keylog.hpp"
-#include "lgrparsermgr.hpp"
 #include "mode.hpp"
-#include "ntypelogger.hpp"
 #include "util/container.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
@@ -72,7 +68,7 @@ namespace vind
               pool_(),
               pool_reprd_mode_(false)
             {
-                for(int i = 0 ; i < identity_map_.size() ; i ++) {
+                for(std::size_t i = 0 ; i < identity_map_.size() ; i ++) {
                     identity_map_[i].resize(256) ;
                     std::fill(
                         identity_map_[i].begin(),
@@ -252,7 +248,7 @@ namespace vind
 
                 using namespace std::chrono ;
                 if((system_clock::now() - pimpl->timestamps_[k.to_code()]) > 515ms) {
-                    for(int m = 0 ; m < mode_num() ; m ++) {
+                    for(std::size_t m = 0 ; m < mode_num() ; m ++) {
                         map_syncstate(k, false, static_cast<Mode>(m)) ;
                     }
                     release_keystate(k) ;

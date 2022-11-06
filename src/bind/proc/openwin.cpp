@@ -4,8 +4,6 @@
 
 #include <psapi.h>
 
-#include "core/charlogger.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/path.hpp"
 #include "util/def.hpp"
 #include "util/winwrap.hpp"

@@ -6,8 +6,6 @@
 
 #include "bind/bindedfunc.hpp"
 #include "bind/bindedfunc.hpp"
-#include "core/charlogger.hpp"
-#include "core/entry.hpp"
 #include "core/rcparser.hpp"
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"

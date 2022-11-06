@@ -1,6 +1,5 @@
 #include "teleport_vdesktop.hpp"
 
-#include "core/ntypelogger.hpp"
 #include "util/smartcom.hpp"
 #include "util/winwrap.hpp"
 

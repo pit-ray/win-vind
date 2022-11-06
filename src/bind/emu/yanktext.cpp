@@ -5,7 +5,6 @@
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "textreg.hpp"
 #include "textutil.hpp"
 #include "util/def.hpp"

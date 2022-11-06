@@ -2,7 +2,6 @@
 
 #include "bind/saferepeat.hpp"
 #include "core/background.hpp"
-#include "core/charlogger.hpp"
 #include "core/entry.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode.hpp"
@@ -73,14 +72,13 @@ namespace
                     return ;
                 }
 
-                core::KeyLog log{igate.pressed_list().data()} ;
-
-                for(const auto& keycode : log) {
+                auto inputs = igate.pressed_list() ;
+                for(const auto& keycode : inputs) {
                     if(keycode.is_major_system()) {
                         continue ;
                     }
 
-                    auto uni = core::keycode_to_unicode(keycode, log) ;
+                    auto uni = core::keycode_to_unicode(keycode, inputs) ;
                     if(!uni.empty()) {
                         auto shift = core::get_shift_keycode(uni.front()) ;
 

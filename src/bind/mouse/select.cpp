@@ -1,9 +1,7 @@
 #include "select.hpp"
 
 #include "bind/saferepeat.hpp"
-#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
 

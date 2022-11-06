@@ -2,7 +2,6 @@
 
 #include <windows.h>
 
-#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <functional>
@@ -10,7 +9,6 @@
 
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
@@ -25,7 +23,6 @@ namespace
 
     class AsyncConstAccelerator {
     private:
-        float max_v_ ;
         float accel_ ;
         int time_w_ ;
 
@@ -36,8 +33,7 @@ namespace
 
     public:
         explicit AsyncConstAccelerator()
-        : max_v_(10.0f),
-          accel_(1.0f),
+        : accel_(1.0f),
           time_w_(100),
           ft_(),
           func_(),
@@ -65,7 +61,7 @@ namespace
             // When moving a mouse, discrete and variable sensory signals,
             // such as text input signals, are not smooth. Therefore, to
             // make it closer to continuous, it asynchronously checks the
-            // current input state and maintains a constant velocity linear
+            // current input state and maintains a constant accelerated
             // motion if it is the same as the input state at the time it
             // is called at first time.
             triggered_keys_ = core::InputGate::get_instance().pressed_list() ;
@@ -84,7 +80,6 @@ namespace
             constexpr float v0 = 1.0f ;
 
             auto start = system_clock::now() ;
-            float v = 0 ;
             while(continue_flag_) {
                 auto inputs = core::InputGate::get_instance().pressed_list() ;
                 // If the current key states is different from the first time set, breaks it.
@@ -94,14 +89,11 @@ namespace
 
                 auto nt = system_clock::now() ;
                 auto t = static_cast<float>(duration_cast<microseconds>(nt - start).count()) ;
-                // The time scale of constant velocity linear motion
+                // The time scale of constant accelerated motion
                 // contributes directly to smoothness. Therefore,
                 // smoothness is a user-modifiable parameter.
                 t *= to_s / time_w_ ;
                 auto x = v0 * t + 0.5f * accel_ * t * t ;
-
-                auto new_v = v0 + accel_ * t ;
-                v = (std::min)({new_v, max_v_}) ;
 
                 func_(static_cast<int>(x)) ;
 
@@ -112,10 +104,6 @@ namespace
 
         void set_acceleration(float acceleration) noexcept {
             accel_ = acceleration ;
-        }
-
-        void set_max_velocity(float velocity) noexcept {
-            max_v_ = velocity ;
         }
 
         void set_time_weight(int weight) noexcept {
@@ -155,8 +143,6 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
             pimpl->accel_.set_acceleration(
                     settable.get("cursor_accel").get<float>()) ;
-            pimpl->accel_.set_max_velocity(
-                    settable.get("cursor_maxv").get<float>()) ;
             pimpl->accel_.set_time_weight(
                     settable.get("cursor_resolution").get<int>()) ;
         }
@@ -187,8 +173,6 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
             pimpl->accel_.set_acceleration(
                     settable.get("cursor_accel").get<float>()) ;
-            pimpl->accel_.set_max_velocity(
-                    settable.get("cursor_maxv").get<float>()) ;
             pimpl->accel_.set_time_weight(
                     settable.get("cursor_resolution").get<int>()) ;
         }
@@ -219,8 +203,6 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
             pimpl->accel_.set_acceleration(
                     settable.get("cursor_accel").get<float>()) ;
-            pimpl->accel_.set_max_velocity(
-                    settable.get("cursor_maxv").get<float>()) ;
             pimpl->accel_.set_time_weight(
                     settable.get("cursor_resolution").get<int>()) ;
         }
@@ -251,8 +233,6 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
             pimpl->accel_.set_acceleration(
                     settable.get("cursor_accel").get<float>()) ;
-            pimpl->accel_.set_max_velocity(
-                    settable.get("cursor_maxv").get<float>()) ;
             pimpl->accel_.set_time_weight(
                     settable.get("cursor_resolution").get<int>()) ;
         }

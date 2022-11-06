@@ -64,12 +64,10 @@ SOFTWARE.
 #include "background.hpp"
 #include "cmdmatcher.hpp"
 #include "errlogger.hpp"
-#include "funcfinder.hpp"
 #include "inputgate.hpp"
 #include "inputhub.hpp"
 #include "mapsolver.hpp"
 #include "mode.hpp"
-#include "ntypelogger.hpp"
 #include "path.hpp"
 #include "settable.hpp"
 
@@ -102,10 +100,6 @@ namespace vind
 
             util::IntervalTimer memread_timer_ ;
 
-            NTypeLogger lgr_ ;
-            ModeArray<FuncFinder> finders_ ;
-            bind::BindedFunc::SPtr actfunc_ ;
-
             Background bg_ ;
 
             template <typename ExitFuncType, typename String>
@@ -116,9 +110,6 @@ namespace vind
               memsize_(memsize),
               subprocess_(false),
               memread_timer_(1000'000), //1 s
-              lgr_(),
-              finders_(),
-              actfunc_(nullptr),
               bg_(opt::all_global_options())
             {}
 

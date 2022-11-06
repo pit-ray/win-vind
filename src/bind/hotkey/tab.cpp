@@ -4,10 +4,8 @@
 
 #include "bind/mode/change_mode.hpp"
 #include "bind/saferepeat.hpp"
-#include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 

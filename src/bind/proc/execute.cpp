@@ -2,8 +2,6 @@
 
 #include "openwin.hpp"
 
-#include "core/charlogger.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/path.hpp"
 #include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"

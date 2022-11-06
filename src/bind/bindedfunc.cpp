@@ -4,11 +4,9 @@
 #include <cstdint>
 #include <functional>
 
-#include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/string.hpp"
 
 

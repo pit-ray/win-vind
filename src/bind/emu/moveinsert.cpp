@@ -5,7 +5,6 @@
 #include "bind/mode/change_mode.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "opt/vcmdline.hpp"
 #include "textsel.hpp"
 #include "util/debug.hpp"

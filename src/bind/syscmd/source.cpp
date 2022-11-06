@@ -1,9 +1,7 @@
 #include "source.hpp"
 
 #include "bind/bindedfunc.hpp"
-#include "core/charlogger.hpp"
 #include "core/cmdparser.hpp"
-#include "core/entry.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputhub.hpp"
 #include "core/mode.hpp"

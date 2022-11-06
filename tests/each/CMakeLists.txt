@@ -2,38 +2,18 @@ cmake_minimum_required(VERSION 3.0.0)
 
 set(SRCDIR ../../src)
 
-AddTest(each-cmdparser-old-test
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_old_test.cpp
-
-    ${SRCDIR}/util/string.cpp
-    ${SRCDIR}/core/cmdparser_old.cpp
-    ${SRCDIR}/core/errlogger.cpp
-    ${SRCDIR}/core/keycode.cpp
-    ${SRCDIR}/core/path.cpp
-    ${SRCDIR}/util/box2d.cpp
-    ${SRCDIR}/util/winwrap.cpp
-)
-target_link_libraries(each-cmdparser-old-test userenv)
-
-
 AddTest(each-cmdparser-test
     ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_test.cpp
 
     ${SRCDIR}/bind/bindedfunc.cpp
     ${SRCDIR}/core/cmdparser.cpp
-    ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/util/string.cpp
 
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/inputgate.cpp
-    ${SRCDIR}/core/keylgrbase.cpp
-    ${SRCDIR}/core/keylog.cpp
-    ${SRCDIR}/core/lgrparser.cpp
-    ${SRCDIR}/core/lgrparsermgr.cpp
     ${SRCDIR}/core/mode.cpp
-    ${SRCDIR}/core/ntypelogger.cpp
     ${SRCDIR}/core/path.cpp
     ${SRCDIR}/util/box2d.cpp
     ${SRCDIR}/util/interval_timer.cpp
@@ -71,7 +51,6 @@ AddTest(each-mapsolver-test
     ${SRCDIR}/bind/mapdefault.cpp
     ${SRCDIR}/core/cmdmatcher.cpp
     ${SRCDIR}/core/cmdparser.cpp
-    ${SRCDIR}/core/cmdparser_old.cpp
     ${SRCDIR}/core/cmdunit.cpp
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/core/mapsolver.cpp
@@ -80,12 +59,7 @@ AddTest(each-mapsolver-test
 
     ${SRCDIR}/core/errlogger.cpp
     ${SRCDIR}/core/inputgate.cpp
-    ${SRCDIR}/core/keylgrbase.cpp
-    ${SRCDIR}/core/keylog.cpp
-    ${SRCDIR}/core/lgrparser.cpp
-    ${SRCDIR}/core/lgrparsermgr.cpp
     ${SRCDIR}/core/mode.cpp
-    ${SRCDIR}/core/ntypelogger.cpp
     ${SRCDIR}/core/path.cpp
     ${SRCDIR}/util/box2d.cpp
     ${SRCDIR}/util/interval_timer.cpp

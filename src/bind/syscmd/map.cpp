@@ -2,8 +2,6 @@
 
 #include "bind/bindedfunc.hpp"
 #include "bind/bindinglist.hpp"
-#include "core/charlogger.hpp"
-#include "core/entry.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputhub.hpp"
 #include "core/mode.hpp"

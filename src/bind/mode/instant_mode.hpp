@@ -19,8 +19,6 @@ namespace vind
             SystemCall sprocess(
                 std::uint16_t count, const std::string& args) ;
 
-            void reconstruct() override ;
-
             ToInstantGUINormal(ToInstantGUINormal&&) ;
             ToInstantGUINormal& operator=(ToInstantGUINormal&&) ;
             ToInstantGUINormal(const ToInstantGUINormal&)            = delete ;

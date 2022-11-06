@@ -4,7 +4,6 @@
 
 #include "bind/saferepeat.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/debug.hpp"
 #include "util/mouse.hpp"
 

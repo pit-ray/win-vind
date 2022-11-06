@@ -5,7 +5,6 @@
 #include "bind/saferepeat.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "smartclipboard.hpp"
 #include "textutil.hpp"

@@ -3,7 +3,6 @@
 #include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
-#include "core/ntypelogger.hpp"
 #include "deltext.hpp"
 #include "smartclipboard.hpp"
 #include "textreg.hpp"

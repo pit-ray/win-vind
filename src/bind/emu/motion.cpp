@@ -9,7 +9,6 @@
 #include "bind/saferepeat.hpp"
 #include "core/background.hpp"
 #include "core/entry.hpp"
-#include "core/funcfinder.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
 #include "core/mode.hpp"
@@ -64,7 +63,7 @@ namespace vind
                 if(!input) {
                     continue ;
                 }
-                for(int i = 0 ; i < outputs.size() ; i ++) {
+                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
                     std::uint16_t correct_count = count * counts[i] ;
                     if(outputs[i]->id() == id()) {
                         bind::YankLine::sprocess(correct_count, "") ;
@@ -120,7 +119,7 @@ namespace vind
                 if(!input) {
                     continue ;
                 }
-                for(int i = 0 ; i < outputs.size() ; i ++) {
+                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
                     std::uint16_t correct_count = count * counts[i] ;
                     if(outputs[i]->id() == id()) {
                         bind::DeleteLine::sprocess(correct_count, "") ;
@@ -174,7 +173,7 @@ namespace vind
                 if(!input) {
                     continue ;
                 }
-                for(int i = 0 ; i < outputs.size() ; i ++) {
+                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
                     std::uint16_t correct_count = count * counts[i] ;
                     if(outputs[i]->id() == id()) {
                         bind::ChangeLine::sprocess(correct_count, "") ;

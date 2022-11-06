@@ -1,12 +1,10 @@
 #include "change_mode.hpp"
 
 #include "bind/emu/textsel.hpp"
-#include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"

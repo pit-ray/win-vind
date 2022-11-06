@@ -152,7 +152,7 @@ namespace vind
             fetch_inputs(input, outputs, counts, mode) ;
 
             auto res = SystemCall::SUCCEEDED ;
-            for(int i = 0 ; i < outputs.size() ; i ++) {
+            for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
                 res = util::enum_or(res, outputs[i]->execute(counts[i])) ;
             }
             return res ;
@@ -195,7 +195,7 @@ namespace vind
 
         void InputHub::apply_mapping(Mode mode) {
             if(mode == Mode::UNDEFINED) {
-                for(int m = 0 ; m < pimpl->solvers_.size() ; m ++) {
+                for(std::size_t m = 0 ; m < pimpl->solvers_.size() ; m ++) {
                     pimpl->solvers_[m]->deploy(static_cast<Mode>(m)) ;
                 }
             }

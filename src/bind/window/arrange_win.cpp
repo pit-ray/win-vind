@@ -8,11 +8,11 @@
 #include <map>
 #include <sstream>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "winutil.hpp"
 
 #include "core/errlogger.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "util/box2d.hpp"
 #include "util/def.hpp"

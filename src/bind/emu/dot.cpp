@@ -1,7 +1,6 @@
 #include "bind/emu/dot.hpp"
 
 #include "bind/bindedfunc.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 

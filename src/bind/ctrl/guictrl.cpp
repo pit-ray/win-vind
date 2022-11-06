@@ -2,8 +2,6 @@
 
 #include <windows.h>
 
-#include "bind/mouse/jump_actwin.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 

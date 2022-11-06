@@ -5,7 +5,6 @@
 #include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "moveinsert.hpp"
 #include "textreg.hpp"

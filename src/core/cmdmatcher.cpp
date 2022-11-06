@@ -165,7 +165,7 @@ namespace vind
                 return update_rejected(in_cmdunit) ;
             }
 
-            if(head == pimpl->cmd_.size() - 1) {
+            if(head == static_cast<int>(pimpl->cmd_.size() - 1)) {
                 pimpl->states_.push(State::ACCEPTED) ;
             }
             else {
@@ -201,7 +201,7 @@ namespace vind
 
                 auto ascii = uc.front() ;
                 if(ascii < '0' || '9' < ascii) {
-                    if(head == pimpl->cmd_.size() - 1) {
+                    if(head == static_cast<int>(pimpl->cmd_.size() - 1)) {
                         return update_rejected(in_cmdunit) ;
                     }
                     return update_matching(in_cmdunit) ;
@@ -211,7 +211,7 @@ namespace vind
             // Check whether the head points to the last position of
             // the command to take account of some cases when the <num>
             // is placed on the last of the command like `abc<num>`.
-            if(head == pimpl->cmd_.size() - 1) {
+            if(head == static_cast<int>(pimpl->cmd_.size() - 1)) {
                 pimpl->states_.push(State::ANYNUM_ACCEPTED) ;
             }
             else {

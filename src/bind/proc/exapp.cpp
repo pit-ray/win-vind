@@ -8,10 +8,8 @@
 
 #include "bind/file/explorer_util.hpp"
 #include "bind/mouse/jump_actwin.hpp"
-#include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
 #include "exapp.hpp"

@@ -1,10 +1,8 @@
 #include "jumpcaret.hpp"
 
 #include "bind/saferepeat.hpp"
-#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "motionids.hpp"
 #include "textsel.hpp"
 #include "util/debug.hpp"

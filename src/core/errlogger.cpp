@@ -174,21 +174,25 @@ namespace vind
                     pimpl->stream_ << "[Error] " ;
 
                     LPSTR msgbuf = nullptr ;
-                    if(auto size = FormatMessageA(
+                    auto size = FormatMessageA(
                                 FORMAT_MESSAGE_ALLOCATE_BUFFER | \
                                 FORMAT_MESSAGE_FROM_SYSTEM | \
                                 FORMAT_MESSAGE_IGNORE_INSERTS,
                                 NULL, win_ercode,
                                 MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
                                 reinterpret_cast<LPSTR>(&msgbuf),
-                                0, NULL)) {
+                                0, NULL) ;
 
+                    if(size > 2) {
                         // print message without \r\n
                         pimpl->stream_ << std::string(msgbuf, size - 2) ;
-                        LocalFree(msgbuf) ;
                     }
                     else {
                         pimpl->stream_ << "Windows Error Code: [" << win_ercode << "]" ;
+                    }
+
+                    if(size > 0) {
+                        LocalFree(msgbuf) ;
                     }
                 }
                 pimpl->stream_ <<  std::endl ;

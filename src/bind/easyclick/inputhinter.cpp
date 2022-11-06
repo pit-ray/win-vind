@@ -45,10 +45,14 @@ namespace vind
                 const std::vector<Hint>& hints) {
             auto& igate = core::InputGate::get_instance() ;
 
+            pimpl->mtx_.lock() ;    // %%%%%% LOCK %%%%%%
+
             pimpl->matched_counts_.clear() ;
             pimpl->matched_counts_.resize(positions.size()) ;
             pimpl->drawable_hints_num_ = positions.size() ;
             pimpl->cancel_running_ = false ;
+
+            pimpl->mtx_.unlock() ;  // %%%%%% UNLOCK %%%%%%
 
             std::vector<core::CmdMatcher> matchers{} ;
             for(const auto& hint : hints) {

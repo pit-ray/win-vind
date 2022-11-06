@@ -61,7 +61,7 @@ jobs:
         key: x64-coverity-cache-221023
 
     - name: Install Coverity scan tools
-      run: "tools/install_coverity_tools.bat $TOKEN"
+      run: "tools/install_coverity_tools.bat ${{env.TOKEN}}"
 
     - name: Configure CMake
       run: |

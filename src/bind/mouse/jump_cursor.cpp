@@ -18,7 +18,8 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             auto pos = util::get_cursor_pos() ;
-            util::set_cursor_pos(0, pos.y()) ;
+            auto box = util::get_combined_metrics() ;
+            util::set_cursor_pos(box.left(), pos.y()) ;
         }
 
         //JumpToRight
@@ -34,7 +35,7 @@ namespace vind
 
             auto& settable = core::SetTable::get_instance() ;
             util::set_cursor_pos(
-                    box.width() - settable.get("jump_margin").get<int>(),
+                    box.right() - settable.get("jump_margin").get<int>(),
                     pos.y()) ;
         }
 

@@ -11,9 +11,9 @@ namespace
     std::vector<Param> default_params {
         Param("initmode", "i"),
         Param("jump_margin", 10),
-        Param("cursor_accel", 95),
-        Param("cursor_tweight", 250),
-        Param("cursor_maxv", 12),
+        Param("cursor_accel", 32),
+        Param("cursor_maxv", 4),
+        Param("cursor_resolution", 250),
         Param("window_velocity", 100),
         Param("winresizer_initmode", 0),
         Param("vscroll_speed", 30),

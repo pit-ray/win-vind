@@ -8,11 +8,11 @@
 #include <map>
 #include <sstream>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "winutil.hpp"
 
 #include "core/errlogger.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "util/box2d.hpp"
 #include "util/def.hpp"
@@ -129,7 +129,9 @@ namespace vind
         ArrangeWindows::ArrangeWindows()
         : BindedFuncVoid("arrange_windows")
         {}
-        void ArrangeWindows::sprocess() {
+        void ArrangeWindows::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
 
             //Search visible windows
@@ -181,14 +183,6 @@ namespace vind
             batch_resize(rects) ;
 
             util::set_foreground_window(hwnd) ;
-        }
-        void ArrangeWindows::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ArrangeWindows::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
         void ArrangeWindows::reconstruct() {
             g_ignores.clear() ;

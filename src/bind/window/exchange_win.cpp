@@ -4,8 +4,6 @@
 
 #include "winutil.hpp"
 
-#include "core/charlogger.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/screen_metrics.hpp"
@@ -57,7 +55,9 @@ namespace vind
         ExchangeWindowWithNearest::ExchangeWindowWithNearest()
         : BindedFuncVoid("exchange_window_with_nearest")
         {}
-        void ExchangeWindowWithNearest::sprocess() {
+        void ExchangeWindowWithNearest::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             g_near_hwnds.clear() ;
 
             ForegroundInfo fginfo ;
@@ -74,14 +74,6 @@ namespace vind
 
             resize_window(nearest_hwnd, fginfo.rect) ;
             resize_window(fginfo.hwnd, nearest_rect) ;
-        }
-        void ExchangeWindowWithNearest::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ExchangeWindowWithNearest::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

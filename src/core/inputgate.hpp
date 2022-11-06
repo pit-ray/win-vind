@@ -1,9 +1,9 @@
 #ifndef _INPUTGATE_HPP
 #define _INPUTGATE_HPP
 
+#include "cmdunit.hpp"
 #include "keycode.hpp"
 #include "keycodedef.hpp"
-#include "keylog.hpp"
 #include "mode.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
@@ -50,6 +50,11 @@ namespace vind
                     WPARAM w_param,
                     LPARAM l_param) ;
 
+            bool map_syncstate(
+                KeyCode key,
+                bool press_sync_state,
+                Mode mode) ;
+
         public:
             static InputGate& get_instance() ;
 
@@ -72,7 +77,7 @@ namespace vind
 
             bool is_really_pressed(KeyCode keycode) noexcept ;
 
-            KeyLog pressed_list() ;
+            CmdUnit pressed_list() ;
 
             bool is_absorbed() noexcept ;
             void absorb() noexcept ;
@@ -87,10 +92,10 @@ namespace vind
             void close_some_ports(
                     std::vector<KeyCode>&& keys) noexcept ;
             void close_some_ports(
-                    KeySet::const_iterator begin,
-                    KeySet::const_iterator end) noexcept ;
+                    std::vector<KeyCode>::const_iterator begin,
+                    std::vector<KeyCode>::const_iterator end) noexcept ;
 
-            void close_some_ports(const KeyLog::Data& key) noexcept ;
+            void close_some_ports(const CmdUnitSet& key) noexcept ;
             void close_port(KeyCode key) noexcept ;
 
             void close_all_ports() noexcept ;
@@ -104,13 +109,13 @@ namespace vind
 
             void open_some_ports(std::vector<KeyCode>&& keys) noexcept ;
             void open_some_ports(
-                    KeySet::const_iterator begin,
-                    KeySet::const_iterator end) noexcept ;
+                    std::vector<KeyCode>::const_iterator begin,
+                    std::vector<KeyCode>::const_iterator end) noexcept ;
 
-            void open_some_ports(const KeyLog::Data& key) noexcept ;
+            void open_some_ports(const CmdUnitSet& key) noexcept ;
             void open_port(KeyCode key) noexcept ;
 
-            //These functions is existed in order to fool KeyLogger as no-changing.
+            //These functions is existed in order to fool CmdUnitger as no-changing.
             //For example, MoveCaretLeft...
             void release_virtually(KeyCode key) noexcept ;
             void press_virtually(KeyCode key) noexcept ;
@@ -621,33 +626,12 @@ namespace vind
                 pushup({key1, key2, KeyCode(keys)...}) ;
             }
 
+            void clear_hotkeys(Mode mode) ;
 
-            /**
-             * NOTE: This function samples a log from the log pool based on 
-             *       the key mapping instead of getting the key status obtained
-             *       from the hook. In the case of noremap, the key message is 
-             *       not actually generated, but in the case of map, the key
-             *       message is generated in a state that is passed to Windows.
-             */
-            KeyLog pop_log(Mode mode=get_global_mode()) ;
-
-            /**
-             * A gate uses to synchronize the state of a key at low-level
-             * with mapped to the hook_key. It return ture if the map was done,
-             * false if the map does not exist.
-             * It works like the following, with the keys connected by bars.
-             *
-             *     _____________________________________
-             *   _|_                        _|_        _|_
-             *  /   \                      /   \      /   \
-             * /_____\                    /_____\    /_____\
-             * hook_key        keyset = {   key1  ,    key2   }
-             *
-             */
-            bool map_syncstate(
-                    KeyCode hook_key,
-                    bool press_sync_state,
-                    Mode mode=get_global_mode()) ;
+            void register_hotkey(
+                const KeyCode& trigger,
+                const CmdUnit& target,
+                Mode mode) ;
         } ;
 
 

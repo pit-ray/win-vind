@@ -6,204 +6,65 @@ namespace vind
 {
     namespace bind
     {
-        class ScrollUp : public BindedFuncVoid<ScrollUp> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollUp : public BindedFuncVoid<ScrollUp> {
             explicit ScrollUp() ;
-            virtual ~ScrollUp() noexcept ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
-            ScrollUp(ScrollUp&&) ;
-            ScrollUp& operator=(ScrollUp&&) ;
-            ScrollUp(const ScrollUp&)               = delete ;
-            ScrollUp& operator=(const ScrollUp&)    = delete ;
         } ;
 
-
-        class ScrollDown : public BindedFuncVoid<ScrollDown> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollDown : public BindedFuncVoid<ScrollDown> {
             explicit ScrollDown() ;
-            virtual ~ScrollDown() noexcept ;
-
-            ScrollDown(ScrollDown&&) ;
-            ScrollDown& operator=(ScrollDown&&) ;
-            ScrollDown(const ScrollDown&)               = delete ;
-            ScrollDown& operator=(const ScrollDown&)    = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollUpHalfPage : public BindedFuncVoid<ScrollUpHalfPage> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollUpHalfPage : public BindedFuncVoid<ScrollUpHalfPage> {
             explicit ScrollUpHalfPage() ;
-            virtual ~ScrollUpHalfPage() noexcept ;
-
-            ScrollUpHalfPage(ScrollUpHalfPage&&) ;
-            ScrollUpHalfPage& operator=(ScrollUpHalfPage&&) ;
-            ScrollUpHalfPage(const ScrollUpHalfPage&)             = delete ;
-            ScrollUpHalfPage& operator=(const ScrollUpHalfPage&)  = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollDownHalfPage : public BindedFuncVoid<ScrollDownHalfPage> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollDownHalfPage : public BindedFuncVoid<ScrollDownHalfPage> {
             explicit ScrollDownHalfPage() ;
-            virtual ~ScrollDownHalfPage() noexcept ;
-
-            ScrollDownHalfPage(ScrollDownHalfPage&&) ;
-            ScrollDownHalfPage& operator=(ScrollDownHalfPage&&) ;
-            ScrollDownHalfPage(const ScrollDownHalfPage&)             = delete ;
-            ScrollDownHalfPage& operator=(const ScrollDownHalfPage&)  = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollUpOnePage : public BindedFuncVoid<ScrollUpOnePage> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollUpOnePage : public BindedFuncVoid<ScrollUpOnePage> {
             explicit ScrollUpOnePage() ;
-            virtual ~ScrollUpOnePage() noexcept ;
-
-            ScrollUpOnePage(ScrollUpOnePage&&) ;
-            ScrollUpOnePage& operator=(ScrollUpOnePage&&) ;
-            ScrollUpOnePage(const ScrollUpOnePage&)               = delete ;
-            ScrollUpOnePage& operator=(const ScrollUpOnePage&)    = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollDownOnePage : public BindedFuncVoid<ScrollDownOnePage> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollDownOnePage : public BindedFuncVoid<ScrollDownOnePage> {
             explicit ScrollDownOnePage() ;
-            virtual ~ScrollDownOnePage() noexcept ;
-
-            ScrollDownOnePage(ScrollDownOnePage&&) ;
-            ScrollDownOnePage& operator=(ScrollDownOnePage&&) ;
-            ScrollDownOnePage(const ScrollDownOnePage&)               = delete ;
-            ScrollDownOnePage& operator=(const ScrollDownOnePage&)    = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollLeft : public BindedFuncVoid<ScrollLeft> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollLeft : public BindedFuncVoid<ScrollLeft> {
             explicit ScrollLeft() ;
-            virtual ~ScrollLeft() noexcept ;
-
-            ScrollLeft(ScrollLeft&&) ;
-            ScrollLeft& operator=(ScrollLeft&&) ;
-            ScrollLeft(const ScrollLeft&)               = delete ;
-            ScrollLeft& operator=(const ScrollLeft&)    = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollRight : public BindedFuncVoid<ScrollRight> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollRight : public BindedFuncVoid<ScrollRight> {
             explicit ScrollRight() ;
-            virtual ~ScrollRight() noexcept ;
-
-            ScrollRight(ScrollRight&&) ;
-            ScrollRight& operator=(ScrollRight&&) ;
-            ScrollRight(const ScrollRight&)             = delete ;
-            ScrollRight& operator=(const ScrollRight&)  = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollLeftHalfPage : public BindedFuncVoid<ScrollLeftHalfPage> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollLeftHalfPage : public BindedFuncVoid<ScrollLeftHalfPage> {
             explicit ScrollLeftHalfPage() ;
-            virtual ~ScrollLeftHalfPage() noexcept ;
-
-            ScrollLeftHalfPage(ScrollLeftHalfPage&&) ;
-            ScrollLeftHalfPage& operator=(ScrollLeftHalfPage&&) ;
-            ScrollLeftHalfPage(const ScrollLeftHalfPage&)             = delete ;
-            ScrollLeftHalfPage& operator=(const ScrollLeftHalfPage&)  = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
-
-        class ScrollRightHalfPage : public BindedFuncVoid<ScrollRightHalfPage> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct ScrollRightHalfPage : public BindedFuncVoid<ScrollRightHalfPage> {
             explicit ScrollRightHalfPage() ;
-            virtual ~ScrollRightHalfPage() noexcept ;
-
-            ScrollRightHalfPage(ScrollRightHalfPage&&) ;
-            ScrollRightHalfPage& operator=(ScrollRightHalfPage&&) ;
-            ScrollRightHalfPage(const ScrollRightHalfPage&)               = delete ;
-            ScrollRightHalfPage& operator=(const ScrollRightHalfPage&)    = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

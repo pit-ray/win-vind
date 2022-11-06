@@ -1,6 +1,5 @@
 #include "teleport_vdesktop.hpp"
 
-#include "core/ntypelogger.hpp"
 #include "util/smartcom.hpp"
 #include "util/winwrap.hpp"
 
@@ -16,8 +15,9 @@ namespace vind
         TeleportOverVDesktop::TeleportOverVDesktop()
         : BindedFuncVoid("teleport_over_vdesktop")
         {}
-
-        void TeleportOverVDesktop::sprocess(unsigned int desktop_id) {
+        void TeleportOverVDesktop::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
 #ifdef DEBUG
             /*
             if(util::is_failed(CoInitialize(NULL))) {
@@ -50,18 +50,6 @@ namespace vind
 
             std::cout << "ID: " << id.Data1 << "." << id.Data2 << "." << id.Data3 << "." << id.Data4 << std::endl ;
             */
-#endif
-        }
-        void TeleportOverVDesktop::sprocess(core::NTypeLogger& parent_lgr) {
-#ifdef DEBUG
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(1) ;
-            }
-#endif
-        }
-        void TeleportOverVDesktop::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-#ifdef DEBUG
-            sprocess(1) ;
 #endif
         }
     }

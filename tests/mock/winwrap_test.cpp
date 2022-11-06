@@ -1,4 +1,4 @@
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 #define PRINT_ERROR(msg) /*(msg)*/
 
@@ -25,7 +25,7 @@ namespace vind
 
 
 // define stub ------------------------------------------
-#include <fff.h>
+#include <meekrosoft/fff.h>
 
 DEFINE_FFF_GLOBALS ;
 

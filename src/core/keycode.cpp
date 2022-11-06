@@ -2,6 +2,7 @@
 
 #include "keycodedef.hpp"
 #include "util/debug.hpp"
+#include "util/def.hpp"
 #include "util/string.hpp"
 
 #include <windows.h>
@@ -18,11 +19,6 @@
 #define SHIFTED_CTRL    (0x0200)
 #define SHIFTED_ALT     (0x0400)
 #define SHIFTED_HANKAKU (0x0800)
-
-#ifdef DEBUG
-#include "errlogger.hpp"
-#endif
-
 
 
 namespace
@@ -330,11 +326,13 @@ namespace vind
                 auto n = util::A2a(name) ;
 
                 if(magic_ascii_.find(n) != magic_ascii_.end()) {
-                    KeyCode::operator=(
-                            char_to_keycode(magic_ascii_.at(n))) ;
+                    KeyCode::operator=(char_to_keycode(magic_ascii_[n])) ;
+                }
+                else if(table.name2code_.find(n) != table.name2code_.end()){
+                    code_ = table.name2code_[n] ;
                 }
                 else {
-                    code_ = table.name2code_.at(n) ;
+                    throw LOGIC_EXCEPT(name + " is not supported.") ;
                 }
             }
         }
@@ -462,59 +460,6 @@ namespace vind
         int keycode_to_number(const KeyCode& keycode) noexcept {
             return keycode.to_code() - KEYCODE_0 ;
         }
-
-        std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) {
-            if(rhs.empty()) {
-                return stream ;
-            }
-
-            if(rhs.size() == 1) {
-                const auto& rhs_f = rhs.front() ;
-                if(rhs_f.is_major_system()) {
-                    stream << "<" << rhs_f << ">" ;
-                }
-                else {
-                    stream << rhs_f ;
-                }
-
-                return stream;
-            }
-
-            stream << "<" ;
-            for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
-                if(itr != rhs.cbegin()) {
-                    stream << "-" ;
-                }
-                stream << *itr ;
-            }
-            stream << ">" ;
-            return stream;
-        }
-
-        std::ostream& operator<<(std::ostream& stream, const Command& rhs) {
-            if(!rhs.empty()) {
-                for(const auto& keyset : rhs) {
-                    stream << keyset ;
-                }
-            }
-            return stream ;
-        }
-
-        std::ostream& operator<<(std::ostream& stream, const CommandList& rhs) {
-            if(!rhs.empty()) {
-                stream << "[" ;
-                for(auto itr = rhs.cbegin() ; itr != rhs.cend() ; itr ++) {
-                    if(rhs.size() > 1 && itr != rhs.cbegin()) {
-                        stream << ", " ;
-                    }
-                    stream << *itr ;
-                }
-                stream << "]" ;
-            }
-
-            return stream ;
-        }
-
 
         KeyCode get_shift_keycode(char ascii) {
             auto res = VkKeyScanW(

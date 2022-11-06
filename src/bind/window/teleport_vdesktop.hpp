@@ -9,9 +9,8 @@ namespace vind
     {
         struct TeleportOverVDesktop : public BindedFuncVoid<TeleportOverVDesktop> {
             explicit TeleportOverVDesktop() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

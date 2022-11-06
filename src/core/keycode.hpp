@@ -92,14 +92,6 @@ namespace vind
 
         int keycode_to_number(const KeyCode& keycode) noexcept ;
 
-        using KeySet = std::vector<KeyCode> ;
-        using Command = std::vector<KeySet> ;
-        using CommandList = std::vector<Command> ;
-
-        std::ostream& operator<<(std::ostream& stream, const KeySet& rhs) ;
-        std::ostream& operator<<(std::ostream& stream, const Command& rhs) ;
-        std::ostream& operator<<(std::ostream& stream, const CommandList& rhs) ;
-
         KeyCode get_shift_keycode(char ascii) ;
 
         KeyCode char_to_keycode(char ascii) ;
@@ -131,6 +123,10 @@ namespace vind
             static std::array<unsigned char, 256> states{} ;
             return keycode_to_unicode_impl(keycode, states) ;
         }
+
+        using KeySet = std::vector<KeyCode> ;
+        using Command = std::vector<KeySet> ;
+        using CommandList = std::vector<Command> ;
     }
 }
 

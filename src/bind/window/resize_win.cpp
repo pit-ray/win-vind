@@ -2,9 +2,6 @@
 
 #include "winutil.hpp"
 
-#include "core/charlogger.hpp"
-#include "core/keylgrbase.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -103,52 +100,54 @@ namespace vind
         ResizeWindowWidth::ResizeWindowWidth()
         : BindedFuncVoid("resize_window_width")
         {}
-        void ResizeWindowWidth::sprocess(long width) {
-            if(width <= 0) return ;
+        void ResizeWindowWidth::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
+            if(args.empty()) {
+                return ;
+            }
+            auto width = util::extract_num(args) ;
             ForegroundInfo fginfo ;
             resize_in_monitor_width(width, fginfo) ;
         }
-        void ResizeWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ResizeWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) return ;
-            sprocess(util::extract_num(str)) ;
-        }
-
 
         //IncreaseWindowWidth
         IncreaseWindowWidth::IncreaseWindowWidth()
         : BindedFuncVoid("increase_window_width")
         {}
-        void IncreaseWindowWidth::sprocess(long delta) {
-            if(delta <= 0) return ;
+        void IncreaseWindowWidth::sprocess(
+                std::uint16_t count,
+                const std::string& args) {
+            long delta = 0 ;
+            if(args.empty()) {
+                auto& settable = core::SetTable::get_instance() ;
+                delta = count * settable.get("window_hdelta").get<long>() ;
+            }
+            else {
+                delta = util::extract_num(args) ;
+            }
 
             ForegroundInfo fginfo ;
             auto width = fginfo.rect.width() + delta ;
             resize_in_monitor_width(width, fginfo) ;
         }
-        void IncreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                auto& settable = core::SetTable::get_instance() ;
-                sprocess(parent_lgr.get_head_num() * \
-                        settable.get("window_hdelta").get<long>()) ;
-            }
-        }
-        void IncreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
-            sprocess(util::extract_num(parent_lgr.to_str())) ;
-        }
-
 
         //DecreaseWindowWidth
         DecreaseWindowWidth::DecreaseWindowWidth()
         : BindedFuncVoid("decrease_window_width")
         {}
-        void DecreaseWindowWidth::sprocess(long delta)  {
-            if(delta <= 0) return ;
+        void DecreaseWindowWidth::sprocess(
+                std::uint16_t count,
+                const std::string& args) {
+            long delta = 0 ;
+            if(args.empty()) {
+                auto& settable = core::SetTable::get_instance() ;
+                delta = count * settable.get("window_hdelta").get<long>() ;
+            }
+            else {
+                delta = util::extract_num(args) ;
+            }
+
             ForegroundInfo fginfo ;
 
             auto width = fginfo.rect.width() - delta ;
@@ -162,71 +161,60 @@ namespace vind
                     fginfo.rect.left(), fginfo.rect.top(),
                     width, fginfo.rect.height()) ;
         }
-        void DecreaseWindowWidth::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                auto& settable = core::SetTable::get_instance() ;
-                sprocess(parent_lgr.get_head_num() * \
-                        settable.get("window_hdelta").get<long>()) ;
-            }
-        }
-        void DecreaseWindowWidth::sprocess(const core::CharLogger& parent_lgr) {
-            sprocess(util::extract_num(parent_lgr.to_str())) ;
-        }
-
 
         //ResizeWindowHeight
         ResizeWindowHeight::ResizeWindowHeight()
         : BindedFuncVoid("resize_window_height")
         {}
-        void ResizeWindowHeight::sprocess(long height) {
-            if(height == 0) return ;
+        void ResizeWindowHeight::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
+            if(args.empty()) {
+                return ;
+            }
+            auto height = util::extract_num(args) ;
             ForegroundInfo fginfo ;
             resize_in_monitor_height(height, fginfo) ;
         }
-        void ResizeWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ResizeWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) return ;
-            sprocess(util::extract_num(str)) ;
-        }
-
 
         //IncreaseWindowHeight
         IncreaseWindowHeight::IncreaseWindowHeight()
         : BindedFuncVoid("increase_window_height")
         {}
-        void IncreaseWindowHeight::sprocess(long delta) {
-            if(delta <= 0) return ;
-            ForegroundInfo fginfo ;
+        void IncreaseWindowHeight::sprocess(
+                std::uint16_t count,
+                const std::string& args) {
+            long delta = 0 ;
+            if(args.empty()) {
+                auto& settable = core::SetTable::get_instance() ;
+                delta = count * settable.get("window_vdelta").get<long>() ;
+            }
+            else {
+                delta = util::extract_num(args) ;
+            }
 
+            ForegroundInfo fginfo ;
             auto height = fginfo.rect.height() + delta ;
             resize_in_monitor_height(height, fginfo) ;
         }
-        void IncreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                auto& settable = core::SetTable::get_instance() ;
-                sprocess(parent_lgr.get_head_num() * \
-                        settable.get("window_vdelta").get<long>()) ;
-            }
-        }
-        void IncreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
-            sprocess(util::extract_num(parent_lgr.to_str())) ;
-        }
-
 
         //DecreaseWindowHeight
         DecreaseWindowHeight::DecreaseWindowHeight()
         : BindedFuncVoid("decrease_window_height")
         {}
-        void DecreaseWindowHeight::sprocess(long delta) {
-            if(delta <= 0) return ;
+        void DecreaseWindowHeight::sprocess(
+                std::uint16_t count,
+                const std::string& args) {
+            long delta = 0 ;
+            if(args.empty()) {
+                auto& settable = core::SetTable::get_instance() ;
+                delta = count * settable.get("window_vdelta").get<long>() ;
+            }
+            else {
+                delta = util::extract_num(args) ;
+            }
 
             ForegroundInfo fginfo ;
-
             auto height = fginfo.rect.height() - delta ;
             if(height <= 0) { 
                 opt::VCmdLine::print(opt::ErrorMessage("E: Height below zero")) ;
@@ -237,16 +225,6 @@ namespace vind
                     fginfo.hwnd,
                     fginfo.rect.left(), fginfo.rect.top(),
                     fginfo.rect.width(), height) ;
-        }
-        void DecreaseWindowHeight::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                auto& settable = core::SetTable::get_instance() ;
-                sprocess(parent_lgr.get_head_num() * \
-                        settable.get("window_vdelta").get<long>()) ;
-            }
-        }
-        void DecreaseWindowHeight::sprocess(const core::CharLogger& parent_lgr) {
-            sprocess(util::extract_num(parent_lgr.to_str())) ;
         }
     }
 }

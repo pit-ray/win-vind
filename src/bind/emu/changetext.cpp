@@ -5,7 +5,6 @@
 #include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "moveinsert.hpp"
 #include "textreg.hpp"
@@ -21,7 +20,9 @@ namespace vind
         ChangeHighlightText::ChangeHighlightText()
         : BindedFuncVoid("change_highlight_text")
         {}
-        void ChangeHighlightText::sprocess() {
+        void ChangeHighlightText::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_X) ;
             if(core::get_global_mode_flags() & core::ModeFlags::VISUAL_LINE) {
                 set_register_type(RegType::Lines) ;
@@ -29,23 +30,16 @@ namespace vind
             else {
                 set_register_type(RegType::Chars) ;
             }
-            ToInsert::sprocess(false) ;
+            ToInsert::sprocess(1, "", false) ;
         }
-        void ChangeHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ChangeHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //ChangeLine
         ChangeLine::ChangeLine()
         : ChangeBaseCreator("change_line")
         {}
-        void ChangeLine::sprocess(unsigned int count) {
+        void ChangeLine::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             auto res = get_selected_text([&igate] {
                 igate.pushup(KEYCODE_HOME) ;
@@ -53,7 +47,7 @@ namespace vind
                 igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             }) ;
             if(res.str.empty()) {
-                ToInsert::sprocess(false) ;
+                ToInsert::sprocess(1, "", false) ;
                 return ;
             }
             igate.pushup(KEYCODE_HOME) ;
@@ -64,24 +58,17 @@ namespace vind
                     igate.pushup(KEYCODE_RIGHT) ;
                 }) ;
             }
-            DeleteLineUntilEOL::sprocess(count) ;
-            ToInsert::sprocess(false) ;
+            DeleteLineUntilEOL::sprocess(count, "") ;
+            ToInsert::sprocess(1, "", false) ;
         }
-        void ChangeLine::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void ChangeLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //ChangeChar
         ChangeChar::ChangeChar()
         : ChangeBaseCreator("change_char")
         {}
-        void ChangeChar::sprocess(unsigned int count) {
+        void ChangeChar::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             safe_for(count, [&igate] {
@@ -97,17 +84,8 @@ namespace vind
                 igate.pushup(KEYCODE_DELETE) ;
             }
 
-            ToInsert::sprocess(false) ;
+            ToInsert::sprocess(1, "", false) ;
         }
-        void ChangeChar::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void ChangeChar::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //ChangeUntilEOL
         ChangeUntilEOL::ChangeUntilEOL()
@@ -139,17 +117,11 @@ namespace vind
          * In future, must fix.
          *
          */
-        void ChangeUntilEOL::sprocess(unsigned int count) {
-            DeleteLineUntilEOL::sprocess(count) ;
-            ToInsert::sprocess(false) ;
-        }
-        void ChangeUntilEOL::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void ChangeUntilEOL::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
+        void ChangeUntilEOL::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
+            DeleteLineUntilEOL::sprocess(count, "") ;
+            ToInsert::sprocess(1, "", false) ;
         }
     }
 }

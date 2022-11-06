@@ -12,30 +12,26 @@ namespace vind
 
         struct ChangeHighlightText : public BindedFuncVoid<ChangeHighlightText> {
             explicit ChangeHighlightText() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct ChangeLine : public ChangeBaseCreator<ChangeLine> {
             explicit ChangeLine() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct ChangeChar : public ChangeBaseCreator<ChangeChar> {
             explicit ChangeChar() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct ChangeUntilEOL : public ChangeBaseCreator<ChangeUntilEOL> {
             explicit ChangeUntilEOL() ;
-            static void sprocess(unsigned int count=1) ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

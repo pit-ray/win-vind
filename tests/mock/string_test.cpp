@@ -1,4 +1,4 @@
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 #include "util/disable_compiler_warning.hpp"
 
@@ -7,7 +7,7 @@
 
 #include "util/string.cpp"
 
-#include <fff.h>
+#include <meekrosoft/fff.h>
 
 DEFINE_FFF_GLOBALS ;
 

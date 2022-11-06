@@ -11,13 +11,10 @@
 #include <utility>
 
 #include "core/background.hpp"
-#include "core/entry.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode.hpp"
 #include "core/keylayout.hpp"
-#include "core/keylog.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
 #include "opt/dedicate_to_window.hpp"
@@ -63,7 +60,9 @@ namespace vind
         JumpWithKeybrdLayout::JumpWithKeybrdLayout(JumpWithKeybrdLayout&&)            = default ;
         JumpWithKeybrdLayout& JumpWithKeybrdLayout::operator=(JumpWithKeybrdLayout&&) = default ;
 
-        void JumpWithKeybrdLayout::sprocess() {
+        void JumpWithKeybrdLayout::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             //reset key state (binded key)
             core::InstantKeyAbsorber ika ;
@@ -78,12 +77,15 @@ namespace vind
                     return ;
                 }
 
-                auto log = igate.pop_log() - toggle_keys ;
-                if(log.empty()) {
+                auto inputs = igate.pressed_list() ;
+                if(inputs.empty()) {
                     continue ;
                 }
 
-                for(const auto& keycode : log) {
+                for(const auto& keycode : inputs) {
+                    if(toggle_keys.is_containing(keycode)) {
+                        continue ;
+                    }
                     if(keycode.is_unreal()) {
                         continue ;
                     }
@@ -111,22 +113,13 @@ namespace vind
 
                     util::set_cursor_pos(x, y) ;
 
-                    for(const auto& key : log) {
+                    for(const auto& key : inputs) {
                         igate.release_keystate(key) ;
                     }
                     return ;
                 }
             }
         }
-        void JumpWithKeybrdLayout::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpWithKeybrdLayout::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         void JumpWithKeybrdLayout::reconstruct() {
             auto& settable = core::SetTable::get_instance() ;

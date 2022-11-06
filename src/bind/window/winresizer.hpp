@@ -15,17 +15,14 @@ namespace vind
         public:
             explicit WindowResizer() ;
 
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             virtual ~WindowResizer() noexcept ;
             WindowResizer(WindowResizer&&) ;
             WindowResizer& operator=(WindowResizer&&) ;
             WindowResizer(const WindowResizer&)            = delete ;
             WindowResizer& operator=(const WindowResizer&) = delete ;
-
-            void reconstruct() override ;
         } ;
     }
 }

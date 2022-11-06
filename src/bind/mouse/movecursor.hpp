@@ -13,12 +13,11 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(int delta=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
             explicit MoveCursorLeft() ;
             virtual ~MoveCursorLeft() noexcept ;
+
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             MoveCursorLeft(MoveCursorLeft&&) ;
             MoveCursorLeft& operator=(MoveCursorLeft&&) ;
@@ -35,12 +34,11 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(int delta=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
             explicit MoveCursorRight() ;
             virtual ~MoveCursorRight() noexcept ;
+
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             MoveCursorRight(MoveCursorRight&&) ;
             MoveCursorRight& operator=(MoveCursorRight&&) ;
@@ -57,12 +55,11 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(int delta=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
             explicit MoveCursorUp() ;
             virtual ~MoveCursorUp() noexcept ;
+
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             MoveCursorUp(MoveCursorUp&&) ;
             MoveCursorUp& operator=(MoveCursorUp&&) ;
@@ -79,12 +76,11 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess(int delta=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
             explicit MoveCursorDown() ;
             virtual ~MoveCursorDown() noexcept ;
+
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             MoveCursorDown(MoveCursorDown&&) ;
             MoveCursorDown& operator=(MoveCursorDown&&) ;

@@ -9,16 +9,14 @@ namespace vind
     {
         struct OpenNewWindowWithHorizontalSplit : public BindedFuncVoid<OpenNewWindowWithHorizontalSplit> {
             explicit OpenNewWindowWithHorizontalSplit() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
 
         struct OpenNewWindowWithVerticalSplit : public BindedFuncVoid<OpenNewWindowWithVerticalSplit> {
             explicit OpenNewWindowWithVerticalSplit() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

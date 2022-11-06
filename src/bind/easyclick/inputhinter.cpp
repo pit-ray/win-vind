@@ -3,89 +3,33 @@
 #include <future>
 #include <memory>
 #include <mutex>
+#include <vector>
 
 #include "core/background.hpp"
-#include "core/charlogger.hpp"
+#include "core/cmdmatcher.hpp"
+#include "core/cmdunit.hpp"
 #include "core/inputgate.hpp"
+#include "core/typeemu.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
+
 
 namespace vind
 {
     namespace bind
     {
         struct InputHinter::Impl {
-            std::vector<unsigned char> matched_counts_ ;
-            std::size_t drawable_hints_num_ ;
-            std::atomic<bool> cancel_running_ ;
-            std::mutex mtx_ ;
+            std::vector<unsigned char> matched_counts_{} ;
+            std::size_t drawable_hints_num_ = 0 ;
+            std::atomic<bool> cancel_running_ = false ;
+            std::mutex mtx_{} ;
 
-            core::Background bg_ ;
-
-            Impl()
-            : matched_counts_(),
-              drawable_hints_num_(0),
-              cancel_running_(false),
-              mtx_(),
-              bg_(opt::ref_global_options_bynames(
-                  opt::AsyncUIACacheBuilder().name(),
-                  opt::VCmdLine().name()
-              ))
-            {}
-
-            void init(std::size_t all_hints_num) {
-                std::lock_guard<std::mutex> socoped_lock{mtx_} ;
-                matched_counts_.clear() ;
-                matched_counts_.resize(all_hints_num) ;
-                drawable_hints_num_ = all_hints_num ;
-                cancel_running_ = false ;
-            }
-
-            // return : matched index
-            long validate_if_match_with_hints(
-                    const core::KeyLoggerBase& lgr,
-                    const std::vector<Hint>& hints) {
-
-                std::lock_guard<std::mutex> socoped_lock{mtx_} ;
-
-                if(lgr.empty()) {
-                    drawable_hints_num_ = hints.size() ; //must draw all hints
-                    return -1 ;
-                }
-
-                drawable_hints_num_ = 0 ;
-
-                for(std::size_t i = 0 ; i < hints.size() ; i ++) {
-
-                    std::size_t seq_idx = 0 ;
-                    while(seq_idx < lgr.size()) {
-                        try {
-                            if(!lgr.at(seq_idx).is_containing(hints[i].at(seq_idx))) {
-                                break ;
-                            }
-                        }
-                        catch(const std::out_of_range&) {
-                            break ;
-                        }
-
-                        seq_idx ++ ;
-                    }
-
-                    if(seq_idx == lgr.size()) {
-                        drawable_hints_num_ ++ ;
-                        matched_counts_[i] = static_cast<unsigned char>(seq_idx) ;
-                    }
-                    else {
-                        matched_counts_[i] = 0 ;
-                    }
-
-                    if(seq_idx == hints[i].size()) {
-                        return static_cast<long>(i) ;
-                    }
-                }
-                return -1 ;
-            }
+            core::Background bg_ {
+                opt::ref_global_options_bynames(
+                    opt::AsyncUIACacheBuilder().name(),
+                    opt::VCmdLine().name())
+            } ;
         } ;
 
         InputHinter::InputHinter()
@@ -99,52 +43,75 @@ namespace vind
         std::shared_ptr<util::Point2D> InputHinter::launch_loop(
                 const std::vector<util::Point2D>& positions,
                 const std::vector<Hint>& hints) {
-
-            pimpl->init(positions.size()) ;
-
-            core::InstantKeyAbsorber ika ;
-            core::CharLogger lgr{
-                KEYCODE_ESC,
-                KEYCODE_BKSPACE
-            };
-
             auto& igate = core::InputGate::get_instance() ;
 
+            pimpl->matched_counts_.clear() ;
+            pimpl->matched_counts_.resize(positions.size()) ;
+            pimpl->drawable_hints_num_ = positions.size() ;
+            pimpl->cancel_running_ = false ;
+
+            std::vector<core::CmdMatcher> matchers{} ;
+            for(const auto& hint : hints) {
+                std::vector<core::CmdUnit::SPtr> cmds ;
+                for(const auto& unit : hint) {
+                    auto unit_ptr = std::make_shared<core::CmdUnit>(unit) ;
+                    cmds.push_back(std::move(unit_ptr)) ;
+                }
+                matchers.emplace_back(std::move(cmds)) ;
+            }
+
+            core::InstantKeyAbsorber ika ;
+            core::TypingEmulator typer{} ;
             while(!(pimpl->cancel_running_)) {
                 pimpl->bg_.update() ;
 
-                auto log = igate.pop_log() ;
-                if(!CHAR_LOGGED(lgr.logging_state(log))) {
+                auto in_cmdunit = typer.lowlevel_to_typing(igate.pressed_list()) ;
+                if(!in_cmdunit) {
+                    continue ;
+                }
+                std::lock_guard<std::mutex> socoped_lock{pimpl->mtx_} ;
+
+                if(in_cmdunit->is_containing(KEYCODE_BKSPACE)) {
+                    igate.release_virtually(KEYCODE_BKSPACE) ;
+                    pimpl->drawable_hints_num_ = 0 ;
+                    for(std::size_t i = 0 ; i < matchers.size() ; i ++) {
+                        auto& mt = matchers[i] ;
+                        mt.backward_state(1) ;
+
+                        if(mt.is_rejected()) {
+                            pimpl->matched_counts_[i] = 0 ;
+                        }
+                        else {
+                            pimpl->matched_counts_[i] = \
+                               static_cast<unsigned char>(mt.history_size()) ;
+                            pimpl->drawable_hints_num_ ++ ;
+                        }
+                    }
                     continue ;
                 }
 
-                if(lgr.latest().is_containing(KEYCODE_ESC)) {
-                    igate.release_virtually(KEYCODE_ESC) ;
-                    return nullptr ;
-                }
-
-                if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
-                    igate.release_virtually(KEYCODE_BKSPACE) ;
-                    if(lgr.size() == 1) {
-                        return nullptr ;
+                pimpl->drawable_hints_num_ = 0 ;
+                bool all_rejected = true ;
+                for(std::size_t i = 0 ; i < matchers.size() ; i ++) {
+                    auto& mt = matchers[i] ;
+                    mt.update_state(*in_cmdunit) ;
+                    if(mt.is_accepted()) {
+                        return std::make_shared<util::Point2D>(
+                                positions[i].x(), positions[i].y()) ;
                     }
 
-                    lgr.remove_from_back(2) ;
-
-                    pimpl->validate_if_match_with_hints(lgr, hints) ; //update matching list
-                    continue ;
+                    if(mt.is_rejected()) {
+                        pimpl->matched_counts_[i] = 0 ;
+                    }
+                    else {
+                        all_rejected = false ;
+                        pimpl->matched_counts_[i] = \
+                           static_cast<unsigned char>(mt.history_size()) ;
+                        pimpl->drawable_hints_num_ ++ ;
+                    }
                 }
-
-
-                auto full_match_idx = pimpl->validate_if_match_with_hints(lgr, hints) ;
-                if(full_match_idx >= 0) {
-                    return std::make_shared<util::Point2D>(
-                            positions[full_match_idx].x(),
-                            positions[full_match_idx].y()) ;
-                }
-
-                if(drawable_hints_num() == 0) {
-                    lgr.remove_from_back(1) ;
+                if(all_rejected) {
+                    break ;
                 }
             }
             return nullptr ;

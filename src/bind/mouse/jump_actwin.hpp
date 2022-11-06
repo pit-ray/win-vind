@@ -9,9 +9,8 @@ namespace vind
     {
         struct JumpToActiveWindow : public BindedFuncVoid<JumpToActiveWindow> {
             explicit JumpToActiveWindow() ;
-            static void sprocess() ;
-            static void sprocess(core::NTypeLogger& parent_lgr) ;
-            static void sprocess(const core::CharLogger& parent_lgr) ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

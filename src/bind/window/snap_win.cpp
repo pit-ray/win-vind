@@ -4,7 +4,6 @@
 
 #include "winutil.hpp"
 
-#include "core/ntypelogger.hpp"
 #include "util/box2d.hpp"
 #include "util/def.hpp"
 #include "util/screen_metrics.hpp"
@@ -43,8 +42,9 @@ namespace vind
         SnapCurrentWindow2Left::SnapCurrentWindow2Left()
         : BindedFuncVoid("snap_current_window_to_left")
         {}
-
-        void SnapCurrentWindow2Left::sprocess() {
+        void SnapCurrentWindow2Left::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D{
                     mrect.left(),
@@ -60,21 +60,14 @@ namespace vind
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;
         }
-        void SnapCurrentWindow2Left::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SnapCurrentWindow2Left::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //SnapCurrentWindow2Right
         SnapCurrentWindow2Right::SnapCurrentWindow2Right()
         : BindedFuncVoid("snap_current_window_to_right")
         {}
-        void SnapCurrentWindow2Right::sprocess() {
+        void SnapCurrentWindow2Right::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D {
                     mrect.center_x(),
@@ -90,21 +83,14 @@ namespace vind
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;
         }
-        void SnapCurrentWindow2Right::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SnapCurrentWindow2Right::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //SnapCurrentWindow2Top
         SnapCurrentWindow2Top::SnapCurrentWindow2Top()
         : BindedFuncVoid("snap_current_window_to_top")
         {}
-        void SnapCurrentWindow2Top::sprocess() {
+        void SnapCurrentWindow2Top::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D {
                     mrect.left(),
@@ -120,21 +106,14 @@ namespace vind
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;
         }
-        void SnapCurrentWindow2Top::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SnapCurrentWindow2Top::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //SnapCurrentWindow2Bottom
         SnapCurrentWindow2Bottom::SnapCurrentWindow2Bottom()
         : BindedFuncVoid("snap_current_window_to_bottom")
         {}
-        void SnapCurrentWindow2Bottom::sprocess() {
+        void SnapCurrentWindow2Bottom::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto calc_half_size = [] (const util::Box2D& mrect) {
                 return util::Box2D {
                     mrect.left(),
@@ -149,14 +128,6 @@ namespace vind
             } ;
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;
-        }
-        void SnapCurrentWindow2Bottom::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void SnapCurrentWindow2Bottom::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

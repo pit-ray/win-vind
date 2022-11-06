@@ -1,4 +1,4 @@
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 #include "core/keycode.hpp"
 
@@ -218,7 +218,7 @@ TEST_SUITE("core/keycode") {
     }
 
     TEST_CASE("KeyCode::KeyCode") {
-        CHECK_THROWS_AS(KeyCode("hhogehogejflak;"), std::out_of_range) ;
+        CHECK_THROWS_AS(KeyCode("hhogehogejflak;"), std::logic_error) ;
 
         KeyCode k1("A", true) ;
         KeyCode k2("a", true) ;
@@ -249,31 +249,6 @@ TEST_SUITE("core/keycode") {
         }
 
         CHECK_EQ(ss.str(), "h<shift><alt>c") ;
-    }
-
-    TEST_CASE("operator<<(Stream, KeySet)") {
-        KeySet ks {
-            KeyCode("shift"),
-            KeyCode("h"),
-            KeyCode("b"),
-            KeyCode("alt"),
-            KeyCode("e")
-        } ;
-
-        std::stringstream ss ;
-        ss << ks ;
-        CHECK_EQ(ss.str(), "<shift-h-b-alt-e>") ;
-    }
-
-    TEST_CASE("operator<<(Stream, Command)") {
-        Command cmd {
-            {KeyCode("shift"), KeyCode("k"), KeyCode("j")},
-            {KeyCode("ctrl"), KeyCode("h")}
-        } ;
-
-        std::stringstream ss ;
-        ss << cmd ;
-        CHECK_EQ(ss.str(), "<shift-k-j><ctrl-h>") ;
     }
 
     TEST_CASE("sortablility") {

@@ -13,9 +13,8 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             explicit YankWithMotion() ;
             virtual ~YankWithMotion() noexcept ;
@@ -24,8 +23,6 @@ namespace vind
             YankWithMotion& operator=(YankWithMotion&&) ;
             YankWithMotion(const YankWithMotion&)            = delete ;
             YankWithMotion& operator=(const YankWithMotion&) = delete ;
-
-            void reconstruct() override ;
         } ;
 
 
@@ -35,9 +32,8 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             explicit DeleteWithMotion() ;
 
@@ -46,8 +42,6 @@ namespace vind
             DeleteWithMotion& operator=(DeleteWithMotion&&) ;
             DeleteWithMotion(const DeleteWithMotion&)            = delete ;
             DeleteWithMotion& operator=(const DeleteWithMotion&) = delete ;
-
-            void reconstruct() override ;
         } ;
 
         class ChangeWithMotion : public BindedFuncVoid<ChangeWithMotion> {
@@ -56,9 +50,8 @@ namespace vind
             std::unique_ptr<Impl> pimpl ;
 
         public:
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             explicit ChangeWithMotion() ;
 
@@ -67,8 +60,6 @@ namespace vind
             ChangeWithMotion& operator=(ChangeWithMotion&&) ;
             ChangeWithMotion(const ChangeWithMotion&)            = delete ;
             ChangeWithMotion& operator=(const ChangeWithMotion&) = delete ;
-
-            void reconstruct() override ;
         } ;
     }
 }

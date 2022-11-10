@@ -25,7 +25,17 @@ namespace vind
         //      -> std::stoi(0784)
         //      uint: 784
         //
-        unsigned int extract_num(const std::string& str) ;
+        template <typename T>
+        T extract_num(const std::string& str) {
+            constexpr auto c_nums = "0123456789" ;
+
+            auto bpos = str.find_first_of(c_nums) ;
+            if(bpos == std::string::npos) return 0 ;
+
+            auto epos = str.find_first_not_of(c_nums, bpos) ;
+
+            return static_cast<T>(std::stoi(str.substr(bpos, epos))) ;
+        }
 
         inline std::string tail(const std::string& str, std::size_t length) {
             if(length >= str.length()) {

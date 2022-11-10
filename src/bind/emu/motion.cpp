@@ -55,16 +55,23 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::CmdUnit::SPtr input ;
-                std::vector<core::CmdUnit::SPtr> outputs ;
-                std::vector<std::uint16_t> counts ;
-                ihub.fetch_inputs(input, outputs, counts) ;
+                std::vector<core::CmdUnit::SPtr> inputs ;
+                std::vector<std::uint16_t> in_counts ;
+                if(!ihub.pull_all_inputs(
+                        inputs, in_counts, Mode::EDI_NORMAL, true)) {
+                    continue ;
+                }
+                if(ihub.is_empty_queue()) {
+                    continue ;
+                }
 
-                if(!input) {
+                std::vector<core::CmdUnit::SPtr> outputs ;
+                std::vector<std::uint16_t> out_counts ;
+                if(!ihub.fetch_all_inputs(outputs, out_counts)) {
                     continue ;
                 }
                 for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
-                    std::uint16_t correct_count = count * counts[i] ;
+                    std::uint16_t correct_count = count * out_counts[i] ;
                     if(outputs[i]->id() == id()) {
                         bind::YankLine::sprocess(correct_count, "") ;
                         return ;
@@ -111,16 +118,23 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::CmdUnit::SPtr input ;
-                std::vector<core::CmdUnit::SPtr> outputs ;
-                std::vector<std::uint16_t> counts ;
-                ihub.fetch_inputs(input, outputs, counts) ;
+                std::vector<core::CmdUnit::SPtr> inputs ;
+                std::vector<std::uint16_t> in_counts ;
+                if(!ihub.pull_all_inputs(
+                        inputs, in_counts, Mode::EDI_NORMAL, true)) {
+                    continue ;
+                }
+                if(ihub.is_empty_queue()) {
+                    continue ;
+                }
 
-                if(!input) {
+                std::vector<core::CmdUnit::SPtr> outputs ;
+                std::vector<std::uint16_t> out_counts ;
+                if(!ihub.fetch_all_inputs(outputs, out_counts)) {
                     continue ;
                 }
                 for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
-                    std::uint16_t correct_count = count * counts[i] ;
+                    std::uint16_t correct_count = count * out_counts[i] ;
                     if(outputs[i]->id() == id()) {
                         bind::DeleteLine::sprocess(correct_count, "") ;
                         return ;
@@ -165,16 +179,23 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::CmdUnit::SPtr input ;
-                std::vector<core::CmdUnit::SPtr> outputs ;
-                std::vector<std::uint16_t> counts ;
-                ihub.fetch_inputs(input, outputs, counts) ;
+                std::vector<core::CmdUnit::SPtr> inputs ;
+                std::vector<std::uint16_t> in_counts ;
+                if(!ihub.pull_all_inputs(
+                        inputs, in_counts, Mode::EDI_NORMAL, true)) {
+                    continue ;
+                }
+                if(ihub.is_empty_queue()) {
+                    continue ;
+                }
 
-                if(!input) {
+                std::vector<core::CmdUnit::SPtr> outputs ;
+                std::vector<std::uint16_t> out_counts ;
+                if(!ihub.fetch_all_inputs(outputs, out_counts)) {
                     continue ;
                 }
                 for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
-                    std::uint16_t correct_count = count * counts[i] ;
+                    std::uint16_t correct_count = count * out_counts[i] ;
                     if(outputs[i]->id() == id()) {
                         bind::ChangeLine::sprocess(correct_count, "") ;
                         return ;

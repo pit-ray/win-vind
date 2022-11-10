@@ -17,9 +17,7 @@
 #include "core/mode.hpp"
 #include "core/settable.hpp"
 #include "core/typeemu.hpp"
-#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
-#include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/container.hpp"
@@ -56,6 +54,11 @@ namespace
         std::size_t size() const noexcept {
             return fetched_logs_.size() ;
         }
+
+        void clear() {
+            print_logs_.clear() ;
+            fetched_logs_.clear() ;
+        }
     } ;
 
     template <typename CmdType>
@@ -80,32 +83,132 @@ namespace vind
         struct ToCommand::Impl {
             std::vector<std::shared_ptr<CmdPoint>> hists_ ;
             core::Background bg_ ;
-            core::TypingEmulator typeemu_ ;
+            int hist_idx_ ;
 
             Impl()
             : hists_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
-                    opt::Dedicate2Window().name(),
-                    opt::SuppressForVim().name(),
                     opt::VCmdLine().name()
               )),
-              typeemu_()
+              hist_idx_(0)
             {}
 
-            template <typename UnitType, typename CmdType>
-            std::vector<core::CmdUnit::SPtr> get_printables(
-                    UnitType&& input, CmdType&& outputs) {
+            void update_cmdline_display() {
+                auto& latest = hists_.back() ;
+                opt::VCmdLine::print(opt::StaticMessage(":" + latest->to_string())) ;
+            }
+
+            void quit_loop() {
+                opt::VCmdLine::reset() ;
+                // Remove the latest history
+                util::remove_from_back(hists_, 1) ;
+            }
+
+            bool backspace() {
+                auto& latest = hists_.back() ;
+                if(latest->empty()) {
+                    // When the command line is `:` only and call it,
+                    // exit the command mode.
+                    quit_loop() ;
+                    return false ;
+                }
+                latest->backward() ;
+                update_cmdline_display() ;
+                return true ;
+            }
+
+            void forward_history() {
+                auto& latest = hists_.back() ;
+                auto latest_idx = hists_.size() - 1 ;
+                auto tmp = hist_idx_ + 1 ;
+                if(tmp > latest_idx) {
+                    return ;
+                }
+
+                hist_idx_ = tmp ;
+                if(tmp == latest_idx) {
+                    latest->clear() ;
+                    update_cmdline_display() ;
+                }
+                else {
+                    *latest = *hists_[hist_idx_] ;
+                    update_cmdline_display() ;
+                }
+            }
+
+            void backward_history() {
+                if(hist_idx_ - 1 < 0) {
+                    return ;
+                }
+                auto& latest = hists_.back() ;
+                *latest = *hists_[--hist_idx_] ;
+                update_cmdline_display() ;
+            }
+
+            auto decide() {
+                opt::VCmdLine::reset() ;
+
+                auto& ihub = core::InputHub::get_instance() ;
+                auto solver = ihub.get_solver(core::Mode::COMMAND) ;
+                solver->reset_state() ;
+
+                auto& latest = hists_.back() ;
+
+                std::string args ;
+                std::vector<core::CmdUnit::SPtr> command ;
+                for(std::size_t i = 0 ; i < latest->size() ; i ++) {
+                    args += latest->print_logs_[i] ;
+                    for(auto& unit : latest->fetched_logs_[i]) {
+                        auto tmp = solver->map_command_from(*unit, false) ;
+                        if(!tmp.empty()) {
+                            // To get the last matched command
+                            command = tmp ;
+                        }
+                    }
+                }
+
+                auto result = SystemCall::SUCCEEDED ;
+                bool called = false ;
+                for(auto& unit : command) {
+                    if(unit->empty()) {
+                        called = true ;
+                        result = unit->execute(1, args) ;
+                    }
+                }
+                if(!called) {
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
+                }
+                return result ;
+            }
+
+            void write_as_printable(const core::CmdUnit::SPtr& input) {
+                // Aggregate the printable keys into this vector from input and outputs.
                 std::vector<core::CmdUnit::SPtr> printables ;
+
+                auto& ihub = core::InputHub::get_instance() ;
+                auto solver = ihub.get_solver(core::Mode::COMMAND) ;
+                auto outputs = solver->map_command_from(*input, true) ;
                 for(auto& unit : outputs) {
                     if(!unit->empty()) {
                         printables.push_back(unit) ;
                     }
                 }
+
+                // If the input is mapped to another printable keys,
+                // then the original input is ignored.
                 if(printables.empty()) {
                     printables.push_back(input) ;
                 }
-                return printables ;
+
+                // Ignore unprintable inputs like <shift> or <alt>.
+                auto printable_ustring = encode_to_unicode(printables) ;
+                if(!printable_ustring.empty()) {
+                    auto& latest = hists_.back() ;
+                    latest->print_logs_.push_back(printable_ustring) ;
+                    latest->fetched_logs_.push_back(printables) ;
+                    update_cmdline_display() ;
+                }
             }
         } ;
 
@@ -121,10 +224,8 @@ namespace vind
         SystemCall ToCommand::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
-            using core::Mode ;
-
             auto& igate = core::InputGate::get_instance() ;
-            auto solver = core::InputHub::get_instance().get_solver(Mode::COMMAND) ;
+            auto& ihub = core::InputHub::get_instance() ;
 
             auto return_mode = [] (core::Mode* m) {
                 // If the mode is changed, then do nothing.
@@ -141,95 +242,50 @@ namespace vind
             opt::VCmdLine::reset() ;
             opt::VCmdLine::print(opt::StaticMessage(":")) ;
 
-            auto hist = std::make_shared<CmdPoint>() ; 
-            pimpl->hists_.push_back(hist) ;
-            auto max_hist_idx = static_cast<int>(pimpl->hists_.size() - 1) ;
-            auto hist_idx = max_hist_idx ;
+            // Reset the index of histories to refer the inputted logs.
+            pimpl->hists_.push_back(std::make_shared<CmdPoint>()) ;
+            pimpl->hist_idx_ = static_cast<int>(pimpl->hists_.size() - 1) ;
 
             auto result = SystemCall::SUCCEEDED ;
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto raw_input = igate.pressed_list() ;
-                auto input = pimpl->typeemu_.lowlevel_to_typing(raw_input) ;
-                if(!input) {
+                std::vector<core::CmdUnit::SPtr> inputs ;
+                std::vector<std::uint16_t> counts ;
+                if(!ihub.fetch_all_inputs(inputs, counts, core::Mode::COMMAND, false)) {
                     continue ;
                 }
 
-                auto outputs = solver->map_command_from(*input) ;
-                auto contains = [&outputs, &input](auto key) {
-                    for(auto& unit : outputs) {
-                        if(unit->is_containing(key)) {
-                            return true ;
-                        }
-                    }
-                    return input->is_containing(key) ;
-                } ;
-
-                if(contains(KEYCODE_ESC)) {
-                    opt::VCmdLine::reset() ;
-                    util::remove_from_back(pimpl->hists_, 1) ;
-                    break ;
-                }
-                if(contains(KEYCODE_BKSPACE)) {
-                    if(hist->empty()) {
-                        opt::VCmdLine::reset() ;
-                        util::remove_from_back(pimpl->hists_, 1) ;
+                bool break_flag = false ;
+                for(auto& input : inputs) {
+                    if(input->is_containing(KEYCODE_ESC)) {
+                        pimpl->quit_loop() ;
+                        break_flag = true ;
                         break ;
                     }
-                    hist->backward() ;
-                    opt::VCmdLine::print(opt::StaticMessage(":" + hist->to_string())) ;
-                    continue ;
-                }
-                if(contains(KEYCODE_UP)) {
-                    hist_idx = (std::max)(hist_idx - 1, 0) ;
-                    *pimpl->hists_.back() = *pimpl->hists_[hist_idx] ;
-                    opt::VCmdLine::print(opt::StaticMessage(":" + hist->to_string())) ;
-                    continue ;
-                }
-                if(contains(KEYCODE_DOWN)) {
-                    hist_idx = (std::min)(hist_idx + 1, max_hist_idx) ;
-                    *pimpl->hists_.back() = *pimpl->hists_[hist_idx] ;
-                    opt::VCmdLine::print(opt::StaticMessage(":" + hist->to_string())) ;
-                    continue ;
-                }
-                if(contains(KEYCODE_ENTER)) {
-                    opt::VCmdLine::reset() ;
-
-                    solver->reset_state() ;
-                    std::vector<core::CmdUnit::SPtr> command ;
-                    std::string args ;
-                    for(std::size_t i = 0 ; i < hist->size() ; i ++) {
-                        args += hist->print_logs_[i] ;
-                        for(auto& unit : hist->fetched_logs_[i]) {
-                            auto tmp = solver->map_command_from(*unit, false) ;
-                            if(!tmp.empty()) {
-                                command = tmp ;
-                            }
+                    if(input->is_containing(KEYCODE_BKSPACE)) {
+                        if(!pimpl->backspace()) {
+                            break_flag = true ;
                         }
+                        break ;
                     }
-
-                    bool called = false ;
-                    for(auto& unit : command) {
-                        if(unit->empty()) {
-                            called = true ;
-                            result = unit->execute(1, args) ;
-                        }
+                    if(input->is_containing(KEYCODE_UP)) {
+                        pimpl->backward_history() ;
+                        continue ;
                     }
-                    if(!called) {
-                        opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
+                    if(input->is_containing(KEYCODE_DOWN)) {
+                        pimpl->forward_history() ;
+                        continue ;
                     }
+                    if(input->is_containing(KEYCODE_ENTER)) {
+                        result = pimpl->decide() ;
+                        break_flag = true ;
+                        break ;
+                    }
+                    pimpl->write_as_printable(input) ;
+                }
+                if(break_flag) {
                     break ;
-                }
-
-                auto printables = pimpl->get_printables(input, outputs) ;
-                auto printable_ustring = encode_to_unicode(printables) ;
-                // Ignore unprintable inputs like <shift> or <alt>.
-                if(!printable_ustring.empty()) {
-                    hist->print_logs_.push_back(printable_ustring) ;
-                    hist->fetched_logs_.push_back(printables) ;
-
-                    opt::VCmdLine::print(opt::StaticMessage(":" + hist->to_string())) ;
                 }
             }
             igate.release_virtually(KEYCODE_ESC) ;

@@ -71,8 +71,8 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args) {
             if(!args.empty()) {
-                if(auto num = util::extract_num(args)) {
-                    count = static_cast<std::uint16_t>(num) ;
+                if(auto num = util::extract_num<std::uint16_t>(args)) {
+                    count = num ;
                 }
             }
 
@@ -104,8 +104,8 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args) {
             if(!args.empty()) {
-                if(auto num = util::extract_num(args)) {
-                    count = static_cast<std::uint16_t>(num) ;
+                if(auto num = util::extract_num<std::uint16_t>(args)) {
+                    count = num ;
                 }
             }
 

@@ -64,7 +64,6 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             using core::Mode ;
-
             auto& igate = core::InputGate::get_instance() ;
             auto& ihub = core::InputHub::get_instance() ;
 
@@ -78,21 +77,35 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::CmdUnit::SPtr input ;
-                std::vector<core::CmdUnit::SPtr> outputs ;
+                std::vector<core::CmdUnit::SPtr> inputs ;
                 std::vector<std::uint16_t> counts ;
-                ihub.fetch_inputs(
-                        input, outputs, counts, Mode::EDI_NORMAL, false) ;
-
-                if(!input) {
+                if(!ihub.pull_all_inputs(
+                        inputs, counts, Mode::EDI_NORMAL, false)) {
                     continue ;
                 }
-                if(input->is_containing(KEYCODE_ESC) ||
-                        input->is_containing(KEYCODE_ENTER)) {
+
+                bool break_flag = false ;
+                for(auto& input : inputs) {
+                    if(input->is_containing(KEYCODE_ESC) ||
+                            input->is_containing(KEYCODE_ENTER)) {
+                        break_flag = true ;
+                        break ;
+                    }
+                }
+                if(break_flag) {
                     break ;
                 }
-                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
-                    pimpl->call_op(outputs[i]->id()) ;
+
+                if(!ihub.is_empty_queue()) {
+                    std::vector<core::CmdUnit::SPtr> outputs ;
+                    std::vector<std::uint16_t> out_counts ;
+                    if(!ihub.fetch_all_inputs(outputs, out_counts)) {
+                        continue ;
+                    }
+                    for(auto& out : outputs) {
+                        pimpl->call_op(out->id()) ;
+                        Sleep(100) ;
+                    }
                 }
             }
 

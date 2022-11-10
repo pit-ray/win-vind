@@ -13,6 +13,7 @@
 #include "core/background.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
+#include "core/mapsolver.hpp"
 #include "core/settable.hpp"
 #include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
@@ -185,31 +186,40 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::CmdUnit::SPtr input ;
-                std::vector<core::CmdUnit::SPtr> outputs ;
+                std::vector<core::CmdUnit::SPtr> inputs ;
                 std::vector<std::uint16_t> counts ;
-                ihub.fetch_inputs(
-                        input, outputs, counts, Mode::EDI_NORMAL, false) ;
-
-                if(!input) {
+                if(!ihub.fetch_all_inputs(
+                        inputs, counts, Mode::EDI_NORMAL, false)) {
                     continue ;
                 }
-                if(input->is_containing(KEYCODE_ESC) ||
-                        input->is_containing(KEYCODE_ENTER)) {
+
+                bool break_flag = false ;
+                for(auto& input : inputs) {
+                    if(input->is_containing(KEYCODE_ESC) ||
+                            input->is_containing(KEYCODE_ENTER)) {
+                        break_flag = true ;
+                        break ;
+                    }
+
+                    if(input->is_containing(KEYCODE_E)) { //mode change
+                        inmode = Impl::cvt_modulo(static_cast<int>(inmode) + 1) ;
+                        pimpl->draw_mode_status(inmode) ;
+
+                        // Release key state for processing at regular intervals.
+                        // release_virtually is more efficient and simpler.
+                        igate.release_virtually(KEYCODE_E) ;
+                        continue ;
+                    }
+
+                    auto solver = ihub.get_solver(core::Mode::EDI_NORMAL) ;
+                    auto outputs = solver->map_command_from(*input, true) ;
+                    for(auto& unit : outputs) {
+                        pimpl->call_op(inmode, unit->id()) ;
+                        Sleep(100) ;
+                    }
+                }
+                if(break_flag) {
                     break ;
-                }
-                if(input->is_containing(KEYCODE_E)) { //mode change
-                    inmode = Impl::cvt_modulo(static_cast<int>(inmode) + 1) ;
-                    pimpl->draw_mode_status(inmode) ;
-
-                    // Release key state for processing at regular intervals.
-                    // release_virtually is more efficient and simpler.
-                    igate.release_virtually(KEYCODE_E) ;
-                    continue ;
-                }
-
-                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
-                    pimpl->call_op(inmode, outputs[i]->id()) ;
                 }
             }
 

@@ -29,16 +29,92 @@ namespace vind
 
             std::shared_ptr<MapSolver> get_solver(Mode mode) ;
 
-            void fetch_inputs(
-                    CmdUnit::SPtr& fetched_input,
-                    std::vector<CmdUnit::SPtr>& fetched_outputs,
-                    std::vector<std::uint16_t>& counts,
-                    Mode mode=get_global_mode(),
-                    bool parse_count=true) ;
+            /*
+             * @param[out] (fetched_input)
+             * @param[out] (fetched_count)
+             * @param[in] (mode)
+             * @param[in] (parse_count)
+             *
+             */
+            bool get_typed_input(
+                CmdUnit::SPtr& fetched_input,
+                std::uint16_t& fetched_count,
+                Mode mode=get_global_mode(),
+                bool parse_count=true) ;
 
-            SystemCall pull_inputs(Mode mode=get_global_mode()) ;
+            /*
+             *
+             *
+             */
+            bool is_empty_queue() const noexcept ;
 
-            void forget_previous_input(Mode mode=get_global_mode()) ;
+            /*
+             *
+             * @param[out] (fetched_input)
+             * @param[out] (fetched_count)
+             * @param[in] (mode)
+             * @param[in] (parse_count)
+             *
+             */
+            bool fetch_input(
+                CmdUnit::SPtr& fetched_input,
+                std::uint16_t& fetched_count,
+                Mode mode=get_global_mode(),
+                bool parse_count=true) ;
+
+            /*
+             *
+             * @param[out] (fetched_inputs)
+             * @param[out] (fetched_counts)
+             * @param[in] (mode)
+             * @param[in] (parse_count)
+             *
+             */
+            bool fetch_all_inputs(
+                std::vector<CmdUnit::SPtr>& fetched_inputs,
+                std::vector<std::uint16_t>& fetched_counts,
+                Mode mode=get_global_mode(),
+                bool parse_count=true) ;
+
+            /*
+             *
+             * @param[in] (input)
+             * @param[in] (count)
+             * @param[in] (mode)
+             *
+             */
+            bool enqueue_mapped(
+                const CmdUnit::SPtr& input,
+                std::uint16_t prefix_count,
+                Mode mode=get_global_mode()) ;
+
+            /*
+             *
+             * @param[out] (fetched_input)
+             * @param[out] (fetched_count)
+             * @param[in] (mode)
+             * @param[in] (parse_count)
+             *
+             */
+            bool pull_input(
+                CmdUnit::SPtr& fetched_input,
+                std::uint16_t& fetched_count,
+                Mode mode=get_global_mode(),
+                bool parse_count=true) ;
+
+            /*
+             *
+             * @param[out] (fetched_inputs)
+             * @param[out] (fetched_counts)
+             * @param[in] (mode)
+             * @param[in] (parse_count)
+             *
+             */
+            bool pull_all_inputs(
+                std::vector<CmdUnit::SPtr>& fetched_inputs,
+                std::vector<std::uint16_t>& fetched_counts,
+                Mode mode=get_global_mode(),
+                bool parse_count=true) ;
 
             void add_map(
                 const std::string& trigger_cmd,

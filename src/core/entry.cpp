@@ -318,7 +318,22 @@ namespace vind
                 }
             }
 
-            handle_system_call(InputHub::get_instance().pull_inputs()) ;
+            auto& ihub = InputHub::get_instance() ;
+
+            std::vector<CmdUnit::SPtr> inputs ;
+            std::vector<std::uint16_t> counts ;
+            if(!ihub.pull_all_inputs(inputs, counts)) {
+                return ;
+            }
+
+            while(!ihub.is_empty_queue()) {
+                CmdUnit::SPtr output ;
+                std::uint16_t count ;
+                if(!ihub.fetch_input(output, count)) {
+                    continue ;
+                }
+                handle_system_call(output->execute(count)) ;
+            }
         }
 
         void VindEntry::handle_system_call(SystemCall systemcall) {

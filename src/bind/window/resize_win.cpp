@@ -106,7 +106,7 @@ namespace vind
             if(args.empty()) {
                 return ;
             }
-            auto width = util::extract_num(args) ;
+            auto width = util::extract_num<LONG>(args) ;
             ForegroundInfo fginfo ;
             resize_in_monitor_width(width, fginfo) ;
         }
@@ -124,7 +124,7 @@ namespace vind
                 delta = count * settable.get("window_hdelta").get<long>() ;
             }
             else {
-                delta = util::extract_num(args) ;
+                delta = util::extract_num<LONG>(args) ;
             }
 
             ForegroundInfo fginfo ;
@@ -145,7 +145,7 @@ namespace vind
                 delta = count * settable.get("window_hdelta").get<long>() ;
             }
             else {
-                delta = util::extract_num(args) ;
+                delta = util::extract_num<LONG>(args) ;
             }
 
             ForegroundInfo fginfo ;
@@ -172,7 +172,7 @@ namespace vind
             if(args.empty()) {
                 return ;
             }
-            auto height = util::extract_num(args) ;
+            auto height = util::extract_num<LONG>(args) ;
             ForegroundInfo fginfo ;
             resize_in_monitor_height(height, fginfo) ;
         }
@@ -190,7 +190,7 @@ namespace vind
                 delta = count * settable.get("window_vdelta").get<long>() ;
             }
             else {
-                delta = util::extract_num(args) ;
+                delta = util::extract_num<LONG>(args) ;
             }
 
             ForegroundInfo fginfo ;
@@ -211,7 +211,7 @@ namespace vind
                 delta = count * settable.get("window_vdelta").get<long>() ;
             }
             else {
-                delta = util::extract_num(args) ;
+                delta = util::extract_num<LONG>(args) ;
             }
 
             ForegroundInfo fginfo ;

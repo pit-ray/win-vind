@@ -47,35 +47,38 @@ namespace vind
         SystemCall ToInstantGUINormal::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
+            auto& ihub = core::InputHub::get_instance() ;
+
             core::InputGate::get_instance().close_all_ports_with_refresh() ;
             core::InstantKeyAbsorber isa{} ;
 
             opt::VCmdLine::print(opt::GeneralMessage("-- Instant GUI Normal --")) ;
 
-            auto syscal = SystemCall::SUCCEEDED ;
+            auto res = SystemCall::SUCCEEDED ;
             while(true) {
                 pimpl->bg_.update() ;
 
-                core::CmdUnit::SPtr input ;
-                std::vector<core::CmdUnit::SPtr> outputs ;
-                std::vector<std::uint16_t> counts ;
-                core::InputHub::get_instance().fetch_inputs(
-                        input, outputs, counts, core::Mode::GUI_NORMAL) ;
-
-                if(!input || outputs.empty()) {
+                std::vector<core::CmdUnit::SPtr> inputs ;
+                std::vector<std::uint16_t> in_counts ;
+                if(!ihub.pull_all_inputs(
+                        inputs, in_counts, core::Mode::GUI_NORMAL, true)) {
                     continue ;
                 }
 
-                auto res = SystemCall::SUCCEEDED ;
-                for(std::size_t i = 0 ; i < outputs.size() ; i ++) {
-                    res = util::enum_or(res, outputs[i]->execute(counts[i])) ;
+                while(!ihub.is_empty_queue()) {
+                    core::CmdUnit::SPtr output ;
+                    std::uint16_t count ;
+                    if(!ihub.fetch_input(output, count)) {
+                        continue ;
+                    }
+                    res = util::enum_or(res, output->execute(count)) ;
                 }
 
                 break ;
             }
             opt::VCmdLine::reset() ;
 
-            return syscal ;
+            return res ;
         }
     }
 }

@@ -18,14 +18,23 @@
 namespace
 {
     using namespace vind::core ;
+    using LinkedCmd = std::vector<std::vector<CmdUnit::SPtr>> ;
+
     struct Map {
         CmdMatcher trigger_matcher ;
-        std::vector<CmdUnit::SPtr> target_cmd ;
+
+        // Register in link format to distinguish between macros and mappings.
+        // For example, when `gmap :!notepad<cr>` is written, it is noto
+        // intuitive if `o` is replaced by `<click_left>` in prior resolution,
+        // because we want to keep the key before the replacement.
+        LinkedCmd mapped_cmd ;
 
         template <typename T1, typename T2>
-        Map(T1&& trigger_command, T2&& target_command)
+        Map(
+            T1&& trigger_command,
+            T2&& linked_command)
         : trigger_matcher(std::forward<T1>(trigger_command)),
-          target_cmd(std::forward<T2>(target_command))
+          mapped_cmd(std::forward<T2>(linked_command))
         {}
     } ;
 
@@ -153,7 +162,7 @@ namespace
 
             // Some matchers are accepted.
             auto max_idx = std::distance(acc_nums.begin(), max_itr) ;
-            auto t_cmd = refmap_table[max_idx].target_cmd ;
+            auto t_cmd = refmap_table[max_idx].mapped_cmd.back() ;
             if(!t_cmd.empty()) {
                 if(!recursively) {
                     solved_target.insert(
@@ -321,7 +330,8 @@ namespace vind
             // Initialize with default noremap.
             for(const auto& map : pimpl->default_) {
                 tmp_noremap.emplace_back(
-                    map.trigger_matcher.get_command(), map.target_cmd) ;
+                    map.trigger_matcher.get_command(),
+                    map.mapped_cmd.back()) ;
             }
 
             // Add and overwrite map with user-defined map.
@@ -333,7 +343,9 @@ namespace vind
             for(const auto& draft_map : tmp_noremap) {
                 auto solved_target = solve_mapping(draft_map, pimpl->default_, false) ;
                 if(!solved_target.empty()) {
-                    solved_maps.emplace_back(draft_map.trigger_cmd, solved_target) ;
+                    auto linked_cmd = {draft_map.target_cmd, solved_target} ;
+                    solved_maps.emplace_back(
+                        draft_map.trigger_cmd, std::move(linked_cmd)) ;
                 }
             }
 
@@ -344,23 +356,27 @@ namespace vind
                 // To remove the duplicate trigger command from default map, 
                 // By the way, noremap and map are disjoint.
                 remove_triggered_map(tmp_maps, draft_map.trigger_cmd) ;
-                tmp_maps.emplace_back(draft_map.trigger_cmd, draft_map.target_cmd) ;
+                auto linked_cmd = {draft_map.target_cmd} ;
+                tmp_maps.emplace_back(
+                    draft_map.trigger_cmd, std::move(linked_cmd)) ;
             }
 
             for(const auto& draft_map : pimpl->registered_map_) {
                 auto solved_target = solve_mapping(draft_map, tmp_maps, true) ;
                 if(!solved_target.empty()) {
                     remove_triggered_map(solved_maps, draft_map.trigger_cmd) ;
-                    solved_maps.emplace_back(draft_map.trigger_cmd, solved_target) ;
+                    auto linked_cmd = {draft_map.target_cmd, solved_target} ;
+                    solved_maps.emplace_back(
+                        draft_map.trigger_cmd, std::move(linked_cmd)) ;
                 }
             }
 
             for(auto& map : solved_maps) {
                 auto& trigger_cmd = map.trigger_matcher.get_command() ;
                 if(trigger_cmd.size() == 1 && trigger_cmd[0]->size() == 1 &&
-                        map.target_cmd.size() == 1) {
+                        map.mapped_cmd.back().size() == 1) {
                     // key2keyset mapping
-                    auto& tgtunit = map.target_cmd[0] ;
+                    auto& tgtunit = map.mapped_cmd.back()[0] ;
                     if(mode != Mode::UNDEFINED \
                             && std::dynamic_pointer_cast<ExternalCmdUnit>(tgtunit)) {
                         // For the external command unit, applies low-level mapping.
@@ -381,7 +397,9 @@ namespace vind
             tmp_maps.reserve(pimpl->registered_default_.size()) ;
 
             for(const auto& draft_map : pimpl->registered_default_) {
-                tmp_maps.emplace_back(draft_map.trigger_cmd, draft_map.target_cmd) ;
+                auto linked_cmd = {draft_map.target_cmd} ;
+                tmp_maps.emplace_back(
+                    draft_map.trigger_cmd, std::move(linked_cmd)) ;
             }
 
             if(!solve) {
@@ -393,7 +411,9 @@ namespace vind
             for(auto& draft_map : pimpl->registered_default_) {
                 auto solved_target = solve_mapping(draft_map, tmp_maps, true) ;
                 if(!solved_target.empty()) {
-                    pimpl->default_.emplace_back(draft_map.trigger_cmd, solved_target) ;
+                    auto linked_cmd = {solved_target} ;
+                    pimpl->default_.emplace_back(
+                        draft_map.trigger_cmd, std::move(linked_cmd)) ;
                 }
             }
         }
@@ -498,7 +518,7 @@ namespace vind
                 }
             }
 
-            return pimpl->deployed_[max_idx].target_cmd ;
+            return pimpl->deployed_[max_idx].mapped_cmd.back() ;
         }
 
         std::vector<std::vector<CmdUnit::SPtr>>
@@ -514,7 +534,7 @@ namespace vind
         MapSolver::get_target_commands() const {
             std::vector<std::vector<CmdUnit::SPtr>> tmp{} ;
             for(const auto& map : pimpl->deployed_) {
-                tmp.emplace_back(map.target_cmd) ;
+                tmp.emplace_back(map.mapped_cmd.back()) ;
             }
             return tmp ;
         }

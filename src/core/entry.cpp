@@ -332,7 +332,6 @@ namespace vind
                 if(!ihub.fetch_input(output, count)) {
                     continue ;
                 }
-                std::cout << output << std::endl ;
                 handle_system_call(output->execute(count)) ;
             }
         }

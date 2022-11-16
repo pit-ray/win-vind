@@ -13,6 +13,7 @@
 #include "core/background.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
+#include "core/inputhub.hpp"
 #include "core/keycode.hpp"
 #include "core/keylayout.hpp"
 #include "core/path.hpp"
@@ -64,6 +65,8 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
+
             //reset key state (binded key)
             core::InstantKeyAbsorber ika ;
 
@@ -73,16 +76,18 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                if(igate.is_pressed(KEYCODE_ESC)) {
-                    return ;
-                }
-
-                auto inputs = igate.pressed_list() ;
-                if(inputs.empty()) {
+                core::CmdUnit::SPtr inputs ;
+                std::uint16_t count ;
+                if(!ihub.fetch_input(
+                        inputs, count, core::get_global_mode(), false)) {
                     continue ;
                 }
 
-                for(const auto& keycode : inputs) {
+                if(inputs->is_containing(KEYCODE_ESC)) {
+                    return ;
+                }
+
+                for(const auto& keycode : *inputs) {
                     if(toggle_keys.is_containing(keycode)) {
                         continue ;
                     }
@@ -113,7 +118,7 @@ namespace vind
 
                     util::set_cursor_pos(x, y) ;
 
-                    for(const auto& key : inputs) {
+                    for(const auto& key : *inputs) {
                         igate.release_keystate(key) ;
                     }
                     return ;

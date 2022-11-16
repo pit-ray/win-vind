@@ -30,11 +30,11 @@ namespace vind
             std::shared_ptr<MapSolver> get_solver(Mode mode) ;
 
             /*
-             * @param[out] (fetched_input)
-             * @param[out] (fetched_count)
-             * @param[in] (mode)
-             * @param[in] (parse_count)
-             *
+             * Emulate text input and retrieve input at the appropriate time.
+             * @param[out] (fetched_input) Retrieved input
+             * @param[out] (fetched_count) Retrived prefix count of a command
+             * @param[in] (mode) The mode of solver to analyze the prefix count.
+             * @param[in] (parse_count) If false, treats the prefix number as the normal.
              */
             bool get_typed_input(
                 CmdUnit::SPtr& fetched_input,
@@ -43,18 +43,18 @@ namespace vind
                 bool parse_count=true) ;
 
             /*
-             *
-             *
+             * Check if the input queue is empty.
              */
             bool is_empty_queue() const noexcept ;
 
             /*
+             * Dequeue an input from the input queue. If the input queue is empty,
+             * get an input from the current states of a keyboard like typing.
              *
-             * @param[out] (fetched_input)
-             * @param[out] (fetched_count)
-             * @param[in] (mode)
-             * @param[in] (parse_count)
-             *
+             * @param[out] (fetched_input) Retrieved input
+             * @param[out] (fetched_count) Retrived prefix count of a command
+             * @param[in] (mode) The mode of solver to analyze the prefix count.
+             * @param[in] (parse_count) If false, treats the prefix number as the normal.
              */
             bool fetch_input(
                 CmdUnit::SPtr& fetched_input,
@@ -63,12 +63,13 @@ namespace vind
                 bool parse_count=true) ;
 
             /*
+             * Dequeue all inputs from the input queue. If the input queue is empty,
+             * get an input from the current states of a keyboard like typing.
              *
-             * @param[out] (fetched_inputs)
-             * @param[out] (fetched_counts)
-             * @param[in] (mode)
-             * @param[in] (parse_count)
-             *
+             * @param[out] (fetched_inputs) Retrieved all inputs
+             * @param[out] (fetched_counts) Retrived prefix counts of each command
+             * @param[in] (mode) The mode of solver to analyze the prefix count.
+             * @param[in] (parse_count) If false, treats the prefix number as the normal.
              */
             bool fetch_all_inputs(
                 std::vector<CmdUnit::SPtr>& fetched_inputs,
@@ -77,11 +78,13 @@ namespace vind
                 bool parse_count=true) ;
 
             /*
+             * Maps input to other commands and adds the result to the input waiting
+             * queue. The mapped commands are assumed to be input at the same time
+             * and the solver automatically transitions between states.
              *
-             * @param[in] (input)
-             * @param[in] (count)
-             * @param[in] (mode)
-             *
+             * @param[in] (input) The trigger input of map
+             * @param[in] (count) The prefix number of input command.
+             * @param[in] (mode) The mode of solver to analyze the prefix number.
              */
             bool enqueue_mapped(
                 const CmdUnit::SPtr& input,
@@ -89,12 +92,14 @@ namespace vind
                 Mode mode=get_global_mode()) ;
 
             /*
+             * Takes input from the waiting input queue and returns it as the
+             * fetched_input variable. It then further maps that input and adds
+             * the mapped command to the queue. (fetch_input + enqueue_mapped)
              *
-             * @param[out] (fetched_input)
-             * @param[out] (fetched_count)
-             * @param[in] (mode)
-             * @param[in] (parse_count)
-             *
+             * @param[out] (fetched_input) Retrieved input
+             * @param[out] (fetched_count) Retrived prefix count of a command
+             * @param[in] (mode) The mode of solver to analyze the prefix count.
+             * @param[in] (parse_count) If false, treats the prefix number as the normal.
              */
             bool pull_input(
                 CmdUnit::SPtr& fetched_input,
@@ -104,11 +109,14 @@ namespace vind
 
             /*
              *
-             * @param[out] (fetched_inputs)
-             * @param[out] (fetched_counts)
-             * @param[in] (mode)
-             * @param[in] (parse_count)
+             * Takes all inputs from the waiting input queue and returns it as the
+             * fetched_inputs variable. It then further maps that inputs and adds
+             * the mapped command to the queue. (fetch_inputs + enqueue_mapped)
              *
+             * @param[out] (fetched_inputs) Retrieved all inputs
+             * @param[out] (fetched_counts) Retrived prefix counts of each command
+             * @param[in] (mode) The mode of solver to analyze the prefix count.
+             * @param[in] (parse_count) If false, treats the prefix number as the normal.
              */
             bool pull_all_inputs(
                 std::vector<CmdUnit::SPtr>& fetched_inputs,

@@ -100,6 +100,13 @@ namespace
         }
 
         std::vector<CmdUnit::SPtr> subcmd_queue{} ;
+        auto _reset_state = [&subcmd_queue, &refmap_table] {
+            subcmd_queue.clear() ;
+            for(auto& map : refmap_table) {
+                map.trigger_matcher.reset_state() ;
+            }
+        } ;
+
         for(const auto& in_cmdunit : draft_map.target_cmd) {
             // If the mapping like `gmap t {hello}` could result in
             // `o` being `click_left`. However, the external mapping
@@ -133,14 +140,11 @@ namespace
             if(all_rejected) {
                 // If all matchers do not match with the target sub-command
                 // of draft_map, the target sub command keeps as is.
-                for(auto& map : refmap_table) {
-                    map.trigger_matcher.reset_state() ;
-                }
                 subcmd_queue.push_back(in_cmdunit) ;
                 solved_target.insert(
                     solved_target.end(),
                     subcmd_queue.begin(), subcmd_queue.end()) ;
-                subcmd_queue.clear() ;
+                _reset_state() ;
                 continue ;
             }
 
@@ -151,29 +155,49 @@ namespace
                 continue ;
             }
 
+            // Make the matchers reset for the next matching.
+            _reset_state() ;
+
             // Some matchers are accepted.
             auto max_idx = std::distance(acc_nums.begin(), max_itr) ;
-            auto t_cmd = refmap_table[max_idx].target_cmd ;
-            if(!t_cmd.empty()) {
-                if(!recursively) {
-                    solved_target.insert(
-                        solved_target.end(), t_cmd.begin(), t_cmd.end()) ;
-                }
-                else if(!is_same_command(draft_map.trigger_cmd, t_cmd)) {
-                    auto solved_subcmd = solve_mapping_recursive_impl(
-                            DraftMap{draft_map.trigger_cmd, t_cmd},
-                            refmap_table, true) ;
-                    solved_target.insert(
-                        solved_target.end(),
-                        solved_subcmd.begin(), solved_subcmd.end()) ;
-                }
+            auto matched_map = refmap_table[max_idx] ;
+            if(matched_map.target_cmd.empty()) {
+                continue ;
             }
 
-            // Make the matchers reset for the next matching.
-            for(auto& map : refmap_table) {
-                map.trigger_matcher.reset_state() ;
+            // If self-mapping is done that finally matches its trigger,
+            // outputs a warning and ignores the partial mapping. If this
+            // is allowed to happen, the loop will spin indefinitely and crash.
+            if(is_same_command(draft_map.trigger_cmd, matched_map.trigger_matcher.get_command())
+                    || is_same_command(draft_map.trigger_cmd, matched_map.target_cmd)) {
+                std::stringstream ss ;
+                ss << "Some part of the command generated from mapping " ;
+                ss << "`" << draft_map.trigger_cmd ;
+                ss <<" * " << draft_map.target_cmd << "` " ;
+                ss << "was ignored to avoid an infinite loop because it was mapped to itself " ;
+                ss << "by mapping `" ;
+                ss << matched_map.trigger_matcher.get_command() ;
+                ss << " * " << matched_map.target_cmd << "`. " ;
+                ss << "If you wish to enter the generated command as is, enclose it in `{}`." ;
+                Logger::get_instance().warning(ss.str()) ;
+                continue ;
             }
-            subcmd_queue.clear() ;
+
+            if(!recursively) {
+                solved_target.insert(
+                    solved_target.end(),
+                    matched_map.target_cmd.begin(),
+                    matched_map.target_cmd.end()) ;
+                continue ;
+            }
+
+            auto solved_subcmd = solve_mapping_recursive_impl(
+                    DraftMap{draft_map.trigger_cmd, matched_map.target_cmd},
+                    refmap_table, true) ;
+            solved_target.insert(
+                solved_target.end(),
+                solved_subcmd.begin(),
+                solved_subcmd.end()) ;
         }
 
         // Matching the target command, the loop is breaked.

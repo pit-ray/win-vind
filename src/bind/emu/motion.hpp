@@ -23,6 +23,10 @@ namespace vind
             YankWithMotion& operator=(YankWithMotion&&) ;
             YankWithMotion(const YankWithMotion&)            = delete ;
             YankWithMotion& operator=(const YankWithMotion&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
 
@@ -42,6 +46,10 @@ namespace vind
             DeleteWithMotion& operator=(DeleteWithMotion&&) ;
             DeleteWithMotion(const DeleteWithMotion&)            = delete ;
             DeleteWithMotion& operator=(const DeleteWithMotion&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         class ChangeWithMotion : public BindedFuncVoid<ChangeWithMotion> {
@@ -60,6 +68,10 @@ namespace vind
             ChangeWithMotion& operator=(ChangeWithMotion&&) ;
             ChangeWithMotion(const ChangeWithMotion&)            = delete ;
             ChangeWithMotion& operator=(const ChangeWithMotion&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

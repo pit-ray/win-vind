@@ -22,6 +22,10 @@ namespace vind
             ToCommand& operator=(ToCommand&&) ;
             ToCommand(const ToCommand&)            = delete ;
             ToCommand& operator=(const ToCommand&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

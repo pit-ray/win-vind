@@ -14,6 +14,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct Change2EdiBkInsert : public ChangeBaseCreator<Change2EdiBkInsert> {
@@ -22,6 +26,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToInsertEOL : public ChangeBaseCreator<ToInsertEOL> {
@@ -30,6 +38,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToInsertNLBelow : public ChangeBaseCreator<ToInsertNLBelow> {
@@ -38,6 +50,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToInsertNLAbove : public ChangeBaseCreator<ToInsertNLAbove> {
@@ -46,6 +62,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

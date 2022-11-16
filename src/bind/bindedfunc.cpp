@@ -84,6 +84,10 @@ namespace vind
             return pimpl->id_ ;
         }
 
+        bool BindedFunc::is_mode_modifiable() const noexcept {
+            return false ;
+        }
+
         void BindedFunc::error_process(const std::exception& e) {
             PRINT_ERROR(name() + " failed. " + e.what()) ;
             try {

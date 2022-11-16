@@ -23,6 +23,10 @@ namespace vind
             WindowResizer& operator=(WindowResizer&&) ;
             WindowResizer(const WindowResizer&)            = delete ;
             WindowResizer& operator=(const WindowResizer&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

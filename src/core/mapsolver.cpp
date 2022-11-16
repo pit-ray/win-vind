@@ -107,12 +107,20 @@ namespace
             }
         } ;
 
+        // Within this function, the mapping is pre-matched and the
+        // resulting map table is optimized. However, if a map contains
+        // a function that changes modes, optimization is aborted because
+        // a single solver cannot pre-resolve through the modes.
+        // (If we want to optimize across modes, we need to come up
+        // with a new data structure.)
+        bool disable_optim = false ;
+
         for(const auto& in_cmdunit : draft_map.target_cmd) {
             // If the mapping like `gmap t {hello}` could result in
             // `o` being `click_left`. However, the external mapping
             // take precedence over functional mappings because
             // the user likely want to input the keys.
-            if(std::dynamic_pointer_cast<ExternalCmdUnit>(in_cmdunit)) {
+            if(std::dynamic_pointer_cast<ExternalCmdUnit>(in_cmdunit) || disable_optim) {
                 subcmd_queue.push_back(in_cmdunit) ;
                 solved_target.insert(
                     solved_target.end(),
@@ -183,7 +191,16 @@ namespace
                 continue ;
             }
 
-            if(!recursively) {
+            for(auto& unit : matched_map.target_cmd) {
+                if(auto func_unit = std::dynamic_pointer_cast<FunctionalCmdUnit>(unit)) {
+                    if(func_unit->get_function()->is_mode_modifiable()) {
+                        disable_optim = true ;
+                        break ;
+                    }
+                }
+            }
+
+            if(!recursively || disable_optim) {
                 solved_target.insert(
                     solved_target.end(),
                     matched_map.target_cmd.begin(),

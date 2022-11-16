@@ -14,6 +14,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToResident : public BindedFuncVoid<ToResident> {
@@ -22,6 +26,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToGUIVisual : public BindedFuncVoid<ToGUIVisual> {
@@ -30,6 +38,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         class ToEdiNormal : public BindedFuncVoid<ToEdiNormal> {
@@ -42,6 +54,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToInsert : public BindedFuncVoid<ToInsert> {
@@ -50,6 +66,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToEdiVisual : public BindedFuncVoid<ToEdiVisual> {
@@ -58,6 +78,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
 
         struct ToEdiVisualLine : public BindedFuncVoid<ToEdiVisualLine> {
@@ -66,6 +90,10 @@ namespace vind
                 std::uint16_t count,
                 const std::string& args,
                 bool vclmodeout=true) ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

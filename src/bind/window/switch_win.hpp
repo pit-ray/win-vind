@@ -23,6 +23,10 @@ namespace vind
             SwitchWindow& operator=(SwitchWindow&&) ;
             SwitchWindow(const SwitchWindow&)            = delete ;
             SwitchWindow& operator=(const SwitchWindow&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

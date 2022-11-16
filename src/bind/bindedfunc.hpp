@@ -38,6 +38,11 @@ namespace vind
             const std::string& name() const noexcept ;
             const std::size_t& id() const noexcept ;
 
+            // Since functions that change the mode affect the optimization
+            // of the mapping, a flag function is used to determine if such
+            // functions are included.
+            virtual bool is_mode_modifiable() const noexcept ;
+
             static std::size_t name_to_id(const std::string& name) noexcept {
                 return std::hash<std::string>()(name) ;
             }

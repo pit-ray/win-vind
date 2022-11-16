@@ -23,6 +23,10 @@ namespace vind
             ToInstantGUINormal& operator=(ToInstantGUINormal&&) ;
             ToInstantGUINormal(const ToInstantGUINormal&)            = delete ;
             ToInstantGUINormal& operator=(const ToInstantGUINormal&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

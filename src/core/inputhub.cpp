@@ -140,7 +140,7 @@ namespace vind
                 Mode mode,
                 bool parse_count) {
             if(is_empty_queue()) {
-                get_typed_input(
+                return get_typed_input(
                     fetched_input, fetched_count, mode, parse_count) ;
             }
 

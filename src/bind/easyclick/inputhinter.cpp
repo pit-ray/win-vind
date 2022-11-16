@@ -9,6 +9,7 @@
 #include "core/cmdmatcher.hpp"
 #include "core/cmdunit.hpp"
 #include "core/inputgate.hpp"
+#include "core/inputhub.hpp"
 #include "core/typeemu.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/uiacachebuild.hpp"
@@ -44,6 +45,7 @@ namespace vind
                 const std::vector<util::Point2D>& positions,
                 const std::vector<Hint>& hints) {
             auto& igate = core::InputGate::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
 
             pimpl->mtx_.lock() ;    // %%%%%% LOCK %%%%%%
 
@@ -65,14 +67,20 @@ namespace vind
             }
 
             core::InstantKeyAbsorber ika ;
-            core::TypingEmulator typer{} ;
             while(!(pimpl->cancel_running_)) {
                 pimpl->bg_.update() ;
 
-                auto in_cmdunit = typer.lowlevel_to_typing(igate.pressed_list()) ;
-                if(!in_cmdunit) {
+                core::CmdUnit::SPtr in_cmdunit ;
+                std::uint16_t count ;
+                if(!ihub.fetch_input(
+                        in_cmdunit, count, core::get_global_mode(), false)) {
                     continue ;
                 }
+
+                if(in_cmdunit->empty()) {
+                    continue ;
+                }
+
                 std::lock_guard<std::mutex> socoped_lock{pimpl->mtx_} ;
 
                 if(in_cmdunit->is_containing(KEYCODE_BKSPACE)) {

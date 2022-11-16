@@ -11,6 +11,7 @@
 #include "core/entry.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
+#include "core/mapsolver.hpp"
 #include "core/mode.hpp"
 #include "opt/blockstylecaret.hpp"
 #include "opt/optionlist.hpp"
@@ -52,27 +53,36 @@ namespace vind
             using core::ModeFlags ;
             auto& ihub = core::InputHub::get_instance() ;
             core::InstantKeyAbsorber ika ;
+
+            auto solver = ihub.get_solver(Mode::EDI_NORMAL) ;
             while(true) {
                 pimpl->bg_.update() ;
 
                 core::CmdUnit::SPtr input ;
                 std::uint16_t in_count ;
-                if(!ihub.pull_input(
+                if(!ihub.fetch_input(
                         input, in_count, Mode::EDI_NORMAL, true)) {
                     continue ;
                 }
 
-                std::uint16_t correct_count = count * in_count ;
-                if(input->id() == id()) {
-                    bind::YankLine::sprocess(correct_count, "") ;
-                    return ;
+                auto outputs = solver->map_command_from(*input) ;
+                if(outputs.empty()) {
+                    continue ;
                 }
-                if(MotionIds::get_instance().is_motion(input->id())) {
-                    core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                    input->execute(correct_count, "") ;
-                    YankHighlightText::sprocess(1, "") ;
-                    ToEdiNormal::sprocess(1, "", false) ;
-                    return ;
+
+                std::uint16_t correct_count = count * in_count ;
+                for(auto& unit : outputs) {
+                    if(unit->id() == id()) {
+                        bind::YankLine::sprocess(correct_count, "") ;
+                        return ;
+                    }
+                    if(MotionIds::get_instance().is_motion(unit->id())) {
+                        core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
+                        unit->execute(correct_count, "") ;
+                        YankHighlightText::sprocess(1, "") ;
+                        ToEdiNormal::sprocess(1, "", false) ;
+                        return ;
+                    }
                 }
                 break ;
             }
@@ -105,26 +115,35 @@ namespace vind
             using core::ModeFlags ;
             auto& ihub = core::InputHub::get_instance() ;
             core::InstantKeyAbsorber ika ;
+
+            auto solver = ihub.get_solver(Mode::EDI_NORMAL) ;
             while(true) {
                 pimpl->bg_.update() ;
 
                 core::CmdUnit::SPtr input ;
                 std::uint16_t in_count ;
-                if(!ihub.pull_input(
+                if(!ihub.fetch_input(
                         input, in_count, Mode::EDI_NORMAL, true)) {
                     continue ;
                 }
 
-                std::uint16_t correct_count = count * in_count ;
-                if(input->id() == id()) {
-                    bind::DeleteLine::sprocess(correct_count, "") ;
-                    return ;
+                auto outputs = solver->map_command_from(*input) ;
+                if(outputs.empty()) {
+                    continue ;
                 }
-                if(MotionIds::get_instance().is_motion(input->id())) {
-                    core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                    input->execute(correct_count, "") ;
-                    DeleteHighlightText::sprocess(1, "") ;
-                    return ;
+
+                std::uint16_t correct_count = count * in_count ;
+                for(auto& unit : outputs) {
+                    if(unit->id() == id()) {
+                        bind::DeleteLine::sprocess(correct_count, "") ;
+                        return ;
+                    }
+                    if(MotionIds::get_instance().is_motion(unit->id())) {
+                        core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
+                        unit->execute(correct_count, "") ;
+                        DeleteHighlightText::sprocess(1, "") ;
+                        return ;
+                    }
                 }
                 break ;
             }
@@ -156,6 +175,8 @@ namespace vind
             using core::ModeFlags ;
             auto& ihub = core::InputHub::get_instance() ;
             core::InstantKeyAbsorber ika ;
+
+            auto solver = ihub.get_solver(Mode::EDI_NORMAL) ;
             while(true) {
                 pimpl->bg_.update() ;
 
@@ -166,17 +187,24 @@ namespace vind
                     continue ;
                 }
 
-                std::uint16_t correct_count = count * in_count ;
-                if(input->id() == id()) {
-                    bind::ChangeLine::sprocess(correct_count, "") ;
-                    return ;
+                auto outputs = solver->map_command_from(*input) ;
+                if(outputs.empty()) {
+                    continue ;
                 }
-                if(MotionIds::get_instance().is_motion(input->id())) {
-                    core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
-                    input->execute(correct_count, "") ;
-                    DeleteHighlightText::sprocess(1, "") ;
-                    ToInsert::sprocess(1, "", false) ;
-                    return ;
+
+                std::uint16_t correct_count = count * in_count ;
+                for(auto& unit : outputs) {
+                    if(unit->id() == id()) {
+                        bind::ChangeLine::sprocess(correct_count, "") ;
+                        return ;
+                    }
+                    if(MotionIds::get_instance().is_motion(unit->id())) {
+                        core::set_global_mode(Mode::EDI_VISUAL, ModeFlags::VISUAL_LINE) ;
+                        unit->execute(correct_count, "") ;
+                        DeleteHighlightText::sprocess(1, "") ;
+                        ToInsert::sprocess(1, "", false) ;
+                        return ;
+                    }
                 }
                 break ;
             }

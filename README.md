@@ -108,7 +108,6 @@ You can refer to the installation and quick tutorial in [Usage - win-vind](https
 You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
 
 ```vim
-" ------------ Example ------------
 " Virtual command line options
 set shell = cmd
 set cmd_fontsize = 14

@@ -175,10 +175,6 @@ If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://githu
 
 The project is managed with <a href="https://github.com/users/pit-ray/projects/2">GitHub Projects</a>. 
 
-## Related Pages
-- <a href="https://pit-ray.hatenablog.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
-- <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
-
 ## Similar Projects
 - [rcmdnk/vim_ahk](https://github.com/rcmdnk/vim_ahk)
 - [microsoft/PowerToys](https://github.com/microsoft/PowerToys)

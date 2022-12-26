@@ -19,8 +19,6 @@
   </p>
 </p>  
 
-## v5.0 beta testing is underway. ([site](https://github.com/pit-ray/win-vind/discussions/129))
-
 ## Description
 **win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.
 
@@ -93,12 +91,12 @@ $ winget install win-vind
 -->
 
 ### Installer Version
-- [win-vind_4.3.3_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_installer.zip)
-- [win-vind_4.3.3_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_installer.zip)
+- [win-vind_5.0.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases)
+- [win-vind_5.0.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases)
 
 ### Portable Version
-- [win-vind_4.3.3_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_portable.zip)
-- [win-vind_4.3.3_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_portable.zip)
+- [win-vind_5.0.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases)
+- [win-vind_5.0.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases)
 
 
 ## Usage
@@ -122,23 +120,18 @@ set blockstylecaret
 set blockstylecaret_mode = solid
 
 " Low-level key mapping in resident mode
-rmap <capslock> <ctrl>
+rmap <capslock> {<ctrl>}
 
-" Define bindings in GUI Normal mode
-gnnoremap <c-h> select_left_window
-gnnoremap <c-l> select_right_window
-gnnoremap <c-k> select_upper_window
-gnnoremap <c-j> select_lower_window
+" Define bindings in Normal mode
+nnoremap <c-h> <select_left_window>
+nnoremap <c-l> <select_right_window>
+nnoremap <c-k> <select_upper_window>
+nnoremap <c-j> <select_lower_window>
 
 " Define bindings in insert mode
-imap <capslock> <f16>
-inoremap <f16> to_edi_normal
-
-imap <ralt> <f17>
-inoremap <f17> easy_click_left
-
-imap <app> <f18>
-inoremap <f18> window_resizer
+inoremap <capslock> <to_edi_normal>
+inoremap <ralt> <easy_click_left>
+inoremap <app> <window_resizer>
 ```
 
 The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keywords/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/defaults">Default Mappings</a>. 
@@ -195,7 +188,3 @@ The project is managed with <a href="https://github.com/users/pit-ray/projects/2
 ## License  
 
 This software is provided by **MIT License**.  
-
-## Author
-
-- pit-ray

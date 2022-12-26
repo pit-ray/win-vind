@@ -186,4 +186,4 @@ The project is managed with <a href="https://github.com/users/pit-ray/projects/2
 
 ## License  
 
-This software is provided by **MIT License**.  
+This software is provided by pit-ray under the **MIT License**.  

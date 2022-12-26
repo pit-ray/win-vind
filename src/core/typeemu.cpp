@@ -59,8 +59,11 @@ namespace vind
                 }
             }
 
+            auto has_system = !system_set.empty() ;
+            auto has_ascii = !ascii_set.empty() ;
+
             auto in_cmdunit = raw_cmdunit - pimpl->prev_cmdunit_ ;
-            if(!system_set.empty() && !ascii_set.empty()) {
+            if(has_system && has_ascii) {
                 // If the inputted command unit has system keys and ASCII keys,
                 // keep the system keycode as is. For example, when <s-h> after
                 // <s-b>, the <shift> key is always kept pressed, so the simple
@@ -77,6 +80,14 @@ namespace vind
             if(in_cmdunit.empty()) {
                 return nullptr ;
             }
+
+            if(has_system && !has_ascii) {
+                // If you inputs the system keys only, they are interpreted as
+                // full inputs rather than the difference between a previous
+                // input and a current input.
+                return std::make_shared<CmdUnit>(raw_cmdunit) ;
+            }
+
             return std::make_shared<CmdUnit>(std::move(in_cmdunit)) ;
         }
     }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-set(SRCDIR ../../src)
+set(SRCDIR ${ROOT_DIR}/src)
 
 AddTest(each-cmdparser-test
     ${CMAKE_CURRENT_SOURCE_DIR}/cmdparser_test.cpp

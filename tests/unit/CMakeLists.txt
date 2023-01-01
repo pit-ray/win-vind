@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(win-vind-test VERSION 0.0.1)
+project(win-vind-unit-test VERSION 0.0.1)
 
 enable_testing()
+
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(ROOT_DIR ..)
+set(ROOT_DIR ${PROJECT_SOURCE_DIR}/../..)
 
 if(${MSVC})
     add_compile_options(/W4 /std:c++17 /MT /D_UNICODE /DUNICODE /DEBUG /DDEBUG /utf-8)
@@ -52,6 +54,6 @@ endfunction()
 
 add_subdirectory(normal)
 add_subdirectory(mock)
-add_subdirectory(each)
+add_subdirectory(alone)
 
 set(CMAKE_CTEST_ARGUMENTS "${CMAKE_CTEST_ARGUMENTS} --verbose --no-label-summary --parallel ${PROC_N}")

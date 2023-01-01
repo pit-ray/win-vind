@@ -1,6 +1,4 @@
-doctest
-fff
-build
-build_linux
-build_msvc
-old
+build-msvc
+build-mingw
+build-runtime
+Testing

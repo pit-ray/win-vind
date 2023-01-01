@@ -165,11 +165,7 @@ namespace vind
 
                     // Root window
                     auto dlg = new AboutDialog(
-#ifdef DEBUG
-                            (vind::core::RESOUECE_ROOT_PATH() / icon_style.get<std::string>()).u8string(),
-#else
-                            icon_style.get<std::string>(),
-#endif
+                            (vind::core::RESOURCE_ROOT_PATH() / icon_style.get<std::string>()).u8string(),
                             "win-vind",
                             settable.get("gui_fontsize").get<int>(),
                             settable.get("gui_fontname").get<std::string>()) ;

@@ -31,35 +31,10 @@ namespace vind
 
         const std::filesystem::path& CONFIG_PATH() ;
 
-        const std::filesystem::path& RESOUECE_ROOT_PATH() ;
-
-        const std::filesystem::path& DEFAULT_CONFIG_PATH() ;
+        const std::filesystem::path& RESOURCE_ROOT_PATH() ;
 
         inline const auto& RC() {
             static const auto obj = CONFIG_PATH() / ".vindrc" ;
-            return obj ;
-        }
-
-        inline const auto& BINDINGS() {
-            static const auto obj = CONFIG_PATH() / "bindings.json" ;
-            return obj ;
-        }
-        inline const auto& SETTINGS() {
-            static const auto obj = CONFIG_PATH() / "settings.json" ;
-            return obj ;
-        }
-
-        inline const auto& RC_DEFAULT() {
-            static const auto obj = DEFAULT_CONFIG_PATH() / ".vindrc" ;
-            return obj ;
-        }
-
-        inline const auto& BINDINGS_DEFAULT() {
-            static const auto& obj = DEFAULT_CONFIG_PATH() / "bindings.json" ;
-            return obj ;
-        }
-        inline const auto& SETTINGS_DEFAULT() {
-            static const auto obj = DEFAULT_CONFIG_PATH() / "settings.json" ;
             return obj ;
         }
     }

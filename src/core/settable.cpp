@@ -32,7 +32,7 @@ namespace
         Param("cmd_fadeout", 5),
         Param("gui_fontsize", 10),
         Param("gui_fontname", "Segoe UI"),
-        Param("icon_style", "resources/icon32_dark.ico"),
+        Param("icon_style", "icon32_dark.ico"),
         Param("keybrd_layout", ""),
         Param("tempdir", "~/Downloads"),
         Param("gui_lang", "en"),

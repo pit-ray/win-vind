@@ -107,7 +107,6 @@ add_subdirectory(src)
 install(TARGETS win-vind RUNTIME DESTINATION .)
 install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/res/resources
-    ${CMAKE_CURRENT_SOURCE_DIR}/res/default_config
     DESTINATION .
 )
 

@@ -190,14 +190,27 @@ namespace vind
                 parser.AddSwitch(
                         wxT("h"),
                         wxT("help"),
-                        wxT("Print usage and exit"),
+                        wxT("Print usage and exit."),
                         wxCMD_LINE_PARAM_OPTIONAL) ;
 
                 parser.AddOption(
                         wxT("f"),
                         wxT("func"),
-                        wxT("Identifier of the function to call in one-shot"),
+                        wxT("Identifier of the function to call in one-shot."),
                         wxCMD_LINE_VAL_STRING,
+                        wxCMD_LINE_PARAM_OPTIONAL) ;
+
+                parser.AddOption(
+                        wxT("c"),
+                        wxT("command"),
+                        wxT("Keystrokes passed to win-vind."),
+                        wxCMD_LINE_VAL_STRING,
+                        wxCMD_LINE_PARAM_OPTIONAL) ;
+
+                parser.AddOption(
+                        wxT("s"),
+                        wxT("status"),
+                        wxT("Returns the current mode."),
                         wxCMD_LINE_PARAM_OPTIONAL) ;
             }
 

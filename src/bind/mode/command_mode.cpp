@@ -96,7 +96,7 @@ namespace vind
 
             void update_cmdline_display() {
                 auto& latest = hists_.back() ;
-                opt::VCmdLine::print(opt::StaticMessage(":" + latest->to_string())) ;
+               opt::VCmdLine::print(opt::StaticMessage(":" + latest->to_string())) ;
             }
 
             void quit_loop() {
@@ -250,14 +250,14 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                std::vector<core::CmdUnit::SPtr> inputs ;
-                std::vector<std::uint16_t> counts ;
-                if(!ihub.fetch_all_inputs(inputs, counts, core::Mode::COMMAND, false)) {
-                    continue ;
-                }
-
                 bool break_flag = false ;
-                for(auto& input : inputs) {
+                do {
+                    core::CmdUnit::SPtr input ;
+                    std::uint16_t count ;
+                    if(!ihub.pull_input(input, count, core::Mode::COMMAND, false)) {
+                        continue ;
+                    }
+
                     if(input->is_containing(KEYCODE_ESC)) {
                         pimpl->quit_loop() ;
                         break_flag = true ;
@@ -283,7 +283,8 @@ namespace vind
                         break ;
                     }
                     pimpl->write_as_printable(input) ;
-                }
+                } while(!ihub.is_empty_queue()) ;
+
                 if(break_flag) {
                     break ;
                 }

@@ -77,35 +77,27 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                std::vector<core::CmdUnit::SPtr> inputs ;
-                std::vector<std::uint16_t> counts ;
-                if(!ihub.pull_all_inputs(
-                        inputs, counts, Mode::EDI_NORMAL, false)) {
-                    continue ;
-                }
-
                 bool break_flag = false ;
-                for(auto& input : inputs) {
+                do {
+                    core::CmdUnit::SPtr input ;
+                    std::uint16_t count ;
+                    if(!ihub.pull_input(
+                            input, count, Mode::EDI_NORMAL, false)) {
+                        continue ;
+                    }
+
                     if(input->is_containing(KEYCODE_ESC) ||
                             input->is_containing(KEYCODE_ENTER)) {
                         break_flag = true ;
                         break ;
                     }
-                }
+
+                    pimpl->call_op(input->id()) ;
+                    Sleep(100) ;
+                } while(!ihub.is_empty_queue()) ;
+
                 if(break_flag) {
                     break ;
-                }
-
-                if(!ihub.is_empty_queue()) {
-                    std::vector<core::CmdUnit::SPtr> outputs ;
-                    std::vector<std::uint16_t> out_counts ;
-                    if(!ihub.fetch_all_inputs(outputs, out_counts)) {
-                        continue ;
-                    }
-                    for(auto& out : outputs) {
-                        pimpl->call_op(out->id()) ;
-                        Sleep(100) ;
-                    }
                 }
             }
 

@@ -63,6 +63,7 @@ SOFTWARE.
 
 #include "background.hpp"
 #include "cmdmatcher.hpp"
+#include "cmdparser.hpp"
 #include "errlogger.hpp"
 #include "inputgate.hpp"
 #include "inputhub.hpp"
@@ -193,23 +194,26 @@ namespace vind
             return pimpl->subprocess_ ;
         }
 
-        void VindEntry::init(const std::string& func_request) {
+        void VindEntry::send_function_request(const std::string& name) {
+            send_command_request("<" + name + ">") ;
+        }
+
+        void VindEntry::send_command_request(const std::string& cmd) {
             if(is_subprocess()) {
-                if(!func_request.empty()) {
+                if(!cmd.empty()) {
                     auto memfile = pimpl->open_memfile_for_writing() ;
 
                     if(auto data = pimpl->read_memfile(memfile.get())) {
-                        std::memmove(data.get(), func_request.c_str(), func_request.length()) ;
+                        std::memmove(data.get(), cmd.c_str(), cmd.length()) ;
                     }
                 }
             }
             else {
-                if(!func_request.empty()) {
+                if(!cmd.empty()) {
                     if(auto data = pimpl->read_memfile(pimpl->map_)) {
-                        std::memmove(data.get(), func_request.c_str(), func_request.length()) ;
+                        std::memmove(data.get(), cmd.c_str(), cmd.length()) ;
                     }
                 }
-                init() ;
             }
         }
 
@@ -298,27 +302,31 @@ namespace vind
         }
 
         void VindEntry::update() {
+            auto& ihub = InputHub::get_instance() ;
+
             pimpl->bg_.update() ;
 
             if(pimpl->memread_timer_.is_passed()) {
                 //check if received messages from another win-vind.
                 if(auto data = pimpl->read_memfile(pimpl->map_)) {
-                    std::string name(reinterpret_cast<const char*>(data.get())) ;
-                    if(!name.empty()) {
-                        if(auto func = bind::ref_global_func_byname(name)) {
-                            handle_system_call(func->process()) ;
+                    std::string cmd_request(reinterpret_cast<const char*>(data.get())) ;
+                    if(!cmd_request.empty()) {
+                        auto request_inputs = parse_command(cmd_request) ;
+                        for(auto input : request_inputs) {
+                            ihub.do_typing(input) ;
                         }
-                        else {
-                            PRINT_ERROR(name + " is invalid function name.") ;
+
+                        for(auto input : request_inputs) {
+                            // Process functions or external keys included in the argument.
+                            // e.g. <move_cursor_left>, {abcd}
+                            handle_system_call(input->execute(1)) ;
                         }
 
                         std::memset(data.get(), 0, pimpl->memsize_) ;
                     }
-                    return ;
                 }
             }
 
-            auto& ihub = InputHub::get_instance() ;
             do {
                 CmdUnit::SPtr input ;
                 std::uint16_t count ;

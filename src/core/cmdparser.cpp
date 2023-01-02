@@ -158,7 +158,7 @@ namespace vind
                     }
 
                     auto inside_cmd = strcmd.substr(i + 1, pairpos - i - 1) ;
-                    if(auto func = bind::ref_global_func_byname(inside_cmd)) {
+                    if(auto func = bind::search_func(inside_cmd)) {
                         parsed.push_back(
                             std::make_shared<FunctionalCmdUnit>(std::move(func))) ;
                     }

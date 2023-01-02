@@ -11,28 +11,11 @@ namespace vind
     {
         const std::vector<BindedFunc::SPtr>& all_global_binded_funcs() ;
 
-        BindedFunc::SPtr ref_global_func_byname(const std::string& name) ;
+        BindedFunc::SPtr search_func(std::size_t id) ;
+        BindedFunc::SPtr search_func(const std::string& name) ;
 
-        BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) ;
-        BindedFunc::SPtr ref_global_funcs_bynames(std::string&& name) ;
-
-        template <typename String, typename... Strings>
-        std::vector<BindedFunc::SPtr> ref_global_funcs_bynames(String&& name, Strings&&... names) {
-            std::vector<BindedFunc::SPtr> out ;
-
-            if(auto func = ref_global_funcs_bynames(std::forward<String>(name))) {
-                out.push_back(std::move(func)) ;
-            }
-
-            auto append = [&out](auto&& ptr) {
-                if(ptr) {
-                    out.push_back(std::forward<decltype(ptr)>(ptr)) ;
-                }
-            } ;
-
-            ((append(ref_global_funcs_bynames(std::forward<String>(names)))), ...) ;
-
-            return out ;
+        inline bool check_if_func(std::size_t id) {
+            return search_func(id) != nullptr ;
         }
     }
 }

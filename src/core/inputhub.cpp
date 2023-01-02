@@ -1,6 +1,7 @@
 #include "inputhub.hpp"
 
 #include "bind/mapdefault.hpp"
+
 #include "cmdunit.hpp"
 #include "inputgate.hpp"
 #include "mapsolver.hpp"
@@ -41,10 +42,18 @@ namespace
         return std::string(nums.begin(), nums.end()) ;
     }
 
-    struct InputQueue {
-        std::vector<CmdUnit::SPtr> keys{} ;
-        std::vector<std::uint16_t> cnts{} ;
-        std::size_t idx{0} ;
+    class InputQueue {
+    private:
+        std::vector<CmdUnit::SPtr> keys ;
+        std::vector<std::uint16_t> cnts ;
+        std::size_t idx ;
+
+    public:
+        explicit InputQueue()
+        : keys(),
+          cnts(),
+          idx(0)
+        {}
 
         void clear() {
             idx = 0 ;
@@ -54,6 +63,42 @@ namespace
 
         bool empty() {
             return keys.empty() ;
+        }
+
+        bool dequeue(CmdUnit::SPtr& key, std::uint16_t& count) {
+            if(empty()) {
+                return false ;
+            }
+            key = keys[idx] ;
+            count = cnts[idx] ;
+            idx ++ ;
+            if(idx >= keys.size()) {
+                clear() ;
+            }
+            return true ;
+        }
+
+        bool enqueue(const CmdUnit::SPtr& key, std::uint16_t count) {
+            keys.push_back(key) ;
+            cnts.push_back(count) ;
+            return true ;
+        }
+
+        void dequeue_full(
+                std::vector<CmdUnit::SPtr>& dump_keys,
+                std::vector<std::uint16_t>& dump_cnts) {
+            dump_keys.insert(
+                dump_keys.end(), keys.begin() + idx, keys.end()) ;
+            dump_cnts.insert(
+                dump_cnts.end(), cnts.begin() + idx, cnts.end()) ;
+            clear() ;
+        }
+
+        void enqueue_full(
+                const std::vector<CmdUnit::SPtr>& push_keys,
+                const std::vector<std::uint16_t>& push_cnts) {
+            keys.insert(keys.end(), push_keys.begin(), push_keys.end()) ;
+            cnts.insert(cnts.end(), push_cnts.begin(), push_cnts.end()) ;
         }
     } ;
 }
@@ -66,7 +111,8 @@ namespace vind
             ModeArray<std::shared_ptr<MapSolver>> solvers_{} ;
             TypingEmulator typeemu_{} ;
             std::string count_{} ;
-            InputQueue q_ ;
+            InputQueue typing_queue_ ;
+            InputQueue waiting_queue_ ;
         } ;
 
         InputHub::InputHub()
@@ -129,9 +175,16 @@ namespace vind
             return true ;
         }
 
+        bool InputHub::do_typing(const CmdUnit::SPtr& input) {
+            if(input->empty()) {
+                return false ;
+            }
+            return pimpl->typing_queue_.enqueue(input, 1) ;
+        }
 
         bool InputHub::is_empty_queue() const noexcept {
-            return pimpl->q_.empty() ;
+            return pimpl->typing_queue_.empty() \
+                && pimpl->waiting_queue_.empty() ;
         }
 
         bool InputHub::fetch_input(
@@ -139,18 +192,16 @@ namespace vind
                 std::uint16_t& fetched_count,
                 Mode mode,
                 bool parse_count) {
-            if(is_empty_queue()) {
-                return get_typed_input(
-                    fetched_input, fetched_count, mode, parse_count) ;
+            if(!pimpl->waiting_queue_.empty()) {
+                return pimpl->waiting_queue_.dequeue(fetched_input, fetched_count) ;
             }
 
-            fetched_input = pimpl->q_.keys[pimpl->q_.idx] ;
-            fetched_count = pimpl->q_.cnts[pimpl->q_.idx] ;
-            pimpl->q_.idx ++ ;
-            if(pimpl->q_.idx >= pimpl->q_.keys.size()) {
-                pimpl->q_.clear() ;
+            if(!pimpl->typing_queue_.empty()) {
+                return pimpl->typing_queue_.dequeue(fetched_input, fetched_count) ;
             }
-            return true ;
+
+            return get_typed_input(
+                fetched_input, fetched_count, mode, parse_count) ;
         }
 
         bool InputHub::fetch_all_inputs(
@@ -170,12 +221,8 @@ namespace vind
                 return true ;
             }
 
-            for(std::size_t i = pimpl->q_.idx ;
-                    i < pimpl->q_.keys.size() ; i ++) {
-                fetched_inputs.push_back(pimpl->q_.keys[i]) ;
-                fetched_counts.push_back(pimpl->q_.cnts[i]) ;
-            }
-            pimpl->q_.clear() ;
+            pimpl->waiting_queue_.dequeue_full(fetched_inputs, fetched_counts) ;
+            pimpl->typing_queue_.dequeue_full(fetched_inputs, fetched_counts) ;
             return true ;
         }
 
@@ -197,11 +244,10 @@ namespace vind
                 }
             }
 
-            // For commands consisting of single command unit,
-            // it is more efficient to repeat using an internal counter.
             if(map_cmd.size() == 1) {
-                pimpl->q_.keys.push_back(map_cmd.front()) ;
-                pimpl->q_.cnts.push_back(prefix_count) ;
+                // For commands consisting of single command unit,
+                // it is more efficient to repeat using an internal counter.
+                pimpl->waiting_queue_.enqueue(map_cmd.front(), prefix_count) ;
                 return true ;
             }
 
@@ -209,13 +255,7 @@ namespace vind
             // assume the count as one and add multiple commands with a count of one.
             std::vector<std::uint16_t> counts(map_cmd.size(), 1) ;
             for(std::uint16_t i = 0 ; i < prefix_count ; i ++) {
-                pimpl->q_.keys.insert(
-                    pimpl->q_.keys.end(),
-                    map_cmd.begin(), map_cmd.end()) ;
-
-                pimpl->q_.cnts.insert(
-                    pimpl->q_.cnts.end(),
-                    counts.begin(), counts.end()) ;
+                pimpl->waiting_queue_.enqueue_full(map_cmd, counts) ;
             }
             return true ;
         }

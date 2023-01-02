@@ -44,6 +44,8 @@ SOFTWARE.
 #include "core/path.hpp"
 #include "core/settable.hpp"
 
+#include "util/debug.hpp"
+
 #include "about.hpp"
 
 
@@ -123,11 +125,14 @@ namespace vind
         private:
             std::unique_ptr<SystemThread> pst_ ;
 
-            static std::string argument_func_ ;
+            std::string arg_func_name_ ;
+            std::string arg_command_ ;
 
         public:
             App()
-            : pst_(nullptr)
+            : pst_(nullptr),
+              arg_func_name_(),
+              arg_command_()
             {}
 
             virtual ~App() noexcept {
@@ -153,11 +158,18 @@ namespace vind
                         ExitMainLoop() ;
                     }) ;
 
-                    pst_->entry_.init(argument_func_) ;
+                    if(!arg_func_name_.empty()) {
+                        pst_->entry_.send_function_request(arg_func_name_) ;
+                    }
+                    if(!arg_command_.empty()) {
+                        pst_->entry_.send_command_request(arg_command_) ;
+                    }
 
                     if(pst_->entry_.is_subprocess()) {
                         return false ;
                     }
+
+                    pst_->entry_.init() ;
 
                     auto& settable = core::SetTable::get_instance() ;
 
@@ -186,6 +198,11 @@ namespace vind
                 return wxApp::MainLoop() ;
             }
 
+            int OnRun() {
+                wxApp::OnRun() ;
+                return 3 ;
+            }
+
             void OnInitCmdLine(wxCmdLineParser& parser) override {
                 parser.AddSwitch(
                         wxT("h"),
@@ -206,12 +223,6 @@ namespace vind
                         wxT("Keystrokes passed to win-vind."),
                         wxCMD_LINE_VAL_STRING,
                         wxCMD_LINE_PARAM_OPTIONAL) ;
-
-                parser.AddOption(
-                        wxT("s"),
-                        wxT("status"),
-                        wxT("Returns the current mode."),
-                        wxCMD_LINE_PARAM_OPTIONAL) ;
             }
 
             bool OnCmdLineParsed(wxCmdLineParser& parser) override {
@@ -220,8 +231,11 @@ namespace vind
                     parser.Usage() ;
                     return false ;
                 }
-                else if(parser.Found(wxT("func"), &fn)) {
-                    argument_func_ = fn.ToStdString() ;
+                if(parser.Found(wxT("func"), &fn)) {
+                    arg_func_name_ = fn.ToStdString() ;
+                }
+                if(parser.Found(wxT("command"), &fn)) {
+                    arg_command_ = fn.ToStdString() ;
                 }
                 return true ;
             }
@@ -250,8 +264,6 @@ namespace vind
                 //the program is already about to exit.
             }
         } ;
-
-        std::string App::argument_func_ ;
     }
 }
 

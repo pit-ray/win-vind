@@ -43,6 +43,13 @@ namespace vind
                 bool parse_count=true) ;
 
             /*
+             * Enqueue the input directly to the input euque.
+             *
+             * @param[in] (input) A raw input or a function unit.
+             */
+            bool do_typing(const CmdUnit::SPtr& input) ;
+
+            /*
              * Check if the input queue is empty.
              */
             bool is_empty_queue() const noexcept ;

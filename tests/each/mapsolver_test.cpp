@@ -11,14 +11,10 @@ namespace vind
             return SystemCall::SUCCEEDED ;
         }
 
-        BindedFunc::SPtr ref_global_func_byname(const std::string& name) {
+        BindedFunc::SPtr search_func(const std::string& name) {
             if(name == "click_right") {
                 return std::make_unique<BindedFunc>(name) ;
             }
-            return nullptr ;
-        }
-
-        BindedFunc::SPtr ref_global_funcs_bynames(const std::string&) {
             return nullptr ;
         }
     }

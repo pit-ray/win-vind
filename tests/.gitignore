@@ -1,4 +1,2 @@
-build-msvc
-build-mingw
-build-runtime
+build-*
 Testing

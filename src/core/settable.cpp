@@ -10,6 +10,7 @@ namespace
 
     std::vector<Param> default_params {
         Param("initmode", "i"),
+        Param("listen_interval", 1.0f),
         Param("jump_margin", 10),
         Param("cursor_accel", 32),
         Param("cursor_resolution", 250),

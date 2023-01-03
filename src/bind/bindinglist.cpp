@@ -109,6 +109,7 @@ namespace vind
                 ExchangeWindowWithNearest::create(),
                 Execute::create(),
                 ExitConfigGUI::create(),
+                Exit::create(),
                 ForwardUINavigation::create(),
                 GotoNextPage::create(),
                 GotoPrevPage::create(),

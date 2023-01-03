@@ -29,19 +29,8 @@ namespace vind
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             auto& settable = core::SetTable::get_instance() ;
 
-            static std::unordered_map<std::string, std::string> compatible = {
-                {"window_accel", "window_velocity"},
-                {"window_tweight", "window_velocity"},
-                {"window_maxv", "window_velocity"},
-                {"cursor_tweight", "cursor_resolution"},
-            } ;
-
             if(pargs.find("=") != std::string::npos) { // set option_name = value
                 auto [key, val] = core::divide_key_and_value(pargs, "=") ;
-
-                if(compatible.find(key) != compatible.end()) {
-                    key = compatible[key] ;
-                }
 
                 if(key.empty()) {
                     if(val.empty()) {
@@ -75,10 +64,6 @@ namespace vind
 
             // set option_name
             auto key = core::extract_single_arg(util::A2a(pargs)) ;
-
-            if(compatible.find(key) != compatible.end()) {
-                key = compatible[key] ;
-            }
 
             bool flag_value = true ;
             if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {

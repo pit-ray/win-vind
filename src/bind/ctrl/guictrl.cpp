@@ -28,5 +28,14 @@ namespace vind
                 const std::string& UNUSED(args)) {
             return SystemCall::TERMINATE ;
         }
+
+        Exit::Exit()
+        : BindedFuncFlex("exit")
+        {}
+        SystemCall Exit::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            return SystemCall::TERMINATE ;
+        }
     }
 }

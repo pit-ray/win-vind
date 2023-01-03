@@ -11,6 +11,7 @@
 #include "opt/vcmdline.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/string.hpp"
 #include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
 
@@ -25,6 +26,8 @@
 #include <stdexcept>
 #include <string>
 #include <system_error>
+#include <utility>
+#include <vector>
 
 #include <shlwapi.h>
 
@@ -80,10 +83,42 @@ namespace
         return target_repo_path / ".vindrc" ;
     }
 
+    std::string to_compatible(std::string text) {
+        std::vector<std::pair<std::string, std::string>> compatible {
+            {"system_command_comclear", "comclear"},
+            {"system_command_command", "command"},
+            {"system_command_delcommand", "delcommand"},
+            {"system_command_map", "map"},
+            {"system_command_mapclear", "mapclear"},
+            {"system_command_noremap", "noremap"},
+            {"system_command_set", "set"},
+            {"system_command_source", "source"},
+            {"system_command_unmap", "unmap"},
+            {"syscmd_comclear", "comclear"},
+            {"syscmd_command", "command"},
+            {"syscmd_delcommand", "delcommand"},
+            {"syscmd_map", "map"},
+            {"syscmd_mapclear", "mapclear"},
+            {"syscmd_noremap", "noremap"},
+            {"syscmd_set", "set"},
+            {"syscmd_source", "source"},
+            {"syscmd_unmap", "unmap"},
+            {"window_accel", "window_velocity"},
+            {"window_tweight", "window_velocity"},
+            {"window_maxv", "window_velocity"},
+            {"cursor_tweight", "cursor_resolution"},
+        } ;
+        for(auto& [from, to] : compatible) {
+            text = util::replace_all(text, from, to) ;
+        }
+        return text ;
+    }
+
     std::error_code do_runcommand(const std::string& cmd, const std::string& args) {
         using namespace vind ;
         using namespace vind::bind ;
         using core::RunCommandsIndex ;
+
         auto rcindex = core::parse_run_command(cmd) ;
         switch(rcindex) {
             case RunCommandsIndex::SET: {
@@ -208,6 +243,8 @@ namespace vind
                 if(cmd.empty()) {
                     continue ;
                 }
+
+                line_args = to_compatible(line_args) ;
 
                 if(auto err = do_runcommand(cmd, line_args)) {
                     auto ltag = "L:" + std::to_string(lnum) ;

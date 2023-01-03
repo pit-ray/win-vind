@@ -11,6 +11,9 @@
 #include "util/def.hpp"
 
 #include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 
 namespace vind

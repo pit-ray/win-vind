@@ -299,6 +299,10 @@ namespace vind
             for(auto& func : bind::all_global_binded_funcs()) {
                 func->reconstruct() ;
             }
+
+            auto listen_sec = settable.get("listen_interval").get<float>() ;
+            pimpl->memread_timer_.set_delta(
+                static_cast<int>(listen_sec * 1000'000)) ;
         }
 
         void VindEntry::update() {

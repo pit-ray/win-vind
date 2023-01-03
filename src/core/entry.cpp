@@ -310,6 +310,10 @@ namespace vind
 
             pimpl->bg_.update() ;
 
+            // TODO: It is necessary to add exclusive handling when
+            // write and read operations are performed at the same
+            // time by multiple processes. However, these are extremely
+            // rare cases, as they are processed faster than human operations.
             if(pimpl->memread_timer_.is_passed()) {
                 //check if received messages from another win-vind.
                 if(auto data = pimpl->read_memfile(pimpl->map_)) {

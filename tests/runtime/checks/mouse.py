@@ -1,22 +1,12 @@
-import time
-
 import pydirectinput as pdi
 
-import logger
 
+def move_cursor_left(handler):
+    handler.send_command('<to_insert><ctrl-]>')
 
-def move_cursor_left():
     x = pdi.position()[0]
+    handler.send_command('h' * 100)
+    delta = abs(pdi.position()[0] - x)
 
-    pdi.press(['ctrl', ']'])
-
-    start = time.time()
-    while time.time() - start < 2:
-        pdi.keyDown('h')
-
-    pdi.keyUp('h')
-    pdi.press('i')
-
-    delta = pdi.position()[0] - x
-    if delta == 0:
-        logger.error('move_cursor_left is failed.')
+    handler.send_command('<to_insert>')
+    return delta > 0

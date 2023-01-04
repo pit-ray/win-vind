@@ -1,8 +1,6 @@
 """
 This code is based on
 https://github.com/learncodebygaming/pydirectinput
-However We partially modified.
-
 
 
 MIT License

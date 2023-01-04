@@ -19,6 +19,12 @@ namespace vind
             static SystemCall sprocess(
                 std::uint16_t count, const std::string& args) ;
         } ;
+
+        struct Exit : public BindedFuncFlex<Exit> {
+            explicit Exit() ;
+            static SystemCall sprocess(
+                std::uint16_t count, const std::string& args) ;
+        } ;
     }
 }
 

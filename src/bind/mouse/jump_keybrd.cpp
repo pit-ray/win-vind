@@ -131,7 +131,7 @@ namespace vind
             auto layoutfile = settable.get("keybrd_layout").get<std::string>() ;
             std::filesystem::path filepath ;
             if(!layoutfile.empty()) {
-                filepath = core::CONFIG_PATH() / layoutfile ;
+                filepath = core::RESOURCE_ROOT_PATH() / layoutfile ;
             }
             else {
                 auto locale_id = GetKeyboardLayout(0) ;

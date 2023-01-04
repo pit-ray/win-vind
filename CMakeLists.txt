@@ -107,7 +107,6 @@ add_subdirectory(src)
 install(TARGETS win-vind RUNTIME DESTINATION .)
 install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/res/resources
-    ${CMAKE_CURRENT_SOURCE_DIR}/res/default_config
     DESTINATION .
 )
 
@@ -119,7 +118,7 @@ set(CPACK_GENERATOR NSIS)
 set(CPACK_PACKAGE_NAME ${CPACK_PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION ${CPACK_PROJECT_VERSION})
 set(CPACK_PACKAGE_VENDOR "pit-ray")
-set(CPACK_PACKAGE_COPYRIGHT "Copyright (c) 2020-2022 pit-ray")
+set(CPACK_PACKAGE_COPYRIGHT "Copyright (c) 2020-2023 pit-ray")
 set(CPACK_PACKAGE_DESCRIPTION "win-vind - Simple Vim Key Binder for Windows (${GEN_ARCH})")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://pit-ray.github.io/win-vind/")
 set(CPACK_PACKAGE_FILE_NAME "setup_${CPACK_PROJECT_NAME}_${CPACK_PROJECT_VERSION}")

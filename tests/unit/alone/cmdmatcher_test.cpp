@@ -18,7 +18,7 @@ namespace vind
             return SystemCall::SUCCEEDED ;
         }
 
-        BindedFunc::SPtr ref_global_func_byname(const std::string& name) {
+        BindedFunc::SPtr search_func(const std::string& name) {
             return nullptr ;
         }
     }

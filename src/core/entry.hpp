@@ -61,6 +61,9 @@ namespace vind
             void init(const std::string& func_request) ;
             void init() ;
 
+            void send_function_request(const std::string& name) ;
+            void send_command_request(const std::string& cmd) ;
+
             void reconstruct() ;
 
             void update() ;

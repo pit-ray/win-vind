@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <functional>
@@ -56,7 +57,6 @@ namespace
             }
 
             func_ = func ;
-            continue_flag_ = true ;
 
             // When moving a mouse, discrete and variable sensory signals,
             // such as text input signals, are not smooth. Therefore, to
@@ -65,10 +65,16 @@ namespace
             // motion if it is the same as the input state at the time it
             // is called at first time.
             triggered_keys_ = core::InputGate::get_instance().pressed_list() ;
+
+            // However, when calling it by --command
+            // all key states are still released, so moves a little bit
+            // once and is finished imediately.
             if(triggered_keys_.empty()) {
+                func_(1) ;
                 return ;
             }
 
+            continue_flag_ = true ;
             ft_ = std::async(
                 std::launch::async,
                 &AsyncConstAccelerator::loop,
@@ -81,8 +87,11 @@ namespace
 
             auto start = system_clock::now() ;
             while(continue_flag_) {
+                Sleep(5) ;
+
+                // If the current key states are different from the first
+                // time set, break it.
                 auto inputs = core::InputGate::get_instance().pressed_list() ;
-                // If the current key states is different from the first time set, breaks it.
                 if(triggered_keys_ != inputs) {
                     break ;
                 }
@@ -96,8 +105,6 @@ namespace
                 auto x = v0 * t + 0.5f * accel_ * t * t ;
 
                 func_(static_cast<int>(x)) ;
-
-                Sleep(5) ;
             }
             continue_flag_ = false ;
         }

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 
 #include "bind/bindedfunc.hpp"
 #include "bind/bindedfunc.hpp"

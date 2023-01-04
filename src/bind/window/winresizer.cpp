@@ -186,15 +186,15 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                std::vector<core::CmdUnit::SPtr> inputs ;
-                std::vector<std::uint16_t> counts ;
-                if(!ihub.fetch_all_inputs(
-                        inputs, counts, Mode::EDI_NORMAL, false)) {
-                    continue ;
-                }
-
                 bool break_flag = false ;
-                for(auto& input : inputs) {
+                do {
+                    core::CmdUnit::SPtr input ;
+                    std::uint16_t count ;
+                    if(!ihub.pull_input(
+                            input, count, Mode::EDI_NORMAL, false)) {
+                        continue ;
+                    }
+
                     if(input->is_containing(KEYCODE_ESC) ||
                             input->is_containing(KEYCODE_ENTER)) {
                         break_flag = true ;
@@ -217,7 +217,9 @@ namespace vind
                         pimpl->call_op(inmode, unit->id()) ;
                         Sleep(100) ;
                     }
-                }
+
+                } while(!ihub.is_empty_queue()) ;
+
                 if(break_flag) {
                     break ;
                 }

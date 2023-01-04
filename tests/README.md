@@ -6,16 +6,16 @@ It are run using CTest at compile time. This is based on branch coverage.
 
 ### Visual Studio 2019
 ```bash
-$ cmake -B build-msvc -G "Visual Studio 16 2019" unit
+$ cmake -B build_msvc -G "Visual Studio 16 2019" unit
 $ cmake --build build-msvc
-$ ctest -C Debug --test-dir build-msvc
+$ ctest -C Debug --test-dir build_msvc --output-on-failure
 ```
 
 ### MinGW-w64 >= GCC 11.2.0
 ```bash
-$ cmake -B build-mingw -G "MinGW Makefiles" unit
+$ cmake -B build_mingw -G "MinGW Makefiles" unit
 $ cmake --build build-mingw
-$ cmake -C Debug --test-dir build-mingw
+$ cmake -C Debug --test-dir build_mingw --output-on-failure
 ```
 
 ## Runtime Test

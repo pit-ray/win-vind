@@ -10,7 +10,7 @@ def get_cases():
     ]
 
 
-def move_cursor_left(handler):
+def move_cursor_left(handler, mock_app):
     handler.send_command('<to_insert><ctrl-]>')
 
     x = get_cursor_pos()[0]
@@ -21,7 +21,7 @@ def move_cursor_left(handler):
     return delta > 0
 
 
-def move_cursor_right(handler):
+def move_cursor_right(handler, mock_app):
     handler.send_command('<to_insert><ctrl-]>')
 
     x = get_cursor_pos()[0]
@@ -32,7 +32,7 @@ def move_cursor_right(handler):
     return delta > 0
 
 
-def move_cursor_up(handler):
+def move_cursor_up(handler, mock_app):
     handler.send_command('<to_insert><ctrl-]>')
 
     y = get_cursor_pos()[1]
@@ -43,7 +43,7 @@ def move_cursor_up(handler):
     return delta > 0
 
 
-def move_cursor_down(handler):
+def move_cursor_down(handler, mock_app):
     handler.send_command('<to_insert><ctrl-]>')
 
     y = get_cursor_pos()[1]

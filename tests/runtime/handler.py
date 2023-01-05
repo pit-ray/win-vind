@@ -74,7 +74,7 @@ class ProcHandler:
     def __exit__(self, *args):
         self.kill()
 
-    def _launch(self, *args, pause=1):
+    def _launch(self, *args, pause=0.5):
         if self.env_root is None:
             raise RuntimeError('The test environment has not yet been set up')
 
@@ -86,10 +86,10 @@ class ProcHandler:
 
         time.sleep(pause)
 
-    def start(self, pause=1):
+    def start(self, pause=0.5):
         self._launch(pause=pause)
 
-    def send_command(self, command, pause=1):
+    def send_command(self, command, pause=0.5):
         self._launch('--command', '\"' + command + '\"')
         time.sleep(pause)
 

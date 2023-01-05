@@ -32,6 +32,7 @@ class MockFrame(tk.Frame):
         self.height = height
         self.master.geometry('{}x{}+0+0'.format(width, height))
         self.master.title('win-vind Runtime Test')
+        self.master.overrideredirect(True)
 
         self.text = tk.Text(
             self.master, width=40, height=20, wrap='none')

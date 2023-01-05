@@ -1,12 +1,14 @@
-from win import get_cursor_pos
+from win import get_cursor_pos, set_cursor_pos, click
 
 
 def get_cases():
     return [
+        jump_cursor_to_active_window,
+
         move_cursor_left,
         move_cursor_right,
         move_cursor_up,
-        move_cursor_down
+        move_cursor_down,
     ]
 
 
@@ -52,3 +54,18 @@ def move_cursor_down(handler, mock_app):
 
     handler.send_command('<to_insert>')
     return delta > 0
+
+
+def jump_cursor_to_active_window(handler, mock_app):
+    left, right = mock_app.get_window_pos()
+    click(left + 10, right + 10)
+
+    cx, cy = mock_app.get_window_center()
+
+    width, height = mock_app.get_window_size()
+    set_cursor_pos(left + width + 20, right + height + 20)
+
+    handler.send_command('<to_gui_normal>t')
+    x, y = get_cursor_pos()
+
+    return x == cx and y == cy

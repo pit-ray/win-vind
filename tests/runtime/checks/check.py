@@ -23,6 +23,4 @@ def check(handler):
         + proc.get_cases()
 
     with MockApp(asynchronous=True) as app:
-        print(app.get_window_size())
-
         check_test_cases(handler, app, test_cases)

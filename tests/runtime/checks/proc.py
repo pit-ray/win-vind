@@ -10,3 +10,15 @@ def exit_process(handler, mock_app):
     result_2 = not handler.check_if_alive()
     handler.start()
     return result_1 & result_2
+
+
+def execute():
+    return False
+
+
+def start_external():
+    return False
+
+
+def start_shell():
+    return False

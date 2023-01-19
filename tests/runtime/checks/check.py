@@ -11,7 +11,7 @@ def check_test_cases(handler, app, test_cases):
     num_of_case = len(test_cases)
     for i, case in enumerate(test_cases):
         app.reset()
-        handler.send_command('<f12>', pause=2)
+        handler.send_command('<f12>')
 
         if case(handler, app):
             logger.info('Case {}/{}: {} is successed.'.format(

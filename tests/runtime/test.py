@@ -1,9 +1,7 @@
-import time
 from argparse import ArgumentParser
 
 import logger
 from checks import check
-from vindrc_gen import VINDRC_GEN
 from handler import ProcHandler
 
 
@@ -12,7 +10,7 @@ def do_test(exe_path):
         logger.info(
             'Target executable file: ' + h.get_absolute_source_exe())
 
-        h.create_vindrc(VINDRC_GEN)
+        logger.info('Test ID: ' + h.get_test_id())
 
         logger.info('Start checking ...')
         check(h)

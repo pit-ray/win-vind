@@ -15,7 +15,7 @@ def get_cases():
 
 def move_cursor_left(handler, mock_app):
     x = get_cursor_pos()[0]
-    handler.send_command('<to_insert><ctrl-]>hi')
+    handler.send_command('h')
     delta = x - get_cursor_pos()[0]
 
     return delta > 0
@@ -23,14 +23,14 @@ def move_cursor_left(handler, mock_app):
 
 def move_cursor_right(handler, mock_app):
     x = get_cursor_pos()[0]
-    handler.send_command('<to_insert><ctrl-]>li')
+    handler.send_command('l')
     delta = get_cursor_pos()[0] - x
     return delta > 0
 
 
 def move_cursor_up(handler, mock_app):
     y = get_cursor_pos()[1]
-    handler.send_command('<to_insert><ctrl-]>ki')
+    handler.send_command('k')
     delta = y - get_cursor_pos()[1]
 
     return delta > 0
@@ -38,7 +38,7 @@ def move_cursor_up(handler, mock_app):
 
 def move_cursor_down(handler, mock_app):
     y = get_cursor_pos()[1]
-    handler.send_command('<to_insert><ctrl-]>ji')
+    handler.send_command('j')
     delta = get_cursor_pos()[1] - y
 
     return delta > 0
@@ -50,7 +50,7 @@ def easy_click_left(handler, mock_app):
     cx, cy = mock_app.get_window_center()
     click(cx, cy)  # Select mock app
 
-    handler.send_command('<to_gui_normal>FFGi')
+    handler.send_command('FFG')
     result = mock_app.frame.check_if_clicked()
 
     mock_app.frame.ready_button()
@@ -66,7 +66,7 @@ def jump_cursor_to_active_window(handler, mock_app):
     width, height = mock_app.get_window_size()
     set_cursor_pos(left + width + 20, right + height + 20)
 
-    handler.send_command('<to_gui_normal>t')
+    handler.send_command('t')
     x, y = get_cursor_pos()
 
     return x == cx and y == cy

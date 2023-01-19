@@ -30,9 +30,9 @@ class MockFrame(tk.Frame):
 
         self.width = width
         self.height = height
-        self.master.geometry('{}x{}+0+0'.format(width, height))
         self.master.title('win-vind Runtime Test')
         self.master.overrideredirect(True)
+        self.init_geometry()
 
         self.text = tk.Text(
             self.master, width=40, height=20, wrap='none')
@@ -49,6 +49,10 @@ class MockFrame(tk.Frame):
         self.button_state = False
 
         self.set_caret_position(0, 0)
+
+    def init_geometry(self):
+        self.master.geometry(
+            '{}x{}+0+0'.format(self.width, self.height))
 
     def set_caret_position(self, row, column):
         self.text.mark_set(
@@ -115,6 +119,10 @@ class MockApp:
     def __exit__(self, *args):
         self.close()
 
+    def reset(self):
+        self.frame.init_geometry()
+        self.frame.ready_button()
+
     def get_title(self):
         return self.root.title()
 
@@ -129,6 +137,12 @@ class MockApp:
 
     def get_window_size(self):
         return (self.root.winfo_width(), self.root.winfo_height())
+
+    def get_maximum_size(self):
+        return self.root.maxsize()
+
+    def get_screen_size(self):
+        return (self.root.winfo_screenwidth(), self.root.winfo_screenheight())
 
 
 if __name__ == '__main__':

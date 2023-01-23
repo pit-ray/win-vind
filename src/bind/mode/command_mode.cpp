@@ -1,25 +1,23 @@
 #include "command_mode.hpp"
 
 #include <algorithm>
+#include <memory>
+#include <sstream>
 #include <windows.h>
 
 #include <vector>
 
 #include "bind/bindedfunc.hpp"
 #include "core/background.hpp"
-#include "core/charlogger.hpp"
-#include "core/entry.hpp"
 #include "core/errlogger.hpp"
-#include "core/funcfinder.hpp"
 #include "core/inputgate.hpp"
+#include "core/inputhub.hpp"
 #include "core/keycodedef.hpp"
-#include "core/keylgrbase.hpp"
+#include "core/mapsolver.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
-#include "opt/dedicate_to_window.hpp"
+#include "core/typeemu.hpp"
 #include "opt/optionlist.hpp"
-#include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/container.hpp"
@@ -33,103 +31,49 @@ namespace
 
     struct CmdPoint
     {
-        core::CharLogger logger {
-            KEYCODE_ESC,
-            KEYCODE_ENTER,
-            KEYCODE_BKSPACE,
-            KEYCODE_UP,
-            KEYCODE_DOWN
-        } ;
+        std::vector<std::string> print_logs_{} ;
+        std::vector<std::vector<core::CmdUnit::SPtr>> fetched_logs_{} ;
 
-        std::size_t lastlgr_size = 0 ;
-
-        bind::BindedFunc::SPtr func = nullptr ;
-
-        using SPtr = std::shared_ptr<CmdPoint> ;
-
-        void reset() {
-            logger.clear() ;
-            lastlgr_size = 0 ;
-            func = nullptr ;
+        void backward() {
+            util::remove_from_back(print_logs_, 1) ;
+            util::remove_from_back(fetched_logs_, 1) ;
         }
 
-        void backward(std::size_t i) {
-            logger.remove_from_back(i) ;
-            lastlgr_size = logger.size() ;
+        std::string to_string() const {
+            std::stringstream ss ;
+            for(auto& cmd : print_logs_) {
+                ss << cmd ;
+            }
+            return ss.str() ;
+        }
+
+        bool empty() const noexcept {
+            return fetched_logs_.empty() ;
+        }
+
+        std::size_t size() const noexcept {
+            return fetched_logs_.size() ;
+        }
+
+        void clear() {
+            print_logs_.clear() ;
+            fetched_logs_.clear() ;
         }
     } ;
 
-    class CmdHist
-    {
-    private:
-        std::vector<CmdPoint::SPtr> hist_ ;
-        std::size_t idx_ ;
-
-    public:
-        explicit CmdHist()
-        : hist_{std::make_shared<CmdPoint>()},
-          idx_(0)
-        {}
-
-        CmdPoint::SPtr get_hist_point() {
-            return hist_.at(idx_) ;
-        }
-
-        std::size_t index() const noexcept {
-            return idx_ ;
-        }
-
-        bool forward() noexcept {
-            if(idx_ == hist_.size() - 1) {
-                return false ; //Could not forward
-            }
-
-            idx_ ++ ;
-            return true ;
-        }
-
-        bool backward() noexcept {
-            if(idx_ == 0) {
-                return false ; //Could not backward
-            }
-            idx_ -- ;
-            return true ;
-        }
-
-        void forward_to_latest() noexcept {
-            idx_ = hist_.size() - 1 ;
-        }
-
-        CmdPoint::SPtr generate_new_hist() {
-            if(idx_ == hist_.size() - 1) {
-                //recently logger
-
-                auto& settable = core::SetTable::get_instance() ;
-                auto over_num = static_cast<long>(hist_.size()) \
-                                - settable.get("cmd_maxhist").get<long>() ;
-
-                if(over_num > 0) {
-                    util::remove_from_top(hist_, over_num) ;
+    template <typename CmdType>
+    std::string encode_to_unicode(CmdType&& cmd) {
+        std::stringstream ss ;
+        for(auto& unit : cmd) {
+            for(auto& key : *unit) {
+                auto uni = core::keycode_to_unicode(key, *unit) ;
+                if(!uni.empty()) {
+                    ss << uni ;
                 }
-
-                idx_ = hist_.size() ; //update to index of recently history
-                hist_.push_back(std::make_shared<CmdPoint>()) ;
             }
-            else {
-                //the current point is past one, so move to latest one.
-                forward_to_latest() ;
-
-                auto p = hist_.at(idx_) ;
-                p->reset() ;
-            }
-
-            return hist_.at(idx_) ;
         }
-
-        bool is_pointing_latest() noexcept {
-            return idx_ == hist_.size() - 1 ;
-        }
-    } ;
+        return ss.str() ;
+    }
 }
 
 namespace vind
@@ -137,20 +81,135 @@ namespace vind
     namespace bind
     {
         struct ToCommand::Impl {
-            CmdHist ch_ ;
-            core::FuncFinder funcfinder_ ;
+            std::vector<std::shared_ptr<CmdPoint>> hists_ ;
             core::Background bg_ ;
+            int hist_idx_ ;
 
             Impl()
-            : ch_(),
-              funcfinder_(),
+            : hists_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
-                    opt::Dedicate2Window().name(),
-                    opt::SuppressForVim().name(),
                     opt::VCmdLine().name()
-              ))
+              )),
+              hist_idx_(0)
             {}
+
+            void update_cmdline_display() {
+                auto& latest = hists_.back() ;
+               opt::VCmdLine::print(opt::StaticMessage(":" + latest->to_string())) ;
+            }
+
+            void quit_loop() {
+                opt::VCmdLine::reset() ;
+                // Remove the latest history
+                util::remove_from_back(hists_, 1) ;
+            }
+
+            bool backspace() {
+                auto& latest = hists_.back() ;
+                if(latest->empty()) {
+                    // When the command line is `:` only and call it,
+                    // exit the command mode.
+                    quit_loop() ;
+                    return false ;
+                }
+                latest->backward() ;
+                update_cmdline_display() ;
+                return true ;
+            }
+
+            void forward_history() {
+                auto& latest = hists_.back() ;
+                auto latest_idx = hists_.size() - 1 ;
+                auto tmp = hist_idx_ + 1 ;
+                if(tmp > latest_idx) {
+                    return ;
+                }
+
+                hist_idx_ = tmp ;
+                if(tmp == latest_idx) {
+                    latest->clear() ;
+                    update_cmdline_display() ;
+                }
+                else {
+                    *latest = *hists_[hist_idx_] ;
+                    update_cmdline_display() ;
+                }
+            }
+
+            void backward_history() {
+                if(hist_idx_ - 1 < 0) {
+                    return ;
+                }
+                auto& latest = hists_.back() ;
+                *latest = *hists_[--hist_idx_] ;
+                update_cmdline_display() ;
+            }
+
+            auto decide() {
+                opt::VCmdLine::reset() ;
+
+                auto& ihub = core::InputHub::get_instance() ;
+                auto solver = ihub.get_solver(core::Mode::COMMAND) ;
+                solver->reset_state() ;
+
+                auto& latest = hists_.back() ;
+
+                std::string args ;
+                std::vector<core::CmdUnit::SPtr> command ;
+                for(std::size_t i = 0 ; i < latest->size() ; i ++) {
+                    args += latest->print_logs_[i] ;
+                    for(auto& unit : latest->fetched_logs_[i]) {
+                        auto tmp = solver->map_command_from(*unit, false) ;
+                        if(!tmp.empty()) {
+                            // To get the last matched command
+                            command = tmp ;
+                        }
+                    }
+                }
+
+                auto result = SystemCall::SUCCEEDED ;
+                bool called = false ;
+                for(auto& unit : command) {
+                    if(unit->empty()) {
+                        called = true ;
+                        result = unit->execute(1, args) ;
+                    }
+                }
+                if(!called) {
+                    opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
+                }
+                return result ;
+            }
+
+            void write_as_printable(const core::CmdUnit::SPtr& input) {
+                // Aggregate the printable keys into this vector from input and outputs.
+                std::vector<core::CmdUnit::SPtr> printables ;
+
+                auto& ihub = core::InputHub::get_instance() ;
+                auto solver = ihub.get_solver(core::Mode::COMMAND) ;
+                auto outputs = solver->map_command_from(*input, true) ;
+                for(auto& unit : outputs) {
+                    if(!unit->empty()) {
+                        printables.push_back(unit) ;
+                    }
+                }
+
+                // If the input is mapped to another printable keys,
+                // then the original input is ignored.
+                if(printables.empty()) {
+                    printables.push_back(input) ;
+                }
+
+                // Ignore unprintable inputs like <shift> or <alt>.
+                auto printable_ustring = encode_to_unicode(printables) ;
+                if(!printable_ustring.empty()) {
+                    auto& latest = hists_.back() ;
+                    latest->print_logs_.push_back(printable_ustring) ;
+                    latest->fetched_logs_.push_back(printables) ;
+                    update_cmdline_display() ;
+                }
+            }
         } ;
 
         ToCommand::ToCommand()
@@ -158,15 +217,16 @@ namespace vind
           pimpl(std::make_unique<Impl>())
         {}
 
-        ToCommand::~ToCommand() noexcept               = default ;
-        ToCommand::ToCommand(ToCommand&&)            = default ;
+        ToCommand::~ToCommand() noexcept = default ;
+        ToCommand::ToCommand(ToCommand&&) = default ;
         ToCommand& ToCommand::operator=(ToCommand&&) = default ;
 
-        void ToCommand::reconstruct() {
-            pimpl->funcfinder_.reconstruct(core::Mode::COMMAND) ;
-        }
+        SystemCall ToCommand::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            auto& igate = core::InputGate::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
 
-        SystemCall ToCommand::sprocess() {
             auto return_mode = [] (core::Mode* m) {
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {
@@ -177,159 +237,62 @@ namespace vind
                 mode_preserver(new core::Mode(core::get_global_mode()), return_mode) ;
 
             core::set_global_mode(core::Mode::COMMAND) ;
-
-            pimpl->funcfinder_.reset_parser_states() ;
-
-            opt::VCmdLine::reset() ;
-
             core::InstantKeyAbsorber ika ;
 
-            constexpr auto cmdline_prefix = ":" ;
-            opt::VCmdLine::print(opt::StaticMessage(cmdline_prefix)) ;
+            opt::VCmdLine::reset() ;
+            opt::VCmdLine::print(opt::StaticMessage(":")) ;
 
-            auto result = SystemCall::NOTHING ;
+            // Reset the index of histories to refer the inputted logs.
+            pimpl->hists_.push_back(std::make_shared<CmdPoint>()) ;
+            pimpl->hist_idx_ = static_cast<int>(pimpl->hists_.size() - 1) ;
 
+            auto result = SystemCall::SUCCEEDED ;
             while(true) {
                 pimpl->bg_.update() ;
 
-                auto p_cmdp = pimpl->ch_.get_hist_point() ;
-                auto& lgr    = p_cmdp->logger ;
-
-                auto log = core::InputGate::get_instance().pop_log() ;
-                if(CHAR_EMPTY(lgr.logging_state(log))) {
-                    continue ;
-                }
-
-                //canceling operation
-                if(lgr.latest().is_containing(KEYCODE_ESC)){
-                    if(pimpl->ch_.is_pointing_latest()) {
-                        p_cmdp->reset() ;
-                    }
-                    else {
-                        p_cmdp->backward(1) ; // remove <ESC>'s log
-                        pimpl->ch_.forward_to_latest() ;
+                bool break_flag = false ;
+                do {
+                    core::CmdUnit::SPtr input ;
+                    std::uint16_t count ;
+                    if(!ihub.pull_input(input, count, core::Mode::COMMAND, false)) {
+                        continue ;
                     }
 
-                    opt::VCmdLine::reset() ;
-                    break ;
-                }
-
-                //decision of input
-                if(lgr.latest().is_containing(KEYCODE_ENTER)) {
-                    p_cmdp->backward(1) ; //remove log including KEYCODE_ENTER
-                    opt::VCmdLine::reset() ;
-
-                    if(lgr.empty()) {
+                    if(input->is_containing(KEYCODE_ESC)) {
+                        pimpl->quit_loop() ;
+                        break_flag = true ;
                         break ;
                     }
-
-                    if(p_cmdp->func) {
-                        result = p_cmdp->func->process(lgr) ;
-                    }
-                    else {
-                        opt::VCmdLine::print(opt::ErrorMessage("E: Not a command")) ;
-                    }
-
-                    auto& new_lgr = pimpl->ch_.generate_new_hist()->logger ;
-
-                    // Let the new created Logger of CmdPoint
-                    // inherit the state of the last logger.
-                    new_lgr.sync_state_with(lgr) ;
-
-                    break ;
-                }
-
-                //edit command
-                if(lgr.latest().is_containing(KEYCODE_BKSPACE)) {
-                    if(lgr.size() == 1) {
-                        p_cmdp->reset() ;
-                        opt::VCmdLine::reset() ;
+                    if(input->is_containing(KEYCODE_BKSPACE)) {
+                        if(!pimpl->backspace()) {
+                            break_flag = true ;
+                        }
                         break ;
                     }
-
-                    p_cmdp->backward(2) ;
-                    opt::VCmdLine::print(
-                            opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
-                    opt::VCmdLine::refresh() ;
-
-                    pimpl->funcfinder_.backward_parser_states(1) ;
-
-                    if(auto acced = pimpl->funcfinder_.find_accepted_parser()) {
-                        p_cmdp->func = acced->get_func() ;
+                    if(input->is_containing(KEYCODE_UP)) {
+                        pimpl->backward_history() ;
+                        continue ;
                     }
-                    else {
-                        p_cmdp->func = nullptr ;
+                    if(input->is_containing(KEYCODE_DOWN)) {
+                        pimpl->forward_history() ;
+                        continue ;
                     }
-                    continue ;
-                }
-
-                //command history operation
-                if(lgr.latest().is_containing(KEYCODE_UP)) {
-                    p_cmdp->backward(1) ; //to remove a log including KEYCODE_UP
-                    if(pimpl->ch_.backward()) {
-                        auto& b_lgr = pimpl->ch_.get_hist_point()->logger ;
-                        b_lgr.sync_state_with(lgr) ;
-
-                        opt::VCmdLine::print(
-                                opt::StaticMessage(cmdline_prefix + b_lgr.to_str())) ;
-                        opt::VCmdLine::refresh() ;
-
-                        pimpl->funcfinder_.reset_parser_states() ;
-                        pimpl->funcfinder_.transition_parser_states_in_batch(b_lgr) ;
+                    if(input->is_containing(KEYCODE_ENTER)) {
+                        result = pimpl->decide() ;
+                        break_flag = true ;
+                        break ;
                     }
-                    continue ;
-                }
+                    pimpl->write_as_printable(input) ;
+                } while(!ihub.is_empty_queue()) ;
 
-                if(lgr.latest().is_containing(KEYCODE_DOWN)) {
-                    p_cmdp->backward(1) ; //to remove a log including KEYCODE_DOWN
-                    if(pimpl->ch_.forward()) {
-                        auto& f_lgr = pimpl->ch_.get_hist_point()->logger ;
-                        f_lgr.sync_state_with(lgr) ;
-
-                        opt::VCmdLine::print(
-                                opt::StaticMessage(cmdline_prefix + f_lgr.to_str())) ;
-                        opt::VCmdLine::refresh() ;
-
-                        pimpl->funcfinder_.reset_parser_states() ;
-                        pimpl->funcfinder_.transition_parser_states_in_batch(f_lgr) ;
-                    }
-                    continue ;
-                }
-
-                opt::VCmdLine::print(
-                        opt::StaticMessage(cmdline_prefix + lgr.to_str())) ;
-
-                /**
-                 * NOTE: Since there may be multiple logging in one iteration,
-                 *       transition the state by the increase from the previous iteration.
-                 */
-                core::LoggerParser::SPtr parser ;
-                auto appended_num = lgr.size() - p_cmdp->lastlgr_size ;
-                for(auto itr = lgr.end() - appended_num ; itr != lgr.end() ; itr ++) {
-                    parser = pimpl->funcfinder_.find_parser_with_transition(*itr, id()) ;
-                }
-                p_cmdp->lastlgr_size = lgr.size() ;
-
-                if(parser && parser->is_accepted()) {
-                    p_cmdp->func = parser->get_func() ;
-                }
-                else {
-                    p_cmdp->func = nullptr ;
+                if(break_flag) {
+                    break ;
                 }
             }
+            igate.release_virtually(KEYCODE_ESC) ;
+            igate.release_virtually(KEYCODE_ENTER) ;
 
             return result ;
-        }
-
-        SystemCall ToCommand::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                return sprocess() ;
-            }
-
-            return SystemCall::NOTHING ;
-        }
-        SystemCall ToCommand::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            return sprocess() ;
         }
     }
 }

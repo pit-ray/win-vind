@@ -11,13 +11,11 @@
 #include <utility>
 
 #include "core/background.hpp"
-#include "core/entry.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
+#include "core/inputhub.hpp"
 #include "core/keycode.hpp"
 #include "core/keylayout.hpp"
-#include "core/keylog.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
 #include "opt/dedicate_to_window.hpp"
@@ -63,8 +61,12 @@ namespace vind
         JumpWithKeybrdLayout::JumpWithKeybrdLayout(JumpWithKeybrdLayout&&)            = default ;
         JumpWithKeybrdLayout& JumpWithKeybrdLayout::operator=(JumpWithKeybrdLayout&&) = default ;
 
-        void JumpWithKeybrdLayout::sprocess() {
+        void JumpWithKeybrdLayout::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
+            auto& ihub = core::InputHub::get_instance() ;
+
             //reset key state (binded key)
             core::InstantKeyAbsorber ika ;
 
@@ -74,16 +76,21 @@ namespace vind
             while(true) {
                 pimpl->bg_.update() ;
 
-                if(igate.is_pressed(KEYCODE_ESC)) {
-                    return ;
-                }
-
-                auto log = igate.pop_log() - toggle_keys ;
-                if(log.empty()) {
+                core::CmdUnit::SPtr inputs ;
+                std::uint16_t count ;
+                if(!ihub.fetch_input(
+                        inputs, count, core::get_global_mode(), false)) {
                     continue ;
                 }
 
-                for(const auto& keycode : log) {
+                if(inputs->is_containing(KEYCODE_ESC)) {
+                    return ;
+                }
+
+                for(const auto& keycode : *inputs) {
+                    if(toggle_keys.is_containing(keycode)) {
+                        continue ;
+                    }
                     if(keycode.is_unreal()) {
                         continue ;
                     }
@@ -111,29 +118,20 @@ namespace vind
 
                     util::set_cursor_pos(x, y) ;
 
-                    for(const auto& key : log) {
+                    for(const auto& key : *inputs) {
                         igate.release_keystate(key) ;
                     }
                     return ;
                 }
             }
         }
-        void JumpWithKeybrdLayout::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void JumpWithKeybrdLayout::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         void JumpWithKeybrdLayout::reconstruct() {
             auto& settable = core::SetTable::get_instance() ;
             auto layoutfile = settable.get("keybrd_layout").get<std::string>() ;
             std::filesystem::path filepath ;
             if(!layoutfile.empty()) {
-                filepath = core::CONFIG_PATH() / layoutfile ;
+                filepath = core::RESOURCE_ROOT_PATH() / layoutfile ;
             }
             else {
                 auto locale_id = GetKeyboardLayout(0) ;

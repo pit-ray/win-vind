@@ -30,6 +30,7 @@ SOFTWARE.
 */
 
 #include <atomic>
+#include <string>
 
 #include "util/disable_compiler_warning.hpp"
 
@@ -44,6 +45,8 @@ SOFTWARE.
 #include "core/path.hpp"
 #include "core/settable.hpp"
 
+#include "util/debug.hpp"
+
 #include "about.hpp"
 
 
@@ -51,6 +54,12 @@ namespace
 {
     inline void error_box(const wxString& msg) {
         wxMessageBox(msg, wxT("Error - win-vind"), wxOK | wxICON_EXCLAMATION) ;
+    }
+
+    void trim_quotation(std::string& str) {
+        if(str.front() == '\"' && str.back() == '\"') {
+            str = str.substr(1, str.size() - 2) ;
+        }
     }
 }
 
@@ -123,11 +132,14 @@ namespace vind
         private:
             std::unique_ptr<SystemThread> pst_ ;
 
-            static std::string argument_func_ ;
+            std::string arg_func_name_ ;
+            std::string arg_command_ ;
 
         public:
             App()
-            : pst_(nullptr)
+            : pst_(nullptr),
+              arg_func_name_(),
+              arg_command_()
             {}
 
             virtual ~App() noexcept {
@@ -153,11 +165,18 @@ namespace vind
                         ExitMainLoop() ;
                     }) ;
 
-                    pst_->entry_.init(argument_func_) ;
+                    if(!arg_func_name_.empty()) {
+                        pst_->entry_.send_function_request(arg_func_name_) ;
+                    }
+                    if(!arg_command_.empty()) {
+                        pst_->entry_.send_command_request(arg_command_) ;
+                    }
 
                     if(pst_->entry_.is_subprocess()) {
                         return false ;
                     }
+
+                    pst_->entry_.init() ;
 
                     auto& settable = core::SetTable::get_instance() ;
 
@@ -165,11 +184,7 @@ namespace vind
 
                     // Root window
                     auto dlg = new AboutDialog(
-#ifdef DEBUG
-                            (vind::core::RESOUECE_ROOT_PATH() / icon_style.get<std::string>()).u8string(),
-#else
-                            icon_style.get<std::string>(),
-#endif
+                            (vind::core::RESOURCE_ROOT_PATH() / icon_style.get<std::string>()).u8string(),
                             "win-vind",
                             settable.get("gui_fontsize").get<int>(),
                             settable.get("gui_fontname").get<std::string>()) ;
@@ -190,17 +205,29 @@ namespace vind
                 return wxApp::MainLoop() ;
             }
 
+            int OnRun() {
+                wxApp::OnRun() ;
+                return 3 ;
+            }
+
             void OnInitCmdLine(wxCmdLineParser& parser) override {
                 parser.AddSwitch(
                         wxT("h"),
                         wxT("help"),
-                        wxT("Print usage and exit"),
+                        wxT("Print usage and exit."),
                         wxCMD_LINE_PARAM_OPTIONAL) ;
 
                 parser.AddOption(
                         wxT("f"),
                         wxT("func"),
-                        wxT("Identifier of the function to call in one-shot"),
+                        wxT("Identifier of the function to call in one-shot."),
+                        wxCMD_LINE_VAL_STRING,
+                        wxCMD_LINE_PARAM_OPTIONAL) ;
+
+                parser.AddOption(
+                        wxT("c"),
+                        wxT("command"),
+                        wxT("Keystrokes passed to win-vind."),
                         wxCMD_LINE_VAL_STRING,
                         wxCMD_LINE_PARAM_OPTIONAL) ;
             }
@@ -211,8 +238,13 @@ namespace vind
                     parser.Usage() ;
                     return false ;
                 }
-                else if(parser.Found(wxT("func"), &fn)) {
-                    argument_func_ = fn.ToStdString() ;
+                if(parser.Found(wxT("func"), &fn)) {
+                    arg_func_name_ = fn.ToStdString() ;
+                    trim_quotation(arg_func_name_) ;
+                }
+                if(parser.Found(wxT("command"), &fn)) {
+                    arg_command_ = fn.ToStdString() ;
+                    trim_quotation(arg_command_) ;
                 }
                 return true ;
             }
@@ -241,8 +273,6 @@ namespace vind
                 //the program is already about to exit.
             }
         } ;
-
-        std::string App::argument_func_ ;
     }
 }
 
@@ -250,6 +280,11 @@ namespace vind
 #include "util/disable_compiler_warning.hpp"
 
 DECLARE_APP(vind::gui::App) ;
+
+#ifdef DEBUG
+IMPLEMENT_APP_CONSOLE(vind::gui::App) ;
+#else
 IMPLEMENT_APP(vind::gui::App) ;
+#endif
 
 #include "util/enable_compiler_warning.hpp"

@@ -9,7 +9,7 @@
 
 MIT License
 
-Copyright (c) 2020-2022 pit-ray
+Copyright (c) 2020-2023 pit-ray
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -62,22 +62,26 @@ SOFTWARE.
 
 
 #include "background.hpp"
+#include "cmdmatcher.hpp"
+#include "cmdparser.hpp"
+#include "errlogger.hpp"
+#include "inputgate.hpp"
+#include "inputhub.hpp"
+#include "mapsolver.hpp"
+#include "mode.hpp"
+#include "path.hpp"
+#include "settable.hpp"
+
 #include "bind/bindinglist.hpp"
 #include "bind/emu/moveinsert.hpp"
 #include "bind/mode/change_mode.hpp"
+#include "bind/saferepeat.hpp"
 #include "bind/syscmd/source.hpp"
-#include "core/inputgate.hpp"
-#include "errlogger.hpp"
-#include "funcfinder.hpp"
-#include "maptable.hpp"
-#include "mode.hpp"
-#include "ntypelogger.hpp"
 #include "opt/optionlist.hpp"
 #include "opt/vcmdline.hpp"
-#include "path.hpp"
-#include "settable.hpp"
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
+#include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
 
 
@@ -97,10 +101,6 @@ namespace vind
 
             util::IntervalTimer memread_timer_ ;
 
-            NTypeLogger lgr_ ;
-            ModeArray<FuncFinder> finders_ ;
-            bind::BindedFunc::SPtr actfunc_ ;
-
             Background bg_ ;
 
             template <typename ExitFuncType, typename String>
@@ -111,9 +111,6 @@ namespace vind
               memsize_(memsize),
               subprocess_(false),
               memread_timer_(1000'000), //1 s
-              lgr_(),
-              finders_(),
-              actfunc_(nullptr),
               bg_(opt::all_global_options())
             {}
 
@@ -197,23 +194,26 @@ namespace vind
             return pimpl->subprocess_ ;
         }
 
-        void VindEntry::init(const std::string& func_request) {
+        void VindEntry::send_function_request(const std::string& name) {
+            send_command_request("<" + name + ">") ;
+        }
+
+        void VindEntry::send_command_request(const std::string& cmd) {
             if(is_subprocess()) {
-                if(!func_request.empty()) {
+                if(!cmd.empty()) {
                     auto memfile = pimpl->open_memfile_for_writing() ;
 
                     if(auto data = pimpl->read_memfile(memfile.get())) {
-                        std::memmove(data.get(), func_request.c_str(), func_request.length()) ;
+                        std::memmove(data.get(), cmd.c_str(), cmd.length()) ;
                     }
                 }
             }
             else {
-                if(!func_request.empty()) {
+                if(!cmd.empty()) {
                     if(auto data = pimpl->read_memfile(pimpl->map_)) {
-                        std::memmove(data.get(), func_request.c_str(), func_request.length()) ;
+                        std::memmove(data.get(), cmd.c_str(), cmd.length()) ;
                     }
                 }
-                init() ;
             }
         }
 
@@ -230,8 +230,8 @@ namespace vind
              */
             if(!SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)) {
                 Logger::get_instance().error(
-                        "Application scaling could not be set to Pre-Monitor V2. "
-                        "Instead, set it to Legacy DPI Aware.") ;
+                    "Application scaling could not be set to Pre-Monitor V2. "
+                    "Instead, set it to Legacy DPI Aware.") ;
 
                 if(!SetProcessDPIAware()) {
                     throw std::runtime_error("Your system is not supported DPI.") ;
@@ -255,25 +255,15 @@ namespace vind
             in.mi.dwFlags     = MOUSEEVENTF_MOVE ;
             in.mi.dwExtraInfo = GetMessageExtraInfo() ;
             if(!SendInput(1, &in, sizeof(INPUT))) {
-                throw std::runtime_error("Could not move the mouse cursor to show it.") ;
+                PRINT_ERROR("Could not move the mouse cursor to show it.") ;
             }
 #endif
-
-            auto& settable = SetTable::get_instance() ;
-            auto& maptable = MapTable::get_instance() ;
-
-            settable.clear() ;
-            maptable.clear_all() ;
-
-            bind::SyscmdSource::sprocess(RC_DEFAULT(), false) ;
-            settable.save_asdef() ;
-            maptable.save_asdef() ;
-            bind::SyscmdSource::sprocess(RC(), true) ;
+            bind::Source::sprocess(1, "") ;
 
             reconstruct() ;
 
-            //lower keyboard hook
-            //If you use debugger, must be disable this line not to be slow.
+            // lower keyboard hook
+            // If you use debugger, must be disable this line not to be slow.
             InputGate::get_instance().install_hook() ;
 
             std::unordered_map<std::string, bind::BindedFunc::SPtr> cm {
@@ -283,11 +273,19 @@ namespace vind
                 {mode_to_prefix(Mode::RESIDENT), bind::ToResident::create()}
             } ;
 
-            handle_system_call(cm.at(
-                        settable.get("initmode").get<std::string>())->process()) ;
+            auto& settable = SetTable::get_instance() ;
+            try {
+                auto func = cm.at(settable.get("initmode").get<std::string>()) ;
+                handle_system_call(func->process()) ;
+            }
+            catch(const std::out_of_range&) {
+                handle_system_call(cm.at("i")->process()) ;
+            }
         }
 
         void VindEntry::reconstruct() {
+            InputHub::get_instance().apply_mapping() ;
+
             auto& settable = SetTable::get_instance() ;
             for(auto& opt : opt::all_global_options()) {
                 if(settable.get(opt->name()).get<bool>()) {
@@ -302,100 +300,57 @@ namespace vind
                 func->reconstruct() ;
             }
 
-            for(std::size_t i = 0 ; i < pimpl->finders_.size() ; i ++) {
-                pimpl->finders_[i].reconstruct(i) ;
-            }
-
-            InputGate::get_instance().reconstruct() ;
+            auto listen_sec = settable.get("listen_interval").get<float>() ;
+            pimpl->memread_timer_.set_delta(
+                static_cast<int>(listen_sec * 1000'000)) ;
         }
 
         void VindEntry::update() {
+            auto& ihub = InputHub::get_instance() ;
+
             pimpl->bg_.update() ;
 
-            auto& finder = pimpl->finders_[get_global_mode<int>()] ;
-
+            // TODO: It is necessary to add exclusive handling when
+            // write and read operations are performed at the same
+            // time by multiple processes. However, these are extremely
+            // rare cases, as they are processed faster than human operations.
             if(pimpl->memread_timer_.is_passed()) {
                 //check if received messages from another win-vind.
                 if(auto data = pimpl->read_memfile(pimpl->map_)) {
-                    std::string name(reinterpret_cast<const char*>(data.get())) ;
-                    if(!name.empty()) {
-                        if(auto func = finder.find_func_byname(name)) {
-                            handle_system_call(func->process()) ;
+                    std::string cmd_request(reinterpret_cast<const char*>(data.get())) ;
+                    if(!cmd_request.empty()) {
+                        auto request_inputs = parse_command(cmd_request) ;
+                        for(auto input : request_inputs) {
+                            ihub.do_typing(input) ;
                         }
-                        else {
-                            PRINT_ERROR(name + " is invalid function name.") ;
+
+                        for(auto input : request_inputs) {
+                            // Process functions or external keys included in the argument.
+                            // e.g. <move_cursor_left>, {abcd}
+                            handle_system_call(input->execute(1)) ;
                         }
 
                         std::memset(data.get(), 0, pimpl->memsize_) ;
                     }
-                    return ;
                 }
             }
 
-            auto log = InputGate::get_instance().pop_log() ;
-
-            auto result = pimpl->lgr_.logging_state(log) ;
-
-            if(NTYPE_EMPTY(result)) {
-                return ;
-            }
-            if(NTYPE_HEAD_NUM(result)) {
-                opt::VCmdLine::print(opt::StaticMessage(
-                            std::to_string(pimpl->lgr_.get_head_num()))) ;
-                return ;
-            }
-
-            if(pimpl->lgr_.is_long_pressing()) {
-                if(pimpl->actfunc_) {
-                    handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
+            do {
+                CmdUnit::SPtr input ;
+                std::uint16_t count ;
+                if(!ihub.pull_input(input, count)) {
+                    continue ;
                 }
-                return ;
-            }
-
-            auto actid = pimpl->actfunc_ ? pimpl->actfunc_->id() : 0 ;
-            auto parser = finder.find_parser_with_transition(
-                    pimpl->lgr_.latest(), actid) ;
-            pimpl->actfunc_ = nullptr ;
-
-            if(parser) {
-                if(parser->is_accepted()) {
-                    if(pimpl->lgr_.has_head_num()) {
-                        opt::VCmdLine::reset() ;
-                    }
-
-                    pimpl->actfunc_ = parser->get_func() ;
-
-                    handle_system_call(pimpl->actfunc_->process(pimpl->lgr_)) ;
-
-                    pimpl->lgr_.accept() ;
-                    finder.reset_parser_states() ;
-                }
-                else if(parser->is_rejected_with_ready()) {
-                    // It did not accepted, but only matched subsets.
-                    // For example, bindings <ctrl> in <ctrl-f>
-                    finder.backward_parser_states(1) ;
-                    pimpl->lgr_.remove_from_back(1) ;
-                }
-            }
-            else {
-                if(pimpl->lgr_.has_head_num()) {
-                    opt::VCmdLine::refresh() ;
-                }
-                pimpl->lgr_.reject() ;
-                finder.reset_parser_states() ;
-            }
+                handle_system_call(input->execute(count)) ;
+            } while(!ihub.is_empty_queue()) ;
         }
 
         void VindEntry::handle_system_call(SystemCall systemcall) {
-            switch(systemcall) {
-                case SystemCall::NOTHING:
-                    return ;
-
-                case SystemCall::RECONSTRUCT:
-                    return reconstruct() ;
-
-                case SystemCall::TERMINATE:
-                    return pimpl->exit_() ;
+            if(util::enum_has_bits(systemcall, SystemCall::TERMINATE)) {
+                pimpl->exit_() ;
+            }
+            if(util::enum_has_bits(systemcall, SystemCall::RECONSTRUCT)) {
+                reconstruct() ;
             }
         }
     }

@@ -1,11 +1,10 @@
 #include "wordmotion.hpp"
 
-#include "movebase.hpp"
+#include "motionids.hpp"
 
 #include "bind/saferepeat.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "core/settable.hpp"
 #include "smartclipboard.hpp"
 #include "textutil.hpp"
@@ -268,141 +267,102 @@ namespace vind
     namespace bind
     {
         MoveFwdWord::MoveFwdWord()
-        : MoveBaseCreator("move_fwd_word")
-        {}
-        void MoveFwdWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_fwd_word")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveFwdWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             fwd_word(count, false) ;
-        }
-        void MoveFwdWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveFwdWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
 
         MoveFwdBigWord::MoveFwdBigWord()
-        : MoveBaseCreator("move_fwd_bigword")
-        {}
-        void MoveFwdBigWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_fwd_bigword")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveFwdBigWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             fwd_word(count, true) ;
-        }
-        void MoveFwdBigWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveFwdBigWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
 
         MoveBckWord::MoveBckWord()
-        : MoveBaseCreator("move_bck_word")
-        {}
-        void MoveBckWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_bck_word")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveBckWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bck_word(count, false) ;
-        }
-        void MoveBckWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveBckWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
 
         MoveBckBigWord::MoveBckBigWord()
-        : MoveBaseCreator("move_bck_bigword")
-        {}
-        void MoveBckBigWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_bck_bigword")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveBckBigWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bck_word(count, true) ;
-        }
-        void MoveBckBigWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveBckBigWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
 
         MoveEndWord::MoveEndWord()
-        : MoveBaseCreator("move_end_word")
-        {}
-        void MoveEndWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_end_word")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveEndWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             end_word(count, false) ;
-        }
-        void MoveEndWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveEndWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
 
         MoveEndBigWord::MoveEndBigWord()
-        : MoveBaseCreator("move_end_bigword")
-        {}
-        void MoveEndBigWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_end_bigword")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveEndBigWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             end_word(count, true) ;
-        }
-        void MoveEndBigWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveEndBigWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
 
         MoveBckEndWord::MoveBckEndWord()
-        : MoveBaseCreator("move_bckend_word")
-        {}
-        void MoveBckEndWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_bckend_word")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveBckEndWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bckend_word(count, false) ;
-        }
-        void MoveBckEndWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveBckEndWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
 
         MoveBckEndBigWord::MoveBckEndBigWord()
-        : MoveBaseCreator("move_bckend_bigword")
-        {}
-        void MoveBckEndBigWord::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_bckend_bigword")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveBckEndBigWord::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             bckend_word(count, true) ;
         }
-        void MoveBckEndBigWord::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MoveBckEndBigWord::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         // For visual mode.
-        struct MoveFwdWordSimple::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveFwdWordSimple::MoveFwdWordSimple()
-        : MoveBaseCreator("move_fwd_word_simple"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveFwdWordSimple::~MoveFwdWordSimple() noexcept = default ;
-        MoveFwdWordSimple::MoveFwdWordSimple(MoveFwdWordSimple&&) = default ;
-        MoveFwdWordSimple& MoveFwdWordSimple::operator=(MoveFwdWordSimple&&) = default ;
-
-        void MoveFwdWordSimple::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_fwd_word_simple")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveFwdWordSimple::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -416,34 +376,15 @@ namespace vind
                 }) ;
             }
         }
-        void MoveFwdWordSimple::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveFwdWordSimple::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
-
-        struct MoveBckWordSimple::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
 
         MoveBckWordSimple::MoveBckWordSimple()
-        : MoveBaseCreator("move_bck_word_simple"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveBckWordSimple::~MoveBckWordSimple() noexcept = default ;
-        MoveBckWordSimple::MoveBckWordSimple(MoveBckWordSimple&&) = default ;
-        MoveBckWordSimple& MoveBckWordSimple::operator=(MoveBckWordSimple&&) = default ;
-
-        void MoveBckWordSimple::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_bck_word_simple")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveBckWordSimple::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -456,18 +397,6 @@ namespace vind
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }
-        }
-        void MoveBckWordSimple::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveBckWordSimple::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

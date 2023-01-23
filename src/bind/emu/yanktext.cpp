@@ -5,7 +5,6 @@
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "textreg.hpp"
 #include "textutil.hpp"
 #include "util/def.hpp"
@@ -19,7 +18,9 @@ namespace vind
         YankHighlightText::YankHighlightText()
         : BindedFuncVoid("yank_highlight_text")
         {}
-        void YankHighlightText::sprocess() {
+        void YankHighlightText::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
@@ -32,23 +33,16 @@ namespace vind
             }
 
             igate.pushup(KEYCODE_LEFT) ; //unselect, but this is for the time being
-            ToEdiNormal::sprocess(true) ;
+            ToEdiNormal::sprocess(1, "", true) ;
         }
-        void YankHighlightText::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void YankHighlightText::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //YankLine (EdiNormal only)
         YankLine::YankLine()
         : BindedFuncVoid("yank_line")
         {}
-        void YankLine::sprocess(unsigned int count) {
+        void YankLine::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             igate.pushup(KEYCODE_HOME) ;
@@ -61,14 +55,6 @@ namespace vind
             igate.pushup(KEYCODE_LCTRL, KEYCODE_C) ;
             igate.pushup(KEYCODE_HOME) ;
             set_register_type(RegType::Lines) ;
-        }
-        void YankLine::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void YankLine::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

@@ -1,13 +1,12 @@
 #include "bindedfunc.hpp"
 
 #include <array>
+#include <cstdint>
 #include <functional>
 
-#include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/string.hpp"
 
 
@@ -85,6 +84,10 @@ namespace vind
             return pimpl->id_ ;
         }
 
+        bool BindedFunc::is_mode_modifiable() const noexcept {
+            return false ;
+        }
+
         void BindedFunc::error_process(const std::exception& e) {
             PRINT_ERROR(name() + " failed. " + e.what()) ;
             try {
@@ -97,39 +100,12 @@ namespace vind
             }
         }
 
-        SystemCall BindedFunc::process() {
-            auto result = SystemCall::NOTHING ;
+        SystemCall BindedFunc::process(
+                std::uint16_t count, const std::string& args) {
+            auto result = SystemCall::SUCCEEDED ;
 
             try {
-                result = do_process() ;
-                pimpl->release_fake_press() ;
-            }
-            catch(const std::runtime_error& e) {
-                error_process(e) ;
-            }
-
-            return result ;
-        }
-
-        SystemCall BindedFunc::process(core::NTypeLogger& parent_lgr) {
-            auto result = SystemCall::NOTHING ;
-
-            try {
-                result = do_process(parent_lgr) ;
-                pimpl->release_fake_press() ;
-            }
-            catch(const std::runtime_error& e) {
-                error_process(e) ;
-            }
-
-            return result ;
-        }
-
-        SystemCall BindedFunc::process(const core::CharLogger& parent_lgr) {
-            auto result = SystemCall::NOTHING ;
-
-            try {
-                result = do_process(parent_lgr) ;
+                result = do_process(count, args) ;
                 pimpl->release_fake_press() ;
             }
             catch(const std::runtime_error& e) {
@@ -157,14 +133,9 @@ namespace vind
             return pimpl->id_ != rhs.pimpl->id_ ;
         }
 
-        SystemCall BindedFunc::do_process() {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall BindedFunc::do_process(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall BindedFunc::do_process(const core::CharLogger&) {
-            return SystemCall::NOTHING ;
+        SystemCall BindedFunc::do_process(
+                std::uint16_t UNUSED(count), const std::string& UNUSED(args)) {
+            return SystemCall::SUCCEEDED ;
         }
     }
 }

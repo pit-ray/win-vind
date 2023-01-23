@@ -15,9 +15,8 @@ namespace vind
         public:
             explicit SwitchWindow() ;
 
-            void sprocess() ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
+            void sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             virtual ~SwitchWindow() noexcept ;
             SwitchWindow(SwitchWindow&&) ;
@@ -25,7 +24,9 @@ namespace vind
             SwitchWindow(const SwitchWindow&)            = delete ;
             SwitchWindow& operator=(const SwitchWindow&) = delete ;
 
-            void reconstruct() override ;
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

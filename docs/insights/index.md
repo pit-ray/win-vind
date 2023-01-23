@@ -7,7 +7,7 @@ disable_anchors: true
 ---  
 
 ## Download Count  
-
+<div>Total: <span id="total">0</span></div>
 <canvas id="dl_count"></canvas>  
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>  
@@ -21,6 +21,7 @@ request.open('GET', 'https://api.github.com/repos/pit-ray/win-vind/releases');
 request.onreadystatechange = function() {
   var names = [];
   var counts = [];
+  var total = 0;
 
   if(request.readyState == 4) {
     if (request.status == 200) {
@@ -45,12 +46,16 @@ request.onreadystatechange = function() {
         else {
           counts[idx] += cnt;
         }
+        total += cnt;
       }
     }
   }
+  
+  const total_ctx = document.getElementById('total');
+  total_ctx.innerText = total;
 
-  const ctx = document.getElementById('dl_count');
-  const chart = new Chart(ctx, {
+  const chart_ctx = document.getElementById('dl_count');
+  const chart = new Chart(chart_ctx, {
     type: 'line',
     data: {
       labels: names.reverse(),

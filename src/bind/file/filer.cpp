@@ -5,9 +5,7 @@
 #include <memory>
 
 #include "bind/mode/change_mode.hpp"
-#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 
@@ -19,36 +17,20 @@ namespace vind
         Save::Save()
         : BindedFuncVoid("save")
         {}
-        void Save::sprocess() {
-            core::InputGate::get_instance().pushup(
-                    KEYCODE_LCTRL, KEYCODE_S) ;
+        void Save::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_S) ;
         }
-        void Save::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void Save::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //Open
         Open::Open()
         : BindedFuncVoid("open")
         {}
-        void Open::sprocess() {
-            core::InputGate::get_instance().pushup(
-                    KEYCODE_LCTRL, KEYCODE_O) ;
-        }
-        void Open::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void Open::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-
+        void Open::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputGate::get_instance().pushup(KEYCODE_LCTRL, KEYCODE_O) ;
         }
     }
 }

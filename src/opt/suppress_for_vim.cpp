@@ -55,7 +55,7 @@ namespace vind
             }
             else {
                 if(core::get_global_mode() == core::Mode::RESIDENT)
-                    bind::ToInsert::sprocess(true) ;
+                    bind::ToInsert::sprocess(1, "", true) ;
             }
         }
     }

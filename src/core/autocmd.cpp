@@ -1,7 +1,5 @@
 #include "autocmd.hpp"
 #include "bind/bindedfunc.hpp"
-#include "lgrparser.hpp"
-#include "maptable.hpp"
 
 #include <array>
 #include <memory>

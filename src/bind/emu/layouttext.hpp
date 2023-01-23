@@ -8,23 +8,10 @@ namespace vind
 {
     namespace bind
     {
-        class JoinNextLine : public ChangeBaseCreator<JoinNextLine> {
-        private:
-            struct Impl ;
-            std::unique_ptr<Impl> pimpl ;
-
-        public:
-            void sprocess(unsigned int count=1) ;
-            void sprocess(core::NTypeLogger& parent_lgr) ;
-            void sprocess(const core::CharLogger& parent_lgr) ;
-
+        struct JoinNextLine : public ChangeBaseCreator<JoinNextLine> {
             explicit JoinNextLine() ;
-            virtual ~JoinNextLine() noexcept ;
-
-            JoinNextLine(JoinNextLine&&) ;
-            JoinNextLine& operator=(JoinNextLine&&) ;
-            JoinNextLine(const JoinNextLine&)             = delete ;
-            JoinNextLine& operator=(const JoinNextLine&)  = delete ;
+            static void sprocess(
+                std::uint16_t count, const std::string& args) ;
         } ;
     }
 }

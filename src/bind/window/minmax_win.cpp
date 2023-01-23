@@ -1,9 +1,7 @@
 #include "minmax_win.hpp"
 
 #include "bind/saferepeat.hpp"
-#include "core/charlogger.hpp"
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 #include "util/rect.hpp"
 #include "util/winwrap.hpp"
@@ -17,27 +15,22 @@ namespace vind
         MinimizeCurrentWindow::MinimizeCurrentWindow()
         : BindedFuncVoid("minimize_current_window")
         {}
-        void MinimizeCurrentWindow::sprocess(unsigned int count) {
+        void MinimizeCurrentWindow::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             safe_for(count, [] {
                 core::InputGate::get_instance().pushup(
                         KEYCODE_LWIN, KEYCODE_DOWN) ;
             }) ;
         }
-        void MinimizeCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MinimizeCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
-
 
         //MaximizeCurrentWindow
         MaximizeCurrentWindow::MaximizeCurrentWindow()
         : BindedFuncVoid("maximize_current_window")
         {}
-        void MaximizeCurrentWindow::sprocess(unsigned int count) {
+        void MaximizeCurrentWindow::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(count == 1) {
@@ -61,14 +54,6 @@ namespace vind
                     igate.pushup(KEYCODE_LWIN, KEYCODE_UP) ;
                 }) ;
             }
-        }
-        void MaximizeCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-        }
-        void MaximizeCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
         }
     }
 }

@@ -16,16 +16,17 @@ namespace vind
             explicit ToInstantGUINormal() ;
             virtual ~ToInstantGUINormal() noexcept ;
 
-            SystemCall sprocess() ;
-            SystemCall sprocess(core::NTypeLogger& parent_lgr) ;
-            SystemCall sprocess(const core::CharLogger& parent_lgr) ;
-
-            void reconstruct() override ;
+            SystemCall sprocess(
+                std::uint16_t count, const std::string& args) ;
 
             ToInstantGUINormal(ToInstantGUINormal&&) ;
             ToInstantGUINormal& operator=(ToInstantGUINormal&&) ;
             ToInstantGUINormal(const ToInstantGUINormal&)            = delete ;
             ToInstantGUINormal& operator=(const ToInstantGUINormal&) = delete ;
+
+            bool is_mode_modifiable() const noexcept override {
+                return true ;
+            }
         } ;
     }
 }

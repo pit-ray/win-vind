@@ -61,7 +61,7 @@
 #include "window/winresizer.hpp"
 
 #include "syscmd/command.hpp"
-#include "syscmd/map.hpp"
+#include "syscmd/mapvar.hpp"
 #include "syscmd/set.hpp"
 #include "syscmd/source.hpp"
 
@@ -109,6 +109,7 @@ namespace vind
                 ExchangeWindowWithNearest::create(),
                 Execute::create(),
                 ExitConfigGUI::create(),
+                Exit::create(),
                 ForwardUINavigation::create(),
                 GotoNextPage::create(),
                 GotoPrevPage::create(),
@@ -226,35 +227,86 @@ namespace vind
                 YankLine::create(),
                 YankWithMotion::create(),
 
-                SyscmdSet::create(),
-                SyscmdMap::create(),
-                SyscmdNoremap::create(),
-                SyscmdUnmap::create(),
-                SyscmdMapclear::create(),
-                SyscmdCommand::create(),
-                SyscmdDelcommand::create(),
-                SyscmdComclear::create(),
-                SyscmdSource::create()
+                Set::create(),
+                Command::create(),
+                Delcommand::create(),
+                Comclear::create(),
+                Source::create(),
+
+                Map::create(),
+                Noremap::create(),
+                Unmap::create(),
+                Mapclear::create(),
+
+                GMap::create(),
+                GNoremap::create(),
+                GUnmap::create(),
+                GMapclear::create(),
+
+                EMap::create(),
+                ENoremap::create(),
+                EUnmap::create(),
+                EMapclear::create(),
+
+                NMap::create(),
+                NNoremap::create(),
+                NUnmap::create(),
+                NMapclear::create(),
+
+                VMap::create(),
+                VNoremap::create(),
+                VUnmap::create(),
+                VMapclear::create(),
+
+                GNMap::create(),
+                GNNoremap::create(),
+                GNUnmap::create(),
+                GNMapclear::create(),
+
+                GVMap::create(),
+                GVNoremap::create(),
+                GVUnmap::create(),
+                GVMapclear::create(),
+
+                ENMap::create(),
+                ENNoremap::create(),
+                ENUnmap::create(),
+                ENMapclear::create(),
+
+                EVMap::create(),
+                EVNoremap::create(),
+                EVUnmap::create(),
+                EVMapclear::create(),
+
+                IMap::create(),
+                INoremap::create(),
+                IUnmap::create(),
+                IMapclear::create(),
+
+                RMap::create(),
+                RNoremap::create(),
+                RUnmap::create(),
+                RMapclear::create(),
+
+                CMap::create(),
+                CNoremap::create(),
+                CUnmap::create(),
+                CMapclear::create(),
             } ;
             return tmp ;
         }
 
-        BindedFunc::SPtr ref_global_funcs_bynames(const std::string& name) {
+        BindedFunc::SPtr search_func(std::size_t id) {
             for(auto& func : all_global_binded_funcs()) {
-                if(func->id() == BindedFunc::name_to_id(util::A2a(name))) {
+                if(func->id() == id) {
                     return func ;
                 }
             }
             return nullptr ;
         }
 
-        BindedFunc::SPtr ref_global_funcs_bynames(std::string&& name) {
-            for(auto& func : all_global_binded_funcs()) {
-                if(func->id() == BindedFunc::name_to_id(util::A2a(name))) {
-                    return func ;
-                }
-            }
-            return nullptr ;
+        BindedFunc::SPtr search_func(const std::string& name) {
+            return search_func(BindedFunc::name_to_id(util::A2a(name))) ;
         }
     }
 }

@@ -66,6 +66,10 @@ namespace vind
                 bool wait_until_finish=false) {
             STARTUPINFOW si = {} ;
             si.cb = sizeof(si) ;
+            si.dwFlags = STARTF_USEPOSITION | STARTF_USESHOWWINDOW ;
+            si.dwX = 0 ;
+            si.dwY = 0 ;
+            si.wShowWindow = SW_RESTORE ;
 
             PROCESS_INFORMATION pi = {} ;
 

@@ -1,9 +1,8 @@
 #include "command.hpp"
 
-#include "core/charlogger.hpp"
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
-#include "core/maptable.hpp"
+#include "core/inputhub.hpp"
 #include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -13,16 +12,19 @@ namespace vind
     namespace bind
     {
         // command
-        SyscmdCommand::SyscmdCommand()
-        : BindedFuncFlex("system_command_command")
+        Command::Command()
+        : BindedFuncFlex("command")
         {}
-        SystemCall SyscmdCommand::sprocess(const std::string& args) {
-            if(args.empty()) {
+        SystemCall Command::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            if(pargs.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
-            auto [arg1, arg2] = core::extract_double_args(args) ;
+            auto [arg1, arg2] = core::extract_double_args(pargs) ;
             if(arg1.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
             }
@@ -30,90 +32,52 @@ namespace vind
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support reference of command yet")) ;
             }
             else {
-                auto& maptable = core::MapTable::get_instance() ;
-                maptable.add_noremap(arg1, arg2, core::Mode::COMMAND) ;
+                auto& ihub = core::InputHub::get_instance() ;
+                // No argument version
+                ihub.add_noremap(arg1, arg2, core::Mode::COMMAND) ;
+
+                // To accept arguments
+                ihub.add_noremap(arg1 + " <any>", arg2, core::Mode::COMMAND) ;
             }
 
-            return SystemCall::NOTHING ;
+            return SystemCall::SUCCEEDED ;
         }
-        SystemCall SyscmdCommand::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdCommand::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                throw RUNTIME_EXCEPT("Empty command") ;
-            }
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            sprocess(args) ;
-
-            return SystemCall::RECONSTRUCT ;
-        }
-
 
         // delcommand
-        SyscmdDelcommand::SyscmdDelcommand()
-        : BindedFuncFlex("system_command_delcommand")
+        Delcommand::Delcommand()
+        : BindedFuncFlex("delcommand")
         {}
-        SystemCall SyscmdDelcommand::sprocess(const std::string& args) {
-            if(args.empty()) {
+        SystemCall Delcommand::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            if(pargs.empty()) {
                 // does not have argument is empty
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return SystemCall::NOTHING ;
+                return SystemCall::SUCCEEDED ;
             }
 
-            auto arg = core::extract_single_arg(args) ;
+            auto arg = core::extract_single_arg(pargs) ;
             if(arg.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
             }
             else {
-                auto& maptable = core::MapTable::get_instance() ;
-                maptable.remove(arg, core::Mode::COMMAND) ;
+                auto& ihub = core::InputHub::get_instance() ;
+                ihub.remove_mapping(arg, core::Mode::COMMAND) ;
             }
 
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdDelcommand::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdDelcommand::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                throw RUNTIME_EXCEPT("Empty command") ;
-            }
-
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            sprocess(args) ;
-
-            return SystemCall::RECONSTRUCT ;
+            return SystemCall::SUCCEEDED ;
         }
 
         // comclear
-        SyscmdComclear::SyscmdComclear()
-        : BindedFuncFlex("system_command_comclear")
+        Comclear::Comclear()
+        : BindedFuncFlex("comclear")
         {}
-        SystemCall SyscmdComclear::sprocess() {
-            auto& maptable = core::MapTable::get_instance() ;
-            maptable.clear(core::Mode::COMMAND) ;
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdComclear::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdComclear::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) {
-                throw RUNTIME_EXCEPT("Empty command") ;
-            }
-
-            auto [cmd, args] = core::divide_cmd_and_args(str) ;
-            if(!args.empty()) {
-                opt::VCmdLine::print(opt::ErrorMessage("E: Invalid argument")) ;
-                return SystemCall::NOTHING ;
-            }
-
-            sprocess() ;
-            return SystemCall::RECONSTRUCT ;
+        SystemCall Comclear::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputHub::get_instance().clear_mapping(core::Mode::COMMAND) ;
+            return SystemCall::SUCCEEDED ;
         }
     }
 }

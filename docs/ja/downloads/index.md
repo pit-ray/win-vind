@@ -11,6 +11,7 @@ version: 4.3.3
 disable_anchors: true
 ---
 
+**最新のバージョン**: {{ site.project.version }}
 
 ### Chocolatey
 win-vindは[Chocolatey](https://chocolatey.org/)によるインストールをサポートしています。Chocolateyでwin-vindをインストールするには、次のコマンドをコマンドラインまたはPowerShellから実行してください。

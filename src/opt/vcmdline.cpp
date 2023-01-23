@@ -328,7 +328,7 @@ namespace vind
             else {
                 pimpl->proj_method_ = ProjectionMethod::FIXED ;
                 pimpl->coords_update_interval_ = 30s ;
-                pimpl->fixed_monitor_idx_ = util::extract_num(mode) ;
+                pimpl->fixed_monitor_idx_ = util::extract_num<std::size_t>(mode) ;
             }
 
             auto rough_key = settable.get("cmd_roughpos").get<std::string>() ;

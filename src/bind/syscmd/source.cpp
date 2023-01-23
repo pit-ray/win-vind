@@ -1,11 +1,9 @@
 #include "source.hpp"
 
 #include "bind/bindedfunc.hpp"
-#include "core/charlogger.hpp"
 #include "core/cmdparser.hpp"
-#include "core/entry.hpp"
 #include "core/errlogger.hpp"
-#include "core/maptable.hpp"
+#include "core/inputhub.hpp"
 #include "core/mode.hpp"
 #include "core/path.hpp"
 #include "core/rcparser.hpp"
@@ -13,6 +11,7 @@
 #include "opt/vcmdline.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/string.hpp"
 #include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
 
@@ -26,12 +25,17 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <system_error>
+#include <utility>
+#include <vector>
 
 #include <shlwapi.h>
 
 
 namespace
 {
+    using namespace vind ;
+
     template <typename Str>
     auto load_remote_vindrc(Str&& args) {
         using namespace vind ;
@@ -79,87 +83,115 @@ namespace
         return target_repo_path / ".vindrc" ;
     }
 
+    std::string to_compatible(std::string text) {
+        std::vector<std::pair<std::string, std::string>> compatible {
+            {"system_command_comclear", "comclear"},
+            {"system_command_command", "command"},
+            {"system_command_delcommand", "delcommand"},
+            {"system_command_map", "map"},
+            {"system_command_mapclear", "mapclear"},
+            {"system_command_noremap", "noremap"},
+            {"system_command_set", "set"},
+            {"system_command_source", "source"},
+            {"system_command_unmap", "unmap"},
+            {"syscmd_comclear", "comclear"},
+            {"syscmd_command", "command"},
+            {"syscmd_delcommand", "delcommand"},
+            {"syscmd_map", "map"},
+            {"syscmd_mapclear", "mapclear"},
+            {"syscmd_noremap", "noremap"},
+            {"syscmd_set", "set"},
+            {"syscmd_source", "source"},
+            {"syscmd_unmap", "unmap"},
+            {"window_accel", "window_velocity"},
+            {"window_tweight", "window_velocity"},
+            {"window_maxv", "window_velocity"},
+            {"cursor_tweight", "cursor_resolution"},
+        } ;
+        for(auto& [from, to] : compatible) {
+            text = util::replace_all(text, from, to) ;
+        }
+        return text ;
+    }
 
-    template <typename Str>
-    void do_runcommand(
-            vind::core::RunCommandsIndex rcindex,
-            Str&& args) {
+    std::error_code do_runcommand(const std::string& cmd, const std::string& args) {
         using namespace vind ;
         using namespace vind::bind ;
         using core::RunCommandsIndex ;
 
+        auto rcindex = core::parse_run_command(cmd) ;
         switch(rcindex) {
             case RunCommandsIndex::SET: {
-                SyscmdSet::sprocess(std::forward<Str>(args)) ;
-                return ;
+                Set::sprocess(1, cmd + " " + args) ;
+                return std::error_code() ;
             }
             case RunCommandsIndex::COMMAND: {
-                SyscmdCommand::sprocess(std::forward<Str>(args)) ;
-                return ;
+                Command::sprocess(1, cmd + " " + args) ;
+                return std::error_code() ;
             }
             case RunCommandsIndex::DELCOMMAND: {
-                SyscmdDelcommand::sprocess(std::forward<Str>(args)) ;
-                return ;
+                Delcommand::sprocess(1, cmd + " " + args) ;
+                return std::error_code() ;
             }
             case RunCommandsIndex::COMCLEAR: {
                 if(!args.empty()) {
-                    throw std::invalid_argument("comclear") ;
+                    return std::make_error_code(std::errc::invalid_argument) ;
                 }
-                SyscmdComclear::sprocess() ;
-                return ;
+                Comclear::sprocess(1, "") ;
+                return std::error_code() ;
             }
             case RunCommandsIndex::SOURCE: {
                 if(args.empty()) {
-                    throw std::invalid_argument("source") ;
+                    return std::make_error_code(std::errc::invalid_argument) ;
                 }
 
-                auto args_path = std::filesystem::u8path(
-                        core::replace_path_magic(args)) ;
+                auto args_path = \
+                     std::filesystem::u8path(core::replace_path_magic(args)) ;
 
                 if(std::filesystem::exists(args_path)) {
                     if(std::filesystem::equivalent(core::RC(), args_path)) {
-                        throw std::invalid_argument(
-                                "Recursive references to the same .vindrc are not allowed.") ;
+                        return std::make_error_code(std::errc::text_file_busy) ;
                     }
                 }
 
                 if(args_path.filename().u8string() != ".vindrc") {
-                    args_path = load_remote_vindrc(std::forward<Str>(args)) ;
+                    args_path = load_remote_vindrc(args) ;
                 }
 
                 if(!args_path.empty()) {
-                    SyscmdSource::sprocess(args_path, false) ; //overload .vindrc
+                    Source::sprocess(1, cmd + " " + args_path.u8string()) ; //overload .vindrc
                 }
-                return ;
+                return std::error_code() ;
             }
-
             default: {
                 break ;
             }
         }
 
         using core::Mode ;
-        auto mode = static_cast<Mode>(
-                util::enum_and(rcindex, RunCommandsIndex::MASK_MODE)) ;
-
         if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAP)) {
-            SyscmdMap::sprocess(mode, std::forward<Str>(args)) ;
+            auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
+            do_map(cmd + " " + args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_NOREMAP)) {
-            SyscmdNoremap::sprocess(mode, std::forward<Str>(args)) ;
+            auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "n") ;
+            do_noremap(cmd + " " + args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_UNMAP)) {
-            SyscmdUnmap::sprocess(mode, std::forward<Str>(args)) ;
+            auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "u") ;
+            do_unmap(cmd + " " + args, prefix) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {
-                throw std::invalid_argument("mapclear") ;
+                return std::make_error_code(std::errc::invalid_argument) ;
             }
-            SyscmdMapclear::sprocess(mode) ;
+            auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
+            do_mapclear(prefix) ;
         }
         else {
-            throw std::domain_error(std::to_string(static_cast<int>(rcindex))) ;
+            return std::make_error_code(std::errc::argument_out_of_domain) ;
         }
+        return std::error_code() ;
     }
 }
 
@@ -168,8 +200,8 @@ namespace vind
 {
     namespace bind
     {
-        SyscmdSource::SyscmdSource()
-        : BindedFuncFlex("system_command_source")
+        Source::Source()
+        : BindedFuncFlex("source")
         {
             std::ifstream ifs(core::RC()) ;
             if(!ifs.is_open()) {
@@ -177,24 +209,24 @@ namespace vind
             }
         }
 
-        SystemCall SyscmdSource::sprocess(
-                const std::filesystem::path& path,
-                bool start_from_default) {
-
-            auto return_to_default = [] {
-                core::SetTable::get_instance().reset_todef() ;
-                core::MapTable::get_instance().reset_todef() ;
-            } ;
-
-            if(start_from_default) {
-                return_to_default() ;
+        SystemCall Source::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& args) {
+            auto [_, pargs] = core::divide_cmd_and_args(args) ;
+            std::filesystem::path path{} ;
+            if(pargs.empty()) {
+                path = core::RC() ;
+            }
+            else {
+                path = core::replace_path_magic(pargs) ;
             }
 
             std::ifstream ifs(path, std::ios::in) ;
             if(!ifs.is_open()) {
-                opt::VCmdLine::print(opt::ErrorMessage("Could not open \"" + path.u8string() + "\".\n")) ;
-
-                return SystemCall::NOTHING ;
+                std::stringstream ss ;
+                ss << "Could not open \"" << path.u8string() << "\".\n" ;
+                opt::VCmdLine::print(opt::ErrorMessage(ss.str())) ;
+                return SystemCall::SUCCEEDED ;
             }
 
             std::string aline ;
@@ -202,97 +234,47 @@ namespace vind
             while(getline(ifs, aline)) {
                 lnum ++ ;
 
-                try {
-                    core::remove_dbquote_comment(aline) ;
-                    if(aline.empty()) {
-                        continue ;
+                core::remove_dbquote_comment(aline) ;
+                if(aline.empty()) {
+                    continue ;
+                }
+
+                auto [cmd, line_args] = core::divide_cmd_and_args(aline) ;
+                if(cmd.empty()) {
+                    continue ;
+                }
+
+                line_args = to_compatible(line_args) ;
+
+                if(auto err = do_runcommand(cmd, line_args)) {
+                    auto ltag = "L:" + std::to_string(lnum) ;
+                    std::stringstream cmdline_ss ;
+                    std::stringstream log_ss ;
+
+                    cmdline_ss << "E: " ;
+                    if(err.value() == static_cast<int>(std::errc::invalid_argument)) {
+                        cmdline_ss << "Invalid Argument" ;
+                        log_ss << cmd << " is recieved invalid arguments." ;
                     }
-
-                    auto [cmd, args] = core::divide_cmd_and_args(aline) ;
-                    if(cmd.empty()) {
-                        continue ;
+                    else if(err.value() == static_cast<int>(std::errc::argument_out_of_domain)) {
+                        cmdline_ss << "Not command" ;
+                        log_ss << cmd << " is not supported." ;
                     }
+                    else {
+                        cmdline_ss << err ;
+                        log_ss << cmd << ": " << err ;
+                    }
+                    cmdline_ss << " (" << ltag << ")" ;
+                    opt::VCmdLine::print(opt::ErrorMessage(cmdline_ss.str())) ;
 
-                    auto rcindex = core::parse_run_command(cmd) ;
+                    log_ss << " (" << path.u8string() << ", " << ltag << ") " ;
+                    PRINT_ERROR(log_ss.str()) ;
 
-                    do_runcommand(rcindex, args) ;
-                }
-                catch(const std::domain_error& e) {
-                    auto ltag = "L:" + std::to_string(lnum) ;
-                    opt::VCmdLine::print(opt::ErrorMessage("E: Not command (" + ltag + ")")) ;
-
-                    std::stringstream ss ;
-                    ss << "RunCommandsIndex: " << e.what() << " is not supported." ;
-                    ss << " (" << path.u8string() << ", " << ltag << ") " ;
-                    PRINT_ERROR(ss.str()) ;
-
-                    return_to_default() ;
-                    break ;
-                }
-                catch(const std::invalid_argument& e) {
-                    auto ltag = "L:" + std::to_string(lnum) ;
-                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Argument (" + ltag + ")")) ;
-
-                    std::stringstream ss ;
-                    ss << e.what() << " is recieved invalid arguments." ;
-                    ss << " (" << path.u8string() << ", " << ltag << ") " ;
-                    PRINT_ERROR(ss.str()) ;
-
-                    return_to_default() ;
-                    break ;
-                }
-                catch(const std::logic_error& e) {
-                    auto ltag = "L:" + std::to_string(lnum) ;
-                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
-
-                    std::stringstream ss ;
-                    ss << e.what() ;
-                    ss << " (" + path.u8string() + ", " + ltag + ")" ;
-                    PRINT_ERROR(ss.str()) ;
-
-                    return_to_default() ;
-                    break ;
-                }
-                catch(const std::runtime_error& e) {
-                    auto ltag = "L:" + std::to_string(lnum) ;
-                    opt::VCmdLine::print(opt::ErrorMessage("E: Invalid Syntax (" + ltag + ")")) ;
-
-                    std::stringstream ss ;
-                    ss << e.what() ;
-                    ss << " (" + path.u8string() + ", " + ltag + ")" ;
-                    PRINT_ERROR(ss.str()) ;
-
-                    return_to_default() ;
+                    core::InputHub::get_instance().clear_mapping() ;
                     break ;
                 }
             }
-
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdSource::sprocess(core::NTypeLogger&) {
-            return SystemCall::NOTHING ;
-        }
-        SystemCall SyscmdSource::sprocess(const core::CharLogger& parent_lgr) {
-            try {
-                auto str = parent_lgr.to_str() ;
-                if(str.empty()) {
-                    throw RUNTIME_EXCEPT("Empty command") ;
-                }
-                auto [cmd, args] = core::divide_cmd_and_args(str) ;
-                if(args.empty()) {
-                    sprocess(core::RC(), true) ;
-                }
-                else {
-                    sprocess(core::replace_path_magic(args), true) ;
-                }
-
-                return SystemCall::RECONSTRUCT ;
-            }
-            // If received syntax error as std::logic_error,
-            // convert to runtime_error not to terminate application.
-            catch(const std::exception& e) {
-                throw std::runtime_error(e.what()) ;
-            }
+            return SystemCall::RECONSTRUCT ;
         }
     }
 }

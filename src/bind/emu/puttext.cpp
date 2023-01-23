@@ -3,7 +3,6 @@
 #include "bind/saferepeat.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
-#include "core/ntypelogger.hpp"
 #include "deltext.hpp"
 #include "smartclipboard.hpp"
 #include "textreg.hpp"
@@ -44,20 +43,12 @@ namespace vind
     namespace bind
     {
         //PutAfter (EdiNormal or EdiVisual)
-        struct PutAfter::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         PutAfter::PutAfter()
-        : ChangeBaseCreator("put_after"),
-          pimpl(std::make_unique<Impl>())
+        : ChangeBaseCreator("put_after")
         {}
-
-        PutAfter::~PutAfter() noexcept            = default ;
-        PutAfter::PutAfter(PutAfter&&)            = default ;
-        PutAfter& PutAfter::operator=(PutAfter&&) = default ;
-
-        void PutAfter::sprocess(unsigned int count) {
+        void PutAfter::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             if(!remove_crlf_in_clipboard()) {
                 return ;
             }
@@ -78,35 +69,14 @@ namespace vind
                 igate.pushup(KEYCODE_HOME) ;
             }
         }
-        void PutAfter::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void PutAfter::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //PutBefore
-        struct PutBefore::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         PutBefore::PutBefore()
-        : ChangeBaseCreator("put_before"),
-          pimpl(std::make_unique<Impl>())
+        : ChangeBaseCreator("put_before")
         {}
-
-        PutBefore::~PutBefore() noexcept                   = default ;
-        PutBefore::PutBefore(PutBefore&&)            = default ;
-        PutBefore& PutBefore::operator=(PutBefore&&) = default ;
-
-        void PutBefore::sprocess(unsigned int count) {
+        void PutBefore::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             if(!remove_crlf_in_clipboard()) {
                 return ;
             }
@@ -127,18 +97,6 @@ namespace vind
                 }) ;
                 igate.pushup(KEYCODE_HOME) ;
             }
-        }
-        void PutBefore::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void PutBefore::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

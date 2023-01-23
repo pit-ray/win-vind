@@ -1,7 +1,6 @@
 #include "close_win.hpp"
 
 #include "core/inputgate.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 namespace vind
@@ -12,17 +11,10 @@ namespace vind
         CloseCurrentWindow::CloseCurrentWindow()
         : BindedFuncVoid("close_current_window")
         {}
-        void CloseCurrentWindow::sprocess() {
-            core::InputGate::get_instance().pushup(
-                    KEYCODE_LALT, KEYCODE_F4) ;
-        }
-        void CloseCurrentWindow::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void CloseCurrentWindow::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
+        void CloseCurrentWindow::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            core::InputGate::get_instance().pushup(KEYCODE_LALT, KEYCODE_F4) ;
         }
     }
 }

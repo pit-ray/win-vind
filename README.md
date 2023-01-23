@@ -19,7 +19,7 @@
   </p>
 </p>  
 
-
+## v5.0 beta testing is underway. ([site](https://github.com/pit-ray/win-vind/discussions/129))
 
 ## Description
 **win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.
@@ -180,6 +180,8 @@ If you want to build with MinGW or create an installer, see [here](https://githu
 
 ## Contribute
 If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).
+
+The project is managed with <a href="https://github.com/users/pit-ray/projects/2">GitHub Projects</a>. 
 
 ## Related Pages
 - <a href="https://pit-ray.hatenablog.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  

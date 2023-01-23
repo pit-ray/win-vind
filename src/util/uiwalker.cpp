@@ -3,11 +3,12 @@
 #include "core/errlogger.hpp"
 
 #include "container.hpp"
+#include "cuia.hpp"
+#include "debug.hpp"
 #include "def.hpp"
 #include "rect.hpp"
 #include "screen_metrics.hpp"
-#include "util/cuia.hpp"
-#include "util/uia.hpp"
+#include "uia.hpp"
 #include "winwrap.hpp"
 
 #include <initializer_list>
@@ -171,7 +172,6 @@ namespace vind
         void UIWalker::scan(
                 HWND hwnd,
                 std::vector<SmartElement>& elements) {
-
             auto root = CUIA::get_instance().get_root_element(hwnd) ;
             root = update_element(root, pimpl->cache_request_) ;
             scan_element_subtree(root, elements) ;

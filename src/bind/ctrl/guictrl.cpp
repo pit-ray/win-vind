@@ -2,8 +2,6 @@
 
 #include <windows.h>
 
-#include "bind/mouse/jump_actwin.hpp"
-#include "core/ntypelogger.hpp"
 #include "util/def.hpp"
 
 
@@ -11,40 +9,33 @@ namespace vind
 {
     namespace bind
     {
-        //ShowConfigGUI
         ShowConfigGUI::ShowConfigGUI()
         : BindedFuncVoid("show_config_gui")
         {}
-        void ShowConfigGUI::sprocess() {
+        void ShowConfigGUI::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             /*
              * NOT IMPLEMENTED
              */
         }
-        void ShowConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
-            if(parent_lgr.is_long_pressing()) {
-                sprocess() ;
-            }
-        }
-        void ShowConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess() ;
-        }
 
-
-        //ExitConfigGUI
         ExitConfigGUI::ExitConfigGUI()
         : BindedFuncFlex("exit_config_gui")
         {}
-        SystemCall ExitConfigGUI::sprocess() {
+        SystemCall ExitConfigGUI::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
             return SystemCall::TERMINATE ;
         }
-        SystemCall ExitConfigGUI::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                return sprocess() ;
-            }
-            return SystemCall::NOTHING ;
-        }
-        SystemCall ExitConfigGUI::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            return sprocess() ;
+
+        Exit::Exit()
+        : BindedFuncFlex("exit")
+        {}
+        SystemCall Exit::sprocess(
+                std::uint16_t UNUSED(count),
+                const std::string& UNUSED(args)) {
+            return SystemCall::TERMINATE ;
         }
     }
 }

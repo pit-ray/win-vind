@@ -30,7 +30,7 @@ namespace vind
 
         InstallType get_install_type() {
             static const auto type = [] {
-                std::ifstream ifs{DEFAULT_CONFIG_PATH() / "instype"} ;
+                std::ifstream ifs{RESOURCE_ROOT_PATH() / ".instype"} ;
                 if(!ifs.is_open()) {
                     return InstallType::PORTABLE ;
                 }
@@ -111,20 +111,11 @@ namespace vind
             return path ;
         }
 
-        const std::filesystem::path& RESOUECE_ROOT_PATH() {
+        const std::filesystem::path& RESOURCE_ROOT_PATH() {
 #if defined(DEBUG)
-            static const auto path = MODULE_ROOT_PATH() / "res" ;
+            static const auto path = MODULE_ROOT_PATH() / "res" / "resources" ;
 #else
-            static const auto path = MODULE_ROOT_PATH() ;
-#endif
-            return path ;
-        }
-
-        const std::filesystem::path& DEFAULT_CONFIG_PATH() {
-#if defined(DEBUG)
-            static const auto path = MODULE_ROOT_PATH() / "res" / "default_config" ;
-#else
-            static const auto path = MODULE_ROOT_PATH() / "default_config" ;
+            static const auto path = MODULE_ROOT_PATH() / "resources" ;
 #endif
             return path ;
         }

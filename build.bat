@@ -95,18 +95,17 @@
     @goto exit
 
 :test
+    cd tests
     @if %compiler% == -msvc (
-        cmake -B tests/build_msvc -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" tests
-        cmake --build tests/build_msvc --config Debug
-        cd tests/build_msvc
+        cmake -B build_msvc -G "Visual Studio 16 2019" unit
+        cmake --build build_msvc
+        ctest -C Debug --test-dir build_msvc --output-on-failure
     ) else (
-        cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
-        cmake --build tests/build --config Debug
-        cd tests/build
+        cmake -B build_mingw -G "MinGW Makefiles" unit
+        cmake --build build_mingw
+        ctest -C Debug --test-dir build_mingw --output-on-failure
     )
-
-    ctest -C Debug --output-on-failure
-    cd ../..
+    cd ..
     @goto exit
 
 :coveralls

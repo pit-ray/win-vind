@@ -101,10 +101,18 @@ file(GLOB_RECURSE SOURCE_FILES LIST_DIRECTORIES false *.cpp)
 if(${MSVC})
     set(winresobj ${PROJECT_SOURCE_DIR}/res/build_assets/resource.rc)
 
-    add_executable(${PROJECT_NAME} WIN32
-        ${winresobj}
-        ${SOURCE_FILES}
-    )
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+        add_executable(${PROJECT_NAME}
+            ${winresobj}
+            ${SOURCE_FILES}
+        )
+
+    else()
+        add_executable(${PROJECT_NAME} WIN32
+            ${winresobj}
+            ${SOURCE_FILES}
+        )
+    endif()
 
 else()
     # If you have installed it in Program Files,

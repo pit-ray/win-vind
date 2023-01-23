@@ -2,6 +2,7 @@
 #define _RC_PARSER_HPP
 
 #include "mode.hpp"
+#include "util/type_traits.hpp"
 
 #include <string>
 #include <utility>
@@ -76,10 +77,10 @@ namespace vind
                 const std::string& split_keyword="n") ;
 
 
-        enum class RunCommandsIndex : unsigned char {
+        enum class RunCommandsIndex : std::uint16_t {
             UNDEFINED       = 0,
 
-            SET             = 0b0000'00001,
+            SET,
             COMMAND,
             DELCOMMAND,
             COMCLEAR,
@@ -89,43 +90,69 @@ namespace vind
             AUTOCMD,
             AUTOCMD_REMOVE,
 
-            MASK_MODE       = 0b0000'1111,
+            MASK_MODE = 0b0000'0000'0000'1111,
 
-            MASK_MAP        = 0b0001'0000,
-            MAP_IN          = MASK_MAP | static_cast<unsigned char>(Mode::INSERT),
-            MAP_GN          = MASK_MAP | static_cast<unsigned char>(Mode::GUI_NORMAL),
-            MAP_GV          = MASK_MAP | static_cast<unsigned char>(Mode::GUI_VISUAL),
-            MAP_EN          = MASK_MAP | static_cast<unsigned char>(Mode::EDI_NORMAL),
-            MAP_EV          = MASK_MAP | static_cast<unsigned char>(Mode::EDI_VISUAL),
-            MAP_RS          = MASK_MAP | static_cast<unsigned char>(Mode::RESIDENT),
-            MAP_CM          = MASK_MAP | static_cast<unsigned char>(Mode::COMMAND),
+            EMPTY_MODE_MASK  = 0b0000'0000'0001'0000,
+            GUI_MODE_MASK    = 0b0000'0000'0010'0000,
+            EDI_MODE_MASK    = 0b0000'0000'0100'0000,
+            NORMAL_MODE_MASK = 0b0000'0000'1000'0000,
+            VISUAL_MODE_MASK = 0b0000'0001'0000'0000,
 
-            MASK_NOREMAP    = 0b0010'0000,
-            NOREMAP_IN      = MASK_NOREMAP | static_cast<unsigned char>(Mode::INSERT),
-            NOREMAP_GN      = MASK_NOREMAP | static_cast<unsigned char>(Mode::GUI_NORMAL),
-            NOREMAP_GV      = MASK_NOREMAP | static_cast<unsigned char>(Mode::GUI_VISUAL),
-            NOREMAP_EN      = MASK_NOREMAP | static_cast<unsigned char>(Mode::EDI_NORMAL),
-            NOREMAP_EV      = MASK_NOREMAP | static_cast<unsigned char>(Mode::EDI_VISUAL),
-            NOREMAP_RS      = MASK_NOREMAP | static_cast<unsigned char>(Mode::RESIDENT),
-            NOREMAP_CM      = MASK_NOREMAP | static_cast<unsigned char>(Mode::COMMAND),
+            MASK_MAP = 0b0001'0000'0000'0000,
+            MAP      = util::enum_or(MASK_MAP, EMPTY_MODE_MASK),
+            MAP_GUI  = util::enum_or(MASK_MAP, EDI_MODE_MASK),
+            MAP_EDI  = util::enum_or(MASK_MAP, EDI_MODE_MASK),
+            MAP_N    = util::enum_or(MASK_MAP, NORMAL_MODE_MASK),
+            MAP_V    = util::enum_or(MASK_MAP, VISUAL_MODE_MASK),
+            MAP_IN   = util::enum_or(MASK_MAP, static_cast<std::size_t>(Mode::INSERT)),
+            MAP_GN   = util::enum_or(MASK_MAP, static_cast<std::size_t>(Mode::GUI_NORMAL)),
+            MAP_GV   = util::enum_or(MASK_MAP, static_cast<std::size_t>(Mode::GUI_VISUAL)),
+            MAP_EN   = util::enum_or(MASK_MAP, static_cast<std::size_t>(Mode::EDI_NORMAL)),
+            MAP_EV   = util::enum_or(MASK_MAP, static_cast<std::size_t>(Mode::EDI_VISUAL)),
+            MAP_RS   = util::enum_or(MASK_MAP, static_cast<std::size_t>(Mode::RESIDENT)),
+            MAP_CM   = util::enum_or(MASK_MAP, static_cast<std::size_t>(Mode::COMMAND)),
 
-            MASK_UNMAP     = 0b0100'0000,
-            UNMAP_IN       = MASK_UNMAP | static_cast<unsigned char>(Mode::INSERT),
-            UNMAP_GN       = MASK_UNMAP | static_cast<unsigned char>(Mode::GUI_NORMAL),
-            UNMAP_GV       = MASK_UNMAP | static_cast<unsigned char>(Mode::GUI_VISUAL),
-            UNMAP_EN       = MASK_UNMAP | static_cast<unsigned char>(Mode::EDI_NORMAL),
-            UNMAP_EV       = MASK_UNMAP | static_cast<unsigned char>(Mode::EDI_VISUAL),
-            UNMAP_RS       = MASK_UNMAP | static_cast<unsigned char>(Mode::RESIDENT),
-            UNMAP_CM       = MASK_UNMAP | static_cast<unsigned char>(Mode::COMMAND),
+            MASK_NOREMAP= 0b0010'0000'0000'0000,
+            NOREMAP     = util::enum_or(MASK_NOREMAP, EMPTY_MODE_MASK),
+            NOREMAP_GUI = util::enum_or(MASK_NOREMAP, GUI_MODE_MASK),
+            NOREMAP_EDI = util::enum_or(MASK_NOREMAP, EDI_MODE_MASK),
+            NOREMAP_N   = util::enum_or(MASK_NOREMAP, NORMAL_MODE_MASK),
+            NOREMAP_V   = util::enum_or(MASK_NOREMAP, VISUAL_MODE_MASK),
+            NOREMAP_IN  = util::enum_or(MASK_NOREMAP, static_cast<std::size_t>(Mode::INSERT)),
+            NOREMAP_GN  = util::enum_or(MASK_NOREMAP, static_cast<std::size_t>(Mode::GUI_NORMAL)),
+            NOREMAP_GV  = util::enum_or(MASK_NOREMAP, static_cast<std::size_t>(Mode::GUI_VISUAL)),
+            NOREMAP_EN  = util::enum_or(MASK_NOREMAP, static_cast<std::size_t>(Mode::EDI_NORMAL)),
+            NOREMAP_EV  = util::enum_or(MASK_NOREMAP, static_cast<std::size_t>(Mode::EDI_VISUAL)),
+            NOREMAP_RS  = util::enum_or(MASK_NOREMAP, static_cast<std::size_t>(Mode::RESIDENT)),
+            NOREMAP_CM  = util::enum_or(MASK_NOREMAP, static_cast<std::size_t>(Mode::COMMAND)),
 
-            MASK_MAPCLEAR  = 0b1000'0000,
-            MAPCLEAR_IN    = MASK_MAPCLEAR | static_cast<unsigned char>(Mode::INSERT),
-            MAPCLEAR_GN    = MASK_MAPCLEAR | static_cast<unsigned char>(Mode::GUI_NORMAL),
-            MAPCLEAR_GV    = MASK_MAPCLEAR | static_cast<unsigned char>(Mode::GUI_VISUAL),
-            MAPCLEAR_EN    = MASK_MAPCLEAR | static_cast<unsigned char>(Mode::EDI_NORMAL),
-            MAPCLEAR_EV    = MASK_MAPCLEAR | static_cast<unsigned char>(Mode::EDI_VISUAL),
-            MAPCLEAR_RS    = MASK_MAPCLEAR | static_cast<unsigned char>(Mode::RESIDENT),
-            MAPCLEAR_CM    = MASK_MAPCLEAR | static_cast<unsigned char>(Mode::COMMAND),
+            MASK_UNMAP = 0b0100'0000'0000'0000,
+            UNMAP      = util::enum_or(MASK_UNMAP, EMPTY_MODE_MASK),
+            UNMAP_GUI  = util::enum_or(MASK_UNMAP, GUI_MODE_MASK),
+            UNMAP_EDI  = util::enum_or(MASK_UNMAP, EDI_MODE_MASK),
+            UNMAP_N    = util::enum_or(MASK_UNMAP, NORMAL_MODE_MASK),
+            UNMAP_V    = util::enum_or(MASK_UNMAP, VISUAL_MODE_MASK),
+            UNMAP_IN   = util::enum_or(MASK_UNMAP, static_cast<std::size_t>(Mode::INSERT)),
+            UNMAP_GN   = util::enum_or(MASK_UNMAP, static_cast<std::size_t>(Mode::GUI_NORMAL)),
+            UNMAP_GV   = util::enum_or(MASK_UNMAP, static_cast<std::size_t>(Mode::GUI_VISUAL)),
+            UNMAP_EN   = util::enum_or(MASK_UNMAP, static_cast<std::size_t>(Mode::EDI_NORMAL)),
+            UNMAP_EV   = util::enum_or(MASK_UNMAP, static_cast<std::size_t>(Mode::EDI_VISUAL)),
+            UNMAP_RS   = util::enum_or(MASK_UNMAP, static_cast<std::size_t>(Mode::RESIDENT)),
+            UNMAP_CM   = util::enum_or(MASK_UNMAP, static_cast<std::size_t>(Mode::COMMAND)),
+
+            MASK_MAPCLEAR = 0b1000'0000'0000'0000,
+            MAPCLEAR      = util::enum_or(MASK_MAPCLEAR, EMPTY_MODE_MASK),
+            MAPCLEAR_GUI  = util::enum_or(MASK_MAPCLEAR, GUI_MODE_MASK),
+            MAPCLEAR_EDI  = util::enum_or(MASK_MAPCLEAR, EDI_MODE_MASK),
+            MAPCLEAR_N    = util::enum_or(MASK_MAPCLEAR, NORMAL_MODE_MASK),
+            MAPCLEAR_V    = util::enum_or(MASK_MAPCLEAR, VISUAL_MODE_MASK),
+            MAPCLEAR_IN   = util::enum_or(MASK_MAPCLEAR, static_cast<std::size_t>(Mode::INSERT)),
+            MAPCLEAR_GN   = util::enum_or(MASK_MAPCLEAR, static_cast<std::size_t>(Mode::GUI_NORMAL)),
+            MAPCLEAR_GV   = util::enum_or(MASK_MAPCLEAR, static_cast<std::size_t>(Mode::GUI_VISUAL)),
+            MAPCLEAR_EN   = util::enum_or(MASK_MAPCLEAR, static_cast<std::size_t>(Mode::EDI_NORMAL)),
+            MAPCLEAR_EV   = util::enum_or(MASK_MAPCLEAR, static_cast<std::size_t>(Mode::EDI_VISUAL)),
+            MAPCLEAR_RS   = util::enum_or(MASK_MAPCLEAR, static_cast<std::size_t>(Mode::RESIDENT)),
+            MAPCLEAR_CM   = util::enum_or(MASK_MAPCLEAR, static_cast<std::size_t>(Mode::COMMAND)),
         } ;
 
         RunCommandsIndex parse_run_command(const std::string& strcmd) ;

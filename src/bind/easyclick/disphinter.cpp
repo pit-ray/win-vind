@@ -3,7 +3,6 @@
 #include <mutex>
 #include <string>
 
-#include "core/charlogger.hpp"
 #include "core/settable.hpp"
 #include "util/color.hpp"
 #include "util/debug.hpp"
@@ -55,11 +54,11 @@ namespace vind
 
             //Colors
             auto [bk_r, bk_g, bk_b] = util::hex2rgb(
-                    settable.get("easyclick_bgcolor").get<std::string>()) ;
+                settable.get("easyclick_bgcolor").get<std::string>()) ;
             auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
 
             auto [tx_r, tx_g, tx_b] = util::hex2rgb(
-                    settable.get("easyclick_fontcolor").get<std::string>()) ;
+                settable.get("easyclick_fontcolor").get<std::string>()) ;
             auto txcolor = RGB(tx_r, tx_g, tx_b) ;
 
             unsigned char decay = settable.get("easyclick_colordecay").get<unsigned char>() ;
@@ -67,16 +66,16 @@ namespace vind
             char sign = to_gray(tx_r, tx_g, tx_b) > to_gray(bk_r, bk_g, bk_b) ? -1 : 1 ;
 
             auto txcolor_ready = RGB(
-                    tx_r < decay ? 0 : tx_r + sign*decay,
-                    tx_g < decay ? 0 : tx_g + sign*decay,
-                    tx_b < decay ? 0 : tx_b + sign*decay) ;
+                (tx_r < decay) ? 0 : (tx_r + sign * decay),
+                (tx_g < decay) ? 0 : (tx_g + sign * decay),
+                (tx_b < decay) ? 0 : (tx_b + sign * decay)) ;
 
             pimpl->fontsize_ = settable.get("easyclick_fontsize").get<long>() ;
 
             pimpl->painter_.set_font(
-                    pimpl->fontsize_,
-                    settable.get("easyclick_fontweight").get<long>(),
-                    settable.get("easyclick_fontname").get<std::string>()) ;
+                pimpl->fontsize_,
+                settable.get("easyclick_fontweight").get<long>(),
+                settable.get("easyclick_fontname").get<std::string>()) ;
 
             pimpl->painter_.set_back_color(bkcolor) ;
             pimpl->painter_.set_text_color(txcolor) ;

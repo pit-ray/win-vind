@@ -26,7 +26,7 @@ namespace vind
                     break ;
             }
 
-            return DEFAULT_CONFIG_PATH() / filename ;
+            return RESOURCE_ROOT_PATH() / filename ;
         }
     }
 }

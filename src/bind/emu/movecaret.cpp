@@ -1,12 +1,11 @@
 #include "movecaret.hpp"
 
 #include "bind/saferepeat.hpp"
-#include "core/charlogger.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
 #include "core/mode.hpp"
-#include "core/ntypelogger.hpp"
+#include "motionids.hpp"
 #include "textsel.hpp"
 #include "util/def.hpp"
 #include "util/interval_timer.hpp"
@@ -19,20 +18,14 @@ namespace vind
     namespace bind
     {
         //MoveCaretLeft
-        struct MoveCaretLeft::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretLeft::MoveCaretLeft()
-        : MoveBaseCreator("move_caret_left"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveCaretLeft::~MoveCaretLeft() noexcept = default ;
-        MoveCaretLeft::MoveCaretLeft(MoveCaretLeft&&) = default ;
-        MoveCaretLeft& MoveCaretLeft::operator=(MoveCaretLeft&&) = default ;
-
-        void MoveCaretLeft::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_caret_left")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretLeft::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 safe_for(count, [&igate] {
@@ -45,35 +38,16 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretLeft::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretLeft::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //MoveCaretRight
-        struct MoveCaretRight::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretRight::MoveCaretRight()
-        : MoveBaseCreator("move_caret_right"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveCaretRight::~MoveCaretRight() noexcept = default ;
-        MoveCaretRight::MoveCaretRight(MoveCaretRight&&) = default ;
-        MoveCaretRight& MoveCaretRight::operator=(MoveCaretRight&&) = default ;
-
-        void MoveCaretRight::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_caret_right")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretRight::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
                 safe_for(count, [&igate] {
@@ -86,35 +60,22 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretRight::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretRight::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //MoveCaretUp
-        struct MoveCaretUp::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretUp::MoveCaretUp()
-        : MoveBaseCreator("move_caret_up"),
-          pimpl(std::make_unique<Impl>())
-        {}
+        : BindedFuncVoid("move_caret_up")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretUp::sprocess(
+                std::uint16_t count,
+                const std::string& args) {
+            if(!args.empty()) {
+                if(auto num = util::extract_num<std::uint16_t>(args)) {
+                    count = num ;
+                }
+            }
 
-        MoveCaretUp::~MoveCaretUp() noexcept = default ;
-        MoveCaretUp::MoveCaretUp(MoveCaretUp&&) = default ;
-        MoveCaretUp& MoveCaretUp::operator=(MoveCaretUp&&) = default ;
-
-        void MoveCaretUp::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -132,43 +93,22 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretUp::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretUp::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) return ;
-
-            if(auto num = util::extract_num(str)) {
-                sprocess(num) ;
-            }
-            else {
-                throw RUNTIME_EXCEPT("There is no number in the passed command.") ;
-            }
-        }
-
 
         //MoveCaretDown
-        struct MoveCaretDown::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretDown::MoveCaretDown()
-        : MoveBaseCreator("move_caret_down"),
-          pimpl(std::make_unique<Impl>())
-        {}
+        : BindedFuncVoid("move_caret_down")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretDown::sprocess(
+                std::uint16_t count,
+                const std::string& args) {
+            if(!args.empty()) {
+                if(auto num = util::extract_num<std::uint16_t>(args)) {
+                    count = num ;
+                }
+            }
 
-        MoveCaretDown::~MoveCaretDown() noexcept = default ;
-        MoveCaretDown::MoveCaretDown(MoveCaretDown&&) = default ;
-        MoveCaretDown& MoveCaretDown::operator=(MoveCaretDown&&) = default ;
-
-        void MoveCaretDown::sprocess(unsigned int count) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -190,43 +130,16 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretDown::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretDown::sprocess(const core::CharLogger& parent_lgr) {
-            auto str = parent_lgr.to_str() ;
-            if(str.empty()) return ;
-
-            if(auto num = util::extract_num(str)) {
-                sprocess(num) ;
-            }
-            else {
-                throw RUNTIME_EXCEPT("There is no number in the passed command.") ;
-            }
-        }
-
 
         //EdiMoveCaretNwordsForward
-        struct MoveCaretWordForward::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretWordForward::MoveCaretWordForward()
-        : MoveBaseCreator("move_caret_word_forward"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveCaretWordForward::~MoveCaretWordForward() noexcept = default ;
-        MoveCaretWordForward::MoveCaretWordForward(MoveCaretWordForward&&) = default ;
-        MoveCaretWordForward& MoveCaretWordForward::operator=(MoveCaretWordForward&&) = default ;
-
-        void MoveCaretWordForward::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_caret_word_forward")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretWordForward::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -240,35 +153,16 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretWordForward::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //EdiMoveCaretNwordsBackward
-        struct MoveCaretWordBackward::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretWordBackward::MoveCaretWordBackward()
-        : MoveBaseCreator("move_caret_word_backward"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveCaretWordBackward::~MoveCaretWordBackward() noexcept = default ;
-        MoveCaretWordBackward::MoveCaretWordBackward(MoveCaretWordBackward&&) = default ;
-        MoveCaretWordBackward& MoveCaretWordBackward::operator=(MoveCaretWordBackward&&) = default ;
-
-        void MoveCaretWordBackward::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_caret_word_backward")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretWordBackward::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -282,35 +176,16 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretWordBackward::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //EdiMoveCaretNWORDSForward
-        struct MoveCaretNonBlankWordForward::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward()
-        : MoveBaseCreator("move_caret_nonblank_word_forward"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveCaretNonBlankWordForward::~MoveCaretNonBlankWordForward() noexcept = default ;
-        MoveCaretNonBlankWordForward::MoveCaretNonBlankWordForward(MoveCaretNonBlankWordForward&&) = default ;
-        MoveCaretNonBlankWordForward& MoveCaretNonBlankWordForward::operator=(MoveCaretNonBlankWordForward&&) = default ;
-
-        void MoveCaretNonBlankWordForward::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_caret_nonblank_word_forward")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretNonBlankWordForward::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -324,35 +199,16 @@ namespace vind
                 }) ;
             }
         }
-        void MoveCaretNonBlankWordForward::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-                pimpl->ksr.reset() ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretNonBlankWordForward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
-        }
-
 
         //EdiMoveCaretNWORDSBackward
-        struct MoveCaretNonBlankWordBackward::Impl {
-            util::KeyStrokeRepeater ksr{} ;
-        } ;
-
         MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward()
-        : MoveBaseCreator("move_caret_nonblank_word_backward"),
-          pimpl(std::make_unique<Impl>())
-        {}
-
-        MoveCaretNonBlankWordBackward::~MoveCaretNonBlankWordBackward() noexcept = default ;
-        MoveCaretNonBlankWordBackward::MoveCaretNonBlankWordBackward(MoveCaretNonBlankWordBackward&&) = default ;
-        MoveCaretNonBlankWordBackward& MoveCaretNonBlankWordBackward::operator=(MoveCaretNonBlankWordBackward&&) = default ;
-
-        void MoveCaretNonBlankWordBackward::sprocess(unsigned int count) {
+        : BindedFuncVoid("move_caret_nonblank_word_backward")
+        {
+            MotionIds::get_instance().register_id(id()) ;
+        }
+        void MoveCaretNonBlankWordBackward::sprocess(
+                std::uint16_t count,
+                const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
 
             if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
@@ -365,17 +221,6 @@ namespace vind
                     igate.pushup(KEYCODE_LCTRL, KEYCODE_LEFT) ;
                 }) ;
             }
-        }
-        void MoveCaretNonBlankWordBackward::sprocess(core::NTypeLogger& parent_lgr) {
-            if(!parent_lgr.is_long_pressing()) {
-                sprocess(parent_lgr.get_head_num()) ;
-            }
-            else if(pimpl->ksr.is_passed()) {
-                sprocess(1) ;
-            }
-        }
-        void MoveCaretNonBlankWordBackward::sprocess(const core::CharLogger& UNUSED(parent_lgr)) {
-            sprocess(1) ;
         }
     }
 }

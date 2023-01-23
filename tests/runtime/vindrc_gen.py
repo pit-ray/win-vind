@@ -11,4 +11,9 @@ inoremap : <to_command>
 
 noremap winresizer <c-w>e
 noremap <lalt><lalt> <to_edi_normal>
+
+map <alt-b><alt-j> {Hello World!<cr>}
+map <f11><ctrl-q> <alt-j>
+map <f10><tab> <alt-b>
+map <f7><f7> <f10><tab><f11><ctrl-q>
 '''

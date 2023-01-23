@@ -2,6 +2,8 @@ import time
 import threading
 import tkinter as tk
 
+from win import click
+
 
 DEFAULT_TEXT = '''MIT License
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,7 +39,7 @@ class MockFrame(tk.Frame):
         self.text = tk.Text(
             self.master, width=40, height=20, wrap='none')
 
-        self.text.insert(tk.INSERT, DEFAULT_TEXT)
+        self.reset_text()
 
         self.button = tk.Button(
             self.master, text='Click',
@@ -53,6 +55,10 @@ class MockFrame(tk.Frame):
     def init_geometry(self):
         self.master.geometry(
             '{}x{}+0+0'.format(self.width, self.height))
+
+    def reset_text(self):
+        self.text.delete('1.0', 'end')
+        self.text.insert(tk.INSERT, DEFAULT_TEXT)
 
     def set_caret_position(self, row, col):
         self.text.mark_set(
@@ -134,8 +140,13 @@ class MockApp:
     def __exit__(self, *args):
         self.close()
 
+    def focus(self):
+        cx, cy = self.get_window_center()
+        click(cx, cy)
+
     def reset(self):
         self.frame.init_geometry()
+        self.frame.reset_text()
         self.frame.ready_button()
 
     def get_title(self):

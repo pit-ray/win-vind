@@ -1,4 +1,4 @@
-from win import click, get_maximum_window_size
+from win import get_maximum_window_size
 
 
 def get_cases():
@@ -12,8 +12,7 @@ def get_cases():
 
 
 def decrease_window_height(handler, mock_app):
-    cx, cy = mock_app.get_window_center()
-    click(cx, cy)
+    mock_app.focus()
 
     w1, h1 = mock_app.get_window_size()
 
@@ -24,8 +23,7 @@ def decrease_window_height(handler, mock_app):
 
 
 def increase_window_width(handler, mock_app):
-    cx, cy = mock_app.get_window_center()
-    click(cx, cy)
+    mock_app.focus()
 
     w1, h1 = mock_app.get_window_size()
 
@@ -36,8 +34,7 @@ def increase_window_width(handler, mock_app):
 
 
 def resize_window_height(handler, mock_app):
-    cx, cy = mock_app.get_window_center()
-    click(cx, cy)
+    mock_app.focus()
 
     handler.send_command(':res vert 100<cr>', pause=2)
     w, h = mock_app.get_window_size()
@@ -45,8 +42,7 @@ def resize_window_height(handler, mock_app):
 
 
 def snap_current_window_to_right(handler, mock_app):
-    cx, cy = mock_app.get_window_center()
-    click(cx, cy)
+    mock_app.focus()
 
     handler.send_command('<c-w>L', pause=2)
     w, h = mock_app.get_window_size()
@@ -59,8 +55,7 @@ def snap_current_window_to_right(handler, mock_app):
 
 
 def window_resizer(handler, mock_app):
-    cx, cy = mock_app.get_window_center()
-    click(cx, cy)
+    mock_app.focus()
 
     x1, y1 = mock_app.get_window_pos()
     w1, h1 = mock_app.get_window_size()

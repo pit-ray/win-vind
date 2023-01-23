@@ -1,6 +1,3 @@
-from win import click
-
-
 def get_cases():
     return [
         emulate_ggyyGp
@@ -8,8 +5,7 @@ def get_cases():
 
 
 def emulate_ggyyGp(handler, mock_app):
-    cx, cy = mock_app.get_window_center()
-    click(cx, cy)
+    mock_app.focus()
 
     head_text = mock_app.frame.get_line_text(row=0)
     handler.send_command('<lalt><lalt>ggyyGpp', pause=2)

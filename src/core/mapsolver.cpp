@@ -215,6 +215,11 @@ namespace
                 solved_target.end(),
                 solved_subcmd.begin(),
                 solved_subcmd.end()) ;
+
+            // Reset state change due to recursion.
+            for(auto& map : refmap_table) {
+                map.trigger_matcher.reset_state() ;
+            }
         }
 
         // Matching the target command, the loop is breaked.

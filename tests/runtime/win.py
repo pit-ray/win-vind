@@ -2,6 +2,15 @@ import ctypes
 import pydirectinput as pdi
 
 
+class RECT(ctypes.Structure):
+    _fields_ = [
+        ("left", ctypes.c_long),
+        ("top", ctypes.c_long),
+        ("right", ctypes.c_long),
+        ("bottom", ctypes.c_long)
+    ]
+
+
 def get_cursor_pos():
     return pdi.position()
 
@@ -15,12 +24,15 @@ def click(x=None, y=None):
 
 
 def get_maximum_window_size():
-    GetSystemMetrics = ctypes.windll.user32.GetSystemMetrics
-    SM_CXFULLSCREEN = 16
-    SM_CYFULLSCREEN = 17
-    w = GetSystemMetrics(SM_CXFULLSCREEN)
-    h = GetSystemMetrics(SM_CYFULLSCREEN)
-    return (w, h)
+    SystemParametersInfo = ctypes.windll.user32.SystemParametersInfoA
+    SPI_GETWORKAREA = 0x0030
+
+    rect = RECT()
+    res = SystemParametersInfo(SPI_GETWORKAREA, 0, rect, 0)
+
+    width = rect.right - rect.left
+    height = rect.bottom - rect.top
+    return (width, height)
 
 
 if __name__ == '__main__':

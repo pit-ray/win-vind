@@ -1,39 +1,38 @@
-from win import click
+from win import click, get_maximum_window_size
 
 
 def get_cases():
     return [
-        resize_window_height
-
+        decrease_window_height,
+        increase_window_width,
+        resize_window_height,
+        snap_current_window_to_right,
+        window_resizer
     ]
 
 
-def close_current_window():
-    return False
+def decrease_window_height(handler, mock_app):
+    cx, cy = mock_app.get_window_center()
+    click(cx, cy)
+
+    w1, h1 = mock_app.get_window_size()
+
+    handler.send_command('<c-w>-', pause=2)
+    w2, h2 = mock_app.get_window_size()
+
+    return w1 == w2 and h1 > h2
 
 
-def decrease_window_height():
-    return False
+def increase_window_width(handler, mock_app):
+    cx, cy = mock_app.get_window_center()
+    click(cx, cy)
 
+    w1, h1 = mock_app.get_window_size()
 
-def decrease_window_width():
-    return False
+    handler.send_command('<c-w><gt>', pause=2)
+    w2, h2 = mock_app.get_window_size()
 
-
-def increase_window_height():
-    return False
-
-
-def increase_window_width():
-    return False
-
-
-def maximize_current_window():
-    return False
-
-
-def minimize_current_window():
-    return False
+    return w1 < w2 and h1 == h2
 
 
 def resize_window_height(handler, mock_app):
@@ -45,21 +44,34 @@ def resize_window_height(handler, mock_app):
     return h == 100
 
 
-def resize_window_width():
-    return False
+def snap_current_window_to_right(handler, mock_app):
+    cx, cy = mock_app.get_window_center()
+    click(cx, cy)
+
+    handler.send_command('<c-w>L', pause=2)
+    w, h = mock_app.get_window_size()
+
+    sw, sh = get_maximum_window_size()
+    target_w = sw // 2
+    target_h = sh
+
+    return w == target_w and h == target_h
 
 
-def select_left_window():
-    return False
+def window_resizer(handler, mock_app):
+    cx, cy = mock_app.get_window_center()
+    click(cx, cy)
 
+    x1, y1 = mock_app.get_window_pos()
+    w1, h1 = mock_app.get_window_size()
 
-def snap_current_window_to_left():
-    return False
+    # [winresizer]  a user-defined macro defined in vindrc_gen.py.
+    # [ll]          increate width in resize mode
+    # [e]           change mode to move mode
+    # [jj]          Down the y coordinate of the window
+    # [<esc>]       Exit windowresizer
+    handler.send_command('winresizerllejj<esc>', pause=2)
+    x2, y2 = mock_app.get_window_pos()
+    w2, h2 = mock_app.get_window_size()
 
-
-def switch_window():
-    return False
-
-
-def window_resizer():
-    return False
+    return w1 < w2 and h1 == h2 and x1 == x2 and y1 < y2

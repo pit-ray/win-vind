@@ -1,6 +1,11 @@
 def get_cases():
     return [
+        emulate_ggyyGp
     ]
+
+
+def emulate_ggyyGp(handler, mock_app):
+    pass
 
 
 def to_insert_BOL():

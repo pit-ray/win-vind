@@ -1,7 +1,7 @@
 <h1 align="center">win-vind</h1>
 
 <p align="center">
-  <img src="res/icon.png?raw=true" width="150" height="150" />
+  <img src="res/icon_flat.png?raw=true" width="150" height="150" />
   <p align="center"><b>Vim Key Binder for Windows</b></p>
   <p align="center">
     <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/22417/badge.svg"/></a>

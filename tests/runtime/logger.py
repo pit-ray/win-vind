@@ -26,10 +26,10 @@ class ColorHandler(StreamHandler):
 
     def emit(self, record):
         record.levelname = {
-            'INFO': '\x1b[0;32m{}\x1b[0m',
-            'WARNING': '\x1b[0;33m{}\x1b[0m',
-            'ERROR': '\x1b[0;31m{}\x1b[0m',
-        }.get(record.levelname, '{}').format(record.levelname)
+            'INFO': '\x1b[0;32m  OK  \x1b[0m',
+            'WARNING': '\x1b[0;33mWARNING\x1b[0m',
+            'ERROR': '\x1b[0;31mFAILED\x1b[0m',
+        }.get(record.levelname, '')
         super().emit(record)
 
 

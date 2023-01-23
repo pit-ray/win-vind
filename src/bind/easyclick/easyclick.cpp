@@ -14,6 +14,7 @@
 
 #include "bind/easyclick/easyclickcore.hpp"
 
+
 namespace vind
 {
     namespace bind

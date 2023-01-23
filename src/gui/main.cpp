@@ -30,6 +30,7 @@ SOFTWARE.
 */
 
 #include <atomic>
+#include <string>
 
 #include "util/disable_compiler_warning.hpp"
 
@@ -53,6 +54,12 @@ namespace
 {
     inline void error_box(const wxString& msg) {
         wxMessageBox(msg, wxT("Error - win-vind"), wxOK | wxICON_EXCLAMATION) ;
+    }
+
+    void trim_quotation(std::string& str) {
+        if(str.front() == '\"' && str.back() == '\"') {
+            str = str.substr(1, str.size() - 2) ;
+        }
     }
 }
 
@@ -233,9 +240,11 @@ namespace vind
                 }
                 if(parser.Found(wxT("func"), &fn)) {
                     arg_func_name_ = fn.ToStdString() ;
+                    trim_quotation(arg_func_name_) ;
                 }
                 if(parser.Found(wxT("command"), &fn)) {
                     arg_command_ = fn.ToStdString() ;
+                    trim_quotation(arg_command_) ;
                 }
                 return true ;
             }

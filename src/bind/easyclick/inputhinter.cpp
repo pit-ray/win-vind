@@ -77,10 +77,6 @@ namespace vind
                     continue ;
                 }
 
-                if(in_cmdunit->empty()) {
-                    continue ;
-                }
-
                 std::lock_guard<std::mutex> socoped_lock{pimpl->mtx_} ;
 
                 if(in_cmdunit->is_containing(KEYCODE_BKSPACE)) {
@@ -102,11 +98,23 @@ namespace vind
                     continue ;
                 }
 
+                // Fetch out only the characters.
+                core::CmdUnitSet ascii_set{} ;
+                for(auto& key : *in_cmdunit) {
+                    if(!key.is_major_system()) {
+                        ascii_set.insert(key) ;
+                    }
+                }
+                if(ascii_set.empty()) {
+                    continue ;
+                }
+                core::CmdUnit ascii_unit(std::move(ascii_set)) ;
+
                 pimpl->drawable_hints_num_ = 0 ;
                 bool all_rejected = true ;
                 for(std::size_t i = 0 ; i < matchers.size() ; i ++) {
                     auto& mt = matchers[i] ;
-                    mt.update_state(*in_cmdunit) ;
+                    mt.update_state(ascii_unit) ;
                     if(mt.is_accepted()) {
                         return std::make_shared<util::Point2D>(
                                 positions[i].x(), positions[i].y()) ;

@@ -70,7 +70,7 @@ namespace
             // all key states are still released, so moves a little bit
             // once and is finished imediately.
             if(triggered_keys_.empty()) {
-                func_(1) ;
+                func_(3) ;  // hard-coded: 3 point.
                 return ;
             }
 

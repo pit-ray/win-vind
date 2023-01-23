@@ -6,6 +6,8 @@ from glob import glob
 from functools import lru_cache
 from shutil import copyfile
 
+from vindrc_gen import VINDRC_GEN
+
 
 class ProcHandler:
     def __init__(self, exe_path, env_dirname='tmp'):
@@ -59,7 +61,7 @@ class ProcHandler:
 
         config_dir = os.path.join(self.env_root, 'config')
         os.makedirs(config_dir, exist_ok=True)
-        self.create_vindrc("")
+        self.create_vindrc(VINDRC_GEN)
 
     def create_vindrc(self, texts):
         vindrc_file = os.path.join(self.env_root, 'config', '.vindrc')
@@ -74,29 +76,40 @@ class ProcHandler:
     def __exit__(self, *args):
         self.kill()
 
-    def _launch(self, *args, pause=1):
+    def _launch(self, *args):
         if self.env_root is None:
             raise RuntimeError('The test environment has not yet been set up')
 
-        proc = subprocess.Popen(
-            ['win-vind.exe'] + list(args), cwd=self.env_root, shell=True)
+        exec_program = os.path.join(self.env_root, 'win-vind.exe')
+        exec_cmd = '\"{}\" {}'.format(exec_program, ' '.join(args))
+        proc = subprocess.Popen(exec_cmd, encoding='utf-8')
         status = proc.poll()
         if status is not None:
             raise RuntimeError('Cloud not start win-vind ({})'.format(status))
 
-        time.sleep(pause)
+        return proc
 
-    def start(self, pause=1):
-        self._launch(pause=pause)
-
-    def send_command(self, command, pause=1):
-        self._launch('--command', '\"' + command + '\"')
+    def start(self, pause=1.0):
+        res = self._launch()
         time.sleep(pause)
+        return res
+
+    def send_command(self, command, pause=1.0):
+        res = self._launch('--command', '\"{}\"'.format(command))
+        time.sleep(pause)
+        return res
 
     def kill(self):
-        self.send_command('<exit>')
+        return self.send_command('<exit>')
 
     def check_if_alive(self):
         output = subprocess.check_output(
             'TASKLIST /fi \"imagename eq win-vind.exe\"', shell=True)
         return output.find(b'win-vind.exe') != -1
+
+
+if __name__ == '__main__':
+    with ProcHandler('../bin_64/win-vind/win-vind.exe') as handler:
+        handler.send_command('<f12>')
+
+        time.sleep(5)

@@ -1,5 +1,5 @@
 # win-vind Test
-In this documents, we assume executing commands in tests directory not in the project root.
+**In this documents, we assume executing commands in tests directory not in the project root.**
 
 ## Unit Test
 It are run using CTest at compile time. This is based on branch coverage.

@@ -1,3 +1,6 @@
+from win import click
+
+
 def get_cases():
     return [
         emulate_ggyyGp
@@ -5,7 +8,16 @@ def get_cases():
 
 
 def emulate_ggyyGp(handler, mock_app):
-    pass
+    cx, cy = mock_app.get_window_center()
+    click(cx, cy)
+
+    head_text = mock_app.frame.get_line_text(row=0)
+    handler.send_command('<lalt><lalt>ggyyGpp', pause=2)
+
+    tail_row = mock_app.frame.get_last_row()
+    tail_text = mock_app.frame.get_line_text(row=tail_row)
+
+    return head_text == tail_text
 
 
 def to_insert_BOL():

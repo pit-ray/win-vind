@@ -10,4 +10,5 @@ noremap : <to_command>
 inoremap : <to_command>
 
 noremap winresizer <c-w>e
+noremap <lalt><lalt> <to_edi_normal>
 '''

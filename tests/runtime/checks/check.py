@@ -5,6 +5,7 @@ from mockapp import MockApp
 from . import mouse
 from . import proc
 from . import window
+from . import emu
 
 
 def check_test_cases(handler, app, test_cases):
@@ -25,7 +26,8 @@ def check(handler):
     test_cases = [] \
         + mouse.get_cases() \
         + window.get_cases() \
-        + proc.get_cases()
+        + proc.get_cases() \
+        + emu.get_cases()
 
     with MockApp(asynchronous=True) as app:
         check_test_cases(handler, app, test_cases)

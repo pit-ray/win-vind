@@ -54,14 +54,29 @@ class MockFrame(tk.Frame):
         self.master.geometry(
             '{}x{}+0+0'.format(self.width, self.height))
 
-    def set_caret_position(self, row, column):
+    def set_caret_position(self, row, col):
         self.text.mark_set(
-            tk.INSERT, '{}.{}'.format(row + 1, column + 1))
+            tk.INSERT, '{}.{}'.format(row + 1, col))
 
     def get_caret_position(self):
         idx = self.text.index(tk.INSERT)
-        row, column = idx.split('.')
-        return (int(row) - 1, int(column))
+        row, col = idx.split('.')
+        return (int(row) - 1, int(col))
+
+    def get_line_text(self, row=None):
+        _row, _col = self.get_caret_position()
+
+        if row is not None:
+            _row = row
+
+        start_idx = '{}.{}'.format(_row + 1, 0)
+        text = self.text.get(start_idx, 'end-1c').split('\n')[0]
+        return text
+
+    def get_last_row(self):
+        idx = self.text.index('end-1c linestart')
+        row, col = idx.split('.')
+        return int(row) - 1
 
     def ready_button(self):
         self.button_state = False
@@ -149,5 +164,5 @@ if __name__ == '__main__':
     with MockApp(asynchronous=True) as app:
         print(app.get_title())
         while True:
-            print(app.get_window_pos())
+            app.frame.get_line_text()
             time.sleep(5)

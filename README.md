@@ -1,8 +1,5 @@
-<h1 align="center">win-vind</h1>
-
 <p align="center">
-  <img src="res/icon_flat.png?raw=true" width="150" height="150" />
-  <p align="center"><b>Vim Key Binder for Windows</b></p>
+  <img src="res/banner.gif?raw=true" width="500" />
   <p align="center">
     <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://img.shields.io/coverity/scan/pit-ray-win-vind?style=flat-square" /></a>
     <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://img.shields.io/codacy/grade/8f2e6f2826904efd82019f5888574327?style=flat-square" /></a>

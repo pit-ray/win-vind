@@ -28,6 +28,7 @@ namespace
         }
 
         bool has_pattern(const std::string& pat) {
+            return true ;
         }
 
         const SequentialCmd& get_sequential_cmd(const std::string& pat) {

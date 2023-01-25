@@ -4,18 +4,19 @@
   <img src="res/icon_flat.png?raw=true" width="150" height="150" />
   <p align="center"><b>Vim Key Binder for Windows</b></p>
   <p align="center">
-    <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/22417/badge.svg"/></a>
-    <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml/badge.svg?branch=master"></a>
-      <a href="https://github.com/pit-ray/win-vind/actions/workflows/test.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/test.yml/badge.svg" /></a>
+    <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://img.shields.io/coverity/scan/pit-ray-win-vind?style=flat-square" /></a>
+    <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://img.shields.io/codacy/grade/8f2e6f2826904efd82019f5888574327?style=flat-square" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/codeql-analysis.yml?branch=master&label=CodeQL&logo=github&style=flat-square" /></a>
+      <a href="https://github.com/pit-ray/win-vind/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/test.yml?branch=master&label=test&logo=github&style=flat-square" /></a>
      <br>  
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml/badge.svg" /> </a>
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml/badge.svg?branch=master" /></a>
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml/badge.svg" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/coverity.yml?branch=master&label=cov-build&logo=github&style=flat-square" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/mingw.yml?branch=master&label=MinGW%20build&logo=github&style=flat-square" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/msvc.yml?branch=master&label=MSVC%20build&logo=github&style=flat-square" /></a>
     <br>
-    <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/badge/chocolatey-supported-blue" /></a>
-    <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/pit-ray/win-vind"><img src="https://img.shields.io/badge/winget-supported-blue" /></a>
-    <img src="https://img.shields.io/badge/Windows%2011-supported-blue" />
+    <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/badge/chocolatey-supported-blue?style=flat-square" /></a>
+    <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/pit-ray/win-vind"><img src="https://img.shields.io/badge/winget-supported-blue?style=flat-square" /></a>
+    <a href=""><img src="https://img.shields.io/badge/scoop-supported-blue?style=flat-square" /></a>
+    <img src="https://img.shields.io/badge/Windows%2011-supported-blue?style=flat-square" />
   </p>
 </p>  
 
@@ -60,50 +61,31 @@ https://user-images.githubusercontent.com/42631247/147887231-24424d36-410d-4379-
 <br>  
 
 ## Installation
-### Chocolatey Version
-win-vind supports installation using [Chocolatey](https://chocolatey.org/). To install win-vind with Chocolatey, run the following command from the command line or from PowerShell.
+We support a variety of installation methods.
+
+#### [Chocolatey](https://chocolatey.org/)
 
 ```sh
 $ choco install win-vind
 ```
 
-<!--
-However, [win-vind 4.3.3](https://community.chocolatey.org/packages/win-vind/4.3.3) is not still approved on Chocolatey. Therefore, download the [Chocolatey package source](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_chocolatey_package_source.zip) manually and execute the following command in the extracted directory.
-
-```sh
-$ cd win-vind_4.3.3_chocolatey_package_source
-$ choco install win-vind.4.3.3.nupkg
-```
-
-#### Current Status
-- [X] 4.3.3
-- [X] 4.3.1
-- [X] 4.3.0
-- [x] 4.2.1
-- [x] 4.2.0
--->
-
-### winget Version
-[winget](https://github.com/microsoft/winget-cli) is also supported. To install the package, run the following command from your command line.
+#### [winget](https://github.com/microsoft/winget-cli)
 
 ```sh
 $ winget install win-vind
 ```
 
-<!--
-#### Current Status
-- [x] 4.3.3
-- [x] 4.3.1
-- [x] 4.3.0
-- [x] 4.2.1
-- [x] 4.2.0
--->
+#### [scoop](https://scoop.sh/)
+Not yet open.
+```sh
+$ scoop install win-vind
+```
 
-### Installer Version
+#### Executable Installer
 - [win-vind_5.0.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases)
 - [win-vind_5.0.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases)
 
-### Portable Version
+#### Portable Zip
 - [win-vind_5.0.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases)
 - [win-vind_5.0.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases)
 

@@ -18,7 +18,7 @@
   </p>
 </p>  
 
-## Description
+## What is this?
 **win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows.  
 
 ### 1. Vim-user friendly.

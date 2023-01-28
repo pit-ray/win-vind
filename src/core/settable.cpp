@@ -25,7 +25,7 @@ namespace
         Param("cmd_fontcolor", "c8c8c8"),
         Param("cmd_bgcolor", "323232"),
         Param("cmd_roughpos", "LowerLeft"),
-        Param("cmd_monitor", "active"),
+        Param("cmd_monitor", "primary"),
         Param("cmd_xmargin", 32),
         Param("cmd_ymargin", 96),
         Param("cmd_fontextra", 1),

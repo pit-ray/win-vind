@@ -20,41 +20,24 @@
 
 ## What is this?
 **win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows.  
+By installing this tool, you will be able to control the Windows GUI in the same way as Vim.
 
 ### 1. Vim-user friendly.
 All configuration methods and mode concepts are derived from Vim, allowing for Vim-like UI operation.  
-Vim users only need to understand win-vind's macro features and mode concepts with little learning cost.  
-
-- Fast binding system
-- Vim-like mode management
-- .vimrc style configuration
+Vim users only need to understand win-vind's macro features and additional mode concepts with little learning cost.  
 
 ### 2. There are many useful built-in commands.
 You don't have to worry about complicated scripts and dependencies like with traditional key binding tools.  
 You can freely create user-defined commands by combining low-level optimized built-in commands.
 
-- GUI operation without mouse
-- Vim emulation everywhere
-- Process launcher like `:!vim ~/.vimrc` on resident command line
-- Low-level key mapping (e.g. Capslock -> Ctrl)
-- Keystroke macros
-- Tiling window manager
-- Hinting feature like Vimium or EasyMotion for GUI.
-
-### 3. Very portable.
+### 3. Very portable and fully open source.
 win-vind is a small single binary with no dependencies that runs with user permissions.   
-It is also available from the command line as a command for UI operations.
-
-- Running in user permission
-- Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
+It is also available from the command line as a command for UI operations like `$ win-vind -c "ggyyGp"`.
 
 
 #### Top Feature Demo
 
 <img src="docs/imgs/4xxdemo.gif" title="Demo" >
-
-#### Macro Feature Demo
-https://user-images.githubusercontent.com/42631247/147887231-24424d36-410d-4379-8846-7dc6a5a7f355.mp4
 
 <br>  
 

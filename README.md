@@ -73,8 +73,7 @@ $ scoop install win-vind
 
 ## Usage
 
-Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.github.io/win-vind/usage/) with plenty of diagrams.  
-Here, only a sample .vindrc is shown below. As you can see, it is Vim user-friendly.  
+Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.github.io/win-vind/usage/) with plenty of diagrams. Here, only a sample .vindrc is shown below. As you can see, it is Vim user-friendly.  
 
 ### .vindrc sample  
 

@@ -72,12 +72,11 @@ $ scoop install win-vind
 
 
 ## Usage
-You can refer to the installation and quick tutorial in [Usage - win-vind](https://pit-ray.github.io/win-vind/usage/).  
 
+Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.github.io/win-vind/usage/) with plenty of diagrams.  
+Here, only a sample .vindrc is shown below. As you can see, it is Vim user-friendly.  
 
-### .vindrc samples  
-
-You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
+### .vindrc sample  
 
 ```vim
 " options
@@ -98,8 +97,6 @@ noremap <ctrl-2> :e http://example.com<cr>
 
 enoremap t ggyyGp
 ```
-
-The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keywords/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/defaults">Default Mappings</a>. 
 
 ## Known Issues
 - EasyClick does not seem to work properly for some applications on older Windows 10 before 1803. The cause is not known, but we have confirmed that it works after 1909. ([#11](https://github.com/pit-ray/win-vind/issues/11))

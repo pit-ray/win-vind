@@ -35,8 +35,8 @@ win-vind is a small single binary with no dependencies that runs with user permi
 It is also available from the command line as a command for UI operations like `$ win-vind -c "ggyyGp"`.
 
 
-#### Top Feature Demo
-https://user-images.githubusercontent.com/42631247/215270132-9491942e-bd28-40d0-a1ce-0fe223b8b0c7.mp4
+### Top Feature Demo
+<video src="https://user-images.githubusercontent.com/42631247/215270132-9491942e-bd28-40d0-a1ce-0fe223b8b0c7.mp4" controls></video>
 
 <br>  
 

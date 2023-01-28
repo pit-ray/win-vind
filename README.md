@@ -44,29 +44,29 @@ It is also available from the command line as a command for UI operations like `
 ## Installation
 We support a variety of installation methods.
 
-#### [Chocolatey](https://chocolatey.org/)
+### [Chocolatey](https://chocolatey.org/)
 
 ```sh
 $ choco install win-vind
 ```
 
-#### [winget](https://github.com/microsoft/winget-cli)
+### [winget](https://github.com/microsoft/winget-cli)
 
 ```sh
 $ winget install win-vind
 ```
 
-#### [scoop](https://scoop.sh/)
+### [scoop](https://scoop.sh/)
 Not yet open.
 ```sh
 $ scoop install win-vind
 ```
 
-#### Executable Installer
+### Executable Installer
 - [win-vind_5.0.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases)
 - [win-vind_5.0.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases)
 
-#### Portable Zip
+### Portable Zip
 - [win-vind_5.0.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases)
 - [win-vind_5.0.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases)
 
@@ -80,29 +80,23 @@ You can refer to the installation and quick tutorial in [Usage - win-vind](https
 You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
 
 ```vim
-" Virtual command line options
+" options
 set shell = cmd
 set cmd_fontsize = 14
-set cmd_roughpos = LowerLeft
-set cmd_maxchar = 100
-
-" Enable block style caret
+set cmd_fontname = Consolas
 set blockstylecaret
 set blockstylecaret_mode = solid
 
-" Low-level key mapping in resident mode
-rmap <capslock> {<ctrl>}
+" bindings
+imap <capslock> {<ctrl>}
 
-" Define bindings in Normal mode
-nnoremap <c-h> <select_left_window>
-nnoremap <c-l> <select_right_window>
-nnoremap <c-k> <select_upper_window>
-nnoremap <c-j> <select_lower_window>
+inoremap <alt><alt> <easy_click_left>
+inoremap <win-enter> <window_resizer>
 
-" Define bindings in insert mode
-inoremap <capslock> <to_edi_normal>
-inoremap <ralt> <easy_click_left>
-inoremap <app> <window_resizer>
+noremap <ctrl-1> :! gvim<cr>
+noremap <ctrl-2> :e http://example.com<cr>
+
+enoremap t ggyyGp
 ```
 
 The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keywords/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/defaults">Default Mappings</a>. 

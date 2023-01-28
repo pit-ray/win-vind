@@ -36,7 +36,8 @@ It is also available from the command line as a command for UI operations like `
 
 
 ### Top Feature Demo
-<video src="https://user-images.githubusercontent.com/42631247/215270132-9491942e-bd28-40d0-a1ce-0fe223b8b0c7.mp4" controls></video>
+
+<video src="https://user-images.githubusercontent.com/42631247/215270933-3365065b-53db-4eca-9fc6-cd03d13e5ab0.mp4" controls></video>
 
 <br>  
 

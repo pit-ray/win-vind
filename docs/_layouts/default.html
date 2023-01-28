@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        {% include head/full.html %}
+    </head>
+
+    {% assign scrollSpyOffset = page.scrollSpyOffset | default: layout.scrollSpyOffset | default: 0 %}
+    <body
+        class="layout-{{ page.layout }}"
+        data-spy="scroll"
+        data-target="#page-toc"
+        data-offset="{{ scrollSpyOffset }}"
+    >
+        {% include navigation.html %}
+        {% include masthead.html %}
+
+        {{ content }}
+
+        {% include footer/full.html %}
+    </body>
+</html>

@@ -1,0 +1,13 @@
+{% if include.icon %}
+    {% capture fa_prefix -%}
+        {%- if include.brand -%}
+            fab
+        {%- else -%}
+            fas
+        {%- endif -%}
+    {%- endcapture -%}
+    <i
+        class="{{ fa_prefix }} fa-{{ include.icon }} fa-fw {{ include.class }}"
+        aria-hidden="true"
+    ></i>
+{% endif %}

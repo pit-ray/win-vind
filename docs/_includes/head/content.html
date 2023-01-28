@@ -1,0 +1,8 @@
+{% assign pageTitle = page.title | default: site.name ~ ' ' ~ site.project.version | escape %}
+{% assign pageDescription = page.description | page.excerpt | default: site.description %}
+
+<title>{{ pageTitle | strip_html |  escape }}</title>
+<meta name="description" content="{{ pageDescription | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+
+<link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">

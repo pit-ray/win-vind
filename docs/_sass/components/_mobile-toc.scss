@@ -1,0 +1,30 @@
+.mobile-toc {
+    h2 {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    ul {
+        padding-left: 1.4rem;
+    }
+
+    .toggle-toc {
+        @include themer(color, (
+            'dark': $site-ui-brand-dark,
+            'light': $site-ui-brand-light,
+        ));
+
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+
+        &::before {
+            content: '[';
+        }
+
+        &::after {
+            content: ']';
+        }
+    }
+}

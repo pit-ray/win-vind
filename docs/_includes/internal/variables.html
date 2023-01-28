@@ -1,0 +1,21 @@
+{%- assign site_ui_mode = site.ui.mode | default: 'auto' -%}
+
+{%- assign site_ui_brand_dark = site.ui.brand.dark | default: '#00ceff' -%}
+{%- assign site_ui_brand_light = site.ui.brand.light | default: '#a20000' -%}
+
+{%- assign site_ui_border_color_dark = site.ui.border_color.dark | default: '#5f5f5f' -%}
+{%- assign site_ui_border_color_light = site.ui.border_color.light | default: '#dee2e6' -%}
+
+{%- if site.ui.header.trianglify == true or site.ui.header.trianglify == false -%}
+    {%- assign site_ui_header_trianglify = site.ui.header.trianglify -%}
+{%- else -%}
+    {%- assign site_ui_header_trianglify = true -%}
+{%- endif -%}
+
+{%- assign site_ui_header_dark_color1 = site.ui.header.dark.color1 | default: '#062a48' -%}
+{%- assign site_ui_header_dark_color2 = site.ui.header.dark.color2 | default: '#304e67' -%}
+{%- assign site_ui_header_light_color1 = site.ui.header.light.color1 | default: '#080331' -%}
+{%- assign site_ui_header_light_color2 = site.ui.header.light.color2 | default: '#673051' -%}
+
+{%- assign site_ui_masthead_color_dark = site.ui.masthead.color.dark | default: '#fff' -%}
+{%- assign site_ui_masthead_color_light = site.ui.masthead.color.light | default: '#fff' -%}

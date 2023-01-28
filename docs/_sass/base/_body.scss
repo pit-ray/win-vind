@@ -1,0 +1,12 @@
+body {
+    @include themer(background-color, (
+        'dark': $background-color-dark,
+        'light': $background-color-light,
+    ));
+    @include themer(color, (
+        'dark': $color-dark,
+        'light': $color-light,
+    ));
+
+    position: relative;
+}

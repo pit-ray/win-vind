@@ -269,7 +269,6 @@ namespace vind
                     fetched_input, fetched_count, mode, parse_count)) {
                 return false ;
             }
-
             enqueue_mapped(fetched_input, fetched_count, mode) ;
             return true ;
         }

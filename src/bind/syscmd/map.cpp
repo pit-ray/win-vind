@@ -90,6 +90,10 @@ namespace vind
 
             auto& ihub = core::InputHub::get_instance() ;
             for(auto mode : prefix_to_modes(prefix)) {
+                if(mode == core::Mode::COMMAND) {
+                    opt::VCmdLine::print(
+                        opt::ErrorMessage("E: Not supported cmap yet")) ;
+                }
                 ihub.add_map(a1, a2, mode) ;
             }
             return SystemCall::RECONSTRUCT ;
@@ -119,6 +123,10 @@ namespace vind
 
             auto& ihub = core::InputHub::get_instance() ;
             for(auto mode : prefix_to_modes(prefix)) {
+                if(mode == core::Mode::COMMAND) {
+                    opt::VCmdLine::print(
+                        opt::ErrorMessage("E: Not supported cnoremap yet")) ;
+                }
                 ihub.add_noremap(a1, a2, mode) ;
             }
             return SystemCall::RECONSTRUCT ;

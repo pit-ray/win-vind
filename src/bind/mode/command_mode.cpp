@@ -254,7 +254,7 @@ namespace vind
                 do {
                     core::CmdUnit::SPtr input ;
                     std::uint16_t count ;
-                    if(!ihub.pull_input(input, count, core::Mode::COMMAND, false)) {
+                    if(!ihub.fetch_input(input, count, core::Mode::COMMAND, false)) {
                         continue ;
                     }
 

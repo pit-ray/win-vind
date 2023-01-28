@@ -43,39 +43,23 @@ description: Vim Key Binder for Windows
 You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
 
 ```vim
-" ------------ Example ------------
-" Virtual command line options
+" options
 set shell = cmd
 set cmd_fontsize = 14
-set cmd_roughpos = LowerLeft
-set cmd_maxchar = 100
-
-" Enable block style caret
+set cmd_fontname = Consolas
 set blockstylecaret
 set blockstylecaret_mode = solid
 
-" Low-level key mapping in resident mode
-rmap <capslock> <ctrl>
+" bindings
+imap <capslock> {<ctrl>}
 
-" Define bindings in GUI normal mode
-gnnoremap <c-h> select_left_window
-gnnoremap <c-l> select_right_window
-gnnoremap <c-k> select_upper_window
-gnnoremap <c-j> select_lower_window
+inoremap <alt><alt> <easy_click_left>
+inoremap <win-enter> <window_resizer>
 
-" Define bindings in insert mode
-imap <capslock> <f16>
-inoremap <f16> to_edi_normal
+noremap <ctrl-1> :! gvim<cr>
+noremap <ctrl-2> :e http://example.com<cr>
 
-imap <ralt> <f17>
-inoremap <f17> easy_click_left
-
-imap <app> <f18>
-inoremap <f18> window_resizer
-
-" Define keystroke macros
-gnnoremap <ctrl-1> :!notepad<cr>
-gnnoremap <ctrl-2> :e https://www.google.com<cr>
+enoremap t ggyyGp
 ```
 
 ## License

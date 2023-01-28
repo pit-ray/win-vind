@@ -75,7 +75,7 @@ $ scoop install win-vind
 
 Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.github.io/win-vind/usage/) with plenty of diagrams. Here, only a sample .vindrc is shown below. As you can see, it is Vim user-friendly.  
 
-## Migration from v4 to v5
+### Migration from v4 to v5
 The v5 has many changes from v4, so please read [the migration guide](https://pit-ray.github.io/win-vind/guide_from_v4).
 
 ### .vindrc sample  

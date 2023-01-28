@@ -1,0 +1,86 @@
+// Only hide nested ULs if they are accessible via JS
+.js .page-sidebar {
+    ul ul {
+        display: none;
+    }
+}
+
+.page-sidebar {
+    max-height: 100vh;
+    position: -webkit-sticky;
+    position: sticky;
+    overflow: auto;
+    top: 20px;
+
+    a {
+        @include themer(color, (
+            'dark': #c7c7c7,
+            'light': #999,
+        ));
+
+        border-bottom: 0;
+    }
+
+    ul {
+        padding-left: 15px;
+
+        & ul {
+            font-size: 90%;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            border-bottom: 0;
+            display: block;
+            font-weight: 500;
+            position: relative;
+
+            &:focus,
+            &:hover {
+                @include themer(color, (
+                    'dark': $site-ui-brand-dark,
+                    'light': $site-ui-brand-light,
+                ));
+
+                background-color: transparent;
+            }
+
+            &.active,
+            &.active:focus,
+            &.active:hover {
+                @include themer(color, (
+                    'dark': $site-ui-brand-dark,
+                    'light': $site-ui-brand-light,
+                ));
+
+                font-weight: 700;
+
+                // In order to prevent being affected by the extra width misaligning
+                // content, we'll do position absolute the border.
+                &::before {
+                    @include themer(border-left-color, (
+                        'dark': $site-ui-brand-dark,
+                        'light': $site-ui-brand-light,
+                    ));
+
+                    border-left-style: solid;
+                    border-left-width: $sidebar-border-width;
+                    content: '';
+                    display: block;
+                    height: 100%;
+                    left: 0;
+                    position: absolute;
+                    top: 0;
+                }
+            }
+
+            // Unhide any nested ULs when this TOC section is active
+            &.active + ul {
+                display: block;
+            }
+        }
+    }
+}

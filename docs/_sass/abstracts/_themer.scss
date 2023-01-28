@@ -1,0 +1,18 @@
+@mixin themer($property, $values) {
+    @if $site-ui-mode == 'auto' {
+        @media (prefers-color-scheme: dark) {
+            & {
+                #{$property}: map-get($values, 'dark');
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            & {
+                #{$property}: map-get($values, 'light');
+            }
+        }
+    }
+    @else if $site-ui-mode == 'dark' or $site-ui-mode == 'light' {
+        #{$property}: map-get($values, $site-ui-mode);
+    }
+}

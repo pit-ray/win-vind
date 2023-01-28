@@ -1,0 +1,38 @@
+{% assign fm_class        = layout.table_of_contents.class        | default: page.table_of_contents.class        | default: "" %}
+{% assign fm_anchor_class = layout.table_of_contents.anchor_class | default: page.table_of_contents.anchor_class | default: "" %}
+
+{% capture class -%}
+    {{- include.class -}}
+    {%- if fm_class != "" -%}
+        .{{- fm_class -}}
+    {%- endif -%}
+{%- endcapture %}
+
+{% capture anchor_class %}
+    {{- include.anchor_class -}}
+    {%- if fm_anchor_class != "" -%}
+        .{{- fm_anchor_class -}}
+    {%- endif -%}
+{% endcapture %}
+
+{% assign sanitize   = page.table_of_contents.sanitize   | default: layout.table_of_contents.sanitize   | default: false %}
+{% assign h_min      = page.table_of_contents.h_min      | default: layout.table_of_contents.h_min      | default: 1 %}
+{% assign h_max      = page.table_of_contents.h_max      | default: layout.table_of_contents.h_max      | default: 3 %}
+{% assign ordered    = page.table_of_contents.ordered    | default: layout.table_of_contents.ordered    | default: false %}
+{% assign item_class = page.table_of_contents.item_class | default: layout.table_of_contents.item_class | default: '' %}
+{% assign baseurl    = page.table_of_contents.baseurl    | default: layout.table_of_contents.baseurl    | default: '' %}
+{% assign skipNoIDs  = page.table_of_contents.skipNoIDs  | default: layout.table_of_contents.skipNoIDs  | default: false %}
+
+{% include jekyll-docs-theme/vendor/toc.html
+     html=content
+     id=include.id
+     class=class
+     sanitize=sanitize
+     h_min=h_min
+     h_max=h_max
+     ordered=ordered
+     item_class=item_class
+     baseurl=baseurl
+     anchor_class=anchor_class
+     skipNoIDs=skipNoIDs
+%}

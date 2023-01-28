@@ -1,0 +1,43 @@
+---
+---
+
+$site-ui-mode: {{ site.ui.mode | default: 'auto' }};
+
+$site-ui-brand-dark: {{ site.ui.brand.dark | default: '#00ceff' }};
+$site-ui-brand-light: {{ site.ui.brand.light | default: '#a20000' }};
+
+$site-ui-border-color-dark: {{ site.ui.border_color.dark | default: '#5f5f5f' }};
+$site-ui-border-color-light: {{ site.ui.border_color.light | default: '#dee2e6' }};
+
+$site-ui-header-dark-color1: {{ site.ui.header.dark.color1 | default: '#062a48' }};
+$site-ui-header-dark-color2: {{ site.ui.header.dark.color2 | default: '#304e67' }};
+$site-ui-header-light-color1: {{ site.ui.header.light.color1 | default: '#080331' }};
+$site-ui-header-light-color2: {{ site.ui.header.light.color2 | default: '#673051' }};
+
+$site-ui-masthead-color-dark: {{ site.ui.masthead.color.dark | default: '#fff' }};
+$site-ui-masthead-color-light: {{ site.ui.masthead.color.light | default: '#fff' }};
+
+@import 'abstracts/highlight-dark';
+@import 'abstracts/highlight-light';
+@import 'abstracts/themer';
+@import 'abstracts/variables';
+
+// Base Styles
+@import 'base/anchor';
+@import 'base/body';
+@import 'base/blockquote';
+@import 'base/horizontal-rule';
+@import 'base/scope-markdown';
+
+// Components
+@import 'components/alert';
+@import 'components/footer';
+@import 'components/header';
+@import 'components/highlight';
+@import 'components/masthead';
+@import 'components/mobile-toc';
+@import 'components/sidebar';
+
+// Utilities
+@import 'utilities/colors';
+@import 'utilities/js';

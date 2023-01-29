@@ -118,27 +118,96 @@ win-vind uses **Run Commands** style configuration method. If you've ever writte
 
 > **Warning**: win-vind v5 has made fundamental changes to the mapping system, please see the [migration guide]({{ site.url }}/migration) from <= 4.4.0.
 
-Generally, there are three levels of key mapping: **key2key**, **keyset2keyset**, and **cmd2cmd**. key2key assigns one key to another. keyset2keyset assigns one key combination to another, such as `<c-s>` to `<m-h>`. cmd2cmd is a mapping scheme that generates another command in response to a sequential command input, such as `qq` to `<c-w>e`.  
+### What is a mapping?
+A typical key binding is a simple one that assigns a function from a set of keys. In contrast, the mapping employed in Vim is a kind of extension of key binding, a mechanism that allows recursive key assignment and command definition.
 
-The keyset syntax uses the same expression as in Vim, where keys are connected by `-` between `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
+Mapping is defined using the `map` or `noremap` command. Examples of recursive key assignments are shown below.
 
-The following commands are supported. By the way, `{` and `}` themselves are not part of the syntax.  
+```vim
+" Mapping A
+nmap b h
+nmap o b
+nmap p o
+```
 
-|**Syntax**|**Effects**|
+```vim
+" Mapping B
+nmap b h
+nmap o h
+nmap p h
+```
+
+Mapping A is defined as b -> h, o -> b, p -> o. However, the `map` command performs a recursive assignment, o -> b -> h, p -> o -> b -> h, and automatically generates an optimized mapping B. This allows simple commands to be combined to form complex commands efficiently.
+
+On the other hand, the `noremap` command does not perform such recursive resolution. That is, the mapping destination is always interpreted as the default binding, and mapping to a nonexistent binding makes no sense.
+
+For example, the following mapping does not cause anything to happen in insert mode because it is not binding to the m key by default.
+
+```vim
+" m does not exist, so nothing happens
+inoremap g m
+```
+
+Below is a table listing the commands for editing mappings.
+
+|**Syntax**|**Features**|
 |:---|:---|
-|`{mode}map {in-key} {out-key}`|It performs **cmd2cmd** mapping with low-level. The defined low-level map is actually propagated to Windows as keystroke. By the way, only the key2keyset format can synchronize the key state without delay.|
-|`{mode}noremap {in-cmd} {func-id}`|It defines the map to call the function.|
-|`{mode}noremap {in-keyset} {out-keyset}`|It performs **cmd2cmd** mapping in win-vind scope. However, since the `{func-id}` definition has higher priority than its syntax, it may result in exactly one level of recursive mapping.|
-|`{mode}unmap {in-cmd}`|Remove the map corresponding to the `{in-cmd}`.|
-|`{mode}mapclear`|Delete all maps.|
-|`command {in-cmd} {func-id}`|It defines the command to call the function.|
-|`delcommand {in-cmd}`|Remove the command corresponding to the `{in-cmd}`.|
-|`comclear`|delete all commands.|
-|`source`|Load another .vindrc. Either fill in the path to the .vindrc or use the syntax `user/repo` to load the .vindrc in the root directory of the GitHub repository.|
+|`${MODE}map ${IN_CMD} ${OUT_CMD}`|Recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`.|
+|`${MODE}noremap ${IN_CMD} ${OUT_CMD}`|Non-recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`, which is composed by the default map.|
+|`${MODE}unmap ${IN_CMD}`|Remove the map corresponding to the `${IN_CMD}`.|
+|`${MODE}mapclear`|Delete all maps.|
+|`command ${IN_CMD} ${OUT_CMD}`|It defines the command to call the `${OUT_CMD}`.|
+|`delcommand ${IN_CMD}`|Remove the command corresponding to the `{IN_CMD}`.|
+|`comclear`|Delete all commands.|
 
-`{mode}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). And only **UTF-8** format is supported for `.vindrc`.  
+&nbsp;
+
+By the way, `${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). The keyset syntax uses the same expression as in Vim, where keys are connected by `-` between `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
+
+### Allow external macro
+
+As mentioned earlier, some modes of win-vind absorb keystrokes and do not propagate them to other applications. Therefore, there is a special feature called external macro.  
+
+The external macro is defined macros that are propagated outside of win-vind by enclosing them in `{` and `}`. This emulates the action of the user pressing the keyboard itself. A single key to single key mapping (e.g. `map a {b}`) is the most efficient low-level mapping done.  
 
 
+### Examples
+Below are some examples of use.
+
+1. Define mode change mapping
+   ```vim
+   imap <win-]> <to_gui_normal>
+   ``` 
+1. Text input macros
+   ```vim
+   nmap mail {win-vind@example.com}
+   ```
+1. Web page launcher
+   ```vim
+   nmap <ctrl-1> :e https://example.com<cr>
+   ```
+1. Application launcher
+   ```vim
+   nmap <ctrl-2> :! notepad<cr>
+   ```
+1. Copy the current line to the bottom line as in Vim.
+   ```vim
+   enmap t yyGp
+   ```
+
+## Load remote .vindrc
+Inspired from many Vim plugin managers such as [vim-plug](https://github.com/junegunn/vim-plug), win-vind has a simple remote .vindrc loading capability using the `source` command.
+
+The `source` command is originally designed to load local .vindrc, but it can also load .vindrc in the form `user/repo` from the root directory of a repository on GitHub .
+
+As a sample, by writing the following in your .vindrc., win-vind loads the .vindrc in [pit-ray/remote_vindrc_demo](https://github.com/pit-ray/remote_vindrc_demo) repository, and `:test_remote` command can be available.
+
+```vim
+" Load remote repository .vindrc
+source pit-ray/remote_vindrc_demo
+```
+
+> **Warning**: `source user/repo` does not verify the safety of the .vindrc it reads, which may be a security hole. Therefore, use it for reliable repositories or your own dotfiles configurations. As a minimum security measure, win-vind only reads the contents of source the first time a `source` command is done, and does not update the contents as `git pull` does.
 
 
 ## Quick Tutorial
@@ -147,7 +216,7 @@ In the following, let's try win-vind in practice based on a concrete example.
 
 ### 1. GUI Operation and Window Operation  
 
-1. Switch to **GUI Normal Mode** with `<Esc-Left>`.
+1. Switch to **GUI Normal Mode** with `<ctrl-]>`.
 1. Please inputs `:!mspaint` to launch Microsoft Paint.
 1. You can call **EasyClick** with `<shift-f><shift-f>`.  
    
@@ -164,29 +233,33 @@ Let's do the last tutorial!
 
 1. Go to **Insert Mode**.
 1. This time, we will try **Instant GUI Normal Mode** with `<F8>`. It allows us to temporarily switch to the **GUI Normal Mode**.  
-
+   
    <p align="center">
    <img src="{{ site.url }}/imgs/instant_gui_normal_mode.jpg" width=450 >  
    <p align="center">Instant GUI Normal Demo</p>
    </p>
 1. Open your `.vindrc` with `:e`.
+   
    <p align="center">
    <img src="{{ site.url }}/imgs/edit_vindrc_demo.jpg" width=450 >  
    <p align="center">Edit .vindrc Demo</p>
    </p>
 1. Write following commands into `.vindrc`.
+   
    ```vim
-   set cmd_fontname = Times New Roman
+   " Write to your .vindrc.
+   set cmd_fontname = Arial
    inoremap <Alt> <easy_click_left>
    imap <ctrl-d><ctrl-d> {win-vind@example.com}
-   ngnnoremap <ctrl-1> :!notepad<cr>
+   noremap <ctrl-1> :!notepad<cr>
    ```
 1. If you done, try reloading `.vindrc` with `:source` of win-vind. (No arguments are needed.)
+   
    <p align="center">
    <img src="{{ site.url }}/imgs/source_demo.jpg" width=450 >  
    <p align="center">Reload Demo</p>
    </p>
-1. In **Insert Mode**, you can use `<Capslock>` instead of `<Ctrl>` and call EasyClick with a single `<Alt>`. And, you can insert a fixed form text with pressing Ctrl and A at the same time. **In GUI Normal Mode**, pressing Ctrl and 1 at the same time will open Notepad.
+1. The above command allows you to call EasyClick with the `<alt>` key and `<ctrl-d><ctrl-d>` will auto-type your email address in insert mode. Also, `<ctrl-1>` will launch Notepad in normal mode.
 
 <br>
 <br>

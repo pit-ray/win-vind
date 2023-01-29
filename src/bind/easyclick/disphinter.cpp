@@ -94,8 +94,11 @@ namespace vind
             }
 
             for(std::size_t i = 0 ; i < strhints.size() ; i ++) {
-                pimpl->painter_.draw(add_margin(strhints[i]),
-                        pimpl->align(positions[i].x()), pimpl->align(positions[i].y()), 1) ;
+                util::Point2D pos{
+                    pimpl->align(positions[i].x()),
+                    pimpl->align(positions[i].y())
+                } ;
+                pimpl->painter_.draw(add_margin(strhints[i]), pos, 1) ;
             }
 
             pimpl->painter_.refresh() ;
@@ -116,12 +119,16 @@ namespace vind
                 if(matched_counts[i] == 0) {
                     continue ;
                 }
-                pimpl->painter_.draw(add_margin(strhints[i]),
-                        pimpl->align(positions[i].x()), pimpl->align(positions[i].y()), 1) ;
+                util::Point2D pos {
+                    pimpl->align(positions[i].x()),
+                    pimpl->align(positions[i].y())
+                } ;
+
+                pimpl->painter_.draw(add_margin(strhints[i]), pos, 1) ;
 
                 //overdraw with the weak text color.
-                pimpl->weak_painter_.draw(" " + strhints[i].substr(0, matched_counts[i]),
-                        pimpl->align(positions[i].x()), pimpl->align(positions[i].y()), 1) ;
+                pimpl->weak_painter_.draw(
+                    " " + strhints[i].substr(0, matched_counts[i]), pos, 1) ;
             }
             pimpl->painter_.refresh() ;
             pimpl->weak_painter_.refresh() ;

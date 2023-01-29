@@ -1,7 +1,9 @@
 #include "display_text_painter.hpp"
 
 #include "color.hpp"
+#include "debug.hpp"
 #include "def.hpp"
+#include "point2d.hpp"
 #include "rect.hpp"
 #include "rect.hpp"
 #include "screen_metrics.hpp"
@@ -10,6 +12,7 @@
 
 #include <cstring>
 #include <memory>
+#include <string>
 
 namespace vind
 {
@@ -29,6 +32,8 @@ namespace vind
             LOGFONTW logfont ; //infomation struct for creation of font
             util::HFontUPtr hfont ; //font handle
 
+            LONG font_size ;
+
             explicit Impl()
             : hdc(nullptr, util::delete_hdc),
               display_dc(nullptr, util::delete_hdc),
@@ -37,7 +42,8 @@ namespace vind
               fg_color(RGB(0, 0, 0)),
               bg_color(RGB(0, 0, 0)),
               logfont(),
-              hfont(nullptr, util::delete_obj)
+              hfont(nullptr, util::delete_obj),
+              font_size(1)
             {
                 logfont.lfItalic         = FALSE ;
                 logfont.lfUnderline      = FALSE ;
@@ -106,7 +112,7 @@ namespace vind
         : pimpl(std::make_unique<Impl>())
         {
             initialize_dc(enable_double_buffering) ;
-            set_font(font_size, font_weight, std::move(face_name)) ;
+            set_font(font_size, font_weight, face_name) ;
         }
 
         void DisplayTextPainter::copy(const DisplayTextPainter& rhs) {
@@ -142,7 +148,10 @@ namespace vind
                 LONG font_size,
                 LONG font_weight,
                 const std::string& face_name) {
-            pimpl->logfont.lfHeight = font_size ;
+            // To automatically scale regarding the DPI of
+            // the position for drawing, save the base size.
+            pimpl->font_size = font_size ;
+
             pimpl->logfont.lfWeight = font_weight ;
 
             if(face_name.empty()) {
@@ -161,7 +170,10 @@ namespace vind
                     dst[LF_FACESIZE - 1] = L'\0' ;
                 }
             }
+        }
 
+        void DisplayTextPainter::apply_font(float scale) {
+            pimpl->logfont.lfHeight = static_cast<LONG>(pimpl->font_size * scale) ;
             pimpl->hfont = util::create_font(pimpl->logfont) ;
             util::select_obj(pimpl->hdc, pimpl->hfont) ;
         }
@@ -196,14 +208,18 @@ namespace vind
             set_back_color(util::hex2COLORREF(hex)) ;
         }
 
-        void DisplayTextPainter::draw(const std::string& str, int x, int y, int extra) {
+        void DisplayTextPainter::draw(const std::string& str, const Point2D& pos, int extra) {
             if(SetTextCharacterExtra(pimpl->hdc.get(), extra) == static_cast<int>(0x80000000)) {
                 throw RUNTIME_EXCEPT("Could not set a character margin.") ;
             }
             auto wstr = s_to_ws(str) ;
+
+            // Change the scale of font regarding the DPI.
+            apply_font(get_monitor_scale(pos)) ;
+
             if(!TextOutW(
-                        pimpl->hdc.get(), x, y,
-                        wstr.c_str(), static_cast<int>(wstr.length()))) {
+                    pimpl->hdc.get(), pos.x(), pos.y(),
+                    wstr.c_str(), static_cast<int>(wstr.length()))) {
                 throw RUNTIME_EXCEPT("Could not draw a text (" + str + ").") ;
             }
         }
@@ -220,7 +236,7 @@ namespace vind
                 }
             }
             else {
-                draw("", 0, 0, 0) ;
+                draw("", Point2D{0, 0}, 0) ;
             }
         }
     }

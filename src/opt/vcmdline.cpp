@@ -438,7 +438,7 @@ namespace vind
             }
 
             for(const auto& p : pimpl->coords_) {
-                pimpl->dtp_.draw(msg_, p.x(), p.y(), pimpl->extra_) ;
+                pimpl->dtp_.draw(msg_, p, pimpl->extra_) ;
             }
         }
     }

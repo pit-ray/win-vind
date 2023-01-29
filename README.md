@@ -1,6 +1,6 @@
 <h1></h1>
 <p align="center">
-  <img src="res/banner.gif?raw=true" />
+  <img src="docs/imgs/banner.gif?raw=true" />
   <p align="center">
     <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://img.shields.io/coverity/scan/pit-ray-win-vind?style=flat-square&color=4DB6AC" /></a>
     <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://img.shields.io/codacy/grade/8f2e6f2826904efd82019f5888574327?style=flat-square&color=4DB6AC" /></a>
@@ -42,7 +42,7 @@ It is also available from the command line as a command for UI operations like `
 <br>  
 
 ## Migration from v4 to v5
-The v5 has many changes from v4, so please read [the migration guide](https://pit-ray.github.io/win-vind/guide_from_v4).
+The v5 has many changes from v4, so please read [the migration guide](https://pit-ray.github.io/win-vind/migration).
 
 ## Installation
 We support a variety of installation methods.

@@ -98,6 +98,10 @@ namespace vind
                     continue ;
                 }
 
+                if(in_cmdunit->is_containing(KEYCODE_ESC)) {
+                    break ;
+                }
+
                 // Fetch out only the characters.
                 core::CmdUnitSet ascii_set{} ;
                 for(auto& key : *in_cmdunit) {

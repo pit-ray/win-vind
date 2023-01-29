@@ -14,7 +14,7 @@ namespace
     using namespace vind ;
     inline void snap_foreground_window(
             const std::function<util::Box2D(const util::Box2D&)>& calc_half_size,
-            const std::function<POINT(const util::Box2D&)>& next_monitor_pos) {
+            const std::function<util::Point2D(const util::Box2D&)>& next_monitor_pos) {
 
         auto hwnd = util::get_foreground_window() ;
 
@@ -55,7 +55,7 @@ namespace vind
             } ;
 
             auto next_monitor_pos = [] (const util::Box2D& rect) {
-                return POINT{rect.left() - 100, rect.center_y()} ;
+                return util::Point2D{rect.left() - 100, rect.center_y()} ;
             } ;
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -78,7 +78,7 @@ namespace vind
             } ;
 
             auto next_monitor_pos = [] (const util::Box2D& rect) {
-                return POINT{rect.right() + 100, rect.center_y()} ;
+                return util::Point2D{rect.right() + 100, rect.center_y()} ;
             } ;
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -101,7 +101,7 @@ namespace vind
             } ;
 
             auto next_monitor_pos = [] (const util::Box2D& rect) {
-                return POINT{rect.center_x(), rect.top() - 100} ;
+                return util::Point2D{rect.center_x(), rect.top() - 100} ;
             } ;
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;
@@ -124,7 +124,7 @@ namespace vind
             } ;
 
             auto next_monitor_pos = [] (const util::Box2D& rect) {
-                return POINT{rect.center_x(), rect.bottom() + 100} ;
+                return util::Point2D{rect.center_x(), rect.bottom() + 100} ;
             } ;
 
             snap_foreground_window(calc_half_size, next_monitor_pos) ;

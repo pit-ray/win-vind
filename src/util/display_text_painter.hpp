@@ -1,6 +1,8 @@
 #ifndef _DISPLAY_TEXT_PAINTER_HPP
 #define _DISPLAY_TEXT_PAINTER_HPP
 
+#include "point2d.hpp"
+
 #include <memory>
 #include <string>
 
@@ -31,6 +33,8 @@ namespace vind
                     LONG font_weight,
                     const std::string& face_name) ;
 
+            void apply_font(float scale=1.0f) ;
+
             void set_text_color(COLORREF color) ;
             void set_text_color(
                     unsigned char r,
@@ -47,8 +51,7 @@ namespace vind
 
             void draw(
                     const std::string& str,
-                    int x,
-                    int y,
+                    const Point2D& pos,
                     int extra=0) ;
 
             void refresh() ; //call it per a one drawing cycle.

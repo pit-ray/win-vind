@@ -36,7 +36,6 @@ namespace
         Param("icon_style", "icon32_flat.ico"),
         Param("keybrd_layout", ""),
         Param("tempdir", "~/Downloads"),
-        Param("gui_lang", "en"),
         Param("shell", "cmd"),
         Param("shellcmdflag", "-c"),
         Param("shell_startupdir", ""),

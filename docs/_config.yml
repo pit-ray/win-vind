@@ -1,7 +1,7 @@
 remote_theme: allejo/jekyll-docs-theme@v1.0.0
 
 name: win-vind
-logo: imgs/win-vind-icon.png
+logo: favicon.png
 
 url: https://pit-ray.github.io/win-vind
 
@@ -9,11 +9,11 @@ translations:
   - id:
     label: English
 
-  - id: ja
-    label: 日本語
+  #- id: ja
+  #  label: 日本語
 
 project:
-  version: 4.3.3
+  version: 5.0.0
   download_url: downloads
   download_text: Download
 
@@ -43,10 +43,10 @@ links:
       icon: comments
       url: https://github.com/pit-ray/win-vind/discussions
 
-dl_ins_32: https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_installer.zip
-dl_zip_32: https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_portable.zip
-dl_ins_64: https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_installer.zip
-dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_portable.zip
+dl_ins_32: https://github.com/pit-ray/win-vind/releases/download/v5.0.0/win-vind_5.0.0_32bit_installer.zip
+dl_zip_32: https://github.com/pit-ray/win-vind/releases/download/v5.0.0/win-vind_5.0.0_32bit_portable.zip
+dl_ins_64: https://github.com/pit-ray/win-vind/releases/download/v5.0.0/win-vind_5.0.0_64bit_installer.zip
+dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v5.0.0/win-vind_5.0.0_64bit_portable.zip
 
 ui:
   mode: 'light' # 'auto', 'dark', 'light'

@@ -9,15 +9,20 @@ All keywords in win-vind are not case-sensitive.
 
 ### Mode Prefix
 
-|Keyword|Meanings|
-|:---:|:---:|
-|gn|GUI Normal Mode|
-|gv|GUI Visual Mode|
-|en|Editor Normal Mode|
-|ev|Editor Visual Mode|
-|i|Insert Mode|
-|r|Resident Mode|
-|c|Command Mode|
+|**Prefix**|**Mode**|
+|:---:|:---|
+| ` ` |GUI Normal, GUI Visual, Edi Normal, Edi Visual|
+|`g` | GUI Normal, GUI Visual|
+|`e` | Edi Normal, Edi Visual|
+|`n` | GUI Normal, Edi Normal|
+|`v` | GUI Visual, Edi Visual|
+|`gn` | GUI Normal|
+|`gv` | GUI Visual|
+|`en` | Edi Normal|
+|`ev` | Edi Visual|
+|`i` | Insert Mode|
+|`r` | Resident Mode|
+|`c` | Command Mode|
 
 ### Specific Keyword  
 

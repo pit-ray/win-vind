@@ -25,14 +25,12 @@ show_in_menu: false
 |`cmd_fontname`|str|Consolas|Font name for virtual command line. If an empty string is passed, the system font will be used.|
 |`cmd_fontsize`|num|23|Font size in virtual command line|
 |`cmd_fontweight`|num|400|Font weight in virtual command line. Its maximum value is 1000.|
-|`cmd_maxchar`|num|32|Maximum number of characters per line in the virtual command line.|
-|`cmd_maxhist`|num|10|Maximum number of histories in the virtual command line.|
 |`cmd_roughpos`|str|LowerMid|Rough position of virtual command line. The choices are `UpperLeft`, `UpperMid`, `UpperRight`, `MidLeft`, `Center`, `MidRight`, `LowerLeft`, `LowerMid`, or `LowerRight`.|
 |`cmd_xmargin`|num|32|Use `cmd_roughpos` to determine the rough position, and `cmd_xmargin` to determine the detailed horizontal position. The units are in pixels.|
 |`cmd_ymargin`|num|96|Use `cmd_roughpos` to determine the rough position, and `cmd_ymargin` to determine the detailed vertical position. The units are in pixels.|
+|`cmd_monitor`|str|primary|The monitor on which to draw the command line. The choices are `primary`, `all`, `active`, `${NUMBER}`. The `primary` displays the command line on the primary monitor only. `all` draws command lines on all monitos. `active` displays command lines on the monitor where the selected window is located. `${NUMBER}` shows the command line on `${NUMBER}`th monitor. The `${NUMBER}` is a number starting from 0 and assigned from the left monitor. For example, `set cmd_monitor=1`.|
 |`cursor_accel`|num|95|Pixel-level acceleration in the constatnt acceleration motion of the mouse cursor.|
-|`cursor_maxv`|num|12|Maximum velocity of the mouse cursor|
-|`cursor_tweight`|num|250|A weight for scaling the time of constant acceleration motion of the mouse cursor.|
+|`cursor_resolution`|num|250|A weight for scaling the time of constant acceleration motion of the mouse cursor.|
 |`dedicate_to_window`|bool|false|If **Dedicate to One window** enables, you can select one window with `enable_targeting_of_dedicate_to_window`. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with `disable_targeting_of_dedicate_to_window`. In other words, this feature transforms some normal editors to fake Vim. The computing cost is so small.|
 |`easyclick_bgcolor`|str|323232|Font background color of hints in EasyClick|
 |`easyclick_colordecay`|num|100|Matching color decay of hints in EasyClick|
@@ -48,10 +46,12 @@ show_in_menu: false
 |`initmode`|str|i|Initial mode of win-vind. The value is the mode prefix.|
 |`jump_margin`|num|10|A margin in pixels to prevent jumping off the screen when jumping to the edge of the screen using `jump_cursor_to_left`, etc.|
 |`keybrd_layout`|str||Keyboard layout kmp file referenced by `jump_cursor_with_keybrd_layout`. By default, only **US (101/102)** or **JP (106/109)** layouts are supported. If your keyboard is not the right one, please create your own kmp file and use its path as the value. If you leave the value empty, the KMP file will be selected automatically.|
+|`listen_interval`|float|1.0|The time interval in seconds at which the server win-vind will retrieve command requests sent by the client with the `-c` argument.|
 |`shell`|str|cmd|Name of the shell to use for `:!` commands|
 |`shell_startupdir`|str||The current directory where commands (e.g. `:shell`, `:terminal`, `:!`) will be executed. For these commands, the current directory is the directory if there is Exeplorer, or the user directory otherwise. If this option is not empty, then the current directory is fixed to a value directory.|
 |`shellcmdflag`|str|-c|Flag passed to the shell to execute `:!` commands|
 |`suppress_for_vim`|bool|false|It makes the mode of win-vind automatically switch to **Resident Mode** on the applications included the strings called **VIM** in an executable file name. Thus, it allows us to smoothly move from win-vind having the same key-bindings as Vim to Vim applications.|
+|`tempdir`|str|~/Downloads|Where to download the file with the update checking.|
 |`uiacachebuild`|bool|false|EasyClick and `autofocus_textarea` are slow because they scan the UI object after being called. If this option is enabled, scanning is done asynchronously and cache is used as a result. Using the cache is 30 times faster than scanning linearly, but the location information, etc. may not always be correct.|
 |`uiacachebuild_lifetime`|num|1500|Cache lifetime (ms). A high value reduces the computational cost, but decreases the reliability of the cache. A low value increases the computational cost due to frequent cache creation, but guarantees reliability.|
 |`uiacachebuild_staybegin`|num|500|The time between when the mouse cursor stops moving and when it starts to build a cache. In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. Therefore, it should be updated only immediately after the mouse stops. The value of this option is the time(ms) that the mouse cursor is considered to be stopped. Please refer to [appendix](#overview-of-stay-range-in-uiacachebuild)|
@@ -59,10 +59,8 @@ show_in_menu: false
 |`vcmdline`|bool|true|show virtual command line|
 |`vscroll_pageratio`|num|0.125|The ratio of one page to the screen height to determine the amount of scrolling movement as a page.
 |`vscroll_speed`|num|30|Vertical scrolling speed of the mouse wheel.|
-|`window_accel`|num|95|Pixel-level acceleration in the constatnt acceleration motion of the window in winresizer.|
+|`window_velocity`|num|100|Pixel-level velocity in the constatnt acceleration motion of the window in winresizer.|
 |`window_hdelta`|num|100|Window Width delta for resizing|
-|`window_maxv`|num|12|Maximum velocity of the window in winresizer.|
-|`window_tweight`|num|250|A weight for scaling the time of constant acceleration motion of the window in winresizer.|
 |`window_vdelta`|num|100|Window height delta for resizing|
 |`winresizer_initmode`|num|0|Initial mode of window resizer ([0]: Resize, [1]: Move, [2]: Focus)|
 

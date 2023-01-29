@@ -30,17 +30,6 @@ namespace vind
               id_(name_to_id(name_))
             {}
 
-            void release_fake_press() {
-                //correct the state to avoid cases that a virtual key is judged to be pressed,
-                //though a real key is released.
-                auto& igate = core::InputGate::get_instance() ;
-                for(auto& key : igate.pressed_list()) {
-                    if(!igate.is_really_pressed(key)) {
-                        igate.release_virtually(key) ;
-                    }
-                }
-            }
-
             void calibrate_absorber_state() {
                 auto& igate = core::InputGate::get_instance() ;
                 auto buf = igate.pressed_list() ;
@@ -106,7 +95,6 @@ namespace vind
 
             try {
                 result = do_process(count, args) ;
-                pimpl->release_fake_press() ;
             }
             catch(const std::runtime_error& e) {
                 error_process(e) ;

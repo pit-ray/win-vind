@@ -342,6 +342,15 @@ namespace vind
                     continue ;
                 }
                 handle_system_call(input->execute(count)) ;
+
+                // correct the state to avoid cases that a virtual key
+                // is judged to be pressed, though a real key is released.
+                auto& igate = core::InputGate::get_instance() ;
+                for(auto& key : igate.pressed_list()) {
+                    if(!igate.is_really_pressed(key)) {
+                        igate.release_virtually(key) ;
+                    }
+                }
             } while(!ihub.is_empty_queue()) ;
         }
 

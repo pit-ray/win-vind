@@ -210,6 +210,20 @@ source pit-ray/remote_vindrc_demo
 > **Warning**: `source user/repo` does not verify the safety of the .vindrc it reads, which may be a security hole. Therefore, use it for reliable repositories or your own dotfiles configurations. As a minimum security measure, win-vind only reads the contents of source the first time a `source` command is done, and does not update the contents as `git pull` does.
 
 
+## Use as automation command by server-client
+
+The `--command` option allows us to execute an arbitrary command from a terminal.
+
+The first time you run win-vind, it will be resident in the system tray and run as a server program. The server will check shared memory at the interval specified by the `listen_interval` option and execute any requested commands in addition to the query. All new win-vinds that already have win-vind running will become clients.
+
+For example, if you execute the following command with win-vind already running, a window-switching program will be started and the two left window will be selected.
+
+```sh
+$ win-vind -c "<switch_window>hh<cr>"
+```
+
+By using this, only specific functions such as EasyClick can be called from other tools such as AutoHotKey.
+
 ## Quick Tutorial
 
 In the following, let's try win-vind in practice based on a concrete example.

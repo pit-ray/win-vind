@@ -11,23 +11,30 @@
    @set BUILD_32=TRUE
    @set BUILD_64=TRUE
 ) else (
-    @if "%2" == "32" (
+    @if %2 == 32 (
         @set BUILD_32=TRUE
-    ) else (
+        @set BUILD_64=FALSE
+    ) else if %2 == 64 (
+        @set BUILD_32=FALSE
         @set BUILD_64=TRUE
+    ) else (
+        @set BUILD_32=FALSE
+        @set BUILD_64=FALSE
     )
 )
+
+@echo Build Status: x86: %BUILD_32%, x64 %BUILD_64%
 
 @if "%3" == "" (
     @set REQUIRE_VCVARS=TRUE
 ) else (
     if "%3" == "-without-vcvars" (
-        @echo Wihtout vcvars for nmake.
+        @set REQUIRE_VCVARS=FALSE
     ) else (
         @set REQUIRE_VCVARS=TRUE
     )
 )
-
+@echo Setup vcvars in the script: %REQUIRE_VCVARS%
 
 @rem @set wxWidgets_VERSION=3.0.5
 set wxWidgets_VERSION=3.1.5
@@ -83,50 +90,61 @@ cd wxWidgets/build/msw
        powershell rm -r gcc_mswu
     )
 
-    @goto exit
+    @goto final
 
 :msvc
     @if exist vc_mswu* (
         powershell rm -r vc_mswu*
     )
 
-    @if not exist ../../lib/vc_x64_lib (
-        @if defined BUILD_64 (
-            @if defined REQUIRE_VCVARS (
-                if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat" (
-                    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-                )
-                else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" (
-                    call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-                )
-            )
-            @echo nmake for 64bit
-            nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X64 RUNTIME_LIBS=static
-        )
+    @ if %BUILD_64% == FALSE (
+        @goto msvc_64_end
     )
 
-    @if not exist ../../lib/vc_lib (
-        @if defined BUILD_32 (
-            @if defined REQUIRE_VCVARS (
-                if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat" (
-                    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-                )
-                else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat" (
-                    call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat"
-                )
-            )
-            @echo nmake for 32bit
-            nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X86 RUNTIME_LIBS=static
-        )
+    @echo Building 64bit...
+    @ if exist ../../lib/vc_x64_lib (
+        @echo Already exists the directory for x64.
+        @goto msvc_64_end
     )
 
-    @if exist vc_mswu* (
+    @if %REQUIRE_VCVARS% == TRUE (
+        if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat" (
+            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+        ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" (
+            call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+        )
+    )
+    nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X64 RUNTIME_LIBS=static
+
+    :msvc_64_end
+
+    @ if %BUILD_32% == FALSE (
+        @goto msvc_32_end
+    )
+
+    @echo Building 32bit...
+    @ if exist ../../lib/vc_lib (
+        @echo Already exists the directory for x86.
+        @goto msvc_32_end
+    )
+    @ if %REQUIRE_VCVARS% == TRUE (
+        if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat" (
+            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
+        ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat" (
+            call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat"
+        )
+    )
+    nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X86 RUNTIME_LIBS=static
+
+    :msvc_32_end
+
+    @ if exist vc_mswu* (
         powershell rm -r vc_mswu*
     )
 
-    @goto exit
+    @goto final
 
-:exit
+:final
 
 cd ../../../..
 
@@ -135,5 +153,3 @@ cd ../../../..
 @rem     cd ..
 @rem call "tools/copy_mingw_libs.bat"
 @rem )
-
-@echo Installed wxWidgets successfully

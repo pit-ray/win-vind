@@ -45,7 +45,7 @@ jobs:
         key: x64-libs-cache-msvc-220126
 
     - name: Setup Libraries
-      run: "tools/install_wxWidgets.bat -msvc 64"
+      run: "tools/install_wxWidgets.bat -msvc 64 -without-vcvars"
  
     - name: Configure CMake
       run: |
@@ -71,7 +71,7 @@ jobs:
         key: x86-libs-cache-msvc-220126
 
     - name: Setup Libraries
-      run: "tools/install_wxWidgets.bat -msvc 32"
+      run: "tools/install_wxWidgets.bat -msvc 32 -without-vcvars"
 
     - name: Configure CMake
       run: |

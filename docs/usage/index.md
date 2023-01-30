@@ -19,7 +19,7 @@ Note that the installation location and configuration file location will vary de
 - If you can see the icon in the system tray, it is working properly.  
 
    <p align="center">
-   <img src="{{ site.url }}/imgs/taskbar.jpg" width=500 >  
+   <img src="{{ site.url }}/imgs/taskbar.jpg" class="img-fluid">
    <p align="center">Like this</p>
    </p>
 
@@ -36,14 +36,14 @@ Note that the installation location and configuration file location will vary de
 The basic concept is the same as Vim, but there are two **Normal** mode and two **Visual** mode, and **Resident** mode.   
 
 <p align="center">
-<img src="{{ site.url }}/imgs/mode_overview.png" width=600>  
+<img src="{{ site.url }}/imgs/mode_overview.png" class="img-fluid">
 <p align="center">Default mode layer overview</p>
 </p>
 
 There are two groups: GUI mode and Editor mode. The former allows us to control windows and mouse cursor, etc. 
 
 <p align="center">
-<img src="{{ site.url }}/imgs/GUIandEditor.jpg" width=700>
+<img src="{{ site.url }}/imgs/GUIandEditor.jpg" class="img-fluid">
 <p align="center">Concepts of GUI Mode and Editor Mode</p>
 </p>
 
@@ -66,7 +66,7 @@ The following table shows a comparison between modes.
 &nbsp;
 
 <p align="center">
-<img src="{{ site.url }}/imgs/mode_overview_3D.png" width=500 >  
+<img src="{{ site.url }}/imgs/mode_overview_3D.png" class="img-fluid">
 </p>
 
 The initial startup mode can be changed with `initmode` option using the [mode prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). An example of setting the initial mode to GUI Normal is as follows.
@@ -85,7 +85,7 @@ You can change the options and parameters specified using the `set` command in y
 You can also try setting `:set cursor_accel=32` in Command mode, in which case it will be reset after restart and not saved.
 
 <p align="center">
-<img src="{{ site.url }}/imgs/cmdline_demo.gif" width=350/>
+<img src="{{ site.url }}/imgs/cmdline_demo.gif" class="img-fluid">
 <p align="center">Try options via virtual command line</p>
 </p>
 
@@ -235,7 +235,7 @@ In the following, let's try win-vind in practice based on a concrete example.
 1. You can call **EasyClick** with `<shift-f><shift-f>`.  
    
    <p align="center">
-   <img src="{{ site.url }}/imgs/EasyClickDemo.gif">
+   <img src="{{ site.url }}/imgs/EasyClickDemo.gif" class="img-fluid">
    <p align="center">EasyClick Demo</p>
    </p>
 1. Let's select windows with `<C-w>h` or `<C-w>l`.
@@ -249,13 +249,13 @@ Let's do the last tutorial!
 1. This time, we will try **Instant GUI Normal Mode** with `<F8>`. It allows us to temporarily switch to the **GUI Normal Mode**.  
    
    <p align="center">
-   <img src="{{ site.url }}/imgs/instant_gui_normal_mode.jpg" width=450 >  
+   <img src="{{ site.url }}/imgs/instant_gui_normal_mode.jpg" class="img-fluid">
    <p align="center">Instant GUI Normal Demo</p>
    </p>
 1. Open your `.vindrc` with `:e`.
    
    <p align="center">
-   <img src="{{ site.url }}/imgs/edit_vindrc_demo.jpg" width=450 >  
+   <img src="{{ site.url }}/imgs/edit_vindrc_demo.jpg" class="img-fluid">
    <p align="center">Edit .vindrc Demo</p>
    </p>
 1. Write following commands into `.vindrc`.
@@ -270,7 +270,7 @@ Let's do the last tutorial!
 1. If you done, try reloading `.vindrc` with `:source` of win-vind. (No arguments are needed.)
    
    <p align="center">
-   <img src="{{ site.url }}/imgs/source_demo.jpg" width=450 >  
+   <img src="{{ site.url }}/imgs/source_demo.jpg" class="img-fluid">
    <p align="center">Reload Demo</p>
    </p>
 1. The above command allows you to call EasyClick with the `<alt>` key and `<ctrl-d><ctrl-d>` will auto-type your email address in insert mode. Also, `<ctrl-1>` will launch Notepad in normal mode.

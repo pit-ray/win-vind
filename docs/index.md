@@ -6,7 +6,7 @@ title: Home - win-vind
 nav: Home
 icon: home
 translation_label: English
-description: <img src="imgs/banner.gif" />
+description: <img src="imgs/banner.gif" class="img-fluid">
 ---
 
 ## What is this?
@@ -28,7 +28,7 @@ It is also available from the command line as a command for UI operations like `
 
 ### Top Feature Demo
 
-<video src="https://user-images.githubusercontent.com/42631247/215270933-3365065b-53db-4eca-9fc6-cd03d13e5ab0.mp4" controls width="640"></video>
+<video src="https://user-images.githubusercontent.com/42631247/215270933-3365065b-53db-4eca-9fc6-cd03d13e5ab0.mp4" controls class="img-fluid"></video>
 
 
 

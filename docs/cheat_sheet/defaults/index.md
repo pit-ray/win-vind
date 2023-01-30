@@ -7,7 +7,7 @@ nav: Default Mappings
 ---
 
 <p align="center">
-<img src="{{ site.url }}/imgs/mode_overview.png" width=600>  
+<img src="{{ site.url }}/imgs/mode_overview.png" class="img-fluid" />
 <p align="center">Default mode layer overview</p>
 </p>
 

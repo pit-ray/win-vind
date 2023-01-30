@@ -69,7 +69,7 @@ show_in_menu: false
 
 ### Overview of stay range in `uiacachebuild`
 <p align="center">
-<img src="{{ site.url }}/imgs/uiacachebuild_stay.png" width=600>  
+<img src="{{ site.url }}/imgs/uiacachebuild_stay.png" class="img-fluid">
 <p align="center">uiacachebuild_staybegin and uiacachebuild_stayend overview</p>
 </p>
 

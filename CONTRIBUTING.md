@@ -5,29 +5,29 @@ Patches are welcome in whatever form. However, you must agree that your code wil
 ### To Documentation
 You can contribute to the [homepage](https://pit-ray.github.io/win-vind/) by sending pull-request to the `docs` directory if there is an error, a better way to describe the content, or writing a translation. [Jekyll](https://jekyllrb.com/) is used as the framework, and can be written in markdown format. We also use [jekyll-docs-theme](https://github.com/allejo/jekyll-docs-theme) as a theme, which allows extended expressions.  
 
-### Setup local test environment.
+### Setup local test environment
 To test a GitHub Pages site locally, refers [this documents](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll).
 
 The following is a brief description using chocolatey.
 
 1. Install Ruby using chocolatey.
-   ```sh
-   $ choco install ruby
-   ```
+  ```sh
+  $ choco install ruby
+  ```
 
 2. Install Jekyll and Bundler.
    
-   ```sh
-   $ ridk install
-   $ gem install jekyll bundler
-   ```
+  ```sh
+  $ ridk install
+  $ gem install jekyll bundler
+  ```
    See [Jekyll documentation](https://jekyllrb.com/docs/installation/windows/) for details.
 
 3. Build site locally in [docs directory](https://github.com/pit-ray/win-vind/tree/master/docs).
-   ```sh
-   $ bundle install
-   $ bundle exec jekyll serve
-   ```
+  ```sh
+  $ bundle install
+  $ bundle exec jekyll serve
+  ```
 
 4. Access to http://localhost:4000.
 

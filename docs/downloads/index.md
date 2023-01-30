@@ -26,6 +26,7 @@ To install win-vind with winget, run the following command from your command lin
 $ winget install win-vind
 ```
 
+<!--
 ### [Scoop](https://scoop.sh/)
 Not yet open.
 Install win-vind to the Scoop package directory and generate a configuration file and log directory in `C:/Users/*/.win-vind`.
@@ -33,6 +34,7 @@ Install win-vind to the Scoop package directory and generate a configuration fil
 ```sh
 $ scoop install win-vind
 ```
+-->
 
 ### Installer
 Install win-vind to `C:/Program Files/win-vind` and generate a configuration file and log directory in `C:/Users/*/.win-vind`.

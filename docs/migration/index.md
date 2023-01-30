@@ -122,7 +122,7 @@ You can mode prefix to specify modes.
 However, external macros in `cmap` and `cnoremap` are not input to other applications and behave the same as internal macros.
 
 ### 2. Self-Mapping
-**[#123](https://github.com/pit-ray/win-vind/issues/123))**  
+**Discussed in [#123](https://github.com/pit-ray/win-vind/issues/123)**  
 
 You can disable the absorption of some keys and allow them to be input, as in `map <alt> {<alt>}`. However, this is only valid for a single key.
 If the target command consists of multiple characters like `map g abcgd` and contains a trigger command, the following warning statement will be printed to log and no mapping will be done.

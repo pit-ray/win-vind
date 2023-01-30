@@ -10,26 +10,25 @@ To test a GitHub Pages site locally, refers [this documents](https://docs.github
 
 The following is a brief description using chocolatey.
 
-1. Install Ruby using chocolatey.
-  ```sh
-  $ choco install ruby
-  ```
+1.  Install Ruby using chocolatey.
+    ```sh
+    $ choco install ruby
+    ```
 
-2. Install Jekyll and Bundler.
-   
-  ```sh
-  $ ridk install
-  $ gem install jekyll bundler
-  ```
-   See [Jekyll documentation](https://jekyllrb.com/docs/installation/windows/) for details.
+2.  Install Jekyll and Bundler.
+    ```sh
+    $ ridk install
+    $ gem install jekyll bundler
+    ```
+    See [Jekyll documentation](https://jekyllrb.com/docs/installation/windows/) for details.
 
-3. Build site locally in [docs directory](https://github.com/pit-ray/win-vind/tree/master/docs).
-  ```sh
-  $ bundle install
-  $ bundle exec jekyll serve
-  ```
+3.  Build site locally in [docs directory](https://github.com/pit-ray/win-vind/tree/master/docs).
+    ```sh
+    $ bundle install
+    $ bundle exec jekyll serve
+    ```
 
-4. Access to http://localhost:4000.
+4.  Access to http://localhost:4000.
 
 #### Add translation of document.
 The win-vind documentation has the potential to easily add manual translation and manage continuously. A Japanese translation is available as a sample in [here](docs/ja). Please use it as a reference when translating. The following are the steps for translation.  

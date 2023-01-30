@@ -3,7 +3,31 @@
     @echo Error: Please pass your compiler type -mingw or -msvc as the first argument.
     @echo.
     exit
+) else (
+    @set compiler=%1
 )
+
+@if "%2" == "" (
+   @set BUILD_32=TRUE
+   @set BUILD_64=TRUE
+) else (
+    @if "%2" == "32" (
+        @set BUILD_32=TRUE
+    ) else (
+        @set BUILD_64=TRUE
+    )
+)
+
+@if "%3" == "" (
+    @set REQUIRE_VCVARS=TRUE
+) else (
+    if "%3" == "-without-vcvars" (
+        @echo Wihtout vcvars for nmake.
+    ) else (
+        @set REQUIRE_VCVARS=TRUE
+    )
+)
+
 
 @rem @set wxWidgets_VERSION=3.0.5
 set wxWidgets_VERSION=3.1.5
@@ -27,51 +51,15 @@ cd ..
 
 cd wxWidgets/build/msw
 
-@if "%1" == "-msvc" (
-    @if "%2" == "" (
-        @set BUILD_32=TRUE
-        @set BUILD_64=TRUE
-    ) else (
-        @if "%2" == "32" (
-            @set BUILD_32=TRUE
-
-        ) else (
-            @set BUILD_64=TRUE
-        )
-    )
-
-    @if exist vc_mswu* (
-        powershell rm -r vc_mswu*
-    )
-
-    @if not exist ../../lib/vc_x64_lib (
-        @if defined BUILD_64 (
-            if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat" (
-                call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-            )
-            else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" (
-                call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-            )
-            nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X64 RUNTIME_LIBS=static
-        )
-    )
-
-    @if not exist ../../lib/vc_lib (
-        @if defined BUILD_32 (
-            if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat" (
-                call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-            )
-            else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat" (
-                call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat"
-            )
-            nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X86 RUNTIME_LIBS=static
-        )
-    )
-
-    @if exist vc_mswu* (
-        powershell rm -r vc_mswu*
-    )
+@if %compiler% == -mingw (
+   @echo Compiler: MinGW
+   goto mingw
 ) else (
+   @echo Compiler: Microsoft Visual C++
+   goto msvc
+)
+
+:mingw
     @if exist gcc_mswu (
         powershell rm -r gcc_mswu
     )
@@ -94,9 +82,53 @@ cd wxWidgets/build/msw
     @if exist gcc_mswu (
        powershell rm -r gcc_mswu
     )
-)
 
-cd ../../../
+    @goto exit
+
+:msvc
+    @if exist vc_mswu* (
+        powershell rm -r vc_mswu*
+    )
+
+    @if not exist ../../lib/vc_x64_lib (
+        @if defined BUILD_64 (
+            @if defined REQUIRE_VCVARS (
+                if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat" (
+                    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+                )
+                else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" (
+                    call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+                )
+            )
+            @echo nmake for 64bit
+            nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X64 RUNTIME_LIBS=static
+        )
+    )
+
+    @if not exist ../../lib/vc_lib (
+        @if defined BUILD_32 (
+            @if defined REQUIRE_VCVARS (
+                if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat" (
+                    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
+                )
+                else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat" (
+                    call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat"
+                )
+            )
+            @echo nmake for 32bit
+            nmake /f makefile.vc BUILD=release SHARED=0 UNICODE=1 TARGET_CPU=X86 RUNTIME_LIBS=static
+        )
+    )
+
+    @if exist vc_mswu* (
+        powershell rm -r vc_mswu*
+    )
+
+    @goto exit
+
+:exit
+
+cd ../../../..
 
 @rem If you use wxWidgets-3.1.x, it solves linker error.
 @rem if "%1" == "-mingw" (

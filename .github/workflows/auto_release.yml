@@ -42,7 +42,7 @@ jobs:
         arch: x64
 
     - name: Setup Libraries
-      run: "tools/install_wxWidgets.bat -msvc"
+      run: "tools/install_wxWidgets.bat -msvc 64 -without-vcvars"
 
     - name: Build x64 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 64
@@ -51,6 +51,9 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x86
+
+    - name: Setup Library
+      run: "tools/install_wxWidgets.bat -msvc 32 -without-vcvars"
 
     - name: Build x86 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32

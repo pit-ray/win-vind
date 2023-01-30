@@ -111,8 +111,8 @@ namespace vind
             ModeArray<std::shared_ptr<MapSolver>> solvers_{} ;
             TypingEmulator typeemu_{} ;
             std::string count_{} ;
-            InputQueue typing_queue_ ;
-            InputQueue waiting_queue_ ;
+            InputQueue typing_queue_{} ;
+            InputQueue waiting_queue_{} ;
         } ;
 
         InputHub::InputHub()

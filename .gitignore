@@ -6,6 +6,7 @@
 .vscode
 :w
 :wq
+Testing
 bin
 bin_32
 bin_64
@@ -21,6 +22,7 @@ cov_tools.zip
 debug
 debug_cov
 debugvs
+debugvs32
 is_initialized
 log
 release
@@ -29,8 +31,7 @@ release_64
 replace.vim
 repo
 temp
+tmp
 venv
 w
 winget
-tmp
-Testing

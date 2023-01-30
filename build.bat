@@ -65,7 +65,7 @@
             cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A win32 .
             cmake --build debug --config Debug
         ) else (
-            cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
+            INTERNALcmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
             cmake --build debug --config Debug
         )
 

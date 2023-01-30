@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.6.0)
-project(win-vind VERSION 5.0.0.5)
+project(win-vind VERSION 5.0.0)
+set(INTERNAL_VERSION 5.0.0.6)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)

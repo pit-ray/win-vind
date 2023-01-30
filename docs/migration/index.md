@@ -195,5 +195,6 @@ Add the following word-motion which behave almost exactly like Vim. ([#57](https
 
 
 ### 7. New option in terminal
+**Discussed in [#101](https://github.com/pit-ray/win-vind/discussions/101), [#97](https://github.com/pit-ray/win-vind/discussions/97)**  
 Please see [this document]({{ site.url }}/usage/#use-as-automation-command-by-server-client).
 

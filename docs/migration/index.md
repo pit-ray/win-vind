@@ -82,7 +82,7 @@ Below are some examples of use.
    ``` 
 1. Text input macros
    ```vim
-   nmap mail {pit-ray@example.com}
+   nmap mail {win-vind@example.com}
    ```
 1. Web page launcher
    ```vim

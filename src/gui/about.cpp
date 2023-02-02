@@ -45,7 +45,7 @@ namespace vind
                 "Version: " WIN_VIND_VERSION
                 "\n"
                 "\n"
-                "License: MIT License (C) 2020-2022 pit-ray") ;
+                "License: MIT License (C) 2020-2023 pit-ray") ;
 
             auto main_text = new wxStaticText(this, wxID_ANY, message) ;
             main_text->SetFont(*font) ;

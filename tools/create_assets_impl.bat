@@ -26,7 +26,7 @@ mkdir bin_%3
 @echo Creating installer version
 echo installer>"res\resources\.instype"
 
-call build.bat -release %2 %3
+call tools\build.bat -release %2 %3
 cd release_%3
 cpack . -C Release
 cd ..

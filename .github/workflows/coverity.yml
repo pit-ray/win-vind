@@ -44,6 +44,7 @@ jobs:
       run: |
         choco install -y unzip
         choco install -y wget
+        choco install -y curl
 
     - name: Cache libraries
       uses: actions/cache@v2
@@ -66,7 +67,7 @@ jobs:
     - name: Configure CMake
       run: |
         cov_tools/bin/cov-configure --config build/covtest/cov.xml --msvc --template --xml-option=skip_file:".*/libs.*"
-        cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+        cmake -B build -G "Visual Studio 16 2019" -A x64 .
 
     - name: Build with Coverity
       run: |
@@ -81,7 +82,6 @@ jobs:
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
     - name: Submit tarball to Coverity
-      shell: cmd
       run: |
         curl --form token="${{env.TOKEN}}" \
              --form email="${{env.EMAIL}}" \

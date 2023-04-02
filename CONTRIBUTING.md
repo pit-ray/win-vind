@@ -87,7 +87,7 @@ Since it builds all libraries with the best options for your system environment,
 
 ###### Automatically (Recommended)
   ```bash
-  $ ./build.bat [-debug/-release] [-mingw/-msvc] [32/64]
+  $ ./tools/build.bat [-debug/-release] [-mingw/-msvc] [32/64]
   $ ./debug/win-vind.exe
   ```
 
@@ -109,7 +109,7 @@ Since it builds all libraries with the best options for your system environment,
 
 ###### Automatically (Recommended)
   ```bash
-  $ ./build.bat -test
+  $ ./tools/build.bat -test
   ```
 
 ###### Manually (Visual Studio 2019)

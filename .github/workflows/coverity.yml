@@ -44,9 +44,11 @@ jobs:
       run: |
         choco install -y unzip
         choco install -y wget
-        wget https://curl.se/windows/dl-7.88.1/curl-7.88.1-win64-mingw.zip -O curl-for-win.zip
+
+        # Use fxied version because latest curl has https://github.com/curl/curl/issues/10591.
+        wget https://curl.se/windows/dl-7.87.0/curl-7.87.0-win64-mingw.zip -O curl-for-win.zip
         unzip curl-for-win.zip
-        mv curl-7.88.1-win64-mingw curl-for-win
+        mv curl-7.87.0-win64-mingw curl-for-win
 
     - name: Cache libraries
       uses: actions/cache@v2

@@ -44,8 +44,9 @@ jobs:
       run: |
         choco install -y unzip
         choco install -y wget
-        remove-item alias:curl
-        choco install -y curl
+        wget https://curl.se/windows/dl-8.0.1_5/curl-8.0.1_5-win64-mingw.zip
+        unzip curl-8.0.1_5-win64-mingw.zip
+        mv curl-8.0.1_5-win64-mingw curl-for-win
 
     - name: Cache libraries
       uses: actions/cache@v2
@@ -83,4 +84,4 @@ jobs:
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
     - name: Submit tarball to Coverity
-      run: curl --form token="${{env.TOKEN}}" --form email="${{env.EMAIL}}" --form file="@build/cov-int.tgz" --form version="${{steps.vars.outputs.sha_short}}" --form description="Automatic submission with GitHub Actions" "https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind"
+      run: curl-for-win/bin/curl --form token="${{env.TOKEN}}" --form email="${{env.EMAIL}}" --form file="@build/cov-int.tgz" --form version="${{steps.vars.outputs.sha_short}}" --form description="Automatic submission with GitHub Actions" "https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind"

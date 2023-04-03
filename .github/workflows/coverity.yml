@@ -44,9 +44,9 @@ jobs:
       run: |
         choco install -y unzip
         choco install -y wget
-        wget https://curl.se/windows/dl-8.0.1_5/curl-8.0.1_5-win64-mingw.zip -O curl-for-win.zip
+        wget https://curl.se/windows/dl-7.88.1/curl-7.88.1-win64-mingw.zip -O curl-for-win.zip
         unzip curl-for-win.zip
-        mv curl-8.0.1_5-win64-mingw curl-for-win
+        mv curl-7.88.1-win64-mingw curl-for-win
 
     - name: Cache libraries
       uses: actions/cache@v2

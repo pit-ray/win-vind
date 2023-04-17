@@ -4,54 +4,40 @@
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/display_text_painter.hpp"
+#include "util/hint.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/string.hpp"
 
+#include "core/cmdunit.hpp"
 #include "core/inputhub.hpp"
+#include "core/keycode.hpp"
+#include "core/keycodedef.hpp"
 #include "core/settable.hpp"
+
+#include <vector>
 
 
 namespace
 {
     using namespace vind ;
 
-    class TileHinter {
+    class HintDrawer {
     private:
-        int l1_grid_w_ ;
-        int l1_grid_h_ ;
-
         util::DisplayTextPainter painter_ ;
         util::DisplayTextPainter weak_painter_ ;
 
     public:
-        explicit TileHinter()
-        : l1_grid_w_(0),
-          l1_grid_h_(0),
+        explicit HintDrawer()
+        : 
           painter_(0, 0, ""),
           weak_painter_(painter_)
         {}
 
-        void draw_hints() {
-            auto monitors = util::get_all_monitor_metrics() ;
-            for(const auto& m : monitors) {
-                const auto& rect = m.rect ;
-                auto cell_w = rect.width() / l1_grid_w_ ;
-                auto cell_h = rect.height() / l1_grid_h_ ;
-
-                // the center of the cell at (0, 0).
-                auto base_x = rect.left() + cell_w / 2 ;
-                auto base_y = rect.top() + cell_h / 2 ;
-
-                for(int j = 0 ; j < l1_grid_h_ ; j ++) {
-                    for(int i = 0 ; i < l1_grid_w_ ; i ++) {
-                        util::Point2D pos{
-                            base_x + i * cell_w,
-                            base_y + j * cell_h
-                        } ;
-
-                        painter_.draw("AA", pos, 1) ;
-                    }
-                }
+        void draw(
+                const std::vector<util::Point2D>& points,
+                const std::vector<std::string>& hint_texts) {
+            for(int i = 0 ; i < points.size() ; i ++) {
+                painter_.draw(hint_texts[i], points[i], 1) ;
             }
 
             painter_.refresh() ;
@@ -59,12 +45,6 @@ namespace
 
         void reconstruct() {
             auto& settable = core::SetTable::get_instance() ;
-            auto l1_size = util::split(
-                settable.get("gridmove_l1size").get<std::string>(), "x") ;
-            l1_grid_w_ = std::stoi(l1_size[0]) ;
-            l1_grid_h_ = std::stoi(l1_size[1]) ;
-
-            std::cout << "L1 Grid Size: " << l1_grid_w_ << " x " << l1_grid_h_ << std::endl ;
 
             //Colors
             auto [bk_r, bk_g, bk_b] = util::hex2rgb(
@@ -104,7 +84,52 @@ namespace vind
     namespace bind
     {
         struct GridMove::Impl {
-            TileHinter tile_hinter_{} ;
+            HintDrawer hint_drawer_{} ;
+
+            int l1_grid_w_ = 0 ;
+            int l1_grid_h_ = 0 ;
+
+            void assign_l1_hints(
+                    std::vector<util::Point2D>& points,
+                    std::vector<util::Hint>& hints,
+                    std::vector<std::string>& hint_texts) {
+
+                auto monitors = util::get_all_monitor_metrics() ;
+
+                std::vector<util::Hint> m_hints ;
+                std::vector<std::string> m_hint_texts ;
+                util::assign_identifier_hints(monitors.size(), m_hints) ;
+                util::convert_hints_to_strings(m_hints, m_hint_texts) ;
+
+                std::vector<util::Hint> c_hints ;
+                std::vector<std::string> c_hint_texts ;
+                util::assign_identifier_hints(l1_grid_h_ * l1_grid_w_, c_hints) ;
+                util::convert_hints_to_strings(c_hints, c_hint_texts) ;
+
+                for(int mi = 0 ; mi < monitors.size() ; mi ++) {
+                    const auto& rect = monitors[mi].rect ;
+                    auto cell_w = rect.width() / l1_grid_w_ ;
+                    auto cell_h = rect.height() / l1_grid_h_ ;
+
+                    // the center of the cell at (0, 0).
+                    auto base_x = rect.left() + cell_w / 2 ;
+                    auto base_y = rect.top() + cell_h / 2 ;
+
+                    for(int ci = 0 ; ci < (l1_grid_h_ * l1_grid_w_) ; ci ++) {
+                        points.emplace_back(
+                            base_x + (ci % l1_grid_w_) * cell_w,
+                            base_y + (ci / l1_grid_w_) * cell_h) ;
+
+                        hint_texts.push_back(m_hint_texts[mi] + c_hint_texts[ci]) ;
+
+                        auto hint = m_hints[mi] ;
+                        hint.insert(hint.end(), c_hints[ci].begin(), c_hints[ci].end()) ;
+                        hints.push_back(hint) ;
+
+                        std::cout << points.back().x() << ", " << points.back().y() << ": " << hint_texts.back() << std::endl ;
+                    }
+                }
+            }
         } ;
 
         GridMove::GridMove()
@@ -121,8 +146,13 @@ namespace vind
                 const std::string& UNUSED(args)) {
             auto& ihub = core::InputHub::get_instance() ;
 
+            std::vector<util::Point2D> points ;
+            std::vector<util::Hint> hints ;
+            std::vector<std::string> hint_texts ;
+            pimpl->assign_l1_hints(points, hints, hint_texts) ;
+
             while(true) {
-                pimpl->tile_hinter_.draw_hints() ;
+                pimpl->hint_drawer_.draw(points, hint_texts) ;
 
                 core::CmdUnit::SPtr inputs ;
                 std::uint16_t count ;
@@ -136,7 +166,15 @@ namespace vind
         }
 
         void GridMove::reconstruct() {
-            pimpl->tile_hinter_.reconstruct() ;
+            auto& settable = core::SetTable::get_instance() ;
+            auto l1_size = util::split(
+                settable.get("gridmove_l1size").get<std::string>(), "x") ;
+            pimpl->l1_grid_w_ = std::stoi(l1_size[0]) ;
+            pimpl->l1_grid_h_ = std::stoi(l1_size[1]) ;
+
+            std::cout << "L1 Grid Size: " << pimpl->l1_grid_w_ << " x " << pimpl->l1_grid_h_ << std::endl ;
+
+            pimpl->hint_drawer_.reconstruct() ;
         }
     }
 }

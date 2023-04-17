@@ -26,6 +26,7 @@
 #include "mode/instant_mode.hpp"
 
 #include "mouse/click.hpp"
+#include "mouse/gridmove.hpp"
 #include "mouse/jump_actwin.hpp"
 #include "mouse/jump_cursor.hpp"
 #include "mouse/jump_keybrd.hpp"
@@ -105,6 +106,7 @@ namespace vind
                 EasyClickLeft::create(),
                 EasyClickMid::create(),
                 EasyClickRight::create(),
+                GridMove::create(),
                 EnableTargetingOfDedicate2Window::create(),
                 ExchangeWindowWithNearest::create(),
                 Execute::create(),

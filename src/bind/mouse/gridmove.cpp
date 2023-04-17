@@ -37,9 +37,8 @@ namespace
                 const std::vector<util::Point2D>& points,
                 const std::vector<std::string>& hint_texts) {
             for(int i = 0 ; i < points.size() ; i ++) {
-                painter_.draw(hint_texts[i], points[i], 1) ;
+                painter_.draw(" " + hint_texts[i] + " ", points[i], 1) ;
             }
-
             painter_.refresh() ;
         }
 
@@ -88,6 +87,10 @@ namespace vind
 
             int l1_grid_w_ = 0 ;
             int l1_grid_h_ = 0 ;
+
+            std::vector<util::Point2D> l1_points ;
+            std::vector<util::Hint> l1_hints ;
+            std::vector<std::string> l1_hint_texts ;
 
             void assign_l1_hints(
                     std::vector<util::Point2D>& points,
@@ -146,13 +149,8 @@ namespace vind
                 const std::string& UNUSED(args)) {
             auto& ihub = core::InputHub::get_instance() ;
 
-            std::vector<util::Point2D> points ;
-            std::vector<util::Hint> hints ;
-            std::vector<std::string> hint_texts ;
-            pimpl->assign_l1_hints(points, hints, hint_texts) ;
-
             while(true) {
-                pimpl->hint_drawer_.draw(points, hint_texts) ;
+                pimpl->hint_drawer_.draw(pimpl->l1_points, pimpl->l1_hint_texts) ;
 
                 core::CmdUnit::SPtr inputs ;
                 std::uint16_t count ;
@@ -175,6 +173,11 @@ namespace vind
             std::cout << "L1 Grid Size: " << pimpl->l1_grid_w_ << " x " << pimpl->l1_grid_h_ << std::endl ;
 
             pimpl->hint_drawer_.reconstruct() ;
+
+            pimpl->l1_points.clear() ;
+            pimpl->l1_hints.clear() ;
+            pimpl->l1_hint_texts.clear() ;
+            pimpl->assign_l1_hints(pimpl->l1_points, pimpl->l1_hints, pimpl->l1_hint_texts) ;
         }
     }
 }

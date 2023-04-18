@@ -10,13 +10,11 @@ namespace
 
     std::vector<Param> default_params {
         Param("gridmove_l1size", "12x8"),
-        Param("gridmove_bgcolor", "12x8"),
         Param("gridmove_fontsize", 14),
         Param("gridmove_fontweight", 500),
         Param("gridmove_fontname", "Arial"),
         Param("gridmove_fontcolor", "c8c8c8"),
         Param("gridmove_bgcolor", "323232"),
-        Param("gridmove_colordecay", 100),
 
         Param("initmode", "i"),
         Param("listen_interval", 1.0f),

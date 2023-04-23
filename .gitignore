@@ -36,3 +36,6 @@ tmp
 venv
 w
 winget
+co
+manifests
+wingetcreate.exe

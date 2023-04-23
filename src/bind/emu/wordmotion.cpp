@@ -273,7 +273,10 @@ namespace vind
         }
         void MoveFwdWord::sprocess(
                 std::uint16_t count,
-                const std::string& UNUSED(args)) {
+                const std::string& args) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return MoveFwdWordSimple::sprocess(count, args) ;
+            }
             fwd_word(count, false) ;
         }
 
@@ -284,7 +287,10 @@ namespace vind
         }
         void MoveFwdBigWord::sprocess(
                 std::uint16_t count,
-                const std::string& UNUSED(args)) {
+                const std::string& args) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return MoveFwdWordSimple::sprocess(count, args) ;
+            }
             fwd_word(count, true) ;
         }
 
@@ -295,7 +301,10 @@ namespace vind
         }
         void MoveBckWord::sprocess(
                 std::uint16_t count,
-                const std::string& UNUSED(args)) {
+                const std::string& args) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return MoveBckWordSimple::sprocess(count, args) ;
+            }
             bck_word(count, false) ;
         }
 
@@ -306,7 +315,10 @@ namespace vind
         }
         void MoveBckBigWord::sprocess(
                 std::uint16_t count,
-                const std::string& UNUSED(args)) {
+                const std::string& args) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return MoveBckWordSimple::sprocess(count, args) ;
+            }
             bck_word(count, true) ;
         }
 
@@ -318,6 +330,9 @@ namespace vind
         void MoveEndWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return ;
+            }
             end_word(count, false) ;
         }
 
@@ -329,6 +344,9 @@ namespace vind
         void MoveEndBigWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return ;
+            }
             end_word(count, true) ;
         }
 
@@ -340,6 +358,9 @@ namespace vind
         void MoveBckEndWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return ;
+            }
             bckend_word(count, false) ;
         }
 
@@ -351,6 +372,9 @@ namespace vind
         void MoveBckEndBigWord::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
+            if(core::get_global_mode() == core::Mode::EDI_VISUAL) {
+                return ;
+            }
             bckend_word(count, true) ;
         }
 

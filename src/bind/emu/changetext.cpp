@@ -40,6 +40,7 @@ namespace vind
         void ChangeLine::sprocess(
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
+            std::cout << "called\n" ;
             auto& igate = core::InputGate::get_instance() ;
             auto res = get_selected_text([&igate] {
                 igate.pushup(KEYCODE_HOME) ;
@@ -48,18 +49,23 @@ namespace vind
             }) ;
             if(res.str.empty()) {
                 ToInsert::sprocess(1, "", false) ;
+                std::cout << "empty\n" ;
                 return ;
             }
             igate.pushup(KEYCODE_HOME) ;
 
             auto pos = res.str.find_first_not_of(" \t") ;
             if(pos != std::string::npos) {
+                std::cout << "head\n" ;
                 safe_for(pos, [&igate] {
                     igate.pushup(KEYCODE_RIGHT) ;
                 }) ;
             }
+            std::cout << "moved\n" ;
             DeleteLineUntilEOL::sprocess(count, "") ;
+            std::cout << "deled\n" ;
             ToInsert::sprocess(1, "", false) ;
+            std::cout << "insert\n" ;
         }
 
         //ChangeChar

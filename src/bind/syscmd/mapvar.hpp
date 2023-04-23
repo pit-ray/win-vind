@@ -14,9 +14,9 @@ namespace vind
             : MapBase("map")
             {}
         } ;
-        struct Noremap : public MapBase<Noremap> {
+        struct Noremap : public NoremapBase<Noremap> {
             explicit Noremap()
-            : MapBase("noremap")
+            : NoremapBase("noremap")
             {}
         } ;
         struct Unmap : public MapBase<Unmap> {
@@ -36,9 +36,9 @@ namespace vind
             : MapBase("gmap")
             {}
         } ;
-        struct GNoremap : public MapBase<GNoremap> {
+        struct GNoremap : public NoremapBase<GNoremap> {
             explicit GNoremap()
-            : MapBase("gnoremap")
+            : NoremapBase("gnoremap")
             {}
         } ;
         struct GUnmap : public MapBase<GUnmap> {
@@ -58,9 +58,9 @@ namespace vind
             : MapBase("emap")
             {}
         } ;
-        struct ENoremap : public MapBase<ENoremap> {
+        struct ENoremap : public NoremapBase<ENoremap> {
             explicit ENoremap()
-            : MapBase("enoremap")
+            : NoremapBase("enoremap")
             {}
         } ;
         struct EUnmap : public MapBase<EUnmap> {
@@ -80,9 +80,9 @@ namespace vind
             : MapBase("nmap")
             {}
         } ;
-        struct NNoremap : public MapBase<NNoremap> {
+        struct NNoremap : public NoremapBase<NNoremap> {
             explicit NNoremap()
-            : MapBase("nnoremap")
+            : NoremapBase("nnoremap")
             {}
         } ;
         struct NUnmap : public MapBase<NUnmap> {
@@ -102,9 +102,9 @@ namespace vind
             : MapBase("vmap")
             {}
         } ;
-        struct VNoremap : public MapBase<VNoremap> {
+        struct VNoremap : public NoremapBase<VNoremap> {
             explicit VNoremap()
-            : MapBase("vnoremap")
+            : NoremapBase("vnoremap")
             {}
         } ;
         struct VUnmap : public MapBase<VUnmap> {
@@ -124,9 +124,9 @@ namespace vind
             : MapBase("gnmap")
             {}
         } ;
-        struct GNNoremap : public MapBase<GNNoremap> {
+        struct GNNoremap : public NoremapBase<GNNoremap> {
             explicit GNNoremap()
-            : MapBase("gnnoremap")
+            : NoremapBase("gnnoremap")
             {}
         } ;
         struct GNUnmap : public MapBase<GNUnmap> {
@@ -146,9 +146,9 @@ namespace vind
             : MapBase("gvmap")
             {}
         } ;
-        struct GVNoremap : public MapBase<GVNoremap> {
+        struct GVNoremap : public NoremapBase<GVNoremap> {
             explicit GVNoremap()
-            : MapBase("gvnoremap")
+            : NoremapBase("gvnoremap")
             {}
         } ;
         struct GVUnmap : public MapBase<GVUnmap> {
@@ -168,9 +168,9 @@ namespace vind
             : MapBase("enmap")
             {}
         } ;
-        struct ENNoremap : public MapBase<ENNoremap> {
+        struct ENNoremap : public NoremapBase<ENNoremap> {
             explicit ENNoremap()
-            : MapBase("ennoremap")
+            : NoremapBase("ennoremap")
             {}
         } ;
         struct ENUnmap : public MapBase<ENUnmap> {
@@ -190,9 +190,9 @@ namespace vind
             : MapBase("evmap")
             {}
         } ;
-        struct EVNoremap : public MapBase<EVNoremap> {
+        struct EVNoremap : public NoremapBase<EVNoremap> {
             explicit EVNoremap()
-            : MapBase("evnoremap")
+            : NoremapBase("evnoremap")
             {}
         } ;
         struct EVUnmap : public MapBase<EVUnmap> {
@@ -212,9 +212,9 @@ namespace vind
             : MapBase("imap")
             {}
         } ;
-        struct INoremap : public MapBase<INoremap> {
+        struct INoremap : public NoremapBase<INoremap> {
             explicit INoremap()
-            : MapBase("inoremap")
+            : NoremapBase("inoremap")
             {}
         } ;
         struct IUnmap : public MapBase<IUnmap> {
@@ -234,9 +234,9 @@ namespace vind
             : MapBase("rmap")
             {}
         } ;
-        struct RNoremap : public MapBase<RNoremap> {
+        struct RNoremap : public NoremapBase<RNoremap> {
             explicit RNoremap()
-            : MapBase("rnoremap")
+            : NoremapBase("rnoremap")
             {}
         } ;
         struct RUnmap : public MapBase<RUnmap> {
@@ -256,9 +256,9 @@ namespace vind
             : MapBase("cmap")
             {}
         } ;
-        struct CNoremap : public MapBase<CNoremap> {
+        struct CNoremap : public NoremapBase<CNoremap> {
             explicit CNoremap()
-            : MapBase("cnoremap")
+            : NoremapBase("cnoremap")
             {}
         } ;
         struct CUnmap : public MapBase<CUnmap> {

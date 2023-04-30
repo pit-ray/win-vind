@@ -1,8 +1,6 @@
 #include "hint.hpp"
 
-#include "core/keycode.hpp"
-#include "core/keycodedef.hpp"
-#include "util/string.hpp"
+#include "string.hpp"
 
 #include <array>
 #include <stdexcept>

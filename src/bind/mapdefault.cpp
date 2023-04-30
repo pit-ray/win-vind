@@ -6,7 +6,6 @@ namespace
 {
     const std::vector<std::pair<std::string, std::string>>& gui_normal() {
         static std::vector<std::pair<std::string, std::string>> tmp = {
-            {"<ctrl-m>", "<gridmove>"},
             {"<esc-left>", "<to_gui_normal>"},
             {"<esc-down>", "<to_resident>"},
             {"v", "<to_gui_visual>"},
@@ -67,6 +66,8 @@ namespace
             {"Fa", "<easy_click_right>"},
             {"Fm", "<easy_click_mid>"},
             {"Fh", "<easy_click_hover>"},
+
+            {"<ctrl-m>", "<gridmove>"},
 
             {"y", "<hotkey_copy>"},
             {"yy", "<hotkey_copy>"},

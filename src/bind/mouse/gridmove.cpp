@@ -32,6 +32,11 @@ namespace
 {
     using namespace vind ;
 
+    template <typename T>
+    auto expand(T&& str) {
+        return " " + str + " " ;
+    }
+
     class HintRenderer {
     private:
         util::DisplayTextPainter painter_ ;
@@ -46,13 +51,18 @@ namespace
                     if(start_indices[i] == std::string::npos) {
                         continue ;
                     }
-                    auto text = " " + hint_texts[i].substr(start_indices[i]) + " " ;
-                    painter_.draw(text, points[i], 1) ;
+                    auto text = hint_texts[i].substr(start_indices[i]) ;
+
+                    // Do no draw unnecessarry hints.
+                    if(!text.empty()) {
+                        painter_.draw(expand(text), points[i], 1) ;
+                    }
                 }
                 painter_.refresh() ;
-
-                Sleep(5) ;
+                Sleep(20) ;  // approximately 60 fps
             }
+
+            util::refresh_display(NULL) ;
         }
 
     public:
@@ -85,7 +95,6 @@ namespace
         void reconstruct() {
             auto& settable = core::SetTable::get_instance() ;
 
-            //Colors
             auto [bk_r, bk_g, bk_b] = util::hex2rgb(
                 settable.get("gridmove_bgcolor").get<std::string>()) ;
             auto bkcolor = RGB(bk_r, bk_g, bk_b) ;
@@ -146,13 +155,18 @@ namespace vind
                 const std::string& UNUSED(args)) {
             auto& ihub = core::InputHub::get_instance() ;
 
+            // If this function was called in insert/resident,
+            // this instance absorbs key messages within its scope.
             core::InstantKeyAbsorber ika ;
 
             for(auto& mt : pimpl->l1_matchers_) {
                 mt.reset_state() ;
             }
 
+            // Save matching-status as the index of texts.
             std::vector<std::size_t> start_indices(pimpl->l1_hint_texts_.size(), 0) ;
+
+            // Start drawing process asynchronously.
             auto ft = pimpl->hint_renderer_.launch_drawing(
                 pimpl->l1_points_, pimpl->l1_hint_texts_, start_indices) ;
 
@@ -161,10 +175,11 @@ namespace vind
 
                 core::CmdUnit::SPtr inputs ;
                 std::uint16_t count ;
-                if(!ihub.fetch_input(inputs, count, core::get_global_mode(), false)) {
+                if(!ihub.get_typed_input(inputs, count, core::get_global_mode(), false)) {
                     continue ;
                 }
-                if(inputs->is_containing(KEYCODE_ESC)) {
+                if(inputs->is_containing(KEYCODE_ESC)
+                        || inputs->is_containing(KEYCODE_ENTER)) {
                     break ;
                 }
 
@@ -174,14 +189,14 @@ namespace vind
                         mt.backward_state(1) ;
 
                         if(mt.is_rejected()) {
-                            start_indices[i] = std::string::npos ;
+                            start_indices[i] = std::string::npos ;  // No more drawing
                         }
                         else {
-                            start_indices[i] = mt.history_size() ;
+                            start_indices[i] = mt.history_size() ; // Draw only matches
                         }
                     }
 
-                    util::refresh_display(NULL) ;
+                    util::refresh_display(NULL) ;  // Update display pixels
                     continue ;
                 }
 
@@ -201,17 +216,18 @@ namespace vind
                 for(std::size_t i = 0 ; i < pimpl->l1_matchers_.size() ; i ++) {
                     auto& mt = pimpl->l1_matchers_[i] ;
                     mt.update_state(ascii_unit) ;
+
                     if(mt.is_accepted()) {
                         util::set_cursor_pos(pimpl->l1_points_[i]) ;
                         break ;
                     }
 
                     if(mt.is_rejected()) {
-                        start_indices[i] = std::string::npos ;
+                        start_indices[i] = std::string::npos ; // No more drawing
                     }
                     else {
                         all_rejected = false ;
-                        start_indices[i] = mt.history_size() ;
+                        start_indices[i] = mt.history_size() ; // Draw only matches
                     }
                 }
 
@@ -219,28 +235,29 @@ namespace vind
                     break ;
                 }
                 else {
+                    // If input a key, the display should be refreshed.
                     util::refresh_display(NULL) ;
                 }
             }
 
+            // Stop drawing process and wait for finishing.
             pimpl->hint_renderer_.stop_drawing() ;
             using namespace std::chrono ;
             while(ft.wait_for(50ms) == std::future_status::timeout) {}
-
-            util::refresh_display(NULL) ;
         }
 
         void GridMove::reconstruct() {
             auto& settable = core::SetTable::get_instance() ;
+
+            // splits the values (e.g., 12x8) into a width (12) and a height (8).
             auto l1_size = util::split(
-                settable.get("gridmove_l1size").get<std::string>(), "x") ;
+                settable.get("gridmove_size").get<std::string>(), "x") ;
             pimpl->l1_grid_w_ = std::stoi(l1_size[0]) ;
             pimpl->l1_grid_h_ = std::stoi(l1_size[1]) ;
 
-            std::cout << "L1 Grid Size: " << pimpl->l1_grid_w_ << " x " << pimpl->l1_grid_h_ << std::endl ;
-
             pimpl->hint_renderer_.reconstruct() ;
 
+            // Pre-computes the coordinates of the hints when some parameters are changed.
             pimpl->l1_points_.clear() ;
             pimpl->l1_hint_texts_.clear() ;
             std::vector<util::Hint> l1_hints ;
@@ -262,11 +279,13 @@ namespace vind
                 std::vector<std::string>& hint_texts) {
             auto monitors = util::get_all_monitor_metrics() ;
 
+            // Assign hints for all monitors.
             std::vector<util::Hint> m_hints ;
             std::vector<std::string> m_hint_texts ;
             util::assign_identifier_hints(monitors.size(), m_hints) ;
             util::convert_hints_to_strings(m_hints, m_hint_texts) ;
 
+            // Assign hints for grid cells of each monitor.
             std::vector<util::Hint> c_hints ;
             std::vector<std::string> c_hint_texts ;
             util::assign_identifier_hints(l1_grid_h_ * l1_grid_w_, c_hints) ;

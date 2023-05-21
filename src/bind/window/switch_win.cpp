@@ -108,6 +108,8 @@ namespace vind
             //jump cursor to a selected window after releasing alt and tab.
             Sleep(50) ; //send select-message to OS(wait)
             JumpToActiveWindow::sprocess(1, "") ;
+
+            ihub.clear_queue() ;
         }
     }
 }

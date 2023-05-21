@@ -55,6 +55,11 @@ namespace vind
             bool is_empty_queue() const noexcept ;
 
             /*
+             * Dequeue all inputs from the input queue without receving them.
+             */
+            void clear_queue() ;
+
+            /*
              * Dequeue an input from the input queue. If the input queue is empty,
              * get an input from the current states of a keyboard like typing.
              *

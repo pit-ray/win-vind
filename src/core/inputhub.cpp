@@ -187,6 +187,11 @@ namespace vind
                 && pimpl->waiting_queue_.empty() ;
         }
 
+        void InputHub::clear_queue() {
+            pimpl->waiting_queue_.clear() ;
+            pimpl->typing_queue_.clear() ;
+        }
+
         bool InputHub::fetch_input(
                 CmdUnit::SPtr& fetched_input,
                 std::uint16_t& fetched_count,

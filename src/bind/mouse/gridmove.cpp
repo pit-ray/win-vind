@@ -51,7 +51,11 @@ namespace
                     if(start_indices[i] == std::string::npos) {
                         continue ;
                     }
+
                     auto text = hint_texts[i].substr(start_indices[i]) ;
+                    if(start_indices[i] > 0) {
+                        text = std::string(start_indices[i], ' ') + text ;
+                    }
 
                     // Do no draw unnecessarry hints.
                     if(!text.empty()) {

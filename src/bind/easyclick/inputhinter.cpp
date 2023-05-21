@@ -72,7 +72,7 @@ namespace vind
 
                 core::CmdUnit::SPtr in_cmdunit ;
                 std::uint16_t count ;
-                if(!ihub.fetch_input(
+                if(!ihub.get_typed_input(
                         in_cmdunit, count, core::get_global_mode(), false)) {
                     continue ;
                 }

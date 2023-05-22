@@ -100,3 +100,12 @@ AddTest(each-unicode-test
     ${CMAKE_CURRENT_SOURCE_DIR}/unicode_test.cpp
 )
 target_link_libraries(each-unicode-test icuuc)
+
+
+AddTest(each-hint-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/hint_test.cpp
+
+    ${SRCDIR}/util/hint.cpp
+    ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/util/string.cpp
+)

@@ -67,6 +67,8 @@ namespace
             {"Fm", "<easy_click_mid>"},
             {"Fh", "<easy_click_hover>"},
 
+            {"<ctrl-m>", "<gridmove>"},
+
             {"y", "<hotkey_copy>"},
             {"yy", "<hotkey_copy>"},
             {"Y", "<hotkey_copy>"},

@@ -13,14 +13,14 @@ namespace vind
     {
         const std::vector<Option::SPtr>& all_global_options() ;
 
-        Option::SPtr ref_global_options_bynames(const std::string& name) ;
-        Option::SPtr ref_global_options_bynames(std::string&& name) ;
+        Option::SPtr ref_global_options_byname(const std::string& name) ;
+        Option::SPtr ref_global_options_byname(std::string&& name) ;
 
         template <typename String, typename... Strings>
         std::vector<Option::SPtr> ref_global_options_bynames(String&& name, Strings&&... names) {
             std::vector<Option::SPtr> out ;
 
-            if(auto opt = ref_global_options_bynames(std::forward<String>(name))) {
+            if(auto opt = ref_global_options_byname(std::forward<String>(name))) {
                 out.push_back(std::move(opt)) ;
             }
 
@@ -30,7 +30,7 @@ namespace vind
                 }
             } ;
 
-            ((append(ref_global_options_bynames(std::forward<String>(names)))), ...) ;
+            ((append(ref_global_options_byname(std::forward<String>(names)))), ...) ;
 
             return out ;
         }

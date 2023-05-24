@@ -2,9 +2,9 @@
 #define _DISPLAY_HINTER_HPP
 
 #include <memory>
+#include <string>
 #include <vector>
 
-#include "easyclickhint.hpp"
 #include "util/point2d.hpp"
 
 namespace vind

@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <string>
+#include <vector>
 
 #include "core/settable.hpp"
 #include "util/color.hpp"

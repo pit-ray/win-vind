@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "bind/easyclick/disphinter.hpp"
-#include "bind/easyclick/easyclickhint.hpp"
 #include "bind/easyclick/inputhinter.hpp"
 #include "bind/easyclick/uiscanner.hpp"
 #include "core/keycodedef.hpp"

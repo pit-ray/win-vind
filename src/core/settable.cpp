@@ -9,6 +9,7 @@ namespace
     using namespace vind::core ;
 
     std::vector<Param> default_params {
+        Param("hintkeys", "asdghklqwertyuiopzxcvbnmfj"),
         Param("arrangewin_ignore", ""),
         Param("autofocus_textarea", false),
         Param("autotrack_popup", false),

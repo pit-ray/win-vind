@@ -4,15 +4,18 @@
 #include <memory>
 
 #include "bind/easyclick/disphinter.hpp"
-#include "bind/easyclick/easyclickhint.hpp"
 #include "bind/easyclick/inputhinter.hpp"
 #include "bind/easyclick/uiscanner.hpp"
 #include "bind/saferepeat.hpp"
+
+#include "core/hintassign.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycode.hpp"
 #include "core/keycodedef.hpp"
 #include "core/settable.hpp"
+
 #include "opt/uiacachebuild.hpp"
+
 #include "util/container.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
@@ -85,7 +88,7 @@ namespace vind
             UIScanner scanner_{} ;
             std::vector<util::SmartElement> elements_{} ;
             std::vector<util::Point2D> positions_{} ;
-            std::vector<Hint> hints_{} ;
+            std::vector<core::Hint> hints_{} ;
             std::vector<std::string> strhints_{} ;
             InputHinter input_hinter_{} ;
             DisplayHinter display_hinter_{} ;
@@ -153,8 +156,9 @@ namespace vind
 
             util::remove_deplication(pimpl->positions_) ;
 
-            assign_identifier_hints(pimpl->positions_.size(), pimpl->hints_) ;
-            convert_hints_to_strings(pimpl->hints_, pimpl->strhints_) ;
+            core::assign_identifier_hints(
+                pimpl->positions_.size(), pimpl->hints_, pimpl->strhints_,
+                settable.get("hintkeys").get<std::string>()) ;
         }
 
         void EasyClickCore::create_matching_loop(

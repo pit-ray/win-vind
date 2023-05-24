@@ -4,8 +4,9 @@
 #include <future>
 #include <memory>
 
-#include "easyclickhint.hpp"
+#include "core/hintassign.hpp"
 #include "util/point2d.hpp"
+
 
 namespace vind
 {
@@ -29,11 +30,11 @@ namespace vind
 
             std::shared_ptr<util::Point2D> launch_loop(
                     const std::vector<util::Point2D>& positions,
-                    const std::vector<Hint>& hints) ;
+                    const std::vector<core::Hint>& hints) ;
 
             std::shared_future<std::shared_ptr<util::Point2D>> launch_async_loop(
                     const std::vector<util::Point2D>& positions,
-                    const std::vector<Hint>& hints) ;
+                    const std::vector<core::Hint>& hints) ;
 
             void cancel() noexcept ;
 

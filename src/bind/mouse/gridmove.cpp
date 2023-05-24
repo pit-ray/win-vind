@@ -4,7 +4,6 @@
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/display_text_painter.hpp"
-#include "util/hint.hpp"
 #include "util/screen_metrics.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
@@ -12,6 +11,7 @@
 #include "core/background.hpp"
 #include "core/cmdmatcher.hpp"
 #include "core/cmdunit.hpp"
+#include "core/hintassign.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
 #include "core/keycode.hpp"
@@ -131,17 +131,17 @@ namespace vind
 
             HintRenderer hint_renderer_{} ;
 
-            int l1_grid_w_ = 0 ;
-            int l1_grid_h_ = 0 ;
+            int grid_w_ = 0 ;
+            int grid_h_ = 0 ;
 
-            std::vector<util::Point2D> l1_points_ ;
-            std::vector<std::string> l1_hint_texts_ ;
+            std::vector<util::Point2D> points_ ;
+            std::vector<std::string> hint_texts_ ;
 
-            std::vector<core::CmdMatcher> l1_matchers_{} ;
+            std::vector<core::CmdMatcher> matchers_{} ;
 
-            void assign_l1_hints(
+            void assign_hints(
                 std::vector<util::Point2D>& points,
-                std::vector<util::Hint>& hints,
+                std::vector<core::Hint>& hints,
                 std::vector<std::string>& hint_texts) ;
         } ;
 
@@ -163,16 +163,16 @@ namespace vind
             // this instance absorbs key messages within its scope.
             core::InstantKeyAbsorber ika ;
 
-            for(auto& mt : pimpl->l1_matchers_) {
+            for(auto& mt : pimpl->matchers_) {
                 mt.reset_state() ;
             }
 
             // Save matching-status as the index of texts.
-            std::vector<std::size_t> start_indices(pimpl->l1_hint_texts_.size(), 0) ;
+            std::vector<std::size_t> start_indices(pimpl->hint_texts_.size(), 0) ;
 
             // Start drawing process asynchronously.
             auto ft = pimpl->hint_renderer_.launch_drawing(
-                pimpl->l1_points_, pimpl->l1_hint_texts_, start_indices) ;
+                pimpl->points_, pimpl->hint_texts_, start_indices) ;
 
             while(true) {
                 pimpl->bg_.update() ;
@@ -188,8 +188,8 @@ namespace vind
                 }
 
                 if(inputs->is_containing(KEYCODE_BKSPACE)) {
-                    for(std::size_t i = 0 ; i < pimpl->l1_matchers_.size() ; i ++) {
-                        auto& mt = pimpl->l1_matchers_[i] ;
+                    for(std::size_t i = 0 ; i < pimpl->matchers_.size() ; i ++) {
+                        auto& mt = pimpl->matchers_[i] ;
                         mt.backward_state(1) ;
 
                         if(mt.is_rejected()) {
@@ -217,12 +217,12 @@ namespace vind
                 core::CmdUnit ascii_unit(std::move(ascii_set)) ;
 
                 bool all_rejected = true ;
-                for(std::size_t i = 0 ; i < pimpl->l1_matchers_.size() ; i ++) {
-                    auto& mt = pimpl->l1_matchers_[i] ;
+                for(std::size_t i = 0 ; i < pimpl->matchers_.size() ; i ++) {
+                    auto& mt = pimpl->matchers_[i] ;
                     mt.update_state(ascii_unit) ;
 
                     if(mt.is_accepted()) {
-                        util::set_cursor_pos(pimpl->l1_points_[i]) ;
+                        util::set_cursor_pos(pimpl->points_[i]) ;
                         break ;
                     }
 
@@ -254,60 +254,63 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
 
             // splits the values (e.g., 12x8) into a width (12) and a height (8).
-            auto l1_size = util::split(
+            auto size = util::split(
                 settable.get("gridmove_size").get<std::string>(), "x") ;
-            pimpl->l1_grid_w_ = std::stoi(l1_size[0]) ;
-            pimpl->l1_grid_h_ = std::stoi(l1_size[1]) ;
+            pimpl->grid_w_ = std::stoi(size[0]) ;
+            pimpl->grid_h_ = std::stoi(size[1]) ;
 
             pimpl->hint_renderer_.reconstruct() ;
 
             // Pre-computes the coordinates of the hints when some parameters are changed.
-            pimpl->l1_points_.clear() ;
-            pimpl->l1_hint_texts_.clear() ;
-            std::vector<util::Hint> l1_hints ;
-            pimpl->assign_l1_hints(pimpl->l1_points_, l1_hints, pimpl->l1_hint_texts_) ;
+            pimpl->points_.clear() ;
+            pimpl->hint_texts_.clear() ;
+            std::vector<core::Hint> hints ;
+            pimpl->assign_hints(pimpl->points_, hints, pimpl->hint_texts_) ;
 
-            pimpl->l1_matchers_.clear() ;
-            for(const auto& hint : l1_hints) {
+            pimpl->matchers_.clear() ;
+            for(const auto& hint : hints) {
                 std::vector<core::CmdUnit::SPtr> cmds ;
                 for(const auto& unit : hint) {
                     cmds.push_back(std::make_shared<core::CmdUnit>(unit)) ;
                 }
-                pimpl->l1_matchers_.emplace_back(std::move(cmds)) ;
+                pimpl->matchers_.emplace_back(std::move(cmds)) ;
             }
         }
 
-        void GridMove::Impl::assign_l1_hints(
+        void GridMove::Impl::assign_hints(
                 std::vector<util::Point2D>& points,
-                std::vector<util::Hint>& hints,
+                std::vector<core::Hint>& hints,
                 std::vector<std::string>& hint_texts) {
+            auto& settable = core::SetTable::get_instance() ;
+            const auto hintkeys = settable.get("hintkeys").get<std::string>() ;
+
             auto monitors = util::get_all_monitor_metrics() ;
 
             // Assign hints for all monitors.
-            std::vector<util::Hint> m_hints ;
+            std::vector<core::Hint> m_hints ;
             std::vector<std::string> m_hint_texts ;
-            util::assign_identifier_hints(monitors.size(), m_hints) ;
-            util::convert_hints_to_strings(m_hints, m_hint_texts) ;
+            core::assign_identifier_hints(
+                monitors.size(), m_hints, m_hint_texts, hintkeys) ;
 
             // Assign hints for grid cells of each monitor.
-            std::vector<util::Hint> c_hints ;
+            std::vector<core::Hint> c_hints ;
             std::vector<std::string> c_hint_texts ;
-            util::assign_identifier_hints(l1_grid_h_ * l1_grid_w_, c_hints) ;
-            util::convert_hints_to_strings(c_hints, c_hint_texts) ;
+            core::assign_identifier_hints(
+                grid_h_ * grid_w_, c_hints, c_hint_texts, hintkeys) ;
 
             for(int mi = 0 ; mi < monitors.size() ; mi ++) {
                 const auto& rect = monitors[mi].rect ;
-                auto cell_w = rect.width() / l1_grid_w_ ;
-                auto cell_h = rect.height() / l1_grid_h_ ;
+                auto cell_w = rect.width() / grid_w_ ;
+                auto cell_h = rect.height() / grid_h_ ;
 
                 // the center of the cell at (0, 0).
                 auto base_x = rect.left() + cell_w / 2 ;
                 auto base_y = rect.top() + cell_h / 2 ;
 
-                for(int ci = 0 ; ci < (l1_grid_h_ * l1_grid_w_) ; ci ++) {
+                for(int ci = 0 ; ci < (grid_h_ * grid_w_) ; ci ++) {
                     points.emplace_back(
-                        base_x + (ci % l1_grid_w_) * cell_w,
-                        base_y + (ci / l1_grid_w_) * cell_h) ;
+                        base_x + (ci % grid_w_) * cell_w,
+                        base_y + (ci / grid_w_) * cell_h) ;
 
                     hint_texts.push_back(m_hint_texts[mi] + c_hint_texts[ci]) ;
 

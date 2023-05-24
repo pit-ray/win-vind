@@ -43,7 +43,7 @@ namespace vind
 
         std::shared_ptr<util::Point2D> InputHinter::launch_loop(
                 const std::vector<util::Point2D>& positions,
-                const std::vector<Hint>& hints) {
+                const std::vector<core::Hint>& hints) {
             auto& igate = core::InputGate::get_instance() ;
             auto& ihub = core::InputHub::get_instance() ;
 
@@ -143,7 +143,7 @@ namespace vind
 
         std::shared_future<std::shared_ptr<util::Point2D>> InputHinter::launch_async_loop(
                 const std::vector<util::Point2D>& positions,
-                const std::vector<Hint>& hints) {
+                const std::vector<core::Hint>& hints) {
 
             auto ft = std::async(
                     std::launch::async,

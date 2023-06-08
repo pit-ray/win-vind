@@ -42,7 +42,7 @@ show_in_menu: false
 |:---:|:---:|:---:|:---|
 |`easyclick_bgcolor`|str|323232|Font background color of hints in EasyClick|
 |`easyclick_fontcolor`|str|c8c8c8|Font color of hints in EasyClick|
-|`easyclick_fontname`|str|Arial|Font name of hints in EasyClick|
+|`easyclick_fontname`|str|Consolas|Font name of hints in EasyClick|
 |`easyclick_fontsize`|num|14|Font size of hints in EasyClick|
 |`easyclick_fontweight`|num|500|Font weight of hits in EasyClick. Its maximum value is 1000.|
 
@@ -52,7 +52,7 @@ show_in_menu: false
 |:---:|:---:|:---:|:---|
 |`gridmove_bgcolor`|str|323232|Font background color of hints in GridMove|
 |`gridmove_fontcolor`|str|c8c8c8|Font color of hints in GridMove|
-|`gridmove_fontname`|str|Arial|Font name of hints in GridMove|
+|`gridmove_fontname`|str|Consolas|Font name of hints in GridMove|
 |`gridmove_fontsize`|num|14|Font size of hints in GridMove|
 |`gridmove_fontweight`|num|500|Font weight of hits in GridMove. Its maximum value is 1000.|
 |`gridmove_size`|str|12x8|The grid size in GridMove. It assumes a text as its value, such as `12x8` for horizontal 12 cells and vertical 8 cells.|

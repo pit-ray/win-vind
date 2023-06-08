@@ -107,6 +107,11 @@ namespace
             {"window_tweight", "window_velocity"},
             {"window_maxv", "window_velocity"},
             {"cursor_tweight", "cursor_resolution"},
+
+            {"<easy_click_left>", "<easyclick><click_left>"},
+            {"<easy_click_right>", "<easyclick><click_right>"},
+            {"<easy_click_mid>", "<easyclick><click_mid>"},
+            {"<easy_click_hover>", "<easyclick>"},
         } ;
         for(auto& [from, to] : compatible) {
             text = util::replace_all(text, from, to) ;

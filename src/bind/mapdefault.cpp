@@ -61,11 +61,11 @@ namespace
             {"O", "<click_left>"},
             {"a", "<click_right>"},
             {"A", "<click_right>"},
-            {"FF", "<easy_click_left>"},
-            {"Fo", "<easy_click_left>"},
-            {"Fa", "<easy_click_right>"},
-            {"Fm", "<easy_click_mid>"},
-            {"Fh", "<easy_click_hover>"},
+            {"FF", "<easyclick><click_left>"},
+            {"Fo", "<easyclick><click_left>"},
+            {"Fa", "<easyclick><click_right>"},
+            {"Fm", "<easyclick><click_mid>"},
+            {"Fh", "<easyclick>"},
 
             {"<ctrl-m>", "<gridmove>"},
 

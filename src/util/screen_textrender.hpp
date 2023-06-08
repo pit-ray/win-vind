@@ -1,5 +1,5 @@
-#ifndef _DISPLAY_TEXT_PAINTER_HPP
-#define _DISPLAY_TEXT_PAINTER_HPP
+#ifndef _SCREEN_TEXTRENDER_HPP
+#define _SCREEN_TEXTRENDER_HPP
 
 #include "point2d.hpp"
 
@@ -12,21 +12,21 @@ namespace vind
 {
     namespace util
     {
-        class DisplayTextPainter {
+        class ScreenTextRenderer {
         private:
             struct Impl ;
             std::unique_ptr<Impl> pimpl ;
 
             void initialize_dc(bool enable_double_buffering) ;
-            void copy(const DisplayTextPainter& rhs) ;
+            void copy(const ScreenTextRenderer& rhs) ;
 
         public:
-            explicit DisplayTextPainter(
+            explicit ScreenTextRenderer(
                     LONG font_size,
                     LONG font_weight,
                     const std::string& face_name,
                     bool enable_double_buffering=false) ;
-            virtual ~DisplayTextPainter() noexcept ;
+            virtual ~ScreenTextRenderer() noexcept ;
 
             void set_font(
                     LONG font_size,
@@ -56,11 +56,11 @@ namespace vind
 
             void refresh() ; //call it per a one drawing cycle.
 
-            DisplayTextPainter(const DisplayTextPainter&) ;
-            DisplayTextPainter& operator=(const DisplayTextPainter&) ;
+            ScreenTextRenderer(const ScreenTextRenderer&) ;
+            ScreenTextRenderer& operator=(const ScreenTextRenderer&) ;
 
-            DisplayTextPainter(DisplayTextPainter&&) ;
-            DisplayTextPainter& operator=(DisplayTextPainter&&) ;
+            ScreenTextRenderer(ScreenTextRenderer&&) ;
+            ScreenTextRenderer& operator=(ScreenTextRenderer&&) ;
         } ;
     }
 }

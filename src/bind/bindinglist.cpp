@@ -26,6 +26,7 @@
 #include "mode/instant_mode.hpp"
 
 #include "mouse/click.hpp"
+#include "mouse/easyclick.hpp"
 #include "mouse/gridmove.hpp"
 #include "mouse/jump_actwin.hpp"
 #include "mouse/jump_cursor.hpp"
@@ -37,8 +38,6 @@
 #include "proc/exapp.hpp"
 #include "proc/execute.hpp"
 #include "proc/openwin.hpp"
-
-#include "easyclick/easyclick.hpp"
 
 #include "hotkey/clipboard.hpp"
 #include "hotkey/pager.hpp"
@@ -86,6 +85,7 @@ namespace vind
                 ChangeWithMotion::create(),
                 ClickLeft::create(),
                 ClickRight::create(),
+                ClickMid::create(),
                 CloseCurrentTab::create(),
                 CloseCurrentVDesktop::create(),
                 CloseCurrentWindow::create(),
@@ -102,10 +102,7 @@ namespace vind
                 DeleteWithMotion::create(),
                 DisableTargetingOfDedicate2Window::create(),
                 DisableTargetingOfDedicate2Window::create(),
-                EasyClickHover::create(),
-                EasyClickLeft::create(),
-                EasyClickMid::create(),
-                EasyClickRight::create(),
+                EasyClick::create(),
                 GridMove::create(),
                 EnableTargetingOfDedicate2Window::create(),
                 ExchangeWindowWithNearest::create(),

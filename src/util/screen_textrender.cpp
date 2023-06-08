@@ -1,4 +1,4 @@
-#include "display_text_painter.hpp"
+#include "screen_textrender.hpp"
 
 #include "color.hpp"
 #include "debug.hpp"
@@ -18,7 +18,7 @@ namespace vind
 {
     namespace util
     {
-        struct DisplayTextPainter::Impl {
+        struct ScreenTextRenderer::Impl {
             util::HDCSPtr hdc ; //device context for actual use
 
             util::HDCSPtr display_dc ;
@@ -68,7 +68,7 @@ namespace vind
             Impl& operator=(Impl&&)      = default ;
         } ;
 
-        void DisplayTextPainter::initialize_dc(bool enable_double_buffering) {
+        void ScreenTextRenderer::initialize_dc(bool enable_double_buffering) {
             pimpl->display_dc = util::create_display_dc() ;
 
             if(enable_double_buffering) {
@@ -104,7 +104,7 @@ namespace vind
             }
         }
 
-        DisplayTextPainter::DisplayTextPainter(
+        ScreenTextRenderer::ScreenTextRenderer(
                 LONG font_size,
                 LONG font_weight,
                 const std::string& face_name,
@@ -115,7 +115,7 @@ namespace vind
             set_font(font_size, font_weight, face_name) ;
         }
 
-        void DisplayTextPainter::copy(const DisplayTextPainter& rhs) {
+        void ScreenTextRenderer::copy(const ScreenTextRenderer& rhs) {
             if(rhs.pimpl == nullptr) return ;
 
             pimpl->copy_copyable_variables(*(rhs.pimpl)) ;
@@ -129,22 +129,22 @@ namespace vind
             util::set_dc_back_color(pimpl->hdc, rhs.pimpl->bg_color) ;
         }
 
-        DisplayTextPainter::~DisplayTextPainter() noexcept                      = default ;
-        DisplayTextPainter::DisplayTextPainter(DisplayTextPainter&&)            = default ;
-        DisplayTextPainter& DisplayTextPainter::operator=(DisplayTextPainter&&) = default ;
+        ScreenTextRenderer::~ScreenTextRenderer() noexcept                      = default ;
+        ScreenTextRenderer::ScreenTextRenderer(ScreenTextRenderer&&)            = default ;
+        ScreenTextRenderer& ScreenTextRenderer::operator=(ScreenTextRenderer&&) = default ;
 
-        DisplayTextPainter::DisplayTextPainter(const DisplayTextPainter& rhs)
+        ScreenTextRenderer::ScreenTextRenderer(const ScreenTextRenderer& rhs)
         : pimpl(std::make_unique<Impl>())
         {
             copy(rhs) ;
         }
 
-        DisplayTextPainter& DisplayTextPainter::operator=(const DisplayTextPainter& rhs) {
+        ScreenTextRenderer& ScreenTextRenderer::operator=(const ScreenTextRenderer& rhs) {
             copy(rhs) ;
             return *this ;
         }
 
-        void DisplayTextPainter::set_font(
+        void ScreenTextRenderer::set_font(
                 LONG font_size,
                 LONG font_weight,
                 const std::string& face_name) {
@@ -172,43 +172,43 @@ namespace vind
             }
         }
 
-        void DisplayTextPainter::apply_font(float scale) {
+        void ScreenTextRenderer::apply_font(float scale) {
             pimpl->logfont.lfHeight = static_cast<LONG>(pimpl->font_size * scale) ;
             pimpl->hfont = util::create_font(pimpl->logfont) ;
             util::select_obj(pimpl->hdc, pimpl->hfont) ;
         }
 
         //foreground color
-        void DisplayTextPainter::set_text_color(COLORREF color) {
+        void ScreenTextRenderer::set_text_color(COLORREF color) {
             pimpl->fg_color = std::move(color) ;
             util::set_dc_text_color(pimpl->hdc, pimpl->fg_color) ;
         }
-        void DisplayTextPainter::set_text_color(
+        void ScreenTextRenderer::set_text_color(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) {
             set_text_color(RGB(r, g, b)) ;
         }
-        void DisplayTextPainter::set_text_color(const std::string& hex) {
+        void ScreenTextRenderer::set_text_color(const std::string& hex) {
             set_text_color(util::hex2COLORREF(hex)) ;
         }
 
         //background color
-        void DisplayTextPainter::set_back_color(COLORREF color) {
+        void ScreenTextRenderer::set_back_color(COLORREF color) {
             pimpl->bg_color = std::move(color) ;
             util::set_dc_back_color(pimpl->hdc, pimpl->bg_color) ;
         }
-        void DisplayTextPainter::set_back_color(
+        void ScreenTextRenderer::set_back_color(
                 unsigned char r,
                 unsigned char g,
                 unsigned char b) {
             set_back_color(RGB(r, g, b)) ;
         }
-        void DisplayTextPainter::set_back_color(const std::string& hex) {
+        void ScreenTextRenderer::set_back_color(const std::string& hex) {
             set_back_color(util::hex2COLORREF(hex)) ;
         }
 
-        void DisplayTextPainter::draw(const std::string& str, const Point2D& pos, int extra) {
+        void ScreenTextRenderer::draw(const std::string& str, const Point2D& pos, int extra) {
             if(SetTextCharacterExtra(pimpl->hdc.get(), extra) == static_cast<int>(0x80000000)) {
                 throw RUNTIME_EXCEPT("Could not set a character margin.") ;
             }
@@ -225,7 +225,7 @@ namespace vind
         }
 
 
-        void DisplayTextPainter::refresh() {
+        void ScreenTextRenderer::refresh() {
             if(pimpl->compatible_dc) {
                 auto box = util::get_combined_metrics() ;
                 if(!BitBlt(pimpl->display_dc.get(), 0, 0,

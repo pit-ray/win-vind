@@ -28,5 +28,5 @@ The runtime test is implemented in python scripts.
 
 ### Run Test
 ```bash
-$ python runtime/test.py --target "C:/Program Files/win-vind/win-vind.exe"
+$ python runtime/test.py --target "../bin_64/win-vind/win-vind.exe"
 ```

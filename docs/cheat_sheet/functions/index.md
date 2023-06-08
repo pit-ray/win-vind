@@ -26,10 +26,9 @@ disable_anchors: true
 |:---:|:---|
 |`<click_left>`|Left button of a mouse click|
 |`<click_right>`|Right button of a mouse click|
-|`<easy_click_hover>`|EasyClick (Hovering)|
-|`<easy_click_left>`|EasyClick (Left Click)|
-|`<easy_click_mid>`|EasyClick (Mid Click)|
-|`<easy_click_right>`|EasyClick (Right Click)|
+|`<click_mid>`|Middle button of a mouse click|
+|`<easyclick>`|Move a cursor using hints on the UI objects without clicking.|
+|`<gridmove>`|Move a cursor using tiled hints laid on the entire screen.|
 |`<jump_cursor_to_active_window>`|Jump the mouse cursor to the foreground window|
 |`<jump_cursor_to_bottom>`|Jump the mouse cursor to bottom|
 |`<jump_cursor_to_hcenter>`|Jump the mouse cursor to horizontal center|

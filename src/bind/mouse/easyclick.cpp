@@ -77,11 +77,11 @@ namespace
     }
 
     struct UIScanner : public util::UIWalker {
-        UIScanner::UIScanner()
+        UIScanner()
         : UIWalker(UIA_IsKeyboardFocusablePropertyId)
         {}
 
-        bool UIScanner::filter_element(const util::SmartElement& elem) {
+        bool filter_element(const util::SmartElement& elem) override {
             BOOL flag ;
             if(util::is_failed(elem->get_CachedIsKeyboardFocusable(&flag))) {
                 throw RUNTIME_EXCEPT("Could not get the keyboard focusable flag.") ;

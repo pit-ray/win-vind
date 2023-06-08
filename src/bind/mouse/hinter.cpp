@@ -41,7 +41,7 @@ namespace
                 const std::vector<std::size_t>& start_indices,
                 std::vector<std::mutex>& mtxes) {
             while(running_) {
-                for(int i = 0 ; i < points.size() ; i ++) {
+                for(std::size_t i = 0 ; i < points.size() ; i ++) {
                     std::lock_guard<std::mutex> scoped_lock(mtxes[i]) ;
                     if(start_indices[i] == std::string::npos) {
                         continue ;
@@ -137,12 +137,13 @@ namespace vind
     {
         struct Hinter::Impl
         {
-            HintRenderer renderer_ ;
             core::Background bg_ ;
+            HintRenderer renderer_ ;
 
             template <typename T>
             Impl(T&& opts)
-            : bg_(std::forward<T>(opts))
+            : bg_(std::forward<T>(opts)),
+              renderer_()
             {}
         } ;
 

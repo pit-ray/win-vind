@@ -118,7 +118,7 @@ namespace vind
             core::assign_identifier_hints(
                 grid_h_ * grid_w_, c_hints, c_hint_texts, hintkeys) ;
 
-            for(int mi = 0 ; mi < monitors.size() ; mi ++) {
+            for(std::size_t mi = 0 ; mi < monitors.size() ; mi ++) {
                 const auto& rect = monitors[mi].rect ;
                 auto cell_w = rect.width() / grid_w_ ;
                 auto cell_h = rect.height() / grid_h_ ;

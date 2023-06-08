@@ -24,7 +24,7 @@ namespace vind
 
             // Consider a hint as a number in base n and
             // compute a number sequence without duplicates.
-            for(int i = 0 ; i < target_count ; i ++) {
+            for(std::size_t i = 0 ; i < target_count ; i ++) {
                 std::size_t num = i ;
 
                 for(int j = 0 ; j < hint_length ; j ++) {

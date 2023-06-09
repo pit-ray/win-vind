@@ -18,6 +18,8 @@ show_in_menu: false
 |`tempdir`|str|~/Downloads|Where to download the file with the update checking.|
 |`gui_fontname`|str|Segoe UI|Font name of GUI. If an empty string is passed, the system font will be used.|
 |`gui_fontsize`|num|11|Font size of GUI|
+|`hintkeys`|str|asdghklqwertyuiopzxcvbnmfj|Specify the characters of hint used for EasyClick and GridMove. It accpets as input a set of non-duplicate characters and assigns them to the hints in order from the first to the last.|
+
 
 ### Command Line
 

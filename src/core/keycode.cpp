@@ -332,7 +332,7 @@ namespace vind
                     code_ = table.name2code_[n] ;
                 }
                 else {
-                    throw LOGIC_EXCEPT(name + " is not supported.") ;
+                    throw RUNTIME_EXCEPT(name + " is not supported.") ;
                 }
             }
         }

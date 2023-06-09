@@ -54,10 +54,11 @@ nav: Default Mappings
 |`<C-f>`|`<scroll_down_onepage>`|
 |`<C-u>`|`<scroll_up_halfpage>`|
 |`<C-y>`, `<C-k>`|`<scroll_up>`|
-|`FF`, `Fo`|`<easy_click_left>`|
-|`Fa`|`<easy_click_right>`|
-|`Fh`|`<easy_click_hover>`|
-|`Fm`|`<easy_click_mid>`|
+|`FF`, `Fo`|`<easyclick><click_left>`|
+|`Fa`|`<easyclick><click_right>`|
+|`Fh`|`<easyclick>`|
+|`Fm`|`<easyclick><click_mid>`|
+|`<C-m>`|`<gridmove>`|
 |`G`|`<jump_cursor_to_bottom>`|
 |`M`|`<jump_cursor_to_vcenter>`|
 |`a`, `A`|`<click_right>`|

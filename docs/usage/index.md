@@ -105,7 +105,6 @@ For example, adjusting EasyClick parameters.
 " write in your .vindrc
 set easyclick_bgcolor=E67E22
 set easyclick_fontcolor=34495E
-set easyclick_colordecay=150
 set easyclick_fontname=Consolas
 set easyclick_fontsize=16
 set easyclick_fontweight=600

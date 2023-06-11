@@ -1,0 +1,16 @@
+" Big default mapping
+" Features: +mouse +syscmd +window +process
+"           +vimemu +hotkey +gvmode +experimental
+
+" Inherit big mapping
+source big.vindrc
+
+" command setgui <show_config_gui>
+
+" @
+command mkdir <makedir>
+command md <makedir>
+
+" @
+command target <enable_targeting_of_dedicate_to_window>
+command untarget <disable_targeting_of_dedicate_to_window>

@@ -13,17 +13,22 @@ namespace vind
     {
         SystemCall do_map(
                 const std::string& args,
-                const std::string& prefix) ;
+                const std::string& prefix,
+                bool as_default=false) ;
 
         SystemCall do_noremap(
                 const std::string& args,
-                const std::string& prefix) ;
+                const std::string& prefix,
+                bool as_default=false) ;
 
         SystemCall do_unmap(
                 const std::string& args,
-                const std::string& prefix) ;
+                const std::string& prefix,
+                bool as_default=false) ;
 
-        SystemCall do_mapclear(const std::string& prefix) ;
+        SystemCall do_mapclear(
+                const std::string& prefix,
+                bool as_default) ;
 
 
         template <typename Derived>

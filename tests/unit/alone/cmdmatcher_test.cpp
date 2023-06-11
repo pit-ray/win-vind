@@ -221,6 +221,26 @@ TEST_SUITE("core/cmdmatcher") {
         CHECK(matcher.is_rejected()) ;
     }
 
+    TEST_CASE("<num> case3") {
+        std::vector<CmdUnitSet> cmd {
+            {KEYCODE_OPTNUMBER},
+            {KEYCODE_SPACE},
+            {KEYCODE_OPTIONAL},
+        } ;
+
+        std::vector<CmdUnit::SPtr> ptrcmd{} ;
+        for(const auto& cmdunit : cmd) {
+            ptrcmd.push_back(std::make_shared<CmdUnit>(cmdunit)) ;
+        }
+
+        CmdMatcher matcher{ptrcmd} ;
+
+        CmdUnit in1{KEYCODE_A} ;
+        int res = matcher.update_state(in1) ;
+        CHECK_EQ(res, 0) ;
+        CHECK(matcher.is_rejected()) ;
+    }
+
     TEST_CASE("typing w/ ctrl") {
         std::vector<CmdUnitSet> cmd {
             {KEYCODE_CTRL, KEYCODE_B},

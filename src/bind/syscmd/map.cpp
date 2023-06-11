@@ -68,7 +68,8 @@ namespace vind
 
         SystemCall do_map(
                 const std::string& args,
-                const std::string& prefix) {
+                const std::string& prefix,
+                bool as_default) {
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             if(pargs.empty()) {
                 opt::VCmdLine::print(
@@ -94,14 +95,15 @@ namespace vind
                     opt::VCmdLine::print(
                         opt::ErrorMessage("E: Not supported cmap yet")) ;
                 }
-                ihub.add_map(a1, a2, mode) ;
+                ihub.add_map(a1, a2, mode, as_default) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
 
         SystemCall do_noremap(
                 const std::string& args,
-                const std::string& prefix) {
+                const std::string& prefix,
+                bool as_default) {
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             if(pargs.empty()) {
                 opt::VCmdLine::print(
@@ -127,14 +129,15 @@ namespace vind
                     opt::VCmdLine::print(
                         opt::ErrorMessage("E: Not supported cnoremap yet")) ;
                 }
-                ihub.add_noremap(a1, a2, mode) ;
+                ihub.add_noremap(a1, a2, mode, as_default) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
 
         SystemCall do_unmap(
                 const std::string& args,
-                const std::string& prefix) {
+                const std::string& prefix,
+                bool as_default) {
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             if(pargs.empty()) {
                 // does not have argument is empty
@@ -148,15 +151,17 @@ namespace vind
                 return SystemCall::SUCCEEDED ;
             }
 
+            auto& ihub = core::InputHub::get_instance() ;
             for(auto mode : prefix_to_modes(prefix)) {
-                core::InputHub::get_instance().remove_mapping(arg, mode) ;
+                ihub.remove_mapping(arg, mode, as_default) ;
             }
             return SystemCall::RECONSTRUCT ;
         }
 
-        SystemCall do_mapclear(const std::string& prefix) {
+        SystemCall do_mapclear(const std::string& prefix, bool as_default) {
+            auto& ihub = core::InputHub::get_instance() ;
             for(auto mode : prefix_to_modes(prefix)) {
-                core::InputHub::get_instance().clear_mapping(mode) ;
+                ihub.clear_mapping(mode, as_default) ;
             }
             return SystemCall::RECONSTRUCT ;
         }

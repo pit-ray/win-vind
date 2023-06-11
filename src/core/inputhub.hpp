@@ -139,19 +139,27 @@ namespace vind
             void add_map(
                 const std::string& trigger_cmd,
                 const std::string& target_cmd,
-                Mode mode) ;
+                Mode mode,
+                bool as_default=false) ;
 
             void add_noremap(
                 const std::string& trigger_cmd,
                 const std::string& target_cmd,
-                Mode mode) ;
+                Mode mode,
+                bool as_default=false) ;
 
             bool remove_mapping(
                 const std::string& trigger_cmd,
-                Mode mode) ;
+                Mode mode,
+                bool as_default=false) ;
 
-            void clear_mapping(Mode mode=Mode::UNDEFINED) ;
-            void apply_mapping(Mode mode=Mode::UNDEFINED) ;
+            void clear_mapping(
+                Mode mode=Mode::UNDEFINED,
+                bool as_default=false) ;
+
+            void apply_mapping(
+                Mode mode=Mode::UNDEFINED,
+                bool as_default=false) ;
         } ;
     }
 }

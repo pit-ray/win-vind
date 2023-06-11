@@ -1,7 +1,5 @@
 #include "inputhub.hpp"
 
-#include "bind/mapdefault.hpp"
-
 #include "cmdunit.hpp"
 #include "inputgate.hpp"
 #include "mapsolver.hpp"
@@ -119,13 +117,7 @@ namespace vind
         : pimpl(std::make_unique<Impl>())
         {
             for(std::size_t m = 0 ; m < pimpl->solvers_.size() ; m ++) {
-                auto solver = std::make_shared<MapSolver>(false) ;
-                for(const auto& [trigger, target] : bind::get_default_map(m)) {
-                    solver->add_default(trigger, target) ;
-                }
-                solver->deploy_default(true) ;
-                solver->deploy(static_cast<Mode>(m)) ;
-                pimpl->solvers_[m] = std::move(solver) ;
+                pimpl->solvers_[m] = std::make_shared<MapSolver>(false) ;
             }
         }
 
@@ -298,42 +290,86 @@ namespace vind
         void InputHub::add_map(
             const std::string& trigger_cmd,
             const std::string& target_cmd,
-            Mode mode) {
-            get_solver(mode)->add_map(trigger_cmd, target_cmd) ;
+            Mode mode,
+            bool as_default) {
+
+            auto solver = get_solver(mode) ;
+
+            if(as_default) {
+                solver->add_default(trigger_cmd, target_cmd) ;
+            }
+            else {
+                solver->add_map(trigger_cmd, target_cmd) ;
+            }
         }
 
         void InputHub::add_noremap(
             const std::string& trigger_cmd,
             const std::string& target_cmd,
-            Mode mode) {
-            get_solver(mode)->add_noremap(trigger_cmd, target_cmd) ;
+            Mode mode,
+            bool as_default) {
+
+            auto solver = get_solver(mode) ;
+
+            if(as_default) {
+                solver->add_default(trigger_cmd, target_cmd) ;
+            }
+            else {
+                solver->add_noremap(trigger_cmd, target_cmd) ;
+            }
         }
 
         bool InputHub::remove_mapping(
             const std::string& trigger_cmd,
-            Mode mode) {
-            return get_solver(mode)->remove(trigger_cmd) ;
+            Mode mode,
+            bool as_default) {
+
+            auto solver = get_solver(mode) ;
+
+            if(as_default) {
+                return solver->remove_default(trigger_cmd) ;
+            }
+            return solver->remove(trigger_cmd) ;
         }
 
-        void InputHub::clear_mapping(Mode mode) {
+        void InputHub::clear_mapping(Mode mode, bool as_default) {
             if(mode == Mode::UNDEFINED) {
                 for(auto& solver : pimpl->solvers_) {
+                    if(as_default) {
+                        solver->clear_default() ;
+                    }
+                    else {
+                        solver->clear() ;
+                    }
+                }
+            }
+            else {
+                auto solver = get_solver(mode) ;
+                if(as_default) {
+                    solver->clear_default() ;
+                }
+                else {
                     solver->clear() ;
                 }
             }
-            else {
-                get_solver(mode)->clear() ;
-            }
         }
 
-        void InputHub::apply_mapping(Mode mode) {
+        void InputHub::apply_mapping(Mode mode, bool as_default) {
             if(mode == Mode::UNDEFINED) {
                 for(std::size_t m = 0 ; m < pimpl->solvers_.size() ; m ++) {
-                    pimpl->solvers_[m]->deploy(static_cast<Mode>(m)) ;
+                    auto& solver = pimpl->solvers_[m] ;
+                    if(as_default) {
+                        solver->deploy_default(true) ;
+                    }
+                    solver->deploy(static_cast<Mode>(m)) ;
                 }
             }
             else {
-                get_solver(mode)->deploy(mode) ;
+                auto solver = get_solver(mode) ;
+                if(as_default) {
+                    solver->deploy_default(true) ;
+                }
+                solver->deploy(mode) ;
             }
         }
     }

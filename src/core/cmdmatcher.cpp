@@ -201,7 +201,11 @@ namespace vind
 
                 auto ascii = uc.front() ;
                 if(ascii < '0' || '9' < ascii) {
-                    if(head == static_cast<int>(pimpl->cmd_.size() - 1)) {
+                    // If the frist match with <num> comes in non-numbers,
+                    // rejects it because it does not match at least one number.
+                    // And, also rejected if there is no subsequent command.
+                    if(pimpl->heads_.empty()
+                            || head == static_cast<int>(pimpl->cmd_.size() - 1)) {
                         return update_rejected(in_cmdunit) ;
                     }
                     return update_matching(in_cmdunit) ;

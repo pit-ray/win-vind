@@ -1,0 +1,201 @@
+" Normal default mapping
+" Features: +mouse +syscmd +window +process +vimemu
+
+" Inherit small mapping
+source small.vindrc
+
+" @ 
+gnnoremap I <to_edi_normal>
+gnnoremap <esc-right> <to_edi_normal>
+gnnoremap <ctrl-[> <to_edi_normal>
+
+" @ Mode Transition
+ennoremap <Esc-Left> <to_gui_normal>
+ennoremap <Esc-Down> <to_resident>
+ennoremap <ctrl-]> <to_gui_normal>
+ennoremap : <to_command>
+ennoremap i <to_insert>
+ennoremap v <to_edi_visual>
+ennoremap V <to_edi_visual_line>
+
+" @ Scrolling
+ennoremap <C-y> <scroll_up>
+ennoremap <C-k> <scroll_up>
+ennoremap <C-e> <scroll_down>
+ennoremap <C-j> <scroll_down>
+ennoremap <C-u> <scroll_up_halfpage>
+ennoremap <C-d> <scroll_down_halfpage>
+ennoremap <C-b> <scroll_up_onepage>
+ennoremap <C-f> <scroll_down_onepage>
+ennoremap zh <scroll_left>
+ennoremap <C-h> <scroll_left>
+ennoremap zl <scroll_right>
+ennoremap <C-l> <scroll_right>
+ennoremap zH <scroll_left_halfpage>
+ennoremap zL <scroll_right_halfpage>
+
+" @ Shortcut
+ennoremap <C-r> <redo>
+ennoremap u <undo>
+ennoremap U <undo>
+ennoremap gT <switch_to_left_tab>
+ennoremap gt <switch_to_right_tab>
+ennoremap / <search_pattern>
+ennoremap ? <search_pattern>
+
+" @ Mode Transition on Vim Emulation
+ennoremap I <to_insert_BOL>
+ennoremap gI <to_insert_BOL>
+ennoremap a <to_insert_append>
+ennoremap A <to_insert_EOL>
+ennoremap o <to_insert_nlbelow>
+ennoremap O <to_insert_nlabove>
+
+" @ Caret Movement on Vim Emulation
+ennoremap h <move_caret_left>
+ennoremap <C-h> <move_caret_left>
+ennoremap <BS> <move_caret_left>
+ennoremap <Left> <move_caret_left>
+ennoremap l <move_caret_right>
+ennoremap <Space> <move_caret_right>
+ennoremap <Right> <move_caret_right>
+ennoremap k <move_caret_up>
+ennoremap - <move_caret_up>
+ennoremap gk <move_caret_up>
+ennoremap <C-p> <move_caret_up>
+ennoremap <Up> <move_caret_up>
+ennoremap j <move_caret_down>
+ennoremap + <move_caret_down>
+ennoremap gj <move_caret_down>
+ennoremap <C-n> <move_caret_down>
+ennoremap <Down> <move_caret_down>
+ennoremap <Enter> <move_caret_down>
+ennoremap <C-m> <move_caret_down>
+ennoremap w <move_fwd_word>
+ennoremap b <move_bck_word>
+ennoremap W <move_fwd_bigword>
+ennoremap B <move_bck_bigword>
+ennoremap e <move_end_word>
+ennoremap E <move_end_bigword>
+ennoremap ge <move_bckend_word>
+ennoremap gE <move_bckend_bigword>
+
+" @ Caret Jumping on Vim Emulation
+ennoremap 0 <jump_caret_to_BOL>
+ennoremap <Home> <jump_caret_to_BOL>
+ennoremap g0 <jump_caret_to_BOL>
+ennoremap $ <jump_caret_to_EOL>
+ennoremap <End> <jump_caret_to_EOL>
+ennoremap g$ <jump_caret_to_EOL>
+ennoremap gg <jump_caret_to_BOF>
+ennoremap G <jump_caret_to_EOF>
+
+" @ Edit on Vim Emulation
+ennoremap yy <yank_line>
+ennoremap Y <yank_line>
+ennoremap y <yank_with_motion>
+ennoremap p <put_after>
+ennoremap P <put_before>
+ennoremap dd <delete_line>
+ennoremap D <delete_line_until_EOL>
+ennoremap x <delete_after>
+ennoremap <Del> <delete_after>
+ennoremap X <delete_before>
+ennoremap J <join_next_line>
+ennoremap r <replace_char>
+ennoremap R <replace_sequence>
+ennoremap ~ <switch_char_case>
+ennoremap d <delete_with_motion>
+ennoremap c <change_with_motion>
+ennoremap cc <change_line>
+ennoremap S <change_line>
+ennoremap s <change_char>
+ennoremap C <change_until_EOL>
+ennoremap . <repeat_last_change>
+
+" @ Mode Transisiton
+evnoremap <Esc-Left> <to_gui_normal>
+evnoremap <ctrl-]> <to_gui_normal>
+evnoremap <Esc-Down> <to_resident>
+evnoremap : <to_command>
+evnoremap <Esc-Right> <to_edi_normal>
+evnoremap <ctrl-[> <to_edi_normal>
+
+" @ Scrolling
+evnoremap <C-y> <scroll_up>
+evnoremap <C-k> <scroll_up>
+evnoremap <C-e> <scroll_down>
+evnoremap <C-j> <scroll_down>
+evnoremap <C-u> <scroll_up_halfpage>
+evnoremap <C-d> <scroll_down_halfpage>
+evnoremap <C-b> <scroll_up_onepage>
+evnoremap <C-f> <scroll_down_onepage>
+evnoremap zh <scroll_left>
+evnoremap <C-h> <scroll_left>
+evnoremap zl <scroll_right>
+evnoremap <C-l> <scroll_right>
+evnoremap zH <scroll_left_halfpage>
+evnoremap zL <scroll_right_halfpage>
+
+" @ Caret Movement on Vim Emulation
+evnoremap h <move_caret_left>
+evnoremap <C-h> <move_caret_left>
+evnoremap <BS> <move_caret_left>
+evnoremap <Left> <move_caret_left>
+evnoremap l <move_caret_right>
+evnoremap <Space> <move_caret_right>
+evnoremap <Right> <move_caret_right>
+evnoremap k <move_caret_up>
+evnoremap - <move_caret_up>
+evnoremap gk <move_caret_up>
+evnoremap <C-p> <move_caret_up>
+evnoremap <Up> <move_caret_up>
+evnoremap j <move_caret_down>
+evnoremap + <move_caret_down>
+evnoremap gj <move_caret_down>
+evnoremap <C-n> <move_caret_down>
+evnoremap <Down> <move_caret_down>
+evnoremap <Enter> <move_caret_down>
+evnoremap <C-m> <move_caret_down>
+evnoremap w <move_fwd_word_simple>
+evnoremap b <move_bck_word_simple>
+
+" @ Caret Jumping on Vim Emulation
+evnoremap 0 <jump_caret_to_BOL>
+evnoremap <Home> <jump_caret_to_BOL>
+evnoremap g0 <jump_caret_to_BOL>
+evnoremap $ <jump_caret_to_EOL>
+evnoremap <End> <jump_caret_to_EOL>
+evnoremap g$ <jump_caret_to_EOL>
+evnoremap gg <jump_caret_to_BOF>
+evnoremap G <jump_caret_to_EOF>
+
+" @ Edit on Vim Emulation
+evnoremap y <yank_highlight_text>
+evnoremap d <delete_highlight_text>
+evnoremap x <delete_highlight_text>
+evnoremap X <delete_highlight_text>
+evnoremap c <change_highlight_text>
+evnoremap s <change_highlight_text>
+evnoremap S <change_highlight_text>
+
+" @
+inoremap <Esc-Right> <to_edi_normal>
+inoremap <ctrl-[> <to_edi_normal>
+rnoremap <Esc-Right> <to_edi_normal>
+
+" @
+command edinormal <to_edi_normal>
+command en <to_edi_normal>
+command ev <to_edi_visual>
+command edivisual <to_edi_visual>
+command edivisualline <to_edi_visual_line>
+command evl  <to_edi_visual_line>
+
+" @ Shortcut
+command w <save>
+
+" @ Vim Emulation
+command - <move_caret_up>
+command + <move_caret_down>
+command <num> <jump_caret_to_BOF>

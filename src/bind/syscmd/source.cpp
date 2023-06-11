@@ -119,7 +119,11 @@ namespace
         return text ;
     }
 
-    std::error_code do_runcommand(const std::string& cmd, const std::string& args) {
+    std::error_code do_runcommand(
+            const std::string& cmd,
+            const std::string& args,
+            const std::filesystem::path& parent_path,
+            bool as_default=false) {
         using namespace vind ;
         using namespace vind::bind ;
         using core::RunCommandsIndex ;
@@ -131,18 +135,18 @@ namespace
                 return std::error_code() ;
             }
             case RunCommandsIndex::COMMAND: {
-                Command::sprocess(1, cmd + " " + args) ;
+                Command::sprocess(1, cmd + " " + args, as_default) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::DELCOMMAND: {
-                Delcommand::sprocess(1, cmd + " " + args) ;
+                Delcommand::sprocess(1, cmd + " " + args, as_default) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::COMCLEAR: {
                 if(!args.empty()) {
                     return std::make_error_code(std::errc::invalid_argument) ;
                 }
-                Comclear::sprocess(1, "") ;
+                Comclear::sprocess(1, "", as_default) ;
                 return std::error_code() ;
             }
             case RunCommandsIndex::SOURCE: {
@@ -150,22 +154,19 @@ namespace
                     return std::make_error_code(std::errc::invalid_argument) ;
                 }
 
-                auto args_path = \
-                     std::filesystem::u8path(core::replace_path_magic(args)) ;
+                auto path = \
+                    parent_path / std::filesystem::u8path(core::replace_path_magic(args)) ;
 
-                if(std::filesystem::exists(args_path)) {
-                    if(std::filesystem::equivalent(core::RC(), args_path)) {
+                if(std::filesystem::exists(path)) {
+                    if(std::filesystem::equivalent(core::RC(), path)) {
                         return std::make_error_code(std::errc::text_file_busy) ;
                     }
+                    Source::sprocess(1, cmd + " " + path.u8string(), as_default) ;
+                }
+                else if(path.filename().u8string() != ".vindrc") {
+                    Source::sprocess(1, cmd + " " + load_remote_vindrc(args).u8string()) ;
                 }
 
-                if(args_path.filename().u8string() != ".vindrc") {
-                    args_path = load_remote_vindrc(args) ;
-                }
-
-                if(!args_path.empty()) {
-                    Source::sprocess(1, cmd + " " + args_path.u8string()) ; //overload .vindrc
-                }
                 return std::error_code() ;
             }
             default: {
@@ -176,22 +177,22 @@ namespace
         using core::Mode ;
         if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
-            do_map(cmd + " " + args, prefix) ;
+            do_map(cmd + " " + args, prefix, as_default) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_NOREMAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "n") ;
-            do_noremap(cmd + " " + args, prefix) ;
+            do_noremap(cmd + " " + args, prefix, as_default) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_UNMAP)) {
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "u") ;
-            do_unmap(cmd + " " + args, prefix) ;
+            do_unmap(cmd + " " + args, prefix, as_default) ;
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {
                 return std::make_error_code(std::errc::invalid_argument) ;
             }
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
-            do_mapclear(prefix) ;
+            do_mapclear(prefix, as_default) ;
         }
         else {
             return std::make_error_code(std::errc::argument_out_of_domain) ;
@@ -205,6 +206,8 @@ namespace vind
 {
     namespace bind
     {
+        bool Source::loaded_default_ = false ;
+
         Source::Source()
         : BindedFuncFlex("source")
         {
@@ -216,7 +219,8 @@ namespace vind
 
         SystemCall Source::sprocess(
                 std::uint16_t UNUSED(count),
-                const std::string& args) {
+                const std::string& args,
+                bool as_default) {
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             std::filesystem::path path{} ;
             if(pargs.empty()) {
@@ -251,7 +255,26 @@ namespace vind
 
                 line_args = to_compatible(line_args) ;
 
-                if(auto err = do_runcommand(cmd, line_args)) {
+                if(!loaded_default_) {
+                    loaded_default_ = true ;
+
+                    if(util::A2a(cmd) != "version") {
+                        line_args = "huge" ;
+                    }
+                    else {
+                        line_args = util::A2a(line_args) ;
+                    }
+
+                    auto default_rc_path = \
+                       core::RESOURCE_ROOT_PATH() / "defaults" / (line_args + ".vindrc") ;
+                    core::Logger::get_instance().message("Version: " + line_args) ;
+                    Source::sprocess(1, "source " + default_rc_path.u8string(), true) ;
+
+                    core::InputHub::get_instance().apply_mapping(core::Mode::UNDEFINED, true) ;
+                    continue ;
+                }
+
+                if(auto err = do_runcommand(cmd, line_args, path.parent_path(), as_default)) {
                     auto ltag = "L:" + std::to_string(lnum) ;
                     std::stringstream cmdline_ss ;
                     std::stringstream log_ss ;
@@ -275,10 +298,12 @@ namespace vind
                     log_ss << " (" << path.u8string() << ", " << ltag << ") " ;
                     PRINT_ERROR(log_ss.str()) ;
 
-                    core::InputHub::get_instance().clear_mapping() ;
+                    core::InputHub::get_instance().clear_mapping(
+                        core::Mode::UNDEFINED, as_default) ;
                     break ;
                 }
             }
+
             return SystemCall::RECONSTRUCT ;
         }
     }

@@ -71,12 +71,12 @@ $ scoop install win-vind
 -->
 
 ### Executable Installer
-- [win-vind_5.1.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.1.0/win-vind_5.1.0_32bit_installer.zip)
-- [win-vind_5.1.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.1.0/win-vind_5.1.0_64bit_installer.zip)
+- [win-vind_5.2.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.0/win-vind_5.2.0_32bit_installer.zip)
+- [win-vind_5.2.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.0/win-vind_5.2.0_64bit_installer.zip)
 
 ### Portable Zip
-- [win-vind_5.1.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.1.0/win-vind_5.1.0_32bit_portable.zip)
-- [win-vind_5.1.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.1.0/win-vind_5.1.0_64bit_portable.zip)
+- [win-vind_5.2.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.0/win-vind_5.2.0_32bit_portable.zip)
+- [win-vind_5.2.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.0/win-vind_5.2.0_64bit_portable.zip)
 
 
 ## Usage
@@ -86,6 +86,9 @@ Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.
 ### .vindrc sample  
 
 ```vim
+" Choose the version of {tiny, small, normal, big, huge}.
+version normal
+
 " options
 set shell = cmd
 set cmd_fontsize = 14
@@ -104,6 +107,31 @@ noremap <ctrl-2> :e http://example.com<cr>
 
 enoremap t ggyyGp
 ```
+
+### Default Mappings
+win-vind has many features, but you can use a simpler one for your purposes by putting the `version` command at the beginning of your .vindrc.
+If you want to use tiny version, write the following. It is important to note that **nothing but comments can be written before the `version` command**.
+
+```vim
+" Only comments can be written in here.
+version tiny
+" Any command can be written from.
+" For example
+set shell = cmd
+```
+
+|**Tier**|**Supported Features**|
+|:---|:---|
+|tiny|+mouse +syscmd|
+|small|+mouse +syscmd +window +process|
+|normal|+mouse +syscmd +window +process +vimemu|
+|big|+mouse +syscmd +window +process +vimemu +hotkey +gvmode|
+|huge|+mouse +syscmd +window +process +vimemu +hotkey +gvmode +experimental|
+
+Following Vim, there are five tiers. `tiny` has minimal commands for mouse moving and clicking, including EasyClick and GridMove. `small` allows more flexible handling of window controls and process launches, etc. `normal` has Vim emulation mappings and allows text editing in text areas, etc. `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse. `huge` allows win-vind to have experimental features for more complex operations. The default tier is `big`.
+
+For more information on default mappings, please visit our [website](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/).
+
 
 ## Known Issues
 - EasyClick does not seem to work properly for some applications on older Windows 10 before 1803. The cause is not known, but we have confirmed that it works after 1909. ([#11](https://github.com/pit-ray/win-vind/issues/11))

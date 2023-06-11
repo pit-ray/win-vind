@@ -7,7 +7,7 @@ nav: Default Mappings
 ---
 
 win-vind has many features, but you can use a simpler one for your purposes by putting the `version` command at the beginning of your .vindrc.
-If you want to use tiny version, write the following. It is important to note that **nothing but comments can be written before the `version` command**.
+If you want to use `tiny` version, write the following. It is important to note that **nothing but comments can be written before the `version` command**.
 
 ```vim
 " Only comments can be written in here.

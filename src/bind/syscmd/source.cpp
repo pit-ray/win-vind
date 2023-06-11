@@ -35,6 +35,7 @@
 namespace
 {
     using namespace vind ;
+    using namespace vind::bind ;
 
     template <typename Str>
     auto load_remote_vindrc(Str&& args) {
@@ -124,8 +125,6 @@ namespace
             const std::string& args,
             const std::filesystem::path& parent_path,
             bool as_default=false) {
-        using namespace vind ;
-        using namespace vind::bind ;
         using core::RunCommandsIndex ;
 
         auto rcindex = core::parse_run_command(cmd) ;
@@ -199,6 +198,15 @@ namespace
         }
         return std::error_code() ;
     }
+
+    void init_default_mapping(const std::string& tier="huge") {
+        auto default_rc_path = \
+           core::RESOURCE_ROOT_PATH() / "defaults" / (tier + ".vindrc") ;
+        core::Logger::get_instance().message("Version: " + tier) ;
+        Source::sprocess(1, "source " + default_rc_path.u8string(), true) ;
+
+        core::InputHub::get_instance().apply_mapping(core::Mode::UNDEFINED, true) ;
+    }
 }
 
 
@@ -210,12 +218,7 @@ namespace vind
 
         Source::Source()
         : BindedFuncFlex("source")
-        {
-            std::ifstream ifs(core::RC()) ;
-            if(!ifs.is_open()) {
-                std::ofstream ofs(core::RC(), std::ios::trunc) ;
-            }
-        }
+        {}
 
         SystemCall Source::sprocess(
                 std::uint16_t UNUSED(count),
@@ -265,13 +268,7 @@ namespace vind
                         line_args = util::A2a(line_args) ;
                     }
 
-                    auto default_rc_path = \
-                       core::RESOURCE_ROOT_PATH() / "defaults" / (line_args + ".vindrc") ;
-                    core::Logger::get_instance().message("Version: " + line_args) ;
-                    Source::sprocess(1, "source " + default_rc_path.u8string(), true) ;
-
-                    core::InputHub::get_instance().apply_mapping(core::Mode::UNDEFINED, true) ;
-                    continue ;
+                    init_default_mapping(line_args) ;
                 }
 
                 if(auto err = do_runcommand(cmd, line_args, path.parent_path(), as_default)) {
@@ -302,6 +299,12 @@ namespace vind
                         core::Mode::UNDEFINED, as_default) ;
                     break ;
                 }
+            }
+
+            // If the .vindrc is empty, apply a default tier.
+            if(!loaded_default_) {
+                loaded_default_ = true ;
+                init_default_mapping() ;
             }
 
             return SystemCall::RECONSTRUCT ;

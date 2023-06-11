@@ -58,6 +58,7 @@ SOFTWARE.
 #endif
 
 #include <cstring>
+#include <fstream>
 #include <memory>
 
 
@@ -170,6 +171,11 @@ namespace vind
             }
 
             Logger::get_instance().init("syslog_", 10, 15) ;
+
+            std::ifstream ifs(core::RC()) ;
+            if(!ifs.is_open()) {
+                std::ofstream ofs(core::RC(), std::ios::trunc) ;
+            }
 
             pimpl->map_ = CreateFileMappingA(
                     INVALID_HANDLE_VALUE, NULL,

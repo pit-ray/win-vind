@@ -8,7 +8,7 @@ nav: Huge Mappings
 
 ## Command Mode
 
-|**Trigger Commands**|**Called Command**|
+|**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`md`, `mkdir`|[\<makedir\>]({{ site.url }}/cheat_sheet/functions/#makedir)|
 |`target`|[\<enable_targeting_of_dedicate_to_window\>]({{ site.url }}/cheat_sheet/functions/#enable_targeting_of_dedicate_to_window)|
@@ -16,5 +16,10 @@ nav: Huge Mappings
 
 <br>
 <br>
-<br>
+## See also
+- [tiny](../tiny)
+- [small](../small)
+- [normal](../normal)
+- [big](../big)
+- [huge](../huge)
 <br>

@@ -2,6 +2,7 @@
 " Features: +mouse +syscmd
 
 " @ Mode Transition
+gnnoremap <ctrl-]> <to_gui_normal>
 gnnoremap <esc-left> <to_gui_normal>
 gnnoremap <esc-down> <to_resident>
 gnnoremap : <to_command>

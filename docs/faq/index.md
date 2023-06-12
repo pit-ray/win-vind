@@ -13,6 +13,4 @@ Typical FAQs are listed here, but if you don't see it here, please search [GitHu
 win-vind means <u>vi</u>m key b<u>ind</u>er for <u>win</u>dows.  
 <br>
 
-## What is the GUI visual mode?  
-It is the same as holding the mouse left pressing.  
 <br>

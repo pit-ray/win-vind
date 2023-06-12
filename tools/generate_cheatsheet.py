@@ -24,7 +24,7 @@ class CheatSheetGenerator(object):
             'command': 'Command Mode'
         }
 
-        self.mode_tag = '${MODE}'
+        self.mode_tag = '{mode}'
         self.cheat_url = '{{ site.url }}/cheat_sheet/functions/'
 
     def make_tiersheet(self, rc_filename):
@@ -58,10 +58,10 @@ class CheatSheetGenerator(object):
                         f.write('### ' + ft_label + '\n\n')
 
                     # Add table headers
-                    f.write('|**Trigger Commands**|**Called Command**|\n')
+                    f.write('|**Trigger Commands**|**Called Commands**|\n')
                     f.write('|:---:|:---:|\n')
 
-                    # Build reversed dicrionary to integrate lines where 
+                    # Build reversed dicrionary to integrate lines where
                     # the called commands are the same
                     back_maps = defaultdict(set)
                     for m in maps:
@@ -78,7 +78,8 @@ class CheatSheetGenerator(object):
 
                     for o_cmds, i_cmds in back_maps.items():
                         # Join the trigger commands with an inner-code tag.
-                        i_text = ', '.join(['`' + x + '`' for x in i_cmds])
+                        i_text = ', '.join([
+                            '`' + x.lower() + '`' for x in i_cmds])
 
                         # Add each url link
                         o_text = ''.join([
@@ -90,7 +91,14 @@ class CheatSheetGenerator(object):
 
                     f.write('\n')
 
-            f.write(4 * '<br>\n')
+            f.write(2 * '<br>\n')
+            f.write('## See also\n')
+            f.write('- [tiny](../tiny)\n')
+            f.write('- [small](../small)\n')
+            f.write('- [normal](../normal)\n')
+            f.write('- [big](../big)\n')
+            f.write('- [huge](../huge)\n')
+            f.write(1 * '<br>\n')
 
     def integrate_modes(self, text):
         if text.endswith('noremap'):

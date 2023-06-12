@@ -122,11 +122,11 @@ set shell = cmd
 
 |**Tier**|**Supported Features**|
 |:---|:---|
-|tiny|+mouse +syscmd|
-|small|+mouse +syscmd +window +process|
-|normal|+mouse +syscmd +window +process +vimemu|
-|big|+mouse +syscmd +window +process +vimemu +hotkey +gvmode|
-|huge|+mouse +syscmd +window +process +vimemu +hotkey +gvmode +experimental|
+|[tiny](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/tiny)|+mouse +syscmd|
+|[small](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/small)|+mouse +syscmd +window +process|
+|[normal](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/normal)|+mouse +syscmd +window +process +vimemu|
+|[big](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/big)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode|
+|[huge](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/huge)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode +experimental|
 
 Following Vim, there are five tiers. `tiny` has minimal commands for mouse moving and clicking, including EasyClick and GridMove. `small` allows more flexible handling of window controls and process launches, etc. `normal` has Vim emulation mappings and allows text editing in text areas, etc. `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse. `huge` allows win-vind to have experimental features for more complex operations. The default tier is `huge`.
 

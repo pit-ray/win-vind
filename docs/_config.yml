@@ -80,14 +80,3 @@ analytics:
 
 # Build settings
 markdown: kramdown
-
-# Function IDs
-functions:
-  to_command: 'to_command'
-  to_edi_normal: '`<to_edi_normal>`'
-  to_edi_visual: '`<to_edi_visual>`'
-  to_edi_visual_line: '`<to_edi_visual_line>`'
-  to_gui_visual: '`<to_gui_visual>`'
-  to_insert: '`<to_insert>`'
-  to_instant_gui_normal: '`<to_instant_gui_normal>`'
-  to_resident: '`<to_resident>`'

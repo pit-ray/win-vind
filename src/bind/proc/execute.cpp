@@ -5,6 +5,7 @@
 #include "core/path.hpp"
 #include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"

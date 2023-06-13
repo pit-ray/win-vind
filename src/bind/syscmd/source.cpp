@@ -261,14 +261,13 @@ namespace vind
                 if(!loaded_default_) {
                     loaded_default_ = true ;
 
-                    if(util::A2a(cmd) != "version") {
-                        line_args = "huge" ;
-                    }
-                    else {
-                        line_args = util::A2a(line_args) ;
-                    }
-
+                    cmd = util::A2a(cmd) ;
+                    line_args = cmd != "version" ? "huge" : util::A2a(line_args) ;
                     init_default_mapping(line_args) ;
+
+                    if(cmd == "version") {
+                        continue ;
+                    }
                 }
 
                 if(auto err = do_runcommand(cmd, line_args, path.parent_path(), as_default)) {

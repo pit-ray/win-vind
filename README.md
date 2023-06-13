@@ -40,7 +40,7 @@ It is also available from the command line as a command for UI operations like `
 
 ### Top Feature Demo
 
-<video src="https://user-images.githubusercontent.com/42631247/215270933-3365065b-53db-4eca-9fc6-cd03d13e5ab0.mp4" controls></video>
+<div><video controls src="https://user-images.githubusercontent.com/42631247/215270933-3365065b-53db-4eca-9fc6-cd03d13e5ab0.mp4" muted="false"></video></div>
 
 <br>  
 
@@ -111,6 +111,7 @@ enoremap t ggyyGp
 ### Default Mappings
 win-vind has many features, but you can use a simpler one for your purposes by putting the `version` command at the beginning of your .vindrc.
 If you want to use `tiny` version, write the following. It is important to note that **nothing but comments can be written before the `version` command**.
+If you do not write the `version` command, `huge` will be loaded.
 
 ```vim
 " Only comments can be written in here.
@@ -128,7 +129,7 @@ set shell = cmd
 |[big](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/big)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode|
 |[huge](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/huge)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode +experimental|
 
-Following Vim, there are five tiers. `tiny` has minimal commands for mouse moving and clicking, including EasyClick and GridMove. `small` allows more flexible handling of window controls and process launches, etc. `normal` has Vim emulation mappings and allows text editing in text areas, etc. `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse. `huge` allows win-vind to have experimental features for more complex operations. The default tier is `huge`.
+Following Vim, there are five tiers. `tiny` has minimal commands for mouse moving and clicking, including EasyClick and GridMove. `small` allows more flexible handling of window controls and process launches, etc. `normal` has Vim emulation mappings and allows text editing in text areas, etc. `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse. `huge` allows win-vind to have experimental features for more complex operations.
 
 For more information on default mappings, please visit our [website](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/).
 

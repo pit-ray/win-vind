@@ -9,4 +9,11 @@ body {
     ));
 
     position: relative;
+
+    hr.dash {
+        background-color: $background-color-light;
+        border-top: 1px dashed #8c8b8b;
+
+
+    }
 }

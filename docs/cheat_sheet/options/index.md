@@ -194,7 +194,7 @@ The grid size in GridMove. It assumes a text as its value, such as `12x8` for ho
 ## Mouse
 
 ### **`cursor_accel`**
-**type**: num, **default**: 95  
+**type**: num, **default**: 90  
 Pixel-level acceleration in the constatnt acceleration motion of the mouse cursor.
 
 <hr class="dash">

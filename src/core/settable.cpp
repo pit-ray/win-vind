@@ -36,7 +36,7 @@ namespace
         Param("cmd_xmargin", 32),
         Param("cmd_ymargin", 96),
 
-        Param("cursor_accel", 32),
+        Param("cursor_accel", 90),
         Param("cursor_resolution", 250),
 
         Param("dedicate_to_window", false),

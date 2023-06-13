@@ -205,6 +205,7 @@ namespace
         core::Logger::get_instance().message("Version: " + tier) ;
         Source::sprocess(1, "source " + default_rc_path.u8string(), true) ;
 
+        // Setup the solver of each mode as default mappings.
         core::InputHub::get_instance().apply_mapping(core::Mode::UNDEFINED, true) ;
     }
 }

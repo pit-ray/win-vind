@@ -10,7 +10,6 @@ namespace
 
     std::vector<Param> default_params {
         Param("hintkeys", "asdghklqwertyuiopzxcvbnmfj"),
-        Param("default", "huge"),
 
         Param("arrangewin_ignore", ""),
 

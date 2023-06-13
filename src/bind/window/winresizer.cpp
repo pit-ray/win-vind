@@ -9,10 +9,11 @@
 #include "winutil.hpp"
 
 #include "bind/bindinglist.hpp"
-#include "bind/emu/movecaret.hpp"
+#include "bind/mouse/movecursor.hpp"
 #include "core/background.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
+#include "core/keycodedef.hpp"
 #include "core/mapsolver.hpp"
 #include "core/settable.hpp"
 #include "opt/dedicate_to_window.hpp"
@@ -33,6 +34,14 @@ namespace
         FOCUS,
         NUM,
    } ;
+
+    enum class OperationID : unsigned char {
+        NONE,
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN,
+    } ;
 }
 
 namespace vind
@@ -48,10 +57,10 @@ namespace vind
             core::Background bg_ ;
 
             explicit Impl()
-            : left_id_(MoveCaretLeft().id()),
-              right_id_(MoveCaretRight().id()),
-              up_id_(MoveCaretUp().id()),
-              down_id_(MoveCaretDown().id()),
+            : left_id_(MoveCursorLeft().id()),
+              right_id_(MoveCursorRight().id()),
+              up_id_(MoveCursorUp().id()),
+              down_id_(MoveCursorDown().id()),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::Dedicate2Window().name(),
@@ -60,22 +69,30 @@ namespace vind
               ))
             {}
 
-            void do_resize(std::size_t id) {
-                if(id == left_id_) {
-                    DecreaseWindowWidth::sprocess(1, "") ;
-                }
-                else if(id == right_id_) {
-                    IncreaseWindowWidth::sprocess(1, "") ;
-                }
-                else if(id == up_id_) {
-                    DecreaseWindowHeight::sprocess(1, "") ;
-                }
-                else if(id == down_id_) {
-                    IncreaseWindowHeight::sprocess(1, "") ;
+            void do_resize(OperationID id) {
+                switch(id) {
+                    case OperationID::LEFT:
+                        DecreaseWindowWidth::sprocess(1, "") ;
+                        break ;
+
+                    case OperationID::RIGHT:
+                        IncreaseWindowWidth::sprocess(1, "") ;
+                        break ;
+
+                    case OperationID::UP:
+                        DecreaseWindowHeight::sprocess(1, "") ;
+                        break ;
+
+                    case OperationID::DOWN:
+                        IncreaseWindowHeight::sprocess(1, "") ;
+                        break ;
+
+                    default:
+                        break ;
                 }
             }
 
-            void do_move(std::size_t id) {
+            void do_move(OperationID id) {
                 auto hwnd = util::get_foreground_window() ;
                 auto rect = util::get_window_rect(hwnd) ;
 
@@ -87,29 +104,37 @@ namespace vind
                 auto& settable = core::SetTable::get_instance() ;
                 auto delta = settable.get("window_velocity").get<long>() ;
 
-                if(id == left_id_) {
-                    left -= delta ;
-                    if(left < cb_rect.left()) {
-                        left = cb_rect.left() ;
-                    }
-                }
-                else if(id == right_id_) {
-                    left += delta ;
-                    if(left > cb_rect.right()) {
-                        left = cb_rect.right() ;
-                    }
-                }
-                else if(id == up_id_) {
-                    top -= delta ;
-                    if(top < cb_rect.top()) {
-                        top = cb_rect.top() ;
-                    }
-                }
-                else if(id == down_id_) {
-                    top += delta ;
-                    if(top > cb_rect.bottom()) {
-                        top = cb_rect.bottom() ;
-                    }
+                switch(id) {
+                    case OperationID::LEFT:
+                        left -= delta ;
+                        if(left < cb_rect.left()) {
+                            left = cb_rect.left() ;
+                        }
+                        break;
+
+                    case OperationID::RIGHT:
+                        left += delta ;
+                        if(left > cb_rect.right()) {
+                            left = cb_rect.right() ;
+                        }
+                        break;
+
+                    case OperationID::UP:
+                        top -= delta ;
+                        if(top < cb_rect.top()) {
+                            top = cb_rect.top() ;
+                        }
+                        break;
+
+                    case OperationID::DOWN:
+                        top += delta ;
+                        if(top > cb_rect.bottom()) {
+                            top = cb_rect.bottom() ;
+                        }
+                        break;
+
+                    default:
+                        break ;
                 }
 
                 if(!MoveWindow(hwnd, left, top, rect.width(), rect.height(), TRUE)) {
@@ -117,31 +142,57 @@ namespace vind
                 }
             }
 
-            void do_focus(std::size_t id) {
-                if(id == left_id_) {
-                    SelectLeftWindow::sprocess(1, "") ;
-                }
-                else if(id == right_id_) {
-                    SelectRightWindow::sprocess(1, "") ;
-                }
-                else if(id == up_id_) {
-                    SelectUpperWindow::sprocess(1, "") ;
-                }
-                else if(id == down_id_) {
-                    SelectLowerWindow::sprocess(1, "") ;
+            void do_focus(OperationID id) {
+                switch(id) {
+                    case OperationID::LEFT:
+                        SelectLeftWindow::sprocess(1, "") ;
+                        break ;
+
+                    case OperationID::RIGHT:
+                        SelectRightWindow::sprocess(1, "") ;
+                        break ;
+
+                    case OperationID::UP:
+                        SelectUpperWindow::sprocess(1, "") ;
+                        break ;
+
+                    case OperationID::DOWN:
+                        SelectLowerWindow::sprocess(1, "") ;
+                        break ;
+
+                    default:
+                        break ;
                 }
             }
 
-            void call_op(InnerMode mode, std::size_t id) {
+            bool call_op(InnerMode mode, const core::CmdUnit::SPtr& input) {
+                auto id = OperationID::NONE ;
+                if(input->is_containing(KEYCODE_H)) {
+                    id = OperationID::LEFT ;
+                }
+                else if(input->is_containing(KEYCODE_L)) {
+                    id = OperationID::RIGHT ;
+                }
+                else if(input->is_containing(KEYCODE_K)) {
+                    id = OperationID::UP ;
+                }
+                else if(input->is_containing(KEYCODE_J)) {
+                    id = OperationID::DOWN ;
+                }
+
                 if(mode == InnerMode::RESIZE) {
                     do_resize(id) ;
+                    return true ;
                 }
                 else if(mode == InnerMode::MOVE) {
                     do_move(id) ;
+                    return true ;
                 }
                 else if(mode == InnerMode::FOCUS) {
                     do_focus(id) ;
+                    return true ;
                 }
+                return false ;
             }
 
             void draw_mode_status(InnerMode mode) const {
@@ -173,7 +224,6 @@ namespace vind
         void WindowResizer::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
-            using core::Mode ;
             auto& igate = core::InputGate::get_instance() ;
             auto& ihub = core::InputHub::get_instance() ;
             auto& settable = core::SetTable::get_instance() ;
@@ -190,8 +240,8 @@ namespace vind
                 do {
                     core::CmdUnit::SPtr input ;
                     std::uint16_t count ;
-                    if(!ihub.pull_input(
-                            input, count, Mode::EDI_NORMAL, false)) {
+                    if(!ihub.get_typed_input(
+                            input, count, core::get_global_mode(), false)) {
                         continue ;
                     }
 
@@ -211,12 +261,10 @@ namespace vind
                         continue ;
                     }
 
-                    auto solver = ihub.get_solver(core::Mode::EDI_NORMAL) ;
-                    auto outputs = solver->map_command_from(*input, true) ;
-                    for(auto& unit : outputs) {
-                        pimpl->call_op(inmode, unit->id()) ;
-                        Sleep(100) ;
+                    if(pimpl->call_op(inmode, input)) {
+                        continue ;
                     }
+                    Sleep(100) ;
 
                 } while(!ihub.is_empty_queue()) ;
 

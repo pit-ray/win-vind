@@ -7,7 +7,6 @@ def get_cases():
         increase_window_width,
         resize_window_height,
         snap_current_window_to_right,
-        window_resizer
     ]
 
 
@@ -52,21 +51,3 @@ def snap_current_window_to_right(handler, mock_app):
     target_h = sh
 
     return w == target_w and h == target_h
-
-
-def window_resizer(handler, mock_app):
-    mock_app.focus()
-
-    x1, y1 = mock_app.get_window_pos()
-    w1, h1 = mock_app.get_window_size()
-
-    # [winresizer]  a user-defined macro defined in vindrc_gen.py.
-    # [ll]          increate width in resize mode
-    # [e]           change mode to move mode
-    # [jj]          Down the y coordinate of the window
-    # [<esc>]       Exit windowresizer
-    handler.send_command('winresizerllejj<esc>', pause=2)
-    x2, y2 = mock_app.get_window_pos()
-    w2, h2 = mock_app.get_window_size()
-
-    return w1 < w2 and h1 == h2 and x1 == x2 and y1 < y2

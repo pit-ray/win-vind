@@ -48,7 +48,6 @@ AddTest(each-mapsolver-test
     ${CMAKE_CURRENT_SOURCE_DIR}/mapsolver_test.cpp
 
     ${SRCDIR}/bind/bindedfunc.cpp
-    ${SRCDIR}/bind/mapdefault.cpp
     ${SRCDIR}/core/cmdmatcher.cpp
     ${SRCDIR}/core/cmdparser.cpp
     ${SRCDIR}/core/cmdunit.cpp

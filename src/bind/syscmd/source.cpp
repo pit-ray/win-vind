@@ -262,8 +262,8 @@ namespace vind
 
                 if(!loaded_default_) {
                     loaded_default_ = true ;
-                    line_args = cmd != "version" ? "huge" : util::A2a(line_args) ;
-                    init_default_mapping(line_args) ;
+                    init_default_mapping(
+                        cmd != "version" ? "huge" : util::A2a(line_args)) ;
                 }
 
                 if(cmd == "version") {

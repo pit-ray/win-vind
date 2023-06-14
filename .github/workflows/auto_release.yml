@@ -33,7 +33,7 @@ jobs:
     - name: Cache libraries
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
+        path: ${{github.workspace}}/libs/wxWidgets
         key: libs-cache-release-220224
 
     - name: Setup x64 MSVC

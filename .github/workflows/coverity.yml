@@ -53,8 +53,8 @@ jobs:
     - name: Cache libraries
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-coverity-220126
+        path: ${{github.workspace}}/libs/wxWidgets
+        key: x64-libs-cache-coverity
 
     - name: Install libraries
       run: "tools/install_wxWidgets.bat -msvc 64"
@@ -63,7 +63,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/cov_tools
-        key: x64-coverity-cache-221023
+        key: x64-coverity-cache
 
     - name: Install Coverity scan tools
       run: "tools/install_coverity_tools.bat ${{env.TOKEN}}"

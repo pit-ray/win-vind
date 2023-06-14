@@ -41,8 +41,8 @@ jobs:
     - name: Cache Libraries
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-msvc-220126
+        path: ${{github.workspace}}/libs/wxWidgets
+        key: x64-libs-cache-msvc
 
     - name: Setup Libraries
       run: "tools/install_wxWidgets.bat -msvc 64 -without-vcvars"
@@ -67,8 +67,8 @@ jobs:
     - name: Cache Library
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
-        key: x86-libs-cache-msvc-220126
+        path: ${{github.workspace}}/libs/wxWidgets
+        key: x86-libs-cache-msvc
 
     - name: Setup Libraries
       run: "tools/install_wxWidgets.bat -msvc 32 -without-vcvars"

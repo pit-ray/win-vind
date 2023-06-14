@@ -84,8 +84,8 @@ jobs:
     - name: Cache Library
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-codeql-220126
+        path: ${{github.workspace}}/libs/wxWidgets
+        key: x64-libs-cache-codeql
 
     - name: Setup Library
       run: "tools/install_wxWidgets.bat -msvc 64"

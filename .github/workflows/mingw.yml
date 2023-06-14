@@ -50,8 +50,8 @@ jobs:
     - name: Cache Libraries
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-mingw-220120
+        path: ${{github.workspace}}/libs/wxWidgets
+        key: x64-libs-cache-mingw
 
     - name: Install Libraries
       run: "tools/install_wxWidgets.bat -mingw 64"

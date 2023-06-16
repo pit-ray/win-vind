@@ -79,7 +79,7 @@ class CheatSheetGenerator(object):
                     for o_cmds, i_cmds in back_maps.items():
                         # Join the trigger commands with an inner-code tag.
                         i_text = ', '.join([
-                            '`' + x.lower() + '`' for x in i_cmds])
+                            '`' + x + '`' for x in i_cmds])
 
                         # Add each url link
                         o_text = ''.join([

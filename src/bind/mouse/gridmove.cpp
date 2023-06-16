@@ -115,8 +115,9 @@ namespace vind
             // Assign hints for grid cells of each monitor.
             std::vector<core::Hint> c_hints ;
             std::vector<std::string> c_hint_texts ;
+            auto cell_nums = static_cast<std::size_t>(grid_h_ * grid_w_) ;
             core::assign_identifier_hints(
-                grid_h_ * grid_w_, c_hints, c_hint_texts, hintkeys) ;
+                cell_nums, c_hints, c_hint_texts, hintkeys) ;
 
             for(std::size_t mi = 0 ; mi < monitors.size() ; mi ++) {
                 const auto& rect = monitors[mi].rect ;

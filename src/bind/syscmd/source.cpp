@@ -120,7 +120,7 @@ namespace
         return text ;
     }
 
-    std::error_code do_runcommand(
+    void do_runcommand(
             const std::string& cmd,
             const std::string& args,
             const std::filesystem::path& parent_path,
@@ -131,26 +131,26 @@ namespace
         switch(rcindex) {
             case RunCommandsIndex::SET: {
                 Set::sprocess(1, cmd + " " + args) ;
-                return std::error_code() ;
+                return ;
             }
             case RunCommandsIndex::COMMAND: {
                 Command::sprocess(1, cmd + " " + args, as_default) ;
-                return std::error_code() ;
+                return ;
             }
             case RunCommandsIndex::DELCOMMAND: {
                 Delcommand::sprocess(1, cmd + " " + args, as_default) ;
-                return std::error_code() ;
+                return ;
             }
             case RunCommandsIndex::COMCLEAR: {
                 if(!args.empty()) {
-                    return std::make_error_code(std::errc::invalid_argument) ;
+                    throw std::make_error_code(std::errc::invalid_argument) ;
                 }
                 Comclear::sprocess(1, "", as_default) ;
-                return std::error_code() ;
+                return ;
             }
             case RunCommandsIndex::SOURCE: {
                 if(args.empty()) {
-                    return std::make_error_code(std::errc::invalid_argument) ;
+                    throw std::make_error_code(std::errc::invalid_argument) ;
                 }
 
                 auto path = \
@@ -158,7 +158,7 @@ namespace
 
                 if(std::filesystem::exists(path)) {
                     if(std::filesystem::equivalent(core::RC(), path)) {
-                        return std::make_error_code(std::errc::text_file_busy) ;
+                        throw std::make_error_code(std::errc::text_file_busy) ;
                     }
                     Source::sprocess(1, cmd + " " + path.u8string(), as_default) ;
                 }
@@ -166,7 +166,7 @@ namespace
                     Source::sprocess(1, cmd + " " + load_remote_vindrc(args).u8string()) ;
                 }
 
-                return std::error_code() ;
+                return ;
             }
             default: {
                 break ;
@@ -188,15 +188,14 @@ namespace
         }
         else if(util::enum_has_bits(rcindex, RunCommandsIndex::MASK_MAPCLEAR)) {
             if(!args.empty()) {
-                return std::make_error_code(std::errc::invalid_argument) ;
+                throw std::make_error_code(std::errc::invalid_argument) ;
             }
             auto [prefix, _] = core::divide_prefix_and_cmd(cmd, "m") ;
             do_mapclear(prefix, as_default) ;
         }
         else {
-            return std::make_error_code(std::errc::argument_out_of_domain) ;
+            throw std::make_error_code(std::errc::argument_out_of_domain) ;
         }
-        return std::error_code() ;
     }
 
     void init_default_mapping(const std::string& tier="huge") {
@@ -270,8 +269,11 @@ namespace vind
                     continue ;
                 }
 
-                if(auto err = do_runcommand(cmd, line_args, path.parent_path(), as_default)) {
-                    auto ltag = "L:" + std::to_string(lnum) ;
+                auto ltag = "L:" + std::to_string(lnum) ;
+                try {
+                    do_runcommand(cmd, line_args, path.parent_path(), as_default) ;
+                }
+                catch(const std::error_code& err) {
                     std::stringstream cmdline_ss ;
                     std::stringstream log_ss ;
 
@@ -291,12 +293,19 @@ namespace vind
                     cmdline_ss << " (" << ltag << ")" ;
                     opt::VCmdLine::print(opt::ErrorMessage(cmdline_ss.str())) ;
 
-                    log_ss << " (" << path.u8string() << ", " << ltag << ") " ;
-                    PRINT_ERROR(log_ss.str()) ;
+                    log_ss << " (" << path.u8string() << ", " << ltag << ")" ;
+                    core::Logger::get_instance().error(log_ss.str()) ;
 
                     core::InputHub::get_instance().clear_mapping(
                         core::Mode::UNDEFINED, as_default) ;
                     break ;
+                }
+                catch(const std::runtime_error& e) {
+                    std::stringstream log_ss ;
+                    log_ss << cmd << ": " << e.what() ;
+                    log_ss << " (" << path.u8string() << ", " << ltag << ")" ;
+                    core::Logger::get_instance().error(log_ss.str()) ;
+                    continue ;
                 }
             }
 

@@ -194,8 +194,9 @@ namespace vind
                     if(size > 0) {
                         LocalFree(msgbuf) ;
                     }
+
+                    pimpl->stream_ <<  std::endl ;
                 }
-                pimpl->stream_ <<  std::endl ;
 
                 pimpl->stream_ << "[Error] " << msg ;
                 if(!scope.empty()) {

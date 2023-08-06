@@ -181,22 +181,22 @@ namespace vind
     {
         AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept {
             static std::unordered_map<std::string, AutoCmdEvent> names {
-                {"appenter",        AutoCmdEvent::APP_ENTER},
-                {"appleave",        AutoCmdEvent::APP_LEAVE},
-                {"guinormalenter",  AutoCmdEvent::GUI_NORMAL_ENTER},
-                {"guinormalleave",  AutoCmdEvent::GUI_NORMAL_LEAVE},
-                {"guivisualenter",  AutoCmdEvent::GUI_VISUAL_ENTER},
-                {"guivisualleave",  AutoCmdEvent::GUI_VISUAL_LEAVE},
-                {"edinormalenter",  AutoCmdEvent::EDI_NORMAL_ENTER},
-                {"edinormalleave",  AutoCmdEvent::EDI_NORMAL_LEAVE},
-                {"edivisualenter",  AutoCmdEvent::EDI_VISUAL_ENTER},
-                {"edivisualleave",  AutoCmdEvent::EDI_VISUAL_LEAVE},
-                {"insertenter",     AutoCmdEvent::INSERT_ENTER},
-                {"insertleave",     AutoCmdEvent::INSERT_LEAVE},
-                {"residententer",   AutoCmdEvent::RESIDENT_ENTER},
-                {"residentleave",   AutoCmdEvent::RESIDENT_LEAVE},
-                {"commandenter",    AutoCmdEvent::COMMAND_ENTER},
-                {"commandleave",    AutoCmdEvent::COMMAND_LEAVE}
+                {"appenter",      AutoCmdEvent::APP_ENTER},
+                {"appleave",      AutoCmdEvent::APP_LEAVE},
+                {"gnormalenter",  AutoCmdEvent::GUI_NORMAL_ENTER},
+                {"gnormalleave",  AutoCmdEvent::GUI_NORMAL_LEAVE},
+                {"gvisualenter",  AutoCmdEvent::GUI_VISUAL_ENTER},
+                {"gvisualleave",  AutoCmdEvent::GUI_VISUAL_LEAVE},
+                {"enormalenter",  AutoCmdEvent::EDI_NORMAL_ENTER},
+                {"enormalleave",  AutoCmdEvent::EDI_NORMAL_LEAVE},
+                {"evisualenter",  AutoCmdEvent::EDI_VISUAL_ENTER},
+                {"evisualleave",  AutoCmdEvent::EDI_VISUAL_LEAVE},
+                {"insertenter",   AutoCmdEvent::INSERT_ENTER},
+                {"insertleave",   AutoCmdEvent::INSERT_LEAVE},
+                {"residententer", AutoCmdEvent::RESIDENT_ENTER},
+                {"residentleave", AutoCmdEvent::RESIDENT_LEAVE},
+                {"commandenter",  AutoCmdEvent::COMMAND_ENTER},
+                {"commandleave",  AutoCmdEvent::COMMAND_LEAVE}
             } ;
             auto event_name_lower = util::A2a(event_name) ;
             if(names.find(event_name_lower) != names.end()) {

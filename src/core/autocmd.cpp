@@ -181,8 +181,8 @@ namespace vind
     {
         AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept {
             static std::unordered_map<std::string, AutoCmdEvent> names {
-                {"procenter",        AutoCmdEvent::PROC_ENTER},
-                {"procleave",        AutoCmdEvent::PROC_LEAVE},
+                {"appenter",        AutoCmdEvent::APP_ENTER},
+                {"appleave",        AutoCmdEvent::APP_LEAVE},
                 {"guinormalenter",  AutoCmdEvent::GUI_NORMAL_ENTER},
                 {"guinormalleave",  AutoCmdEvent::GUI_NORMAL_LEAVE},
                 {"guivisualenter",  AutoCmdEvent::GUI_VISUAL_ENTER},

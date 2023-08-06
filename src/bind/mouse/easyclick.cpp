@@ -175,6 +175,10 @@ namespace vind
             std::vector<util::Point2D> points ;
 
             auto hwnd = util::get_foreground_window() ;
+            if(!hwnd) {
+                return ;
+            }
+
             if(!scan_ui_objects(hwnd, pimpl->scanner_, elems, points)) {
                 return ;
             }

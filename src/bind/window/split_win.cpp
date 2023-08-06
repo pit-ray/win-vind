@@ -31,9 +31,16 @@ namespace vind
             OpenNewWindow::sprocess(1, "") ;
 
             auto new_hwnd = util::get_foreground_window() ;
+            if(!new_hwnd) {
+                return ;
+            }
+
             if(new_hwnd == fginfo.hwnd) {
                 Sleep(500) ;
                 new_hwnd = util::get_foreground_window() ;
+                if(!new_hwnd) {
+                    return ;
+                }
             }
 
             //snap a new window to bottom
@@ -63,9 +70,16 @@ namespace vind
             OpenNewWindow::sprocess(1, "") ;
 
             auto new_hwnd = util::get_foreground_window() ;
+            if(!new_hwnd) {
+                return ;
+            }
+
             if(new_hwnd == fginfo.hwnd) {
                 Sleep(500) ;
                 new_hwnd = util::get_foreground_window() ;
+                if(!new_hwnd) {
+                    return ;
+                }
             }
 
             //snap a new window to right

@@ -15,6 +15,9 @@ namespace vind
                 std::function<void()> clip_func,
                 bool backup) {
             auto hwnd = util::get_foreground_window() ;
+            if(!hwnd) {
+                throw std::runtime_error("There is no foreground window.") ;
+            }
 
             SmartClipboard scb(hwnd) ;
             scb.open() ;

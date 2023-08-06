@@ -265,6 +265,9 @@ namespace vind
                 std::uint16_t count,
                 const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
+            if(!hwnd) {
+                throw std::runtime_error("There is no foreground window.") ;
+            }
 
             auto& igate = core::InputGate::get_instance() ;
 

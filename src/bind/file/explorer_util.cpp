@@ -19,6 +19,9 @@ namespace vind
         //This is based on https://devblogs.microsoft.com/oldnewthing/?p=38393 .
         std::filesystem::path get_current_explorer_path() {
             auto hwnd = util::get_foreground_window() ;
+            if(!hwnd) {
+                throw std::runtime_error("There is no foreground window.") ;
+            }
 
             if(util::is_failed(CoInitialize(NULL))) {
                 throw RUNTIME_EXCEPT("initialization failed") ;

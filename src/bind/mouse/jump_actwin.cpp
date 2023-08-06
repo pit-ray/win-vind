@@ -18,6 +18,10 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
+            if(!hwnd) {
+                return ;
+            }
+
             auto rect = util::get_window_rect(hwnd) ;
             util::set_cursor_pos(rect.center()) ;
         }

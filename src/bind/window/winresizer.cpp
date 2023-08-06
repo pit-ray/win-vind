@@ -94,6 +94,10 @@ namespace vind
 
             void do_move(OperationID id) {
                 auto hwnd = util::get_foreground_window() ;
+                if(!hwnd) {
+                    return ;
+                }
+
                 auto rect = util::get_window_rect(hwnd) ;
 
                 auto cb_rect = util::get_combined_metrics() ;

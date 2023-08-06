@@ -135,6 +135,9 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             auto hwnd = util::get_foreground_window() ;
+            if(!hwnd) {
+                return ;
+            }
 
             //Search visible windows
             g_m_ordered_hwnd.clear() ;

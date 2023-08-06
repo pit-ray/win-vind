@@ -69,12 +69,17 @@ namespace vind
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
             auto& igate = core::InputGate::get_instance() ;
+            auto& ac = core::AutoCmd::get_instance() ;
+            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+
             igate.close_all_ports() ;
             igate.unabsorb() ;
             core::set_global_mode(core::Mode::RESIDENT) ;
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- RESIDENT --")) ;
             }
+
+            ac.apply_autocmds(core::get_enter_event(core::Mode::RESIDENT)) ;
         }
 
         //ToGUIVisual
@@ -85,11 +90,16 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
+            auto& ac = core::AutoCmd::get_instance() ;
+            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+
             core::set_global_mode(core::Mode::GUI_VISUAL) ;
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- GUI VISUAL --")) ;
             }
             util::press_mousestate(KEYCODE_MOUSE_LEFT) ;
+
+            ac.apply_autocmds(core::get_enter_event(core::Mode::GUI_VISUAL)) ;
         }
 
         // All instances share TextAreaScanner to keep staticity of sprocess.
@@ -111,6 +121,10 @@ namespace vind
             if(mode == Mode::EDI_NORMAL) {
                 return ;
             }
+
+            auto& ac = core::AutoCmd::get_instance() ;
+            ac.apply_autocmds(core::get_leave_event(mode)) ;
+
             if(mode == Mode::GUI_NORMAL) {
                 util::click(KEYCODE_MOUSE_LEFT) ;
             }
@@ -129,10 +143,13 @@ namespace vind
 
             auto& settable = core::SetTable::get_instance() ;
             if(settable.get("autofocus_textarea").get<bool>()) {
-                auto hwnd = util::get_foreground_window() ;
-                auto pos = util::get_cursor_pos() ;
-                focus_nearest_textarea(hwnd, pos, scanner_) ;
+                if(auto hwnd = util::get_foreground_window()) {
+                    auto pos = util::get_cursor_pos() ;
+                    focus_nearest_textarea(hwnd, pos, scanner_) ;
+                }
             }
+
+            ac.apply_autocmds(core::get_enter_event(Mode::EDI_NORMAL)) ;
         }
 
         //ToInsert
@@ -144,7 +161,13 @@ namespace vind
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
             using core::Mode ;
-            if(core::get_global_mode() == Mode::GUI_NORMAL) {
+
+            auto m = core::get_global_mode() ;
+
+            auto& ac = core::AutoCmd::get_instance() ;
+            ac.apply_autocmds(core::get_leave_event(m)) ;
+
+            if(m == Mode::GUI_NORMAL) {
                 util::click(KEYCODE_MOUSE_LEFT) ;
             }
 
@@ -157,6 +180,8 @@ namespace vind
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- INSERT --")) ;
             }
+
+            ac.apply_autocmds(core::get_enter_event(Mode::INSERT)) ;
         }
 
         //ToEdiVisual
@@ -167,11 +192,16 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
+            auto& ac = core::AutoCmd::get_instance() ;
+            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+
             select_words() ;
             core::set_global_mode(core::Mode::EDI_VISUAL) ;
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL --")) ;
             }
+
+            ac.apply_autocmds(core::get_enter_event(core::Mode::EDI_VISUAL)) ;
         }
 
         //ToEdiVisualLine
@@ -182,12 +212,17 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
+            auto& ac = core::AutoCmd::get_instance() ;
+            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+
             select_line_EOL2BOL() ;
             core::set_global_mode(
                     core::Mode::EDI_VISUAL, core::ModeFlags::VISUAL_LINE) ;
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL LINE--")) ;
             }
+
+            ac.apply_autocmds(core::get_enter_event(core::Mode::EDI_VISUAL)) ;
         }
     }
 }

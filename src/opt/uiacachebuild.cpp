@@ -73,6 +73,9 @@ namespace vind
             }
 
             auto hwnd = util::get_foreground_window() ;
+            if(!hwnd) {
+                return ;
+            }
 
             if(!has_cache(hwnd)) {
                 caches_.emplace(hwnd, hwnd) ;

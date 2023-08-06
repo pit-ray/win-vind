@@ -17,6 +17,9 @@ namespace
     // If the clipboard does not have string, return false.
     bool remove_crlf_in_clipboard() {
         auto hwnd = util::get_foreground_window() ;
+        if(!hwnd) {
+            throw std::runtime_error("There is no foreground window.") ;
+        }
         bind::SmartClipboard scb(hwnd) ;
         scb.open() ;
 

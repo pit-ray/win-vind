@@ -105,6 +105,8 @@ namespace vind
 
             Background bg_ ;
 
+            HWND previous_hwnd_ ;
+
             template <typename ExitFuncType, typename String>
             Impl(ExitFuncType&& exitfunc, String&& memname, std::size_t memsize)
             : exit_(std::forward<ExitFuncType>(exitfunc)),
@@ -113,7 +115,8 @@ namespace vind
               memsize_(memsize),
               subprocess_(false),
               memread_timer_(1000'000), //1 s
-              bg_(opt::all_global_options())
+              bg_(opt::all_global_options()),
+              previous_hwnd_(NULL)
             {}
 
             ~Impl() noexcept {
@@ -289,7 +292,10 @@ namespace vind
                 handle_system_call(cm.at("i")->process()) ;
             }
 
-            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::GUI_NORMAL_ENTER, ".*vim.*", "<to_resident>") ;
+            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_LEAVE, "*vim*", "<to_insert>") ;
+            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_ENTER, "*vim*", "<to_resident>") ;
+            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_ENTER, "*notepad.exe", "<to_edi_normal>") ;
+            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_LEAVE, "*notepad.exe", "<to_insert>") ;
         }
 
         void VindEntry::reconstruct() {
@@ -316,6 +322,16 @@ namespace vind
 
         void VindEntry::update() {
             auto& ihub = InputHub::get_instance() ;
+
+            auto& ac = AutoCmd::get_instance() ;
+            auto hwnd = util::get_foreground_window() ;
+            if(pimpl->previous_hwnd_ != hwnd) {
+                if(pimpl->previous_hwnd_ != NULL) {
+                    ac.apply_autocmds(AutoCmdEvent::WIN_LEAVE, pimpl->previous_hwnd_) ;
+                }
+                pimpl->previous_hwnd_ = hwnd ;
+                ac.apply_autocmds(AutoCmdEvent::WIN_ENTER, hwnd) ;
+            }
 
             pimpl->bg_.update() ;
 

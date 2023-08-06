@@ -86,7 +86,10 @@ namespace vind
                 const std::string& pattern,
                 const std::string& cmd) ;
 
-            void apply_autocmds(AutoCmdEvent event) ;
+            // Perform command automation.
+            // First argument: the event type
+            // Second argument: target window handle, which has default HWND.
+            void apply_autocmds(AutoCmdEvent event, HWND hwnd=NULL) ;
         } ;
     }
 }

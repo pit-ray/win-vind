@@ -2,6 +2,7 @@
 
 #include "cmdparser.hpp"
 #include "cmdunit.hpp"
+#include "errlogger.hpp"
 #include "util/winwrap.hpp"
 
 #include <array>
@@ -24,33 +25,45 @@ namespace
         std::string pat_ ;
         std::regex re_ ;
 
+        void init_regex() {
+            std::string regex ;
+            regex.reserve(pat_.length()) ;
+
+            for(std::size_t i = 0 ; i < pat_.length() ; i ++) {
+                if(pat_[i] == '*') {
+                    regex.append(".*") ;
+                }
+                else if(pat_[i] == '.') {
+                    regex.append("\\.") ;
+                }
+                else {
+                    regex.push_back(pat_[i]) ;
+                }
+            }
+
+            re_ = std::regex(std::move(regex)) ;
+        }
+
     public:
         explicit AutoPattern()
         : AutoPattern("")
         {}
 
         explicit AutoPattern(const std::string& pat)
-        : pat_(pat),
-          re_(pat)
-        {}
+        : pat_(util::A2a(pat))
+        {
+            init_regex() ;
+        }
 
         explicit AutoPattern(std::string&& pat)
-        : pat_(std::move(pat)),
-          re_(pat_)
-        {}
+        : pat_(util::A2a(std::move(pat)))
+        {
+            init_regex() ;
+        }
 
-        // Match a query with the pattern and returns the match score.
-        // The higher score denotes more specified matching.
-        int match(const std::string& query) {
-            if(pat_.length() == 1 && pat_.front() == '*') {
-                return 1 ;
-            }
-
-            if(std::regex_match(query, re_)) {
-                return 2 ;
-            }
-
-            return 0 ;
+        // Match a query with the pattern
+        bool match(const std::string& query) {
+            return std::regex_match(query, re_) ;
         }
 
         const std::string& get() const noexcept {
@@ -94,17 +107,12 @@ namespace
             }
         }
 
-        int match_pattern(const std::string& query) {
-            int highest_index = -1 ;
-            int highest_score = 0 ;
+        void match_pattern(const std::string& query, std::unordered_set<int>& indices) {
             for(int i = 0 ; i < pats_.size() ; i ++) {
-                auto score = pats_[i].match(query) ;
-                if(highest_score < score) {
-                    highest_index = i ;
+                if(pats_[i].match(query)) {
+                    indices.insert(i) ;
                 }
             }
-
-            return highest_index ;
         }
 
         void call_sequential_cmd(int patidx) {
@@ -183,15 +191,23 @@ namespace vind
             pimpl->events_[static_cast<int>(event)].add_pattern_cmd(pattern, std::move(cmd)) ;
         }
 
-        void AutoCmd::apply_autocmds(AutoCmdEvent event) {
+        void AutoCmd::apply_autocmds(AutoCmdEvent event, HWND hwnd) {
             if(event == AutoCmdEvent::UNDEFINED) {
                 return ;
             }
 
             auto evt = pimpl->events_[static_cast<int>(event)] ;
 
+            if(!hwnd) {  // set default value istead
+                hwnd = util::get_foreground_window() ;
+            }
+
+            if(!hwnd) {
+                // There is no foreground window, so do nothing.
+                return ;
+            }
+
             // Get the path for executable file of the foreground window.
-            auto hwnd = util::get_foreground_window() ;
             DWORD procid ;
             GetWindowThreadProcessId(hwnd, &procid) ;
 
@@ -209,21 +225,46 @@ namespace vind
             }
 
             std::unordered_set<DWORD> parent_set{procid} ;
-            std::unordered_set<int> pat_indices{} ;
+
+            std::unordered_set<int> pat_indices{} ;  // to call indices of the pattern list
+
+            // Check pattern of the parent process
+            std::string path ;
+            try {
+                path = util::A2a(util::get_module_path(procid)) ;
+            }
+            catch(const std::runtime_error&) {
+                // If failed to get the path of the module, skip matching.
+                return ;
+            }
+            std::unordered_set<int> indices ;
+            evt.match_pattern(path, indices) ;
+            if(!indices.empty()) {
+                pat_indices.insert(indices.begin(), indices.end()) ;
+            }
+
             do {
-                // Enumerate only child processs
+                // Check pattern of child processs
                 if(parent_set.find(pe32.th32ParentProcessID) != parent_set.end()) {
-                    // Check pattern and execute sequential command
-                    auto path = util::get_module_path(pe32.th32ProcessID) ;
-                    auto patidx = evt.match_pattern(path) ;
-                    if(patidx >= 0) {
-                        pat_indices.insert(patidx) ;
+                    try {
+                        path = util::A2a(util::get_module_path(pe32.th32ProcessID)) ;
+                    }
+                    catch(const std::runtime_error&) {
+                        // If failed to get the path of the module, skip matching.
+                        continue ;
+                    }
+
+                    indices.clear() ;
+                    evt.match_pattern(path, indices) ;
+                    if(!indices.empty()) {
+                        pat_indices.insert(indices.begin(), indices.end()) ;
                     }
 
                     parent_set.insert(pe32.th32ProcessID) ;
                 }
             } while(Process32Next(h_snap.get(), &pe32)) ;
 
+            // Execute the matched sequential commands
             if(!pat_indices.empty()) {
                 for(auto patidx : pat_indices) {
                     evt.call_sequential_cmd(patidx) ;

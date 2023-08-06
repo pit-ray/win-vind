@@ -1,6 +1,7 @@
 #include "instant_mode.hpp"
 
 #include "bind/bindedfunc.hpp"
+#include "core/autocmd.hpp"
 #include "core/background.hpp"
 #include "core/cmdunit.hpp"
 #include "core/inputgate.hpp"
@@ -48,6 +49,11 @@ namespace vind
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
             auto& ihub = core::InputHub::get_instance() ;
+            auto& ac = core::AutoCmd::get_instance() ;
+
+            auto m = core::get_global_mode() ;
+            ac.apply_autocmds(core::get_leave_event(m)) ;
+            ac.apply_autocmds(core::get_enter_event(core::Mode::GUI_NORMAL)) ;
 
             core::InputGate::get_instance().close_all_ports_with_refresh() ;
             core::InstantKeyAbsorber isa{} ;
@@ -77,6 +83,7 @@ namespace vind
                 break ;
             }
             opt::VCmdLine::reset() ;
+            ac.apply_autocmds(core::get_enter_event(m)) ;
 
             return res ;
         }

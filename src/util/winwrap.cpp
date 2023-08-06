@@ -38,9 +38,11 @@ namespace vind
 
         HWND get_foreground_window() {
             auto hwnd = GetForegroundWindow() ;
+            /*
             if(!hwnd) {
                 throw std::runtime_error("There is no foreground window.") ;
             }
+            */
             return hwnd ;
         }
 

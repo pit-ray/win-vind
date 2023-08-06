@@ -15,8 +15,8 @@ namespace vind
     namespace core
     {
         enum class AutoCmdEvent : unsigned char {
-            PROC_ENTER,
-            PROC_LEAVE,
+            APP_ENTER,
+            APP_LEAVE,
             GUI_NORMAL_ENTER,
             GUI_NORMAL_LEAVE,
             GUI_VISUAL_ENTER,

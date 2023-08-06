@@ -38,7 +38,7 @@ namespace vind
 
         AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept ;
 
-        inline AutoCmdEvent get_leave_event(Mode mode) noexcept {
+        inline AutoCmdEvent get_leave_event(Mode mode) {
             static const std::unordered_map<Mode, AutoCmdEvent> leave_events {
                 {Mode::GUI_NORMAL, AutoCmdEvent::GUI_NORMAL_LEAVE},
                 {Mode::GUI_VISUAL, AutoCmdEvent::GUI_VISUAL_LEAVE},
@@ -54,7 +54,7 @@ namespace vind
             return AutoCmdEvent::UNDEFINED ;
         }
 
-        inline AutoCmdEvent get_enter_event(Mode mode) noexcept {
+        inline AutoCmdEvent get_enter_event(Mode mode) {
             static const std::unordered_map<Mode, AutoCmdEvent> enter_events {
                 {Mode::GUI_NORMAL, AutoCmdEvent::GUI_NORMAL_ENTER},
                 {Mode::GUI_VISUAL, AutoCmdEvent::GUI_VISUAL_ENTER},

@@ -51,13 +51,15 @@ namespace
         {}
 
         explicit AutoPattern(const std::string& pat)
-        : pat_(pat)
+        : pat_(pat),
+          re_()
         {
             init_regex() ;
         }
 
         explicit AutoPattern(std::string&& pat)
-        : pat_(std::move(pat))
+        : pat_(std::move(pat)),
+          re_()
         {
             init_regex() ;
         }
@@ -80,9 +82,9 @@ namespace
         std::vector<SequentialCmd> seqcmds_ ;
 
         int get_pat_index(const std::string& query) {
-            for(int i = 0 ; i < pats_.size() ; i ++) {
+            for(std::size_t i = 0 ; i < pats_.size() ; i ++) {
                 if(pats_[i].get() == query) {
-                    return i ;
+                    return static_cast<int>(i) ;
                 }
             }
             return -1 ;
@@ -146,9 +148,9 @@ namespace
         }
 
         void match_pattern(const std::string& query, std::unordered_set<int>& indices) {
-            for(int i = 0 ; i < pats_.size() ; i ++) {
+            for(std::size_t i = 0 ; i < pats_.size() ; i ++) {
                 if(pats_[i].match(query)) {
-                    indices.insert(i) ;
+                    indices.insert(static_cast<int>(i)) ;
                 }
             }
         }

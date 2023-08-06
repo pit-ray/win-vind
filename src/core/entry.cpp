@@ -61,6 +61,7 @@ SOFTWARE.
 #include <fstream>
 #include <memory>
 
+#include "autocmd.hpp"
 
 #include "background.hpp"
 #include "cmdmatcher.hpp"
@@ -287,6 +288,8 @@ namespace vind
             catch(const std::out_of_range&) {
                 handle_system_call(cm.at("i")->process()) ;
             }
+
+            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::GUI_NORMAL_ENTER, ".*vim.*", "<to_resident>") ;
         }
 
         void VindEntry::reconstruct() {

@@ -1,8 +1,13 @@
 #ifndef _AUTOCMD_HPP
 #define _AUTOCMD_HPP
 
+#include "mode.hpp"
+
+#include <windows.h>
+
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 
 namespace vind
@@ -24,14 +29,46 @@ namespace vind
             INSERT_LEAVE,
             RESIDENT_ENTER,
             RESIDENT_LEAVE,
-            CMDLINE_ENTER,
-            CMDLINE_LEAVE,
+            COMMAND_ENTER,
+            COMMAND_LEAVE,
 
-            EVENT_NUM
+            EVENT_NUM,
+            UNDEFINED,
         } ;
 
-
         AutoCmdEvent get_autocmd_event(const std::string& event_name) ;
+
+        inline AutoCmdEvent get_leave_event(Mode mode) noexcept {
+            static const std::unordered_map<Mode, AutoCmdEvent> leave_events {
+                {Mode::GUI_NORMAL, AutoCmdEvent::GUI_NORMAL_LEAVE},
+                {Mode::GUI_VISUAL, AutoCmdEvent::GUI_VISUAL_LEAVE},
+                {Mode::EDI_NORMAL, AutoCmdEvent::EDI_NORMAL_LEAVE},
+                {Mode::EDI_VISUAL, AutoCmdEvent::EDI_VISUAL_LEAVE},
+                {Mode::INSERT,     AutoCmdEvent::INSERT_LEAVE},
+                {Mode::RESIDENT,   AutoCmdEvent::RESIDENT_LEAVE},
+                {Mode::COMMAND,    AutoCmdEvent::COMMAND_LEAVE}
+            } ;
+            if(leave_events.find(mode) != leave_events.end()) {
+                return leave_events.at(mode) ;
+            }
+            return AutoCmdEvent::UNDEFINED ;
+        }
+
+        inline AutoCmdEvent get_enter_event(Mode mode) noexcept {
+            static const std::unordered_map<Mode, AutoCmdEvent> enter_events {
+                {Mode::GUI_NORMAL, AutoCmdEvent::GUI_NORMAL_ENTER},
+                {Mode::GUI_VISUAL, AutoCmdEvent::GUI_VISUAL_ENTER},
+                {Mode::EDI_NORMAL, AutoCmdEvent::EDI_NORMAL_ENTER},
+                {Mode::EDI_VISUAL, AutoCmdEvent::EDI_VISUAL_ENTER},
+                {Mode::INSERT,     AutoCmdEvent::INSERT_ENTER},
+                {Mode::RESIDENT,   AutoCmdEvent::RESIDENT_ENTER},
+                {Mode::COMMAND,    AutoCmdEvent::COMMAND_ENTER}
+            } ;
+            if(enter_events.find(mode) != enter_events.end()) {
+                return enter_events.at(mode) ;
+            }
+            return AutoCmdEvent::UNDEFINED ;
+        }
 
         class AutoCmd {
         private:

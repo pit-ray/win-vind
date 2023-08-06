@@ -1,6 +1,7 @@
 #include "change_mode.hpp"
 
 #include "bind/emu/textsel.hpp"
+#include "core/autocmd.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/keycodedef.hpp"
@@ -35,6 +36,9 @@ namespace vind
                 return ;
             }
 
+            auto& ac = core::AutoCmd::get_instance() ;
+            ac.apply_autocmds(core::get_leave_event(m)) ;
+
             if(m == Mode::GUI_VISUAL) {
                 util::click(KEYCODE_MOUSE_LEFT) ; //release holding mouse
             }
@@ -52,6 +56,8 @@ namespace vind
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- GUI NORMAL --")) ;
             }
+
+            ac.apply_autocmds(core::get_enter_event(Mode::GUI_NORMAL)) ;
         }
 
         //ToResident

@@ -6,6 +6,7 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 #include <sstream>
 #include <unordered_map>
 #include <unordered_set>
@@ -58,22 +59,23 @@ namespace
         DWORD proc_id = 0 ;
         GetWindowThreadProcessId(hwnd, &proc_id) ;
 
-        HANDLE hproc = OpenProcess(
+        HANDLE hproc_raw = OpenProcess(
                 PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
                 FALSE, proc_id) ;
-        if(!hproc) {
+        if(!hproc_raw) {
             return TRUE ; //has not permission
         }
 
+        auto close_handle = [](HANDLE handle) {CloseHandle(handle) ;} ;
+        std::unique_ptr<void, decltype(close_handle)> hproc(hproc_raw, close_handle) ;
+
         PROCESS_MEMORY_COUNTERS pmc ;
-        if(!GetProcessMemoryInfo(hproc, &pmc, sizeof(pmc))) {
-            CloseHandle(hproc) ;
+        if(!GetProcessMemoryInfo(hproc.get(), &pmc, sizeof(pmc))) {
             std::stringstream ss ;
             ss << "Could not get the memory infomation of " << hwnd ;
             PRINT_ERROR(ss.str()) ;
             return FALSE ; //break
         }
-        CloseHandle(hproc) ;
 
         //a key is unique and described the priority.
         auto& ordered_hwnd = g_m_ordered_hwnd[minfo.hmonitor] ;

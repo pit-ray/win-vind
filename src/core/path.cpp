@@ -55,18 +55,19 @@ namespace vind
 
         const std::filesystem::path& HOME_PATH() {
             static const auto obj = [] {
-                HANDLE token ;
-                if(!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) {
+                HANDLE token_raw ;
+                if(!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token_raw)) {
                     throw RUNTIME_EXCEPT("Could not open process token.") ;
                 }
 
+                auto close_token = [](HANDLE token) {CloseHandle(token) ;} ;
+                std::unique_ptr<void, decltype(close_token)> token(token_raw, close_token) ;
+
                 WCHAR path[MAX_PATH] = {0} ;
                 DWORD size = MAX_PATH ;
-                if(!GetUserProfileDirectoryW(token, path, &size)) {
-                    CloseHandle(token) ;
+                if(!GetUserProfileDirectoryW(token.get(), path, &size)) {
                     throw RUNTIME_EXCEPT("Could not get the home directory.") ;
                 }
-                CloseHandle(token) ;
 
                 return std::filesystem::path(path) ;
             } () ;

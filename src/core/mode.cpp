@@ -31,6 +31,7 @@ namespace
 
         void set_mode(Mode mode, ModeFlags flags) noexcept {
             std::lock_guard<std::mutex> scoped_lock{mtx_} ;
+
             mode_ = mode ;
             flags_ = flags ;
         }

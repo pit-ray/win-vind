@@ -15,8 +15,8 @@ namespace vind
     namespace core
     {
         enum class AutoCmdEvent : unsigned char {
-            WIN_ENTER,
-            WIN_LEAVE,
+            PROC_ENTER,
+            PROC_LEAVE,
             GUI_NORMAL_ENTER,
             GUI_NORMAL_LEAVE,
             GUI_VISUAL_ENTER,
@@ -36,7 +36,7 @@ namespace vind
             UNDEFINED,
         } ;
 
-        AutoCmdEvent get_autocmd_event(const std::string& event_name) ;
+        AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept ;
 
         inline AutoCmdEvent get_leave_event(Mode mode) noexcept {
             static const std::unordered_map<Mode, AutoCmdEvent> leave_events {
@@ -81,15 +81,28 @@ namespace vind
         public:
             static AutoCmd& get_instance() ;
 
+            // Perform command automation.
+            // First argument: the event type
+            // Second argument: target window handle, which has default HWND.
+            void apply_autocmds(AutoCmdEvent event, DWORD procid=0) ;
+
             void add_autocmd(
                 AutoCmdEvent event,
                 const std::string& pattern,
                 const std::string& cmd) ;
 
-            // Perform command automation.
-            // First argument: the event type
-            // Second argument: target window handle, which has default HWND.
-            void apply_autocmds(AutoCmdEvent event, HWND hwnd=NULL) ;
+            void remove_autocmd(AutoCmdEvent event) ;
+
+            void remove_autocmd(
+                AutoCmdEvent event,
+                const std::string& pattern) ;
+
+            void remove_autocmd(const std::string& pattern) ;
+
+            void remove_autocmd(
+                AutoCmdEvent event,
+                const std::string& pattern,
+                const std::string& cmd) ;
         } ;
     }
 }

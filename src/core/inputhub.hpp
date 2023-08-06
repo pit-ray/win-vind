@@ -90,6 +90,16 @@ namespace vind
                 bool parse_count=true) ;
 
             /*
+             * Enqueue the unit into whe waiting queue.
+             *
+             * @param[in] (input) The trigger input of map
+             * @param[in] (count) The prefix number of input command.
+             */
+            bool enqueue(
+                const CmdUnit::SPtr& unit,
+                std::uint16_t prefix_count) ;
+
+            /*
              * Maps input to other commands and adds the result to the input waiting
              * queue. The mapped commands are assumed to be input at the same time
              * and the solver automatically transitions between states.

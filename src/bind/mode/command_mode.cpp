@@ -233,7 +233,8 @@ namespace vind
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {
                     core::set_global_mode(*m) ;
-                    core::AutoCmd::get_instance().apply_autocmds(core::get_enter_event(*m)) ;
+                    core::AutoCmd::get_instance().apply_autocmds(
+                        core::get_leave_event(core::Mode::COMMAND)) ;
                 }
             } ;
             auto m = core::get_global_mode() ;

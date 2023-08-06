@@ -60,6 +60,7 @@
 #include "window/teleport_vdesktop.hpp"
 #include "window/winresizer.hpp"
 
+#include "syscmd/autocmd.hpp"
 #include "syscmd/command.hpp"
 #include "syscmd/mapvar.hpp"
 #include "syscmd/set.hpp"
@@ -291,6 +292,9 @@ namespace vind
                 CNoremap::create(),
                 CUnmap::create(),
                 CMapclear::create(),
+
+                AutoCmdAdd::create(),
+                AutoCmdRemove::create(),
             } ;
             return tmp ;
         }

@@ -142,3 +142,5 @@ command comc <comclear>
 command comclear <comclear>
 command so <source>
 command source <source>
+command autocmd <autocmd>
+command autocmd! <autocmd_del>

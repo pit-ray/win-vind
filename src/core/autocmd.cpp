@@ -3,6 +3,7 @@
 #include "cmdparser.hpp"
 #include "cmdunit.hpp"
 #include "errlogger.hpp"
+#include "inputhub.hpp"
 #include "util/winwrap.hpp"
 
 #include <array>
@@ -50,13 +51,13 @@ namespace
         {}
 
         explicit AutoPattern(const std::string& pat)
-        : pat_(util::A2a(pat))
+        : pat_(pat)
         {
             init_regex() ;
         }
 
         explicit AutoPattern(std::string&& pat)
-        : pat_(util::A2a(std::move(pat)))
+        : pat_(std::move(pat))
         {
             init_regex() ;
         }
@@ -77,7 +78,6 @@ namespace
     private:
         std::vector<AutoPattern> pats_ ;
         std::vector<SequentialCmd> seqcmds_ ;
-        SequentialCmd empty_ ;
 
         int get_pat_index(const std::string& query) {
             for(int i = 0 ; i < pats_.size() ; i ++) {
@@ -91,8 +91,7 @@ namespace
     public:
         explicit AutoEvent()
         : pats_(),
-          seqcmds_(),
-          empty_()
+          seqcmds_()
         {}
 
         template <typename T1, typename T2>
@@ -107,6 +106,45 @@ namespace
             }
         }
 
+        template <typename T1>
+        void remove_pattern(T1&& pat) {
+            auto idx = get_pat_index(pat) ;
+            if(idx < 0) {
+                return ;
+            }
+
+            pats_.erase(pats_.begin() + idx) ;
+            seqcmds_.erase(seqcmds_.begin() + idx) ;
+        }
+
+        template <typename T1, typename T2>
+        void remove_pattern_cmd(T1&& pat, T2&& cmd) {
+            auto idx = get_pat_index(pat) ;
+            if(idx < 0) {
+                return ;
+            }
+
+            auto& cmds = seqcmds_[idx] ;
+
+            for(std::size_t i = 0 ; i < cmds.size() ; i ++) {
+                if(cmds[i].size() != cmd.size()) {
+                    continue ;
+                }
+
+                bool is_same = true ;
+                for(std::size_t j = 0 ; j < cmd.size() ; j ++) {
+                    if(*(cmds[i][j]) != *(cmd[j])) {
+                        is_same = false ;
+                        break ;
+                    }
+                }
+                if(is_same) {
+                    cmds.erase(cmds.begin() + i) ;
+                    return ;
+                }
+            }
+        }
+
         void match_pattern(const std::string& query, std::unordered_set<int>& indices) {
             for(int i = 0 ; i < pats_.size() ; i ++) {
                 if(pats_[i].match(query)) {
@@ -115,13 +153,24 @@ namespace
             }
         }
 
-        void call_sequential_cmd(int patidx) {
+        void enqueue_sequential_command(int patidx) {
             for(const auto& cmd : seqcmds_[patidx]) {
-                std::cout << "call: " << cmd << std::endl ;
                 for(const auto& unit : cmd) {
-                    unit->execute(1) ;
+                    if(unit->empty()) {
+                        // Function
+                        core::InputHub::get_instance().enqueue(unit, 1) ;
+                    }
+                    else {
+                        // Keycode
+                        core::InputHub::get_instance().do_typing(unit) ;
+                    }
                 }
             }
+        }
+
+        void clear() {
+            pats_.clear() ;
+            seqcmds_.clear() ;
         }
     } ;
 }
@@ -130,26 +179,31 @@ namespace vind
 {
     namespace core
     {
-        AutoCmdEvent get_autocmd_event(const std::string& event_name) {
+        AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept {
             static std::unordered_map<std::string, AutoCmdEvent> names {
-                {"WinEnter",        AutoCmdEvent::WIN_ENTER},
-                {"WinLeave",        AutoCmdEvent::WIN_LEAVE},
-                {"GUINormalEnter",  AutoCmdEvent::GUI_NORMAL_ENTER},
-                {"GUINormalLeave",  AutoCmdEvent::GUI_NORMAL_LEAVE},
-                {"GUIVisualEnter",  AutoCmdEvent::GUI_VISUAL_ENTER},
-                {"GUIVisualLeave",  AutoCmdEvent::GUI_VISUAL_LEAVE},
-                {"EdiNormalEnter",  AutoCmdEvent::EDI_NORMAL_ENTER},
-                {"EdiNormalLeave",  AutoCmdEvent::EDI_NORMAL_LEAVE},
-                {"EdiVisualEnter",  AutoCmdEvent::EDI_VISUAL_ENTER},
-                {"EdiVisualLeave",  AutoCmdEvent::EDI_VISUAL_LEAVE},
-                {"InsertEnter",     AutoCmdEvent::INSERT_ENTER},
-                {"InsertLeave",     AutoCmdEvent::INSERT_LEAVE},
-                {"ResidentEnter",   AutoCmdEvent::RESIDENT_ENTER},
-                {"ResidentLeave",   AutoCmdEvent::RESIDENT_LEAVE},
-                {"CommandEnter",    AutoCmdEvent::COMMAND_ENTER},
-                {"CommandLeave",    AutoCmdEvent::COMMAND_LEAVE}
+                {"procenter",        AutoCmdEvent::PROC_ENTER},
+                {"procleave",        AutoCmdEvent::PROC_LEAVE},
+                {"guinormalenter",  AutoCmdEvent::GUI_NORMAL_ENTER},
+                {"guinormalleave",  AutoCmdEvent::GUI_NORMAL_LEAVE},
+                {"guivisualenter",  AutoCmdEvent::GUI_VISUAL_ENTER},
+                {"guivisualleave",  AutoCmdEvent::GUI_VISUAL_LEAVE},
+                {"edinormalenter",  AutoCmdEvent::EDI_NORMAL_ENTER},
+                {"edinormalleave",  AutoCmdEvent::EDI_NORMAL_LEAVE},
+                {"edivisualenter",  AutoCmdEvent::EDI_VISUAL_ENTER},
+                {"edivisualleave",  AutoCmdEvent::EDI_VISUAL_LEAVE},
+                {"insertenter",     AutoCmdEvent::INSERT_ENTER},
+                {"insertleave",     AutoCmdEvent::INSERT_LEAVE},
+                {"residententer",   AutoCmdEvent::RESIDENT_ENTER},
+                {"residentleave",   AutoCmdEvent::RESIDENT_LEAVE},
+                {"commandenter",    AutoCmdEvent::COMMAND_ENTER},
+                {"commandleave",    AutoCmdEvent::COMMAND_LEAVE}
             } ;
-            return names.at(event_name) ;
+            auto event_name_lower = util::A2a(event_name) ;
+            if(names.find(event_name_lower) != names.end()) {
+                return names[event_name_lower] ;
+            }
+
+            return AutoCmdEvent::UNDEFINED ;
         }
 
         struct AutoCmd::Impl {
@@ -171,45 +225,23 @@ namespace vind
             return instance ;
         }
 
-        void AutoCmd::add_autocmd(
-                AutoCmdEvent event,
-                const std::string& pattern,
-                const std::string& cmdstr) {
-            if(event == AutoCmdEvent::UNDEFINED) {
-                return ;
-            }
-
-            if(pattern.empty()) {
-                return ;
-            }
-
-            auto cmd = parse_command(cmdstr) ;
-            if(cmd.empty()) {
-                return ;
-            }
-
-            pimpl->events_[static_cast<int>(event)].add_pattern_cmd(pattern, std::move(cmd)) ;
-        }
-
-        void AutoCmd::apply_autocmds(AutoCmdEvent event, HWND hwnd) {
+        void AutoCmd::apply_autocmds(AutoCmdEvent event, DWORD procid) {
             if(event == AutoCmdEvent::UNDEFINED) {
                 return ;
             }
 
             auto evt = pimpl->events_[static_cast<int>(event)] ;
 
-            if(!hwnd) {  // set default value istead
-                hwnd = util::get_foreground_window() ;
-            }
+            if(procid == 0) {
+                auto hwnd = util::get_foreground_window() ;
+                if(!hwnd) {
+                    // There is no foreground window, so do nothing.
+                    return ;
+                }
 
-            if(!hwnd) {
-                // There is no foreground window, so do nothing.
-                return ;
+                // Get the path for executable file of the foreground window.
+                GetWindowThreadProcessId(hwnd, &procid) ;
             }
-
-            // Get the path for executable file of the foreground window.
-            DWORD procid ;
-            GetWindowThreadProcessId(hwnd, &procid) ;
 
             auto h_snap_raw = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) ;
             if(h_snap_raw == INVALID_HANDLE_VALUE) {
@@ -267,9 +299,58 @@ namespace vind
             // Execute the matched sequential commands
             if(!pat_indices.empty()) {
                 for(auto patidx : pat_indices) {
-                    evt.call_sequential_cmd(patidx) ;
+                    evt.enqueue_sequential_command(patidx) ;
                 }
             }
+        }
+
+        void AutoCmd::add_autocmd(
+                AutoCmdEvent event,
+                const std::string& pattern,
+                const std::string& cmdstr) {
+            if(event == AutoCmdEvent::UNDEFINED) {
+                return ;
+            }
+
+            if(pattern.empty()) {
+                return ;
+            }
+
+            auto cmd = parse_command(cmdstr) ;
+            if(cmd.empty()) {
+                return ;
+            }
+
+            auto& evt = pimpl->events_[static_cast<int>(event)] ;
+            evt.add_pattern_cmd(util::A2a(pattern), std::move(cmd)) ;
+        }
+
+        void AutoCmd::remove_autocmd(AutoCmdEvent event) {
+            pimpl->events_[static_cast<int>(event)].clear() ;
+        }
+
+        void AutoCmd::remove_autocmd(
+            AutoCmdEvent event,
+            const std::string& pattern) {
+            pimpl->events_[static_cast<int>(event)].remove_pattern(pattern) ;
+        }
+
+        void AutoCmd::remove_autocmd(const std::string& pattern) {
+            for(std::size_t i = 0 ; i < pimpl->events_.size() ; i ++) {
+                pimpl->events_[i].remove_pattern(pattern) ;
+            }
+        }
+
+        void AutoCmd::remove_autocmd(
+            AutoCmdEvent event,
+            const std::string& pattern,
+            const std::string& cmdstr) {
+
+            auto cmd = parse_command(cmdstr) ;
+            if(cmd.empty()) {
+                return ;
+            }
+            pimpl->events_[static_cast<int>(event)].remove_pattern_cmd(pattern, cmd) ;
         }
     }
 }

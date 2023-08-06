@@ -105,7 +105,7 @@ namespace vind
 
             Background bg_ ;
 
-            HWND previous_hwnd_ ;
+            DWORD previous_procid_ ;
 
             template <typename ExitFuncType, typename String>
             Impl(ExitFuncType&& exitfunc, String&& memname, std::size_t memsize)
@@ -116,7 +116,7 @@ namespace vind
               subprocess_(false),
               memread_timer_(1000'000), //1 s
               bg_(opt::all_global_options()),
-              previous_hwnd_(NULL)
+              previous_procid_(0)
             {}
 
             ~Impl() noexcept {
@@ -291,11 +291,6 @@ namespace vind
             catch(const std::out_of_range&) {
                 handle_system_call(cm.at("i")->process()) ;
             }
-
-            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_LEAVE, "*vim*", "<to_insert>") ;
-            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_ENTER, "*vim*", "<to_resident>") ;
-            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_ENTER, "*notepad.exe", "<to_edi_normal>") ;
-            AutoCmd::get_instance().add_autocmd(AutoCmdEvent::WIN_LEAVE, "*notepad.exe", "<to_insert>") ;
         }
 
         void VindEntry::reconstruct() {
@@ -325,12 +320,13 @@ namespace vind
 
             auto& ac = AutoCmd::get_instance() ;
             auto hwnd = util::get_foreground_window() ;
-            if(pimpl->previous_hwnd_ != hwnd) {
-                if(pimpl->previous_hwnd_ != NULL) {
-                    ac.apply_autocmds(AutoCmdEvent::WIN_LEAVE, pimpl->previous_hwnd_) ;
+            DWORD procid ;
+            if(hwnd && GetWindowThreadProcessId(hwnd, &procid)) {
+                if(pimpl->previous_procid_ != procid) {
+                    ac.apply_autocmds(AutoCmdEvent::PROC_LEAVE, pimpl->previous_procid_) ;
+                    pimpl->previous_procid_ = procid ;
+                    ac.apply_autocmds(AutoCmdEvent::PROC_ENTER, procid) ;
                 }
-                pimpl->previous_hwnd_ = hwnd ;
-                ac.apply_autocmds(AutoCmdEvent::WIN_ENTER, hwnd) ;
             }
 
             pimpl->bg_.update() ;

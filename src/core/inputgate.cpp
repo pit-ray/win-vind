@@ -135,7 +135,7 @@ namespace vind
         }
 
         LRESULT CALLBACK InputGate::hook_proc(int n_code, WPARAM w_param, LPARAM l_param) {
-            if(n_code < HC_ACTION) { //not processed
+            if(n_code < 0) { //not processed
                 return CallNextHookEx(NULL, n_code, w_param, l_param) ;
             }
 
@@ -173,12 +173,12 @@ namespace vind
 
             if(self.pimpl->port_state_[code] \
                     || self.pimpl->identity_map_[static_cast<int>(mode)][code]) {
-                return CallNextHookEx(NULL, HC_ACTION, w_param, l_param) ;
+                return CallNextHookEx(NULL, n_code, w_param, l_param) ;
             }
             if(self.pimpl->absorb_state_) {
                 return 1 ;
             }
-            return CallNextHookEx(NULL, HC_ACTION, w_param, l_param) ;
+            return CallNextHookEx(NULL, n_code, w_param, l_param) ;
         }
 
         //

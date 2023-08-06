@@ -120,7 +120,7 @@ namespace vind
 
             void forward_history() {
                 auto& latest = hists_.back() ;
-                auto latest_idx = hists_.size() - 1 ;
+                auto latest_idx = static_cast<int>(hists_.size() - 1) ;
                 auto tmp = hist_idx_ + 1 ;
                 if(tmp > latest_idx) {
                     return ;
@@ -254,7 +254,7 @@ namespace vind
                 do {
                     core::CmdUnit::SPtr input ;
                     std::uint16_t count ;
-                    if(!ihub.pull_input(input, count, core::Mode::COMMAND, false)) {
+                    if(!ihub.fetch_input(input, count, core::Mode::COMMAND, false)) {
                         continue ;
                     }
 

@@ -5,6 +5,7 @@
 #include "core/path.hpp"
 #include "core/rcparser.hpp"
 #include "opt/vcmdline.hpp"
+#include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
@@ -23,11 +24,12 @@ namespace vind
                 const std::string& args) {
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             auto filepath = std::filesystem::u8path(util::trim(pargs)) ;
-            if(filepath.empty()) {
-                return ;
+            if(!filepath.empty()) {
+                filepath = core::replace_path_magic(filepath) ;
             }
-
-            filepath = core::replace_path_magic(filepath) ;
+            else {
+                filepath = core::RC() ;
+            }
 
             switch(util::shell_execute(filepath)) {
                 case 0:

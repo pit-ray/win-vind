@@ -5,6 +5,7 @@
 #include "cmdunit.hpp"
 #include "errlogger.hpp"
 #include "inputgate.hpp"
+#include "mode.hpp"
 #include "typeemu.hpp"
 
 #include "util/debug.hpp"

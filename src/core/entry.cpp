@@ -58,6 +58,7 @@ SOFTWARE.
 #endif
 
 #include <cstring>
+#include <fstream>
 #include <memory>
 
 
@@ -170,6 +171,11 @@ namespace vind
             }
 
             Logger::get_instance().init("syslog_", 10, 15) ;
+
+            std::ifstream ifs(core::RC()) ;
+            if(!ifs.is_open()) {
+                std::ofstream ofs(core::RC(), std::ios::trunc) ;
+            }
 
             pimpl->map_ = CreateFileMappingA(
                     INVALID_HANDLE_VALUE, NULL,
@@ -342,6 +348,15 @@ namespace vind
                     continue ;
                 }
                 handle_system_call(input->execute(count)) ;
+
+                // correct the state to avoid cases that a virtual key
+                // is judged to be pressed, though a real key is released.
+                auto& igate = core::InputGate::get_instance() ;
+                for(auto& key : igate.pressed_list()) {
+                    if(!igate.is_really_pressed(key)) {
+                        igate.release_virtually(key) ;
+                    }
+                }
             } while(!ihub.is_empty_queue()) ;
         }
 

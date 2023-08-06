@@ -4,7 +4,6 @@ from win import get_cursor_pos, set_cursor_pos
 def get_cases():
     return [
         jump_cursor_to_active_window,
-        easy_click_left,
 
         move_cursor_left,
         move_cursor_right,
@@ -42,17 +41,6 @@ def move_cursor_down(handler, mock_app):
     delta = get_cursor_pos()[1] - y
 
     return delta > 0
-
-
-def easy_click_left(handler, mock_app):
-    mock_app.frame.ready_button()
-    mock_app.focus()
-
-    handler.send_command('FFG')
-    result = mock_app.frame.check_if_clicked()
-
-    mock_app.frame.ready_button()
-    return result
 
 
 def jump_cursor_to_active_window(handler, mock_app):

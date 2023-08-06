@@ -1,0 +1,9 @@
+hr {
+    @include themer(border-top-color, (
+        'dark': $site-ui-border-color-dark,
+        'light': $site-ui-border-color-light,
+    ));
+
+    margin-bottom: 2.5rem;
+    margin-top: 2.5rem;
+}

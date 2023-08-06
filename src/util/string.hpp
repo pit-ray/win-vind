@@ -44,16 +44,30 @@ namespace vind
             return str.substr(str.length() - length) ;
         }
 
+        inline char a2A(char c) {
+            if(c >= 'a' && c <= 'z') {
+                return c - ('a' - 'A') ;
+            }
+            return c ;
+        }
+
         inline std::string a2A(std::string s) {
             for(char& c : s) {
-                if(c >= 'a' && c <= 'z') c = c - ('a' - 'A') ;
+                c = a2A(c) ;
             }
             return s ;
         }
 
+        inline char A2a(char c) {
+            if(c >= 'A' && c <= 'Z') {
+                return c + ('a' - 'A') ;
+            }
+            return c ;
+        }
+
         inline std::string A2a(std::string s) {
             for(char& c : s) {
-                if(c >= 'A' && c <= 'Z') c = c + ('a' - 'A') ;
+                c = A2a(c) ;
             }
             return s ;
         }

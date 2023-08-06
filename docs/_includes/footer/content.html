@@ -1,0 +1,137 @@
+<div class="container">
+    {% if site.social %}
+        <div class="site-footer__social-links">
+            <ul class="list-inline mb-2">
+                {% if site.social.github.user and site.social.github.repo %}
+                    <li class="list-inline-item">
+                        <iframe
+                            class="github-btn"
+                            src="https://ghbtns.com/github-btn.html?user={{ site.social.github.user }}&amp;repo={{ site.social.github.repo }}&amp;type=watch&amp;count=true"
+                            width="90"
+                            height="20"
+                            title="Star on GitHub"
+                        ></iframe>
+                    </li>
+                    <li class="list-inline-item">
+                        <iframe
+                            class="github-btn"
+                            src="https://ghbtns.com/github-btn.html?user={{ site.social.github.user }}&amp;repo={{ site.social.github.repo }}&amp;type=fork&amp;count=true"
+                            width="90"
+                            height="20"
+                            title="Fork on GitHub"
+                        ></iframe>
+                    </li>
+                {% endif %}
+                {% if site.social.twitter.enabled %}
+                    <li class="list-inline-item">
+                        <a
+                            href="https://twitter.com/share"
+                            class="twitter-share-button"
+                            data-url="{{ site.github.url }}"
+                            data-count="horizontal"
+                            data-via="{{ site.social.twitter.via }}"
+                            data-text="{{ site.name }}"
+                            data-hashtags="{{ site.social.twitter.hash }}"
+                        >
+                            Tweet
+                        </a>
+                    </li>
+                {% endif %}
+                {% if site.twitter.account %}
+                    <li class="list-inline-item">
+                        <a
+                            href="https://twitter.com/{{ site.social.twitter.account }}"
+                            class="twitter-follow-button"
+                            data-show-count="true"
+                        >
+                            Follow @{{ site.social.twitter.account }}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if site.facebook.enabled %}
+                    <li class="list-inline-item">
+                        <div
+                            class="fb-like"
+                            data-href="{{ site.github.url }}"
+                            data-layout="button_count"
+                            data-action="like"
+                            data-show-faces="false"
+                            data-share="true"
+                        ></div>
+                    </li>
+                {% endif %}
+                {% if site.facebook.profileUrl %}
+                    <li class="list-inline-item">
+                        <div
+                            class="fb-follow"
+                            data-href="{{ site.social.facebook.profileUrl }}"
+                            data-layout="button_count"
+                            data-show-faces="false"
+                        ></div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="site-footer__body">
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                {% if site.links.footer %}
+                    <ul class="site-footer__links text-left list-inline mb-0">
+                        {% for link in site.links.footer %}
+                            <li class="list-inline-item">
+                                <a
+                                    href="{{ link.url }}"
+                                    class="site-footer__link"
+                                >
+                                    {% include fa-icon.html
+                                         icon=link.icon
+                                         brand=link.brand
+                                    %}
+                                    <span>{{ link.title }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="col-md-7 text-left text-md-right">
+                {% if site.license %}
+                    <div class="site-footer__summary">
+                        {% assign software_and_docs = site.license.software and site.license.docs %}
+                        {% assign one_or_the_other = site.license.software or site.license.docs %}
+
+                        <p class="mb-0">
+                            {%- if site.license.software -%}
+                                Licensed under
+
+                                {% if site.license.software_url -%}<a href="{{ site.license.software_url }}" target="_blank">{%- endif -%}
+                                    {{ site.license.software }}
+                                {%- if site.license.software_url -%}</a>{%- endif -%}
+                            {%- endif -%}
+
+                            {%- if site.license.docs -%}
+                                {%- if one_or_the_other -%}
+                                    , documentation under
+                                {%- else -%}
+                                    Documentation under
+                                {%- endif %}
+
+                                {% if site.license.docs_url -%}<a href="{{ site.license.docs_url }}">{%- endif -%}
+                                    {{ site.license.docs }}
+                                {%- if site.license.docs_url -%}</a>{%- endif -%}
+                            {%- endif -%}
+                        </p>
+
+                        <p class="mb-0">
+                            Documentation template by <a href="http://getbootstrap.com">Bootstrap team</a>, generated with
+                            <a href="https://github.com/allejo/jekyll-docs-theme">Jekyll Docs Theme</a>
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

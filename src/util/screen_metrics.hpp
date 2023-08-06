@@ -26,9 +26,10 @@ namespace vind
 
         void get_monitor_metrics(HWND hwnd, MonitorInfo& minfo) ;
 
-        void get_monitor_metrics(const POINT& pos, MonitorInfo& minfo) ;
+        void get_monitor_metrics(const Point2D& pos, MonitorInfo& minfo) ;
 
-        void get_monitor_metrics(POINT&& pos, MonitorInfo& minfo) ;
+        float get_monitor_scale(HWND hwnd) ;
+        float get_monitor_scale(const Point2D& pos) ;
 
         std::vector<MonitorInfo> get_all_monitor_metrics() ;
 

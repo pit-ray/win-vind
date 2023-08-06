@@ -135,7 +135,7 @@ namespace vind
         }
 
         LRESULT CALLBACK InputGate::hook_proc(int n_code, WPARAM w_param, LPARAM l_param) {
-            if(n_code < HC_ACTION) { //not processed
+            if(n_code < 0) { //not processed
                 return CallNextHookEx(NULL, n_code, w_param, l_param) ;
             }
 
@@ -173,12 +173,12 @@ namespace vind
 
             if(self.pimpl->port_state_[code] \
                     || self.pimpl->identity_map_[static_cast<int>(mode)][code]) {
-                return CallNextHookEx(NULL, HC_ACTION, w_param, l_param) ;
+                return CallNextHookEx(NULL, n_code, w_param, l_param) ;
             }
             if(self.pimpl->absorb_state_) {
                 return 1 ;
             }
-            return CallNextHookEx(NULL, HC_ACTION, w_param, l_param) ;
+            return CallNextHookEx(NULL, n_code, w_param, l_param) ;
         }
 
         //
@@ -248,14 +248,23 @@ namespace vind
 
                 using namespace std::chrono ;
                 if((system_clock::now() - pimpl->timestamps_[k.to_code()]) > 515ms) {
+                    // Release mapped keys which is triggered by the toggle key.
                     for(std::size_t m = 0 ; m < mode_num() ; m ++) {
                         map_syncstate(k, false, static_cast<Mode>(m)) ;
+                        map_syncstate(k.to_representative(), false, static_cast<Mode>(m)) ;
                     }
-                    release_keystate(k) ;
 
+                    // Release the toggle key
+                    release_keystate(k) ;
                     pimpl->real_state_[k.to_code()] = false ;
                     pimpl->state_[k.to_code()] = false ;
                     pimpl->lowlevel_state_[k.to_code()] = false ;
+
+                    // Also Release representative key
+                    release_keystate(k.to_representative()) ;
+                    pimpl->real_state_[k.to_representative().to_code()] = false ;
+                    pimpl->state_[k.to_representative().to_code()] = false ;
+                    pimpl->lowlevel_state_[k.to_representative().to_code()] = false ;
                 }
             }
         }

@@ -33,7 +33,7 @@ jobs:
     - name: Cache libraries
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
+        path: ${{github.workspace}}/libs/wxWidgets
         key: libs-cache-release-220224
 
     - name: Setup x64 MSVC
@@ -42,7 +42,7 @@ jobs:
         arch: x64
 
     - name: Setup Libraries
-      run: "tools/install_wxWidgets.bat -msvc 64"
+      run: "tools/install_wxWidgets.bat -msvc 64 -without-vcvars"
 
     - name: Build x64 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 64
@@ -53,7 +53,7 @@ jobs:
         arch: x86
 
     - name: Setup Library
-      run: "tools/install_wxWidgets.bat -msvc 32"
+      run: "tools/install_wxWidgets.bat -msvc 32 -without-vcvars"
 
     - name: Build x86 assets
       run: ./tools/create_assets.bat ${{steps.version.outputs.VERSION}} -msvc 32

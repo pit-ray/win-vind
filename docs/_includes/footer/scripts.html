@@ -1,0 +1,48 @@
+<!-- Bootstrap Related Dependencies -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.js"
+    integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"
+></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
+    integrity="sha256-/ijcOLwFf26xEYAjW75FizKVo5tnTYiQddPZoLUHHZ8=" crossorigin="anonymous"
+></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"
+></script>
+
+{% include internal/variables.html %}
+{% if site_ui_header_trianglify %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.1.2/trianglify.min.js"></script>
+    <script>
+        let uiColors = [];
+
+        {% if site_ui_mode == 'auto' -%}
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                uiColors = [
+                    "{{ site_ui_header_dark_color1 }}",
+                    "{{ site_ui_header_dark_color2 }}",
+                ];
+            } else {
+                uiColors = [
+                    "{{ site_ui_header_light_color1 }}",
+                    "{{ site_ui_header_light_color2 }}",
+                ];
+            }
+        {%- elsif site_ui_mode == "dark" -%}
+            uiColors = [
+                "{{ site_ui_header_dark_color1 }}",
+                "{{ site_ui_header_dark_color2 }}",
+            ];
+        {%- else -%}
+            uiColors = [
+                "{{ site_ui_header_light_color1 }}",
+                "{{ site_ui_header_light_color2 }}",
+            ];
+        {%- endif %}
+    </script>
+{% endif %}
+
+<script src="{{ '/assets/js/docs.js' | relative_url }}"></script>

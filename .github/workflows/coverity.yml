@@ -45,11 +45,16 @@ jobs:
         choco install -y unzip
         choco install -y wget
 
+        # Use fxied version because latest curl has https://github.com/curl/curl/issues/10591.
+        wget https://curl.se/windows/dl-7.87.0/curl-7.87.0-win64-mingw.zip -O curl-for-win.zip
+        unzip curl-for-win.zip
+        mv curl-7.87.0-win64-mingw curl-for-win
+
     - name: Cache libraries
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-coverity-220126
+        path: ${{github.workspace}}/libs/wxWidgets
+        key: x64-libs-cache-coverity
 
     - name: Install libraries
       run: "tools/install_wxWidgets.bat -msvc 64"
@@ -58,7 +63,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/cov_tools
-        key: x64-coverity-cache-221023
+        key: x64-coverity-cache
 
     - name: Install Coverity scan tools
       run: "tools/install_coverity_tools.bat ${{env.TOKEN}}"
@@ -66,7 +71,7 @@ jobs:
     - name: Configure CMake
       run: |
         cov_tools/bin/cov-configure --config build/covtest/cov.xml --msvc --template --xml-option=skip_file:".*/libs.*"
-        cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 -DBIT_TYPE=64 .
+        cmake -B build -G "Visual Studio 16 2019" -A x64 .
 
     - name: Build with Coverity
       run: |
@@ -80,20 +85,5 @@ jobs:
       id: vars
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
-    - name: Setup MSYS2
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW64
-        install: >-
-          base-devel
-          mingw-w64-x86_64-curl
-
     - name: Submit tarball to Coverity
-      shell: msys2 {0}
-      run: |
-        curl --form token="${{env.TOKEN}}" \
-             --form email="${{env.EMAIL}}" \
-             --form file=@build/cov-int.tgz \
-             --form version="${{steps.vars.outputs.sha_short}}" \
-             --form description="Automatic submission with GitHub Actions" \
-             https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind
+      run: curl-for-win/bin/curl --form token="${{env.TOKEN}}" --form email="${{env.EMAIL}}" --form file="@build/cov-int.tgz" --form version="${{steps.vars.outputs.sha_short}}" --form description="Automatic submission with GitHub Actions" "https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind"

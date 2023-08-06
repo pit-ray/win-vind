@@ -55,7 +55,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
@@ -84,8 +84,8 @@ jobs:
     - name: Cache Library
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-codeql-220126
+        path: ${{github.workspace}}/libs/wxWidgets
+        key: x64-libs-cache-codeql
 
     - name: Setup Library
       run: "tools/install_wxWidgets.bat -msvc 64"
@@ -98,4 +98,4 @@ jobs:
         cmake --build ${{github.workspace}}/codeql --config Debug
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@v2

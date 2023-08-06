@@ -18,7 +18,7 @@ namespace vind
     namespace util {
         const MSG& get_win_message() noexcept ;
 
-        void refresh_display(HWND hwnd) ;
+        void refresh_display(HWND hwnd=NULL) ;
 
         HWND get_foreground_window() ;
         void set_foreground_window(HWND hwnd) ;

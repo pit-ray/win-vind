@@ -55,6 +55,11 @@ namespace vind
             bool is_empty_queue() const noexcept ;
 
             /*
+             * Dequeue all inputs from the input queue without receving them.
+             */
+            void clear_queue() ;
+
+            /*
              * Dequeue an input from the input queue. If the input queue is empty,
              * get an input from the current states of a keyboard like typing.
              *
@@ -134,19 +139,27 @@ namespace vind
             void add_map(
                 const std::string& trigger_cmd,
                 const std::string& target_cmd,
-                Mode mode) ;
+                Mode mode,
+                bool as_default=false) ;
 
             void add_noremap(
                 const std::string& trigger_cmd,
                 const std::string& target_cmd,
-                Mode mode) ;
+                Mode mode,
+                bool as_default=false) ;
 
             bool remove_mapping(
                 const std::string& trigger_cmd,
-                Mode mode) ;
+                Mode mode,
+                bool as_default=false) ;
 
-            void clear_mapping(Mode mode=Mode::UNDEFINED) ;
-            void apply_mapping(Mode mode=Mode::UNDEFINED) ;
+            void clear_mapping(
+                Mode mode=Mode::UNDEFINED,
+                bool as_default=false) ;
+
+            void apply_mapping(
+                Mode mode=Mode::UNDEFINED,
+                bool as_default=false) ;
         } ;
     }
 }

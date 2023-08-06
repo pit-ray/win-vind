@@ -17,13 +17,13 @@ mkdir bin
 @echo Create Installer Version -------------------------------------------------------
 echo 1 > ".\\res\\default_config\\instype"
 
-call build.bat -release %2 64
+call tools\build.bat -release %2 64
 cd release_64
 cpack . -C Release
 cd ..
 copy /Y ".\\release_64\\setup*" ".\\bin\\*_%1_64bit.exe"
 
-call build.bat -release %2 32
+call tools\build.bat -release %2 32
 cd release_32
 cpack . -C Release
 cd ..

@@ -4,7 +4,8 @@ from datetime import datetime
 import subprocess
 from glob import glob
 from functools import lru_cache
-from shutil import copyfile
+from distutils.dir_util import copy_tree
+import shutil
 
 from vindrc_gen import VINDRC_GEN
 
@@ -37,22 +38,15 @@ class ProcHandler:
         # Copy win-vind binary into the temporary directory.
         dest_exe_path = os.path.join(self.env_root, 'win-vind.exe')
         if not os.path.isfile(dest_exe_path):
-            copyfile(self.exe_path, dest_exe_path)
+            shutil.copyfile(self.exe_path, dest_exe_path)
 
         # Copy the resource files into the temporary directory.
         resource_dir = os.path.join(self.env_root, 'resources')
         os.makedirs(resource_dir, exist_ok=True)
 
-        source_resource_query = os.path.join(
-            os.path.dirname(self.exe_path), 'resources', '*')
-        resource_files = glob(source_resource_query)
-
-        for filename in resource_files:
-            dest_path = os.path.join(
-                resource_dir, os.path.basename(filename))
-
-            if not os.path.isfile(dest_path):
-                copyfile(filename, dest_path)
+        copy_tree(
+            os.path.join(os.path.dirname(self.exe_path), 'resources'),
+            resource_dir)
 
         # Set the install type as portable.
         instype_file = os.path.join(resource_dir, '.instype')

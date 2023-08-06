@@ -48,7 +48,6 @@ AddTest(each-mapsolver-test
     ${CMAKE_CURRENT_SOURCE_DIR}/mapsolver_test.cpp
 
     ${SRCDIR}/bind/bindedfunc.cpp
-    ${SRCDIR}/bind/mapdefault.cpp
     ${SRCDIR}/core/cmdmatcher.cpp
     ${SRCDIR}/core/cmdparser.cpp
     ${SRCDIR}/core/cmdunit.cpp
@@ -100,3 +99,12 @@ AddTest(each-unicode-test
     ${CMAKE_CURRENT_SOURCE_DIR}/unicode_test.cpp
 )
 target_link_libraries(each-unicode-test icuuc)
+
+
+AddTest(each-hint-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/hint_test.cpp
+
+    ${SRCDIR}/core/hintassign.cpp
+    ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/util/string.cpp
+)

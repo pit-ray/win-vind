@@ -11,6 +11,7 @@
 #include <cctype>
 #include <initializer_list>
 #include <limits>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -484,7 +485,10 @@ namespace vind
             auto keycode = static_cast<unsigned char>(res & 0x00ff) ;
 
             if(keycode == 0xff) {
-                return KeyCode{} ;
+                std::stringstream ss ;
+                ss << "The specified letter `" << ascii << "`" ;
+                ss << " cannot be typed directly in your keyboard layout." ;
+                throw std::runtime_error(ss.str()) ;
             }
 
             return KeyCode{keycode} ;

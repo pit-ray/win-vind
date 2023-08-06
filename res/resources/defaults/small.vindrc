@@ -1,0 +1,96 @@
+" Small default mapping
+" Features: +mouse +syscmd +window +process
+
+" Inherit tiny mapping
+source tiny.vindrc
+
+" @ Window Open/Close
+gnnoremap <C-w>n <open_new_window>
+gnnoremap <C-w>q <close_current_window>
+gnnoremap <C-w>c <close_current_window>
+
+" @ Window Select
+gnnoremap <C-w>h <select_left_window>
+gnnoremap <C-w>l <select_right_window>
+gnnoremap <C-w>k <select_upper_window>
+gnnoremap <C-w>j <select_lower_window>
+gnnoremap <C-w>s <switch_window>
+
+" @ Window Resize
+gnnoremap <C-w>= <arrange_windows>
+gnnoremap <C-w>r <rotate_windows>
+gnnoremap <C-w>R <rotate_windows_in_reverse>
+gnnoremap <C-w>x <exchange_window_with_nearest>
+gnnoremap <C-w><gt> <increase_window_width>
+gnnoremap <C-w><lt> <decrease_window_width>
+gnnoremap <C-w>+ <increase_window_height>
+gnnoremap <C-w>- <decrease_window_height>
+gnnoremap <C-w>u <maximize_current_window>
+gnnoremap <C-w>d <minimize_current_window>
+gnnoremap <C-w>H <snap_current_window_to_left>
+gnnoremap <C-w><Left> <snap_current_window_to_left>
+gnnoremap <C-w>L <snap_current_window_to_right>
+gnnoremap <C-w><Right> <snap_current_window_to_right>
+gnnoremap <C-w>K <snap_current_window_to_top>
+gnnoremap <C-w>J <snap_current_window_to_bottom>
+gnnoremap <C-w>e <window_resizer>
+
+" @ Window Open/Close
+command cl <close_current_window>
+command close <close_current_window>
+command new  <open_new_window>
+command sp <open_new_window_with_hsplit>
+command split <open_new_window_with_hsplit>
+command vs <open_new_window_with_vsplit>
+command vsplit <open_new_window_with_vsplit>
+
+" @ Window Select
+command sw <switch_window>
+command switch <switch_window>
+
+" @ Window Resize
+command resizer  <window_resizer>
+command winresizer <window_resizer>
+command max  <maximize_current_window>
+command on <maximize_current_window>
+command only <maximize_current_window>
+command min  <minimize_current_window>
+command hi <minimize_current_window>
+command hide <minimize_current_window>
+command lsplit <snap_current_window_to_left>
+command lsp  <snap_current_window_to_left>
+command rsplit <snap_current_window_to_right>
+command rsp  <snap_current_window_to_right>
+command tsplit <snap_current_window_to_top>
+command tsp  <snap_current_window_to_top>
+command bsplit <snap_current_window_to_bottom>
+command bsp  <snap_current_window_to_bottom>
+command arrange  <arrange_windows>
+command reload <reload_current_window>
+command rotate <rotate_windows>
+command rot  <rotate_windows>
+command rerotate <rotate_windows_in_reverse>
+command rerot <rotate_windows_in_reverse>
+command exchange <exchange_window_with_nearest>
+command vertical<space>resize <resize_window_width>
+command vert<space>res <resize_window_width>
+command vertical<space>resize<space>+ <increase_window_width>
+command vert<space>res<space>+  <increase_window_width>
+command vertical<space>resize<space>- <decrease_window_width>
+command vert<space>res<space>-  <decrease_window_width>
+command resize <resize_window_height>
+command res  <resize_window_height>
+command resize<space>+  <increase_window_height>
+command res<space>+ <increase_window_height>
+command resize<space>-  <decrease_window_height>
+command res<space>- <decrease_window_height>
+
+" @ Process Launcher
+command ! <start_external>
+command e <execute>
+command edit <execute>
+command execute  <execute>
+command sh <start_shell>
+command shell <start_shell>
+command terminal <start_shell>
+command term <start_shell>

@@ -15,9 +15,9 @@
 #include "util/box2d.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
-#include "util/display_text_painter.hpp"
 #include "util/point2d.hpp"
 #include "util/screen_metrics.hpp"
+#include "util/screen_textrender.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
 
@@ -256,7 +256,7 @@ namespace vind
     namespace opt
     {
         struct VCmdLine::Impl {
-            util::DisplayTextPainter dtp_{25, FW_MEDIUM, "Consolas"} ;
+            util::ScreenTextRenderer dtp_{25, FW_MEDIUM, "Consolas"} ;
 
             std::chrono::seconds fadeout_time_{} ;
 
@@ -438,7 +438,7 @@ namespace vind
             }
 
             for(const auto& p : pimpl->coords_) {
-                pimpl->dtp_.draw(msg_, p.x(), p.y(), pimpl->extra_) ;
+                pimpl->dtp_.draw(msg_, p, pimpl->extra_) ;
             }
         }
     }

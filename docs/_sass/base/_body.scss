@@ -1,0 +1,19 @@
+body {
+    @include themer(background-color, (
+        'dark': $background-color-dark,
+        'light': $background-color-light,
+    ));
+    @include themer(color, (
+        'dark': $color-dark,
+        'light': $color-light,
+    ));
+
+    position: relative;
+
+    hr.dash {
+        background-color: $background-color-light;
+        border-top: 1px dashed #8c8b8b;
+
+
+    }
+}

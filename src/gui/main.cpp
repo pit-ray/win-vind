@@ -205,11 +205,6 @@ namespace vind
                 return wxApp::MainLoop() ;
             }
 
-            int OnRun() {
-                wxApp::OnRun() ;
-                return 3 ;
-            }
-
             void OnInitCmdLine(wxCmdLineParser& parser) override {
                 parser.AddSwitch(
                         wxT("h"),

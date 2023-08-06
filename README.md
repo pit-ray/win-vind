@@ -1,147 +1,138 @@
-<h1 align="center">win-vind</h1>
-
+<h1></h1>
 <p align="center">
-  <img src="res/icon.png?raw=true" width="150" height="150" />
-  <p align="center"><b>Vim Key Binder for Windows</b></p>
+  <img src="docs/imgs/banner.gif?raw=true" />
   <p align="center">
-    <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/22417/badge.svg"/></a>
-    <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8f2e6f2826904efd82019f5888574327" /></a>
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml/badge.svg?branch=master"></a>
-      <a href="https://github.com/pit-ray/win-vind/actions/workflows/test.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/test.yml/badge.svg" /></a>
-     <br>  
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml/badge.svg" /> </a>
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml/badge.svg?branch=master" /></a>
-    <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml/badge.svg" /></a>
+    <a href="https://scan.coverity.com/projects/pit-ray-win-vind"><img alt="Coverity Scan Build Status" src="https://img.shields.io/coverity/scan/pit-ray-win-vind?style=flat-square" /></a>
+    <a href="https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pit-ray/win-vind&amp;utm_campaign=Badge_Grade"><img src="https://img.shields.io/codacy/grade/8f2e6f2826904efd82019f5888574327?style=flat-square" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/codeql-analysis.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/codeql-analysis.yml?branch=master&label=CodeQL&logo=github&style=flat-square" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/test.yml?branch=master&label=test&logo=github&style=flat-square" /></a>
+    <br>  
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/coverity.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/coverity.yml?branch=master&label=cov-build&logo=github&style=flat-square" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/mingw.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/mingw.yml?branch=master&label=MinGW%20build&logo=github&style=flat-square" /></a>
+    <a href="https://github.com/pit-ray/win-vind/actions/workflows/msvc.yml"><img src="https://img.shields.io/github/actions/workflow/status/pit-ray/win-vind/msvc.yml?branch=master&label=MSVC%20build&logo=github&style=flat-square" /></a>
     <br>
-    <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/badge/chocolatey-supported-blue" /></a>
-    <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/pit-ray/win-vind"><img src="https://img.shields.io/badge/winget-supported-blue" /></a>
-    <img src="https://img.shields.io/badge/Windows%2011-supported-blue" />
+    <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/badge/chocolatey-supported-blue?style=flat-square&color=607D8B" /></a>
+    <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/pit-ray/win-vind"><img src="https://img.shields.io/badge/winget-supported-blue?style=flat-square&color=607D8B" /></a>
+    <img src="https://img.shields.io/badge/Windows%2011-supported-blue?style=flat-square&color=607D8B" />
   </p>
 </p>  
 
-## v5.0 beta testing is underway. ([site](https://github.com/pit-ray/win-vind/discussions/129))
+<!--
+<a href=""><img src="https://img.shields.io/badge/scoop-supported-blue?style=flat-square&color=607D8B" /></a>
+-->
 
-## Description
-**win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.
+## What is this?
+**win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows.  
+By installing this tool, you will be able to control the Windows GUI in the same way as Vim.
 
-### Features
-#### System Design
-- Fast binding system
-- Vim-like mode management
-- .vimrc style configuration
-- Running in user permission
-- Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
+### 1. Vim-user friendly.
+All configuration methods and mode concepts are derived from Vim, allowing for Vim-like UI operation.  
+Vim users only need to understand win-vind's macro features and additional mode concepts with little learning cost.  
 
-#### Top Features
-- GUI operation without mouse
-- Vim emulation everywhere
-- Process launcher like `:!vim ~/.vimrc` on resident command line
-- Low-level key mapping (e.g. Capslock -> Ctrl)
-- Keystroke macros
-- Tiling window manager
-- Hinting feature like Vimium or EasyMotion for GUI.
+### 2. There are many useful built-in commands.
+You don't have to worry about complicated scripts and dependencies like with traditional key binding tools.  
+You can freely create user-defined commands by combining low-level optimized built-in commands.
+
+### 3. Very portable and fully open source.
+win-vind is a small single binary with no dependencies that runs with user permissions.   
+It is also available from the command line as a command for UI operations like `$ win-vind -c "ggyyGp"`.
 
 
+### Top Feature Demo
 
-#### Top Feature Demo
-
-<img src="docs/imgs/4xxdemo.gif" title="Demo" >
-
-#### Macro Feature Demo
-https://user-images.githubusercontent.com/42631247/147887231-24424d36-410d-4379-8846-7dc6a5a7f355.mp4
+<div><video controls src="https://user-images.githubusercontent.com/42631247/215270933-3365065b-53db-4eca-9fc6-cd03d13e5ab0.mp4" muted="false"></video></div>
 
 <br>  
 
+## Migration from v4 to v5
+The v5 has many changes from v4, so please read [the migration guide](https://pit-ray.github.io/win-vind/migration).
+
 ## Installation
-### Chocolatey Version
-win-vind supports installation using [Chocolatey](https://chocolatey.org/). To install win-vind with Chocolatey, run the following command from the command line or from PowerShell.
+We support a variety of installation methods.
+
+### [Chocolatey](https://chocolatey.org/)
 
 ```sh
 $ choco install win-vind
 ```
 
-<!--
-However, [win-vind 4.3.3](https://community.chocolatey.org/packages/win-vind/4.3.3) is not still approved on Chocolatey. Therefore, download the [Chocolatey package source](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_chocolatey_package_source.zip) manually and execute the following command in the extracted directory.
-
-```sh
-$ cd win-vind_4.3.3_chocolatey_package_source
-$ choco install win-vind.4.3.3.nupkg
-```
-
-#### Current Status
-- [X] 4.3.3
-- [X] 4.3.1
-- [X] 4.3.0
-- [x] 4.2.1
-- [x] 4.2.0
--->
-
-### winget Version
-[winget](https://github.com/microsoft/winget-cli) is also supported. To install the package, run the following command from your command line.
+### [winget](https://github.com/microsoft/winget-cli)
 
 ```sh
 $ winget install win-vind
 ```
 
 <!--
-#### Current Status
-- [x] 4.3.3
-- [x] 4.3.1
-- [x] 4.3.0
-- [x] 4.2.1
-- [x] 4.2.0
+### [scoop](https://scoop.sh/)
+Not yet open.
+```sh
+$ scoop install win-vind
+```
 -->
 
-### Installer Version
-- [win-vind_4.3.3_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_installer.zip)
-- [win-vind_4.3.3_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_installer.zip)
+### Executable Installer
+- [win-vind_5.2.3_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.3/win-vind_5.2.3_32bit_installer.zip)
+- [win-vind_5.2.3_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.3/win-vind_5.2.3_64bit_installer.zip)
 
-### Portable Version
-- [win-vind_4.3.3_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_32bit_portable.zip)
-- [win-vind_4.3.3_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v4.3.3/win-vind_4.3.3_64bit_portable.zip)
+### Portable Zip
+- [win-vind_5.2.3_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.3/win-vind_5.2.3_32bit_portable.zip)
+- [win-vind_5.2.3_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.2.3/win-vind_5.2.3_64bit_portable.zip)
 
 
 ## Usage
-You can refer to the installation and quick tutorial in [Usage - win-vind](https://pit-ray.github.io/win-vind/usage/).  
 
+Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.github.io/win-vind/usage/) with plenty of diagrams. Here, only a sample .vindrc is shown below. As you can see, it is Vim user-friendly.  
 
-### .vindrc samples  
-
-You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
+### .vindrc sample  
 
 ```vim
-" ------------ Example ------------
-" Virtual command line options
+" Choose the version of {tiny, small, normal, big, huge}.
+version normal
+
+" options
 set shell = cmd
 set cmd_fontsize = 14
-set cmd_roughpos = LowerLeft
-set cmd_maxchar = 100
-
-" Enable block style caret
+set cmd_fontname = Consolas
 set blockstylecaret
 set blockstylecaret_mode = solid
 
-" Low-level key mapping in resident mode
-rmap <capslock> <ctrl>
+" bindings
+imap <capslock> {<ctrl>}
 
-" Define bindings in GUI Normal mode
-gnnoremap <c-h> select_left_window
-gnnoremap <c-l> select_right_window
-gnnoremap <c-k> select_upper_window
-gnnoremap <c-j> select_lower_window
+inoremap <alt><alt> <easy_click_left>
+inoremap <win-enter> <window_resizer>
 
-" Define bindings in insert mode
-imap <capslock> <f16>
-inoremap <f16> to_edi_normal
+noremap <ctrl-1> :! gvim<cr>
+noremap <ctrl-2> :e http://example.com<cr>
 
-imap <ralt> <f17>
-inoremap <f17> easy_click_left
-
-imap <app> <f18>
-inoremap <f18> window_resizer
+enoremap t ggyyGp
 ```
 
-The [Functions](https://pit-ray.github.io/win-vind/cheat_sheet/functions/) page lists all supported functions, the [Options](https://pit-ray.github.io/win-vind/cheat_sheet/options/) document lists parameters and useful extensions, and the [Keyword List](https://pit-ray.github.io/win-vind/cheat_sheet/keywords/) contains keyword notations for writing .vindrc. If you want to know the default bindings, refer to <a href="https://pit-ray.github.io/win-vind/cheat_sheet/defaults">Default Mappings</a>. 
+### Default Mappings
+win-vind has many features, but you can use a simpler one for your purposes by putting the `version` command at the beginning of your .vindrc.
+If you want to use `tiny` version, write the following. It is important to note that **nothing but comments can be written before the `version` command**.
+If you do not write the `version` command, `huge` will be loaded.
+
+```vim
+" Only comments can be written in here.
+version tiny
+" Any command can be written from.
+" For example
+set shell = cmd
+```
+
+|**Tier**|**Supported Features**|
+|:---|:---|
+|[tiny](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/tiny)|+mouse +syscmd|
+|[small](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/small)|+mouse +syscmd +window +process|
+|[normal](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/normal)|+mouse +syscmd +window +process +vimemu|
+|[big](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/big)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode|
+|[huge](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/huge)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode +experimental|
+
+Following Vim, there are five tiers. `tiny` has minimal commands for mouse moving and clicking, including EasyClick and GridMove. `small` allows more flexible handling of window controls and process launches, etc. `normal` has Vim emulation mappings and allows text editing in text areas, etc. `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse. `huge` allows win-vind to have experimental features for more complex operations.
+
+For more information on default mappings, please visit our [website](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/).
+
 
 ## Known Issues
 - EasyClick does not seem to work properly for some applications on older Windows 10 before 1803. The cause is not known, but we have confirmed that it works after 1909. ([#11](https://github.com/pit-ray/win-vind/issues/11))
@@ -183,10 +174,6 @@ If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://githu
 
 The project is managed with <a href="https://github.com/users/pit-ray/projects/2">GitHub Projects</a>. 
 
-## Related Pages
-- <a href="https://pit-ray.hatenablog.com/archive/category/win-vind">Description Blog of Author in Japanese</a>  
-- <a href="https://www.reddit.com/user/pit-ray/posts/">Posts of reddit</a>  
-
 ## Similar Projects
 - [rcmdnk/vim_ahk](https://github.com/rcmdnk/vim_ahk)
 - [microsoft/PowerToys](https://github.com/microsoft/PowerToys)
@@ -194,8 +181,4 @@ The project is managed with <a href="https://github.com/users/pit-ray/projects/2
 
 ## License  
 
-This software is provided by **MIT License**.  
-
-## Author
-
-- pit-ray
+This software is provided by pit-ray under the **MIT License**.  

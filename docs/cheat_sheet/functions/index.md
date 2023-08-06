@@ -6,246 +6,1658 @@ show_in_menu: false
 disable_anchors: true
 ---
 
-### Mode
+## Mode
 
-|ID|Feature|
-|:---:|:---|
-|**to_command**|Command Mode|
-|**to_edi_normal**|Editor Normal Mode|
-|**to_edi_visual**|Editor Visual Mode|
-|**to_edi_visual_line**|Editor Visual-Line Mode|
-|**to_gui_visual**|GUI Visual Mode|
-|**to_insert**|Insert Mode|
-|**to_instant_gui_normal**|Temporarily switches to GUI Normal Mode and performs matching, which can be used as a map-leader.|
-|**to_resident**|Resident Mode|
+### **`<to_command>`**
+Enter the command mode. Generally, this command is called with `:`. In the command mode, the typed characters are displayed on the virtual command line, the command can be executed with the `<enter>` key, and you can delete characters with `<bs>`. You can also use the `<up>` and `<down>` keys to move thr class="dash"ough the executed history.
 
+<p align="center">
+  <img src="https://pit-ray.github.io/win-vind/imgs/cmdline_demo.gif" class="img-fluid"/>
+  <p align="center">Example: Change options via the virtual command line</p>
+</p>
 
-### Mouse
+**Related Options**
+- [vcmdline](../options/#vcmdline)
+- [cmd_bgcolor](../options/#cmd_bgcolor)
+- [cmd_fontcolor](../options/#cmd_fontcolor)
+- [cmd_fontname](../options/#cmd_fontname)
+- [cmd_fontsize](../options/#cmd_fontsize)
+- [cmd_fontweight](../options/#cmd_fontweight)
+- [cmd_fontextra](../options/#cmd_fontextra)
+- [cmd_roughpos](../options/#cmd_roughpos)
+- [cmd_xmargin](../options/#cmd_xmargin)
+- [cmd_ymargin](../options/#cmd_ymargin)
+- [cmd_fadeout](../options/#cmd_fadeout)
+- [cmd_monitor](../options/#cmd_monitor)
 
-|ID|Feature|
-|:---:|:---|
-|**click_left**|Left button of a mouse click|
-|**click_right**|Right button of a mouse click|
-|**easy_click_hover**|EasyClick (Hovering)|
-|**easy_click_left**|EasyClick (Left Click)|
-|**easy_click_mid**|EasyClick (Mid Click)|
-|**easy_click_right**|EasyClick (Right Click)|
-|**jump_cursor_to_active_window**|Jump the mouse cursor to the foreground window|
-|**jump_cursor_to_bottom**|Jump the mouse cursor to bottom|
-|**jump_cursor_to_hcenter**|Jump the mouse cursor to horizontal center|
-|**jump_cursor_to_left**|Jump the Mouse cursor to left|
-|**jump_cursor_to_right**|Jump the mouse cursor to right|
-|**jump_cursor_to_top**|Jump the mouse cursor to top|
-|**jump_cursor_to_vcenter**|Jump the mouse cursor to vertical center|
-|**jump_cursor_with_keybrd_layout**|Jump the mouse cursor by keyboard mapping|
-|**move_cursor_down**|Move the Mouse Cursor Down|
-|**move_cursor_left**|Move the mouse cursor to left|
-|**move_cursor_right**|Move the mouse cursor to right|
-|**move_cursor_up**|Move the mouse cursor up|
-|**scroll_down**|Scroll a mouse wheel down|
-|**scroll_down_halfpage**|Scroll a mouse wheel down with a half page|
-|**scroll_down_onepage**|Scroll a mouse wheel down With a page|
-|**scroll_left**|Scroll a mouse wheel left|
-|**scroll_left_halfpage**|Scroll a mouse wheel left With a half page|
-|**scroll_right**|Scroll a mouse wheel right|
-|**scroll_right_halfpage**|Scroll a mouse wheel right with a half page|
-|**scroll_up**|Scroll a mouse wheel up|
-|**scroll_up_halfpage**|Scroll a mouse wheel up with a half page|
-|**scroll_up_onepage**|Scroll a mouse wheel up with a page|
+**See Also**
+- [\<command\>](./#command)
+- [\<delcommand\>](./#delcommand)
+- [\<comclear\>](./#comclear)
 
-### Hotkey
+<hr class="dash">
 
-|ID|Feature|
-|:---:|:---|
-|**backward_ui_navigation**|Backward UI Navigation|
-|**decide_focused_ui_object**|Decide a focused UI object|
-|**forward_ui_navigation**|Forward UI Navigation|
-|**goto_next_page**|Forward a next page|
-|**goto_prev_page**|Backward a previous page|
-|**hotkey_backspace**|BackSpace|
-|**hotkey_copy**|Copy|
-|**hotkey_cut**|Cut|
-|**hotkey_delete**|Delete|
-|**hotkey_paste**|Paste|
-|**open**|Open another file|
-|**open_startmenu**|Open a StartMenu|
-|**redo**|Redo|
-|**save**|Save a current file|
-|**search_pattern**|Search Pattern|
-|**select_all**|Select all|
-|**start_explorer**|Start a Explorer|
-|**undo**|Undo|
+### **`<to_gui_normal>`**
+Transition to GUI normal mode. In GUI normal mode, the typed keys are not transmitted to Windows, so you can create any mapping you like without considering shortcut key conflicts.
 
-### Virtual Desktop
+**See Also**
+- [\<to_gui_visual\>](./#to_gui_visual)
+- [\<to_instant_gui_normal\>](./#to_instant_gui_normal)
+- [\<gnmap\>](./#map)
+- [\<gnnoremap\>](./#noremap)
+- [\<gnunmap\>](./#unmap)
+- [\<gnmapclear\>](./#mapclear)
 
-|ID|Feature|
-|:---:|:---|
-|**close_current_vdesktop**|Close a current virtual desktop|
-|**create_new_vdesktop**|Create a new virtual desktop|
-|**switch_to_left_vdesktop**|Switch to a left virtual desktop|
-|**switch_to_right_vdesktop**|Switch to a right virtual desktop|
-|**taskview**|Task View|
+<hr class="dash">
 
-### Tab
+### **`<to_gui_visual>`**
+Enter GUI visual mode. In this mode, the mouse is always in the click state and input is blocked from Windows as in normal mode.
 
-|ID|Feature|
-|:---:|:---|
-|**close_current_tab**|Close a current tab|
-|**open_new_tab**|Open a new tab|
-|**switch_to_left_tab**|Switch to a left tab|
-|**switch_to_right_tab**|Switch to a right tab|
+**See Also**
+- [\<to_gui_normal\>](./#to_gui_normal)
+- [\<to_instant_gui_normal\>](./#to_instant_gui_normal)
+- [\<mgvap\>](./#map)
+- [\<gvnoremap\>](./#noremap)
+- [\<gvunmap\>](./#unmap)
+- [\<gvmapclear\>](./#mapclear)
 
+<hr class="dash">
 
-### Window
+### **`<to_edi_normal>`**
+Switch to the editor normal mode. This mode is essentially the same as GUI normal mode, but defines a lot of text-specific mappings that emulate Vim editing in order to achieve Vim everywhere.
 
-|ID|Feature|
-|:---:|:---|
-|**arrange_windows**|Arrange windows with tile style|
-|**close_current_window**|Close a current window|
-|**decrease_window_height**|Decrease the height of a window|
-|**decrease_window_width**|Decrease the width of a window|
-|**exchange_window_with_nearest**|Exchange a window with the nearest window|
-|**increase_window_height**|Increase the height of a window|
-|**increase_window_width**|Increase the width of a window|
-|**maximize_current_window**|Maximize a current window|
-|**minimize_current_window**|Minimize a current window|
-|**open_new_window**|Open a new window|
-|**open_new_window_with_hsplit**|Open a new window with horizontal split|
-|**open_new_window_with_vsplit**|Open a new window with vertical split|
-|**reload_current_window**|Reload a current window|
-|**resize_window_height**|Set the height of a window. You have to pass the pixel value as an argument using the command line.|
-|**resize_window_width**|Set the width of a window. You have to pass the pixel value as an argument using the command line.|
-|**rotate_windows**|Rotate windows in a current monitor|
-|**rotate_windows_in_reverse**|Rotate windows in a current monitor in reverse|
-|**select_left_window**|Select a left window|
-|**select_lower_window**|Select a lower window|
-|**select_right_window**|Select a right window|
-|**select_upper_window**|Select an upper window|
-|**snap_current_window_to_bottom**|Snap a current window to bottom|
-|**snap_current_window_to_left**|Snap a current window to left|
-|**snap_current_window_to_right**|Snap a current window to right|
-|**snap_current_window_to_top**|Snap a current window to top|
-|**switch_window**|Switch a window|
-|**window_resizer**|Start window resizer. It respects Vim plugin <a href="https://github.com/simeji/winresizer">simeji/winresizer</a>.|
+**See Also**
+- [\<to_edi_visual\>](./#to_edi_visual)
+- [\<to_edi_visual_line\>](./#to_edi_visual_line)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
 
-### File
+<hr class="dash">
 
-|ID|Feature|
-|:---:|:---|
-|**makedir**|Create a directory. If you call it with a relative path such as `:mkdir foo`, it creates it in the explorer directory. If no explorer is found, it creates it in `~/Desktop/foo`. If you call it with an absolute path like `:mkdir C:/Users/You/Desktop/bar`, it will create a directory along the path recursively.|
+### **`<to_edi_visual>`**
+Switch to editor visual mode.
+The editor visual mode corresponds to the "v" command in Vim, which allows you to make a character-based selection with the keyboard. The typed keys are not propagated to Windows. To select a line, call [\<to_edi_visual_line\>](./#to_edi_visual_line) instead. In both ways, the only difference is the initialization, and the transition destination is the editor visual mode.
 
-### Process
+**See Also**
+- [\<to_edi_normal\>](./#to_edi_normal)
+- [\<to_edi_visual_line\>](./#to_edi_visual_line)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
 
-|ID|Feature|
-|:---:|:---|
-|**execute**|Open file with the associated application. This is a wrapper for the famous Windows API, **ShellExecute**, which behaves the same as double-clicking in Explorer. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`. If there is no argument, it will open .vindrc loaded at initialization.|
-|**exit_config_gui**|Exit win-vind|
-|**start_external**|Start an external application. This environment variable is dependent on the application specified in the `shell` option. By appending `;` at the end, it keeps the console window without closing immediately. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
-|**start_shell**|Start a terminal. If the explorer is the foreground window, the current directory of a terminal will be that directory.|
+<hr class="dash">
 
-### Option
+### **`<to_edi_visual_line>`**
+Switch to editor visual mode.
+Similar to `<s-v>` of Vim, the selection method is line selection. If you want to do character selection, call [\<to_edi_visual\>](./#to_edi_visual) instead.
 
-|ID|Feature|
-|:---:|:---|
-|**disable_targeting_of_dedicate_to_window**|Disable targeting (Dedicate to One Window)|
-|**enable_targeting_of_dedicate_to_window**|Enable targeting (Dedicate to One Window)|
+**See Also**
+- [\<to_edi_normal\>](./#to_edi_normal)
+- [\<to_edi_visual\>](./#to_edi_visual)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
 
-### System Command
+<hr class="dash">
 
-|ID|Feature|
-|:---:|:---|
-|**system_command_comclear**|System Command comclear|
-|**system_command_command**|System Command command|
-|**system_command_delcommand**|System Command delcommand|
-|**system_command_map**|System Command map|
-|**system_command_mapclear**|System Command mapclear|
-|**system_command_noremap**|System Command noremap|
-|**system_command_set**|System Command set|
-|**system_command_source**|System Command source|
-|**system_command_unmap**|System Command unmap|
+### **`<to_insert>`**
+Enters the Insert mode. In this mode, you can directly input and edit text.
+
+**See Also**
+- [\<to_resident\>](./#to_resident)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
+
+<hr class="dash">
+
+### **`<to_resident>`**
+Enters Resident mode.
+
+**See Also**
+- [\<to_insert\>](./#to_insert)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
+
+<hr class="dash">
+
+### **`<to_instant_gui_normal>`**
+Temporarily switches to GUI Normal mode and performs matching, which can be used as a map-leader.
+
+**See Also**
+- [\<to_gui_normal\>](./#to_gui_normal)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
 
 
-### Vim Emulation
+## System Command
 
-<br>
+### **`<set>`**
+System Command set.
 
-**Mode**  
+**See Also**
+- [Options](../options)
+- [\<source\>](./#source)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
 
-|ID|Feature|Emulation|
-|:---:|:---|:---:|
-|**to_insert_BOL**|Insert to begin of line.|`I`|
-|**to_insert_EOL**|Append end of line.|`A`|
-|**to_insert_append**|Append after a caret.|`a`|
-|**to_insert_nlabove**|Begin new line above a caret.|`O`|
-|**to_insert_nlbelow**|Begin new line below a caret.|`o`|
+<hr class="dash">
 
-<br>
+### **`<source>`**
+System Command source.
 
-**Move**  
-In 4.4, `move_caret_word_forward`, `move_caret_nonblank_word_forward`, `move_caret_word_backward`, and `move_caret_nonblank_word_backward` are deprecated. Instead, functions equivalent to `w`, `b`, `W`, `B`, `e`, `E`, `ge`, and `gE` have been added. These functions do not work in visual mode except for `w` and `b`, because they copy the text once and retrieve the text via the clipboard. `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.  
+**See Also**
+- [\<set\>](./#set)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
 
-There is an option [charbreak]({{ site.url }}/cheat_sheet/options) to set the criteria for considering a Unicode character as a single character. 
+<hr class="dash">
 
-|ID|Feature|Emulation|
-|:---:|:---|:---:|
-|**move_caret_left**|Move the caret to left.|`h`|
-|**move_caret_down**|Move the caret down.|`j`|
-|**move_caret_up**|Move the caret up|`k`|
-|**move_caret_right**|Move the caret to right.|`l`|
-|~~**move_caret_word_forward**~~|Forward with words (Deprecated in 4.4)|`w`|
-|~~**move_caret_nonblank_word_forward**~~|Forward with WORDS. (Deprecated in 4.4)|`W`|
-|~~**move_caret_word_backward**~~|Backward with words (Deprecated in 4.4)|`b`|
-|~~**move_caret_nonblank_word_backward**~~|Backward with WORDS. (Deprecated in 4.4)|`B`|
-|**move_fwd_word**|words forward for normal mode.|`w`|
-|**move_fwd_word_simple**|words forward for visual mode.|`w`|
-|**move_bck_word**|words backward for normal mode.|`b`|
-|**move_bck_word_simple**|words backward for visual mode.|`b`|
-|**move_fwd_bigword**|WORDS forward.|`W`|
-|**move_bck_bigword**|WORDS backward.|`B`|
-|**move_end_word**|Forward to the end of words.|`e`|
-|**move_end_bigword**|Forward to the end of WORDS.|`E`|
-|**move_bckend_word**|Backward to the end of words.|`ge`|
-|**move_bckend_bigword**|Backward to the end of WORDS.|`gE`|
+### **`<map>`**
+System Command map.
+
+ the `map` allows remapping with user-defined mapping like the following.
+```vim
+nmap f h  " f --> h
+nmap t f  " t --> h
+```
+The `noremap` performs only the default map.
+```vim
+nnoremap f h  " f --> h
+nnoremap t f  " t --> f
+```
+
+**See Also**
+- [\<noremap\>](./#noremap)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
+- [\<source\>](./#source)
+
+<hr class="dash">
+
+### **`<noremap>`**
+System Command noremap.
+
+**See Also**
+- [\<map\>](./#map)
+- [\<unmap\>](./#unmap)
+- [\<mapclear\>](./#mapclear)
+- [\<source\>](./#source)
+
+<hr class="dash">
+
+### **`<unmap>`**
+System Command unmap.
+
+**See Also**
+- [\<mapclear\>](./#mapclear)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<source\>](./#source)
+
+<hr class="dash">
+
+### **`<mapclear>`**
+System Command mapclear.
+
+**See Also**
+- [\<unmap\>](./#unmap)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+- [\<source\>](./#source)
+
+<hr class="dash">
+
+### **`<command>`**
+System Command command.
+
+**See Also**
+- [\<delcommand\>](./#delcommand)
+- [\<comclear\>](./#comclear)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+
+<hr class="dash">
+
+### **`<delcommand>`**
+System Command delcommand.
+
+**See Also**
+- [\<comclear\>](./#comclear)
+- [\<command\>](./#command)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+
+<hr class="dash">
+
+### **`<comclear>`**
+System Command comclear.
+
+**See Also**
+- [\<delcommand\>](./#delcommand)
+- [\<command\>](./#command)
+- [\<map\>](./#map)
+- [\<noremap\>](./#noremap)
+
+## Mouse
+
+### **`<click_left>`**
+Left button of a mouse click.
+
+**See Also**
+- [\<click_right\>](./#click_right)
+- [\<click_mid\>](./#click_mid)
+- [\<easyclick\>](./#easyclick)
+- [\<gridmove\>](./#gridmove)
+
+<hr class="dash">
+
+### **`<click_right>`**
+Right button of a mouse click.
+
+**See Also**
+- [\<click_left\>](./#click_left)
+- [\<click_mid\>](./#click_mid)
+- [\<easyclick\>](./#easyclick)
+- [\<gridmove\>](./#gridmove)
+
+<hr class="dash">
+
+### **`<click_mid>`**
+Middle button of a mouse click.
+
+**See Also**
+- [\<click_left\>](./#click_left)
+- [\<click_right\>](./#click_right)
+- [\<easyclick\>](./#easyclick)
+- [\<gridmove\>](./#gridmove)
+
+<hr class="dash">
+
+### **`<move_cursor_left>`**
+Move the mouse cursor to the left.
+
+**See Also**
+- [\<move_cursor_right\>](./#move_cursor_right)
+- [\<move_cursor_up\>](./#move_cursor_up)
+- [\<move_cursor_down\>](./#move_cursor_down)
+
+<hr class="dash">
+
+### **`<move_cursor_right>`**
+Move the mouse cursor to the right.
+
+**See Also**
+- [\<move_cursor_left\>](./#move_cursor_left)
+- [\<move_cursor_up\>](./#move_cursor_up)
+- [\<move_cursor_down\>](./#move_cursor_down)
+
+<hr class="dash">
+
+### **`<move_cursor_up>`**
+Move the mouse cursor up.
+
+**See Also**
+- [\<move_cursor_left\>](./#move_cursor_left)
+- [\<move_cursor_right\>](./#move_cursor_right)
+- [\<move_cursor_down\>](./#move_cursor_down)
+
+<hr class="dash">
 
 
-<br>
+### **`<move_cursor_down>`**
+Move the mouse cursor down.
 
-**Jump**  
+**See Also**
+- [\<move_cursor_left\>](./#move_cursor_left)
+- [\<move_cursor_right\>](./#move_cursor_right)
+- [\<move_cursor_up\>](./#move_cursor_up)
 
-|ID|Feature|Emulation|
-|:---:|:---|:---:|
-|**jump_caret_to_BOF**|Jump the caret to BOF|`gg`|
-|**jump_caret_to_BOL**|Jump the caret to begin of line|`0`|
-|**jump_caret_to_EOF**|Jump the caret to EOF|`G`|
-|**jump_caret_to_EOL**|Jump the caret to end of line|`$`|
+<hr class="dash">
 
-<br>
+### **`<easyclick>`**
+Move a cursor using hints on the UI objects without clicking.
 
-**Edit**  
+> **Note:**
+> In versions prior to 5.1.0, there where commands `<easy_click_left>`, `<easy_click_right>`, `<easy_click_mid>`, and `<easy_click_hover>`, which have been merged into `<easyclick>`. For compatibility, the previous commands are automatically replaced by the following.
+> <table>
+> <tr>
+>   <th>Conventional Name</th>
+>   <th>Automatically Replaced Name</th>
+> </tr>
+> <tr>
+>   <td><code>&lt;easy_click_left&gt;</code></td>
+>   <td><code>&lt;easyclick&gt;&lt;click_left&gt;</code></td>
+> </tr>
+> <tr>
+>   <td><code>&lt;easy_click_right&gt;</code></td>
+>   <td><code>&lt;easyclick&gt;&lt;click_right&gt;</code></td>
+> </tr>
+> <tr>
+>   <td><code>&lt;easy_click_mid&gt;</code></td>
+>   <td><code>&lt;easyclick&gt;&lt;click_mid&gt;</code></td>
+> </tr>
+> <tr>
+>   <td><code>&lt;easy_click_hover&gt;</code></td>
+>   <td><code>&lt;easyclick&gt;</code></td>
+> </tr>
+> </table>
 
-|ID|Feature|Emulation|
-|:---:|:---|:---:|
-|**change_char**|Change Characters|`s`|
-|**change_highlight_text**|Change highlighted texts|`c`, `s`, `S`|
-|**change_line**|Change Lines|`cc`, `S`|
-|**change_until_EOL**|Change until EOL|`C`|
-|**change_with_motion**|Change texts with motion|`c{motion}`|
-|**delete_after**|Delete chars after the caret|`x`|
-|**delete_before**|Delete chars before the caret|`X`|
-|**delete_highlight_text**|Delete highlighted texts|`d`, `x`, `X`|
-|**delete_line**|Delete lines|`dd`|
-|**delete_line_until_EOL**|Delete texts until end of line|`D`|
-|**delete_with_motion**|Delete texts with motion|`d{motion}`|
-|**join_next_line**|Join a next line|`J`|
-|**put_after**|Put texts after the caret|`p`|
-|**put_before**|Put texts before the caret|`P`|
-|**repeat_last_change**|Repeat last simple change|`.`|
-|**replace_char**|Replace a char|`r`|
-|**replace_sequence**|Replace Mode|`R`|
-|**switch_char_case**|Switch char case|`~`|
-|**yank_highlight_text**|Yank highlighted texts|`y`|
-|**yank_line**|Yank lines|`yy`, `Y`|
-|**yank_with_motion**|Yank lines with motion|`y{motion}`|
+**See Also**
+- [\<gridmove\>](./#gridmove)
+- [\<click_left\>](./#click_left)
+- [\<click_right\>](./#click_right)
+- [\<click_mid\>](./#click_mid)
+- [\<jump_cursor_to_active_window\>](./#jump_cursor_to_active_window)
+- [\<jump_cursor_with_keybrd_layout\>](./#jump_cursor_with_keybrd_layout)
+
+<hr class="dash">
+
+### **`<gridmove>`**
+Move a cursor using tiled hints laid on the entire screen.
+To change fonts or colors, you can set the several options, such as `gridmove_bgcolor`, `gridmove_fontcolor`, `gridmove_fontname`, `gridmove_fontsize`, and `gridmove_fontweight`.
+In order to change the grid size, set the size with `gridmove_size` option. It assumes a text as its value, such as `12x8` for horizontal 12 cells and vertical 8 cells.
+
+**See Also**
+- [\<easyclick\>](./#easyclick)
+- [\<click_left\>](./#click_left)
+- [\<click_right\>](./#click_right)
+- [\<click_mid\>](./#click_mid)
+- [\<jump_cursor_to_active_window\>](./#jump_cursor_to_active_window)
+- [\<jump_cursor_with_keybrd_layout\>](./#jump_cursor_with_keybrd_layout)
+
+<hr class="dash">
+
+### **`<jump_cursor_to_left>`**
+Jump the mouse cursor to the left.
+
+**See Also**
+- [\<jump_cursor_to_right\>](./#jump_cursor_to_right)
+- [\<jump_cursor_to_top\>](./#jump_cursor_to_top)
+- [\<jump_cursor_to_bottom\>](./#jump_cursor_to_bottom)
+- [\<jump_cursor_to_hcenter\>](./#jump_cursor_to_hcenter)
+- [\<jump_cursor_to_vcenter\>](./#jump_cursor_to_vcenter)
+
+<hr class="dash">
+
+### **`<jump_cursor_to_right>`**
+Jump the mouse cursor to the right.
+
+**See Also**
+- [\<jump_cursor_to_left\>](./#jump_cursor_to_left)
+- [\<jump_cursor_to_top\>](./#jump_cursor_to_top)
+- [\<jump_cursor_to_bottom\>](./#jump_cursor_to_bottom)
+- [\<jump_cursor_to_hcenter\>](./#jump_cursor_to_hcenter)
+- [\<jump_cursor_to_vcenter\>](./#jump_cursor_to_vcenter)
+
+<hr class="dash">
+
+
+### **`<jump_cursor_to_top>`**
+Jump the mouse cursor to the top.
+
+**See Also**
+- [\<jump_cursor_to_left\>](./#jump_cursor_to_left)
+- [\<jump_cursor_to_right\>](./#jump_cursor_to_right)
+- [\<jump_cursor_to_bottom\>](./#jump_cursor_to_bottom)
+- [\<jump_cursor_to_hcenter\>](./#jump_cursor_to_hcenter)
+- [\<jump_cursor_to_vcenter\>](./#jump_cursor_to_vcenter)
+
+<hr class="dash">
+
+### **`<jump_cursor_to_bottom>`**
+Jump the mouse cursor to the bottom.
+
+**See Also**
+- [\<jump_cursor_to_left\>](./#jump_cursor_to_left)
+- [\<jump_cursor_to_right\>](./#jump_cursor_to_right)
+- [\<jump_cursor_to_top\>](./#jump_cursor_to_top)
+- [\<jump_cursor_to_hcenter\>](./#jump_cursor_to_hcenter)
+- [\<jump_cursor_to_vcenter\>](./#jump_cursor_to_vcenter)
+
+<hr class="dash">
+
+### **`<jump_cursor_to_hcenter>`**
+Jump the mouse cursor to the horizontal center.
+
+**See Also**
+- [\<jump_cursor_to_left\>](./#jump_cursor_to_left)
+- [\<jump_cursor_to_right\>](./#jump_cursor_to_right)
+- [\<jump_cursor_to_top\>](./#jump_cursor_to_top)
+- [\<jump_cursor_to_bottom\>](./#jump_cursor_to_bottom)
+- [\<jump_cursor_to_vcenter\>](./#jump_cursor_to_vcenter)
+
+<hr class="dash">
+
+### **`<jump_cursor_to_vcenter>`**
+Jump the mouse cursor to the vertical center.
+
+**See Also**
+- [\<jump_cursor_to_left\>](./#jump_cursor_to_left)
+- [\<jump_cursor_to_right\>](./#jump_cursor_to_right)
+- [\<jump_cursor_to_top\>](./#jump_cursor_to_top)
+- [\<jump_cursor_to_bottom\>](./#jump_cursor_to_bottom)
+- [\<jump_cursor_to_hcenter\>](./#jump_cursor_to_hcenter)
+
+<hr class="dash">
+
+### **`<jump_cursor_to_active_window>`**
+Jump the mouse cursor to the foreground window.
+
+**See Also**
+- [\<jump_cursor_with_keybrd_layout\>](./#jump_cursor_with_keybrd_layout)
+- [\<easyclick\>](./#easyclick)
+- [\<gridmove\>](./#gridmove)
+
+<hr class="dash">
+
+### **`<jump_cursor_with_keybrd_layout>`**
+Jump the mouse cursor by keyboard mapping.
+
+**See Also**
+- [\<jump_cursor_to_active_window\>](./#jump_cursor_to_active_window)
+- [\<easyclick\>](./#easyclick)
+- [\<gridmove\>](./#gridmove)
+
+<hr class="dash">
+
+### **`<scroll_up>`**
+Scroll the mouse wheel up.
+
+**See Also**
+- [\<scroll_up_onepage\>](./#scroll_up_onepage)
+- [\<scroll_up_halfpage\>](./#scroll_up_halfpage)
+- [\<scroll_down\>](./#scroll_down)
+
+<hr class="dash">
+
+### **`<scroll_up_halfpage>`**
+Scroll the mouse wheel up with a half page.
+
+**See Also**
+- [\<scroll_up\>](./#scroll_up)
+- [\<scroll_up_onepage\>](./#scroll_up_onepage)
+- [\<scroll_down\>](./#scroll_down)
+
+<hr class="dash">
+
+### **`<scroll_up_onepage>`**
+Scroll the mouse wheel up with a page.
+
+**See Also**
+- [\<scroll_up\>](./#scroll_up)
+- [\<scroll_up_halfpage\>](./#scroll_up_halfpage)
+- [\<scroll_down\>](./#scroll_down)
+
+<hr class="dash">
+
+### **`<scroll_down>`**
+Scroll the mouse wheel down.
+
+**See Also**
+- [\<scroll_down_onepage\>](./#scroll_down_onepage)
+- [\<scroll_down_halfpage\>](./#scroll_down_halfpage)
+- [\<scroll_up\>](./#scroll_up)
+
+<hr class="dash">
+
+### **`<scroll_down_halfpage>`**
+Scroll the mouse wheel down with a half page.
+
+**See Also**
+- [\<scroll_down\>](./#scroll_down)
+- [\<scroll_down_onepage\>](./#scroll_down_onepage)
+- [\<scroll_up\>](./#scroll_up)
+
+<hr class="dash">
+
+### **`<scroll_down_onepage>`**
+Scroll the mouse wheel down with a page.
+
+**See Also**
+- [\<scroll_down\>](./#scroll_down)
+- [\<scroll_down_halfpage\>](./#scroll_down_halfpage)
+- [\<scroll_up\>](./#scroll_up)
+
+<hr class="dash">
+
+### **`<scroll_left>`**
+Scroll the mouse wheel left.
+
+**See Also**
+- [\<scroll_left_halfpage\>](./#scroll_left_halfpage)
+- [\<scroll_right\>](./#scroll_right)
+
+<hr class="dash">
+
+### **`<scroll_left_halfpage>`**
+Scroll the mouse wheel left with a half page.
+
+**See Also**
+- [\<scroll_left\>](./#scroll_left)
+- [\<scroll_right\>](./#scroll_right)
+
+<hr class="dash">
+
+### **`<scroll_right>`**
+Scroll the mouse wheel right.
+
+**See Also**
+- [\<scroll_right_halfpage\>](./#scroll_right_halfpage)
+- [\<scroll_left\>](./#scroll_left)
+
+<hr class="dash">
+
+### **`<scroll_right_halfpage>`**
+Scroll the mouse wheel right with a half page.
+
+**See Also**
+- [\<scroll_right\>](./#scroll_right)
+- [\<scroll_left\>](./#scroll_left)
+
+
+## Window
+
+### **`<window_resizer>`**
+Start window resizer. It respects Vim plugin [simeji/winresizer](https://github.com/simeji/winresizer).
+
+**See Also**
+- [\<resize_window_width\>](./#resize_window_width)
+- [\<increase_window_width\>](./#increase_window_width)
+- [\<arrange_windows\>](./#arrange_windows)
+
+<hr class="dash">
+
+### **`<switch_window>`**
+Switch a window.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+- [\<select_left_window\>](./#select_left_window)
+- [\<select_upper_window\>](./#select_upper_window)
+
+<hr class="dash">
+
+### **`<select_left_window>`**
+Select the left window.
+
+**See Also**
+- [\<select_right_window\>](./#select_right_window)
+- [\<select_upper_window\>](./#select_upper_window)
+- [\<select_lower_window\>](./#select_lower_window)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<select_right_window>`**
+Select the right window.
+
+**See Also**
+- [\<select_left_window\>](./#select_left_window)
+- [\<select_upper_window\>](./#select_upper_window)
+- [\<select_lower_window\>](./#select_lower_window)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<select_upper_window>`**
+Select the upper window.
+
+**See Also**
+- [\<select_lower_window\>](./#select_lower_window)
+- [\<select_left_window\>](./#select_left_window)
+- [\<select_right_window\>](./#select_right_window)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<select_lower_window>`**
+Select the lower window.
+
+**See Also**
+- [\<select_upper_window\>](./#select_upper_window)
+- [\<select_left_window\>](./#select_left_window)
+- [\<select_right_window\>](./#select_right_window)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<maximize_current_window>`**
+Maximize the current window.
+
+**See Also**
+- [\<minimize_current_window\>](./#minimize_current_window)
+- [\<resize_window_width\>](./#resize_window_width)
+- [\<resize_window_height\>](./#resize_window_height)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<minimize_current_window>`**
+Minimize the current window.
+
+**See Also**
+- [\<maximize_current_window\>](./#maximize_current_window)
+- [\<resize_window_width\>](./#resize_window_width)
+- [\<resize_window_height\>](./#resize_window_height)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<resize_window_width>`**
+Set the width of a window. You have to pass the pixel value as an argument using the command line.
+
+**See Also**
+- [\<resize_window_height\>](./#resize_window_height)
+- [\<increase_window_width\>](./#increase_window_width)
+- [\<decrease_window_width\>](./#decrease_window_width)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+
+### **`<increase_window_width>`**
+Increase the width of a window.
+
+**See Also**
+- [\<decrease_window_width\>](./#decrease_window_width)
+- [\<increase_window_height\>](./#increase_window_height)
+- [\<decrease_window_height\>](./#decrease_window_height)
+- [\<resize_window_width\>](./#resize_window_width)
+
+<hr class="dash">
+
+
+### **`<decrease_window_width>`**
+Decrease the width of a window.
+
+**See Also**
+- [\<increase_window_width\>](./#increase_window_width)
+- [\<increase_window_height\>](./#increase_window_height)
+- [\<decrease_window_height\>](./#decrease_window_height)
+- [\<resize_window_width\>](./#resize_window_width)
+
+<hr class="dash">
+
+
+### **`<resize_window_height>`**
+Set the height of a window. You have to pass the pixel value as an argument using the command line.
+
+**See Also**
+- [\<resize_window_width\>](./#resize_window_width)
+- [\<increase_window_height\>](./#increase_window_height)
+- [\<decrease_window_height\>](./#decrease_window_height)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+
+### **`<increase_window_height>`**
+Increase the height of a window.
+
+**See Also**
+- [\<decrease_window_height\>](./#decrease_window_height)
+- [\<increase_window_width\>](./#increase_window_width)
+- [\<decrease_window_width\>](./#decrease_window_width)
+- [\<resize_window_height\>](./#resize_window_height)
+
+<hr class="dash">
+
+### **`<decrease_window_height>`**
+Decrease the height of a window.
+
+**See Also**
+- [\<increase_window_height\>](./#increase_window_height)
+- [\<increase_window_width\>](./#increase_window_width)
+- [\<decrease_window_width\>](./#decrease_window_width)
+- [\<resize_window_height\>](./#resize_window_height)
+
+<hr class="dash">
+
+### **`<arrange_windows>`**
+Arrange windows with tile style.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<exchange_window_with_nearest>`**
+Exchange a window with the nearest window.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<rotate_windows>`**
+Rotate windows in the current monitor.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<rotate_windows_in_reverse>`**
+Rotate windows in the current monitor in reverse.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<snap_current_window_to_left>`**
+Snap the current window to the left.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<snap_current_window_to_right>`**
+Snap the current window to the right.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<snap_current_window_to_top>`**
+Snap the current window to the top.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<snap_current_window_to_bottom>`**
+Snap the current window to the bottom.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<open_new_window>`**
+Open a new window.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<reload_current_window>`**
+Reload the current window.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<open_new_window_with_hsplit>`**
+Open a new window with a horizontal split.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<open_new_window_with_vsplit>`**
+Open a new window with a vertical split.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<close_current_window>`**
+Close the current window.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+
+## Process
+
+### **`<execute>`**
+Open file with the associated application. This is a wrapper for the famous Windows API, **ShellExecute**, which behaves the same as double-clicking in Explorer. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`. If there is no argument, it will open .vindrc loaded at initialization.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<exit>`**
+Exit win-vind.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<start_external>`**
+Start an external application. This environment variable is dependent on the application specified in the `shell` option. By appending `;` at the end, it keeps the console window without closing immediately. If the explorer is the foreground window, the current directory of a terminal will be that directory.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<start_shell>`**
+Start a terminal. If the explorer is the foreground window, the current directory of a terminal will be that directory.
+
+## Vim Emulation
+
+### **`<to_insert_BOL>`**
+**Vim Emulation:** `I`  
+Insert to begin of line.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<to_insert_EOL>`**
+**Vim Emulation:** `A`  
+Append end of line.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<to_insert_append>`**
+**Vim Emulation:** `a`  
+Append after a caret.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<to_insert_nlabove>`**
+**Vim Emulation:** `O`  
+Begin new line above a caret.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<to_insert_nlbelow>`**
+**Vim Emulation:** `o`  
+Begin new line below a caret.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_caret_left>`**
+**Vim Emulation:** `h`  
+Move the caret to left.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_caret_down>`**
+**Vim Emulation:** `j`  
+Move the caret down.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_caret_up>`**
+**Vim Emulation:** `k`  
+Move the caret up.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_caret_right>`**
+**Vim Emulation:** `l`  
+Move the caret to right.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_fwd_word>`**
+**Vim Emulation:** `w`  
+Move words forward for normal mode.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_fwd_word_simple>`**
+**Vim Emulation:** `w`  
+Move words forward fast.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_bck_word>`**
+**Vim Emulation:** `b`  
+Move words backward for normal mode.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_bck_word_simple>`**
+**Vim Emulation:** `b`  
+Move words backward fast.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_fwd_bigword>`**
+**Vim Emulation:** `W`  
+Move WORDS forward.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_bck_bigword>`**
+**Vim Emulation:** `B`  
+Move WORDS backward.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_end_word>`**
+**Vim Emulation:** `e`  
+Forward to the end of words.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_end_bigword>`**
+**Vim Emulation:** `E`  
+Forward to the end of WORDS.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_bckend_word>`**
+**Vim Emulation:** `ge`  
+Backward to the end of words.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<move_bckend_bigword>`**
+**Vim Emulation:** `gE`  
+Backward to the end of WORDS.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<jump_caret_to_BOF>`**
+**Vim Emulation:** `gg`  
+Jump the caret to BOF.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<jump_caret_to_BOL>`**
+**Vim Emulation:** `0`  
+Jump the caret to begin of line.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<jump_caret_to_EOF>`**
+**Vim Emulation:** `G`  
+Jump the caret to EOF.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<jump_caret_to_EOL>`**
+**Vim Emulation:** `$`  
+Jump the caret to end of line.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<change_char>`**
+**Vim Emulation:** `s`  
+Change Characters.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<change_highlight_text>`**
+**Vim Emulation:** `c`, `s`, `S`  
+Change highlighted texts.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<change_line>`**
+**Vim Emulation:** `cc`, `S`  
+Change Lines.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<change_until_EOL>`**
+**Vim Emulation:** `C`  
+Change until EOL.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<change_with_motion>`**
+**Vim Emulation:** `c{motion}`  
+Change texts with motion.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<delete_after>`**
+**Vim Emulation:** `x`  
+Delete chars after the caret.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<delete_before>`**
+**Vim Emulation:** `X`  
+Delete chars before the caret.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<delete_highlight_text>`**
+**Vim Emulation:** `d`, `x`, `X`  
+Delete highlighted texts.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<delete_line>`**
+**Vim Emulation:** `dd`  
+Delete lines.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<delete_line_until_EOL>`**
+**Vim Emulation:** `D`  
+Delete texts until end of line.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<delete_with_motion>`**
+**Vim Emulation:** `d{motion}`  
+Delete texts with motion.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<join_next_line>`**
+**Vim Emulation:** `J`  
+Join a next line.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<put_after>`**
+**Vim Emulation:** `p`  
+Put texts after the caret.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<put_before>`**
+**Vim Emulation:** `P`  
+Put texts before the caret.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<repeat_last_change>`**
+**Vim Emulation:** `.`  
+Repeat last simple change.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<replace_char>`**
+**Vim Emulation:** `r`  
+Replace a char.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<replace_sequence>`**
+**Vim Emulation:** `R`  
+Replace Mode.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<switch_char_case>`**
+**Vim Emulation:** `~`  
+Switch char case.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<yank_highlight_text>`**
+**Vim Emulation:** `y`  
+Yank highlighted texts.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<yank_line>`**
+**Vim Emulation:** `yy`, `Y`  
+Yank lines.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<yank_with_motion>`**
+**Vim Emulation:** `y{motion}`  
+Yank lines with motion.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+## Hotkey
+
+### **`<backward_ui_navigation>`**
+Backward UI Navigation.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<decide_focused_ui_object>`**
+Decide a focused UI object.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<forward_ui_navigation>`**
+Forward UI Navigation.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<goto_next_page>`**
+Forward to the next page.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<goto_prev_page>`**
+Go backward to the previous page.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<hotkey_backspace>`**
+Backspace.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<hotkey_copy>`**
+Copy.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<hotkey_cut>`**
+Cut.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<hotkey_delete>`**
+Delete.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<hotkey_paste>`**
+Paste.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<open>`**
+Open another file.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<open_startmenu>`**
+Open the Start Menu.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<redo>`**
+Redo.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<save>`**
+Save the current file.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<search_pattern>`**
+Search Pattern.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<select_all>`**
+Select all.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<start_explorer>`**
+Start Explorer.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<undo>`**
+Undo.
+
+## Virtual Desktop
+
+
+### **`<close_current_vdesktop>`**
+Close a current virtual desktop.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<create_new_vdesktop>`**
+Create a new virtual desktop.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<switch_to_left_vdesktop>`**
+Switch to a left virtual desktop.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<switch_to_right_vdesktop>`**
+Switch to a right virtual desktop.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<taskview>`**
+Task View.
+
+## Tab
+
+### **`<close_current_tab>`**
+Close a current tab.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<open_new_tab>`**
+Open a new tab.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<switch_to_left_tab>`**
+Switch to a left tab.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<switch_to_right_tab>`**
+Switch to a right tab.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+
+## File
+
+### **`<makedir>`**
+Create a directory. If you call it with a relative path such as `:mkdir foo`, it creates it in the explorer directory. If no explorer is found, it creates it in `~/Desktop/foo`. If you call it with an absolute path like `:mkdir C:/Users/You/Desktop/bar`, it will create a directory along the path recursively.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+
+## Option
+
+### **`<disable_targeting_of_dedicate_to_window>`**
+Disable targeting (Dedicate to One Window).
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<enable_targeting_of_dedicate_to_window>`**
+Enable targeting (Dedicate to One Window).
 
 
 <br>

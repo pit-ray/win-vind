@@ -1,0 +1,144 @@
+" Tiny default mapping
+" Features: +mouse +syscmd
+
+" @ Mode Transition
+gnnoremap <ctrl-]> <to_gui_normal>
+gnnoremap <esc-left> <to_gui_normal>
+gnnoremap <esc-down> <to_resident>
+gnnoremap : <to_command>
+gnnoremap i <to_insert>
+
+" @ Mouse Movement
+gnnoremap h <move_cursor_left>
+gnnoremap <bs> <move_cursor_left>
+gnnoremap <left> <move_cursor_left>
+gnnoremap l <move_cursor_right>
+gnnoremap <space> <move_cursor_right>
+gnnoremap <right> <move_cursor_right>
+gnnoremap k <move_cursor_up>
+gnnoremap - <move_cursor_up>
+gnnoremap <up> <move_cursor_up>
+gnnoremap j <move_cursor_down>
+gnnoremap + <move_cursor_down>
+gnnoremap <down> <move_cursor_down>
+
+" @ Mouse Clicking
+gnnoremap o <click_left>
+gnnoremap O <click_left>
+gnnoremap a <click_right>
+gnnoremap A <click_right>
+
+" @ Mouse Scrolling
+gnnoremap <c-y> <scroll_up>
+gnnoremap <c-k> <scroll_up>
+gnnoremap <c-e> <scroll_down>
+gnnoremap <c-j> <scroll_down>
+gnnoremap <c-u> <scroll_up_halfpage>
+gnnoremap <c-d> <scroll_down_halfpage>
+gnnoremap <c-b> <scroll_up_onepage>
+gnnoremap <c-f> <scroll_down_onepage>
+gnnoremap zh <scroll_left>
+gnnoremap <c-h> <scroll_left>
+gnnoremap zl <scroll_right>
+gnnoremap <c-l> <scroll_right>
+gnnoremap zh <scroll_left_halfpage>
+gnnoremap zl <scroll_right_halfpage>
+
+" @ Mouse Jumping
+gnnoremap 0 <jump_cursor_to_left>
+gnnoremap ^ <jump_cursor_to_left>
+gnnoremap <home> <jump_cursor_to_left>
+gnnoremap $ <jump_cursor_to_right>
+gnnoremap <end> <jump_cursor_to_right>
+gnnoremap gg <jump_cursor_to_top>
+gnnoremap G <jump_cursor_to_bottom>
+gnnoremap gm <jump_cursor_to_hcenter>
+gnnoremap M <jump_cursor_to_vcenter>
+gnnoremap t <jump_cursor_to_active_window>
+
+" @ Complex Mouse Controls
+gnnoremap f <jump_cursor_with_keybrd_layout>
+gnnoremap FF <easyclick><click_left>
+gnnoremap Fo <easyclick><click_left>
+gnnoremap Fa <easyclick><click_right>
+gnnoremap Fm <easyclick><click_mid>
+gnnoremap Fh <easyclick>
+gnnoremap <ctrl-m> <gridmove>
+
+" @
+inoremap <ctrl-]> <to_gui_normal>
+inoremap <Esc-Left> <to_gui_normal>
+inoremap <F8> <to_instant_gui_normal>
+inoremap <Esc-Down> <to_resident>
+
+" @
+rnoremap <Esc-Left> <to_gui_normal>
+rnoremap <Esc-Down> <to_resident>
+rnoremap <Esc-up> <to_insert>
+
+" @ Mode Transition
+command guinormal <to_gui_normal>
+command gn <to_gui_normal>
+command resident <to_resident>
+command insert <to_insert>
+command i <to_insert>
+
+" @ System Commands
+command exit <exit>
+command set  <set>
+command map <map>
+command noremap <noremap>
+command unmap <unmap>
+command mapclear <mapclear>
+command gmap <gmap>
+command gnoremap <gnoremap>
+command gunmap <gunmap>
+command gmapclear <gmapclear>
+command emap <emap>
+command enoremap <enoremap>
+command eunmap <eunmap>
+command emapclear <emapclear>
+command nmap <nmap>
+command nnoremap <nnoremap>
+command nunmap <nunmap>
+command nmapclear <nmapclear>
+command vmap <vmap>
+command vnoremap <vnoremap>
+command vunmap <vunmap>
+command vmapclear <vmapclear>
+command gnmap <gnmap>
+command gnnoremap <gnnoremap>
+command gnunmap <gnunmap>
+command gnmapclear <gnmapclear>
+command gvmap <gvmap>
+command gvnoremap <gvnoremap>
+command gvunmap <gvunmap>
+command gvmapclear <gvmapclear>
+command enmap <enmap>
+command command <command>
+command enunmap <enunmap>
+command enmapclear <enmapclear>
+command evmap <evmap>
+command evnoremap <evnoremap>
+command evunmap <evunmap>
+command evmapclear <evmapclear>
+command imap <imap>
+command inoremap <inoremap>
+command iunmap <iunmap>
+command imapclear <imapclear>
+command rmap <rmap>
+command rnoremap <rnoremap>
+command runmap <runmap>
+command rmapclear <rmapclear>
+command cmap <cmap>
+command cnoremap <cnoremap>
+command cunmap <cunmap>
+command cmapclear <cmapclear>
+command com  <command>
+command command  <command>
+command delc <delcommand>
+command delcommand <delcommand>
+command comc <comclear>
+command comclear <comclear>
+command so <source>
+command source <source>

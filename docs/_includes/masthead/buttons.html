@@ -1,0 +1,30 @@
+{% if page.homepage %}
+    <div class="mt-4 mb-0">
+        {% if site.project.download_url %}
+            {% capture button_text -%}
+                {{ site.project.download_text | default: 'Download' }}
+            {%- endcapture %}
+
+            {% include masthead/button.html
+                 url=site.project.download_url
+                 icon="download"
+                 title=button_text
+            %}
+        {% endif %}
+
+        {% for link in site.links.homepage %}
+            {% include masthead/button.html
+                   url=link.url
+                   icon=link.icon
+                   title=link.title
+                   brand=link.brand
+            %}
+        {% endfor %}
+    </div>
+
+    {% if site.project.version %}
+        <p class="site-masthead__version my-0">
+            Latest release v{{ site.project.version }}
+        </p>
+    {% endif %}
+{% endif %}

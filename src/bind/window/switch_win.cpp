@@ -4,7 +4,6 @@
 #include <windows.h>
 
 #include "bind/bindinglist.hpp"
-#include "bind/emu/movecaret.hpp"
 #include "bind/mouse/jump_actwin.hpp"
 #include "core/background.hpp"
 #include "core/entry.hpp"
@@ -24,15 +23,10 @@ namespace vind
     namespace bind
     {
         struct SwitchWindow::Impl {
-            std::size_t left_id_ ;
-            std::size_t right_id_ ;
-
             core::Background bg_ ;
 
             explicit Impl()
-            : left_id_(MoveCaretLeft().id()),
-              right_id_(MoveCaretRight().id()),
-              bg_(opt::ref_global_options_bynames(
+            : bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::Dedicate2Window().name(),
                     opt::SuppressForVim().name(),
@@ -40,14 +34,19 @@ namespace vind
               ))
             {}
 
-            void call_op(std::size_t id) const {
+            bool call_op(const core::CmdUnit::SPtr& input) {
                 auto& igate = core::InputGate::get_instance() ;
-                if(id == left_id_) {
+
+                if(input->is_containing(KEYCODE_H)) {
                     igate.pushup(KEYCODE_LEFT) ;
+                    return true ;
                 }
-                else if(id == right_id_) {
+
+                if(input->is_containing(KEYCODE_L)) {
                     igate.pushup(KEYCODE_RIGHT) ;
+                    return true ;
                 }
+                return false ;
             }
         } ;
 
@@ -81,8 +80,8 @@ namespace vind
                 do {
                     core::CmdUnit::SPtr input ;
                     std::uint16_t count ;
-                    if(!ihub.pull_input(
-                            input, count, Mode::EDI_NORMAL, false)) {
+                    if(!ihub.get_typed_input(
+                            input, count, core::get_global_mode(), false)) {
                         continue ;
                     }
 
@@ -92,7 +91,10 @@ namespace vind
                         break ;
                     }
 
-                    pimpl->call_op(input->id()) ;
+                    if(pimpl->call_op(input)) {
+                        continue ;
+                    }
+
                     Sleep(100) ;
                 } while(!ihub.is_empty_queue()) ;
 
@@ -108,6 +110,8 @@ namespace vind
             //jump cursor to a selected window after releasing alt and tab.
             Sleep(50) ; //send select-message to OS(wait)
             JumpToActiveWindow::sprocess(1, "") ;
+
+            ihub.clear_queue() ;
         }
     }
 }

@@ -182,7 +182,7 @@ namespace vind
 
                 core::CmdUnit::SPtr input ;
                 std::uint16_t in_count ;
-                if(!ihub.pull_input(
+                if(!ihub.fetch_input(
                         input, in_count, Mode::EDI_NORMAL, true)) {
                     continue ;
                 }

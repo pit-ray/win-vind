@@ -8,11 +8,17 @@ namespace vind
 {
     namespace bind
     {
-        struct Source : public BindedFuncFlex<Source> {
+        class Source : public BindedFuncFlex<Source> {
+        private:
+            static bool loaded_default_ ;
+
+        public:
             explicit Source() ;
 
             static SystemCall sprocess(
-                std::uint16_t count, const std::string& args) ;
+                std::uint16_t count,
+                const std::string& args,
+                bool as_default=false) ;
         } ;
     }
 }

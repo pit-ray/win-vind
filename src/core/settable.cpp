@@ -9,60 +9,88 @@ namespace
     using namespace vind::core ;
 
     std::vector<Param> default_params {
-        Param("initmode", "i"),
-        Param("listen_interval", 1.0f),
-        Param("jump_margin", 10),
-        Param("cursor_accel", 32),
-        Param("cursor_resolution", 250),
-        Param("window_velocity", 100),
-        Param("winresizer_initmode", 0),
-        Param("vscroll_speed", 30),
-        Param("hscroll_speed", 10),
-        Param("vscroll_pageratio", 0.125f),
-        Param("hscroll_pageratio", 0.125f),
-        Param("cmd_fontsize", 23),
-        Param("cmd_fontweight", 400),
-        Param("cmd_fontcolor", "c8c8c8"),
+        Param("hintkeys", "asdghklqwertyuiopzxcvbnmfj"),
+
+        Param("arrangewin_ignore", ""),
+
+        Param("autofocus_textarea", false),
+        Param("autotrack_popup", false),
+
+        Param("blockstylecaret", false),
+        Param("blockstylecaret_mode", "solid"),
+        Param("blockstylecaret_width", 15),
+
+        Param("charbreak", "grapheme"),
+        Param("charcache", false),
+
         Param("cmd_bgcolor", "323232"),
-        Param("cmd_roughpos", "LowerLeft"),
-        Param("cmd_monitor", "active"),
-        Param("cmd_xmargin", 32),
-        Param("cmd_ymargin", 96),
+        Param("cmd_fadeout", 5),
+        Param("cmd_fontcolor", "c8c8c8"),
         Param("cmd_fontextra", 1),
         Param("cmd_fontname", "Consolas"),
-        Param("cmd_fadeout", 5),
-        Param("gui_fontsize", 10),
-        Param("gui_fontname", "Segoe UI"),
-        Param("icon_style", "icon32_flat.ico"),
-        Param("keybrd_layout", ""),
-        Param("tempdir", "~/Downloads"),
-        Param("gui_lang", "en"),
-        Param("shell", "cmd"),
-        Param("shellcmdflag", "-c"),
-        Param("shell_startupdir", ""),
-        Param("autotrack_popup", false),
+        Param("cmd_fontsize", 23),
+        Param("cmd_fontweight", 400),
+        Param("cmd_monitor", "primary"),
+        Param("cmd_roughpos", "LowerLeft"),
+        Param("cmd_xmargin", 32),
+        Param("cmd_ymargin", 96),
+
+        Param("cursor_accel", 90),
+        Param("cursor_resolution", 250),
+
         Param("dedicate_to_window", false),
-        Param("vcmdline", true),
+
+        Param("easyclick_bgcolor", "323232"),
+        Param("easyclick_fontcolor", "c8c8c8"),
+        Param("easyclick_fontname", "Consolas"),
+        Param("easyclick_fontsize", 14),
+        Param("easyclick_fontweight", 500),
+
+        Param("gridmove_bgcolor", "323232"),
+        Param("gridmove_fontcolor", "c8c8c8"),
+        Param("gridmove_fontname", "Consolas"),
+        Param("gridmove_fontsize", 14),
+        Param("gridmove_fontweight", 500),
+        Param("gridmove_size", "12x8"),
+
+        Param("gui_fontname", "Segoe UI"),
+        Param("gui_fontsize", 10),
+
+        Param("hscroll_pageratio", 0.125f),
+        Param("hscroll_speed", 10),
+
+        Param("icon_style", "icon32_flat.ico"),
+
+        Param("initmode", "i"),
+
+        Param("jump_margin", 10),
+
+        Param("keybrd_layout", ""),
+
+        Param("listen_interval", 1.0f),
+
+        Param("shell", "cmd"),
+        Param("shell_startupdir", ""),
+        Param("shellcmdflag", "-c"),
+
         Param("suppress_for_vim", false),
-        Param("blockstylecaret", false),
-        Param("blockstylecaret_width", 15),
-        Param("blockstylecaret_mode", "solid"),
-        Param("autofocus_textarea", false),
+
+        Param("tempdir", "~/Downloads"),
+
         Param("uiacachebuild", false),
         Param("uiacachebuild_lifetime", 1500),
         Param("uiacachebuild_staybegin", 500),
         Param("uiacachebuild_stayend", 2000),
-        Param("easyclick_fontsize", 14),
-        Param("easyclick_fontweight", 500),
-        Param("easyclick_fontname", "Arial"),
-        Param("easyclick_fontcolor", "c8c8c8"),
-        Param("easyclick_bgcolor", "323232"),
-        Param("easyclick_colordecay", 100),
-        Param("charcache", false),
+
+        Param("vcmdline", true),
+
+        Param("vscroll_pageratio", 0.125f),
+        Param("vscroll_speed", 30),
+
         Param("window_hdelta", 100),
         Param("window_vdelta", 100),
-        Param("arrangewin_ignore", ""),
-        Param("charbreak", "grapheme"),
+        Param("window_velocity", 100),
+        Param("winresizer_initmode", 0),
     } ;
 }
 

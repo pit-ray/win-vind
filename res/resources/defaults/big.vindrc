@@ -1,0 +1,121 @@
+" Big default mapping
+" Features: +mouse +syscmd +window +process +vimemu +hotkey +gvmode
+
+" Inherit normal mapping
+source normal.vindrc
+
+" @ Mode Transition
+gnnoremap v <to_gui_visual>
+
+" @ Hotkey
+gnnoremap V <select_all>
+gnnoremap y <hotkey_copy>
+gnnoremap yy <hotkey_copy>
+gnnoremap Y <hotkey_copy>
+gnnoremap p <hotkey_paste>
+gnnoremap P <hotkey_paste>
+gnnoremap dd <hotkey_cut>
+gnnoremap D <hotkey_cut>
+gnnoremap x <hotkey_delete>
+gnnoremap <Del> <hotkey_delete>
+gnnoremap X <hotkey_backspace>
+gnnoremap <C-r> <redo>
+gnnoremap u <undo>
+gnnoremap U <undo>
+gnnoremap <C-v>h <switch_to_left_vdesktop>
+gnnoremap <C-v>l <switch_to_right_vdesktop>
+gnnoremap <C-v>n <create_new_vdesktop>
+gnnoremap <C-v>q <close_current_vdesktop>
+gnnoremap <C-v>s <taskview>
+gnnoremap gT <switch_to_left_tab>
+gnnoremap gt <switch_to_right_tab>
+gnnoremap / <search_pattern>
+gnnoremap ? <search_pattern>
+gnnoremap <gt> <goto_next_page>
+gnnoremap <lt> <goto_prev_page>
+gnnoremap <win> <open_startmenu>
+
+" @ Mode Transition
+gvnoremap <Esc-Left> <to_gui_normal>
+gvnoremap <ctrl-]> <to_gui_normal>
+gvnoremap <Esc-Down> <to_resident>
+
+" @ Mouse Movement
+gvnoremap h <move_cursor_left>
+gvnoremap <BS> <move_cursor_left>
+gvnoremap <Left> <move_cursor_left>
+gvnoremap l <move_cursor_right>
+gvnoremap <Space> <move_cursor_right>
+gvnoremap <Right> <move_cursor_right>
+gvnoremap k <move_cursor_up>
+gvnoremap - <move_cursor_up>
+gvnoremap <Up> <move_cursor_up>
+gvnoremap j <move_cursor_down>
+gvnoremap + <move_cursor_down>
+gvnoremap <Down> <move_cursor_down>
+
+" @ Mouse Jumping
+gvnoremap 0 <jump_cursor_to_left>
+gvnoremap ^ <jump_cursor_to_left>
+gvnoremap <Home> <jump_cursor_to_left>
+gvnoremap $ <jump_cursor_to_right>
+gvnoremap <End> <jump_cursor_to_right>
+gvnoremap gg <jump_cursor_to_top>
+gvnoremap G <jump_cursor_to_bottom>
+gvnoremap gm <jump_cursor_to_hcenter>
+gvnoremap M <jump_cursor_to_vcenter>
+
+" @ Mouse Scrolling
+gvnoremap <C-y> <scroll_up>
+gvnoremap <C-k> <scroll_up>
+gvnoremap <C-e> <scroll_down>
+gvnoremap <C-j> <scroll_down>
+gvnoremap <C-u> <scroll_up_halfpage>
+gvnoremap <C-d> <scroll_down_halfpage>
+gvnoremap <C-b> <scroll_up_onepage>
+gvnoremap <C-f> <scroll_down_onepage>
+gvnoremap zh <scroll_left>
+gvnoremap <C-h> <scroll_left>
+gvnoremap zl <scroll_right>
+gvnoremap <C-l> <scroll_right>
+gvnoremap zH <scroll_left_halfpage>
+gvnoremap zL <scroll_right_halfpage>
+
+" @ Hotkey
+gvnoremap y <hotkey_copy>
+gvnoremap yy <hotkey_copy>
+gvnoremap Y <hotkey_copy>
+gvnoremap p <hotkey_paste>
+gvnoremap P <hotkey_paste>
+gvnoremap dd <hotkey_cut>
+gvnoremap D <hotkey_cut>
+gvnoremap x <hotkey_delete>
+gvnoremap <Del> <hotkey_delete>
+gvnoremap X <hotkey_backspace>
+
+" @ Mode Transition
+command guivisual <to_gui_visual>
+command gv <to_gui_visual>
+
+" @ Shortcut
+command vdprev <switch_to_left_vdesktop>
+command vdnext <switch_to_right_vdesktop>
+command closev <close_current_vdesktop>
+command taskview <taskview>
+command tv <taskview>
+command vdesktop<space>list  <taskview>
+command tabprevious  <switch_to_left_tab>
+command tabnext  <switch_to_right_tab>
+command tabnew <open_new_tab>
+command q <close_current_tab>
+command q! <close_current_tab>
+command tabclose <close_current_tab>
+command ex <start_explorer>
+command explorer <start_explorer>
+command win  <open_startmenu>
+command start <open_startmenu>
+command find <open>
+command open <open>
+command forward  <forward_ui_navigation>
+command backward <backward_ui_navigation>
+command decide <decide_focused_ui_object>

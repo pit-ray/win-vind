@@ -27,7 +27,7 @@ namespace vind
             return tmp ;
         }
 
-        Option::SPtr ref_global_options_bynames(const std::string& name) {
+        Option::SPtr ref_global_options_byname(const std::string& name) {
             for(auto& opt : all_global_options()) {
                 if(opt->name() == util::A2a(name)) {
                     return opt ;
@@ -36,7 +36,7 @@ namespace vind
             return nullptr ;
         }
 
-        Option::SPtr ref_global_options_bynames(std::string&& name) {
+        Option::SPtr ref_global_options_byname(std::string&& name) {
             for(auto& opt : all_global_options()) {
                 if(opt->name() == util::A2a(name)) {
                     return opt ;

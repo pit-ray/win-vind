@@ -15,8 +15,8 @@
     <!-- projectUrl is required for the community feed -->
     <projectUrl>https://github.com/pit-ray/win-vind</projectUrl>
     <!-- Here is an example using Githack -->
-    <iconUrl>https://rawcdn.githack.com/pit-ray/win-vind/v@PROJECT_VERSION@/res/icon.png</iconUrl>
-    <copyright>Copyright (c) 2020-2022 pit-ray</copyright>
+    <iconUrl>https://rawcdn.githack.com/pit-ray/win-vind/master/res/icon.png</iconUrl>
+    <copyright>Copyright (c) 2020-2023 pit-ray</copyright>
     <!-- If there is a license Url available, it is required for the community feed -->
     <licenseUrl>https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -27,21 +27,21 @@
     <tags>win-vind vim windows hotkeys mouse window-manager keybindings vim-emulation vim-key-binder gui-operation</tags>
     <summary>You can operate Windows with key bindings like Vim.</summary>
     <description>
-## Description
-**win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows. And everything is inspired by Vim and its plugins. Simply put, it is a Vim-oriented toy box consisting of various useful features.
+## What is this?
+**win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows.  
+By installing this tool, you will be able to control the Windows GUI in the same way as Vim.
 
-### Features
-- Fast binding system
-- Vim-like mode management
-- GUI operation without mouse
-- Vim emulation everywhere
-- Process control like `:!vim ~/.vimrc` on resident command line
-- .vimrc style configuration
-- Low-level key mapping (e.g. Capslock -> Ctrl)
-- Running in user permission
-- Oneshot use for Vim or AHK (e.g. `$ win-vind -f easy_click_left`)
-- Tiling window manager
-- Hinting feature like Vimium or EasyMotion for GUI.
+### 1. Vim-user friendly.
+All configuration methods and mode concepts are derived from Vim, allowing for Vim-like UI operation.  
+Vim users only need to understand win-vind's macro features and additional mode concepts with little learning cost.  
+
+### 2. There are many useful built-in commands.
+You don't have to worry about complicated scripts and dependencies like with traditional key binding tools.  
+You can freely create user-defined commands by combining low-level optimized built-in commands.
+
+### 3. Very portable and fully open source.
+win-vind is a small single binary with no dependencies that runs with user permissions.   
+It is also available from the command line as a command for UI operations like `$ win-vind -c "ggyyGp"`.
     </description>
     <releaseNotes>
 The release notes can be found on [GitHub Releases](https://github.com/pit-ray/win-vind/releases/tag/v@PROJECT_VERSION@).

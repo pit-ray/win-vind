@@ -7,6 +7,7 @@
 
 #include "debug.hpp"
 #include "def.hpp"
+#include "point2d.hpp"
 #include "rect.hpp"
 
 #define MONITOR_SEARCH_MARGIN (256)
@@ -54,12 +55,24 @@ namespace vind
             get_monitor_metrics(MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST), minfo) ;
         }
 
-        void get_monitor_metrics(const POINT& pos, MonitorInfo& minfo) {
-            get_monitor_metrics(MonitorFromPoint(pos, MONITOR_DEFAULTTONEAREST), minfo) ;
+        void get_monitor_metrics(const Point2D& pos, MonitorInfo& minfo) {
+            get_monitor_metrics(MonitorFromPoint(pos.data(), MONITOR_DEFAULTTONEAREST), minfo) ;
         }
 
-        void get_monitor_metrics(POINT&& pos, MonitorInfo& minfo) {
-            get_monitor_metrics(MonitorFromPoint(std::move(pos), MONITOR_DEFAULTTONEAREST), minfo) ;
+        float get_monitor_scale(HWND hwnd) {
+            auto dpi = GetDpiForWindow(hwnd) ;
+            if(dpi == 0) {
+                return 1.0f ;
+            }
+            return static_cast<float>(dpi) / 96.0f ;
+        }
+
+        float get_monitor_scale(const Point2D& pos) {
+            HWND hwnd = WindowFromPoint(pos.data()) ;
+            if(hwnd == NULL) {
+                return 1.0f ;
+            }
+            return get_monitor_scale(hwnd) ;
         }
 
         // TODO: we should be implement vertical monitor detection.

@@ -17,7 +17,8 @@ namespace vind
         {}
         SystemCall Command::sprocess(
                 std::uint16_t UNUSED(count),
-                const std::string& args) {
+                const std::string& args,
+                bool as_default) {
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             if(pargs.empty()) {
                 opt::VCmdLine::print(opt::ErrorMessage("E: Not support list of command yet")) ;
@@ -34,10 +35,10 @@ namespace vind
             else {
                 auto& ihub = core::InputHub::get_instance() ;
                 // No argument version
-                ihub.add_noremap(arg1, arg2, core::Mode::COMMAND) ;
+                ihub.add_noremap(arg1, arg2, core::Mode::COMMAND, as_default) ;
 
                 // To accept arguments
-                ihub.add_noremap(arg1 + " <any>", arg2, core::Mode::COMMAND) ;
+                ihub.add_noremap(arg1 + " <any>", arg2, core::Mode::COMMAND, as_default) ;
             }
 
             return SystemCall::SUCCEEDED ;
@@ -49,7 +50,8 @@ namespace vind
         {}
         SystemCall Delcommand::sprocess(
                 std::uint16_t UNUSED(count),
-                const std::string& args) {
+                const std::string& args,
+                bool as_default) {
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
             if(pargs.empty()) {
                 // does not have argument is empty
@@ -63,7 +65,7 @@ namespace vind
             }
             else {
                 auto& ihub = core::InputHub::get_instance() ;
-                ihub.remove_mapping(arg, core::Mode::COMMAND) ;
+                ihub.remove_mapping(arg, core::Mode::COMMAND, as_default) ;
             }
 
             return SystemCall::SUCCEEDED ;
@@ -75,8 +77,9 @@ namespace vind
         {}
         SystemCall Comclear::sprocess(
                 std::uint16_t UNUSED(count),
-                const std::string& UNUSED(args)) {
-            core::InputHub::get_instance().clear_mapping(core::Mode::COMMAND) ;
+                const std::string& UNUSED(args),
+                bool as_default) {
+            core::InputHub::get_instance().clear_mapping(core::Mode::COMMAND, as_default) ;
             return SystemCall::SUCCEEDED ;
         }
     }

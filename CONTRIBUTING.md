@@ -5,6 +5,31 @@ Patches are welcome in whatever form. However, you must agree that your code wil
 ### To Documentation
 You can contribute to the [homepage](https://pit-ray.github.io/win-vind/) by sending pull-request to the `docs` directory if there is an error, a better way to describe the content, or writing a translation. [Jekyll](https://jekyllrb.com/) is used as the framework, and can be written in markdown format. We also use [jekyll-docs-theme](https://github.com/allejo/jekyll-docs-theme) as a theme, which allows extended expressions.  
 
+#### Setup local test environment
+To test a GitHub Pages site locally, refers [this documents](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll).
+
+The following is a brief description using chocolatey.
+
+1.  Install Ruby using chocolatey.
+    ```sh
+    $ choco install ruby
+    ```
+
+2.  Install Jekyll and Bundler.
+    ```sh
+    $ ridk install
+    $ gem install jekyll bundler
+    ```
+    See [Jekyll documentation](https://jekyllrb.com/docs/installation/windows/) for details.
+
+3.  Build site locally in [docs directory](https://github.com/pit-ray/win-vind/tree/master/docs).
+    ```sh
+    $ bundle install
+    $ bundle exec jekyll serve
+    ```
+
+4.  Access to http://localhost:4000.
+
 #### Add translation of document.
 The win-vind documentation has the potential to easily add manual translation and manage continuously. A Japanese translation is available as a sample in [here](docs/ja). Please use it as a reference when translating. The following are the steps for translation.  
 
@@ -62,7 +87,7 @@ Since it builds all libraries with the best options for your system environment,
 
 ###### Automatically (Recommended)
   ```bash
-  $ ./build.bat [-debug/-release] [-mingw/-msvc] [32/64]
+  $ ./tools/build.bat [-debug/-release] [-mingw/-msvc] [32/64]
   $ ./debug/win-vind.exe
   ```
 
@@ -84,7 +109,7 @@ Since it builds all libraries with the best options for your system environment,
 
 ###### Automatically (Recommended)
   ```bash
-  $ ./build.bat -test
+  $ ./tools/build.bat -test
   ```
 
 ###### Manually (Visual Studio 2019)
@@ -129,95 +154,4 @@ I recommend to install follow softwares or libraries.
 |[maddy](https://github.com/progsource/maddy)|Markdown to HTML parser|Display the release note via **Check Update**|[MIT License](https://github.com/progsource/maddy/blob/master/LICENSE)|
 |[doctest](https://github.com/onqtam/doctest)|Unit test framework|For basic unit test|[MIT License](https://github.com/onqtam/doctest/blob/master/LICENSE.txt)|
 |[fff](https://github.com/meekrosoft/fff)|Macro-based fake function framework|To mock Windows API|[MIT License](https://github.com/meekrosoft/fff/blob/master/LICENSE)|
-
-
-## Examples
-All binded functions of win-vind derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func.hpp">**BindedFunc**</a>. However, these are based on polymorphism, so recommends to derive from <a href="https://github.com/pit-ray/win-vind/blob/master/core/include/bind/binded_func_creator.hpp">**BindedFuncCreator**</a> to have a factory function.
-
-### Making a new function
-- Make a source file and a header file into [core/include/bind/](https://github.com/pit-ray/win-vind/blob/master/core/include/bind) and [core/src/bind/](https://github.com/pit-ray/win-vind/blob/master/core/src/bind).
-- Add a path of source file into [core/CMakeLists.txt](https://github.com/pit-ray/win-vind/blob/master/core/include/bind/dev).
-- Define a new derived class (e.g. **MyBinding**).  
-
-**mybinding.hpp**
-
-```cpp  
-#ifndef MY_BINDING_HPP
-#define MY_BINDING_HPP
-
-#include "bind/base/binded_func_creator.hpp"
-
-namespace vind
-{
-    struct MyBinding : public BindedFuncCreator<MyBinding> {
-        explicit MyBinding() ;
-        static void sprocess() ;
-        static void sprocess(NTypeLogger& parent_lgr) ;
-        static void sprocess(const CharLogger& parent_lgr) ;
-    } ;
-}
-
-#endif
-```  
-**mybinding.cpp**
-
-```cpp  
-#include "bind/dev/mybindings.hpp"
-
-#include "bind/base/ntype_logger.hpp"
-#include "io/keybrd.hpp"
-#include "io/mouse.hpp"
-#include "opt/vcmdline.hpp"
-#include "util/def.hpp"
-
-
-namespace vind
-{
-    MyBinding::MyBinding()
-    : BindedFuncCreator("my_binding") //Give the unique identifier.
-    {}
-    // A one-shot function to call inside win-vind
-    void MyBinding::sprocess() {
-        mouse::click(KEYCODE_MOUSE_LEFT) ; //left click
-
-        keybrd::pushup(KEYCODE_LWIN, KEYCODE_D) ; //minimize all window
-
-        VCmdLine::print(GeneralMessage("Hello World !")) ;
-    }
-    // A function called by sequence commands such as `23gg`
-    void MyBinding::sprocess(NTypeLogger& parent_lgr) {
-        if(!parent_lgr.is_long_pressing()) {
-            sprocess() ;
-        }
-    }
-    // A function called by the command line style commands like `:sample`
-    void MyBinding::sprocess(const CharLogger& UNUSED(parent_lgr)) {
-        sprocess() ;
-    }
-}
-```
-
-- Please register the class into [core/src/bindings_lists.cpp](https://github.com/pit-ray/win-vind/blob/master/core/src/bind/bindings_lists.cpp).
-
-```cpp
-    MyBinding::create(),
-```
-  
-- Assign commands to **MyBinding** in [default_config/bindings.json](https://github.com/pit-ray/win-vind/blob/master/res/default_config/bindings.json).
-
-```json
-    {
-        "name": "my_binding",
-        "cdef": ["CallMyFunc"],
-        "endef": [],
-        "evdef": [],
-        "gndef": ["<C-g>"],
-        "gvdef": [],
-        "idef": [],
-        "rdef": [],
-        "en": "Sample",
-        "ja": "Sample"
-    },
-```
-
-Once built, you can call it with `:CallMyFunc` or `<C-g>`.
+|[pydirectinput](https://github.com/learncodebygaming/pydirectinput)|Mouse and keyboard automation for Windows|To emulate inputs for runtime tests|[MIT License](https://github.com/learncodebygaming/pydirectinput/blob/master/LICENSE.txt)|

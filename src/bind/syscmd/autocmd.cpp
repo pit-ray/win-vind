@@ -122,7 +122,10 @@ namespace vind
             }
 
             for(const auto event : events) {
-                ac.remove_and_add(event, aupat, cmd) ;
+                ac.remove(event, aupat) ;
+            }
+            for(const auto event : events) {
+                ac.add(event, aupat, cmd) ;
             }
         }
     }

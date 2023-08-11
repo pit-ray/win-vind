@@ -98,11 +98,6 @@ namespace vind
                 const std::string& pattern) ;
 
             void remove(const std::string& pattern) ;
-
-            void remove_and_add(
-                AutoCmdEvent event,
-                const std::string& pattern,
-                const std::string& cmd) ;
         } ;
     }
 }

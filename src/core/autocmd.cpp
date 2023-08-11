@@ -314,13 +314,5 @@ namespace vind
                 pimpl->events_[i].remove_pattern(pattern) ;
             }
         }
-
-        void AutoCmd::remove_and_add(
-                AutoCmdEvent event,
-                const std::string& pattern,
-                const std::string& cmdstr) {
-            remove(event, pattern) ;
-            add(event, pattern, cmdstr) ;
-        }
     }
 }

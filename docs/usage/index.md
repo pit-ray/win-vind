@@ -194,6 +194,28 @@ Below are some examples of use.
    enmap t yyGp
    ```
 
+## Automatic command
+win-vind can be configured to automatically execute commands for specific events and target filenames using the `autocmd` command.
+
+### Examples
+
+1. Default mapping for the specific event (match any applications)
+   ```vim
+   autocmd AppLeave * <to_insert>
+   ```
+1. Once notepad is selected, it will automatically switch to Editor normal mode.  
+   ```vim
+   "Equivalent to conventional dedicate_to_window
+   autocmd AppEnter *notepad* <to_edi_normal>
+   ```
+1. Suppress win-vind in processes named Vim.  
+   ```vim
+   " Equivalent to conventional suppress_for_vim
+   autocmd AppEnter,EdiNormalEnter *vim* <to_resident>
+   ```
+
+See [\<autocmd_add\>]({{ site.url }}/cheat_sheet/functions/#autocmd_add) or [\<autocmd_del\>]({{ site.url }}/cheat_sheet/functions/#autocmd_del) for more details.
+
 ## Load remote .vindrc
 Inspired from many Vim plugin managers such as [vim-plug](https://github.com/junegunn/vim-plug), win-vind has a simple remote .vindrc loading capability using the `source` command.
 
@@ -215,10 +237,10 @@ The `--command` option allows us to execute an arbitrary command from a terminal
 
 The first time you run win-vind, it will be resident in the system tray and run as a server program. The server will check shared memory at the interval specified by the `listen_interval` option and execute any requested commands in addition to the query. All new win-vinds that already have win-vind running will become clients.
 
-For example, if you execute the following command with win-vind already running, a window-switching program will be started and the two left window will be selected.
+For example, if you execute the following command with win-vind already running, a window-switching program will be started.
 
 ```sh
-$ win-vind -c "<switch_window>hh<cr>"
+$ win-vind -c "<switch_window>"
 ```
 
 By using this, only specific functions such as EasyClick can be called from other tools such as AutoHotKey.

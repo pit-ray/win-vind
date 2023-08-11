@@ -10,9 +10,7 @@
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
 #include "core/mode.hpp"
-#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
-#include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -28,8 +26,6 @@ namespace vind
             explicit Impl()
             : bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
-                    opt::Dedicate2Window().name(),
-                    opt::SuppressForVim().name(),
                     opt::VCmdLine().name()
               ))
             {}

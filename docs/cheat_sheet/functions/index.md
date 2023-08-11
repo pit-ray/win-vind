@@ -1748,22 +1748,6 @@ Create a directory. If you call it with a relative path such as `:mkdir foo`, it
 -->
 
 
-## Option
-
-### **`<disable_targeting_of_dedicate_to_window>`**
-Disable targeting (Dedicate to One Window).
-
-<!--
-**See Also**
-- [\<a\>](./#a)
--->
-
-<hr class="dash">
-
-### **`<enable_targeting_of_dedicate_to_window>`**
-Enable targeting (Dedicate to One Window).
-
-
 <br>
 <br>
 <br>

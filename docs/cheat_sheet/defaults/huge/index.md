@@ -11,8 +11,6 @@ nav: Huge Mappings
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`md`, `mkdir`|[\<makedir\>]({{ site.url }}/cheat_sheet/functions/#makedir)|
-|`target`|[\<enable_targeting_of_dedicate_to_window\>]({{ site.url }}/cheat_sheet/functions/#enable_targeting_of_dedicate_to_window)|
-|`untarget`|[\<disable_targeting_of_dedicate_to_window\>]({{ site.url }}/cheat_sheet/functions/#disable_targeting_of_dedicate_to_window)|
 
 <br>
 <br>

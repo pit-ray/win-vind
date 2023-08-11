@@ -2,7 +2,6 @@
 
 #include "bindedfunc.hpp"
 
-#include "ctrl/d2wctrl.hpp"
 #include "ctrl/guictrl.hpp"
 
 #include "emu/changetext.hpp"
@@ -101,11 +100,8 @@ namespace vind
                 DeleteLineUntilEOL::create(),
                 DeleteLineUntilEOL::create(),
                 DeleteWithMotion::create(),
-                DisableTargetingOfDedicate2Window::create(),
-                DisableTargetingOfDedicate2Window::create(),
                 EasyClick::create(),
                 GridMove::create(),
-                EnableTargetingOfDedicate2Window::create(),
                 ExchangeWindowWithNearest::create(),
                 Execute::create(),
                 ExitConfigGUI::create(),

@@ -8,9 +8,7 @@
 #include "core/inputhub.hpp"
 #include "core/mode.hpp"
 #include "opt/blockstylecaret.hpp"
-#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
-#include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/debug.hpp"
@@ -29,8 +27,6 @@ namespace vind
             : bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::BlockStyleCaret().name(),
-                    opt::Dedicate2Window().name(),
-                    opt::SuppressForVim().name(),
                     opt::VCmdLine().name()
               ))
             {}

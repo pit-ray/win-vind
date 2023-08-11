@@ -365,21 +365,6 @@ Mode for how to split a single Unicode character. The `grapheme` mode treats a c
 It is a very small cache for one character used by `x` or `X` commands. If it is enabled, the clipboard is opened per once typing. Therefore, you will get the same behavior as the original Vim, whereas the performance maybe drop a litte.
 
 
-## Options
-
-### **`dedicate_to_window`**
-**type**: bool, **default**: false  
-If **Dedicate to One window** enables, you can select one window with `enable_targeting_of_dedicate_to_window`. In this case, it makes the mode automatically switch to Editor Normal Mode on the targeting window. When the foreground window change to another, it makes the mode switch to Insert Mode. The targeting becomes disable with `disable_targeting_of_dedicate_to_window`. In other words, this feature transforms some normal editors to fake Vim. The computing cost is so small.
-
-<hr class="dash">
-
-### **`suppress_for_vim`**
-**type**: bool, **default**: false  
-It makes the mode of win-vind automatically switch to **Resident Mode** on the applications included the strings called **VIM** in an executable file name. Thus, it allows us to smoothly move from win-vind having the same key-bindings as Vim to Vim applications.
-
-
-
-
 <br>
 <br>
 <br>

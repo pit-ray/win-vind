@@ -61,6 +61,7 @@ SOFTWARE.
 #include <fstream>
 #include <memory>
 
+#include "autocmd.hpp"
 
 #include "background.hpp"
 #include "cmdmatcher.hpp"
@@ -104,6 +105,8 @@ namespace vind
 
             Background bg_ ;
 
+            DWORD previous_procid_ ;
+
             template <typename ExitFuncType, typename String>
             Impl(ExitFuncType&& exitfunc, String&& memname, std::size_t memsize)
             : exit_(std::forward<ExitFuncType>(exitfunc)),
@@ -112,7 +115,8 @@ namespace vind
               memsize_(memsize),
               subprocess_(false),
               memread_timer_(1000'000), //1 s
-              bg_(opt::all_global_options())
+              bg_(opt::all_global_options()),
+              previous_procid_(0)
             {}
 
             ~Impl() noexcept {
@@ -313,6 +317,17 @@ namespace vind
 
         void VindEntry::update() {
             auto& ihub = InputHub::get_instance() ;
+
+            auto& ac = AutoCmd::get_instance() ;
+            auto hwnd = util::get_foreground_window() ;
+            DWORD procid ;
+            if(hwnd && GetWindowThreadProcessId(hwnd, &procid)) {
+                if(pimpl->previous_procid_ != procid) {
+                    ac.apply(AutoCmdEvent::APP_LEAVE, pimpl->previous_procid_) ;
+                    pimpl->previous_procid_ = procid ;
+                    ac.apply(AutoCmdEvent::APP_ENTER, procid) ;
+                }
+            }
 
             pimpl->bg_.update() ;
 

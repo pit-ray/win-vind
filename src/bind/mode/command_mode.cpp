@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "bind/bindedfunc.hpp"
+#include "core/autocmd.hpp"
 #include "core/background.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
@@ -226,15 +227,21 @@ namespace vind
                 const std::string& UNUSED(args)) {
             auto& igate = core::InputGate::get_instance() ;
             auto& ihub = core::InputHub::get_instance() ;
+            auto& ac = core::AutoCmd::get_instance() ;
 
             auto return_mode = [] (core::Mode* m) {
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {
                     core::set_global_mode(*m) ;
+                    core::AutoCmd::get_instance().apply(
+                        core::get_leave_event(core::Mode::COMMAND)) ;
                 }
             } ;
+            auto m = core::get_global_mode() ;
+            ac.apply(core::get_leave_event(m)) ;
+
             std::unique_ptr<core::Mode, decltype(return_mode)>
-                mode_preserver(new core::Mode(core::get_global_mode()), return_mode) ;
+                mode_preserver(new core::Mode(m), return_mode) ;
 
             core::set_global_mode(core::Mode::COMMAND) ;
             core::InstantKeyAbsorber ika ;
@@ -247,6 +254,7 @@ namespace vind
             pimpl->hist_idx_ = static_cast<int>(pimpl->hists_.size() - 1) ;
 
             auto result = SystemCall::SUCCEEDED ;
+            ac.apply(core::get_enter_event(core::Mode::COMMAND)) ;
             while(true) {
                 pimpl->bg_.update() ;
 

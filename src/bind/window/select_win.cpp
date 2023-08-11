@@ -50,6 +50,9 @@ namespace
             T1&& is_if_target,
             T2&& calc_distance) {
         auto fg_hwnd = util::get_foreground_window() ;
+        if(!fg_hwnd) {
+            return ;
+        }
 
         g_rects.clear() ;
         if(!EnumWindows(EnumWindowsProcForNearest,

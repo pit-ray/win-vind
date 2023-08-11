@@ -2,8 +2,6 @@
 
 #include "opt/autotrack_popup.hpp"
 #include "opt/blockstylecaret.hpp"
-#include "opt/dedicate_to_window.hpp"
-#include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -19,8 +17,6 @@ namespace vind
                 AsyncUIACacheBuilder::create(),
                 AutotrackPopup::create(),
                 BlockStyleCaret::create(),
-                Dedicate2Window::create(),
-                SuppressForVim::create(),
                 VCmdLine::create(),
             } ;
 

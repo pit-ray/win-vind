@@ -15,6 +15,7 @@
 #include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
 
+#include "autocmd.hpp"
 #include "command.hpp"
 #include "map.hpp"
 #include "set.hpp"
@@ -166,6 +167,14 @@ namespace
                     Source::sprocess(1, cmd + " " + load_remote_vindrc(args).u8string()) ;
                 }
 
+                return ;
+            }
+            case RunCommandsIndex::AUTOCMD: {
+                AutoCmdAdd::sprocess(1, cmd + " " + args) ;
+                return ;
+            }
+            case RunCommandsIndex::AUTOCMD_REMOVE: {
+                AutoCmdRemove::sprocess(1, cmd + " " + args) ;
                 return ;
             }
             default: {

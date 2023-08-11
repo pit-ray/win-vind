@@ -87,6 +87,9 @@ namespace vind
 
             SOURCE,
 
+            AUTOCMD,
+            AUTOCMD_REMOVE,
+
             MASK_MODE = 0b0000'0000'0000'1111,
 
             EMPTY_MODE_MASK  = 0b0000'0000'0001'0000,

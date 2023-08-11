@@ -18,9 +18,7 @@
 #include "core/keylayout.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
-#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
-#include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/debug.hpp"
@@ -46,8 +44,6 @@ namespace vind
               yposs_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
-                    opt::Dedicate2Window().name(),
-                    opt::SuppressForVim().name(),
                     opt::VCmdLine().name()
               ))
             {}

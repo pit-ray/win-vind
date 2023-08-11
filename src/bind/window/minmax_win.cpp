@@ -35,6 +35,9 @@ namespace vind
 
             if(count == 1) {
                 auto hwnd = util::get_foreground_window() ;
+                if(!hwnd) {
+                    return ;
+                }
 
                 auto before_rect = util::get_window_rect(hwnd) ;
 

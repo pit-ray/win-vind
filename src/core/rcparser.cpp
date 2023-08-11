@@ -193,6 +193,20 @@ namespace vind
                     {"sou",         RunCommandsIndex::SOURCE},
                     {"so",          RunCommandsIndex::SOURCE},
 
+                    {"autocmd",     RunCommandsIndex::AUTOCMD},
+                    {"autocm",      RunCommandsIndex::AUTOCMD},
+                    {"autoc",       RunCommandsIndex::AUTOCMD},
+                    {"auto",        RunCommandsIndex::AUTOCMD},
+                    {"aut",         RunCommandsIndex::AUTOCMD},
+                    {"au",          RunCommandsIndex::AUTOCMD},
+
+                    {"autocmd!",    RunCommandsIndex::AUTOCMD_REMOVE},
+                    {"autocm!",     RunCommandsIndex::AUTOCMD_REMOVE},
+                    {"autoc!",      RunCommandsIndex::AUTOCMD_REMOVE},
+                    {"auto!",       RunCommandsIndex::AUTOCMD_REMOVE},
+                    {"aut!",        RunCommandsIndex::AUTOCMD_REMOVE},
+                    {"au!",         RunCommandsIndex::AUTOCMD_REMOVE},
+
                     {"map",         RunCommandsIndex::MAP},
                     {"ma",          RunCommandsIndex::MAP},
                     {"m",           RunCommandsIndex::MAP},

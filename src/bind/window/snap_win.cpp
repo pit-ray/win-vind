@@ -17,6 +17,9 @@ namespace
             const std::function<util::Point2D(const util::Box2D&)>& next_monitor_pos) {
 
         auto hwnd = util::get_foreground_window() ;
+        if(!hwnd) {
+            return ;
+        }
 
         util::MonitorInfo minfo ;
         util::get_monitor_metrics(hwnd, minfo) ;

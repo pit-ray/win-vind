@@ -10,7 +10,3 @@ source big.vindrc
 " @
 command mkdir <makedir>
 command md <makedir>
-
-" @
-command target <enable_targeting_of_dedicate_to_window>
-command untarget <disable_targeting_of_dedicate_to_window>

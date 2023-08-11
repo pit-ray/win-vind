@@ -2,7 +2,6 @@
 
 #include "bindedfunc.hpp"
 
-#include "ctrl/d2wctrl.hpp"
 #include "ctrl/guictrl.hpp"
 
 #include "emu/changetext.hpp"
@@ -60,6 +59,7 @@
 #include "window/teleport_vdesktop.hpp"
 #include "window/winresizer.hpp"
 
+#include "syscmd/autocmd.hpp"
 #include "syscmd/command.hpp"
 #include "syscmd/mapvar.hpp"
 #include "syscmd/set.hpp"
@@ -100,11 +100,8 @@ namespace vind
                 DeleteLineUntilEOL::create(),
                 DeleteLineUntilEOL::create(),
                 DeleteWithMotion::create(),
-                DisableTargetingOfDedicate2Window::create(),
-                DisableTargetingOfDedicate2Window::create(),
                 EasyClick::create(),
                 GridMove::create(),
-                EnableTargetingOfDedicate2Window::create(),
                 ExchangeWindowWithNearest::create(),
                 Execute::create(),
                 ExitConfigGUI::create(),
@@ -291,6 +288,9 @@ namespace vind
                 CNoremap::create(),
                 CUnmap::create(),
                 CMapclear::create(),
+
+                AutoCmdAdd::create(),
+                AutoCmdRemove::create(),
             } ;
             return tmp ;
         }

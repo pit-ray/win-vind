@@ -38,9 +38,11 @@ namespace vind
 
         HWND get_foreground_window() {
             auto hwnd = GetForegroundWindow() ;
+            /*
             if(!hwnd) {
                 throw std::runtime_error("There is no foreground window.") ;
             }
+            */
             return hwnd ;
         }
 
@@ -85,13 +87,15 @@ namespace vind
                         + "in the current directory \"" + current_dir.u8string() + "\".") ;
             }
 
+            auto close_handle = [](HANDLE handle) {CloseHandle(handle) ;} ;
+            std::unique_ptr<void, decltype(close_handle)> h_thread(pi.hThread, close_handle) ;
+            std::unique_ptr<void, decltype(close_handle)> h_process(pi.hProcess, close_handle) ;
+
             if(wait_until_finish) {
-                if(WaitForSingleObject(pi.hProcess, INFINITE) == WAIT_FAILED) {
+                if(WaitForSingleObject(h_process.get(), INFINITE) == WAIT_FAILED) {
                     PRINT_ERROR("Failed to wait until process end.") ;
                 }
             }
-            CloseHandle(pi.hThread) ;
-            CloseHandle(pi.hProcess) ;
         }
 
         void create_process(
@@ -145,19 +149,41 @@ namespace vind
                             NULL, NULL, SW_SHOWNORMAL))) ;
         }
 
-        std::string get_module_filename(HWND hwnd) {
-            DWORD procid ;
-            GetWindowThreadProcessId(hwnd, &procid) ;
-
-            auto handle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, procid) ;
+        std::filesystem::path _get_module_path(DWORD procid) {
+            auto handle_raw = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, procid) ;
+            if(handle_raw == NULL) {
+                throw RUNTIME_EXCEPT("Could not open process.") ;
+            }
+            auto close_handle = [](HANDLE handle) {CloseHandle(handle) ;} ;
+            std::unique_ptr<void, decltype(close_handle)> handle(handle_raw, close_handle) ;
 
             WCHAR fullpath[MAX_PATH] ;
-            if(!GetModuleFileNameExW(handle, NULL, fullpath, MAX_PATH)) {
-                CloseHandle(handle) ;
+            if(!GetModuleFileNameExW(handle.get(), NULL, fullpath, MAX_PATH)) {
                 throw RUNTIME_EXCEPT("Could not get module filename.") ;
             }
-            CloseHandle(handle) ;
-            return std::filesystem::path(fullpath).filename().u8string() ;
+            return std::filesystem::path(fullpath) ;
+        }
+
+        std::filesystem::path _get_module_path(HWND hwnd) {
+            DWORD procid ;
+            GetWindowThreadProcessId(hwnd, &procid) ;
+            return _get_module_path(procid) ;
+        }
+
+        std::string get_module_filename(HWND hwnd) {
+            return _get_module_path(hwnd).filename().u8string() ;
+        }
+
+        std::string get_module_filename(DWORD procid) {
+            return _get_module_path(procid).filename().u8string() ;
+        }
+
+        std::string get_module_path(HWND hwnd) {
+            return _get_module_path(hwnd).u8string() ;
+        }
+
+        std::string get_module_path(DWORD procid) {
+            return _get_module_path(procid).u8string() ;
         }
 
         bool is_failed(HRESULT result) noexcept {

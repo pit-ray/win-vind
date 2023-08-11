@@ -248,6 +248,110 @@ System Command comclear.
 - [\<map\>](./#map)
 - [\<noremap\>](./#noremap)
 
+<hr class="dash">
+
+### **`<autocmd_add>`**
+
+**Syntax**
+```vim
+autocmd {event} {aupat} {cmd}
+```
+
+It adds `{cmd}` into autocmd list for `{aupat}`, autocmd pattern, corresponding to `{event}`.
+As such as Vim, this function append `{cmd}` into a list rather than overwriting it even if the same `{cmd}` has already existed in a list.
+The event does not allow us to use `*`.
+If you want to add a command to multiple events at the same time, `,` without after-space is available.
+The rule of `{aupat}` is based on the original Vim.
+The registered `{cmd}`s will execute in the order added.
+
+**Event**
+
+The following table shows the supported events. autocmd is NOT case-sensitive for events.
+
+|*Event*|*When does it ignite?*|
+|:---|:---|
+|AppEnter|Select an application|
+|AppLeave|Unselect an application|
+|GUINormalEnter|Enter to the GUI normal mode|
+|GUINormalLeave|Leave from the GUI normal mode|
+|GUIVisualEnter|Enter to the GUI visual mode|
+|GUIVisualLeave|Leave from the GUI visual mode|
+|EdiNormalEnter|Enter to the editor normal mode|
+|EdiNormalLeave|Leave from the editor normal mode|
+|EdiVisualEnter|Enter to the editor visual mode|
+|EdiVisualLeave|Leave from the editor visual mode|
+|InsertEnter|Enter to the insert mode|
+|InsertLeave|Leave from the insert mode|
+|ResidentEnter|Enter to the resident mode|
+|ResidentLeave|Leave from the resident mode|
+|CmdLineEnter|Enter to the command mode|
+|CmdLineLeave|Leave from the command mode|
+
+<br>
+
+**Pattern**
+
+The pattern matches against the absolute path to the executable file of the application which creates each event.
+
+|Pattern|Interpretation|
+|:---|:---|
+|`*`|Matches any character|
+|`?`|Matches any single character|
+|`\?`|Matches the `?` character|
+|`.`|Matches the `.` character|
+|`~`|Matches the `~` character|
+
+<br>
+All path delimiters `\` in Windows are treated as `/` in pattern translation.  
+All others follow the general regex.
+
+**Examples**
+
+```vim
+" Default mapping (match any applications)
+autocmd AppLeave * <to_insert>
+
+" Limited mapping (match specific application)
+autocmd AppEnter *notepad* <to_edi_normal>
+autocmd AppEnter,EdiNormalEnter *vim* <to_resident>
+autocmd AppEnter C:/*/Zotero/zotero.exe <to_edi_normal>
+```
+
+**See Also**
+- [\<autocmd_del\>](./#autocmd_del)
+
+<hr class="dash">
+
+
+### **`<autocmd_del>`**
+**Syntax**
+```vim
+autocmd! {event} {aupat} {cmd}
+```
+
+It remove all autocmd matched `{event}` and `{aupat}`, then register `{cmd}` after delete.
+
+The following syntaxes are available.
+
+```vim
+autocmd! {event} {aupat} {cmd}
+autocmd! {event} {aupat}
+autocmd! * {aupat}
+autocmd! {event}
+```
+
+Each features are the same as the original Vim.
+
+**Examples**
+
+```vim
+autocmd! * *vim*  " Remove all events having the pattern *vim*
+autocmd! AppLeave *notepad* <to_insert>  " Remove old events and add a new event
+```
+
+**See Also**
+- [\<autocmd_add\>](./#autocmd_add)
+
 ## Mouse
 
 ### **`<click_left>`**
@@ -1642,22 +1746,6 @@ Create a directory. If you call it with a relative path such as `:mkdir foo`, it
 **See Also**
 - [\<a\>](./#a)
 -->
-
-
-## Option
-
-### **`<disable_targeting_of_dedicate_to_window>`**
-Disable targeting (Dedicate to One Window).
-
-<!--
-**See Also**
-- [\<a\>](./#a)
--->
-
-<hr class="dash">
-
-### **`<enable_targeting_of_dedicate_to_window>`**
-Enable targeting (Dedicate to One Window).
 
 
 <br>

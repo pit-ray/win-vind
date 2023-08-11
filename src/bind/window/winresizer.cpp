@@ -16,9 +16,7 @@
 #include "core/keycodedef.hpp"
 #include "core/mapsolver.hpp"
 #include "core/settable.hpp"
-#include "opt/dedicate_to_window.hpp"
 #include "opt/optionlist.hpp"
-#include "opt/suppress_for_vim.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
 #include "util/def.hpp"
@@ -63,8 +61,6 @@ namespace vind
               down_id_(MoveCursorDown().id()),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
-                    opt::Dedicate2Window().name(),
-                    opt::SuppressForVim().name(),
                     opt::VCmdLine().name()
               ))
             {}
@@ -94,6 +90,10 @@ namespace vind
 
             void do_move(OperationID id) {
                 auto hwnd = util::get_foreground_window() ;
+                if(!hwnd) {
+                    return ;
+                }
+
                 auto rect = util::get_window_rect(hwnd) ;
 
                 auto cb_rect = util::get_combined_metrics() ;

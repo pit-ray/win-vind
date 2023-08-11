@@ -53,7 +53,7 @@ nav: Small Mappings
 |:---:|:---:|
 |`close`, `cl`|[\<close_current_window\>]({{ site.url }}/cheat_sheet/functions/#close_current_window)|
 |`new`|[\<open_new_window\>]({{ site.url }}/cheat_sheet/functions/#open_new_window)|
-|`sp`, `split`|[\<open_new_window_with_hsplit\>]({{ site.url }}/cheat_sheet/functions/#open_new_window_with_hsplit)|
+|`split`, `sp`|[\<open_new_window_with_hsplit\>]({{ site.url }}/cheat_sheet/functions/#open_new_window_with_hsplit)|
 |`vsplit`, `vs`|[\<open_new_window_with_vsplit\>]({{ site.url }}/cheat_sheet/functions/#open_new_window_with_vsplit)|
 
 ### Window Select
@@ -66,32 +66,32 @@ nav: Small Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`resizer`, `winresizer`|[\<window_resizer\>]({{ site.url }}/cheat_sheet/functions/#window_resizer)|
-|`max`, `on`, `only`|[\<maximize_current_window\>]({{ site.url }}/cheat_sheet/functions/#maximize_current_window)|
-|`hi`, `min`, `hide`|[\<minimize_current_window\>]({{ site.url }}/cheat_sheet/functions/#minimize_current_window)|
+|`winresizer`, `resizer`|[\<window_resizer\>]({{ site.url }}/cheat_sheet/functions/#window_resizer)|
+|`only`, `max`, `on`|[\<maximize_current_window\>]({{ site.url }}/cheat_sheet/functions/#maximize_current_window)|
+|`hide`, `min`, `hi`|[\<minimize_current_window\>]({{ site.url }}/cheat_sheet/functions/#minimize_current_window)|
 |`lsp`, `lsplit`|[\<snap_current_window_to_left\>]({{ site.url }}/cheat_sheet/functions/#snap_current_window_to_left)|
-|`rsp`, `rsplit`|[\<snap_current_window_to_right\>]({{ site.url }}/cheat_sheet/functions/#snap_current_window_to_right)|
+|`rsplit`, `rsp`|[\<snap_current_window_to_right\>]({{ site.url }}/cheat_sheet/functions/#snap_current_window_to_right)|
 |`tsplit`, `tsp`|[\<snap_current_window_to_top\>]({{ site.url }}/cheat_sheet/functions/#snap_current_window_to_top)|
 |`bsplit`, `bsp`|[\<snap_current_window_to_bottom\>]({{ site.url }}/cheat_sheet/functions/#snap_current_window_to_bottom)|
 |`arrange`|[\<arrange_windows\>]({{ site.url }}/cheat_sheet/functions/#arrange_windows)|
 |`reload`|[\<reload_current_window\>]({{ site.url }}/cheat_sheet/functions/#reload_current_window)|
 |`rot`, `rotate`|[\<rotate_windows\>]({{ site.url }}/cheat_sheet/functions/#rotate_windows)|
-|`rerotate`, `rerot`|[\<rotate_windows_in_reverse\>]({{ site.url }}/cheat_sheet/functions/#rotate_windows_in_reverse)|
+|`rerot`, `rerotate`|[\<rotate_windows_in_reverse\>]({{ site.url }}/cheat_sheet/functions/#rotate_windows_in_reverse)|
 |`exchange`|[\<exchange_window_with_nearest\>]({{ site.url }}/cheat_sheet/functions/#exchange_window_with_nearest)|
 |`vert<space>res`, `vertical<space>resize`|[\<resize_window_width\>]({{ site.url }}/cheat_sheet/functions/#resize_window_width)|
 |`vertical<space>resize<space>+`, `vert<space>res<space>+`|[\<increase_window_width\>]({{ site.url }}/cheat_sheet/functions/#increase_window_width)|
 |`vert<space>res<space>-`, `vertical<space>resize<space>-`|[\<decrease_window_width\>]({{ site.url }}/cheat_sheet/functions/#decrease_window_width)|
-|`resize`, `res`|[\<resize_window_height\>]({{ site.url }}/cheat_sheet/functions/#resize_window_height)|
-|`res<space>+`, `resize<space>+`|[\<increase_window_height\>]({{ site.url }}/cheat_sheet/functions/#increase_window_height)|
-|`resize<space>-`, `res<space>-`|[\<decrease_window_height\>]({{ site.url }}/cheat_sheet/functions/#decrease_window_height)|
+|`res`, `resize`|[\<resize_window_height\>]({{ site.url }}/cheat_sheet/functions/#resize_window_height)|
+|`resize<space>+`, `res<space>+`|[\<increase_window_height\>]({{ site.url }}/cheat_sheet/functions/#increase_window_height)|
+|`res<space>-`, `resize<space>-`|[\<decrease_window_height\>]({{ site.url }}/cheat_sheet/functions/#decrease_window_height)|
 
 ### Process Launcher
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`!`|[\<start_external\>]({{ site.url }}/cheat_sheet/functions/#start_external)|
-|`e`, `edit`, `execute`|[\<execute\>]({{ site.url }}/cheat_sheet/functions/#execute)|
-|`shell`, `term`, `terminal`, `sh`|[\<start_shell\>]({{ site.url }}/cheat_sheet/functions/#start_shell)|
+|`execute`, `edit`, `e`|[\<execute\>]({{ site.url }}/cheat_sheet/functions/#execute)|
+|`term`, `shell`, `sh`, `terminal`|[\<start_shell\>]({{ site.url }}/cheat_sheet/functions/#start_shell)|
 
 <br>
 <br>

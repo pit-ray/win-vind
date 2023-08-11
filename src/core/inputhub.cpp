@@ -223,6 +223,13 @@ namespace vind
             return true ;
         }
 
+        bool InputHub::enqueue(
+            const CmdUnit::SPtr& unit,
+            std::uint16_t prefix_count) {
+            pimpl->waiting_queue_.enqueue(unit, prefix_count) ;
+            return true ;
+        }
+
         bool InputHub::enqueue_mapped(
                 const CmdUnit::SPtr& input,
                 std::uint16_t prefix_count,

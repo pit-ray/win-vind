@@ -41,7 +41,9 @@ namespace
                 SPI_SETCARETWIDTH, 0, val,
                 SPIF_UPDATEINIFILE | SPIF_SENDCHANGE) ;
 
-        update_caret(util::get_foreground_window()) ;
+        if(auto hwnd = util::get_foreground_window()) {
+            update_caret(hwnd) ;
+        }
     }
 
     /**

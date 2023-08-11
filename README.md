@@ -44,9 +44,6 @@ It is also available from the command line as a command for UI operations like `
 
 <br>  
 
-## Migration from v4 to v5
-The v5 has many changes from v4, so please read [the migration guide](https://pit-ray.github.io/win-vind/migration).
-
 ## Installation
 We support a variety of installation methods.
 

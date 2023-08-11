@@ -96,7 +96,8 @@ set blockstylecaret_mode = solid
 " bindings
 imap <capslock> {<ctrl>}
 
-inoremap <alt><alt> <easy_click_left>
+inoremap <ralt><ralt> <easyclick><click_left>
+inoremap <rctrl><rctrl> <gridmove><click_left>
 inoremap <win-enter> <window_resizer>
 
 noremap <ctrl-1> :! gvim<cr>

@@ -83,7 +83,7 @@ namespace vind
                 break ;
             }
             opt::VCmdLine::reset() ;
-            ac.apply(core::get_enter_event(m)) ;
+            ac.apply(core::get_leave_event(core::Mode::GUI_NORMAL)) ;
 
             return res ;
         }

@@ -36,7 +36,7 @@ namespace vind
             UNDEFINED,
         } ;
 
-        AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept ;
+        AutoCmdEvent get_autocmd_event(const std::string& event_name) ;
 
         inline AutoCmdEvent get_enter_event(Mode mode) {
             static const std::unordered_map<Mode, AutoCmdEvent> enter_events {

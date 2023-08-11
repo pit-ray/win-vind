@@ -145,7 +145,7 @@ namespace vind
 {
     namespace core
     {
-        AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept {
+        AutoCmdEvent get_autocmd_event(const std::string& event_name) {
             static std::unordered_map<std::string, AutoCmdEvent> names {
                 {"appenter",      AutoCmdEvent::APP_ENTER},
                 {"appleave",      AutoCmdEvent::APP_LEAVE},

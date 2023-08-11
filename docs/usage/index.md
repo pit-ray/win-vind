@@ -284,7 +284,7 @@ Let's do the last tutorial!
    ```vim
    " Write to your .vindrc.
    set cmd_fontname = Arial
-   inoremap <Alt> <easy_click_left>
+   inoremap <Alt> <easyclick><click_left>
    imap <ctrl-d><ctrl-d> {win-vind@example.com}
    noremap <ctrl-1> :!notepad<cr>
    ```

@@ -54,6 +54,9 @@ noremap <ctrl-1> :! gvim<cr>
 noremap <ctrl-2> :e http://example.com<cr>
 
 enoremap t ggyyGp
+
+autocmd AppLeave * <to_insert>
+autocmd AppEnter,EdiNormalEnter *vim* <to_resident>
 ```
 
 ## License

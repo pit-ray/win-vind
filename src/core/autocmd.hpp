@@ -84,22 +84,22 @@ namespace vind
             // Perform command automation.
             // First argument: the event type
             // Second argument: target window handle, which has default HWND.
-            void apply_autocmds(AutoCmdEvent event, DWORD procid=0) ;
+            void apply(AutoCmdEvent event, DWORD procid=0) ;
 
-            void add_autocmd(
+            void add(
                 AutoCmdEvent event,
                 const std::string& pattern,
                 const std::string& cmd) ;
 
-            void remove_autocmd(AutoCmdEvent event) ;
+            void remove(AutoCmdEvent event) ;
 
-            void remove_autocmd(
+            void remove(
                 AutoCmdEvent event,
                 const std::string& pattern) ;
 
-            void remove_autocmd(const std::string& pattern) ;
+            void remove(const std::string& pattern) ;
 
-            void remove_autocmd(
+            void remove_and_add(
                 AutoCmdEvent event,
                 const std::string& pattern,
                 const std::string& cmd) ;

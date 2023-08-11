@@ -6,6 +6,7 @@
 #include "opt/vcmdline.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/string.hpp"
 
 #include <sstream>
 
@@ -26,14 +27,19 @@ namespace vind
             auto [event_str, patcmd] = core::extract_double_args(pargs) ;
             auto [aupat, cmd] = core::extract_double_args(patcmd) ;
 
-            auto event = core::get_autocmd_event(event_str) ;
-            if(event == core::AutoCmdEvent::UNDEFINED) {
-                opt::VCmdLine::print(
-                    opt::ErrorMessage("E: Not supported event name")) ;
+            std::vector<core::AutoCmdEvent> events ;
+            for(const auto& event_str_part : util::split(event_str, ",")) {
+                auto event = core::get_autocmd_event(event_str_part) ;
+                if(event == core::AutoCmdEvent::UNDEFINED) {
+                    opt::VCmdLine::print(
+                        opt::ErrorMessage("E: Not supported event name")) ;
 
-                core::Logger::get_instance().error(
-                    event_str + " is an unsupported event name.") ;
-                return ;
+                    core::Logger::get_instance().error(
+                        event_str + " is an unsupported event name.") ;
+                    return ;
+                }
+
+                events.push_back(event) ;
             }
 
             if(aupat.empty()) {
@@ -56,7 +62,9 @@ namespace vind
                 return ;
             }
 
-            core::AutoCmd::get_instance().add_autocmd(event, aupat, cmd) ;
+            for(const auto event : events) {
+                core::AutoCmd::get_instance().add(event, aupat, cmd) ;
+            }
         }
 
         AutoCmdRemove::AutoCmdRemove()
@@ -82,29 +90,40 @@ namespace vind
                     return ;
                 }
 
-                ac.remove_autocmd(aupat) ;
+                ac.remove(aupat) ;
                 return ;
             }
 
-            auto event = core::get_autocmd_event(event_str) ;
-            if(event == core::AutoCmdEvent::UNDEFINED) {
-                opt::VCmdLine::print(
-                    opt::ErrorMessage("E: Not supported event name")) ;
+            std::vector<core::AutoCmdEvent> events ;
+            for(const auto& event_str_part : util::split(event_str, ",")) {
+                auto event = core::get_autocmd_event(event_str_part) ;
+                if(event == core::AutoCmdEvent::UNDEFINED) {
+                    opt::VCmdLine::print(
+                        opt::ErrorMessage("E: Not supported event name")) ;
 
-                core::Logger::get_instance().error(
-                    event_str + " is an unsupported event name.") ;
-                return ;
+                    core::Logger::get_instance().error(
+                        event_str + " is an unsupported event name.") ;
+                    return ;
+                }
+                events.push_back(event) ;
             }
 
             if(aupat.empty()) {
-                ac.remove_autocmd(event) ;
+                for(const auto event : events) {
+                    ac.remove(event) ;
+                }
                 return ;
             }
             if(cmd.empty()) {
-                ac.remove_autocmd(event, aupat) ;
+                for(const auto event : events) {
+                    ac.remove(event, aupat) ;
+                }
                 return ;
             }
-            ac.remove_autocmd(event, aupat, cmd) ;
+
+            for(const auto event : events) {
+                ac.remove_and_add(event, aupat, cmd) ;
+            }
         }
     }
 }

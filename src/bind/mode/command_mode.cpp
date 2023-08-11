@@ -233,12 +233,12 @@ namespace vind
                 // If the mode is changed, then do nothing.
                 if(core::get_global_mode() == core::Mode::COMMAND) {
                     core::set_global_mode(*m) ;
-                    core::AutoCmd::get_instance().apply_autocmds(
+                    core::AutoCmd::get_instance().apply(
                         core::get_leave_event(core::Mode::COMMAND)) ;
                 }
             } ;
             auto m = core::get_global_mode() ;
-            ac.apply_autocmds(core::get_leave_event(m)) ;
+            ac.apply(core::get_leave_event(m)) ;
 
             std::unique_ptr<core::Mode, decltype(return_mode)>
                 mode_preserver(new core::Mode(m), return_mode) ;
@@ -254,7 +254,7 @@ namespace vind
             pimpl->hist_idx_ = static_cast<int>(pimpl->hists_.size() - 1) ;
 
             auto result = SystemCall::SUCCEEDED ;
-            ac.apply_autocmds(core::get_enter_event(core::Mode::COMMAND)) ;
+            ac.apply(core::get_enter_event(core::Mode::COMMAND)) ;
             while(true) {
                 pimpl->bg_.update() ;
 

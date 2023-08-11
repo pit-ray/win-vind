@@ -52,8 +52,8 @@ namespace vind
             auto& ac = core::AutoCmd::get_instance() ;
 
             auto m = core::get_global_mode() ;
-            ac.apply_autocmds(core::get_leave_event(m)) ;
-            ac.apply_autocmds(core::get_enter_event(core::Mode::GUI_NORMAL)) ;
+            ac.apply(core::get_leave_event(m)) ;
+            ac.apply(core::get_enter_event(core::Mode::GUI_NORMAL)) ;
 
             core::InputGate::get_instance().close_all_ports_with_refresh() ;
             core::InstantKeyAbsorber isa{} ;
@@ -83,7 +83,7 @@ namespace vind
                 break ;
             }
             opt::VCmdLine::reset() ;
-            ac.apply_autocmds(core::get_enter_event(m)) ;
+            ac.apply(core::get_enter_event(m)) ;
 
             return res ;
         }

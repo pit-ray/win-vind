@@ -4,8 +4,7 @@
 .vimspector.json
 .vs
 .vscode
-:w
-:wq
+:*
 Testing
 bin
 bin_32
@@ -24,8 +23,8 @@ debug
 debug_cov
 debugvs
 debugvs32
-is_initialized
 log
+manifests
 release
 release_32
 release_64
@@ -36,5 +35,4 @@ tmp
 venv
 w
 winget
-manifests
 wingetcreate.exe

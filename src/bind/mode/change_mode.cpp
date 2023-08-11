@@ -37,7 +37,7 @@ namespace vind
             }
 
             auto& ac = core::AutoCmd::get_instance() ;
-            ac.apply_autocmds(core::get_leave_event(m)) ;
+            ac.apply(core::get_leave_event(m)) ;
 
             if(m == Mode::GUI_VISUAL) {
                 util::click(KEYCODE_MOUSE_LEFT) ; //release holding mouse
@@ -57,7 +57,7 @@ namespace vind
                 opt::VCmdLine::print(opt::GeneralMessage("-- GUI NORMAL --")) ;
             }
 
-            ac.apply_autocmds(core::get_enter_event(Mode::GUI_NORMAL)) ;
+            ac.apply(core::get_enter_event(Mode::GUI_NORMAL)) ;
         }
 
         //ToResident
@@ -70,7 +70,7 @@ namespace vind
                 bool vclmodeout) {
             auto& igate = core::InputGate::get_instance() ;
             auto& ac = core::AutoCmd::get_instance() ;
-            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+            ac.apply(core::get_leave_event(core::get_global_mode())) ;
 
             igate.close_all_ports() ;
             igate.unabsorb() ;
@@ -79,7 +79,7 @@ namespace vind
                 opt::VCmdLine::print(opt::GeneralMessage("-- RESIDENT --")) ;
             }
 
-            ac.apply_autocmds(core::get_enter_event(core::Mode::RESIDENT)) ;
+            ac.apply(core::get_enter_event(core::Mode::RESIDENT)) ;
         }
 
         //ToGUIVisual
@@ -91,7 +91,7 @@ namespace vind
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
             auto& ac = core::AutoCmd::get_instance() ;
-            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+            ac.apply(core::get_leave_event(core::get_global_mode())) ;
 
             core::set_global_mode(core::Mode::GUI_VISUAL) ;
             if(vclmodeout) {
@@ -99,7 +99,7 @@ namespace vind
             }
             util::press_mousestate(KEYCODE_MOUSE_LEFT) ;
 
-            ac.apply_autocmds(core::get_enter_event(core::Mode::GUI_VISUAL)) ;
+            ac.apply(core::get_enter_event(core::Mode::GUI_VISUAL)) ;
         }
 
         // All instances share TextAreaScanner to keep staticity of sprocess.
@@ -123,7 +123,7 @@ namespace vind
             }
 
             auto& ac = core::AutoCmd::get_instance() ;
-            ac.apply_autocmds(core::get_leave_event(mode)) ;
+            ac.apply(core::get_leave_event(mode)) ;
 
             if(mode == Mode::GUI_NORMAL) {
                 util::click(KEYCODE_MOUSE_LEFT) ;
@@ -149,7 +149,7 @@ namespace vind
                 }
             }
 
-            ac.apply_autocmds(core::get_enter_event(Mode::EDI_NORMAL)) ;
+            ac.apply(core::get_enter_event(Mode::EDI_NORMAL)) ;
         }
 
         //ToInsert
@@ -165,7 +165,7 @@ namespace vind
             auto m = core::get_global_mode() ;
 
             auto& ac = core::AutoCmd::get_instance() ;
-            ac.apply_autocmds(core::get_leave_event(m)) ;
+            ac.apply(core::get_leave_event(m)) ;
 
             if(m == Mode::GUI_NORMAL) {
                 util::click(KEYCODE_MOUSE_LEFT) ;
@@ -181,7 +181,7 @@ namespace vind
                 opt::VCmdLine::print(opt::GeneralMessage("-- INSERT --")) ;
             }
 
-            ac.apply_autocmds(core::get_enter_event(Mode::INSERT)) ;
+            ac.apply(core::get_enter_event(Mode::INSERT)) ;
         }
 
         //ToEdiVisual
@@ -193,7 +193,7 @@ namespace vind
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
             auto& ac = core::AutoCmd::get_instance() ;
-            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+            ac.apply(core::get_leave_event(core::get_global_mode())) ;
 
             select_words() ;
             core::set_global_mode(core::Mode::EDI_VISUAL) ;
@@ -201,7 +201,7 @@ namespace vind
                 opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL --")) ;
             }
 
-            ac.apply_autocmds(core::get_enter_event(core::Mode::EDI_VISUAL)) ;
+            ac.apply(core::get_enter_event(core::Mode::EDI_VISUAL)) ;
         }
 
         //ToEdiVisualLine
@@ -213,7 +213,7 @@ namespace vind
                 const std::string& UNUSED(args),
                 bool vclmodeout) {
             auto& ac = core::AutoCmd::get_instance() ;
-            ac.apply_autocmds(core::get_leave_event(core::get_global_mode())) ;
+            ac.apply(core::get_leave_event(core::get_global_mode())) ;
 
             select_line_EOL2BOL() ;
             core::set_global_mode(
@@ -222,7 +222,7 @@ namespace vind
                 opt::VCmdLine::print(opt::GeneralMessage("-- EDI VISUAL LINE--")) ;
             }
 
-            ac.apply_autocmds(core::get_enter_event(core::Mode::EDI_VISUAL)) ;
+            ac.apply(core::get_enter_event(core::Mode::EDI_VISUAL)) ;
         }
     }
 }

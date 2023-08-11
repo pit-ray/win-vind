@@ -119,34 +119,6 @@ namespace
             seqcmds_.erase(seqcmds_.begin() + idx) ;
         }
 
-        template <typename T1, typename T2>
-        void remove_pattern_cmd(T1&& pat, T2&& cmd) {
-            auto idx = get_pat_index(pat) ;
-            if(idx < 0) {
-                return ;
-            }
-
-            auto& cmds = seqcmds_[idx] ;
-
-            for(std::size_t i = 0 ; i < cmds.size() ; i ++) {
-                if(cmds[i].size() != cmd.size()) {
-                    continue ;
-                }
-
-                bool is_same = true ;
-                for(std::size_t j = 0 ; j < cmd.size() ; j ++) {
-                    if(*(cmds[i][j]) != *(cmd[j])) {
-                        is_same = false ;
-                        break ;
-                    }
-                }
-                if(is_same) {
-                    cmds.erase(cmds.begin() + i) ;
-                    return ;
-                }
-            }
-        }
-
         void match_pattern(const std::string& query, std::unordered_set<int>& indices) {
             for(std::size_t i = 0 ; i < pats_.size() ; i ++) {
                 if(pats_[i].match(query)) {
@@ -227,7 +199,7 @@ namespace vind
             return instance ;
         }
 
-        void AutoCmd::apply_autocmds(AutoCmdEvent event, DWORD procid) {
+        void AutoCmd::apply(AutoCmdEvent event, DWORD procid) {
             if(event == AutoCmdEvent::UNDEFINED) {
                 return ;
             }
@@ -306,7 +278,7 @@ namespace vind
             }
         }
 
-        void AutoCmd::add_autocmd(
+        void AutoCmd::add(
                 AutoCmdEvent event,
                 const std::string& pattern,
                 const std::string& cmdstr) {
@@ -327,32 +299,28 @@ namespace vind
             evt.add_pattern_cmd(util::A2a(pattern), std::move(cmd)) ;
         }
 
-        void AutoCmd::remove_autocmd(AutoCmdEvent event) {
+        void AutoCmd::remove(AutoCmdEvent event) {
             pimpl->events_[static_cast<int>(event)].clear() ;
         }
 
-        void AutoCmd::remove_autocmd(
-            AutoCmdEvent event,
-            const std::string& pattern) {
+        void AutoCmd::remove(
+                AutoCmdEvent event,
+                const std::string& pattern) {
             pimpl->events_[static_cast<int>(event)].remove_pattern(pattern) ;
         }
 
-        void AutoCmd::remove_autocmd(const std::string& pattern) {
+        void AutoCmd::remove(const std::string& pattern) {
             for(std::size_t i = 0 ; i < pimpl->events_.size() ; i ++) {
                 pimpl->events_[i].remove_pattern(pattern) ;
             }
         }
 
-        void AutoCmd::remove_autocmd(
-            AutoCmdEvent event,
-            const std::string& pattern,
-            const std::string& cmdstr) {
-
-            auto cmd = parse_command(cmdstr) ;
-            if(cmd.empty()) {
-                return ;
-            }
-            pimpl->events_[static_cast<int>(event)].remove_pattern_cmd(pattern, cmd) ;
+        void AutoCmd::remove_and_add(
+                AutoCmdEvent event,
+                const std::string& pattern,
+                const std::string& cmdstr) {
+            remove(event, pattern) ;
+            add(event, pattern, cmdstr) ;
         }
     }
 }

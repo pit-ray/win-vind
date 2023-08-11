@@ -323,9 +323,9 @@ namespace vind
             DWORD procid ;
             if(hwnd && GetWindowThreadProcessId(hwnd, &procid)) {
                 if(pimpl->previous_procid_ != procid) {
-                    ac.apply_autocmds(AutoCmdEvent::APP_LEAVE, pimpl->previous_procid_) ;
+                    ac.apply(AutoCmdEvent::APP_LEAVE, pimpl->previous_procid_) ;
                     pimpl->previous_procid_ = procid ;
-                    ac.apply_autocmds(AutoCmdEvent::APP_ENTER, procid) ;
+                    ac.apply(AutoCmdEvent::APP_ENTER, procid) ;
                 }
             }
 

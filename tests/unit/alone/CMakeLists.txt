@@ -108,3 +108,27 @@ AddTest(each-hint-test
     ${SRCDIR}/core/keycode.cpp
     ${SRCDIR}/util/string.cpp
 )
+
+
+AddTest(each-autocmd-test
+    ${CMAKE_CURRENT_SOURCE_DIR}/autocmd_test.cpp
+
+    ${SRCDIR}/bind/bindedfunc.cpp
+    ${SRCDIR}/core/cmdmatcher.cpp
+    ${SRCDIR}/core/cmdparser.cpp
+    ${SRCDIR}/core/cmdunit.cpp
+    ${SRCDIR}/core/errlogger.cpp
+    ${SRCDIR}/core/inputgate.cpp
+    ${SRCDIR}/core/inputhub.cpp
+    ${SRCDIR}/core/keycode.cpp
+    ${SRCDIR}/core/mapsolver.cpp
+    ${SRCDIR}/core/mode.cpp
+    ${SRCDIR}/core/path.cpp
+    ${SRCDIR}/core/typeemu.cpp
+    ${SRCDIR}/util/box2d.cpp
+    ${SRCDIR}/util/interval_timer.cpp
+    ${SRCDIR}/util/keystroke_repeater.cpp
+    ${SRCDIR}/util/string.cpp
+    ${SRCDIR}/util/winwrap.cpp
+)
+target_link_libraries(each-autocmd-test userenv)

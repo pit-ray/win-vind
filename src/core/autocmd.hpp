@@ -38,6 +38,22 @@ namespace vind
 
         AutoCmdEvent get_autocmd_event(const std::string& event_name) noexcept ;
 
+        inline AutoCmdEvent get_enter_event(Mode mode) {
+            static const std::unordered_map<Mode, AutoCmdEvent> enter_events {
+                {Mode::GUI_NORMAL, AutoCmdEvent::GUI_NORMAL_ENTER},
+                {Mode::GUI_VISUAL, AutoCmdEvent::GUI_VISUAL_ENTER},
+                {Mode::EDI_NORMAL, AutoCmdEvent::EDI_NORMAL_ENTER},
+                {Mode::EDI_VISUAL, AutoCmdEvent::EDI_VISUAL_ENTER},
+                {Mode::INSERT,     AutoCmdEvent::INSERT_ENTER},
+                {Mode::RESIDENT,   AutoCmdEvent::RESIDENT_ENTER},
+                {Mode::COMMAND,    AutoCmdEvent::COMMAND_ENTER}
+            } ;
+            if(enter_events.find(mode) != enter_events.end()) {
+                return enter_events.at(mode) ;
+            }
+            return AutoCmdEvent::UNDEFINED ;
+        }
+
         inline AutoCmdEvent get_leave_event(Mode mode) {
             static const std::unordered_map<Mode, AutoCmdEvent> leave_events {
                 {Mode::GUI_NORMAL, AutoCmdEvent::GUI_NORMAL_LEAVE},
@@ -54,21 +70,6 @@ namespace vind
             return AutoCmdEvent::UNDEFINED ;
         }
 
-        inline AutoCmdEvent get_enter_event(Mode mode) {
-            static const std::unordered_map<Mode, AutoCmdEvent> enter_events {
-                {Mode::GUI_NORMAL, AutoCmdEvent::GUI_NORMAL_ENTER},
-                {Mode::GUI_VISUAL, AutoCmdEvent::GUI_VISUAL_ENTER},
-                {Mode::EDI_NORMAL, AutoCmdEvent::EDI_NORMAL_ENTER},
-                {Mode::EDI_VISUAL, AutoCmdEvent::EDI_VISUAL_ENTER},
-                {Mode::INSERT,     AutoCmdEvent::INSERT_ENTER},
-                {Mode::RESIDENT,   AutoCmdEvent::RESIDENT_ENTER},
-                {Mode::COMMAND,    AutoCmdEvent::COMMAND_ENTER}
-            } ;
-            if(enter_events.find(mode) != enter_events.end()) {
-                return enter_events.at(mode) ;
-            }
-            return AutoCmdEvent::UNDEFINED ;
-        }
 
         class AutoCmd {
         private:

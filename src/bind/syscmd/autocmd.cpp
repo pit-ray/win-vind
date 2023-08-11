@@ -16,7 +16,7 @@ namespace vind
     namespace bind
     {
         AutoCmdAdd::AutoCmdAdd()
-        : BindedFuncVoid("autocmd")
+        : BindedFuncVoid("autocmd_add")
         {}
 
         void AutoCmdAdd::sprocess(

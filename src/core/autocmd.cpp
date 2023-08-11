@@ -37,6 +37,9 @@ namespace
                 else if(pat_[i] == '.') {
                     regex.append("\\.") ;
                 }
+                else if(pat_[i] == '?' && (i == 0 || (i > 0 && pat_[i - 1] != '\\'))) {
+                    regex.append(".") ;
+                }
                 else {
                     regex.push_back(pat_[i]) ;
                 }
@@ -127,19 +130,8 @@ namespace
             }
         }
 
-        void enqueue_sequential_command(int patidx) {
-            for(const auto& cmd : seqcmds_[patidx]) {
-                for(const auto& unit : cmd) {
-                    if(unit->empty()) {
-                        // Function
-                        core::InputHub::get_instance().enqueue(unit, 1) ;
-                    }
-                    else {
-                        // Keycode
-                        core::InputHub::get_instance().do_typing(unit) ;
-                    }
-                }
-            }
+        const SequentialCmd& get_sequential_command(int patidx) {
+            return seqcmds_.at(patidx) ;
         }
 
         void clear() {
@@ -157,14 +149,14 @@ namespace vind
             static std::unordered_map<std::string, AutoCmdEvent> names {
                 {"appenter",      AutoCmdEvent::APP_ENTER},
                 {"appleave",      AutoCmdEvent::APP_LEAVE},
-                {"gnormalenter",  AutoCmdEvent::GUI_NORMAL_ENTER},
-                {"gnormalleave",  AutoCmdEvent::GUI_NORMAL_LEAVE},
-                {"gvisualenter",  AutoCmdEvent::GUI_VISUAL_ENTER},
-                {"gvisualleave",  AutoCmdEvent::GUI_VISUAL_LEAVE},
-                {"enormalenter",  AutoCmdEvent::EDI_NORMAL_ENTER},
-                {"enormalleave",  AutoCmdEvent::EDI_NORMAL_LEAVE},
-                {"evisualenter",  AutoCmdEvent::EDI_VISUAL_ENTER},
-                {"evisualleave",  AutoCmdEvent::EDI_VISUAL_LEAVE},
+                {"guinormalenter",  AutoCmdEvent::GUI_NORMAL_ENTER},
+                {"guinormalleave",  AutoCmdEvent::GUI_NORMAL_LEAVE},
+                {"guivisualenter",  AutoCmdEvent::GUI_VISUAL_ENTER},
+                {"guivisualleave",  AutoCmdEvent::GUI_VISUAL_LEAVE},
+                {"edinormalenter",  AutoCmdEvent::EDI_NORMAL_ENTER},
+                {"edinormalleave",  AutoCmdEvent::EDI_NORMAL_LEAVE},
+                {"edivisualenter",  AutoCmdEvent::EDI_VISUAL_ENTER},
+                {"edivisualleave",  AutoCmdEvent::EDI_VISUAL_LEAVE},
                 {"insertenter",   AutoCmdEvent::INSERT_ENTER},
                 {"insertleave",   AutoCmdEvent::INSERT_LEAVE},
                 {"residententer", AutoCmdEvent::RESIDENT_ENTER},
@@ -186,6 +178,18 @@ namespace vind
             explicit Impl()
             : events_()
             {}
+
+            std::string get_module_path(DWORD procid) {
+                // Check pattern of the parent process
+                std::string path ;
+                try {
+                    path = util::get_module_path(procid) ;
+                }
+                catch(const std::runtime_error&) {
+                    return "" ;
+                }
+                return util::A2a(util::replace_all(path, "\\", "/")) ;
+            }
         } ;
 
         AutoCmd::AutoCmd()
@@ -231,15 +235,11 @@ namespace vind
             }
 
             std::unordered_set<DWORD> parent_set{procid} ;
-
             std::unordered_set<int> pat_indices{} ;  // to call indices of the pattern list
 
             // Check pattern of the parent process
-            std::string path ;
-            try {
-                path = util::A2a(util::get_module_path(procid)) ;
-            }
-            catch(const std::runtime_error&) {
+            auto path = pimpl->get_module_path(procid) ;
+            if(path.empty()) {
                 // If failed to get the path of the module, skip matching.
                 return ;
             }
@@ -252,10 +252,8 @@ namespace vind
             do {
                 // Check pattern of child processs
                 if(parent_set.find(pe32.th32ParentProcessID) != parent_set.end()) {
-                    try {
-                        path = util::A2a(util::get_module_path(pe32.th32ProcessID)) ;
-                    }
-                    catch(const std::runtime_error&) {
+                    path = pimpl->get_module_path(pe32.th32ProcessID) ;
+                    if(path.empty()) {
                         // If failed to get the path of the module, skip matching.
                         continue ;
                     }
@@ -273,7 +271,18 @@ namespace vind
             // Execute the matched sequential commands
             if(!pat_indices.empty()) {
                 for(auto patidx : pat_indices) {
-                    evt.enqueue_sequential_command(patidx) ;
+                    for(const auto& cmd : evt.get_sequential_command(patidx)) {
+                        for(const auto& unit : cmd) {
+                            if(unit->empty()) {
+                                // Function
+                                core::InputHub::get_instance().enqueue(unit, 1) ;
+                            }
+                            else {
+                                // Keycode
+                                core::InputHub::get_instance().do_typing(unit) ;
+                            }
+                        }
+                    }
                 }
             }
         }

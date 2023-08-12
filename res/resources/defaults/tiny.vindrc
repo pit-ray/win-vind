@@ -24,9 +24,7 @@ gnnoremap <down> <move_cursor_down>
 
 " @ Mouse Clicking
 gnnoremap o <click_left>
-gnnoremap O <click_left>
 gnnoremap a <click_right>
-gnnoremap A <click_right>
 
 " @ Mouse Scrolling
 gnnoremap <c-y> <scroll_up>
@@ -64,6 +62,12 @@ gnnoremap Fa <easyclick><click_right>
 gnnoremap Fm <easyclick><click_mid>
 gnnoremap Fh <easyclick>
 gnnoremap <ctrl-m> <gridmove>
+
+gnnoremap AA <easyclick_all><click_left>
+gnnoremap Ao <easyclick_all><click_left>
+gnnoremap Aa <easyclick_all><click_right>
+gnnoremap Am <easyclick_all><click_mid>
+gnnoremap Ah <easyclick_all>
 
 " @
 inoremap <ctrl-]> <to_gui_normal>

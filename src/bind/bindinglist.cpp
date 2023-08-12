@@ -101,6 +101,7 @@ namespace vind
                 DeleteLineUntilEOL::create(),
                 DeleteWithMotion::create(),
                 EasyClick::create(),
+                EasyClickAll::create(),
                 GridMove::create(),
                 ExchangeWindowWithNearest::create(),
                 Execute::create(),

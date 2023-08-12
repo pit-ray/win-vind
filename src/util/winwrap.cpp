@@ -60,6 +60,14 @@ namespace vind
             return rect ;
         }
 
+        Box2D get_client_rect(HWND hwnd) {
+            util::Box2D rect ;
+            if(!GetClientRect(hwnd, &(rect.data()))) {
+                throw std::runtime_error("Could not get a rectangle of the clind area in the window.") ;
+            }
+            return rect ;
+        }
+
         template <typename StdString, typename Path>
         inline void create_process_core(
                 StdString&& cmd,

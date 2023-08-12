@@ -36,6 +36,7 @@ namespace vind
                 return false ;
             }
 
+            // Check whether the application is a background process (true) or the waiting process (false)
             int n_cloaked ;
             if(DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, &n_cloaked, sizeof(int)) != S_OK) {
                 return false ;

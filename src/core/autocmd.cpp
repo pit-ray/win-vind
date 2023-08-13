@@ -6,7 +6,9 @@
 #include "inputhub.hpp"
 #include "util/winwrap.hpp"
 
+#include <__msvc_chrono.hpp>
 #include <array>
+#include <chrono>
 #include <memory>
 #include <regex>
 #include <unordered_map>
@@ -152,6 +154,8 @@ namespace
             seqcmds_.clear() ;
         }
     } ;
+
+    static auto close_snap = [](HANDLE handle) {CloseHandle(handle) ;} ;
 }
 
 namespace vind
@@ -185,11 +189,17 @@ namespace vind
             return AutoCmdEvent::UNDEFINED ;
         }
 
+        auto close_snap = [](HANDLE handle) {CloseHandle(handle) ;} ;
         struct AutoCmd::Impl {
             std::array<AutoEvent, static_cast<int>(AutoCmdEvent::EVENT_NUM)> events_ ;
 
+            std::unique_ptr<void, decltype(close_snap)> h_snap ;
+            std::chrono::system_clock::time_point snap_timestamp ;
+
             explicit Impl()
-            : events_()
+            : events_(),
+              h_snap(nullptr, close_snap),
+              snap_timestamp()
             {}
 
             std::filesystem::path get_module_path(DWORD procid) {
@@ -235,16 +245,23 @@ namespace vind
                 GetWindowThreadProcessId(hwnd, &procid) ;
             }
 
-            auto h_snap_raw = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) ;
-            if(h_snap_raw == INVALID_HANDLE_VALUE) {
-                return ;
+            using namespace std::chrono ;
+            auto cache_lifetime = duration_cast<seconds>(
+                    system_clock::now() - pimpl->snap_timestamp) ;
+
+            // Avoid tasking snapshots too frequently
+            if(!pimpl->h_snap || cache_lifetime > 1s) {
+                auto h_snap_raw = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) ;
+                if(h_snap_raw == INVALID_HANDLE_VALUE) {
+                    return ;
+                }
+                pimpl->h_snap.reset(h_snap_raw) ;
+                pimpl->snap_timestamp = system_clock::now() ;
             }
-            auto close_snap = [](HANDLE handle) {CloseHandle(handle) ;} ;
-            std::unique_ptr<void, decltype(close_snap)> h_snap(h_snap_raw, close_snap) ;
 
             PROCESSENTRY32 pe32 ;
             pe32.dwSize = sizeof(PROCESSENTRY32) ;
-            if(!Process32First(h_snap.get(), &pe32)) {
+            if(!Process32First(pimpl->h_snap.get(), &pe32)) {
                 return ;
             }
 
@@ -256,7 +273,6 @@ namespace vind
                 // If failed to get the path of the module, skip matching.
                 return ;
             }
-            // std::cout << "## parent: " << path.u8string() << std::endl ;
 
             std::unordered_set<int> indices ;
             evt.match_pattern(path, indices) ;
@@ -272,7 +288,6 @@ namespace vind
                         // If failed to get the path of the module, skip matching.
                         continue ;
                     }
-                    // std::cout << path.u8string() << std::endl ;
 
                     indices.clear() ;
                     evt.match_pattern(path, indices) ;
@@ -282,7 +297,7 @@ namespace vind
 
                     parent_set.insert(pe32.th32ProcessID) ;
                 }
-            } while(Process32Next(h_snap.get(), &pe32)) ;
+            } while(Process32Next(pimpl->h_snap.get(), &pe32)) ;
 
             // Execute the matched sequential commands
             if(!pat_indices.empty()) {

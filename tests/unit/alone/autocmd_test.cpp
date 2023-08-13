@@ -95,10 +95,11 @@ TEST_CASE("AutoPattern") {
 
     SUBCASE("Complex") {
         AutoPattern ap1("*.exe") ;
-        AutoPattern ap2("*vim*") ;
+        AutoPattern ap2("*/vim*") ;
         AutoPattern ap3("*/vim/entry.*") ;
         AutoPattern ap4("?:/*/win-vind/*/*.exe") ;
         AutoPattern ap5("*(vim|emacs)[0-9].[0-9]/*") ;
+        AutoPattern ap6("msedge.exe") ;
 
         CHECK(ap1.match("C:/abc/defj/x.exe")) ;
         CHECK(ap1.match("C:/abc/defj/fjalkfa.exe")) ;
@@ -120,6 +121,9 @@ TEST_CASE("AutoPattern") {
         CHECK(ap5.match("D:/Program Files (x86)/emacs1.0/bin/emacs.exe")) ;
         CHECK_FALSE(ap5.match("D:/Program Files (x86)/emacs1.2.0/bin/emacs.exe")) ;
         CHECK_FALSE(ap5.match("D:/Program Files (x86)/vscode1.2/bin/code.exe")) ;
+
+        CHECK(ap6.match("D:/Program Files (x86)/microsoft/msedge.exe")) ;
+        CHECK(ap6.match("msedge.exe")) ;
     }
 }
 
@@ -129,13 +133,13 @@ TEST_CASE("AutoEvent") {
     evt.add_pattern_cmd("*notepad*", cmd1) ;
 
     auto cmd2 = core::parse_command("<shift-s><ctrl-b>") ;
-    evt.add_pattern_cmd("*vim*", cmd2) ;
+    evt.add_pattern_cmd("*/vim*", cmd2) ;
 
     auto cmd3 = core::parse_command("abcd") ;
-    evt.add_pattern_cmd("*vim*", cmd3) ;
+    evt.add_pattern_cmd("*/vim*", cmd3) ;
 
     auto cmd4 = core::parse_command("<shift-s><ctrl-b>jj") ;
-    evt.add_pattern_cmd("*vim-like*", cmd4) ;
+    evt.add_pattern_cmd("*/vim-like/*", cmd4) ;
 
     auto cmd5 = core::parse_command("FF") ;
     evt.add_pattern_cmd("*edge*", cmd5) ;
@@ -157,7 +161,7 @@ TEST_CASE("AutoEvent") {
 
     indices.clear() ;
 
-    evt.remove_pattern("*vim*") ;
+    evt.remove_pattern("*/vim*") ;
     evt.match_pattern("C:/Program Files/vim-like/something.exe", indices) ;
     CHECK_EQ(indices.size(), 1) ;
 

@@ -85,6 +85,14 @@ namespace
             return std::regex_match(str_query, re_) ;
         }
 
+        bool match(std::string&& query) {
+            return match(std::filesystem::path(std::move(query))) ;
+        }
+
+        bool match(const std::string& query) {
+            return match(std::filesystem::path(query)) ;
+        }
+
         const std::string& get() const noexcept {
             return pat_ ;
         }

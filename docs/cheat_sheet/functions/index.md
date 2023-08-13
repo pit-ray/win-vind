@@ -471,7 +471,7 @@ Move a cursor using hints on the UI objects without clicking.
 <hr class="dash">
 
 ### **`<easyclick_all>`**
-The [\<easyclick\>](./#easyclick) to work on all visible applications even if they are not in focus.
+This function is the [\<easyclick\>](./#easyclick) to work on all visible applications even if they are not in focus.
 
 **See Also**
 - [\<easyclick\>](./#easyclick)

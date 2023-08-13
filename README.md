@@ -68,12 +68,12 @@ $ scoop install win-vind
 -->
 
 ### Executable Installer
-- [win-vind_5.3.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.3.0/win-vind_5.3.0_32bit_installer.zip)
-- [win-vind_5.3.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.3.0/win-vind_5.3.0_64bit_installer.zip)
+- [win-vind_5.4.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.4.0/win-vind_5.4.0_32bit_installer.zip)
+- [win-vind_5.4.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.4.0/win-vind_5.4.0_64bit_installer.zip)
 
 ### Portable Zip
-- [win-vind_5.3.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.3.0/win-vind_5.3.0_32bit_portable.zip)
-- [win-vind_5.3.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.3.0/win-vind_5.3.0_64bit_portable.zip)
+- [win-vind_5.4.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.4.0/win-vind_5.4.0_32bit_portable.zip)
+- [win-vind_5.4.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.4.0/win-vind_5.4.0_64bit_portable.zip)
 
 
 ## Usage

@@ -259,14 +259,13 @@ autocmd {event} {aupat} {cmd}
 
 It adds `{cmd}` into autocmd list for `{aupat}`, autocmd pattern, corresponding to `{event}`.
 As such as Vim, this function append `{cmd}` into a list rather than overwriting it even if the same `{cmd}` has already existed in a list.
-The event does not allow us to use `*`.
-If you want to add a command to multiple events at the same time, `,` without after-space is available.
 The rule of `{aupat}` is based on the original Vim.
 The registered `{cmd}`s will execute in the order added.
 
 **Event**
 
-The following table shows the supported events. autocmd is NOT case-sensitive for events.
+The following table shows the supported events.
+The string of each event is NOT case-sensitive.
 
 |*Event*|*When does it ignite?*|
 |:---|:---|
@@ -287,11 +286,15 @@ The following table shows the supported events. autocmd is NOT case-sensitive fo
 |CmdLineEnter|Enter to the command mode|
 |CmdLineLeave|Leave from the command mode|
 
+The event does not allow us to use `*`.
+If you want to add a command to multiple events at the same time, `,` without after-space is available.
+
 <br>
 
 **Pattern**
-
-The pattern matches against the absolute path to the executable file of the application which creates each event.
+If the pattern contains `/`, it matches the absolute path of the executable file of the application which creates each event.
+If it does not contain `/`, it is compared against the name of the executable file.
+The pattern is NOT case-sensitive.
 
 |Pattern|Interpretation|
 |:---|:---|
@@ -303,6 +306,7 @@ The pattern matches against the absolute path to the executable file of the appl
 
 <br>
 All path delimiters `\` in Windows are treated as `/` in pattern translation.  
+If you want to add a command to multiple patterns at the same time, `,` without after-space is available.
 All others follow the general regex.
 
 **Examples**

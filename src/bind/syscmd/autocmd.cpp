@@ -25,7 +25,7 @@ namespace vind
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
 
             auto [event_str, patcmd] = core::extract_double_args(pargs) ;
-            auto [aupat, cmd] = core::extract_double_args(patcmd) ;
+            auto [pattern, cmd] = core::extract_double_args(patcmd) ;
 
             std::vector<core::AutoCmdEvent> events ;
             for(const auto& event_str_part : util::split(event_str, ",")) {
@@ -42,7 +42,7 @@ namespace vind
                 events.push_back(event) ;
             }
 
-            if(aupat.empty()) {
+            if(pattern.empty()) {
                 opt::VCmdLine::print(
                     opt::ErrorMessage("E: Empty autocmd pattern")) ;
 
@@ -51,6 +51,7 @@ namespace vind
 
                 return ;
             }
+            auto patterns = util::split(pattern, ",") ;
 
             if(cmd.empty()) {
                 opt::VCmdLine::print(
@@ -63,7 +64,9 @@ namespace vind
             }
 
             for(const auto event : events) {
-                core::AutoCmd::get_instance().add(event, aupat, cmd) ;
+                for(const auto& aupat : patterns) {
+                    core::AutoCmd::get_instance().add(event, aupat, cmd) ;
+                }
             }
         }
 
@@ -79,10 +82,11 @@ namespace vind
             auto [_, pargs] = core::divide_cmd_and_args(args) ;
 
             auto [event_str, patcmd] = core::extract_double_args(pargs) ;
-            auto [aupat, cmd] = core::extract_double_args(patcmd) ;
+            auto [pattern, cmd] = core::extract_double_args(patcmd) ;
+            auto patterns = util::split(pattern, ",") ;
 
             if(event_str == "*") {
-                if(aupat.empty()) {
+                if(patterns.empty()) {
                     opt::VCmdLine::print(
                         opt::ErrorMessage("E: Empty autocmd pattern")) ;
                     core::Logger::get_instance().error(
@@ -90,7 +94,9 @@ namespace vind
                     return ;
                 }
 
-                ac.remove(aupat) ;
+                for(const auto& aupat : patterns) {
+                    ac.remove(aupat) ;
+                }
                 return ;
             }
 
@@ -108,7 +114,7 @@ namespace vind
                 events.push_back(event) ;
             }
 
-            if(aupat.empty()) {
+            if(patterns.empty()) {
                 for(const auto event : events) {
                     ac.remove(event) ;
                 }
@@ -116,16 +122,22 @@ namespace vind
             }
             if(cmd.empty()) {
                 for(const auto event : events) {
-                    ac.remove(event, aupat) ;
+                    for(const auto& aupat : patterns) {
+                        ac.remove(event, aupat) ;
+                    }
                 }
                 return ;
             }
 
             for(const auto event : events) {
-                ac.remove(event, aupat) ;
+                for(const auto& aupat : patterns) {
+                    ac.remove(event, aupat) ;
+                }
             }
             for(const auto event : events) {
-                ac.add(event, aupat, cmd) ;
+                for(const auto& aupat : patterns) {
+                    ac.add(event, aupat, cmd) ;
+                }
             }
         }
     }

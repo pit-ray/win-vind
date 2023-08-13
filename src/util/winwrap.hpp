@@ -53,8 +53,8 @@ namespace vind
         std::string get_module_filename(HWND hwnd) ;
         std::string get_module_filename(DWORD procid) ;
 
-        std::string get_module_path(HWND hwnd) ;
-        std::string get_module_path(DWORD procid) ;
+        std::filesystem::path get_module_path(HWND hwnd) ;
+        std::filesystem::path get_module_path(DWORD procid) ;
 
         // Wrapper SystemParametersInfo
         template <typename Ptr>

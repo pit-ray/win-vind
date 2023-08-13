@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "core/keycodedef.hpp"
+#include "debug.hpp"
 #include "def.hpp"
 
 

@@ -125,10 +125,7 @@ namespace vind
             auto& ac = core::AutoCmd::get_instance() ;
             ac.apply(core::get_leave_event(mode)) ;
 
-            if(mode == Mode::GUI_NORMAL) {
-                util::click(KEYCODE_MOUSE_LEFT) ;
-            }
-            else if(mode == Mode::EDI_VISUAL) {
+            if(mode == Mode::EDI_VISUAL) {
                 unselect() ;
             }
 
@@ -166,10 +163,6 @@ namespace vind
 
             auto& ac = core::AutoCmd::get_instance() ;
             ac.apply(core::get_leave_event(m)) ;
-
-            if(m == Mode::GUI_NORMAL) {
-                util::click(KEYCODE_MOUSE_LEFT) ;
-            }
 
             auto& igate = core::InputGate::get_instance() ;
             igate.close_all_ports() ;

@@ -5,9 +5,9 @@
 source small.vindrc
 
 " @ 
-gnnoremap I <to_edi_normal>
-gnnoremap <esc-right> <to_edi_normal>
-gnnoremap <ctrl-[> <to_edi_normal>
+gnnoremap I <click_left><to_edi_normal>
+gnnoremap <esc-right> <click_left><to_edi_normal>
+gnnoremap <ctrl-[> <click_left><to_edi_normal>
 
 " @ Mode Transition
 ennoremap <Esc-Left> <to_gui_normal>

@@ -25,6 +25,7 @@ namespace
     private:
         std::string pat_ ;
         std::regex re_ ;
+        bool is_absolute ;
 
         void init_regex() {
             std::string regex ;
@@ -55,21 +56,31 @@ namespace
 
         explicit AutoPattern(const std::string& pat)
         : pat_(pat),
-          re_()
+          re_(),
+          is_absolute(pat_.find('/') != std::string::npos)
         {
             init_regex() ;
         }
 
         explicit AutoPattern(std::string&& pat)
         : pat_(std::move(pat)),
-          re_()
+          re_(),
+          is_absolute(pat_.find('/') != std::string::npos)
         {
             init_regex() ;
         }
 
         // Match a query with the pattern
-        bool match(const std::string& query) {
-            return std::regex_match(query, re_) ;
+        bool match(const std::filesystem::path& query) {
+            std::string str_query ;
+            if(is_absolute) {
+                str_query = query.u8string() ;
+            }
+            else {
+                str_query = query.filename().u8string() ;
+            }
+
+            return std::regex_match(str_query, re_) ;
         }
 
         const std::string& get() const noexcept {
@@ -122,7 +133,9 @@ namespace
             seqcmds_.erase(seqcmds_.begin() + idx) ;
         }
 
-        void match_pattern(const std::string& query, std::unordered_set<int>& indices) {
+        void match_pattern(
+                const std::filesystem::path& query,
+                std::unordered_set<int>& indices) {
             for(std::size_t i = 0 ; i < pats_.size() ; i ++) {
                 if(pats_[i].match(query)) {
                     indices.insert(static_cast<int>(i)) ;
@@ -179,16 +192,17 @@ namespace vind
             : events_()
             {}
 
-            std::string get_module_path(DWORD procid) {
+            std::filesystem::path get_module_path(DWORD procid) {
                 // Check pattern of the parent process
-                std::string path ;
+                std::filesystem::path path ;
                 try {
                     path = util::get_module_path(procid) ;
                 }
                 catch(const std::runtime_error&) {
-                    return "" ;
+                    return std::filesystem::path() ;
                 }
-                return util::A2a(util::replace_all(path, "\\", "/")) ;
+                return std::filesystem::path(
+                    util::A2a(util::replace_all(path.u8string(), "\\", "/"))) ;
             }
         } ;
 
@@ -237,12 +251,12 @@ namespace vind
             std::unordered_set<DWORD> parent_set{procid} ;
             std::unordered_set<int> pat_indices{} ;  // to call indices of the pattern list
 
-            // Check pattern of the parent process
             auto path = pimpl->get_module_path(procid) ;
             if(path.empty()) {
                 // If failed to get the path of the module, skip matching.
                 return ;
             }
+
             std::unordered_set<int> indices ;
             evt.match_pattern(path, indices) ;
             if(!indices.empty()) {

@@ -6,7 +6,7 @@ gnnoremap <ctrl-]> <to_gui_normal>
 gnnoremap <esc-left> <to_gui_normal>
 gnnoremap <esc-down> <to_resident>
 gnnoremap : <to_command>
-gnnoremap i <to_insert>
+gnnoremap i <click_left><to_insert>
 
 " @ Mouse Movement
 gnnoremap h <move_cursor_left>

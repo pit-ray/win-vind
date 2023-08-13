@@ -186,12 +186,12 @@ namespace vind
             return _get_module_path(procid).filename().u8string() ;
         }
 
-        std::string get_module_path(HWND hwnd) {
-            return _get_module_path(hwnd).u8string() ;
+        std::filesystem::path get_module_path(HWND hwnd) {
+            return _get_module_path(hwnd) ;
         }
 
-        std::string get_module_path(DWORD procid) {
-            return _get_module_path(procid).u8string() ;
+        std::filesystem::path get_module_path(DWORD procid) {
+            return _get_module_path(procid) ;
         }
 
         bool is_failed(HRESULT result) noexcept {

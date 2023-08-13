@@ -318,10 +318,22 @@ namespace vind
         void VindEntry::update() {
             auto& ihub = InputHub::get_instance() ;
 
+            // NOTE: we assume that these hwnd are fixed.
+            static const auto desktop_hwnd = GetDesktopWindow() ;
+            static const auto taskbar_hwnd = FindWindowA("Shell_TrayWnd", NULL) ;
+
             auto& ac = AutoCmd::get_instance() ;
             auto hwnd = util::get_foreground_window() ;
-            DWORD procid ;
-            if(hwnd && GetWindowThreadProcessId(hwnd, &procid)) {
+            auto procid = static_cast<DWORD>(0) ;
+            if(!hwnd || hwnd == desktop_hwnd || hwnd == taskbar_hwnd) {
+                // desktop and taskbar don't fire the enter event because they
+                // include all processes.
+                if(pimpl->previous_procid_ != 0) {
+                    ac.apply(AutoCmdEvent::APP_LEAVE, pimpl->previous_procid_) ;
+                    pimpl->previous_procid_ = 0 ;
+                }
+            }
+            else if(GetWindowThreadProcessId(hwnd, &procid)) {
                 if(pimpl->previous_procid_ != procid) {
                     ac.apply(AutoCmdEvent::APP_LEAVE, pimpl->previous_procid_) ;
                     pimpl->previous_procid_ = procid ;

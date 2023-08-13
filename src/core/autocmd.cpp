@@ -256,6 +256,7 @@ namespace vind
                 // If failed to get the path of the module, skip matching.
                 return ;
             }
+            // std::cout << "## parent: " << path.u8string() << std::endl ;
 
             std::unordered_set<int> indices ;
             evt.match_pattern(path, indices) ;
@@ -271,6 +272,7 @@ namespace vind
                         // If failed to get the path of the module, skip matching.
                         continue ;
                     }
+                    // std::cout << path.u8string() << std::endl ;
 
                     indices.clear() ;
                     evt.match_pattern(path, indices) ;

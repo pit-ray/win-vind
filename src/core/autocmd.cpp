@@ -6,7 +6,6 @@
 #include "inputhub.hpp"
 #include "util/winwrap.hpp"
 
-#include <__msvc_chrono.hpp>
 #include <array>
 #include <chrono>
 #include <memory>

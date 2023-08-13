@@ -470,6 +470,17 @@ Move a cursor using hints on the UI objects without clicking.
 
 <hr class="dash">
 
+### **`<easyclick_all>`**
+The [\<easyclick\>](./#easyclick) to work on all visible applications even if they are not in focus.
+
+**See Also**
+- [\<easyclick\>](./#easyclick)
+- [\<gridmove\>](./#gridmove)
+- [\<click_left\>](./#click_left)
+- [\<click_right\>](./#click_right)
+
+<hr class="dash">
+
 ### **`<gridmove>`**
 Move a cursor using tiled hints laid on the entire screen.
 To change fonts or colors, you can set the several options, such as `gridmove_bgcolor`, `gridmove_fontcolor`, `gridmove_fontname`, `gridmove_fontsize`, and `gridmove_fontweight`.

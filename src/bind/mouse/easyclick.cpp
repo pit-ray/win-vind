@@ -263,7 +263,7 @@ namespace
 
         // For a window to be considered visible,
         // the reference point must be at least 50% visible.
-        int visibility_count = 0 ;
+        std::size_t visibility_count = 0 ;
         for(const auto& point : reference_points) {
             auto top_z_hwnd = get_top_hwnd_from_point(point) ;
             if(top_z_hwnd == hwnd) {

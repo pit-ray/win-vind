@@ -10,7 +10,7 @@ nav: Huge Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`md`, `mkdir`|[\<makedir\>]({{ site.url }}/cheat_sheet/functions/#makedir)|
+|`mkdir`, `md`|[\<makedir\>]({{ site.url }}/cheat_sheet/functions/#makedir)|
 
 <br>
 <br>

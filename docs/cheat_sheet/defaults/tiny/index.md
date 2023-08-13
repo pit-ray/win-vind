@@ -12,39 +12,39 @@ nav: Tiny Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<esc-left>`, `<ctrl-]>`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
+|`<ctrl-]>`, `<esc-left>`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
 |`<esc-down>`|[\<to_resident\>]({{ site.url }}/cheat_sheet/functions/#to_resident)|
 |`:`|[\<to_command\>]({{ site.url }}/cheat_sheet/functions/#to_command)|
-|`i`|[\<to_insert\>]({{ site.url }}/cheat_sheet/functions/#to_insert)|
+|`i`|[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)[\<to_insert\>]({{ site.url }}/cheat_sheet/functions/#to_insert)|
 
 ### Mouse Movement
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<left>`, `h`, `<bs>`|[\<move_cursor_left\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_left)|
-|`l`, `<space>`, `<right>`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
-|`-`, `<up>`, `k`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
-|`<down>`, `+`, `j`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
+|`h`, `<left>`, `<bs>`|[\<move_cursor_left\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_left)|
+|`<space>`, `<right>`, `l`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
+|`-`, `k`, `<up>`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
+|`+`, `j`, `<down>`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
 
 ### Mouse Clicking
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`o`, `O`|[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)|
-|`a`, `A`|[\<click_right\>]({{ site.url }}/cheat_sheet/functions/#click_right)|
+|`o`|[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)|
+|`a`|[\<click_right\>]({{ site.url }}/cheat_sheet/functions/#click_right)|
 
 ### Mouse Scrolling
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<c-k>`, `<c-y>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
-|`<c-j>`, `<c-e>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
+|`<c-y>`, `<c-k>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
+|`<c-e>`, `<c-j>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
 |`<c-u>`|[\<scroll_up_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_halfpage)|
 |`<c-d>`|[\<scroll_down_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_halfpage)|
 |`<c-b>`|[\<scroll_up_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_onepage)|
 |`<c-f>`|[\<scroll_down_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_onepage)|
-|`zh`, `<c-h>`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
-|`<c-l>`, `zl`|[\<scroll_right\>]({{ site.url }}/cheat_sheet/functions/#scroll_right)|
+|`<c-h>`, `zh`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
+|`zl`, `<c-l>`|[\<scroll_right\>]({{ site.url }}/cheat_sheet/functions/#scroll_right)|
 |`zh`|[\<scroll_left_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_left_halfpage)|
 |`zl`|[\<scroll_right_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_right_halfpage)|
 
@@ -52,7 +52,7 @@ nav: Tiny Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<home>`, `^`, `0`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
+|`0`, `^`, `<home>`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
 |`$`, `<end>`|[\<jump_cursor_to_right\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_right)|
 |`gg`|[\<jump_cursor_to_top\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_top)|
 |`G`|[\<jump_cursor_to_bottom\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_bottom)|
@@ -70,6 +70,10 @@ nav: Tiny Mappings
 |`Fm`|[\<easyclick\>]({{ site.url }}/cheat_sheet/functions/#easyclick)[\<click_mid\>]({{ site.url }}/cheat_sheet/functions/#click_mid)|
 |`Fh`|[\<easyclick\>]({{ site.url }}/cheat_sheet/functions/#easyclick)|
 |`<ctrl-m>`|[\<gridmove\>]({{ site.url }}/cheat_sheet/functions/#gridmove)|
+|`AA`, `Ao`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)|
+|`Aa`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)[\<click_right\>]({{ site.url }}/cheat_sheet/functions/#click_right)|
+|`Am`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)[\<click_mid\>]({{ site.url }}/cheat_sheet/functions/#click_mid)|
+|`Ah`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)|
 
 ## Insert Mode
 
@@ -93,9 +97,9 @@ nav: Tiny Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`guinormal`, `gn`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
+|`gn`, `guinormal`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
 |`resident`|[\<to_resident\>]({{ site.url }}/cheat_sheet/functions/#to_resident)|
-|`insert`, `i`|[\<to_insert\>]({{ site.url }}/cheat_sheet/functions/#to_insert)|
+|`i`, `insert`|[\<to_insert\>]({{ site.url }}/cheat_sheet/functions/#to_insert)|
 
 ### System Commands
 
@@ -107,10 +111,10 @@ nav: Tiny Mappings
 |`{mode}noremap`|[\<{mode}noremap\>]({{ site.url }}/cheat_sheet/functions/#noremap)|
 |`{mode}unmap`|[\<{mode}unmap\>]({{ site.url }}/cheat_sheet/functions/#unmap)|
 |`{mode}mapclear`|[\<{mode}mapclear\>]({{ site.url }}/cheat_sheet/functions/#mapclear)|
-|`command`, `com`|[\<command\>]({{ site.url }}/cheat_sheet/functions/#command)|
+|`com`, `command`|[\<command\>]({{ site.url }}/cheat_sheet/functions/#command)|
 |`delc`, `delcommand`|[\<delcommand\>]({{ site.url }}/cheat_sheet/functions/#delcommand)|
 |`comclear`, `comc`|[\<comclear\>]({{ site.url }}/cheat_sheet/functions/#comclear)|
-|`so`, `source`|[\<source\>]({{ site.url }}/cheat_sheet/functions/#source)|
+|`source`, `so`|[\<source\>]({{ site.url }}/cheat_sheet/functions/#source)|
 |`autocmd`|[\<autocmd_add\>]({{ site.url }}/cheat_sheet/functions/#autocmd_add)|
 |`autocmd!`|[\<autocmd_del\>]({{ site.url }}/cheat_sheet/functions/#autocmd_del)|
 

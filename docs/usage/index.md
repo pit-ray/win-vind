@@ -206,12 +206,12 @@ win-vind can be configured to automatically execute commands for specific events
 1. Once notepad is selected, it will automatically switch to Editor normal mode.  
    ```vim
    "Equivalent to conventional dedicate_to_window
-   autocmd AppEnter *notepad* <to_edi_normal>
+   autocmd AppEnter */microsoft*/notepad.exe <to_edi_normal>
    ```
 1. Suppress win-vind in processes named Vim.  
    ```vim
    " Equivalent to conventional suppress_for_vim
-   autocmd AppEnter,EdiNormalEnter *vim* <to_resident>
+   autocmd AppEnter,EdiNormalEnter vim.exe <to_resident>
    ```
 
 See [\<autocmd_add\>]({{ site.url }}/cheat_sheet/functions/#autocmd_add) or [\<autocmd_del\>]({{ site.url }}/cheat_sheet/functions/#autocmd_del) for more details.

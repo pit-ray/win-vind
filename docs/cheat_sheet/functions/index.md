@@ -317,7 +317,7 @@ autocmd AppLeave * <to_insert>
 
 " Limited mapping (match specific application)
 autocmd AppEnter *notepad* <to_edi_normal>
-autocmd AppEnter,EdiNormalEnter *vim* <to_resident>
+autocmd AppEnter,EdiNormalEnter vim.exe <to_resident>
 autocmd AppEnter C:/*/Zotero/zotero.exe <to_edi_normal>
 ```
 

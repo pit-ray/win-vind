@@ -34,7 +34,7 @@ $ scoop bucket add extras
 $ scoop install win-vind
 ```
 
-This has been added to extra thanks to contributors and is automatically updated by the autoupdate feature of scoop.
+This has been added to Scoop Extras thanks to contributors and is automatically updated by the autoupdate feature of scoop.
 
 ### Installer
 Install win-vind to `C:/Program Files/win-vind` and generate a configuration file and log directory in `C:/Users/*/.win-vind`.

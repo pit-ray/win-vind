@@ -1,4 +1,4 @@
-# clean the wxWidgets
+@REM clean the wxWidgets
 
 cd libs
 if %errorlevel% neq 0 exit /b %errorlevel%
@@ -6,7 +6,7 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 rmdir /s wxWidgets
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-# get fresh copies
+@REM get fresh copies
 git clone https://github.com/wxWidgets/wxWidgets.git -b v3.1.5 -j %NUMBER_OF_PROCESSORS% --depth=1
 if %errorlevel% neq 0 exit /b %errorlevel%
 

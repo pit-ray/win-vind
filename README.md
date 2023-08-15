@@ -13,6 +13,7 @@
     <br>
     <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/badge/chocolatey-supported-blue?style=flat-square&color=607D8B" /></a>
     <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/pit-ray/win-vind"><img src="https://img.shields.io/badge/winget-supported-blue?style=flat-square&color=607D8B" /></a>
+    <a href="https://github.com/ScoopInstaller/Extras/commits/master/bucket/win-vind.json"><img src="https://img.shields.io/badge/scoop-supported-blue?style=flat-square&color=607D8B" /></a>
     <img src="https://img.shields.io/badge/Windows%2011-supported-blue?style=flat-square&color=607D8B" />
   </p>
 </p>  
@@ -59,13 +60,13 @@ $ choco install win-vind
 $ winget install win-vind
 ```
 
-<!--
 ### [scoop](https://scoop.sh/)
-Not yet open.
-```sh
+This has been added to extra thanks to contributors and is automatically updated by the autoupdate feature of scoop.
+
+```
+$ scoop bucket add extras
 $ scoop install win-vind
 ```
--->
 
 ### Executable Installer
 - [win-vind_5.4.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.4.0/win-vind_5.4.0_32bit_installer.zip)

@@ -61,7 +61,7 @@ $ winget install win-vind
 ```
 
 ### [scoop](https://scoop.sh/)
-This has been added to extra thanks to contributors and is automatically updated by the autoupdate feature of scoop.
+This has been added to Scoop Extras thanks to contributors and is automatically updated by the autoupdate feature of scoop.
 
 ```
 $ scoop bucket add extras

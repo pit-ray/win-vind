@@ -1,3 +1,5 @@
+*.exe
+*.zip
 .VSCodeCounter
 .a
 .clangd
@@ -17,8 +19,6 @@ compile_flags.txt
 config
 cov-analysis*
 cov_tools
-cov_tools.zip
-curl-for-win.zip
 debug
 debug_cov
 debugvs
@@ -35,4 +35,3 @@ tmp
 venv
 w
 winget
-wingetcreate.exe

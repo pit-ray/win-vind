@@ -318,7 +318,7 @@ namespace vind
         void VindEntry::update() {
             auto& ihub = InputHub::get_instance() ;
 
-            // NOTE: we assume that these hwnd are fixed.
+            // NOTE: it assume that these hwnd are fixed.
             static const auto desktop_hwnd = GetDesktopWindow() ;
             static const auto taskbar_hwnd = FindWindowA("Shell_TrayWnd", NULL) ;
 

@@ -195,7 +195,7 @@ namespace vind
             auto& settable = core::SetTable::get_instance() ;
             auto str = settable.get("arrangewin_ignore").get<std::string>() ;
 
-            auto modules = util::split(str, ",") ;
+            auto modules = util::split(std::move(str), ",") ;
             for(auto& m : modules) {
                 g_ignores.insert(util::A2a(util::trim(m))) ;
             }

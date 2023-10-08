@@ -34,7 +34,7 @@ namespace vind
 
         Option::SPtr ref_global_options_byname(std::string&& name) {
             for(auto& opt : all_global_options()) {
-                if(opt->name() == util::A2a(name)) {
+                if(opt->name() == util::A2a(std::move(name))) {
                     return opt ;
                 }
             }

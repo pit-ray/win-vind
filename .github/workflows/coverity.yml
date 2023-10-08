@@ -82,4 +82,10 @@ jobs:
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
     - name: Submit tarball to Coverity
-      run: curl --form token="${{env.TOKEN}}" --form email="${{env.EMAIL}}" --form file="@build/cov-int.tgz" --form version="${{steps.vars.outputs.sha_short}}" --form description="Automatic submission with GitHub Actions" "https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind"
+      run: curl.exe \
+             --form token="${{env.TOKEN}}" \
+             --form email="${{env.EMAIL}}" \
+             --form file="@build/cov-int.tgz" \
+             --form version="${{steps.vars.outputs.sha_short}}" \
+             --form description="Automatic submission with GitHub Actions" \
+             "https://scan.coverity.com/builds?project=pit-ray%2Fwin-vind"

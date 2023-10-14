@@ -29,21 +29,6 @@ namespace vind
                     opt::VCmdLine().name()
               ))
             {}
-
-            bool call_op(const core::CmdUnit::SPtr& input) {
-                auto& igate = core::InputGate::get_instance() ;
-
-                if(input->is_containing(KEYCODE_H)) {
-                    igate.pushup(KEYCODE_LEFT) ;
-                    return true ;
-                }
-
-                if(input->is_containing(KEYCODE_L)) {
-                    igate.pushup(KEYCODE_RIGHT) ;
-                    return true ;
-                }
-                return false ;
-            }
         } ;
 
         //SwitchWindow
@@ -69,6 +54,9 @@ namespace vind
             igate.release_virtually(KEYCODE_LALT) ;
             igate.pushup(KEYCODE_TAB) ;
 
+            // Wait until the switching control is shown.
+            Sleep(200) ;
+
             while(true) {
                 pimpl->bg_.update() ;
 
@@ -76,7 +64,7 @@ namespace vind
                 do {
                     core::CmdUnit::SPtr input ;
                     std::uint16_t count ;
-                    if(!ihub.get_typed_input(
+                    if(!ihub.pull_input(
                             input, count, core::get_global_mode(), false)) {
                         continue ;
                     }
@@ -87,11 +75,17 @@ namespace vind
                         break ;
                     }
 
-                    if(pimpl->call_op(input)) {
+                    if(input->is_containing(KEYCODE_H)) {
+                        igate.pushup(KEYCODE_LEFT) ;
+                        continue ;
+                    }
+                    if(input->is_containing(KEYCODE_L)) {
+                        igate.pushup(KEYCODE_RIGHT) ;
                         continue ;
                     }
 
-                    Sleep(100) ;
+                    input->execute(count) ;
+                    break_flag = true ;  // executed some commands.
                 } while(!ihub.is_empty_queue()) ;
 
                 if(break_flag) {

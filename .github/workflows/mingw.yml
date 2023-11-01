@@ -43,7 +43,7 @@ jobs:
       shell: powershell
       run: |
         choco install -y 7zip.install
-        curl.exe -OL https://github.com/niXman/mingw-builds-binaries/releases/download/13.2.0-rt_v11-rev0/x86_64-13.2.0-release-win32-seh-ucrt-rt_v11-rev0.7z
+        curl.exe -OL https://github.com/niXman/mingw-builds-binaries/releases/download/13.2.0-rt_v11-rev0/x86_64-13.2.0-release-win32-seh-msvcrt-rt_v11-rev0.7z
         7z x x86_64-13.2.0-release-win32-seh-ucrt-rt_v11-rev0.7z
 
     - name: Cache Libraries

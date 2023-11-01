@@ -42,10 +42,7 @@ jobs:
     - name: Setup Dependencies
       shell: powershell
       run: |
-        choco install -y mingw --version=11.2.0.07112021
-
-    - name: Export chocolatey
-      run: export PATH=C:\\ProgramData\\chocolatey\\bin:$PATH
+        choco install -y mingw
 
     - name: Cache Libraries
       uses: actions/cache@v2

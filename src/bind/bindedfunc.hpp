@@ -1,6 +1,7 @@
 #ifndef _BINDED_FUNC_HPP
 #define _BINDED_FUNC_HPP
 
+#include <cstdint>
 #include <memory>
 #include <string>
 

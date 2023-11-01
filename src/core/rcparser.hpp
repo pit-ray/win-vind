@@ -4,6 +4,7 @@
 #include "mode.hpp"
 #include "util/type_traits.hpp"
 
+#include <cstdint>
 #include <string>
 #include <utility>
 

@@ -57,6 +57,8 @@ namespace vind
             // Wait until the switching control is shown.
             Sleep(200) ;
 
+            auto mode = core::get_global_mode() ;
+
             while(true) {
                 pimpl->bg_.update() ;
 
@@ -64,8 +66,7 @@ namespace vind
                 do {
                     core::CmdUnit::SPtr input ;
                     std::uint16_t count ;
-                    if(!ihub.pull_input(
-                            input, count, core::get_global_mode(), false)) {
+                    if(!ihub.fetch_input(input, count, mode, false)) {
                         continue ;
                     }
 
@@ -81,6 +82,14 @@ namespace vind
                     }
                     if(input->is_containing(KEYCODE_L)) {
                         igate.pushup(KEYCODE_RIGHT) ;
+                        continue ;
+                    }
+
+                    // Map the inputs except for h and l.
+                    if(!ihub.enqueue_mapped(input, count, mode)) {
+                        continue ;
+                    }
+                    if(!ihub.fetch_input(input, count, mode, false)) {
                         continue ;
                     }
 

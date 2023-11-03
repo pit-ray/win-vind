@@ -85,16 +85,14 @@ namespace vind
                         continue ;
                     }
 
-                    // Map the inputs except for h and l.
-                    if(!ihub.enqueue_mapped(input, count, mode)) {
-                        continue ;
-                    }
-                    if(!ihub.fetch_input(input, count, mode, false)) {
+                    if(input->empty()) {
+                        input->execute(count) ;
+                        break_flag = true ;  // executed some commands.
                         continue ;
                     }
 
-                    input->execute(count) ;
-                    break_flag = true ;  // executed some commands.
+                    // Map the inputs except for h and l.
+                    ihub.enqueue_mapped(input, count, mode) ;
                 } while(!ihub.is_empty_queue()) ;
 
                 if(break_flag) {

@@ -319,13 +319,13 @@ Cache lifetime (ms). A high value reduces the computational cost, but decreases 
 
 ### **`uiacachebuild_staybegin`**
 **type**: num, **default**: 500  
-The time between when the mouse cursor stops moving and when it starts to build a cache. In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. Therefore, it should be updated only immediately after the mouse stops. The value of this option is the time(ms) that the mouse cursor is considered to be stopped. Please refer to [appendix](#overview-of-stay-range-in-uiacachebuild)
+The time between when the mouse cursor stops moving and when it starts to build a cache. In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. Therefore, it should be updated only immediately after the mouse stops. The value of this option is the time(ms) that the mouse cursor is considered to be stopped.
 
 <hr class="dash">
 
 ### **`uiacachebuild_stayend`**
 **type**: num, **default**: 2000  
-In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. The value of this option is the time(ms) between the time the cursor stops moving and the time it stops creating a cache. Please refer to appendix [appendix](#overview-of-stay-range-in-uiacachebuild)
+In order to reduce unnecessary computational cost, it is desirable not to create a cache when there is no operation. The value of this option is the time(ms) between the time the cursor stops moving and the time it stops creating a cache.
 
 
 <p align="center">

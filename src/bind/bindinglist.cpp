@@ -3,6 +3,7 @@
 #include "bindedfunc.hpp"
 
 #include "ctrl/guictrl.hpp"
+#include "ctrl/sleep.hpp"
 
 #include "emu/changetext.hpp"
 #include "emu/deltext.hpp"
@@ -107,6 +108,7 @@ namespace vind
                 Execute::create(),
                 ExitConfigGUI::create(),
                 Exit::create(),
+                Sleep::create(),
                 ForwardUINavigation::create(),
                 GotoNextPage::create(),
                 GotoPrevPage::create(),

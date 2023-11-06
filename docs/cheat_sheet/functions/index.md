@@ -976,6 +976,8 @@ Close the current window.
 ### **`<execute>`**
 Open file with the associated application. This is a wrapper for the famous Windows API, **ShellExecute**, which behaves the same as double-clicking in Explorer. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`. If there is no argument, it will open .vindrc loaded at initialization.
 
+
+
 <!--
 **See Also**
 - [\<a\>](./#a)
@@ -985,6 +987,35 @@ Open file with the associated application. This is a wrapper for the famous Wind
 
 ### **`<exit>`**
 Exit win-vind.
+
+<!--
+**See Also**
+- [\<a\>](./#a)
+-->
+
+<hr class="dash">
+
+### **`<sleep>`**
+Sleep win-vind for N seconds.
+As the same as Vim, this command is called with commands of the command mode or some bindings.
+The duration of time to sleep is specified by the arguments of commands (e.g., `:sleep 10`) or the prefix number of bindings (e.g., `10gs`), as shown in the below examples.
+When `m` is included, sleep for N milliseconds.
+The default is one seconds.
+
+**Example for command line**
+
+```vim
+:sleep       " sleep for one second
+:sleep 5     " sleep for five seconds
+:sleep 100m  " sleep for 100 milliseconds
+```
+
+**Example for .vindrc**
+
+```vim
+map <ctrl-1> :sleep 5<cr><easyclick>  " Launch easyclick after 5 seconds.
+```
+
 
 <!--
 **See Also**

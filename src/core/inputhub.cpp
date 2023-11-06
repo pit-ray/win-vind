@@ -145,6 +145,10 @@ namespace vind
 
             auto solver = get_solver(mode) ;
             if(parse_count && !solver->is_matching_any()) {
+                if(!pimpl->count_.empty() && pimpl->count_.back() == ';') {
+                    pimpl->count_.clear() ;  // Erase previous counts.
+                }
+
                 // parses the sequence of head counts as the string
                 // and converts them into a number.
                 auto new_count = extract_numbers(
@@ -156,8 +160,8 @@ namespace vind
             }
 
             if(!pimpl->count_.empty()) {
+                pimpl->count_ += ';' ;  // Final symbol of counts
                 count = util::extract_num<std::uint16_t>(pimpl->count_) ;
-                pimpl->count_.clear() ;
             }
             else {
                 count = 1 ;

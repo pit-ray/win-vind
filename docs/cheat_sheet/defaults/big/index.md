@@ -20,9 +20,9 @@ nav: Big Mappings
 |:---:|:---:|
 |`V`|[\<select_all\>]({{ site.url }}/cheat_sheet/functions/#select_all)|
 |`Y`, `yy`, `y`|[\<hotkey_copy\>]({{ site.url }}/cheat_sheet/functions/#hotkey_copy)|
-|`P`, `p`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
-|`dd`, `D`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
-|`x`, `<Del>`|[\<hotkey_delete\>]({{ site.url }}/cheat_sheet/functions/#hotkey_delete)|
+|`p`, `P`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
+|`D`, `dd`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
+|`<Del>`, `x`|[\<hotkey_delete\>]({{ site.url }}/cheat_sheet/functions/#hotkey_delete)|
 |`X`|[\<hotkey_backspace\>]({{ site.url }}/cheat_sheet/functions/#hotkey_backspace)|
 |`<C-r>`|[\<redo\>]({{ site.url }}/cheat_sheet/functions/#redo)|
 |`u`, `U`|[\<undo\>]({{ site.url }}/cheat_sheet/functions/#undo)|
@@ -52,15 +52,15 @@ nav: Big Mappings
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`h`, `<BS>`, `<Left>`|[\<move_cursor_left\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_left)|
-|`<Space>`, `<Right>`, `l`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
-|`-`, `<Up>`, `k`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
-|`<Down>`, `+`, `j`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
+|`<Right>`, `l`, `<Space>`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
+|`k`, `-`, `<Up>`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
+|`<Down>`, `j`, `+`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
 
 ### Mouse Jumping
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`0`, `<Home>`, `^`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
+|`^`, `0`, `<Home>`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
 |`<End>`, `$`|[\<jump_cursor_to_right\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_right)|
 |`gg`|[\<jump_cursor_to_top\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_top)|
 |`G`|[\<jump_cursor_to_bottom\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_bottom)|
@@ -72,13 +72,13 @@ nav: Big Mappings
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`<C-y>`, `<C-k>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
-|`<C-j>`, `<C-e>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
+|`<C-e>`, `<C-j>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
 |`<C-u>`|[\<scroll_up_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_halfpage)|
 |`<C-d>`|[\<scroll_down_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_halfpage)|
 |`<C-b>`|[\<scroll_up_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_onepage)|
 |`<C-f>`|[\<scroll_down_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_onepage)|
-|`<C-h>`, `zh`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
-|`zl`, `<C-l>`|[\<scroll_right\>]({{ site.url }}/cheat_sheet/functions/#scroll_right)|
+|`zh`, `<C-h>`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
+|`<C-l>`, `zl`|[\<scroll_right\>]({{ site.url }}/cheat_sheet/functions/#scroll_right)|
 |`zH`|[\<scroll_left_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_left_halfpage)|
 |`zL`|[\<scroll_right_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_right_halfpage)|
 
@@ -87,9 +87,9 @@ nav: Big Mappings
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`Y`, `yy`, `y`|[\<hotkey_copy\>]({{ site.url }}/cheat_sheet/functions/#hotkey_copy)|
-|`P`, `p`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
-|`dd`, `D`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
-|`x`, `<Del>`|[\<hotkey_delete\>]({{ site.url }}/cheat_sheet/functions/#hotkey_delete)|
+|`p`, `P`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
+|`D`, `dd`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
+|`<Del>`, `x`|[\<hotkey_delete\>]({{ site.url }}/cheat_sheet/functions/#hotkey_delete)|
 |`X`|[\<hotkey_backspace\>]({{ site.url }}/cheat_sheet/functions/#hotkey_backspace)|
 
 ## Command Mode
@@ -98,7 +98,7 @@ nav: Big Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`gv`, `guivisual`|[\<to_gui_visual\>]({{ site.url }}/cheat_sheet/functions/#to_gui_visual)|
+|`guivisual`, `gv`|[\<to_gui_visual\>]({{ site.url }}/cheat_sheet/functions/#to_gui_visual)|
 
 ### Shortcut
 
@@ -107,14 +107,14 @@ nav: Big Mappings
 |`vdprev`|[\<switch_to_left_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#switch_to_left_vdesktop)|
 |`vdnext`|[\<switch_to_right_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#switch_to_right_vdesktop)|
 |`closev`|[\<close_current_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#close_current_vdesktop)|
-|`vdesktop<space>list`, `tv`, `taskview`|[\<taskview\>]({{ site.url }}/cheat_sheet/functions/#taskview)|
+|`tv`, `vdesktop<space>list`, `taskview`|[\<taskview\>]({{ site.url }}/cheat_sheet/functions/#taskview)|
 |`tabprevious`|[\<switch_to_left_tab\>]({{ site.url }}/cheat_sheet/functions/#switch_to_left_tab)|
 |`tabnext`|[\<switch_to_right_tab\>]({{ site.url }}/cheat_sheet/functions/#switch_to_right_tab)|
 |`tabnew`|[\<open_new_tab\>]({{ site.url }}/cheat_sheet/functions/#open_new_tab)|
 |`q!`, `tabclose`, `q`|[\<close_current_tab\>]({{ site.url }}/cheat_sheet/functions/#close_current_tab)|
 |`ex`, `explorer`|[\<start_explorer\>]({{ site.url }}/cheat_sheet/functions/#start_explorer)|
 |`start`, `win`|[\<open_startmenu\>]({{ site.url }}/cheat_sheet/functions/#open_startmenu)|
-|`find`, `open`|[\<open\>]({{ site.url }}/cheat_sheet/functions/#open)|
+|`open`, `find`|[\<open\>]({{ site.url }}/cheat_sheet/functions/#open)|
 |`forward`|[\<forward_ui_navigation\>]({{ site.url }}/cheat_sheet/functions/#forward_ui_navigation)|
 |`backward`|[\<backward_ui_navigation\>]({{ site.url }}/cheat_sheet/functions/#backward_ui_navigation)|
 |`decide`|[\<decide_focused_ui_object\>]({{ site.url }}/cheat_sheet/functions/#decide_focused_ui_object)|

@@ -21,10 +21,10 @@ nav: Tiny Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`h`, `<left>`, `<bs>`|[\<move_cursor_left\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_left)|
-|`<space>`, `<right>`, `l`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
-|`-`, `k`, `<up>`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
-|`+`, `j`, `<down>`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
+|`h`, `<bs>`, `<left>`|[\<move_cursor_left\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_left)|
+|`<right>`, `l`, `<space>`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
+|`k`, `-`, `<up>`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
+|`j`, `<down>`, `+`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
 
 ### Mouse Clicking
 
@@ -38,13 +38,13 @@ nav: Tiny Mappings
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`<c-y>`, `<c-k>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
-|`<c-e>`, `<c-j>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
+|`<c-j>`, `<c-e>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
 |`<c-u>`|[\<scroll_up_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_halfpage)|
 |`<c-d>`|[\<scroll_down_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_halfpage)|
 |`<c-b>`|[\<scroll_up_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_onepage)|
 |`<c-f>`|[\<scroll_down_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_onepage)|
-|`<c-h>`, `zh`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
-|`zl`, `<c-l>`|[\<scroll_right\>]({{ site.url }}/cheat_sheet/functions/#scroll_right)|
+|`zh`, `<c-h>`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
+|`<c-l>`, `zl`|[\<scroll_right\>]({{ site.url }}/cheat_sheet/functions/#scroll_right)|
 |`zh`|[\<scroll_left_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_left_halfpage)|
 |`zl`|[\<scroll_right_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_right_halfpage)|
 
@@ -52,8 +52,8 @@ nav: Tiny Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`0`, `^`, `<home>`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
-|`$`, `<end>`|[\<jump_cursor_to_right\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_right)|
+|`^`, `0`, `<home>`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
+|`<end>`, `$`|[\<jump_cursor_to_right\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_right)|
 |`gg`|[\<jump_cursor_to_top\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_top)|
 |`G`|[\<jump_cursor_to_bottom\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_bottom)|
 |`gm`|[\<jump_cursor_to_hcenter\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_hcenter)|
@@ -70,7 +70,7 @@ nav: Tiny Mappings
 |`Fm`|[\<easyclick\>]({{ site.url }}/cheat_sheet/functions/#easyclick)[\<click_mid\>]({{ site.url }}/cheat_sheet/functions/#click_mid)|
 |`Fh`|[\<easyclick\>]({{ site.url }}/cheat_sheet/functions/#easyclick)|
 |`<ctrl-m>`|[\<gridmove\>]({{ site.url }}/cheat_sheet/functions/#gridmove)|
-|`AA`, `Ao`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)|
+|`Ao`, `AA`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)|
 |`Aa`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)[\<click_right\>]({{ site.url }}/cheat_sheet/functions/#click_right)|
 |`Am`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)[\<click_mid\>]({{ site.url }}/cheat_sheet/functions/#click_mid)|
 |`Ah`|[\<easyclick_all\>]({{ site.url }}/cheat_sheet/functions/#easyclick_all)|
@@ -79,7 +79,7 @@ nav: Tiny Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<Esc-Left>`, `<ctrl-]>`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
+|`<ctrl-]>`, `<Esc-Left>`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
 |`<F8>`|[\<to_instant_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_instant_gui_normal)|
 |`<Esc-Down>`|[\<to_resident\>]({{ site.url }}/cheat_sheet/functions/#to_resident)|
 
@@ -97,15 +97,16 @@ nav: Tiny Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`gn`, `guinormal`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
+|`guinormal`, `gn`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
 |`resident`|[\<to_resident\>]({{ site.url }}/cheat_sheet/functions/#to_resident)|
-|`i`, `insert`|[\<to_insert\>]({{ site.url }}/cheat_sheet/functions/#to_insert)|
+|`insert`, `i`|[\<to_insert\>]({{ site.url }}/cheat_sheet/functions/#to_insert)|
 
 ### System Commands
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`exit`|[\<exit\>]({{ site.url }}/cheat_sheet/functions/#exit)|
+|`sleep`|[\<sleep\>]({{ site.url }}/cheat_sheet/functions/#sleep)|
 |`set`|[\<set\>]({{ site.url }}/cheat_sheet/functions/#set)|
 |`{mode}map`|[\<{mode}map\>]({{ site.url }}/cheat_sheet/functions/#map)|
 |`{mode}noremap`|[\<{mode}noremap\>]({{ site.url }}/cheat_sheet/functions/#noremap)|

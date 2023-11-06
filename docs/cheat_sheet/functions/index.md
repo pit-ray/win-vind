@@ -1002,12 +1002,20 @@ The duration of time to sleep is specified by the arguments of commands (e.g., `
 When `m` is included, sleep for N milliseconds.
 The default is one seconds.
 
-**Example**
+**Example for command line**
+
 ```vim
 :sleep       " sleep for one second
 :sleep 5     " sleep for five seconds
 :sleep 100m  " sleep for 100 milliseconds
 ```
+
+**Example for .vindrc**
+
+```vim
+map <ctrl-1> :sleep 5<cr><easyclick>  " Launch easyclick after 5 seconds.
+```
+
 
 <!--
 **See Also**

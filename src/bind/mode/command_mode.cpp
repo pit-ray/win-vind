@@ -183,6 +183,10 @@ namespace vind
                 return result ;
             }
 
+            void complement_command() {
+
+            }
+
             void write_as_printable(const core::CmdUnit::SPtr& input) {
                 // Aggregate the printable keys into this vector from input and outputs.
                 std::vector<core::CmdUnit::SPtr> printables ;
@@ -283,6 +287,10 @@ namespace vind
                     }
                     if(input->is_containing(KEYCODE_DOWN)) {
                         pimpl->forward_history() ;
+                        continue ;
+                    }
+                    if(input->is_containing(KEYCODE_TAB)) {
+                        pimpl->complement_command() ;
                         continue ;
                     }
                     if(input->is_containing(KEYCODE_ENTER)) {

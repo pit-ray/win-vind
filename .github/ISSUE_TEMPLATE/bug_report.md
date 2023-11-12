@@ -19,6 +19,9 @@ To prevent duplicated issue posts, please check the task list at https://github.
 1.
 
 # Environments
+<!--
+Run this in powershell to get the relevant Windows build information :  systeminfo /fo csv | ConvertFrom-Csv | select "OS Name", "OS Version", "System Type" | Format-List 
+-->
 
 |Environments|Delete the example and fill in your information.|
 |:---:|:---|

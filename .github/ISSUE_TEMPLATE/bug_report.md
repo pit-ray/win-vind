@@ -20,7 +20,7 @@ To prevent duplicated issue posts, please check the task list at https://github.
 
 # Environments
 <!--
-Run this in powershell to get the relevant Windows build information :  systeminfo /fo csv | ConvertFrom-Csv | select "OS Name", "OS Version", "System Type" | Format-List 
+You can find the environment detail in the log files of %USERPROFILE%/.win-vind/log directory. Don't add any personal information here.
 -->
 
 |Environments|Delete the example and fill in your information.|

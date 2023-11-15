@@ -19,6 +19,9 @@ To prevent duplicated issue posts, please check the task list at https://github.
 1.
 
 # Environments
+<!--
+You can find the environment detail in the log files of %USERPROFILE%/.win-vind/log directory. Don't add any personal information here.
+-->
 
 |Environments|Delete the example and fill in your information.|
 |:---:|:---|

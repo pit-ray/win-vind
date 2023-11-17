@@ -1,0 +1,4 @@
+#ifndef _FOCUSTEXTAREA_HPP
+#define _FOCUSTEXTAREA_HPP
+
+#endif

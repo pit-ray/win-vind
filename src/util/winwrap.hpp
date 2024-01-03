@@ -26,6 +26,8 @@ namespace vind
         Box2D get_window_rect(HWND hwnd) ;
         Box2D get_client_rect(HWND hwnd) ;
 
+        void move_window(HWND hwnd, long left, long top, long width, long height) ;
+
         inline BOOL b_to_B(bool b) noexcept {
             return b ? TRUE : FALSE ;
         }

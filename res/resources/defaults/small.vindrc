@@ -16,6 +16,12 @@ gnnoremap <C-w>k <select_upper_window>
 gnnoremap <C-w>j <select_lower_window>
 gnnoremap <C-w>s <switch_window>
 
+" @ Window Movement
+gnnoremap <C-w><C-h> <move_window_left>
+gnnoremap <C-w><C-l> <move_window_right>
+gnnoremap <C-w><C-k> <move_window_up>
+gnnoremap <C-w><C-j> <move_window_down>
+
 " @ Window Resize
 gnnoremap <C-w>= <arrange_windows>
 gnnoremap <C-w>r <rotate_windows>

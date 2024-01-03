@@ -68,6 +68,12 @@ namespace vind
             return rect ;
         }
 
+        void move_window(HWND hwnd, long left, long top, long width, long height) {
+            if(!MoveWindow(hwnd, left, top, width, height, TRUE)) {
+                throw RUNTIME_EXCEPT("Could not move the foreground window.") ;
+            }
+        }
+
         template <typename StdString, typename Path>
         inline void create_process_core(
                 StdString&& cmd,

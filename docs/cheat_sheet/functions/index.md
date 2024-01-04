@@ -460,6 +460,11 @@ Move a cursor using hints on the UI objects without clicking.
 > </tr>
 > </table>
 
+<p align="center">
+<img src="{{ site.url }}/imgs/easyclick.png" class="img-fluid">
+<p align="center">Move a cursor using hints.</p>
+</p>
+
 **See Also**
 - [\<gridmove\>](./#gridmove)
 - [\<click_left\>](./#click_left)
@@ -485,6 +490,11 @@ This function is the [\<easyclick\>](./#easyclick) to work on all visible applic
 Move a cursor using tiled hints laid on the entire screen.
 To change fonts or colors, you can set the several options, such as `gridmove_bgcolor`, `gridmove_fontcolor`, `gridmove_fontname`, `gridmove_fontsize`, and `gridmove_fontweight`.
 In order to change the grid size, set the size with `gridmove_size` option. It assumes a text as its value, such as `12x8` for horizontal 12 cells and vertical 8 cells.
+
+<p align="center">
+<img src="{{ site.url }}/imgs/gridmove.png" class="img-fluid">
+<p align="center">Move a cursor using tiled hints.</p>
+</p>
 
 **See Also**
 - [\<easyclick\>](./#easyclick)

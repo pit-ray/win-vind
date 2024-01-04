@@ -568,7 +568,7 @@ namespace vind
 
         bool MapSolver::is_matching_any() const noexcept {
             for(const auto& map : pimpl->deployed_) {
-                if(map.trigger_matcher.history_size() > 0) {
+                if(map.trigger_matcher.is_matching()) {
                     return true ;
                 }
             }
@@ -602,6 +602,16 @@ namespace vind
                 }
             }
             return flag ;
+        }
+
+        std::size_t MapSolver::max_history_size() const noexcept {
+            std::size_t size = 0 ;
+            for(const auto& map : pimpl->deployed_) {
+                if(map.trigger_matcher.history_size() > size) {
+                    size = map.trigger_matcher.history_size() ;
+                }
+            }
+            return size ;
         }
     }
 }

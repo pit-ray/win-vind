@@ -750,6 +750,63 @@ Select the lower window.
 
 <hr class="dash">
 
+### **`<move_window_left>`**
+Moves the selected widow to the left.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-h>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+
+### **`<move_window_right>`**
+Moves the selected widow to the right.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-l>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<move_window_up>`**
+Moves the selected widow to the up.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-k>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<move_window_down>`**
+Moves the selected widow to the down.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-j>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
 ### **`<maximize_current_window>`**
 Maximize the current window.
 

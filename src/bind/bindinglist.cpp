@@ -50,6 +50,7 @@
 #include "window/close_win.hpp"
 #include "window/exchange_win.hpp"
 #include "window/minmax_win.hpp"
+#include "window/move_win.hpp"
 #include "window/reload_win.hpp"
 #include "window/resize_win.hpp"
 #include "window/rotate_win.hpp"
@@ -135,6 +136,11 @@ namespace vind
                 MakeDir::create(),
                 MaximizeCurrentWindow::create(),
                 MinimizeCurrentWindow::create(),
+                MoveBckBigWord::create(),
+                MoveBckEndBigWord::create(),
+                MoveBckEndWord::create(),
+                MoveBckWord::create(),
+                MoveBckWordSimple::create(),
                 MoveCaretDown::create(),
                 MoveCaretLeft::create(),
                 MoveCaretNonBlankWordBackward::create(),
@@ -147,16 +153,15 @@ namespace vind
                 MoveCursorLeft::create(),
                 MoveCursorRight::create(),
                 MoveCursorUp::create(),
-                MoveBckBigWord::create(),
-                MoveBckEndBigWord::create(),
-                MoveBckEndWord::create(),
-                MoveBckWord::create(),
-                MoveBckWordSimple::create(),
                 MoveEndBigWord::create(),
                 MoveEndWord::create(),
                 MoveFwdBigWord::create(),
                 MoveFwdWord::create(),
                 MoveFwdWordSimple::create(),
+                MoveWindowDown::create(),
+                MoveWindowLeft::create(),
+                MoveWindowRight::create(),
+                MoveWindowUp::create(),
                 Open::create(),
                 OpenNewTab::create(),
                 OpenNewWindow::create(),

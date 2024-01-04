@@ -10,7 +10,7 @@ nav: Normal Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<esc-right>`, `<ctrl-[>`, `I`|[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
+|`<ctrl-[>`, `<esc-right>`, `I`|[\<click_left\>]({{ site.url }}/cheat_sheet/functions/#click_left)[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
 
 ## Editor Normal Mode
 
@@ -29,8 +29,8 @@ nav: Normal Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<C-y>`, `<C-k>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
-|`<C-e>`, `<C-j>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
+|`<C-k>`, `<C-y>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
+|`<C-j>`, `<C-e>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
 |`<C-u>`|[\<scroll_up_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_halfpage)|
 |`<C-d>`|[\<scroll_down_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_halfpage)|
 |`<C-b>`|[\<scroll_up_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_onepage)|
@@ -48,7 +48,7 @@ nav: Normal Mappings
 |`u`, `U`|[\<undo\>]({{ site.url }}/cheat_sheet/functions/#undo)|
 |`gT`|[\<switch_to_left_tab\>]({{ site.url }}/cheat_sheet/functions/#switch_to_left_tab)|
 |`gt`|[\<switch_to_right_tab\>]({{ site.url }}/cheat_sheet/functions/#switch_to_right_tab)|
-|`?`, `/`|[\<search_pattern\>]({{ site.url }}/cheat_sheet/functions/#search_pattern)|
+|`/`, `?`|[\<search_pattern\>]({{ site.url }}/cheat_sheet/functions/#search_pattern)|
 
 ### Mode Transition on Vim Emulation
 
@@ -64,10 +64,10 @@ nav: Normal Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<C-h>`, `h`, `<BS>`, `<Left>`|[\<move_caret_left\>]({{ site.url }}/cheat_sheet/functions/#move_caret_left)|
-|`<Right>`, `l`, `<Space>`|[\<move_caret_right\>]({{ site.url }}/cheat_sheet/functions/#move_caret_right)|
-|`<C-p>`, `-`, `<Up>`, `gk`, `k`|[\<move_caret_up\>]({{ site.url }}/cheat_sheet/functions/#move_caret_up)|
-|`j`, `<C-n>`, `<Enter>`, `<Down>`, `<C-m>`, `+`, `gj`|[\<move_caret_down\>]({{ site.url }}/cheat_sheet/functions/#move_caret_down)|
+|`<BS>`, `<Left>`, `<C-h>`, `h`|[\<move_caret_left\>]({{ site.url }}/cheat_sheet/functions/#move_caret_left)|
+|`l`, `<Right>`, `<Space>`|[\<move_caret_right\>]({{ site.url }}/cheat_sheet/functions/#move_caret_right)|
+|`<Up>`, `-`, `gk`, `<C-p>`, `k`|[\<move_caret_up\>]({{ site.url }}/cheat_sheet/functions/#move_caret_up)|
+|`j`, `<C-n>`, `<Down>`, `<C-m>`, `gj`, `<Enter>`, `+`|[\<move_caret_down\>]({{ site.url }}/cheat_sheet/functions/#move_caret_down)|
 |`w`|[\<move_fwd_word\>]({{ site.url }}/cheat_sheet/functions/#move_fwd_word)|
 |`b`|[\<move_bck_word\>]({{ site.url }}/cheat_sheet/functions/#move_bck_word)|
 |`W`|[\<move_fwd_bigword\>]({{ site.url }}/cheat_sheet/functions/#move_fwd_bigword)|
@@ -81,8 +81,8 @@ nav: Normal Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`0`, `<Home>`, `g0`|[\<jump_caret_to_BOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_bol)|
-|`g$`, `<End>`, `$`|[\<jump_caret_to_EOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_eol)|
+|`0`, `g0`, `<Home>`|[\<jump_caret_to_BOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_bol)|
+|`$`, `g$`, `<End>`|[\<jump_caret_to_EOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_eol)|
 |`gg`|[\<jump_caret_to_BOF\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_bof)|
 |`G`|[\<jump_caret_to_EOF\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_eof)|
 
@@ -96,7 +96,7 @@ nav: Normal Mappings
 |`P`|[\<put_before\>]({{ site.url }}/cheat_sheet/functions/#put_before)|
 |`dd`|[\<delete_line\>]({{ site.url }}/cheat_sheet/functions/#delete_line)|
 |`D`|[\<delete_line_until_EOL\>]({{ site.url }}/cheat_sheet/functions/#delete_line_until_eol)|
-|`<Del>`, `x`|[\<delete_after\>]({{ site.url }}/cheat_sheet/functions/#delete_after)|
+|`x`, `<Del>`|[\<delete_after\>]({{ site.url }}/cheat_sheet/functions/#delete_after)|
 |`X`|[\<delete_before\>]({{ site.url }}/cheat_sheet/functions/#delete_before)|
 |`J`|[\<join_next_line\>]({{ site.url }}/cheat_sheet/functions/#join_next_line)|
 |`r`|[\<replace_char\>]({{ site.url }}/cheat_sheet/functions/#replace_char)|
@@ -104,7 +104,7 @@ nav: Normal Mappings
 |`~`|[\<switch_char_case\>]({{ site.url }}/cheat_sheet/functions/#switch_char_case)|
 |`d`|[\<delete_with_motion\>]({{ site.url }}/cheat_sheet/functions/#delete_with_motion)|
 |`c`|[\<change_with_motion\>]({{ site.url }}/cheat_sheet/functions/#change_with_motion)|
-|`cc`, `S`|[\<change_line\>]({{ site.url }}/cheat_sheet/functions/#change_line)|
+|`S`, `cc`|[\<change_line\>]({{ site.url }}/cheat_sheet/functions/#change_line)|
 |`s`|[\<change_char\>]({{ site.url }}/cheat_sheet/functions/#change_char)|
 |`C`|[\<change_until_EOL\>]({{ site.url }}/cheat_sheet/functions/#change_until_eol)|
 |`.`|[\<repeat_last_change\>]({{ site.url }}/cheat_sheet/functions/#repeat_last_change)|
@@ -118,14 +118,14 @@ nav: Normal Mappings
 |`<ctrl-]>`, `<Esc-Left>`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
 |`<Esc-Down>`|[\<to_resident\>]({{ site.url }}/cheat_sheet/functions/#to_resident)|
 |`:`|[\<to_command\>]({{ site.url }}/cheat_sheet/functions/#to_command)|
-|`<ctrl-[>`, `<Esc-Right>`|[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
+|`<Esc-Right>`, `<ctrl-[>`|[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
 
 ### Scrolling
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<C-y>`, `<C-k>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
-|`<C-e>`, `<C-j>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
+|`<C-k>`, `<C-y>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
+|`<C-j>`, `<C-e>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
 |`<C-u>`|[\<scroll_up_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_halfpage)|
 |`<C-d>`|[\<scroll_down_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_halfpage)|
 |`<C-b>`|[\<scroll_up_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_onepage)|
@@ -139,10 +139,10 @@ nav: Normal Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<C-h>`, `h`, `<BS>`, `<Left>`|[\<move_caret_left\>]({{ site.url }}/cheat_sheet/functions/#move_caret_left)|
-|`<Right>`, `l`, `<Space>`|[\<move_caret_right\>]({{ site.url }}/cheat_sheet/functions/#move_caret_right)|
-|`<C-p>`, `-`, `<Up>`, `gk`, `k`|[\<move_caret_up\>]({{ site.url }}/cheat_sheet/functions/#move_caret_up)|
-|`j`, `<C-n>`, `<Enter>`, `<Down>`, `<C-m>`, `+`, `gj`|[\<move_caret_down\>]({{ site.url }}/cheat_sheet/functions/#move_caret_down)|
+|`<BS>`, `<Left>`, `<C-h>`, `h`|[\<move_caret_left\>]({{ site.url }}/cheat_sheet/functions/#move_caret_left)|
+|`l`, `<Right>`, `<Space>`|[\<move_caret_right\>]({{ site.url }}/cheat_sheet/functions/#move_caret_right)|
+|`<Up>`, `-`, `gk`, `<C-p>`, `k`|[\<move_caret_up\>]({{ site.url }}/cheat_sheet/functions/#move_caret_up)|
+|`j`, `<C-n>`, `<Down>`, `<C-m>`, `gj`, `<Enter>`, `+`|[\<move_caret_down\>]({{ site.url }}/cheat_sheet/functions/#move_caret_down)|
 |`w`|[\<move_fwd_word_simple\>]({{ site.url }}/cheat_sheet/functions/#move_fwd_word_simple)|
 |`b`|[\<move_bck_word_simple\>]({{ site.url }}/cheat_sheet/functions/#move_bck_word_simple)|
 
@@ -150,8 +150,8 @@ nav: Normal Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`0`, `<Home>`, `g0`|[\<jump_caret_to_BOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_bol)|
-|`g$`, `<End>`, `$`|[\<jump_caret_to_EOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_eol)|
+|`0`, `g0`, `<Home>`|[\<jump_caret_to_BOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_bol)|
+|`$`, `g$`, `<End>`|[\<jump_caret_to_EOL\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_eol)|
 |`gg`|[\<jump_caret_to_BOF\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_bof)|
 |`G`|[\<jump_caret_to_EOF\>]({{ site.url }}/cheat_sheet/functions/#jump_caret_to_eof)|
 
@@ -160,14 +160,14 @@ nav: Normal Mappings
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`y`|[\<yank_highlight_text\>]({{ site.url }}/cheat_sheet/functions/#yank_highlight_text)|
-|`d`, `x`, `X`|[\<delete_highlight_text\>]({{ site.url }}/cheat_sheet/functions/#delete_highlight_text)|
-|`s`, `c`, `S`|[\<change_highlight_text\>]({{ site.url }}/cheat_sheet/functions/#change_highlight_text)|
+|`x`, `X`, `d`|[\<delete_highlight_text\>]({{ site.url }}/cheat_sheet/functions/#delete_highlight_text)|
+|`S`, `c`, `s`|[\<change_highlight_text\>]({{ site.url }}/cheat_sheet/functions/#change_highlight_text)|
 
 ## Insert Mode
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<ctrl-[>`, `<Esc-Right>`|[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
+|`<Esc-Right>`, `<ctrl-[>`|[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
 
 ## Resident Mode
 
@@ -179,7 +179,7 @@ nav: Normal Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`en`, `edinormal`|[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
+|`edinormal`, `en`|[\<to_edi_normal\>]({{ site.url }}/cheat_sheet/functions/#to_edi_normal)|
 |`ev`, `edivisual`|[\<to_edi_visual\>]({{ site.url }}/cheat_sheet/functions/#to_edi_visual)|
 |`evl`, `edivisualline`|[\<to_edi_visual_line\>]({{ site.url }}/cheat_sheet/functions/#to_edi_visual_line)|
 

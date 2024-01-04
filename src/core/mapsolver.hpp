@@ -83,6 +83,9 @@ namespace vind
             bool is_accepted_any() const noexcept ;
             bool is_rejected_any() const noexcept ;
             bool is_rejected_all() const noexcept ;
+
+            // Return the maximum history size.
+            std::size_t max_history_size() const noexcept ;
         } ;
     }
 }

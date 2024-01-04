@@ -460,6 +460,11 @@ Move a cursor using hints on the UI objects without clicking.
 > </tr>
 > </table>
 
+<p align="center">
+<img src="{{ site.url }}/imgs/easyclick.png" class="img-fluid">
+<p align="center">Move a cursor using hints.</p>
+</p>
+
 **See Also**
 - [\<gridmove\>](./#gridmove)
 - [\<click_left\>](./#click_left)
@@ -486,6 +491,11 @@ Move a cursor using tiled hints laid on the entire screen.
 To change fonts or colors, you can set the several options, such as `gridmove_bgcolor`, `gridmove_fontcolor`, `gridmove_fontname`, `gridmove_fontsize`, and `gridmove_fontweight`.
 In order to change the grid size, set the size with `gridmove_size` option. It assumes a text as its value, such as `12x8` for horizontal 12 cells and vertical 8 cells.
 
+<p align="center">
+<img src="{{ site.url }}/imgs/gridmove.png" class="img-fluid">
+<p align="center">Move a cursor using tiled hints.</p>
+</p>
+
 **See Also**
 - [\<easyclick\>](./#easyclick)
 - [\<click_left\>](./#click_left)
@@ -495,6 +505,21 @@ In order to change the grid size, set the size with `gridmove_size` option. It a
 - [\<jump_cursor_with_keybrd_layout\>](./#jump_cursor_with_keybrd_layout)
 
 <hr class="dash">
+
+
+### **`<focus_textarea>`**
+Select the text area closest to the cursor and move the mouse cursor over it.
+If there are multiple text areas, the selection is based on the minimum Euclidean distance between the mouse cursor and the center point of the bounding box of the text area.
+
+In the previous version of win-vind, this function was attached to the Editor Normal Mode as the `autofocus_textarea` option, but it is now independent. Currently, the `autofocus_textarea` option is deprecated. For compatibility, `autofocus_textarea` defines a mapping such as `autocmd EdiNormalEnter * <focus_textarea>`.
+
+<p align="center">
+<img src="{{ site.url }}/imgs/focus_textarea.png" class="img-fluid">
+<p align="center">Focus the nearest text area and move the cursor.</p>
+</p>
+
+<hr class="dash">
+
 
 ### **`<jump_cursor_to_left>`**
 Jump the mouse cursor to the left.
@@ -746,6 +771,63 @@ Select the lower window.
 - [\<select_upper_window\>](./#select_upper_window)
 - [\<select_left_window\>](./#select_left_window)
 - [\<select_right_window\>](./#select_right_window)
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<move_window_left>`**
+Moves the selected widow to the left.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-h>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+
+### **`<move_window_right>`**
+Moves the selected widow to the right.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-l>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<move_window_up>`**
+Moves the selected widow to the up.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-k>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
+- [\<window_resizer\>](./#window_resizer)
+
+<hr class="dash">
+
+### **`<move_window_down>`**
+Moves the selected widow to the down.
+The amount of window movement is based on the [window_velocity](../options/#window_velocity) parameter as in [window_resizer](./#window_resizer).
+If a number is entered before the command, such as `20<c-w><c-j>`, the window will be moved by `20 * window_velocity`.
+
+The window can only be moved as far as it is visible on the screen.
+Therefore, excessive movement will cause the window to stop at the edge of the screen.
+If you are using multiple displays, the movement range is determined by the combined resolution of all displays.
+
+**See Also**
 - [\<window_resizer\>](./#window_resizer)
 
 <hr class="dash">

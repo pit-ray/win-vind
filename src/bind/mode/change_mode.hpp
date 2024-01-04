@@ -2,7 +2,6 @@
 #define _CHANGE_MODE_HPP
 
 #include "bind/bindedfunc.hpp"
-#include "text_area_scanner.hpp"
 
 namespace vind
 {
@@ -44,11 +43,7 @@ namespace vind
             }
         } ;
 
-        class ToEdiNormal : public BindedFuncVoid<ToEdiNormal> {
-        private:
-            static TextAreaScanner scanner_ ;
-
-        public:
+        struct ToEdiNormal : public BindedFuncVoid<ToEdiNormal> {
             explicit ToEdiNormal() ;
             static void sprocess(
                 std::uint16_t count,

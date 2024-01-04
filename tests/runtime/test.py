@@ -19,7 +19,7 @@ def do_test(exe_path):
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument(
-        '--target', type=str, required=True,
+        'target', type=str,
         help='Path of win-vind.exe to be test.')
     args = parser.parse_args()
 

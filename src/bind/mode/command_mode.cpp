@@ -1,15 +1,9 @@
 #include "command_mode.hpp"
 
-#include <algorithm>
-#include <memory>
-#include <sstream>
-#include <windows.h>
-
-#include <vector>
-
 #include "bind/bindedfunc.hpp"
 #include "core/autocmd.hpp"
 #include "core/background.hpp"
+#include "core/cmdunit.hpp"
 #include "core/errlogger.hpp"
 #include "core/inputgate.hpp"
 #include "core/inputhub.hpp"
@@ -24,6 +18,15 @@
 #include "util/container.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
+
+
+#include <algorithm>
+#include <memory>
+#include <set>
+#include <sstream>
+#include <windows.h>
+
+#include <vector>
 
 
 namespace
@@ -86,13 +89,20 @@ namespace vind
             core::Background bg_ ;
             int hist_idx_ ;
 
+            std::vector<std::vector<core::CmdUnit::SPtr>> candidates_ ;
+            std::vector<std::vector<std::string>> print_candidates_ ;
+            int candidate_idx_ ;
+
             Impl()
             : hists_(),
               bg_(opt::ref_global_options_bynames(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::VCmdLine().name()
               )),
-              hist_idx_(0)
+              hist_idx_(0),
+              candidates_(),
+              print_candidates_(),
+              candidate_idx_(0)
             {}
 
             void update_cmdline_display() {
@@ -184,7 +194,92 @@ namespace vind
             }
 
             void complement_command() {
+                if(candidates_.empty()) { // find candidates
+                    auto& ihub = core::InputHub::get_instance() ;
+                    auto solver = ihub.get_solver(core::Mode::COMMAND) ;
 
+                    // Load the current command
+                    auto& latest = hists_.back() ;
+
+                    // Match with matchers
+                    solver->reset_state() ;
+                    for(std::size_t i = 0 ; i < latest->size() ; i ++) {
+                        for(auto& unit : latest->fetched_logs_[i]) {
+                            solver->map_command_from(*unit, false) ;
+                        }
+                    }
+
+                    std::set<std::string> candidates_set ;
+                    auto matchers = solver->get_trigger_matchers() ;
+                    for(auto matcher : matchers) {
+                        if(!matcher->is_rejected()) {
+                            const auto& trigger_cmd = matcher->get_command() ;
+                            std::vector<core::CmdUnit::SPtr> cmd_no_args ;
+                            std::vector<std::string> print_cmd_no_args ;
+
+                            for(const auto& unit : trigger_cmd) {
+                                bool break_flag = false ;
+                                std::vector<core::CmdUnit::SPtr> cmd ;
+                                std::stringstream ss ;
+                                for(const auto& key : *unit) {
+                                    // For simplicity, ignore a command with arguments such as `:! <any>`.
+                                    // It just considers the pure command like `:!`.
+                                    auto uni = core::keycode_to_unicode(key, *unit) ;
+                                    if(uni.empty() || uni == " ") {
+                                        break_flag = true ;
+                                        break ;
+                                    }
+                                    ss << uni ;
+                                }
+                                if(break_flag) {
+                                    break ;
+                                }
+                                cmd_no_args.push_back(unit) ;
+                                print_cmd_no_args.push_back(ss.str()) ;
+                            }
+
+                            std::string cmd_str ;
+                            for(const auto& s : print_cmd_no_args) {
+                                cmd_str += s ;
+                            }
+
+                            if(candidate_set.find(cmd_str) != candidate_set.end()) {  // Avoid the duplicated candidates.
+                                candidates_.push_back(std::move(cmd_no_args)) ;
+                                print_candidates_.push_back(std::move(print_cmd_no_args)) ;
+                                candidates_str.push_back(std::move(cmd_str)) ;
+                            }
+                        }
+                    }
+
+                    // Show the candidates in the virtual command line.
+                    if(!candidates_.empty()) {
+                        std::stringstream ss ;
+                        for(const auto& s : candidates_str) {
+                            ss << ":" << s << " " ;
+                        }
+                        opt::VCmdLine::print(opt::StaticMessage(ss.str())) ;
+                    }
+                    candidate_idx_ = -1 ;
+
+                    return ;  // At the first time, show a list of candidates without selection.
+                }
+
+                // Rotate the candidates
+                candidate_idx_ = (candidate_idx_ + 1) % candidates_.size() ;
+
+                // Overwrite the latest command line with the candidate.
+                auto& latest = hists_.back() ;
+                latest->fetched_logs_.clear() ;
+                for(const auto& unit : candidates_[candidate_idx_]) {
+                    latest->fetched_logs_.push_back({unit}) ;
+                }
+                latest->print_logs_ = print_candidates_[candidate_idx_] ;
+                update_cmdline_display() ;
+            }
+
+            void clear_candidates() {
+                candidates_.clear() ;
+                print_candidates_.clear() ;
             }
 
             void write_as_printable(const core::CmdUnit::SPtr& input) {
@@ -298,6 +393,7 @@ namespace vind
                         break_flag = true ;
                         break ;
                     }
+                    pimpl->clear_candidates() ;
                     pimpl->write_as_printable(input) ;
                 } while(!ihub.is_empty_queue()) ;
 

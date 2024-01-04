@@ -148,9 +148,4 @@ endif()
 
 
 link_wxWidgets(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME}
-    psapi
-    dwmapi
-    userenv
-    icuuc
-)
+target_link_libraries(${PROJECT_NAME} psapi dwmapi userenv icuuc)

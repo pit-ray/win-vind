@@ -20,12 +20,14 @@ namespace
 {
     using namespace vind::core ;
     struct Map {
-        CmdMatcher trigger_matcher ;
+        std::shared_ptr<CmdMatcher> trigger_matcher ;
         std::vector<CmdUnit::SPtr> target_cmd ;
 
         template <typename T1, typename T2>
         Map(T1&& trigger_command, T2&& target_command)
-        : trigger_matcher(std::forward<T1>(trigger_command)),
+        : trigger_matcher(
+                std::make_shared<CmdMatcher>(
+                    std::forward<T1>(trigger_command))),
           target_cmd(std::forward<T2>(target_command))
         {}
     } ;
@@ -79,7 +81,7 @@ namespace
         std::vector<Map> new_map{} ;
         for(auto& map : map_table) {
             if(!is_same_command(
-                    map.trigger_matcher.get_command(), remove_trigger)) {
+                    map.trigger_matcher->get_command(), remove_trigger)) {
                 new_map.push_back(std::move(map)) ;
             }
         }
@@ -97,14 +99,14 @@ namespace
             bool recursively=false) {
         std::vector<CmdUnit::SPtr> solved_target ;
         for(auto& map : refmap_table) {
-            map.trigger_matcher.reset_state() ;
+            map.trigger_matcher->reset_state() ;
         }
 
         std::vector<CmdUnit::SPtr> subcmd_queue{} ;
         auto _reset_state = [&subcmd_queue, &refmap_table] {
             subcmd_queue.clear() ;
             for(auto& map : refmap_table) {
-                map.trigger_matcher.reset_state() ;
+                map.trigger_matcher->reset_state() ;
             }
         } ;
 
@@ -136,12 +138,12 @@ namespace
             std::vector<int> acc_nums(refmap_table.size(), 0) ;
             bool all_rejected = true ;
             for(std::size_t i = 0 ; i < refmap_table.size() ; i ++) {
-                auto& mt = refmap_table[i].trigger_matcher ;
-                auto res = mt.update_state(*in_cmdunit) ;
-                if(mt.is_accepted()) {
+                auto mt = refmap_table[i].trigger_matcher ;
+                auto res = mt->update_state(*in_cmdunit) ;
+                if(mt->is_accepted()) {
                     acc_nums[i] = res ;
                 }
-                if(!mt.is_rejected()) {
+                if(!mt->is_rejected()) {
                     all_rejected = false ;
                 }
             }
@@ -177,7 +179,7 @@ namespace
             // If self-mapping is done that finally matches its trigger,
             // outputs a warning and ignores the partial mapping. If this
             // is allowed to happen, the loop will spin indefinitely and crash.
-            if(is_same_command(draft_map.trigger_cmd, matched_map.trigger_matcher.get_command())
+            if(is_same_command(draft_map.trigger_cmd, matched_map.trigger_matcher->get_command())
                     || is_same_command(draft_map.trigger_cmd, matched_map.target_cmd)) {
                 std::stringstream ss ;
                 ss << "Some part of the command generated from mapping " ;
@@ -185,7 +187,7 @@ namespace
                 ss <<" * " << draft_map.target_cmd << "` " ;
                 ss << "was ignored to avoid an infinite loop because it was mapped to itself " ;
                 ss << "by mapping `" ;
-                ss << matched_map.trigger_matcher.get_command() ;
+                ss << matched_map.trigger_matcher->get_command() ;
                 ss << " * " << matched_map.target_cmd << "`. " ;
                 ss << "If you wish to enter the generated command as is, enclose it in `{}`." ;
                 Logger::get_instance().warning(ss.str()) ;
@@ -219,7 +221,7 @@ namespace
 
             // Reset state change due to recursion.
             for(auto& map : refmap_table) {
-                map.trigger_matcher.reset_state() ;
+                map.trigger_matcher->reset_state() ;
             }
         }
 
@@ -368,7 +370,7 @@ namespace vind
             // Initialize with default noremap.
             for(const auto& map : pimpl->default_) {
                 tmp_noremap.emplace_back(
-                    map.trigger_matcher.get_command(), map.target_cmd) ;
+                    map.trigger_matcher->get_command(), map.target_cmd) ;
             }
 
             // Add and overwrite map with user-defined map.
@@ -403,7 +405,7 @@ namespace vind
             }
 
             for(auto& map : solved_maps) {
-                auto& trigger_cmd = map.trigger_matcher.get_command() ;
+                auto& trigger_cmd = map.trigger_matcher->get_command() ;
                 if(trigger_cmd.size() == 1 && trigger_cmd[0]->size() == 1 &&
                         map.target_cmd.size() == 1) {
                     // key2keyset mapping
@@ -456,13 +458,13 @@ namespace vind
 
         void MapSolver::backward_state(int n) {
             for(auto& map : pimpl->deployed_) {
-                map.trigger_matcher.backward_state(n) ;
+                map.trigger_matcher->backward_state(n) ;
             }
         }
 
         void MapSolver::reset_state() {
             for(auto& map : pimpl->deployed_) {
-                map.trigger_matcher.reset_state() ;
+                map.trigger_matcher->reset_state() ;
             }
         }
 
@@ -489,12 +491,12 @@ namespace vind
             std::vector<int> acc_nums(pimpl->deployed_.size(), 0) ;
             bool all_rejected = true ;
             for(std::size_t i = 0 ; i < pimpl->deployed_.size() ; i ++) {
-                auto& mt = pimpl->deployed_[i].trigger_matcher ;
-                auto res = mt.update_state(in_cmdunit) ;
-                if(mt.is_accepted()) {
+                auto mt = pimpl->deployed_[i].trigger_matcher ;
+                auto res = mt->update_state(in_cmdunit) ;
+                if(mt->is_accepted()) {
                     acc_nums[i] = res ;
                 }
-                if(!mt.is_rejected()) {
+                if(!mt->is_rejected()) {
                     all_rejected = false ;
                 }
             }
@@ -520,12 +522,12 @@ namespace vind
                 }
                 if(only_syskey) {
                     for(auto& map : pimpl->deployed_) {
-                        map.trigger_matcher.backward_state(1) ;
+                        map.trigger_matcher->backward_state(1) ;
                     }
                 }
                 else if(auto_reset) {
                     for(auto& map : pimpl->deployed_) {
-                        map.trigger_matcher.reset_state() ;
+                        map.trigger_matcher->reset_state() ;
                     }
                 }
                 return {} ;
@@ -541,7 +543,7 @@ namespace vind
             // Make the matchers reset for the next matching.
             if(auto_reset) {
                 for(auto& map : pimpl->deployed_) {
-                    map.trigger_matcher.reset_state() ;
+                    map.trigger_matcher->reset_state() ;
                 }
             }
 
@@ -552,7 +554,7 @@ namespace vind
         MapSolver::get_trigger_commands() const {
             std::vector<std::vector<CmdUnit::SPtr>> tmp{} ;
             for(const auto& map : pimpl->deployed_) {
-                tmp.push_back(map.trigger_matcher.get_command()) ;
+                tmp.push_back(map.trigger_matcher->get_command()) ;
             }
             return tmp ;
         }
@@ -568,7 +570,7 @@ namespace vind
 
         bool MapSolver::is_matching_any() const noexcept {
             for(const auto& map : pimpl->deployed_) {
-                if(map.trigger_matcher.is_matching()) {
+                if(map.trigger_matcher->is_matching()) {
                     return true ;
                 }
             }
@@ -577,7 +579,7 @@ namespace vind
 
         bool MapSolver::is_accepted_any() const noexcept {
             for(const auto& map : pimpl->deployed_) {
-                if(map.trigger_matcher.is_accepted()) {
+                if(map.trigger_matcher->is_accepted()) {
                     return true ;
                 }
             }
@@ -586,7 +588,7 @@ namespace vind
 
         bool MapSolver::is_rejected_any() const noexcept {
             for(const auto& map : pimpl->deployed_) {
-                if(map.trigger_matcher.is_rejected()) {
+                if(map.trigger_matcher->is_rejected()) {
                     return true ;
                 }
             }
@@ -596,7 +598,7 @@ namespace vind
         bool MapSolver::is_rejected_all() const noexcept {
             bool flag = true ;
             for(const auto& map : pimpl->deployed_) {
-                if(!map.trigger_matcher.is_rejected()) {
+                if(!map.trigger_matcher->is_rejected()) {
                     flag = false ;
                     break ;
                 }
@@ -607,11 +609,19 @@ namespace vind
         std::size_t MapSolver::max_history_size() const noexcept {
             std::size_t size = 0 ;
             for(const auto& map : pimpl->deployed_) {
-                if(map.trigger_matcher.history_size() > size) {
-                    size = map.trigger_matcher.history_size() ;
+                if(map.trigger_matcher->history_size() > size) {
+                    size = map.trigger_matcher->history_size() ;
                 }
             }
             return size ;
+        }
+
+        std::vector<std::shared_ptr<CmdMatcher>> MapSolver::get_trigger_matchers() const {
+            std::vector<std::shared_ptr<CmdMatcher>> matchers{} ;
+            for(const auto& map : pimpl->deployed_) {
+                matchers.push_back(map.trigger_matcher) ;
+            }
+            return matchers ;
         }
     }
 }

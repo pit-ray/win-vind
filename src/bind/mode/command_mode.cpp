@@ -209,7 +209,7 @@ namespace vind
                         }
                     }
 
-                    std::set<std::string> candidates_set ;
+                    std::set<std::string> candidate_set ;
                     auto matchers = solver->get_trigger_matchers() ;
                     for(auto matcher : matchers) {
                         if(!matcher->is_rejected()) {
@@ -243,10 +243,10 @@ namespace vind
                                 cmd_str += s ;
                             }
 
-                            if(candidate_set.find(cmd_str) != candidate_set.end()) {  // Avoid the duplicated candidates.
+                            if(candidate_set.find(cmd_str) == candidate_set.end()) {  // Avoid the duplicated candidates.
                                 candidates_.push_back(std::move(cmd_no_args)) ;
                                 print_candidates_.push_back(std::move(print_cmd_no_args)) ;
-                                candidates_str.push_back(std::move(cmd_str)) ;
+                                candidate_set.insert(std::move(cmd_str)) ;
                             }
                         }
                     }
@@ -254,7 +254,7 @@ namespace vind
                     // Show the candidates in the virtual command line.
                     if(!candidates_.empty()) {
                         std::stringstream ss ;
-                        for(const auto& s : candidates_str) {
+                        for(const auto& s : candidate_set) {
                             ss << ":" << s << " " ;
                         }
                         opt::VCmdLine::print(opt::StaticMessage(ss.str())) ;
@@ -393,7 +393,10 @@ namespace vind
                         break_flag = true ;
                         break ;
                     }
-                    pimpl->clear_candidates() ;
+
+                    if(!pimpl->candidates_.empty()) {
+                        pimpl->clear_candidates() ;
+                    }
                     pimpl->write_as_printable(input) ;
                 } while(!ihub.is_empty_queue()) ;
 

@@ -292,12 +292,6 @@ Width of block style caret on solid mode
 
 ## AutoFocus
 
-### **`autofocus_textarea`**
-**type**: bool, **default**: false  
-Automatically focus on the nearest text area when switching to **Editor Normal Mode**
-
-<hr class="dash">
-
 ### **`autotrack_popup`**
 **type**: bool, **default**: false  
 It is one of standard options on Windows. For example, if shown **Are you sure you want to move this file to the Recycle Bin?**, it automatically moves the cursor to the popup window.
@@ -307,7 +301,7 @@ It is one of standard options on Windows. For example, if shown **Are you sure y
 
 ### **`uiacachebuild`**
 **type**: bool, **default**: false  
-EasyClick and `autofocus_textarea` are slow because they scan the UI object after being called. If this option is enabled, scanning is done asynchronously and cache is used as a result. Using the cache is 30 times faster than scanning linearly, but the location information, etc. may not always be correct.
+[easyclick](../functions/#easyclick) and [focus_textarea](../functions/#focus_textarea) are slow because they scan the UI object after being called. If this option is enabled, scanning is done asynchronously and cache is used as a result. Using the cache is 30 times faster than scanning linearly, but the location information, etc. may not always be correct.
 
 <hr class="dash">
 

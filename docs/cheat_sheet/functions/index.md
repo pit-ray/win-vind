@@ -496,6 +496,21 @@ In order to change the grid size, set the size with `gridmove_size` option. It a
 
 <hr class="dash">
 
+
+### **`<focus_textarea>`**
+Select the text area closest to the cursor and move the mouse cursor over it.
+If there are multiple text areas, the selection is based on the minimum Euclidean distance between the mouse cursor and the center point of the bounding box of the text area.
+
+In the previous version of win-vind, this function was attached to the Editor Normal Mode as the `autofocus_textarea` option, but it is now independent. Currently, the `autofocus_textarea` option is deprecated. For compatibility, `autofocus_textarea` defines a mapping such as `autocmd EdiNormalEnter * <focus_textarea>`.
+
+<p align="center">
+<img src="{{ site.url }}/imgs/focus_textarea.png" class="img-fluid">
+<p align="center">Focus the nearest text area and move the cursor.</p>
+</p>
+
+<hr class="dash">
+
+
 ### **`<jump_cursor_to_left>`**
 Jump the mouse cursor to the left.
 

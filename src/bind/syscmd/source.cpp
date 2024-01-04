@@ -27,6 +27,7 @@
 #include <stdexcept>
 #include <string>
 #include <system_error>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -85,7 +86,7 @@ namespace
         return target_repo_path / ".vindrc" ;
     }
 
-    std::string to_compatible(std::string text) {
+    void to_compatible(std::string& cmd, std::string& args) {
         std::vector<std::pair<std::string, std::string>> compatible {
             {"system_command_comclear", "comclear"},
             {"system_command_command", "command"},
@@ -116,9 +117,17 @@ namespace
             {"<easy_click_hover>", "<easyclick>"},
         } ;
         for(auto& [from, to] : compatible) {
-            text = util::replace_all(text, from, to) ;
+            args = util::replace_all(args, from, to) ;
         }
-        return text ;
+
+        if(args.find("noautofocus_textarea") != std::string::npos) {
+            cmd.clear() ;
+            args.clear() ;
+        }
+        else if(args.find("autofocus_textarea") != std::string::npos) {
+            cmd = "autocmd" ;
+            args = "EdiNormalEnter * <focus_textarea>" ;
+        }
     }
 
     void do_runcommand(
@@ -266,7 +275,10 @@ namespace vind
                 }
 
                 cmd = util::A2a(cmd) ;
-                line_args = to_compatible(line_args) ;
+                to_compatible(cmd, line_args) ;
+                if(cmd.empty()) {
+                    continue ;
+                }
 
                 if(!loaded_default_) {
                     loaded_default_ = true ;

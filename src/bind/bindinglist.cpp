@@ -27,6 +27,7 @@
 
 #include "mouse/click.hpp"
 #include "mouse/easyclick.hpp"
+#include "mouse/focustextarea.hpp"
 #include "mouse/gridmove.hpp"
 #include "mouse/jump_actwin.hpp"
 #include "mouse/jump_cursor.hpp"
@@ -110,6 +111,7 @@ namespace vind
                 ExitConfigGUI::create(),
                 Exit::create(),
                 Sleep::create(),
+                FocusTextArea::create(),
                 ForwardUINavigation::create(),
                 GotoNextPage::create(),
                 GotoPrevPage::create(),

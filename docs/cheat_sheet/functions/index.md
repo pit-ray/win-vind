@@ -9,7 +9,19 @@ disable_anchors: true
 ## Mode
 
 ### **`<to_command>`**
-Enter the command mode. Generally, this command is called with `:`. In the command mode, the typed characters are displayed on the virtual command line, the command can be executed with the `<enter>` key, and you can delete characters with `<bs>`. You can also use the `<up>` and `<down>` keys to move thr class="dash"ough the executed history.
+Enter the command mode, which is generally called with `:`.
+In the command mode, the typed characters are displayed on the virtual command line.
+You can operate the virtual command line as shown in the following table.
+
+|**Key**|**Operation**|
+|:---:|:---:|
+|`<enter>`|Execute the current command|
+|`<bs>`|Delete characters|
+|`<up>`|Backward history|
+|`<down>`|Forward history|
+|`<tab>`|Complete commands|
+
+<br>
 
 <p align="center">
   <img src="https://pit-ray.github.io/win-vind/imgs/cmdline_demo.gif" class="img-fluid"/>

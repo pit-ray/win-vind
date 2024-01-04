@@ -13,7 +13,6 @@ namespace
 
         Param("arrangewin_ignore", ""),
 
-        Param("autofocus_textarea", false),
         Param("autotrack_popup", false),
 
         Param("blockstylecaret", false),

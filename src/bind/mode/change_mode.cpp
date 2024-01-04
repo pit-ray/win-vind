@@ -9,7 +9,6 @@
 #include "core/settable.hpp"
 #include "opt/uiacachebuild.hpp"
 #include "opt/vcmdline.hpp"
-#include "options.hpp"
 #include "util/debug.hpp"
 #include "util/def.hpp"
 #include "util/mouse.hpp"
@@ -102,16 +101,10 @@ namespace vind
             ac.apply(core::get_enter_event(core::Mode::GUI_VISUAL)) ;
         }
 
-        // All instances share TextAreaScanner to keep staticity of sprocess.
-        TextAreaScanner ToEdiNormal::scanner_ ;
-
         //ToEdiNormal
         ToEdiNormal::ToEdiNormal()
         : BindedFuncVoid("to_edi_normal")
-        {
-            opt::AsyncUIACacheBuilder::register_properties(
-                    scanner_.get_properties()) ;
-        }
+        {}
         void ToEdiNormal::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args),
@@ -136,14 +129,6 @@ namespace vind
             core::set_global_mode(Mode::EDI_NORMAL) ;
             if(vclmodeout) {
                 opt::VCmdLine::print(opt::GeneralMessage("-- EDI NORMAL --")) ;
-            }
-
-            auto& settable = core::SetTable::get_instance() ;
-            if(settable.get("autofocus_textarea").get<bool>()) {
-                if(auto hwnd = util::get_foreground_window()) {
-                    auto pos = util::get_cursor_pos() ;
-                    focus_nearest_textarea(hwnd, pos, scanner_) ;
-                }
             }
 
             ac.apply(core::get_enter_event(Mode::EDI_NORMAL)) ;

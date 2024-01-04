@@ -61,6 +61,7 @@ gnnoremap Fo <easyclick><click_left>
 gnnoremap Fa <easyclick><click_right>
 gnnoremap Fm <easyclick><click_mid>
 gnnoremap Fh <easyclick>
+gnnoremap Ft <focus_textarea>
 gnnoremap <ctrl-m> <gridmove>
 
 gnnoremap AA <easyclick_all><click_left>

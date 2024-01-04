@@ -19,13 +19,13 @@ nav: Big Mappings
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
 |`V`|[\<select_all\>]({{ site.url }}/cheat_sheet/functions/#select_all)|
-|`yy`, `y`, `Y`|[\<hotkey_copy\>]({{ site.url }}/cheat_sheet/functions/#hotkey_copy)|
-|`P`, `p`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
-|`dd`, `D`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
+|`Y`, `y`, `yy`|[\<hotkey_copy\>]({{ site.url }}/cheat_sheet/functions/#hotkey_copy)|
+|`p`, `P`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
+|`D`, `dd`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
 |`x`, `<Del>`|[\<hotkey_delete\>]({{ site.url }}/cheat_sheet/functions/#hotkey_delete)|
 |`X`|[\<hotkey_backspace\>]({{ site.url }}/cheat_sheet/functions/#hotkey_backspace)|
 |`<C-r>`|[\<redo\>]({{ site.url }}/cheat_sheet/functions/#redo)|
-|`u`, `U`|[\<undo\>]({{ site.url }}/cheat_sheet/functions/#undo)|
+|`U`, `u`|[\<undo\>]({{ site.url }}/cheat_sheet/functions/#undo)|
 |`<C-v>h`|[\<switch_to_left_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#switch_to_left_vdesktop)|
 |`<C-v>l`|[\<switch_to_right_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#switch_to_right_vdesktop)|
 |`<C-v>n`|[\<create_new_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#create_new_vdesktop)|
@@ -44,24 +44,24 @@ nav: Big Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<ctrl-]>`, `<Esc-Left>`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
+|`<Esc-Left>`, `<ctrl-]>`|[\<to_gui_normal\>]({{ site.url }}/cheat_sheet/functions/#to_gui_normal)|
 |`<Esc-Down>`|[\<to_resident\>]({{ site.url }}/cheat_sheet/functions/#to_resident)|
 
 ### Mouse Movement
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<Left>`, `<BS>`, `h`|[\<move_cursor_left\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_left)|
-|`l`, `<Right>`, `<Space>`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
-|`-`, `k`, `<Up>`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
-|`+`, `j`, `<Down>`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
+|`<BS>`, `<Left>`, `h`|[\<move_cursor_left\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_left)|
+|`<Right>`, `l`, `<Space>`|[\<move_cursor_right\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_right)|
+|`k`, `-`, `<Up>`|[\<move_cursor_up\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_up)|
+|`+`, `<Down>`, `j`|[\<move_cursor_down\>]({{ site.url }}/cheat_sheet/functions/#move_cursor_down)|
 
 ### Mouse Jumping
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`0`, `^`, `<Home>`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
-|`$`, `<End>`|[\<jump_cursor_to_right\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_right)|
+|`^`, `0`, `<Home>`|[\<jump_cursor_to_left\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_left)|
+|`<End>`, `$`|[\<jump_cursor_to_right\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_right)|
 |`gg`|[\<jump_cursor_to_top\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_top)|
 |`G`|[\<jump_cursor_to_bottom\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_bottom)|
 |`gm`|[\<jump_cursor_to_hcenter\>]({{ site.url }}/cheat_sheet/functions/#jump_cursor_to_hcenter)|
@@ -71,13 +71,13 @@ nav: Big Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`<C-k>`, `<C-y>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
+|`<C-y>`, `<C-k>`|[\<scroll_up\>]({{ site.url }}/cheat_sheet/functions/#scroll_up)|
 |`<C-j>`, `<C-e>`|[\<scroll_down\>]({{ site.url }}/cheat_sheet/functions/#scroll_down)|
 |`<C-u>`|[\<scroll_up_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_halfpage)|
 |`<C-d>`|[\<scroll_down_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_halfpage)|
 |`<C-b>`|[\<scroll_up_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_up_onepage)|
 |`<C-f>`|[\<scroll_down_onepage\>]({{ site.url }}/cheat_sheet/functions/#scroll_down_onepage)|
-|`zh`, `<C-h>`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
+|`<C-h>`, `zh`|[\<scroll_left\>]({{ site.url }}/cheat_sheet/functions/#scroll_left)|
 |`<C-l>`, `zl`|[\<scroll_right\>]({{ site.url }}/cheat_sheet/functions/#scroll_right)|
 |`zH`|[\<scroll_left_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_left_halfpage)|
 |`zL`|[\<scroll_right_halfpage\>]({{ site.url }}/cheat_sheet/functions/#scroll_right_halfpage)|
@@ -86,9 +86,9 @@ nav: Big Mappings
 
 |**Trigger Commands**|**Called Commands**|
 |:---:|:---:|
-|`yy`, `y`, `Y`|[\<hotkey_copy\>]({{ site.url }}/cheat_sheet/functions/#hotkey_copy)|
-|`P`, `p`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
-|`dd`, `D`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
+|`Y`, `y`, `yy`|[\<hotkey_copy\>]({{ site.url }}/cheat_sheet/functions/#hotkey_copy)|
+|`p`, `P`|[\<hotkey_paste\>]({{ site.url }}/cheat_sheet/functions/#hotkey_paste)|
+|`D`, `dd`|[\<hotkey_cut\>]({{ site.url }}/cheat_sheet/functions/#hotkey_cut)|
 |`x`, `<Del>`|[\<hotkey_delete\>]({{ site.url }}/cheat_sheet/functions/#hotkey_delete)|
 |`X`|[\<hotkey_backspace\>]({{ site.url }}/cheat_sheet/functions/#hotkey_backspace)|
 
@@ -107,14 +107,14 @@ nav: Big Mappings
 |`vdprev`|[\<switch_to_left_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#switch_to_left_vdesktop)|
 |`vdnext`|[\<switch_to_right_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#switch_to_right_vdesktop)|
 |`closev`|[\<close_current_vdesktop\>]({{ site.url }}/cheat_sheet/functions/#close_current_vdesktop)|
-|`tv`, `vdesktop<space>list`, `taskview`|[\<taskview\>]({{ site.url }}/cheat_sheet/functions/#taskview)|
+|`tv`, `taskview`, `vdesktop<space>list`|[\<taskview\>]({{ site.url }}/cheat_sheet/functions/#taskview)|
 |`tabprevious`|[\<switch_to_left_tab\>]({{ site.url }}/cheat_sheet/functions/#switch_to_left_tab)|
 |`tabnext`|[\<switch_to_right_tab\>]({{ site.url }}/cheat_sheet/functions/#switch_to_right_tab)|
 |`tabnew`|[\<open_new_tab\>]({{ site.url }}/cheat_sheet/functions/#open_new_tab)|
-|`q`, `q!`, `tabclose`|[\<close_current_tab\>]({{ site.url }}/cheat_sheet/functions/#close_current_tab)|
+|`q!`, `q`, `tabclose`|[\<close_current_tab\>]({{ site.url }}/cheat_sheet/functions/#close_current_tab)|
 |`ex`, `explorer`|[\<start_explorer\>]({{ site.url }}/cheat_sheet/functions/#start_explorer)|
 |`win`, `start`|[\<open_startmenu\>]({{ site.url }}/cheat_sheet/functions/#open_startmenu)|
-|`find`, `open`|[\<open\>]({{ site.url }}/cheat_sheet/functions/#open)|
+|`open`, `find`|[\<open\>]({{ site.url }}/cheat_sheet/functions/#open)|
 |`forward`|[\<forward_ui_navigation\>]({{ site.url }}/cheat_sheet/functions/#forward_ui_navigation)|
 |`backward`|[\<backward_ui_navigation\>]({{ site.url }}/cheat_sheet/functions/#backward_ui_navigation)|
 |`decide`|[\<decide_focused_ui_object\>]({{ site.url }}/cheat_sheet/functions/#decide_focused_ui_object)|

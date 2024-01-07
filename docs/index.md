@@ -37,25 +37,32 @@ It is also available from the command line as a command for UI operations like `
 You can configure it in .vimrc style. What you can do in .vindrc is switch options, set parameters, remap low-level keys, and define function bindings.
 
 ```vim
-" options
+" Choose the version of {tiny, small, normal, big, huge}.
+version normal
+
+" Change parameters
 set shell = cmd
 set cmd_fontsize = 14
 set cmd_fontname = Consolas
-set blockstylecaret
-set blockstylecaret_mode = solid
+set easyclick_bgcolor=E67E22
+set easyclick_fontcolor=34495E
 
-" bindings
+" Map capslock to ctrl.
 imap <capslock> {<ctrl>}
 
-inoremap <ralt><ralt> <easyclick><click_left>
-inoremap <rctrl><rctrl> <gridmove><click_left>
-inoremap <win-enter> <window_resizer>
+" Define useful shortcuts
+inoremap <ctrl-shift-f> <easyclick><click_left>
+inoremap <ctrl-shift-m> <gridmove><click_left>
+inoremap <ctrl-shift-s> <switch_window><easyclick><click_left>
 
+" Register application launchers
 noremap <ctrl-1> :! gvim<cr>
 noremap <ctrl-2> :e http://example.com<cr>
 
+" Define macros like Vim
 enoremap t ggyyGp
 
+" Apply auto-commands
 autocmd AppLeave * <to_insert>
 autocmd AppEnter,EdiNormalEnter vim.exe <to_resident>
 ```

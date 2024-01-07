@@ -71,8 +71,8 @@ The following table shows a comparison between modes.
 |**GUI Visual**|<b><font color="green">✓</font></b>|Select GUI objects such as icons by holding down the left mouse button. The default binding is `v` in GUI Normal mode.|
 |**Edi Normal**|<b><font color="green">✓</font></b>|Emulate Vim in input forms of web pages, Microsoft Office Word, etc. The default bindings are `<esc-right>` or `<ctrl-[>`.|
 |**Edi Visual**|<b><font color="green">✓</font></b>|Select text as in Vim. The default binding is `v` in Edi Normal mode.|
-|**Insert**|<b><font color="red">✗</font></b>|Input texts as normal Windows without absorbing key messages. The default binding is `i`.|
-|**Resident**|<b><font color="red">✗</font></b>|Resident mode is an evacuation mode to prevent bindings from collisions with shortcut keys while gaming on Steam or using Vim. The default binding is `<esc-down>`.|
+|**Insert**|<b><font color="red">✘</font></b>|Input texts as normal Windows without absorbing key messages. The default binding is `i`.|
+|**Resident**|<b><font color="red">✘</font></b>|Resident mode is an evacuation mode to prevent bindings from collisions with shortcut keys while gaming on Steam or using Vim. The default binding is `<esc-down>`.|
 |**Command**|<b><font color="green">✓</font></b>|Execute commands visually using a Vim-like virtual command line that is overlaid on the screen. The default binding is `:`.|
 
 &nbsp;

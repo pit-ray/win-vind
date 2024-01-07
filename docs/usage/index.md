@@ -241,7 +241,7 @@ source pit-ray/remote_vindrc_demo
 > **Warning**: `source user/repo` does not verify the safety of the .vindrc it reads, which may be a security hole. Therefore, use it for reliable repositories or your own dotfiles configurations. As a minimum security measure, win-vind only reads the contents of source the first time a `source` command is done, and does not update the contents as `git pull` does.
 
 
-### **Use as automation command by server-client**
+### **Use as UI automation command by server-client**
 
 The `--command` option allows us to execute an arbitrary command from a terminal.
 

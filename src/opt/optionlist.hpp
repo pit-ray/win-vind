@@ -37,7 +37,7 @@ namespace vind
 
         template <typename T>
         inline bool check_if_option(T&& name) {
-            return search_option(name) != nullptr ;
+            return search_option(std::forward<T>(name)).get() != nullptr ;
         }
     }
 }

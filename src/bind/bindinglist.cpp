@@ -319,5 +319,10 @@ namespace vind
         BindedFunc::SPtr search_func(const std::string& name) {
             return search_func(BindedFunc::name_to_id(util::A2a(name))) ;
         }
+
+        BindedFunc::SPtr search_func(std::string&& name) {
+            return search_func(
+                BindedFunc::name_to_id(util::A2a(std::move(name)))) ;
+        }
     }
 }

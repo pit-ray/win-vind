@@ -50,6 +50,7 @@ namespace vind
             void set(Param&& param) ;
 
             const Param& get(const std::string& name) const ;
+            bool has(const std::string& name) const ;
 
             void remove(const std::string& name) ;
         } ;

@@ -150,7 +150,7 @@ namespace vind
             UIScanner scanner_ ;
 
             Impl()
-            : hinter_(opt::ref_global_options_bynames(
+            : hinter_(opt::search_options(
                 opt::AsyncUIACacheBuilder().name(),
                 opt::VCmdLine().name())),
               scanner_()
@@ -289,7 +289,7 @@ namespace vind
             UIScanner scanner_ ;
 
             Impl()
-            : hinter_(opt::ref_global_options_bynames(
+            : hinter_(opt::search_options(
                 opt::AsyncUIACacheBuilder().name(),
                 opt::VCmdLine().name())),
               scanner_()

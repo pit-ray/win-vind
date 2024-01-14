@@ -38,6 +38,7 @@
 
 #include "proc/exapp.hpp"
 #include "proc/execute.hpp"
+#include "proc/help.hpp"
 #include "proc/openwin.hpp"
 
 #include "hotkey/clipboard.hpp"
@@ -115,6 +116,7 @@ namespace vind
                 ForwardUINavigation::create(),
                 GotoNextPage::create(),
                 GotoPrevPage::create(),
+                Help::create(),
                 HotkeyBackspace::create(),
                 HotkeyCopy::create(),
                 HotkeyCut::create(),
@@ -316,6 +318,11 @@ namespace vind
 
         BindedFunc::SPtr search_func(const std::string& name) {
             return search_func(BindedFunc::name_to_id(util::A2a(name))) ;
+        }
+
+        BindedFunc::SPtr search_func(std::string&& name) {
+            return search_func(
+                BindedFunc::name_to_id(util::A2a(std::move(name)))) ;
         }
     }
 }

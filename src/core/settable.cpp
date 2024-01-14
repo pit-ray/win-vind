@@ -166,6 +166,11 @@ namespace vind
             return pimpl->table_.at(name) ;
         }
 
+        bool SetTable::has(const std::string& name) const {
+            std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
+            return pimpl->table_.find(name) != pimpl->table_.end() ;
+        }
+
         void SetTable::remove(const std::string& name) {
             std::lock_guard<std::mutex> scoped_lock{pimpl->mtx_} ;
             pimpl->table_.erase(name) ;

@@ -91,6 +91,7 @@ command i <to_insert>
 " @ System Commands
 command exit <exit>
 command sleep <sleep>
+command help <help>
 command set  <set>
 command map <map>
 command noremap <noremap>

@@ -95,7 +95,7 @@ namespace vind
 
             Impl()
             : hists_(),
-              bg_(opt::ref_global_options_bynames(
+              bg_(opt::search_options(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::VCmdLine().name()
               )),

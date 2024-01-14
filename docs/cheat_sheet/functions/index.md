@@ -1067,6 +1067,21 @@ Close the current window.
 
 ## Process
 
+### **`<help>`**
+This function is called from the virtual command line as a command and opens the document page matching the arguments. The arguments can be function names, option names, parameter names, or predefined tags.
+
+**Examples**
+
+```vim
+" Execute from the virtual command line
+:help easyclick      " Function name
+:help uiacachebuild  " Option name
+:help gridmove_size  " Parameter name
+:help usage          " Predefined tag
+```
+
+<hr class="dash">
+
 ### **`<execute>`**
 Open file with the associated application. This is a wrapper for the famous Windows API, **ShellExecute**, which behaves the same as double-clicking in Explorer. Therefore, you can open any format files and URLs. For example, `:e ~/.vimrc` or `:e https://www.google.com`. If there is no argument, it will open .vindrc loaded at initialization.
 

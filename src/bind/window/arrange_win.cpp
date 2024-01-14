@@ -191,11 +191,9 @@ namespace vind
         }
         void ArrangeWindows::reconstruct() {
             g_ignores.clear() ;
-
             auto& settable = core::SetTable::get_instance() ;
-            auto str = settable.get("arrangewin_ignore").get<std::string>() ;
-
-            auto modules = util::split(std::move(str), ",") ;
+            auto modules = util::split(
+                settable.get("arrangewin_ignore").get<std::string>(), ",") ;
             for(auto& m : modules) {
                 g_ignores.insert(util::A2a(util::trim(m))) ;
             }

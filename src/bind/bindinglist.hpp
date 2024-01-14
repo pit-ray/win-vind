@@ -17,7 +17,7 @@ namespace vind
 
         template <typename T>
         inline bool check_if_func(T&& arg) {
-            return search_func(std::forward<T>(arg)) != nullptr ;
+            return search_func(std::forward<T>(arg)).get() != nullptr ;
         }
     }
 }

@@ -48,10 +48,12 @@ namespace vind
                 {Mode::RESIDENT,   AutoCmdEvent::RESIDENT_ENTER},
                 {Mode::COMMAND,    AutoCmdEvent::COMMAND_ENTER}
             } ;
-            if(enter_events.find(mode) != enter_events.end()) {
+            try {
                 return enter_events.at(mode) ;
             }
-            return AutoCmdEvent::UNDEFINED ;
+            catch(const std::out_of_range&) {
+                return AutoCmdEvent::UNDEFINED ;
+            }
         }
 
         inline AutoCmdEvent get_leave_event(Mode mode) {
@@ -64,10 +66,12 @@ namespace vind
                 {Mode::RESIDENT,   AutoCmdEvent::RESIDENT_LEAVE},
                 {Mode::COMMAND,    AutoCmdEvent::COMMAND_LEAVE}
             } ;
-            if(leave_events.find(mode) != leave_events.end()) {
+            try {
                 return leave_events.at(mode) ;
             }
-            return AutoCmdEvent::UNDEFINED ;
+            catch(const std::out_of_range&) {
+                return AutoCmdEvent::UNDEFINED ;
+            }
         }
 
 

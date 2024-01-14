@@ -159,17 +159,17 @@ $ ./tools/setup_libs.bat -msvc 64
 #### Debug
 
 ```bash
-$ cmake -B debug -G "Visual Studio 16 2019" .
-$ cmake --build debug
-$ ./debug/Debug/win-vind.exe
+$ cmake -B builg -G "Visual Studio 16 2019" .
+$ cmake --build build
+$ ./build/Debug/win-vind.exe
 ```
 
 #### Release
 
 ```bash
-$ cmake -B release -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" .
-$ cmake --build release --config Release
-$ ./debug/Release/win-vind.exe
+$ cmake -B build -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" .
+$ cmake --build build --config Release
+$ ./build/Release/win-vind.exe
 ```
 
 If you want to build with MinGW or create an installer, see [here](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md#to-development).

@@ -83,7 +83,7 @@ namespace vind
 
             auto [event_str, patcmd] = core::extract_double_args(pargs) ;
             auto [pattern, cmd] = core::extract_double_args(patcmd) ;
-            auto patterns = util::split(pattern, ",") ;
+            auto patterns = util::split(std::move(pattern), ",") ;
 
             if(event_str == "*") {
                 if(patterns.empty()) {

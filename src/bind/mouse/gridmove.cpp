@@ -34,7 +34,7 @@ namespace vind
             std::vector<core::CmdMatcher> matchers_ ;
 
             Impl()
-            : hinter_(opt::ref_global_options_bynames(
+            : hinter_(opt::search_options(
                     opt::VCmdLine().name())),
               grid_w_(0),
               grid_h_(0),

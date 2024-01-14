@@ -144,11 +144,7 @@ namespace vind
             }
 
             auto solver = get_solver(mode) ;
-            if(parse_count && !solver->is_matching_any()) {
-                if(!pimpl->count_.empty() && pimpl->count_.back() == ';') {
-                    pimpl->count_.clear() ;  // Erase previous counts.
-                }
-
+            if(parse_count && solver->max_history_size() == 0) {
                 // parses the sequence of head counts as the string
                 // and converts them into a number.
                 auto new_count = extract_numbers(
@@ -160,13 +156,14 @@ namespace vind
             }
 
             if(!pimpl->count_.empty()) {
-                pimpl->count_ += ';' ;  // Final symbol of counts
+                if(pimpl->count_.back() != ';') {
+                    pimpl->count_ += ';' ;  // Final symbol of counts
+                }
                 count = util::extract_num<std::uint16_t>(pimpl->count_) ;
             }
             else {
                 count = 1 ;
             }
-
             fetched_input = input ;
             return true ;
         }
@@ -239,7 +236,13 @@ namespace vind
                 std::uint16_t prefix_count,
                 Mode mode) {
             auto solver = get_solver(mode) ;
-            auto map_cmd = solver->map_command_from(*input) ;
+            auto map_cmd = solver->map_command_from(*input, false) ;
+            if(solver->is_accepted_any() || solver->is_rejected_all()) {
+                if(!pimpl->count_.empty() && pimpl->count_.back() == ';') {
+                    pimpl->count_.clear() ;  // Erase previous counts.
+                }
+                solver->reset_state() ;
+            }
             if(map_cmd.empty()) {
                 return false ;
             }

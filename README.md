@@ -69,12 +69,12 @@ $ scoop install win-vind
 ```
 
 ### Executable Installer
-- [win-vind_5.6.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.6.0/win-vind_5.6.0_32bit_installer.zip)
-- [win-vind_5.6.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.6.0/win-vind_5.6.0_64bit_installer.zip)
+- [win-vind_5.9.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.9.0/win-vind_5.9.0_32bit_installer.zip)
+- [win-vind_5.9.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.9.0/win-vind_5.9.0_64bit_installer.zip)
 
 ### Portable Zip
-- [win-vind_5.6.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.6.0/win-vind_5.6.0_32bit_portable.zip)
-- [win-vind_5.6.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.6.0/win-vind_5.6.0_64bit_portable.zip)
+- [win-vind_5.9.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.9.0/win-vind_5.9.0_32bit_portable.zip)
+- [win-vind_5.9.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.9.0/win-vind_5.9.0_64bit_portable.zip)
 
 
 ## Usage
@@ -87,25 +87,29 @@ Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.
 " Choose the version of {tiny, small, normal, big, huge}.
 version normal
 
-" options
+" Change parameters
 set shell = cmd
 set cmd_fontsize = 14
 set cmd_fontname = Consolas
-set blockstylecaret
-set blockstylecaret_mode = solid
+set easyclick_bgcolor=E67E22
+set easyclick_fontcolor=34495E
 
-" bindings
+" Map capslock to ctrl.
 imap <capslock> {<ctrl>}
 
-inoremap <ralt><ralt> <easyclick><click_left>
-inoremap <rctrl><rctrl> <gridmove><click_left>
-inoremap <win-enter> <window_resizer>
+" Define useful shortcuts
+inoremap <ctrl-shift-f> <easyclick><click_left>
+inoremap <ctrl-shift-m> <gridmove><click_left>
+inoremap <ctrl-shift-s> <switch_window><easyclick><click_left>
 
+" Register application launchers
 noremap <ctrl-1> :! gvim<cr>
 noremap <ctrl-2> :e http://example.com<cr>
 
+" Define macros like Vim
 enoremap t ggyyGp
 
+" Apply auto-commands
 autocmd AppLeave * <to_insert>
 autocmd AppEnter,EdiNormalEnter vim.exe <to_resident>
 ```
@@ -155,17 +159,17 @@ $ ./tools/setup_libs.bat -msvc 64
 #### Debug
 
 ```bash
-$ cmake -B debug -G "Visual Studio 16 2019" .
-$ cmake --build debug
-$ ./debug/Debug/win-vind.exe
+$ cmake -B builg -G "Visual Studio 16 2019" .
+$ cmake --build build
+$ ./build/Debug/win-vind.exe
 ```
 
 #### Release
 
 ```bash
-$ cmake -B release -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" .
-$ cmake --build release --config Release
-$ ./debug/Release/win-vind.exe
+$ cmake -B build -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" .
+$ cmake --build build --config Release
+$ ./build/Release/win-vind.exe
 ```
 
 If you want to build with MinGW or create an installer, see [here](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md#to-development).

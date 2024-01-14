@@ -59,7 +59,7 @@ namespace vind
               right_id_(MoveCursorRight().id()),
               up_id_(MoveCursorUp().id()),
               down_id_(MoveCursorDown().id()),
-              bg_(opt::ref_global_options_bynames(
+              bg_(opt::search_options(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::VCmdLine().name()
               ))

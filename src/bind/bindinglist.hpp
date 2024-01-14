@@ -14,8 +14,9 @@ namespace vind
         BindedFunc::SPtr search_func(std::size_t id) ;
         BindedFunc::SPtr search_func(const std::string& name) ;
 
-        inline bool check_if_func(std::size_t id) {
-            return search_func(id) != nullptr ;
+        template <typename T>
+        inline bool check_if_func(T&& arg) {
+            return search_func(arg) != nullptr ;
         }
     }
 }

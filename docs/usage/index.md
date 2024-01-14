@@ -6,15 +6,18 @@ icon: map-signs
 order: 0
 disable_anchors: true
 ---
-This software only supports Windows 10 or Windows 11 on real machines. Therefore, it may not work on older Windows or virtual environments such as Wine or Virtual Box. If you have any problems or requests, please post them to [GitHub Issues](https://github.com/pit-ray/win-vind/issues).  
+This software only supports Windows 10/11 on real machines.
+It may not work on older Windows or virtual environments such as Wine or Virtual Box.
+
+If you have any problems or requests, please post them to [GitHub Issues](https://github.com/pit-ray/win-vind/issues).  
 
 
 ## Installation
 
-- Download the latest version of the type that suits your preference from the [Downloads page]({{ site.url }}/downloads) and install it.
-Note that the installation location and configuration file location will vary depending on the installation method.
+- Install win-vind using your preferred installation method from the [Downloads]({{ site.url }}/downloads) page.
+Note that the installation path and configuration file path will vary according to the installation method.
 
-- Install and run win-vind.exe.
+- To run win-vind, please execute `$win-vind.exe` from the command line or click on the app icon.
 
 - If you can see the icon in the system tray, it is working properly.  
 
@@ -28,57 +31,63 @@ Note that the installation location and configuration file location will vary de
 - `:exit` is the recommended termination.
 - `<F8> + <F9>` is safe forced termination.
 
-> **Note**: win-vind could **not** operate some windows given high-rank authorization than itself. For example, if you start **Task Manager** having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, I recommend giving win-vind the administrator authorization. (Please use **Task Scheduler**).
+> **Note**: win-vind could **NOT** operate some windows given high-rank authorization than itself. For example, if you start **Task Manager** having the highest authorization and select its window, you cannot move, click or scroll the mouse cursor by win-vind. If you want to operate all windows, it is recommended that win-vind be given administrator authorization using **Task Scheduler**.
 
 
-## About the concept mode transition
-
-The basic concept is the same as Vim, but there are two **Normal** mode and two **Visual** mode, and **Resident** mode.   
+## Mode transition concept
+As in Vim, there is the concept of modes, such as normal mode or insert mode.
+Since Vim only works with text, one normal mode and one visual mode are sufficient. However, since GUI has two types of operation targets, the mouse and text caret, win-vind has two normal modes and two visual modes.
 
 <p align="center">
 <img src="{{ site.url }}/imgs/mode_overview.png" class="img-fluid">
 <p align="center">Default mode layer overview</p>
 </p>
 
-There are two groups: GUI mode and Editor mode. The former allows us to control windows and mouse cursor, etc. 
+These normal and visual modes are classified into two groups: the *GUI* group and the *Editor* group.
+The GUI group is a family of mouse cursor functions that comprehensively handles not only mouse cursors but also GUIs that can be manipulated by mouse cursors, such as windows.
+The Editor group is a family of functions specialized for text editing, which uses carets to perform Vim emulation to achieve a Vim everywhere.
 
 <p align="center">
 <img src="{{ site.url }}/imgs/GUIandEditor.jpg" class="img-fluid">
 <p align="center">Concepts of GUI Mode and Editor Mode</p>
 </p>
 
-The first time win-vind is started, it starts in Insert mode, and the mode can be changed by the command attached to the arrow. The mode is like a binding preset, which is dynamically switched depending on the application.
-If Insert mode or Resident mode is selected, the operation is the same as in normal Windows.
+As a new mode concept, win-vind has Resident mode, which is substantially off-mode.
+Since win-vind targets Windows as a whole, it must coexist with software that uses keyboard shortcuts, such as Vim, and applications that require real-time performance, such as games (in some cases, keyboard emulation is cheating).
+Resident mode is an evacuation mode that turns off win-vind itself to avoid such collision problems, providing only the minimum necessary mappings by default.
 
-
-The following table shows a comparison between modes.
-
-|**Mode**|**Block key messages?**|**Roles**|
-|:---:|:---:|:---:|
-|**GUI Normal**|Yes|To control windows and mouse cursor. The default bindings are `<esc>-left>` or `<ctrl-]>`.|
-|**GUI Visual**|Yes|To select GUI objects such as icons by holding down the left mouse button. The default binding is `v` in GUI Normal mode.|
-|**Edi Normal**|Yes|To emulate Vim in input forms of web pages, Microsoft Office Word, etc. The default bindings are `<esc-right>` or `<ctrl-[>`.|
-|**Edi Visual**|Yes|To select text as in Vim. The default binding is `v` in Edi Normal mode.|
-|**Insert**|No|Basic input operations remain the same as in conventional Windows, but specific functions such as EasyClick are added on a daily basis. The default binding is `i`.|
-|**Resident**|No|Resident mode is an evacuation mode to prevent bindings from being collisions with shortcut keys while gaming on Steam or using Vim. The default binding is `<esc-down>`.|
-|**Command**|Yes|To execute commands visually using a Vim-like virtual command line that is overlaid on the screen. The default binding is `:`.|
-
-&nbsp;
+Mode is only a binding preset, but all modes except *insert* and *resident* block all keyboard messages and route them within win-vind.
+This input key absorption feature allows us to freely define mappings without having to consider conflicts with Windows hotkeys or other application shortcut keys, in contrast to conventional binding tools.
 
 <p align="center">
 <img src="{{ site.url }}/imgs/mode_overview_3D.png" class="img-fluid">
 </p>
 
+The following table shows a comparison between modes.
+
+|**Mode**|**Key Message Blocking**|**Roles**|
+|:---:|:---:|:---:|
+|**GUI Normal**|<b><font color="green">✓</font></b>|Control windows and mouse cursor. The default bindings are `<esc>-left>` or `<ctrl-]>`.|
+|**GUI Visual**|<b><font color="green">✓</font></b>|Select GUI objects such as icons by holding down the left mouse button. The default binding is `v` in GUI Normal mode.|
+|**Edi Normal**|<b><font color="green">✓</font></b>|Emulate Vim in input forms of web pages, Microsoft Office Word, etc. The default bindings are `<esc-right>` or `<ctrl-[>`.|
+|**Edi Visual**|<b><font color="green">✓</font></b>|Select text as in Vim. The default binding is `v` in Edi Normal mode.|
+|**Insert**|<b><font color="red">✘</font></b>|Input texts as normal Windows without absorbing key messages. The default binding is `i`.|
+|**Resident**|<b><font color="red">✘</font></b>|Resident mode is an evacuation mode to prevent bindings from collisions with shortcut keys while gaming on Steam or using Vim. The default binding is `<esc-down>`.|
+|**Command**|<b><font color="green">✓</font></b>|Execute commands visually using a Vim-like virtual command line that is overlaid on the screen. The default binding is `:`.|
+
+&nbsp;
+
 The initial startup mode can be changed with `initmode` option using the [mode prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). An example of setting the initial mode to GUI Normal is as follows.
 
 ```vim
-" write this run commands into .vindrc.
+" write this run command into .vindrc.
 set initmode = gn
   
 ```
 
+## Customization
 
-## Change parameters and options
+### **Change parameters and options**
 
 You can change the options and parameters specified using the `set` command in your .vindrc. All options are on the [cheat sheet]({{ site.url }}/cheat_sheet/options/).  
 
@@ -86,7 +95,7 @@ You can also try setting `:set cursor_accel=32` in Command mode, in which case i
 
 <p align="center">
 <img src="{{ site.url }}/imgs/cmdline_demo.gif" class="img-fluid">
-<p align="center">Try options via virtual command line</p>
+<p align="center">Try options via the virtual command line</p>
 </p>
 
 The following is a list of syntaxes.  
@@ -111,13 +120,13 @@ set easyclick_fontweight=600
 ```
 
 
-## Change bindings or define macros
+### **Change bindings or define macros**
 
 win-vind uses **Run Commands** style configuration method. If you've ever written a `.vimrc`, it's easy to make it your win-vind. 
 
 > **Warning**: win-vind v5 has made fundamental changes to the mapping system, please see the [migration guide]({{ site.url }}/migration) from <= 4.4.0.
 
-### What is a mapping?
+#### What is a mapping?
 A typical key binding is a simple one that assigns a function from a set of keys. In contrast, the mapping employed in Vim is a kind of extension of key binding, a mechanism that allows recursive key assignment and command definition.
 
 Mapping is defined using the `map` or `noremap` command. Examples of recursive key assignments are shown below.
@@ -163,14 +172,14 @@ Below is a table listing the commands for editing mappings.
 
 By the way, `${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). The keyset syntax uses the same expression as in Vim, where keys are connected by `-` between `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
 
-### Allow external macro
+#### Allow external macro
 
 As mentioned earlier, some modes of win-vind absorb keystrokes and do not propagate them to other applications. Therefore, there is a special feature called external macro.  
 
 The external macro is defined macros that are propagated outside of win-vind by enclosing them in `{` and `}`. This emulates the action of the user pressing the keyboard itself. A single key to single key mapping (e.g. `map a {b}`) is the most efficient low-level mapping done.  
 
 
-### Examples
+#### Examples
 Below are some examples of use.
 
 1. Define mode change mapping
@@ -194,10 +203,10 @@ Below are some examples of use.
    enmap t yyGp
    ```
 
-## Automatic command
+### **Automatic command**
 win-vind can be configured to automatically execute commands for specific events and target filenames using the `autocmd` command.
 
-### Examples
+#### Examples
 
 1. Default mapping for the specific event (match any applications)
    ```vim
@@ -216,10 +225,11 @@ win-vind can be configured to automatically execute commands for specific events
 
 See [\<autocmd_add\>]({{ site.url }}/cheat_sheet/functions/#autocmd_add) or [\<autocmd_del\>]({{ site.url }}/cheat_sheet/functions/#autocmd_del) for more details.
 
-## Load remote .vindrc
-Inspired from many Vim plugin managers such as [vim-plug](https://github.com/junegunn/vim-plug), win-vind has a simple remote .vindrc loading capability using the `source` command.
+## More advanced features
+### **Load remote .vindrc**
+Inspired by many Vim plugin managers such as [vim-plug](https://github.com/junegunn/vim-plug), win-vind has a simple remote .vindrc loading capability using the `source` command.
 
-The `source` command is originally designed to load local .vindrc, but it can also load .vindrc in the form `user/repo` from the root directory of a repository on GitHub .
+The `source` command is originally designed to load local .vindrc, but it can also load .vindrc in the form `user/repo` from the root directory of a repository on GitHub.
 
 As a sample, by writing the following in your .vindrc., win-vind loads the .vindrc in [pit-ray/remote_vindrc_demo](https://github.com/pit-ray/remote_vindrc_demo) repository, and `:test_remote` command can be available.
 
@@ -231,11 +241,11 @@ source pit-ray/remote_vindrc_demo
 > **Warning**: `source user/repo` does not verify the safety of the .vindrc it reads, which may be a security hole. Therefore, use it for reliable repositories or your own dotfiles configurations. As a minimum security measure, win-vind only reads the contents of source the first time a `source` command is done, and does not update the contents as `git pull` does.
 
 
-## Use as automation command by server-client
+### **Use as UI automation command by server-client**
 
 The `--command` option allows us to execute an arbitrary command from a terminal.
 
-The first time you run win-vind, it will be resident in the system tray and run as a server program. The server will check shared memory at the interval specified by the `listen_interval` option and execute any requested commands in addition to the query. All new win-vinds that already have win-vind running will become clients.
+The first time you run win-vind, it will be resident in the system tray and run as a server program. The server will check shared memory at the interval specified by the [listen_interval]({{ site.url }}/cheat_sheet/options/#listen_interval) option and execute any requested commands in addition to the query. All new win-vinds that already have win-vind running will become clients.
 
 For example, if you execute the following command with win-vind already running, a window-switching program will be started.
 
@@ -259,42 +269,41 @@ In the following, let's try win-vind in practice based on a concrete example.
    <img src="{{ site.url }}/imgs/EasyClickDemo.gif" class="img-fluid">
    <p align="center">EasyClick Demo</p>
    </p>
-1. Let's select windows with `<C-w>h` or `<C-w>l`.
+1. Let's key to return to insert mode. select windows with `<C-w>h` or `<C-w>l`.
 1. Please select Microsoft Paint and close it with `:close`.
 
 ### 2. Customize win-vind  
 
 Let's do the last tutorial!  
 
-1. Go to **Insert Mode**.
-1. This time, we will try **Instant GUI Normal Mode** with `<F8>`. It allows us to temporarily switch to the **GUI Normal Mode**.  
-   
-   <p align="center">
-   <img src="{{ site.url }}/imgs/instant_gui_normal_mode.jpg" class="img-fluid">
-   <p align="center">Instant GUI Normal Demo</p>
-   </p>
+1. Go to **GUI Normal** mode.
 1. Open your `.vindrc` with `:e`.
    
    <p align="center">
    <img src="{{ site.url }}/imgs/edit_vindrc_demo.jpg" class="img-fluid">
    <p align="center">Edit .vindrc Demo</p>
    </p>
-1. Write following commands into `.vindrc`.
+1. Write the following commands into `.vindrc`.
    
    ```vim
    " Write to your .vindrc.
    set cmd_fontname = Arial
-   inoremap <Alt> <easyclick><click_left>
-   imap <ctrl-d><ctrl-d> {win-vind@example.com}
+   inoremap <ctrl-shift-f> <easyclick><click_left>
+   inoremap <ctrl-shift-s> <switch_window><easyclick><click_left>
    noremap <ctrl-1> :!notepad<cr>
    ```
-1. If you done, try reloading `.vindrc` with `:source` of win-vind. (No arguments are needed.)
+1. If you are done, try reloading `.vindrc` with `:source` of win-vind. (No arguments are needed.)
    
    <p align="center">
    <img src="{{ site.url }}/imgs/source_demo.jpg" class="img-fluid">
    <p align="center">Reload Demo</p>
    </p>
-1. The above command allows you to call EasyClick with the `<alt>` key and `<ctrl-d><ctrl-d>` will auto-type your email address in insert mode. Also, `<ctrl-1>` will launch Notepad in normal mode.
+
+1. Now make sure you are in **GUI Normal** mode and press **Ctrl + 1** to launch Notepad.
+
+1. Press the **i** key to return to **Insert** mode.
+
+1. You can use EasyClick by pressing **Ctrl + Shift + f** and switching windows with EasyClick by pressing **Ctrl + Shift + s**.
 
 <br>
 <br>

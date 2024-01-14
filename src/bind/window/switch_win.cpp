@@ -24,7 +24,7 @@ namespace vind
             core::Background bg_ ;
 
             explicit Impl()
-            : bg_(opt::ref_global_options_bynames(
+            : bg_(opt::search_options(
                     opt::AsyncUIACacheBuilder().name(),
                     opt::VCmdLine().name()
               ))

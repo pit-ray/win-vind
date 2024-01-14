@@ -9,79 +9,65 @@ icon: home
 translation: ja
 translators:
   - pit-ray
-version: 4.3.3
-description: <img src="../imgs/banner.gif" />
+version: 5.9.0
+description: <img src="imgs/banner.gif" class="img-fluid">
 ---
 
+## これは何ですか？
+**win-vind** は、Windows のための軽量なハイブリッド UI システムを提供します。CUI と GUI の両方の特徴を持ち、このツールをインストールすることで、Vim と同じように Windows GUI を制御することができます。
 
-## このソフトウェアについて  
+### 1. Vim ユーザーフレンドリー。
+すべての設定方法やモードの概念は Vim から派生しており、Vim のような UI 操作が可能です。Vim ユーザーは win-vind のマクロ機能と追加のモード概念を少しの学習コストで理解するだけで済みます。
 
-**win-vind**は、Vimとそのプラグインの影響を強く受けた、Windowsを操作するためのツールボックスです。
+### 2. 多くの便利な組み込みコマンドがあります。
+従来のキーバインディングツールのような複雑なスクリプトや依存関係を気にする必要はありません。低レベルで最適化された組み込みコマンドを組み合わせて、自由にユーザー定義のコマンドを作成できます。
 
-
-### 機能  
-#### システム設計
-- 軽量なバインディング
-- Vimライクなモード管理
-- .vimrcスタイルの設定
-- ユーザ権限内での実行
-- VimやAHKからのワンショット利用 (例: `$ win-vind -f easy_click_left`)
-
-#### 代表的な機能
-- マウスレスのGUI操作
-- どこでもVimエミュレーション
-- 常駐コマンドラインを利用したプロセス起動 (例: `:!vim ~/.vimrc`)
-- 低レベルなキーマッピング (例: CapsLockをCtrl)
-- キーストロークのマクロ定義
-- タイルウィンドウマネージャ
-- GUIのためのVimium/EasyMotionライクな操作
+### 3. 非常に携帯性が高く完全にオープンソースです。
+win-vind はユーザー権限で実行される依存関係のない小さな単一のバイナリです。また、コマンドラインからも利用でき、UI 操作のためのコマンドとして `$ win-vind -c "ggyyGp"` のように使用できます。
 
 
-##### 動作例
+### トップ機能デモ
 
-<img src="{{ site.url }}/imgs/4xxdemo.gif?raw=true" title="Demo" width="624">  
+<video src="https://user-images.githubusercontent.com/42631247/215270933-3365065b-53db-4eca-9fc6-cd03d13e5ab0.mp4" controls class="img
+-fluid"></video>
 
 
-##### 設定ファイルの例
 
-.vimrcスタイルで設定できます。.vindrcではオプションの切り替え、パラメータの設定、低レベルなキーマッピング、バインディングの定義を行うことができます。
+### 設定ファイル例
 
+.vimrc スタイルで設定できます。.vindrc ではオプションの切り替え、パラメータの設定、低レベルのキーの再マップ、および関数のバインディングを行うことができます。
 
 ```vim
-" ------------ Example ------------
-" Virtual command line options
+" {tiny, small, normal, big, huge} のバージョンを選択します。
+version normal
+
+" パラメータの変更
 set shell = cmd
 set cmd_fontsize = 14
-set cmd_roughpos = LowerLeft
-set cmd_maxchar = 100
+set cmd_fontname = Consolas
+set easyclick_bgcolor=E67E22
+set easyclick_fontcolor=34495E
 
-" Enable block style caret
-set blockstylecaret
-set blockstylecaret_mode = solid
+" capslock を ctrl にマップします。
+imap <capslock> {<ctrl>}
 
-" Low-level key mapping in resident mode
-rmap <capslock> <ctrl>
+" 便利なショートカットを定義します
+inoremap <ctrl-shift-f> <easyclick><click_left>
+inoremap <ctrl-shift-m> <gridmove><click_left>
+inoremap <ctrl-shift-s> <switch_window><easyclick><click_left>
 
-" Define bindings in GUI normal mode
-gnnoremap <c-h> select_left_window
-gnnoremap <c-l> select_right_window
-gnnoremap <c-k> select_upper_window
-gnnoremap <c-j> select_lower_window
+" アプリケーションの起動を登録します
+noremap <ctrl-1> :! gvim<cr>
+noremap <ctrl-2> :e http://example.com<cr>
 
-" Define bindings in insert mode
-imap <capslock> <f16>
-inoremap <f16> to_edi_normal
+" Vim のようなマクロを定義します
+enoremap t ggyyGp
 
-imap <ralt> <f17>
-inoremap <f17> easy_click_left
-
-imap <app> <f18>
-inoremap <f18> window_resizer
-
-" Define keystroke macros
-gnnoremap <ctrl-1> :!notepad<cr>
-gnnoremap <ctrl-2> :e https://www.google.com<cr>
+" オートコマンドの適用
+autocmd AppLeave * <to_insert>
+autocmd AppEnter,EdiNormalEnter vim.exe <to_resident>
 ```
 
+
 ## ライセンス
-このソフトウェアは[MIT License](https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt)を採用しています。
+このソフトウェアは [MIT ライセンス](https://github.com/pit-ray/win-vind/blob/master/LICENSE.txt) によって提供されています。

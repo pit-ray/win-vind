@@ -169,7 +169,7 @@ $ ./debug/Debug/win-vind.exe
 ```bash
 $ cmake -B release -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" .
 $ cmake --build release --config Release
-$ ./debug/Release/win-vind.exe
+$ ./release/Release/win-vind.exe
 ```
 
 If you want to build with MinGW or create an installer, see [here](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md#to-development).

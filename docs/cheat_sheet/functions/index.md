@@ -1236,6 +1236,13 @@ Move the caret to right.
 **Vim Emulation:** `w`  
 Move words forward for normal mode.
 
+It performs word-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+Instead, you can [move_fwd_word_simple](./#move_fwd_word_simple) for visual mode, which is faster and simpler (of course, it is also available for other modes)
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
+
 <!--
 **See Also**
 - [\<a\>](./#a)
@@ -1257,6 +1264,13 @@ Move words forward fast.
 ### **`<move_bck_word>`**
 **Vim Emulation:** `b`  
 Move words backward for normal mode.
+
+It performs word-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+Instead, you can [move_bck_word_simple](./#move_fwd_word_simple) for visual mode, which is faster and simpler (of course, it is also available for other modes)
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
 
 <!--
 **See Also**
@@ -1280,6 +1294,13 @@ Move words backward fast.
 **Vim Emulation:** `W`  
 Move WORDS forward.
 
+It performs WORD-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+Instead, you can [move_fwd_word_simple](./#move_fwd_word_simple) for visual mode, which is faster and simpler (of course, it is also available for other modes)
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
+
 <!--
 **See Also**
 - [\<a\>](./#a)
@@ -1290,6 +1311,13 @@ Move WORDS forward.
 ### **`<move_bck_bigword>`**
 **Vim Emulation:** `B`  
 Move WORDS backward.
+
+It performs WORD-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+Instead, you can [move_bck_word_simple](./#move_fwd_word_simple) for visual mode, which is faster and simpler (of course, it is also available for other modes)
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
 
 <!--
 **See Also**
@@ -1302,6 +1330,12 @@ Move WORDS backward.
 **Vim Emulation:** `e`  
 Forward to the end of words.
 
+It performs word-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
+
 <!--
 **See Also**
 - [\<a\>](./#a)
@@ -1312,6 +1346,12 @@ Forward to the end of words.
 ### **`<move_end_bigword>`**
 **Vim Emulation:** `E`  
 Forward to the end of WORDS.
+
+It performs WORD-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
 
 <!--
 **See Also**
@@ -1324,6 +1364,12 @@ Forward to the end of WORDS.
 **Vim Emulation:** `ge`  
 Backward to the end of words.
 
+It performs word-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
+
 <!--
 **See Also**
 - [\<a\>](./#a)
@@ -1334,6 +1380,12 @@ Backward to the end of words.
 ### **`<move_bckend_bigword>`**
 **Vim Emulation:** `gE`  
 Backward to the end of WORDS.
+
+It performs WORD-motion using an algorithm that is completely identical to Vim.
+However, it is not available in visual mode, since the text is selected and copied once and retrieved via the clipboard for text parsing.
+
+The `iskeyword` option is fixed to the default value of Vim in Windows and cannot change it currently.
+There is an option [charbreak](../options/#charbreak) to set the criteria for considering a Unicode character as a single character. 
 
 <!--
 **See Also**

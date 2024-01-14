@@ -21,7 +21,6 @@
 #include <sstream>
 #include <string>
 
-#include "bind/proc/execute.hpp"
 #include "core/errlogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
@@ -123,12 +122,12 @@ namespace vind
             tempdir = core::replace_path_magic(tempdir) ;
 
             util::create_process(
-                    tempdir,
-                    "curl",
-                    util::concat_args(
-                    "-H", "@{\"Accept\"=\"application/vnd.github.v3+json\"}",
-                    "\"https://api.github.com/repos/pit-ray/win-vind/releases/latest\"",
-                    "-o", g_release_cache_name), false) ;
+                tempdir,
+                "curl.exe",
+                util::concat_args(
+                "-H", "@{\"Accept\"=\"application/vnd.github+json\"}",
+                "\"https://api.github.com/repos/pit-ray/win-vind/releases/latest\"",
+                "-o", g_release_cache_name), false) ;
             const auto json_path = tempdir / g_release_cache_name ;
 
             using namespace std::chrono ;
@@ -144,7 +143,13 @@ namespace vind
 
                 Sleep(500) ;
 
-                if(system_clock::now() - start > 30s) { //timeout
+                if(system_clock::now() - start >
+#if defined(DEBUG)
+                        1s
+#else
+                        30s
+#endif
+                        ) { //timeout
                     break ;
                 }
             }
@@ -166,6 +171,7 @@ namespace vind
             } ;
 
             if(!ifs.is_open()) {
+                util::shell_execute("https://github.com/pit-ray/win-vind/releases/latest") ;
                 insert_message(wxT("Could not connect to github.com")) ;
             }
             else {
@@ -244,7 +250,7 @@ namespace vind
 
                             Bind(wxEVT_HTML_LINK_CLICKED, [](wxHtmlLinkEvent& e) {
                                 auto url = e.GetLinkInfo().GetHref().ToStdString() ;
-                                bind::Execute::sprocess(1, url) ;
+                                util::shell_execute(url) ;
                             }, UPDATE_NOTES) ;
 
                             root->Add(body, flags) ;
@@ -289,7 +295,7 @@ namespace vind
                                                     Sleep(500) ;
                                                     std::ifstream check(dl_filepath) ;
                                                     if(check.is_open()) {
-                                                    bind::Execute::sprocess(1, dl_filepath.u8string()) ;
+                                                    util::shell_execute(dl_filepath.u8string()) ;
                                                         parent->Destroy() ;  // exit win-vind for update
                                                         break ;
                                                     }
@@ -302,8 +308,7 @@ namespace vind
                                         }
                                     }
                                     catch(const nlohmann::json::exception&) {
-                                        bind::Execute::sprocess(
-                                            1, "https://github.com/pit-ray/win-vind/releases/latest") ;
+                                        util::shell_execute("https://github.com/pit-ray/win-vind/releases/latest") ;
                                     }
                                 }, wxID_OK) ;
                             }

@@ -95,14 +95,14 @@ Since it builds all libraries with the best options for your system environment,
   ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
   $ cmake --build build --config Debug
-  $ ./debug/Debug/win-vind.exe
+  $ ./build/Debug/win-vind.exe
   ```
 
 ###### Manually (MinGW-w64 >= 8.2.0)
   ```bash
-  $ cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" .
-  $ cmake --build debug --config Debug
-  $ ./debug/win-vind.exe
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" .
+  $ cmake --build build --config Debug
+  $ ./build/win-vind.exe
   ```
 
 #### Run Test 

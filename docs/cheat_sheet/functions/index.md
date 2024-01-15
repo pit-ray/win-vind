@@ -154,7 +154,18 @@ Temporarily switches to GUI Normal mode and performs matching, which can be used
 ## System Command
 
 ### **`<set>`**
-System Command set.
+Change the options and parameters specified using the `set` command in your .vindrc.
+
+<p align="center">
+<img src="{{ site.url }}/imgs/cmdline_demo.gif" class="img-fluid">
+<p align="center">Change parameters via the virtual command line</p>
+</p>
+
+|**Syntax**|**Effects**|
+|:---|:---|
+|`set ${OPTION_NAME}`|Set the value of the option to **true**.|
+|`set no${OPTION_NAME}`|Set the value of the option to **false**.|
+|`set ${OPTION_NAME} = ${VALUE}`|Set a value of the option. The value can be a string or a number that allows floating points. The string does not need quotation marks, and any character after the non-white character will be handled as the value. White spaces at both ends of the equals sign are ignored.|
 
 **See Also**
 - [Options](../options)
@@ -175,9 +186,14 @@ System Command source.
 <hr class="dash">
 
 ### **`<map>`**
-System Command map.
+Recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`.
 
- the `map` allows remapping with user-defined mapping like the following.
+```vim
+${MODE}map ${IN_CMD} ${OUT_CMD}
+```
+`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix).
+
+The `map` allows remapping with user-defined mapping like the following.
 ```vim
 nmap f h  " f --> h
 nmap t f  " t --> h
@@ -197,7 +213,13 @@ nnoremap t f  " t --> f
 <hr class="dash">
 
 ### **`<noremap>`**
-System Command noremap.
+Non-recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`, which is composed by the default map.
+
+```vim
+" Call in .vindrc
+${MODE}noremap ${IN_CMD} ${OUT_CMD}
+```
+`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix).
 
 **See Also**
 - [\<map\>](./#map)
@@ -208,7 +230,12 @@ System Command noremap.
 <hr class="dash">
 
 ### **`<unmap>`**
-System Command unmap.
+Remove the map corresponding to the `${IN_CMD}`.
+
+```vim
+${MODE}unmap ${IN_CMD}
+```
+`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix).
 
 **See Also**
 - [\<mapclear\>](./#mapclear)
@@ -219,7 +246,12 @@ System Command unmap.
 <hr class="dash">
 
 ### **`<mapclear>`**
-System Command mapclear.
+Delete all maps.
+
+```vim
+${MODE}mapclear
+```
+`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix).
 
 **See Also**
 - [\<unmap\>](./#unmap)
@@ -230,7 +262,12 @@ System Command mapclear.
 <hr class="dash">
 
 ### **`<command>`**
-System Command command.
+It defines the command to call the `${OUT_CMD}`.
+
+```vim
+command ${IN_CMD} ${OUT_CMD}
+```
+`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix).
 
 **See Also**
 - [\<delcommand\>](./#delcommand)
@@ -241,7 +278,12 @@ System Command command.
 <hr class="dash">
 
 ### **`<delcommand>`**
-System Command delcommand.
+Remove the command corresponding to the `{IN_CMD}`.
+
+```vim
+delcommand ${IN_CMD}
+```
+`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix).
 
 **See Also**
 - [\<comclear\>](./#comclear)
@@ -253,6 +295,11 @@ System Command delcommand.
 
 ### **`<comclear>`**
 System Command comclear.
+Delete all commands
+
+```vim
+comclear
+```
 
 **See Also**
 - [\<delcommand\>](./#delcommand)

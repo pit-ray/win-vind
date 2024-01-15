@@ -176,7 +176,20 @@ Change the options and parameters specified using the `set` command in your .vin
 <hr class="dash">
 
 ### **`<source>`**
-System Command source.
+Load the .vindrc file.
+
+Inspired by many Vim plugin managers such as [vim-plug](https://github.com/junegunn/vim-plug), win-vind has a simple remote .vindrc loading capability using the `source` command.
+
+The `source` command is originally designed to load local .vindrc, but it can also load .vindrc in the form `user/repo` from the root directory of a repository on GitHub.
+
+As a sample, by writing the following in your .vindrc., win-vind loads the .vindrc in [pit-ray/remote_vindrc_demo](https://github.com/pit-ray/remote_vindrc_demo) repository, and `:test_remote` command can be available.
+
+```vim
+" Load remote repository .vindrc
+source pit-ray/remote_vindrc_demo
+```
+
+> **Warning**: `source user/repo` does not verify the safety of the .vindrc it reads, which may be a security hole. Therefore, use it for reliable repositories or your own dotfiles configurations. As a minimum security measure, win-vind only reads the contents of source the first time a `source` command is done, and does not update the contents as `git pull` does.
 
 **See Also**
 - [\<set\>](./#set)

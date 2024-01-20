@@ -13,6 +13,7 @@ bin
 bin_32
 bin_64
 build
+build_arm64
 build_cov
 choco
 cmake_modules

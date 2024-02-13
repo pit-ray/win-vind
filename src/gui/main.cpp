@@ -127,22 +127,24 @@ int WINAPI WinMain(
             "win-vind", WIN_VIND_VERSION, argparse::default_arguments::none) ;
 
         parser.add_argument("-h", "--help")
-            .action([&parser] (const auto&) {
+            .action([&parser, &runnable] (const auto&) {
                 if(create_console()) {
                     std::cout << parser ;
                     system("PAUSE") ;
                 }
+                runnable.store(false) ;
             })
             .default_value(false)
             .help("Shows help message and exits.")
             .implicit_value(true)
             .nargs(0) ;
         parser.add_argument("-v", "--version")
-            .action([&parser] (const auto&) {
+            .action([&parser, &runnable] (const auto&) {
                 if(create_console()) {
                     std::cout << WIN_VIND_VERSION << std::endl ;
                     system("PAUSE") ;
                 }
+                runnable.store(false) ;
             })
             .default_value(false)
             .help("Prints version information and exits.")
@@ -154,6 +156,10 @@ int WINAPI WinMain(
             "Keystrokes passed to win-vind.") ;
 
         parser.parse_args(args) ;
+
+        if(!runnable.load()) {
+            return 0 ;
+        }
 
         auto exit_process = [&runnable] {
             runnable = false ;
@@ -187,7 +193,7 @@ int WINAPI WinMain(
         if(!tray.create_tray(
             "win-vind",
             (core::RESOURCE_ROOT_PATH() / "icons" / icon_path).u8string(),
-            5, 5, 10, 5, 240, true)) {
+            5, 5, 10, 10, 240, true)) {
             PRINT_ERROR("Failed tray initialization") ;
             return 1 ;
         }

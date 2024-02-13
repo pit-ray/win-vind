@@ -50,21 +50,3 @@ call "tools/install_nlohmann_json.bat" %1 %2
 :start_setup_maddy
 call "tools/install_maddy.bat" %1 %2
 :end_of_setup_maddy
-
-@echo.
-@echo Setup wxWidgets --------------------------------------------------------------------------
-@echo.
-
-@rem @if exist libs/wxWidgets (
-@rem     @if "%3" == "-update" (
-@rem         @goto start_setup_wxWidgets
-@rem     )
-@rem     @echo.
-@rem     @echo wxWidgets is already installed. If you want to re-install, pass -update as the third argument.
-@rem     @echo Syntax: setup_libs.bat [-mingw/-msvc] [32/64] [-update]
-@rem     @echo.
-@rem     @goto end_of_wxWidgets
-@rem )
-@rem :start_setup_wxWidgets
-call "tools/install_wxWidgets.bat" %1 %2
-@rem :end_of_wxWidgets

@@ -44,15 +44,6 @@ jobs:
       with:
         arch: x64
 
-    - name: Cache Libraries
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/libs
-        key: x64-libs-cache-test-220126
-
-    - name: Setup Libraries
-      run: "tools/install_wxWidgets.bat -msvc 64"
-
     - name: Configure CMake
       working-directory: ${{github.workspace}}/tests
       run: |

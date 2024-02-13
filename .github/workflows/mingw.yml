@@ -46,18 +46,6 @@ jobs:
         curl.exe -OL https://github.com/niXman/mingw-builds-binaries/releases/download/13.2.0-rt_v11-rev0/x86_64-13.2.0-release-win32-seh-msvcrt-rt_v11-rev0.7z
         7z x x86_64-13.2.0-release-win32-seh-msvcrt-rt_v11-rev0.7z
 
-    - name: Cache Libraries
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/libs/wxWidgets
-        key: x64-libs-cache-mingw
-
-    - name: Install Libraries
-      run: "tools/install_wxWidgets.bat -mingw 64"
-      env:
-        CC: ${{github.workspace}}/mingw64/bin/gcc.exe
-        CXX: ${{github.workspace}}/mingw64/bin/g++.exe
-
     - name: Configure CMake
       run: |
         cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -DCCACHE_ENABLE=OFF .

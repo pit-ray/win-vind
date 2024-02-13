@@ -150,12 +150,6 @@ For more information on default mappings, please visit our [website](https://pit
 
 ## How to build
 
-#### Preparation
-The dependencies required for the build are installed locally in the project directory. The system is not affected.
-```bash
-$ ./tools/setup_libs.bat -msvc 64
-```
-
 #### Debug
 
 ```bash

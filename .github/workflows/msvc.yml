@@ -38,15 +38,6 @@ jobs:
       with:
         arch: x64
 
-    - name: Cache Libraries
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/libs/wxWidgets
-        key: x64-libs-cache-msvc
-
-    - name: Setup Libraries
-      run: "tools/install_wxWidgets.bat -msvc 64 -without-vcvars"
- 
     - name: Configure CMake
       run: |
         cmake -B ${{github.workspace}}/build_msvc_x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G "Visual Studio 16 2019" -A x64 .

@@ -81,15 +81,6 @@ jobs:
       with:
         arch: x64
 
-    - name: Cache Library
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/libs/wxWidgets
-        key: x64-libs-cache-codeql
-
-    - name: Setup Library
-      run: "tools/install_wxWidgets.bat -msvc 64"
-
     - name: Configure CMake
       run: |
         cmake -B ${{github.workspace}}/codeql -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .

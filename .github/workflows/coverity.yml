@@ -46,15 +46,6 @@ jobs:
         choco install -y wget
         choco install -y curl
 
-    - name: Cache libraries
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/libs/wxWidgets
-        key: x64-libs-cache-coverity
-
-    - name: Install libraries
-      run: "tools/install_wxWidgets.bat -msvc 64"
-
     - name: Cache Coverity scan tools
       uses: actions/cache@v2
       with:

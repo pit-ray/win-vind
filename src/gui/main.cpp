@@ -29,257 +29,292 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <atomic>
-#include <string>
-
-#include "util/disable_compiler_warning.hpp"
-
-#include <wx/app.h>
-#include <wx/cmdline.h>
-#include <wx/msgdlg.h>
-
-#include "util/enable_compiler_warning.hpp"
+#define NOMINMAX
 
 #include "core/entry.hpp"
 #include "core/errlogger.hpp"
 #include "core/path.hpp"
 #include "core/settable.hpp"
+#include "core/version.hpp"
 
 #include "util/debug.hpp"
+#include "util/def.hpp"
+#include "util/string.hpp"
+#include "util/winwrap.hpp"
 
-#include "about.hpp"
+#include "startup.hpp"
+
+#include <atomic>
+#include <exception>
+#include <future>
+#include <string>
+
+#include "fluent_tray/fluent_tray.hpp"
+
+#include "argparse/argparse.hpp"
+
+#include <fcntl.h>
+#include <io.h>
 
 
 namespace
 {
-    inline void error_box(const wxString& msg) {
-        wxMessageBox(msg, wxT("Error - win-vind"), wxOK | wxICON_EXCLAMATION) ;
-    }
-
-    void trim_quotation(std::string& str) {
+    inline void trim_quotation(std::string& str) {
         if(str.front() == '\"' && str.back() == '\"') {
             str = str.substr(1, str.size() - 2) ;
         }
     }
-}
 
-namespace vind
-{
-    namespace gui
-    {
-        //core system is wrought at another thread
-        class SystemThread : public wxThread {
-        public:
-            core::VindEntry entry_ ;
+    inline bool create_console() {
+        if(!AllocConsole()) {
+            return false ;
+        }
 
-            std::atomic<bool> runnable_ ;
+        _setmode(_fileno(stdout), _O_U8TEXT) ;
 
-            template <typename ExitFunc>
-            SystemThread(ExitFunc&& exit_func)
-            : wxThread(wxTHREAD_DETACHED),
-              entry_(std::forward<ExitFunc>(exit_func)),
-              runnable_(true)
-            {}
-
-        private:
-            virtual ExitCode Entry() override {
-                runnable_.store(true) ;
-                while(runnable_.load()) {
-                    try {
-                        entry_.update() ;
-                    }
-                    catch(const std::exception& e) {
-                        core::Logger::get_instance().error(e.what()) ;
-                        break ;
-                    }
-                    catch(const core::SafeForcedTermination& e) {
-                        core::Logger::get_instance().message(e.what()) ;
-                        break ;
-                    }
-                    catch(...) {
-                        core::Logger::get_instance().error("Fatal error occured.") ;
-                        break ;
-                    }
-                }
-
-                if(runnable_.load()) {
-                    runnable_.store(false) ;
-                    entry_.handle_system_call(SystemCall::TERMINATE) ;
-                }
-
-                return static_cast<ExitCode>(0) ;
-            }
-
-        public:
-            void exit() noexcept {
-                runnable_.store(false) ;
-            }
-
-            bool is_running() const noexcept {
-                return runnable_.load() ;
-            }
-
-            virtual ~SystemThread() noexcept = default ;
-
-            SystemThread(SystemThread&&)                 = delete ;
-            SystemThread& operator=(SystemThread&&)      = delete ;
-            SystemThread(const SystemThread&)            = delete ;
-            SystemThread& operator=(const SystemThread&) = delete ;
-        } ;
-
-
-        class App : public wxApp {
-        private:
-            std::unique_ptr<SystemThread> pst_ ;
-
-            std::string arg_func_name_ ;
-            std::string arg_command_ ;
-
-        public:
-            App()
-            : pst_(nullptr),
-              arg_func_name_(),
-              arg_command_()
-            {}
-
-            virtual ~App() noexcept {
-                // Core win_vind is running yet, so terminate core system.
-                pst_->exit() ;
-            }
-
-        private:
-            bool OnInit() override {
-                try {
-                    if(!wxApp::OnInit()) {
-                        return false ;
-                    }
-
-                    if(!wxTaskBarIcon::IsAvailable()) {
-                        wxMessageBox(
-                                wxT("Not supported System Tray"),
-                                wxT("Warning - win-vind"),
-                                wxOK | wxICON_EXCLAMATION) ;
-                    }
-
-                    pst_ = std::make_unique<SystemThread>([this] {
-                        ExitMainLoop() ;
-                    }) ;
-
-                    if(!arg_func_name_.empty()) {
-                        pst_->entry_.send_function_request(arg_func_name_) ;
-                    }
-                    if(!arg_command_.empty()) {
-                        pst_->entry_.send_command_request(arg_command_) ;
-                    }
-
-                    if(pst_->entry_.is_subprocess()) {
-                        return false ;
-                    }
-
-                    pst_->entry_.init() ;
-
-                    auto& settable = core::SetTable::get_instance() ;
-
-                    const auto& icon_style = settable.get("icon_style") ;
-
-                    // Root window
-                    auto dlg = new AboutDialog(
-                            (vind::core::RESOURCE_ROOT_PATH() / icon_style.get<std::string>()).u8string(),
-                            "win-vind",
-                            settable.get("gui_fontsize").get<int>(),
-                            settable.get("gui_fontname").get<std::string>()) ;
-
-                    dlg->Show(false) ;
-                }
-                catch(const std::exception& e) {
-                    error_box(wxString::FromUTF8(e.what()) \
-                            + wxT(" Could not initialize win-vind, so terminate." \
-                            + wxT(" (Windows Error Code: ") + std::to_string(GetLastError()) + ")")) ;
-                    return false ;
-                }
-                return true ;
-            }
-
-            int MainLoop() override {
-                pst_->Run() ;
-                return wxApp::MainLoop() ;
-            }
-
-            void OnInitCmdLine(wxCmdLineParser& parser) override {
-                parser.AddSwitch(
-                        wxT("h"),
-                        wxT("help"),
-                        wxT("Print usage and exit."),
-                        wxCMD_LINE_PARAM_OPTIONAL) ;
-
-                parser.AddOption(
-                        wxT("f"),
-                        wxT("func"),
-                        wxT("Identifier of the function to call in one-shot."),
-                        wxCMD_LINE_VAL_STRING,
-                        wxCMD_LINE_PARAM_OPTIONAL) ;
-
-                parser.AddOption(
-                        wxT("c"),
-                        wxT("command"),
-                        wxT("Keystrokes passed to win-vind."),
-                        wxCMD_LINE_VAL_STRING,
-                        wxCMD_LINE_PARAM_OPTIONAL) ;
-            }
-
-            bool OnCmdLineParsed(wxCmdLineParser& parser) override {
-                wxString fn ;
-                if(parser.Found(wxT("help"))) {
-                    parser.Usage() ;
-                    return false ;
-                }
-                if(parser.Found(wxT("func"), &fn)) {
-                    arg_func_name_ = fn.ToStdString() ;
-                    trim_quotation(arg_func_name_) ;
-                }
-                if(parser.Found(wxT("command"), &fn)) {
-                    arg_command_ = fn.ToStdString() ;
-                    trim_quotation(arg_command_) ;
-                }
-                return true ;
-            }
-
-            bool OnExceptionInMainLoop() override {
-                try {
-                    throw ; //Rethrow the current exception.
-                }
-                catch(const std::exception& e) {
-                    pst_->exit() ;
-                    PRINT_ERROR(e.what()) ;
-                }
-
-                return false ; //exit program
-            }
-
-            void OnUnhandledException() override {
-                try {
-                    throw ; //Rethrow the current exception.
-                }
-                catch(const std::exception& e) {
-                    pst_->exit() ;
-                    PRINT_ERROR(e.what()) ;
-                }
-
-                //the program is already about to exit.
-            }
-        } ;
+        FILE* fp ;
+        if(freopen_s(&fp, "CONOUT$", "w+", stdout) != 0) {
+            return false ;
+        }
+        return true ;
     }
 }
 
-
-#include "util/disable_compiler_warning.hpp"
-
-DECLARE_APP(vind::gui::App) ;
-
 #ifdef DEBUG
-IMPLEMENT_APP_CONSOLE(vind::gui::App) ;
-#else
-IMPLEMENT_APP(vind::gui::App) ;
-#endif
 
-#include "util/enable_compiler_warning.hpp"
+////////////////////////////////////
+///            Debug             ///
+////////////////////////////////////
+
+// Console is available.
+int main(int argc, char* argv[])
+{
+    using namespace vind ;
+    std::vector<std::string> args ;
+    for(int i = 0 ; i < argc ; i ++ ) {
+        args.push_back(std::string(argv[i])) ;
+    }
+
+#else
+
+////////////////////////////////////
+///           Release           ////
+////////////////////////////////////
+
+int WINAPI WinMain(
+    HINSTANCE UNUSED(hinstance),
+    HINSTANCE UNUSED(h_prev_instance),
+    LPSTR UNUSED(lp_cmd_line),
+    int UNUSED(n_show_cmd))
+{
+    using namespace vind ;
+    int argc ;
+    auto argv = CommandLineToArgvW(GetCommandLineW(), &argc) ;
+
+    std::vector<std::string> args ;
+    for(int i = 0 ; i < argc ; i ++ ) {
+        args.push_back(util::ws_to_s(argv[i])) ;
+    }
+
+#endif
+    using namespace std::chrono ;
+
+    std::atomic<bool> runnable = true ;
+    std::future<void> ft ;
+
+    try {
+        argparse::ArgumentParser parser(
+            "win-vind", WIN_VIND_VERSION, argparse::default_arguments::none) ;
+
+        parser.add_argument("-h", "--help")
+            .action([&parser] (const auto&) {
+                if(create_console()) {
+                    std::cout << parser ;
+                    system("PAUSE") ;
+                }
+            })
+            .default_value(false)
+            .help("Shows help message and exits.")
+            .implicit_value(true)
+            .nargs(0) ;
+        parser.add_argument("-v", "--version")
+            .action([&parser] (const auto&) {
+                if(create_console()) {
+                    std::cout << WIN_VIND_VERSION << std::endl ;
+                    system("PAUSE") ;
+                }
+            })
+            .default_value(false)
+            .help("Prints version information and exits.")
+            .implicit_value(true)
+            .nargs(0) ;
+        parser.add_argument("-f", "--func").help(
+            "Identifier of the function to call in one-shot.") ;
+        parser.add_argument("-c", "--command").help(
+            "Keystrokes passed to win-vind.") ;
+
+        parser.parse_args(args) ;
+
+        auto exit_process = [&runnable] {
+            runnable = false ;
+            return false ;
+        } ;
+
+        core::VindEntry entry{exit_process} ;
+
+        if(parser.is_used("--command")) {
+            auto arg_cmd = parser.get<std::string>("--command") ;
+            trim_quotation(arg_cmd) ;
+            entry.send_command_request(arg_cmd) ;
+        }
+        else if(parser.is_used("--func")) {
+            auto arg_fn = parser.get<std::string>("--func") ;
+            trim_quotation(arg_fn) ;
+            entry.send_function_request(arg_fn) ;
+        }
+
+        if(entry.is_subprocess()) {
+            return 1 ;
+        }
+
+        entry.init() ;
+
+        fluent_tray::FluentTray tray{} ;
+
+        auto& settable = core::SetTable::get_instance() ;
+        const auto& icon_path = settable.get("icon_style").get<std::string>() ;
+
+        if(!tray.create_tray(
+            "win-vind",
+            (core::RESOURCE_ROOT_PATH() / "icons" / icon_path).u8string(),
+            5, 5, 10, 5, 240, true)) {
+            PRINT_ERROR("Failed tray initialization") ;
+            return 1 ;
+        }
+
+        // --------------------------
+        auto check_startup = [] {
+            gui::register_to_startup() ;
+            return true ;
+        } ;
+        auto uncheck_startup = [] {
+            gui::remove_from_startup() ;
+            return true ;
+        } ;
+        if(!tray.add_menu(
+                "Startup with Windows",
+                (core::RESOURCE_ROOT_PATH() / "icons" / "fa-tachometer.ico").u8string(),
+                true, "・",
+                check_startup, uncheck_startup)) {
+            PRINT_ERROR("Could not add a menu.") ;
+            return 1 ;
+        }
+        if(gui::check_if_registered()) {
+            tray.back().check() ;
+        }
+        else {
+            tray.back().uncheck() ;
+        }
+
+        // --------------------------
+        tray.add_separator() ;
+
+        auto open_root_dir = [] {
+            util::create_process(
+                    core::ROOT_PATH(),
+                    "explorer",
+                    core::CONFIG_PATH().u8string()) ;
+            return true ;
+        } ;
+        if(!tray.add_menu(
+                "Open Root Directory",
+                (core::RESOURCE_ROOT_PATH() / "icons" / "fa-folder.ico").u8string(),
+                false, "", open_root_dir)) {
+            PRINT_ERROR("Could not add a menu.") ;
+            return 1 ;
+        }
+
+        auto show_version = [&tray] {
+            constexpr auto title = "About win-vind" ;
+            constexpr auto message = \
+                "Version: " WIN_VIND_VERSION
+                "\n"
+                "\n"
+                "MIT License (C) 2020-2024 pit-ray" ;
+
+            tray.show_balloon_tip(title, message) ;
+            return true ;
+        } ;
+        if(!tray.add_menu(
+                "About",
+                (core::RESOURCE_ROOT_PATH() / "icons" / "fa-info-circle.ico").u8string(),
+                false, "", show_version)) {
+            PRINT_ERROR("Could not add a menu.") ;
+            return 1 ;
+        }
+
+        // --------------------------
+        tray.add_separator() ;
+
+        if(!tray.add_menu(
+                "Exit",
+                (core::RESOURCE_ROOT_PATH() / "icons" / "fa-sign-out.ico").u8string(),
+                false, "", exit_process)) {
+            PRINT_ERROR("Could not add a menu.") ;
+            return 1 ;
+        }
+        // --------------------------
+
+        auto vind_process = [&entry, &runnable] {
+            while(runnable.load()) {
+                try {
+                    entry.update() ;
+                }
+                catch(const std::exception& e) {
+                    core::Logger::get_instance().error(e.what()) ;
+                    break ;
+                }
+                catch(const core::SafeForcedTermination& e) {
+                    core::Logger::get_instance().message(e.what()) ;
+                    break ;
+                }
+                catch(...) {
+                    core::Logger::get_instance().error("Fatal error occured.") ;
+                    break ;
+                }
+            }
+
+            if(runnable.load()) {
+                runnable.store(false) ;
+                entry.handle_system_call(SystemCall::TERMINATE) ;
+            }
+        } ;
+        ft = std::async(std::launch::async, vind_process) ;
+
+        while(runnable.load()) {
+            if(tray.status() == fluent_tray::TrayStatus::SHOULD_STOP) {
+                break ;
+            }
+            if(!tray.update()) {
+                PRINT_ERROR("Failed the tray update") ;
+                break ;
+            }
+            Sleep(1) ;
+        }
+
+        runnable.store(false) ;
+        while(ft.wait_for(50ms) == std::future_status::timeout) {}
+
+        if(tray.status() == fluent_tray::TrayStatus::FAILED) {
+            return 1 ;
+        }
+    }
+    catch(const std::exception& e) {
+        PRINT_ERROR(e.what()) ;
+        runnable.store(false) ;
+        while(ft.wait_for(50ms) == std::future_status::timeout) {}
+        return 1 ;
+    }
+
+    return 0 ;
+}

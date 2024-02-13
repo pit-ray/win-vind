@@ -54,7 +54,6 @@ else()
         -fdiagnostics-color
         -DUNICODE
         -D_UNICODE
-        -Wl,--allow-multiple-definition #UUID of wxWidgets and one of MinGW
         -DWINVER=0x0A00
         -D_WIN32_WINNT=0x0A00
         -Wa,-mbig-obj

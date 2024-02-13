@@ -151,8 +151,6 @@ I recommend to install follow softwares or libraries.
 |:---:|:---:|:---:|:---:|
 |[fluent-tray](https://github.com/pit-ray/fluent-tray)|GUI framework|Create GUI for the system tray or popups.|[MIT License](https://github.com/pit-ray/fluent-tray/blob/main/LICENSE.txt)|
 |[argparse](https://github.com/p-ranav/argparse)|Argument Parser|Parse arguments in the command line.|[MIT License](https://github.com/p-ranav/argparse/blob/master/LICENSE)|
-|[nlohmann-json](https://github.com/nlohmann/json)|JSON parser|Parse json style settings|[MIT License](https://github.com/nlohmann/json/blob/develop/LICENSE.MIT)|
-|[maddy](https://github.com/progsource/maddy)|Markdown to HTML parser|Display the release note via **Check Update**|[MIT License](https://github.com/progsource/maddy/blob/master/LICENSE)|
 |[doctest](https://github.com/onqtam/doctest)|Unit test framework|For basic unit test|[MIT License](https://github.com/onqtam/doctest/blob/master/LICENSE.txt)|
 |[fff](https://github.com/meekrosoft/fff)|Macro-based fake function framework|To mock Windows API|[MIT License](https://github.com/meekrosoft/fff/blob/master/LICENSE)|
 |[pydirectinput](https://github.com/learncodebygaming/pydirectinput)|Mouse and keyboard automation for Windows|To emulate inputs for runtime tests|[MIT License](https://github.com/learncodebygaming/pydirectinput/blob/master/LICENSE.txt)|

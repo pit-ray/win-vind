@@ -18,10 +18,6 @@
   </p>
 </p>  
 
-<!--
-<a href=""><img src="https://img.shields.io/badge/scoop-supported-blue?style=flat-square&color=607D8B" /></a>
--->
-
 ## What is this?
 **win-vind** provides a lightweight hybrid UI system of CUI and GUI for Windows.  
 By installing this tool, you will be able to control the Windows GUI in the same way as Vim.
@@ -69,12 +65,12 @@ $ scoop install win-vind
 ```
 
 ### Executable Installer
-- [win-vind_5.10.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.10.0/win-vind_5.10.0_32bit_installer.zip)
-- [win-vind_5.10.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.10.0/win-vind_5.10.0_64bit_installer.zip)
+- [win-vind_5.11.0_32bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.11.0/win-vind_5.11.0_32bit_installer.zip)
+- [win-vind_5.11.0_64bit_installer.zip](https://github.com/pit-ray/win-vind/releases/download/v5.11.0/win-vind_5.11.0_64bit_installer.zip)
 
 ### Portable Zip
-- [win-vind_5.10.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.10.0/win-vind_5.10.0_32bit_portable.zip)
-- [win-vind_5.10.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.10.0/win-vind_5.10.0_64bit_portable.zip)
+- [win-vind_5.11.0_32bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.11.0/win-vind_5.11.0_32bit_portable.zip)
+- [win-vind_5.11.0_64bit_portable.zip](https://github.com/pit-ray/win-vind/releases/download/v5.11.0/win-vind_5.11.0_64bit_portable.zip)
 
 
 ## Usage

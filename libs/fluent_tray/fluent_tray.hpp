@@ -82,6 +82,14 @@ typedef enum {
 #define FLUENT_TRAY_MESSAGE_ID_OFFSET (25)
 #endif
 
+#ifndef FLUENT_TRAY_COLORPICK_OFFSET
+/**
+ * @brief Pixel offset to determine the background color.
+ */
+#define FLUENT_TRAY_COLORPICK_OFFSET (5)
+#endif
+
+
 /**
  * @namespace fluent_tray
  * @brief Base namespace
@@ -1326,7 +1334,10 @@ namespace fluent_tray
 
                 if(auto dc = GetDC(NULL)) {
                     // Get Taskbar color
-                    back_color_ = GetPixel(dc, abd.rc.left + 1, abd.rc.top + 1) ;
+                    back_color_ = GetPixel(
+                        dc,
+                        abd.rc.left + FLUENT_TRAY_COLORPICK_OFFSET,
+                        abd.rc.top + FLUENT_TRAY_COLORPICK_OFFSET) ;
                     if(back_color_ == CLR_INVALID) {
                         // if failed, use COLOR_WINDOW color.
                         back_color_ = GetSysColor(COLOR_WINDOW) ;

@@ -77,28 +77,14 @@ You can see the documentation for the high-layers of the architecture in [devdoc
 #### Quick Start for Build  
 If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you need is the next steps.  
 
-##### 1. Install dependent libraries in the project root
-  ```bash  
-  $ ./tools/setup_libs.bat [-mingw/-msvc] [32/64] [-update (optional)]
-  ```  
-Since it builds all libraries with the best options for your system environment, it may take some minutes.
-
-##### 2. Build this project with cmake and execute it
-
-###### Automatically (Recommended)
-  ```bash
-  $ ./tools/build.bat [-debug/-release] [-mingw/-msvc] [32/64]
-  $ ./debug/win-vind.exe
-  ```
-
-###### Manually (Visual Studio 2019)
+##### Manually (Visual Studio 2019)
   ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
   $ cmake --build build --config Debug
   $ ./build/Debug/win-vind.exe
   ```
 
-###### Manually (MinGW-w64 >= 8.2.0)
+##### Manually (MinGW-w64 >= 8.2.0)
   ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" .
   $ cmake --build build --config Debug
@@ -107,19 +93,14 @@ Since it builds all libraries with the best options for your system environment,
 
 #### Run Test 
 
-###### Automatically (Recommended)
-  ```bash
-  $ ./tools/build.bat -test
-  ```
-
-###### Manually (Visual Studio 2019)
+##### Manually (Visual Studio 2019)
   ```bash
   $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" tests
   $ cmake --build tests/build
   $ cd tests/build ; ctest -C Debug ; cd ../..
   ```
 
-###### Manually (MinGW-w64 >= GCC 11.2.0)
+##### Manually (MinGW-w64 >= GCC 11.2.0)
   ```bash
   $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
   $ cmake --build tests/build
@@ -136,16 +117,17 @@ You can refer to ToDo at <a href="https://github.com/pit-ray/win-vind/projects/2
 
 ## Dependencies
 
-I recommend to install follow softwares or libraries.  
-
 ### Softwares
+I recommend to install follow softwares.
+
 |Name|Recommended Version|Download Link|
 |:---:|:---:|:---:|
 |CMake|3.14.4|<a href="https://cmake.org/download/">Download - CMake</a>|
 |NSIS|3.06.1|<a href="https://nsis.sourceforge.io/Download">Download - NSIS</a>|
 |Windows10 SDK|10.0.19041.0|<a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/">Microsoft Windows10 SDK - Windows app development</a>|
 
-### Libraries (you can install with ./tools/setup_libs.bat)
+### Libraries
+These libraries are bundled in the libs directory.
 
 |**Name**|**What is**|**Purpose**|**License**|
 |:---:|:---:|:---:|:---:|

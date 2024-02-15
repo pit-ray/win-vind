@@ -75,16 +75,16 @@ You can see the documentation for the high-layers of the architecture in [devdoc
 
 
 #### Quick Start for Build  
-If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you need is the next steps.  
+If you have already installed **MinGW-w64** or **Visual Studio**, all you need is the next steps.  
 
-##### Manually (Visual Studio 2019)
+##### Visual Studio
   ```bash
-  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 17 2022" -A x64 .
   $ cmake --build build --config Debug
   $ ./build/Debug/win-vind.exe
   ```
 
-##### Manually (MinGW-w64 >= 8.2.0)
+##### MinGW-w64 >= 8.2.0
   ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" .
   $ cmake --build build --config Debug
@@ -93,14 +93,14 @@ If you have already installed **MinGW-w64** or **Visual Studio 2019**, all you n
 
 #### Run Test 
 
-##### Manually (Visual Studio 2019)
+##### Visual Studio
   ```bash
-  $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" tests
+  $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 17 2022" tests
   $ cmake --build tests/build
   $ cd tests/build ; ctest -C Debug ; cd ../..
   ```
 
-##### Manually (MinGW-w64 >= GCC 11.2.0)
+##### MinGW-w64 >= GCC 11.2.0
   ```bash
   $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
   $ cmake --build tests/build

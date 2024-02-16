@@ -5,9 +5,8 @@
 
 #include "disable_compiler_warning.hpp"
 
-#include <windows.h>
-#include "guiddef.hpp"
 #include <oleauto.h>
+#include <windows.h>
 #include <winerror.h>
 #include <winuser.h>
 

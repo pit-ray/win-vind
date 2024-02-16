@@ -71,8 +71,6 @@ The win-vind documentation has the potential to easily add manual translation an
 ### To Development
 You can contribute to development by sending pull requests to the `master` branch to fix or add features, add test cases, modify typos and expressions, improve [security](https://github.com/pit-ray/win-vind/security/code-scanning). When adding new code, please consider adding test cases in the test directory to satisfy branch coverage. [Codacy](https://www.codacy.com/gh/pit-ray/win-vind/dashboard?utm_source=github.com&utm_medium=referral&utm_content=pit-ray/win-vind&utm_campaign=Badge_Grade) and [Travis](https://travis-ci.com/pit-ray/win-vind) and [Actions](https://github.com/pit-ray/win-vind/actions) run by pushing, and [Coverity](https://scan.coverity.com/projects/pit-ray-win-vind) checks programmatic resources at releasing as Continuous Integration. If you want to discuss development, please create a thread in [Discussion](https://github.com/pit-ray/win-vind/discussions) with **#Development** category.
 
-You can see the documentation for the high-layers of the architecture in [devdocs](https://github.com/pit-ray/win-vind/blob/master/src/README.md).
-
 
 #### Quick Start for Build  
 If you have already installed **MinGW-w64** or **Visual Studio**, all you need is the next steps.  
@@ -111,8 +109,6 @@ If you have already installed **MinGW-w64** or **Visual Studio**, all you need i
 ```bash
 $ ./tools/create_assets.bat 1.0.0 -msvc 64
 ```
-
-You can refer to ToDo at <a href="https://github.com/pit-ray/win-vind/projects/2">Projects/win-vind</a> and its architecture at <a href="src/README.md">devdocs</a>.  
 
 
 ## Dependencies

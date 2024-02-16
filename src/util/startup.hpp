@@ -3,7 +3,7 @@
 
 namespace vind
 {
-    namespace gui
+    namespace util
     {
         void register_to_startup() ;
         void remove_from_startup() ;

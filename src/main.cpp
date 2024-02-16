@@ -39,10 +39,9 @@ SOFTWARE.
 
 #include "util/debug.hpp"
 #include "util/def.hpp"
+#include "util/startup.hpp"
 #include "util/string.hpp"
 #include "util/winwrap.hpp"
-
-#include "startup.hpp"
 
 #include <atomic>
 #include <exception>
@@ -180,7 +179,7 @@ int WINAPI WinMain(
         }
 
         if(entry.is_subprocess()) {
-            return 1 ;
+            return 0 ;
         }
 
         entry.init() ;
@@ -200,11 +199,11 @@ int WINAPI WinMain(
 
         // --------------------------
         auto check_startup = [] {
-            gui::register_to_startup() ;
+            util::register_to_startup() ;
             return true ;
         } ;
         auto uncheck_startup = [] {
-            gui::remove_from_startup() ;
+            util::remove_from_startup() ;
             return true ;
         } ;
         if(!tray.add_menu(
@@ -215,7 +214,7 @@ int WINAPI WinMain(
             PRINT_ERROR("Could not add a menu.") ;
             return 1 ;
         }
-        if(gui::check_if_registered()) {
+        if(util::check_if_registered()) {
             tray.back().check() ;
         }
         else {

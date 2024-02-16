@@ -108,7 +108,7 @@ namespace
 
 namespace vind
 {
-    namespace gui
+    namespace util
     {
         void register_to_startup() {
             auto psl = create_shell_link() ;

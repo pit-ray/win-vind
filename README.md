@@ -149,7 +149,7 @@ For more information on default mappings, please visit our [website](https://pit
 #### Debug
 
 ```bash
-$ cmake -B builg -G "Visual Studio 16 2019" .
+$ cmake -B build .
 $ cmake --build build
 $ ./build/Debug/win-vind.exe
 ```
@@ -157,7 +157,7 @@ $ ./build/Debug/win-vind.exe
 #### Release
 
 ```bash
-$ cmake -B build -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" .
+$ cmake -B build -DCMAKE_BUILD_TYPE=Release .
 $ cmake --build build --config Release
 $ ./build/Release/win-vind.exe
 ```

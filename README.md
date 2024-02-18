@@ -42,7 +42,7 @@ It is also available from the command line as a command for UI operations like `
 <br>  
 
 ## Installation
-We support a variety of installation methods.
+win-vind supports a variety of installation methods.
 
 ### [Chocolatey](https://chocolatey.org/)
 
@@ -144,26 +144,41 @@ For more information on default mappings, please visit our [website](https://pit
 
   <img src="docs/imgs/opt_in_ms_word.png" title="Option in MS Word" width=600>
 
-## How to build
-
-#### Debug
+## Build
+All you have to do is install [cmake](https://cmake.org/download/), [Visual Sudio](https://visualstudio.microsoft.com/ja/downloads/) and [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/), then do the following.
 
 ```bash
-$ cmake -B build .
+$ cmake -B build
 $ cmake --build build
 $ ./build/Debug/win-vind.exe
 ```
 
-#### Release
-
-```bash
-$ cmake -B build -DCMAKE_BUILD_TYPE=Release .
-$ cmake --build build --config Release
-$ ./build/Release/win-vind.exe
-```
-
 If you want to build with MinGW or create an installer, see [here](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md#to-development).
 
+## Test
+Tests can be run using ctest and python.
+
+### Unit Test
+Run source code level tests.
+
+```bash
+$ cd tests
+$ cmake -B build unit
+$ cmake --build build
+$ ctest -C Debug --test-dir build --output-on-failure
+$ cd ..
+```
+
+### Runtime Test
+Runtime tests check the behavior of the built binaries.
+
+```bash
+$ cd tests
+$ python runtime/test.py "../bin_64/win-vind/win-vind.exe"  # Specifies the binary for release.
+$ cd ..
+```
+
+See [this document](tests/README.md) for details.
 
 ## Contribute
 If you would like to contribute to win-vind, see [CONTRIBUTING.md](https://github.com/pit-ray/win-vind/blob/master/CONTRIBUTING.md).

@@ -90,20 +90,8 @@ If you have already installed **MinGW-w64** or **Visual Studio**, all you need i
   ```
 
 #### Run Test 
+See [here](../tests/README.md) for unit tests and runtime test.
 
-##### Visual Studio
-  ```bash
-  $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 17 2022" tests
-  $ cmake --build tests/build
-  $ cd tests/build ; ctest -C Debug ; cd ../..
-  ```
-
-##### MinGW-w64 >= GCC 11.2.0
-  ```bash
-  $ cmake -B tests/build -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" tests
-  $ cmake --build tests/build
-  $ cd tests/build ; ctest -C Debug ; cd ../..
-  ```
 
 #### Make Installer
 ```bash

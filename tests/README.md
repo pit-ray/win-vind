@@ -6,7 +6,7 @@ It are run using CTest at compile time. This is based on branch coverage.
 
 ### Visual Studio 2019
 ```bash
-$ cmake -B build_msvc -G "Visual Studio 16 2019" unit
+$ cmake -B build_msvc -G "Visual Studio 17 2022" unit
 $ cmake --build build_msvc
 $ ctest -C Debug --test-dir build_msvc --output-on-failure
 ```

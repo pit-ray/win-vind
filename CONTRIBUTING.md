@@ -90,7 +90,7 @@ If you have already installed **MinGW-w64** or **Visual Studio**, all you need i
   ```
 
 #### Run Test 
-See [here](../tests/README.md) for unit tests and runtime test.
+See [here](tests/README.md) for unit tests and runtime test.
 
 
 #### Make Installer

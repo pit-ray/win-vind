@@ -14,7 +14,6 @@
     <a href="https://community.chocolatey.org/packages/win-vind"><img src="https://img.shields.io/badge/chocolatey-supported-blue?style=flat-square&color=607D8B" /></a>
     <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/pit-ray/win-vind"><img src="https://img.shields.io/badge/winget-supported-blue?style=flat-square&color=607D8B" /></a>
     <a href="https://github.com/ScoopInstaller/Extras/commits/master/bucket/win-vind.json"><img src="https://img.shields.io/badge/scoop-supported-blue?style=flat-square&color=607D8B" /></a>
-    <img src="https://img.shields.io/badge/Windows%2011-supported-blue?style=flat-square&color=607D8B" />
   </p>
 </p>  
 

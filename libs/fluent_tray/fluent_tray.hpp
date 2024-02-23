@@ -706,14 +706,22 @@ namespace fluent_tray
     public:
         /**
          * @brief Create tray object.
-         * @param [in] message_id_offset Unique message identifier.
-         * @param [in] autocolorpick_offset Pixel offset to determine the background color.
+         * @param [in] menu_x_margin Horizontal margins outside menus.
+         * @param [in] menu_y_margin Vertical margins outside menus.
+         * @param [in] menu_x_pad Horizontal paddings inside menus.
+         * @param [in] menu_y_pad Vertical paddings inside menus.
          * @param [in] autofadedborder_from_backcolor Decay value from the background color to determine the background color of the currently selected menu and the color of the separator line.
+         * @param [in] autocolorpick_offset Pixel offset to determine the background color.
+         * @param [in] message_id_offset Unique message identifier.
          */
         explicit FluentTray(
-            int message_id_offset=25,
+            LONG menu_x_margin=5,
+            LONG menu_y_margin=5,
+            LONG menu_x_pad=10,
+            LONG menu_y_pad=5,
+            unsigned char autofadedborder_from_backcolor=10,
             int autocolorpick_offset=5,
-            unsigned char autofadedborder_from_backcolor=10)
+            int message_id_offset=25)
         : menus_(),
           mouse_is_over_(),
           app_name_(),
@@ -723,10 +731,10 @@ namespace fluent_tray
           icon_data_(),
           status_(TrayStatus::STOPPED),
           next_menu_id_(1),
-          menu_x_margin_(5),
-          menu_y_margin_(5),
-          menu_x_pad_(5),
-          menu_y_pad_(5),
+          menu_x_margin_(menu_x_margin),
+          menu_y_margin_(menu_y_margin),
+          menu_x_pad_(menu_x_pad),
+          menu_y_pad_(menu_y_pad),
           text_color_(CLR_INVALID),
           back_color_(CLR_INVALID),
           border_color_(CLR_INVALID),
@@ -760,10 +768,6 @@ namespace fluent_tray
          * @brief Initialize tray and create icon on tray.
          * @param [in] app_name The application name to be displayed as tooltip text.
          * @param [in] icon_path A UTF-8 encoded path to the icon to be displayed in the system tray.
-         * @param [in] menu_x_margin Horizontal margins outside menus.
-         * @param [in] menu_y_margin Vertical margins outside menus.
-         * @param [in] menu_x_pad Horizontal paddings inside menus.
-         * @param [in] menu_y_pad Vertical paddings inside menus.
          * @param [in] opacity Menu opacity from 0 to 255.
          * @param [in] round_corner Option to round the corners of the menu window (Windows 11 only)
          * @return Returns true on success, false on failure.
@@ -771,20 +775,11 @@ namespace fluent_tray
         bool create_tray(
                 const std::string& app_name,
                 const std::string& icon_path="",
-                LONG menu_x_margin=5,
-                LONG menu_y_margin=5,
-                LONG menu_x_pad=10,
-                LONG menu_y_pad=5,
-                unsigned char opacity=255,
+            unsigned char opacity=255,
                 bool round_corner=true) {
             if(!util::string2wstring(app_name, app_name_)) {
                 return false ;
             }
-
-            menu_x_margin_ = menu_x_margin ;
-            menu_y_margin_ = menu_y_margin ;
-            menu_x_pad_ = menu_x_pad ;
-            menu_y_pad_ = menu_y_pad ;
 
             WNDCLASSW winc ;
             winc.style = CS_HREDRAW | CS_VREDRAW ;

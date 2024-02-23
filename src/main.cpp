@@ -184,7 +184,7 @@ int WINAPI WinMain(
 
         entry.init() ;
 
-        fluent_tray::FluentTray tray{} ;
+        fluent_tray::FluentTray tray(5, 5, 10, 10) ;
 
         auto& settable = core::SetTable::get_instance() ;
         const auto& icon_path = settable.get("icon_style").get<std::string>() ;
@@ -192,7 +192,7 @@ int WINAPI WinMain(
         if(!tray.create_tray(
             "win-vind",
             (core::RESOURCE_ROOT_PATH() / "icons" / icon_path).u8string(),
-            5, 5, 10, 10, 240, true)) {
+            240, true)) {
             PRINT_ERROR("Failed tray initialization") ;
             return 1 ;
         }

@@ -75,20 +75,6 @@ typedef enum {
 #include <string>
 #include <vector>
 
-#ifndef FLUENT_TRAY_MESSAGE_ID_OFFSET
-/**
- * @brief Unique message identifier
- */
-#define FLUENT_TRAY_MESSAGE_ID_OFFSET (25)
-#endif
-
-#ifndef FLUENT_TRAY_COLORPICK_OFFSET
-/**
- * @brief Pixel offset to determine the background color.
- */
-#define FLUENT_TRAY_COLORPICK_OFFSET (5)
-#endif
-
 
 /**
  * @namespace fluent_tray
@@ -96,8 +82,6 @@ typedef enum {
  */
 namespace fluent_tray
 {
-    static constexpr int MESSAGE_ID = WM_APP + FLUENT_TRAY_MESSAGE_ID_OFFSET ;
-
     /**
      * @namespace fluent_tray::util
      * @brief Utility namespace
@@ -196,7 +180,7 @@ namespace fluent_tray
          */
         template <typename InType, typename OutType>
         inline void split_bits(InType input, OutType& upper, OutType& lower) noexcept {
-            constexpr auto bits = type2bit<OutType>() ;
+            static constexpr auto bits = type2bit<OutType>() ;
             static const auto lower_mask = util::bit2mask(bits) ;
 
             upper = static_cast<OutType>(reinterpret_cast<std::size_t>(input) >> bits) ;
@@ -212,7 +196,7 @@ namespace fluent_tray
          */
         template <typename InType, typename OutType>
         inline void concatenate_bits(InType upper, InType lower, OutType& out) noexcept {
-            constexpr auto bits = type2bit<InType>() ;
+            static constexpr auto bits = type2bit<InType>() ;
             static const auto lower_mask = util::bit2mask(bits) ;
 
             auto out_upper = static_cast<std::size_t>(upper) << bits ;
@@ -709,17 +693,27 @@ namespace fluent_tray
 
         COLORREF text_color_ ;
         COLORREF back_color_ ;
-        COLORREF ash_color_ ;
+        COLORREF border_color_ ;
+        unsigned char color_decay_ ;
         HBRUSH back_brush_ ;
+        int autocolorpick_offset_ ;
 
         LONG menu_font_size_ ;
         HFONT font_ ;
 
+        static unsigned int message_id_ ;
+
     public:
         /**
          * @brief Create tray object.
+         * @param [in] message_id_offset Unique message identifier.
+         * @param [in] autocolorpick_offset Pixel offset to determine the background color.
+         * @param [in] autofadedborder_from_backcolor Decay value from the background color to determine the background color of the currently selected menu and the color of the separator line.
          */
-        explicit FluentTray()
+        explicit FluentTray(
+            int message_id_offset=25,
+            int autocolorpick_offset=5,
+            unsigned char autofadedborder_from_backcolor=10)
         : menus_(),
           mouse_is_over_(),
           app_name_(),
@@ -733,13 +727,17 @@ namespace fluent_tray
           menu_y_margin_(5),
           menu_x_pad_(5),
           menu_y_pad_(5),
-          text_color_(RGB(30, 30, 30)),
-          back_color_(RGB(200, 200, 200)),
-          ash_color_(RGB(100, 100, 100)),
+          text_color_(CLR_INVALID),
+          back_color_(CLR_INVALID),
+          border_color_(CLR_INVALID),
+          color_decay_(autofadedborder_from_backcolor),
           back_brush_(NULL),
+          autocolorpick_offset_(autocolorpick_offset),
           menu_font_size_(0),
           font_(NULL)
-        {}
+        {
+            message_id_ = WM_APP + message_id_offset ;
+        }
 
         // Copy
         FluentTray(const FluentTray&) = delete ;
@@ -775,8 +773,8 @@ namespace fluent_tray
                 const std::string& icon_path="",
                 LONG menu_x_margin=5,
                 LONG menu_y_margin=5,
-                LONG menu_x_pad=5,
-                LONG menu_y_pad=5, 
+                LONG menu_x_pad=10,
+                LONG menu_y_pad=5,
                 unsigned char opacity=255,
                 bool round_corner=true) {
             if(!util::string2wstring(app_name, app_name_)) {
@@ -884,10 +882,6 @@ namespace fluent_tray
                 return false ;
             }
 
-            if(!set_color()) {
-                return false ;
-            }
-
             status_ = TrayStatus::RUNNING ;
 
             return true ;
@@ -955,7 +949,7 @@ namespace fluent_tray
                 auto& menu = menus_[i] ;
                 if(menu.is_mouse_over()) {
                     if(!mouse_is_over_[i]) {
-                        if(!change_menu_back_color(menu, ash_color_)) {
+                        if(!change_menu_back_color(menu, border_color_)) {
                             fail() ;
                             return false ;
                         }
@@ -1012,6 +1006,32 @@ namespace fluent_tray
          * @return Returns true on success, false on failure.
          */
         bool show_menu_window() {
+            // Initialize the color settings.
+            if(back_color_ == CLR_INVALID) {
+                // If the color is CLR_INVALID, it is determined from the theme.
+                back_color_ = extract_taskbar_color() ;
+                if(back_color_ == CLR_INVALID) {
+                    return false ;
+                }
+                if(!update_background_brush()) {
+                    return false ;
+                }
+            }
+            if(text_color_ == CLR_INVALID) {
+                // The text color is automatically determined from the background color.
+                text_color_ = calculate_text_color_(back_color_) ;
+                if(text_color_ == CLR_INVALID) {
+                    return false ;
+                }
+            }
+            if(border_color_ == CLR_INVALID) {
+                // The border color is automatically determined from the background color.
+                border_color_ = calculate_faded_color_(back_color_, color_decay_) ;
+                if(border_color_ == CLR_INVALID) {
+                    return false ;
+                }
+            }
+
             LONG max_label_size = 0 ;
             for(auto& menu : menus_) {
                 SIZE size ;
@@ -1097,7 +1117,7 @@ namespace fluent_tray
                     return false ;
                 }
 
-                if(!menu.set_color(text_color_, back_color_, ash_color_)) {
+                if(!menu.set_color(text_color_, back_color_, border_color_)) {
                     return false ;
                 }
             }
@@ -1317,81 +1337,25 @@ namespace fluent_tray
          * @brief Set colors to draw menus.
          * @param [in] text_color The color for label text.
          * @param [in] back_color The color for background.
-         * @param [in] color_decay Decay value from the background color to determine the background color of the currently selected menu and the color of the separator line.
+         * @param [in] border_color The color for border.
          * @return Returns true on success, false on failure.
          */
         bool set_color(
-                const COLORREF& text_color=CLR_INVALID,
-                const COLORREF& back_color=CLR_INVALID,
-                unsigned char color_decay=10) {
-            if(back_color == CLR_INVALID) {
-                // Get Taskbar color
-                APPBARDATA abd ;
-                abd.cbSize = sizeof(abd) ;
-                if(!SHAppBarMessage(ABM_GETTASKBARPOS, &abd)) {
+                COLORREF text_color=CLR_INVALID,
+                COLORREF back_color=CLR_INVALID,
+                COLORREF border_color=CLR_INVALID) {
+            if(back_color != CLR_INVALID) {
+                back_color_ = back_color ;
+                if(!update_background_brush()) {
                     return false ;
                 }
-
-                if(auto dc = GetDC(NULL)) {
-                    // Get Taskbar color
-                    back_color_ = GetPixel(
-                        dc,
-                        abd.rc.left + FLUENT_TRAY_COLORPICK_OFFSET,
-                        abd.rc.top + FLUENT_TRAY_COLORPICK_OFFSET) ;
-                    if(back_color_ == CLR_INVALID) {
-                        // if failed, use COLOR_WINDOW color.
-                        back_color_ = GetSysColor(COLOR_WINDOW) ;
-                    }
-                    if(!ReleaseDC(NULL, dc)) {
-                        return false ;
-                    }
-                }
             }
-            else {
-                back_color_ = back_color ;
-            }
-
-            auto back_gray_color_ = util::rgb2gray(back_color_) ;
-
-            unsigned char ash_value = back_gray_color_ ;
-            if(back_gray_color_ < 128) {
-                ash_value = static_cast<decltype(ash_value)>(
-                    (std::min)(ash_value + color_decay, 255)) ;
-            }
-            else {
-                ash_value = static_cast<decltype(ash_value)>(
-                    (std::max)(ash_value - color_decay, 0)) ;
-            }
-            ash_color_ = RGB(ash_value, ash_value, ash_value) ;
-
-            if(text_color == CLR_INVALID) {
-                text_color_ = GetSysColor(COLOR_WINDOWTEXT) ;
-                if(back_gray_color_ < 128) {
-                    // if dark background, use light text color.
-                    text_color_ = 0x00FFFFFF & ~text_color_ ;
-                }
-            }
-            else {
+            if(text_color != CLR_INVALID) {
                 text_color_ = text_color ;
             }
-
-            if(back_brush_) {
-                // Release old handle.
-                if(!DeleteObject(back_brush_)) {
-                    return false ;
-                }
+            if(border_color != CLR_INVALID) {
+                border_color_ = border_color ;
             }
-            back_brush_ = CreateSolidBrush(back_color_) ;
-            if(back_brush_ == NULL) {
-                return false ;
-            }
-
-            if(!SetClassLongPtr(
-                    hwnd_, GCLP_HBRBACKGROUND,
-                    reinterpret_cast<LONG_PTR>(back_brush_))) {
-                return false ;
-            }
-
             return true ;
         }
 
@@ -1425,7 +1389,7 @@ namespace fluent_tray
             icon_data_.cbSize = sizeof(icon_data_) ;
             icon_data_.hWnd = hwnd_ ;
             icon_data_.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP ;
-            icon_data_.uCallbackMessage = MESSAGE_ID ;
+            icon_data_.uCallbackMessage = message_id_ ;
             icon_data_.hIcon = static_cast<HICON>(
                 LoadImageW(
                     NULL, icon_path_wide.c_str(),
@@ -1528,7 +1492,7 @@ namespace fluent_tray
                     return TRUE ;
                 }
             }
-            else if(msg == MESSAGE_ID) {  //On NotifyIcon
+            else if(msg == message_id_) {  //On NotifyIcon
                 if(auto self = get_instance()) {
                     if(lparam == WM_LBUTTONUP || lparam == WM_RBUTTONUP) {
                         self->show_menu_window() ;
@@ -1574,7 +1538,7 @@ namespace fluent_tray
 
         bool change_menu_back_color(FluentMenu& menu, COLORREF new_color) {
             if(!menu.set_color(
-                    text_color_, new_color, ash_color_)) {
+                    text_color_, new_color, border_color_)) {
                 return false ;
             }
             // Redraw
@@ -1583,7 +1547,84 @@ namespace fluent_tray
             }
             return true ;
         }
+
+        COLORREF extract_taskbar_color() const {
+            // Get Taskbar color
+            APPBARDATA abd ;
+            abd.cbSize = sizeof(abd) ;
+            if(!SHAppBarMessage(ABM_GETTASKBARPOS, &abd)) {
+                return CLR_INVALID ;
+            }
+
+            COLORREF color = CLR_INVALID ;
+            if(auto dc = GetDC(NULL)) {
+                // Get Taskbar color
+                color = GetPixel(
+                    dc,
+                    abd.rc.left + autocolorpick_offset_,
+                    abd.rc.top + autocolorpick_offset_) ;
+                if(color == CLR_INVALID) {
+                    // if failed, use COLOR_WINDOW color.
+                    color = GetSysColor(COLOR_WINDOW) ;
+                }
+                if(!ReleaseDC(NULL, dc)) {
+                    return CLR_INVALID ;
+                }
+            }
+            return color ;
+        }
+
+        static COLORREF calculate_faded_color_(
+                COLORREF back_color,
+                unsigned char color_decay=10) {
+            auto back_gray_color = util::rgb2gray(back_color) ;
+
+            unsigned char ash_value = back_gray_color ;
+            if(back_gray_color < 128) {
+                ash_value = static_cast<decltype(ash_value)>(
+                    (std::min)(ash_value + color_decay, 255)) ;
+            }
+            else {
+                ash_value = static_cast<decltype(ash_value)>(
+                    (std::max)(ash_value - color_decay, 0)) ;
+            }
+            return RGB(ash_value, ash_value, ash_value) ;
+        }
+
+        static COLORREF calculate_text_color_(COLORREF back_color) {
+            auto back_gray_color = util::rgb2gray(back_color) ;
+
+            auto text_color = GetSysColor(COLOR_WINDOWTEXT) ;
+            if(back_gray_color < 128) {
+                // if dark background, use light text color.
+                text_color = 0x00FFFFFF & ~text_color ;
+            }
+            return text_color ;
+        }
+
+        bool update_background_brush() {
+            if(back_brush_) {
+                // Release old handle.
+                if(!DeleteObject(back_brush_)) {
+                    return false ;
+                }
+            }
+            back_brush_ = CreateSolidBrush(back_color_) ;
+            if(back_brush_ == NULL) {
+                return false ;
+            }
+
+            if(!SetClassLongPtr(
+                    hwnd_, GCLP_HBRBACKGROUND,
+                    reinterpret_cast<LONG_PTR>(back_brush_))) {
+                return false ;
+            }
+
+            return true ;
+        }
     } ;
+
+    unsigned int FluentTray::message_id_ ;
 }
 
 #endif

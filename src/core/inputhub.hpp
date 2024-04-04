@@ -27,7 +27,7 @@ namespace vind
         public:
             static InputHub& get_instance() ;
 
-            std::shared_ptr<MapSolver> get_solver(Mode mode) ;
+            std::shared_ptr<MapSolver> get_solver(Mode mode=get_global_mode()) ;
 
             /*
              * Emulate text input and retrieve input at the appropriate time.

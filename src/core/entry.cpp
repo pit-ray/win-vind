@@ -60,6 +60,7 @@ SOFTWARE.
 #include <cstring>
 #include <fstream>
 #include <memory>
+#include <sstream>
 
 #include "autocmd.hpp"
 
@@ -374,6 +375,32 @@ namespace vind
                 if(!ihub.pull_input(input, count)) {
                     continue ;
                 }
+
+                auto solver = ihub.get_solver() ;
+                for(const auto& matcher : solver->get_trigger_matchers()) {
+                    if(matcher->is_matching()) {
+                        auto hist_size = matcher->history_size() ;
+                        if(hist_size == 0) {
+                            break ;
+                        }
+                        auto cmd = matcher->get_command() ;
+                        std::stringstream ss ;
+                        for(
+                                auto itr = cmd.begin() ;
+                                itr < (cmd.begin() + hist_size) ;
+                                itr ++) {
+                            for(auto& key : **itr) {
+                                auto uni = core::keycode_to_unicode(key, **itr) ;
+                                if(!uni.empty()) {
+                                    ss << uni ;
+                                }
+                            }
+                        }
+                        std::cout << ss.str() << std::endl ;
+                        break ;
+                    }
+                }
+
                 handle_system_call(input->execute(count)) ;
 
                 // correct the state to avoid cases that a virtual key

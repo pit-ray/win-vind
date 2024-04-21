@@ -54,7 +54,13 @@ Specify the characters of hint used for EasyClick and GridMove. It accpets as in
 
 ### **`vcmdline`**
 **type**: bool, **default**: true  
-show virtual command line
+Show virtual command line
+
+<hr class="dash">
+
+### **`showcmd`**
+**type**: bool, **default**: true  
+Show the partial command in the virtual command line.
 
 <hr class="dash">
 

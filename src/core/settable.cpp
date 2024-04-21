@@ -82,6 +82,7 @@ namespace
         Param("uiacachebuild_stayend", 2000),
 
         Param("vcmdline", true),
+        Param("showcmd", true),
 
         Param("vscroll_pageratio", 0.125f),
         Param("vscroll_speed", 30),

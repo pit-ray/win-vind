@@ -105,16 +105,20 @@ namespace fluent_tray
                     CP_UTF8, 0,
                     str.c_str(), static_cast<int>(str.length()),
                     NULL, 0) ;
+#ifndef _FLUENT_TRAY_IGNORE_IN_TEST
             if(needed_size <= 0) {
                 return false ;
             }
+#endif
 
             wstr.resize(needed_size) ;
             if(MultiByteToWideChar(
                         CP_UTF8, 0,
                         str.c_str(), static_cast<int>(str.length()),
                         &wstr[0], static_cast<int>(wstr.length())) <= 0) {
+#ifndef _FLUENT_TRAY_IGNORE_IN_TEST
                 return false;
+#endif
             }
             return true ;
         }
@@ -137,9 +141,11 @@ namespace fluent_tray
                     wstr.c_str(), static_cast<int>(wstr.length()),
                     NULL, 0,
                     NULL, NULL) ;
+#ifndef _FLUENT_TRAY_IGNORE_IN_TEST
             if(needed_size <= 0) {
                 return false ;
             }
+#endif
 
             str.resize(needed_size) ;
             if(WideCharToMultiByte(
@@ -147,7 +153,9 @@ namespace fluent_tray
                         wstr.c_str(), static_cast<int>(wstr.length()),
                         &str[0], static_cast<int>(str.size()),
                         NULL, NULL) <= 0) {
+#ifndef _FLUENT_TRAY_IGNORE_IN_TEST
                 return false ;
+#endif
             }
             return true ;
         }
@@ -386,22 +394,6 @@ namespace fluent_tray
                 }
             }
             return callback_() ;
-        }
-
-        /**
-         * @brief Checks whether the mouse cursor is over the menu or not.
-         * @return If the cursor is over it, true is returned; otherwise, false is returned.
-         */
-        bool is_mouse_over() const {
-            POINT pos ;
-            if(!GetCursorPos(&pos)) {
-                return false ;
-            }
-            auto detected_hwnd = WindowFromPoint(pos) ;
-            if(!detected_hwnd) {
-                return false ;
-            }
-            return detected_hwnd == hwnd_ ;
         }
 
         /**
@@ -671,9 +663,6 @@ namespace fluent_tray
      */
     class FluentTray {
     private:
-        std::vector<FluentMenu> menus_ ;
-        std::vector<bool> mouse_is_over_ ;
-
         std::wstring app_name_ ;
 
         HINSTANCE hinstance_ ;
@@ -683,7 +672,12 @@ namespace fluent_tray
 
         TrayStatus status_ ;
 
+        std::vector<FluentMenu> menus_ ;
+        std::vector<bool> status_if_focus ;
         std::size_t next_menu_id_ ;
+        int select_index_ ;
+
+        POINT previous_mouse_pos_ ;
 
         LONG menu_x_margin_ ;
         LONG menu_y_margin_ ;
@@ -722,15 +716,17 @@ namespace fluent_tray
             unsigned char autofadedborder_from_backcolor=10,
             int autocolorpick_offset=5,
             int message_id_offset=25)
-        : menus_(),
-          mouse_is_over_(),
-          app_name_(),
+        : app_name_(),
           hinstance_(GetModuleHandle(NULL)),
           hwnd_(NULL),
           visible_(false),
           icon_data_(),
           status_(TrayStatus::STOPPED),
+          menus_(),
+          status_if_focus(),
           next_menu_id_(1),
+          select_index_(-1),
+          previous_mouse_pos_(),
           menu_x_margin_(menu_x_margin),
           menu_y_margin_(menu_y_margin),
           menu_x_pad_(menu_x_pad),
@@ -907,7 +903,7 @@ namespace fluent_tray
             }
 
             menus_.push_back(std::move(menu)) ;
-            mouse_is_over_.push_back(false) ;
+            status_if_focus.push_back(false) ;
             next_menu_id_ ++ ;
             return true ;
         }
@@ -940,25 +936,54 @@ namespace fluent_tray
                 }
             }
 
-            for(std::size_t i = 0 ; i < menus_.size() ; i ++) {
-                auto& menu = menus_[i] ;
-                if(menu.is_mouse_over()) {
-                    if(!mouse_is_over_[i]) {
-                        if(!change_menu_back_color(menu, border_color_)) {
+            POINT pos ;
+            if(!GetCursorPos(&pos)) {
+                return false ;
+            }
+
+            if(pos.x != previous_mouse_pos_.x || pos.y != previous_mouse_pos_.y) {
+                // The mouse cursor is moved, so switch to the mouse-mode.
+                for(int i = 0 ; i < static_cast<int>(menus_.size()) ; i ++) {
+                    auto& menu = menus_[i] ;
+                    auto detected_hwnd = WindowFromPoint(pos) ;
+                    if(!detected_hwnd) {
+                        return false ;
+                    }
+                    // Checks whether the mouse cursor is over the menu or not.
+                    if(detected_hwnd == menu.window_handle()) {
+                        // Start selection by key from the currently selected menu.
+                        select_index_ = i ;
+                        break ;
+                    }
+                }
+                previous_mouse_pos_ = pos ;
+            }
+
+            if(select_index_ < 0) {
+                return true ;
+            }
+
+            // Update the color of only changed menu.
+            for(int i = 0 ; i < static_cast<int>(menus_.size()) ; i ++) {
+                if(i == select_index_) {
+                    if(!status_if_focus[i]) {
+                        // OFF -> ON
+                        if(!change_menu_back_color(menus_[i], border_color_)) {
                             fail() ;
                             return false ;
                         }
                     }
-                    mouse_is_over_[i] = true ;
+                    status_if_focus[i] = true ;
                 }
                 else {
-                    if(mouse_is_over_[i]) {
-                        if(!change_menu_back_color(menu, back_color_)) {
+                    if(status_if_focus[i]) {
+                        // ON -> OFF
+                        if(!change_menu_back_color(menus_[i], back_color_)) {
                             fail() ;
                             return false ;
                         }
                     }
-                    mouse_is_over_[i] = false ;
+                    status_if_focus[i] = false ;
                 }
             }
 
@@ -1116,7 +1141,7 @@ namespace fluent_tray
                     return false ;
                 }
             }
-            std::fill(mouse_is_over_.begin(), mouse_is_over_.end(), false) ;
+            std::fill(status_if_focus.begin(), status_if_focus.end(), false) ;
 
             if(!SetForegroundWindow(hwnd_)) {
                 return false ;
@@ -1134,7 +1159,8 @@ namespace fluent_tray
         bool hide_menu_window() {
             ShowWindow(hwnd_, SW_HIDE) ;
             visible_ = false ;
-            std::fill(mouse_is_over_.begin(), mouse_is_over_.end(), false) ;
+            select_index_ = -1 ;
+            std::fill(status_if_focus.begin(), status_if_focus.end(), false) ;
             return true ;
         }
 
@@ -1473,18 +1499,54 @@ namespace fluent_tray
                         self->stop() ;
                         return FALSE ;
                     }
-                    if(menu.is_toggleable()) {
-                        // Update the toggle menu for checkmark
-                        if(!InvalidateRect(menu.window_handle(), NULL, TRUE)) {
-                            return FALSE ;
-                        }
+                    if(!self->hide_menu_window()) {
+                        return FALSE ;
                     }
-                    else {
+                    return TRUE ;
+                }
+            }
+            else if(msg == WM_KEYDOWN) {
+                if(auto self = get_instance()) {
+                    if(wparam == VK_DOWN) {
+                        if(self->select_index_ < 0) {
+                            // Initialize the position of bounding box cursor
+                            self->select_index_ = 0 ;
+                        }
+                        else {
+                            self->select_index_ = (self->select_index_ + 1) % self->menus_.size() ;
+                        }
+                        return TRUE;
+                    }
+                    else if(wparam == VK_UP) {
+                        if(self->select_index_ < 0) {
+                            // Initialize the position of bounding box cursor
+                            self->select_index_ = static_cast<int>(self->menus_.size() - 1) ;
+                        }
+                        else {
+                            auto mod = static_cast<int>(self->menus_.size()) ;
+                            self->select_index_ = ((self->select_index_ - 1) % mod + mod) % mod ;  // to be positive
+                        }
+                        return TRUE;
+                    }
+                    else if(wparam == VK_ESCAPE) {
                         if(!self->hide_menu_window()) {
                             return FALSE ;
                         }
+                        return TRUE;
                     }
-                    return TRUE ;
+                    else if(wparam == VK_SPACE || wparam == VK_RETURN) {
+                        if(self->select_index_ >= 0) {
+                            auto& menu = self->menus_[self->select_index_] ;
+                            if(!menu.process_click_event()) {
+                                self->stop() ;
+                                return FALSE ;
+                            }
+                            if(!self->hide_menu_window()) {
+                                return FALSE ;
+                            }
+                        }
+                        return TRUE;
+                    }
                 }
             }
             else if(msg == message_id_) {  //On NotifyIcon

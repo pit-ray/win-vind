@@ -372,8 +372,12 @@ namespace vind
 
             do {
                 CmdUnit::SPtr input ;
-                std::uint16_t count ;
+                std::uint16_t count = 0 ;
                 if(!ihub.pull_input(input, count)) {
+                    if(count > 0) {
+                        opt::VCmdLine::reset() ;
+                        opt::VCmdLine::print(opt::StaticMessage(std::to_string(count))) ;
+                    }
                     continue ;
                 }
 
@@ -390,6 +394,8 @@ namespace vind
                             break ;
                         }
                         std::stringstream ss ;
+                        ss << count ;
+
                         auto cmd = matcher->get_command() ;
                         auto end_itr = cmd.begin() + hist_size ;
                         for(auto itr = cmd.begin() ; itr != end_itr ; itr ++) {

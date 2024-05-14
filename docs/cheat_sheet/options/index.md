@@ -48,6 +48,12 @@ Font size of GUI
 **type**: str, **default**: asdghklqwertyuiopzxcvbnmfj  
 Specify the characters of hint used for EasyClick and GridMove. It accpets as input a set of non-duplicate characters and assigns them to the hints in order from the first to the last.
 
+<hr class="dash">
+
+### **`showcmd`**
+**type**: bool, **default**: true  
+Show partial command in the virtual command line.
+This feature causes some overhead.
 
 
 ## Command Line

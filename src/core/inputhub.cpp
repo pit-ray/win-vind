@@ -151,6 +151,9 @@ namespace vind
                         *input, pimpl->count_.size() > 0) ;
                 if(!new_count.empty()) {
                     pimpl->count_ += new_count ;
+
+                    // Store the count number, but return as false.
+                    count = util::extract_num<std::uint16_t>(pimpl->count_) ;
                     return false ;
                 }
             }

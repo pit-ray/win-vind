@@ -60,6 +60,7 @@ SOFTWARE.
 #include <cstring>
 #include <fstream>
 #include <memory>
+#include <sstream>
 
 #include "autocmd.hpp"
 
@@ -317,6 +318,7 @@ namespace vind
 
         void VindEntry::update() {
             auto& ihub = InputHub::get_instance() ;
+            auto& settable = SetTable::get_instance() ;
 
             // NOTE: it assume that these hwnd are fixed.
             static const auto desktop_hwnd = GetDesktopWindow() ;
@@ -370,10 +372,41 @@ namespace vind
 
             do {
                 CmdUnit::SPtr input ;
-                std::uint16_t count ;
+                std::uint16_t count = 0 ;
                 if(!ihub.pull_input(input, count)) {
+                    if(count > 0) {
+                        opt::VCmdLine::reset() ;
+                        opt::VCmdLine::print(opt::StaticMessage(std::to_string(count))) ;
+                    }
                     continue ;
                 }
+
+                if(settable.get("showcmd").get<bool>()) {
+                    auto solver = ihub.get_solver() ;
+                    for(const auto& matcher : solver->get_trigger_matchers()) {
+                        if(!matcher->is_matching()) {
+                            continue ;
+                        }
+                        auto hist_size = matcher->history_size() ;
+                        // If the any matcher isn't matched, the history size is zero.
+                        if(hist_size == 0) {
+                            opt::VCmdLine::reset() ;
+                            break ;
+                        }
+                        std::stringstream ss ;
+                        ss << count ;
+
+                        auto cmd = matcher->get_command() ;
+                        auto end_itr = cmd.begin() + hist_size ;
+                        for(auto itr = cmd.begin() ; itr != end_itr ; itr ++) {
+                            ss << **itr ;
+                        }
+                        opt::VCmdLine::reset() ;
+                        opt::VCmdLine::print(opt::StaticMessage(ss.str())) ;
+                        break ;
+                    }
+                }
+
                 handle_system_call(input->execute(count)) ;
 
                 // correct the state to avoid cases that a virtual key

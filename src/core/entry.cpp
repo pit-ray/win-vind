@@ -374,9 +374,11 @@ namespace vind
                 CmdUnit::SPtr input ;
                 std::uint16_t count = 0 ;
                 if(!ihub.pull_input(input, count)) {
-                    if(count > 0) {
-                        opt::VCmdLine::reset() ;
-                        opt::VCmdLine::print(opt::StaticMessage(std::to_string(count))) ;
+                    if(settable.get("showcmd").get<bool>()) {
+                        if(count > 0) {
+                            opt::VCmdLine::reset() ;
+                            opt::VCmdLine::print(opt::StaticMessage(std::to_string(count))) ;
+                        }
                     }
                     continue ;
                 }

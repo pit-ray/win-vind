@@ -39,11 +39,11 @@
 
     @if %compiler% == -msvc (
         if %3 == 32 (
-            cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" -A win32 .
+            cmake -B release_32 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A win32 .
             cmake --build release_32 --config Release
             xcopy /E /Y release_32\Release\*.exe release_32
         ) else (
-            cmake -B release_64 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" -A x64 .
+            cmake -B release_64 -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 .
             cmake --build release_64 --config Release
             xcopy /E /Y release_64\Release\*.exe release_64
         )
@@ -62,10 +62,10 @@
         Del /q "debug/Debug"
 
         if "%3" == "32" (
-            cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 17 2022" -A win32 .
+            cmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A win32 .
             cmake --build debug --config Debug
         ) else (
-            INTERNALcmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 17 2022" -A x64 .
+            INTERNALcmake -B debug -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
             cmake --build debug --config Debug
         )
 
@@ -80,7 +80,7 @@
     @set covdir=build_cov
     @if %compiler% == -msvc (
         "cov_tools/bin/cov-configure" --config %covdir%/covtest/cov.xml --msvc --template --xml-option=skip_file:".*/libs.*"
-        cmake -B %covdir% -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 17 2022" -A x64 .
+        cmake -B %covdir% -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64 .
         xcopy /e /Y %covdir%\Debug\*.exe %covdir%
 
     ) else (
@@ -97,7 +97,7 @@
 :test
     cd tests
     @if %compiler% == -msvc (
-        cmake -B build_msvc -G "Visual Studio 17 2022" unit
+        cmake -B build_msvc -G "Visual Studio 16 2019" unit
         cmake --build build_msvc
         ctest -C Debug --test-dir build_msvc --output-on-failure
     ) else (

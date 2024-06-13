@@ -56,7 +56,9 @@ namespace vind
 
             auto solver = ihub.get_solver(Mode::EDI_NORMAL) ;
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 core::CmdUnit::SPtr input ;
                 std::uint16_t in_count ;
@@ -118,7 +120,9 @@ namespace vind
 
             auto solver = ihub.get_solver(Mode::EDI_NORMAL) ;
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 core::CmdUnit::SPtr input ;
                 std::uint16_t in_count ;
@@ -178,7 +182,9 @@ namespace vind
 
             auto solver = ihub.get_solver(Mode::EDI_NORMAL) ;
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 core::CmdUnit::SPtr input ;
                 std::uint16_t in_count ;

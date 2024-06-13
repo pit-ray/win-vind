@@ -66,7 +66,9 @@ namespace
             }
 
             while(true) {
-                bg_.update() ;
+                if(!bg_.update()) {
+                    continue ;
+                }
 
                 if(igate.is_pressed(KEYCODE_ESC)) {
                     return ;

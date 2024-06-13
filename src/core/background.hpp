@@ -28,7 +28,8 @@ namespace vind
 
             // If you make some loop functions, the function is needed to call.
             // It includes Sleep().
-            void update() ;
+            // If this function returns false, should skip an iteration.
+            bool update() ;
 
             Background(const Background&) = delete ;
             Background& operator=(const Background&) = delete ;

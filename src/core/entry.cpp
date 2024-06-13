@@ -324,6 +324,10 @@ namespace vind
             static const auto desktop_hwnd = GetDesktopWindow() ;
             static const auto taskbar_hwnd = FindWindowA("Shell_TrayWnd", NULL) ;
 
+            if(!pimpl->bg_.update()) {
+                return ;
+            }
+
             auto& ac = AutoCmd::get_instance() ;
             auto hwnd = util::get_foreground_window() ;
             auto procid = static_cast<DWORD>(0) ;
@@ -342,8 +346,6 @@ namespace vind
                     ac.apply(AutoCmdEvent::APP_ENTER, procid) ;
                 }
             }
-
-            pimpl->bg_.update() ;
 
             // TODO: It is necessary to add exclusive handling when
             // write and read operations are performed at the same

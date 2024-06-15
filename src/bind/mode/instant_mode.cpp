@@ -58,7 +58,9 @@ namespace vind
 
             auto res = SystemCall::SUCCEEDED ;
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 std::vector<core::CmdUnit::SPtr> inputs ;
                 std::vector<std::uint16_t> in_counts ;

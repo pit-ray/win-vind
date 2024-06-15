@@ -355,7 +355,9 @@ namespace vind
             auto result = SystemCall::SUCCEEDED ;
             ac.apply(core::get_enter_event(core::Mode::COMMAND)) ;
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 bool break_flag = false ;
                 do {

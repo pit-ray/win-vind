@@ -937,26 +937,24 @@ namespace fluent_tray
             }
 
             POINT pos ;
-            if(!GetCursorPos(&pos)) {
-                return false ;
-            }
-
-            if(pos.x != previous_mouse_pos_.x || pos.y != previous_mouse_pos_.y) {
-                // The mouse cursor is moved, so switch to the mouse-mode.
-                for(int i = 0 ; i < static_cast<int>(menus_.size()) ; i ++) {
-                    auto& menu = menus_[i] ;
-                    auto detected_hwnd = WindowFromPoint(pos) ;
-                    if(!detected_hwnd) {
-                        return false ;
+            if(GetCursorPos(&pos)) {
+                if(pos.x != previous_mouse_pos_.x || pos.y != previous_mouse_pos_.y) {
+                    // The mouse cursor is moved, so switch to the mouse-mode.
+                    for(int i = 0 ; i < static_cast<int>(menus_.size()) ; i ++) {
+                        auto& menu = menus_[i] ;
+                        auto detected_hwnd = WindowFromPoint(pos) ;
+                        if(!detected_hwnd) {
+                            return false ;
+                        }
+                        // Checks whether the mouse cursor is over the menu or not.
+                        if(detected_hwnd == menu.window_handle()) {
+                            // Start selection by key from the currently selected menu.
+                            select_index_ = i ;
+                            break ;
+                        }
                     }
-                    // Checks whether the mouse cursor is over the menu or not.
-                    if(detected_hwnd == menu.window_handle()) {
-                        // Start selection by key from the currently selected menu.
-                        select_index_ = i ;
-                        break ;
-                    }
+                    previous_mouse_pos_ = pos ;
                 }
-                previous_mouse_pos_ = pos ;
             }
 
             if(select_index_ < 0) {
@@ -1422,7 +1420,10 @@ namespace fluent_tray
             if(!Shell_NotifyIconW(NIM_ADD, &icon_data_)) {
                 return false ;
             }
-            hide_menu_window() ;
+
+            if(!hide_menu_window()) {
+                return false ;
+            }
 
             return true ;
         }

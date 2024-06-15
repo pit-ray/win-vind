@@ -182,7 +182,9 @@ namespace vind
                     points, hint_texts, start_indices, mtxes) ;
 
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 // To use combined macros like <easyclick><click_left>,
                 // get the keys from the input queue rather than the mapped queue.

@@ -13,7 +13,7 @@ translations:
   #  label: 日本語
 
 project:
-  version: 5.13.0
+  version: 5.13.1
   download_url: downloads
   download_text: Download
 
@@ -43,10 +43,10 @@ links:
       icon: comments
       url: https://github.com/pit-ray/win-vind/discussions
 
-dl_ins_32: https://github.com/pit-ray/win-vind/releases/download/v5.13.0/win-vind_5.13.0_32bit_installer.zip
-dl_zip_32: https://github.com/pit-ray/win-vind/releases/download/v5.13.0/win-vind_5.13.0_32bit_portable.zip
-dl_ins_64: https://github.com/pit-ray/win-vind/releases/download/v5.13.0/win-vind_5.13.0_64bit_installer.zip
-dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v5.13.0/win-vind_5.13.0_64bit_portable.zip
+dl_ins_32: https://github.com/pit-ray/win-vind/releases/download/v5.13.1/win-vind_5.13.1_32bit_installer.zip
+dl_zip_32: https://github.com/pit-ray/win-vind/releases/download/v5.13.1/win-vind_5.13.1_32bit_portable.zip
+dl_ins_64: https://github.com/pit-ray/win-vind/releases/download/v5.13.1/win-vind_5.13.1_64bit_installer.zip
+dl_zip_64: https://github.com/pit-ray/win-vind/releases/download/v5.13.1/win-vind_5.13.1_64bit_portable.zip
 
 ui:
   mode: 'light' # 'auto', 'dark', 'light'

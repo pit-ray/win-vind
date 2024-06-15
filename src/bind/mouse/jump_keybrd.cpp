@@ -70,7 +70,9 @@ namespace vind
             auto toggle_keys = igate.pressed_list() ;
 
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 core::CmdUnit::SPtr inputs ;
                 std::uint16_t count ;

@@ -234,7 +234,9 @@ namespace vind
 
             core::InstantKeyAbsorber ika ;
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 bool break_flag = false ;
                 do {

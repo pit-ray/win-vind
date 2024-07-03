@@ -84,6 +84,7 @@ SOFTWARE.
 #include "opt/vcmdline.hpp"
 #include "util/debug.hpp"
 #include "util/interval_timer.hpp"
+#include "util/screen_metrics.hpp"
 #include "util/type_traits.hpp"
 #include "util/winwrap.hpp"
 
@@ -108,6 +109,8 @@ namespace vind
 
             DWORD previous_procid_ ;
 
+            std::size_t num_of_monitor_ ;
+
             template <typename ExitFuncType, typename String>
             Impl(ExitFuncType&& exitfunc, String&& memname, std::size_t memsize)
             : exit_(std::forward<ExitFuncType>(exitfunc)),
@@ -117,7 +120,8 @@ namespace vind
               subprocess_(false),
               memread_timer_(1000'000), //1 s
               bg_(opt::all_global_options()),
-              previous_procid_(0)
+              previous_procid_(0),
+              num_of_monitor_(util::get_all_monitor_metrics().size())
             {}
 
             ~Impl() noexcept {
@@ -370,6 +374,13 @@ namespace vind
                         std::memset(data.get(), 0, pimpl->memsize_) ;
                     }
                 }
+            }
+
+            // If the number of monitors changes, reload the settings.
+            auto current_num_of_monitor = util::get_all_monitor_metrics().size() ;
+            if(current_num_of_monitor != pimpl->num_of_monitor_) {
+                reconstruct() ;
+                pimpl->num_of_monitor_ = current_num_of_monitor ;
             }
 
             do {

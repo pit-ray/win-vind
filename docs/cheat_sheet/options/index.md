@@ -49,12 +49,21 @@ Font size of GUI
 Specify the characters of hint used for EasyClick and GridMove. It accpets as input a set of non-duplicate characters and assigns them to the hints in order from the first to the last.
 
 
-
 ## Command Line
 
 ### **`vcmdline`**
 **type**: bool, **default**: true  
-show virtual command line
+Show virtual command line
+
+<hr class="dash">
+
+### **`showcmd`**
+**type**: bool, **default**: true  
+Show the partial command in the virtual command line.
+This feature causes some overhead.
+If the count of repeats for a command is specified, the command is displayed following the count of repeats.
+If you do not enter a repeat count for a command, then the repeat count is denoted as 1.
+Unlike Vim, the repeat count is always explicitly displayed to reduce mistakes in the repeat count.
 
 <hr class="dash">
 

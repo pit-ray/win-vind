@@ -14,11 +14,19 @@ namespace vind
     {
         struct Background::Impl {
             std::vector<opt::Option::SPtr> opts_ ;
+            bool screen_is_locked_ ;
 
             template <typename T>
             Impl(T&& opts)
-            : opts_(std::forward<T>(opts))
+            : opts_(std::forward<T>(opts)),
+              screen_is_locked_(false)
             {}
+
+            bool is_screen_locked() {
+                // GetCursorPos fails when the screen is locked.
+                POINT pos ;
+                return GetCursorPos(&pos) == 0 ;
+            }
         } ;
 
         Background::Background()
@@ -35,22 +43,37 @@ namespace vind
 
         Background::~Background() noexcept = default ;
 
-        void Background::update() {
-            util::get_win_message() ;
-
+        bool Background::update() {
+            auto& igate = InputGate::get_instance() ;
             Sleep(5) ;
+
+            if(pimpl->is_screen_locked()) {
+                if(!pimpl->screen_is_locked_) {
+                    // Release all keys when the screen is locked.
+                    for(auto& key : igate.pressed_list()) {
+                        igate.release_virtually(key) ;
+                    }
+                    pimpl->screen_is_locked_ = true ;
+                }
+                return false ;
+            }
+            else if(pimpl->screen_is_locked_) {
+                pimpl->screen_is_locked_ = false ;
+            }
+
+            util::get_win_message() ;
 
             for(const auto& op : pimpl->opts_) {
                 op->process() ;
             }
 
-            auto& igate = InputGate::get_instance() ;
             igate.refresh_toggle_state() ;
 
             if(igate.is_really_pressed(KEYCODE_F8) && \
                igate.is_really_pressed(KEYCODE_F9)) {
                 throw SafeForcedTermination() ;
             }
+            return true ;
         }
     }
 }

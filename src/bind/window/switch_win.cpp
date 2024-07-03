@@ -60,7 +60,9 @@ namespace vind
             auto mode = core::get_global_mode() ;
 
             while(true) {
-                pimpl->bg_.update() ;
+                if(!pimpl->bg_.update()) {
+                    continue ;
+                }
 
                 bool break_flag = false ;
                 do {

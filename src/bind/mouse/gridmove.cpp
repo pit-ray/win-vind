@@ -28,19 +28,11 @@ namespace vind
             int grid_w_ ;
             int grid_h_ ;
 
-            std::vector<util::Point2D> points_ ;
-            std::vector<std::string> hint_texts_ ;
-
-            std::vector<core::CmdMatcher> matchers_ ;
-
             Impl()
             : hinter_(opt::search_options(
                     opt::VCmdLine().name())),
               grid_w_(0),
-              grid_h_(0),
-              points_(),
-              hint_texts_(),
-              matchers_()
+              grid_h_(0)
             {}
 
             void assign_hints(
@@ -61,8 +53,22 @@ namespace vind
         void GridMove::sprocess(
                 std::uint16_t UNUSED(count),
                 const std::string& UNUSED(args)) {
-            pimpl->hinter_.start_matching(
-                pimpl->points_, pimpl->hint_texts_, pimpl->matchers_) ;
+            std::vector<util::Point2D> points ;
+            std::vector<std::string> hint_texts ;
+            std::vector<core::Hint> hints ;
+            pimpl->assign_hints(points, hints, hint_texts) ;
+
+            std::vector<core::CmdMatcher> matchers{} ;
+            matchers.reserve(hints.size()) ;
+            for(const auto& hint : hints) {
+                std::vector<core::CmdUnit::SPtr> cmds ;
+                for(const auto& unit : hint) {
+                    cmds.push_back(std::make_shared<core::CmdUnit>(unit)) ;
+                }
+                matchers.emplace_back(std::move(cmds)) ;
+            }
+
+            pimpl->hinter_.start_matching(points, hint_texts, matchers) ;
         }
 
         void GridMove::reconstruct() {
@@ -80,21 +86,6 @@ namespace vind
                 settable.get("gridmove_size").get<std::string>(), "x") ;
             pimpl->grid_w_ = std::stoi(size[0]) ;
             pimpl->grid_h_ = std::stoi(size[1]) ;
-
-            // Pre-computes the coordinates of the hints when some parameters are changed.
-            pimpl->points_.clear() ;
-            pimpl->hint_texts_.clear() ;
-            std::vector<core::Hint> hints ;
-            pimpl->assign_hints(pimpl->points_, hints, pimpl->hint_texts_) ;
-
-            pimpl->matchers_.clear() ;
-            for(const auto& hint : hints) {
-                std::vector<core::CmdUnit::SPtr> cmds ;
-                for(const auto& unit : hint) {
-                    cmds.push_back(std::make_shared<core::CmdUnit>(unit)) ;
-                }
-                pimpl->matchers_.emplace_back(std::move(cmds)) ;
-            }
         }
 
         void GridMove::Impl::assign_hints(

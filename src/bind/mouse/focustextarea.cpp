@@ -132,8 +132,8 @@ namespace vind
 
                     if(min_distance > distance) {
                         nearest = elem ;
-                        min_distance = distance ;
-                        nearest_box = box ;
+                        min_distance = std::move(distance) ;
+                        nearest_box = std::move(box) ;
                     }
                 }
 

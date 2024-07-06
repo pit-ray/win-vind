@@ -106,13 +106,14 @@ namespace vind
                 util::create_process(
                         get_shell_startupdirectory(),
                         "cmd", util::concat_args("/c",
-                        shell_cmd, shell_cmd_flag, cmd,
+                        std::move(shell_cmd), std::move(shell_cmd_flag), std::move(cmd),
                         "& pause")) ;
             }
             else {
                 util::create_process(
                         get_shell_startupdirectory(),
-                        shell_cmd, util::concat_args(shell_cmd_flag, cmd), false) ;
+                        std::move(shell_cmd),
+                        util::concat_args(std::move(shell_cmd_flag), std::move(cmd)), false) ;
             }
 
             Sleep(100) ; //wait until the window is selectable

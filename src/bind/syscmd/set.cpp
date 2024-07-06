@@ -63,7 +63,7 @@ namespace vind
             }
 
             // set option_name
-            auto key = core::extract_single_arg(util::A2a(pargs)) ;
+            auto key = core::extract_single_arg(util::A2a(std::move(pargs))) ;
 
             bool flag_value = true ;
             if(key.size() > 2 && key[0] == 'n' && key[1] == 'o') {

@@ -237,7 +237,7 @@ namespace
                             longest = name ;
                         }
                     }
-                    code2name_[code] = longest ;
+                    code2name_[code] = std::move(longest) ;
 
                     continue ;
                 }

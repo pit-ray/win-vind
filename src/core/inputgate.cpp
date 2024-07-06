@@ -447,7 +447,7 @@ namespace vind
 
             std::vector<KeyCode> keyset(target.begin(), target.end()) ;
             std::sort(keyset.begin(), keyset.end()) ;
-            pimpl->k2ks_map_[static_cast<int>(mode)][trigger_code] = keyset ;
+            pimpl->k2ks_map_[static_cast<int>(mode)][trigger_code] = std::move(keyset) ;
         }
     } // namespace core
 } // namespace vind

@@ -27,7 +27,7 @@ namespace vind
             auto [event_str, patcmd] = core::extract_double_args(pargs) ;
             auto [pattern, cmd] = core::extract_double_args(patcmd) ;
 
-            std::vector<core::AutoCmdEvent> events ;
+            std::vector<core::AutoCmdEvent> event_list ;
             for(const auto& event_str_part : util::split(event_str, ",")) {
                 auto event = core::get_autocmd_event(event_str_part) ;
                 if(event == core::AutoCmdEvent::UNDEFINED) {
@@ -39,7 +39,7 @@ namespace vind
                     return ;
                 }
 
-                events.push_back(event) ;
+                event_list.push_back(event) ;
             }
 
             if(pattern.empty()) {
@@ -51,7 +51,7 @@ namespace vind
 
                 return ;
             }
-            auto patterns = util::split(pattern, ",") ;
+            auto pattern_list = util::split(std::move(pattern), ",") ;
 
             if(cmd.empty()) {
                 opt::VCmdLine::print(
@@ -63,8 +63,8 @@ namespace vind
                 return ;
             }
 
-            for(const auto event : events) {
-                for(const auto& aupat : patterns) {
+            for(const auto event : event_list) {
+                for(const auto& aupat : pattern_list) {
                     core::AutoCmd::get_instance().add(event, aupat, cmd) ;
                 }
             }
@@ -83,10 +83,10 @@ namespace vind
 
             auto [event_str, patcmd] = core::extract_double_args(pargs) ;
             auto [pattern, cmd] = core::extract_double_args(patcmd) ;
-            auto patterns = util::split(std::move(pattern), ",") ;
+            auto pattern_list = util::split(std::move(pattern), ",") ;
 
             if(event_str == "*") {
-                if(patterns.empty()) {
+                if(pattern_list.empty()) {
                     opt::VCmdLine::print(
                         opt::ErrorMessage("E: Empty autocmd pattern")) ;
                     core::Logger::get_instance().error(
@@ -94,13 +94,13 @@ namespace vind
                     return ;
                 }
 
-                for(const auto& aupat : patterns) {
+                for(const auto& aupat : pattern_list) {
                     ac.remove(aupat) ;
                 }
                 return ;
             }
 
-            std::vector<core::AutoCmdEvent> events ;
+            std::vector<core::AutoCmdEvent> event_list ;
             for(const auto& event_str_part : util::split(event_str, ",")) {
                 auto event = core::get_autocmd_event(event_str_part) ;
                 if(event == core::AutoCmdEvent::UNDEFINED) {
@@ -111,31 +111,31 @@ namespace vind
                         event_str + " is an unsupported event name.") ;
                     return ;
                 }
-                events.push_back(event) ;
+                event_list.push_back(event) ;
             }
 
-            if(patterns.empty()) {
-                for(const auto event : events) {
+            if(pattern_list.empty()) {
+                for(const auto event : event_list) {
                     ac.remove(event) ;
                 }
                 return ;
             }
             if(cmd.empty()) {
-                for(const auto event : events) {
-                    for(const auto& aupat : patterns) {
+                for(const auto event : event_list) {
+                    for(const auto& aupat : pattern_list) {
                         ac.remove(event, aupat) ;
                     }
                 }
                 return ;
             }
 
-            for(const auto event : events) {
-                for(const auto& aupat : patterns) {
+            for(const auto event : event_list) {
+                for(const auto& aupat : pattern_list) {
                     ac.remove(event, aupat) ;
                 }
             }
-            for(const auto event : events) {
-                for(const auto& aupat : patterns) {
+            for(const auto event : event_list) {
+                for(const auto& aupat : pattern_list) {
                     ac.add(event, aupat, cmd) ;
                 }
             }

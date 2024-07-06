@@ -248,7 +248,7 @@ namespace vind
                 path = core::RC() ;
             }
             else {
-                path = core::replace_path_magic(pargs) ;
+                path = core::replace_path_magic(std::move(pargs)) ;
             }
 
             std::ifstream ifs(path, std::ios::in) ;

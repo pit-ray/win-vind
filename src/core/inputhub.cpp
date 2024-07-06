@@ -167,7 +167,7 @@ namespace vind
             else {
                 count = 1 ;
             }
-            fetched_input = input ;
+            fetched_input = std::move(input) ;
             return true ;
         }
 

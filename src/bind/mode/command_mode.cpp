@@ -174,7 +174,7 @@ namespace vind
                         auto tmp = solver->map_command_from(*unit, false) ;
                         if(!tmp.empty()) {
                             // To get the last matched command
-                            command = tmp ;
+                            command = std::move(tmp) ;
                         }
                     }
                 }

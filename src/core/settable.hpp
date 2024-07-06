@@ -7,6 +7,7 @@
 #include <type_traits>
 #include <typeinfo>
 #include <variant>
+#include <vector>
 
 
 namespace vind
@@ -22,6 +23,8 @@ namespace vind
 
             explicit SetTable() ;
             virtual ~SetTable() noexcept ;
+
+            static std::vector<Param> default_params ;
 
         public:
             static SetTable& get_instance() ;

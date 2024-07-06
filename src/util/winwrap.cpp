@@ -677,7 +677,7 @@ namespace vind
                 L"DisplayVersion",
                 L"ReleaseId"
             } ;
-            for (auto version_key : version_keys) {
+            for (const auto& version_key : version_keys) {
                 DWORD size ;
                 if(ERROR_SUCCESS != RegGetValueW(
                         HKEY_LOCAL_MACHINE, subkey, version_key.c_str(),

@@ -97,26 +97,26 @@ namespace vind
                 return std::filesystem::path(root_path) ;
             } () ;
 #else
-            static const auto path = MODULE_PATH().parent_path() ;
+            static const auto& path = MODULE_PATH().parent_path() ;
 #endif
             return path ;
         }
 
         const std::filesystem::path& ROOT_PATH() {
-            static const auto path = is_installer_used() ? HOME_PATH() / ".win-vind" : MODULE_ROOT_PATH() ;
+            static const auto& path = is_installer_used() ? HOME_PATH() / ".win-vind" : MODULE_ROOT_PATH() ;
             return path ;
         }
 
         const std::filesystem::path& CONFIG_PATH() {
-            static const auto path = is_installer_used() ? ROOT_PATH() : ROOT_PATH() / "config" ;
+            static const auto& path = is_installer_used() ? ROOT_PATH() : ROOT_PATH() / "config" ;
             return path ;
         }
 
         const std::filesystem::path& RESOURCE_ROOT_PATH() {
 #if defined(DEBUG)
-            static const auto path = MODULE_ROOT_PATH() / "res" / "resources" ;
+            static const auto& path = MODULE_ROOT_PATH() / "res" / "resources" ;
 #else
-            static const auto path = MODULE_ROOT_PATH() / "resources" ;
+            static const auto& path = MODULE_ROOT_PATH() / "resources" ;
 #endif
             return path ;
         }

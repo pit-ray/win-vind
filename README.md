@@ -76,6 +76,9 @@ $ scoop install win-vind
 
 Usage is mainly described in easy-to-read [documentation pages](https://pit-ray.github.io/win-vind/usage/) with plenty of diagrams. Here, only a sample .vindrc is shown below. As you can see, it is Vim user-friendly.  
 
+The file is located at `C:\Users\[USERNAME]\.win-vind\.vindrc`
+
+
 ### .vindrc sample  
 
 ```vim
@@ -130,7 +133,12 @@ set shell = cmd
 |[big](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/big)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode|
 |[huge](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/huge)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode +experimental|
 
-Following Vim, there are five tiers. `tiny` has minimal commands for mouse moving and clicking, including EasyClick and GridMove. `small` allows more flexible handling of window controls and process launches, etc. `normal` has Vim emulation mappings and allows text editing in text areas, etc. `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse. `huge` allows win-vind to have experimental features for more complex operations.
+Following Vim, there are five tiers. 
+* `tiny` has minimal commands for mouse moving and clicking from the keyboard (called "GridMove" and "EasyClick" ). 
+* `small` allows more flexible handling of window controls and process launches, etc.
+* `normal` has Vim emulation mappings and allows text editing in text areas, etc.
+* `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse.
+* `huge` allows win-vind to have experimental features for more complex operations.
 
 For more information on default mappings, please visit our [website](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/).
 

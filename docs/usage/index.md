@@ -129,7 +129,7 @@ win-vind uses **Run Commands** style configuration method. If you've ever writte
 #### What is a mapping?
 A typical key binding is a simple one that assigns a function from a set of keys. In contrast, the mapping employed in Vim is a kind of extension of key binding, a mechanism that allows recursive key assignment and command definition.
 
-Mapping is defined using a variety of map commands known in vim. The most commonly used are
+Mapping is defined using a variety of map commands known in Vim. The most commonly used are:
 
 * `map` remaps for all modes
 * `nmap` / `noremap` remaps for normal mode

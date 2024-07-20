@@ -129,7 +129,33 @@ win-vind uses **Run Commands** style configuration method. If you've ever writte
 #### What is a mapping?
 A typical key binding is a simple one that assigns a function from a set of keys. In contrast, the mapping employed in Vim is a kind of extension of key binding, a mechanism that allows recursive key assignment and command definition.
 
-Mapping is defined using the `map` or `noremap` command. Examples of recursive key assignments are shown below.
+Mapping is defined using a variety of map commands known in Vim. The most commonly used are:
+
+* `map` remaps for all modes
+* `nmap` / `noremap` remaps for normal mode
+* `imap` / `inoremap` remaps for insert mode 
+
+Below is a table listing the complete set of commands for editing mappings.
+
+|**Syntax**|**Features**|
+|:---|:---|
+|`${MODE}map ${IN_CMD} ${OUT_CMD}`|Recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`.|
+|`${MODE}noremap ${IN_CMD} ${OUT_CMD}`|Non-recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`, which is composed by the default map.|
+|`${MODE}unmap ${IN_CMD}`|Remove the map corresponding to the `${IN_CMD}`.|
+|`${MODE}mapclear`|Delete all maps.|
+|`command ${IN_CMD} ${OUT_CMD}`|It defines the command to call the `${OUT_CMD}`.|
+|`delcommand ${IN_CMD}`|Remove the command corresponding to the `{IN_CMD}`.|
+|`comclear`|Delete all commands.|
+
+&nbsp;
+
+`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). The keyset syntax uses the same expression as in Vim, where keys are connected by `-` between `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
+
+
+
+
+
+Examples of recursive key assignments are shown below.
 
 ```vim
 " Mapping A
@@ -155,22 +181,6 @@ For example, the following mapping does not cause anything to happen in insert m
 " m does not exist, so nothing happens
 inoremap g m
 ```
-
-Below is a table listing the commands for editing mappings.
-
-|**Syntax**|**Features**|
-|:---|:---|
-|`${MODE}map ${IN_CMD} ${OUT_CMD}`|Recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`.|
-|`${MODE}noremap ${IN_CMD} ${OUT_CMD}`|Non-recursively define a map that is invoked by `${IN_CMD}` and generates `${OUT_CMD}`, which is composed by the default map.|
-|`${MODE}unmap ${IN_CMD}`|Remove the map corresponding to the `${IN_CMD}`.|
-|`${MODE}mapclear`|Delete all maps.|
-|`command ${IN_CMD} ${OUT_CMD}`|It defines the command to call the `${OUT_CMD}`.|
-|`delcommand ${IN_CMD}`|Remove the command corresponding to the `{IN_CMD}`.|
-|`comclear`|Delete all commands.|
-
-&nbsp;
-
-`${MODE}` is the [Mode Prefix]({{ site.url }}/cheat_sheet/keywords/#mode-prefix). The keyset syntax uses the same expression as in Vim, where keys are connected by `-` between `<` and `>`. However, there is no limit to the number of combinations, and you can connect as many as you like. (e.g. `<Esc-b-c-a-d>`).  
 
 #### Allow external macro
 

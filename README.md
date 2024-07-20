@@ -134,7 +134,7 @@ set shell = cmd
 |[huge](https://pit-ray.github.io/win-vind/cheat_sheet/defaults/huge)|+mouse +syscmd +window +process +vimemu +hotkey +gvmode +experimental|
 
 Following Vim, there are five tiers. 
-* `tiny` has minimal commands for mouse moving and clicking from the keyboard (called "GridMove" and "EasyClick" ). 
+* `tiny` has minimal commands for mouse moving and clicking from the keyboard (e.g., GridMove and EasyClick). 
 * `small` allows more flexible handling of window controls and process launches, etc.
 * `normal` has Vim emulation mappings and allows text editing in text areas, etc.
 * `big` adds several hotkeys that redefine some of the shortcut keys in Windows to operate Windows with more Vim-like ways. It also provides GUI Visual Mode (+gvmode), which allows for holding down the mouse.

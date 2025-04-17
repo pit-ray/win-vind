@@ -434,7 +434,7 @@ namespace vind
             }
 
             if(!solve) {
-                pimpl->default_ = tmp_maps ;
+                pimpl->default_ = std::move(tmp_maps) ;
                 return ;
             }
 

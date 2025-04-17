@@ -305,8 +305,8 @@ namespace vind
                 auto printable_ustring = encode_to_unicode(printables) ;
                 if(!printable_ustring.empty()) {
                     auto& latest = hists_.back() ;
-                    latest->print_logs_.push_back(printable_ustring) ;
-                    latest->fetched_logs_.push_back(printables) ;
+                    latest->print_logs_.push_back(std::move(printable_ustring)) ;
+                    latest->fetched_logs_.push_back(std::move(printables)) ;
                     update_cmdline_display() ;
                 }
             }

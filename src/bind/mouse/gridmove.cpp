@@ -137,7 +137,7 @@ namespace vind
 
                     auto hint = m_hints[mi] ;
                     hint.insert(hint.end(), c_hints[ci].begin(), c_hints[ci].end()) ;
-                    hints.push_back(hint) ;
+                    hints.push_back(std::move(hint)) ;
                 }
             }
         }

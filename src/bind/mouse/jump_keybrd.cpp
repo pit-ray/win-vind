@@ -220,6 +220,10 @@ namespace vind
                 }
             }
 
+            if(max_x == 0 || max_y == 0) {
+                PRINT_ERROR("The keyboard layout is invalid.") ;
+            }
+
             for(std::size_t i = 0 ; i < pimpl->xposs_.size() ; i ++) {
                 pimpl->xposs_[i] /= max_x ;
                 pimpl->yposs_[i] /= max_y ;

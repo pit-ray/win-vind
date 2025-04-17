@@ -217,7 +217,7 @@ namespace vind
                         input, count, mode, parse_count)) {
                     return false ;
                 }
-                fetched_inputs.push_back(input) ;
+                fetched_inputs.push_back(std::move(input)) ;
                 fetched_counts.push_back(count) ;
                 return true ;
             }

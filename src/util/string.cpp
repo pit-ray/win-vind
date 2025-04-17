@@ -25,12 +25,12 @@ namespace vind
             while(true) {
                 auto pos = str.find(deliminator) ;
                 if(pos == std::string::npos) {
-                    vec.push_back(str) ;
+                    vec.push_back(std::move(str)) ;
                     return vec ;
                 }
                 auto head = str.substr(0, pos) ;
                 if(!head.empty()) {
-                    vec.push_back(head) ;
+                    vec.push_back(std::move(head)) ;
                 }
                 str = str.substr(pos + deliminator.size()) ;
             }
